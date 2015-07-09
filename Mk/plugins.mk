@@ -44,9 +44,10 @@ umount: check
 install: check
 	# move all sources to their destination
 	@mkdir -p ${DESTDIR}/usr/local
-	@(cd ${.CURDIR}/src; find * -type f) | \
-	    (xargs -n1 tar -C ${.CURDIR}/src -cpf -) | \
-	    tar -C ${DESTDIR}/usr/local -xpf -
+	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	    tar -C ${.CURDIR}/src -cpf - $${FILE} | \
+	    tar -C ${DESTDIR}/usr/local -xpf -; \
+	done
 	# finally pretty-print a list of files present
 	@(cd ${.CURDIR}/src; find * -type f) | \
 	    xargs -n1 printf "/usr/local/%s\n"
