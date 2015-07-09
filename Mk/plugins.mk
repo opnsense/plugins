@@ -34,23 +34,6 @@ check:
 	@[ -n "${PLUGIN_DESC}" ] || echo "PLUGIN_DESC not set"
 	@[ -n "${PLUGIN_MAINTAINER}" ] || echo "PLUGIN_MAINTAINER not set"
 
-mount: check
-	mount_unionfs ${.CURDIR}/src ${DESTDIR}/usr/local
-
-umount: check
-	umount -f "<above>:${.CURDIR}/src"
-
-install: check
-	# move all sources to their destination
-	@mkdir -p ${DESTDIR}/usr/local
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
-	    tar -C ${.CURDIR}/src -cpf - $${FILE} | \
-	    tar -C ${DESTDIR}/usr/local -xpf -; \
-	done
-	# finally pretty-print a list of files present
-	@(cd ${.CURDIR}/src; find * -type f) | \
-	    xargs -n1 printf "/usr/local/%s\n"
-
 manifest: check
 	@echo "name: ${PLUGIN_PREFIX}${PLUGIN_NAME}"
 	@echo "version: \"${PLUGIN_VERSION}\""
@@ -66,18 +49,35 @@ manifest: check
 	done
 	@echo "}"
 
+install: check
+	@mkdir -p ${DESTDIR}/usr/local
+	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
+		    tar -C ${DESTDIR}/usr/local -xpf -; \
+		echo /usr/local/$${FILE}; \
+	done
+
 collect: check
-	# collect known files present in system
-	@(cd ${.CURDIR}/src; find * -type f) | \
-	    (xargs -n1 tar -C /usr/local -cpf -) | \
-	    tar -C ${.CURDIR}/src -xpf -
+	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		tar -C ${DESTDIR}/usr/local -cpf - $${FILE} | \
+		    tar -C ${.CURDIR}/src -xpf -; \
+	done
 
 remove: check
-	# remove known files and directories from system
-	@(cd ${.CURDIR}/src; find * -type f) | \
-	    xargs -n1 -I% rm -f ${DESTDIR}/usr/local/%
-	@(cd ${.CURDIR}/src; find * -type d) | \
-	    xargs -n1 -I% rmdir ${DESTDIR}/usr/local/%
+	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		rm -f ${DESTDIR}/usr/local/$${FILE}; \
+	done
+	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
+		if [ -d ${DESTDIR}/usr/local/$${DIR} ]; then \
+			rmdir ${DESTDIR}/usr/local/$${DIR}; \
+		fi; \
+	done
+
+mount: check
+	mount_unionfs ${.CURDIR}/src ${DESTDIR}/usr/local
+
+umount: check
+	umount -f "<above>:${.CURDIR}/src"
 
 clean: check
 	@git reset -q . && git checkout -f . && git clean -xdqf .
