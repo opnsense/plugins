@@ -1,0 +1,5 @@
+vmware_guest_vmblock_enable="YES"
+vmware_guest_vmhgfs_enable="YES"
+vmware_guest_vmmemctl_enable="YES"
+vmware_guest_vmxnet_enable="YES"
+vmware_guestd_enable="YES"
