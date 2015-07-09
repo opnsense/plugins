@@ -4,4 +4,4 @@ PLUGIN_DESC=		VMware tools wrapper
 PLUGIN_DEPENDS=		open-vm-tools-nox11
 PLUGIN_MAINTAINER=	franco@opnsense.org
 
-.include "../Mk/plugins.mk"
+.include "../../Mk/plugins.mk"
