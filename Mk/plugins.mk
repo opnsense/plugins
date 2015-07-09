@@ -26,7 +26,6 @@
 all: check
 
 PLUGIN_COMMENT!=	git rev-list HEAD --max-count=1 | cut -c1-9
-PLUGIN_DEPENDS+=	opnsense
 PLUGIN_PREFIX=		os-
 
 check:
