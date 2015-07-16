@@ -37,6 +37,10 @@ check:
 	@[ -n "${PLUGIN_VERSION}" ] || echo "PLUGIN_VERSION not set"
 	@[ -n "${PLUGIN_DESC}" ] || echo "PLUGIN_DESC not set"
 	@[ -n "${PLUGIN_MAINTAINER}" ] || echo "PLUGIN_MAINTAINER not set"
+	# XXX throw an error here
+
+name: check
+	@echo ${PLUGIN_PREFIX}${PLUGIN_NAME}
 
 manifest: check
 	@echo "name: ${PLUGIN_PREFIX}${PLUGIN_NAME}"
