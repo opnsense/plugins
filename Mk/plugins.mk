@@ -26,7 +26,11 @@
 all: check
 
 PLUGIN_COMMENT!=	git rev-list HEAD --max-count=1 | cut -c1-9
+PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
+			+PRE_DEINSTALL +POST_DEINSTALL
 PLUGIN_PREFIX=		os-
+
+LOCALBASE?=		/usr/local
 
 check:
 	@[ -n "${PLUGIN_NAME}" ] || echo "PLUGIN_NAME not set"
@@ -49,32 +53,44 @@ manifest: check
 	done
 	@echo "}"
 
+scripts: check
+	@mkdir -p ${DESTDIR}
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f $${SCRIPT} ]; then \
+			cp -v $${SCRIPT} ${DESTDIR}; \
+		fi; \
+	done
+
 install: check
-	@mkdir -p ${DESTDIR}/usr/local
+	@mkdir -p ${DESTDIR}${LOCALBASE}
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
-		    tar -C ${DESTDIR}/usr/local -xpf -; \
-		echo /usr/local/$${FILE}; \
+		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
+	done
+
+plist: check
+	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		echo ${LOCALBASE}/$${FILE}; \
 	done
 
 collect: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
-		tar -C ${DESTDIR}/usr/local -cpf - $${FILE} | \
+		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
 		    tar -C ${.CURDIR}/src -xpf -; \
 	done
 
 remove: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
-		rm -f ${DESTDIR}/usr/local/$${FILE}; \
+		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
 	done
 	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
-		if [ -d ${DESTDIR}/usr/local/$${DIR} ]; then \
-			rmdir ${DESTDIR}/usr/local/$${DIR}; \
+		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
+			rmdir ${DESTDIR}${LOCALBASE}/$${DIR}; \
 		fi; \
 	done
 
 mount: check
-	mount_unionfs ${.CURDIR}/src ${DESTDIR}/usr/local
+	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
 
 umount: check
 	umount -f "<above>:${.CURDIR}/src"
