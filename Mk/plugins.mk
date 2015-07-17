@@ -43,6 +43,9 @@ check:
 name: check
 	@echo ${PLUGIN_PREFIX}${PLUGIN_NAME}
 
+depends: check
+	@echo ${PLUGIN_DEPENDS}
+
 manifest: check
 	@echo "name: ${PLUGIN_PREFIX}${PLUGIN_NAME}"
 	@echo "version: \"${PLUGIN_VERSION}\""
