@@ -31,6 +31,7 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 PLUGIN_PREFIX=		os-
 
 LOCALBASE?=		/usr/local
+PKG!=			which pkg || echo true
 
 check:
 	@[ -n "${PLUGIN_NAME}" ] || echo "PLUGIN_NAME not set"
@@ -52,8 +53,9 @@ manifest: check
 	@echo "www: https://opnsense.org/"
 	@echo "prefix: /"
 	@echo "deps: {"
-	@for DEP in ${PLUGIN_DEPENDS}; do \
-		pkg query '  %n: { version: "%v", origin: "%o" }' $${DEP}; \
+	@for PLUGIN_DEPEND in ${PLUGIN_DEPENDS}; do \
+		${PKG} query '  %n: { version: "%v", origin: "%o" }' \
+		    $${PLUGIN_DEPEND}; \
 	done
 	@echo "}"
 
