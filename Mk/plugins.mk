@@ -66,7 +66,7 @@ scripts: check
 	@mkdir -p ${DESTDIR}
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f $${SCRIPT} ]; then \
-			cp -v $${SCRIPT} ${DESTDIR}; \
+			cp $${SCRIPT} ${DESTDIR}; \
 		fi; \
 	done
 
