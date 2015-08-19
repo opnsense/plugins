@@ -1,0 +1,2 @@
+configctl template reload OPNsense.VMware
+/usr/local/opnsense/scripts/vmware/setup.sh

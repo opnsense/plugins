@@ -1,5 +1,2 @@
-vmware_guest_vmblock_enable="YES"
-vmware_guest_vmhgfs_enable="YES"
-vmware_guest_vmmemctl_enable="YES"
-vmware_guest_vmxnet_enable="YES"
-vmware_guestd_enable="YES"
+# rc vars for open-vm-tools are dynamic, so launch the launcher
+/usr/local/opnsense/scripts/vmware/setup.sh
