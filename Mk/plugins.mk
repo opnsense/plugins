@@ -25,7 +25,7 @@
 
 all: check
 
-PLUGIN_COMMENT!=	git rev-list HEAD --max-count=1 | cut -c1-9
+PLUGIN_DESC!=		git rev-list HEAD --max-count=1 | cut -c1-9
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 PLUGIN_PREFIX=		os-
@@ -36,7 +36,7 @@ PKG!=			which pkg || echo true
 check:
 	@[ -n "${PLUGIN_NAME}" ] || echo "PLUGIN_NAME not set"
 	@[ -n "${PLUGIN_VERSION}" ] || echo "PLUGIN_VERSION not set"
-	@[ -n "${PLUGIN_DESC}" ] || echo "PLUGIN_DESC not set"
+	@[ -n "${PLUGIN_COMMENT}" ] || echo "PLUGIN_COMMENT not set"
 	@[ -n "${PLUGIN_MAINTAINER}" ] || echo "PLUGIN_MAINTAINER not set"
 	# XXX throw an error here
 
