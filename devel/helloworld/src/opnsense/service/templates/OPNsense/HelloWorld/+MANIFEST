@@ -1,0 +1,8 @@
+name: opnsense-helloworld
+version: 1.0
+origin: opnsense/hello-world
+comment: framework sample application
+desc: configuration templates for helloworld
+maintainer: ad at opnsense.org
+www: https://opnsense.org
+prefix: /
