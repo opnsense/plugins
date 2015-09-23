@@ -1,2 +1,9 @@
+touch /boot/loader.conf
+cp /boot/loader.conf /boot/loader.conf.bak
+(grep -v '^vmxnet_load=' /boot/loader.conf.bak; \
+    echo 'vmxnet_load="YES"') > /boot/loader.conf
+rm -f /boot/loader.conf.bak
+
 configctl template reload OPNsense.VMware
+
 /usr/local/opnsense/scripts/vmware/setup.sh
