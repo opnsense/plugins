@@ -1,8 +1,0 @@
-name: os-vmware
-version: 1.0
-origin: opnsense/os-vmware
-comment: VMware tools wrapper
-desc: do we really need this file, Ad?
-maintainer: franco@opnsense.org
-www: https://opnsense.org
-prefix: /

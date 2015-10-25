@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export vmware_guestd_enable="YES"
+
+/usr/local/etc/rc.d/vmware-guestd start
