@@ -33,12 +33,15 @@ PLUGIN_PREFIX=		os-
 LOCALBASE?=		/usr/local
 PKG!=			which pkg || echo true
 
+PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
+			PLUGIN_MAINTAINER
+
 check:
-	@[ -n "${PLUGIN_NAME}" ] || echo "PLUGIN_NAME not set"
-	@[ -n "${PLUGIN_VERSION}" ] || echo "PLUGIN_VERSION not set"
-	@[ -n "${PLUGIN_COMMENT}" ] || echo "PLUGIN_COMMENT not set"
-	@[ -n "${PLUGIN_MAINTAINER}" ] || echo "PLUGIN_MAINTAINER not set"
-	# XXX throw an error here
+.for PLUGIN_REQUIRE in ${PLUGIN_REQUIRES}
+.  if "${${PLUGIN_REQUIRE}}" == ""
+.    error "${PLUGIN_REQUIRE} not set"
+.  endif
+.endfor
 
 name: check
 	@echo ${PLUGIN_PREFIX}${PLUGIN_NAME}
