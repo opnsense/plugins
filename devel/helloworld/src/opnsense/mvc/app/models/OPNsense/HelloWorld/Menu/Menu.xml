@@ -1,6 +1,5 @@
 <menu>
-    <!-- Plugin HelloWorld menu -->
-    <User order="999">
+    <Lobby>
         <HelloWorld VisibleName="Hello World!" url="/ui/helloworld/"/>
-    </User>
+    </Lobby>
 </menu>

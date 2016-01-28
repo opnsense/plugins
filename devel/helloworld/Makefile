@@ -1,7 +1,7 @@
 PLUGIN_NAME=		helloworld
-PLUGIN_VERSION=		1.0
+PLUGIN_VERSION=		1.1
 PLUGIN_COMMENT=		A sample framework application
 #PLUGIN_DEPENDS=		
-PLUGIN_MAINTAINER=	adopnsense.org
+PLUGIN_MAINTAINER=	ad@opnsense.org
 
 .include "../../Mk/plugins.mk"
