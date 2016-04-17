@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2016 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -28,7 +28,15 @@ all: check
 PLUGIN_DESC!=		git rev-list HEAD --max-count=1 | cut -c1-9
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
+
+# Setting private mode allows plugins not
+# to show up in the firmware GUI, and must
+# thus be installed during build or console.
+.if "${PLUGIN_PRIVATE}" == ""
 PLUGIN_PREFIX=		os-
+.else
+PLUGIN_PREFIX=		ospriv-
+.endif
 
 LOCALBASE?=		/usr/local
 PKG!=			which pkg || echo true
