@@ -1,0 +1,8 @@
+name: opnsense-haproxy
+version: 1.0
+origin: opnsense/haproxy
+comment: load balancer
+desc: Reliable, high performance TCP/HTTP load balancer
+maintainer: opnsense at moov.de
+www: https://haproxy.org
+prefix: /

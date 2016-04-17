@@ -1,0 +1,106 @@
+<form>
+    <field>
+        <id>healthcheck.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this ACL.</help>
+    </field>
+    <field>
+        <id>healthcheck.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this ACL.</help>
+    </field>
+    <field>
+        <id>healthcheck.type</id>
+        <label>Check type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select type of health check.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.interval</id>
+        <label>Check interval</label>
+        <type>text</type>
+        <help><![CDATA[Select interval (in milliseconds) between two consecutive health checks.]]></help>
+    </field>
+    <field>
+        <label>HTTP check options</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>healthcheck.http_method</id>
+        <label>HTTP method</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select HTTP method for health check.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.http_uri</id>
+        <label>Request URI</label>
+        <type>text</type>
+        <help><![CDATA[Specify HTTP request URI for health check.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.http_version</id>
+        <label>HTTP version</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select HTTP version for a HTTP health check.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.http_host</id>
+        <label>HTTP host</label>
+        <type>text</type>
+        <help><![CDATA[Specify HTTP host to use for health check. Requires HTTP/1.1.]]></help>
+    </field>
+    <field>
+        <label>Custom HTTP check</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>healthcheck.http_expressionEnabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>healthcheck.http_expression</id>
+        <label>Expression</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select health check expression.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.http_negate</id>
+        <label>Negate condition</label>
+        <type>checkbox</type>
+        <help><![CDATA[Use this to invert the meaning of the expression.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.http_value</id>
+        <label>Value</label>
+        <type>text</type>
+        <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
+
+        <help><![CDATA[Specify additional SSL parameters such as force-sslv3, force-tlsv10, force-tlsv11, force-tlsv12, no-sslv3, no-tlsv10, no-tlsv11, no-tlsv12, no-tls-tickets or customize the list of SSL ciphers.<br/>Example: no-sslv3 ciphers HIGH:!DSS:!aNULL@STRENGTH<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+
+    </field>
+    <field>
+        <label>Non-HTTP check options</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>healthcheck.agentPort</id>
+        <label>Agent port</label>
+        <type>text</type>
+        <help><![CDATA[Specify the TCP port used for agent checks.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.dbUser</id>
+        <label>DB user</label>
+        <type>text</type>
+        <help><![CDATA[Specify the username to be used for database health checks.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.smtpDomain</id>
+        <label>SMTP domain</label>
+        <type>text</type>
+        <help><![CDATA[Specify the domain name to present to the server for SMTP/ESMTP health checks.]]></help>
+    </field>
+</form>

@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>lua.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this Lua script.</help>
+    </field>
+    <field>
+        <id>lua.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this Lua script.</help>
+    </field>
+    <field>
+        <id>lua.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this Lua script.</help>
+    </field>
+    <field>
+        <id>lua.content</id>
+        <label>Content</label>
+        <type>textbox</type>
+        <help>Paste the content of your Lua script here.</help>
+    </field>
+</form>

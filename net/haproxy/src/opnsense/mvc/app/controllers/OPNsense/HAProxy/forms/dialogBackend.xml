@@ -1,0 +1,157 @@
+<form>
+    <field>
+        <id>backend.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this backend</help>
+    </field>
+    <field>
+        <id>backend.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this backend.</help>
+    </field>
+    <field>
+        <id>backend.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this backend.</help>
+    </field>
+    <field>
+        <id>backend.mode</id>
+        <label>Mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the running mode or protocol of the backend. Usually the frontend and the backend are in the same mode.]]></help>
+        <hint>Set the same mode for backend and frontend.</hint>
+    </field>
+    <field>
+        <id>backend.algorithm</id>
+        <label>Balancing Algorithm</label>
+        <type>dropdown</type>
+        <help><![CDATA[Define the load balancing algorithm to be used in a backend. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.6.html#balance">HAProxy documentation</a> for a full description.]]></help>
+        <hint>Choose a load balancing algorithm.</hint>
+    </field>
+    <field>
+        <id>backend.linkedServers</id>
+        <label>Servers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Add servers to this backend. Use TAB key to complete typing.]]></help>
+        <hint>Type server name or choose from list.</hint>
+    </field>
+    <field>
+        <label>Health Checking</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>backend.healthCheckEnabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable health checking.]]></help>
+    </field>
+    <field>
+        <id>backend.healthCheck</id>
+        <label>Health check</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select health check for servers in this backend.]]></help>
+    </field>
+    <field>
+        <id>backend.healthCheckLogStatus</id>
+        <label>Log Status Changes</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable to log health check status updates.]]></help>
+    </field>
+    <field>
+        <label>Stick-table persistence</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>backend.stickiness_pattern</id>
+        <label>Table type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.6.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
+        <hint>Choose a persistence type.</hint>
+    </field>
+    <field>
+        <id>backend.stickiness_expire</id>
+        <label>Expiration time</label>
+        <type>text</type>
+        <help><![CDATA[Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds). This configures the maximum duration of an entry in the stick-table since it was last created, refreshed or matched. The maximum duration is slightly above 24 days.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_size</id>
+        <label>Size</label>
+        <type>text</type>
+        <help><![CDATA[Enter a number followed by one of the supported suffixes "k", "m", "g". This configures the maximum number of entries that can fit in the table. This value directly impacts memory usage. Count approximately 50 bytes per entry, plus the size of a string if any.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_cookiename</id>
+        <label>Cookie name</label>
+        <type>text</type>
+        <help><![CDATA[Cookie name to use for stick table (if appropiate table type is selected).]]></help>
+    </field>
+    <field>
+        <id>backend.stickiness_cookielength</id>
+        <label>Cookie length</label>
+        <type>text</type>
+        <help><![CDATA[The maximum number of characters that will be stored in the stick table (if appropiate table type is selected).]]></help>
+    </field>
+    <field>
+        <label>Tuning Options</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>backend.tuning_timeoutConnect</id>
+        <label>Connection Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum time (in milliseconds) to wait for a connection attempt to a server to succeed.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.tuning_timeoutServer</id>
+        <label>Server Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum inactivity time (in milliseconds) on the server side.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.tuning_retries</id>
+        <label>Retries</label>
+        <type>text</type>
+        <help><![CDATA[Set the number of retries to perform on a server after a connection failure.]]></help>
+    </field>
+    <field>
+        <id>backend.customOptions</id>
+        <label>Option pass-through</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the HAProxy backend configuration.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Actions (ACLs)</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>backend.linkedActions</id>
+        <label>Actions</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Choose actions to be included in this backend.]]></help>
+        <hint>Choose actions.</hint>
+    </field>
+    <field>
+        <label>Error Files</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>backend.linkedErrorfiles</id>
+        <label>Error files</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Choose error files to be included in this backend.]]></help>
+        <hint>Choose error files.</hint>
+    </field>
+</form>

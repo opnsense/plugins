@@ -1,0 +1,190 @@
+<form>
+    <tab id="haproxy-general" description="General Settings">
+        <subtab id="haproxy-general-settings" description="Service Settings">
+            <field>
+                <label>NOTE: You need to configure frontends, backends and servers before enabling HAProxy.</label>
+                <type>info</type>
+            </field>
+            <field>
+                <id>haproxy.general.enabled</id>
+                <label>Enable HAProxy</label>
+                <type>checkbox</type>
+                <help>Enable or disable the HAProxy service.</help>
+            </field>
+        </subtab>
+        <subtab id="haproxy-general-global" description="Global Parameters">
+            <field>
+                <label>NOTE: Define global parameters for the HAProxy service. They cannot be overriden.</label>
+                <type>info</type>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.nbproc</id>
+                <label>HAProxy processes</label>
+                <type>text</type>
+                <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>NOTE:</b> You may experience random issues in multi-process mode. For more information about the "nbproc" option please see the HAProxy Documentation.</div>]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.maxConnections</id>
+                <label>Maximum connections</label>
+                <type>text</type>
+                <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> HAProxy will not be able to allocate enough memory if you set this value too high. Consider raising the settings for kern.maxfiles and kern.maxfilesperproc if you need to specify a non-default value.</div>]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.maxDHSize</id>
+                <label>Maximum SSL DH Size</label>
+                <type>text</type>
+                <help><![CDATA[Sets the maximum size of the Diffie-Hellman parameters used for generating the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange (default is 1024).<br/><div class="text-info"><b>NOTE:</b> Higher values will increase the CPU load. For more information about the "tune.ssl.default-dh-param" option please see the HAProxy Documentation.</div>]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.bufferSize</id>
+                <label>Buffer size</label>
+                <type>text</type>
+                <help><![CDATA[Change the buffer size (in bytes). Lower values allow more sessions to coexist in the same amount of RAM, and higher values allow some applications with very large cookies to work. The default value is 16384. <br/><div class="text-info"><b>NOTE:</b> It is strongly recommended not to change this from the default value, as very low values will break some services such as statistics, and values larger than default size will increase memory usage, possibly causing the system to run out of memory.</div>]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.checkBufferSize</id>
+                <label>Health check buffer size</label>
+                <type>text</type>
+                <help><![CDATA[Change the check buffer size (in bytes). Higher values may help find string or regex patterns in very large pages, though doing so may imply more memory and CPU usage. The default value is 16384.]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.luaMaxMem</id>
+                <label>Maximum RAM per LUA process</label>
+                <type>text</type>
+                <help><![CDATA[Sets the maximum amount of RAM in megabytes per process usable by Lua. By default it is zero which means unlimited. It is important to set a limit to ensure that a bug in a script will not result in the system running out of memory.]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.spreadChecks</id>
+                <label>Spread checks</label>
+                <type>text</type>
+                <help><![CDATA[Add some randomness in the check interval between 0 and +/- 50%. A value between 2 and 5 seems to show good results. The default value is 0 (disabled).]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.customOptions</id>
+                <label>Custom options</label>
+                <type>textbox</type>
+                <help><![CDATA[These lines will be added to the global settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+                <advanced>true</advanced>
+            </field>
+        </subtab>
+        <subtab id="haproxy-general-defaults" description="Default Parameters">
+            <field>
+                <label>NOTE: Define default parameters for ALL Frontends, Backends and Servers here. They may still be overriden elsewhere.</label>
+                <type>info</type>
+            </field>
+            <field>
+                <id>haproxy.general.defaults.maxConnections</id>
+                <label>Max. Connections</label>
+                <type>text</type>
+                <help><![CDATA[Set the maximum number of concurrent connections for this frontend.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.defaults.timeoutClient</id>
+                <label>Client Timeout</label>
+                <type>text</type>
+                <help><![CDATA[Set the maximum inactivity time (in milliseconds) on the client side.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.defaults.timeoutConnect</id>
+                <label>Connection Timeout</label>
+                <type>text</type>
+                <help><![CDATA[Set the maximum time (in milliseconds) to wait for a connection attempt to a server to succeed.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.defaults.timeoutServer</id>
+                <label>Server Timeout</label>
+                <type>text</type>
+                <help><![CDATA[Set the maximum inactivity time (in milliseconds) on the server side.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.defaults.retries</id>
+                <label>Retries</label>
+                <type>text</type>
+                <help><![CDATA[Set the number of retries to perform on a server after a connection failure (default is 3).]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.defaults.redispatch</id>
+                <label>Session redistribution</label>
+                <type>dropdown</type>
+                <help><![CDATA[Enable or disable session redistribution in case of connection failure.]]></help>
+            </field>
+        </subtab>
+        <subtab id="haproxy-general-logging" description="Logging Configuration">
+            <field>
+                <id>haproxy.general.logging.host</id>
+                <label>Log Host</label>
+                <type>text</type>
+                <help><![CDATA[Indicates where to send the logs. Takes an IPv4 or IPv6 address optionally followed by a colon (':') and a UDP port, i.e. 127.0.0.1 or 10.0.0.1:514]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.logging.facility</id>
+                <label>Syslog facility</label>
+                <type>dropdown</type>
+                <help><![CDATA[Choose one of the 24 standard syslog facilities. The default value is local0.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.logging.level</id>
+                <label>Filter syslog level</label>
+                <type>dropdown</type>
+                <help><![CDATA[Can be specified to filter outgoing messages. By default, all messages are sent. If a level is specified, only messages with a severity at least as important as this level will be sent.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.logging.length</id>
+                <label>Max. line length</label>
+                <type>text</type>
+                <help><![CDATA[Specify an optional maximum line length. Log lines larger than this value will be truncated before being sent. The reason is that syslog servers act differently on log line length. All servers support the default value of 1024, but some servers simply drop larger lines while others do log them.]]></help>
+                <advanced>true</advanced>
+            </field>
+        </subtab>
+        <subtab id="haproxy-general-statistics" description="Statistics Configuration">
+            <field>
+                <id>haproxy.general.stats.enabled</id>
+                <label>Stats enabled</label>
+                <type>checkbox</type>
+                <help><![CDATA[Enable HAProxy's statistics page.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.stats.port</id>
+                <label>Local stats TCP port</label>
+                <type>text</type>
+                <help><![CDATA[Choose a TCP port to be used for the local statistics page. The default value is 8822.]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>haproxy.general.stats.remoteEnabled</id>
+                <label>Enable remote access</label>
+                <type>checkbox</type>
+                <help><![CDATA[Enable remote access to HAProxy's statistics page. <b>This may be a security risk if you do not enable authentication!</b> Note that you need to add appropiate firewall rules for this to work.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.stats.remoteBind</id>
+                <label>Remote listen addresses</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help><![CDATA[Configure listen addresses for the statistics page to enable remote access, i.e. 10.0.0.1:8080 or haproxy.example.com:8999. Use TAB key to complete typing a listen address.]]></help>
+                <hint>Enter address:port here. Finish with TAB.</hint>
+            </field>
+            <field>
+                <id>haproxy.general.stats.authEnabled</id>
+                <label>Enable authentication</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>haproxy.general.stats.users</id>
+                <label>Stats users</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help><![CDATA[Grant access to HAProxy statistics page. Please provide both user and password in clear text separated by a ':', i.e. john:secret123 or jdoe:anonymous. Use TAB key to complete adding a user.]]></help>
+                <hint>Enter user:password here. Finish with TAB.</hint>
+            </field>
+        </subtab>
+    </tab>
+
+    <activetab>haproxy-general-settings</activetab>
+</form>

@@ -1,0 +1,901 @@
+<model>
+    <mount>//OPNsense/HAProxy</mount>
+    <description>
+        the HAProxy load balancer
+    </description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <tuning>
+                <maxConnections type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>500000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <Required>N</Required>
+                </maxConnections>
+                <nbproc type="IntegerField">
+                    <default>1</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>128</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 128.</ValidationMessage>
+                    <Required>Y</Required>
+                </nbproc>
+                <maxDHSize type="IntegerField">
+                    <default>1024</default>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>16384</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1024 and 16384.</ValidationMessage>
+                    <Required>Y</Required>
+                </maxDHSize>
+                <bufferSize type="IntegerField">
+                    <default>16384</default>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>1048576</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
+                    <Required>N</Required>
+                </bufferSize>
+                <checkBufferSize type="IntegerField">
+                    <default>16384</default>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>1048576</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
+                    <Required>N</Required>
+                </checkBufferSize>
+                <spreadChecks type="IntegerField">
+                    <default>0</default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>50</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 50.</ValidationMessage>
+                    <Required>Y</Required>
+                </spreadChecks>
+                <luaMaxMem type="IntegerField">
+                    <default>0</default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>1024</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 1024.</ValidationMessage>
+                    <Required>N</Required>
+                </luaMaxMem>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
+            </tuning>
+            <defaults>
+                <maxConnections type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>500000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <Required>N</Required>
+                </maxConnections>
+                <timeoutClient type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <default>30000</default>
+                    <ValidationMessage>Please specify a value between 1 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </timeoutClient>
+                <timeoutConnect type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <default>30000</default>
+                    <ValidationMessage>Please specify a value between 100 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </timeoutConnect>
+                <timeoutServer type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <default>30000</default>
+                    <ValidationMessage>Please specify a value between 100 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </timeoutServer>
+                <retries type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <default>3</default>
+                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <Required>Y</Required>
+                </retries>
+                <redispatch type="OptionField">
+                    <Required>N</Required>
+                    <default>x-1</default>
+                    <OptionValues>
+                        <x3>redispatch on every 3rd retry</x3>
+                        <x2>redispatch on every 2nd retry</x2>
+                        <x1>redispatch on every retry</x1>
+                        <x0>Disable redispatching</x0>
+                        <x-1>redispatch on the last retry [default]</x-1>
+                        <x-2>redispatch on the 2nd retry prior to the last retry</x-2>
+                        <x-3>redispatch on the 3rd retry prior to the last retry</x-3>
+                    </OptionValues>
+                </redispatch>
+            </defaults>
+            <logging>
+                <host type="TextField">
+                    <default>127.0.0.1</default>
+                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid host, i.e. 127.0.0.1 or 10.0.0.1:514.</ValidationMessage>
+                    <Required>Y</Required>
+                </host>
+                <facility type="OptionField">
+                    <Required>Y</Required>
+                    <default>local0</default>
+                    <OptionValues>
+                        <alert>alert</alert>
+                        <audit>audit</audit>
+                        <auth2>auth2</auth2>
+                        <auth>auth</auth>
+                        <cron2>cron2</cron2>
+                        <cron>cron</cron>
+                        <daemon>daemon</daemon>
+                        <ftp>ftp</ftp>
+                        <kern>kern</kern>
+                        <local0>local0</local0>
+                        <local1>local1</local1>
+                        <local2>local2</local2>
+                        <local3>local3</local3>
+                        <local4>local4</local4>
+                        <local5>local5</local5>
+                        <local6>local6</local6>
+                        <local7>local7</local7>
+                        <lpr>lpr</lpr>
+                        <mail>mail</mail>
+                        <news>news</news>
+                        <ntp>ntp</ntp>
+                        <syslog>syslog</syslog>
+                        <user>user</user>
+                        <uucp>uucp</uucp>
+                    </OptionValues>
+                </facility>
+                <level type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <alert>alert</alert>
+                        <crit>crit</crit>
+                        <debug>debug</debug>
+                        <emerg>emerg</emerg>
+                        <err>err</err>
+                        <info>info</info>
+                        <notice>notice</notice>
+                        <warning>warning</warning>
+                    </OptionValues>
+                </level>
+                <length type="IntegerField">
+                    <MinimumValue>64</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 64 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </length>
+            </logging>
+            <stats>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </enabled>
+                <port type="IntegerField">
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <default>8822</default>
+                    <ValidationMessage>Please specify a value between 1024 and 65535.</ValidationMessage>
+                    <Required>Y</Required>
+                </port>
+                <remoteEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </remoteEnabled>
+                <!-- XXX: filter localhost and variations of it -->
+                <remoteBind type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-]+:[0-9a-zA-Z._\-]+)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 10.0.0.1:8080 or haproxy.example.com:8999.</ValidationMessage>
+                </remoteBind>
+                <authEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </authEnabled>
+                <users type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-]+:[0-9a-zA-Z._\-]+)([,]){0,1}))*/u</mask>
+                    <ValidationMessage>Please provide a valid user and password, i.e. user:secret123.</ValidationMessage>
+                </users>
+            </stats>
+        </general>
+        <frontends>
+            <frontend type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <bind type="CSVListField">
+                    <Required>Y</Required>
+                    <multiple>Y</multiple>
+                    <!-- <default>localhost:8080</default> -->
+                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080 or www.example.com:443.</ValidationMessage>
+                </bind>
+                <mode type="OptionField">
+                    <Required>Y</Required>
+                    <default>http</default>
+                    <OptionValues>
+                        <http>HTTP / HTTPS (SSL offloading) [default]</http>
+                        <ssl>SSL / HTTPS (TCP mode)</ssl>
+                        <tcp>TCP</tcp>
+                    </OptionValues>
+                </mode>
+                <defaultBackend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Required>N</Required>
+                </defaultBackend>
+                <!-- XXX: add tag <ssl> once nesting is supported by our framework -->
+                <ssl_enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ssl_enabled>
+                <ssl_certificates type="CertificateField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+                </ssl_certificates>
+                <ssl_customOptions type="TextField">
+                    <Required>N</Required>
+                </ssl_customOptions>
+                <!-- XXX: add tag <tuning> once nesting is supported by our framework -->
+                <tuning_maxConnections type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>500000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_maxConnections>
+                <tuning_timeoutClient type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutClient>
+                <!-- XXX: add tag <logging> once nesting is supported by our framework -->
+                <logging_dontLogNull type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </logging_dontLogNull>
+                <logging_dontLogNormal type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </logging_dontLogNormal>
+                <logging_logSeparateErrors type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </logging_logSeparateErrors>
+                <logging_detailedLog type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </logging_detailedLog>
+                <logging_socketStats type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </logging_socketStats>
+                <forwardFor type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </forwardFor>
+                <connectionBehaviour type="OptionField">
+                    <Required>Y</Required>
+                    <default>http-keep-alive</default>
+                    <OptionValues>
+                        <http-keep-alive>http-keep-alive [default]</http-keep-alive>
+                        <http-tunnel>http-tunnel</http-tunnel>
+                        <httpclose>httpclose</httpclose>
+                        <http-server-close>http-server-close</http-server-close>
+                        <forceclose>forceclose</forceclose>
+                    </OptionValues>
+                </connectionBehaviour>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
+                <linkedActions type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>actions.action</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </linkedActions>
+                <linkedErrorfiles type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>errorfiles.errorfile</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </linkedErrorfiles>
+            </frontend>
+        </frontends>
+        <backends>
+            <backend type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <mode type="OptionField">
+                    <Required>Y</Required>
+                    <default>http</default>
+                    <OptionValues>
+                        <http>HTTP (Layer 7) [default]</http>
+                        <tcp>TCP (Layer 4)</tcp>
+                    </OptionValues>
+                </mode>
+                <algorithm type="OptionField">
+                    <Required>Y</Required>
+                    <default>source</default>
+                    <OptionValues>
+                        <source>Source-IP Hash [default]</source>
+                        <roundrobin>Round Robin</roundrobin>
+                        <static-rr>Static Round Robin</static-rr>
+                        <leastconn>Least Connections</leastconn>
+                        <uri>URI Hash (only HTTP mode)</uri>
+                    </OptionValues>
+                </algorithm>
+                <linkedServers type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>servers.server</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </linkedServers>
+                <healthCheckEnabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </healthCheckEnabled>
+                <healthCheck type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>healthchecks.healthcheck</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </healthCheck>
+                <healthCheckLogStatus type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </healthCheckLogStatus>
+                <!-- XXX: add tag <stickiness> once nesting is supported by our framework -->
+                <stickiness_pattern type="OptionField">
+                    <Required>N</Required>
+                    <default>sourceipv4</default>
+                    <OptionValues>
+                        <sourceipv4>Stick on Source-IP [default]</sourceipv4>
+                        <sourceipv6>Stick on Source-IPv6</sourceipv6>
+                        <cookievalue>Stick on existing Cookie value</cookievalue>
+                        <rdpcookie>Stick on RDP-Cookie</rdpcookie>
+                    </OptionValues>
+                </stickiness_pattern>
+                <stickiness_expire type="TextField">
+                    <Required>Y</Required>
+                    <default>30m</default>
+                    <mask>/^([0-9]{1,5}[d|h|m|s|ms]{1})*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Should be a number between 1 and 5 characters followed by either "d", "h", "m", "s" or "ms".</ValidationMessage>
+                </stickiness_expire>
+                <stickiness_size type="TextField">
+                    <Required>Y</Required>
+                    <default>50k</default>
+                    <mask>/^([0-9]{1,5}[k|m|g]{1})*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Should be a number between 1 and 5 characters followed by either "k", "m" or "g".</ValidationMessage>
+                </stickiness_size>
+                <stickiness_cookiename type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){1,1024}$/u</mask>
+                    <ValidationMessage>Does not look like a valid cookie name (most special characters are not allowed).</ValidationMessage>
+                </stickiness_cookiename>
+                <stickiness_cookielength type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 10000.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_cookielength>
+                <!-- XXX: add tag <tuning> once nesting is supported by our framework -->
+                <tuning_timeoutConnect type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 100 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutConnect>
+                <tuning_timeoutServer type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 100 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutServer>
+                <tuning_retries type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_retries>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
+                <linkedActions type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>actions.action</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </linkedActions>
+                <linkedErrorfiles type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>errorfiles.errorfile</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </linkedErrorfiles>
+            </backend>
+        </backends>
+        <servers>
+            <server type="ArrayField">
+                <name type="TextField">
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <address type="TextField">
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+                    <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
+                    <Required>Y</Required>
+                </address>
+                <port type="IntegerField">
+                    <default>80</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>Y</Required>
+                </port>
+                <mode type="OptionField">
+                    <Required>Y</Required>
+                    <default>active</default>
+                    <OptionValues>
+                        <active>active [default]</active>
+                        <backup>backup</backup>
+                        <disabled>disabled</disabled>
+                        <inactive>inactive</inactive>
+                    </OptionValues>
+                </mode>
+                <ssl type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ssl>
+                <weight type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>256</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 256.</ValidationMessage>
+                    <Required>N</Required>
+                </weight>
+                <checkInterval type="IntegerField">
+                    <default>1000</default>
+                    <MinimumValue>500</MinimumValue>
+                    <MaximumValue>100000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
+                    <Required>Y</Required>
+                </checkInterval>
+            </server>
+        </servers>
+        <healthchecks>
+            <healthcheck type="ArrayField">
+                <name type="TextField">
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <default>http</default>
+                    <OptionValues>
+                        <tcp>TCP</tcp>
+                        <http>HTTP [default]</http>
+                        <agent>Agent</agent>
+                        <ldap>LDAP</ldap>
+                        <mysql>MySQL</mysql>
+                        <pgsql>PostgreSQL</pgsql>
+                        <redis>Redis</redis>
+                        <smtp>SMTP</smtp>
+                        <esmtp>ESMTP</esmtp>
+                        <ssl>SSL</ssl>
+                    </OptionValues>
+                </type>
+                <interval type="IntegerField">
+                    <MinimumValue>250</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <default>1000</default>
+                    <ValidationMessage>Please specify a value between 250 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </interval>
+                <!-- XXX: add tag <http> once nesting is supported by our framework -->
+                <http_method type="OptionField">
+                    <Required>N</Required>
+                    <default>options</default>
+                    <OptionValues>
+                        <options>OPTIONS [default]</options>
+                        <head>HEAD</head>
+                        <get>GET</get>
+                        <put>PUT</put>
+                        <post>POST</post>
+                        <delete>DELETE</delete>
+                        <trace>TRACE</trace>
+                    </OptionValues>
+                </http_method>
+                <http_uri type="TextField">
+                    <default>/</default>
+                    <mask>/^(.*){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </http_uri>
+                <http_version type="OptionField">
+                    <Required>N</Required>
+                    <default>http10</default>
+                    <OptionValues>
+                        <http10>HTTP/1.0 [default]</http10>
+                        <http11>HTTP/1.1</http11>
+                    </OptionValues>
+                </http_version>
+                <http_host type="TextField">
+                    <default>localhost</default>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </http_host>
+                <http_expressionEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http_expressionEnabled>
+                <http_expression type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <status>test the exact string match for the HTTP status code</status>
+                        <rstatus>test a regular expression for the HTTP status code</rstatus>
+                        <string>test the exact string match in the HTTP response body</string>
+                        <rstring>test a regular expression on the HTTP response body</rstring>
+                    </OptionValues>
+                </http_expression>
+                <http_negate type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http_negate>
+                <http_value type="TextField">
+                    <Required>N</Required>
+                </http_value>
+                <agentPort type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </agentPort>
+                <dbUser type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </dbUser>
+                <smtpDomain type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </smtpDomain>
+            </healthcheck>
+        </healthchecks>
+        <acls>
+            <acl type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <name type="TextField">
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <expression type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <host_starts_with>Host starts with</host_starts_with>
+                        <host_ends_with>Host ends with</host_ends_with>
+                        <host_matches>Host matches</host_matches>
+                        <host_regex>Host regex</host_regex>
+                        <host_contains>Host contains</host_contains>
+                        <path_starts_with>Path starts with</path_starts_with>
+                        <path_ends_with>Path ends with</path_ends_with>
+                        <path_matches>Path matches</path_matches>
+                        <path_regex>Path regex</path_regex>
+                        <path_contains>Path contains</path_contains>
+                        <url_parameter>URL parameter contains</url_parameter>
+                        <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
+                        <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
+                        <ssl_c_ca_commonname>SSL Client issued by CA common-name</ssl_c_ca_commonname>
+                        <source_ip>Source IP matches IP or Alias</source_ip>
+                        <backendservercount>Minimum count usable servers</backendservercount>
+                        <traffic_is_http>Traffic is http (no value needed)</traffic_is_http>
+                        <traffic_is_ssl>Traffic is ssl (no value needed)</traffic_is_ssl>
+                        <ssl_sni_matches>SNI TLS extension matches</ssl_sni_matches>
+                        <ssl_sni_contains>SNI TLS extension contains</ssl_sni_contains>
+                        <ssl_sni_starts_with>SNI TLS extension starts with</ssl_sni_starts_with>
+                        <ssl_sni_ends_with>SNI TLS extension ends with</ssl_sni_ends_with>
+                        <ssl_sni_regex>SNI TLS extension regex</ssl_sni_regex>
+                        <custom_acl>Custom ACL</custom_acl>
+                    </OptionValues>
+                </expression>
+                <negate type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </negate>
+                <value type="TextField">
+                    <Required>N</Required>
+                </value>
+                <urlparam type="TextField">
+                    <Required>N</Required>
+                </urlparam>
+                <queryBackend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Required>N</Required>
+                </queryBackend>
+            </acl>
+        </acls>
+        <actions>
+            <action type="ArrayField">
+                <name type="TextField">
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <testType type="OptionField">
+                    <Required>Y</Required>
+                    <default>if</default>
+                    <OptionValues>
+                        <if>IF [default]</if>
+                        <unless>UNLESS</unless>
+                    </OptionValues>
+                </testType>
+                <linkedAcls type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>acls.acl</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </linkedAcls>
+                <operator type="OptionField">
+                    <Required>N</Required>
+                    <default>and</default>
+                    <OptionValues>
+                        <and>AND [default]</and>
+                        <or>OR</or>
+                    </OptionValues>
+                </operator>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <use_backend>Use Backend</use_backend>
+                        <use_server>Use Server</use_server>
+                        <http-request_allow>http-request allow</http-request_allow>
+                        <http-request_deny>http-request deny</http-request_deny>
+                        <http-request_tarpit>http-request tarpit</http-request_tarpit>
+                        <http-request_auth>http-request auth</http-request_auth>
+                        <http-request_redirect>http-request redirect</http-request_redirect>
+                        <http-request_lua>http-request lua action</http-request_lua>
+                        <http-request_use-service>http-request lua service</http-request_use-service>
+                        <http-request_add-header>http-request header add</http-request_add-header>
+                        <http-request_set-header>http-request header set</http-request_set-header>
+                        <http-request_del-header>http-request header delete</http-request_del-header>
+                        <http-request_replace-header>http-request header replace</http-request_replace-header>
+                        <http-request_replace-value>http-request header replace value</http-request_replace-value>
+                        <http-response_allow>http-response allow</http-response_allow>
+                        <http-response_deny>http-response deny</http-response_deny>
+                        <http-response_lua>http-response lua script</http-response_lua>
+                        <http-response_add-header>http-response header add</http-response_add-header>
+                        <http-response_set-header>http-response header set</http-response_set-header>
+                        <http-response_del-header>http-response header delete</http-response_del-header>
+                        <http-response_replace-header>http-response header replace</http-response_replace-header>
+                        <http-response_replace-value>http-response header replace value</http-response_replace-value>
+                        <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
+                        <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
+                        <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
+                        <tcp-request_content_reject>tcp-request content reject</tcp-request_content_reject>
+                        <tcp-request_content_lua>tcp-request content lua script</tcp-request_content_lua>
+                        <tcp-request_content_use-service>tcp-request content use-service</tcp-request_content_use-service>
+                        <tcp-response_content_accept>tcp-response content accept</tcp-response_content_accept>
+                        <tcp-response_content_close>tcp-response content close</tcp-response_content_close>
+                        <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
+                        <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
+                        <custom>Custom</custom>
+                    </OptionValues>
+                </type>
+                <useBackend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </useBackend>
+                <useServer type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>servers.server</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </useServer>
+                <actionName type="TextField">
+                    <Required>N</Required>
+                </actionName>
+                <actionFind type="TextField">
+                    <Required>N</Required>
+                </actionFind>
+                <actionValue type="TextField">
+                    <Required>N</Required>
+                </actionValue>
+            </action>
+        </actions>
+        <luas>
+            <lua type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <mask>/^([0-9a-zA-Z_\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <content type="TextField">
+                    <Required>Y</Required>
+                </content>
+            </lua>
+        </luas>
+        <errorfiles>
+            <errorfile type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <name type="TextField">
+                    <mask>/^([0-9a-zA-Z_\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <code type="OptionField">
+                    <Required>Y</Required>
+                    <default>503</default>
+                    <OptionValues>
+                        <x200>200</x200>
+                        <x400>400</x400>
+                        <x403>403</x403>
+                        <x405>405</x405>
+                        <x408>408</x408>
+                        <x429>429</x429>
+                        <x500>500</x500>
+                        <x502>502</x502>
+                        <x503>503</x503>
+                        <x504>504</x504>
+                    </OptionValues>
+                </code>
+                <content type="TextField">
+                    <Required>Y</Required>
+                </content>
+            </errorfile>
+        </errorfiles>
+    </items>
+</model>

@@ -1,0 +1,81 @@
+<form>
+    <field>
+        <id>action.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this action.</help>
+    </field>
+    <field>
+        <id>action.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this action.</help>
+    </field>
+    <field>
+        <label>Form condition</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>action.testType</id>
+        <label>Test type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose how to test. By using IF it tests if the condition evaluates to true. If you use UNLESS, the sense of the test is reversed.]]></help>
+    </field>
+    <field>
+        <id>action.linkedAcls</id>
+        <label>Select ACLs</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select one ore more ACLs to be used as condition for this action.]]></help>
+    </field>
+    <field>
+        <id>action.operator</id>
+        <label>Logical operator (for ACLs)</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose an logical operator to be used to form a condition.]]></help>
+    </field>
+    <field>
+        <id>action.type</id>
+        <label>Choose action</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose an action that should be executed if the condition is true.]]></help>
+    </field>
+    <field>
+        <label>Optional parameters</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>action.useBackend</id>
+        <label>Use backend</label>
+        <type>dropdown</type>
+        <help><![CDATA[Use this backend if the condition is true.<br/><b>Not used for any other action.</b>]]></help>
+    </field>
+    <field>
+        <id>action.useServer</id>
+        <label>Use server</label>
+        <type>dropdown</type>
+        <help><![CDATA[Use this server if the condition is true.<br/><b>Not used for any other action.</b>]]></help>
+    </field>
+    <field>
+        <label>Conditional parameters</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>action.actionName</id>
+        <label>Name/Identifier</label>
+        <type>text</type>
+        <help><![CDATA[Specify a value to match with the action.]]></help>
+    </field>
+    <field>
+        <id>action.actionFind</id>
+        <label>Find value</label>
+        <type>text</type>
+        <help><![CDATA[Specify a value to match with the action.]]></help>
+    </field>
+    <field>
+        <id>action.actionValue</id>
+        <label>Set value</label>
+        <type>text</type>
+        <help><![CDATA[Specify a value to match with the action.]]></help>
+    </field>
+</form>

@@ -1,0 +1,52 @@
+<form>
+    <field>
+        <id>acl.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this ACL.</help>
+    </field>
+    <field>
+        <id>acl.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this ACL.</help>
+    </field>
+    <field>
+        <label>Compose expression</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>acl.expression</id>
+        <label>Expression</label>
+        <type>dropdown</type>
+        <hint>Select ACL expression.</hint>
+    </field>
+    <field>
+        <id>acl.negate</id>
+        <label>Negate condition</label>
+        <type>checkbox</type>
+        <help><![CDATA[Use this to invert the meaning of the expression.]]></help>
+    </field>
+    <field>
+        <id>acl.value</id>
+        <label>Value</label>
+        <type>text</type>
+        <help><![CDATA[Specify a value to match with the expression.]]></help>
+    </field>
+    <field>
+        <label>Optional parameters</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>acl.urlparam</id>
+        <label>URL parameter</label>
+        <type>text</type>
+        <help><![CDATA[Specify the URL parameter to be checked for the value specified below.<br/><b>Not used for any other expression.</b>]]></help>
+    </field>
+    <field>
+        <id>acl.queryBackend</id>
+        <label>Query Backend</label>
+        <type>dropdown</type>
+        <help><![CDATA[Use this backend to count usable servers.<br/><b>Not used for any other expression.</b>]]></help>
+    </field>
+</form>
