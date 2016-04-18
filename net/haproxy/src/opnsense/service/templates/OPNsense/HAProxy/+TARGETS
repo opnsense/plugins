@@ -1,0 +1,2 @@
+haproxy.conf:/usr/local/etc/haproxy.conf
+rc.conf.d:/etc/rc.conf.d/haproxy

@@ -1,0 +1,170 @@
+<form>
+    <field>
+        <id>frontend.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this frontend</help>
+    </field>
+    <field>
+        <id>frontend.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this frontend.</help>
+    </field>
+    <field>
+        <id>frontend.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this frontend.</help>
+    </field>
+    <field>
+        <id>frontend.bind</id>
+        <label>Listen Addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Configure listen addresses for this frontend, i.e. 127.0.0.1:8080 or www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
+        <hint>Enter address:port here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>frontend.mode</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the running mode or protocol for this frontend.]]></help>
+    </field>
+    <field>
+        <id>frontend.defaultBackend</id>
+        <label>Default Backend</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the default backend to use for this frontend.]]></help>
+    </field>
+    <field>
+        <label>SSL Offloading</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.ssl_enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable SSL offloading</help>
+    </field>
+    <field>
+        <id>frontend.ssl_certificates</id>
+        <label>Certificates</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Select certificates to use for SSL offloading. HAProxy's SNI recognition will determine the correct certificate automatically. If no SNI is provided by the client then the first certificate will be presented.<br/>To import additional certificates, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
+        <hint>Type certificate name or choose from list.</hint>
+    </field>
+    <field>
+        <id>frontend.ssl_customOptions</id>
+        <label>Advanced SSL options</label>
+        <type>text</type>
+        <help><![CDATA[Specify additional SSL parameters such as force-sslv3, force-tlsv10, force-tlsv11, force-tlsv12, no-sslv3, no-tlsv10, no-tlsv11, no-tlsv12, no-tls-tickets or customize the list of SSL ciphers.<br/>Example: no-sslv3 ciphers HIGH:!DSS:!aNULL@STRENGTH<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Tuning Options</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.tuning_maxConnections</id>
+        <label>Max. Connections</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum number of concurrent connections for this frontend.]]></help>
+    </field>
+    <field>
+        <id>frontend.tuning_timeoutClient</id>
+        <label>Client Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum inactivity time (in milliseconds) on the client side.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Logging Options</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.logging_dontLogNull</id>
+        <label>Don't log null</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable logging of connections with no data.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.logging_dontLogNormal</id>
+        <label>Don't log normal</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable logging of normal, successful connections.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.logging_logSeparateErrors</id>
+        <label>Raise Log Level</label>
+        <type>checkbox</type>
+        <help><![CDATA[Allow HAProxy to automatically raise log level for non-completely successful connections to aid debugging.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.logging_detailedLog</id>
+        <label>Detailed Logging</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable verbose logging. Each log line turns into a much richer format.]]></help>
+    </field>
+    <field>
+        <id>frontend.logging_socketStats</id>
+        <label>Separate Statistics</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable collecting & providing separate statistics for each socket.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Advanced settings</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.forwardFor</id>
+        <label>X-Forwarded-For header</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
+    </field>
+    <field>
+        <id>frontend.connectionBehaviour</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"http-tunnel"</b> disables any HTTP processing past the first request and the first response. Option <b>"httpclose"</b> configures HAProxy to work in HTTP tunnel mode and check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side. With Option <b>"forceclose"</b> HAProxy will actively close the outgoing server channel as soon as the server has finished to respond and release some resources earlier.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.customOptions</id>
+        <label>Option pass-through</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the HAProxy frontend configuration.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Actions (ACLs)</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.linkedActions</id>
+        <label>Actions</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Choose actions to be included in this frontend.]]></help>
+        <hint>Choose actions.</hint>
+    </field>
+    <field>
+        <label>Error Files</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.linkedErrorfiles</id>
+        <label>Error files</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Choose error files to be included in this backend.]]></help>
+        <hint>Choose error files.</hint>
+    </field>
+</form>
