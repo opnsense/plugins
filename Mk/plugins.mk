@@ -25,6 +25,9 @@
 
 all: check
 
+LOCALBASE?=		/usr/local
+PKG!=			which pkg || echo true
+
 PLUGIN_DESC!=		git rev-list HEAD --max-count=1 | cut -c1-9
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
@@ -38,8 +41,7 @@ PLUGIN_PREFIX=		os-
 PLUGIN_PREFIX=		ospriv-
 .endif
 
-LOCALBASE?=		/usr/local
-PKG!=			which pkg || echo true
+PLUGIN_WWW?=		https://opnsense.org/
 
 PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
 			PLUGIN_MAINTAINER
@@ -63,13 +65,19 @@ manifest: check
 	@echo "origin: opnsense/${PLUGIN_PREFIX}${PLUGIN_NAME}"
 	@echo "comment: \"${PLUGIN_COMMENT}\""
 	@echo "desc: \"${PLUGIN_DESC}\""
-	@echo "maintainer: ${PLUGIN_MAINTAINER}"
-	@echo "www: https://opnsense.org/"
-	@echo "prefix: /"
+	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
+	@echo "categories: [ \"${.CURDIR:S/\// /g:[-2]}\" ]"
+	@echo "www: \"${PLUGIN_WWW}\""
+	@echo "prefix: \"${LOCALBASE}\""
+	@echo "licenselogic: \"single\""
+	@echo "licenses: [ \"BSD2CLAUSE\" ]"
 	@echo "deps: {"
 	@for PLUGIN_DEPEND in ${PLUGIN_DEPENDS}; do \
-		${PKG} query '  %n: { version: "%v", origin: "%o" }' \
-		    $${PLUGIN_DEPEND}; \
+		if ! ${PKG} query '  %n: { version: "%v", origin: "%o" }' \
+		    $${PLUGIN_DEPEND}; then \
+			echo ">>> Missing dependency: $${PLUGIN_DEPEND}" >&2; \
+			exit 1; \
+		fi; \
 	done
 	@echo "}"
 
@@ -108,6 +116,22 @@ remove: check
 			rmdir ${DESTDIR}${LOCALBASE}/$${DIR}; \
 		fi; \
 	done
+
+WRKDIR?=${.CURDIR}/work
+WRKSRC=	${WRKDIR}/src
+PKGDIR=	${WRKDIR}/pkg
+
+package: check
+	@rm -rf ${WRKSRC} ${PKGDIR}
+	@mkdir -p ${WRKSRC} ${PKGDIR}
+	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} install
+	@${MAKE} DESTDIR=${WRKSRC} scripts
+	@${MAKE} DESTDIR=${WRKSRC} manifest > ${WRKSRC}/+MANIFEST
+	@${MAKE} DESTDIR=${WRKSRC} plist > ${WRKSRC}/plist
+	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
+	    -p ${WRKSRC}/plist -o ${PKGDIR}
+	@echo -n "Sucessfully built "
+	@cd ${PKGDIR}; find . -name "*.txz" | cut -c3-
 
 mount: check
 	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
