@@ -161,7 +161,9 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         // first generate template based on current configuration
         $backend->configdRun("template reload OPNsense.HAProxy");
-        // now run the syntax check
+        // now export all the required files (or syntax check will fail)
+        $backend->configdRun("haproxy setup");
+        // finally run the syntax check
         $response = $backend->configdRun("haproxy configtest");
         return array("result" => $response);
     }
