@@ -154,7 +154,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#info"><b>{{ lang._('General') }}</b></a></li>
+    <li class="active"><a data-toggle="tab" href="#info"><b>{{ lang._('Overview') }}</b></a></li>
     <li><a data-toggle="tab" href="#status"><b>{{ lang._('Status') }}</b></a></li>
     <li><a data-toggle="tab" href="#counters"><b>{{ lang._('Counters') }}</b></a></li>
     <li><a data-toggle="tab" href="#tables"><b>{{ lang._('Stick Tables') }}</b></a></li>
