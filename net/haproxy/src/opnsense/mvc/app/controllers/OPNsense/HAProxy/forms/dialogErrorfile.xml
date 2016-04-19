@@ -15,7 +15,7 @@
         <id>errorfile.code</id>
         <label>Error code</label>
         <type>dropdown</type>
-        <help>The HTTP status code.</help>
+        <help><![CDATA[The HTTP status code.<br/><div class="text-info"><b>NOTE:</b> It is important to understand that errorfiles are NOT meant to rewrite errors returned by the server, but errors detected and returned by HAProxy. This is why the list of supported errors is limited to a small set.</div>]]></help>
     </field>
     <field>
         <id>errorfile.content</id>
