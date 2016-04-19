@@ -44,7 +44,7 @@ if (isset($configObj->OPNsense->HAProxy->errorfiles)) {
         $ef_name = (string)$errorfile->name;
         $ef_id = (string)$errorfile->id;
         if ($ef_id != "") {
-            $ef_content = str_replace("\n\n", "\n", str_replace("\r", "", (string)$errorfile->content));
+            $ef_content = htmlspecialchars_decode(str_replace("\r", "", (string)$errorfile->content));
             $ef_filename = "/var/etc/haproxy/errorfiles/" . $ef_id . ".txt" ;
             file_put_contents($ef_filename, $ef_content);
             chmod($ef_filename, 0600);
