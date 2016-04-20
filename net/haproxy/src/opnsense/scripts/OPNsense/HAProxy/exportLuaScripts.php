@@ -47,7 +47,7 @@ if (isset($configObj->OPNsense->HAProxy->luas)) {
         $lua_name = (string)$lua->name;
         $lua_id = (string)$lua->id;
         if ($lua_id != "") {
-            $lua_content = str_replace("\n\n", "\n", str_replace("\r", "", (string)$lua->content));
+            $lua_content = htmlspecialchars_decode(str_replace("\r", "", (string)$lua->content));
             $lua_filename = "/var/etc/haproxy/lua/" . $lua_id . ".lua" ;
             file_put_contents($lua_filename, $lua_content);
             chmod($lua_filename, 0600);

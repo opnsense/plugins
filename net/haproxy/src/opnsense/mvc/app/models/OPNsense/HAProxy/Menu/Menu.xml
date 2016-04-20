@@ -17,7 +17,7 @@
               <Errorfiles VisibleName="Error Files" url="/ui/haproxy/#errorfiles"/>
           </Settings>
           <Statistics order="20" url="/ui/haproxy/statistics/">
-              <Info VisibleName="Info" url="/ui/haproxy/statistics/#info"/>
+              <Overview VisibleName="Overview" url="/ui/haproxy/statistics/#info"/>
               <Status VisibleName="Status" url="/ui/haproxy/statistics/#status"/>
               <Counters VisibleName="Counters" url="/ui/haproxy/statistics/#counters"/>
               <StickTables VisibleName="Stick Tables" url="/ui/haproxy/statistics/#tables"/>
