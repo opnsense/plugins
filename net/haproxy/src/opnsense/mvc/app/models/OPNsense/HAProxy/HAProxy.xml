@@ -10,6 +10,10 @@
                 <Required>Y</Required>
             </enabled>
             <tuning>
+                <chroot type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </chroot>
                 <maxConnections type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>500000</MaximumValue>
@@ -132,7 +136,7 @@
                         <daemon>daemon</daemon>
                         <ftp>ftp</ftp>
                         <kern>kern</kern>
-                        <local0>local0</local0>
+                        <local0>local0 [default]</local0>
                         <local1>local1</local1>
                         <local2>local2</local2>
                         <local3>local3</local3>
