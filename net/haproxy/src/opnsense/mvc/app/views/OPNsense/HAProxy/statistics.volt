@@ -49,6 +49,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                 $('#infolist').append('<tr><td>'+key+'</td>' +
                                 "<td>"+value+"</td></tr>");
                             });
+                        } else {
+                            $("#infolist").html("<tr><td><br/><b>Error:</b> Unable to fetch statistics. Is HAProxy running?</td></tr>");
                         }
                         $('#processing-dialog').modal('hide');
                     }

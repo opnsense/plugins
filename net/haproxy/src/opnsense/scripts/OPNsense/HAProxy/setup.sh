@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HAPROXY_DIRS="/var/log/haproxy /var/run/haproxy /var/etc/haproxy/ssl /var/etc/haproxy/lua /var/etc/haproxy/errorfiles"
+HAPROXY_DIRS="/var/run/haproxy /var/etc/haproxy/ssl /var/etc/haproxy/lua /var/etc/haproxy/errorfiles"
 
 for directory in ${HAPROXY_DIRS}; do
     mkdir -p ${directory}
