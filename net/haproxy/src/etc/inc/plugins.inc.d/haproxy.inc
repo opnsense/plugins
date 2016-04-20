@@ -2,7 +2,6 @@
 
 /**
  *    Copyright (C) 2016 Frank Wall
- *    Copyright (C) 2014-2016 Franco Fichtner <franco@opnsense.org>
  *
  *    All rights reserved.
  *

@@ -1,3 +1,0 @@
-# remove legacy components on uninstall
-rm -f /usr/local/www/diag_logs_haproxy.php
-rm -f /usr/local/etc/inc/plugins.inc.d/haproxy.inc
