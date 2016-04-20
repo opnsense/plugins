@@ -9,7 +9,7 @@ The make targets for the root directory:
 
 The make targets for any plugin directory:
 
-* manifest:	generate +MANIFEST file
+* package:	creates a package from directory
 * install:	install to target directory
 * remove:	remove from target directory
 * collect:	gather updates from target directory

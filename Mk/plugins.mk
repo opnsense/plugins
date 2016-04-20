@@ -42,6 +42,7 @@ PLUGIN_PREFIX=		ospriv-
 .endif
 
 PLUGIN_WWW?=		https://opnsense.org/
+PLUGIN_REVISION?=	0
 
 PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
 			PLUGIN_MAINTAINER
@@ -53,6 +54,12 @@ check:
 .  endif
 .endfor
 
+.if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
+PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
+.else
+PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
+.endif
+
 name: check
 	@echo ${PLUGIN_PREFIX}${PLUGIN_NAME}
 
@@ -61,7 +68,7 @@ depends: check
 
 manifest: check
 	@echo "name: ${PLUGIN_PREFIX}${PLUGIN_NAME}"
-	@echo "version: \"${PLUGIN_VERSION}\""
+	@echo "version: \"${PLUGIN_PKGVERSION}\""
 	@echo "origin: opnsense/${PLUGIN_PREFIX}${PLUGIN_NAME}"
 	@echo "comment: \"${PLUGIN_COMMENT}\""
 	@echo "desc: \"${PLUGIN_DESC}\""
@@ -71,6 +78,7 @@ manifest: check
 	@echo "prefix: \"${LOCALBASE}\""
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
+.if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
 	@for PLUGIN_DEPEND in ${PLUGIN_DEPENDS}; do \
 		if ! ${PKG} query '  %n: { version: "%v", origin: "%o" }' \
@@ -80,6 +88,7 @@ manifest: check
 		fi; \
 	done
 	@echo "}"
+.endif
 
 scripts: check
 	@mkdir -p ${DESTDIR}
