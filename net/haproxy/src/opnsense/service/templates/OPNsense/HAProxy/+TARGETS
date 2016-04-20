@@ -1,3 +1,4 @@
+diag_logs_haproxy.php:/usr/local/www/diag_logs_haproxy.php
 haproxy.conf:/usr/local/etc/haproxy.conf
 haproxy.inc:/usr/local/etc/inc/plugins.inc.d/haproxy.inc
 rc.conf.d:/etc/rc.conf.d/haproxy

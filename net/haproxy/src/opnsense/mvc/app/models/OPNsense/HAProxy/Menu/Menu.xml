@@ -22,7 +22,7 @@
               <Counters VisibleName="Counters" url="/ui/haproxy/statistics/#counters"/>
               <StickTables VisibleName="Stick Tables" url="/ui/haproxy/statistics/#tables"/>
           </Statistics>
-          <!-- <Log VisibleName="Log File" order="30" url="/diag_logs_haproxy.php"/> -->
+          <Log VisibleName="Log File" order="30" url="/diag_logs_haproxy.php"/>
       </HAProxy>
     </Services>
 </menu>
