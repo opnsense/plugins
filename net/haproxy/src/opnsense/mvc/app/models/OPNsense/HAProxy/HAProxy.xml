@@ -155,13 +155,14 @@
                 </facility>
                 <level type="OptionField">
                     <Required>N</Required>
+                    <default>info</default>
                     <OptionValues>
                         <alert>alert</alert>
                         <crit>crit</crit>
                         <debug>debug</debug>
                         <emerg>emerg</emerg>
                         <err>err</err>
-                        <info>info</info>
+                        <info>info [default]</info>
                         <notice>notice</notice>
                         <warning>warning</warning>
                     </OptionValues>
