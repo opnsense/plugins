@@ -35,11 +35,11 @@ function socketCmd($command) {
     global $haproxy_socket;
     $data = array();
     if (!file_exists($haproxy_socket)) {
-        throw new UnexpectedValueException("HAProxy socket does not exist, service may be stopped");
+        exit("HAProxy socket does not exist, service may be stopped");
     } else {
         $socket = @stream_socket_client("unix://$haproxy_socket", $errorNumber, $errorMessage);
         if (!$socket) {
-            throw new UnexpectedValueException("Unable to open socket: $errorMessage");
+            exit("Unable to open socket: $errorMessage");
         } else {
             fwrite($socket, "$command\n");
             while (!feof($socket)) {
