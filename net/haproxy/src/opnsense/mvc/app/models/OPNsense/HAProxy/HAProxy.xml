@@ -118,9 +118,9 @@
             <logging>
                 <host type="TextField">
                     <default>127.0.0.1</default>
-                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+)([,]){0,1}))*/u</mask>
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid host, i.e. 127.0.0.1 or 10.0.0.1:514.</ValidationMessage>
+                    <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
                     <Required>Y</Required>
                 </host>
                 <facility type="OptionField">

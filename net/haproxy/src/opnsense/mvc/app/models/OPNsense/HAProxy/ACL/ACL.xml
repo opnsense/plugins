@@ -6,6 +6,7 @@
         <patterns>
             <pattern>ui/haproxy/*</pattern>
             <pattern>api/haproxy/*</pattern>
+            <pattern>diag_logs_haproxy.php</pattern>
         </patterns>
     </page-services-haproxy>
 </acl>
