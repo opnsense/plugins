@@ -93,7 +93,7 @@ manifest: check
 scripts: check
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f $${SCRIPT} ]; then \
-			cp $${SCRIPT} ${DESTDIR}; \
+			cp $${SCRIPT} ${DESTDIR}/; \
 		fi; \
 	done
 
