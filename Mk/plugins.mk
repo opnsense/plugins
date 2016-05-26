@@ -91,7 +91,6 @@ manifest: check
 .endif
 
 scripts: check
-	@mkdir -p ${DESTDIR}
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f $${SCRIPT} ]; then \
 			cp $${SCRIPT} ${DESTDIR}; \
@@ -109,6 +108,12 @@ plist: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
+
+metadata: check
+	@mkdir -p ${DESTDIR}
+	@${MAKE} DESTDIR=${DESTDIR} scripts
+	@${MAKE} DESTDIR=${DESTDIR} manifest > ${DESTDIR}/+MANIFEST
+	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
@@ -133,10 +138,8 @@ PKGDIR=	${WRKDIR}/pkg
 package: check
 	@rm -rf ${WRKSRC} ${PKGDIR}
 	@mkdir -p ${WRKSRC} ${PKGDIR}
+	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} metadata
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} install
-	@${MAKE} DESTDIR=${WRKSRC} scripts
-	@${MAKE} DESTDIR=${WRKSRC} manifest > ${WRKSRC}/+MANIFEST
-	@${MAKE} DESTDIR=${WRKSRC} plist > ${WRKSRC}/plist
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 	@echo -n "Sucessfully built "
