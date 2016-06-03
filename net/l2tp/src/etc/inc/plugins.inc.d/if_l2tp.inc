@@ -63,9 +63,7 @@ function if_l2tp_services()
 function if_l2tp_syslog()
 {
     $logfacilities = array();
-
-    $logfacilities['l2tps'] = array('facility' => array('l2tps'), 'remote' => null);
-
+    $logfacilities['l2tps'] = array('facility' => array('l2tps'));
     return $logfacilities;
 }
 

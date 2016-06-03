@@ -70,9 +70,7 @@ function if_pppoe_services()
 function if_pppoe_syslog()
 {
     $logfacilities = array();
-
-    $logfacilities['poes'] = array('facility' => array('poes'), 'remote' => null);
-
+    $logfacilities['poes'] = array('facility' => array('poes'));
     return $logfacilities;
 }
 
