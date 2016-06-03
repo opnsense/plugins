@@ -31,7 +31,7 @@ require_once("guiconfig.inc");
 require_once("services.inc");
 require_once("system.inc");
 require_once("plugins.inc");
-require_once("plugins.inc.d/vpn.inc");
+require_once("plugins.inc.d/if_l2tp.inc");
 
 if (!isset($config['l2tp']['user'])) {
     $config['l2tp']['user'] = array();
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     } elseif (!empty($_POST['apply'])) {
-        vpn_l2tp_configure();
+        if_l2tp_configure_do();
         clear_subsystem_dirty('l2tpusers');
         header("Location: vpn_l2tp_users.php");
         exit;

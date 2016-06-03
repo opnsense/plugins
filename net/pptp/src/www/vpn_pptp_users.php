@@ -31,7 +31,7 @@ require_once('guiconfig.inc');
 require_once('services.inc');
 require_once("system.inc");
 require_once("plugins.inc");
-require_once('plugins.inc.d/vpn.inc');
+require_once('plugins.inc.d/if_pptp.inc');
 
 if (!is_array($config['pptpd']['user'])) {
     $config['pptpd']['user'] = array();
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     } elseif (!empty($_POST['apply'])) {
-        vpn_pptpd_configure();
+        if_pptp_configure_do();
         clear_subsystem_dirty('pptpusers');
         header("Location: vpn_pptp_users.php");
         exit;

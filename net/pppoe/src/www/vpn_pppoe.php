@@ -29,7 +29,7 @@
 
 require_once("guiconfig.inc");
 require_once("filter.inc");
-require_once("plugins.inc.d/vpn.inc");
+require_once("plugins.inc.d/if_pppoe.inc");
 require_once("interfaces.inc");
 
 if (empty($config['pppoes']['pppoe']) || !is_array($config['pppoes']['pppoe'])) {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($config['pppoes']['pppoe'])) {
                     foreach ($config['pppoes']['pppoe'] as $pppoe) {
                         if ($pppoe['pppoeid'] == $pppoeid) {
-                            vpn_pppoe_configure($pppoe);
+                            if_pppoe_configure_single($pppoe);
                             break;
                         }
                     }

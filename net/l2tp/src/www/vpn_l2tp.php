@@ -33,7 +33,7 @@ require_once("interfaces.inc");
 require_once("services.inc");
 require_once("system.inc");
 require_once("plugins.inc");
-require_once("plugins.inc.d/vpn.inc");
+require_once("plugins.inc.d/if_l2tp.inc");
 
 if (!isset($config['l2tp']['radius']) || !is_array($config['l2tp']['radius'])) {
     $config['l2tp']['radius'] = array();
@@ -151,8 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         write_config();
-
-        vpn_l2tp_configure();
+        if_l2tp_configure_do();
         header("Location: vpn_l2tp.php");
         exit;
     }

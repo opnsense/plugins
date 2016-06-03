@@ -34,7 +34,7 @@ require_once('services.inc');
 require_once("system.inc");
 require_once("plugins.inc");
 require_once("pfsense-utils.inc");
-require_once('plugins.inc.d/vpn.inc');
+require_once('plugins.inc.d/if_pptp.inc');
 
 if (!is_array($config['pptpd']['radius'])) {
     $config['pptpd']['radius'] = array();
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         write_config();
         $savemsg = get_std_save_message();
-        vpn_pptpd_configure();
+        if_pptp_configure_do();
         filter_configure();
     }
 }
@@ -195,16 +195,6 @@ include("head.inc");
         <?php if (isset($savemsg)) {
                     print_info_box($savemsg);
 } ?>
-        <?php print_alert_box(
-          gettext(
-            'PPTP is not considered a secure VPN technology, because it relies upon ' .
-            'the compromised MS-CHAPv2 protocol. If you choose to use PPTP, be aware ' .
-            'that your traffic can be decrypted by virtually any third party. ' .
-            'It should be considered an unencrypted tunneling protocol.'
-          ) .  ' <a href="https://isc.sans.edu/diary/End+of+Days+for+MS-CHAPv2/13807">' .
-          gettext('Read more') . '</a>.',
-          'warning'
-        ); ?>
           <section class="col-xs-12">
             <div class="tab-content content-box col-xs-12">
               <form method="post" name="iform" id="iform">

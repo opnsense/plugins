@@ -17,9 +17,9 @@ if ($mode != 'raw') {
 $logtype = 'l2tp';
 
 $tab_array = array();
-$tab_array[] = array(gettext('L2TP Logins'), $mode != 'raw', '/vpn_l2tp_logs.php');
-$tab_array[] = array(gettext('L2TP Raw'), $mode == 'raw', '/vpn_l2tp_logs.php?mode=raw');
+$tab_array[] = array(gettext('L2TP Logins'), $mode != 'raw', '/vpn_l2tp_log.php');
+$tab_array[] = array(gettext('L2TP Raw'), $mode == 'raw', '/vpn_l2tp_log.php?mode=raw');
 
 $service_hook = 'l2tpd';
 
-require_once 'vpn_l2tp_logs.inc';
+require_once 'vpn_l2tp_log.inc';
