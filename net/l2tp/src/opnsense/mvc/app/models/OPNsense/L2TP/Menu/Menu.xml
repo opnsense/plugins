@@ -5,8 +5,8 @@
             <Users order="20" url="/vpn_l2tp_users.php">
                 <Edit url="/vpn_l2tp_users_edit.php*" visibility="hidden"/>
             </Users>
-            <LogFile order="30" VisibleName="Log File" url="/diag_logs_l2tp.php">
-                <Type url="/diag_logs_l2tp.php*" visibility="hidden"/>
+            <LogFile order="30" VisibleName="Log File" url="/vpn_l2tp_log.php">
+                <Type url="/vpn_l2tp_log.php*" visibility="hidden"/>
             </LogFile>
         </L2TP>
     </VPN>

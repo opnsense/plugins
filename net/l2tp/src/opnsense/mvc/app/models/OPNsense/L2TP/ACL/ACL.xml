@@ -4,7 +4,7 @@
         <name>WebCfg - Diagnostics: Logs: L2TP page</name>
         <description>Allow access to the 'Diagnostics: Logs: L2TP' page.</description>
         <patterns>
-            <pattern>diag_logs_l2tp.php*</pattern>
+            <pattern>vpn_l2tp_log.php*</pattern>
         </patterns>
     </page-diagnostics-logs-l2tp>
     <page-vpn-vpnl2tp>

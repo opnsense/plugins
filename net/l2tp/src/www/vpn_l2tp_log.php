@@ -5,7 +5,7 @@ if (htmlspecialchars($_POST['mode'])) {
 } elseif (htmlspecialchars($_GET['mode'])) {
     $mode = htmlspecialchars($_GET['mode']);
 } else {
-    $mode = "login";
+    $mode = 'login';
 }
 
 if ($mode != 'raw') {
@@ -17,9 +17,9 @@ if ($mode != 'raw') {
 $logtype = 'l2tp';
 
 $tab_array = array();
-$tab_array[] = array(gettext("L2TP Logins"), $mode != "raw", "/diag_logs_l2tp.php");
-$tab_array[] = array(gettext("L2TP Raw"), $mode == "raw", "/diag_logs_l2tp.php?mode=raw");
+$tab_array[] = array(gettext('L2TP Logins'), $mode != 'raw', '/vpn_l2tp_logs.php');
+$tab_array[] = array(gettext('L2TP Raw'), $mode == 'raw', '/vpn_l2tp_logs.php?mode=raw');
 
 $service_hook = 'l2tpd';
 
-require_once 'diag_logs_l2tp.inc';
+require_once 'vpn_l2tp_logs.inc';

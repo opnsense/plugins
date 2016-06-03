@@ -5,7 +5,7 @@ if (htmlspecialchars($_POST['mode'])) {
 } elseif (htmlspecialchars($_GET['mode'])) {
     $mode = htmlspecialchars($_GET['mode']);
 } else {
-    $mode = "login";
+    $mode = 'login';
 }
 
 if ($mode != 'raw') {
@@ -17,7 +17,7 @@ if ($mode != 'raw') {
 $logtype = 'poes';
 
 $tab_array = array();
-$tab_array[] = array(gettext("PPPoE Logins"), $mode != "raw", "/diag_logs_poes.php");
-$tab_array[] = array(gettext("PPPoE Raw"), $mode == "raw", "/diag_logs_poes.php?mode=raw");
+$tab_array[] = array(gettext('PPPoE Logins'), $mode != 'raw', '/vpn_pppoe_log.php');
+$tab_array[] = array(gettext('PPPoE Raw'), $mode == 'raw', '/vpn_pppoe_log.php?mode=raw');
 
-require_once 'diag_logs_poes.inc';
+require_once 'vpn_pppoe_log.inc';

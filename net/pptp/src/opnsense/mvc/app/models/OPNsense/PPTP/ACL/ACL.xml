@@ -4,7 +4,7 @@
         <name>WebCfg - Diagnostics: Logs: PPTP page</name>
         <description>Allow access to the 'Diagnostics: Logs: PPTP' page.</description>
         <patterns>
-            <pattern>diag_logs_pptp.php*</pattern>
+            <pattern>vpn_pptp_log.php*</pattern>
         </patterns>
     </page-diagnostics-logs-pptp>
     <page-vpn-vpnpptp>

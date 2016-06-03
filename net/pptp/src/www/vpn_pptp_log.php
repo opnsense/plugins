@@ -5,7 +5,7 @@ if (htmlspecialchars($_POST['mode'])) {
 } elseif (htmlspecialchars($_GET['mode'])) {
     $mode = htmlspecialchars($_GET['mode']);
 } else {
-    $mode = "login";
+    $mode = 'login';
 }
 
 if ($mode != 'raw') {
@@ -17,9 +17,9 @@ if ($mode != 'raw') {
 $logtype = 'pptp';
 
 $tab_array = array();
-$tab_array[] = array(gettext("PPTP Logins"), $mode != "raw", "/diag_logs_pptp.php");
-$tab_array[] = array(gettext("PPTP Raw"), $mode == "raw", "/diag_logs_pptp.php?mode=raw");
+$tab_array[] = array(gettext('PPTP Logins'), $mode != 'raw', '/vpn_pptp_log.php');
+$tab_array[] = array(gettext('PPTP Raw'), $mode == 'raw', '/vpn_pptp_log.php?mode=raw');
 
 $service_hook = 'pptpd';
 
-require_once 'diag_logs_pptp.inc';
+require_once 'vpn_pptp_log.inc';

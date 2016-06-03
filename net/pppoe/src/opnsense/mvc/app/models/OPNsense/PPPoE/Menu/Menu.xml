@@ -4,8 +4,8 @@
             <Settings order="10" url="/vpn_pppoe.php">
                 <Edit url="/vpn_pppoe_edit.php*" visibility="hidden"/>
             </Settings>
-            <LogFile order="20" VisibleName="Log File" url="/diag_logs_poes.php">
-                <Type url="/diag_logs_poes.php*" visibility="hidden"/>
+            <LogFile order="20" VisibleName="Log File" url="/vpn_pppoe_log.php">
+                <Type url="/vpn_pppoe_log.php*" visibility="hidden"/>
             </LogFile>
         </PPPoE>
     </VPN>
