@@ -476,6 +476,9 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <tuning_defaultserver type="TextField">
+                    <Required>N</Required>
+                </tuning_defaultserver>
                 <linkedActions type="ModelRelationField">
                     <Model>
                         <template>

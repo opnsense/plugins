@@ -131,6 +131,12 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.tuning_defaultserver</id>
+        <label>Default for server</label>
+        <type>text</type>
+        <help><![CDATA[Default option for all server entries.]]></help>
+    </field>
+    <field>
         <label>Actions (ACLs)</label>
         <type>header</type>
     </field>
