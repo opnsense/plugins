@@ -114,6 +114,9 @@
                         <x-3>redispatch on the 3rd retry prior to the last retry</x-3>
                     </OptionValues>
                 </redispatch>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
             </defaults>
             <logging>
                 <host type="TextField">

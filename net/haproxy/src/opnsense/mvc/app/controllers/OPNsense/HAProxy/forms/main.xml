@@ -118,6 +118,13 @@
                 <type>dropdown</type>
                 <help><![CDATA[Enable or disable session redistribution in case of connection failure.]]></help>
             </field>
+            <field>
+                <id>haproxy.general.defaults.customOptions</id>
+                <label>Custom options</label>
+                <type>textbox</type>
+                <help><![CDATA[These lines will be added to the defaults settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+                <advanced>true</advanced>
+            </field>
         </subtab>
         <subtab id="haproxy-general-logging" description="Logging Configuration">
             <field>
