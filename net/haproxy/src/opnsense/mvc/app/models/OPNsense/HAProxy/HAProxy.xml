@@ -479,6 +479,10 @@
                 <tuning_defaultserver type="TextField">
                     <Required>N</Required>
                 </tuning_defaultserver>
+                <tuning_noport type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </tuning_noport>
                 <linkedActions type="ModelRelationField">
                     <Model>
                         <template>
@@ -529,6 +533,13 @@
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
                     <Required>Y</Required>
                 </port>
+                <checkport type="IntegerField">
+                    <default>80</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </checkport>
                 <mode type="OptionField">
                     <Required>Y</Required>
                     <default>active</default>

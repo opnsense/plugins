@@ -135,6 +135,14 @@
         <label>Default for server</label>
         <type>text</type>
         <help><![CDATA[Default option for all server entries.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.tuning_noport</id>
+        <label>Don't use port on server</label>
+        <type>checkbox</type>
+        <help><![CDATA[Don't use port on server, use the same port as frontend receive. If check enable, require port check in server.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <label>Actions (ACLs)</label>

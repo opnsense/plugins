@@ -51,4 +51,11 @@
         <help><![CDATA[Sets the interval (in milliseconds) for running health checks on the server.]]></help>
         <advanced>true</advanced>
     </field>
+    <field>
+        <id>server.checkport</id>
+        <label>Port to check</label>
+        <type>text</type>
+        <help><![CDATA[Provide the TCP communication port to use during check, i.e. 80 or 443.]]></help>
+        <advanced>true</advanced>
+    </field>
 </form>
