@@ -211,6 +211,9 @@
                     <mask>/^((([0-9a-zA-Z._\-]+:[0-9a-zA-Z._\-]+)([,]){0,1}))*/u</mask>
                     <ValidationMessage>Please provide a valid user and password, i.e. user:secret123.</ValidationMessage>
                 </users>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
             </stats>
         </general>
         <frontends>
