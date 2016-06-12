@@ -10,6 +10,10 @@
                 <Required>Y</Required>
             </enabled>
             <tuning>
+                <root type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </root>
                 <chroot type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>

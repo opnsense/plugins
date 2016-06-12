@@ -18,6 +18,13 @@
                 <type>info</type>
             </field>
             <field>
+                <id>haproxy.general.tuning.root</id>
+                <label>Run as root</label>
+                <type>checkbox</type>
+                <help><![CDATA[Enable or disable HAProxy running as root.<br/><div class="text-info"><b>NOTE:</b> Enabling root could be a security issue but it's required by some feature.</div>]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
                 <id>haproxy.general.tuning.chroot</id>
                 <label>Secure mode (chroot)</label>
                 <type>checkbox</type>
