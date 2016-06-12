@@ -139,7 +139,7 @@
     </field>
     <field>
         <id>backend.tuning_noport</id>
-        <label>Don't use port on server</label>
+        <label>Use Frontend port</label>
         <type>checkbox</type>
         <help><![CDATA[Don't use port on server, use the same port as frontend receive. If check enable, require port check in server.]]></help>
         <advanced>true</advanced>
