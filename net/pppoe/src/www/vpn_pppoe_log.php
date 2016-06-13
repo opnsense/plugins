@@ -8,16 +8,17 @@ if (htmlspecialchars($_POST['mode'])) {
     $mode = 'login';
 }
 
+$logtype = 'poes';
+$logclog = true;
+
+$logpills = array();
+$logpills[] = array(gettext('PPPoE Logins'), $mode != 'raw', '/vpn_pppoe_log.php');
+$logpills[] = array(gettext('PPPoE Raw'), $mode == 'raw', '/vpn_pppoe_log.php?mode=raw');
+
 if ($mode != 'raw') {
     $logfile = '/var/log/vpn.log';
+    require_once 'vpn_pppoe_log.inc';
 } else {
     $logfile = '/var/log/poes.log';
+    require_once 'diag_logs_template.inc';
 }
-
-$logtype = 'poes';
-
-$tab_array = array();
-$tab_array[] = array(gettext('PPPoE Logins'), $mode != 'raw', '/vpn_pppoe_log.php');
-$tab_array[] = array(gettext('PPPoE Raw'), $mode == 'raw', '/vpn_pppoe_log.php?mode=raw');
-
-require_once 'vpn_pppoe_log.inc';

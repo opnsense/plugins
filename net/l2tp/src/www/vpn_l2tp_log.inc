@@ -89,30 +89,26 @@ include("head.inc");
           <div class="table-responsive">
             <table class="table table-striped table-sort">
               <tr>
-                <td colspan="4">
-                  <ul class="nav nav-pills" role="tablist">
-                    <?php foreach ($tab_array as $tab): ?>
-                      <li role="presentation" <?php if (str_replace('amp;','', $tab[2]) == $_SERVER['REQUEST_URI']):?>class="active"<?php endif; ?>><a href="<?=$tab[2];?>"><?=$tab[0];?></a></li>
-                      <?php endforeach; ?>
-                  </ul>
-                </td>
-              </tr>
-               <?php if ($mode != "raw"): ?>
-              <tr>
                 <td class="listhdrr"><?=gettext("Time");?></td>
                 <td class="listhdrr"><?=gettext("Action");?></td>
                 <td class="listhdrr"><?=gettext("User");?></td>
                 <td class="listhdrr"><?=gettext("IP address");?></td>
               </tr>
+              <tr>
+                <td colspan="4">
+                  <ul class="nav nav-pills" role="tablist">
+                    <?php foreach ($logpills as $pill): ?>
+                      <li role="presentation" <?php if (str_replace('amp;','', $pill[2]) == $_SERVER['REQUEST_URI']):?>class="active"<?php endif; ?>><a href="<?=$pill[2];?>"><?=$pill[0];?></a></li>
+                      <?php endforeach; ?>
+                  </ul>
+                </td>
+              </tr>
               <?php dump_clog_vpn($logfile, $nentries, $logtype); ?>
-              <?php else:
-                dump_clog($logfile, $nentries);
-              endif; ?>
               <tr>
                 <td colspan="4">
                   <form method="post">
-                    <input type="hidden" name="mode" id="mode" value="<?=$mode;?>" />
-                    <input name="clear" type="submit" class="btn" value="<?= gettext("Clear log");?>" />
+                    <input type="hidden" name="mode" id="mode" value="<?= html_safe($mode) ?>"/>
+                    <input name="clear" type="submit" class="btn btn-primary" value="<?= html_safe(gettext('Clear log')) ?>"/>
                   </form>
                 </td>
               </tr>

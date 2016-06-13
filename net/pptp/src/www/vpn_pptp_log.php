@@ -8,18 +8,19 @@ if (htmlspecialchars($_POST['mode'])) {
     $mode = 'login';
 }
 
-if ($mode != 'raw') {
-    $logfile = '/var/log/vpn.log';
-} else {
-    $logfile = '/var/log/pptps.log';
-}
-
 $logtype = 'pptp';
+$logclog = true;
 
-$tab_array = array();
-$tab_array[] = array(gettext('PPTP Logins'), $mode != 'raw', '/vpn_pptp_log.php');
-$tab_array[] = array(gettext('PPTP Raw'), $mode == 'raw', '/vpn_pptp_log.php?mode=raw');
+$logpills = array();
+$logpills[] = array(gettext('PPTP Logins'), $mode != 'raw', '/vpn_pptp_log.php');
+$logpills[] = array(gettext('PPTP Raw'), $mode == 'raw', '/vpn_pptp_log.php?mode=raw');
 
 $service_hook = 'pptpd';
 
-require_once 'vpn_pptp_log.inc';
+if ($mode != 'raw') {
+    $logfile = '/var/log/vpn.log';
+    require_once 'vpn_pptp_log.inc';
+} else {
+    $logfile = '/var/log/pptps.log';
+    require_once 'diag_logs_template.inc';
+}
