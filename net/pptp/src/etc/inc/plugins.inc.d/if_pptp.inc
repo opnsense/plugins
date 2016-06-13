@@ -63,7 +63,12 @@ function if_pptp_services()
 function if_pptp_syslog()
 {
     $logfacilities = array();
-    $logfacilities['pptps'] = array('facility' => array('pptps'));
+
+    $logfacilities['pptps'] = array(
+        'facility' => array('pptps'),
+        'remote' => 'vpn',
+    );
+
     return $logfacilities;
 }
 
