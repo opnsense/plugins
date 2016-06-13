@@ -18,6 +18,13 @@
                 <type>info</type>
             </field>
             <field>
+                <id>haproxy.general.tuning.root</id>
+                <label>Run as root</label>
+                <type>checkbox</type>
+                <help><![CDATA[Enable or disable HAProxy running as root.<br/><div class="text-info"><b>NOTE:</b> Enabling root could be a security issue but it's required by some feature.</div>]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
                 <id>haproxy.general.tuning.chroot</id>
                 <label>Secure mode (chroot)</label>
                 <type>checkbox</type>
@@ -118,6 +125,13 @@
                 <type>dropdown</type>
                 <help><![CDATA[Enable or disable session redistribution in case of connection failure.]]></help>
             </field>
+            <field>
+                <id>haproxy.general.defaults.customOptions</id>
+                <label>Custom options</label>
+                <type>textbox</type>
+                <help><![CDATA[These lines will be added to the defaults settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+                <advanced>true</advanced>
+            </field>
         </subtab>
         <subtab id="haproxy-general-logging" description="Logging Configuration">
             <field>
@@ -188,6 +202,13 @@
                 <allownew>true</allownew>
                 <help><![CDATA[Grant access to HAProxy statistics page. Please provide both user and password in clear text separated by a ':', i.e. john:secret123 or jdoe:anonymous. Use TAB key to complete adding a user.]]></help>
                 <hint>Enter user:password here. Finish with TAB.</hint>
+            </field>
+            <field>
+                <id>haproxy.general.stats.customOptions</id>
+                <label>Custom options</label>
+                <type>textbox</type>
+                <help><![CDATA[These lines will be added to the statistics settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+                <advanced>true</advanced>
             </field>
         </subtab>
     </tab>

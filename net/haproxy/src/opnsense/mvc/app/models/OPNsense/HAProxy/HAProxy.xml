@@ -10,6 +10,10 @@
                 <Required>Y</Required>
             </enabled>
             <tuning>
+                <root type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </root>
                 <chroot type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -114,6 +118,9 @@
                         <x-3>redispatch on the 3rd retry prior to the last retry</x-3>
                     </OptionValues>
                 </redispatch>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
             </defaults>
             <logging>
                 <host type="TextField">
@@ -208,6 +215,9 @@
                     <mask>/^((([0-9a-zA-Z._\-]+:[0-9a-zA-Z._\-]+)([,]){0,1}))*/u</mask>
                     <ValidationMessage>Please provide a valid user and password, i.e. user:secret123.</ValidationMessage>
                 </users>
+                <customOptions type="TextField">
+                    <Required>N</Required>
+                </customOptions>
             </stats>
         </general>
         <frontends>
@@ -233,9 +243,9 @@
                     <Required>Y</Required>
                     <multiple>Y</multiple>
                     <!-- <default>localhost:8080</default> -->
-                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080 or www.example.com:443.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
                 <mode type="OptionField">
                     <Required>Y</Required>
@@ -476,6 +486,13 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <tuning_defaultserver type="TextField">
+                    <Required>N</Required>
+                </tuning_defaultserver>
+                <tuning_noport type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </tuning_noport>
                 <linkedActions type="ModelRelationField">
                     <Model>
                         <template>
@@ -526,6 +543,13 @@
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
                     <Required>Y</Required>
                 </port>
+                <checkport type="IntegerField">
+                    <default>80</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </checkport>
                 <mode type="OptionField">
                     <Required>Y</Required>
                     <default>active</default>
