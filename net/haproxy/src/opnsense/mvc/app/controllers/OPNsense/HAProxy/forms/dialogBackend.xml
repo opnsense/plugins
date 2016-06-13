@@ -41,6 +41,13 @@
         <hint>Type server name or choose from list.</hint>
     </field>
     <field>
+        <id>backend.source</id>
+        <label>Source address</label>
+        <type>text</type>
+        <help><![CDATA[Sets the source address which will be used when connecting to the server(s).]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Health Checking</label>
         <type>header</type>
     </field>
