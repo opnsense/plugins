@@ -15,7 +15,7 @@
                     <Required>Y</Required>
                 </root>
                 <chroot type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>Y</Required>
                 </chroot>
                 <maxConnections type="IntegerField">

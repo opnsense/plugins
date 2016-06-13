@@ -28,7 +28,7 @@
                 <id>haproxy.general.tuning.chroot</id>
                 <label>Secure mode (chroot)</label>
                 <type>checkbox</type>
-                <help><![CDATA[Enable or disable HAProxy's chroot feature.<br/><div class="text-info"><b>NOTE:</b> Enabling chroot will deactivate logging to localhost, because the local syslogd is running in secure mode and does not accept network connections (and it's log socket is not accessible from the chroot directory). You'll need to log to a remote host when enabling the chroot feature.</div>]]></help>
+                <help><![CDATA[Enable or disable HAProxy's chroot feature.]]></help>
             </field>
             <field>
                 <id>haproxy.general.tuning.nbproc</id>
