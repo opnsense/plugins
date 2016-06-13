@@ -549,7 +549,7 @@
                     <Required>Y</Required>
                 </port>
                 <checkport type="IntegerField">
-                    <default>80</default>
+                    <default></default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
@@ -624,6 +624,13 @@
                     <ValidationMessage>Please specify a value between 250 and 1000000.</ValidationMessage>
                     <Required>N</Required>
                 </interval>
+                <checkport type="IntegerField">
+                    <default></default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </checkport>
                 <!-- XXX: add tag <http> once nesting is supported by our framework -->
                 <http_method type="OptionField">
                     <Required>N</Required>
