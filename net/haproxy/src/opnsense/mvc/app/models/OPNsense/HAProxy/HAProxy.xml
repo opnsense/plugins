@@ -408,6 +408,11 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedServers>
+                <source type="TextField">
+                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
+                    <Required>N</Required>
+                </source>
                 <healthCheckEnabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -577,6 +582,11 @@
                     <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
                     <Required>Y</Required>
                 </checkInterval>
+                <source type="TextField">
+                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
+                    <Required>N</Required>
+                </source>
             </server>
         </servers>
         <healthchecks>

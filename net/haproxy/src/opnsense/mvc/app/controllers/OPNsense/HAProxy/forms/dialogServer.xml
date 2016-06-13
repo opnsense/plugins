@@ -58,4 +58,11 @@
         <help><![CDATA[Provide the TCP communication port to use during check, i.e. 80 or 443.]]></help>
         <advanced>true</advanced>
     </field>
+    <field>
+        <id>server.source</id>
+        <label>Source address</label>
+        <type>text</type>
+        <help><![CDATA[Sets the source address which will be used when connecting to the server.]]></help>
+        <advanced>true</advanced>
+    </field>
 </form>
