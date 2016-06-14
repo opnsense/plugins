@@ -25,12 +25,6 @@
                 <advanced>true</advanced>
             </field>
             <field>
-                <id>haproxy.general.tuning.chroot</id>
-                <label>Secure mode (chroot)</label>
-                <type>checkbox</type>
-                <help><![CDATA[Enable or disable HAProxy's chroot feature.]]></help>
-            </field>
-            <field>
                 <id>haproxy.general.tuning.nbproc</id>
                 <label>HAProxy processes</label>
                 <type>text</type>
