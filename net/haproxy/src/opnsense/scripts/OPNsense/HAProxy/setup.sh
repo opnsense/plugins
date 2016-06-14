@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HAPROXY_DIRS="/var/run/haproxy /var/etc/haproxy/ssl /var/etc/haproxy/lua /var/etc/haproxy/errorfiles"
+HAPROXY_DIRS="/var/haproxy/var/run /var/etc/haproxy/ssl /var/etc/haproxy/lua /var/etc/haproxy/errorfiles"
 
 for directory in ${HAPROXY_DIRS}; do
     mkdir -p ${directory}
@@ -9,7 +9,7 @@ for directory in ${HAPROXY_DIRS}; do
 done
 
 # chroot dir must not be writable
-chmod 550 /var/run/haproxy
+find /var/haproxy -type d -exec chmod 550 {} \;
 
 # export required data to filesystem
 /usr/local/opnsense/scripts/OPNsense/HAProxy/exportCerts.php > /dev/null 2>&1

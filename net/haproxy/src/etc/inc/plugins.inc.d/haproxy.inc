@@ -37,7 +37,7 @@ function haproxy_syslog()
     $syslogconf = array();
 
     $syslogconf['haproxy'] = array(
-        'local' => '/var/run/haproxy/var/run/log',
+        'local' => '/var/haproxy/var/run/log',
         'facility' => array('haproxy'),
         'remote' => 'relayd',
     );
