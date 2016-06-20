@@ -33,7 +33,6 @@ require_once('filter.inc');
 require_once('services.inc');
 require_once("system.inc");
 require_once("plugins.inc");
-require_once("pfsense-utils.inc");
 require_once('plugins.inc.d/if_pptp.inc');
 
 if (!is_array($config['pptpd']['radius'])) {
