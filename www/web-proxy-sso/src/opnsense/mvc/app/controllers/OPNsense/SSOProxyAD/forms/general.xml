@@ -1,0 +1,33 @@
+<form>
+    <field>
+        <id>ssoproxyad.general.Enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this feature</help>
+    </field>
+    <field>
+        <id>ssoproxyad.general.DomainName</id>
+        <label>Active Directory Domain Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>ssoproxyad.general.DomainDC</id>
+        <label>Active Directory Domain Controller</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>ssoproxyad.general.DomainVersion</id>
+        <label>Active Directory Domain Version</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>ssoproxyad.general.DomainUser</id>
+        <label>Active Directory Domin User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>ssoproxyad.general.DomainPassword</id>
+        <label>Active Directory Domain Password</label>
+        <type>password</type>
+    </field>
+ </form>
