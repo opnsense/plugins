@@ -1,0 +1,33 @@
+<form>
+    <field>
+        <id>sso_ad.general.Enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this feature</help>
+    </field>
+    <field>
+        <id>sso_ad.general.DomainName</id>
+        <label>Active Directory Domain Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>sso_ad.general.DomainDC</id>
+        <label>Active Directory Domain Controller</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>sso_ad.general.DomainVersion</id>
+        <label>Active Directory Domain Version</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>sso_ad.general.DomainUser</id>
+        <label>Active Directory Domin User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>sso_ad.general.DomainPassword</id>
+        <label>Active Directory Domain Password</label>
+        <type>password</type>
+    </field>
+ </form>
