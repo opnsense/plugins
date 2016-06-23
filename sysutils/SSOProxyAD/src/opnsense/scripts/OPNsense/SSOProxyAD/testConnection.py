@@ -31,27 +31,15 @@
 """
 import os
 import socket
-import smtplib
 import json
-from ConfigParser import ConfigParser
 
-# set default timeout to 2 seconds
-socket.setdefaulttimeout(2)
-
-hello_world_config = '/usr/local/etc/ssoproxyad/krb5.conf'
+ssoproxyad_config = '/usr/local/etc/ssoproxyad/krb5.conf'
 
 result = {}
-if os.path.exists(hello_world_config):
-    cnf = ConfigParser()
-    cnf.read(hello_world_config)
-    if cnf.has_section('general'):
-        result['message'] = 'test ok!'
-    else:
-        # empty config
-        result['message'] = 'empty configuration'
+if os.path.exists(ssoproxyad_onfig):
+    result['message'] = 'test ok!'
 else:
     # no config
     result['message'] = 'no configuration file found'
-
 
 print (json.dumps(result))
