@@ -36,7 +36,7 @@ import json
 ssoproxyad_config = '/usr/local/etc/ssoproxyad/krb5.conf'
 
 result = {}
-if os.path.exists(ssoproxyad_onfig):
+if os.path.exists(ssoproxyad_config):
     result['message'] = 'test ok!'
 else:
     # no config
