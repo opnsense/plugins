@@ -30,7 +30,7 @@
 namespace OPNsense\SSOProxyAD\Api;
 
 use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\SSOProxyAD\SSOProxyAD
+use \OPNsense\SSOProxyAD\SSOProxyAD;
 use \OPNsense\Core\Config;
 
 class SettingsController extends ApiControllerBase
