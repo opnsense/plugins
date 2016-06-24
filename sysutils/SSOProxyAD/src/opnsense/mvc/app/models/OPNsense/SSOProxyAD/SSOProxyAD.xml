@@ -15,13 +15,8 @@
             <DomainDC type="TextField">
                 <Required>Y</Required>
             </DomainDC>
-            <DomainVersion type="OptionField">
-                <default>w2008</default>
-                <Required>N</Required>
-                <OptionValues>
-                     <w2008>Windows 2008 with AES</w2008>
-                     <w2003>Windows 2003</w2003>
-                </OptionValues>
+            <DomainVersion type="TextField">
+                <Required>Y</Required>
             </DomainVersion>
             <DomainUser type="TextField">
                 <Required>Y</Required>
