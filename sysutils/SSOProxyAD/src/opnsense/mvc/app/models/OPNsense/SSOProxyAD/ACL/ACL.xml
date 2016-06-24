@@ -7,5 +7,5 @@
             <pattern>ui/ssoproxyad/*</pattern>
             <pattern>api/ssoproxyad/*</pattern>
         </patterns>
-    </page-user-helloworld>
+    </page-user-ssoproxyad>
 </acl>
