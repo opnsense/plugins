@@ -65,6 +65,6 @@ if ($enabled == 1) {
 		chown($keytab,'squid');
 		chgrp($keytab,'squid');
 		exec("/usr/bin/kdestroy");
-		//unlink($krb5secret);
+		unlink($krb5secret);
 	}
 }
