@@ -60,4 +60,17 @@ public function testAction()
     return array("message" => "unable to run config action");
 }
 
+public function joinDomainAction()
+{
+    if ($this->request->isPost()) {
+        $backend = new Backend();
+        $bckresult = json_decode(trim($backend->configdRun("ssoproxyad joinDomain")), true);
+        if ($bckresult !== null) {
+            // only return valid json type responses
+            return $bckresult;
+        }
+    }
+    return array("message" => "unable to run config action");
+}
+
 }
