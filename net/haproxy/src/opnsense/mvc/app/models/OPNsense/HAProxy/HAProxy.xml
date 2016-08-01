@@ -27,6 +27,15 @@
                     <ValidationMessage>Please specify a value between 1 and 128.</ValidationMessage>
                     <Required>Y</Required>
                 </nbproc>
+                <sslServerVerify type="OptionField">
+                    <Required>Y</Required>
+                    <default>ignore</default>
+                    <OptionValues>
+                        <ignore>no preference [default]</ignore>
+                        <required>enforce verify</required>
+                        <none>disable verify</none>
+                    </OptionValues>
+                </sslServerVerify>
                 <maxDHSize type="IntegerField">
                     <default>1024</default>
                     <MinimumValue>1024</MinimumValue>
