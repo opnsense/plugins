@@ -567,7 +567,6 @@
                         <active>active [default]</active>
                         <backup>backup</backup>
                         <disabled>disabled</disabled>
-                        <inactive>inactive</inactive>
                     </OptionValues>
                 </mode>
                 <ssl type="BooleanField">
