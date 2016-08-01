@@ -574,6 +574,25 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </ssl>
+                <sslVerify type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </sslVerify>
+                <sslCA type="CertificateField">
+                    <Required>N</Required>
+                    <Type>ca</Type>
+                    <ValidationMessage>Please select a valid CA from the list.</ValidationMessage>
+                </sslCA>
+                <sslCRL type="CertificateField">
+                    <Required>N</Required>
+                    <Type>crl</Type>
+                    <ValidationMessage>Please select a valid CRL from the list.</ValidationMessage>
+                </sslCRL>
+                <sslClientCertificate type="CertificateField">
+                    <Required>N</Required>
+                    <Type>cert</Type>
+                    <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+                </sslClientCertificate>
                 <weight type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>256</MaximumValue>
