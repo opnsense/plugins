@@ -252,6 +252,9 @@
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
+                <bindOptions type="TextField">
+                    <Required>N</Required>
+                </bindOptions>
                 <mode type="OptionField">
                     <Required>Y</Required>
                     <default>http</default>
