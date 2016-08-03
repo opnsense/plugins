@@ -27,6 +27,13 @@
         <hint>Enter address:port here. Finish with TAB.</hint>
     </field>
     <field>
+        <id>frontend.bindOptions</id>
+        <label>Advanced Bind Options</label>
+        <type>text</type>
+        <help><![CDATA[A list of parameters that will be appended to every Listen Address line.<br/>Example: accept-proxy npn http/1.1<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>frontend.mode</id>
         <label>Type</label>
         <type>dropdown</type>

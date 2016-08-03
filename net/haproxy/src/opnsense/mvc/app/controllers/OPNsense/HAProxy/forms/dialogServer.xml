@@ -38,6 +38,35 @@
         <help><![CDATA[Enable or disable SSL communication with this server.]]></help>
     </field>
     <field>
+        <id>server.sslVerify</id>
+        <label>Verify SSL Certificate</label>
+        <type>checkbox</type>
+        <help><![CDATA[If disabled, server certificate is not verified. Otherwise the certificate provided by the server is verified using CAs and optional CRLs. <b>Please note that this setting can be overriden by the global configuration.</b><br/><div class="text-info"><b>NOTE:</b> It is critically important to verify server certificates when using SSL to connect to servers, otherwise the communication is prone to trivial man-in-the-middle attacks rendering SSL totally useless.</div>]]></help>
+    </field>
+    <field>
+        <id>server.sslCA</id>
+        <label>SSL Verify CA</label>
+        <type>dropdown</type>
+        <help><![CDATA[This certificate authority will be used to verify server's certificate. <br/>To import additional CAs, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
+        <hint>Type CA name or choose from list.</hint>
+    </field>
+    <field>
+        <id>server.sslCRL</id>
+        <label>SSL Verify CRL</label>
+        <type>dropdown</type>
+        <help><![CDATA[This certificate revocation list will be used to verify server's certificate. <br/>To import additional CRLs, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
+        <hint>Type CRL name or choose from list.</hint>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>server.sslClientCertificate</id>
+        <label>SSL Client Certificate</label>
+        <type>dropdown</type>
+        <help><![CDATA[This certificate will be sent if the server send a client certificate request.<br/>To import additional certificates, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
+        <hint>Type certificate name or choose from list.</hint>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>server.weight</id>
         <label>Weight</label>
         <type>text</type>

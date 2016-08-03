@@ -27,6 +27,15 @@
                     <ValidationMessage>Please specify a value between 1 and 128.</ValidationMessage>
                     <Required>Y</Required>
                 </nbproc>
+                <sslServerVerify type="OptionField">
+                    <Required>Y</Required>
+                    <default>ignore</default>
+                    <OptionValues>
+                        <ignore>no preference [default]</ignore>
+                        <required>enforce verify</required>
+                        <none>disable verify</none>
+                    </OptionValues>
+                </sslServerVerify>
                 <maxDHSize type="IntegerField">
                     <default>1024</default>
                     <MinimumValue>1024</MinimumValue>
@@ -243,6 +252,9 @@
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
+                <bindOptions type="TextField">
+                    <Required>N</Required>
+                </bindOptions>
                 <mode type="OptionField">
                     <Required>Y</Required>
                     <default>http</default>
@@ -558,13 +570,31 @@
                         <active>active [default]</active>
                         <backup>backup</backup>
                         <disabled>disabled</disabled>
-                        <inactive>inactive</inactive>
                     </OptionValues>
                 </mode>
                 <ssl type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
                 </ssl>
+                <sslVerify type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </sslVerify>
+                <sslCA type="CertificateField">
+                    <Required>N</Required>
+                    <Type>ca</Type>
+                    <ValidationMessage>Please select a valid CA from the list.</ValidationMessage>
+                </sslCA>
+                <sslCRL type="CertificateField">
+                    <Required>N</Required>
+                    <Type>crl</Type>
+                    <ValidationMessage>Please select a valid CRL from the list.</ValidationMessage>
+                </sslCRL>
+                <sslClientCertificate type="CertificateField">
+                    <Required>N</Required>
+                    <Type>cert</Type>
+                    <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+                </sslClientCertificate>
                 <weight type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>256</MaximumValue>

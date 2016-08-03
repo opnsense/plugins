@@ -37,27 +37,51 @@ require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
 global $config;
 
-// traverse HAProxy frontends
+// configure ssl elements
+$configNodes = [
+    'frontends' => ['ssl_certificates'],
+    'servers'   => ['sslCA', 'sslCRL', 'sslClientCertificate'],
+];
+$certTypes = ['cert', 'ca', 'crl'];
+
+// traverse HAProxy configuration
 $configObj = Config::getInstance()->object();
-if (isset($configObj->OPNsense->HAProxy->frontends)) {
-    foreach ($configObj->OPNsense->HAProxy->frontends->children() as $frontend) {
-        if (!isset($frontend->ssl_enabled)) {
-            continue;
-        }
-        // multiple comma-separated values are possible
-        $certs = explode(',', $frontend->ssl_certificates);
-        foreach ($certs as $cert_refid) {
-            // if the frontend has a cert attached, search for its contents
-            if ($cert_refid != "") {
-                foreach ($configObj->cert as $cert) {
-                    if ($cert_refid == (string)$cert->refid) {
-                        // generate cert pem file
-                        $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
-                        $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
-                        $output_pem_filename = "/var/etc/haproxy/ssl/" . $cert_refid . ".pem" ;
-                        file_put_contents($output_pem_filename, $pem_content);
-                        chmod($output_pem_filename, 0600);
-                        echo "certificate exported to " . $output_pem_filename . "\n";
+foreach ($configNodes as $key => $value) {
+    // lookup all config nodes
+    if (isset($configObj->OPNsense->HAProxy->$key)) {
+        foreach ($configObj->OPNsense->HAProxy->$key->children() as $child) {
+            // search in all matching child elements for ssl data
+            foreach ($configNodes[$key] as $sslchild) {
+                if (isset($child->$sslchild)) {
+                    // multiple comma-separated values are possible
+                    $certs = explode(',', $child->$sslchild);
+                    foreach ($certs as $cert_refid) {
+                        // if the element has a cert attached, search for its contents
+                        if ($cert_refid != "") {
+                            // check all known cert types
+                            foreach ($certTypes as $type) {
+                                // search for cert (type) in config
+                                foreach ($configObj->$type as $cert) {
+                                    if ($cert_refid == (string)$cert->refid) {
+                                        $pem_content = '';
+                                        // CRLs require special export
+                                        if ( $type == 'crl' ) {
+                                            $crl =& lookup_crl($cert_refid);
+                                            crl_update($crl);
+                                            $pem_content = base64_decode($crl['text']);
+                                        } else {
+                                            $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
+                                            $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
+                                        }
+                                        // generate pem file
+                                        $output_pem_filename = "/var/etc/haproxy/ssl/" . $cert_refid . ".pem" ;
+                                        file_put_contents($output_pem_filename, $pem_content);
+                                        chmod($output_pem_filename, 0600);
+                                        echo "exported $type to " . $output_pem_filename . "\n";
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

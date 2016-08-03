@@ -38,6 +38,13 @@
                 <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> HAProxy will not be able to allocate enough memory if you set this value too high. Consider raising the settings for kern.maxfiles and kern.maxfilesperproc if you need to specify a non-default value.</div>]]></help>
             </field>
             <field>
+                <id>haproxy.general.tuning.sslServerVerify</id>
+                <label>Verify SSL Server Certificates</label>
+                <type>dropdown</type>
+                <help><![CDATA[This enforces a certain behavior for SSL verify on servers, ignoring per-server settings. If set to 'enforce verify', server certificates are verified. If set to 'disable verify', server certificates are not verified. The default is 'no preference' to only use per-server configurations and not enforce a global default for all servers.]]></help>
+                <advanced>true</advanced>
+            </field>
+            <field>
                 <id>haproxy.general.tuning.maxDHSize</id>
                 <label>Maximum SSL DH Size</label>
                 <type>text</type>
