@@ -257,7 +257,7 @@ EOD;
     return 0;
 }
 
-function l2tp_interfaces()
+function if_l2tp_interfaces()
 {
     global $config;
 
