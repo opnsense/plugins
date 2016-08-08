@@ -30,6 +30,7 @@
 
 require_once("guiconfig.inc");
 require_once("interfaces.inc");
+require_once("plugins.inc");
 
 function vpn_pppoe_get_id()
 {
@@ -216,6 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $a_pppoes[$id] = $pppoecfg;
         }
 
+        plugins_interfaces(false);
         write_config();
         mark_subsystem_dirty('vpnpppoe');
         file_put_contents('/tmp/.vpn_pppoe.apply', serialize($toapplylist));

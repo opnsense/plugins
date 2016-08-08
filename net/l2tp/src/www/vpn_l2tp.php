@@ -149,6 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             unset($l2tpcfg['radius']['radiusissueips']);
         }
 
+        plugins_interfaces(false);
         write_config();
         if_l2tp_configure_do();
         header("Location: vpn_l2tp.php");

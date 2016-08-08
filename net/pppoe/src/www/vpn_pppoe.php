@@ -29,6 +29,7 @@
 
 require_once("guiconfig.inc");
 require_once("filter.inc");
+require_once("plugins.inc");
 require_once("plugins.inc.d/if_pppoe.inc");
 require_once("interfaces.inc");
 
@@ -67,12 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             killbypid("/var/run/pppoe{$a_pppoes[$_POST['id']]['pppoeid']}-vpn.pid");
             mwexecf('/bin/rm -r %s', "/var/etc/pppoe{$a_pppoes[$_POST['id']]['pppoeid']}");
             unset($a_pppoes[$_POST['id']]);
+            plugins_interfaces(false);
             write_config();
             exit;
         }
     }
-
-
 }
 
 include("head.inc");
