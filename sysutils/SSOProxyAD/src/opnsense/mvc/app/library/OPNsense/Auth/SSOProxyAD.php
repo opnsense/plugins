@@ -29,6 +29,8 @@
 
 namespace OPNsense\Auth;
 
+use OPNsense\Core\Config;
+
 /**
  * Class SSOProxyAD connector
  * @package OPNsense\Auth
