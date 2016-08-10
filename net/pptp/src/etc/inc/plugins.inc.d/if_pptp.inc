@@ -78,6 +78,7 @@ function if_pptp_link_scripts($rootdir, $logtype = 'pptp')
 #!/bin/sh
 
 /usr/bin/logger -p local3.info "login,%s,$4,$5"
+/sbin/ifconfig $1 group pptp
 
 EOD;
     $down = <<<'EOD'

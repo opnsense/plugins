@@ -78,6 +78,7 @@ function if_l2tp_link_scripts($rootdir, $logtype = 'l2tp')
 #!/bin/sh
 
 /usr/bin/logger -p local3.info "login,%s,$4,$5"
+/sbin/ifconfig $1 group l2tp
 
 EOD;
     $down = <<<'EOD'

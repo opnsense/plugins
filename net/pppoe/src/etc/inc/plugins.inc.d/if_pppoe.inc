@@ -85,6 +85,7 @@ function if_pppoe_link_scripts($rootdir, $logtype = 'poes')
 #!/bin/sh
 
 /usr/bin/logger -p local3.info "login,%s,$4,$5"
+/sbin/ifconfig $1 group pppoe
 
 EOD;
     $down = <<<'EOD'
