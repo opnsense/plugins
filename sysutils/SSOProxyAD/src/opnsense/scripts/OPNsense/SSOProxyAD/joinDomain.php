@@ -58,9 +58,9 @@ if ($enabled == 1) {
 		chmod($krb5secret, 0600);
 		exec('/usr/bin/kinit --password-file="' . $krb5secret . '" ' . $domainuser. "@" . strtoupper($domainname));
 		if ( $domainversion == '2003' ) {
-			exec('/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --verbose');
+			exec('/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . '-K --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --verbose');
 		} elseif ( $domainversion == '2008' ) { 
-			exec('/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --verbose --enctypes 28');
+			exec('/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . '-K --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --verbose --enctypes 28');
 		}
 		chown($keytab,'squid');
 		chgrp($keytab,'squid');

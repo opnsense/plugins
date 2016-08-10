@@ -53,6 +53,6 @@ if (isset($configObj->OPNsense->ssoproxyad)) {
 if ($enabled == 1) {
 	$keytab = '/usr/local/etc/ssoproxyad/PROXY.keytab';
 	if ( file_exists($keytab) ) {
-		exec('/usr/local/sbin/msktutil --auto-update --verbose --computer-name ' . strtolower($hostname) . ' --keytab ' . $keytab);
+		exec('/usr/local/sbin/msktutil --auto-update --verbose --computer-name ' . strtolower($hostname) . '-k --keytab ' . $keytab);
 	}
 }
