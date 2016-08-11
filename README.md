@@ -24,6 +24,7 @@ Your OPNsense team
 A list of currently available plugins
 =====================================
 
+```
 devel/helloworld -- a sample plugin to show how development works
 net/haproxy -- flexible HAProxy plugin
 net/l2tp -- L2TP server support
@@ -32,6 +33,7 @@ net/pptp -- PPTP server support
 sysutils/smart -- S.M.A.R.T. disk utilies
 sysutils/vmware -- Guest additions for VMware
 sysutils/xen -- Guest additions for Xen
+```
 
 A brief description of how to use the plugins repository
 ========================================================
