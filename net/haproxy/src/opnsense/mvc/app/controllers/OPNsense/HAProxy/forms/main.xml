@@ -157,7 +157,7 @@
                 <id>haproxy.general.logging.length</id>
                 <label>Max. line length</label>
                 <type>text</type>
-                <help><![CDATA[Specify an optional maximum line length. Log lines larger than this value will be truncated before being sent. The reason is that syslog servers act differently on log line length. All servers support the default value of 1024, but some servers simply drop larger lines while others do log them.]]></help>
+                <help><![CDATA[Specify an optional maximum line length in characters. Log lines larger than this value will be truncated before being sent. The reason is that syslog servers act differently on log line length. All servers support the default value of 1024 characters, but some servers simply drop larger lines while others do log them.]]></help>
                 <advanced>true</advanced>
             </field>
         </subtab>
