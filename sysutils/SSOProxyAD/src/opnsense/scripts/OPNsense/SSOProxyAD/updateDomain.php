@@ -42,17 +42,25 @@ $fqdn = $hostname . "." . $configObj->system->domain;
 if (isset($configObj->OPNsense->ssoproxyad)) {
     foreach ($configObj->OPNsense->ssoproxyad->general as $ssoproxyad) {
 	$enabled = $ssoproxyad->Enabled;
-	$domainname = $ssoproxyad->DomainName;
-	$domaindc = $ssoproxyad->DomainDC;
-	$domainversion = $ssoproxyad->DomainVersion;
-	$domainuser = $ssoproxyad->DomainUser;
-	$domainpassword = $ssoproxyad->DomainPassword;
     }
 }
 
 if ($enabled == 1) {
 	$keytab = '/usr/local/etc/ssoproxyad/PROXY.keytab';
 	if ( file_exists($keytab) ) {
-		exec('/usr/local/sbin/msktutil --auto-update --verbose --computer-name ' . strtolower($hostname) . '-k --keytab ' . $keytab);
+		$cmd = '/usr/local/sbin/msktutil --auto-update --verbose --computer-name ' . strtolower($hostname) . ' --keytab ' . $keytab . ' 2>&1';
+		exec($cmd,$output_msktutil,$error_msktutil);
+		$out = implode($output_msktutil);
+		if ($error_msktutil > 0) {
+			$return = array('message' => "Unable to auto-update: $out)");
+		}
+		else {
+			$return = array('message' => "Auto-update successful: $out");
+		}
+	}
+	else {
+		$return = array('message' => "keytab do not exists");
 	}
 }
+
+echo json_encode($return);

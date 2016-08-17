@@ -59,6 +59,14 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#responseMsg").html(data['message']);
             });
        });
+	$("#updateDomainAct").click(function(){
+            $("#responseMsg").removeClass("hidden");
+            ajaxCall(url="/api/ssoproxyad/service/updateDomain", sendData={},callback=function(data,status) {
+                // action to run after reload
+                $("#responseMsg").html(data['message']);
+            });
+       });
+
 
 
     });
@@ -73,3 +81,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 <button class="btn btn-primary"  id="testAct" type="button"><b>{{ lang._('Test') }}</b></button>
 <button class="btn btn-primary"  id="joinDomainAct" type="button"><b>{{ lang._('Join Domain') }}</b></button>
+<button class="btn btn-primary"  id="updateDomainAct" type="button"><b>{{ lang._('Update Domain') }}</b></button>
