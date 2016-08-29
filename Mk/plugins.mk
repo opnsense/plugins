@@ -136,14 +136,12 @@ WRKSRC?=${WRKDIR}/src
 PKGDIR?=${WRKDIR}/pkg
 
 package: check
-	@rm -rf ${WRKSRC} ${PKGDIR}
+	@rm -rf ${WRKSRC}
 	@mkdir -p ${WRKSRC} ${PKGDIR}
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} metadata
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} install
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
-	@echo -n "Sucessfully built "
-	@cd ${PKGDIR}; find . -name "*.txz" | cut -c3-
 
 mount: check
 	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
