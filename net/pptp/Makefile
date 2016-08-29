@@ -1,5 +1,6 @@
 PLUGIN_NAME=		pptp
 PLUGIN_VERSION=		1.1
+PLUGIN_REVISION=	1
 PLUGIN_DEPENDS=		clog mpd5
 PLUGIN_COMMENT=		PPTP server based on MPD5
 PLUGIN_MAINTAINER=	franco@opnsense.org
