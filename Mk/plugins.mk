@@ -132,8 +132,8 @@ remove: check
 	done
 
 WRKDIR?=${.CURDIR}/work
-WRKSRC=	${WRKDIR}/src
-PKGDIR=	${WRKDIR}/pkg
+WRKSRC?=${WRKDIR}/src
+PKGDIR?=${WRKDIR}/pkg
 
 package: check
 	@rm -rf ${WRKSRC} ${PKGDIR}
