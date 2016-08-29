@@ -170,7 +170,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             unset($pptpcfg['radius']['radiusissueips']);
         }
 
-        plugins_interfaces(false);
         write_config();
         $savemsg = get_std_save_message();
         if_pptp_configure_do();
