@@ -217,7 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $a_pppoes[$id] = $pppoecfg;
         }
 
-        plugins_interfaces(false);
         write_config();
         mark_subsystem_dirty('vpnpppoe');
         file_put_contents('/tmp/.vpn_pppoe.apply', serialize($toapplylist));
