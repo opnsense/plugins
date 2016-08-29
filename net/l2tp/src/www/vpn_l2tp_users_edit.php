@@ -49,7 +49,6 @@ require_once("system.inc");
 require_once("plugins.inc");
 require_once("plugins.inc.d/if_l2tp.inc");
 
-
 if (empty($config['l2tp']['user']) || !is_array($config['l2tp']['user'])) {
     $config['l2tp']['user'] = array();
 }
