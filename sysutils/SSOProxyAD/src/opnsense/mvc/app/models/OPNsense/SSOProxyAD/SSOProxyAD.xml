@@ -21,7 +21,7 @@
             <DomainUser type="TextField">
                 <Required>Y</Required>
             </DomainUser>
-            <DomainPassword type="TextField">
+            <DomainPassword type="UpdateOnly">
                 <Required>Y</Required>
             </DomainPassword>
         </general>
