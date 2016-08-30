@@ -25,5 +25,19 @@
                 <Required>Y</Required>
             </DomainPassword>
         </general>
+        <UpdateCron type="ModelRelationField">
+            <Model>
+                <queues>
+                    <source>OPNsense.Cron.Cron</source>
+                    <items>jobs.job</items>
+                    <display>description</display>
+                    <filters>
+                        <origin>/SSOProxyAD/</origin>
+                    </filters>
+                </queues>
+            </Model>
+            <ValidationMessage>Related cron not found.</ValidationMessage>
+            <Required>N</Required>
+        </UpdateCron>
     </items>
 </model>

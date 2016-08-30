@@ -31,6 +31,7 @@ namespace OPNsense\SSOProxyAD\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
+use \OPNsense\Cron\Cron;
 class ServiceController extends ApiControllerBase
 {
 
@@ -38,6 +39,16 @@ public function reloadAction()
 {
     $status = "failed";
     if ($this->request->isPost()) {
+        $mdlSSOProxyAD = new SSOProxyAD();
+        if ((string)$mdlSSOProxyAD->general->UpdateCron == "") {
+            $mdlCron = new Cron();
+            $mdlSSOProxyAD->general->UpdateCron = $mdlCron->newDailyJob("SSOProyAD", "ssoproxyad updateDomain", "SSOProxyAD updateDomain cron", "1" "1");
+                if ($mdlCron->performValidation()->count() == 0) {
+                    $mdlCron->serializeToConfig();
+                    $mdlMymodule->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                    Config::getInstance()->save();
+                }
+        }
         $backend = new Backend();
         $bckresult = trim($backend->configdRun("template reload OPNsense.SSOProxyAD"));
         if ($bckresult == "OK") {

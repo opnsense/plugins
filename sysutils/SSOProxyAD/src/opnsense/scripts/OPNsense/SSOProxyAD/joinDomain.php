@@ -50,11 +50,11 @@ if (isset($configObj->OPNsense->ssoproxyad)) {
     }
 }
 
-$cmd_2003 = '/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --verbose 2>&1';
-$cmd_2008 = '/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --enctypes 28 --verbose 2>&1';
+$keytab = '/usr/local/etc/ssoproxyad/PROXY.keytab';
+$cmd_2003 = '/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' 2>&1';
+$cmd_2008 = '/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --enctypes 28 2>&1';
 
 if ($enabled == 1) {
-	$keytab = '/usr/local/etc/ssoproxyad/PROXY.keytab';
 	$krb5secret = '/usr/local/etc/ssoproxyad/krb5secret';
 	if ( !file_exists($keytab) ) {
 		file_put_contents($krb5secret, $domainpassword);
