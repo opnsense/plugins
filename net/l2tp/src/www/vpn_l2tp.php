@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         write_config();
         if_l2tp_configure_do();
-        header(url_safe('Location: vpn_l2tp.php'));
+        header(url_safe('Location: /vpn_l2tp.php'));
         exit;
     }
 }
@@ -159,8 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 $service_hook = 'l2tpd';
 legacy_html_escape_form_data($pconfig);
 include("head.inc");
-?>
 
+?>
 <body>
 <?php include("fbegin.inc"); ?>
   <section class="page-content-main">
