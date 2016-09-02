@@ -49,9 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!empty($_POST['apply'])) {
         if_l2tp_configure_do();
         clear_subsystem_dirty('l2tpusers');
-        header("Location: vpn_l2tp_users.php");
+        header(url_safe('Location: vpn_l2tp_users.php'));
         exit;
-
     }
 }
 

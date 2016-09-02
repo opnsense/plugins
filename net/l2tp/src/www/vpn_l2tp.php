@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         write_config();
         if_l2tp_configure_do();
-        header("Location: vpn_l2tp.php");
+        header(url_safe('Location: vpn_l2tp.php'));
         exit;
     }
 }

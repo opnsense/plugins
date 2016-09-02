@@ -129,11 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         l2tp_users_sort();
         write_config();
         if_l2tp_configure_do();
-        header("Location: vpn_l2tp_users.php");
+        header(url_safe('Location: vpn_l2tp_users.php'));
         exit;
     }
 }
-
 
 $service_hook = 'l2tpd';
 legacy_html_escape_form_data($pconfig);
