@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         filter_configure();
         clear_subsystem_dirty('vpnpppoe');
-        header("Location: vpn_pppoe.php");
+        header(url_safe('Location: vpn_pppoe.php'));
         exit;
     } elseif (!empty($_POST['act']) && $_POST['act'] == "del") {
         if (!empty($a_pppoes[$_POST['id']])) {

@@ -220,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         write_config();
         mark_subsystem_dirty('vpnpppoe');
         file_put_contents('/tmp/.vpn_pppoe.apply', serialize($toapplylist));
-        header("Location: vpn_pppoe.php");
+        header(url_safe('Location: vpn_pppoe.php'));
         exit;
     }
 }
