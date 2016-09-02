@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!empty($_POST['apply'])) {
         if_pptp_configure_do();
         clear_subsystem_dirty('pptpusers');
-        header(url_safe('Location: vpn_pptp_users.php'));
+        header(url_safe('Location: /vpn_pptp_users.php'));
         exit;
 
     }

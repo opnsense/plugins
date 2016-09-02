@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         pptpd_users_sort();
         write_config();
         if_pptp_configure_do();
-        header(url_safe('Location: vpn_pptp_users.php'));
+        header(url_safe('Location: /vpn_pptp_users.php'));
         exit;
     }
 }
