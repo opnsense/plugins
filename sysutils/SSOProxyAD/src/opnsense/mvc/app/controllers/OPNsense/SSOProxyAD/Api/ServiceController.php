@@ -43,7 +43,7 @@ public function reloadAction()
         $mdlSSOProxyAD = new SSOProxyAD();
         if ((string)$mdlSSOProxyAD->general->UpdateCron == "") {
             $mdlCron = new Cron();
-            $mdlSSOProxyAD->general->UpdateCron = $mdlCron->newDailyJob("SSOProyAD", "ssoproxyad updateDomain", "SSOProxyAD updateDomain cron", "1", "1");
+            $mdlSSOProxyAD->general->UpdateCron = $mdlCron->newDailyJob("SSOProyAD", "ssoproxyad updateDomain", "SSOProxyAD updateDomain cron", "1");
                 if ($mdlCron->performValidation()->count() == 0) {
                     $mdlCron->serializeToConfig();
                     $mdlMymodule->serializeToConfig($validateFullModel = false, $disable_validation = true);
