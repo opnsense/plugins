@@ -1,2 +1,2 @@
 echo "install loader hook"
-configctl firmware loader edit if_em_updated_load YES
+configctl firmware loader update
