@@ -1,0 +1,2 @@
+echo "uninstall loader hook"
+configctl firmware loader rm if_em_updated_load
