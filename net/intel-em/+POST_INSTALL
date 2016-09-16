@@ -1,0 +1,6 @@
+echo "Updating /boot/loader.conf"
+touch /boot/loader.conf
+cp /boot/loader.conf /boot/loader.conf.bak
+(grep -v if_em_updated_load /boot/loader.conf.bak; \
+    echo 'if_em_updated_load="YES"') > /boot/loader.conf
+rm -f /boot/loader.conf.bak

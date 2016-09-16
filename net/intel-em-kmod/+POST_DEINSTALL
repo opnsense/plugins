@@ -1,2 +1,0 @@
-echo "uninstall loader hook"
-configctl firmware loader update

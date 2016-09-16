@@ -1,2 +1,0 @@
-echo "install loader hook"
-configctl firmware loader update
