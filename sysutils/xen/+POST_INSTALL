@@ -1,1 +1,1 @@
-/usr/local/etc/rc.syshook.d/xen.start
+/usr/local/etc/rc.syshook.d/50-xen.start
