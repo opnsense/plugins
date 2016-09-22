@@ -106,6 +106,14 @@ scripts-auto:
 			echo '/usr/local/etc/rc.configure_firmware' >> ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
+	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
+		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
+			echo 'echo "Restarting configd"' >> ${DESTDIR}/$${SCRIPT}; \
+			echo 'if /usr/local/etc/rc.d/configd status > /dev/null; then' >> ${DESTDIR}/$${SCRIPT}; \
+			echo '        /usr/local/etc/rc.d/configd restart' >> ${DESTDIR}/$${SCRIPT}; \
+			echo 'fi' >> ${DESTDIR}/$${SCRIPT}; \
+		done; \
+	fi
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
