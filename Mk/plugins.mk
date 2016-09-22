@@ -90,12 +90,22 @@ manifest: check
 	@echo "}"
 .endif
 
-scripts: check
+scripts: check scripts-manual scripts-auto
+
+scripts-manual:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f $${SCRIPT} ]; then \
 			cp $${SCRIPT} ${DESTDIR}/; \
 		fi; \
 	done
+
+scripts-auto:
+	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
+		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
+			echo 'echo "Reloading firmware configuration"' >> ${DESTDIR}/$${SCRIPT}; \
+			echo '/usr/local/etc/rc.configure_firmware' >> ${DESTDIR}/$${SCRIPT}; \
+		done; \
+	fi
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
