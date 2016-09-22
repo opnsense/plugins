@@ -1,1 +1,2 @@
-/usr/local/etc/rc.loader
+echo "Reloading firmware configuration"
+/usr/local/etc/rc.configure_firmware
