@@ -100,18 +100,19 @@ scripts-manual:
 	done
 
 scripts-auto:
-	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
-		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			echo 'echo "Reloading firmware configuration"' >> ${DESTDIR}/$${SCRIPT}; \
-			echo '/usr/local/etc/rc.configure_firmware' >> ${DESTDIR}/$${SCRIPT}; \
-		done; \
-	fi
+	# XXX ticket #35
 	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
 			echo 'echo "Restarting configd"' >> ${DESTDIR}/$${SCRIPT}; \
 			echo 'if /usr/local/etc/rc.d/configd status > /dev/null; then' >> ${DESTDIR}/$${SCRIPT}; \
 			echo '        /usr/local/etc/rc.d/configd restart' >> ${DESTDIR}/$${SCRIPT}; \
 			echo 'fi' >> ${DESTDIR}/$${SCRIPT}; \
+		done; \
+	fi
+	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
+		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
+			echo 'echo "Reloading firmware configuration"' >> ${DESTDIR}/$${SCRIPT}; \
+			echo '/usr/local/etc/rc.configure_firmware' >> ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
 
