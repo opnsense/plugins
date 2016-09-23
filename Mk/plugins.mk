@@ -32,6 +32,9 @@ PLUGIN_DESC!=		git rev-list HEAD --max-count=1 | cut -c1-9
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
+PLUGINSDIR=		${.CURDIR}/../..
+TEMPLATESDIR=		${PLUGINSDIR}/Templates
+
 # Setting private mode allows plugins not
 # to show up in the firmware GUI, and must
 # thus be installed during build or console.
@@ -103,16 +106,14 @@ scripts-auto:
 	# XXX ticket #35
 	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			echo 'echo "Restarting configd"' >> ${DESTDIR}/$${SCRIPT}; \
-			echo 'if /usr/local/etc/rc.d/configd status > /dev/null; then' >> ${DESTDIR}/$${SCRIPT}; \
-			echo '        /usr/local/etc/rc.d/configd restart' >> ${DESTDIR}/$${SCRIPT}; \
-			echo 'fi' >> ${DESTDIR}/$${SCRIPT}; \
+			cat ${TEMPLATESDIR}/actions.d >> \
+			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			echo 'echo "Reloading firmware configuration"' >> ${DESTDIR}/$${SCRIPT}; \
-			echo '/usr/local/etc/rc.configure_firmware' >> ${DESTDIR}/$${SCRIPT}; \
+			cat ${TEMPLATESDIR}/rc.loader.d >> \
+			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
 
