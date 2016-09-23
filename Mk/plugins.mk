@@ -103,7 +103,15 @@ scripts-manual:
 	done
 
 scripts-auto:
-	# XXX ticket #35
+	@if [ -d ${.CURDIR}/src/etc/rc.syshook.d ]; then \
+		for SYSHOOK in early start; do \
+			for FILE in $$(cd ${.CURDIR}/src/etc/rc.syshook.d && \
+			    find -s . -type f -name "*.$${SYSHOOK}"); do \
+				echo ${LOCALBASE}/etc/rc.syshook.d/$${FILE#./} >> \
+				    ${DESTDIR}/+POST_INSTALL; \
+			done; \
+		done; \
+	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
 			cat ${TEMPLATESDIR}/actions.d >> \
