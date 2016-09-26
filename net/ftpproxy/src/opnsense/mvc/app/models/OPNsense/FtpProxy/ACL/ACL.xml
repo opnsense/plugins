@@ -1,0 +1,10 @@
+<acl>
+   <page-services-ftpproxy>
+      <name>WebCfg - Services: Ftp Proxy page</name>
+      <description>Allow access to the 'Services: Ftp Proxy' page.</description>
+      <patterns>
+         <pattern>ui/ftpproxy/*</pattern>
+         <pattern>api/ftpproxy/*</pattern>
+      </patterns>
+   </page-services-ftpproxy>
+</acl>

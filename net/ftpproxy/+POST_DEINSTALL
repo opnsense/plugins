@@ -1,0 +1,33 @@
+DIFF='--- filter.inc.ftpproxy 2016-09-21 16:38:53.947075272 +0200
++++ filter.inc.orig     2016-09-21 16:47:29.239370565 +0200
+@@ -1450,7 +1450,6 @@
+ 
+     $natrules = "no nat proto carp\n";
+     $natrules .= "no rdr proto carp\n";
+-    $natrules .= "nat-anchor \"ftp-proxy/*\"\n";
+     $natrules .= "nat-anchor \"natearly/*\"\n";
+ 
+     $natrules .= "nat-anchor \"natrules/*\"\n\n";
+@@ -1703,7 +1702,6 @@
+         unset($tonathosts, $tonathosts_array, $numberofnathosts);
+     }
+ 
+-    $natrules .= "rdr-anchor \"ftp-proxy/*\"\n";
+     $natrules .= "\n# Load balancing\n";
+     $natrules .= "rdr-anchor \"relayd/*\"\n";
+ 
+@@ -2482,7 +2480,6 @@
+ 
+     $ipfrules = "";
+ 
+-    $ipfrules .= "anchor \"ftp-proxy/*\"\n";
+     /* relayd */
+     $ipfrules .= "anchor \"relayd/*\"\n";
+     /* OpenVPN user rules from radius */'
+
+echo "$DIFF" | patch -b -p1 /usr/local/etc/inc/filter.inc
+
+echo "restarting configd..."
+if /usr/local/etc/rc.d/configd status > /dev/null; then
+        /usr/local/etc/rc.d/configd restart
+fi
