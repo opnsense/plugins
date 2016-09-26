@@ -42,7 +42,7 @@ class IndexController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        $this->view->title = gettext('FTP Proxy Settings');
+        $this->view->title = gettext('FTP Proxy Server');
         // include dialog form definitions
         $this->view->formDialogEdit = $this->getForm("dialogEdit");
         $this->view->pick('OPNsense/FtpProxy/index');

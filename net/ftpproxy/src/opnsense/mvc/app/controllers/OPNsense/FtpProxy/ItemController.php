@@ -36,17 +36,5 @@ namespace OPNsense\FtpProxy;
  */
 class ItemController extends \OPNsense\Base\IndexController
 {
-    /**
-     * open ftpproxy form with selected item
-     * @param null $uuid ftp proxy item to open
-     * @throws \Exception
-     */
-    public function openAction($uuid = null)
-    {
-        $this->view->title = gettext('FTP Proxy Settings');
-        $this->view->selected_uuid = $uuid;
-        // include dialog form definitions
-        $this->view->formDialogEdit = $this->getForm("dialogEdit");
-        $this->view->pick('OPNsense/FtpProxy/index');
-    }
+    
 }

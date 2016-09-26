@@ -26,8 +26,3 @@ DIFF='--- filter.inc.orig     2016-09-21 16:39:02.853045967 +0200
      /* OpenVPN user rules from radius */'
 
 echo "$DIFF" | patch -b -p1 /usr/local/etc/inc/filter.inc
-
-echo "restarting configd..."
-if /usr/local/etc/rc.d/configd status > /dev/null; then
-        /usr/local/etc/rc.d/configd restart
-fi

@@ -78,9 +78,9 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+<!-- <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#grid-proxies">{{ lang._('FTP Proxies') }}</a></li>
-</ul>
+</ul> -->
 <div class="tab-content content-box tab-content">
     <div id="ftpproxies" class="tab-pane fade in active">
         <!-- tab page "ftpproxy items" -->
