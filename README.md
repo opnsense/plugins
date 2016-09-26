@@ -12,7 +12,10 @@ Plugins can do the following:
 * Add additional server software and their respective GUI pages
 * Create new authentication methods to be used within other subsystems
 * Provide other types of devices and interfaces to the firewall
+* Pull in additional packages that will update automatically
 * Enhance the backend services with additional work tasks
+* Allow custom start, stop and early scripts
+* Persistent /boot/loader.conf modifications
 
 Now we need your help to enrich the plugins.  Feel free to contact us
 at project AT opnsense DOT org or open GitHub issue to get in touch.
@@ -25,14 +28,16 @@ A list of currently available plugins
 =====================================
 
 ```
-devel/helloworld -- a sample plugin to show how development works
-net/haproxy -- flexible HAProxy plugin
-net/l2tp -- L2TP server support
-net/pppoe -- PPPoE servers support
-net/pptp -- PPTP server support
-sysutils/smart -- S.M.A.R.T. disk utilies
-sysutils/vmware -- Guest additions for VMware
-sysutils/xen -- Guest additions for Xen
+devel/helloworld -- A sample framework application
+net/haproxy -- Reliable, high performance TCP/HTTP load balancer
+net/intel-em -- Intel Gigabit Base Driver for em(4) and lem(4)
+net/l2tp -- L2TP server based on MPD5
+net/pppoe -- PPPoE server based on MPD5
+net/pptp -- PPTP server based on MPD5
+sysutils/boot-delay -- Apply a persistent boot delay
+sysutils/smart -- SMART tools
+sysutils/vmware -- VMware tools
+sysutils/xen -- Xen guest utilities
 ```
 
 A brief description of how to use the plugins repository
@@ -56,6 +61,7 @@ The make targets for the root directory:
 
 * lint:		run syntax checks on all available plugins
 * list:		print a list of all plugin directories
+* list-full:	print a list of all plugin directories with comments
 
 The make targets for any plugin directory:
 
