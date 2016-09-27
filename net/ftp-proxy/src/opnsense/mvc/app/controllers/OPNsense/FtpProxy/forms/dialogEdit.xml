@@ -1,0 +1,74 @@
+<form>
+   <field>
+      <id>ftpproxy.enabled</id>
+      <label>enabled</label>
+      <type>checkbox</type>
+      <help><![CDATA[Enable or disable this ftp proxy.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.listenaddress</id>
+      <label>Listen address</label>
+      <type>text</type>
+      <help><![CDATA[Address where the proxy will listen for redirected control connections. The default is 127.0.0.1.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.listenport</id>
+      <label>Listen port</label>
+      <type>text</type>
+      <help><![CDATA[Port where the proxy will listen for redirected connections. The default is port 8021.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.sourceaddress</id>
+      <label>Source address</label>
+      <type>text</type>
+      <help><![CDATA[The proxy will use this as the source address for the control connection to a server.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.rewritesourceport</id>
+      <label>Rewrite source port</label>
+      <type>checkbox</type>
+      <help><![CDATA[Rewrite sourceport to 20 in active mode to suit ancient clients that insist on this RFC property.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.idletimeout</id>
+      <label>Idle timeout</label>
+      <type>text</type>
+      <help><![CDATA[Number of seconds that the control connection can be idle, before the proxy will disconnect. The maximum is 86400 seconds, which is also the default. Do not set this too low, because the control connection is usually idle when large data transfers are taking place.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.maxsessions</id>
+      <label>Max sessions</label>
+      <type>text</type>
+      <help><![CDATA[Maximum number of concurrent FTP sessions.  When the proxy reaches this limit, new connections are denied. The default is 100 sessions. The limit can be lowered to a minimum of 1, or raised to a maximum of 500.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.reverseaddress</id>
+      <label>Reverse address</label>
+      <type>text</type>
+      <help><![CDATA[Fixed server address, also known as reverse mode. The proxy will always connect to the same server, regardless of where the client wanted to connect to (before it was redirected). Use this option to proxy for a server behind NAT, or to forward all connections to another proxy.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.reverseport</id>
+      <label>Reverse port</label>
+      <type>text</type>
+      <help><![CDATA[Fixed server port. Only used in combination with <i>Reverse address</i>. The default is port 21.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.logconnections</id>
+      <label>Log connections</label>
+      <type>checkbox</type>
+      <help><![CDATA[Set the 'log' flag on pf rules committed by ftp-proxy. The pf rules do not log by default.]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.debuglevel</id>
+      <label>Debug level</label>
+      <type>text</type>
+      <help><![CDATA[Debug level, ranging from 0 to 7.  Higher is more verbose. The default is 5. (These levels correspond to the syslog(3) levels.)]]></help>
+   </field>
+   <field>
+      <id>ftpproxy.description</id>
+      <label>Description</label>
+      <type>text</type>
+      <help><![CDATA[Briefly description of this ftp proxy]]></help>
+   </field>
+</form>
