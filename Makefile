@@ -25,3 +25,8 @@ lint:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
 	${MAKE} -C ${PLUGIN_DIR} lint
 .endfor
+
+sweep:
+.for PLUGIN_DIR in ${PLUGIN_DIRS}
+	${MAKE} -C ${PLUGIN_DIR} sweep
+.endfor

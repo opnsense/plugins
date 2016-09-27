@@ -193,5 +193,15 @@ lint: check
 	    ! -name "*.tgz" ! -name "*.xml.dist" \
 	    -type f -print0 | xargs -0 -n1 php -l
 
+sweep: check
+	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
+	    xargs -0 -n1 rm
+	if grep -nr sourceMappingURL= ${.CURDIR}/src; then \
+		echo "Mentions of sourceMappingURL must be removed"; \
+		exit 1; \
+	fi
+	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
+	    ! -name "*.ser" -type f -print0 | \
+	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
 .PHONY:	check

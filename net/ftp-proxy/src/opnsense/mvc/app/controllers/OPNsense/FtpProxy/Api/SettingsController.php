@@ -83,7 +83,7 @@ class SettingsController extends ApiControllerBase
 					$OldFlags = $mdlFtpProxy->configToFlags($node);
 					$result = array("result" => "failed", "validations" => array());
 					$proxyInfo = $this->request->getPost("ftpproxy");
-					
+
 					$node->setNodes($proxyInfo);
 					$valMsgs = $mdlFtpProxy->performValidation();
 					foreach ($valMsgs as $field => $msg) {
@@ -94,11 +94,11 @@ class SettingsController extends ApiControllerBase
 					if (count($result['validations']) == 0) {
 						// check for duplicates
 						foreach ($CurrentProxies['ftpproxies']['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
-							if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress'] && 
+							if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress'] &&
 								$node->listenport->__toString() == $CurrentProxy['listenport'] &&
 								$uuid != $CurrentUUID) {
 								return array(
-										  "result" => "failed", 
+										  "result" => "failed",
 										  "validations" => array(
 										     "ftpproxy.listenaddress" => "Listen address in combination with Listen port already exists.",
 										     "ftpproxy.listenport" => "Listen port in combination with Listen address already exists."
@@ -111,7 +111,7 @@ class SettingsController extends ApiControllerBase
 				        // save config if validated correctly
 						$mdlFtpProxy->serializeToConfig();
 						Config::getInstance()->save();
-						
+
 						$backend = new Backend();
 						// apply new settings to the ftp-proxy process
 						// stop ftp-proxy with old flags
@@ -148,17 +148,17 @@ class SettingsController extends ApiControllerBase
 			$CurrentProxies =  $mdlFtpProxy->getNodes();
 			$node = $mdlFtpProxy->ftpproxies->ftpproxy->Add();
 			$node->setNodes($this->request->getPost("ftpproxy"));
-			
+
 			$valMsgs = $mdlFtpProxy->performValidation();
 
 			foreach ($valMsgs as $field => $msg) {
 				$fieldnm = str_replace($node->__reference, "ftpproxy", $msg->getField());
 				$result["validations"][$fieldnm] = $msg->getMessage();
 			}
-			
+
 			if (count($result['validations']) == 0) {
 				foreach ($CurrentProxies['ftpproxies']['ftpproxy'] as &$CurrentProxy) {
-					if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress'] 
+					if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress']
 							&& $node->listenport->__toString() == $CurrentProxy['listenport']) {
 						return array(
 								  "result" => "failed",
@@ -166,7 +166,7 @@ class SettingsController extends ApiControllerBase
 								     "ftpproxy.listenaddress" => "Listen address in combination with Listen port already exists.",
 								     "ftpproxy.listenport" => "Listen port in combination with Listen address already exists."
 								   )
-  						       );
+						       );
 					}
 				}
 				// retrieve ftp-proxy flags and set defaults
@@ -247,7 +247,7 @@ class SettingsController extends ApiControllerBase
 						$node->enabled = "1";
 						$response = $backend->configdpRun('ftpproxy start ', array($mdlFtpProxy->configToFlags($node)));
 					}
-					
+
 					// if item has toggled, serialize to config and save
 					$mdlFtpProxy->serializeToConfig();
 					Config::getInstance()->save();
@@ -281,14 +281,14 @@ class SettingsController extends ApiControllerBase
 				"description"
 		);
 		$mdlFtpProxy = new FtpProxy();
-		
+
 		$grid = new UIModelGrid($mdlFtpProxy->ftpproxies->ftpproxy);
 		$response = $grid->fetchBindRequest(
 				$this->request,
 				$fields,
 				"listenport"
 				);
-		
+
 		$backend = new Backend();
 		foreach($response['rows'] as &$row) {
 			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $row['uuid']);
@@ -299,7 +299,7 @@ class SettingsController extends ApiControllerBase
 			}
 			$row['status'] = 2;
 		}
-			
+
 		return $response;
 	}
 }

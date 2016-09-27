@@ -36,5 +36,5 @@ namespace OPNsense\FtpProxy;
  */
 class ItemController extends \OPNsense\Base\IndexController
 {
-    
+
 }
