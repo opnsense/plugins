@@ -31,7 +31,6 @@ require_once("guiconfig.inc");
 require_once("interfaces.inc");
 require_once("services.inc");
 require_once("system.inc");
-require_once("plugins.inc");
 require_once("plugins.inc.d/if_l2tp.inc");
 
 if (!isset($config['l2tp']['radius']) || !is_array($config['l2tp']['radius'])) {
