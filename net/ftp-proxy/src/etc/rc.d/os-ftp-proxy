@@ -1,0 +1,163 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: os-ftp-proxy
+# REQUIRE: DAEMON pf
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="osftpproxy"
+rcvar="osftpproxy_enable"
+command="/usr/sbin/ftp-proxy"
+extra_commands="reload"
+reload_cmd="ftpproxy_reload"
+
+load_rc_config $name
+
+eval osftpproxy_flags=\$osftpproxy_${2}
+pidfile="/var/run/osftpproxy.$2.pid"
+
+ftpproxy_start () {
+   ftpproxy_status
+   if [ $? -eq 0 ]; then # already running
+      return 0
+   fi
+   run_rc_command "start"
+   if [ $? -eq 0 ]; then
+      cmd_string=`basename ${procname:-${command}}`
+      ps_pid=`ps ax -o pid= -o command= | grep $cmd_string | grep -e "$osftpproxy_flags" | grep -v grep | awk '{ print $1 }'`
+      if [ -z "$ps_pid" ]; then
+         err 1 "Cannot get pid for $cmd_string $osftpproxy_flags"
+      fi
+      echo $ps_pid > $pidfile
+      return $?
+   fi
+   return 1
+}
+
+ftpproxy_stop () {
+   ftpproxy_status
+   if [ $? -eq 1 ]; then # already stopped
+      return 0
+   fi
+   run_rc_command "stop"
+   if [ $? -ne 0 ]; then
+      err 1 "Cannot stop ftp-proxy with pid from $pidfile"
+   fi
+   rm -f $pidfile
+   return $?
+}
+
+ftpproxy_restart () {
+   ftpproxy_stop
+   if [ $? -ne 0 ]; then
+      return $?
+   fi
+   ftpproxy_start
+   return $?
+}
+
+ftpproxy_status () {
+   if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+      err 1 "Instance name unknown"
+   fi
+   run_rc_command "status"
+   return $?
+}
+
+ftpproxy_reload () {
+   osftpproxy_flags=""
+   pidfile=""
+   # get running instances
+   ps ax -o pid= -o command= | grep "ftp-proxy -b" | grep -v grep | while read line; do
+      # get instance name
+      instance=`echo $line | awk '{printf "%s_%s", $4, $6 }' | sed 's/\./_/g'`
+      # get instance flags
+      instance_flags="${line#*ftp-proxy}"
+      # check if it should run
+      eval osftpproxy_flags=\$osftpproxy_${instance}
+      if [ -n "$osftpproxy_flags" -a "$osftpproxy_flags" = "$instance_flags" ]; then
+         debug "running instance $instance match config"
+         continue
+      fi
+      debug "running instance $instance not configured"
+      osftpproxy_flags=$instance_flags
+      pidfile="/var/run/osftpproxy.$instance.pid"
+      ftpproxy_stop
+   done
+   # start configured instances
+   if [ -n "$osftpproxy_instances" ]; then
+      for i in $osftpproxy_instances; do
+         eval osftpproxy_flags=\$osftpproxy_${i}
+         pidfile="/var/run/osftpproxy.$i.pid"
+         ftpproxy_start
+      done
+   fi
+   return 0
+}
+
+case $1 in
+   start)
+      if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+         if [ -n "$osftpproxy_instances" ]; then
+            for i in $osftpproxy_instances; do
+               eval osftpproxy_flags=\$osftpproxy_${i}
+               pidfile="/var/run/osftpproxy.$i.pid"
+               ftpproxy_start
+            done
+         fi
+      else
+         ftpproxy_start
+      fi
+      exit $?
+      ;;
+   stop)
+      if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+         if [ -n "$osftpproxy_instances" ]; then
+            for i in $osftpproxy_instances; do
+               eval osftpproxy_flags=\$osftpproxy_${i}
+               pidfile="/var/run/osftpproxy.$i.pid"
+               ftpproxy_stop
+            done
+         fi
+      else
+         ftpproxy_stop
+      fi
+      exit $?
+      ;;
+   restart)
+      if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+         if [ -n "$osftpproxy_instances" ]; then
+            for i in $osftpproxy_instances; do
+               eval osftpproxy_flags=\$osftpproxy_${i}
+               pidfile="/var/run/osftpproxy.$i.pid"
+               ftpproxy_restart
+            done
+         fi
+      else
+         ftpproxy_restart
+      fi
+      exit $?
+      ;;
+   status)
+      if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+         if [ -n "$osftpproxy_instances" ]; then
+            for i in $osftpproxy_instances; do
+               eval osftpproxy_flags=\$osftpproxy_${i}
+               pidfile="/var/run/osftpproxy.$i.pid"
+               ftpproxy_status
+            done
+         fi
+      else
+         ftpproxy_status
+      fi
+      exit $?
+      ;;
+   reload)
+      ftpproxy_reload;
+      exit $?
+      ;;
+esac
