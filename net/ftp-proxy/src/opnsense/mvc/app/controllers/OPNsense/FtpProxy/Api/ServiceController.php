@@ -49,7 +49,7 @@ class ServiceController extends ApiControllerBase
 		}
 		if ($uuid != null) {
 			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 			if ($node != null) {
 				$result['result'] = $this->callBackend('status', $node);
 			}
@@ -70,7 +70,7 @@ class ServiceController extends ApiControllerBase
 		}
 		if ($uuid != null) {
 			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 			if ($node != null) {
 				$result['result'] = $this->callBackend('start', $node);
 			}
@@ -91,7 +91,7 @@ class ServiceController extends ApiControllerBase
 		}
 		if ($uuid != null) {
 			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 			if ($node != null) {
 				$result['result'] = $this->callBackend('stop', $node);
 			}
@@ -111,7 +111,7 @@ class ServiceController extends ApiControllerBase
 		}
 		if ($uuid != null) {
 			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 			if ($node != null) {
 				$result['result'] = $this->callBackend('restart', $node);
 			}

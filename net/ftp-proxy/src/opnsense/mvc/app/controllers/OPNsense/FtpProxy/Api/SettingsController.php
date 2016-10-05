@@ -50,14 +50,14 @@ class SettingsController extends ApiControllerBase
 	{
 		$mdlFtpProxy = new FtpProxy();
 		if ($uuid != null) {
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 			if ($node != null) {
 				// return node
 				return array("ftpproxy" => $node->getNodes());
 			}
 		} else {
 			// generate new node, but don't save to disc
-			$node = $mdlFtpProxy->ftpproxies->ftpproxy->Add();
+			$node = $mdlFtpProxy->ftpproxy->Add();
 			return array("ftpproxy" => $node->getNodes());
 		}
 		return array();
@@ -76,7 +76,7 @@ class SettingsController extends ApiControllerBase
 			// keep a list to detect duplicates later
 			$CurrentProxies =  $mdlFtpProxy->getNodes();
 			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 				if ($node != null) {
 					$Enabled = $node->enabled->__toString();
 					$result = array("result" => "failed", "validations" => array());
@@ -91,7 +91,7 @@ class SettingsController extends ApiControllerBase
 
 					if (count($result['validations']) == 0) {
 						// check for duplicates
-						foreach ($CurrentProxies['ftpproxies']['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
+						foreach ($CurrentProxies['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
 							if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress'] &&
 								$node->listenport->__toString() == $CurrentProxy['listenport'] &&
 								$uuid != $CurrentUUID) {
@@ -130,7 +130,7 @@ class SettingsController extends ApiControllerBase
 			$mdlFtpProxy = new FtpProxy();
 			// keep a list to detect duplicates later
 			$CurrentProxies =  $mdlFtpProxy->getNodes();
-			$node = $mdlFtpProxy->ftpproxies->ftpproxy->Add();
+			$node = $mdlFtpProxy->ftpproxy->Add();
 			$node->setNodes($this->request->getPost("ftpproxy"));
 
 			$valMsgs = $mdlFtpProxy->performValidation();
@@ -141,7 +141,7 @@ class SettingsController extends ApiControllerBase
 			}
 
 			if (count($result['validations']) == 0) {
-				foreach ($CurrentProxies['ftpproxies']['ftpproxy'] as &$CurrentProxy) {
+				foreach ($CurrentProxies['ftpproxy'] as &$CurrentProxy) {
 					if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress']
 							&& $node->listenport->__toString() == $CurrentProxy['listenport']) {
 						return array(
@@ -177,9 +177,9 @@ class SettingsController extends ApiControllerBase
 		if ($this->request->isPost()) {
 			$mdlFtpProxy = new FtpProxy();
 			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 				if ($node != null) {
-					if ($mdlFtpProxy->ftpproxies->ftpproxy->del($uuid) == true) {
+					if ($mdlFtpProxy->ftpproxy->del($uuid) == true) {
 						// if item is removed, serialize to config and save
 						$mdlFtpProxy->serializeToConfig();
 						Config::getInstance()->save();
@@ -207,7 +207,7 @@ class SettingsController extends ApiControllerBase
 		if ($this->request->isPost()) {
 			$mdlFtpProxy = new FtpProxy();
 			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 				if ($node != null) {
 					if ($node->enabled->__toString() == "1") {
 						$node->enabled = "0";
@@ -249,8 +249,8 @@ class SettingsController extends ApiControllerBase
 				"description"
 		);
 		$mdlFtpProxy = new FtpProxy();
-
-		$grid = new UIModelGrid($mdlFtpProxy->ftpproxies->ftpproxy);
+		
+		$grid = new UIModelGrid($mdlFtpProxy->ftpproxy);
 		$response = $grid->fetchBindRequest(
 				$this->request,
 				$fields,

@@ -28,7 +28,7 @@
 function ftpproxy_firewall($fw)
 {
     global $config;
-    if (is_array($config['ftpproxy']['ftpproxies'])) {
+    if (isset($config['OPNsense']['ftpproxies']) && is_array($config['OPNsense']['ftpproxies'])) {
         $fw->registerAnchor("ftp-proxy/*", "nat");
         $fw->registerAnchor("ftp-proxy/*", "rdr");
         $fw->registerAnchor("ftp-proxy/*", "fw");
