@@ -9,7 +9,7 @@ if (htmlspecialchars($_POST['mode'])) {
 }
 
 $logtype = 'poes';
-$logclog = true;
+$logclog = false;
 
 $logpills = array();
 $logpills[] = array(gettext('PPPoE Logins'), $mode != 'raw', '/vpn_pppoe_log.php');

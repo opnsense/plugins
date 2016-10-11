@@ -9,7 +9,7 @@ if (htmlspecialchars($_POST['mode'])) {
 }
 
 $logtype = 'pptp';
-$logclog = true;
+$logclog = false;
 
 $logpills = array();
 $logpills[] = array(gettext('PPTP Logins'), $mode != 'raw', '/vpn_pptp_log.php');

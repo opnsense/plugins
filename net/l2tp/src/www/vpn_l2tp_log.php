@@ -9,7 +9,7 @@ if (htmlspecialchars($_POST['mode'])) {
 }
 
 $logtype = 'l2tp';
-$logclog = true;
+$logclog = false;
 
 $logpills = array();
 $logpills[] = array(gettext('L2TP Logins'), $mode != 'raw', '/vpn_l2tp_log.php');
