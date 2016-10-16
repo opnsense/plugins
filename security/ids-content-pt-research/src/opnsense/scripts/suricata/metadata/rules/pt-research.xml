@@ -4,6 +4,7 @@
     <files>
         <file url="https://github.com/ptresearch/AttackDetection/raw/master/pt.rules.tar.gz"
               description="PT Research ruleset"
+              documentation_url="https://github.com/ptresearch/AttackDetection"
         >pt.research.rules</file>
     </files>
 </ruleset>
