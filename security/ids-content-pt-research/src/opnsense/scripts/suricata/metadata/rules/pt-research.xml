@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset>
+    <location url="https://github.com/ptresearch/AttackDetection/raw/master/" prefix="Non-Free"/>
+    <files>
+        <file url="https://github.com/ptresearch/AttackDetection/raw/master/pt.rules.tar.gz"
+              description="PT Research ruleset"
+        >pt.research.rules</file>
+    </files>
+</ruleset>

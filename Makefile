@@ -3,7 +3,7 @@ PAGER?=		less
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
-CATEGORIES=	devel net sysutils
+CATEGORIES=	devel net sysutils security
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
