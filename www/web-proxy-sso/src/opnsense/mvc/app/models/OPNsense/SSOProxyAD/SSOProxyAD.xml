@@ -1,0 +1,43 @@
+<model>
+    <mount>//OPNsense/ssoproxyad</mount>
+    <description>
+       SSO Active Directory plugin
+    </description>
+    <items>
+        <general>
+            <Enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </Enabled>
+            <DomainName type="TextField">
+                <Required>Y</Required>
+            </DomainName>
+            <DomainDC type="TextField">
+                <Required>Y</Required>
+            </DomainDC>
+            <DomainVersion type="TextField">
+                <Required>Y</Required>
+            </DomainVersion>
+            <DomainUser type="TextField">
+                <Required>Y</Required>
+            </DomainUser>
+            <DomainPassword type="UpdateOnlyTextField">
+                <Required>Y</Required>
+            </DomainPassword>
+            <UpdateCron type="ModelRelationField">
+                <Model>
+                    <queues>
+                        <source>OPNsense.Cron.Cron</source>
+                        <items>jobs.job</items>
+                        <display>description</display>
+                        <filters>
+                            <origin>/SSOProxyAD/</origin>
+                        </filters>
+                    </queues>
+                </Model>
+                <ValidationMessage>Related cron not found.</ValidationMessage>
+                <Required>N</Required>
+            </UpdateCron>
+        </general>
+    </items>
+</model>

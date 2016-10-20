@@ -32,7 +32,6 @@ namespace OPNsense\FtpProxy\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Config;
-use \OPNsense\Core\Backend;
 use \OPNsense\FtpProxy\FtpProxy;
 use \OPNsense\Base\UIModelGrid;
 
@@ -51,14 +50,14 @@ class SettingsController extends ApiControllerBase
 	{
 		$mdlFtpProxy = new FtpProxy();
 		if ($uuid != null) {
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 			if ($node != null) {
 				// return node
 				return array("ftpproxy" => $node->getNodes());
 			}
 		} else {
 			// generate new node, but don't save to disc
-			$node = $mdlFtpProxy->ftpproxies->ftpproxy->Add();
+			$node = $mdlFtpProxy->ftpproxy->Add();
 			return array("ftpproxy" => $node->getNodes());
 		}
 		return array();
@@ -71,16 +70,15 @@ class SettingsController extends ApiControllerBase
 	 */
 	public function setProxyAction($uuid)
 	{
+		$result = array("result" => "failed");
 		if ($this->request->isPost() && $this->request->hasPost("ftpproxy")) {
 			$mdlFtpProxy = new FtpProxy();
 			// keep a list to detect duplicates later
 			$CurrentProxies =  $mdlFtpProxy->getNodes();
 			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 				if ($node != null) {
 					$Enabled = $node->enabled->__toString();
-					// get current ftp-proxy flags for stopping it later
-					$OldFlags = $mdlFtpProxy->configToFlags($node);
 					$result = array("result" => "failed", "validations" => array());
 					$proxyInfo = $this->request->getPost("ftpproxy");
 
@@ -93,7 +91,7 @@ class SettingsController extends ApiControllerBase
 
 					if (count($result['validations']) == 0) {
 						// check for duplicates
-						foreach ($CurrentProxies['ftpproxies']['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
+						foreach ($CurrentProxies['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
 							if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress'] &&
 								$node->listenport->__toString() == $CurrentProxy['listenport'] &&
 								$uuid != $CurrentUUID) {
@@ -106,32 +104,18 @@ class SettingsController extends ApiControllerBase
 									   );
 							}
 						}
-						// retrieve ftp-proxy flags and set defaults
-				        $NewFlags = $mdlFtpProxy->configToFlags($node);
+
 				        // save config if validated correctly
 						$mdlFtpProxy->serializeToConfig();
 						Config::getInstance()->save();
-
-						$backend = new Backend();
-						// apply new settings to the ftp-proxy process
-						// stop ftp-proxy with old flags
-						if ($Enabled == 1) {
-							$backend->configdpRun('ftpproxy stop ', array($OldFlags));
-						}
-						$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
-						// start ftp-proxy with new flags
-						if ($node != null && $node->enabled->__toString() == 1) {
-							$backend->configdpRun('ftpproxy start ', array($NewFlags));
-						}
-						// make the changes boot resistant in /etc/rc.conf.d/ftpproxy
-						$backend->configdRun("template reload OPNsense.FtpProxy");
-						$result = array("result" => "saved");
+						// reload config
+						$svcFtpProxy = new ServiceController();
+						$result= $svcFtpProxy->reloadAction();
 					}
-					return $result;
 				}
 			}
 		}
-		return array("result" => "failed");
+		return $result;
 	}
 
 	/**
@@ -146,7 +130,7 @@ class SettingsController extends ApiControllerBase
 			$mdlFtpProxy = new FtpProxy();
 			// keep a list to detect duplicates later
 			$CurrentProxies =  $mdlFtpProxy->getNodes();
-			$node = $mdlFtpProxy->ftpproxies->ftpproxy->Add();
+			$node = $mdlFtpProxy->ftpproxy->Add();
 			$node->setNodes($this->request->getPost("ftpproxy"));
 
 			$valMsgs = $mdlFtpProxy->performValidation();
@@ -157,7 +141,7 @@ class SettingsController extends ApiControllerBase
 			}
 
 			if (count($result['validations']) == 0) {
-				foreach ($CurrentProxies['ftpproxies']['ftpproxy'] as &$CurrentProxy) {
+				foreach ($CurrentProxies['ftpproxy'] as &$CurrentProxy) {
 					if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress']
 							&& $node->listenport->__toString() == $CurrentProxy['listenport']) {
 						return array(
@@ -169,20 +153,14 @@ class SettingsController extends ApiControllerBase
 						       );
 					}
 				}
-				// retrieve ftp-proxy flags and set defaults
-				$Flags = $mdlFtpProxy->configToFlags($node);
+
 				// save config if validated correctly
 				$mdlFtpProxy->serializeToConfig();
 				Config::getInstance()->save();
-				if ($node->enabled->__toString() == 1) {
-					$backend = new Backend();
-					$backend->configdpRun('ftpproxy start ', array($Flags));
-					// add it to /etc/rc.conf.d/ftpproxy
-					$backend->configdRun("template reload OPNsense.FtpProxy");
-				}
-				$result = array("result" => "saved");
+				// reload config
+				$svcFtpProxy = new ServiceController();
+				$result= $svcFtpProxy->reloadAction();
 			}
-			return $result;
 		}
 		return $result;
 	}
@@ -199,20 +177,15 @@ class SettingsController extends ApiControllerBase
 		if ($this->request->isPost()) {
 			$mdlFtpProxy = new FtpProxy();
 			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 				if ($node != null) {
-					$backend = new Backend();
-					// stop if the ftp-proxy is running
-					if ($node->enabled->__toString() == 1) {
-						$backend->configdpRun('ftpproxy stop ', array($mdlFtpProxy->configToFlags($node)));
-					}
-					if ($mdlFtpProxy->ftpproxies->ftpproxy->del($uuid) == true) {
+					if ($mdlFtpProxy->ftpproxy->del($uuid) == true) {
 						// if item is removed, serialize to config and save
 						$mdlFtpProxy->serializeToConfig();
 						Config::getInstance()->save();
-						$result['result'] = 'deleted';
-						// remove it from /etc/rc.conf.d/ftpproxy
-						$backend->configdRun("template reload OPNsense.FtpProxy");
+						// reload config
+						$svcFtpProxy = new ServiceController();
+						$result= $svcFtpProxy->reloadAction();
 					}
 				} else {
 					$result['result'] = 'not found';
@@ -231,27 +204,22 @@ class SettingsController extends ApiControllerBase
 	{
 
 		$result = array("result" => "failed");
-
 		if ($this->request->isPost()) {
 			$mdlFtpProxy = new FtpProxy();
 			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $uuid);
+				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
 				if ($node != null) {
-					$backend = new Backend();
 					if ($node->enabled->__toString() == "1") {
-						$result['result'] = "Disabled";
 						$node->enabled = "0";
-						$response = $backend->configdpRun('ftpproxy stop ', array($mdlFtpProxy->configToFlags($node)));
 					} else {
-						$result['result'] = "Enabled";
 						$node->enabled = "1";
-						$response = $backend->configdpRun('ftpproxy start ', array($mdlFtpProxy->configToFlags($node)));
 					}
-
 					// if item has toggled, serialize to config and save
 					$mdlFtpProxy->serializeToConfig();
 					Config::getInstance()->save();
-					$backend->configdRun("template reload OPNsense.FtpProxy");
+					// reload config
+					$svcFtpProxy = new ServiceController();
+					$result= $svcFtpProxy->reloadAction();
 				}
 			}
 		}
@@ -282,22 +250,21 @@ class SettingsController extends ApiControllerBase
 		);
 		$mdlFtpProxy = new FtpProxy();
 
-		$grid = new UIModelGrid($mdlFtpProxy->ftpproxies->ftpproxy);
+		$grid = new UIModelGrid($mdlFtpProxy->ftpproxy);
 		$response = $grid->fetchBindRequest(
 				$this->request,
 				$fields,
 				"listenport"
 				);
-
-		$backend = new Backend();
+		$svcFtpProxy = new ServiceController();
 		foreach($response['rows'] as &$row) {
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxies.ftpproxy.' . $row['uuid']);
-			$status = trim($backend->configdpRun('ftpproxy status ', array($mdlFtpProxy->configToFlags($node))));
-			if ($status == 'OK') {
+			$result = $svcFtpProxy->statusAction($row['uuid']);
+			if ($result['result'] == 'OK') {
 				$row['status'] = 0;
 				continue;
 			}
 			$row['status'] = 2;
+
 		}
 
 		return $response;

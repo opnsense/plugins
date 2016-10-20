@@ -124,6 +124,15 @@ scripts-auto:
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
+	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
+		    find -s . -mindepth 2 -type d); do \
+			echo "echo -n \"Reloading template $${FILE#./}: \"" >> \
+			    ${DESTDIR}/+POST_INSTALL; \
+			echo "/usr/local/sbin/configctl template reload $${FILE#./}" >> \
+			    ${DESTDIR}/+POST_INSTALL; \
+		done; \
+	fi
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
@@ -203,5 +212,18 @@ sweep: check
 	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+
+style: check
+	@(phpcs --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src \
+	    || true) > ${.CURDIR}/.style.out
+	@echo -n "Total number of style warnings: "
+	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
+	@echo -n "Total number of style errors:   "
+	@grep '| ERROR' ${.CURDIR}/.style.out | wc -l
+	@cat ${.CURDIR}/.style.out
+	@rm ${.CURDIR}/.style.out
+
+style-fix: check
+	phpcbf --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src || true
 
 .PHONY:	check

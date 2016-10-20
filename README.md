@@ -28,7 +28,9 @@ A list of currently available plugins
 =====================================
 
 ```
+devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
+net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/intel-em -- Intel Gigabit Base Driver for em(4) and lem(4)
 net/l2tp -- L2TP server based on MPD5
@@ -38,6 +40,8 @@ sysutils/boot-delay -- Apply a persistent boot delay
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
+security/intrusion-detection-content-pt-open -- IDS PT Research ruleset
+www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```
 
 A brief description of how to use the plugins repository
@@ -59,14 +63,17 @@ below.
 
 The make targets for the root directory:
 
-* lint:		run syntax checks on all available plugins
 * list:		print a list of all plugin directories
 * list-full:	print a list of all plugin directories with comments
 
 The make targets for any plugin directory:
 
-* package:	creates a package from directory
-* install:	install to target directory
-* remove:	remove from target directory
-* collect:	gather updates from target directory
 * clean:	remove all changes and unknown files
+* collect:	gather updates from target directory
+* install:	install to target directory
+* lint:		run syntax checks
+* package:	creates a package
+* remove:	remove known files from target directory
+* style-fix:	apply style fixes
+* style:	run style checks
+* sweep:	apply whitespace fixes

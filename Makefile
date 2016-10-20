@@ -3,7 +3,7 @@ PAGER?=		less
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
-CATEGORIES=	devel net sysutils
+CATEGORIES=	devel net sysutils security www
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
@@ -17,16 +17,14 @@ list:
 
 list-full:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo -n ${PLUGIN_DIR} '-- '
-	@${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT
+	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor
 
-lint:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	${MAKE} -C ${PLUGIN_DIR} lint
-.endfor
+TARGETS=	lint sweep sytle style-fix clean
 
-sweep:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	${MAKE} -C ${PLUGIN_DIR} sweep
+.for TARGET in ${TARGETS}
+${TARGET}:
+.  for PLUGIN_DIR in ${PLUGIN_DIRS}
+	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
+.  endfor
 .endfor
