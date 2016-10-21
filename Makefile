@@ -21,22 +21,11 @@ list-full:
 	@${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT
 .endfor
 
-lint:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	${MAKE} -C ${PLUGIN_DIR} lint
-.endfor
+TARGETS=	lint sweep sytle style-fix clean
 
-sweep:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	${MAKE} -C ${PLUGIN_DIR} sweep
-.endfor
-
-style:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	${MAKE} -C ${PLUGIN_DIR} style
-.endfor
-
-style-fix:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	${MAKE} -C ${PLUGIN_DIR} style-fix
+.for TARGET in ${TARGETS}
+${TARGET}:
+.  for PLUGIN_DIR in ${PLUGIN_DIRS}
+	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
+.  endfor
 .endfor
