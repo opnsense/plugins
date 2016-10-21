@@ -30,3 +30,13 @@ sweep:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
 	${MAKE} -C ${PLUGIN_DIR} sweep
 .endfor
+
+style:
+.for PLUGIN_DIR in ${PLUGIN_DIRS}
+	${MAKE} -C ${PLUGIN_DIR} style
+.endfor
+
+style-fix:
+.for PLUGIN_DIR in ${PLUGIN_DIRS}
+	${MAKE} -C ${PLUGIN_DIR} style-fix
+.endfor

@@ -204,4 +204,17 @@ sweep: check
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
+style: check
+	@(phpcs --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src \
+	    || true) > ${.CURDIR}/.style.out
+	@echo -n "Total number of style warnings: "
+	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
+	@echo -n "Total number of style errors:   "
+	@grep '| ERROR' ${.CURDIR}/.style.out | wc -l
+	@cat ${.CURDIR}/.style.out
+	@rm ${.CURDIR}/.style.out
+
+style-fix: check
+	phpcbf --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src || true
+
 .PHONY:	check
