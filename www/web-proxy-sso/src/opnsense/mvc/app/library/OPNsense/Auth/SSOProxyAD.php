@@ -69,5 +69,6 @@ class SSOProxyAD implements IAuthConnector
 
     public function authenticate($username, $password)
     {
+        return false;
     }
 }
