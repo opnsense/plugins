@@ -33,69 +33,69 @@ use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\SSOProxyAD\SSOProxyAD;
 use \OPNsense\Core\Backend;
 use \OPNsense\Cron\Cron;
+
 class ServiceController extends ApiControllerBase
 {
 
-public function reloadAction()
-{
-    $status = "failed";
-    if ($this->request->isPost()) {
-        $mdlSSOProxyAD = new SSOProxyAD();
-        if ((string)$mdlSSOProxyAD->general->UpdateCron == "") {
-            $mdlCron = new Cron();
-            $mdlSSOProxyAD->general->UpdateCron = $mdlCron->newDailyJob("SSOProyAD", "ssoproxyad updateDomain", "SSOProxyAD updateDomain cron", "1");
+    public function reloadAction()
+    {
+        $status = "failed";
+        if ($this->request->isPost()) {
+            $mdlSSOProxyAD = new SSOProxyAD();
+            if ((string)$mdlSSOProxyAD->general->UpdateCron == "") {
+                $mdlCron = new Cron();
+                $mdlSSOProxyAD->general->UpdateCron = $mdlCron->newDailyJob("SSOProyAD", "ssoproxyad updateDomain", "SSOProxyAD updateDomain cron", "1");
                 if ($mdlCron->performValidation()->count() == 0) {
                     $mdlCron->serializeToConfig();
                     $mdlMymodule->serializeToConfig($validateFullModel = false, $disable_validation = true);
                     Config::getInstance()->save();
                 }
+            }
+            $backend = new Backend();
+            $bckresult = trim($backend->configdRun("template reload OPNsense.SSOProxyAD"));
+            if ($bckresult == "OK") {
+                $status = "ok";
+            }
         }
-        $backend = new Backend();
-        $bckresult = trim($backend->configdRun("template reload OPNsense.SSOProxyAD"));
-        if ($bckresult == "OK") {
-            $status = "ok";
-        }
+        return array("status" => $status);
     }
-    return array("status" => $status);
-}
 
-public function testAction()
-{
-    if ($this->request->isPost()) {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("ssoproxyad test")), true);
-        if ($bckresult !== null) {
-            // only return valid json type responses
-            return $bckresult;
+    public function testAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $bckresult = json_decode(trim($backend->configdRun("ssoproxyad test")), true);
+            if ($bckresult !== null) {
+                // only return valid json type responses
+                return $bckresult;
+            }
         }
+        return array("message" => "unable to run config action");
     }
-    return array("message" => "unable to run config action");
-}
 
-public function joinDomainAction()
-{
-    if ($this->request->isPost()) {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("ssoproxyad joinDomain")), true);
-        if ($bckresult !== null) {
-            // only return valid json type responses
-            return $bckresult;
+    public function joinDomainAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $bckresult = json_decode(trim($backend->configdRun("ssoproxyad joinDomain")), true);
+            if ($bckresult !== null) {
+                // only return valid json type responses
+                return $bckresult;
+            }
         }
+        return array("message" => "unable to run config action");
     }
-    return array("message" => "unable to run config action");
-}
 
-public function updateDomainAction()
-{
-    if ($this->request->isPost()) {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("ssoproxyad updateDomain")), true);
-        if ($bckresult !== null) {
-            // only return valid json type responses
-            return $bckresult;
+    public function updateDomainAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $bckresult = json_decode(trim($backend->configdRun("ssoproxyad updateDomain")), true);
+            if ($bckresult !== null) {
+                // only return valid json type responses
+                return $bckresult;
+            }
         }
+        return array("message" => "unable to run config action");
     }
-    return array("message" => "unable to run config action");
-}
-
 }

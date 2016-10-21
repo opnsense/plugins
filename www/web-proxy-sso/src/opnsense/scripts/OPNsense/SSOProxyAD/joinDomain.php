@@ -34,6 +34,7 @@ require_once("config.inc");
 require_once("certs.inc");
 require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
+
 global $config;
 
 $configObj = Config::getInstance()->object();
@@ -41,12 +42,12 @@ $hostname = $configObj->system->hostname;
 $fqdn = $hostname . "." . $configObj->system->domain;
 if (isset($configObj->OPNsense->ssoproxyad)) {
     foreach ($configObj->OPNsense->ssoproxyad->general as $ssoproxyad) {
-	$enabled = $ssoproxyad->Enabled;
-	$domainname = $ssoproxyad->DomainName;
-	$domaindc = $ssoproxyad->DomainDC;
-	$domainversion = $ssoproxyad->DomainVersion;
-	$domainuser = $ssoproxyad->DomainUser;
-	$domainpassword = $ssoproxyad->DomainPassword;
+        $enabled = $ssoproxyad->Enabled;
+        $domainname = $ssoproxyad->DomainName;
+        $domaindc = $ssoproxyad->DomainDC;
+        $domainversion = $ssoproxyad->DomainVersion;
+        $domainuser = $ssoproxyad->DomainUser;
+        $domainpassword = $ssoproxyad->DomainPassword;
     }
 }
 
@@ -55,35 +56,32 @@ $cmd_2003 = '/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab 
 $cmd_2008 = '/usr/local/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . $keytab . ' --computer-name ' . strtoupper($hostname) . ' --upn HTTP/' . $fqdn. ' --server ' . $domaindc . ' --enctypes 28 2>&1';
 
 if ($enabled == 1) {
-	$krb5secret = '/usr/local/etc/ssoproxyad/krb5secret';
-	if ( !file_exists($keytab) ) {
-		file_put_contents($krb5secret, $domainpassword);
-		chmod($krb5secret, 0600);
-		exec('/usr/bin/kinit --password-file="' . $krb5secret . '" ' . $domainuser. "@" . strtoupper($domainname) . " 2>&1",$output_kinit,$error_kinit);
-		if ($error_kinit > 0) {
-			$return = array('message' => "$output_kinit");
-		} 
-		else {
-			if ( $domainversion == '2003' ) {
-				exec($cmd_2003,$output_msktutil,$error_msktutil);
-			} elseif ( $domainversion == '2008' ) {
-				exec($cmd_2008,$output_msktutil,$error_msktutil);
-			}
-			if ( (file_exists($keytab)) and ($error_msktutil <= 0) ) {
-				chown($keytab,'squid');
-				chgrp($keytab,'squid');
-				exec("/usr/bin/kdestroy 2>&1",$output_kdestroy,$error_kdestroy);
-				unlink($krb5secret);
-				$return = array('message' => "keytab created");
-			}
-			else {
-				$out = implode($output_msktutil);
-				$return = array('message' => "Unable to create keytab: $out");
-			}
-		}
-	}
-	else {
-		$return = array('message' => "keytab already exists");
-	}
+    $krb5secret = '/usr/local/etc/ssoproxyad/krb5secret';
+    if (!file_exists($keytab)) {
+        file_put_contents($krb5secret, $domainpassword);
+        chmod($krb5secret, 0600);
+        exec('/usr/bin/kinit --password-file="' . $krb5secret . '" ' . $domainuser. "@" . strtoupper($domainname) . " 2>&1", $output_kinit, $error_kinit);
+        if ($error_kinit > 0) {
+            $return = array('message' => "$output_kinit");
+        } else {
+            if ($domainversion == '2003') {
+                exec($cmd_2003, $output_msktutil, $error_msktutil);
+            } elseif ($domainversion == '2008') {
+                exec($cmd_2008, $output_msktutil, $error_msktutil);
+            }
+            if ((file_exists($keytab)) and ($error_msktutil <= 0)) {
+                chown($keytab, 'squid');
+                chgrp($keytab, 'squid');
+                exec("/usr/bin/kdestroy 2>&1", $output_kdestroy, $error_kdestroy);
+                unlink($krb5secret);
+                $return = array('message' => "keytab created");
+            } else {
+                $out = implode($output_msktutil);
+                $return = array('message' => "Unable to create keytab: $out");
+            }
+        }
+    } else {
+        $return = array('message' => "keytab already exists");
+    }
 }
 echo json_encode($return);

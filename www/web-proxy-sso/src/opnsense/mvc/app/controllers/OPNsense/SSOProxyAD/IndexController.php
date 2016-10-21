@@ -28,6 +28,7 @@
  */
 
 namespace OPNsense\SSOProxyAD;
+
 class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
@@ -37,6 +38,6 @@ class IndexController extends \OPNsense\Base\IndexController
         // pick the template to serve to our users.
         $this->view->pick('OPNsense/SSOProxyAD/index');
 
-       $this->view->generalForm = $this->getForm("general");
+        $this->view->generalForm = $this->getForm("general");
     }
 }

@@ -34,6 +34,7 @@ require_once("config.inc");
 require_once("certs.inc");
 require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
+
 global $config;
 
 $configObj = Config::getInstance()->object();
@@ -41,26 +42,24 @@ $hostname = $configObj->system->hostname;
 $fqdn = $hostname . "." . $configObj->system->domain;
 if (isset($configObj->OPNsense->ssoproxyad)) {
     foreach ($configObj->OPNsense->ssoproxyad->general as $ssoproxyad) {
-	$enabled = $ssoproxyad->Enabled;
+        $enabled = $ssoproxyad->Enabled;
     }
 }
 
 if ($enabled == 1) {
-	$keytab = '/usr/local/etc/ssoproxyad/PROXY.keytab';
-	if ( file_exists($keytab) ) {
-		$cmd = '/usr/local/sbin/msktutil --auto-update --computer-name ' . strtolower($hostname) . ' --keytab ' . $keytab . ' 2>&1';
-		exec($cmd,$output_msktutil,$error_msktutil);
-		$out = implode($output_msktutil);
-		if ($error_msktutil > 0) {
-			$return = array('message' => "Unable to auto-update: $out)");
-		}
-		else {
-			$return = array('message' => "Auto-update successful: $out");
-		}
-	}
-	else {
-		$return = array('message' => "keytab do not exists");
-	}
+    $keytab = '/usr/local/etc/ssoproxyad/PROXY.keytab';
+    if (file_exists($keytab)) {
+        $cmd = '/usr/local/sbin/msktutil --auto-update --computer-name ' . strtolower($hostname) . ' --keytab ' . $keytab . ' 2>&1';
+        exec($cmd, $output_msktutil, $error_msktutil);
+        $out = implode($output_msktutil);
+        if ($error_msktutil > 0) {
+            $return = array('message' => "Unable to auto-update: $out)");
+        } else {
+            $return = array('message' => "Auto-update successful: $out");
+        }
+    } else {
+        $return = array('message' => "keytab do not exists");
+    }
 }
 
 echo json_encode($return);

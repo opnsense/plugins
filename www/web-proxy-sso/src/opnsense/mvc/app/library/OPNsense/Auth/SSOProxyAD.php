@@ -62,12 +62,12 @@ class SSOProxyAD implements IAuthConnector
    * unused
    * @return array mixed named list of authentication properties
    */
-   public function getLastAuthProperties()
-   {
-       return array();
-   }
+    public function getLastAuthProperties()
+    {
+        return array();
+    }
 
-   public function authenticate($username,$password)
-   {
-   }
+    public function authenticate($username, $password)
+    {
+    }
 }

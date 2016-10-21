@@ -43,7 +43,7 @@ class SettingsController extends ApiControllerBase
     {
         // define list of configurable settings
         $result = array();
-            if ($this->request->isGet()) {
+        if ($this->request->isGet()) {
             $mdlSSOProxyAD= new SSOProxyAD();
             $result['ssoproxyad'] = $mdlSSOProxyAD->getNodes();
         }
@@ -54,31 +54,30 @@ class SettingsController extends ApiControllerBase
  * update SSOProxyAD settings
  * @return array status
  */
-public function setAction()
-{
-    $result = array("result"=>"failed");
-    if ($this->request->isPost()) {
-        // load model and update with provided data
-        $mdlSSOProxyAD= new SSOProxyAD();
-        $mdlSSOProxyAD->setNodes($this->request->getPost("ssoproxyad"));
+    public function setAction()
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost()) {
+            // load model and update with provided data
+            $mdlSSOProxyAD= new SSOProxyAD();
+            $mdlSSOProxyAD->setNodes($this->request->getPost("ssoproxyad"));
 
-        // perform validation
-        $valMsgs = $mdlSSOProxyAD->performValidation();
-        foreach ($valMsgs as $field => $msg) {
-            if (!array_key_exists("validations", $result)) {
-                $result["validations"] = array();
+            // perform validation
+            $valMsgs = $mdlSSOProxyAD->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                if (!array_key_exists("validations", $result)) {
+                    $result["validations"] = array();
+                }
+                $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
             }
-            $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
-        }
 
-        // serialize model to config and save
-        if ($valMsgs->count() == 0) {
-            $mdlSSOProxyAD->serializeToConfig();
-            Config::getInstance()->save();
-            $result["result"] = "saved";
+            // serialize model to config and save
+            if ($valMsgs->count() == 0) {
+                $mdlSSOProxyAD->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
         }
+        return $result;
     }
-    return $result;
-}
-
 }

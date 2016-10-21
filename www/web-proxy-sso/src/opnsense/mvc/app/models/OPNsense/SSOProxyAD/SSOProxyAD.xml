@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/ssoproxyad</mount>
     <description>
-       SSO Active Directory plugin 
+       SSO Active Directory plugin
     </description>
     <items>
         <general>
