@@ -17,8 +17,7 @@ list:
 
 list-full:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo -n ${PLUGIN_DIR} '-- '
-	@${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT
+	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor
 
 TARGETS=	lint sweep sytle style-fix clean
