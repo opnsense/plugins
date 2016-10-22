@@ -2,8 +2,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 gitdevmod@github.com
- *
+ *    Copyright (C) 2016 <gitdevmod@github.com>
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -26,13 +25,13 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 // Use legacy code to export certificates to the filesystem.
 require_once("config.inc");
 require_once("certs.inc");
 require_once("legacy_bindings.inc");
+
 use OPNsense\Core\Config;
 
 global $config;

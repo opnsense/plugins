@@ -1,7 +1,7 @@
 <?php
+
 /**
- *    Copyright (C) 2016 gitdevmod@github.com
- *
+ *    Copyright (C) 2016 <gitdevmod@github.com>
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,6 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\SSOProxyAD;
@@ -33,11 +32,8 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        // set page title, used by the standard template in layouts/default.volt.
-        $this->view->title = "SSO Proxy Active Directory";
-        // pick the template to serve to our users.
+        $this->view->title = gettext('SSO Proxy Active Directory');
         $this->view->pick('OPNsense/SSOProxyAD/index');
-
         $this->view->generalForm = $this->getForm("general");
     }
 }

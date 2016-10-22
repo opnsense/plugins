@@ -1,6 +1,5 @@
 {#
-Copyright (C) 2016 gitdevmod@github.com
-
+Copyright (C) 2016 <gitdevmod@github.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -23,7 +22,6 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
-
 #}
 
 {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}

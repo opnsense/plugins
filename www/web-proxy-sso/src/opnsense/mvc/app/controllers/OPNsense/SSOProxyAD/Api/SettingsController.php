@@ -1,7 +1,7 @@
 <?php
+
 /**
- *    Copyright (C) 2016 gitdevmod@github.com
- *
+ *    Copyright (C) 2016 <gitdevmod@github.com>
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -24,59 +24,28 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\SSOProxyAD\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\SSOProxyAD\SSOProxyAD;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Core\Config;
 
-class SettingsController extends ApiControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
-    /*
-     * retrieve SSO Proxy Active Directory general settings
-     * @return array general settings
+    static protected $internalModelClass = '\OPNsense\SSOProxyAD\SSOProxyAD';
+    static protected $internalModelName = 'ssoproxyad';
+
+    /**
+     * @return array plain model settings (non repeating items)
      */
-    public function getAction()
+    protected function getModelNodes()
     {
-        // define list of configurable settings
+        $settingsNodes = array('general');
         $result = array();
-        if ($this->request->isGet()) {
-            $mdlSSOProxyAD= new SSOProxyAD();
-            $result['ssoproxyad'] = $mdlSSOProxyAD->getNodes();
-        }
-        return $result;
-    }
-
-/**
- * update SSOProxyAD settings
- * @return array status
- */
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlSSOProxyAD= new SSOProxyAD();
-            $mdlSSOProxyAD->setNodes($this->request->getPost("ssoproxyad"));
-
-            // perform validation
-            $valMsgs = $mdlSSOProxyAD->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlSSOProxyAD->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
+        $mdlSSO = $this->getModel();
+        foreach ($settingsNodes as $key) {
+            $result[$key] = $mdlSSO->$key->getNodes();
         }
         return $result;
     }

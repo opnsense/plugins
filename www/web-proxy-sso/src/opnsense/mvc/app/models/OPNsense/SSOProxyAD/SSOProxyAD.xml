@@ -21,7 +21,7 @@
             <DomainUser type="TextField">
                 <Required>Y</Required>
             </DomainUser>
-            <DomainPassword type="UpdateOnly">
+            <DomainPassword type="UpdateOnlyTextField">
                 <Required>Y</Required>
             </DomainPassword>
             <UpdateCron type="ModelRelationField">

@@ -22,7 +22,7 @@
     </field>
     <field>
         <id>ssoproxyad.general.DomainUser</id>
-        <label>Active Directory Domin User</label>
+        <label>Active Directory Domain User</label>
         <type>text</type>
     </field>
     <field>
