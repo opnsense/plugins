@@ -1,6 +1,5 @@
 <menu>
-    <!-- Plugin SSOProxyAD menu -->
-    <User order="999">
-        <SSOProxyAD VisibleName="SSO Proxy AD" url="/ui/ssoproxyad/"/>
-    </User>
+    <Services>
+        <SSOProxyAD VisibleName="Web Proxy SSO" url="/ui/ssoproxyad/"/>
+    </Services>
 </menu>
