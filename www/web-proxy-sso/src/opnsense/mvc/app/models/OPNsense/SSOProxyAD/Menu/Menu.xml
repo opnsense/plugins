@@ -1,5 +1,7 @@
 <menu>
     <Services>
-        <SSOProxyAD VisibleName="Web Proxy SSO" url="/ui/ssoproxyad/" cssClass="fa fa-sign-in fa-fw"/>
+        <Proxy>
+            <SSO VisibleName="Single-Sign On" url="/ui/ssoproxyad/"/>
+        </Proxy>
     </Services>
 </menu>
