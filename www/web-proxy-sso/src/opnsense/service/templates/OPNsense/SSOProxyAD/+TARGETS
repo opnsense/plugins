@@ -1,1 +1,2 @@
 krb5.conf:/usr/local/etc/ssoproxyad/krb5.conf
+rc.conf:/usr/local/etc/rc.d/ssoproxyad.conf
