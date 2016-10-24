@@ -1,6 +1,6 @@
-name: ftpproxy
-version: 0.1
-origin: opnsense/ftpproxy
+name: ftp-proxy
+version: 0.2
+origin: opnsense/ftp-proxy
 comment: ftp-proxy configuration
 desc: configuration templates for ftp-proxy
 prefix: /
