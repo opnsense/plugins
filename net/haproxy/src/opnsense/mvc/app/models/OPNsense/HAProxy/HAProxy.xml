@@ -84,19 +84,19 @@
                 </maxConnections>
                 <timeoutClient type="TextField">
                     <default>30s</default>
-                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})*/u</mask>
+                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </timeoutClient>
                 <timeoutConnect type="TextField">
                     <default>30s</default>
-                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})*/u</mask>
+                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </timeoutConnect>
                 <timeoutServer type="TextField">
                     <default>30s</default>
-                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})*/u</mask>
+                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </timeoutServer>
@@ -293,7 +293,7 @@
                     <Required>N</Required>
                 </tuning_maxConnections>
                 <tuning_timeoutClient type="TextField">
-                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})*/u</mask>
+                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutClient>
@@ -475,12 +475,12 @@
                 </stickiness_cookielength>
                 <!-- XXX: add tag <tuning> once nesting is supported by our framework -->
                 <tuning_timeoutConnect type="TextField">
-                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})*/u</mask>
+                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutConnect>
                 <tuning_timeoutServer type="TextField">
-                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})*/u</mask>
+                    <mask>/^([0-9]{1,8}[d|h|m|s|ms|us]{0,1})/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutServer>
