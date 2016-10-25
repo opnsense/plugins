@@ -114,14 +114,14 @@
         <id>backend.tuning_timeoutConnect</id>
         <label>Connection Timeout</label>
         <type>text</type>
-        <help><![CDATA[Set the maximum time (in milliseconds) to wait for a connection attempt to a server to succeed.]]></help>
+        <help><![CDATA[Set the maximum time to wait for a connection attempt to a server to succeed. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>backend.tuning_timeoutServer</id>
         <label>Server Timeout</label>
         <type>text</type>
-        <help><![CDATA[Set the maximum inactivity time (in milliseconds) on the server side.]]></help>
+        <help><![CDATA[Set the maximum inactivity time on the server side. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
