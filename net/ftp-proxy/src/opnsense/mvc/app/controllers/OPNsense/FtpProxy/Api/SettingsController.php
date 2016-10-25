@@ -249,7 +249,7 @@ class SettingsController extends ApiControllerBase
 				"description"
 		);
 		$mdlFtpProxy = new FtpProxy();
-		
+
 		$grid = new UIModelGrid($mdlFtpProxy->ftpproxy);
 		$response = $grid->fetchBindRequest(
 				$this->request,
@@ -264,7 +264,7 @@ class SettingsController extends ApiControllerBase
 				continue;
 			}
 			$row['status'] = 2;
-			
+
 		}
 
 		return $response;

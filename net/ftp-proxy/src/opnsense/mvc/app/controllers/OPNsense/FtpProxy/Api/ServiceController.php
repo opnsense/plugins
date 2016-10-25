@@ -56,7 +56,7 @@ class ServiceController extends ApiControllerBase
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * start a ftp-proxy process
 	 * @param $uuid item unique id
@@ -77,7 +77,7 @@ class ServiceController extends ApiControllerBase
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * stop a ftp-proxy process
 	 * @param $uuid item unique id
@@ -98,7 +98,7 @@ class ServiceController extends ApiControllerBase
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * restart a ftp-proxy process
 	 * @param $uuid item unique id
@@ -118,7 +118,7 @@ class ServiceController extends ApiControllerBase
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * recreate configuration file from template
 	 * @return array
@@ -132,7 +132,7 @@ class ServiceController extends ApiControllerBase
 		$result['result'] = $this->callBackend('template');
 		return $result;
 	}
-	
+
 	/**
 	 * reload configuration
 	 * @return array
@@ -149,7 +149,7 @@ class ServiceController extends ApiControllerBase
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * call backend
 	 * @param action, node
