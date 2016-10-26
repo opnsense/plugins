@@ -124,6 +124,13 @@ scripts-auto:
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
+	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
+		    find -s . -mindepth 2 -type d); do \
+			echo "/usr/local/sbin/configctl template reload $${FILE#./}" >> \
+			    ${DESTDIR}/+POST_INSTALL; \
+		done; \
+	fi
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
