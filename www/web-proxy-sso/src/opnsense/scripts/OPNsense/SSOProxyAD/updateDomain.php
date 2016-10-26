@@ -53,7 +53,7 @@ if ($enabled == 1) {
             '--auto-update',
             '--computer-name',
             strtolower($hostname),
-            ' --keytab',
+            '--keytab',
             $keytab
         ));
         exec($cmd, $output_msktutil, $error_msktutil);
