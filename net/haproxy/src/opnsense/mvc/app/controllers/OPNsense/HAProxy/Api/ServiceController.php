@@ -134,7 +134,7 @@ class ServiceController extends ApiControllerBase
             }
 
             // generate template
-            $backend->configdRun("template reload OPNsense.HAProxy");
+            $backend->configdRun('template reload OPNsense/HAProxy');
 
             // (res)start daemon
             if ($mdlProxy->general->enabled->__toString() == 1) {
@@ -160,7 +160,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         // first generate template based on current configuration
-        $backend->configdRun("template reload OPNsense.HAProxy");
+        $backend->configdRun('template reload OPNsense/HAProxy');
         // now export all the required files (or syntax check will fail)
         $backend->configdRun("haproxy setup");
         // finally run the syntax check

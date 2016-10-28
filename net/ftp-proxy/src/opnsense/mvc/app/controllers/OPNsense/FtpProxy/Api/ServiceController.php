@@ -163,7 +163,7 @@ class ServiceController extends ApiControllerBase
 			return trim($backend->configdpRun('ftpproxy ' . $action, array($instance)));
 		}
 		if ($action == 'template') {
-			return trim($backend->configdRun("template reload OPNsense.FtpProxy"));
+			return trim($backend->configdRun('template reload OPNsense/FtpProxy'));
 		}
 		if ($action == 'reload') {
 			return trim($backend->configdRun("ftpproxy reload"));

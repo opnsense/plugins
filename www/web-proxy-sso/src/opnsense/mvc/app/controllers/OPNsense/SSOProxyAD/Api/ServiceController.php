@@ -56,7 +56,7 @@ class ServiceController extends ApiControllerBase
                 }
             }
             $backend = new Backend();
-            $bckresult = trim($backend->configdRun("template reload OPNsense.SSOProxyAD"));
+            $bckresult = trim($backend->configdRun('template reload OPNsense/SSOProxyAD'));
             if ($bckresult == "OK") {
                 $status = "ok";
             }

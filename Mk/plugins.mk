@@ -127,6 +127,8 @@ scripts-auto:
 	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
 		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
 		    find -s . -mindepth 2 -type d); do \
+			echo "echo -n \"Reloading template $${FILE#./}: \"" >> \
+			    ${DESTDIR}/+POST_INSTALL; \
 			echo "/usr/local/sbin/configctl template reload $${FILE#./}" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
