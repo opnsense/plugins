@@ -61,7 +61,8 @@ if ($enabled == 1) {
         chmod($krb5secret, 0600);
         exec('/usr/bin/kinit --password-file="' . $krb5secret . '" ' . $domainuser. "@" . strtoupper($domainname) . " 2>&1", $output_kinit, $error_kinit);
         if ($error_kinit > 0) {
-            $return = array('message' => "$output_kinit");
+            $out = implode($output_kinit);
+            $return = array('message' => "$out");
         } else {
             if ($domainversion == '2003') {
                 exec($cmd_2003, $output_msktutil, $error_msktutil);
@@ -72,7 +73,6 @@ if ($enabled == 1) {
                 chown($keytab, 'squid');
                 chgrp($keytab, 'squid');
                 exec("/usr/bin/kdestroy 2>&1", $output_kdestroy, $error_kdestroy);
-                unlink($krb5secret);
                 $return = array('message' => "keytab created");
             } else {
                 $out = implode($output_msktutil);
@@ -83,4 +83,8 @@ if ($enabled == 1) {
         $return = array('message' => "keytab already exists");
     }
 }
+if (file_exists($krb5secret)) {
+    unlink($krb5secret);
+}
+
 echo json_encode($return);
