@@ -17,8 +17,10 @@ reload_cmd="ftpproxy_reload"
 
 load_rc_config $name
 
-eval osftpproxy_flags=\$osftpproxy_${2}
-pidfile="/var/run/osftpproxy.$2.pid"
+if [ -n "$2" ]; then
+   eval osftpproxy_flags=\$osftpproxy_${2}
+   pidfile="/var/run/osftpproxy.$2.pid"
+fi
 
 ftpproxy_start () {
    ftpproxy_status
@@ -61,7 +63,7 @@ ftpproxy_restart () {
 }
 
 ftpproxy_status () {
-   if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+   if [ -z "$pidfile" ]; then
       err 1 "Instance name unknown"
    fi
    run_rc_command "status"
@@ -143,7 +145,7 @@ case $1 in
       exit $?
       ;;
    status)
-      if [ -z "$osftpproxy_flags" -o -z "$pidfile" ]; then
+      if [ -z "$osftpproxy_flags" -a -z "$pidfile" ]; then
          if [ -n "$osftpproxy_instances" ]; then
             for i in $osftpproxy_instances; do
                eval osftpproxy_flags=\$osftpproxy_${i}
