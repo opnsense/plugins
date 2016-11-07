@@ -1,4 +1,5 @@
 <?php
+
 /*
     Copyright (C) 2016 EURO-LOG AG
     All rights reserved.
@@ -28,9 +29,31 @@
 function ftpproxy_firewall($fw)
 {
     global $config;
+
     if (isset($config['OPNsense']['ftpproxies']) && is_array($config['OPNsense']['ftpproxies'])) {
         $fw->registerAnchor("ftp-proxy/*", "nat");
         $fw->registerAnchor("ftp-proxy/*", "rdr");
         $fw->registerAnchor("ftp-proxy/*", "fw");
     }
+}
+
+function ftpproxy_services()
+{
+    global $config;
+
+    $services = array();
+
+    if (isset($config['OPNsense']['ftpproxies']) && is_array($config['OPNsense']['ftpproxies'])) {
+        $services[] = array(
+            'description' => gettext('FTP Proxy Server'),
+            'configd' => array(
+                'restart' => array('ftpproxy restart'),
+                'start' => array('ftpproxy start'),
+                'stop' => array('ftpproxy stop'),
+            ),
+            'name' => 'ftp-proxy',
+        );
+    }
+
+    return $services;
 }
