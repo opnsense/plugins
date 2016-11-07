@@ -1,0 +1,34 @@
+<networks>
+{% if helpers.exists('OPNsense.Tinc.networks.network') %}
+{%   for network in helpers.toList('OPNsense.Tinc.networks.network', 'id') %}
+    <network>
+        <id>{{network.id}}</id>
+        <hostname>{{network.hostname}}</hostname>
+        <network>{{network.name}}</network>
+        <privkey><![CDATA[{{network.privkey}}]]></privkey>
+        <hosts>
+            <host>
+                <hostname>{{network.hostname}}</hostname>
+                <network>{{network.name}}</network>
+                <address>{{network.extaddress}}</address>
+                <subnet>{{network.subnet}}</subnet>
+                <pubkey><![CDATA[{{network.pubkey}}]]></pubkey>
+                <connectto>0</connectto>
+            </host>
+{%       for host in helpers.toList('OPNsense.Tinc.hosts.host', 'hostname') %}
+{%          if helpers.getUUID(host.network).id == network.id %}
+            <host>
+                <hostname>{{host.hostname}}</hostname>
+                <network>{{network.name}}</network>
+                <address>{{host.extaddress}}</address>
+                <subnet>{{host.subnet}}</subnet>
+                <pubkey><![CDATA[{{host.pubkey}}]]></pubkey>
+                <connectto>{{host.connectTo}}</connectto>
+            </host>
+{%          endif %}
+{%       endfor %}
+        </hosts>
+    </network>
+{%   endfor %}
+{% endif %}
+</networks>

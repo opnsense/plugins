@@ -1,0 +1,99 @@
+<model>
+    <mount>//OPNsense/Tinc</mount>
+    <version>1.0.0</version>
+    <description>
+        OPNsense Tinc VPN
+    </description>
+    <items>
+        <networks>
+            <network type="ArrayField">
+                <id type="AutoNumberField">
+                    <ValidationMessage>ID should be a number.</ValidationMessage>
+                    <Required>Y</Required>
+                </id>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z]){1,50}$/u</mask>
+                    <ValidationMessage>The name should contain only alphanumeric characters.</ValidationMessage>
+                </name>
+                <hostname type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z\.]){1,1024}$/u</mask>
+                    <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
+                </hostname>
+                <extaddress type="NetworkField">
+                    <Required>Y</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <FieldSeparator>,</FieldSeparator>
+                </extaddress>
+                <intaddress type="NetworkField">
+                    <Required>Y</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                </intaddress>
+                <subnet type="NetworkField">
+                    <Required>Y</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <FieldSeparator>,</FieldSeparator>
+                </subnet>
+                <network type="NetworkField">
+                    <Required>Y</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                </network>
+                <privkey type="TextField">
+                    <Required>Y</Required>
+                </privkey>
+                <pubkey type="TextField">
+                    <Required>Y</Required>
+                </pubkey>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+            </network>
+        </networks>
+        <hosts>
+            <host type="ArrayField">
+                <network type="ModelRelationField">
+                    <Model>
+                        <hosts>
+                            <source>OPNsense.Tinc.Tinc</source>
+                            <items>networks.network</items>
+                            <display>name</display>
+                        </hosts>
+                    </Model>
+                    <ValidationMessage>Related pipe or queue not found</ValidationMessage>
+                    <Required>Y</Required>
+                </network>
+                <hostname type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z\.]){1,1024}$/u</mask>
+                    <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
+                </hostname>
+                <extaddress type="NetworkField">
+                    <Required>Y</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <FieldSeparator>,</FieldSeparator>
+                </extaddress>
+                <subnet type="NetworkField">
+                    <Required>Y</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <FieldSeparator>,</FieldSeparator>
+                </subnet>
+                <pubkey type="TextField">
+                    <Required>Y</Required>
+                </pubkey>
+                <connectTo type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </connectTo>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+            </host>
+        </hosts>
+    </items>
+</model>

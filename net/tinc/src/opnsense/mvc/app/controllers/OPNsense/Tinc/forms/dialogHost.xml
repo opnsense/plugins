@@ -1,0 +1,44 @@
+<form>
+    <field>
+        <id>host.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this network</help>
+    </field>
+    <field>
+        <id>host.network</id>
+        <label>Network</label>
+        <type>dropdown</type>
+        <help>The network for this host</help>
+    </field>
+    <field>
+        <id>host.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>The hostname for the selected machine in the network</help>
+    </field>
+    <field>
+        <id>host.extaddress</id>
+        <label>Ext. Address</label>
+        <type>text</type>
+        <help>This machines external address to use</help>
+    </field>
+    <field>
+        <id>host.subnet</id>
+        <label>Subnet</label>
+        <type>text</type>
+        <help>This machines part of the network</help>
+    </field>
+    <field>
+        <id>host.pubkey</id>
+        <label>Public key</label>
+        <type>textbox</type>
+        <help>Public key for this host in the network</help>
+    </field>
+    <field>
+        <id>host.connectTo</id>
+        <label>Connect To</label>
+        <type>checkbox</type>
+        <help>Connect to this host</help>
+    </field>
+</form>
