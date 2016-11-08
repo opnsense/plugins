@@ -5,7 +5,9 @@
         <id>{{network.id}}</id>
         <hostname>{{network.hostname}}</hostname>
         <network>{{network.name}}</network>
+        <intaddress>{{network.intaddress}}</intaddress>
         <privkey><![CDATA[{{network.privkey}}]]></privkey>
+        <address>{{network.intaddress}}</address>
         <hosts>
             <host>
                 <hostname>{{network.hostname}}</hostname>

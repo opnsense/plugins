@@ -18,7 +18,7 @@
                 </name>
                 <hostname type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\.]){1,1024}$/u</mask>
+                    <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extaddress type="NetworkField">
@@ -36,11 +36,6 @@
                     <NetMaskRequired>Y</NetMaskRequired>
                     <FieldSeparator>,</FieldSeparator>
                 </subnet>
-                <network type="NetworkField">
-                    <Required>Y</Required>
-                    <WildcardEnabled>N</WildcardEnabled>
-                    <NetMaskRequired>Y</NetMaskRequired>
-                </network>
                 <privkey type="TextField">
                     <Required>Y</Required>
                 </privkey>
@@ -68,7 +63,7 @@
                 </network>
                 <hostname type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\.]){1,1024}$/u</mask>
+                    <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extaddress type="NetworkField">

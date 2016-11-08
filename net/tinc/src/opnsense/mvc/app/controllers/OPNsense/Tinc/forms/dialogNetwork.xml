@@ -12,10 +12,10 @@
         <help>Name used for this network</help>
     </field>
     <field>
-        <id>network.network</id>
-        <label>VPN network</label>
+        <id>network.intaddress</id>
+        <label>Network</label>
         <type>text</type>
-        <help>Network for this VPN, where all hosts should fit in.</help>
+        <help>This machines internal address to use and network mask for the whole network</help>
     </field>
     <field>
         <label>This Host</label>
@@ -32,12 +32,6 @@
         <label>Ext. Address</label>
         <type>text</type>
         <help>This machines external address to use</help>
-    </field>
-    <field>
-        <id>network.intaddress</id>
-        <label>Int. Address</label>
-        <type>text</type>
-        <help>This machines internal address to use (within specified subnet)</help>
     </field>
     <field>
         <id>network.subnet</id>

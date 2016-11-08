@@ -29,20 +29,23 @@
     reconfigure tincd, using the supplied configuration
 """
 import os
+import sys
 import tempfile
 import glob
+import pipes
 import xml.etree.ElementTree
+import subprocess
 from lib import objects
 
-def write_file(filename, content):
+def write_file(filename, content, mode=0o600):
     dirname = '/'.join(filename.split('/')[0:-1])
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
     open(filename, 'w').write(content)
+    os.chmod(filename, mode)
 
-def deploy(config_filename):
-    # collect file info
-    config_files=dict()
+def read_config(config_filename):
+    result = list()
     if os.path.isfile(config_filename):
         for network in xml.etree.ElementTree.parse(config_filename).getroot():
             Network_obj = objects.Network()
@@ -50,16 +53,49 @@ def deploy(config_filename):
                 Network_obj.set(network_prop.tag, network_prop)
             # check if config is complete before collecting output files
             if Network_obj.is_valid():
-                for conf_obj in Network_obj.all():
-                    if conf_obj.is_valid():
-                        config_files[conf_obj.filename()] = conf_obj.config_text()
-                # private key
-                tmp = Network_obj.privkey()
-                config_files[tmp['filename']] = tmp['content']
+                # add Network to result
+                result.append(Network_obj)
+
+    return result
+
+def deploy(config_filename):
+    interfaces = (subprocess.check_output(['/sbin/ifconfig','-l'])).split()
+    networks = read_config(config_filename)
     # remove previous configuration
     os.system('rm -rf /usr/local/etc/tinc')
-    # write output
-    for filename in config_files:
-        write_file(filename, config_files[filename])
+    for network in networks:
+        # interface name to use
+        interface_name = 'tinc%s' % network.get_id()
 
-deploy('/usr/local/etc/tinc_deploy.xml')
+        # dump Network and host config
+        for conf_obj in network.all():
+            if conf_obj.is_valid():
+                write_file(conf_obj.filename(), conf_obj.config_text())
+
+        # dump private key
+        tmp = network.privkey()
+        write_file(tmp['filename'], tmp['content'])
+
+        # write if-up file
+        if_up = list()
+        if_up.append("#!/bin/sh")
+        if_up.append("ifconfig %s %s " % (interface_name, pipes.quote(network.get_local_address())))
+        write_file("%s/if-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
+
+        # configure and rename new tun device, place all in group "tinc" symlink associated tun device
+        if interface_name not in interfaces:
+            tundev = subprocess.check_output(['/sbin/ifconfig','tun','create']).split()[0]
+            subprocess.call(['/sbin/ifconfig',tundev,'name',interface_name])
+            subprocess.call(['/sbin/ifconfig',interface_name,'group','tinc'])
+            if os.path.islink('/dev/%s' % interface_name):
+                os.remove('/dev/%s' % interface_name)
+            os.symlink('/dev/%s' % tundev, '/dev/%s' % interface_name)
+    return networks
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == 'stop':
+        for instance in glob.glob('/usr/local/etc/tinc/*'):
+            subprocess.call(['/usr/local/sbin/tincd','-n',instance.split('/')[-1], '-k'])
+    elif sys.argv[1] == 'start':
+        for netwrk in deploy('/usr/local/etc/tinc_deploy.xml'):
+            subprocess.call(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R'])

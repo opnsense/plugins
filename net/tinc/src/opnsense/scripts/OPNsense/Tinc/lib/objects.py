@@ -30,6 +30,7 @@ class NetwConfObject(object):
         self._payload = dict()
         self._payload['hostname'] = None
         self._payload['network'] = None
+        self._payload['address'] = None
 
     def is_valid(self):
         for key in self._payload:
@@ -47,6 +48,9 @@ class NetwConfObject(object):
     def get_hostname(self):
         return self._payload['hostname']
 
+    def get_network(self):
+        return self._payload['network']
+
     def get_basepath(self):
         return '/usr/local/etc/tinc/%(network)s' % self._payload
 
@@ -55,10 +59,14 @@ class Network(NetwConfObject):
         super(Network, self).__init__()
         self._payload['id'] = None
         self._payload['privkey'] = None
+        self._payload['intaddress'] = None
         self._hosts = list()
 
-    def set_id(self, value):
-        self._payload['id'] = value.text
+    def get_id(self):
+        return self._payload['id']
+
+    def get_local_address(self):
+        return self._payload['intaddress']
 
     def set_hosts(self, hosts):
         for host in hosts:
@@ -92,7 +100,6 @@ class Host(NetwConfObject):
     def __init__(self):
         super(Host, self).__init__()
         self._connectTo = "0"
-        self._payload['address'] = None
         self._payload['subnet'] = None
         self._payload['pubkey'] = None
 
