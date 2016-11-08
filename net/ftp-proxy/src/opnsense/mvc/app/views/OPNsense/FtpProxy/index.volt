@@ -61,7 +61,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     'set':'/api/ftpproxy/settings/setProxy/',
                     'add':'/api/ftpproxy/settings/addProxy/',
                     'del':'/api/ftpproxy/settings/delProxy/',
-                    'toggle':'/api/ftpproxy/settings/toggleProxy/'
+                    'toggle':'/api/ftpproxy/settings/toggleProxy/',
+                    'options':{selection:false, multiSelect:false}
                 }
         );
 
@@ -90,7 +91,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="listenaddress" data-type="string" data-visible="true">{{ lang._('Listen Address') }}</th>
                 <th data-column-id="listenport" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>
-                <th data-column-id="sourceaddress" data-type="string" data-visible="true">{{ lang._('Source Address') }}</th>
+                <th data-column-id="sourceaddress" data-type="string" data-visible="false">{{ lang._('Source Address') }}</th>
+                <th data-column-id="reverseaddress" data-type="string" data-visible="false">{{ lang._('Reverse Address') }}</th>
+                <th data-column-id="reverseport" data-type="string" data-visible="false">{{ lang._('Reverse Port') }}</th>
+                <th data-column-id="maxsessions" data-type="string" data-visible="false">{{ lang._('Maximum Sessions') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
