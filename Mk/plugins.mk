@@ -164,7 +164,7 @@ remove: check
 	done
 	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
-			rmdir ${DESTDIR}${LOCALBASE}/$${DIR}; \
+			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
 	done
 
