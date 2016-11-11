@@ -13,6 +13,9 @@ name=opnsense-tincd
 
 stop_cmd=tincd_stop
 start_cmd=tincd_start
+rcvar=OPNtincd_enable
+
+[ -z "$OPNtincd_enable" ] && OPNtincd_enable="NO"
 
 # stop tincd
 tincd_stop()

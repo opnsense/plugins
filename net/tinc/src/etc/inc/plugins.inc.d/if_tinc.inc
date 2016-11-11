@@ -44,20 +44,18 @@ function if_tinc_services()
 
     $services = array();
     $is_enabled = false;
-    if (isset($config['OPNsense']['proxy']['general']['enabled']) && $config['OPNsense']['proxy']['general']['enabled'] == 1) {
-      if (isset($config['OPNsense']['Tinc']['networks']['network'])) {
-          if (!isset($config['OPNsense']['Tinc']['networks']['network'][0])) {
-              $networks = array($config['OPNsense']['Tinc']['networks']['network']);
-          } else {
-              $networks = $config['OPNsense']['Tinc']['networks']['network'];
-          }
-          foreach ($networks as $network) {
-              if (!empty($network['enabled'])) {
-                  $is_enabled = true;
-                  break;
-              }
-          }
-      }
+    if (isset($config['OPNsense']['Tinc']['networks']['network'])) {
+        if (!isset($config['OPNsense']['Tinc']['networks']['network'][0])) {
+            $networks = array($config['OPNsense']['Tinc']['networks']['network']);
+        } else {
+            $networks = $config['OPNsense']['Tinc']['networks']['network'];
+        }
+        foreach ($networks as $network) {
+            if (!empty($network['enabled'])) {
+                $is_enabled = true;
+                break;
+            }
+        }
     }
 
     if ($is_enabled) {
