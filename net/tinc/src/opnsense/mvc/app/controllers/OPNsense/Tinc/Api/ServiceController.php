@@ -37,7 +37,6 @@ use \OPNsense\Core\Backend;
  */
 class ServiceController extends ApiControllerBase
 {
-
     /**
      * reconfigure captive portal
      */
@@ -51,6 +50,51 @@ class ServiceController extends ApiControllerBase
             return array("status" => "ok");
         } else {
             return array("status" => "failed");
+        }
+    }
+
+    /**
+     * start tinc service (in background)
+     * @return array
+     */
+    public function startAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun("tinc start", true);
+            return array("response" => $response);
+        } else {
+            return array("response" => array());
+        }
+    }
+
+    /**
+     * stop tinc service
+     * @return array
+     */
+    public function stopAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun("tinc stop");
+            return array("response" => $response);
+        } else {
+            return array("response" => array());
+        }
+    }
+
+    /**
+     * restart tinc service
+     * @return array
+     */
+    public function restartAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun("tinc restart");
+            return array("response" => $response);
+        } else {
+            return array("response" => array());
         }
     }
 }

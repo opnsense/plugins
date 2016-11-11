@@ -76,11 +76,11 @@ def deploy(config_filename):
         tmp = network.privkey()
         write_file(tmp['filename'], tmp['content'])
 
-        # write if-up file
+        # write tinc-up file
         if_up = list()
         if_up.append("#!/bin/sh")
         if_up.append("ifconfig %s %s " % (interface_name, pipes.quote(network.get_local_address())))
-        write_file("%s/if-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
+        write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:

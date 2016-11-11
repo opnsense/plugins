@@ -74,6 +74,8 @@ POSSIBILITY OF SUCH DAMAGE.
                         message: data['status'],
                         draggable: true
                     });
+                } else {
+                    ajaxCall(url="/api/tinc/service/restart", sendData={});
                 }
             });
         });

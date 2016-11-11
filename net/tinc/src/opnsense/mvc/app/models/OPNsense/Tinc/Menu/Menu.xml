@@ -1,0 +1,7 @@
+<menu>
+    <VPN>
+      <Tinc cssClass="fa fa-lock fa-fw" order="100">
+        <config VisibleName="Configuration" order="10" url="/ui/tinc/"/>
+      </Tinc>
+    </VPN>
+</menu>

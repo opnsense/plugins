@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: tincd
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=opnsense-tincd
+
+stop_cmd=tincd_stop
+start_cmd=tincd_start
+
+# stop tincd
+tincd_stop()
+{
+	echo "stopping tincd"
+	/usr/local/opnsense/scripts/OPNsense/Tinc/tincd.py stop
+}
+
+# start tincd
+tincd_start()
+{
+	echo "starting tincd"
+	/usr/local/opnsense/scripts/OPNsense/Tinc/tincd.py start
+}
+
+run_rc_command $1
