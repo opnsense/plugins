@@ -214,8 +214,11 @@ sweep: check
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
 style: check
-	@(phpcs --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src \
-	    || true) > ${.CURDIR}/.style.out
+	@: > ${.CURDIR}/.style.out
+	@if [ -d ${.CURDIR}/src ]; then \
+	    (phpcs --standard=${.CURDIR}/../../ruleset.xml \
+	    ${.CURDIR}/src || true) > ${.CURDIR}/.style.out; \
+	fi
 	@echo -n "Total number of style warnings: "
 	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
 	@echo -n "Total number of style errors:   "
@@ -224,6 +227,9 @@ style: check
 	@rm ${.CURDIR}/.style.out
 
 style-fix: check
-	phpcbf --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src || true
+	@if [ -d ${.CURDIR}/src ]; then \
+	    phpcbf --standard=${.CURDIR}/../../ruleset.xml \
+	    ${.CURDIR}/src || true; \
+	fi
 
 .PHONY:	check

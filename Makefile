@@ -20,7 +20,7 @@ list-full:
 	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor
 
-TARGETS=	lint sweep sytle style-fix clean
+TARGETS=	lint sweep style style-fix clean
 
 .for TARGET in ${TARGETS}
 ${TARGET}:
