@@ -44,17 +44,11 @@ function if_tinc_services()
 
     $services = array();
     $is_enabled = false;
-    if (isset($config['OPNsense']['Tinc']['networks']['network'])) {
-        if (!isset($config['OPNsense']['Tinc']['networks']['network'][0])) {
-            $networks = array($config['OPNsense']['Tinc']['networks']['network']);
-        } else {
-            $networks = $config['OPNsense']['Tinc']['networks']['network'];
-        }
-        foreach ($networks as $network) {
-            if (!empty($network['enabled'])) {
-                $is_enabled = true;
-                break;
-            }
+    $mdl = new \OPNsense\Tinc\Tinc();
+    foreach ($mdl->networks->network->__items as $network) {
+        if ($network->enabled == "1") {
+            $is_enabled = true;
+            break;
         }
     }
 
@@ -78,26 +72,18 @@ function if_tinc_interfaces()
     global $config;
 
     $interfaces = array();
-
-    if (isset($config['OPNsense']['Tinc']['networks']['network'])) {
-        if (!isset($config['OPNsense']['Tinc']['networks']['network'][0])) {
-            $networks = array($config['OPNsense']['Tinc']['networks']['network']);
-        } else {
-            $networks = $config['OPNsense']['Tinc']['networks']['network'];
-        }
-        foreach ($networks as $network) {
-            if (!empty($network['enabled'])) {
-                $oic = array('enable' => true);
-                $oic['if'] = 'tinc';
-                $oic['descr'] = 'TincVPN';
-                $oic['type'] = 'none';
-                $oic['virtual'] = true;
-                $oic['networks'] = array();
-                $interfaces['tinc'] = $oic;
-                break;
-            }
+    $mdl = new \OPNsense\Tinc\Tinc();
+    foreach ($mdl->networks->network->__items as $network) {
+        if ($network->enabled == "1") {
+            $oic = array('enable' => true);
+            $oic['if'] = 'tinc';
+            $oic['descr'] = 'TincVPN';
+            $oic['type'] = 'none';
+            $oic['virtual'] = true;
+            $oic['networks'] = array();
+            $interfaces['tinc'] = $oic;
+            break;
         }
     }
-
     return $interfaces;
 }
