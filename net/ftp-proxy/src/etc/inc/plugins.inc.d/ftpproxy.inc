@@ -26,34 +26,55 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-function ftpproxy_firewall($fw)
+function ftpproxy_enabled()
 {
     global $config;
 
-    if (isset($config['OPNsense']['ftpproxies']) && is_array($config['OPNsense']['ftpproxies'])) {
-        $fw->registerAnchor("ftp-proxy/*", "nat");
-        $fw->registerAnchor("ftp-proxy/*", "rdr");
-        $fw->registerAnchor("ftp-proxy/*", "fw");
+    if (isset($config['OPNsense']['ftpproxies']['ftpproxy'][0])) {
+        foreach ($config['OPNsense']['ftpproxies']['ftpproxy'] as $ftpproxy) {
+            if (isset($ftpproxy['enabled']) && $ftpproxy['enabled']) {
+                return true;
+            }
+        }
     }
+
+    /* we should always make arrays for these, too many potential bugs: */
+    if (isset($config['OPNsense']['ftpproxies']['ftpproxy']['enabled']) &&
+        $config['OPNsense']['ftpproxies']['ftpproxy']['enabled']) {
+        return true;
+    }
+
+    return false;
+}
+
+function ftpproxy_firewall($fw)
+{
+    if (!ftpproxy_enabled()) {
+        return;
+    }
+
+    $fw->registerAnchor('ftp-proxy/*', 'nat');
+    $fw->registerAnchor('ftp-proxy/*', 'rdr');
+    $fw->registerAnchor('ftp-proxy/*', 'fw');
 }
 
 function ftpproxy_services()
 {
-    global $config;
-
     $services = array();
 
-    if (isset($config['OPNsense']['ftpproxies']) && is_array($config['OPNsense']['ftpproxies'])) {
-        $services[] = array(
-            'description' => gettext('FTP Proxy Server'),
-            'configd' => array(
-                'restart' => array('ftpproxy restart'),
-                'start' => array('ftpproxy start'),
-                'stop' => array('ftpproxy stop'),
-            ),
-            'name' => 'ftp-proxy',
-        );
+    if (!ftpproxy_enabled()) {
+        return $services;
     }
+
+    $services[] = array(
+        'description' => gettext('FTP Proxy Server'),
+        'configd' => array(
+            'restart' => array('ftpproxy restart'),
+            'start' => array('ftpproxy start'),
+            'stop' => array('ftpproxy stop'),
+        ),
+        'name' => 'ftp-proxy',
+    );
 
     return $services;
 }
