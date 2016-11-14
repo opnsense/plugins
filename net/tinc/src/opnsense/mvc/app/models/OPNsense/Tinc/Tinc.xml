@@ -46,7 +46,6 @@
                     <Required>Y</Required>
                     <Multiple>N</Multiple>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
-                    <ConfigdPopulateTTL>1</ConfigdPopulateTTL>
                     <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
                     <default>blowfish</default>
                 </cipher>
@@ -105,7 +104,6 @@
                     <Required>Y</Required>
                     <Multiple>N</Multiple>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
-                    <ConfigdPopulateTTL>1</ConfigdPopulateTTL>
                     <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
                     <default>blowfish</default>
                 </cipher>
