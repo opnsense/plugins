@@ -60,6 +60,7 @@ class Network(NetwConfObject):
         self._payload['id'] = None
         self._payload['privkey'] = None
         self._payload['intaddress'] = None
+        self._payload['debuglevel'] = 'd0'
         self._hosts = list()
 
     def get_id(self):
@@ -67,6 +68,12 @@ class Network(NetwConfObject):
 
     def get_local_address(self):
         return self._payload['intaddress']
+
+    def get_debuglevel(self):
+        if len(self._payload['debuglevel']) > 1:
+            return self._payload['debuglevel'][1]
+        else:
+            return '0'
 
     def set_hosts(self, hosts):
         for host in hosts:

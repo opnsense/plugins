@@ -18,6 +18,12 @@
         <help>This machines internal address to use and network mask for the whole network</help>
     </field>
     <field>
+        <id>network.debuglevel</id>
+        <label>Debug</label>
+        <type>dropdown</type>
+        <help>set debug output for this tinc network.</help>
+    </field>
+    <field>
         <label>This Host</label>
         <type>header</type>
     </field>

@@ -46,6 +46,19 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
+                <debuglevel type="OptionField">
+                    <Required>Y</Required>
+                    <default>ip</default>
+                    <OptionValues>
+                        <d0>[0] start/stop, serious errors</d0>
+                        <d1>[1] +all connections</d1>
+                        <d2>[2] +script status</d2>
+                        <d3>[3] +all requests</d3>
+                        <d4>[4] +meta socket</d4>
+                        <d5>[5] +network traffic</d5>
+                    </OptionValues>
+                    <ValidationMessage>debug level needs to be between 0 (default) and 5 (highest)</ValidationMessage>
+                </debuglevel>
             </network>
         </networks>
         <hosts>

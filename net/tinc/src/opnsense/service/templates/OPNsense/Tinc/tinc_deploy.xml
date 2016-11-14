@@ -9,6 +9,7 @@
         <intaddress>{{network.intaddress}}</intaddress>
         <privkey><![CDATA[{{network.privkey}}]]></privkey>
         <address>{{network.intaddress}}</address>
+        <debuglevel>{{network.debuglevel}}</debuglevel>
         <hosts>
             <host>
                 <hostname>{{network.hostname}}</hostname>

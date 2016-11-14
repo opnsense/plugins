@@ -98,4 +98,4 @@ if len(sys.argv) > 1:
             subprocess.call(['/usr/local/sbin/tincd','-n',instance.split('/')[-1], '-k'])
     elif sys.argv[1] == 'start':
         for netwrk in deploy('/usr/local/etc/tinc_deploy.xml'):
-            subprocess.call(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R'])
+            subprocess.call(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R', '-d', netwrk.get_debuglevel()])
