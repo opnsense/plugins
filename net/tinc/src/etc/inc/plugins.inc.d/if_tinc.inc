@@ -44,9 +44,16 @@ function if_tinc_syslog()
     $logfacilities = array();
 
     $logfacilities['tinc'] = array(
-        'facility' => array('tinc'),
+        'facility' => array(),
         'remote' => 'vpn',
     );
+    $mdl = new \OPNsense\Tinc\Tinc();
+
+    foreach ($mdl->networks->network->__items as $network) {
+        if ($network->enabled == '1') {
+            $logfacilities['tinc']['facility'][] = 'tinc.'.$network->name;
+        }
+    }
 
     return $logfacilities;
 }
