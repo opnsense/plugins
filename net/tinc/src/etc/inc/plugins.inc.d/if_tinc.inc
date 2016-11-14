@@ -26,6 +26,19 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+function if_tinc_enabled()
+{
+    $mdl = new \OPNsense\Tinc\Tinc();
+
+    foreach ($mdl->networks->network->__items as $network) {
+        if ($network->enabled == '1') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function if_tinc_syslog()
 {
     $logfacilities = array();
@@ -40,50 +53,40 @@ function if_tinc_syslog()
 
 function if_tinc_services()
 {
-    global $config;
-
     $services = array();
-    $is_enabled = false;
-    $mdl = new \OPNsense\Tinc\Tinc();
-    foreach ($mdl->networks->network->__items as $network) {
-        if ($network->enabled == "1") {
-            $is_enabled = true;
-            break;
-        }
+
+    if (!if_tinc_enabled()) {
+        return $services;
     }
 
-    if ($is_enabled) {
-        $services[] = array(
-            'description' => gettext('Tinc server'),
-            'configd' => array(
-                'restart' => array('tinc restart'),
-                'start' => array('tinc start'),
-                'stop' => array('tinc stop'),
-            ),
-            'name' => 'tincd',
-        );
-    }
+    $services[] = array(
+        'description' => gettext('Tinc VPN Server'),
+        'configd' => array(
+            'restart' => array('tinc restart'),
+            'start' => array('tinc start'),
+            'stop' => array('tinc stop'),
+        ),
+        'name' => 'tincd',
+    );
 
     return $services;
 }
 
 function if_tinc_interfaces()
 {
-    global $config;
-
     $interfaces = array();
-    $mdl = new \OPNsense\Tinc\Tinc();
-    foreach ($mdl->networks->network->__items as $network) {
-        if ($network->enabled == "1") {
-            $oic = array('enable' => true);
-            $oic['if'] = 'tinc';
-            $oic['descr'] = 'TincVPN';
-            $oic['type'] = 'none';
-            $oic['virtual'] = true;
-            $oic['networks'] = array();
-            $interfaces['tinc'] = $oic;
-            break;
-        }
+
+    if (!if_tinc_enabled()) {
+        return $interfaces;
     }
+
+    $oic = array('enable' => true);
+    $oic['if'] = 'tinc';
+    $oic['descr'] = 'TincVPN';
+    $oic['type'] = 'none';
+    $oic['virtual'] = true;
+    $oic['networks'] = array();
+    $interfaces['tinc'] = $oic;
+
     return $interfaces;
 }
