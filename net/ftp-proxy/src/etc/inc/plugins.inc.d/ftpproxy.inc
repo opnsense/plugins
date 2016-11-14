@@ -28,20 +28,12 @@
 
 function ftpproxy_enabled()
 {
-    global $config;
+    $model = new \OPNsense\FtpProxy\FtpProxy();
 
-    if (isset($config['OPNsense']['ftpproxies']['ftpproxy'][0])) {
-        foreach ($config['OPNsense']['ftpproxies']['ftpproxy'] as $ftpproxy) {
-            if (isset($ftpproxy['enabled']) && $ftpproxy['enabled']) {
-                return true;
-            }
+    foreach ($model->ftpproxy->__items as $server) {
+        if ($server->enabled == '1') {
+            return true;
         }
-    }
-
-    /* we should always make arrays for these, too many potential bugs: */
-    if (isset($config['OPNsense']['ftpproxies']['ftpproxy']['enabled']) &&
-        $config['OPNsense']['ftpproxies']['ftpproxy']['enabled']) {
-        return true;
     }
 
     return false;
