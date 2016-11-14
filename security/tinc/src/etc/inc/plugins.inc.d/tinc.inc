@@ -26,7 +26,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-function if_tinc_enabled()
+function tinc_enabled()
 {
     $mdl = new \OPNsense\Tinc\Tinc();
 
@@ -39,7 +39,7 @@ function if_tinc_enabled()
     return false;
 }
 
-function if_tinc_syslog()
+function tinc_syslog()
 {
     $logfacilities = array();
 
@@ -58,11 +58,11 @@ function if_tinc_syslog()
     return $logfacilities;
 }
 
-function if_tinc_services()
+function tinc_services()
 {
     $services = array();
 
-    if (!if_tinc_enabled()) {
+    if (!tinc_enabled()) {
         return $services;
     }
 
@@ -79,11 +79,11 @@ function if_tinc_services()
     return $services;
 }
 
-function if_tinc_interfaces()
+function tinc_interfaces()
 {
     $interfaces = array();
 
-    if (!if_tinc_enabled()) {
+    if (!tinc_enabled()) {
         return $interfaces;
     }
 
