@@ -1,6 +1,7 @@
 <networks>
 {% if helpers.exists('OPNsense.Tinc.networks.network') %}
 {%   for network in helpers.toList('OPNsense.Tinc.networks.network', 'id') %}
+{%     if network.enabled|default('0') == '1' %}
     <network>
         <id>{{network.id}}</id>
         <hostname>{{network.hostname}}</hostname>
@@ -31,6 +32,7 @@
 {%       endfor %}
         </hosts>
     </network>
+{%     endif %}
 {%   endfor %}
 {% endif %}
 </networks>
