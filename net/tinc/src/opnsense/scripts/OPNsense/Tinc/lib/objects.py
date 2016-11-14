@@ -41,7 +41,7 @@ class NetwConfObject(object):
     def set(self, prop, value):
         if ('set_%s' % prop) in dir(self):
             getattr(self,'set_%s' % prop)(value)
-        else:
+        elif value.text is not None:
             # default copy propery to _payload
             self._payload[prop] = value.text
 
