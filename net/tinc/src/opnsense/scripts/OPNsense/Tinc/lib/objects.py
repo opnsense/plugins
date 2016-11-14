@@ -109,6 +109,7 @@ class Host(NetwConfObject):
         self._connectTo = "0"
         self._payload['subnet'] = None
         self._payload['pubkey'] = None
+        self._payload['cipher'] = None
 
     def connect_to_this_host(self):
         if self.is_valid() and self._connectTo == "1":
@@ -123,6 +124,7 @@ class Host(NetwConfObject):
         result = list()
         result.append('Address=%(address)s'%self._payload)
         result.append('Subnet=%(subnet)s'%self._payload)
+        result.append('Cipher=%(cipher)s'%self._payload)
         result.append(self._payload['pubkey'])
         return '\n'.join(result)
 

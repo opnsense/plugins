@@ -17,6 +17,7 @@
                 <address>{{network.extaddress}}</address>
                 <subnet>{{network.subnet}}</subnet>
                 <pubkey><![CDATA[{{network.pubkey}}]]></pubkey>
+                <cipher>{{network.cipher}}</cipher>
                 <connectto>0</connectto>
             </host>
 {%       for host in helpers.toList('OPNsense.Tinc.hosts.host', 'hostname') %}
@@ -27,6 +28,7 @@
                 <address>{{host.extaddress}}</address>
                 <subnet>{{host.subnet}}</subnet>
                 <pubkey><![CDATA[{{host.pubkey}}]]></pubkey>
+                <cipher>{{host.cipher}}</cipher>
                 <connectto>{{host.connectTo}}</connectto>
             </host>
 {%          endif %}
