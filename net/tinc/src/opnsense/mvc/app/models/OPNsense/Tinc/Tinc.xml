@@ -47,7 +47,7 @@
                     <Multiple>N</Multiple>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
                     <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
-                    <default>blowfish</default>
+                    <default>aes-256-cbc</default>
                 </cipher>
                 <enabled type="BooleanField">
                     <default>1</default>
@@ -105,7 +105,7 @@
                     <Multiple>N</Multiple>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
                     <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
-                    <default>blowfish</default>
+                    <default>aes-256-cbc</default>
                 </cipher>
                 <connectTo type="BooleanField">
                     <default>1</default>

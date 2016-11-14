@@ -125,6 +125,7 @@ class Host(NetwConfObject):
         result.append('Address=%(address)s'%self._payload)
         result.append('Subnet=%(subnet)s'%self._payload)
         result.append('Cipher=%(cipher)s'%self._payload)
+        result.append('Digest=sha256')
         result.append(self._payload['pubkey'])
         return '\n'.join(result)
 
