@@ -94,4 +94,11 @@
         <help><![CDATA[Sets the source address which will be used when connecting to the server.]]></help>
         <advanced>true</advanced>
     </field>
+    <field>
+        <id>server.advanced</id>
+        <label>Advanced options</label>
+        <type>text</type>
+        <help><![CDATA[A list of parameters that will be appended to the server line in every backend where this is will be used.<br/>Example: send-proxy<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>.]]></help>
+        <advanced>true</advanced>
+    </field>
 </form>
