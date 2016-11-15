@@ -612,6 +612,9 @@
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
                     <Required>N</Required>
                 </source>
+                <advanced type="TextField">
+                    <Required>N</Required>
+                </advanced>
             </server>
         </servers>
         <healthchecks>
