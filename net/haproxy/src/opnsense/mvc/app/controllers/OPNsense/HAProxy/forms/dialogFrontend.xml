@@ -65,6 +65,13 @@
         <hint>Type certificate name or choose from list.</hint>
     </field>
     <field>
+        <id>frontend.ssl_default_certificate</id>
+        <label>Default certificate</label>
+        <type>dropdown</type>
+        <help><![CDATA[This certificate will be presented if no SNI is provided by the client or if the client provides an SNI hostname which does not match any certificate.<div class="text-info"><b>NOTE:</b> This parameter is optional to enforce a certain sort order for certificates. The certificate itself must still be listed under "Certificates".</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>frontend.ssl_customOptions</id>
         <label>Advanced SSL options</label>
         <type>text</type>
