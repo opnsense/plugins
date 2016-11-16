@@ -282,6 +282,11 @@
                     <Multiple>Y</Multiple>
                     <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
                 </ssl_certificates>
+                <ssl_default_certificate type="CertificateField">
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                    <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+                </ssl_default_certificate>
                 <ssl_customOptions type="TextField">
                     <Required>N</Required>
                 </ssl_customOptions>
