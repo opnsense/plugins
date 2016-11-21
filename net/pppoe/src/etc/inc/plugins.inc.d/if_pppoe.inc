@@ -176,7 +176,7 @@ function if_pppoe_configure_single(&$pppoecfg)
 
     switch ($pppoecfg['mode']) {
         case 'server':
-            mkdir("/var/etc/pppoe{$pppoecfg['pppoeid']}-vpn");
+            @mkdir("/var/etc/pppoe{$pppoecfg['pppoeid']}-vpn");
             if_pppoe_link_scripts("/var/etc/pppoe{$pppoecfg['pppoeid']}-vpn");
 
             $pppoe_interface = get_real_interface($pppoecfg['interface']);

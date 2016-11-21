@@ -137,7 +137,7 @@ function if_pptp_configure_do()
 
     switch ($pptpdcfg['mode']) {
         case 'server':
-            mkdir('/var/etc/pptp-vpn');
+            @mkdir('/var/etc/pptp-vpn');
             if_pptp_link_scripts('/var/etc/pptp-vpn');
 
             $fd = fopen('/var/etc/pptp-vpn/mpd.conf', 'w');

@@ -141,8 +141,7 @@ function if_l2tp_configure_do()
 
     switch ($l2tpcfg['mode']) {
         case 'server':
-
-            mkdir('/var/etc/l2tp-vpn');
+            @mkdir('/var/etc/l2tp-vpn');
             if_l2tp_link_scripts('/var/etc/l2tp-vpn');
 
             $fd = fopen("/var/etc/l2tp-vpn/mpd.conf", "w");
