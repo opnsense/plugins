@@ -97,3 +97,13 @@ function tinc_interfaces()
 
     return $interfaces;
 }
+
+function tinc_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'tincvpn';
+    $result['section'] = 'OPNsense.Tinc';
+    $result['description'] = 'Tinc VPN';
+    $result['help'] = gettext('Synchronize Tinc VPN settings to backup');
+    return array($result);
+}
