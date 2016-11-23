@@ -1,8 +1,6 @@
 <acl>
-    <!-- unique acl key, must be globally unique for all acl's  -->
     <page-user-ssoproxyad>
-        <name>WebCfg - Users: SSO Proxy AD</name>
-        <description>Allow access to the SSO Proxy AD module</description>
+        <name>Services: Web Proxy: SSO</name>
         <patterns>
             <pattern>ui/ssoproxyad/*</pattern>
             <pattern>api/ssoproxyad/*</pattern>

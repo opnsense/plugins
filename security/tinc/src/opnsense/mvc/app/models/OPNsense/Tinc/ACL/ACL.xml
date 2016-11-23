@@ -1,8 +1,6 @@
 <acl>
-    <!-- unique acl key, must be globally unique for all acl's  -->
     <page-tinc-config>
-        <name>WebCfg - VPN: Tinc configuration</name>
-        <description>Allow access to the 'VPN: Tinc' page.</description>
+        <name>VPN: Tinc configuration</name>
         <patterns>
             <pattern>ui/tinc/*</pattern>
             <pattern>api/tinc/*</pattern>

@@ -1,7 +1,6 @@
 <acl>
    <page-services-ftpproxy>
-      <name>WebCfg - Services: FTP Proxy page</name>
-      <description>Allow access to the 'Services: FTP Proxy' page.</description>
+      <name>Services: FTP Proxy</name>
       <patterns>
          <pattern>ui/ftpproxy/*</pattern>
          <pattern>api/ftpproxy/*</pattern>

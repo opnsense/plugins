@@ -1,8 +1,6 @@
 <acl>
-    <!-- unique acl key, must be globally unique for all acl's  -->
     <page-services-haproxy>
-        <name>WebCfg - Services: HAProxy page</name>
-        <description>Allow access to the 'Services: HAProxy' page.</description>
+        <name>Services: HAProxy</name>
         <patterns>
             <pattern>ui/haproxy/*</pattern>
             <pattern>api/haproxy/*</pattern>
