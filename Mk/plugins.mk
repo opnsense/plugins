@@ -93,12 +93,13 @@ manifest: check
 	@echo "}"
 .endif
 
-scripts: check scripts-auto scripts-manual
+scripts: check scripts-pre scripts-auto scripts-manual scripts-post
 
-scripts-manual:
+scripts-pre:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
-		if [ -f $${SCRIPT} ]; then \
-			cp $${SCRIPT} ${DESTDIR}/; \
+		rm -f ${DESTDIR}/$${SCRIPT}; \
+		if [ -f ${.CURDIR}/$${SCRIPT}.pre ]; then \
+			cp ${.CURDIR}/$${SCRIPT}.pre ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
@@ -133,6 +134,20 @@ scripts-auto:
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
 	fi
+
+scripts-manual:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
+			cp ${.CURDIR}/$${SCRIPT} ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
+
+scripts-post:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT}.post ]; then \
+			cat ${.CURDIR}/$${SCRIPT}.post >> ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
