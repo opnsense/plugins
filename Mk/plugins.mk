@@ -93,12 +93,12 @@ manifest: check
 	@echo "}"
 .endif
 
-scripts: check scripts-manual scripts-auto
+scripts: check scripts-auto scripts-manual
 
 scripts-manual:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f $${SCRIPT} ]; then \
-			cp $${SCRIPT} ${DESTDIR}/; \
+			cat $${SCRIPT} >> ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
