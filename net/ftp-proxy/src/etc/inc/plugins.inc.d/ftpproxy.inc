@@ -1,4 +1,5 @@
 <?php
+
 /*
     Copyright (C) 2016 EURO-LOG AG
     All rights reserved.
@@ -25,12 +26,47 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+function ftpproxy_enabled()
+{
+    $model = new \OPNsense\FtpProxy\FtpProxy();
+
+    foreach ($model->ftpproxy->__items as $server) {
+        if ($server->enabled == '1') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function ftpproxy_firewall($fw)
 {
-    global $config;
-    if (isset($config['OPNsense']['ftpproxies']) && is_array($config['OPNsense']['ftpproxies'])) {
-        $fw->registerAnchor("ftp-proxy/*", "nat");
-        $fw->registerAnchor("ftp-proxy/*", "rdr");
-        $fw->registerAnchor("ftp-proxy/*", "fw");
+    if (!ftpproxy_enabled()) {
+        return;
     }
+
+    $fw->registerAnchor('ftp-proxy/*', 'nat');
+    $fw->registerAnchor('ftp-proxy/*', 'rdr');
+    $fw->registerAnchor('ftp-proxy/*', 'fw');
+}
+
+function ftpproxy_services()
+{
+    $services = array();
+
+    if (!ftpproxy_enabled()) {
+        return $services;
+    }
+
+    $services[] = array(
+        'description' => gettext('FTP Proxy Server'),
+        'configd' => array(
+            'restart' => array('ftpproxy restart'),
+            'start' => array('ftpproxy start'),
+            'stop' => array('ftpproxy stop'),
+        ),
+        'name' => 'ftp-proxy',
+    );
+
+    return $services;
 }

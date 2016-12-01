@@ -1,0 +1,9 @@
+<acl>
+    <page-tinc-config>
+        <name>VPN: Tinc configuration</name>
+        <patterns>
+            <pattern>ui/tinc/*</pattern>
+            <pattern>api/tinc/*</pattern>
+        </patterns>
+    </page-tinc-config>
+</acl>

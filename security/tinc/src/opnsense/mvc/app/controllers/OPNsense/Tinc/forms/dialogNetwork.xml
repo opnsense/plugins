@@ -1,0 +1,70 @@
+<form>
+    <field>
+        <id>network.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this network</help>
+    </field>
+    <field>
+        <id>network.name</id>
+        <label>Network Name</label>
+        <type>text</type>
+        <help>Name used for this network</help>
+    </field>
+    <field>
+        <id>network.intaddress</id>
+        <label>Network</label>
+        <type>text</type>
+        <help>This machines internal address to use and network mask for the whole network</help>
+    </field>
+    <field>
+      <id>network.cipher</id>
+      <label>Cipher</label>
+      <type>dropdown</type>
+      <help> The symmetric cipher algorithm used to encrypt UDP packets.
+             Any cipher supported by LibreSSL or OpenSSL is recognised.
+             Furthermore, specifying "none" will turn off packet encryption.
+             It is best to use only those ciphers which support CBC mode
+      </help>
+    </field>
+    <field>
+        <id>network.debuglevel</id>
+        <label>Debug</label>
+        <type>dropdown</type>
+        <help>set debug output for this tinc network.</help>
+    </field>
+    <field>
+        <label>This Host</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>network.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>The hostname for this machine in the network</help>
+    </field>
+    <field>
+        <id>network.extaddress</id>
+        <label>Ext. Address</label>
+        <type>text</type>
+        <help>This machines external address to use</help>
+    </field>
+    <field>
+        <id>network.subnet</id>
+        <label>Subnet</label>
+        <type>text</type>
+        <help>This machines part of the network</help>
+    </field>
+    <field>
+        <id>network.privkey</id>
+        <label>Private key</label>
+        <type>textbox</type>
+        <help>Private key for this host in the network (leave empty to generate)</help>
+    </field>
+    <field>
+        <id>network.pubkey</id>
+        <label>Public key</label>
+        <type>textbox</type>
+        <help>Public key for this host in the network (leave empty to generate)</help>
+    </field>
+</form>

@@ -282,6 +282,11 @@
                     <Multiple>Y</Multiple>
                     <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
                 </ssl_certificates>
+                <ssl_default_certificate type="CertificateField">
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                    <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+                </ssl_default_certificate>
                 <ssl_customOptions type="TextField">
                     <Required>N</Required>
                 </ssl_customOptions>
@@ -607,6 +612,9 @@
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
                     <Required>N</Required>
                 </source>
+                <advanced type="TextField">
+                    <Required>N</Required>
+                </advanced>
             </server>
         </servers>
         <healthchecks>

@@ -1,8 +1,6 @@
 <acl>
-    <!-- unique acl key, must be globally unique for all acl's  -->
     <page-services-smart>
-        <name>WebCfg - Services: SMART</name>
-        <description>Allow access to the 'Services: SMART' page.</description>
+        <name>Services: SMART</name>
         <patterns>
             <pattern>diag_smart.php*</pattern>
         </patterns>

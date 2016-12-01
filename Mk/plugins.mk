@@ -93,12 +93,13 @@ manifest: check
 	@echo "}"
 .endif
 
-scripts: check scripts-manual scripts-auto
+scripts: check scripts-pre scripts-auto scripts-manual scripts-post
 
-scripts-manual:
+scripts-pre:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
-		if [ -f $${SCRIPT} ]; then \
-			cp $${SCRIPT} ${DESTDIR}/; \
+		rm -f ${DESTDIR}/$${SCRIPT}; \
+		if [ -f ${.CURDIR}/$${SCRIPT}.pre ]; then \
+			cp ${.CURDIR}/$${SCRIPT}.pre ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
@@ -134,6 +135,20 @@ scripts-auto:
 		done; \
 	fi
 
+scripts-manual:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
+			cp ${.CURDIR}/$${SCRIPT} ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
+
+scripts-post:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT}.post ]; then \
+			cat ${.CURDIR}/$${SCRIPT}.post >> ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
+
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
@@ -164,7 +179,7 @@ remove: check
 	done
 	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
-			rmdir ${DESTDIR}${LOCALBASE}/$${DIR}; \
+			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
 	done
 
@@ -214,8 +229,11 @@ sweep: check
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
 style: check
-	@(phpcs --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src \
-	    || true) > ${.CURDIR}/.style.out
+	@: > ${.CURDIR}/.style.out
+	@if [ -d ${.CURDIR}/src ]; then \
+	    (phpcs --standard=${.CURDIR}/../../ruleset.xml \
+	    ${.CURDIR}/src || true) > ${.CURDIR}/.style.out; \
+	fi
 	@echo -n "Total number of style warnings: "
 	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
 	@echo -n "Total number of style errors:   "
@@ -224,6 +242,9 @@ style: check
 	@rm ${.CURDIR}/.style.out
 
 style-fix: check
-	phpcbf --standard=${.CURDIR}/../../ruleset.xml ${.CURDIR}/src || true
+	@if [ -d ${.CURDIR}/src ]; then \
+	    phpcbf --standard=${.CURDIR}/../../ruleset.xml \
+	    ${.CURDIR}/src || true; \
+	fi
 
 .PHONY:	check

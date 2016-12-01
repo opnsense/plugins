@@ -2,7 +2,6 @@
 
 /**
  *    Copyright (C) 2016 EURO-LOG AG
- *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,7 +24,6 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\FtpProxy\Api;
@@ -33,7 +31,6 @@ namespace OPNsense\FtpProxy\Api;
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\FtpProxy\FtpProxy;
-
 
 /**
  * Class ServiceController
@@ -166,7 +163,10 @@ class ServiceController extends ApiControllerBase
 			return trim($backend->configdRun('template reload OPNsense/FtpProxy'));
 		}
 		if ($action == 'reload') {
-			return trim($backend->configdRun("ftpproxy reload"));
+			$ret = trim($backend->configdRun('ftpproxy reload'));
+			/* also requires anchors in rules: */
+			$backend->configdRun('filter reload');
+			return $ret;
 		}
 		return "Wrong action defined";
 	}

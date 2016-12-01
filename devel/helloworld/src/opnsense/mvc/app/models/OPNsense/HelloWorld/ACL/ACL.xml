@@ -1,8 +1,6 @@
 <acl>
-    <!-- unique acl key, must be globally unique for all acl's  -->
     <page-user-helloworld>
-        <name>WebCfg - Users: Hello World! </name>
-        <description>Allow access to the Hello World! module</description>
+        <name>Lobby: Hello World!</name>
         <patterns>
             <pattern>ui/helloworld/*</pattern>
             <pattern>api/helloworld/*</pattern>
