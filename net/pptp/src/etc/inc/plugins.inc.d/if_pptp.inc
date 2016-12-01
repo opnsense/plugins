@@ -32,7 +32,7 @@
 
 /* BEGIN remove this in 17.1: provide compat for newer plugin on stock 16.7 */
 require_once 'util.inc';
-if (!function_exists(url_safe)) {
+if (!function_exists('url_safe')) {
     function url_safe($format, $args = array())
     {
         if (!is_array($args)) {
