@@ -31,7 +31,9 @@
  */
 
 /* BEGIN remove this in 17.1: provide compat for newer plugin on stock 16.7 */
+
 require_once 'util.inc';
+
 if (!function_exists('url_safe')) {
     function url_safe($format, $args = array())
     {
@@ -47,6 +49,13 @@ if (!function_exists('url_safe')) {
         return vsprintf($format, $args);
     }
 }
+
+require_once 'interfaces.lib.inc';
+
+if (!function_exists('legacy_netgraph_attach')) {
+    function legacy_netgraph_attach($if) { return; }
+}
+
 /* END remove this in 17.1 */
 
 function if_pppoe_configure()
