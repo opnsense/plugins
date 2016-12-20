@@ -109,6 +109,12 @@
                 <help><![CDATA[Set the maximum time to wait for a connection attempt to a server to succeed. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
             </field>
             <field>
+                <id>haproxy.general.defaults.timeoutCheck</id>
+                <label>Check Timeout</label>
+                <type>text</type>
+                <help><![CDATA[Sets an additional read timeout for running health checks on a server. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+            </field>
+            <field>
                 <id>haproxy.general.defaults.timeoutServer</id>
                 <label>Server Timeout</label>
                 <type>text</type>

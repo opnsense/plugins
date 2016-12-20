@@ -118,6 +118,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.tuning_timeoutCheck</id>
+        <label>Check Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Sets an additional read timeout for running health checks on a server. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>backend.tuning_timeoutServer</id>
         <label>Server Timeout</label>
         <type>text</type>
