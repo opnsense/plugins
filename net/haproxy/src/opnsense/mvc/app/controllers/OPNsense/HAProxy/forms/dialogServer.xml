@@ -81,6 +81,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>server.checkDownInterval</id>
+        <label>Down Interval</label>
+        <type>text</type>
+        <help><![CDATA[Sets the interval (in milliseconds) for running health checks on the server when the server state is DOWN. If it is not set HAProxy uses the check interval.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>server.checkport</id>
         <label>Port to check</label>
         <type>text</type>

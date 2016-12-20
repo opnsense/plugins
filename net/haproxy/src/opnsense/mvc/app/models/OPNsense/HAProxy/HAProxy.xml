@@ -94,6 +94,11 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </timeoutConnect>
+                <timeoutCheck type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </timeoutCheck>
                 <timeoutServer type="TextField">
                     <default>30s</default>
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
@@ -484,6 +489,11 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutConnect>
+                <tuning_timeoutCheck type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutCheck>
                 <tuning_timeoutServer type="TextField">
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
@@ -607,6 +617,12 @@
                     <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
                     <Required>Y</Required>
                 </checkInterval>
+                <checkDownInterval type="IntegerField">
+                    <MinimumValue>500</MinimumValue>
+                    <MaximumValue>100000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
+                    <Required>N</Required>
+                </checkDownInterval>
                 <source type="TextField">
                     <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
