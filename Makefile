@@ -12,11 +12,6 @@ PLUGIN_DIRS+=	${_${CATEGORY}}
 
 list:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ${PLUGIN_DIR}
-.endfor
-
-list-full:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
 	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor
 
