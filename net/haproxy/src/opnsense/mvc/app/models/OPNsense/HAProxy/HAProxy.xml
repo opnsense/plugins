@@ -729,6 +729,29 @@
                 <http_value type="TextField">
                     <Required>N</Required>
                 </http_value>
+                <tcp_enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </tcp_enabled>
+                <tcp_sendValue type="TextField">
+                    <Required>N</Required>
+                </tcp_sendValue>
+                <tcp_matchType type="OptionField">
+                    <Required>N</Required>
+                    <default>string</default>
+                    <OptionValues>
+                        <string>test the exact string match in the response buffer [default]</string>
+                        <rstring>test a regular expression on the response buffer</rstring>
+                        <binary>test the exact string in its hexadecimal form matches in the response buffer</binary>
+                    </OptionValues>
+                </tcp_matchType>
+                <tcp_negate type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </tcp_negate>
+                <tcp_matchValue type="TextField">
+                    <Required>N</Required>
+                </tcp_matchValue>
                 <agentPort type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
