@@ -64,8 +64,12 @@ below.
 
 The make targets for the root directory:
 
-* list:		print a list of all plugin directories
-* list-full:	print a list of all plugin directories with comments
+* clean:	remove all changes and unknown files
+* lint:		run syntax checks
+* list:		print a list of all plugin directories with comments
+* style-fix:	apply style fixes
+* style:	run style checks
+* sweep:	apply whitespace fixes
 
 The make targets for any plugin directory:
 
