@@ -1,4 +1,4 @@
-PLUGIN_NAME=		igmpproxy
+PLUGIN_NAME=		igmp-proxy
 PLUGIN_VERSION=		0.1
 PLUGIN_PRIVATE=		yes
 PLUGIN_DEPENDS=		igmpproxy
