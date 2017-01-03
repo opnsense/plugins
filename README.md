@@ -32,10 +32,15 @@ devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
+net/igmp-proxy -- IGMP-Proxy Service
 net/intel-em -- Intel Gigabit Base Driver for em(4) and lem(4)
 net/l2tp -- L2TP server based on MPD5
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
+net/relayd -- Relayd Load Balancer
+net/upnp -- Universal Plug and Play Service
+net/wol -- Wake on LAN Service
+net-mgmt/snmp -- SNMP Server via bsnmpd
 sysutils/boot-delay -- Apply a persistent boot delay
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
