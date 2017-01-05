@@ -1,0 +1,2 @@
+lighttpd-acme-challenge.conf:/var/etc/lighttpd-acme-challenge.conf
+rc.conf.d:/etc/rc.conf.d/acme_http_challenge

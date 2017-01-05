@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: acme_http_challenge
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf to enable acme_http_challenge:
+#
+# acme_http_challenge_enable (bool):	Set it to "YES" to enable acme_http_challenge
+#				Default is "NO".
+# acme_http_challenge_conf (path):		Set full path to configuration file.
+#				Default is "/var/etc/lighttpd-acme-challenge.conf".
+# acme_http_challenge_pidfile (path):	Set full path to pid file.
+#				Default is "/var/run/lighttpd-acme-challenge.pid".
+#
+
+. /etc/rc.subr
+
+name="acme_http_challenge"
+rcvar=acme_http_challenge_enable
+
+load_rc_config $name
+
+: ${acme_http_challenge_enable="NO"}
+: ${acme_http_challenge_conf="/var/etc/lighttpd-acme-challenge.conf"}
+: ${acme_http_challenge_pidfile="/var/run/lighttpd-acme-challenge.pid"}
+
+command=/usr/local/sbin/lighttpd
+stop_postcmd=stop_postcmd
+restart_precmd="acme_http_challenge_checkconfig"
+graceful_precmd="acme_http_challenge_checkconfig"
+graceful_cmd="acme_http_challenge_graceful"
+gracefulstop_cmd="acme_http_challenge_gracefulstop"
+configtest_cmd="acme_http_challenge_checkconfig"
+extra_commands="reload graceful gracefulstop configtest"
+command_args="-f ${acme_http_challenge_conf}"
+pidfile=${acme_http_challenge_pidfile}
+required_files=${acme_http_challenge_conf}
+
+acme_http_challenge_checkconfig()
+{
+	echo "Performing sanity check on ${name} configuration:"
+	eval "${command} ${command_args} -t"
+}
+
+acme_http_challenge_gracefulstop()
+{
+	echo "Stopping ${name} gracefully."
+	sig_reload="INT"
+	run_rc_command reload
+}
+
+acme_http_challenge_graceful()
+{
+	acme_http_challenge_gracefulstop
+	rm -f ${pidfile}
+	run_rc_command start
+}
+
+stop_postcmd()
+{
+	rm -f ${pidfile}
+}
+
+run_rc_command "$1"
