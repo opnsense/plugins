@@ -1,0 +1,33 @@
+<form>
+    <field>
+        <id>account.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this account</help>
+    </field>
+    <field>
+        <id>account.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this account.</help>
+    </field>
+    <field>
+        <id>account.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this account.</help>
+    </field>
+    <field>
+        <id>account.email</id>
+        <label>E-Mail Address</label>
+        <type>text</type>
+        <help>Optional e-mail address for this account.</help>
+    </field>
+    <field>
+        <id>account.certificateAuthority</id>
+        <label>Certificate Authority</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the certificate authority for this account.]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>
