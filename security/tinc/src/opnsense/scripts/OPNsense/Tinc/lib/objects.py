@@ -31,6 +31,7 @@ class NetwConfObject(object):
         self._payload['hostname'] = None
         self._payload['network'] = None
         self._payload['address'] = None
+        self._payload['port'] = None
 
     def is_valid(self):
         for key in self._payload:
@@ -85,6 +86,8 @@ class Network(NetwConfObject):
     def config_text(self):
         result = list()
         result.append('AddressFamily=any')
+        result.append('Port=%(port)s' % self._payload)
+        result.append('PingTimeout=%(pingtimeout)s' % self._payload)
         for host in self._hosts:
             if host.connect_to_this_host():
                 result.append('ConnectTo = %s' % (host.get_hostname(),))
@@ -122,7 +125,7 @@ class Host(NetwConfObject):
 
     def config_text(self):
         result = list()
-        result.append('Address=%(address)s'%self._payload)
+        result.append('Address=%(address)s %(port)s'%self._payload)
         result.append('Subnet=%(subnet)s'%self._payload)
         result.append('Cipher=%(cipher)s'%self._payload)
         result.append('Digest=sha256')

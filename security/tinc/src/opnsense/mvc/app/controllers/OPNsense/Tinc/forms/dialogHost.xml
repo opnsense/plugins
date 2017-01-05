@@ -24,6 +24,12 @@
         <help>This machines external address to use</help>
     </field>
     <field>
+        <id>host.extport</id>
+        <label>Ext. Port</label>
+        <type>text</type>
+        <help>This machines external port to use</help>
+    </field>
+    <field>
         <id>host.subnet</id>
         <label>Subnet</label>
         <type>text</type>
