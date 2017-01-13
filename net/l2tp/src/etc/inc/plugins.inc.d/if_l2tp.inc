@@ -30,33 +30,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* BEGIN remove this in 17.1: provide compat for newer plugin on stock 16.7 */
-require_once 'util.inc';
-
-if (!function_exists('url_safe')) {
-    function url_safe($format, $args = array())
-    {
-        if (!is_array($args)) {
-            /* just in case there's only one argument */
-            $args = array($args);
-        }
-
-        foreach ($args as $id => $arg) {
-            $args[$id] = urlencode($arg);
-        }
-
-        return vsprintf($format, $args);
-    }
-}
-
-require_once 'interfaces.lib.inc';
-
-if (!function_exists('legacy_netgraph_attach')) {
-    function legacy_netgraph_attach($if) { return; }
-}
-
-/* END remove this in 17.1 */
-
 function if_l2tp_configure()
 {
     return array('if_l2tp_configure_do');
