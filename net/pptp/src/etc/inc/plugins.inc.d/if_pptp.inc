@@ -256,9 +256,6 @@ EOD;
             unset($mpdsecret);
             chmod('/var/etc/pptp-vpn/mpd.secret', 0600);
 
-            /* fixed to WAN elsewhere, no need to extend, but at least make it work */
-            legacy_netgraph_attach(get_real_interface('wan'));
-
             mwexec('/usr/local/sbin/mpd5 -b -d /var/etc/pptp-vpn -p /var/run/pptp-vpn.pid -s pptps pptps');
 
             break;
