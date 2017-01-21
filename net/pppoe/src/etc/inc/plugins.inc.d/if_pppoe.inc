@@ -288,8 +288,6 @@ EOD;
                 chmod("/var/etc/pppoe{$pppoecfg['pppoeid']}-vpn/mpd.secret", 0600);
             }
 
-            legacy_netgraph_attach($pppoe_interface);
-
             mwexec("/usr/local/sbin/mpd5 -b -d /var/etc/pppoe{$pppoecfg['pppoeid']}-vpn -p /var/run/pppoe{$pppoecfg['pppoeid']}-vpn.pid -s poes poes");
 
             break;
