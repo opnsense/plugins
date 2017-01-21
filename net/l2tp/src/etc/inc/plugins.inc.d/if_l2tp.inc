@@ -243,8 +243,6 @@ EOD;
             unset($mpdsecret);
             chmod('/var/etc/l2tp-vpn/mpd.secret', 0600);
 
-            legacy_netgraph_attach(get_real_interface($l2tpcfg['interface']));
-
             mwexec('/usr/local/sbin/mpd5 -b -d /var/etc/l2tp-vpn -p /var/run/l2tp-vpn.pid -s l2tps l2tps');
 
             break;
