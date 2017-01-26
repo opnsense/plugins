@@ -32,7 +32,7 @@
 
 function if_l2tp_configure()
 {
-    return array('if_l2tp_configure_do');
+    return array('bootup' => array('if_l2tp_configure_do'));
 }
 
 function if_l2tp_services()

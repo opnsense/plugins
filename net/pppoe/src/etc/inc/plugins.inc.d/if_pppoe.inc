@@ -32,7 +32,7 @@
 
 function if_pppoe_configure()
 {
-    return array('if_pppoe_configure_do');
+    return array('bootup' => array('if_pppoe_configure_do'));
 }
 
 function if_pppoe_services()
