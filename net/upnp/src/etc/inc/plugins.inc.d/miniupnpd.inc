@@ -85,7 +85,7 @@ function miniupnpd_stop()
 
 function miniupnpd_configure()
 {
-    return array('miniupnpd_configure_do');
+    return array('bootup' => array('miniupnpd_configure_do'));
 }
 
 function miniupnpd_uuid()
