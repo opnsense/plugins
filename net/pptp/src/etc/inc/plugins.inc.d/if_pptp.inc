@@ -32,7 +32,7 @@
 
 function if_pptp_configure()
 {
-    return array('if_pptp_configure_do');
+    return array('bootup' => array('if_pptp_configure_do'));
 }
 
 function if_pptp_services()
