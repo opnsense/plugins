@@ -57,15 +57,14 @@ function acmeclient_firewall($fw)
  */
 function acmeclient_services()
 {
-    if (!acmeclient_enabled()) {
-        return;
-    }
-
-    global $config;
     $services = array();
 
+    if (!acmeclient_enabled()) {
+        return $services;
+    }
+
     $services[] = array(
-        'description' => gettext('Secure Lets Encrypt client'),
+        'description' => gettext('Let\'s Encrypt client'),
         'configd' => array(
             'restart' => array('acme-http-challenge restart'),
             'start' => array('acme-http-challenge start'),
@@ -89,7 +88,7 @@ function acmeclient_xmlrpc_sync()
     $result = array();
     $result['id'] = 'acmeclient';
     $result['section'] = 'OPNsense.acmeclient';
-    $result['description'] = gettext('Lets Encrypt Client');
+    $result['description'] = gettext('Let\'s Encrypt client');
     return array($result);
 }
  */

@@ -820,7 +820,7 @@ function import_certificate($certObj, $modelObj)
 
     // Write changes to config
     // TODO: Legacy code, should be replaced with code from OPNsense framework
-    write_config("${import_log_message} Lets Encrypt SSL certificate: ${cert_cn}");
+    write_config("${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
 
     // Update (acme) certificate object (through MVC framework)
     $uuid = $certObj->attributes()->uuid;
