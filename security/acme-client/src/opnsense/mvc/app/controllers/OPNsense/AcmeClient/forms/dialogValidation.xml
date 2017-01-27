@@ -101,7 +101,7 @@
         <help><![CDATA[The time in seconds to wait for all the TXT records to take effect DNS API mode. Default 120 seconds.]]></help>
     </field>
     <field>
-        <label>DNS-01/ad</label>
+        <label>DNS-01/Alwaysdata</label>
         <type>header</type>
     </field>
     <field>
@@ -111,7 +111,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/ali</label>
+        <label>DNS-01/aliyun</label>
         <type>header</type>
     </field>
     <field>
@@ -159,7 +159,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/CX</label>
+        <label>DNS-01/CloudXNS</label>
         <type>header</type>
     </field>
     <field>
@@ -175,7 +175,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/DP</label>
+        <label>DNS-01/DNSPod</label>
         <type>header</type>
     </field>
     <field>
@@ -191,7 +191,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/GD</label>
+        <label>DNS-01/GoDaddy</label>
         <type>header</type>
     </field>
     <field>
@@ -257,7 +257,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/lua</label>
+        <label>DNS-01/LuaDNS</label>
         <type>header</type>
     </field>
     <field>
@@ -273,7 +273,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/ME</label>
+        <label>DNS-01/DNSMadeEasy</label>
         <type>header</type>
     </field>
     <field>
