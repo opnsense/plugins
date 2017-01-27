@@ -93,7 +93,7 @@ class AccountsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlAcme->accounts->account->add() ;
+            $node = $mdlAcme->accounts->account->add();
             return array("account" => $node->getNodes());
         }
         return array();

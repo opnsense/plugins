@@ -93,7 +93,7 @@ class ValidationsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlAcme->validations->validation->add() ;
+            $node = $mdlAcme->validations->validation->add();
             return array("validation" => $node->getNodes());
         }
         return array();

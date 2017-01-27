@@ -62,7 +62,6 @@ class SettingsController extends ApiMutableModelControllerBase
             if ((string)$mdlAcme->settings->UpdateCron == "" and
                 (string)$mdlAcme->settings->autoRenewal == "1" and
                 (string)$mdlAcme->settings->enabled == "1") {
-
                 $mdlCron = new Cron();
                 // NOTE: Only configd actions are valid commands for cronjobs
                 //       and they *must* provide a description that is not empty.
@@ -93,7 +92,6 @@ class SettingsController extends ApiMutableModelControllerBase
             } elseif ((string)$mdlAcme->settings->UpdateCron != "" and
                 ((string)$mdlAcme->settings->autoRenewal == "0" or
                 (string)$mdlAcme->settings->enabled == "0")) {
-
                 $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
                 $mdlAcme->settings->UpdateCron = null;
                 $mdlCron = new Cron();

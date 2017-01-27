@@ -94,7 +94,7 @@ class CertificatesController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlAcme->certificates->certificate->add() ;
+            $node = $mdlAcme->certificates->certificate->add();
             return array("certificate" => $node->getNodes());
         }
         return array();
@@ -255,5 +255,4 @@ class CertificatesController extends ApiControllerBase
         }
         return $result;
     }
-
 }

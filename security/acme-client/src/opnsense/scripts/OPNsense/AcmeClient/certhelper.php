@@ -46,6 +46,7 @@ require_once("util.inc");
 use OPNsense\Core\Config;
 use OPNsense\Base;
 use OPNsense\AcmeClient\AcmeClient;
+
 global $config;
 
 /* CLI arguments:
@@ -80,17 +81,17 @@ switch ($options["a"]) {
     case 'sign':
         //$result = sign_or_renew_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
-        echo json_encode(Array('status'=>$result));
+        echo json_encode(array('status'=>$result));
         break;
     case 'renew':
         //$result = sign_or_renew_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
-        echo json_encode(Array('status'=>$result));
+        echo json_encode(array('status'=>$result));
         break;
     case 'revoke':
         //$result = revoke_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
-        echo json_encode(Array('status'=>$result));
+        echo json_encode(array('status'=>$result));
         exit(1);
     case 'cleanup':
         // TODO: remove certs from filesystem if they cannot be found in config.xml
@@ -115,7 +116,6 @@ function cert_action_validator($opt_cert_id)
     $configObj = Config::getInstance()->object();
     if (isset($configObj->OPNsense->AcmeClient->certificates)) {
         foreach ($configObj->OPNsense->AcmeClient->certificates->children() as $certObj) {
-
             // Extract cert ID
             $cert_id = (string)$certObj->id;
             if (empty($cert_id)) {
@@ -124,10 +124,11 @@ function cert_action_validator($opt_cert_id)
 
             // Either work with ALL certificates or check if cert ID matches
             if (isset($options["A"]) or ((string)$cert_id == (string)$opt_cert_id)) {
-
                 // Ignore disabled certificates
                 if ($certObj->enabled == 0) {
-                    if (isset($options["A"])) continue; // skip to next item
+                    if (isset($options["A"])) {
+                        continue; // skip to next item
+                    }
                     return(1); // Cert is disabled, skip it.
                 }
 
@@ -136,29 +137,33 @@ function cert_action_validator($opt_cert_id)
                 $acctObj = null;
                 $acctref_found = false;
                 foreach ($modelObj->getNodeByReference('accounts.account')->__items as $node) {
-                    if ((string)$node->getAttributes()["uuid"] == $acctRef ) {
-                      $acctref_found = true;
-                      $acctObj = $node;
-                      break; // Match! Go ahead.
+                    if ((string)$node->getAttributes()["uuid"] == $acctRef) {
+                        $acctref_found = true;
+                        $acctObj = $node;
+                        break; // Match! Go ahead.
                     }
                 }
 
                 // Make sure we found the configured account
-                if ( $acctref_found == true ) {
+                if ($acctref_found == true) {
                     // Ensure that this account was properly setup and registered.
-                    $acct_result = run_acme_account_registration($acctObj,$certObj,$modelObj);
+                    $acct_result = run_acme_account_registration($acctObj, $certObj, $modelObj);
                     if (!$acct_result) {
                         //echo "DEBUG: account registration OK\n";
                     } else {
                         //echo "DEBUG: account registration failed\n";
                         log_error("AcmeClient: account registration failed");
-                        if (isset($options["A"])) continue; // skip to next item
+                        if (isset($options["A"])) {
+                            continue; // skip to next item
+                        }
                         return(1);
                     }
                 } else {
                     //echo "DEBUG: account not found\n";
                     log_error("AcmeClient: account not found");
-                    if (isset($options["A"])) continue; // skip to next item
+                    if (isset($options["A"])) {
+                        continue; // skip to next item
+                    }
                     return(1);
                 }
 
@@ -167,28 +172,29 @@ function cert_action_validator($opt_cert_id)
                 $valObj = null;
                 $ref_found = false;
                 foreach ($modelObj->getNodeByReference('validations.validation')->__items as $node) {
-                    if ((string)$node->getAttributes()["uuid"] == $valRef ) {
-                      $ref_found = true;
-                      $valObj = $node;
-                      break; // Match! Go ahead.
+                    if ((string)$node->getAttributes()["uuid"] == $valRef) {
+                        $ref_found = true;
+                        $valObj = $node;
+                        break; // Match! Go ahead.
                     }
                 }
 
                 // Make sure we found the configured validation method
                 if ($ref_found == true) {
-
                     // Was a revocation requested?
                     // NOTE: Revocation is not even considered when some elements have already been
                     //       deleted from the GUI. It's likely that it would fail anyway.
                     if ($options["a"] == "revoke") {
                         // Start acme client to revoke the certificate
-                        $rev_result = revoke_cert($certObj,$valObj,$acctObj);
+                        $rev_result = revoke_cert($certObj, $valObj, $acctObj);
                         if (!$rev_result) {
                             return(0); // Success!
                         } else {
                             // Revocation failure
                             log_error("AcmeClient: revocation for certificate failed");
-                            if (isset($options["A"])) continue; // skip to next item
+                            if (isset($options["A"])) {
+                                continue; // skip to next item
+                            }
                             return(1);
                         }
                     }
@@ -196,31 +202,38 @@ function cert_action_validator($opt_cert_id)
                     // Which validation method?
                     if ((string)$valObj->method == 'http01' or ((string)$valObj->method == 'dns01')) {
                         // Start acme client to issue or renew certificate
-                        $val_result = run_acme_validation($certObj,$valObj,$acctObj);
+                        $val_result = run_acme_validation($certObj, $valObj, $acctObj);
                         if (!$val_result) {
                             // Import certificate to Cert Manager
-                            if (!import_certificate($certObj,$modelObj)) {
+                            if (!import_certificate($certObj, $modelObj)) {
                                 //echo "DEBUG: cert import done\n";
                             } else {
                                 log_error("AcmeClient: unable to import certificate: " . (string)$certObj->name);
-                                if (isset($options["A"])) continue; // skip to next item
+                                if (isset($options["A"])) {
+                                    continue; // skip to next item
+                                }
                                 return(1);
                             }
                         } else {
                             // validation failure
                             log_error("AcmeClient: validation for certificate failed: " . (string)$certObj->name);
-                            if (isset($options["A"])) continue; // skip to next item
+                            if (isset($options["A"])) {
+                                continue; // skip to next item
+                            }
                             return(1);
                         }
                     } else {
                         log_error("AcmeClient: invalid validation method specified: " . (string)$valObj->method);
-                        if (isset($options["A"])) continue; // skip to next item
+                        if (isset($options["A"])) {
+                            continue; // skip to next item
+                        }
                         return(1);
                     }
-
                 } else {
                     log_error("AcmeClient: validation method not found for cert " . $certObj->name);
-                    if (isset($options["A"])) continue; // skip to next item
+                    if (isset($options["A"])) {
+                        continue; // skip to next item
+                    }
                     return(1);
                 }
 
@@ -243,7 +256,7 @@ function eval_optional_acme_args()
     global $options;
     $configObj = Config::getInstance()->object();
 
-    $acme_args = Array();
+    $acme_args = array();
     // Force certificate renewal?
     $acme_args[] = isset($options["F"]) ? "--force" : null;
     // Use LE staging environment?
@@ -255,7 +268,7 @@ function eval_optional_acme_args()
 }
 
 // Create account keys and register accounts, export/import them from/to filesystem/config.xml
-function run_acme_account_registration($acctObj,$certObj,$modelObj)
+function run_acme_account_registration($acctObj, $certObj, $modelObj)
 {
     global $options;
 
@@ -266,7 +279,7 @@ function run_acme_account_registration($acctObj,$certObj,$modelObj)
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
     $account_conf_file = $account_conf_dir . "/account.conf";
     $account_key_file = $account_conf_dir . "/account.key";
-    $acme_conf = Array();
+    $acme_conf = array();
     $acme_conf[] = "CERT_HOME='/var/etc/acme-client/home'";
     $acme_conf[] = "LOG_FILE='/var/log/acme.sh.log'";
     $acme_conf[] = "ACCOUNT_KEY_PATH='" . $account_key_file . "'";
@@ -278,12 +291,12 @@ function run_acme_account_registration($acctObj,$certObj,$modelObj)
     if (!is_dir($account_conf_dir)) {
         mkdir($account_conf_dir, 0700, true);
     }
-    file_put_contents($account_conf_file, (string)implode("\n",$acme_conf) . "\n");
+    file_put_contents($account_conf_file, (string)implode("\n", $acme_conf) . "\n");
     chmod($account_conf_file, 0600);
     //echo "DEBUG: ${account_conf_file} | ${account_key_file}\n";
 
     // Check if account key already exists
-    if ( is_file($account_key_file) ) {
+    if (is_file($account_key_file)) {
         //echo "DEBUG: account key found\n";
     } else {
         // Check if we have an account key in our configuration
@@ -374,7 +387,7 @@ function run_acme_account_registration($acctObj,$certObj,$modelObj)
 }
 
 // Run acme client with HTTP-01 or DNS-01 validation to issue/renew certificate
-function run_acme_validation($certObj,$valObj,$acctObj)
+function run_acme_validation($certObj, $valObj, $acctObj)
 {
     // TODO: add support for other HTTP-01 validation services/methods
 
@@ -395,7 +408,7 @@ function run_acme_validation($certObj,$valObj,$acctObj)
     $certdir = "/var/etc/acme-client/certs/${cert_id}";
     $keydir = "/var/etc/acme-client/keys/${cert_id}";
     $configdir = "/var/etc/acme-client/configs/${cert_id}";
-    foreach (Array($certdir, $keydir, $configdir) as $dir) {
+    foreach (array($certdir, $keydir, $configdir) as $dir) {
         if (!is_dir($dir)) {
             mkdir($dir, 0700, true);
         }
@@ -403,7 +416,7 @@ function run_acme_validation($certObj,$valObj,$acctObj)
 
     // Preparation to run acme client
     $acme_args = eval_optional_acme_args();
-    $proc_env = Array(); // env variables for proc_open()
+    $proc_env = array(); // env variables for proc_open()
     $proc_env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/root/bin';
     $proc_desc = array(  // descriptor array for proc_open()
         0 => array("pipe", "r"), // stdin
@@ -435,7 +448,7 @@ function run_acme_validation($certObj,$valObj,$acctObj)
     // Try HTTP-01 or DNS-01 validation?
     $val_method = (string)$valObj->method;
     $acme_validation = "";        // val.method as argument for acme.sh
-    $acme_hook_options = Array(); // store addition arguments for acme.sh here
+    $acme_hook_options = array(); // store addition arguments for acme.sh here
     switch ($val_method) {
         case 'http01':
             $acme_validation = "--webroot /var/etc/acme-client/challenges ";
@@ -456,13 +469,13 @@ function run_acme_validation($certObj,$valObj,$acctObj)
         //echo "DEBUG: local http challenge port: ${local_http_port}\n";
 
         // Collect all IP addresses here, automatic port forward will be applied for each IP
-        $iplist = Array();
+        $iplist = array();
 
         // Add IP addresses from auto-discovery feature
         if ($valObj->http_opn_autodiscovery == 1) {
-            $dnslist = explode(',',$certObj->altNames);
+            $dnslist = explode(',', $certObj->altNames);
             $dnslist[] = $certObj->name;
-            foreach($dnslist as $fqdn) {
+            foreach ($dnslist as $fqdn) {
                 // NOTE: This may take some time.
                 //echo "DEBUG: resolving ${fqdn}\n";
                 $ip_found = gethostbyname("${fqdn}.");
@@ -476,9 +489,9 @@ function run_acme_validation($certObj,$valObj,$acctObj)
         // Add IP addresses from user input
         $additional_ip = (string)$valObj->http_opn_ipaddresses;
         if (!empty($additional_ip)) {
-            foreach(explode(',',$additional_ip) as $ip) {
+            foreach (explode(',', $additional_ip) as $ip) {
               //echo "DEBUG: additional IP ${ip}\n";
-              $iplist[] = $ip;
+                $iplist[] = $ip;
             }
         }
 
@@ -497,7 +510,9 @@ function run_acme_validation($certObj,$valObj,$acctObj)
             $dedup_iplist = array_unique($iplist);
             // Add one rule for every IP
             foreach ($dedup_iplist as $ip) {
-                if ($ip == '.') continue; // skip broken entries
+                if ($ip == '.') {
+                    continue; // skip broken entries
+                }
                 $anchor_rules .= "rdr pass inet proto tcp from any to ${ip} port 80 -> 127.0.0.1 port ${local_http_port}\n";
             }
         } else {
@@ -609,8 +624,8 @@ function run_acme_validation($certObj,$valObj,$acctObj)
     // Prepare altNames
     $altnames = "";
     if (!empty((string)$certObj->altNames)) {
-        $_altnames = explode(",",(string)$certObj->altNames);
-        foreach (explode(",",(string)$certObj->altNames) as $altname) {
+        $_altnames = explode(",", (string)$certObj->altNames);
+        foreach (explode(",", (string)$certObj->altNames) as $altname) {
             $altnames .= "--domain ${altname} ";
         }
     }
@@ -634,7 +649,7 @@ function run_acme_validation($certObj,$valObj,$acctObj)
       . "--fullchainpath ${cert_fullchain_filename} "
       . implode(" ", $acme_hook_options);
     //echo "DEBUG: executing command: " . $acmecmd . "\n";
-    $proc = proc_open($acmecmd , $proc_desc, $proc_pipes, null, $proc_env);
+    $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
     // Make sure the resource could be setup properly
     if (is_resource($proc)) {
@@ -665,7 +680,7 @@ function run_acme_validation($certObj,$valObj,$acctObj)
 }
 
 // Revoke a certificate.
-function revoke_cert($certObj,$valObj,$acctObj)
+function revoke_cert($certObj, $valObj, $acctObj)
 {
     // NOTE: Revocation will fail if additional domain names were added
     // to the certificate after issue/renewal.
@@ -700,7 +715,7 @@ function revoke_cert($certObj,$valObj,$acctObj)
     return($result);
 }
 
-function import_certificate($certObj,$modelObj)
+function import_certificate($certObj, $modelObj)
 {
     global $config;
 
@@ -711,7 +726,7 @@ function import_certificate($certObj,$modelObj)
 
     // Check if certificate files can be found
     clearstatcache(); // don't let the cache fool us
-    foreach (Array($cert_filename, $key_filename, $cert_fullchain_filename) as $file) {
+    foreach (array($cert_filename, $key_filename, $cert_fullchain_filename) as $file) {
         if (is_file($file)) {
             // certificate file found
         } else {
@@ -723,11 +738,11 @@ function import_certificate($certObj,$modelObj)
     // Read contents from certificate file
     $cert_content = @file_get_contents($cert_filename);
     if ($cert_content != false) {
-      $cert_subject = cert_get_subject($cert_content,false);
-      $cert_serial  = cert_get_serial($cert_content,false);
-      $cert_cn      = local_cert_get_cn($cert_content,false);
-      $cert_issuer  = cert_get_issuer($cert_content,false);
-      $cert_purpose = cert_get_purpose($cert_content,false);
+        $cert_subject = cert_get_subject($cert_content, false);
+        $cert_serial  = cert_get_serial($cert_content, false);
+        $cert_cn      = local_cert_get_cn($cert_content, false);
+        $cert_issuer  = cert_get_issuer($cert_content, false);
+        $cert_purpose = cert_get_purpose($cert_content, false);
       //echo "DEBUG: importing cert: subject: ${cert_subject}, serial: ${cert_serial}, issuer: ${cert_issuer} \n";
     } else {
         log_error("AcmeClient: unable to read certificate content from file");
@@ -747,7 +762,7 @@ function import_certificate($certObj,$modelObj)
         $configObj = Config::getInstance()->object();
         foreach ($configObj->cert as $cfgCert) {
             // Check if the IDs matches
-            if ( (string)$certObj->certRefId == (string)$cfgCert->refid ) {
+            if ((string)$certObj->certRefId == (string)$cfgCert->refid) {
                 $cert_found = true;
                 break;
             }
@@ -779,7 +794,7 @@ function import_certificate($certObj,$modelObj)
     }
 
     // Collect required cert information
-    $cert_cn = local_cert_get_cn($cert_content,false);
+    $cert_cn = local_cert_get_cn($cert_content, false);
     $cert['descr'] = (string)$cert_cn . ' (Let\'s Encrypt)';
     $cert['refid'] = $cert_refid;
 
@@ -790,13 +805,13 @@ function import_certificate($certObj,$modelObj)
     if ($cert_found == true) {
         // FIXME: Do legacy configs really depend on counters?
         $cnt = 0;
-        foreach($config['cert'] as $crt) {
-          if ( $crt['refid'] == $cert_refid ) {
-              //echo "DEBUG: found legacy cert object\n";
-              $config['cert'][$cnt] = $cert;
-              break;
-          }
-          $cnt++;
+        foreach ($config['cert'] as $crt) {
+            if ($crt['refid'] == $cert_refid) {
+                //echo "DEBUG: found legacy cert object\n";
+                $config['cert'][$cnt] = $cert;
+                break;
+            }
+            $cnt++;
         }
     } else {
         // Create new certificate item
@@ -841,7 +856,7 @@ function local_cert_get_subject_array($str_crt, $decode = true)
 
     $subject_array = array();
 
-    foreach($components as $a => $v) {
+    foreach ($components as $a => $v) {
         $subject_array[] = array('a' => $a, 'v' => $v);
     }
 
@@ -851,7 +866,7 @@ function local_cert_get_subject_array($str_crt, $decode = true)
 // taken from certs.inc
 function local_cert_get_cn($crt, $decode = true)
 {
-    $sub = local_cert_get_subject_array($crt,$decode);
+    $sub = local_cert_get_subject_array($crt, $decode);
     if (is_array($sub)) {
         foreach ($sub as $s) {
             if (strtoupper($s['a']) == "CN") {
@@ -862,10 +877,12 @@ function local_cert_get_cn($crt, $decode = true)
     return "";
 }
 
-function base64url_encode($str) {
+function base64url_encode($str)
+{
     return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
 }
-function base64url_decode($str) {
+function base64url_decode($str)
+{
     return base64_decode(str_pad(strtr($str, '-_', '+/'), strlen($str) % 4, '=', STR_PAD_RIGHT));
 }
 
