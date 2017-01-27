@@ -2,7 +2,6 @@
 
 /**
  *    Copyright (C) 2017 Frank Wall
- *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,18 +24,14 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 function acmeclient_enabled()
 {
     global $config;
 
-    if (isset($config['OPNsense']['AcmeClient']['general']['enabled']) && $config['OPNsense']['AcmeClient']['general']['enabled'] == 1) {
-        return true;
-    }
-
-    return false;
+    return isset($config['OPNsense']['AcmeClient']['settings']['enabled']) &&
+	$config['OPNsense']['AcmeClient']['settings']['enabled'] == 1;
 }
 
 function acmeclient_firewall($fw)
@@ -65,12 +60,13 @@ function acmeclient_services()
 
     $services[] = array(
         'description' => gettext('Let\'s Encrypt client'),
+        'pidfile' => '/var/run/lighttpd-acme-challenge.pid',
         'configd' => array(
             'restart' => array('acme-http-challenge restart'),
             'start' => array('acme-http-challenge start'),
             'stop' => array('acme-http-challenge stop'),
         ),
-        'name' => 'acmeclient',
+        'name' => 'acme',
     );
 
     return $services;

@@ -8,7 +8,4 @@ for directory in ${ACME_DIRS}; do
     chmod -R 755 ${directory}
 done
 
-# XXX: fix file permissions of rc script (limitation of +TARGETS mechanism)
-chmod 755 /usr/local/etc/rc.d/acme_http_challenge
-
 exit 0
