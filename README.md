@@ -44,6 +44,7 @@ sysutils/boot-delay -- Apply a persistent boot delay
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
+security/acme-client -- Let's Encrypt client
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset
 security/tinc -- Tinc VPN
 www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
