@@ -21,7 +21,7 @@
         <id>validation.method</id>
         <label>Validation Method</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt validation method.]]></help>
+        <help><![CDATA[Set the Let's Encrypt validation method. You'll have to add configuration for the selected method below.]]></help>
     </field>
     <field>
         <label>HTTP-01</label>
@@ -41,7 +41,7 @@
         <id>validation.http_opn_autodiscovery</id>
         <label>IP Auto-Discovery</label>
         <type>checkbox</type>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose this option to let OPNsense tryo to auto-discover these IP addresses. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose this option to let OPNsense try to auto-discover these IP addresses. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
     </field>
     <field>
         <id>validation.http_opn_interface</id>
@@ -58,19 +58,25 @@
         <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
         <hint>Enter IP addresses here. Finish each with TAB.</hint>
     </field>
-<!--
+    <field>
+        <label>HTTP-01/HAProxy</label>
+        <type>header</type>
+    </field>
     <field>
         <id>validation.http_haproxyInject</id>
-        <label>HAProxy Config Injection</label>
+        <label>Enable Auto-Configuration</label>
         <type>checkbox</type>
-        <help>Automatically inject config into the local HAProxy instance to let it serve acme challanges without service interruption.</help>
+        <help>Automatically inject config into the local HAProxy instance to let it serve acme challanges without service interruption. Of course, adding the configuration requires a short restart of the HAProxy service.</help>
     </field>
     <field>
-        <id>validation.http_haproxyFrontend</id>
-        <label>HAProxy Frontend</label>
-        <type>dropdown</type>
-        <help>Choose the local HAProxy frontend that should be configured to server acme challenges.</help>
+        <id>validation.http_haproxyFrontends</id>
+        <label>HAProxy Frontends</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed.</help>
     </field>
+<!--
     <field>
         <id>validation.http_relaydInject</id>
         <label>Loadbalancer Config Injection</label>
@@ -98,7 +104,7 @@
         <id>validation.dns_sleep</id>
         <label>Sleep Time</label>
         <type>text</type>
-        <help><![CDATA[The time in seconds to wait for all the TXT records to take effect DNS API mode. Default 120 seconds.]]></help>
+        <help><![CDATA[The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.]]></help>
     </field>
     <field>
         <label>DNS-01/Alwaysdata</label>
@@ -231,7 +237,7 @@
     <field>
         <id>validation.dns_ispconfig_insecure</id>
         <label>Disable SSL Verification</label>
-        <type>text</type>
+        <type>checkbox</type>
         <help></help>
     </field>
     <field>
@@ -302,7 +308,7 @@
         <id>validation.dns_nsupdate_key</id>
         <label>Secret Key</label>
         <type>textbox</type>
-        <help></help>
+        <help><![CDATA[Requires the the whole key file in a format that is compatible with nsupdate.]]></help>
     </field>
     <field>
         <label>DNS-01/OVH</label>

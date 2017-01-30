@@ -30,6 +30,7 @@
 namespace OPNsense\AcmeClient;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Core\Backend;
 
 /**
  * Class AcmeClient
@@ -54,15 +55,86 @@ class AcmeClient extends BaseModel
 
     /**
      * check if module is enabled
-     * @return bool is the AcmeClient enabled (1 or more active certificates)
+     * @param $checkCertificates bool enable in-depth check (1 or more active certificates)
+     * @return bool is the AcmeClient service enabled
      */
-    public function isEnabled()
+    public function isEnabled($checkCertificates=false)
     {
-        foreach ($this->certificates->certificate->__items as $certificate) {
-            if ((string)$certificate->enabled == "1") {
-                return true;
+        if ((string)$this->settings->enabled === "1") {
+            if ($checkCertificates === true) {
+                foreach ($this->certificates->certificate->__items as $certificate) {
+                    if ((string)$certificate->enabled == "1") {
+                        return true; // Found a active certificate
+                    }
+                }
+            } else {
+                return true; // AcmeClient enabled
             }
         }
         return false;
+    }
+
+    /**
+     * retrieve restart action by number
+     * @param $uuid action number
+     * @return null|BaseField action details
+     */
+    public function getByActionID($uuid)
+    {
+        foreach ($this->actions->action->__items as $action) {
+            if ((string)$uuid === (string)$action->getAttributes()["uuid"]) {
+                return $action;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * check if the specfied plugin is installed
+     * @param $name plugin/package name
+     * @return bool is the plugin installed
+     */
+    public function isPluginInstalled($name)
+    {
+        // NOTE: Based on infoAction() from Core/Api/FirmwareController.php
+        // FIXME: Should be replaced by a Core function sooner or later.
+
+        $backend = new Backend();
+        $keys = array('name', 'version', 'comment', 'flatsize', 'locked', 'license');
+        $plugins = array();
+
+        // Only check local package data for performance reasons
+        $current = $backend->configdRun("firmware local");
+        $current = explode("\n", trim($current));
+
+        foreach ($current as $line) {
+            /* package infos are flat lists with 3 pipes as delimiter */
+            $expanded = explode('|||', $line);
+            $translated = array();
+            $index = 0;
+            if (count($expanded) != count($keys)) {
+                continue;
+            }
+            foreach ($keys as $key) {
+                $translated[$key] = $expanded[$index++];
+            }
+
+            /* mark local packages as "installed" */
+            $translated['installed'] = "1";
+
+            /* figure out local and remote plugins */
+            $plugin = explode('-', $translated['name']);
+            if (count($plugin)) {
+                if ($plugin[0] == 'os' || $plugin[0] == 'ospriv') {
+                    $plugins[$translated['name']] = $translated;
+                }
+            }
+        }
+
+        if (isset($plugins[$name]) and $plugins[$name]['installed'] == "1") {
+            return 1; // TRUE, is installed
+        } else {
+            return 0; // FALSE, is not installed
+        }
     }
 }

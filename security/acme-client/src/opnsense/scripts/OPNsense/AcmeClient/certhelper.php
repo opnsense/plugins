@@ -42,7 +42,9 @@ require_once("certs.inc");
 require_once("legacy_bindings.inc");
 require_once("interfaces.inc");
 require_once("util.inc");
+require_once("system.inc"); // required for Web UI restart action
 // Some stuff requires the almighty MVC framework.
+use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
 use OPNsense\Base;
 use OPNsense\AcmeClient\AcmeClient;
@@ -111,6 +113,9 @@ function cert_action_validator($opt_cert_id)
     global $options;
 
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
+
+    // Store certs here after successful issue/renewal. Required for restart actions.
+    $restart_certs = Array();
 
     // Search for cert ID in configuration
     $configObj = Config::getInstance()->object();
@@ -204,9 +209,12 @@ function cert_action_validator($opt_cert_id)
                         // Start acme client to issue or renew certificate
                         $val_result = run_acme_validation($certObj, $valObj, $acctObj);
                         if (!$val_result) {
+                            log_error("AcmeClient: issued/renewed certificate: " . (string)$certObj->name);
                             // Import certificate to Cert Manager
                             if (!import_certificate($certObj, $modelObj)) {
                                 //echo "DEBUG: cert import done\n";
+                                // Prepare certificate for restart action
+                                $restart_certs[] = $certObj;
                             } else {
                                 log_error("AcmeClient: unable to import certificate: " . (string)$certObj->name);
                                 if (isset($options["A"])) {
@@ -214,6 +222,8 @@ function cert_action_validator($opt_cert_id)
                                 }
                                 return(1);
                             }
+                        } elseif ($val_result == '99') {
+                            // Renewal not required. Do nothing.
                         } else {
                             // validation failure
                             log_error("AcmeClient: validation for certificate failed: " . (string)$certObj->name);
@@ -247,6 +257,17 @@ function cert_action_validator($opt_cert_id)
         log_error("AcmeClient: no LE certificates found in configuration");
         return(1);
     }
+
+    // Run restart actions if an operation was successful.
+    if (!empty($restart_certs)) {
+        // Execute restart actions.
+        if (!run_restart_actions($restart_certs, $modelObj)) {
+            # Success.
+        } else {
+            log_error("AcmeClient: failed to execute some restart actions");
+        }
+    }
+
     return(0);
 }
 
@@ -389,8 +410,6 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
 // Run acme client with HTTP-01 or DNS-01 validation to issue/renew certificate
 function run_acme_validation($certObj, $valObj, $acctObj)
 {
-    // TODO: add support for other HTTP-01 validation services/methods
-
     global $options;
 
     // Collect account information
@@ -417,7 +436,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Preparation to run acme client
     $acme_args = eval_optional_acme_args();
     $proc_env = array(); // env variables for proc_open()
-    $proc_env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/root/bin';
+    $proc_env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin';
     $proc_desc = array(  // descriptor array for proc_open()
         0 => array("pipe", "r"), // stdin
         1 => array("pipe", "w"), // stdout
@@ -426,7 +445,15 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $proc_pipes = array();
 
     // Do we need to issue or renew the certificate?
-    $acme_action = !empty((string)$certObj->lastUpdate) ? "renew" : "issue";
+    if (!empty((string)$certObj->lastUpdate) and !isset($options["F"])) {
+        $acme_action = "renew";
+    } else {
+        // Default: Issue a new certificate.
+        // If "-F" is specified, forcefully re-issue the cert, no matter if it's required.
+        // NOTE: This is useful if altNames were changed or when switching
+        // from acme staging to acme production servers.
+        $acme_action = "issue";
+    }
 
     // Calculate next renewal date
     $last_update = !empty((string)$certObj->lastUpdate) ? (string)$certObj->lastUpdate : 0;
@@ -437,12 +464,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $renew_interval = (string)$certObj->renewInterval;
     $next_update = $last_update_time->add(new \DateInterval('P'.$renew_interval.'D'));
 
-    // Check if it's time to renew, otherwise report success
+    // Check if it's time to renew the cert.
     if (isset($options["F"]) or ($current_time >= $next_update)) {
         $renew_cert = true;
     } else {
-        // Renewal not yet required, report success
-        return(0);
+        // Renewal not yet required, report special code
+        return(99);
     }
 
     // Try HTTP-01 or DNS-01 validation?
@@ -839,6 +866,148 @@ function import_certificate($certObj, $modelObj)
     }
 
     return(0);
+}
+
+function run_restart_actions($certlist, $modelObj)
+{
+    global $config;
+    $return = 0;
+
+    // NOTE: Do NOT run any restart action twice, collect duplicates first.
+    $restart_actions = Array();
+
+    // Check if there's something to do.
+    if (!empty($certlist) and is_array($certlist)) {
+        // Extract cert object
+        foreach ($certlist as $certObj) {
+            // Make sure the object is functional.
+            if (empty($certObj->id)) {
+                log_error("AcmeClient: failed to query certificate for restart action");
+                continue;
+            }
+            // Extract restart actions
+            $_actions = explode(',', $certObj->restartActions);
+            // Walk through all linked restart actions.
+            $_actions = explode(',', $certObj->restartActions);
+            foreach ($_actions as $_action ) {
+                // Extract restart action
+                $action = $modelObj->getByActionID($_action);
+                // Make sure the object is functional.
+                if ($action === null) {
+                    log_error("AcmeClient: failed to retrieve restart action from certificate");
+                } else {
+                    // Ignore disabled restart actions (even if they are still
+                    // linked to a certificated).
+                    if ((string)$action->enabled === "0") {
+                        continue;
+                    }
+                    // Store by UUID, automatically eliminates duplicates.
+                    $restart_actions[$_action] = $action;
+                }
+            }
+        }
+    }
+
+    // Run the collected restart actions.
+    if (!empty($restart_actions) and is_array($restart_actions)) {
+        // Required to run pre-defined commands.
+        $backend = new Backend();
+        // Extract cert object
+        foreach ($restart_actions as $action) {
+            // Run pre-defined or custom command?
+            log_error("AcmeClient: running restart action: " . $action->name);
+            switch ((string)$action->type) {
+                case 'restart_gui':
+                    $response = system_webgui_configure();
+                    break;
+                case 'restart_haproxy':
+                    $response = $backend->configdRun("haproxy restart");
+                    break;
+                case 'configd':
+                    // Make sure a configd command was specified.
+                    if (empty((string)$action->configd)) {
+                        log_error("AcmeClient: no configd command specified for restart action: " . $action->name);
+                        $result = '1';
+                        continue; // Continue with next action.
+                    }
+                    $response = $backend->configdRun((string)$action->configd);
+                    break;
+                case 'custom':
+                    // Make sure a custom command was specified.
+                    if (empty((string)$action->custom)) {
+                        log_error("AcmeClient: no custom command specified for restart action: " . $action->name);
+                        $result = '1';
+                        continue; // Continue with next action.
+                    }
+
+                    // Prepare to run the command.
+                    $proc_env = array(); // env variables for proc_open()
+                    $proc_env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin';
+                    $proc_desc = array(  // descriptor array for proc_open()
+                        0 => array("pipe", "r"), // stdin
+                        1 => array("pipe", "w"), // stdout
+                        2 => array("pipe", "w")  // stderr
+                    );
+                    $proc_pipes = array();
+                    $proc_stdout = '';
+                    $proc_stderr = '';
+                    $result = ''; // exit code (or '99' in case of timeout)
+
+                    // TODO: Make the timeout configurable.
+                    $timeout = '600';
+                    $starttime = time();
+
+                    $proc_cmd = (string)$action->custom;
+                    $proc = proc_open($proc_cmd, $proc_desc, $proc_pipes, null, $proc_env);
+
+                    // Make sure the resource could be setup properly
+                    if (is_resource($proc)) {
+                        fclose($proc_pipes[0]);
+
+                        // Wait until process terminates normally
+                        while(is_resource($proc))
+                        {
+                            $proc_stdout .= stream_get_contents($proc_pipes[1]);
+                            $proc_stderr .= stream_get_contents($proc_pipes[2]);
+
+                            // Check if timeout is reached
+                            if(($timeout !== false) and ((time() - $starttime) > $timeout))
+                            {
+                                // Terminate process if timeout is reached
+                                log_error("AcmeClient: timeout running restart action: " . $action->name);
+                                proc_terminate($proc, 9);
+                                $result = '99';
+                                break;
+                            }
+
+                            // Check if process terminated normally
+                            $status = proc_get_status($proc);
+                            if(!$status['running'])
+                            {
+                                fclose($proc_pipes[1]);
+                                fclose($proc_pipes[2]);
+                                proc_close($proc);
+                                $result = $status['exitcode'];
+                                break;
+                            }
+
+                            usleep(100000);
+                        }
+                    } else {
+                        log_error("AcmeClient: unable to initiate restart action: " . $action->name);
+                        continue; // Continue with next action.
+                    }
+                    $return = $result;
+                    break;
+                default:
+                    log_error("AcmeClient: an invalid restart action was specified: " . (string)$action->type);
+                    $return = 1;
+                    continue; // Continue with next action.
+            }
+        }
+    }
+
+    return($return);
 }
 
 // taken from certs.inc

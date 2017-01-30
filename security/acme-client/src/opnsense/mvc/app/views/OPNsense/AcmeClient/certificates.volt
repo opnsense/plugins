@@ -269,12 +269,14 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['sign'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogRemoveItem('Sign/renew selected certificate?',function() {
-                        ajaxCall(url=gridParams['sign'] + uuid,
-                            sendData={},callback=function(data,status){
+                    stdDialogRemoveItem('Forcefully (re-)issue the selected certificate?',function() {
+                        // Handle HAProxy integration (no-op if not applicable)
+                        ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+                            ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){
                                 // reload grid after sign
                                 $("#"+gridId).bootgrid("reload");
                             });
+                        });
                     });
                 } else {
                     console.log("[grid] action sign missing")
@@ -311,9 +313,12 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         $("#signallcertsAct").click(function(){
             //$("#signallcertsAct_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/acmeclient/service/signallcerts", sendData={}, callback=function(data,status) {
-                // when done, disable progress animation.
-                //$("#signallcertsAct_progress").removeClass("fa fa-spinner fa-pulse");
+            // Handle HAProxy integration (no-op if not applicable)
+            ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/acmeclient/service/signallcerts", sendData={}, callback=function(data,status) {
+                    // when done, disable progress animation.
+                    //$("#signallcertsAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
 

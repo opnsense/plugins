@@ -202,7 +202,7 @@ class AccountsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlAcme->accounts->account);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "email","accountid"),
+            array("enabled", "name", "email"),
             "name"
         );
     }
