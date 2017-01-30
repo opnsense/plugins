@@ -88,7 +88,12 @@ POSSIBILITY OF SUCH DAMAGE.
                                     }
                                 });
 
-                                ajaxCall(url="/api/acmeclient/settings/fetchRBCron", sendData={}, callback=function(data,status) {
+                                // Handle cron integration
+                                ajaxCall(url="/api/acmeclient/settings/fetchCronIntegration", sendData={}, callback=function(data,status) {
+                                });
+
+                                // Handle HAProxy integration
+                                ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
                                 });
 
                                 // when done, disable progress animation
@@ -120,12 +125,15 @@ POSSIBILITY OF SUCH DAMAGE.
                             });
                         }
 
-                        ajaxCall(url="/api/acmeclient/settings/fetchRBCron", sendData={}, callback=function(data,status) {
-                        });
-
-                        // when done, disable progress animation
-                        $('[id*="reconfigureAct_progress"]').each(function(){
-                            $(this).removeClass("fa fa-spinner fa-pulse");
+                        // Handle cron integration
+                        ajaxCall(url="/api/acmeclient/settings/fetchCronIntegration", sendData={}, callback=function(data,status) {
+                            // Handle HAProxy integration
+                            ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+                                // when done, disable progress animation
+                                $('[id*="reconfigureAct_progress"]').each(function(){
+                                    $(this).removeClass("fa fa-spinner fa-pulse");
+                                });
+                            });
                         });
                     });
                 }

@@ -54,15 +54,38 @@ class AcmeClient extends BaseModel
 
     /**
      * check if module is enabled
-     * @return bool is the AcmeClient enabled (1 or more active certificates)
+     * @param $checkCertificates bool enable in-depth check (1 or more active certificates)
+     * @return bool is the AcmeClient service enabled
      */
-    public function isEnabled()
+    public function isEnabled($checkCertificates=false)
     {
-        foreach ($this->certificates->certificate->__items as $certificate) {
-            if ((string)$certificate->enabled == "1") {
-                return true;
+        if ((string)$this->settings->enabled === "1") {
+            if ($checkCertificates === true) {
+                foreach ($this->certificates->certificate->__items as $certificate) {
+                    if ((string)$certificate->enabled == "1") {
+                        return true; // Found a active certificate
+                    }
+                }
+            } else {
+                return true; // AcmeClient enabled
             }
         }
         return false;
     }
+
+    /**
+     * retrieve restart action by number
+     * @param $uuid action number
+     * @return null|BaseField action details
+     */
+    public function getByActionID($uuid)
+    {
+        foreach ($this->actions->action->__items as $action) {
+            if ((string)$uuid === (string)$action->getAttributes()["uuid"]) {
+                return $action;
+            }
+        }
+        return null;
+    }
+
 }

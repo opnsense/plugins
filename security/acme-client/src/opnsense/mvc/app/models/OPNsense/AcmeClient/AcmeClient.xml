@@ -43,6 +43,58 @@
                 <MaximumValue>65535</MaximumValue>
                 <Required>Y</Required>
             </challengePort>
+            <haproxyIntegration type="BooleanField">
+                <default>1</default>
+                <Required>N</Required>
+            </haproxyIntegration>
+            <haproxyAclRef type="ModelRelationField">
+                <Model>
+                    <acls>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>acls.acl</items>
+                        <display>name</display>
+                    </acls>
+                </Model>
+                <ValidationMessage>Related HAProxy ACL not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyAclRef>
+            <haproxyActionRef type="ModelRelationField">
+                <Model>
+                    <actions>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>actions.action</items>
+                        <display>name</display>
+                    </actions>
+                </Model>
+                <ValidationMessage>Related HAProxy action not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyActionRef>
+            <haproxyServerRef type="ModelRelationField">
+                <Model>
+                    <servers>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>servers.server</items>
+                        <display>name</display>
+                    </servers>
+                </Model>
+                <ValidationMessage>Related HAProxy server not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyServerRef>
+            <haproxyBackendRef type="ModelRelationField">
+                <Model>
+                    <backends>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>backends.backend</items>
+                        <display>name</display>
+                    </backends>
+                </Model>
+                <ValidationMessage>Related HAProxy backend not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyBackendRef>
         </settings>
         <accounts>
             <account type="ArrayField">
@@ -112,11 +164,14 @@
                 </altNames>
                 <account type="ModelRelationField">
                     <Model>
-                        <template>
+                        <accounts>
                             <source>OPNsense.AcmeClient.AcmeClient</source>
                             <items>accounts.account</items>
                             <display>name</display>
-                        </template>
+                            <filters>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </accounts>
                     </Model>
                     <ValidationMessage>Related item not found</ValidationMessage>
                     <multiple>N</multiple>
@@ -124,16 +179,34 @@
                 </account>
                 <validationMethod type="ModelRelationField">
                     <Model>
-                        <template>
+                        <validations>
                             <source>OPNsense.AcmeClient.AcmeClient</source>
                             <items>validations.validation</items>
                             <display>name</display>
-                        </template>
+                            <filters>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </validations>
                     </Model>
                     <ValidationMessage>Related item not found</ValidationMessage>
                     <multiple>N</multiple>
                     <Required>Y</Required>
                 </validationMethod>
+                <restartActions type="ModelRelationField">
+                    <Model>
+                        <actions>
+                            <source>OPNsense.AcmeClient.AcmeClient</source>
+                            <items>actions.action</items>
+                            <display>name</display>
+                            <filters>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </actions>
+                    </Model>
+                    <ValidationMessage>Related restart action not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </restartActions>
                 <autoRenewal type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -186,10 +259,7 @@
                     <default>opnsense</default>
                     <OptionValues>
                         <opnsense>OPNsense port forward (specify Interface or IP)</opnsense>
-<!-- WIP/TODO
-                        <haproxy>HAProxy Frontend (OPNsense plugin)</haproxy>
-                        <relayd>relayd Loadbalancer Virtual Server (OPNsense plugin)</relayd>
--->
+                        <haproxy>HAProxy HTTP Frontend Integration (OPNsense plugin)</haproxy>
                     </OptionValues>
                 </http_service>
                 <http_opn_autodiscovery type="BooleanField">
@@ -208,32 +278,26 @@
                     <Required>N</Required>
                     <multiple>Y</multiple>
                 </http_opn_ipaddresses>
-<!-- WIP/TODO
                 <http_haproxyInject type="BooleanField">
                     <default>1</default>
                     <Required>N</Required>
                 </http_haproxyInject>
-                <http_haproxyFrontend type="ModelRelationField">
+                <http_haproxyFrontends type="ModelRelationField">
                     <Model>
-                        <template>
+                        <frontends>
                             <source>OPNsense.HAProxy.HAProxy</source>
                             <items>frontends.frontend</items>
                             <display>name</display>
-                        </template>
+                            <filters>
+                                <mode>/^(http|ssl)$/</mode>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </frontends>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
-                    <multiple>N</multiple>
+                    <ValidationMessage>Related HAProxy frontend not found</ValidationMessage>
+                    <multiple>Y</multiple>
                     <Required>N</Required>
-                </http_haproxyFrontend>
-                <http_relaydInject type="BooleanField">
-                    <default>1</default>
-                    <Required>N</Required>
-                </http_relaydInject>
-                <http_relaydVserver type="TextField">
-                    <Required>N</Required>
-                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
-                </http_relaydVserver>
--->
+                </http_haproxyFrontends>
                 <dns_service type="OptionField">
                     <Required>Y</Required>
                     <default>dns_nsupdate</default>
@@ -369,5 +433,45 @@
                 </dns_pdns_token>
             </validation>
         </validations>
+        <actions>
+            <action type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <restart_gui>Restart OPNsense Web UI</restart_gui>
+                        <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
+                        <configd>System or Plugin Command (select below)</configd>
+                        <custom>Custom Command (specify below)</custom>
+                    </OptionValues>
+                </type>
+                <configd type="ConfigdActionsField">
+                    <filters>
+                        <description>/(.){1,255}/</description>
+                    </filters>
+                    <ValidationMessage>Select a command from the list.</ValidationMessage>
+                    <Required>N</Required>
+                </configd>
+                <custom type="TextField">
+                    <Required>N</Required>
+                </custom>
+            </action>
+        </actions>
     </items>
 </model>
