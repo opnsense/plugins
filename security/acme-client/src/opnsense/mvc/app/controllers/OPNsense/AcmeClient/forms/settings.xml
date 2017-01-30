@@ -18,6 +18,12 @@
         <help><![CDATA[Choose Let's Encrypts staging environment when using it for the first time or while testing new validation methods. The staging environment offers <a href="https://letsencrypt.org/docs/staging-environment/">relaxed rate limits</a>.<br/><div class="text-info"><b>NOTE:</b>Certificates signed by the staging environment are NOT valid. You need to forcefully re-sign (or delete and re-create) them after switching from staging to production environment.</div>]]></help>
     </field>
     <field>
+        <id>acmeclient.settings.haproxyIntegration</id>
+        <label>HAProxy Integration</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable automatic integration with the OPNsense HAProxy plugin. This will automatically add the required backend, server, action and ACL for you. You just need to select your HAProxy frontend when configuration the certificate or validation method. <div class="text-info"><b>NOTE:</b>This will only work for HTTP-01 validation and HAProxy frontends running in <i>http</i> mode; TCP frontends are not supported.</div>]]></help>
+    </field>
+    <field>
         <id>acmeclient.settings.challengePort</id>
         <label>Local HTTP Port</label>
         <type>text</type>

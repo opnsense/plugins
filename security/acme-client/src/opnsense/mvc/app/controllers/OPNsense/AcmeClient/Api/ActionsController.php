@@ -35,10 +35,10 @@ use \OPNsense\Core\Config;
 use \OPNsense\Base\UIModelGrid;
 
 /**
- * Class ValidationsController
+ * Class ActionsController
  * @package OPNsense\AcmeClient
  */
-class ValidationsController extends ApiControllerBase
+class ActionsController extends ApiControllerBase
 {
     /**
      * Validate and save model after update or insertion.
@@ -78,7 +78,7 @@ class ValidationsController extends ApiControllerBase
     }
 
     /**
-     * retrieve validation settings or return defaults
+     * retrieve action settings or return defaults
      * @param $uuid item unique id
      * @return array
      */
@@ -86,33 +86,33 @@ class ValidationsController extends ApiControllerBase
     {
         $mdlAcme = new AcmeClient();
         if ($uuid != null) {
-            $node = $mdlAcme->getNodeByReference('validations.validation.'.$uuid);
+            $node = $mdlAcme->getNodeByReference('actions.action.'.$uuid);
             if ($node != null) {
                 // return node
-                return array("validation" => $node->getNodes());
+                return array("action" => $node->getNodes());
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlAcme->validations->validation->add();
-            return array("validation" => $node->getNodes());
+            $node = $mdlAcme->actions->action->add();
+            return array("action" => $node->getNodes());
         }
         return array();
     }
 
     /**
-     * update validation with given properties
+     * update action with given properties
      * @param $uuid item unique id
      * @return array
      */
     public function setAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("validation")) {
+        if ($this->request->isPost() && $this->request->hasPost("action")) {
             $mdlAcme = new AcmeClient();
             if ($uuid != null) {
-                $node = $mdlAcme->getNodeByReference('validations.validation.'.$uuid);
+                $node = $mdlAcme->getNodeByReference('actions.action.'.$uuid);
                 if ($node != null) {
-                    $node->setNodes($this->request->getPost("validation"));
-                    return $this->save($mdlAcme, $node, "validation");
+                    $node->setNodes($this->request->getPost("action"));
+                    return $this->save($mdlAcme, $node, "action");
                 }
             }
         }
@@ -120,23 +120,23 @@ class ValidationsController extends ApiControllerBase
     }
 
     /**
-     * add new validation and set with attributes from post
+     * add new action and set with attributes from post
      * @return array
      */
     public function addAction()
     {
         $result = array("result"=>"failed");
-        if ($this->request->isPost() && $this->request->hasPost("validation")) {
+        if ($this->request->isPost() && $this->request->hasPost("action")) {
             $mdlAcme = new AcmeClient();
-            $node = $mdlAcme->validations->validation->Add();
-            $node->setNodes($this->request->getPost("validation"));
-            return $this->save($mdlAcme, $node, "validation");
+            $node = $mdlAcme->actions->action->Add();
+            $node->setNodes($this->request->getPost("action"));
+            return $this->save($mdlAcme, $node, "action");
         }
         return $result;
     }
 
     /**
-     * delete validation by uuid
+     * delete action by uuid
      * @param $uuid item unique id
      * @return array status
      */
@@ -146,7 +146,7 @@ class ValidationsController extends ApiControllerBase
         if ($this->request->isPost()) {
             $mdlAcme = new AcmeClient();
             if ($uuid != null) {
-                if ($mdlAcme->validations->validation->del($uuid)) {
+                if ($mdlAcme->actions->action->del($uuid)) {
                     // if item is removed, serialize to config and save
                     $mdlAcme->serializeToConfig();
                     Config::getInstance()->save();
@@ -160,7 +160,7 @@ class ValidationsController extends ApiControllerBase
     }
 
     /**
-     * toggle validation by uuid (enable/disable)
+     * toggle action by uuid (enable/disable)
      * @param $uuid item unique id
      * @param $enabled desired state enabled(1)/disabled(0), leave empty for toggle
      * @return array status
@@ -172,7 +172,7 @@ class ValidationsController extends ApiControllerBase
         if ($this->request->isPost()) {
             $mdlAcme = new AcmeClient();
             if ($uuid != null) {
-                $node = $mdlAcme->getNodeByReference('validations.validation.' . $uuid);
+                $node = $mdlAcme->getNodeByReference('actions.action.' . $uuid);
                 if ($node != null) {
                     if ($enabled == "0" || $enabled == "1") {
                         $node->enabled = (string)$enabled;
@@ -192,14 +192,14 @@ class ValidationsController extends ApiControllerBase
     }
 
     /**
-     * search validations
+     * search actions
      * @return array
      */
     public function searchAction()
     {
         $this->sessionClose();
         $mdlAcme = new AcmeClient();
-        $grid = new UIModelGrid($mdlAcme->validations->validation);
+        $grid = new UIModelGrid($mdlAcme->actions->action);
         return $grid->fetchBindRequest(
             $this->request,
             array("enabled", "name", "description"),
