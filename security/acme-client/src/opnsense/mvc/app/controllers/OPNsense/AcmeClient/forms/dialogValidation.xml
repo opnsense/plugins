@@ -21,7 +21,7 @@
         <id>validation.method</id>
         <label>Validation Method</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt validation method.]]></help>
+        <help><![CDATA[Set the Let's Encrypt validation method. You'll have to add configuration for the selected method below.]]></help>
     </field>
     <field>
         <label>HTTP-01</label>
@@ -98,7 +98,7 @@
         <id>validation.dns_sleep</id>
         <label>Sleep Time</label>
         <type>text</type>
-        <help><![CDATA[The time in seconds to wait for all the TXT records to take effect DNS API mode. Default 120 seconds.]]></help>
+        <help><![CDATA[The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.]]></help>
     </field>
     <field>
         <label>DNS-01/Alwaysdata</label>
