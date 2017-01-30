@@ -243,7 +243,7 @@
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <bind type="CSVListField">
@@ -274,7 +274,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </defaultBackend>
                 <!-- XXX: add tag <ssl> once nesting is supported by our framework -->
@@ -354,7 +354,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related action item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedActions>
@@ -366,7 +366,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related error file item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedErrorfiles>
@@ -388,7 +388,7 @@
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <mode type="OptionField">
@@ -418,7 +418,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related server item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedServers>
@@ -439,7 +439,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related health check item not found</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </healthCheck>
@@ -523,7 +523,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related action item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedActions>
@@ -535,7 +535,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related error file item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedErrorfiles>
@@ -549,7 +549,7 @@
                     <Required>Y</Required>
                 </name>
                 <description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
@@ -610,17 +610,15 @@
                     <ValidationMessage>Please specify a value between 0 and 256.</ValidationMessage>
                     <Required>N</Required>
                 </weight>
-                <checkInterval type="IntegerField">
-                    <default>1000</default>
-                    <MinimumValue>500</MinimumValue>
-                    <MaximumValue>100000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
+                <checkInterval type="TextField">
+                    <default>2s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </checkInterval>
-                <checkDownInterval type="IntegerField">
-                    <MinimumValue>500</MinimumValue>
-                    <MaximumValue>100000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
+                <checkDownInterval type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </checkDownInterval>
                 <source type="TextField">
@@ -641,7 +639,7 @@
                     <Required>Y</Required>
                 </name>
                 <description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
@@ -781,7 +779,7 @@
                     <Required>Y</Required>
                 </name>
                 <description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
@@ -832,7 +830,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </queryBackend>
             </acl>
@@ -845,7 +843,7 @@
                     <Required>Y</Required>
                 </name>
                 <description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
@@ -865,7 +863,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related ACL item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedAcls>
@@ -923,7 +921,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </useBackend>
@@ -935,7 +933,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related server item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </useServer>
@@ -965,7 +963,7 @@
                     <Required>Y</Required>
                 </name>
                 <description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
@@ -985,7 +983,7 @@
                     <Required>Y</Required>
                 </name>
                 <description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
