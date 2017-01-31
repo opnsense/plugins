@@ -252,7 +252,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->frontends->frontend);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "description","frontendid"),
+            array("enabled", "name", "description"),
             "name"
         );
     }
@@ -382,7 +382,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->backends->backend);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "description", "backendid"),
+            array("enabled", "name", "description"),
             "name"
         );
     }
@@ -480,7 +480,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->servers->server);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "address", "port", "description", "serverid"),
+            array("name", "address", "port", "description"),
             "name"
         );
     }
@@ -578,7 +578,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->healthchecks->healthcheck);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "healthcheckid"),
+            array("name", "description"),
             "name"
         );
     }
@@ -676,7 +676,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->acls->acl);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "aclid"),
+            array("name", "description"),
             "name"
         );
     }
@@ -774,7 +774,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->actions->action);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "actionid"),
+            array("name", "description"),
             "name"
         );
     }
@@ -904,7 +904,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->luas->lua);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "description", "luaid"),
+            array("enabled", "name", "description"),
             "name"
         );
     }
@@ -1002,7 +1002,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->errorfiles->errorfile);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "errorfileid"),
+            array("name", "description"),
             "name"
         );
     }
