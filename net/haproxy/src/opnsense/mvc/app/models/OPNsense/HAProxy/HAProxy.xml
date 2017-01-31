@@ -611,16 +611,18 @@
                     <Required>N</Required>
                 </weight>
                 <checkInterval type="IntegerField">
-                    <default>1000</default>
-                    <MinimumValue>500</MinimumValue>
-                    <MaximumValue>100000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
+                    <default>2s</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </checkInterval>
                 <checkDownInterval type="IntegerField">
-                    <MinimumValue>500</MinimumValue>
-                    <MaximumValue>100000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 500 and 100000.</ValidationMessage>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </checkDownInterval>
                 <source type="TextField">
