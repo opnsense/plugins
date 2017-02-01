@@ -39,13 +39,20 @@ class HAProxy extends BaseModel
 {
     /**
      * check if module is enabled
-     * @return bool is the HAProxy enabled (1 or more active frontends)
+     * @param $checkFrontends bool enable in-depth check (1 or more active frontends)
+     * @return bool is the HAProxy service enabled
      */
-    public function isEnabled()
+    public function isEnabled($checkFrontends=true)
     {
-        foreach ($this->frontends->frontend->__items as $frontend) {
-            if ((string)$frontend->enabled == "1") {
-                return true;
+        if ((string)$this->general->enabled === "1") {
+            if ($checkFrontends === true) {
+                foreach ($this->frontends->frontend->__items as $frontend) {
+                    if ((string)$frontend->enabled === "1") {
+                        return true; // Found a active frontend
+                    }
+                }
+            } else {
+                return true; // HAProxy enabled
             }
         }
         return false;
