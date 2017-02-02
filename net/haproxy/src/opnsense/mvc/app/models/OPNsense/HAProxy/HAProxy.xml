@@ -274,7 +274,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </defaultBackend>
                 <!-- XXX: add tag <ssl> once nesting is supported by our framework -->
@@ -354,7 +354,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related action item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedActions>
@@ -366,7 +366,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related error file item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedErrorfiles>
@@ -418,7 +418,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related server item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedServers>
@@ -439,7 +439,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related health check item not found</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </healthCheck>
@@ -523,7 +523,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related action item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedActions>
@@ -535,7 +535,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related error file item not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedErrorfiles>
@@ -830,7 +830,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </queryBackend>
             </acl>
@@ -863,7 +863,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related ACL item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedAcls>
@@ -921,7 +921,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </useBackend>
@@ -933,7 +933,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related server item not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </useServer>
