@@ -462,7 +462,7 @@
                 </type>
                 <configd type="ConfigdActionsField">
                     <filters>
-                        <description>/(.){1,255}/</description>
+                        <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
                     </filters>
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
