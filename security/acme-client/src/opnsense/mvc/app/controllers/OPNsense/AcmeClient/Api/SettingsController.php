@@ -34,7 +34,6 @@ use \OPNsense\Core\Backend;
 use \OPNsense\Cron\Cron;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\UIModelGrid;
-use \OPNsense\HAProxy\HAProxy;
 use \OPNsense\AcmeClient\AcmeClient;
 
 /**
@@ -125,12 +124,18 @@ class SettingsController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlAcme = $this->getModel();
 
+            // Check if the required plugin is installed
+            if ((string)$mdlAcme->isPluginInstalled('os-haproxy') != "1") {
+                $this->getLogger()->error("LE check: HAProxy plugin is NOT installed, skipping integration");
+                return($result);
+            }
+
             // Setup only if AcmeClient and HAProxy integration is enabled.
             // NOTE: We provide HAProxy integration no matter if the HAProxy plugin
             //       is actually enabled or not. This should avoid confusion.
             if ((string)$mdlAcme->settings->haproxyIntegration == "1" and
                 (string)$mdlAcme->settings->enabled == "1") {
-                $mdlHAProxy = new HAProxy();
+                $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
                 $backend = new Backend();
 
                 // Get current status of HAProxy integration by running various checks.
