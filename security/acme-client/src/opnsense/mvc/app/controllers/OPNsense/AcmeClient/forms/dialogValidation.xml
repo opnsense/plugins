@@ -308,7 +308,7 @@
         <id>validation.dns_nsupdate_key</id>
         <label>Secret Key</label>
         <type>textbox</type>
-        <help></help>
+        <help><![CDATA[Requires the the whole key file in a format that is compatible with nsupdate.]]></help>
     </field>
     <field>
         <label>DNS-01/OVH</label>
