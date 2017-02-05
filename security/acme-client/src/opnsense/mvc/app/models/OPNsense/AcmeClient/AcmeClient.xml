@@ -107,12 +107,12 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <email type="EmailField">
@@ -146,21 +146,20 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <altNames type="CSVListField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
-                    <!--- XXX: FQDN should at least contain one dot -->
-                    <mask>/^((([0-9a-zA-Z._\-\*]+\.[0-9a-zA-Z._\-\*]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^.{1,16384}$/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com. Field length is limited to 16384 characters.</ValidationMessage>
                 </altNames>
                 <account type="ModelRelationField">
                     <Model>
@@ -238,12 +237,12 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <method type="OptionField">
@@ -444,12 +443,12 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <type type="OptionField">
