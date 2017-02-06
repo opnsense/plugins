@@ -81,6 +81,10 @@ manifest: check
 	@echo "prefix: \"${LOCALBASE}\""
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
+.if defined(PLUGIN_NO_ABI)
+	@echo "arch: `pkg config abi | tr '[:upper:]' '[:lower:]' | cut -d: -f1`:*:*"
+	@echo "abi: `pkg config abi | cut -d: -f1`:*:*"
+.endif
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
 	@for PLUGIN_DEPEND in ${PLUGIN_DEPENDS}; do \
