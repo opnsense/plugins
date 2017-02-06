@@ -982,9 +982,6 @@ function run_restart_actions($certlist, $modelObj)
 
                             usleep(100000);
                         }
-
-                        // Get exit code
-                        $result = proc_close($proc);
                     } else {
                         log_error("AcmeClient: unable to initiate restart action: " . $action->name);
                         continue; // Continue with next action.
