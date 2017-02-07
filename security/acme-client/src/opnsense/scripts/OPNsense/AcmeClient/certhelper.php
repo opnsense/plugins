@@ -209,6 +209,7 @@ function cert_action_validator($opt_cert_id)
                         // Start acme client to issue or renew certificate
                         $val_result = run_acme_validation($certObj, $valObj, $acctObj);
                         if (!$val_result) {
+                            log_error("AcmeClient: issued/renewed certificate: " . (string)$certObj->name);
                             // Import certificate to Cert Manager
                             if (!import_certificate($certObj, $modelObj)) {
                                 //echo "DEBUG: cert import done\n";
@@ -221,6 +222,8 @@ function cert_action_validator($opt_cert_id)
                                 }
                                 return(1);
                             }
+                        } elseif ($val_result == '99') {
+                            // Renewal not required. Do nothing.
                         } else {
                             // validation failure
                             log_error("AcmeClient: validation for certificate failed: " . (string)$certObj->name);
@@ -461,12 +464,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $renew_interval = (string)$certObj->renewInterval;
     $next_update = $last_update_time->add(new \DateInterval('P'.$renew_interval.'D'));
 
-    // Check if it's time to renew, otherwise report success
+    // Check if it's time to renew the cert.
     if (isset($options["F"]) or ($current_time >= $next_update)) {
         $renew_cert = true;
     } else {
-        // Renewal not yet required, report success
-        return(0);
+        // Renewal not yet required, report special code
+        return(99);
     }
 
     // Try HTTP-01 or DNS-01 validation?
