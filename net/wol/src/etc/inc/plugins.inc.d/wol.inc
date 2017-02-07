@@ -38,4 +38,3 @@ function wol_xmlrpc_sync()
 
     return $result;
 }
-

@@ -121,7 +121,6 @@ class SettingsController extends ApiControllerBase
                 $cnf->save();
                 $result["result"] = "saved";
             }
-
         }
 
         return $result;
@@ -143,7 +142,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->frontends->frontend->add() ;
+            $node = $mdlCP->frontends->frontend->add();
             return array("frontend" => $node->getNodes());
         }
         return array();
@@ -273,7 +272,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->backends->backend->add() ;
+            $node = $mdlCP->backends->backend->add();
             return array("backend" => $node->getNodes());
         }
         return array();
@@ -403,7 +402,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->servers->server->add() ;
+            $node = $mdlCP->servers->server->add();
             return array("server" => $node->getNodes());
         }
         return array();
@@ -501,7 +500,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->healthchecks->healthcheck->add() ;
+            $node = $mdlCP->healthchecks->healthcheck->add();
             return array("healthcheck" => $node->getNodes());
         }
         return array();
@@ -599,7 +598,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->acls->acl->add() ;
+            $node = $mdlCP->acls->acl->add();
             return array("acl" => $node->getNodes());
         }
         return array();
@@ -697,7 +696,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->actions->action->add() ;
+            $node = $mdlCP->actions->action->add();
             return array("action" => $node->getNodes());
         }
         return array();
@@ -795,7 +794,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->luas->lua->add() ;
+            $node = $mdlCP->luas->lua->add();
             return array("lua" => $node->getNodes());
         }
         return array();
@@ -925,7 +924,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->errorfiles->errorfile->add() ;
+            $node = $mdlCP->errorfiles->errorfile->add();
             return array("errorfile" => $node->getNodes());
         }
         return array();

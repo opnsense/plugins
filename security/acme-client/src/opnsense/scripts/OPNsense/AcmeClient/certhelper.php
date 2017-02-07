@@ -115,7 +115,7 @@ function cert_action_validator($opt_cert_id)
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
     // Store certs here after successful issue/renewal. Required for restart actions.
-    $restart_certs = Array();
+    $restart_certs = array();
 
     // Search for cert ID in configuration
     $configObj = Config::getInstance()->object();
@@ -874,7 +874,7 @@ function run_restart_actions($certlist, $modelObj)
     $return = 0;
 
     // NOTE: Do NOT run any restart action twice, collect duplicates first.
-    $restart_actions = Array();
+    $restart_actions = array();
 
     // Check if there's something to do.
     if (!empty($certlist) and is_array($certlist)) {
@@ -889,7 +889,7 @@ function run_restart_actions($certlist, $modelObj)
             $_actions = explode(',', $certObj->restartActions);
             // Walk through all linked restart actions.
             $_actions = explode(',', $certObj->restartActions);
-            foreach ($_actions as $_action ) {
+            foreach ($_actions as $_action) {
                 // Extract restart action
                 $action = $modelObj->getByActionID($_action);
                 // Make sure the object is functional.
@@ -965,14 +965,12 @@ function run_restart_actions($certlist, $modelObj)
                         fclose($proc_pipes[0]);
 
                         // Wait until process terminates normally
-                        while(is_resource($proc))
-                        {
+                        while (is_resource($proc)) {
                             $proc_stdout .= stream_get_contents($proc_pipes[1]);
                             $proc_stderr .= stream_get_contents($proc_pipes[2]);
 
                             // Check if timeout is reached
-                            if(($timeout !== false) and ((time() - $starttime) > $timeout))
-                            {
+                            if (($timeout !== false) and ((time() - $starttime) > $timeout)) {
                                 // Terminate process if timeout is reached
                                 log_error("AcmeClient: timeout running restart action: " . $action->name);
                                 proc_terminate($proc, 9);
@@ -982,8 +980,7 @@ function run_restart_actions($certlist, $modelObj)
 
                             // Check if process terminated normally
                             $status = proc_get_status($proc);
-                            if(!$status['running'])
-                            {
+                            if (!$status['running']) {
                                 fclose($proc_pipes[1]);
                                 fclose($proc_pipes[2]);
                                 proc_close($proc);

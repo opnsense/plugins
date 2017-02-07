@@ -58,7 +58,7 @@ class AcmeClient extends BaseModel
      * @param $checkCertificates bool enable in-depth check (1 or more active certificates)
      * @return bool is the AcmeClient service enabled
      */
-    public function isEnabled($checkCertificates=false)
+    public function isEnabled($checkCertificates = false)
     {
         if ((string)$this->settings->enabled === "1") {
             if ($checkCertificates === true) {
