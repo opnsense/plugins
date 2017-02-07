@@ -269,7 +269,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['sign'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogRemoveItem('Sign/renew selected certificate?',function() {
+                    stdDialogRemoveItem('Forcefully (re-)issue the selected certificate?',function() {
                         // Handle HAProxy integration (no-op if not applicable)
                         ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
                             ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){

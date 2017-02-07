@@ -23,7 +23,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure additional names that should be part pf the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>Cannot be altered once the certificate was signed by the Let's Encrypt Authority! You need to create a new certificate to add additional names.</div>]]></help>
+        <help><![CDATA[Configure additional names that should be part pf the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>You need to forcefully re-issue the certificate if you change "Alt Names" after the certificate was signed by the Let's Encrypt Authority! Use the "issue" button in the Commands column in this case.</div>]]></help>
         <hint>Enter FQDN here. Finish with TAB.</hint>
     </field>
     <field>
