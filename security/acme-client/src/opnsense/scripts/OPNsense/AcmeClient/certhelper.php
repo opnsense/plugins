@@ -442,7 +442,15 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $proc_pipes = array();
 
     // Do we need to issue or renew the certificate?
-    $acme_action = !empty((string)$certObj->lastUpdate) ? "renew" : "issue";
+    if (!empty((string)$certObj->lastUpdate) and !isset($options["F"])) {
+        $acme_action = "renew";
+    } else {
+        // Default: Issue a new certificate.
+        // If "-F" is specified, forcefully re-issue the cert, no matter if it's required.
+        // NOTE: This is useful if altNames were changed or when switching
+        // from acme staging to acme production servers.
+        $acme_action = "issue";
+    }
 
     // Calculate next renewal date
     $last_update = !empty((string)$certObj->lastUpdate) ? (string)$certObj->lastUpdate : 0;
