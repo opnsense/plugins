@@ -31,7 +31,8 @@
 
 $haproxy_socket = '/var/run/haproxy.socket';
 
-function socketCmd($command) {
+function socketCmd($command)
+{
     global $haproxy_socket;
     $data = array();
     if (!file_exists($haproxy_socket)) {
@@ -52,22 +53,28 @@ function socketCmd($command) {
     return $data;
 }
 
-function showInfo() {
+function showInfo()
+{
     $data = array();
     $show_info = socketCmd('show info');
-    foreach ($show_info as $line ) {
-        if (empty(trim($line))) continue;
+    foreach ($show_info as $line) {
+        if (empty(trim($line))) {
+            continue;
+        }
         $values = explode(':', $line);
         $data[trim($values[0])] = trim($values[1]);
     }
     return $data;
 }
 
-function showTable() {
+function showTable()
+{
     $data = array();
     $show_table = socketCmd('show table');
     foreach ($show_table as $line) {
-        if (empty(trim($line))) continue;
+        if (empty(trim($line))) {
+            continue;
+        }
         $line = preg_replace('/#/', '', $line);
         $values = explode(',', $line);
         $items = array();
@@ -80,18 +87,21 @@ function showTable() {
     return $data;
 }
 
-function showStat() {
+function showStat()
+{
     $show_stat = socketCmd('show stat');
     // output is a list of CSV
     $stat_csv = array_map('str_getcsv', $show_stat);
-    array_walk($stat_csv, function(&$a) use ($stat_csv) {
+    array_walk($stat_csv, function (&$a) use ($stat_csv) {
         // XXX: Ignore empty/incomplete entries.
-        if (count($a) > 1) $a = array_combine($stat_csv[0], $a);
+        if (count($a) > 1) {
+            $a = array_combine($stat_csv[0], $a);
+        }
     });
     array_shift($stat_csv); # remove column header
     foreach ($stat_csv as &$value) {
         // Add unique identifier.
-        if ( ! empty($value['pxname']) and $value['pxname'] != null ) {
+        if (! empty($value['pxname']) and $value['pxname'] != null) {
             $value['id'] = $value['pxname'] . '/' . $value['svname'];
         }
     }

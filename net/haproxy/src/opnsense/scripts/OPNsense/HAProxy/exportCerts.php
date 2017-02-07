@@ -35,6 +35,7 @@ require_once("config.inc");
 require_once("certs.inc");
 require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
+
 global $config;
 
 // configure ssl elements
@@ -65,7 +66,7 @@ foreach ($configNodes as $key => $value) {
                                     if ($cert_refid == (string)$cert->refid) {
                                         $pem_content = '';
                                         // CRLs require special export
-                                        if ( $type == 'crl' ) {
+                                        if ($type == 'crl') {
                                             $crl =& lookup_crl($cert_refid);
                                             crl_update($crl);
                                             $pem_content = base64_decode($crl['text']);
@@ -74,7 +75,7 @@ foreach ($configNodes as $key => $value) {
                                             $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
                                         }
                                         // generate pem file
-                                        $output_pem_filename = "/var/etc/haproxy/ssl/" . $cert_refid . ".pem" ;
+                                        $output_pem_filename = "/var/etc/haproxy/ssl/" . $cert_refid . ".pem";
                                         file_put_contents($output_pem_filename, $pem_content);
                                         chmod($output_pem_filename, 0600);
                                         echo "exported $type to " . $output_pem_filename . "\n";

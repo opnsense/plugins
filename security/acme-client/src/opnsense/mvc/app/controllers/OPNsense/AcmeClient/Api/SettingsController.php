@@ -307,11 +307,11 @@ class SettingsController extends ApiMutableModelControllerBase
                     $mdlAcme->settings->haproxyBackendRef = $backend_uuid;
 
                     // Link new ACL to HAProxy action
-                    $link_acl_result = $mdlHAProxy->linkAclToAction($acl_uuid,$action_uuid);
+                    $link_acl_result = $mdlHAProxy->linkAclToAction($acl_uuid, $action_uuid);
                     //$this->getLogger()->error("LE link acl result: ${link_acl_result}");
 
                     // Link new server to HAProxy backend
-                    $link_server_result = $mdlHAProxy->linkServerToBackend($server_uuid,$backend_uuid);
+                    $link_server_result = $mdlHAProxy->linkServerToBackend($server_uuid, $backend_uuid);
                     //$this->getLogger()->error("LE link server result: ${link_server_result}");
                 }
 
@@ -331,7 +331,7 @@ class SettingsController extends ApiMutableModelControllerBase
                             if (!empty((string)$frontend->id)) {
                                 // Check if the HAProxy ACME Action is linked to this frontend.
                                 $_actions = $frontend->linkedActions;
-                                if (strpos($_actions,$action_ref) !== false) {
+                                if (strpos($_actions, $action_ref) !== false) {
                                     // Match! Nothing to do.
                                 } else {
                                     // Link to ACME Action is currently missing: add it!
@@ -368,7 +368,6 @@ class SettingsController extends ApiMutableModelControllerBase
                     $backend->configdRun('template reload OPNsense/HAProxy');
                     $response = $backend->configdRun("haproxy restart");
                 }
-
             } else {
                 // NOTE: HAProxy integration is NOT removed if the user disables it, because
                 // we might destroy changes made by the user when doing so.

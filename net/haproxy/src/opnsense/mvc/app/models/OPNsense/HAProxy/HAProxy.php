@@ -42,7 +42,7 @@ class HAProxy extends BaseModel
      * @param $checkFrontends bool enable in-depth check (1 or more active frontends)
      * @return bool is the HAProxy service enabled
      */
-    public function isEnabled($checkFrontends=true)
+    public function isEnabled($checkFrontends = true)
     {
         if ((string)$this->general->enabled === "1") {
             if ($checkFrontends === true) {
@@ -267,7 +267,7 @@ class HAProxy extends BaseModel
         // Check if the ACL is already linked to the Action.
         $linkedAcls = (string)$action->linkedAcls;
         if (!empty($linkedAcls) and !($replace)) {
-            if (strpos($linkedAcls,$acl_uuid) !== false) {
+            if (strpos($linkedAcls, $acl_uuid) !== false) {
                 // Match! Nothing to do.
                 return $acl_uuid;
             } else {
@@ -307,7 +307,7 @@ class HAProxy extends BaseModel
         // Check if the server is already linked to the backend.
         $linkedServers = (string)$backend->linkedServers;
         if (!empty($linkedServers) and !($replace)) {
-            if (strpos($linkedServers,$server_uuid) !== false) {
+            if (strpos($linkedServers, $server_uuid) !== false) {
                 // Match! Nothing to do.
                 return $server_uuid;
             } else {
@@ -347,7 +347,7 @@ class HAProxy extends BaseModel
         // Check if the action is already linked to the frontend.
         $linkedActions = (string)$frontend->linkedActions;
         if (!empty($linkedActions) and !($replace)) {
-            if (strpos($linkedActions,$action_uuid) !== false) {
+            if (strpos($linkedActions, $action_uuid) !== false) {
                 // Match! Nothing to do.
                 return $action_uuid;
             } else {
