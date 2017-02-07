@@ -35,15 +35,6 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 PLUGINSDIR=		${.CURDIR}/../..
 TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
-# Setting private mode allows plugins not
-# to show up in the firmware GUI, and must
-# thus be installed during build or console.
-.if "${PLUGIN_PRIVATE}" == ""
-PLUGIN_PREFIX=		os-
-.else
-PLUGIN_PREFIX=		ospriv-
-.endif
-
 PLUGIN_WWW?=		https://opnsense.org/
 PLUGIN_REVISION?=	0
 
@@ -57,6 +48,17 @@ check:
 .  endif
 .endfor
 
+.if "${PLUGIN_PRIVATE}" == ""
+PLUGIN_PREFIX=		os-
+.else
+PLUGIN_PREFIX=		ospriv-
+.endif
+.if "${PLUGIN_DEVEL}" != ""
+PLUGIN_SUFFIX?=		-devel
+.endif
+
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 .else
@@ -64,15 +66,15 @@ PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
 
 name: check
-	@echo ${PLUGIN_PREFIX}${PLUGIN_NAME}
+	@echo ${PLUGIN_PKGNAME}
 
 depends: check
 	@echo ${PLUGIN_DEPENDS}
 
 manifest: check
-	@echo "name: ${PLUGIN_PREFIX}${PLUGIN_NAME}"
+	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
-	@echo "origin: opnsense/${PLUGIN_PREFIX}${PLUGIN_NAME}"
+	@echo "origin: opnsense/${PLUGIN_PKGNAME}"
 	@echo "comment: \"${PLUGIN_COMMENT}\""
 	@echo "desc: \"${PLUGIN_DESC}\""
 	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
