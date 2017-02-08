@@ -35,6 +35,8 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 PLUGINSDIR=		${.CURDIR}/../..
 TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
+SRC?=			src
+
 # Setting private mode allows plugins not
 # to show up in the firmware GUI, and must
 # thus be installed during build or console.
@@ -104,7 +106,7 @@ scripts-pre:
 	done
 
 scripts-auto:
-	@if [ -d ${.CURDIR}/src/etc/rc.syshook.d ]; then \
+	@if [ -d ${.CURDIR}/${SRC}/etc/rc.syshook.d ]; then \
 		for SYSHOOK in early start; do \
 			for FILE in $$(cd ${.CURDIR}/src/etc/rc.syshook.d && \
 			    find -s . -type f -name "*.$${SYSHOOK}"); do \
@@ -113,20 +115,20 @@ scripts-auto:
 			done; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
+	@if [ -d ${.CURDIR}/${SRC}/opnsense/service/conf/actions.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
 			cat ${TEMPLATESDIR}/actions.d >> \
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
+	@if [ -d ${.CURDIR}/${SRC}/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
 			cat ${TEMPLATESDIR}/rc.loader.d >> \
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
-		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
+	@if [ -d ${.CURDIR}/${SRC}/opnsense/service/templates ]; then \
+		for FILE in $$(cd ${.CURDIR}/${SRC}/opnsense/service/templates && \
 		    find -s . -mindepth 2 -type d); do \
 			echo "echo -n \"Reloading template $${FILE#./}: \"" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
@@ -151,13 +153,13 @@ scripts-post:
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
-		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
+		tar -C ${.CURDIR}/${SRC} -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 	done
 
 plist: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
 
@@ -168,23 +170,23 @@ metadata: check
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
-		    tar -C ${.CURDIR}/src -xpf -; \
+		    tar -C ${.CURDIR}/${SRC} -xpf -; \
 	done
 
 remove: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
 	done
-	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
 			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
 	done
 
 WRKDIR?=${.CURDIR}/work
-WRKSRC?=${WRKDIR}/src
+WRKSRC?=${WRKDIR}/${SRC}
 PKGDIR?=${WRKDIR}/pkg
 
 package: check
@@ -196,20 +198,20 @@ package: check
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
 mount: check
-	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
+	mount_unionfs ${.CURDIR}/${SRC} ${DESTDIR}${LOCALBASE}
 
 umount: check
-	umount -f "<above>:${.CURDIR}/src"
+	umount -f "<above>:${.CURDIR}/${SRC}"
 
 clean: check
 	@git reset -q . && git checkout -f . && git clean -xdqf .
 
 lint: check
-	find ${.CURDIR}/src \
+	find ${.CURDIR}/${SRC} \
 	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
-	find ${.CURDIR}/src \
+	find ${.CURDIR}/${SRC} \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
-	find ${.CURDIR}/src \
+	find ${.CURDIR}/${SRC} \
 	    ! -name "*.xml" ! -name "*.xml.sample" ! -name "*.eot" \
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" \
@@ -218,21 +220,21 @@ lint: check
 	    -type f -print0 | xargs -0 -n1 php -l
 
 sweep: check
-	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
+	find ${.CURDIR}/${SRC} -type f -name "*.map" -print0 | \
 	    xargs -0 -n1 rm
-	if grep -nr sourceMappingURL= ${.CURDIR}/src; then \
+	if grep -nr sourceMappingURL= ${.CURDIR}/${SRC}; then \
 		echo "Mentions of sourceMappingURL must be removed"; \
 		exit 1; \
 	fi
-	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
+	find ${.CURDIR}/${SRC} ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
 style: check
 	@: > ${.CURDIR}/.style.out
-	@if [ -d ${.CURDIR}/src ]; then \
+	@if [ -d ${.CURDIR}/${SRC} ]; then \
 	    (phpcs --standard=${.CURDIR}/../../ruleset.xml \
-	    ${.CURDIR}/src || true) > ${.CURDIR}/.style.out; \
+	    ${.CURDIR}/${SRC} || true) > ${.CURDIR}/.style.out; \
 	fi
 	@echo -n "Total number of style warnings: "
 	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
@@ -242,9 +244,9 @@ style: check
 	@rm ${.CURDIR}/.style.out
 
 style-fix: check
-	@if [ -d ${.CURDIR}/src ]; then \
+	@if [ -d ${.CURDIR}/${SRC} ]; then \
 	    phpcbf --standard=${.CURDIR}/../../ruleset.xml \
-	    ${.CURDIR}/src || true; \
+	    ${.CURDIR}/${SRC} || true; \
 	fi
 
 .PHONY:	check
