@@ -887,8 +887,11 @@ function run_restart_actions($certlist, $modelObj)
             }
             // Extract restart actions
             $_actions = explode(',', $certObj->restartActions);
+            if (empty($_actions)) {
+                // No restart actions configured.
+                continue;
+            }
             // Walk through all linked restart actions.
-            $_actions = explode(',', $certObj->restartActions);
             foreach ($_actions as $_action) {
                 // Extract restart action
                 $action = $modelObj->getByActionID($_action);
