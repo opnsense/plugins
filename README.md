@@ -47,7 +47,6 @@ sysutils/xen -- Xen guest utilities
 security/acme-client -- Let's Encrypt client
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset
 security/tinc -- Tinc VPN
-www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```
 
 A brief description of how to use the plugins repository

@@ -1,9 +1,0 @@
-<acl>
-    <page-user-ssoproxyad>
-        <name>Services: Web Proxy: SSO</name>
-        <patterns>
-            <pattern>ui/ssoproxyad/*</pattern>
-            <pattern>api/ssoproxyad/*</pattern>
-        </patterns>
-    </page-user-ssoproxyad>
-</acl>
