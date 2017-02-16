@@ -48,11 +48,7 @@ check:
 .  endif
 .endfor
 
-.if "${PLUGIN_PRIVATE}" == ""
-PLUGIN_PREFIX=		os-
-.else
-PLUGIN_PREFIX=		ospriv-
-.endif
+PLUGIN_PREFIX?=		os-
 .if "${PLUGIN_DEVEL}" != ""
 PLUGIN_SUFFIX?=		-devel
 .endif
@@ -156,16 +152,18 @@ scripts-post:
 	done
 
 install: check
-	@mkdir -p ${DESTDIR}${LOCALBASE}
+	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 	done
+	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
+	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 metadata: check
 	@mkdir -p ${DESTDIR}
