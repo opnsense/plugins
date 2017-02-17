@@ -125,7 +125,7 @@ class SettingsController extends ApiMutableModelControllerBase
             $mdlAcme = $this->getModel();
 
             // Check if the required plugin is installed
-            if ((string)$mdlAcme->isPluginInstalled('os-haproxy') != "1") {
+            if ((string)$mdlAcme->isPluginInstalled('haproxy') != "1") {
                 $this->getLogger()->error("LE check: HAProxy plugin is NOT installed, skipping integration");
                 return($result);
             }
