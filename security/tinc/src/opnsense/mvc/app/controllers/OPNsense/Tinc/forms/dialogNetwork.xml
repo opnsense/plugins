@@ -6,6 +6,13 @@
         <help>Enable this network</help>
     </field>
     <field>
+        <id>network.mode</id>
+        <label>Mode</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>This option selects the way packets are routed to other daemons</help>
+    </field>
+    <field>
         <id>network.name</id>
         <label>Network Name</label>
         <type>text</type>

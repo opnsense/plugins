@@ -62,6 +62,7 @@ class Network(NetwConfObject):
         self._payload['privkey'] = None
         self._payload['intaddress'] = None
         self._payload['debuglevel'] = 'd0'
+        self._payload['mode'] = 'switch'
         self._hosts = list()
 
     def get_id(self):
@@ -86,6 +87,7 @@ class Network(NetwConfObject):
     def config_text(self):
         result = list()
         result.append('AddressFamily=any')
+        result.append('Mode=%(mode)s' % self._payload)
         result.append('Port=%(port)s' % self._payload)
         result.append('PingTimeout=%(pingtimeout)s' % self._payload)
         for host in self._hosts:

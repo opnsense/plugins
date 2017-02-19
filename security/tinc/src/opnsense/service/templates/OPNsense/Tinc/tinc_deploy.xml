@@ -4,6 +4,7 @@
 {%     if network.enabled|default('0') == '1' %}
     <network>
         <id>{{network.id}}</id>
+        <mode>{{network.mode}}</mode>
         <hostname>{{network.hostname}}</hostname>
         <network>{{network.name}}</network>
         <intaddress>{{network.intaddress}}</intaddress>
