@@ -17,7 +17,8 @@ set mailserver {{ OPNsense.monit.general.mailserver }}
 {%       set noton = 'not on' if alert.noton|default('0') == '1' %}
 {%       set mailformat = "mail-format { " ~ alert.format ~ " }" if alert.format|default('') != '' %}
 {%       set reminder = "reminder on " ~ alert.reminder ~ " cycles" if alert.reminder|default('0') != '0' %}
-set alert {{ alert.recipient }} {{ noton }} { {{ alert.events }} } {{ mailformat }} {{ reminder }}
+{%       set events = "{ " ~  alert.events ~ " }" if alert.events|default('') != '' %}
+set alert {{ alert.recipient }} {{ noton }} {{ events }} {{ mailformat }} {{ reminder }}
 {%    endif %}
 {%   endfor %}
 {%  endif %}
