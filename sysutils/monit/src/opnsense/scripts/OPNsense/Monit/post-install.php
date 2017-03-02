@@ -1,3 +1,4 @@
+#!/usr/local/bin/php
 <?php
 
 /**
@@ -38,8 +39,8 @@ $mdlMonit = new OPNsense\Monit\Monit;
 
 $nodes = $mdlMonit->getNodes();
 // test if Monit is already configured
-if(count($nodes['service']) != 0 || count($nodes['test']) != 0) {
-	exit;
+if (count($nodes['service']) != 0 || count($nodes['test']) != 0) {
+    exit;
 }
 
 $cfg = Config::getInstance();
@@ -59,46 +60,46 @@ $domainName = $cfgObj->system->domain;
 
 // define some tests
 $defaultTests = array(
-	array("name" => "Ping", "condition" => "failed ping", "action" => "alert"),
-	array("name" => "NetworkLink", "condition" => "failed link", "action" => "alert"),
-	array("name" => "NetworkSaturation", "condition" => "saturation is greater than 75%", "action" => "alert"),
-	array("name" => "MemoryUsage", "condition" => "memory usage is greater than 75%", "action" => "alert"),
-	array("name" => "CPUUsage", "condition" => "cpu usage is greater than 75%", "action" => "alert"),
-	array("name" => "LoadAvg1", "condition" => "loadavg (1min) is greater than $LoadAvg1", "action" => "alert"),
-	array("name" => "LoadAvg5", "condition" => "loadavg (5min) is greater than $LoadAvg5", "action" => "alert"),
-	array("name" => "LoadAvg15", "condition" => "loadavg (15min) is greater than $LoadAvg15", "action" => "alert"),
-	array("name" => "SpaceUsage", "condition" => "space usage is greater than 75%", "action" => "alert")
+    array("name" => "Ping", "condition" => "failed ping", "action" => "alert"),
+    array("name" => "NetworkLink", "condition" => "failed link", "action" => "alert"),
+    array("name" => "NetworkSaturation", "condition" => "saturation is greater than 75%", "action" => "alert"),
+    array("name" => "MemoryUsage", "condition" => "memory usage is greater than 75%", "action" => "alert"),
+    array("name" => "CPUUsage", "condition" => "cpu usage is greater than 75%", "action" => "alert"),
+    array("name" => "LoadAvg1", "condition" => "loadavg (1min) is greater than $LoadAvg1", "action" => "alert"),
+    array("name" => "LoadAvg5", "condition" => "loadavg (5min) is greater than $LoadAvg5", "action" => "alert"),
+    array("name" => "LoadAvg15", "condition" => "loadavg (15min) is greater than $LoadAvg15", "action" => "alert"),
+    array("name" => "SpaceUsage", "condition" => "space usage is greater than 75%", "action" => "alert")
 );
 
 // define system service
 $systemService = array(
-	"enabled" => 1,
-	"name" => $hostName . "." . $domainName,
-	"type" => "system",
-	"tests" => ""
+    "enabled" => 1,
+    "name" => $hostName . "." . $domainName,
+    "type" => "system",
+    "tests" => ""
 );
 
 // define root filesystem service
 $rootFsService = array(
-	"enabled" => 1,
-	"name" => "RootFs",
-	"type" => "filesystem",
-	"path" => "/",
-	"tests" => ""
+    "enabled" => 1,
+    "name" => "RootFs",
+    "type" => "filesystem",
+    "path" => "/",
+    "tests" => ""
 );
 
 foreach ($defaultTests as $defaultTest) {
-	$testNode = $mdlMonit->test->Add();
-	$testNode->setNodes($defaultTest);
-	if ($defaultTest['name'] == "MemoryUsage" ||
-		$defaultTest['name'] == "CPUUsage" ||
-		$defaultTest['name'] == "LoadAvg1" ||
-		$defaultTest['name'] == "LoadAvg5" ) {
-			$systemService['tests'] .= $testNode->getAttributes()['uuid'] . ",";
-	}
-	if ($defaultTest['name'] == "SpaceUsage") {
-			$rootFsService['tests'] .= $testNode->getAttributes()['uuid'] . ",";
-	}
+    $testNode = $mdlMonit->test->Add();
+    $testNode->setNodes($defaultTest);
+    if ($defaultTest['name'] == "MemoryUsage" ||
+        $defaultTest['name'] == "CPUUsage" ||
+        $defaultTest['name'] == "LoadAvg1" ||
+        $defaultTest['name'] == "LoadAvg5" ) {
+            $systemService['tests'] .= $testNode->getAttributes()['uuid'] . ",";
+    }
+    if ($defaultTest['name'] == "SpaceUsage") {
+            $rootFsService['tests'] .= $testNode->getAttributes()['uuid'] . ",";
+    }
 }
 
 // remove last comma from tests csv

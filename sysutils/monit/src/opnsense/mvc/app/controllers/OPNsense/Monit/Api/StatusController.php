@@ -38,97 +38,97 @@ use \OPNsense\Base\ApiControllerBase;
  */
 class StatusController extends ApiControllerBase
 {
-	/**
-	 * get monit status page
-	 * see monit(1)
-	 * @return array
-	 */
-	public function getAction()
-	{
-		$result = array("result" => "failed", "function" => "getStatus");
+    /**
+     * get monit status page
+     * see monit(1)
+     * @return array
+     */
+    public function getAction()
+    {
+        $result = array("result" => "failed", "function" => "getStatus");
 
-		// connect monit httpd socket defined in monitrc by 'set httpd ...'
-		if (file_exists("/var/run/monit.sock") && filetype("/var/run/monit.sock") == "socket" ) {
-			// throws an exception therefore no error handling
-			$socket = stream_socket_client("unix:///var/run/monit.sock", $errno, $errstr);
+        // connect monit httpd socket defined in monitrc by 'set httpd ...'
+        if (file_exists("/var/run/monit.sock") && filetype("/var/run/monit.sock") == "socket") {
+            // throws an exception therefore no error handling
+            $socket = stream_socket_client("unix:///var/run/monit.sock", $errno, $errstr);
 
-			// get monit status page
-			$request  = "GET /_status?format=text HTTP/1.0\r\n";
-			$request .= "\r\n";
-			$count = fwrite($socket, $request);
-			$result['count'] = $count;
-			$result['status'] = '';
-			$result['orig'] = '';
-			$result['httpstatus'] = preg_replace( "/\r|\n/", "", fgets($socket));
-			$ignorelines = 1;
-			if ($result['httpstatus'] == 'HTTP/1.0 200 OK') {
-				while (!feof($socket)) {
-					$line = fgets($socket);
-					$result['orig'] .= $line;
+            // get monit status page
+            $request  = "GET /_status?format=text HTTP/1.0\r\n";
+            $request .= "\r\n";
+            $count = fwrite($socket, $request);
+            $result['count'] = $count;
+            $result['status'] = '';
+            $result['orig'] = '';
+            $result['httpstatus'] = preg_replace("/\r|\n/", "", fgets($socket));
+            $ignorelines = 1;
+            if ($result['httpstatus'] == 'HTTP/1.0 200 OK') {
+                while (!feof($socket)) {
+                    $line = fgets($socket);
+                    $result['orig'] .= $line;
 
-					// ignore lines (mostly HTTP headers) until a line starts with 'Monit' e.g. 'Monit 5.20.0 uptime: 2d 23h 2m'
-					if (substr($line, 0, 5) == 'Monit') {
-						$ignorelines = 0;
-					}
-					if ($ignorelines) {
-						continue;
-					}
-					$result['status'] .= $line;
-				}
-				$result['result'] = "ok";
+                    // ignore lines (mostly HTTP headers) until a line starts with 'Monit' e.g. 'Monit 5.20.0 uptime: 2d 23h 2m'
+                    if (substr($line, 0, 5) == 'Monit') {
+                        $ignorelines = 0;
+                    }
+                    if ($ignorelines) {
+                        continue;
+                    }
+                    $result['status'] .= $line;
+                }
+                $result['result'] = "ok";
+            }
+            fclose($socket);
 
-			}
-			fclose($socket);
-
-			// response contains shell color escape codes; convert them to CSS
-			$result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">' . $this->bashColorToCSS($result['status']) . '</pre>';
-		} else {
-			$result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">
+            // response contains shell color escape codes; convert them to CSS
+            $result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">' . $this->bashColorToCSS($result['status']) . '</pre>';
+        } else {
+            $result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">
 Either the file /var/run/monit.sock does not exists or it is not a unix socket.
 Please check if the Monit service is running.
 
 If you have started Monit recently, wait for StartDelay seconds and refresh this page.</pre>';
-		}
-		return $result;
-	}
+        }
+        return $result;
+    }
 
-	/**
-	 * convert bash color escape codes to CSS
-	 * @param $string
-	 * @return string
-	 */
-	private function bashColorToCSS($string) {
-	$colors = [
-			'/\x1b\[0;30m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold">$1</span>',
+    /**
+     * convert bash color escape codes to CSS
+     * @param $string
+     * @return string
+     */
+    private function bashColorToCSS($string)
+    {
+        $colors = [
+            '/\x1b\[0;30m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold">$1</span>',
 
-			'/\x1b\[0;30m(.*?)\x1b\[0m/s' => '<span style="color:Black;">$1</span>',
-			'/\x1b\[0;31m(.*?)\x1b\[0m/s' => '<span style="color:Red;">$1</span>',
-			'/\x1b\[0;32m(.*?)\x1b\[0m/s' => '<span style="color:Green;">$1</span>',
-			'/\x1b\[0;33m(.*?)\x1b\[0m/s' => '<span style="color:Yellow;">$1</span>',
-			'/\x1b\[0;34m(.*?)\x1b\[0m/s' => '<span style="color:Blue;">$1</span>',
-			'/\x1b\[0;35m(.*?)\x1b\[0m/s' => '<span style="color:Magents;">$1</span>',
-			'/\x1b\[0;36m(.*?)\x1b\[0m/s' => '<span style="color:Cyan;">$1</span>',
-			'/\x1b\[0;37m(.*?)\x1b\[0m/s' => '<span style="color:WhiteSmoke;">$1</span>',
-			'/\x1b\[0;39m(.*?)\x1b\[0m/s' => '<span>$1</span>',
+            '/\x1b\[0;30m(.*?)\x1b\[0m/s' => '<span style="color:Black;">$1</span>',
+            '/\x1b\[0;31m(.*?)\x1b\[0m/s' => '<span style="color:Red;">$1</span>',
+            '/\x1b\[0;32m(.*?)\x1b\[0m/s' => '<span style="color:Green;">$1</span>',
+            '/\x1b\[0;33m(.*?)\x1b\[0m/s' => '<span style="color:Yellow;">$1</span>',
+            '/\x1b\[0;34m(.*?)\x1b\[0m/s' => '<span style="color:Blue;">$1</span>',
+            '/\x1b\[0;35m(.*?)\x1b\[0m/s' => '<span style="color:Magents;">$1</span>',
+            '/\x1b\[0;36m(.*?)\x1b\[0m/s' => '<span style="color:Cyan;">$1</span>',
+            '/\x1b\[0;37m(.*?)\x1b\[0m/s' => '<span style="color:WhiteSmoke;">$1</span>',
+            '/\x1b\[0;39m(.*?)\x1b\[0m/s' => '<span>$1</span>',
 
-			'/\x1b\[1;30m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Black;">$1</span>',
-			'/\x1b\[1;31m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Red;">$1</span>',
-			'/\x1b\[1;32m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Green;">$1</span>',
-			'/\x1b\[1;33m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Yellow;">$1</span>',
-			'/\x1b\[1;34m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Blue;">$1</span>',
-			'/\x1b\[1;35m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Magenta;">$1</span>',
-			'/\x1b\[1;36m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Cyan;">$1</span>',
-			'/\x1b\[1;37m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:White:">$1</span>',
+            '/\x1b\[1;30m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Black;">$1</span>',
+            '/\x1b\[1;31m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Red;">$1</span>',
+            '/\x1b\[1;32m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Green;">$1</span>',
+            '/\x1b\[1;33m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Yellow;">$1</span>',
+            '/\x1b\[1;34m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Blue;">$1</span>',
+            '/\x1b\[1;35m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Magenta;">$1</span>',
+            '/\x1b\[1;36m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:Cyan;">$1</span>',
+            '/\x1b\[1;37m(.*?)\x1b\[0m/s' => '<span style="font-weight:bold; color:White:">$1</span>',
 
-			'/\x1b\[0;90m(.*?)\x1b\[0m/s' => '<span style="color:DargGrey">$1</span>',
-			'/\x1b\[0;91m(.*?)\x1b\[0m/s' => '<span style="color:LightCoral">$1</span>',
-			'/\x1b\[0;92m(.*?)\x1b\[0m/s' => '<span style="color:LightGreen;">$1</span>',
-			'/\x1b\[0;93m(.*?)\x1b\[0m/s' => '<span style="color:LightYellow;">$1</span>',
-			'/\x1b\[0;94m(.*?)\x1b\[0m/s' => '<span style="color:LightSkyBlue;">$1</span>',
-			'/\x1b\[0;95m(.*?)\x1b\[0m/s' => '<span style="color:LightPink;">$1</span>',
-			'/\x1b\[0;96m(.*?)\x1b\[0m/s' => '<span style="color:LightCyan;">$1</span>',
-			'/\x1b\[0;97m(.*?)\x1b\[0m/s' => '<span style="color:White;">$1</span>'
+            '/\x1b\[0;90m(.*?)\x1b\[0m/s' => '<span style="color:DargGrey">$1</span>',
+            '/\x1b\[0;91m(.*?)\x1b\[0m/s' => '<span style="color:LightCoral">$1</span>',
+            '/\x1b\[0;92m(.*?)\x1b\[0m/s' => '<span style="color:LightGreen;">$1</span>',
+            '/\x1b\[0;93m(.*?)\x1b\[0m/s' => '<span style="color:LightYellow;">$1</span>',
+            '/\x1b\[0;94m(.*?)\x1b\[0m/s' => '<span style="color:LightSkyBlue;">$1</span>',
+            '/\x1b\[0;95m(.*?)\x1b\[0m/s' => '<span style="color:LightPink;">$1</span>',
+            '/\x1b\[0;96m(.*?)\x1b\[0m/s' => '<span style="color:LightCyan;">$1</span>',
+            '/\x1b\[0;97m(.*?)\x1b\[0m/s' => '<span style="color:White;">$1</span>'
         ];
-	return preg_replace(array_keys($colors), $colors, $string);
-	}
+        return preg_replace(array_keys($colors), $colors, $string);
+    }
 }

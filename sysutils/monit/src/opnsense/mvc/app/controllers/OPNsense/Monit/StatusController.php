@@ -35,13 +35,13 @@ namespace OPNsense\Monit;
  */
 class StatusController extends \OPNsense\Base\IndexController
 {
-	/**
-	 * monit status page
-	 * @throws \Exception
-	 */
-	public function indexAction()
-	{
-		$this->view->title = gettext('Monit System Monitoring - Status');
-		$this->view->pick('OPNsense/Monit/status');
-	}
+    /**
+     * monit status page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        $this->view->title = gettext('Monit System Monitoring - Status');
+        $this->view->pick('OPNsense/Monit/status');
+    }
 }

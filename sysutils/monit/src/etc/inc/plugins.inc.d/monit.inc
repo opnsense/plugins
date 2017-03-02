@@ -31,18 +31,18 @@
  */
 function monit_services()
 {
-	global $config;
-	$services = array();
-	if (isset($config['OPNsense']['monit']['general']['enabled']) && $config['OPNsense']['monit']['general']['enabled'] == 1) {
-		$services[] = array(
-				'description' => gettext('Monit System Monitoring'),
-				'configd' => array(
-						'restart' => array('monit restart'),
-						'start' => array('monit start'),
-						'stop' => array('monit stop'),
-				),
-				'name' => 'monit',
-		);
-	}
-	return $services;
+    global $config;
+    $services = array();
+    if (isset($config['OPNsense']['monit']['general']['enabled']) && $config['OPNsense']['monit']['general']['enabled'] == 1) {
+        $services[] = array(
+                'description' => gettext('Monit System Monitoring'),
+                'configd' => array(
+                        'restart' => array('monit restart'),
+                        'start' => array('monit start'),
+                        'stop' => array('monit stop'),
+                ),
+                'name' => 'monit',
+        );
+    }
+    return $services;
 }
