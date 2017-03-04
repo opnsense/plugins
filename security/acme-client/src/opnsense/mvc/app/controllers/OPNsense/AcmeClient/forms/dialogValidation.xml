@@ -109,6 +109,7 @@
     <field>
         <label>DNS-01/Alwaysdata</label>
         <type>header</type>
+        <style>table_dns table_dns_ad</style>
     </field>
     <field>
         <id>validation.dns_ad_key</id>
@@ -119,6 +120,7 @@
     <field>
         <label>DNS-01/aliyun</label>
         <type>header</type>
+        <style>table_dns table_dns_ali</style>
     </field>
     <field>
         <id>validation.dns_ali_key</id>
@@ -135,6 +137,7 @@
     <field>
         <label>DNS-01/AWS Route53</label>
         <type>header</type>
+        <style>table_dns table_dns_aws</style>
     </field>
     <field>
         <id>validation.dns_aws_id</id>
@@ -151,6 +154,7 @@
     <field>
         <label>DNS-01/Cloudflare</label>
         <type>header</type>
+        <style>table_dns table_dns_cf</style>
     </field>
     <field>
         <id>validation.dns_cf_email</id>
@@ -167,6 +171,7 @@
     <field>
         <label>DNS-01/CloudXNS</label>
         <type>header</type>
+        <style>table_dns table_dns_cx</style>
     </field>
     <field>
         <id>validation.dns_cx_key</id>
@@ -183,6 +188,7 @@
     <field>
         <label>DNS-01/DNSPod</label>
         <type>header</type>
+        <style>table_dns table_dns_dp</style>
     </field>
     <field>
         <id>validation.dns_dp_id</id>
@@ -199,6 +205,7 @@
     <field>
         <label>DNS-01/GoDaddy</label>
         <type>header</type>
+        <style>table_dns table_dns_gd</style>
     </field>
     <field>
         <id>validation.dns_gd_key</id>
@@ -215,6 +222,7 @@
     <field>
         <label>DNS-01/IPSConfig</label>
         <type>header</type>
+        <style>table_dns table_dns_ispconfig</style>
     </field>
     <field>
         <id>validation.dns_ispconfig_user</id>
@@ -243,6 +251,7 @@
     <field>
         <label>DNS-01/lexicon</label>
         <type>header</type>
+        <style>table_dns table_dns_lexicon</style>
     </field>
     <field>
         <id>validation.dns_lexicon_provider</id>
@@ -265,6 +274,7 @@
     <field>
         <label>DNS-01/LuaDNS</label>
         <type>header</type>
+        <style>table_dns table_dns_lua</style>
     </field>
     <field>
         <id>validation.dns_lua_email</id>
@@ -281,6 +291,7 @@
     <field>
         <label>DNS-01/DNSMadeEasy</label>
         <type>header</type>
+        <style>table_dns table_dns_me</style>
     </field>
     <field>
         <id>validation.dns_me_key</id>
@@ -297,6 +308,7 @@
     <field>
         <label>DNS-01/nsupdate</label>
         <type>header</type>
+        <style>table_dns table_dns_nsupdate</style>
     </field>
     <field>
         <id>validation.dns_nsupdate_server</id>
@@ -313,6 +325,7 @@
     <field>
         <label>DNS-01/OVH</label>
         <type>header</type>
+        <style>table_dns table_dns_ovh</style>
     </field>
     <field>
         <id>validation.dns_ovh_app_key</id>
@@ -341,6 +354,7 @@
     <field>
         <label>DNS-01/PowerDNS</label>
         <type>header</type>
+        <style>table_dns table_dns_pdns</style>
     </field>
     <field>
         <id>validation.dns_pdns_url</id>
