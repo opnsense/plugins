@@ -53,9 +53,16 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#validation\\.dns_service").change(function(){
                 var service_id = 'table_' + $(this).val() ;
                 $(".table_dns").hide();
-                $("."+service_id).show();
+                if ($("#validation\\.method").val() == 'dns01') {
+                    $("."+service_id).show();
+                }
             });
-            $("#validation\\.dns_service").change();
+            $("#validation\\.method").change(function(){
+                $(".method_table").hide();
+                $(".method_table_"+$(this).val()).show();
+                $("#validation\\.dns_service").change();
+            });
+            $("#validation\\.method").change();
         })
     });
 

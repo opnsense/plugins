@@ -26,6 +26,7 @@
     <field>
         <label>HTTP-01</label>
         <type>header</type>
+        <style>method_table method_table_http01</style>
     </field>
     <field>
         <id>validation.http_service</id>
@@ -36,6 +37,7 @@
     <field>
         <label>HTTP-01/OPNsense</label>
         <type>header</type>
+        <style>method_table method_table_http01</style>
     </field>
     <field>
         <id>validation.http_opn_autodiscovery</id>
@@ -61,6 +63,7 @@
     <field>
         <label>HTTP-01/HAProxy</label>
         <type>header</type>
+        <style>method_table method_table_http01</style>
     </field>
     <field>
         <id>validation.http_haproxyInject</id>
@@ -93,6 +96,7 @@
     <field>
         <label>DNS-01</label>
         <type>header</type>
+        <style>method_table method_table_dns01</style>
     </field>
     <field>
         <id>validation.dns_service</id>
