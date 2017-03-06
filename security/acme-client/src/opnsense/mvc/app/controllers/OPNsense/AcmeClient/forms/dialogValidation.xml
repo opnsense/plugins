@@ -190,6 +190,42 @@
         <help></help>
     </field>
     <field>
+      <label>DNS-01/cyon</label>
+      <type>header</type>
+      <style>table_dns table_dns_cyon</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_cyon_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_cyon_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>DNS-01/Domain-Offensive</label>
+      <type>header</type>
+      <style>table_dns table_dns_do</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_do_pid</id>
+        <label>Partner ID</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_do_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
         <label>DNS-01/DNSPod</label>
         <type>header</type>
         <style>table_dns table_dns_dp</style>
@@ -202,6 +238,36 @@
     </field>
     <field>
         <id>validation.dns_dp_key</id>
+        <label>Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>DNS-01/FreeDNS</label>
+      <type>header</type>
+      <style>table_dns table_dns_freedns</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_freedns_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_freedns_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>DNS-01/Gandi LiveDNS</label>
+      <type>header</type>
+      <style>table_dns table_dns_gandi_livedns</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_gandi_livedns_key</id>
         <label>Key</label>
         <type>text</type>
         <help></help>
@@ -272,6 +338,18 @@
     <field>
         <id>validation.dns_lexicon_token</id>
         <label>Token</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>DNS-01/Linode</label>
+      <type>header</type>
+      <style>table_dns table_dns_linode</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_linode_key</id>
+        <label>Key</label>
         <type>text</type>
         <help></help>
     </field>
