@@ -355,7 +355,11 @@ class SettingsController extends ApiControllerBase
                 if ($valMsgs->count() == 0) {
                     $mdlMonit->serializeToConfig();
                     Config::getInstance()->save();
-                    $result["result"] = "saved";
+                    $svcMonit = new ServiceController();
+                    $result = $svcMonit->configtestAction();
+                    if ($nodeType == 'general' && $node->enabled->__toString() == 0) {
+			$result['stop'] = $svcMonit->stopAction();
+                    }
                 }
             }
         }
