@@ -600,9 +600,24 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['CX_Key'] = (string)$valObj->dns_cx_key;
                 $proc_env['CX_Secret'] = (string)$valObj->dns_cx_secret;
                 break;
+            case 'dns_cyon':
+                $proc_env['CY_Username'] = (string)$valObj->dns_cyon_user;
+                $proc_env['CY_Password'] = (string)$valObj->dns_cyon_user;
+                break;
+            case 'dns_do':
+                $proc_env['DO_PID'] = (string)$valObj->dns_do_pid;
+                $proc_env['DO_PW'] = (string)$valObj->dns_do_password;
+                break;
             case 'dns_dp':
                 $proc_env['DP_Id'] = (string)$valObj->dns_dp_id;
                 $proc_env['DP_Key'] = (string)$valObj->dns_dp_key;
+                break;
+            case 'dns_freedns':
+                $proc_env['FREEDNS_User'] = (string)$valObj->dns_freedns_user;
+                $proc_env['FREEDNS_Password'] = (string)$valObj->dns_freedns_password;
+                break;
+            case 'dns_gandi_livedns':
+                $proc_env['GANDI_LIVEDNS_KEY'] = (string)$valObj->dns_gandi_livedns_key;
                 break;
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
@@ -623,6 +638,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                     // Namesilo applies changes to DNS records only every 15 minutes.
                     $acme_hook_options[] = "--dnssleep 960";
                 }
+                break;
+            case 'dns_linode':
+                $proc_env['LINODE_API_KEY'] = (string)$valObj->dns_linode_key;
+                // Linode can take up to 15 to update DNS records
+                $acme_hook_options[] = "--dnssleep 960";
                 break;
             case 'dns_lua':
                 $proc_env['LUA_Key'] = (string)$valObj->dns_lua_key;

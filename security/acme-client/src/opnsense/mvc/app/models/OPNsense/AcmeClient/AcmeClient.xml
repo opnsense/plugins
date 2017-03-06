@@ -318,10 +318,15 @@
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
+                        <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_do>Domain-Offensive API</dns_do>
                         <dns_dp>DNSPod.cn API</dns_dp>
+                        <dns_freedns>FreeDNS API</dns_freedns>
+                        <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
+                        <dns_linode>Linode API</dns_linode>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
@@ -363,12 +368,33 @@
                 <dns_cx_secret type="TextField">
                     <Required>N</Required>
                 </dns_cx_secret>
+                <dns_cyon_user type="TextField">
+                  <Required>N</Required>
+                </dns_cyon_user>
+                <dns_cyon_password type="TextField">
+                  <Required>N</Required>
+                </dns_cyon_password>
+                <dns_do_pid type="TextField">
+                  <Required>N</Required>
+                </dns_do_pid>
+                <dns_do_password type="TextField">
+                  <Required>N</Required>
+                </dns_do_password>
                 <dns_dp_id type="TextField">
                     <Required>N</Required>
                 </dns_dp_id>
                 <dns_dp_key type="TextField">
                     <Required>N</Required>
                 </dns_dp_key>
+                <dns_freedns_user type="TextField">
+                    <Required>N</Required>
+                </dns_freedns_user>
+                <dns_freedns_password type="TextField">
+                    <Required>N</Required>
+                </dns_freedns_password>
+                <dns_gandi_livedns_key type="TextField">
+                    <Required>N</Required>
+                </dns_gandi_livedns_key>
                 <dns_gd_key type="TextField">
                     <Required>N</Required>
                 </dns_gd_key>
@@ -402,6 +428,9 @@
                 <dns_lexicon_token type="TextField">
                     <Required>N</Required>
                 </dns_lexicon_token>
+                <dns_linode_key type="TextField">
+                  <Required>N</Required>
+                </dns_linode_key>
                 <dns_lua_email type="TextField">
                     <Required>N</Required>
                 </dns_lua_email>
