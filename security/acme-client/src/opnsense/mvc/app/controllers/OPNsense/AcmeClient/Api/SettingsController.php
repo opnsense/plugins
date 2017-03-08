@@ -322,6 +322,11 @@ class SettingsController extends ApiMutableModelControllerBase
                         (string)$validation->method == "http01" and
                         (string)$validation->http_service == "haproxy") {
                         //$this->getLogger()->error("LE HAProxy DEBUG: checking validation method: " . (string)$validation->name);
+                        // Check if HAProxy frontends were specified.
+                        if (empty((string)$validation->http_haproxyFrontends)) {
+                            // Skip item, no HAProxy frontends were specified.
+                            continue;
+                        }
                         $_frontends = explode(',', $validation->http_haproxyFrontends);
                         // Walk through all linked frontends.
                         foreach ($_frontends as $_frontend) {
