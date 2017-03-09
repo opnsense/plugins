@@ -6,17 +6,17 @@
   </field>
   <field>
     <id>network.ipaddr</id>
-    <name>Network Address</name>
+    <label>Network Address</label>
     <type>text</type>
   </field>
   <field>
     <id>network.netmask</id>
-    <name>Network Mask</name>
+    <label>Network Mask</label>
     <type>text</type>
   </field>
   <field>
     <id>network.area</id>
-    <name>Area</name>
+    <label>Area</label>
     <type>text</type>
   </field>
 </form>
