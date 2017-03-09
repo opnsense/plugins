@@ -158,6 +158,7 @@ function cert_action_validator($opt_cert_id)
                     } else {
                         //echo "DEBUG: account registration failed\n";
                         log_error("AcmeClient: account registration failed");
+                        log_cert_acme_status($certObj, $modelObj, '400');
                         if (isset($options["A"])) {
                             continue; // skip to next item
                         }
@@ -166,6 +167,7 @@ function cert_action_validator($opt_cert_id)
                 } else {
                     //echo "DEBUG: account not found\n";
                     log_error("AcmeClient: account not found");
+                    log_cert_acme_status($certObj, $modelObj, '300');
                     if (isset($options["A"])) {
                         continue; // skip to next item
                     }
@@ -193,10 +195,12 @@ function cert_action_validator($opt_cert_id)
                         // Start acme client to revoke the certificate
                         $rev_result = revoke_cert($certObj, $valObj, $acctObj);
                         if (!$rev_result) {
+                            log_cert_acme_status($certObj, $modelObj, '250');
                             return(0); // Success!
                         } else {
                             // Revocation failure
                             log_error("AcmeClient: revocation for certificate failed");
+                            log_cert_acme_status($certObj, $modelObj, '400');
                             if (isset($options["A"])) {
                                 continue; // skip to next item
                             }
@@ -215,8 +219,10 @@ function cert_action_validator($opt_cert_id)
                                 //echo "DEBUG: cert import done\n";
                                 // Prepare certificate for restart action
                                 $restart_certs[] = $certObj;
+                                log_cert_acme_status($certObj, $modelObj, '200');
                             } else {
                                 log_error("AcmeClient: unable to import certificate: " . (string)$certObj->name);
+                                log_cert_acme_status($certObj, $modelObj, '500');
                                 if (isset($options["A"])) {
                                     continue; // skip to next item
                                 }
@@ -227,6 +233,7 @@ function cert_action_validator($opt_cert_id)
                         } else {
                             // validation failure
                             log_error("AcmeClient: validation for certificate failed: " . (string)$certObj->name);
+                            log_cert_acme_status($certObj, $modelObj, '400');
                             if (isset($options["A"])) {
                                 continue; // skip to next item
                             }
@@ -234,6 +241,7 @@ function cert_action_validator($opt_cert_id)
                         }
                     } else {
                         log_error("AcmeClient: invalid validation method specified: " . (string)$valObj->method);
+                        log_cert_acme_status($certObj, $modelObj, '300');
                         if (isset($options["A"])) {
                             continue; // skip to next item
                         }
@@ -241,6 +249,7 @@ function cert_action_validator($opt_cert_id)
                     }
                 } else {
                     log_error("AcmeClient: validation method not found for cert " . $certObj->name);
+                    log_cert_acme_status($certObj, $modelObj, '300');
                     if (isset($options["A"])) {
                         continue; // skip to next item
                     }
@@ -1008,6 +1017,32 @@ function run_restart_actions($certlist, $modelObj)
     }
 
     return($return);
+}
+
+/* Update certificate object to log the status of the current acme run.
+ * Supported status codes are:
+ *   100     pending
+ *   200     issue/renew OK
+ *   250     certificate revoked
+ *   300     configuration error (validation method, account, ...)
+ *   400     issue/renew failed
+ *   500     internal error (code issues, bad luck, unexpected errors, ...)
+ * Feel free to add more status codes to make it more useful.
+*/
+function log_cert_acme_status($certObj, $modelObj, $statusCode)
+{
+    $uuid = $certObj->attributes()->uuid;
+    $node = $modelObj->getNodeByReference('certificates.certificate.' . $uuid);
+    if ($node != null) {
+        $node->statusCode = $statusCode;
+        $node->statusLastUpdate = time();
+        // serialize to config and save
+        $modelObj->serializeToConfig();
+        Config::getInstance()->save();
+    } else {
+        log_error("AcmeClient: unable to update acme status for certificate " . (string)$certObj->name);
+        return(1);
+    }
 }
 
 // taken from certs.inc
