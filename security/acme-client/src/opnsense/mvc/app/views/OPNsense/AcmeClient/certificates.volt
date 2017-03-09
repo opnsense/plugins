@@ -78,7 +78,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         return certdate.toLocaleString();
                     }
                 },
-                "certstatus": function (column, row) {
+                "acmestatus": function (column, row) {
                     if (row.statusCode == "" || row.statusCode == undefined) {
                         // fallback to lastUpdate value (unset if cert was never issued/imported)
                         if (row.lastUpdate == "" || row.lastUpdate == undefined) {
@@ -102,7 +102,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         return "{{ lang._('unknown') }}";
                     }
                 },
-                "certstatusdate": function (column, row) {
+                "acmestatusdate": function (column, row) {
                     if (row.statusLastUpdate == "" || row.statusCode == undefined) {
                         // fallback to lastUpdate value
                         if (row.lastUpdate == "" || row.lastUpdate == undefined) {
@@ -386,8 +386,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="altNames" data-type="string">{{ lang._('Multi-Domain (SAN)') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="lastUpdate" data-type="string" data-formatter="certdate">{{ lang._('Issue/Renewal Date') }}</th>
-                <th data-column-id="statusCode" data-type="string" data-formatter="certstatus">{{ lang._('Last Acme Status') }}</th>
-                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="certstatusdate">{{ lang._('Last Acme Run') }}</th>
+                <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last Acme Status') }}</th>
+                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last Acme Run') }}</th>
                 <th data-column-id="commands" data-width="11em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
             </tr>
