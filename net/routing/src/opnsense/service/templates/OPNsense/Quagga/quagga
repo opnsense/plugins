@@ -1,0 +1,9 @@
+defaultrouter="NO"
+quagga_enable="NO"
+
+#Also, you may wish to set the following options:"
+quagga_daemons="zebra ospfd"
+#quagga_flags="...."
+#quagga_extralibs_path="... ..."
+router_enable="NO"
+watchquagga_enable="YES"

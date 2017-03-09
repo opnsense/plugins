@@ -1,0 +1,17 @@
+<form>
+  <field>
+    <id>network.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>network.ipaddr</id>
+    <name>Network Address</name>
+    <type>text</type>
+  </field>
+  <field>
+    <id>network.mask</id>
+    <name>Network mask</name>
+    <type>text</type>
+  </field>
+</form>
