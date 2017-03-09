@@ -224,6 +224,18 @@
                 <lastUpdate type="IntegerField">
                     <Required>N</Required>
                 </lastUpdate>
+                <!-- hidden field; status of last operation -->
+                <statusCode type="IntegerField">
+                    <Required>N</Required>
+                    <!-- XXX: enable once data migration is working -->
+                    <!-- <default>100</default> -->
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                </statusCode>
+                <!-- hidden field; timestamp for statusCode -->
+                <statusLastUpdate type="IntegerField">
+                    <Required>N</Required>
+                </statusLastUpdate>
             </certificate>
         </certificates>
         <validations>

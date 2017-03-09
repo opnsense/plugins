@@ -203,7 +203,7 @@ class CertificatesController extends ApiControllerBase
         $grid = new UIModelGrid($mdlAcme->certificates->certificate);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "altNames", "description"),
+            array("enabled", "name", "altNames", "description", "lastUpdate", "statusCode", "statusLastUpdate"),
             "name"
         );
     }
