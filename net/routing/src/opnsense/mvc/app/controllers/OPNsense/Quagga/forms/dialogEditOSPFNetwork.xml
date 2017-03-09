@@ -10,8 +10,8 @@
     <type>text</type>
   </field>
   <field>
-    <id>network.mask</id>
-    <name>Network mask</name>
+    <id>network.netmask</id>
+    <name>Network Mask</name>
     <type>text</type>
   </field>
 </form>

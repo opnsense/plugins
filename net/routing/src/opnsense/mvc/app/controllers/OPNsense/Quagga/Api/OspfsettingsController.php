@@ -56,7 +56,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlOSPF->networks->network);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "ipaddr", "mask")
+            array("enabled", "ipaddr", "netmask")
         );
     }
     /**
@@ -78,5 +78,78 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             return array("network" => $node->getNodes());
         }
         return array();
+    }
+    
+    public function addNetworkAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("network")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlOSPF = $this->getModel();
+            $node = $mdlOSPF->networks->network->Add();
+            $node->setNodes($this->request->getPost("network"));
+            $valMsgs = $mdlOSPF->performValidation();
+
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "network", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlOSPF->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+    public function delNetworkAction($uuid)
+    {
+
+        $result = array("result" => "failed");
+
+        if ($this->request->isPost()) {
+            $mdlOSPF = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlOSPF->networks->network->del($uuid)) {
+                    $mdlOSPF->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+    public function setNetworkAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("network")) {
+            $mdlNetwork = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNetwork->getNodeByReference('networks.network.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $networkInfo = $this->request->getPost("network");
+
+                    $node->setNodes($networkInfo);
+                    $valMsgs = $mdlNetwork->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "network", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNetwork->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
     }
 }
