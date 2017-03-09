@@ -43,7 +43,7 @@
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
                 <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
-                <th data-column-id="area" data-type="string" data-visible="false">{{ lang._('Area') }}</th>
+                <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>

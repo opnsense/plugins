@@ -56,7 +56,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlOSPF->networks->network);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "ipaddr", "netmask")
+            array("enabled", "ipaddr", "netmask", "area")
         );
     }
     /**

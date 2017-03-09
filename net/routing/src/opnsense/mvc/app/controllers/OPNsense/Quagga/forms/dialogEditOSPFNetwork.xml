@@ -14,4 +14,9 @@
     <name>Network Mask</name>
     <type>text</type>
   </field>
+  <field>
+    <id>network.area</id>
+    <name>Area</name>
+    <type>text</type>
+  </field>
 </form>

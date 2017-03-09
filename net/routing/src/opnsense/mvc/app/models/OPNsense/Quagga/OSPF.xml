@@ -49,6 +49,11 @@
                                 <Required>Y</Required>
                                 <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                         </ipaddr>
+                        <area type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                        </area>
                         <netmask type="IntegerField">
                                 <default>24</default>
                                 <MinimumValue>0</MinimumValue>
