@@ -1,0 +1,154 @@
+<model>
+    <mount>//OPNsense/quagga/ospf</mount>
+    <description>OSPF Routing configuration</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <originate type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </originate>
+        <originatealways type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </originatealways>
+
+        <passiveinterfaces type="InterfaceField">
+                <Required>N</Required>
+                <multiple>Y</multiple>
+                <default></default>
+                <filters>
+                    <enable>/^(?!0).*$/</enable>
+                </filters>
+        </passiveinterfaces>
+        <redistribute type="OptionField">
+                <Required>N</Required>
+                <multiple>Y</multiple>
+                <default></default>
+                <OptionValues>
+                        <babel>Babel routing protocol (Babel)</babel>
+                        <bgp>Border Gateway Protocol (BGP)</bgp>
+                        <connected>Connected routes (directly attached subnet or host)</connected>
+                        <isis>Intermediate System to Intermediate System (IS-IS)</isis>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                        <pim>Protocol Independent Multicast (PIM)</pim>
+                        <rip>Routing Information Protocol (RIP)</rip>
+                        <static>Statically configured routes</static>
+                </OptionValues>
+        </redistribute>
+        <networks>
+                <network type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <ipaddr type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                        </ipaddr>
+                        <area type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                        </area>
+                        <netmask type="IntegerField">
+                                <default>24</default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>Y</Required>
+                                <MaximumValue>32</MaximumValue>
+                                <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
+                        </netmask>
+                </network>
+        </networks>
+        <interfaces>
+                <interface type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <interfacename type="InterfaceField">
+                                 <Required>N</Required>
+                                 <multiple>N</multiple>
+                                 <default></default>
+                                 <filters>
+                                         <enable>/^(?!0).*$/</enable>
+                                 </filters>
+                        </interfacename>
+                        <authtype type="OptionField">
+                                <Required>N</Required>
+                                <multiple>N</multiple>
+                                <default></default>
+                                <OptionValues>
+                                        <md5>MD5</md5>
+                                </OptionValues>
+                        </authtype>
+                        <authkey type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                                <mask>/^\S+$/</mask>
+                        </authkey>
+                        <area type="CSVListField">
+                                <default></default>
+                                <Required>N</Required>
+                                <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/</mask>
+                        </area>
+                        <cost type="IntegerField">
+                                <default></default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>4294967295</MaximumValue>
+                                <ValidationMessage>Cost must be between 0 and 4294967295.</ValidationMessage>
+                        </cost>
+                        <hellointerval type="IntegerField">
+                                <default></default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>4294967295</MaximumValue>
+                                <ValidationMessage>Hello interval must be between 0 and 4294967295.</ValidationMessage>
+                        </hellointerval>
+                        <deadinterval type="IntegerField">
+                                <default></default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>4294967295</MaximumValue>
+                                <ValidationMessage>Dead interval must be between 0 and 4294967295.</ValidationMessage>
+                        </deadinterval>
+                        <retransmitinterval type="IntegerField">
+                                <default></default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>4294967295</MaximumValue>
+                                <ValidationMessage>Retransmit interval must be between 0 and 4294967295.</ValidationMessage>
+                        </retransmitinterval>
+                        <transmitdelay type="IntegerField">
+                                <default></default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>4294967295</MaximumValue>
+                                <ValidationMessage>Transmit delay must be between 0 and 4294967295.</ValidationMessage>
+                        </transmitdelay>
+                        <priority type="IntegerField">
+                                <default></default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>4294967295</MaximumValue>
+                                <ValidationMessage>Priority must be between 0 and 4294967295.</ValidationMessage>
+                        </priority>
+                        <networktype type="OptionField">
+                                <Required>N</Required>
+                                <multiple>N</multiple>
+                                <default></default>
+                                <OptionValues>
+                                        <broadcast>Broadcast multi-access network</broadcast>
+                                        <non-broadcast>NBMA network</non-broadcast>
+                                        <point-to-multipoint>Point-to-multipoint network</point-to-multipoint>
+                                        <point-to-point>Point-to-point network</point-to-point>
+                                </OptionValues>
+                        </networktype>
+                </interface>
+        </interfaces>
+    </items>
+</model>

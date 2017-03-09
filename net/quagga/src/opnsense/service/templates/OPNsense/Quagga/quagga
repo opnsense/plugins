@@ -1,0 +1,14 @@
+defaultrouter="NO"
+quagga_enable="{% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}YES{% else %}NO{% endif %}"
+
+quagga_daemons="zebra{% 
+if helpers.exists('OPNsense.quagga.ospf.enabled') and OPNsense.quagga.ospf.enabled == '1' %} ospfd{% endif %}{% 
+if helpers.exists('OPNsense.quagga.rip.enabled') and OPNsense.quagga.ripd.enabled == '1' %} ripd{% endif %}{% 
+if helpers.exists('OPNsense.quagga.bgp.enabled') and OPNsense.quagga.bgp.enabled == '1' %} bgpd{% endif %}{% 
+if helpers.exists('OPNsense.quagga.ospf6.enabled') and OPNsense.quagga.ospf6.enabled == '1' %} ospf6d{% endif %}{% 
+if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}{% 
+if helpers.exists('OPNsense.quagga.isis.enabled') and OPNsense.quagga.isis.enabled == '1' %} isisd{% endif %}"
+#quagga_flags="...."
+#quagga_extralibs_path="... ..."
+#router_enable="NO"
+watchquagga_enable="YES"
