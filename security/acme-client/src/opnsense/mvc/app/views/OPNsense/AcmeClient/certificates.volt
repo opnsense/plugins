@@ -91,9 +91,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     } else if (row.statusCode == "200") {
                         return "OK";
                     } else if (row.statusCode == "250") {
-                        return "OK (renewed)";
+                        return "cert revoked";
+                    } else if (row.statusCode == "300") {
+                        return "configuration error";
                     } else if (row.statusCode == "400") {
-                        return "failed";
+                        return "validation failed";
                     } else if (row.statusCode == "500") {
                         return "internal error";
                     } else {
