@@ -72,7 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 },
                 "certdate": function (column, row) {
                     if (row.lastUpdate == "" || row.lastUpdate == undefined) {
-                        return "pending";
+                        return "{{ lang._('pending') }}";
                     } else {
                         var certdate = new Date(row.lastUpdate*1000);
                         return certdate.toLocaleString();
@@ -82,31 +82,31 @@ POSSIBILITY OF SUCH DAMAGE.
                     if (row.statusCode == "" || row.statusCode == undefined) {
                         // fallback to lastUpdate value (unset if cert was never issued/imported)
                         if (row.lastUpdate == "" || row.lastUpdate == undefined) {
-                            return "never";
+                            return "{{ lang._('unknown') }}";
                         } else {
-                            return "OK";
+                            return "{{ lang._('OK') }}";
                         }
                     } else if (row.statusCode == "100") {
-                        return "never";
+                        return "{{ lang._('unknown') }}";
                     } else if (row.statusCode == "200") {
-                        return "OK";
+                        return "{{ lang._('OK') }}";
                     } else if (row.statusCode == "250") {
-                        return "cert revoked";
+                        return "{{ lang._('cert revoked') }}";
                     } else if (row.statusCode == "300") {
-                        return "configuration error";
+                        return "{{ lang._('configuration error') }}";
                     } else if (row.statusCode == "400") {
-                        return "validation failed";
+                        return "{{ lang._('validation failed') }}";
                     } else if (row.statusCode == "500") {
-                        return "internal error";
+                        return "{{ lang._('internal error') }}";
                     } else {
-                        return "unknown";
+                        return "{{ lang._('unknown') }}";
                     }
                 },
                 "certstatusdate": function (column, row) {
                     if (row.statusLastUpdate == "" || row.statusCode == undefined) {
                         // fallback to lastUpdate value
                         if (row.lastUpdate == "" || row.lastUpdate == undefined) {
-                            return "unknown";
+                            return "{{ lang._('unknown') }}";
                         } else {
                             var legacydate = new Date(row.lastUpdate*1000);
                             return legacydate.toLocaleString();
