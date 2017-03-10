@@ -32,7 +32,7 @@ function quagga_services()
 
     $services = array();
 
-    if (isset($config['OPNsense']['routing']['general']['enabled']) && $config['OPNsense']['routing']['general']['enabled'] == 1) {
+    if (isset($config['OPNsense']['quagga']['general']['enabled']) && $config['OPNsense']['quagga']['general']['enabled'] == 1) {
         $services[] = array(
             'description' => gettext('Quagga is a deamon to add support of various routing protocols.'),
             'configd' => array(

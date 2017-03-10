@@ -1,5 +1,5 @@
 <model>
-    <mount>//OPNsense/routing/ospf</mount>
+    <mount>//OPNsense/quagga/ospf</mount>
     <description>OSPF Routing configuration</description>
     <items>
         <enabled type="BooleanField">
