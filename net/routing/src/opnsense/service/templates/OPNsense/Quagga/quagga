@@ -1,9 +1,14 @@
 defaultrouter="NO"
-quagga_enable="NO"
+quagga_enable="{% if helpers.exists('OPNsense.routing.general.enabled') and OPNsense.routing.general.enabled == '1' %}YES{% else %}NO{% endif %}"
 
-#Also, you may wish to set the following options:"
-quagga_daemons="zebra ospfd"
+quagga_daemons="zebra{% 
+if helpers.exists('OPNsense.routing.ospf.enabled') and OPNsense.routing.ospf.enabled == '1' %} ospfd{% endif %}{% 
+if helpers.exists('OPNsense.routing.rip.enabled') and OPNsense.routing.ripd.enabled == '1' %} ripd{% endif %}{% 
+if helpers.exists('OPNsense.routing.bgp.enabled') and OPNsense.routing.bgp.enabled == '1' %} bgpd{% endif %}{% 
+if helpers.exists('OPNsense.routing.ospf6.enabled') and OPNsense.routing.ospf6.enabled == '1' %} ospf6d{% endif %}{% 
+if helpers.exists('OPNsense.routing.ripng.enabled') and OPNsense.routing.ripng.enabled == '1' %} ripngd{% endif %}{% 
+if helpers.exists('OPNsense.routing.isis.enabled') and OPNsense.routing.isis.enabled == '1' %} isisd{% endif %}"
 #quagga_flags="...."
 #quagga_extralibs_path="... ..."
-router_enable="NO"
+#router_enable="NO"
 watchquagga_enable="YES"

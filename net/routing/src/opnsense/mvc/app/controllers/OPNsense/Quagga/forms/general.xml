@@ -1,9 +1,9 @@
 <form>
     <field>
-        <id>routing.general.general.Enabled</id>
+        <id>general.enabled</id>
         <label>enable</label>
         <type>checkbox</type>
-        <help>This will activate the ospf service.</help>
+        <help>This will activate the routing service.</help>
     </field>
 </form>
 
