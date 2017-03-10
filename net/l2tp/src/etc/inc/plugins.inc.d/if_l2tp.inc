@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich
@@ -267,6 +267,7 @@ function if_l2tp_interfaces()
         $oic['networks'] =  array();
         $oic['if'] = 'l2tp';
         $oic['descr'] = 'L2TP';
+        $oic['type'] = 'group';
         $mask = !empty($config['l2tp']['l2tp_subnet']) ? $config['l2tp']['l2tp_subnet'] : 32;
         $oic['networks'][] = array("network" => gen_subnet($config['l2tp']['remoteip'], $mask), "mask" => $mask);
         $interfaces['l2tp'] = $oic;

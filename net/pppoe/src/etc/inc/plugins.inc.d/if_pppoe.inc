@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich
@@ -319,6 +319,7 @@ function if_pppoe_interfaces()
             $pppoeifs['virtual'] = true;
             $pppoeifs['if'] = 'pppoe';
             $pppoeifs['descr'] = 'pppoe';
+            $pppoeifs['type'] = 'group';
             $interfaces['pppoe'] = $pppoeifs;
         }
     }

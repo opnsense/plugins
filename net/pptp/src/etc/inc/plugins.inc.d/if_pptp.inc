@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich
@@ -279,6 +279,7 @@ function if_pptp_interfaces()
         $oic['networks'] =  array();
         $oic['virtual'] = true;
         $oic['if'] = 'pptp';
+        $oic['type'] = 'group';
         $oic['descr'] = 'pptp';
         $mask = !empty($config['pptpd']['pptp_subnet']) ? $config['pptpd']['pptp_subnet'] : 32;
         if (isset($config['pptpd']['n_pptp_units']) && is_numeric($config['pptpd']['n_pptp_units'])) {
