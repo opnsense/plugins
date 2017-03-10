@@ -26,7 +26,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-function routing_services()
+function quagga_services()
 {
     global $config;
 
@@ -34,13 +34,13 @@ function routing_services()
 
     if (isset($config['OPNsense']['routing']['general']['enabled']) && $config['OPNsense']['routing']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('Routing deamon to add support of various routing protocols.'),
+            'description' => gettext('Quagga is a deamon to add support of various routing protocols.'),
             'configd' => array(
                 'restart' => array('quagga restart'),
                 'start' => array('quagga start'),
                 'stop' => array('quagga stop'),
             ),
-            'name' => 'Routing',
+            'name' => 'quagga',
         );
     }
 
