@@ -52,7 +52,11 @@ check {{ service.type }} {{ service.name }} {{ address }} {{ interface }}
 check {{ service.type }} {{ service.name }}
 {%     else %}
 {%      set path = "with path " ~ service.path %}
+{%      if service.type == 'custom' %}
+check program {{ service.name }} {{ path }}
+{%      else %}
 check {{ service.type }} {{ service.name }} {{ path }}
+{%      endif %}
 {%     endif %}
 {%     if service.start|default('') != '' %}
    start program = "{{ service.start }}"
