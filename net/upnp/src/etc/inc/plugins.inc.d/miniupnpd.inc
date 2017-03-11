@@ -211,6 +211,10 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
             $config_text .= "enable_natpmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
+            /* configure default lifetimes */
+            $config_text .= "min_lifetime=120\n";
+            $config_text .= "max_lifetime=86400\n";
+
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
 
