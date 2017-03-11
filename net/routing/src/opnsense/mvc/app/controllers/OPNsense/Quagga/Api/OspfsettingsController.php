@@ -9,6 +9,7 @@ use \OPNsense\Base\UIModelGrid;
 
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
+ *    Copyright (C) 2015 J. Schellevis - Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
  *
  *    All rights reserved.
@@ -181,5 +182,30 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             }
         }
         return array("result" => "failed");
+    }
+    public function toggleNetworkAction($uuid)
+    {
+
+        $result = array("result" => "failed");
+
+        if ($this->request->isPost()) {
+            $mdlNetwork = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNetwork->getNodeByReference('networks.network.' . $uuid);
+                if ($node != null) {
+                    if ($node->enabled->__toString() == "1") {
+                        $result['result'] = "Disabled";
+                        $node->enabled = "0";
+                    } else {
+                        $result['result'] = "Enabled";
+                        $node->enabled = "1";
+                    }
+                    // if item has toggled, serialize to config and save
+                    $mdlNetwork->serializeToConfig();
+                    Config::getInstance()->save();
+                }
+            }
+        }
+        return $result;
     }
 }
