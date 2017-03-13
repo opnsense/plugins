@@ -90,11 +90,16 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             array("enabled", "ipaddr", "netmask", "area")
         );
     }
-    /**
-     * retrieve remote blacklist settings or return defaults
-     * @param $uuid item unique id
-     * @return array
-     */
+    public function searchInterfaceAction()
+    {
+        $this->sessionClose();
+        $mdlOSPF = $this->getModel();
+        $grid = new UIModelGrid($mdlOSPF->interfaces->interface);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "interfacename", "networktype", "authtype", "area")
+        );
+    }
     public function getNetworkAction($uuid = null)
     {
         $mdlOSPF = $this->getModel();
@@ -107,6 +112,21 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         } else {
             $node = $mdlOSPF->networks->network->add();
             return array("network" => $node->getNodes());
+        }
+        return array();
+    }
+    public function getInterfaceAction($uuid = null)
+    {
+        $mdlOSPF = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlOSPF->getNodeByReference('interfaces.interface.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("interface" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlOSPF->interfaces->interface->add();
+            return array("interface" => $node->getNodes());
         }
         return array();
     }
@@ -135,6 +155,30 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    public function addInterfaceAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("interface")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlOSPF = $this->getModel();
+            $node = $mdlOSPF->interfaces->interface->Add();
+            $node->setNodes($this->request->getPost("interface"));
+            $valMsgs = $mdlOSPF->performValidation();
+
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "interface", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlOSPF->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
     public function delNetworkAction($uuid)
     {
 
@@ -144,6 +188,25 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             $mdlOSPF = $this->getModel();
             if ($uuid != null) {
                 if ($mdlOSPF->networks->network->del($uuid)) {
+                    $mdlOSPF->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+    public function delInterfaceAction($uuid)
+    {
+
+        $result = array("result" => "failed");
+
+        if ($this->request->isPost()) {
+            $mdlOSPF = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlOSPF->interfaces->interface->del($uuid)) {
                     $mdlOSPF->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -183,7 +246,36 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
-    public function toggleNetworkAction($uuid)
+    public function setInterfaceAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("interface")) {
+            $mdlNetwork = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNetwork->getNodeByReference('interfaces.interface.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $interfaceInfo = $this->request->getPost("interface");
+
+                    $node->setNodes($interfaceInfo);
+                    $valMsgs = $mdlNetwork->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "interface", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNetwork->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
+    public function toggle_handler($uuid, $elements, $element)
     {
 
         $result = array("result" => "failed");
@@ -191,7 +283,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlNetwork = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlNetwork->getNodeByReference('networks.network.' . $uuid);
+                $node = $mdlNetwork->getNodeByReference($elements . '.'. $element .'.' . $uuid);
                 if ($node != null) {
                     if ($node->enabled->__toString() == "1") {
                         $result['result'] = "Disabled";
@@ -207,5 +299,14 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             }
         }
         return $result;
+    }
+    
+    public function toggleNetworkAction($uuid)
+    {
+      return $this->toggle_handler($uuid, 'networks', 'network');
+    }
+    public function toggleInterfaceAction($uuid)
+    {
+      return $this->toggle_handler($uuid, 'interfaces', 'interface');
     }
 }

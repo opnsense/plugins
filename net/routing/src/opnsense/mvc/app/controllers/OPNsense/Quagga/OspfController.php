@@ -34,6 +34,7 @@ class OspfController extends \OPNsense\Base\IndexController
         $this->view->title = gettext("OSPF Settings");
         $this->view->generalForm = $this->getForm("ospf");
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
+        $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
         $this->view->pick('OPNsense/Quagga/ospf');
     }
 }
