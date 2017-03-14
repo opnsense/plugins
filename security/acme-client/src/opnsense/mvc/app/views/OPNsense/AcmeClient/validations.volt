@@ -48,6 +48,22 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogValidation').on('shown.bs.modal', function (e) {
+            $("#validation\\.dns_service").change(function(){
+                var service_id = 'table_' + $(this).val() ;
+                $(".table_dns").hide();
+                if ($("#validation\\.method").val() == 'dns01') {
+                    $("."+service_id).show();
+                }
+            });
+            $("#validation\\.method").change(function(){
+                $(".method_table").hide();
+                $(".method_table_"+$(this).val()).show();
+                $("#validation\\.dns_service").change();
+            });
+            $("#validation\\.method").change();
+        })
     });
 
 </script>

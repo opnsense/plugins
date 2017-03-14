@@ -69,6 +69,52 @@ POSSIBILITY OF SUCH DAMAGE.
                     } else {
                         return "<span style=\"cursor: pointer;\" class=\"fa fa-square-o command-toggle\" data-value=\"0\" data-row-id=\"" + row.uuid + "\"></span>";
                     }
+                },
+                "certdate": function (column, row) {
+                    if (row.lastUpdate == "" || row.lastUpdate == undefined) {
+                        return "{{ lang._('pending') }}";
+                    } else {
+                        var certdate = new Date(row.lastUpdate*1000);
+                        return certdate.toLocaleString();
+                    }
+                },
+                "acmestatus": function (column, row) {
+                    if (row.statusCode == "" || row.statusCode == undefined) {
+                        // fallback to lastUpdate value (unset if cert was never issued/imported)
+                        if (row.lastUpdate == "" || row.lastUpdate == undefined) {
+                            return "{{ lang._('unknown') }}";
+                        } else {
+                            return "{{ lang._('OK') }}";
+                        }
+                    } else if (row.statusCode == "100") {
+                        return "{{ lang._('unknown') }}";
+                    } else if (row.statusCode == "200") {
+                        return "{{ lang._('OK') }}";
+                    } else if (row.statusCode == "250") {
+                        return "{{ lang._('cert revoked') }}";
+                    } else if (row.statusCode == "300") {
+                        return "{{ lang._('configuration error') }}";
+                    } else if (row.statusCode == "400") {
+                        return "{{ lang._('validation failed') }}";
+                    } else if (row.statusCode == "500") {
+                        return "{{ lang._('internal error') }}";
+                    } else {
+                        return "{{ lang._('unknown') }}";
+                    }
+                },
+                "acmestatusdate": function (column, row) {
+                    if (row.statusLastUpdate == "" || row.statusCode == undefined) {
+                        // fallback to lastUpdate value
+                        if (row.lastUpdate == "" || row.lastUpdate == undefined) {
+                            return "{{ lang._('unknown') }}";
+                        } else {
+                            var legacydate = new Date(row.lastUpdate*1000);
+                            return legacydate.toLocaleString();
+                        }
+                    } else {
+                        var statusdate = new Date(row.statusLastUpdate*1000);
+                        return statusdate.toLocaleString();
+                    }
                 }
             },
         };
@@ -339,6 +385,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="name" data-type="string">{{ lang._('Certificate Name') }}</th>
                 <th data-column-id="altNames" data-type="string">{{ lang._('Multi-Domain (SAN)') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="lastUpdate" data-type="string" data-formatter="certdate">{{ lang._('Issue/Renewal Date') }}</th>
+                <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last Acme Status') }}</th>
+                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last Acme Run') }}</th>
                 <th data-column-id="commands" data-width="11em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
             </tr>

@@ -28,9 +28,9 @@
     </field>
     <field>
         <id>certificate.account</id>
-        <label>CA Account</label>
+        <label>LE Account</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the CA account to use for this certificate.]]></help>
+        <help><![CDATA[Set the Let's Encrypt account to use for this certificate.]]></help>
     </field>
     <field>
         <id>certificate.validationMethod</id>

@@ -175,7 +175,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     });
                 } else {
                     BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
+                        type: BootstrapDialog.TYPE_INFO,
                         title: "{{ lang._('acme-client config test result') }}",
                         message: "{{ lang._('Your acme-client config contains no errors.') }}",
                         draggable: true
