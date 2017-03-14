@@ -33,6 +33,5 @@
         <type>checkbox</type>
         <help>This will send the information that we have a default gateway, regardless of if it is available.</help>
     </field>
- 
-</form>
 
+</form>

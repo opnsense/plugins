@@ -1,5 +1,6 @@
 <?php
 namespace OPNsense\Quagga;
+
 class IsisController extends \OPNsense\Base\IndexController
 {
     public function indexAction()

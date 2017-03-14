@@ -1,5 +1,6 @@
 <?php
 namespace OPNsense\Quagga;
+
 class RipController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
@@ -9,4 +10,3 @@ class RipController extends \OPNsense\Base\IndexController
         $this->view->pick('OPNsense/Quagga/rip');
     }
 }
-

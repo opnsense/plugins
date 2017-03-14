@@ -1,5 +1,6 @@
 <?php
 namespace OPNsense\Quagga;
+
 class BgpController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
