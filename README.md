@@ -41,12 +41,14 @@ net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
 net-mgmt/snmp -- SNMP Server via bsnmpd
 sysutils/boot-delay -- Apply a persistent boot delay
+sysutils/monit -- Proactive system monitoring
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 security/acme-client -- Let's Encrypt client
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset
 security/tinc -- Tinc VPN
+www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```
 
 A brief description of how to use the plugins repository
