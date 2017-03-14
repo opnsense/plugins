@@ -1,0 +1,26 @@
+<form>
+   <field>
+      <id>monit.general.enabled</id>
+      <label>Enable monit</label>
+      <type>checkbox</type>
+      <help>Enable or disable monit.</help>
+   </field>
+   <field>
+      <id>monit.general.interval</id>
+      <label>Polling Interval</label>
+      <type>text</type>
+      <help>Polling interval in seconds</help>
+   </field>
+   <field>
+      <id>monit.general.startdelay</id>
+      <label>Start Delay</label>
+      <type>text</type>
+      <help>On system boot wait before Monit starts checking services.</help>
+   </field>
+   <field>
+      <id>monit.general.mailserver</id>
+      <label>Mail Server</label>
+      <type>text</type>
+      <help>Comma separated list of SMTP servers for alert delivery.</help>
+   </field>
+</form>
