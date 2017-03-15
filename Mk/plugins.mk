@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2016 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2017 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -28,7 +28,7 @@ all: check
 LOCALBASE?=		/usr/local
 PKG!=			which pkg || echo true
 
-PLUGIN_DESC!=		git rev-list HEAD --max-count=1 | cut -c1-9
+PLUGIN_DESC=		pkg-descr
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
@@ -72,7 +72,6 @@ manifest: check
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
 	@echo "origin: opnsense/${PLUGIN_PKGNAME}"
 	@echo "comment: \"${PLUGIN_COMMENT}\""
-	@echo "desc: \"${PLUGIN_DESC}\""
 	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
 	@echo "categories: [ \"${.CURDIR:S/\// /g:[-2]}\" ]"
 	@echo "www: \"${PLUGIN_WWW}\""
@@ -165,10 +164,16 @@ plist: check
 	done
 	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
+description: check
+	@if [ -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
+		cat ${.CURDIR}/${PLUGIN_DESC}; \
+	fi
+
 metadata: check
 	@mkdir -p ${DESTDIR}
 	@${MAKE} DESTDIR=${DESTDIR} scripts
 	@${MAKE} DESTDIR=${DESTDIR} manifest > ${DESTDIR}/+MANIFEST
+	@${MAKE} DESTDIR=${DESTDIR} description > ${DESTDIR}/+DESC
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check

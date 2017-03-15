@@ -36,7 +36,7 @@ net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
-net/quagga -- Plugin to manage the quagga routing daemon software which offers routing protocols like RIP, IS-IS and OSPF to guide your packets through the sea
+net/quagga -- Quagga Routing Suite
 net/relayd -- Relayd Load Balancer
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
