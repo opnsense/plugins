@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>routing.rip.general.Enabled</id>
+        <label>enable</label>
+        <type>checkbox</type>
+        <help>This will activate the ospf service.</help>
+    </field>
+</form>

@@ -1,0 +1,2 @@
+ospfd.conf:/usr/local/etc/quagga/ospfd.conf
+quagga:/etc/rc.conf.d/quagga
