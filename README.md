@@ -36,6 +36,7 @@ net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
+net/quagga -- Plugin to manage the quagga routing daemon software which offers routing protocols like RIP, IS-IS and OSPF to guide your packets through the sea
 net/relayd -- Relayd Load Balancer
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
@@ -46,7 +47,7 @@ sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 security/acme-client -- Let's Encrypt client
-security/intrusion-detection-content-pt-open -- IDS PT Research ruleset
+security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/tinc -- Tinc VPN
 www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```
