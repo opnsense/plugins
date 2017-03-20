@@ -18,5 +18,6 @@
     <id>network.area</id>
     <label>Area</label>
     <type>text</type>
+    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
   </field>
 </form>
