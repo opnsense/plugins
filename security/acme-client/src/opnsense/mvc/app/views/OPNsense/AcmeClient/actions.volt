@@ -55,7 +55,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 $(".table_optional").hide();
                 if (($("#action\\.type").val() == 'configd') || ($("#action\\.type").val() == 'custom')) {
                     $("."+service_id).show();
-                } else {
                 }
             });
             $("#action\\.type").change(function(){
