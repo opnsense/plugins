@@ -48,6 +48,22 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAction').on('shown.bs.modal', function (e) {
+            $("#action\\.type").change(function(){
+                var service_id = 'table_optional_' + $(this).val();
+                $(".table_optional").hide();
+                if (($("#action\\.type").val() == 'configd') || ($("#action\\.type").val() == 'custom')) {
+                    $("."+service_id).show();
+                } else {
+                }
+            });
+            $("#action\\.type").change(function(){
+                $(".method_table").hide();
+                $(".method_table_"+$(this).val()).show();
+            });
+            $("#action\\.type").change();
+        })
     });
 
 </script>
