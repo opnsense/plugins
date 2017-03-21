@@ -37,7 +37,7 @@
     <field>
         <label>HTTP-01/OPNsense</label>
         <type>header</type>
-        <style>method_table method_table_http01</style>
+        <style>table_http table_http_opnsense</style>
     </field>
     <field>
         <id>validation.http_opn_autodiscovery</id>
@@ -63,7 +63,7 @@
     <field>
         <label>HTTP-01/HAProxy</label>
         <type>header</type>
-        <style>method_table method_table_http01</style>
+        <style>table_http table_http_haproxy</style>
     </field>
     <field>
         <id>validation.http_haproxyInject</id>
@@ -79,20 +79,6 @@
         <allownew>true</allownew>
         <help>Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed.</help>
     </field>
-<!--
-    <field>
-        <id>validation.http_relaydInject</id>
-        <label>Loadbalancer Config Injection</label>
-        <type>checkbox</type>
-        <help>Automatically inject config into the local Loadbalancer (relayd) to let it serve acme challanges without service interruption.</help>
-    </field>
-    <field>
-        <id>validation.http_relaydVserver</id>
-        <label>Loadbalancer Virtual Server</label>
-        <type>text</type>
-        <help>Choose the Virtual Server from the relayd Loadbalancer that should be configured to server acme challenges.</help>
-    </field>
--->
     <field>
         <label>DNS-01</label>
         <type>header</type>
