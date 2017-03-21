@@ -957,6 +957,7 @@ function run_restart_actions($certlist, $modelObj)
 {
     global $config;
     $return = 0;
+    $configObj = Config::getInstance()->object();
 
     // NOTE: Do NOT run any restart action twice, collect duplicates first.
     $restart_actions = array();
@@ -1041,8 +1042,12 @@ function run_restart_actions($certlist, $modelObj)
                     $proc_stderr = '';
                     $result = ''; // exit code (or '99' in case of timeout)
 
-                    // TODO: Make the timeout configurable.
-                    $timeout = '600';
+                    // Timeout for custom restart actions.
+                    if (!empty((string)$configObj->OPNsense->AcmeClient->settings->restartTimeout)) {
+                        $timeout = (string)$configObj->OPNsense->AcmeClient->settings->restartTimeout;
+                    } else {
+                        $timeout = '600';
+                    }
                     $starttime = time();
 
                     $proc_cmd = (string)$action->custom;
