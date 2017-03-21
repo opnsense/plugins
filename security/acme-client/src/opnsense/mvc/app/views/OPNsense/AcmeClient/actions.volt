@@ -53,9 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#action\\.type").change(function(){
                 var service_id = 'table_optional_' + $(this).val();
                 $(".table_optional").hide();
-                if (($("#action\\.type").val() == 'configd') || ($("#action\\.type").val() == 'custom')) {
-                    $("."+service_id).show();
-                }
+                $("."+service_id).show();
             });
             $("#action\\.type").change(function(){
                 $(".method_table").hide();
