@@ -2,7 +2,7 @@
 <?php
 
 /**
- *    Based in parts on certs.inc (thus the extended copyright notice).
+ *    Based in parts on certs.inc and system_camanager.php (thus the extended copyright notice).
  *
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -777,12 +777,13 @@ function import_certificate($certObj, $modelObj)
 
     $cert_id = (string)$certObj->id;
     $cert_filename = "/var/etc/acme-client/certs/${cert_id}/cert.pem";
+    $cert_chain_filename = "/var/etc/acme-client/certs/${cert_id}/chain.pem";
     $cert_fullchain_filename = "/var/etc/acme-client/certs/${cert_id}/fullchain.pem";
     $key_filename = "/var/etc/acme-client/keys/${cert_id}/private.key";
 
     // Check if certificate files can be found
     clearstatcache(); // don't let the cache fool us
-    foreach (array($cert_filename, $key_filename, $cert_fullchain_filename) as $file) {
+    foreach (array($cert_filename, $key_filename, $cert_chain_filename, $cert_fullchain_filename) as $file) {
         if (is_file($file)) {
             // certificate file found
         } else {
@@ -790,6 +791,63 @@ function import_certificate($certObj, $modelObj)
             return(1);
         }
     }
+
+    /*
+     * Step 1: import CA
+     */
+
+    // Read contents from CA file
+    $ca_content = @file_get_contents($cert_chain_filename);
+    if ($ca_content != false) {
+        $ca_subject = cert_get_subject($ca_content, false);
+        $ca_serial  = cert_get_serial($ca_content, false);
+        $ca_cn      = local_cert_get_cn($ca_content, false);
+        $ca_issuer  = cert_get_issuer($ca_content, false);
+        $ca_purpose = cert_get_purpose($ca_content, false);
+    } else {
+        log_error("AcmeClient: unable to read CA certificate content from file");
+        return(1);
+    }
+
+    // Prepare CA for import in Cert Manager
+    $ca = array();
+    $ca['crt'] = base64_encode($ca_content);
+    $ca['refid'] = uniqid();
+    $ca_found = false;
+
+    // Check if CA was previously imported
+    $cacnt = 0;
+    foreach ($config['ca'] as $cacrt) {
+        $cacrt_subject = cert_get_subject($cacrt['crt'], true);
+        $cacrt_issuer = cert_get_issuer($cacrt['crt'], true);
+        if (($ca_subject == $cacrt_subject) and ($ca_issuer == $cacrt_issuer)) {
+            // Use old refid instead of generating a new one
+            $ca['refid'] = (string)$cacrt['refid'];
+            $ca_found = true;
+            break;
+        }
+        $cacnt++;
+    }
+
+    // Collect required CA information
+    $ca_cn = local_cert_get_cn($ca_content, false);
+    $ca['descr'] = (string)$ca_cn . ' (Let\'s Encrypt)';
+
+    // Prepare CA for import
+    local_ca_import($ca, $ca_content);
+
+    // Update existing CA?
+    if ($ca_found == true) {
+        $config['ca'][$cacnt] = $ca;
+    } else {
+        // Create new CA item
+        $config['ca'][] = $ca;
+        log_error("AcmeClient: importing Let's Encrypt CA: ${ca_cn}");
+    }
+
+    /*
+     * Step 2: import certificate
+     */
 
     // Read contents from certificate file
     $cert_content = @file_get_contents($cert_filename);
@@ -809,6 +867,7 @@ function import_certificate($certObj, $modelObj)
     $cert = array();
     $cert_refid = uniqid();
     $cert['refid'] = $cert_refid;
+    $cert['caref'] = (string)$ca['refid'];
     $import_log_message = 'Imported';
     $cert_found = false;
 
@@ -842,20 +901,13 @@ function import_certificate($certObj, $modelObj)
         return(1);
     }
 
-    // Read cert fullchain
-    $cert_fullchain_content = @file_get_contents($cert_fullchain_filename);
-    if ($cert_fullchain_content == false) {
-        log_error("AcmeClient: unable to read full certificate chain from file: ${cert_fullchain_filename}");
-        return(1);
-    }
-
     // Collect required cert information
     $cert_cn = local_cert_get_cn($cert_content, false);
     $cert['descr'] = (string)$cert_cn . ' (Let\'s Encrypt)';
     $cert['refid'] = $cert_refid;
 
     // Prepare certificate for import
-    cert_import($cert, $cert_fullchain_content, $key_content);
+    cert_import($cert, $cert_content, $key_content);
 
     // Update existing certificate?
     if ($cert_found == true) {
@@ -873,6 +925,10 @@ function import_certificate($certObj, $modelObj)
         // Create new certificate item
         $config['cert'][] = $cert;
     }
+
+    /*
+     * Step 3: update configuration
+     */
 
     // Write changes to config
     // TODO: Legacy code, should be replaced with code from OPNsense framework
@@ -901,6 +957,7 @@ function run_restart_actions($certlist, $modelObj)
 {
     global $config;
     $return = 0;
+    $configObj = Config::getInstance()->object();
 
     // NOTE: Do NOT run any restart action twice, collect duplicates first.
     $restart_actions = array();
@@ -915,11 +972,11 @@ function run_restart_actions($certlist, $modelObj)
                 continue;
             }
             // Extract restart actions
-            $_actions = explode(',', $certObj->restartActions);
-            if (empty($_actions)) {
+            if (empty((string)$certObj->restartActions)) {
                 // No restart actions configured.
                 continue;
             }
+            $_actions = explode(',', $certObj->restartActions);
             // Walk through all linked restart actions.
             foreach ($_actions as $_action) {
                 // Extract restart action
@@ -985,8 +1042,12 @@ function run_restart_actions($certlist, $modelObj)
                     $proc_stderr = '';
                     $result = ''; // exit code (or '99' in case of timeout)
 
-                    // TODO: Make the timeout configurable.
-                    $timeout = '600';
+                    // Timeout for custom restart actions.
+                    if (!empty((string)$configObj->OPNsense->AcmeClient->settings->restartTimeout)) {
+                        $timeout = (string)$configObj->OPNsense->AcmeClient->settings->restartTimeout;
+                    } else {
+                        $timeout = '600';
+                    }
                     $starttime = time();
 
                     $proc_cmd = (string)$action->custom;
@@ -1099,6 +1160,48 @@ function local_cert_get_cn($crt, $decode = true)
         }
     }
     return "";
+}
+
+// taken from system_camanager.php
+function local_ca_import(& $ca, $str, $key="", $serial=0) {
+    global $config;
+
+    $ca['crt'] = base64_encode($str);
+    if (!empty($key)) {
+        $ca['prv'] = base64_encode($key);
+    }
+    if (!empty($serial)) {
+        $ca['serial'] = $serial;
+    }
+    $subject = cert_get_subject($str, false);
+    $issuer = cert_get_issuer($str, false);
+
+    // Find my issuer unless self-signed
+    if($issuer <> $subject) {
+        $issuer_crt =& lookup_ca_by_subject($issuer);
+        if($issuer_crt) {
+            $ca['caref'] = $issuer_crt['refid'];
+        }
+    }
+
+    /* Correct if child certificate was loaded first */
+    if (is_array($config['ca'])) {
+        foreach ($config['ca'] as & $oca) {
+            $issuer = cert_get_issuer($oca['crt']);
+            if($ca['refid']<>$oca['refid'] && $issuer==$subject) {
+                $oca['caref'] = $ca['refid'];
+            }
+        }
+    }
+    if (is_array($config['cert'])) {
+        foreach ($config['cert'] as & $cert) {
+            $issuer = cert_get_issuer($cert['crt']);
+            if($issuer==$subject) {
+                $cert['caref'] = $ca['refid'];
+            }
+        }
+    }
+    return true;
 }
 
 function base64url_encode($str)

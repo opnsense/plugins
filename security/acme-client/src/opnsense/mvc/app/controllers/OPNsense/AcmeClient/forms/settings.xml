@@ -30,4 +30,11 @@
         <help><![CDATA[When using HTTP-01 as validation method, a local webserver is used to provide acme challenge data to the Let's Encrypt servers. This setting allows you to change the local port of this webserver in case it interferes with another local services. Defaults to port 43580.]]></help>
         <advanced>true</advanced>
     </field>
+    <field>
+        <id>acmeclient.settings.restartTimeout</id>
+        <label>Restart Timeout</label>
+        <type>text</type>
+        <help><![CDATA[The maximum time in seconds to wait for a restart action to complete. When the timeout is reached the command is forcefully aborted. Defaults to 600 seconds.]]></help>
+        <advanced>true</advanced>
+    </field>
 </form>

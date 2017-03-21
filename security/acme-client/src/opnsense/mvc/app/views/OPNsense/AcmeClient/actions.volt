@@ -48,6 +48,19 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAction').on('shown.bs.modal', function (e) {
+            $("#action\\.type").change(function(){
+                var service_id = 'table_optional_' + $(this).val();
+                $(".table_optional").hide();
+                $("."+service_id).show();
+            });
+            $("#action\\.type").change(function(){
+                $(".method_table").hide();
+                $(".method_table_"+$(this).val()).show();
+            });
+            $("#action\\.type").change();
+        })
     });
 
 </script>
