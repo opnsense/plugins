@@ -1,0 +1,129 @@
+<form>
+    <tab id="zabbixagent-settings-main" description="Main Settings">
+        <field>
+            <id>zabbixagent.settings.main.enabled</id>
+            <label>Enabled</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable Zabbix Agent service.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.hostname</id>
+            <label>Hostname</label>
+            <type>text</type>
+            <help><![CDATA[Usually the FQDN. Required for active checks and must match hostname as configured on the Zabbix server.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.listenPort</id>
+            <label>Listen Port</label>
+            <type>text</type>
+            <help><![CDATA[Zabbix agent will listen on this port for connections from the server.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.listenIP</id>
+            <label>Listen IPs</label>
+            <type>select_multiple</type>
+            <style>tokenize</style>
+            <allownew>true</allownew>
+            <help><![CDATA[List of IP addresses that the agent should listen on. First IP address is sent to Zabbix server if connecting to it to retrieve list of active checks.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.sourceIP</id>
+            <label>Source IP</label>
+            <type>text</type>
+            <help><![CDATA[Source IP address for outgoing connections.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.serverList</id>
+            <label>Zabbix Servers</label>
+            <type>select_multiple</type>
+            <style>tokenize</style>
+            <allownew>true</allownew>
+            <help><![CDATA[List of IP addresses (or hostnames) of Zabbix servers. Incoming connections will be accepted only from the hosts listed here.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.logFileSize</id>
+            <label>Log File Size</label>
+            <type>text</type>
+            <help><![CDATA[Maximum size of log file in MB. Zabbix Agent will automatically rotate the log once this limit is reached.]]></help>
+            <advanced>true</advanced>
+        </field>
+        <field>
+            <id>zabbixagent.settings.main.debugLevel</id>
+            <label>Debug Level</label>
+            <type>dropdown</type>
+            <help><![CDATA[Specifies the debug level for Zabbix agent.]]></help>
+            <advanced>false</advanced>
+        </field>
+    </tab>
+    <tab id="zabbixagent-settings-tuning" description="Tuning Parameters">
+        <field>
+            <id>zabbixagent.settings.tuning.startAgents</id>
+            <label>Pre-Forked Instances</label>
+            <type>text</type>
+            <help><![CDATA[Number of pre-forked instances of zabbix_agentd that process passive checks. If set to 0, disables passive checks and the agent will not listen on any TCP port.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.tuning.bufferSend</id>
+            <label>BufferSend</label>
+            <type>text</type>
+            <help><![CDATA[Do not keep data longer than N seconds in buffer.]]></help>
+            <advanced>true</advanced>
+        </field>
+        <field>
+            <id>zabbixagent.settings.tuning.bufferSize</id>
+            <label>BufferSize</label>
+            <type>text</type>
+            <help><![CDATA[Maximum number of values in a memory buffer. The agent will send all collected data to Zabbix Server or Proxy if the buffer is full.]]></help>
+            <advanced>true</advanced>
+        </field>
+        <field>
+            <id>zabbixagent.settings.tuning.maxLinesPerSecond</id>
+            <label>MaxLinesPerSecond</label>
+            <type>text</type>
+            <help><![CDATA[Maximum number of new lines the agent will send per second to Zabbix Server or Proxy processing 'log' and 'logrt' active checks.]]></help>
+            <advanced>true</advanced>
+        </field>
+        <field>
+            <id>zabbixagent.settings.tuning.timeout</id>
+            <label>Processing Timeout</label>
+            <type>text</type>
+            <help><![CDATA[]]>Spend no more than N seconds on processing.</help>
+            <advanced>false</advanced>
+        </field>
+    </tab>
+    <tab id="zabbixagent-settings-features" description="Zabbix Features">
+        <field>
+            <id>zabbixagent.settings.features.enableActiveChecks</id>
+            <label>Enable Active Checks</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable active checks.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.activeCheckServers</id>
+            <label>Active Check Servers</label>
+            <type>select_multiple</type>
+            <style>tokenize</style>
+            <allownew>true</allownew>
+            <help><![CDATA[List of IP:port (or hostname:port) pairs of Zabbix servers for active checks. If port is not specified, default port is used. IPv6 addresses must be enclosed in square brackets if port for that host is specified. If port is not specified, square brackets for IPv6 addresses are optional. If this parameter is not specified, active checks are disabled. Example: ServerActive=127.0.0.1:20051,zabbix.domain,[::1]:30051,::1,[12fc::1]]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.refreshActiveChecks</id>
+            <label>Active Check Refresh</label>
+            <type>text</type>
+            <help><![CDATA[How often list of active checks is refreshed, in seconds.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.enableRemoteCommands</id>
+            <label>Enable Remote Commands</label>
+            <type>checkbox</type>
+            <help><![CDATA[Whether remote commands from Zabbix server are allowed.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.logRemoteCommands</id>
+            <label>Log Remote Commands</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable logging of executed shell commands as warnings. Make sure to set the Debug Level accordingly.]]></help>
+        </field>
+    </tab>
+    <activetab>zabbixagent-settings-main</activetab>
+</form>
