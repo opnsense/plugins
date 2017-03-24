@@ -1,2 +1,18 @@
 Manage the Quagga Routing Software Suite, which offers routing protocols
 like RIP, IS-IS and OSPF to guide your packets through the sea.
+
+This package sets up the quagga routing suite for your use and currently supports
+only the routing protocol OSPF.
+
+OSPF
+====
+
+An advanced link state protocol for IPv4 routing.
+The routing decision is based on cost which can be defined or calculated.
+
+RIP
+===
+
+A simple distance vector protocol which is often used because it is simple
+to configure. The routing decision is based on the hop count.
+RIP is currently not implemented in this plugin.
