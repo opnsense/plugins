@@ -1,0 +1,6 @@
+ bsnmp. It allows you to use SNMPv1 and SNMPv2 to query your OPNsense appliance
+for information like the current interface status, CPU load etc.
+
+You will probably need this plugin if you want to use some sort of a monitoring tool.
+
+NOTE: This plugin is not using MVC. You cannot control it via the API.
