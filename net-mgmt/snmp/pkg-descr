@@ -1,3 +1,4 @@
- bsnmp. It allows you to use SNMPv1 and SNMPv2 to query your OPNsense appliance
-for information like the current interface status, CPU load etc.
+The snmp plugin allows you to query information about your OPNsense appliance about
+memory, load and CPU utilization and system statistics via the bsnmp-ucd module.
+It also allows to create counters from log files, program output and other text data via the bsnmp-regex module.
 
