@@ -71,15 +71,22 @@ def stats
   raw.each do |line|
     key,value = line.split("=")
     key_parts = key.split(".")
-    key = key_parts.pop
-    origin = data
-    key_parts.each do |kp|
-      unless origin[kp]
-        origin[kp] = {}
+    if key_parts[0] == 'histogram'
+      data['histogram'] = [] unless data['histogram']
+      data['histogram'] << {from: key_parts[1..2].map(&:to_i), 
+                            to: key_parts[4..5].map(&:to_i), 
+                            value: value.to_i}
+    else
+      key = key_parts.pop
+      origin = data
+      key_parts.each do |kp|
+        unless origin[kp]
+          origin[kp] = {}
+        end
+        origin = origin[kp]
       end
-      origin = origin[kp]
+      origin[key] = value.to_i
     end
-    origin[key] = value
   end
   data
 end
