@@ -103,7 +103,12 @@ def dump_infra
     data['host'] = elements.shift
     while elements.count > 2
       key = elements.shift
-      data[key] = elements.shift
+      if key == 'lame'
+        data['lame'] = true
+        next
+      end
+      tmp = elements.shift
+      data[key] = tmp =~ /^\d+$/ ? tmp.to_i : tmp
     end
     data
   end
