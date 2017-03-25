@@ -38,6 +38,9 @@ OptionParser.new do |opts|
   opts.on("-c", "--cache", "Dump cache") do |c|
     options[:dump_cache] = c
   end
+  opts.on("-i", "--infra", "Dump infrastructure cache") do |c|
+    options[:dump_infra] = c
+  end
   opts.on("-f", "--format FORMAT") do |format|
     if supported_formats.include? format
       options[:format] = format
@@ -91,9 +94,28 @@ def stats
   data
 end
 
+def dump_infra
+  raw = `unbound-control -c /var/unbound/remotecontrol.conf dump_infra`.split("\n")
+  raw.map do |line|
+    elements = line.split(/\s+/)
+    data = {}
+    data['ip'] = elements.shift
+    data['host'] = elements.shift
+    while elements.count > 2
+      key = elements.shift
+      data[key] = elements.shift
+    end
+    data
+  end
+end
+
 output = nil
 if options[:dump_cache]
   output = dump_cache
+end
+
+if options[:dump_infra]
+  output = dump_infra
 end
 
 if options[:stats]

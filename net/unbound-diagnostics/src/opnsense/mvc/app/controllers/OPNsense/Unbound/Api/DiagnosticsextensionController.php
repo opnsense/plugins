@@ -53,13 +53,24 @@ class DiagnosticsextensionController extends ApiControllerBase
     }
 
     /**
-     * return the entries of the cage
+     * return the entries of the cache
      */
     public function dumpcacheAction()
     {
         $ret['status'] = "failed";
         $backend = new Backend();
         $result = json_decode(trim($backend->configdRun("unbounddiagnostics dumpcache")), true);
+        if ($result !== null) {
+            $ret['data'] = $result;
+            $ret['status'] = 'ok';
+        }
+        return $ret;
+    }
+    public function dumpinfraAction()
+    {
+        $ret['status'] = "failed";
+        $backend = new Backend();
+        $result = json_decode(trim($backend->configdRun("unbounddiagnostics dumpinfra")), true);
         if ($result !== null) {
             $ret['data'] = $result;
             $ret['status'] = 'ok';
