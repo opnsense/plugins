@@ -32,8 +32,8 @@ use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
 
 /**
- * Class ServiceController
- * @package OPNsense\Cron
+ * Class DiagnosticsextensionController
+ * @package OPNsense\Unbound\Api
  */
 class DiagnosticsextensionController extends ApiControllerBase
 {
