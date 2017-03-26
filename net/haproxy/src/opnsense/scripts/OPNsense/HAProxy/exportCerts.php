@@ -73,6 +73,12 @@ foreach ($configNodes as $key => $value) {
                                         } else {
                                             $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
                                             $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
+                                            // check if a CA is linked
+                                            if (!empty((string)$cert->caref)) {
+                                                $cert = (array)$cert;
+                                                $ca = ca_chain($cert);
+                                                $pem_content .= $ca;
+                                            }
                                         }
                                         // generate pem file
                                         $output_pem_filename = "/var/etc/haproxy/ssl/" . $cert_refid . ".pem";
