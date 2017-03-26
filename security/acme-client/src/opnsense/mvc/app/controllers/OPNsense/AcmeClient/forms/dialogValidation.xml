@@ -35,9 +35,9 @@
         <help></help>
     </field>
     <field>
-        <label>HTTP-01/OPNsense</label>
+        <label>OPNsense</label>
         <type>header</type>
-        <style>method_table method_table_http01</style>
+        <style>table_http table_http_opnsense</style>
     </field>
     <field>
         <id>validation.http_opn_autodiscovery</id>
@@ -61,9 +61,9 @@
         <hint>Enter IP addresses here. Finish each with TAB.</hint>
     </field>
     <field>
-        <label>HTTP-01/HAProxy</label>
+        <label>HAProxy</label>
         <type>header</type>
-        <style>method_table method_table_http01</style>
+        <style>table_http table_http_haproxy</style>
     </field>
     <field>
         <id>validation.http_haproxyInject</id>
@@ -79,20 +79,6 @@
         <allownew>true</allownew>
         <help>Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed.</help>
     </field>
-<!--
-    <field>
-        <id>validation.http_relaydInject</id>
-        <label>Loadbalancer Config Injection</label>
-        <type>checkbox</type>
-        <help>Automatically inject config into the local Loadbalancer (relayd) to let it serve acme challanges without service interruption.</help>
-    </field>
-    <field>
-        <id>validation.http_relaydVserver</id>
-        <label>Loadbalancer Virtual Server</label>
-        <type>text</type>
-        <help>Choose the Virtual Server from the relayd Loadbalancer that should be configured to server acme challenges.</help>
-    </field>
--->
     <field>
         <label>DNS-01</label>
         <type>header</type>
@@ -111,7 +97,7 @@
         <help><![CDATA[The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.]]></help>
     </field>
     <field>
-        <label>DNS-01/Alwaysdata</label>
+        <label>Alwaysdata</label>
         <type>header</type>
         <style>table_dns table_dns_ad</style>
     </field>
@@ -122,7 +108,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/aliyun</label>
+        <label>aliyun</label>
         <type>header</type>
         <style>table_dns table_dns_ali</style>
     </field>
@@ -139,7 +125,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/AWS Route53</label>
+        <label>AWS Route53</label>
         <type>header</type>
         <style>table_dns table_dns_aws</style>
     </field>
@@ -156,7 +142,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/Cloudflare</label>
+        <label>Cloudflare</label>
         <type>header</type>
         <style>table_dns table_dns_cf</style>
     </field>
@@ -173,7 +159,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/CloudXNS</label>
+        <label>CloudXNS</label>
         <type>header</type>
         <style>table_dns table_dns_cx</style>
     </field>
@@ -190,7 +176,43 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/DNSPod</label>
+      <label>cyon</label>
+      <type>header</type>
+      <style>table_dns table_dns_cyon</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_cyon_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_cyon_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>Domain-Offensive</label>
+      <type>header</type>
+      <style>table_dns table_dns_do</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_do_pid</id>
+        <label>Partner ID</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_do_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>DNSPod</label>
         <type>header</type>
         <style>table_dns table_dns_dp</style>
     </field>
@@ -207,7 +229,37 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/GoDaddy</label>
+      <label>FreeDNS</label>
+      <type>header</type>
+      <style>table_dns table_dns_freedns</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_freedns_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_freedns_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>Gandi LiveDNS</label>
+      <type>header</type>
+      <style>table_dns table_dns_gandi_livedns</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_gandi_livedns_key</id>
+        <label>Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>GoDaddy</label>
         <type>header</type>
         <style>table_dns table_dns_gd</style>
     </field>
@@ -224,7 +276,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/IPSConfig</label>
+        <label>IPSConfig</label>
         <type>header</type>
         <style>table_dns table_dns_ispconfig</style>
     </field>
@@ -253,7 +305,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/lexicon</label>
+        <label>lexicon</label>
         <type>header</type>
         <style>table_dns table_dns_lexicon</style>
     </field>
@@ -276,7 +328,19 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/LuaDNS</label>
+      <label>Linode</label>
+      <type>header</type>
+      <style>table_dns table_dns_linode</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_linode_key</id>
+        <label>Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>LuaDNS</label>
         <type>header</type>
         <style>table_dns table_dns_lua</style>
     </field>
@@ -293,7 +357,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/DNSMadeEasy</label>
+        <label>DNSMadeEasy</label>
         <type>header</type>
         <style>table_dns table_dns_me</style>
     </field>
@@ -310,7 +374,7 @@
         <help></help>
     </field>
     <field>
-        <label>DNS-01/nsupdate</label>
+        <label>nsupdate</label>
         <type>header</type>
         <style>table_dns table_dns_nsupdate</style>
     </field>
@@ -327,7 +391,7 @@
         <help><![CDATA[Requires the the whole key file in a format that is compatible with nsupdate.]]></help>
     </field>
     <field>
-        <label>DNS-01/OVH</label>
+        <label>OVH</label>
         <type>header</type>
         <style>table_dns table_dns_ovh</style>
     </field>
@@ -356,7 +420,7 @@
         <help><![CDATA[Specify the OVH endpoint, i.e. ovh-eu, ovh-ca, kimsufi-eu, etc. Please refer to the <a href="https://github.com/Neilpang/acme.sh/tree/master/dnsapi">acme.sh documentation</a> for further information.]]></help>
     </field>
     <field>
-        <label>DNS-01/PowerDNS</label>
+        <label>PowerDNS</label>
         <type>header</type>
         <style>table_dns table_dns_pdns</style>
     </field>
