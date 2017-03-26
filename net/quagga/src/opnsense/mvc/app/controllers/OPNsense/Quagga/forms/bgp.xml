@@ -3,6 +3,6 @@
         <id>routing.bgp.general.Enabled</id>
         <label>enable</label>
         <type>checkbox</type>
-        <help>This will activate the ospf service.</help>
+        <help>This will activate the bgp service.</help>
     </field>
 </form>
