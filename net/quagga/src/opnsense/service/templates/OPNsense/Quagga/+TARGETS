@@ -1,3 +1,4 @@
 ospfd.conf:/usr/local/etc/quagga/ospfd.conf
+ripd.conf:/usr/local/etc/quagga/ripd.conf
 quagga:/etc/rc.conf.d/quagga
 zebra.conf:/usr/local/etc/quagga/zebra.conf
