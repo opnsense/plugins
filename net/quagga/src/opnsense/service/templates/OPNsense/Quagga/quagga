@@ -7,7 +7,7 @@ quagga_opnsense_bootup_run="/usr/local/opnsense/scripts/quagga/setup.sh"
 
 quagga_daemons="zebra{%
 if helpers.exists('OPNsense.quagga.ospf.enabled') and OPNsense.quagga.ospf.enabled == '1' %} ospfd{% endif %}{%
-if helpers.exists('OPNsense.quagga.rip.enabled') and OPNsense.quagga.ripd.enabled == '1' %} ripd{% endif %}{%
+if helpers.exists('OPNsense.quagga.rip.enabled') and OPNsense.quagga.rip.enabled == '1' %} ripd{% endif %}{%
 if helpers.exists('OPNsense.quagga.bgp.enabled') and OPNsense.quagga.bgp.enabled == '1' %} bgpd{% endif %}{%
 if helpers.exists('OPNsense.quagga.ospf6.enabled') and OPNsense.quagga.ospf6.enabled == '1' %} ospf6d{% endif %}{%
 if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}{%
