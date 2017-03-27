@@ -8,8 +8,7 @@
     <field>
         <id>rip.version</id>
         <label>Version</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
+        <type>text</type>
         <help>Choose your RIP version (1 or 2). 1 is classful, 2 supports CIDR.</help>
     </field>
     <field>
@@ -33,6 +32,7 @@
         <label>Networks</label>
         <style>tokenize</style>
         <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Select your Netzworks.</help>
     </field>
 </form>

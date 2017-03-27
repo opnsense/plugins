@@ -11,11 +11,7 @@
             <MaximumValue>2</MaximumValue>
             <default>2</default>
             <Required>Y</Required>
-        </originate>
-        <originatealways type="BooleanField">
-            <default>0</default>
-            <Required>Y</Required>
-        </originatealways>
+        </version>
         <networks type="CSVListField">
             <default></default>
             <Required>Y</Required>
