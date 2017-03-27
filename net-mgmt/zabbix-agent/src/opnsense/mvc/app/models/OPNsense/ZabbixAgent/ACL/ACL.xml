@@ -1,0 +1,10 @@
+<acl>
+    <page-services-zabbixagent>
+        <name>Services: Zabbix Agent</name>
+        <patterns>
+            <pattern>ui/zabbixagent/*</pattern>
+            <pattern>api/zabbixagent/*</pattern>
+            <pattern>diag_logs_zabbixagent.php</pattern>
+        </patterns>
+    </page-services-zabbixagent>
+</acl>
