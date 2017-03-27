@@ -5,21 +5,24 @@
         Enterprise-class open source distributed monitoring agent
     </description>
     <items>
+        <!-- local settings that should NOT be synced to another node -->
+        <local>
+            <hostname type="TextField">
+                <Required>Y</Required>
+                <mask>/^.{1,255}$/u</mask>
+                <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+            </hostname>
+        </local>
         <settings>
             <main>
                 <enabled type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
                 </enabled>
-                <hostname type="TextField">
-                    <Required>Y</Required>
-                    <mask>/^.{1,255}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
-                </hostname>
                 <serverList type="CSVListField">
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\s\-]*?,)*([a-zA-Z0-9\.:\[\]\s\-]*)$/</mask>
+                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid Zabbix server addresses, i.e. 10.0.0.1 or zabbix.example.com.</ValidationMessage>
                 </serverList>
@@ -50,12 +53,12 @@
                 <debugLevel type="OptionField">
                     <default>val_3</default>
                     <OptionValues>
-                        <val_0>0 - basic information</val_0>
-                        <val_1>1 - critical information</val_1>
-                        <val_2>2 - error information</val_2>
-                        <val_3>3 - warnings [default]</val_3>
-                        <val_4>4 - debugging</val_4>
-                        <val_5>5 - extended debugging</val_5>
+                        <val_0>basic information (0)</val_0>
+                        <val_1>critical information (1)</val_1>
+                        <val_2>error information (2)</val_2>
+                        <val_3>warnings (3, default)</val_3>
+                        <val_4>debugging (4)</val_4>
+                        <val_5>extended debugging (5)</val_5>
                     </OptionValues>
                     <Required>Y</Required>
                 </debugLevel>
@@ -105,7 +108,7 @@
                 <activeCheckServers type="CSVListField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\s\-]*?,)*([a-zA-Z0-9\.:\[\]\s\-]*)$/</mask>
+                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid active check receivers, i.e. 10.0.0.1:10051, zabbix.example.com or [::1]:30051.</ValidationMessage>
                 </activeCheckServers>

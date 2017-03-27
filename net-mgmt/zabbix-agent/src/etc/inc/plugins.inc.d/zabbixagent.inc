@@ -76,14 +76,11 @@ function zabbixagent_services()
  * @return array
  */
 
-/**
-XXX: needs investigation, hostname must be unique/replaced/excluded on secondary node(s)
 function zabbixagent_xmlrpc_sync()
 {
     $result = array();
     $result['id'] = 'zabbixagent';
-    $result['section'] = 'OPNsense.zabbixagent';
+    $result['section'] = 'OPNsense.zabbixagent.settings';
     $result['description'] = gettext('Enterprise-class open source distributed monitoring agent');
     return array($result);
 }
- */

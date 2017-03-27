@@ -7,7 +7,7 @@
             <help><![CDATA[Enable Zabbix Agent service.]]></help>
         </field>
         <field>
-            <id>zabbixagent.settings.main.hostname</id>
+            <id>zabbixagent.local.hostname</id>
             <label>Hostname</label>
             <type>text</type>
             <help><![CDATA[Usually the FQDN. Required for active checks and must match hostname as configured on the Zabbix server.]]></help>

@@ -96,14 +96,14 @@ class ServiceController extends ApiControllerBase
         $response = $backend->configdRun("zabbixagent status");
 
         if (strpos($response, "not running") > 0) {
-            if ($mdlAgent->settings->main->enabled->__toString() == 1) {
+            if ($mdlAgent->settings->main->enabled->__toString() == "1") {
                 $status = "stopped";
             } else {
                 $status = "disabled";
             }
         } elseif (strpos($response, "is running") > 0) {
             $status = "running";
-        } elseif ($mdlAgent->settings->main->enabled->__toString() == 0) {
+        } elseif ($mdlAgent->settings->main->enabled->__toString() == "0") {
             $status = "disabled";
         } else {
             $status = "unkown";
@@ -129,7 +129,7 @@ class ServiceController extends ApiControllerBase
 
             // stop zabbix agent when disabled
             if ($runStatus['status'] == "running" &&
-               ($mdlAgent->settings->main->enabled->__toString() == 0 || $force_restart)) {
+               ($mdlAgent->settings->main->enabled->__toString() == "0" || $force_restart)) {
                 $this->stopAction();
             }
 
@@ -137,7 +137,7 @@ class ServiceController extends ApiControllerBase
             $backend->configdRun('template reload OPNsense/ZabbixAgent');
 
             // (res)start daemon
-            if ($mdlAgent->settings->main->enabled->__toString() == 1) {
+            if ($mdlAgent->settings->main->enabled->__toString() == "1") {
                 if ($runStatus['status'] == "running" && !$force_restart) {
                     $backend->configdRun("zabbixagent reconfigure");
                 } else {
