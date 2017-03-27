@@ -35,16 +35,4 @@
         <help>Select a pre-defined system command which should be run for this action.</help>
         <style>table_optional table_optional_configd</style>
     </field>
-    <field>
-        <label>Required Parameters</label>
-        <type>header</type>
-        <style>method_table method_table_custom</style>
-    </field>
-    <field>
-        <id>action.custom</id>
-        <label>Custom Command</label>
-        <type>textbox</type>
-        <help>Specify a custom commands which should be run for this action.</help>
-        <style>table_optional table_optional_custom</style>
-    </field>
 </form>

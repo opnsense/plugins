@@ -504,7 +504,6 @@
                         <restart_gui>Restart OPNsense Web UI</restart_gui>
                         <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
                         <configd>System or Plugin Command (select below)</configd>
-                        <custom>Custom Command (specify below)</custom>
                     </OptionValues>
                 </type>
                 <configd type="ConfigdActionsField">
@@ -514,9 +513,6 @@
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
                 </configd>
-                <custom type="TextField">
-                    <Required>N</Required>
-                </custom>
             </action>
         </actions>
     </items>
