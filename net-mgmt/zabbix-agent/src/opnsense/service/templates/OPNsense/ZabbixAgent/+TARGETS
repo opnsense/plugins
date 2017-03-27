@@ -1,0 +1,2 @@
+zabbix_agentd.conf:/usr/local/etc/zabbix_agentd.conf
+rc.conf.d:/etc/rc.conf.d/zabbix_agentd
