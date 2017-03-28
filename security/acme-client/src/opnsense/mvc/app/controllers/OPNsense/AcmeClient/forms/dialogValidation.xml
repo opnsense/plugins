@@ -19,9 +19,9 @@
     </field>
     <field>
         <id>validation.method</id>
-        <label>Validation Method</label>
+        <label>Challenge Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt validation method. You'll have to add configuration for the selected method below.]]></help>
+        <help><![CDATA[Set the Let's Encrypt challenge type. You'll have to add configuration for the selected challenge type below.]]></help>
     </field>
     <field>
         <label>HTTP-01</label>
