@@ -1,0 +1,7 @@
+The goal of the "Hello world" plugin is to showcase the capabilities
+of the OPNsense plugin framework.  It will control a program on the
+system named "testConnection.py". It will send an email using plain
+SMTP and will respond with a JSON message about the result of the
+attempt.
+
+WWW: https://docs.opnsense.org/development/examples/helloworld.html

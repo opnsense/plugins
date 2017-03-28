@@ -1,0 +1,10 @@
+Ftp-proxy is a proxy for the Internet File Transfer Protocol.  FTP
+control connections are being redirected into the proxy, after which
+the proxy connects to the server on behalf of the client.
+
+The proxy allows data connections to pass, rewriting and redirecting them
+so that the right addresses are used.  All connections from the client to
+the server have their source address rewritten so they appear to come
+from the proxy.  Consequently, all connections from the server to the
+proxy have their destination address rewritten, so they are redirected to
+the client.
