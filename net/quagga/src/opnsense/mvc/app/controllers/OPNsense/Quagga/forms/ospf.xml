@@ -3,14 +3,14 @@
         <id>ospf.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>This will activate the ospf service.</help>
+        <help>This will activate the ospf service if routing protocols are enabled in "General".</help>
     </field>
     <field>
         <id>ospf.passiveinterfaces</id>
         <label>Passive Interfaces</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[Select the interfaces, where no OSPF-Packets should be sent to.]]></help>
+        <help><![CDATA[Select the interfaces, where no OSPF packets should be sent to.]]></help>
         <hint>Type or select interface.</hint>
     </field>
     <field>
