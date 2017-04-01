@@ -1,1 +1,1 @@
-{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_bgp_settings'])}}
