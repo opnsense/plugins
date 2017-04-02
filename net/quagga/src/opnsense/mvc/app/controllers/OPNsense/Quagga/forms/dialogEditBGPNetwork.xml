@@ -5,19 +5,9 @@
     <type>checkbox</type>
   </field>
   <field>
-    <id>network.ipaddr</id>
+    <id>network.addr</id>
     <label>Network Address</label>
     <type>text</type>
-  </field>
-  <field>
-    <id>network.netmask</id>
-    <label>Network Mask</label>
-    <type>text</type>
-  </field>
-  <field>
-    <id>network.area</id>
-    <label>Area</label>
-    <type>text</type>
-    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
+    <help>Network in CIDR notation</help>
   </field>
 </form>
