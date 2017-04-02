@@ -5,7 +5,6 @@
         <type>checkbox</type>
         <help>This will activate the bgp service.</help>
     </field>
-</form>
     <field>
         <id>bgp.redistribute</id>
         <label>Route Redistribution</label>
@@ -14,3 +13,4 @@
         <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
         <hint>Type or select a route source.</hint>
     </field>
+</form>
