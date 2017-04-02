@@ -79,7 +79,7 @@ class BgpsettingsController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->networks->network);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "ipaddr", "netmask", "area")
+            array("enabled", "addr")
         );
     }
     public function searchInterfaceAction()
