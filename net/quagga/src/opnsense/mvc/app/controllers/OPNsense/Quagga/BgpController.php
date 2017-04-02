@@ -21,7 +21,7 @@ namespace OPNsense\Quagga;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
-class OspfController extends \OPNsense\Base\IndexController
+class BgpController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
