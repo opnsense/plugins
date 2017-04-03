@@ -6,15 +6,6 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
-        <originate type="BooleanField">
-            <default>0</default>
-            <Required>Y</Required>
-        </originate>
-        <originatealways type="BooleanField">
-            <default>0</default>
-            <Required>Y</Required>
-        </originatealways>
-
         <passiveinterfaces type="InterfaceField">
                 <Required>N</Required>
                 <multiple>Y</multiple>
