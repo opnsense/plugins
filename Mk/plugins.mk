@@ -48,6 +48,8 @@ check:
 .  endif
 .endfor
 
+PLUGIN_DEVEL?=		yes
+
 PLUGIN_PREFIX?=		os-
 .if "${PLUGIN_DEVEL}" != ""
 PLUGIN_SUFFIX?=		-devel
