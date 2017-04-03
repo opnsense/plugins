@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
 $( document ).ready(function() {
-  var data_get_map = {'frm_ospf_settings':"/api/quagga/bgpsettings/get"};
+  var data_get_map = {'frm_bgp_settings':"/api/quagga/bgpsettings/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
