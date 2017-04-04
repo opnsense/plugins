@@ -8,7 +8,7 @@
     <field>
         <id>bgp.asnumber</id>
         <label>BGP AS Number</label>
-        <type>Text</type>
+        <type>text</type>
         <hint>Your AS Number here</hint>
     </field>
     <field>
