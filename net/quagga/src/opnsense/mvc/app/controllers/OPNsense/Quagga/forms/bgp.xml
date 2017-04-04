@@ -6,6 +6,12 @@
         <help>This will activate the bgp service.</help>
     </field>
     <field>
+        <id>bgp.asnumber</id>
+        <label>BGP AS Number</label>
+        <type>Text</type>
+        <hint>Your AS Number here</hint>
+    </field>
+    <field>
         <id>bgp.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
