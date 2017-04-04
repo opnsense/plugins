@@ -25,11 +25,15 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
-#}{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_bgp_settings'])}}
+#}{{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
+
+<div class="col-md-12">
+    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+</div>
 
 <script type="text/javascript">
-$( document ).ready(function() {
-  var data_get_map = {'frm_bgp_settings':"/api/quagga/bgpsettings/get"};
+$(document).ready(function() {
+  var data_get_map = {'frm_bgp_settings':"/api/quagga/bgp/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
@@ -40,7 +44,7 @@ $( document ).ready(function() {
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/bgpsettings/set",formid='frm_bgp_settings',callback_ok=function(){
+      saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_rip_settings',callback_ok=function(){
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
@@ -48,95 +52,7 @@ $( document ).ready(function() {
         });
       });
   });
-  $("#grid-networks").UIBootgrid(
-    { 'search':'/api/quagga/bgpsettings/searchNetwork',
-      'get':'/api/quagga/bgpsettings/getNetwork/',
-      'set':'/api/quagga/bgpsettings/setNetwork/',
-      'add':'/api/quagga/bgpsettings/addNetwork/',
-      'del':'/api/quagga/bgpsettings/delNetwork/',
-      'toggle':'/api/quagga/bgpsettings/toggleNetwork/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-interfaces").UIBootgrid(
-    { 'search':'/api/quagga/bgpsettings/searchInterface',
-      'get':'/api/quagga/bgpsettings/getInterface/',
-      'set':'/api/quagga/bgpsettings/setInterface/',
-      'add':'/api/quagga/bgpsettings/addInterface/',
-      'del':'/api/quagga/bgpsettings/delInterface/',
-      'toggle':'/api/quagga/bgpsettings/toggleInterface/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
 
 
     });
 </script>
-
-<div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-</div>
-
-<h2>{{ lang._('Networks') }}</h2>
-<div class="tab-content content-box tab-content">
-<div id="networks" class="tab-pane fade in active">
-
-<table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
-<thead>
-            <tr>
-                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="addr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                </td>
-            </tr>
-</tfoot>
-</table>
-
-</div>
-</div>
-
-<h2>{{ lang._('Interfaces') }}</h2>
-<div class="tab-content content-box tab-content">
-<div id="interfaces" class="tab-pane fade in active">
-
-<table id="grid-interfaces" class="table table-responsive" data-editDialog="DialogEditInterface">
-<thead>
-            <tr>
-                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
-                <th data-column-id="networktype" data-type="string" data-visible="true">{{ lang._('Network Type') }}</th>
-                <th data-column-id="authtype" data-type="string" data-visible="true">{{ lang._('Authentication Type') }}</th>
-                <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                </td>
-            </tr>
-</tfoot>
-</table>
-
-</div>
-</div>
-
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':'Edit Network'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':'Edit Interface'])}}
