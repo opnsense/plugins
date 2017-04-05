@@ -1,0 +1,29 @@
+<model>
+    <mount>//OPNsense/quagga/bgp</mount>
+    <description>BGP Routing configuration</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <asnumber type="TextField">
+            <default></default>
+            <Required>Y</Required>
+        </asnumber>
+        <redistribute type="OptionField">
+                <Required>N</Required>
+                <multiple>Y</multiple>
+                <default></default>
+                <OptionValues>
+                        <babel>Babel routing protocol (Babel)</babel>
+                        <ospf>Open Shortest Path First (OSPF)</ospf>
+                        <connected>Connected routes (directly attached subnet or host)</connected>
+                        <isis>Intermediate System to Intermediate System (IS-IS)</isis>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                        <pim>Protocol Independent Multicast (PIM)</pim>
+                        <rip>Routing Information Protocol (RIP)</rip>
+                        <static>Statically configured routes</static>
+                </OptionValues>
+        </redistribute>
+    </items>
+</model>
