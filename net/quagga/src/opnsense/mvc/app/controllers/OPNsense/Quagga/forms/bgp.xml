@@ -1,6 +1,6 @@
 <form>
     <field>
-        <id>routing.bgp.general.Enabled</id>
+        <id>bgp.enabled</id>
         <label>enable</label>
         <type>checkbox</type>
         <help>This will activate the bgp service.</help>
