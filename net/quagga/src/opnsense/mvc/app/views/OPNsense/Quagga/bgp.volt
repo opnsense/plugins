@@ -44,7 +44,7 @@ $(document).ready(function() {
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_rip_settings',callback_ok=function(){
+      saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_bgp_settings',callback_ok=function(){
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
