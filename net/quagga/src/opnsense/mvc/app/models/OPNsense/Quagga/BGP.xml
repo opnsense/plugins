@@ -10,6 +10,11 @@
             <default></default>
             <Required>Y</Required>
         </asnumber>
+        <networks type="CSVListField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</mask>
+        </networks>
         <redistribute type="OptionField">
                 <Required>N</Required>
                 <multiple>Y</multiple>
