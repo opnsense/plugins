@@ -3,7 +3,7 @@
         <id>ospf.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>This will activate the ospf service if routing protocols are enabled in "General".</help>
+        <help>This will activate the OSPF service if routing protocols are enabled in "General".</help>
     </field>
     <field>
         <id>ospf.passiveinterfaces</id>
