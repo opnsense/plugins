@@ -67,4 +67,124 @@ class BgpController extends ApiControllerBase
         }
         return $result;
     }
+
+///////////////////////////////////////////////////////////////////// TO BE REVIEWED
+    public function searchNeighborAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->neighbors->neighbor);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "address")
+        );
+    }
+    public function getNeighborAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('neighbors.neighbor.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("neighbor" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->neighbors->neighbor->add();
+            return array("neighbor" => $node->getNodes());
+        }
+        return array();
+    }
+    public function addNeighborAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("neighbor")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->neighbors->neighbor->Add();
+            $node->setNodes($this->request->getPost("neighbor"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "neighbor", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+    public function delNeighborAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->neighbors->neighbor->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+    public function setNeighborAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("neighbor")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('neighbors.neighbor.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $neighborInfo = $this->request->getPost("neighbor");
+                    $node->setNodes($neighborInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "neighbor", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
+    public function toggle_handler($uuid, $elements, $element)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference($elements . '.'. $element .'.' . $uuid);
+                if ($node != null) {
+                    if ($node->enabled->__toString() == "1") {
+                        $result['result'] = "Disabled";
+                        $node->enabled = "0";
+                    } else {
+                        $result['result'] = "Enabled";
+                        $node->enabled = "1";
+                    }
+                    // if item has toggled, serialize to config and save
+                    $mdlNeighbor->serializeToConfig();
+                    Config::getInstance()->save();
+                }
+            }
+        }
+        return $result;
+    }
+    public function toggleNeighborAction($uuid)
+    {
+        return $this->toggle_handler($uuid, 'neighbors', 'neighbor');
+    }
 }
