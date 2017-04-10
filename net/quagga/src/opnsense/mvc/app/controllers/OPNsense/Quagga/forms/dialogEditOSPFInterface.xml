@@ -22,11 +22,6 @@
     <type>text</type>
   </field>
   <field>
-    <id>interface.area</id>
-    <label>Area</label>
-    <type>text</type>
-  </field>
-  <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>

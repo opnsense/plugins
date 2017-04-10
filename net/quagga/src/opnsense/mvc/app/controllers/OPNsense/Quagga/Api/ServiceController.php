@@ -119,7 +119,6 @@ class ServiceController extends ApiControllerBase
     public function reconfigureAction()
     {
         if ($this->request->isPost()) {
-            $force_restart = false;
             // close session for long running action
             $this->sessionClose();
 
@@ -128,22 +127,15 @@ class ServiceController extends ApiControllerBase
 
             $runStatus = $this->statusAction();
 
-            // stop squid when disabled
-            if ($runStatus['status'] == "running" &&
-               ($mdlGeneral->enabled->__toString() == 0)) {
-                $this->stopAction();
-            }
+            // stop quagga if it is running or not
+            $this->stopAction();
 
             // generate template
             $backend->configdRun('template reload OPNsense/Quagga');
 
             // (res)start daemon
             if ($mdlGeneral->enabled->__toString() == 1) {
-                if ($runStatus['status'] == "running" && !$force_restart) {
-                    $this->restartAction();
-                } else {
-                    $this->startAction();
-                }
+                $this->startAction();
             }
 
             return array("status" => "ok");
