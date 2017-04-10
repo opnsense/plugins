@@ -17,7 +17,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Select the network to advertise, you have to set a Null route via zebra or a static route.</help>
+        <help>Select the network to advertise, you have to set a Null route via System -> Routes</help>
     </field>
     <field>
         <id>bgp.redistribute</id>
