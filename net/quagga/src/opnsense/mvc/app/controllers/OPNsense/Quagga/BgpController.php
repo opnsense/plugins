@@ -27,6 +27,7 @@ class BgpController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("BGP Settings");
         $this->view->bgpForm = $this->getForm("bgp");
+        $this->view->formDialogEditNeighbor = $this->getForm("dialogEditBGPNeighbor");
         $this->view->pick('OPNsense/Quagga/bgp');
     }
 }
