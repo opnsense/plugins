@@ -77,7 +77,7 @@ foreach ($configNodes as $key => $value) {
                                             if (!empty((string)$cert->caref)) {
                                                 $cert = (array)$cert;
                                                 $ca = ca_chain($cert);
-                                                $pem_content .= $ca;
+                                                $pem_content .= "\n" . $ca;
                                             }
                                         }
                                         // generate pem file
