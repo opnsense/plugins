@@ -30,5 +30,34 @@
                         <static>Statically configured routes</static>
                 </OptionValues>
         </redistribute>
+        <neighbors>
+                <neighbor type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <address type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                        </address>
+                        <remoteas type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </remoteas>
+                        <updatesource type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </updatesource>
+						<nexthopself type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </nexthopself>
+						<defaultoriginate type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </defaultoriginate>
+                </neighbor>
+        </neighbors>
     </items>
 </model>
