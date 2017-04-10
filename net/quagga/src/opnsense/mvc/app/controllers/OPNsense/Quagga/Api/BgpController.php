@@ -3,6 +3,8 @@ namespace OPNsense\Quagga\Api;
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Quagga\BGP;
 use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Base\UIModelGrid;
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
@@ -31,7 +33,7 @@ use \OPNsense\Core\Config;
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
-class BgpController extends ApiControllerBase
+class BgpController extends ApiMutableModelControllerBase
 {
     public function getAction()
     {
