@@ -103,4 +103,4 @@ $(document).ready(function() {
 </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogBGPEditNeighbor,'id':'DialogEditBGPNeighbor','label':'Edit Neighbor'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':'Edit Neighbor'])}}
