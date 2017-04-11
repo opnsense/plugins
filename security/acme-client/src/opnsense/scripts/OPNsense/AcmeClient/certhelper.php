@@ -119,7 +119,7 @@ function cert_action_validator($opt_cert_id)
 
     // Search for cert ID in configuration
     $configObj = Config::getInstance()->object();
-    if (isset($configObj->OPNsense->AcmeClient->certificates)) {
+    if (isset($configObj->OPNsense->AcmeClient->certificates) && $configObj->OPNsense->AcmeClient->certificates->count() > 0) {
         foreach ($configObj->OPNsense->AcmeClient->certificates->children() as $certObj) {
             // Extract cert ID
             $cert_id = (string)$certObj->id;
