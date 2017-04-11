@@ -74,7 +74,7 @@ $(document).ready(function() {
 <div class="tab-content content-box tab-content">
 <div id="neighbors" class="tab-pane fade in active">
 
-<table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditNeighbor">
+<table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditBGPNeighbor">
 <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -103,4 +103,4 @@ $(document).ready(function() {
 </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNeighbor,'id':'DialogEditNeighbor','label':'Edit Neighbor'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditNeighbor,'id':'DialogEditBGPNeighbor','label':'Edit Neighbor'])}}
