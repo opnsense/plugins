@@ -52,7 +52,55 @@ $(document).ready(function() {
         });
       });
   });
-
+  $("#grid-networks").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchNeighbor',
+      'get':'/api/quagga/bgp/getNeighbor/',
+      'set':'/api/quagga/bgp/setNeighbor/',
+      'add':'/api/quagga/bgp/addNeighbor/',
+      'del':'/api/quagga/bgp/delNeighbor/',
+      'toggle':'/api/quagga/bgp/toggleNeighbor/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
 
     });
 </script>
+    
+<div class="col-md-12">
+    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+</div>
+
+<h2>{{ lang._('Neighbors') }}</h2>
+<div class="tab-content content-box tab-content">
+<div id="neighbors" class="tab-pane fade in active">
+
+<table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditNeighbor">
+<thead>
+            <tr>
+                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="address" data-type="string" data-visible="true">{{ lang._('Neighbor Address') }}</th>
+                <th data-column-id="remoteas" data-type="string" data-visible="true">{{ lang._('Remote AS') }}</th>
+                <th data-column-id="updatesource" data-type="string" data-visible="true">{{ lang._('Update Source Address') }}</th>
+				<th data-column-id="nexthopself" data-type="string" data-formatter="rowtoggle">{{ lang._('Next Hop Self') }}</th>
+				<th data-column-id="defaultoriginate" data-type="string" data-formatter="rowtoggle">{{ lang._('Default Originate') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                </td>
+            </tr>
+</tfoot>
+</table>
+
+</div>
+</div>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditNeighbor,'id':'DialogEditNeighbor','label':'Edit Neighbor'])}}
