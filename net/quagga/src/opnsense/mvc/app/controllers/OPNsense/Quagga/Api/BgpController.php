@@ -8,7 +8,7 @@ use \OPNsense\Base\UIModelGrid;
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
- *    Modified for BGP functionality by Michael Muenz
+ *    Copyright (C) 2017 Michael Muenz
  *
  *    All rights reserved.
  *
