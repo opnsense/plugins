@@ -14,13 +14,13 @@
     <id>neighbor.remoteas</id>
     <label>Remote AS</label>
     <type>text</type>
-	<help>Neighbor AS.</help>
+    <help>Neighbor AS.</help>
   </field>
   <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>text</type>
-	<help>Physical name of the interface facing the peer</help>
+    <help>Physical name of the interface facing the peer</help>
   </field>
   <field>
     <id>neighbor.nexthopself</id>
