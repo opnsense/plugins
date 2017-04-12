@@ -27,9 +27,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}{{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
 
-<div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-</div>
 
 <script type="text/javascript">
 $(document).ready(function() {
