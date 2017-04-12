@@ -80,7 +80,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->neighbors->neighbor);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "address")
+            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate" )
         );
     }
     public function getNeighborAction($uuid = null)
