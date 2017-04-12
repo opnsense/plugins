@@ -1,8 +1,8 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-This file is Copyright © 2017 by Fabian Franz
-Modified for BGP functionality by Michael Muenz
+Copyright (C) 2017 Fabian Franz
+Copyright (C) 2017 Michael Muenz
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
