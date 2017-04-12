@@ -276,7 +276,7 @@ include("head.inc");
                       <td>
                        <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" for="help_for_logpackets">
-                         <?=gettext("Log packets handled by UPnP &amp; NAT-PMP rules?");?>
+                         <?=gettext("Log packets handled by UPnP and NAT-PMP rules?");?>
                        </div>
                       </td>
                     </tr>
