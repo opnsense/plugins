@@ -49,11 +49,11 @@
                                 <default></default>
                                 <Required>N</Required>
                         </updatesource>
-						<nexthopself type="BooleanField">
+			<nexthopself type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
                         </nexthopself>
-						<defaultoriginate type="BooleanField">
+			<defaultoriginate type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
                         </defaultoriginate>
