@@ -8,6 +8,7 @@ use \OPNsense\Base\UIModelGrid;
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
+ *    Modified for BGP functionality by Michael Muenz
  *
  *    All rights reserved.
  *
@@ -72,7 +73,6 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-///////////////////////////////////////////////////////////////////// TO BE REVIEWED
     public function searchNeighborAction()
     {
         $this->sessionClose();
@@ -83,6 +83,7 @@ class BgpController extends ApiMutableModelControllerBase
             array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate" )
         );
     }
+    
     public function getNeighborAction($uuid = null)
     {
         $mdlBGP = $this->getModel();
@@ -98,6 +99,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return array();
     }
+    
     public function addNeighborAction()
     {
         $result = array("result" => "failed");
@@ -120,6 +122,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function delNeighborAction($uuid)
     {
         $result = array("result" => "failed");
@@ -137,6 +140,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function setNeighborAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("neighbor")) {
@@ -164,6 +168,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
+    
     public function toggle_handler($uuid, $elements, $element)
     {
         $result = array("result" => "failed");
@@ -187,6 +192,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function toggleNeighborAction($uuid)
     {
         return $this->toggle_handler($uuid, 'neighbors', 'neighbor');
