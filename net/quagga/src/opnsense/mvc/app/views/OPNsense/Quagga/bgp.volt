@@ -52,7 +52,7 @@ $(document).ready(function() {
         });
       });
   });
-  $("#grid-networks").UIBootgrid(
+  $("#grid-neighbors").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchNeighbor',
       'get':'/api/quagga/bgp/getNeighbor/',
       'set':'/api/quagga/bgp/setNeighbor/',
