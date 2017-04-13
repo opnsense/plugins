@@ -41,7 +41,7 @@ if (empty($config['load_balancer']['virtual_server']) || !is_array($config['load
 $a_vs = &$config['load_balancer']['virtual_server'];
 
 
-$copy_fields=array('name', 'descr', 'poolname', 'port', 'sitedown', 'ipaddr', 'mode', 'relay_protocol');
+$copy_fields=array('name', 'descr', 'poolname', 'port', 'sitedown', 'ipaddr', 'mode', 'relay_protocol', 'sessiontimeout');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_vs[$_GET['id']])) {
         $id = $_GET['id'];
@@ -100,16 +100,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("You cannot select a Fall Back Pool when using the DNS relay protocol.");
     }
 
+    if (isset($pconfig['sessiontimeout']) && $pconfig['sessiontimeout'] !== '' &&
+        ((string)((int)$pconfig['sessiontimeout']) != $pconfig['sessiontimeout'] ||
+        $pconfig['sessiontimeout'] < 1 || $pconfig['sessiontimeout'] > 2147483647)) {
+        $input_errors[] = gettext('The session timeout must be a number greater than zero or left blank.');
+    }
+
     if (count($input_errors) == 0) {
         $vsent = array();
         foreach ($copy_fields as $fieldname) {
             $vsent[$fieldname] = $pconfig[$fieldname];
         }
-        if ($vsent['sitedown'] == "") {
+        if ($vsent['sitedown'] == '') {
             unset($vsent['sitedown']);
         }
+        if ($vsent['sessiontimeout'] == '') {
+            unset($vsent['sessiontimeout']);
+        } else {
+            $vsent['sessiontimeout'] = (int)$vsent['sessiontimeout'];
+        }
         if ($vsent['mode'] != 'relay'){
-            // relay protocol only applies to relay
+            /* relay protocol only applies to relay */
             unset($vsent['relay_protocol']);
         }
 
@@ -314,6 +325,15 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
+                    <tr>
+                      <td><a id="help_for_sessiontimeout" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Session Timeout"); ?></td>
+                      <td>
+                        <input type="text" name="sessiontimeout" id="sessiontimeout" value="<?=$pconfig['sessiontimeout'];?>" />
+                        <div class="hidden" for="help_for_sessiontimeout">
+                          <?= sprintf(gettext('This is the timeout in seconds for idle sessions. The default timeout is %s, the maximum is %s (%s years).'), 600, 2147483647, (int)(2147483647 / 60 / 60 / 24 / 365)) ?>
+                        </div>
+                      </td>
+                    </tr>
                       <td>&nbsp;</td>
                       <td>
                         <input name="Save" type="submit" class="btn btn-primary" value="<?=gettext("Submit"); ?>" />
