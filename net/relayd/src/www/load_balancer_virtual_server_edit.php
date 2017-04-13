@@ -41,7 +41,7 @@ if (empty($config['load_balancer']['virtual_server']) || !is_array($config['load
 $a_vs = &$config['load_balancer']['virtual_server'];
 
 
-$copy_fields=array('name', 'descr', 'poolname', 'port', 'sitedown', 'ipaddr', 'mode', 'relay_protocol');
+$copy_fields=array('name', 'descr', 'poolname', 'port', 'sitedown', 'ipaddr', 'mode', 'relay_protocol', 'sessiontimeout');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_vs[$_GET['id']])) {
         $id = $_GET['id'];
@@ -100,6 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("You cannot select a Fall Back Pool when using the DNS relay protocol.");
     }
 
+    if ($pconfig['sessiontimeout'] != "" && ($pconfig['sessiontimeout'] < 1 || $pconfig['sessiontimeout'] > 2147483647)) {
+        $input_errors[] = gettext("The session timeout value must be an integer between 1 and 2147483647.");
+    }
+    
     if (count($input_errors) == 0) {
         $vsent = array();
         foreach ($copy_fields as $fieldname) {
@@ -314,6 +318,16 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
+                    <tr>
+                      <td><a id="help_for_sessiontimeout" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Session Timeout"); ?></td>
+                      <td>
+                        <input type="text" name="sessiontimeout" id="sessiontimeout" value="<?=$pconfig['sessiontimeout'];?>" />
+                        <div class="hidden" for="help_for_sessiontimeout">
+                          <?=gettext("This is the timeout in seconds for idle sessions."); ?>
+                          <br /><?=gettext(" The default timeout is 600, the maximum is 2147483647 (68 years)."); ?>
+                        </div>
+                      </td>
+                    </tr>
                       <td>&nbsp;</td>
                       <td>
                         <input name="Save" type="submit" class="btn btn-primary" value="<?=gettext("Submit"); ?>" />
