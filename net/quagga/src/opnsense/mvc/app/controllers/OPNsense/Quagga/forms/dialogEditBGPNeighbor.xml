@@ -19,7 +19,7 @@
   <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
-    <type>text</type>
+    <type>select_multiple</type>
     <help>Physical name of the interface facing the peer</help>
   </field>
   <field>
