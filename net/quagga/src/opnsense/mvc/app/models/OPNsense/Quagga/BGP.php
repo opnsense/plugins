@@ -1,5 +1,6 @@
 <?php
 namespace OPNsense\Quagga;
+use OPNsense\Base\BaseModel;
 /*
     Copyright (C) 2017 Fabian Franz
     Copyright (C) 2017 Michael Muenz
@@ -22,13 +23,6 @@ namespace OPNsense\Quagga;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
-class BgpController extends \OPNsense\Base\IndexController
+class BGP extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->title = gettext("BGP Settings");
-        $this->view->bgpForm = $this->getForm("bgp");
-        $this->view->formDialogEditBGPNeighbor = $this->getForm("dialogEditBGPNeighbor");
-        $this->view->pick('OPNsense/Quagga/bgp');
-    }
 }
