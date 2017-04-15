@@ -45,9 +45,13 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </remoteas>
-                        <updatesource type="TextField">
+                        <updatesource type="InterfaceField">
                                 <default></default>
                                 <Required>N</Required>
+                                <multiple>N</multiple>
+                                <filters>
+                                        <enable>/^(?!0).*$/</enable>
+                                </filters>
                         </updatesource>
 			<nexthopself type="BooleanField">
                                 <default>0</default>
