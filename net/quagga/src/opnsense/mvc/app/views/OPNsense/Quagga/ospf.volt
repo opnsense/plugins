@@ -26,8 +26,80 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<div class="content-box" style="padding-bottom: 1.5em;">
-{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+
+    <!-- Navigation bar -->
+    <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+        <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+        <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+        <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
+    </ul>
+    <div class="tab-content content-box tab-content">
+        <div id="general" class="tab-pane fade in active">
+            <div class="content-box" style="padding-bottom: 1.5em;">
+                {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+
+                <div class="col-md-12">
+                    <hr />
+                    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+                </div>
+            </div>
+        </div>
+
+    <!-- Tab: Networks -->
+    <div id="networks" class="tab-pane fade in">
+      <table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
+          <thead>
+              <tr>
+                  <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                  <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
+                  <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
+                  <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
+                  <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                  <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <td colspan="5"></td>
+                  <td>
+                      <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                      <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                  </td>
+              </tr>
+          </tfoot>
+      </table>
+    </div>
+
+    <!-- Tab: Interfaces -->
+    <div id="interfaces" class="tab-pane fade in">
+        <table id="grid-interfaces" class="table table-responsive" data-editDialog="DialogEditInterface">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
+                    <th data-column-id="networktype" data-type="string" data-visible="true">{{ lang._('Network Type') }}</th>
+                    <th data-column-id="authtype" data-type="string" data-visible="true">{{ lang._('Authentication Type') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    </div>
 
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -74,74 +146,6 @@ $( document ).ready(function() {
 
     });
 </script>
-
-    <div class="col-md-12">
-        <hr />
-        <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-    </div>
-</div>
-
-<h2>{{ lang._('Networks') }}</h2>
-<div class="tab-content content-box tab-content">
-<div id="networks" class="tab-pane fade in active">
-
-<table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
-<thead>
-            <tr>
-                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
-                <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
-                <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                </td>
-            </tr>
-</tfoot>
-</table>
-
-</div>
-</div>
-
-<h2>{{ lang._('Interfaces') }}</h2>
-<div class="tab-content content-box tab-content">
-<div id="interfaces" class="tab-pane fade in active">
-
-<table id="grid-interfaces" class="table table-responsive" data-editDialog="DialogEditInterface">
-<thead>
-            <tr>
-                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
-                <th data-column-id="networktype" data-type="string" data-visible="true">{{ lang._('Network Type') }}</th>
-                <th data-column-id="authtype" data-type="string" data-visible="true">{{ lang._('Authentication Type') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                </td>
-            </tr>
-</tfoot>
-</table>
-
-</div>
-</div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':'Edit Network'])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':'Edit Interface'])}}
