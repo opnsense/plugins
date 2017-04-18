@@ -25,7 +25,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
-#}{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+#}
+<div class="content-box" style="padding-bottom: 1.5em;">
+{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
 
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -73,8 +75,10 @@ $( document ).ready(function() {
     });
 </script>
 
-<div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+    <div class="col-md-12">
+        <hr />
+        <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+    </div>
 </div>
 
 <h2>{{ lang._('Networks') }}</h2>
