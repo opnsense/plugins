@@ -206,10 +206,10 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="col-md-12">
         <b>{{ lang._("Please read the official %sLet's Encrypt documentation%s before using this plugin. Otherwise you will easily hit it's %srate limits%s and thus all your attempts to issue a certificate will fail.") | format('<a href="https://letsencrypt.org/how-it-works/">', '</a>', '<a href="https://letsencrypt.org/docs/rate-limits/">', '</a>') }}</b>{{ lang._("Please use Let's Encrypts %staging servers%s when using this plugin for the first time or while testing a new validation method. You'll have to re-issue your certificates when switching from staging to production servers to get valid certificates.") | format('<a href="https://letsencrypt.org/docs/staging-environment/">', '</a>') }}
         <br/>
-        {{ lang._("Please use the %sGitHub Issue Tracker%s to report bugs or request new features.") | format('<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}
+        {{ lang._("Please use the %sissue tracker%s to report bugs or request new features.") | format('<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}
         <br/>
         <br/>
-        <p>{{ lang._("This plugin includes code from the %sNeilpang/acme.sh%s project.") | format('<a href="https://github.com/Neilpang/acme.sh">', '</a>' ) }} {{ lang._('Licensed under GPLv3.') }}<br/>{{ lang._('Let's Encrypt™ is a trademark of the Internet Security Research Group. All rights reserved.') }}</p>
+        <p>{{ lang._("This plugin includes code from the %s project.") | format('<a href="https://github.com/Neilpang/acme.sh">Neilpang/acme.sh</a>' ) }} {{ lang._('Licensed under GPLv3.') }}<br/>{{ lang._('Let's Encrypt™ is a trademark of the Internet Security Research Group. All rights reserved.') }}</p>
         <br/>
     </div>
 </div>
