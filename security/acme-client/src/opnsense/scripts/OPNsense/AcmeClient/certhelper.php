@@ -723,6 +723,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // HTTP-01: flush OPNsense port forward rules
     if (($val_method == 'http01') and ((string)$valObj->http_service == 'opnsense')) {
         mwexec('/sbin/pfctl -a acme-client -F all');
+        # XXX: workaround to solve disconnection issues reported by some users
+        $response = $backend->configdRun('filter reload');
     }
 
     // Check validation result
