@@ -153,5 +153,5 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogNetwork,'id':'DialogNetwork','label':'Edit Network'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHost,'id':'DialogHost','label':'Edit Host'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogNetwork,'id':'DialogNetwork','label':lang._('Edit Network')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHost,'id':'DialogHost','label':lang._('Edit Host')])}}

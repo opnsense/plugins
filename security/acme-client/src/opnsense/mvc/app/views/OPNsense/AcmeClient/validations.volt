@@ -109,4 +109,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogValidation,'id':'DialogValidation','label':'Edit Validation Method'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogValidation,'id':'DialogValidation','label':lang._('Edit Validation Method')])}}

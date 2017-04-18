@@ -84,4 +84,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAccount,'id':'DialogAccount','label':'Edit Account'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAccount,'id':'DialogAccount','label':{{ lang._('Edit Account')])}}
