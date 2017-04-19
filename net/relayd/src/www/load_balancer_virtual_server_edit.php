@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("You cannot select a Fall Back Pool when using the DNS relay protocol.");
     }
 
-    if ($pconfig['sessiontimeout'] != "" && ($pconfig['sessiontimeout'] < 1 || $pconfig['sessiontimeout'] > 2147483647)) {
+    if (!empty($pconfig['sessiontimeout']) && (!is_int($pconfig['sessiontimeout']) || $pconfig['sessiontimeout'] > 2147483647)) {
         $input_errors[] = gettext("The session timeout value must be an integer between 1 and 2147483647.");
     }
     
