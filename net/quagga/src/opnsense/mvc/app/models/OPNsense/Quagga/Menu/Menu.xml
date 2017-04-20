@@ -5,6 +5,6 @@
       <OSPF VisibleName="OSPF" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/ospf/index" order="20" />
       <!--<ISIS VisibleName="IS-IS" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/isis/index" order="30" />-->
       <BGP VisibleName="BGPv4" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/bgp/index" order="40" />
-
+      <Diagnostics VisibleName="Diagnostics" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/diagnostics/index" order="50" />
    </Routing>
 </menu>
