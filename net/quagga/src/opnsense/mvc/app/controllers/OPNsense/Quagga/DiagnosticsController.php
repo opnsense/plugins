@@ -23,7 +23,6 @@ namespace OPNsense\Quagga;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-// FIXME Replace IndexController with ???
 class DiagnosticsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
