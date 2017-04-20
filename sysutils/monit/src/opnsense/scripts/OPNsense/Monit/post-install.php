@@ -61,25 +61,25 @@ $domainName = $cfgObj->system->domain;
 // inherit SMTP settings from System->Settings->Notifications
 $generalSettings = array();
 if (!empty($cfgObj->notifications->smtp->ipaddress)) {
-	$generalSettings['mailserver'] = $cfgObj->notifications->smtp->ipaddress;
+    $generalSettings['mailserver'] = $cfgObj->notifications->smtp->ipaddress;
 }
 if (!empty($cfgObj->notifications->smtp->port)) {
-	$generalSettings['port'] = $cfgObj->notifications->smtp->port;
+    $generalSettings['port'] = $cfgObj->notifications->smtp->port;
 }
 if (!empty($cfgObj->notifications->smtp->username)) {
-	$generalSettings['username'] = $cfgObj->notifications->smtp->username;
+    $generalSettings['username'] = $cfgObj->notifications->smtp->username;
 }
 if (!empty($cfgObj->notifications->smtp->password)) {
-	$generalSettings['password'] = $cfgObj->notifications->smtp->password;
+    $generalSettings['password'] = $cfgObj->notifications->smtp->password;
 }
 if ((!empty($cfgObj->notifications->smtp->tls) && $cfgObj->notifications->smtp->tls == 1)  ||
-	(!empty($cfgObj->notifications->smtp->ssl) && $cfgObj->notifications->smtp->ssl == 1)) {
-	$generalSettings['ssl'] = 1;
+    (!empty($cfgObj->notifications->smtp->ssl) && $cfgObj->notifications->smtp->ssl == 1)) {
+    $generalSettings['ssl'] = 1;
 }
 
 $alertSettings = array();
 if (!empty($cfgObj->notifications->smtp->notifyemailaddress)) {
-	$alertSettings['recipient'] = $cfgObj->notifications->smtp->notifyemailaddress;
+    $alertSettings['recipient'] = $cfgObj->notifications->smtp->notifyemailaddress;
 }
 
 // define some tests

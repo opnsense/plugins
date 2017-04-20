@@ -358,7 +358,7 @@ class SettingsController extends ApiControllerBase
                     $svcMonit = new ServiceController();
                     $result = $svcMonit->configtestAction();
                     if ($nodeType == 'general' && $node->enabled->__toString() == 0) {
-			$result['stop'] = $svcMonit->stopAction();
+                        $result['stop'] = $svcMonit->stopAction();
                     }
                 }
             }
