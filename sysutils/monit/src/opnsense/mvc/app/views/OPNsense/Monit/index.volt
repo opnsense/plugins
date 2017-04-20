@@ -72,9 +72,11 @@ POSSIBILITY OF SUCH DAMAGE.
          $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
          saveFormToEndpoint(
             url    = "/api/monit/settings/setGeneral",
-            formid = "frm_GeneralSettings"
+            formid = "frm_GeneralSettings",
+            callback_ok=function(){
+               $("#frm_GeneralSettings_progress").removeClass("fa fa-spinner fa-pulse");
+            }
          );
-         $("#frm_GeneralSettings_progress").removeClass("fa fa-spinner fa-pulse");
          $("#btn_ApplyGeneralSettings").blur();
       });
 
@@ -311,8 +313,8 @@ POSSIBILITY OF SUCH DAMAGE.
    </div>
    <div class="col-md-12">
          <hr/>
-         <button class="btn btn-primary" id="btn_configtest" type="button"><b>{{ lang._('Test Configuration') }}</b><i id="configtest_progress" class=""></i></button>
-         <button class="btn btn-primary" id="btn_reload" type="button"><b>{{ lang._('Reload Configuration') }}</b><i id="reload_progress" class=""></i></button>
+         <button class="btn btn-primary" id="btn_configtest" type="button"><b>{{ lang._('Test Configuration') }}</b><i id="btn_configtest_progress" class=""></i></button>
+         <button class="btn btn-primary" id="btn_reload" type="button"><b>{{ lang._('Reload Configuration') }}</b><i id="btn_reload_progress" class=""></i></button>
          <br/>
          <br/>
       </div>

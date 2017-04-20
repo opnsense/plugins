@@ -37,8 +37,7 @@
       <id>monit.alert.reminder</id>
       <label>Reminder</label>
       <type>text</type>
-      <help><![CDATA[]]></help>
-      <help>Send a reminder after some cycles</help>
+      <help><![CDATA[Send a reminder after some cycles]]></help>
    </field>
    <field>
       <id>monit.alert.description</id>
