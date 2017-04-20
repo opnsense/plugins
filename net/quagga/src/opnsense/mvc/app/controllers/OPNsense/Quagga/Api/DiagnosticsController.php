@@ -42,132 +42,48 @@ class DiagnosticsController extends ApiControllerBase
      * show ip bgp
      * @return array
      */
-    public function showipbgpAction() // FIXME: restart here
+    public function showipbgpAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("acmeclient http-start", true);
+            $response = $backend->configdRun("quagga diag-bgp bgp", true);
             return array("response" => $response);
         } else {
             return array("response" => array());
         }
     }
     /**
-     * stop acmeclient service
+     * show ip bgp summary
      * @return array
      */
-    public function stopAction()
+    public function showipbgpsummaryAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("acmeclient http-stop");
+            $response = $backend->configdRun("quagga diag-bgp bgp", true);
             return array("response" => $response);
         } else {
             return array("response" => array());
         }
     }
-    /**
-     * restart acme_http_challenge service
-     * @return array
-     */
-    public function restartAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = $backend->configdRun("acmeclient http-restart");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-    /**
-     * retrieve status of acme_http_challenge service
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $model = new AcmeClient();
-        $response = $backend->configdRun("acmeclient http-status");
-        if (strpos($response, "not running") > 0) {
-            if ($model->settings->enabled->__toString() == 1) {
-                $status = "stopped";
-            } else {
-                $status = "disabled";
-            }
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
-        } elseif ($model->settings->enabled->__toString() == 0) {
-            $status = "disabled";
-        } else {
-            $status = "unkown";
-        }
-        return array("status" => $status);
-    }
-    /**
-     * reconfigure acmeclient, generate config and reload
-     */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $force_restart = false;
-            $mdlAcme = new AcmeClient();
-            $backend = new Backend();
-            $runStatus = $this->statusAction();
-            // stop acmeclient when disabled
-            if ($runStatus['status'] == "running" &&
-               ($mdlAcme->settings->enabled->__toString() == 0 || $force_restart)) {
-                $this->stopAction();
-            }
-            // generate template
-            $backend->configdRun('template reload OPNsense/AcmeClient');
-            // now setup the environment
-            $backend->configdRun("acmeclient setup");
-            // (res)start daemon
-            if ($mdlAcme->settings->enabled->__toString() == 1) {
-                if ($runStatus['status'] == "running" && !$force_restart) {
-                    $backend->configdRun("acmeclient http-restart");
-                } else {
-                    $this->startAction();
-                }
-            }
-            return array("status" => "ok");
-        } else {
-            return array("status" => "failed");
-        }
-    }
-    /**
-     * run syntax check for our custom lighttpd configuration
-     * @return array
-     * @throws \Exception
-     */
-    public function configtestAction()
-    {
-        $backend = new Backend();
-        // first generate template based on current configuration
-        $backend->configdRun('template reload OPNsense/AcmeClient');
-        // now setup the environment
-        $backend->configdRun("acmeclient setup");
-        // finally run the syntax check
-        $response = $backend->configdRun("acmeclient configtest");
-        return array("result" => $response);
-        // TODO: We may also want to check for duplicate cert names, etc.
-    }
-    /**
-     * Run sign or renew (if required) command for ALL certificates
-     * @return array
-     * @throws \Exception
-     */
-    public function signallcertsAction()
-    {
-        $backend = new Backend();
-        // first setup the environment
-        $backend->configdRun("acmeclient setup");
-        // run the command
-        $response = $backend->configdRun("acmeclient sign-all-certs");
-        return array("result" => $response);
-    }
+/*    public function statusAction()
+*    {
+*        $backend = new Backend();
+*        $model = new AcmeClient();
+*        $response = $backend->configdRun("acmeclient http-status");
+*        if (strpos($response, "not running") > 0) {
+*            if ($model->settings->enabled->__toString() == 1) {
+*                $status = "stopped";
+*            } else {
+*                $status = "disabled";
+*            }
+*        } elseif (strpos($response, "is running") > 0) {
+*            $status = "running";
+*        } elseif ($model->settings->enabled->__toString() == 0) {
+*            $status = "disabled";
+*        } else {
+*            $status = "unkown";
+*        }
+*        return array("status" => $status);
+*    } */
 }
