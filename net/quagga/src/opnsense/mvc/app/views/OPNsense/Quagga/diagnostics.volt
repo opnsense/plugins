@@ -52,7 +52,7 @@ $(document).ready(function() {
   });
   $('#showIpBgp').click(function(){
       $('#responseMsg').removeClass("hidden");
-      ajaxCall(url="/api/quagga/service/diag-bgp", sendData={}, callback=function(data,status) {
+      ajaxCall(url="/api/quagga/service/diag-bgp2", sendData={}, callback=function(data,status) {
           $("#responseMsg").text(data['result']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
