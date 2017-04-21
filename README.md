@@ -41,7 +41,8 @@ net/relayd -- Relayd Load Balancer
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
 net-mgmt/snmp -- SNMP Server via bsnmpd
-sysutils/boot-delay -- Apply a persistent boot delay
+net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
+sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
