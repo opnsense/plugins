@@ -50,6 +50,22 @@ $(document).ready(function() {
         });
       });
   });
+  $('#showIpBgp').click(function(){
+      $('#showIpBgp_progress').addClass("fa fa-spinner fa-pulse");
+      ajaxCall(url="/api/quagga/service/diag-bgp", sendData={}, callback=function(data,status) {
+          $('#showIpBgp_progress').removeClass("fa fa-spinner fa-pulse");
+          $('#showIpBgp').blur();
+          $("#responseMsg").removeClass("hidden");
+          $("#responseMsg").html(data['result']);
+          BootstrapDialog.show({
+              type: BootstrapDialog.TYPE_INFO,
+              title: "{{ lang._('show ip bgp') }}",
+              message: data['result'],
+              draggable: true
+          });
+      });
+  });
+    
 
     });
 </script>
@@ -57,3 +73,7 @@ $(document).ready(function() {
 <div class="col-md-12">
     <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
 </div>
+    
+<div class="col-md-12">
+    <button class="btn btn-primary"  id="showIpBgp" type="button"><b>{{ lang._('show ip bgp') }}</b></button>
+</div> 
