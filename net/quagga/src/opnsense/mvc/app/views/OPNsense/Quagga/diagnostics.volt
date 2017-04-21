@@ -53,10 +53,10 @@ $(document).ready(function() {
   $('#showIpBgp').click(function(){
       $('#responseMsg').removeClass("hidden");
       ajaxCall(url="/api/quagga/service/diag-bgp", sendData={}, callback=function(data,status) {
-          $("#responseMsg").html(data['result']);
+          $("#responseMsg").text(data['result']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
-              title: "{{ lang._('show ip bgp') }}",
+              title: "{{ lang._('Output of: show ip bgp') }}",
               message: data['result'],
               draggable: true
           });
@@ -72,5 +72,5 @@ $(document).ready(function() {
 </div>
     
 <div class="col-md-12">
-    <button class="btn btn-primary"  id="showIpBgp" type="button"><b>{{ lang._('show ip bgp') }}</b></button>
+    <button class="btn btn-primary"  id="showIpBgp" type="button"><b>{{ lang._('Output of: show ip bgp') }}</b></button>
 </div> 
