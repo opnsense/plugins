@@ -51,11 +51,8 @@ $(document).ready(function() {
       });
   });
   $('#showIpBgp').click(function(){
-      $('#showIpBgp_progress').addClass("fa fa-spinner fa-pulse");
+      $('#responseMsg').removeClass("hidden");
       ajaxCall(url="/api/quagga/service/diag-bgp", sendData={}, callback=function(data,status) {
-          $('#showIpBgp_progress').removeClass("fa fa-spinner fa-pulse");
-          $('#showIpBgp').blur();
-          $("#responseMsg").removeClass("hidden");
           $("#responseMsg").html(data['result']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
