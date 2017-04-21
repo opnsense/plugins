@@ -329,7 +329,7 @@ include("head.inc");
                         <input type="text" name="sessiontimeout" id="sessiontimeout" value="<?=$pconfig['sessiontimeout'];?>" />
                         <div class="hidden" for="help_for_sessiontimeout">
                           <?=gettext("This is the timeout in seconds for idle sessions."); ?>
-                          <br /><?=gettext(" The default timeout is 600, the maximum is 2147483647 (68 years)."); ?>
+                          <br /><?= sprintf(gettext("The default timeout is %s, the maximum is %s (%s years)."), '600', '2147483647', '68') ?>
                         </div>
                       </td>
                     </tr>
