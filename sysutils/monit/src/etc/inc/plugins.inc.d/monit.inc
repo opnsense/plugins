@@ -1,4 +1,5 @@
 <?php
+
 /*
     Copyright (C) 2017 EURO-LOG AG
     All rights reserved.
@@ -45,4 +46,21 @@ function monit_services()
         );
     }
     return $services;
+}
+
+/**
+ *  sync configuration via xmlrpc
+ * @return array
+ */
+function monit_xmlrpc_sync()
+{
+    $result = array();
+
+    $result[] = array(
+        'description' => gettext('Monit System Monitoring'),
+        'section' => 'OPNsense.monit',
+        'id' => 'monit',
+    );
+
+    return $result;
 }

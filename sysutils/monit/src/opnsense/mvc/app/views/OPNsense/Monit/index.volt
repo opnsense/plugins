@@ -70,11 +70,35 @@ POSSIBILITY OF SUCH DAMAGE.
       });
       $('#btn_ApplyGeneralSettings').unbind('click').click(function(){
          $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
-         saveFormToEndpoint(
-            url    = "/api/monit/settings/setGeneral",
-            formid = "frm_GeneralSettings"
+         var frm_id = 'frm_GeneralSettings';
+         saveFormToEndpoint(url = "/api/monit/settings/setGeneral",formid=frm_id,callback_ok=function(){
+                // on correct save, perform reconfigure. set progress animation when reloading
+                $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
+
+                //
+                ajaxCall(url="/api/monit/service/restart", sendData={}, callback=function(data,status){
+                    // when done, disable progress animation.
+                    $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
+
+                    if (status != "success" || data['result'] != 'OK' ) {
+                        // fix error handling
+                        BootstrapDialog.show({
+                            type:BootstrapDialog.TYPE_WARNING,
+                            title: 'Error',
+                            message: JSON.stringify(data),
+                            draggable: true
+                        });
+                    } else {
+                        // request service status after successful save and update status box (wait a few seconds before update)
+                        setTimeout(function(){
+                            ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
+                                updateServiceStatusUI(data['status']);
+                            });
+                        },3000);
+                    }
+                });
+            }
          );
-         $("#frm_GeneralSettings_progress").removeClass("fa fa-spinner fa-pulse");
          $("#btn_ApplyGeneralSettings").blur();
       });
 
@@ -311,8 +335,8 @@ POSSIBILITY OF SUCH DAMAGE.
    </div>
    <div class="col-md-12">
          <hr/>
-         <button class="btn btn-primary" id="btn_configtest" type="button"><b>{{ lang._('Test Configuration') }}</b><i id="configtest_progress" class=""></i></button>
-         <button class="btn btn-primary" id="btn_reload" type="button"><b>{{ lang._('Reload Configuration') }}</b><i id="reload_progress" class=""></i></button>
+         <button class="btn btn-primary" id="btn_configtest" type="button"><b>{{ lang._('Test Configuration') }}</b><i id="btn_configtest_progress" class=""></i></button>
+         <button class="btn btn-primary" id="btn_reload" type="button"><b>{{ lang._('Reload Configuration') }}</b><i id="btn_reload_progress" class=""></i></button>
          <br/>
          <br/>
       </div>

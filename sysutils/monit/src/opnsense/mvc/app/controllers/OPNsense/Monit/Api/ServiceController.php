@@ -94,17 +94,24 @@ class ServiceController extends ApiControllerBase
      */
     public function statusAction()
     {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
-        $result['function'] = "status";
-        $result['result'] = "failed";
-        $result['status'] = 'stopped';
-        $status = $this->callBackend('status');
-        if (substr($status, 0, 16) == 'monit is running') {
-            $result['result'] = "ok";
+        $mdlMonit = new Monit();
+        $result = array();
+        $result['function'] = 'status';
+        $result['result'] = 'ok';
+        $response = $this->callBackend('status');
+        if (strpos($response, 'not running') > 0) {
+            if ($mdlMonit->general->enabled->__toString() == '1') {
+                $result['status'] = 'stopped';
+            } else {
+                $result['status'] = 'disabled';
+            }
+        } elseif (strpos($response, 'is running') > 0) {
             $result['status'] = 'running';
+        } elseif ($mdlMonit->general->enabled->__toString() == '0') {
+            $result['status'] = 'disabled';
         } else {
+            $result['result'] = 'failed';
+            $result['status'] = 'unknown';
             $result['error'] = $status;
         }
         return $result;
