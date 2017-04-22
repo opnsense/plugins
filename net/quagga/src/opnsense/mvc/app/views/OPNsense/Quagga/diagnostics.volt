@@ -54,12 +54,12 @@ $(document).ready(function() {
       $('#responseMsg').removeClass("hidden");
       ajaxCall(url="/api/quagga/service/diag-bgp2", sendData={}, callback=function(data,status) {
           $("#responseMsg").text(data['result']);
-          BootstrapDialog.show({
-              type: BootstrapDialog.TYPE_INFO,
-              title: "{{ lang._('BGP Overview') }}",
-              message: data['result'],
-              draggable: true
-          });
+          //BootstrapDialog.show({
+          //    type: BootstrapDialog.TYPE_INFO,
+          //    title: "{{ lang._('BGP Overview') }}",
+          //    message: data['result'],
+          //    draggable: true
+          //});
       });
   });
     
