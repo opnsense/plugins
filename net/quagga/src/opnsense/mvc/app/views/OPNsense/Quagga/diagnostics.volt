@@ -50,13 +50,13 @@ $(document).ready(function() {
         });
       });
   });
-  $('#showIpBgp').click(function(){
+  $('#showipbgpAct').click(function(){
       $('#responseMsg').removeClass("hidden");
       ajaxCall(url="/api/quagga/service/diag-bgp2", sendData={}, callback=function(data,status) {
           $("#responseMsg").text(data['result']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
-              title: "{{ lang._('Output of: show ip bgp') }}",
+              title: "{{ lang._('BGP Overview') }}",
               message: data['result'],
               draggable: true
           });
@@ -72,5 +72,5 @@ $(document).ready(function() {
 </div>
     
 <div class="col-md-12">
-    <button class="btn btn-primary"  id="showIpBgp" type="button"><b>{{ lang._('Output of: show ip bgp') }}</b></button>
+    <button class="btn btn-primary"  id="showipbgpAct" type="button"><b>{{ lang._('BGP Overview') }}</b></button>
 </div> 
