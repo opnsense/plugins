@@ -52,7 +52,7 @@ $(document).ready(function() {
   });
   $('#showipbgpAct').click(function(){
       $('#responseMsg').removeClass("hidden");
-      ajaxCall(url="/api/quagga/service/diag-bgp2", sendData={}, callback=function(data,status) {
+      ajaxCall(url="/api/quagga/diagnostics/diag-bgp2", sendData={}, callback=function(data,status) {
           $("#responseMsg").html(data['message']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
@@ -65,7 +65,7 @@ $(document).ready(function() {
     
   $('#showipbgpsummaryAct').click(function(){
       $('#responseMsg').removeClass("hidden");
-      ajaxCall(url="/api/quagga/service/diag-bgp", sendData={}, callback=function(data,status) {
+      ajaxCall(url="/api/quagga/diagnostics/diag-bgp", sendData={}, callback=function(data,status) {
           $("#responseMsg").html(data['message']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
