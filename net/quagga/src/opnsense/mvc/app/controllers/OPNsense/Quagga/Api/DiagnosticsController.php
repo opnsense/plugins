@@ -48,7 +48,7 @@ class DiagnosticsController extends ApiControllerBase
             $backend = new Backend();
             $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")), true);
             //return array("response" => $response);
-            return $response
+            return $response;
         } else {
             return array("response" => array());
         }
@@ -63,7 +63,7 @@ class DiagnosticsController extends ApiControllerBase
             $backend = new Backend();
             $response = $backend->configdRun("quagga diag-bgp summary", true);
             //return array("response" => $response);
-            return $response
+            return $response;
         } else {
             return array("response" => array());
         }
