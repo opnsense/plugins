@@ -62,7 +62,8 @@ class DiagnosticsController extends ApiControllerBase
         if ($this->request->isPost()) {
             $backend = new Backend();
             $response = $backend->configdRun("quagga diag-bgp summary", true);
-            return array("response" => $response);
+            //return array("response" => $response);
+            return $response
         } else {
             return array("response" => array());
         }
