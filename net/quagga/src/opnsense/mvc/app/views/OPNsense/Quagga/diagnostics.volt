@@ -65,7 +65,7 @@ $(document).ready(function() {
     
   $('#showipbgpsummaryAct').click(function(){
       $('#responseMsg').removeClass("hidden");
-      ajaxCall(url="/api/quagga/diagnostics/diag-bgp", sendData={}, callback=function(data,status) {
+      ajaxCall(url="/api/quagga/diagnostics/showipbgpsummary", sendData={}, callback=function(data,status) {
           $("#responseMsg").html(data['message']);
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
