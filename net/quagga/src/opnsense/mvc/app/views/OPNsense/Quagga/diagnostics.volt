@@ -63,7 +63,19 @@ $(document).ready(function() {
       });
   });
     
-
+  $('#showipbgpsummaryAct').click(function(){
+      $('#responseMsg').removeClass("hidden");
+      ajaxCall(url="/api/quagga/service/diag-bgp", sendData={}, callback=function(data,status) {
+          $("#responseMsg").html(data['message']);
+          BootstrapDialog.show({
+              type: BootstrapDialog.TYPE_INFO,
+              title: "{{ lang._('BGP Summary') }}",
+              message: data['message'],
+              draggable: true
+          });
+      });
+  });
+    
     });
 </script>
 
@@ -73,4 +85,5 @@ $(document).ready(function() {
 <div class="col-md-12">
     <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
     <button class="btn btn-primary"  id="showipbgpAct" type="button"><b>{{ lang._('BGP Overview') }}</b></button>
+    <button class="btn btn-primary"  id="showipbgpsummaryAct" type="button"><b>{{ lang._('BGP Summary') }}</b></button>
 </div>
