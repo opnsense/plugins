@@ -17,6 +17,7 @@ VTYSH = '/usr/local/bin/vtysh'
 def show_ip_bgp
   output = `#{VTYSH} -d bgpd -c "show ip bgp"`
   return {} if output.include? "No BGP process is configured"
+  return {} unless output.include? 'version' # we get an empty output if quagga is not running
   output = output.split("\n")
   bgp = {}
   
