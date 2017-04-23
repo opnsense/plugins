@@ -38,6 +38,16 @@ use \OPNsense\Quagga\Diagnostics;
  */
 class DiagnosticsController extends ApiControllerBase
 {
+    public function getAction()
+    {
+        // define list of configurable settings
+        $result = array();
+        if ($this->request->isGet()) {
+            $mdlDiagnostics = new Diagnostics();
+            $result['diagnostics'] = $mdlDiagnostics->getNodes();
+        }
+        return $result;
+    }
     /**
      * show ip bgp
      * @return array
