@@ -233,10 +233,78 @@ class OSPF
     end
     db
   end
+  
+  def route
+    # TODO find out, why the other two headings are emtpy and what is included
+    lines = @vtysh.execute("show ip ospf route").lines
+    heading = ''
+    route = {}
+    last_line = []
+    while line = lines.shift
+      if line[0] == "=" #heading
+        puts line
+        heading = line.scan(/=* ([^=]*) =*/).first.first
+        route[heading] = []
+      else # data
+        case line.strip
+        when /N\s+([\d\.\/]+)\s+\[(\d+)\]\s+area:\s(.*)/
+          last_line = {network: $1, cost: $2.to_i, area: $3}
+          route[heading] << last_line
+        when /(?:(directly attached) to|via ([^,]+),) (.*)/
+          last_line[:via] = $1 || $2
+          last_line[:via_interface] = $3
+        else
+          puts line
+        end
+      end
+    end
+    route
+  end
+  
+  def overview
+    lines = @vtysh.execute("show ip ospf").lines
+    overview = {rfc2328_conform: false, asbr: false}
+    while line = lines.shift&.strip
+      case line
+      when /OSPF Routing Process, Router ID: ([\d\.]+)/
+        overview[:router_id] = $1
+      when "This implementation conforms to RFC2328"
+        overview[:rfc2328_conform] = true
+      when /OpaqueCapability flag is (\S+)/
+        overview[:opaque_capability] = ($1 == 'enabled')
+      when /Initial SPF scheduling delay (\d+) millisec\(s\)/
+        overview[:initial_spf_scheduling_delay] = $1.to_i
+      when /(Min|Max)imum hold time between consecutive SPFs (\d+) millisec\(s\)/
+        overview[:hold_time] ||= {}
+        overview[:hold_time][$1.downcase] = $2.to_i
+      when "This router is an ASBR (injecting external routing information)"
+        overview[:asbr] = true
+      when /Number of external LSA (\d+). Checksum Sum ([x\d]+)/
+        overview[:external_lsa] = {count: $1.to_i, checksum: $2}
+      when /Number of opaque AS LSA (\d+). Checksum Sum ([x\d]+)/
+        overview[:opaque_as_lsa] = {count: $1.to_i, checksum: $2}
+      when /Refresh timer (\d+) secs/
+        overview[:refresh_timer] = $1.to_i
+      when /Number of areas attached to this router: (\d+)/
+        overview[:areas_attached_count] = $1.to_i
+      when /Hold time multiplier is currently (\d+)/
+        overview[:current_hold_time_multipier] = $1.to_i
+      when /RFC1583Compatibility flag is (\S+)/
+        overview[:rfc1583_compatibility] = ($1 == 'enabled')
+      when /SPF timer is (.*)/
+        overview[:spf_timer] = $1
+      else
+        # debug
+        #puts line
+      end
+    end
+    overview
+  end
 end
 
 # use the lib
 sh = VTYSH.new
 ospf = OSPF.new sh
 general = General.new sh
-pp ospf.database, general.routes, ospf.interface, ospf.neighbors
+# ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route
+pp ospf.overview
