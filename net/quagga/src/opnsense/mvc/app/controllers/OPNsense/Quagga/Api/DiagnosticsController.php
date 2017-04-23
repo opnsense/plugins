@@ -56,7 +56,8 @@ class DiagnosticsController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")), true);
+            //$response = json_decode(trim($backend->configdRun("quagga diag-bgp2")), true);
+            $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")));
             return array("response" => $response);
             //return $response;
         } else {
@@ -71,7 +72,8 @@ class DiagnosticsController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("quagga diag-bgp", true);
+            //$response = $backend->configdRun("quagga diag-bgp", true);
+            $response = $backend->configdRun("quagga diag-bgp");
             return array("response" => $response);
             //return $response;
         } else {
