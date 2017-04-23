@@ -1,0 +1,242 @@
+#!/usr/local/bin/ruby
+=begin
+Copyright 2017 Fabian Franz
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+=end
+require 'json'
+require 'shellwords'
+require 'pp'
+class VTYSH
+  def initialize(path = '/usr/local/bin/vtysh')
+    @path = path
+  end
+  
+  def execute(param)
+    `vtysh -c "#{param.shellescape}"`
+  end
+  
+  #def execute(param)
+  #  fn = param.sub("show","sh").gsub(" ","_")
+  #  File.read(fn)
+  #end
+end
+
+class QuaggaTableReader
+  attr_accessor :headers
+  def initialize(headers = [])
+    @headers = headers
+  end
+  def read_headline(line, start_without_header = false, start_without_header_name = 'status')
+    # get begin of header (number of the first char of the string)
+    header = line
+    header_offset = {}
+    header_offset[0] = start_without_header_name if start_without_header
+    @headers.map do |x|
+      header_offset[header.index(x)] = x.strip
+    end
+
+
+    # make ranges: this will make a range of the first char of the sting until
+    # the the char befor the next heading begins
+    ranges = []
+    0.upto (header_offset.keys.length - 2) do |i|
+      ranges << ((header_offset.keys[i])...(header_offset.keys[i + 1]))
+    end
+    # the last one has no next heading - this will go to the end of the line
+    ranges.push ((header_offset.keys.last)..-1) # path
+    @header_offset = header_offset
+    @ranges = ranges
+    nil
+  end
+  
+  def read_entry(line, expand_fields = {})
+    raise "heading missing" unless @ranges
+    tmp = {}
+    return tmp unless line&.strip.length > 2
+    
+    @ranges.each do |r|
+      # the string starts here
+      b = r.begin
+      # get the heading starting where the string starts
+      n = @header_offset[b]
+      # get the data or return an empty string
+      tmp[n] = line[r]&.strip || ""
+    end
+    # replace characters by the meaning
+    expand_fields.keys.each do |key|
+      tmp[key] = tmp[key].split("").map {|x| {dn: expand_fields[key][x], abb: x} } if tmp[key]
+    end
+    tmp
+  end
+end
+
+class General
+  def initialize(vtysh)
+    @vtysh = vtysh
+  end
+  def routes
+    lines = @vtysh.execute("show ip route").lines
+    
+    # headers
+    meanings = {}
+    while (line = lines.shift.strip) != ''
+      line = line.gsub('Codes: ','')
+      line.split(",").each do |meaning|
+        short, long = meaning.strip.split(" - ")
+        meanings[short] = long
+      end
+    end
+    
+    # you don't have to understand this regex ;)
+    entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:via (\S+?)|is ([^,]+?)), ([^,\n]+)(?:, (\S+))?/
+    entries = []
+    while (line = lines.shift&.strip)
+      if line.length > 10
+        code, network, ad, metric, via, direct, interface, time = line.scan(entry_regex).first
+        code = code.split('').map {|c| {short: c, long: meanings[c]}}
+        entries << {code: code, network: (network || direct), ad: ad, metric: metric, interface: interface, time: time }
+      end
+    end
+    entries
+  end
+end
+
+class OSPF
+  def initialize(vtysh)
+    @vtysh = vtysh
+  end
+  def neighbors
+    qta = QuaggaTableReader.new(["Neighbor ID", "Pri State", "Dead Time", "Address", "Interface", "RXmtL", "RqstL", "DBsmL"])
+    lines = @vtysh.execute("show ip ospf neighbor").lines
+    lines.shift # empty line
+    data = []
+    qta.read_headline(lines.shift)
+    while (line = lines.shift) && (line.length > 2)
+      data << qta.read_entry(line)
+    end
+    data
+  end
+  
+  def interface
+    lines = @vtysh.execute("show ip ospf interface").lines
+    interfaces = {}
+    current_if = ''
+    while line = lines.shift
+      next if line.strip.length <= 1
+      if line[0] != ' ' # we are in a heading
+        current_if = line.split(" ").first
+        interfaces[current_if] = {}
+        current_if = interfaces[current_if]
+        current_if[:enabled] = true
+        lines.shift
+      else
+        line.strip!
+        case line
+        when 'OSPF not enabled on this interface'
+          current_if[:enabled] = false
+        when /Internet Address ([^,]+?), Broadcast ([^,]+?), Area (.*)/
+          current_if[:address] = $1
+          current_if[:broadcast] = $2
+          current_if[:area] = $3
+        when /MTU mismatch detection:(.*)/
+          current_if[:mtu_mismatch_detection] = ($1 == 'enabled')
+        when /Router ID ([^,]+?), Network Type ([^,]+?), Cost: (\d+)/
+          current_if[:router_id] = $1
+          current_if[:network_type] = $2
+          current_if[:cost] = $3.to_i
+        when /Transmit Delay is (\d+) sec, State ([^,]+?), Priority (\d+)/
+          current_if[:transmit_delay] = $1.to_i
+          current_if[:state] = $2
+          current_if[:priority] = $3.to_i
+        when "No designated router on this network"
+          current_if[:designated_router] = nil
+        when /Designated Router \(ID\) ([^,]+?), Interface Address (.*)/
+          current_if[:designated_router] = $1
+          current_if[:designated_router_interface_address] = $2
+        when "No backup designated router on this network"
+          current_if[:backup_designated_router] = nil
+        when /Timer intervals configured, Hello (\d+)s, Dead (\d+)s, Wait (\d+)s, Retransmit (\d+)/
+          current_if[:intervals] = {hello: $1.to_i, dead: $2.to_i, wait: $3.to_i, retransmit: $4.to_i}
+        when /Multicast group memberships: (.*)/
+          current_if[:multicast_group_memberships] = $1.split(" ")
+        when /Hello due in ([\d\.]+|inactive)s?/
+          current_if[:hello_due_in] = $1 == 'inactive' ? $1 : $1.to_f
+        when /Neighbor Count is (\d+), Adjacent neighbor count is (\d+)/
+          current_if[:neighbor_count] = $1.to_i
+          current_if[:adjacent_neighbor_count] = $2.to_i
+        else
+          # make sure there is an array to write in
+          current_if[:unparsed] ||= []
+          current_if[:unparsed] << line
+        end
+      end
+    end
+    interfaces
+  end
+  
+  def database
+    lines = @vtysh.execute("show ip ospf database").lines
+    db = {}
+    heading = ''
+    router = ''
+    router_link_states_area = ''
+    mode = :none
+    qta = nil
+    while line = lines.shift
+      next if line == ''
+      if line[0] == ' ' # heading
+        heading = line.strip
+        case heading
+        when /OSPF Router with ID \(([\.\d]+)\)/
+          router = $1
+          db[router] ||= {}
+          mode = :router
+        when /Router Link States \(Area ([\.\d]+)\)/
+          router_link_states_area = $1
+          db[router]['link_state_area'] ||= {}
+          db[router]['link_state_area'][$1] ||= []
+          mode = :link_state
+          qta = nil
+        when 'AS External Link States'
+          mode = :states
+          db[router]['external_states'] ||= []
+          qta = nil
+        else
+          $stderr.puts "unknown heading"
+        end
+      else
+        if qta == nil
+          case mode
+          when :link_state
+            qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Link count"])
+          when :states
+            qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Route\n"])
+          else
+            next
+          end
+          headline = lines.shift
+          qta.read_headline(headline,true)
+        else
+          entry = qta.read_entry(line)
+          case mode
+          when :link_state
+            db[router]['link_state_area'][router_link_states_area] << entry
+          when :states
+            db[router]['external_states'] << entry
+          end
+        end
+      end
+      # table
+    end
+    db
+  end
+end
+
+# use the lib
+sh = VTYSH.new
+ospf = OSPF.new sh
+general = General.new sh
+pp ospf.database, general.routes, ospf.interface, ospf.neighbors
