@@ -306,5 +306,4 @@ end
 sh = VTYSH.new
 ospf = OSPF.new sh
 general = General.new sh
-# ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route
-pp ospf.overview
+# ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route, ospf.overview
