@@ -1,10 +1,25 @@
 #!/usr/local/bin/ruby
 =begin
 Copyright 2017 Fabian Franz
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, 
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, 
+   this list of conditions and the following disclaimer in the documentation and/or 
+   other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =end
 require 'json'
 require 'shellwords'
@@ -15,7 +30,9 @@ class VTYSH
   end
   
   def execute(param)
-    `vtysh -c "#{param.shellescape}"`
+    o = `vtysh -c "#{param.shellescape}"`
+    raise "error" if o.length <= 2
+    o
   end
   
   #def execute(param)
@@ -235,7 +252,6 @@ class OSPF
   end
   
   def route
-    # TODO find out, why the other two headings are emtpy and what is included
     lines = @vtysh.execute("show ip ospf route").lines
     heading = ''
     route = {}
@@ -247,13 +263,19 @@ class OSPF
       else # data
         case line.strip
         when /N\s+([\d\.\/]+)\s+\[(\d+)\]\s+area:\s(.*)/
-          last_line = {network: $1, cost: $2.to_i, area: $3}
+          last_line = {network: $1, cost: $2.to_i, area: $3, type: 'N'}
+          route[heading] << last_line
+        when /N (E(?:\d+) (?:\S+))\s+\[([\d\/]+)\] tag: (\d+)/
+          last_line = {network: $1, cost: $2, tag: $3.to_i, type: 'N'}
           route[heading] << last_line
         when /(?:(directly attached) to|via ([^,]+),) (.*)/
           last_line[:via] = $1 || $2
           last_line[:via_interface] = $3
+        when /R\s+(\S+)\s+\[(\d+)\] area: ([^,]+)(, ASBR)/
+          last_line = {ip: $1, cost: $2.to_i, area: $3, asbr: (", ASBR" == $4), type: 'R'}
+          route[heading] << last_line
         else
-          puts line
+          #puts line
         end
       end
     end
@@ -292,8 +314,39 @@ class OSPF
         overview[:rfc1583_compatibility] = ($1 == 'enabled')
       when /SPF timer is (.*)/
         overview[:spf_timer] = $1
+      when ""
+        break
       else
         # debug
+        #puts line
+      end
+    end
+    # general overview has ended - now the area overviews come
+    overview[:areas] = {}
+    current_area = {}
+    while line = lines.shift&.strip
+      case line
+      when /Area ID: (.*)/
+        current_area = {}
+        overview[:areas][$1] = current_area
+      when /Number of interfaces in this area: Total: (\d+), Active: (\d+)/
+        current_area[:interfaces] = {total: $1.to_i,active:  $2.to_i}
+      when /Number of (router|network|summary) LSA (\d+). Checksum Sum ([\da-fx]+)/
+        current_area[:lsa] ||= {}
+        current_area[:lsa][$1] = {count: $2.to_i, checksum: $3}
+      when /Number of LSA (\d+)/
+        current_area[:lsa] ||= {}
+        current_area[:lsa][:count] = $1.to_i
+      when /Number of (opaque (?:area|link)|NSSA|ASBR summary) LSA (\d+). Checksum Sum ([\da-fx]+)/
+        current_area[:lsa] ||= {}
+        current_area[:lsa][$1] = {count: $2.to_i, checksum: $3}
+      when /Number of fully adjacent neighbors in this area: (\d+)/
+        current_area[:fully_adjacent_neighbour_count] = $1.to_i
+      when /SPF algorithm executed (\d) times/
+        current_area[:spf_exec_count] = $1.to_i
+      when "Area has no authentication"
+        current_area[:auth] = "none"
+      else
         #puts line
       end
     end
@@ -341,12 +394,15 @@ result = {}
 options.keys.each do |k|
   # if it is true
   if options[k]
-    if k.to_s.include? 'ospf'
-      cmd = k.to_s.split('_').last
-      result[k] = ospf.send(cmd)
-    elsif k.to_s.include? 'general'
-      cmd = k.to_s.split('_').last
-      result[k] = general.send(cmd)
+    begin
+      if k.to_s.include? 'ospf'
+        cmd = k.to_s.split('_').last
+        result[k] = ospf.send(cmd)
+      elsif k.to_s.include? 'general'
+        cmd = k.to_s.split('_').last
+        result[k] = general.send(cmd)
+      end
+    rescue # do nothing on an error
     end
   end
 end
