@@ -411,7 +411,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <br/>
     </div>
     <div class="col-md-12">
-        {{ lang._("Use the Issue/Renew button to let the acme client automatically issue any new certificate and renew existing certificates (only if required). If you want to only issue/renew or revoke a single certificate, use the buttons in the Commands column. This will forcefully issue/renew the certificate, even if it's not required.") }} <b>{{ lang._("The process may take some time and thus will run in the background, you will not get any notification in the GUI. Use the log file to monitor the progress and to see error messages.") }}</b>
+        {{ lang._('Use the Issue/Renew button to let the acme client automatically issue any new certificate and renew existing certificates (only if required). If you want to only issue/renew or revoke a single certificate, use the buttons in the Commands column. This will forcefully issue/renew the certificate, even if it is not required.') }} <b>{{ lang._('The process may take some time and thus will run in the background, you will not get any notification in the GUI. Use the log file to monitor the progress and to see error messages.') }}</b>
         <br/><br/>
     </div>
 </div>
