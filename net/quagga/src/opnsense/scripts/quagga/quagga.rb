@@ -30,8 +30,9 @@ class VTYSH
   end
   
   def execute(param)
-    o = `vtysh -c "#{param.shellescape}"`
+    o = `#{@path} -c #{param.shellescape}`
     raise "error" if o.length <= 2
+    raise "command error - command: #{param}" if o.include? "% Unknown command"
     o
   end
   
