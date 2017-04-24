@@ -1,0 +1,9 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>enable</label>
+        <type>checkbox</type>
+        <help>This will activate the routing service.</help>
+    </field>
+</form>
+
