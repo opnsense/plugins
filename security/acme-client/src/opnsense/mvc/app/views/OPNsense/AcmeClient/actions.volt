@@ -97,4 +97,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':{{ lang._('Edit Restart Action')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Restart Action')])}}
