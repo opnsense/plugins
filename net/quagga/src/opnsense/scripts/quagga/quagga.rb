@@ -242,7 +242,6 @@ class OSPF
     last_line = []
     while line = lines.shift
       if line[0] == "=" #heading
-        puts line
         heading = line.scan(/=* ([^=]*) =*/).first.first
         route[heading] = []
       else # data
@@ -302,8 +301,60 @@ class OSPF
   end
 end
 
+require 'optparse'
+options = {}
+supported_sections = %w{general ospf}
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{__FILE__} -s section [section specific params]"
+  opts.on("-d", "--ospf-database") do |od|
+    options[:ospf_database] = od
+  end
+  opts.on("-r", "--ospf-route", 'print OSPF routing table') do |od|
+    options[:ospf_route] = od
+  end
+  opts.on("-i", "--ospf-interface", 'print OSPF interface information') do |od|
+    options[:ospf_interface] = od
+  end
+  opts.on("-n", "--ospf-neighbor", 'Print OSPF neighbors') do |od|
+    options[:ospf_neighbors] = od
+  end
+  opts.on("-o", "--ospf-overview", "Print OSPF summary") do |od|
+    options[:ospf_overview] = od
+  end
+  opts.on("-R", "--general-routes", "Print Routing Table") do |od|
+    options[:general_routes] = od
+  end
+  opts.on("-H", "--human-readable", "Print the output human readable (not json)") do |od|
+    options[:human_readable] = od
+  end
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
 # use the lib
 sh = VTYSH.new
 ospf = OSPF.new sh
 general = General.new sh
+
+result = {}
+options.keys.each do |k|
+  # if it is true
+  if options[k]
+    if k.to_s.include? 'ospf'
+      cmd = k.to_s.split('_').last
+      result[k] = ospf.send(cmd)
+    elsif k.to_s.include? 'general'
+      cmd = k.to_s.split('_').last
+      result[k] = general.send(cmd)
+    end
+  end
+end
+
+
 # ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route, ospf.overview
+if options[:human_readable]
+  pp result
+else
+  print result.to_json
+end
