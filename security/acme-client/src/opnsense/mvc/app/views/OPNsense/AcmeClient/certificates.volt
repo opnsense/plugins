@@ -417,4 +417,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogCertificate,'id':'DialogCertificate','label':{{ lang._('Edit Certificate')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogCertificate,'id':'DialogCertificate','label':lang._('Edit Certificate')])}}

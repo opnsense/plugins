@@ -209,7 +209,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ lang._("Please use the %sissue tracker%s to report bugs or request new features.") | format('<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}
         <br/>
         <br/>
-        <p>{{ lang._("This plugin includes code from the %s project.") | format('<a href="https://github.com/Neilpang/acme.sh">Neilpang/acme.sh</a>' ) }} {{ lang._('Licensed under GPLv3.') }}<br/>{{ lang._('Let's Encrypt™ is a trademark of the Internet Security Research Group. All rights reserved.') }}</p>
+        <p>{{ lang._("This plugin includes code from the %s project.") | format('<a href="https://github.com/Neilpang/acme.sh">Neilpang/acme.sh</a>' ) }} {{ lang._('Licensed under GPLv3.') }}<br/>{{ lang._("Let's Encrypt™ is a trademark of the Internet Security Research Group. All rights reserved.") }}</p>
         <br/>
     </div>
 </div>
