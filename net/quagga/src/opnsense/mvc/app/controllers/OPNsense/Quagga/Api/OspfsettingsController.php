@@ -150,6 +150,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
                 // save config if validated correctly
                 $mdlOSPF->serializeToConfig();
                 Config::getInstance()->save();
+                unset($result['validations']);
                 $result["result"] = "saved";
             }
         }
@@ -174,6 +175,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
                 // save config if validated correctly
                 $mdlOSPF->serializeToConfig();
                 Config::getInstance()->save();
+                unset($result['validations']);
                 $result["result"] = "saved";
             }
         }
