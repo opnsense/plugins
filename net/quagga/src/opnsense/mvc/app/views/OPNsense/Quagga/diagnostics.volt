@@ -50,8 +50,8 @@ $(document).ready(function() {
         });
       });
   });
-  $('#showipbgpAct').click(function(){
-      $('#responseMsg').removeClass("hidden");
+  $("#showipbgpAct").click(function(){
+      $("#responseMsg").removeClass("hidden");
       ajaxCall(url="/api/quagga/diagnostics/showipbgp", sendData={}, callback=function(data,status) {
           $("#responseMsg").html(data['message']);
           BootstrapDialog.show({
