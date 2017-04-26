@@ -421,6 +421,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 {
     global $options;
 
+    // Required to run pre-defined commands.
+    $backend = new Backend();
+
     // Collect account information
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
     $account_conf_file = $account_conf_dir . "/account.conf";
@@ -723,6 +726,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // HTTP-01: flush OPNsense port forward rules
     if (($val_method == 'http01') and ((string)$valObj->http_service == 'opnsense')) {
         mwexec('/sbin/pfctl -a acme-client -F all');
+        # XXX: workaround to solve disconnection issues reported by some users
+        $response = $backend->configdRun('filter reload');
     }
 
     // Check validation result
@@ -959,6 +964,9 @@ function run_restart_actions($certlist, $modelObj)
     $return = 0;
     $configObj = Config::getInstance()->object();
 
+    // Required to run pre-defined commands.
+    $backend = new Backend();
+
     // NOTE: Do NOT run any restart action twice, collect duplicates first.
     $restart_actions = array();
 
@@ -999,8 +1007,6 @@ function run_restart_actions($certlist, $modelObj)
 
     // Run the collected restart actions.
     if (!empty($restart_actions) and is_array($restart_actions)) {
-        // Required to run pre-defined commands.
-        $backend = new Backend();
         // Extract cert object
         foreach ($restart_actions as $action) {
             // Run pre-defined or custom command?

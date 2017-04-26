@@ -9,7 +9,17 @@ set daemon {{ OPNsense.monit.general.interval }} with start delay {{ OPNsense.mo
 
 set logfile syslog facility log_daemon
 
-set mailserver {{ OPNsense.monit.general.mailserver }}
+{%  if helpers.exists('OPNsense.monit.general.mailserver') %}
+{%    set port = "port " ~ OPNsense.monit.general.port if OPNsense.monit.general.port|default('') != '' %}
+{%    set username = '' %}
+{%    set password = '' %}
+{%    if helpers.exists('OPNsense.monit.general.username') and helpers.exists('OPNsense.monit.general.password') %}
+{%      set username = "username " ~ OPNsense.monit.general.username %}
+{%      set password = "password " ~ OPNsense.monit.general.password %}
+{%    endif %}
+{%    set ssl = 'using ssl' if OPNsense.monit.general.ssl|default('0') == '1' %}
+set mailserver {{ OPNsense.monit.general.mailserver }} {{ port }} {{ username }} {{ password }} {{ ssl }}
+{%  endif %}
 
 {%  if helpers.exists('OPNsense.monit.alert') %}
 {%   for alert in helpers.toList('OPNsense.monit.alert') %}
