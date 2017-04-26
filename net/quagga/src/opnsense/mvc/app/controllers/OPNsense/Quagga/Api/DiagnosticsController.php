@@ -58,10 +58,11 @@ class DiagnosticsController extends ApiControllerBase
             $backend = new Backend();
             //$response = json_decode(trim($backend->configdRun("quagga diag-bgp2")), true);
             $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")));
-            return array("response" => $response);
-            //return $response;
+            //return array("response" => $response);
+            return $response;
         } else {
-            return array("response" => array());
+            //return array("response" => array());
+            return $response;
         }
     }
     /**
