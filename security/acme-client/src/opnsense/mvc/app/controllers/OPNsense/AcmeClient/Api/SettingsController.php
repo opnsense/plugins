@@ -333,7 +333,7 @@ class SettingsController extends ApiMutableModelControllerBase
                             //$this->getLogger()->error("LE HAProxy DEBUG: checking frontend: ${_frontend}");
                             $frontend = $mdlHAProxy->getByFrontendID($_frontend);
                             // Make sure the frontend was found in config.
-                            if (!empty((string)$frontend->id)) {
+                            if (!is_null($frontend) && !empty((string)$frontend->id)) {
                                 // Check if the HAProxy ACME Action is linked to this frontend.
                                 $_actions = $frontend->linkedActions;
                                 if (strpos($_actions, $action_ref) !== false) {
