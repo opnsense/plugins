@@ -57,7 +57,8 @@ $(document).ready(function() {
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
               title: "{{ lang._('BGP Overview') }}",
-              message: data['message'],
+              //message: data['message'],
+              message: JSON.stringify(data),
               draggable: true
           });
       });
