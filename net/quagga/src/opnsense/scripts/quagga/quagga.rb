@@ -355,6 +355,61 @@ class OSPF
   end
 end
 
+class BGP
+  def initialize(sh)
+    @vtysh = sh
+  end
+  
+  def overview
+    output = @vtysh.execute('show ip bgp')
+    return {} if output.include? "No BGP process is configured"
+    return {} unless output.include? 'version' # we get an empty output if quagga is not running
+    output = output.split("\n")
+    bgp = {}
+    
+    x,y = output.shift.scan(/.*?version is (\d+).*?ID is ([0-9\.]+).*/).first
+    bgp['table_version'] = x
+    bgp['local_router_id'] = y
+    
+    # find out, what the status abbreviations mean
+    status_codes = {}
+    line = output.shift
+    line.split(":").last.strip.split(",").each do |x|
+      k,v = x.strip.split(" ")
+      status_codes[k] = v
+    end
+    while line.end_with? ","
+      line = output.shift
+      line.strip.split(",").each do |x|
+        k,v = x.strip.split(" ")
+        status_codes[k] = v
+      end
+    end
+
+    # same like before but for the origin codes
+    origin_codes = {}
+    output.shift.split(":").last.strip.split(",").each do |x|
+      k,v = x.strip.split(" - ")
+      origin_codes[k] = v
+    end
+    
+    # drop empty line
+    output.shift
+    # read entries
+    bgp['output'] = []
+    qta = QuaggaTableReader.new(["Network", "Next Hop", "Metric", "LocPrf", "Weight", "Path"])
+    qta.read_headline(output.shift,true)
+    while line = output.shift&.strip
+      break if line == ''
+      data = qta.read_entry(line)
+      data['status'] = data['status'].split("").map {|x| {dn: status_codes[x], abb: x} }
+      data['Path'] = data['Path'].split("").map {|x| {dn: origin_codes[x], abb: x} }
+      bgp['output'] << data
+    end
+    bgp
+  end
+end
+
 require 'optparse'
 options = {}
 supported_sections = %w{general ospf}
@@ -378,6 +433,9 @@ OptionParser.new do |opts|
   opts.on("-R", "--general-routes", "Print Routing Table") do |od|
     options[:general_routes] = od
   end
+  opts.on("-B", "--bgp-overview", "Print an overview of BGP") do |od|
+    options[:bgp_overview] = od
+  end
   opts.on("-H", "--human-readable", "Print the output human readable (not json)") do |od|
     options[:human_readable] = od
   end
@@ -389,6 +447,7 @@ end.parse!
 # use the lib
 sh = VTYSH.new
 ospf = OSPF.new sh
+bgp = BGP.new sh
 general = General.new sh
 
 result = {}
@@ -402,12 +461,16 @@ options.keys.each do |k|
       elsif k.to_s.include? 'general'
         cmd = k.to_s.split('_').last
         result[k] = general.send(cmd)
+      elsif k.to_s.include? 'bgp'
+        cmd = k.to_s.split('_').last
+        result[k] = bgp.send(cmd)
       end
     rescue # do nothing on an error
+      result[k] = "error"
+      #puts $!
     end
   end
 end
-
 
 # ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route, ospf.overview
 if options[:human_readable]
