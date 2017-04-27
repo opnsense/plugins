@@ -41,6 +41,7 @@ function quagga_services()
                 'stop' => array('quagga stop'),
             ),
             'name' => 'quagga',
+            'pidfile' => '/var/run/quagga/zebra.pid'
         );
     }
 
