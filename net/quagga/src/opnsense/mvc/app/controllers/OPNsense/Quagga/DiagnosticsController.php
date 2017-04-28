@@ -29,7 +29,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("Diagnostics: BGP");
         $this->view->diagnosticsForm = $this->getForm("diagnostics");
-        $this->view->pick('OPNsense/Quagga/diagnostics');
+        $this->view->pick('OPNsense/Quagga/diagnosticsbgp');
     }
     public function ospfAction()
     {
