@@ -25,7 +25,7 @@ namespace OPNsense\Quagga;
 
 class DiagnosticsController extends \OPNsense\Base\IndexController
 {
-    public function indexAction()
+    public function bgpAction()
     {
         $this->view->title = gettext("Diagnostics: BGP");
         $this->view->diagnosticsForm = $this->getForm("diagnostics");
