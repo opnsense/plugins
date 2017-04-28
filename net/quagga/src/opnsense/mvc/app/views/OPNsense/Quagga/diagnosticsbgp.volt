@@ -40,16 +40,6 @@ $(document).ready(function() {
       updateServiceStatusUI(data['status']);
   });
 
-  // link save button to API set action  //FIXME Change save to show ...
-  $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_bgp_settings',callback_ok=function(){
-        ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-          ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
-          });
-        });
-      });
-  });
   $("#showipbgpAct").click(function(){
       $("#responseMsg").removeClass("hidden");
       ajaxCall(url="/api/quagga/diagnostics/showipbgp", sendData={}, callback=function(data,status) {
