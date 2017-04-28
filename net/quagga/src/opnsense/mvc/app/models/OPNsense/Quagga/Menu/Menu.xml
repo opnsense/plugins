@@ -7,7 +7,7 @@
     <BGP VisibleName="BGPv4" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/bgp/index" order="40" />
     <Diagnostics VisibleName="Diagnostics" cssClass="fa fa-medkit fa-fw" order="50">
       <General VisibleName="General" url="/ui/quagga/diagnostics/general" order="1" />
-      <BGP VisibleName="BGPv4" url="/ui/quagga/diagnostics/index" order="40" />
+      <BGP VisibleName="BGPv4" url="/ui/quagga/diagnostics/bgp" order="40" />
       <OSPF VisibleName="OSPF" url="/ui/quagga/diagnostics/ospf" order="20" />
     </Diagnostics>
   </Routing>
