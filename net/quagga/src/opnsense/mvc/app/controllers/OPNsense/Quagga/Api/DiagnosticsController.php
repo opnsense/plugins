@@ -81,4 +81,26 @@ class DiagnosticsController extends ApiControllerBase
             return array("response" => array());
         }
     }
+    
+    private function get_ospf_information($name)
+    {
+        $backend = new Backend();
+        return array("response" => json_decode(trim($backend->configdRun("quagga ospf-$name"))));
+    }
+    public function ospfoverviewAction()
+    {
+        return $this->get_ospf_information('overview');
+    }
+    public function ospfneighborAction()
+    {
+        return $this->get_ospf_information('neighbor');
+    }
+    public function ospfrouteAction()
+    {
+        return $this->get_ospf_information('route');
+    }
+    public function ospfdatabaseAction()
+    {
+        return $this->get_ospf_information('database');
+    }
 }
