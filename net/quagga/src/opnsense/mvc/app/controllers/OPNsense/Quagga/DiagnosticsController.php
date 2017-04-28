@@ -27,8 +27,18 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("Diagnostics");
+        $this->view->title = gettext("Diagnostics: BGP");
         $this->view->diagnosticsForm = $this->getForm("diagnostics");
         $this->view->pick('OPNsense/Quagga/diagnostics');
+    }
+    public function ospfAction()
+    {
+        $this->view->title = gettext("Diagnostics: OSPF");
+        $this->view->pick('OPNsense/Quagga/diagnosticsospf');
+    }
+    public function generalAction()
+    {
+        $this->view->title = gettext("Diagnostics: General");
+        $this->view->pick('OPNsense/Quagga/diagnosticsgeneral');
     }
 }
