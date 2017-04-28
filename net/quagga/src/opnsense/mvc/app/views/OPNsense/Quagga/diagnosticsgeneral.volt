@@ -26,7 +26,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<script type="text/javascript" src="/ui/js/lodash.js"></script>
+<script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
 <script type="text/x-template" id="routestpl">
 <table>
   <thead>

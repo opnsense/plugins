@@ -78,7 +78,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </tbody>
   </table>
 </script>
-<script type="text/javascript" src="/ui/js/lodash.js"></script>
+<script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
 <script type="text/javascript">
 function translate(x) {
   return x;
