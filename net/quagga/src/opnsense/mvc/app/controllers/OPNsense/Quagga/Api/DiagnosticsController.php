@@ -81,24 +81,4 @@ class DiagnosticsController extends ApiControllerBase
             return array("response" => array());
         }
     }
-/*    public function statusAction()
-*    {
-*        $backend = new Backend();
-*        $model = new AcmeClient();
-*        $response = $backend->configdRun("acmeclient http-status");
-*        if (strpos($response, "not running") > 0) {
-*            if ($model->settings->enabled->__toString() == 1) {
-*                $status = "stopped";
-*            } else {
-*                $status = "disabled";
-*            }
-*        } elseif (strpos($response, "is running") > 0) {
-*            $status = "running";
-*        } elseif ($model->settings->enabled->__toString() == 0) {
-*            $status = "disabled";
-*        } else {
-*            $status = "unkown";
-*        }
-*        return array("status" => $status);
-*    } */
 }
