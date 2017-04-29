@@ -31,6 +31,7 @@ namespace OPNsense\Quagga\Api;
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
+use \OPNsense\Quagga\Diagnostics;
 /**
  * Class DiagnosticsController
  * @package OPNsense\Quagga
@@ -43,16 +44,9 @@ class DiagnosticsController extends ApiControllerBase
      */
     public function showipbgpAction()
     {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            //$response = json_decode(trim($backend->configdRun("quagga diag-bgp2")), true);
-            $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")));
-            return array("response" => $response);
-            //return $response;
-        } else {
-            return array("response" => array());
-            //return $response;
-        }
+        $backend = new Backend();
+        $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")));
+        return array("response" => $response);
     }
     /**
      * show ip bgp summary
@@ -60,15 +54,9 @@ class DiagnosticsController extends ApiControllerBase
      */
     public function showipbgpsummaryAction()
     {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            //$response = $backend->configdRun("quagga diag-bgp", true);
-            $response = $backend->configdRun("quagga diag-bgp");
-            return array("response" => $response);
-            //return $response;
-        } else {
-            return array("response" => array());
-        }
+        $backend = new Backend();
+        $response = $backend->configdRun("quagga diag-bgp summary");
+        return array("response" => $response);
     }
     private function get_ospf_information($name)
     {
