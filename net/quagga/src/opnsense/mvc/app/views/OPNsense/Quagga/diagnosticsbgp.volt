@@ -26,16 +26,13 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
-#}{{ partial("layout_partials/base_form",['fields':diagnosticsForm,'id':'frm_diagnostics_settings'])}}
+#}
+
+{{ partial("layout_partials/base_form",['fields':diagnosticsForm,'id':'frm_diagnostics_settings'])}}
 
 
 <script type="text/javascript">
 $(document).ready(function() {
-  var data_get_map = {'frm_diagnostics_settings':"/api/quagga/diagnostics/get"};
-  mapDataToFormUI(data_get_map).done(function(data){
-      formatTokenizersUI();
-      $('.selectpicker').selectpicker('refresh');
-  });
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
       updateServiceStatusUI(data['status']);
   });
@@ -74,7 +71,6 @@ $(document).ready(function() {
 </div>
 
 <div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
     <button class="btn btn-primary"  id="showipbgpAct" type="button"><b>{{ lang._('BGP Overview') }}</b></button>
     <button class="btn btn-primary"  id="showipbgpsummaryAct" type="button"><b>{{ lang._('BGP Summary') }}</b></button>
 </div>
