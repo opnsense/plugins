@@ -94,7 +94,7 @@ $(document).ready(function() {
   });
 
   ajaxCall(url="/api/quagga/diagnostics/showipbgpsummary", sendData={}, callback=function(data,status) {
-      $("#summarycontent").text(data['message']);
+      $("#summarycontent").text(data['response']);
   });
 });
 </script>
