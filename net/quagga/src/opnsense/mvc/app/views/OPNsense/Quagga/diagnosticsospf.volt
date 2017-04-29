@@ -87,7 +87,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <% }); %>
 </script>
 <script type="text/x-template" id="routestpl">
-<h2>{{ lang._('OSPF network routing table') }}</h2>
+<h2>{{ lang._('Network Routing Table') }}</h2>
 <table>
   <thead>
     <tr>
@@ -112,10 +112,60 @@ POSSIBILITY OF SUCH DAMAGE.
     <% }); %>
   </tbody>
 </table>
-<h2>{{ lang._('OSPF router routing table') }}</h2>
-TODO
-<h2>{{ lang._('OSPF external routing table') }}</h2>
-TODO
+<h2>{{ lang._('Router Routing Table') }}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>{{ lang._('Type') }}</th>
+      <th>{{ lang._('Network') }}</th>
+      <th>{{ lang._('Cost') }}</th>
+      <th>{{ lang._('Area') }}</th>
+      <th>{{ lang._('ASBR') }}</th>
+      <th>{{ lang._('Via') }}</th>
+      <th>{{ lang._('Via interface') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% _.each(ospf_route['OSPF router routing table'], function(entry) { %>
+      <tr>
+        <td><%= entry["type"] %></td>
+        <td><%= entry["network"] %></td>
+        <td><%= entry["cost"] %></td>
+        <td><%= entry["area"] %></td>
+        <td><%= checkmark(entry["asbr"]) %></td>
+        <td><%= entry["via"] %></td>
+        <td><%= entry["via_interface"] %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<h2>{{ lang._('External Routing Table') }}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>{{ lang._('Type') }}</th>
+      <th>{{ lang._('Network') }}</th>
+      <th>{{ lang._('Cost') }}</th>
+      <th>{{ lang._('Area') }}</th>
+      <th>{{ lang._('Tag') }}</th>
+      <th>{{ lang._('Via') }}</th>
+      <th>{{ lang._('Via interface') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% _.each(ospf_route['OSPF external routing table'], function(entry) { %>
+      <tr>
+        <td><%= entry["type"] %></td>
+        <td><%= entry["network"] %></td>
+        <td><%= entry["cost"] %></td>
+        <td><%= entry["area"] %></td>
+        <td><%= entry["tag"] %></td>
+        <td><%= entry["via"] %></td>
+        <td><%= entry["via_interface"] %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
 </script>
 <script type="text/javascript" src="/ui/js/lodash.js"></script>
 <script>
@@ -125,7 +175,10 @@ function translate(string)
   return string;
 }
 
-
+function checkmark(bin)
+{
+  return "<i class=\"fa " + (bin ? "fa-check-square" : "fa-square") + " text-muted\"></i>";
+}
 
 $(document).ready(function() {
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
