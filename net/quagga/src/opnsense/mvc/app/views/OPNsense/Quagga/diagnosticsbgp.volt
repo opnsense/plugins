@@ -28,49 +28,88 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
+{#
 {{ partial("layout_partials/base_form",['fields':diagnosticsForm,'id':'frm_diagnostics_settings'])}}
+#}
 
-
+<script type="text/x-template" id="overviewtpl">
+  <table>
+    <tr>
+      <td>{{ lang._('Table Version') }}</td>
+      <td><%= bgp_overview['table_version'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._('Local Router ID') }}</td>
+      <td><%= bgp_overview['local_router_id'] %></td>
+    </tr>
+  </table>
+  <table>
+    <thead>
+      <tr>
+        <th>{{ lang._('Status') }}</th>
+        <th>{{ lang._('Network') }}</th>
+        <th>{{ lang._('Next Hop') }}</th>
+        <th>{{ lang._('Metric') }}</th>
+        <th>{{ lang._('LocPrf') }}</th>
+        <th>{{ lang._('Weight') }}</th>
+        <th>{{ lang._('Path') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(bgp_overview['output'], function (row) { %>
+        <tr>
+          <td>
+            <% _.each(row['status'], function(element) { %>
+              <abbr title="<%= translate(element['dn']) %>"><%= element['abb'] %></abbr>
+            <% }) %>
+          </td>
+          <td><%= row['Network'] %></td>
+          <td><%= row['Next Hop'] %></td>
+          <td><%= row['Metric'] %></td>
+          <td><%= row['LocPrf'] %></td>
+          <td><%= row['Weight'] %></td>
+          <td>
+            <% _.each(row['Path'], function(element) { %>
+              <abbr title="<%= translate(element['dn']) %>"><%= element['abb'] %></abbr>
+            <% }) %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</script>
+<script type="text/javascript" src="/ui/js/lodash.js"></script>
 <script type="text/javascript">
+function translate(x) {
+  return x;
+}
 $(document).ready(function() {
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
       updateServiceStatusUI(data['status']);
   });
 
-  $("#showipbgpAct").click(function(){
-      $("#responseMsg").removeClass("hidden");
-      ajaxCall(url="/api/quagga/diagnostics/showipbgp", sendData={}, callback=function(data,status) {
-          $("#responseMsg").html(data['message']);
-          BootstrapDialog.show({
-              type: BootstrapDialog.TYPE_INFO,
-              title: "{{ lang._('BGP Overview') }}",
-              //message: data['message'],
-              message: JSON.stringify(data),
-              draggable: true
-          });
-      });
+  ajaxCall(url="/api/quagga/diagnostics/showipbgp", sendData={}, callback=function(data,status) {
+      content = _.template($('#overviewtpl').html())(data['response'])
+      $('#overview').html(content)
   });
-    
-  $('#showipbgpsummaryAct').click(function(){
-      $('#responseMsg').removeClass("hidden");
-      ajaxCall(url="/api/quagga/diagnostics/showipbgpsummary", sendData={}, callback=function(data,status) {
-          $("#responseMsg").html(data['message']);
-          BootstrapDialog.show({
-              type: BootstrapDialog.TYPE_INFO,
-              title: "{{ lang._('BGP Summary') }}",
-              message: data['message'],
-              draggable: true
-          });
-      });
+
+  ajaxCall(url="/api/quagga/diagnostics/showipbgpsummary", sendData={}, callback=function(data,status) {
+      $("#summarycontent").text(data['message']);
   });
-    
-    });
+});
 </script>
 
-<div class="alert alert-info hidden" role="alert" id="responseMsg">
-</div>
+<!-- Navigation bar -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
+    <li><a data-toggle="tab" href="#summary">{{ lang._('Summary') }}</a></li>
+</ul>
 
-<div class="col-md-12">
-    <button class="btn btn-primary"  id="showipbgpAct" type="button"><b>{{ lang._('BGP Overview') }}</b></button>
-    <button class="btn btn-primary"  id="showipbgpsummaryAct" type="button"><b>{{ lang._('BGP Summary') }}</b></button>
+<div class="tab-content content-box tab-content">
+    <div id="overview" class="tab-pane fade in active">
+      {{ lang._('loading...') }}
+    </div>
+    <div id="summary" class="tab-pane fade in">
+      <pre id="summarycontent"></pre>
+    </div>
 </div>
