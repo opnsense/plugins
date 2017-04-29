@@ -27,6 +27,88 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
+<script type="text/x-template" id="overviewtpl">
+<h2>{{ lang._('General') }}</h2>
+<table>
+<tbody>
+  <tr>
+    <td>{{ lang._("RFC2328 Conform") }}</td>
+    <td><%= checkmark(ospf_overview['rfc2328_conform']) %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("ASBR") }}</td>
+    <td><%= checkmark(ospf_overview['asbr']) %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Router ID") }}</td>
+    <td><%= ospf_overview['router_id'] %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("RFC1583 Compatibility") }}</td>
+    <td><%= checkmark(ospf_overview['rfc1583_compatibility']) %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Opaque Capability") }}</td>
+    <td><%= checkmark(ospf_overview['opaque_capability']) %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Initial SPF Scheduling Delay") }}</td>
+    <td><%= ospf_overview['initial_spf_scheduling_delay'] %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Minimum Hold Time") }}</td>
+    <td><%= ospf_overview['hold_time']['min'] %> {{ lang._('Milliseconds') }}</td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Maximum Hold Time") }}</td>
+    <td><%= ospf_overview['hold_time']['max'] %> {{ lang._('Milliseconds') }}</td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Current Hold Time Multipier") }}</td>
+    <td><%= ospf_overview['current_hold_time_multipier'] %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("SPF Timer") }}</td>
+    <td><%= ospf_overview['spf_timer'] %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Refresh Timer") }}</td>
+    <td><%= ospf_overview['refresh_timer'] %></td>
+  </tr>
+  <tr>
+    <td>{{ lang._("Areas Attached Count") }}</td>
+    <td><%= ospf_overview['areas_attached_count'] %></td>
+  </tr>
+</tbody>
+</table>
+
+<h2>{{ lang._('Link State Area') }}</h2>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>{{ lang._('Count') }}</th>
+      <th>{{ lang._('Checksum') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ lang._('External LSA') }}</td>
+      <td><%= ospf_overview['external_lsa']['count'] %></td>
+      <td><%= ospf_overview['external_lsa']['checksum'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._('Opaque AS LSA') }}</td>
+      <td><%= ospf_overview['opaque_as_lsa']['count'] %></td>
+      <td><%= ospf_overview['opaque_as_lsa']['checksum'] %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>{{ lang._('Areas') }}</h2>
+
+TODO
+</script>
 <script type="text/x-template" id="databasetpl">
 <% _.each(_.keys(ospf_database), function(router_id) { %>
   <h1>{{ lang._('Router ID:')}} <%= router_id %></h1>
@@ -185,17 +267,18 @@ $(document).ready(function() {
       updateServiceStatusUI(data['status'])
   });
 
-  //ajaxCall(url="/api/quagga/diagnostics/ospfdatabase", sendData={}, callback=function(data,status) {
-    //
-  //});
+  ajaxCall(url="/api/quagga/diagnostics/ospfoverview", sendData={}, callback=function(data,status) {
+    content = _.template($('#overviewtpl').html())(data['response'])
+    $('#overview').html(content)
+  });
   ajaxCall(url="/api/quagga/diagnostics/ospfdatabase", sendData={}, callback=function(data,status) {
     content = _.template($('#databasetpl').html())(data['response'])
     $('#database').html(content)
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfroute", sendData={}, callback=function(data,status) {
-  content = _.template($('#routestpl').html())(data['response'])
-  $('#routing').html(content)
-});
+    content = _.template($('#routestpl').html())(data['response'])
+    $('#routing').html(content)
+  });
     
     
 });
@@ -210,7 +293,7 @@ $(document).ready(function() {
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="overview" class="tab-pane fade in">
+    <div id="overview" class="tab-pane fade in active">
     </div>
     <div id="routing" class="tab-pane fade in">
     </div>
