@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>diagnostics.bgpneighbor</id>
+        <label>BGP Neighbor</label>
+        <type>text</type>
+        <hint>One of the neighbor IPs</hint>
+    </field>
+</form>
