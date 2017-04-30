@@ -3,8 +3,8 @@
       <General VisibleName="General" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/general/index" order="1"/>
       <RIP VisibleName="RIP" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/rip/index" order="10" />
       <OSPF VisibleName="OSPF" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/ospf/index" order="20" />
-      <!--<ISIS VisibleName="IS-IS" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/isis/index" order="30" />
-      <BGP VisibleName="BGPv4" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/bgp/index" order="40" />-->
+      <!--<ISIS VisibleName="IS-IS" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/isis/index" order="30" />-->
+      <BGP VisibleName="BGPv4" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/bgp/index" order="40" />
 
    </Routing>
 </menu>

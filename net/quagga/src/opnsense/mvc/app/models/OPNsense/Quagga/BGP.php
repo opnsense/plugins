@@ -1,19 +1,19 @@
 <?php
+namespace OPNsense\Quagga;
+
+use OPNsense\Base\BaseModel;
 
 /*
     Copyright (C) 2017 Fabian Franz
+    Copyright (C) 2017 Michael Muenz
     All rights reserved.
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
        this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -25,25 +25,6 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
-
-function quagga_services()
+class BGP extends BaseModel
 {
-    global $config;
-
-    $services = array();
-
-    if (isset($config['OPNsense']['quagga']['general']['enabled']) && $config['OPNsense']['quagga']['general']['enabled'] == 1) {
-        $services[] = array(
-            'description' => gettext('Quagga is a deamon to add support of various routing protocols.'),
-            'configd' => array(
-                'restart' => array('quagga restart'),
-                'start' => array('quagga start'),
-                'stop' => array('quagga stop'),
-            ),
-            'name' => 'quagga',
-            'pidfile' => '/var/run/quagga/zebra.pid'
-        );
-    }
-
-    return $services;
 }
