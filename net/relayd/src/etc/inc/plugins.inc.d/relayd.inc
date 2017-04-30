@@ -284,6 +284,11 @@ function relayd_configure_do($kill_first = false)
                     if (isset($vs_a[$i]['sitedown']) &&  strlen($vs_a[$i]['sitedown']) > 0 && ($vs_a[$i]['relay_protocol'] != 'dns')) {
                         $conf .= "  forward to <{$vs_a[$i]['sitedown']}> port {$dest_port} {$lbmode} {$check_a[$pools[$vs_a[$i]['poolname']]['monitor']]} \n";
                     }
+                    
+                    if (isset($vs_a[$i]['sessiontimeout'])) {
+                    	$conf .= "  session timeout {$vs_a[$i]['sessiontimeout']} \n";
+                    }
+                    
                     $conf .= "}\n";
                 } else  {
                     // redirect mode
@@ -300,6 +305,10 @@ function relayd_configure_do($kill_first = false)
                         $conf .= "  forward to <{$vs_a[$i]['sitedown']}> port {$dest_port} {$check_a[$pools[$vs_a[$i]['sitedown']]['monitor']]} \n";
                     }
 
+                    if (isset($vs_a[$i]['sessiontimeout'])) {
+                    	$conf .= "  session timeout {$vs_a[$i]['sessiontimeout']} \n";
+                    }
+                    
                     $conf .= "}\n";
                 }
             }
