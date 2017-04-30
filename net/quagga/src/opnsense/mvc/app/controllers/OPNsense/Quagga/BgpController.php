@@ -1,5 +1,6 @@
 <?php
 namespace OPNsense\Quagga;
+
 /*
     Copyright (C) 2017 Fabian Franz
     Copyright (C) 2017 Michael Muenz

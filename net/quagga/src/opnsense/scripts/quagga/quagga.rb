@@ -1,14 +1,14 @@
 #!/usr/local/bin/ruby
 =begin
 Copyright 2017 Fabian Franz
-Redistribution and use in source and binary forms, with or without modification, 
+Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-1. Redistributions of source code must retain the above copyright notice, 
+1. Redistributions of source code must retain the above copyright notice,
    this list of conditions and the following disclaimer.
 
-2. Redistributions in binary form must reproduce the above copyright notice, 
-   this list of conditions and the following disclaimer in the documentation and/or 
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation and/or
    other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
@@ -28,14 +28,14 @@ class VTYSH
   def initialize(path = '/usr/local/bin/vtysh')
     @path = path
   end
-  
+
   def execute(param)
     o = `#{@path} -c #{param.shellescape}`
     raise "error" if o.length <= 2
     raise "command error - command: #{param}" if o.include? "% Unknown command"
     o
   end
-  
+
   #def execute(param)
   #  fn = param.sub("show","sh").gsub(" ","_")
   #  File.read(fn)
@@ -69,12 +69,12 @@ class QuaggaTableReader
     @ranges = ranges
     nil
   end
-  
+
   def read_entry(line, expand_fields = {})
     raise "heading missing" unless @ranges
     tmp = {}
     return tmp unless line&.strip.length > 2
-    
+
     @ranges.each do |r|
       # the string starts here
       b = r.begin
@@ -97,7 +97,7 @@ class General
   end
   def routes
     lines = @vtysh.execute("show ip route").lines
-    
+
     # headers
     meanings = {}
     while (line = lines.shift.strip) != ''
@@ -107,7 +107,7 @@ class General
         meanings[short] = long
       end
     end
-    
+
     # you don't have to understand this regex ;)
     entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:via (\S+?)|is ([^,]+?)), ([^,\n]+)(?:, (\S+))?/
     entries = []
@@ -137,7 +137,7 @@ class OSPF
     end
     data
   end
-  
+
   def interface
     lines = @vtysh.execute("show ip ospf interface").lines
     interfaces = {}
@@ -194,7 +194,7 @@ class OSPF
     end
     interfaces
   end
-  
+
   def database
     lines = @vtysh.execute("show ip ospf database").lines
     db = {}
@@ -251,7 +251,7 @@ class OSPF
     end
     db
   end
-  
+
   def route
     lines = @vtysh.execute("show ip ospf route").lines
     heading = ''
@@ -282,7 +282,7 @@ class OSPF
     end
     route
   end
-  
+
   def overview
     lines = @vtysh.execute("show ip ospf").lines
     overview = {rfc2328_conform: false, asbr: false}
@@ -359,18 +359,18 @@ class BGP
   def initialize(sh)
     @vtysh = sh
   end
-  
+
   def overview
     output = @vtysh.execute('show ip bgp')
     return {} if output.include? "No BGP process is configured"
     return {} unless output.include? 'version' # we get an empty output if quagga is not running
     output = output.split("\n")
     bgp = {}
-    
+
     x,y = output.shift.scan(/.*?version is (\d+).*?ID is ([0-9\.]+).*/).first
     bgp['table_version'] = x
     bgp['local_router_id'] = y
-    
+
     # find out, what the status abbreviations mean
     status_codes = {}
     line = output.shift
@@ -392,7 +392,7 @@ class BGP
       k,v = x.strip.split(" - ")
       origin_codes[k] = v
     end
-    
+
     # drop empty line
     output.shift
     # read entries
