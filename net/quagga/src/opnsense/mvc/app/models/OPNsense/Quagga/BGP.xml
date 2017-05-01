@@ -9,7 +9,7 @@
         <asnumber type="IntegerField">
             <default></default>
             <Required>Y</Required>
-	    <MinimumValue>1</MinimumValue>
+            <MinimumValue>1</MinimumValue>
             <MaximumValue>4294967295</MaximumValue>
         </asnumber>
         <networks type="CSVListField">
@@ -46,8 +46,8 @@
                         <remoteas type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-				<MinimumValue>1</MinimumValue>
-				<MaximumValue>4294967295</MaximumValue>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>4294967295</MaximumValue>
                         </remoteas>
                         <updatesource type="InterfaceField">
                                 <default></default>
