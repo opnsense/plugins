@@ -41,9 +41,11 @@
                                 <Required>Y</Required>
                                 <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                         </address>
-                        <remoteas type="TextField">
+                        <remoteas type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
+				<MinimumValue>1</MinimumValue>
+				<MaximumValue>4294967295</MaximumValue>
                         </remoteas>
                         <updatesource type="InterfaceField">
                                 <default></default>
