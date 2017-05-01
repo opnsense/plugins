@@ -6,9 +6,11 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
-        <asnumber type="TextField">
+        <asnumber type="IntegerField">
             <default></default>
             <Required>Y</Required>
+	    <MinimumValue>1</MinimumValue>
+            <MaximumValue>4294967295</MaximumValue>
         </asnumber>
         <networks type="CSVListField">
             <default></default>
