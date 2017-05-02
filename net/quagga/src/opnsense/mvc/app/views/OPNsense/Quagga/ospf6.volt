@@ -2,6 +2,7 @@
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
 This file is Copyright © 2017 by Fabian Franz
+This file is Copyright © 2017 by Michael Muenz
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -36,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="tab-content content-box tab-content">
         <div id="general" class="tab-pane fade in active">
             <div class="content-box" style="padding-bottom: 1.5em;">
-                {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+                {{ partial("layout_partials/base_form",['fields':ospf6Form,'id':'frm_ospf6_settings'])}}
 
                 <div class="col-md-12">
                     <hr />
@@ -103,7 +104,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
 $( document ).ready(function() {
-  var data_get_map = {'frm_ospf_settings':"/api/quagga/ospfsettings/get"};
+  var data_get_map = {'frm_ospf6_settings':"/api/quagga/ospf6settings/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
@@ -114,7 +115,7 @@ $( document ).ready(function() {
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/ospfsettings/set",formid='frm_ospf_settings',callback_ok=function(){
+      saveFormToEndpoint(url="/api/quagga/ospf6settings/set",formid='frm_ospf6_settings',callback_ok=function(){
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
@@ -123,22 +124,22 @@ $( document ).ready(function() {
       });
   });
   $("#grid-networks").UIBootgrid(
-    { 'search':'/api/quagga/ospfsettings/searchNetwork',
-      'get':'/api/quagga/ospfsettings/getNetwork/',
-      'set':'/api/quagga/ospfsettings/setNetwork/',
-      'add':'/api/quagga/ospfsettings/addNetwork/',
-      'del':'/api/quagga/ospfsettings/delNetwork/',
-      'toggle':'/api/quagga/ospfsettings/toggleNetwork/',
+    { 'search':'/api/quagga/ospf6settings/searchNetwork',
+      'get':'/api/quagga/ospf6settings/getNetwork/',
+      'set':'/api/quagga/ospf6settings/setNetwork/',
+      'add':'/api/quagga/ospf6settings/addNetwork/',
+      'del':'/api/quagga/ospf6settings/delNetwork/',
+      'toggle':'/api/quagga/ospf6settings/toggleNetwork/',
       'options':{selection:false, multiSelect:false}
     }
   );
   $("#grid-interfaces").UIBootgrid(
-    { 'search':'/api/quagga/ospfsettings/searchInterface',
-      'get':'/api/quagga/ospfsettings/getInterface/',
-      'set':'/api/quagga/ospfsettings/setInterface/',
-      'add':'/api/quagga/ospfsettings/addInterface/',
-      'del':'/api/quagga/ospfsettings/delInterface/',
-      'toggle':'/api/quagga/ospfsettings/toggleInterface/',
+    { 'search':'/api/quagga/ospf6settings/searchInterface',
+      'get':'/api/quagga/ospf6settings/getInterface/',
+      'set':'/api/quagga/ospf6settings/setInterface/',
+      'add':'/api/quagga/ospf6settings/addInterface/',
+      'del':'/api/quagga/ospf6settings/delInterface/',
+      'toggle':'/api/quagga/ospf6settings/toggleInterface/',
       'options':{selection:false, multiSelect:false}
     }
   );
