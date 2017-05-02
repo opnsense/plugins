@@ -6,6 +6,7 @@ use OPNsense\Base\BaseModel;
 
 /*
     Copyright (C) 2017 Fabian Franz
+    Copyright (C) 2017 Michael Muenz
     All rights reserved.
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
