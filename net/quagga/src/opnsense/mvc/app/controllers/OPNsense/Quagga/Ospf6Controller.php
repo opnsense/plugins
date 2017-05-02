@@ -21,14 +21,13 @@ namespace OPNsense\Quagga;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
-class OspfController extends \OPNsense\Base\IndexController
+class Ospf6Controller extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("OSPF Settings");
-        $this->view->generalForm = $this->getForm("ospf");
-        $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
-        $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
-        $this->view->pick('OPNsense/Quagga/ospf');
+        $this->view->title = gettext("OSPFv3 Settings");
+        $this->view->ospf6Form = $this->getForm("ospf6");
+        $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPF6Interface");
+        $this->view->pick('OPNsense/Quagga/ospf6');
     }
 }
