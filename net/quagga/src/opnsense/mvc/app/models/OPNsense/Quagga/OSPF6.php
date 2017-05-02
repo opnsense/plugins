@@ -1,3 +1,10 @@
+<?php
+
+namespace OPNsense\Quagga;
+
+use OPNsense\Base\BaseModel;
+
+
 /*
     Copyright (C) 2017 Fabian Franz
     All rights reserved.
