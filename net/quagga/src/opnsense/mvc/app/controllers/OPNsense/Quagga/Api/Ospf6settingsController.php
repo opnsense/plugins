@@ -1,7 +1,7 @@
 <?php
 namespace OPNsense\Quagga\Api;
 use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Quagga\OSPF;
+use \OPNsense\Quagga\OSPF6;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Base\UIModelGrid;
@@ -34,16 +34,16 @@ use \OPNsense\Base\UIModelGrid;
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
-class OspfsettingsController extends ApiMutableModelControllerBase
+class Ospfsettings6Controller extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'OSPF';
-    static protected $internalModelClass = '\OPNsense\Quagga\OSPF';
+    static protected $internalModelName = 'OSPF6';
+    static protected $internalModelClass = '\OPNsense\Quagga\OSPF6';
     public function getAction()
     {
         $result = array();
         if ($this->request->isGet()) {
-            $mdlospf = new OSPF();
-            $result['ospf'] = $mdlospf->getNodes();
+            $mdlospf6 = new OSPF6();
+            $result['ospf6'] = $mdlospf6->getNodes();
         }
         return $result;
     }
@@ -52,10 +52,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         $result = array("result"=>"failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
-            $mdlospf = new OSPF();
-            $mdlospf->setNodes($this->request->getPost("ospf"));
+            $mdlospf6 = new OSPF6();
+            $mdlospf6->setNodes($this->request->getPost("ospf6"));
             // perform validation
-            $valMsgs = $mdlospf->performValidation();
+            $valMsgs = $mdlospf6->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
@@ -64,7 +64,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             }
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
-                $mdlospf->serializeToConfig();
+                $mdlospf6->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";
             }
@@ -75,8 +75,8 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function searchNetworkAction()
     {
         $this->sessionClose();
-        $mdlOSPF = $this->getModel();
-        $grid = new UIModelGrid($mdlOSPF->networks->network);
+        $mdlOSPF6 = $this->getModel();
+        $grid = new UIModelGrid($mdlOSPF6->networks->network);
         return $grid->fetchBindRequest(
             $this->request,
             array("enabled", "ipaddr", "netmask", "area")
@@ -85,8 +85,8 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function searchInterfaceAction()
     {
         $this->sessionClose();
-        $mdlOSPF = $this->getModel();
-        $grid = new UIModelGrid($mdlOSPF->interfaces->interface);
+        $mdlOSPF6 = $this->getModel();
+        $grid = new UIModelGrid($mdlOSPF6->interfaces->interface);
         return $grid->fetchBindRequest(
             $this->request,
             array("enabled", "interfacename", "networktype", "authtype", "area")
@@ -94,30 +94,30 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     }
     public function getNetworkAction($uuid = null)
     {
-        $mdlOSPF = $this->getModel();
+        $mdlOSPF6 = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlOSPF->getNodeByReference('networks.network.' . $uuid);
+            $node = $mdlOSPF6->getNodeByReference('networks.network.' . $uuid);
             if ($node != null) {
                 // return node
                 return array("network" => $node->getNodes());
             }
         } else {
-            $node = $mdlOSPF->networks->network->add();
+            $node = $mdlOSPF6->networks->network->add();
             return array("network" => $node->getNodes());
         }
         return array();
     }
     public function getInterfaceAction($uuid = null)
     {
-        $mdlOSPF = $this->getModel();
+        $mdlOSPF6 = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlOSPF->getNodeByReference('interfaces.interface.' . $uuid);
+            $node = $mdlOSPF6->getNodeByReference('interfaces.interface.' . $uuid);
             if ($node != null) {
                 // return node
                 return array("interface" => $node->getNodes());
             }
         } else {
-            $node = $mdlOSPF->interfaces->interface->add();
+            $node = $mdlOSPF6->interfaces->interface->add();
             return array("interface" => $node->getNodes());
         }
         return array();
@@ -127,17 +127,17 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("network")) {
             $result = array("result" => "failed", "validations" => array());
-            $mdlOSPF = $this->getModel();
-            $node = $mdlOSPF->networks->network->Add();
+            $mdlOSPF6 = $this->getModel();
+            $node = $mdlOSPF6->networks->network->Add();
             $node->setNodes($this->request->getPost("network"));
-            $valMsgs = $mdlOSPF->performValidation();
+            $valMsgs = $mdlOSPF6->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 $fieldnm = str_replace($node->__reference, "network", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
                 // save config if validated correctly
-                $mdlOSPF->serializeToConfig();
+                $mdlOSPF6->serializeToConfig();
                 Config::getInstance()->save();
                 unset($result['validations']);
                 $result["result"] = "saved";
@@ -150,17 +150,17 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("interface")) {
             $result = array("result" => "failed", "validations" => array());
-            $mdlOSPF = $this->getModel();
-            $node = $mdlOSPF->interfaces->interface->Add();
+            $mdlOSPF6 = $this->getModel();
+            $node = $mdlOSPF6->interfaces->interface->Add();
             $node->setNodes($this->request->getPost("interface"));
-            $valMsgs = $mdlOSPF->performValidation();
+            $valMsgs = $mdlOSPF6->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 $fieldnm = str_replace($node->__reference, "interface", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
                 // save config if validated correctly
-                $mdlOSPF->serializeToConfig();
+                $mdlOSPF6->serializeToConfig();
                 Config::getInstance()->save();
                 unset($result['validations']);
                 $result["result"] = "saved";
@@ -172,10 +172,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
-            $mdlOSPF = $this->getModel();
+            $mdlOSPF6 = $this->getModel();
             if ($uuid != null) {
-                if ($mdlOSPF->networks->network->del($uuid)) {
-                    $mdlOSPF->serializeToConfig();
+                if ($mdlOSPF6->networks->network->del($uuid)) {
+                    $mdlOSPF6->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
                 } else {
@@ -189,10 +189,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
-            $mdlOSPF = $this->getModel();
+            $mdlOSPF6 = $this->getModel();
             if ($uuid != null) {
-                if ($mdlOSPF->interfaces->interface->del($uuid)) {
-                    $mdlOSPF->serializeToConfig();
+                if ($mdlOSPF6->interfaces->interface->del($uuid)) {
+                    $mdlOSPF6->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
                 } else {
