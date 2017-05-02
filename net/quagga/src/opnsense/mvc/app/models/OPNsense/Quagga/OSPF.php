@@ -29,6 +29,6 @@ use OPNsense\Base\BaseModel;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-class OSPF6 extends BaseModel
+class OSPF extends BaseModel
 {
 }
