@@ -9,6 +9,7 @@ use \OPNsense\Base\UIModelGrid;
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2015 J. Schellevis - Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
+ *    Copyright (C) 2017 Michael Muenz
  *
  *    All rights reserved.
  *
@@ -72,16 +73,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
         return $result;
     }
 /////////////////////////////////////////////////////////////////////
-    public function searchNetworkAction()
-    {
-        $this->sessionClose();
-        $mdlOSPF6 = $this->getModel();
-        $grid = new UIModelGrid($mdlOSPF6->networks->network);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array("enabled", "ipaddr", "netmask", "area")
-        );
-    }
     public function searchInterfaceAction()
     {
         $this->sessionClose();
@@ -91,21 +82,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
             $this->request,
             array("enabled", "interfacename", "networktype", "authtype", "area")
         );
-    }
-    public function getNetworkAction($uuid = null)
-    {
-        $mdlOSPF6 = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdlOSPF6->getNodeByReference('networks.network.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array("network" => $node->getNodes());
-            }
-        } else {
-            $node = $mdlOSPF6->networks->network->add();
-            return array("network" => $node->getNodes());
-        }
-        return array();
     }
     public function getInterfaceAction($uuid = null)
     {
@@ -121,29 +97,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
             return array("interface" => $node->getNodes());
         }
         return array();
-    }
-    public function addNetworkAction()
-    {
-        $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("network")) {
-            $result = array("result" => "failed", "validations" => array());
-            $mdlOSPF6 = $this->getModel();
-            $node = $mdlOSPF6->networks->network->Add();
-            $node->setNodes($this->request->getPost("network"));
-            $valMsgs = $mdlOSPF6->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "network", $msg->getField());
-                $result["validations"][$fieldnm] = $msg->getMessage();
-            }
-            if (count($result['validations']) == 0) {
-                // save config if validated correctly
-                $mdlOSPF6->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
     }
     public function addInterfaceAction()
     {
@@ -168,23 +121,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    public function delNetworkAction($uuid)
-    {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlOSPF6 = $this->getModel();
-            if ($uuid != null) {
-                if ($mdlOSPF6->networks->network->del($uuid)) {
-                    $mdlOSPF6->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
-    }
     public function delInterfaceAction($uuid)
     {
         $result = array("result" => "failed");
@@ -201,33 +137,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
             }
         }
         return $result;
-    }
-    public function setNetworkAction($uuid)
-    {
-        if ($this->request->isPost() && $this->request->hasPost("network")) {
-            $mdlNetwork = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlNetwork->getNodeByReference('networks.network.' . $uuid);
-                if ($node != null) {
-                    $result = array("result" => "failed", "validations" => array());
-                    $networkInfo = $this->request->getPost("network");
-                    $node->setNodes($networkInfo);
-                    $valMsgs = $mdlNetwork->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "network", $msg->getField());
-                        $result["validations"][$fieldnm] = $msg->getMessage();
-                    }
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdlNetwork->serializeToConfig();
-                        Config::getInstance()->save();
-                        $result = array("result" => "saved");
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array("result" => "failed");
     }
     public function setInterfaceAction($uuid)
     {
@@ -278,10 +187,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
             }
         }
         return $result;
-    }
-    public function toggleNetworkAction($uuid)
-    {
-        return $this->toggle_handler($uuid, 'networks', 'network');
     }
     public function toggleInterfaceAction($uuid)
     {
