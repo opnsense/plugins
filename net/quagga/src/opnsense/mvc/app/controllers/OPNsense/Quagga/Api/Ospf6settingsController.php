@@ -34,7 +34,7 @@ use \OPNsense\Base\UIModelGrid;
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
-class Ospfsettings6Controller extends ApiMutableModelControllerBase
+class Ospf6settingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'OSPF6';
     static protected $internalModelClass = '\OPNsense\Quagga\OSPF6';
