@@ -31,7 +31,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Navigation bar -->
     <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
         <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-        <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
         <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
     </ul>
     <div class="tab-content content-box tab-content">
@@ -45,33 +44,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 </div>
             </div>
         </div>
-
-    <!-- Tab: Networks -->
-    <div id="networks" class="tab-pane fade in">
-      <table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
-          <thead>
-              <tr>
-                  <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                  <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
-                  <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
-                  <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
-                  <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                  <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-              </tr>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot>
-              <tr>
-                  <td colspan="5"></td>
-                  <td>
-                      <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                      <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                  </td>
-              </tr>
-          </tfoot>
-      </table>
-    </div>
 
     <!-- Tab: Interfaces -->
     <div id="interfaces" class="tab-pane fade in">
@@ -123,16 +95,6 @@ $( document ).ready(function() {
         });
       });
   });
-  $("#grid-networks").UIBootgrid(
-    { 'search':'/api/quagga/ospf6settings/searchNetwork',
-      'get':'/api/quagga/ospf6settings/getNetwork/',
-      'set':'/api/quagga/ospf6settings/setNetwork/',
-      'add':'/api/quagga/ospf6settings/addNetwork/',
-      'del':'/api/quagga/ospf6settings/delNetwork/',
-      'toggle':'/api/quagga/ospf6settings/toggleNetwork/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
   $("#grid-interfaces").UIBootgrid(
     { 'search':'/api/quagga/ospf6settings/searchInterface',
       'get':'/api/quagga/ospf6settings/getInterface/',
@@ -148,5 +110,4 @@ $( document ).ready(function() {
     });
 </script>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':lang._('Edit Interface')])}}
