@@ -28,6 +28,7 @@ class Ospf6Controller extends \OPNsense\Base\IndexController
         $this->view->title = gettext("OSPFv3 Settings");
         $this->view->ospf6Form = $this->getForm("ospf6");
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPF6Interface");
+        $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPF6Network");
         $this->view->pick('OPNsense/Quagga/ospf6');
     }
 }
