@@ -1,12 +1,4 @@
 <?php
-namespace OPNsense\Quagga\Api;
-
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Quagga\BGP;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
@@ -36,6 +28,13 @@ use \OPNsense\Base\UIModelGrid;
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+namespace OPNsense\Quagga\Api;
+use \OPNsense\Quagga\BGP;
+use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Base\UIModelGrid;
+
 class BgpController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'BGP';

@@ -23,6 +23,7 @@
 */
 
 namespace OPNsense\Quagga;
+
 class Ospf6Controller extends \OPNsense\Base\IndexController
 {
     public function indexAction()

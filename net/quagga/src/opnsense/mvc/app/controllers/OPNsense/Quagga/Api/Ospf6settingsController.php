@@ -1,10 +1,4 @@
 <?php
-namespace OPNsense\Quagga\Api;
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Quagga\OSPF6;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2015 J. Schellevis - Deciso B.V.
@@ -35,6 +29,13 @@ use \OPNsense\Base\UIModelGrid;
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+namespace OPNsense\Quagga\Api;
+use \OPNsense\Quagga\OSPF6;
+use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Base\UIModelGrid;
+
 class Ospf6settingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'OSPF6';
