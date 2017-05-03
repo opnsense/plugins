@@ -52,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
+                    <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th> 
                     <th data-column-id="networktype" data-type="string" data-visible="true">{{ lang._('Network Type') }}</th>
                     <th data-column-id="authtype" data-type="string" data-visible="true">{{ lang._('Authentication Type') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
