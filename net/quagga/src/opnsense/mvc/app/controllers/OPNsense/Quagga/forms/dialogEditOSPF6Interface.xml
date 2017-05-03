@@ -18,16 +18,6 @@
     <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
   </field>
   <field>
-    <id>interface.authtype</id>
-    <label>Authentication Type</label>
-    <type>select_multiple</type>
-  </field>
-  <field>
-    <id>interface.authkey</id>
-    <label>Authentication Key</label>
-    <type>text</type>
-  </field>
-  <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
