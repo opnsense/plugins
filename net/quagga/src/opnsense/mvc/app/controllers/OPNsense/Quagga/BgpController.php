@@ -1,6 +1,4 @@
 <?php
-namespace OPNsense\Quagga;
-
 /*
     Copyright (C) 2017 Fabian Franz
     Copyright (C) 2017 Michael Muenz
@@ -23,6 +21,9 @@ namespace OPNsense\Quagga;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
+
+namespace OPNsense\Quagga;
+
 class BgpController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
