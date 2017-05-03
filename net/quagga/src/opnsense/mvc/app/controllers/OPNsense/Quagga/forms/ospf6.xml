@@ -17,6 +17,6 @@
         <id>ospf6.routerid</id>
         <label>Router ID</label>
         <type>text</type>
-        <hint>Router ID as IPv4 Address</hint>
+        <help>Router ID as IPv4 Address</help>
     </field>
 </form>
