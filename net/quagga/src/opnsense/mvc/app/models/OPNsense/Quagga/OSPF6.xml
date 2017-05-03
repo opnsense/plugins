@@ -20,6 +20,11 @@
                         <static>Statically configured routes</static>
                 </OptionValues>
         </redistribute>
+        <routerid type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+        </routerid>
         <interfaces>
                 <interface type="ArrayField">
                         <enabled type="BooleanField">
@@ -39,19 +44,6 @@
                                 <Required>Y</Required>
                                 <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                         </area>
-                        <authtype type="OptionField">
-                                <Required>N</Required>
-                                <multiple>N</multiple>
-                                <default></default>
-                                <OptionValues>
-                                        <md5>MD5</md5>
-                                </OptionValues>
-                        </authtype>
-                        <authkey type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                                <mask>/^\S+$/</mask>
-                        </authkey>
                         <cost type="IntegerField">
                                 <default></default>
                                 <MinimumValue>0</MinimumValue>
