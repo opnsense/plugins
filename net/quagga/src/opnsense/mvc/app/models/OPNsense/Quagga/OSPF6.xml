@@ -11,12 +11,7 @@
                 <multiple>Y</multiple>
                 <default></default>
                 <OptionValues>
-                        <babel>Babel routing protocol (Babel)</babel>
-                        <bgp>Border Gateway Protocol (BGP)</bgp>
                         <connected>Connected routes (directly attached subnet or host)</connected>
-                        <isis>Intermediate System to Intermediate System (IS-IS)</isis>
-                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                        <rip>Routing Information Protocol (RIP)</rip>
                         <static>Statically configured routes</static>
                 </OptionValues>
         </redistribute>
