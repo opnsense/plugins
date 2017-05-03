@@ -80,7 +80,7 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlOSPF6->interfaces->interface);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "interfacename", "networktype", "authtype", "area")
+            array("enabled", "interfacename", "area", "networktype")
         );
     }
     public function getInterfaceAction($uuid = null)
