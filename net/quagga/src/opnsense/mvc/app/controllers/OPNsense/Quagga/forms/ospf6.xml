@@ -13,4 +13,10 @@
         <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
         <hint>Type or select a route source.</hint>
     </field>
+    <field>
+        <id>ospf6.routerid</id>
+        <label>Router ID</label>
+        <type>text</type>
+        <hint>Router ID as IPv4 Address</hint>
+    </field>
 </form>
