@@ -1,9 +1,4 @@
 <?php
-namespace OPNsense\Quagga;
-
-use OPNsense\Base\BaseModel;
-
-
 /*
     Copyright (C) 2017 Fabian Franz
     Copyright (C) 2017 Michael Muenz
@@ -26,6 +21,9 @@ use OPNsense\Base\BaseModel;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
+namespace OPNsense\Quagga;
+use OPNsense\Base\BaseModel;
+
 class OSPF6 extends BaseModel
 {
 }
