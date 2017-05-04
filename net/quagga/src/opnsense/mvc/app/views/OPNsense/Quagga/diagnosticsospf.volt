@@ -330,9 +330,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <th>{{ lang._('Dead Time') }}</th>
         <th>{{ lang._('Address') }}</th>
         <th>{{ lang._('Interface') }}</th>
-        <th>{{ lang._('RXmtL') }}</th>
-        <th>{{ lang._('RqstL') }}</th>
-        <th>{{ lang._('DBsmL') }}</th>
+        <th>RXmtL</th>
+        <th>RqstL</th>
+        <th>DBsmL</th>
       </tr>
     </thead>
     <tbody>
