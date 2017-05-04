@@ -127,7 +127,7 @@ class OSPF
     @vtysh = vtysh
   end
   def neighbors
-    qta = QuaggaTableReader.new(["Neighbor ID", "Pri State", "Dead Time", "Address", "Interface", "RXmtL", "RqstL", "DBsmL"])
+    qta = QuaggaTableReader.new(["Neighbor ID", "Pri", "State", "Dead Time", "Address", "Interface", "RXmtL", "RqstL", "DBsmL"])
     lines = @vtysh.execute("show ip ospf neighbor").lines
     lines.shift # empty line
     data = []
@@ -214,9 +214,15 @@ class OSPF
           mode = :router
         when /Router Link States \(Area ([\.\d]+)\)/
           router_link_states_area = $1
-          db[router]['link_state_area'] ||= {}
-          db[router]['link_state_area'][$1] ||= []
-          mode = :link_state
+          db[router]['router_link_state_area'] ||= {}
+          db[router]['router_link_state_area'][$1] ||= []
+          mode = :router_link_state
+          qta = nil
+        when /Net Link States \(Area ([\.\d]+)\)/
+          net_link_states_area = $1
+          db[router]['net_link_state_area'] ||= {}
+          db[router]['net_link_state_area'][$1] ||= []
+          mode = :net_link_state
           qta = nil
         when 'AS External Link States'
           mode = :states
@@ -228,8 +234,10 @@ class OSPF
       else
         if qta == nil
           case mode
-          when :link_state
+          when :router_link_state
             qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Link count"])
+          when :net_link_state
+            qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum"])
           when :states
             qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Route\n"])
           else
@@ -240,8 +248,10 @@ class OSPF
         else
           entry = qta.read_entry(line)
           case mode
-          when :link_state
-            db[router]['link_state_area'][router_link_states_area] << entry
+          when :router_link_state
+            db[router]['router_link_state_area'][router_link_states_area] << entry
+          when :net_link_state
+            db[router]['net_link_state_area'][net_link_states_area] << entry
           when :states
             db[router]['external_states'] << entry
           end

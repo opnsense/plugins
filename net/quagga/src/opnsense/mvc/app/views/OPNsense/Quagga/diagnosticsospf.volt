@@ -107,14 +107,59 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <h2>{{ lang._('Areas') }}</h2>
 
-TODO
+<% if (ospf_overview['areas']) { %>
+  <% areas = ospf_overview['areas'] %>
+  <% _.each(_.keys(areas), function(areaname) { %>
+    <% area = areas[areaname] %>
+    <h3><%= areaname %></h3>
+    <table>
+      <tbody>
+        <tr>
+          <td>{{ lang._('Interfaces: Total') }}</td>
+          <td><%= area['interfaces']['total'] %></td>
+        </tr>
+        <tr>
+          <td>{{ lang._('Interfaces: Active') }}</td>
+          <td><%= area['interfaces']['active'] %></td>
+        </tr>
+        <tr>
+          <td>{{ lang._('Fully Adjacent Neighbour Count') }}</td>
+          <td><%= area['fully_adjacent_neighbour_count'] %></td>
+        </tr>
+        <tr>
+          <td>{{ lang._('SPF Execution Count') }}</td>
+          <td><%= area['spf_exec_count'] %></td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{ lang._('Count') }}</th>
+          <th>{{ lang._('Checksum') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(_.keys(area['lsa']), function(lsaname) { %>
+        <% lsa = area['lsa'][lsaname] %>
+          <tr>
+            <td><%= translate(lsaname) %></td>
+            <td><%= lsa['count'] %></td>
+            <td><%= lsa['checksum'] %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% }) %>
+<% } %>
 </script>
 <script type="text/x-template" id="databasetpl">
 <% _.each(_.keys(ospf_database), function(router_id) { %>
   <h1>{{ lang._('Router ID:')}} <%= router_id %></h1>
   <hr />
-  <h2>{{ lang._('Link State Area') }}</h2>
-  <% _.each(_.keys(ospf_database[router_id]['link_state_area']), function(area) { %>
+  <h2>{{ lang._('Router Link State Area') }}</h2>
+  <% _.each(_.keys(ospf_database[router_id]['router_link_state_area']), function(area) { %>
     <h3>Area <%= area %></h3>
     <table>
       <thead>
@@ -128,7 +173,7 @@ TODO
         </tr>
       </thead>
       <tbody>
-        <% _.each(ospf_database[router_id]['link_state_area'][area], function(entry) { %>
+        <% _.each(ospf_database[router_id]['router_link_state_area'][area], function(entry) { %>
           <tr>
             <td><%= entry["Link ID"] %></td>
             <td><%= entry["ADV Router"] %></td>
@@ -136,6 +181,32 @@ TODO
             <td><%= entry["Seq#"] %></td>
             <td><%= entry["CkSum"] %></td>
             <td><%= entry["Link count"] %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    <table>
+  <% }); %>
+  <h2>{{ lang._('Net Link State Area') }}</h2>
+  <% _.each(_.keys(ospf_database[router_id]['net_link_state_area']), function(area) { %>
+    <h3>Area <%= area %></h3>
+    <table>
+      <thead>
+        <tr>
+          <th>{{ lang._('Link ID') }}</th>
+          <th>{{ lang._('ADV Router') }}</th>
+          <th>{{ lang._('Age') }}</th>
+          <th>{{ lang._('Sequence Number') }}</th>
+          <th>{{ lang._('Checksum') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(ospf_database[router_id]['net_link_state_area'][area], function(entry) { %>
+          <tr>
+            <td><%= entry["Link ID"] %></td>
+            <td><%= entry["ADV Router"] %></td>
+            <td><%= entry["Age"] %></td>
+            <td><%= entry["Seq#"] %></td>
+            <td><%= entry["CkSum"] %></td>
           </tr>
         <% }); %>
       </tbody>
@@ -188,7 +259,7 @@ TODO
         <td><%= entry["network"] %></td>
         <td><%= entry["cost"] %></td>
         <td><%= entry["area"] %></td>
-        <td><%= entry["via"] %></td>
+        <td><%= translate(entry["via"]) %></td>
         <td><%= entry["via_interface"] %></td>
       </tr>
     <% }); %>
@@ -215,7 +286,7 @@ TODO
         <td><%= entry["cost"] %></td>
         <td><%= entry["area"] %></td>
         <td><%= checkmark(entry["asbr"]) %></td>
-        <td><%= entry["via"] %></td>
+        <td><%= translate(entry["via"]) %></td>
         <td><%= entry["via_interface"] %></td>
       </tr>
     <% }); %>
@@ -242,19 +313,60 @@ TODO
         <td><%= entry["cost"] %></td>
         <td><%= entry["area"] %></td>
         <td><%= entry["tag"] %></td>
-        <td><%= entry["via"] %></td>
+        <td><%= translate(entry["via"]) %></td>
         <td><%= entry["via_interface"] %></td>
       </tr>
     <% }); %>
   </tbody>
 </table>
 </script>
+<script type="text/x-template" id="neighbortpl">
+  <table>
+    <thead>
+      <tr>
+        <th>{{ lang._('Neighbor ID') }}</th>
+        <th>{{ lang._('Priority') }}</th>
+        <th>{{ lang._('State') }}</th>
+        <th>{{ lang._('Dead Time') }}</th>
+        <th>{{ lang._('Address') }}</th>
+        <th>{{ lang._('Interface') }}</th>
+        <th>RXmtL</th>
+        <th>RqstL</th>
+        <th>DBsmL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(ospf_neighbors, function(entry) { %>
+        <tr>
+          <td><%= entry["Neighbor ID"] %></td>
+          <td><%= entry["Pri"] %></td>
+          <td><%= translate(entry["State"]) %></td>
+          <td><%= entry["Dead Time"] %></td>
+          <td><%= entry["Address"] %></td>
+          <td><%= entry["Interface"] %></td>
+          <td><%= entry["RXmtL"] %></td>
+          <td><%= entry["RqstL"] %></td>
+          <td><%= entry["DBsmL"] %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</script>
 <script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
 <script>
 
-function translate(string)
+function translate(data)
 {
-  return string;
+  tr = []
+  tr['count'] = '{{ lang._('Count') }}'
+  tr['router'] = '{{ lang._('Router') }}'
+  tr['network'] = '{{ lang._('Network') }}'
+  tr['summary'] = '{{ lang._('Summary') }}'
+  tr['ASBR summary'] = '{{ lang._('ASBR summary') }}'
+  tr['NSSA'] = '{{ lang._('NSSA') }}'
+  tr['directly attached'] = '{{ lang._('Directly Attached') }}'
+  tr['Full/DR'] = '{{ lang._('Full (Designated Router)') }}'
+  return _.has(tr,data) ? tr[data] : data
 }
 
 function checkmark(bin)
@@ -279,6 +391,10 @@ $(document).ready(function() {
     content = _.template($('#routestpl').html())(data['response'])
     $('#routing').html(content)
   });
+  ajaxCall(url="/api/quagga/diagnostics/ospfneighbor", sendData={}, callback=function(data,status) {
+    content = _.template($('#neighbortpl').html())(data['response'])
+    $('#neighbor').html(content)
+  });
 
 
 });
@@ -289,7 +405,8 @@ $(document).ready(function() {
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
     <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
-    <li><a data-toggle="tab" href="#database">{{ lang._('OSPF Database') }}</a></li>
+    <li><a data-toggle="tab" href="#database">{{ lang._('Database') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbor">{{ lang._('Neighbor') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -298,5 +415,7 @@ $(document).ready(function() {
     <div id="routing" class="tab-pane fade in">
     </div>
     <div id="database" class="tab-pane fade in">
+    </div>
+    <div id="neighbor" class="tab-pane fade in">
     </div>
 </div>
