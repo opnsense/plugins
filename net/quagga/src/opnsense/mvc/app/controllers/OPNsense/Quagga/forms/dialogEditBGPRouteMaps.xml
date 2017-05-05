@@ -21,8 +21,10 @@
   </field>
   <field>
     <id>routemap.match</id>
-    <label>Match</label>
-    <type>text</type>
+    <label>AS-Path List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
   </field>
     <field>
     <id>routemap.set</id>
