@@ -129,9 +129,17 @@
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>1000</MaximumValue>
                         </id>
-                        <match type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
+                        <match type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>aspaths.aspath</items>
+                                                <display>name</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
                         </match>
                         <set type="TextField">
                                 <default></default>
