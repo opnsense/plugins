@@ -134,7 +134,7 @@
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>aspaths.aspath</items>
-                                                <display>name</display>
+                                                <display>number</display>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related item not found</ValidationMessage>
