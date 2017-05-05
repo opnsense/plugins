@@ -15,7 +15,7 @@
     <type>select_multiple</type>
   </field>
   <field>
-    <id>route-map.ip</id>
+    <id>route-map.id</id>
     <label>ID</label>
     <type>text</type>
   </field>
