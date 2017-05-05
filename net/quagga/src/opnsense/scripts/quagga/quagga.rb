@@ -420,6 +420,119 @@ class BGP
   end
 end
 
+class OSPFv3
+  def initialize(sh)
+    @vtysh = sh
+  end
+  
+    def overview
+    lines = @vtysh.execute("show ipv6 ospf6").lines
+    overview = {}
+    while line = lines.shift&.strip
+      case line
+      when /OSPFv3 Routing Process \((\d+)\) with Router-ID ([\d\.]+)/
+        overview[:router_id] = $2
+        overview[:routing_process] = $1.to_i
+      when /Initial SPF scheduling delay (\d+) millisec\(s\)/
+        overview[:initial_spf_scheduling_delay] = $1.to_i
+      # this line contains a typo in the output - I made it to work with and without
+      # this typo
+      when /(Min|Max)imum hold time between consecutive SPFs (\d+) milli?second\(s\)/
+        overview[:hold_time] ||= {}
+        overview[:hold_time][$1.downcase] = $2.to_i
+      when "This router is an ASBR (injecting external routing information)"
+        overview[:asbr] = true
+      when /SPF timer is (.*)/
+        overview[:spf_timer] = $1
+      when /Running (.*)/
+        overview[:running_time] = $1
+      when /Number of AS scoped LSAs is (\d+)/
+        overview[:number_as_scoped] = $1.to_i
+      when /Hold time multiplier is currently (\d+)/
+        overview[:current_hold_time_multipier] = $1.to_i
+      when /Number of areas in this router is (\d+)/
+        overview[:number_of_areas] = $1.to_i
+      when ""
+        break
+      else
+        # debug
+        #puts line
+      end
+    end
+    # general overview has ended - now the area overviews come
+    overview[:areas] = {}
+    current_area = {}
+    while line = lines.shift&.strip
+      case line
+      when /^Area ([\d\.]*)/
+        current_area = {}
+        overview[:areas][$1] = current_area
+      when /Interface attached to this area: (.*)/
+        current_area[:interfaces] = $1.split(" ")
+      when /Number of Area scoped LSAs is (.*)/
+        current_area[:number_lsas] = $1.to_i
+      else
+        puts line
+      end
+    end
+    overview
+  end
+  
+  def linkstate
+    lines = @vtysh.execute("show ipv6 ospf6 linkstate").lines
+    linkstate = {}
+    
+    qta = nil
+    current_area = []
+    while line = lines.shift&.strip
+      case line
+      when /SPF Result in Area (.*)/
+        linkstate[$1] = current_area = []
+        qta = QuaggaTableReader.new(["Type","Router-ID", "Net-ID", "Rtr-Bits", "Options", "Cost"])
+        lines.shift
+        qta.read_headline(lines.shift)
+      else
+        if line.length > 10
+          current_area << qta.read_entry(line)
+        end
+      end
+    end
+    linkstate
+  end
+  
+  def route
+    route = []
+    lines = @vtysh.execute("show ipv6 ospf6 route").lines
+    
+    lines.each do |line|
+      f1, f2, network, gateway, interface, time = line.strip.split(/\s+/)
+      route << { f1: f1,
+                 f2: f2,
+                 network: network,
+                 gateway: gateway,
+                 interface: interface,
+                 time: time }
+    end
+    route
+  end
+  
+  def neighbor
+    qta = QuaggaTableReader.new(["Neighbor ID","Pri", "DeadTime", "State/IfState", "Duration I/F[State]"])
+    neighbor = []
+    nb = @vtysh.execute("show ipv6 ospf6 neighbor").lines
+    qta.read_headline(nb.shift.strip)
+    while line = nb.shift&.strip
+      puts line
+      if line.length > 10
+        tmp = qta.read_entry(line)
+        tmp['Pri'] = tmp['Pri'].to_i
+        neighbor << tmp
+      end
+    end
+    neighbor
+  end
+end
+
 require 'optparse'
 options = {}
 supported_sections = %w{general ospf}
@@ -457,6 +570,7 @@ end.parse!
 # use the lib
 sh = VTYSH.new
 ospf = OSPF.new sh
+ospfv3 = OSPFv3.new sh
 bgp = BGP.new sh
 general = General.new sh
 
