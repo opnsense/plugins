@@ -76,7 +76,7 @@
                         <number type="IntegerField">
                                 <default>1</default>
                                 <Required>Y</Required>
-                                <MinimumValue>100</MinimumValue>
+                                <MinimumValue>1</MinimumValue>
                                 <MaximumValue>299</MaximumValue>
                         </number>
                         <action type="OptionField">
@@ -87,11 +87,9 @@
                                         <deny>Deny</deny>
                                 </OptionValues>
                         </action>
-                        <as type="IntegerField">
+                        <as type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>4294967295</MaximumValue>
                         </as>
                 </aspath> 
         </aspaths>
