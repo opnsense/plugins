@@ -27,6 +27,6 @@
     <field>
     <id>routemap.set</id>
     <label>Set</label>
-    <type>Text</type>
+    <type>text</type>
   </field>
 </form>
