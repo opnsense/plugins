@@ -67,5 +67,33 @@
                         </defaultoriginate>
                 </neighbor>
         </neighbors>
+	<as-paths>
+                <as-path type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <number type="IntegerField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                                <MinimumValue>100</MinimumValue>
+                                <MaximumValue>299</MaximumValue>
+                        </number>
+                        <action type="OptionField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <OptionValues>
+					<permit>Permit</permit>
+					<deny>Deny</deny>
+				</OptionValues>
+			</action>
+                        <as type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>4294967295</MaximumValue>
+                        </as>
+                </as-path> 
+        </as-paths>              			
     </items>
 </model>
