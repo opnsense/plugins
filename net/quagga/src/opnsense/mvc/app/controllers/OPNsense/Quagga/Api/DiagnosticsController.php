@@ -80,6 +80,10 @@ class DiagnosticsController extends ApiControllerBase
     {
         return $this->get_ospf_information('database');
     }
+    public function ospfinterfaceAction()
+    {
+        return $this->get_ospf_information('interface');
+    }
     private function get_general_information($name)
     {
         $backend = new Backend();
