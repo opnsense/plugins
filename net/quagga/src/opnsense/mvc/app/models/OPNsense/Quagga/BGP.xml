@@ -57,17 +57,17 @@
                                         <enable>/^(?!0).*$/</enable>
                                 </filters>
                         </updatesource>
-			<nexthopself type="BooleanField">
+                        <nexthopself type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
                         </nexthopself>
-			<defaultoriginate type="BooleanField">
+                        <defaultoriginate type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
                         </defaultoriginate>
                 </neighbor>
         </neighbors>
-	<as-paths>
+        <as-paths>
                 <as-path type="ArrayField">
                         <enabled type="BooleanField">
                                 <default>1</default>
@@ -83,10 +83,10 @@
                                 <default></default>
                                 <Required>Y</Required>
                                 <OptionValues>
-					<permit>Permit</permit>
-					<deny>Deny</deny>
-				</OptionValues>
-			</action>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
                         <as type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -94,6 +94,40 @@
                                 <MaximumValue>4294967295</MaximumValue>
                         </as>
                 </as-path> 
-        </as-paths>              			
+        </as-paths>
+        <route-maps>
+                <route-map type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <name type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </name>
+                        <action type="OptionField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <OptionValues>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
+                        <id type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>1000</MaximumValue>
+                        </id>
+                        <match type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </match>
+                        <set type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </set>
+                </route-map> 
+        </route-maps>
     </items>
 </model>
