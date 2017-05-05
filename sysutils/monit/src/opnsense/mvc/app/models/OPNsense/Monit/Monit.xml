@@ -95,7 +95,7 @@
          </events>
          <format type="TextField">
             <Required>N</Required>
-            <mask>/^([ 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+            <mask>/^.{1,255}$/u</mask>
             <ValidationMessage>Message format should be a string between 1 and 255 characters.</ValidationMessage>
          </format>
          <reminder type="IntegerField">
@@ -107,7 +107,7 @@
          </reminder>
          <description type="TextField">
             <Required>N</Required>
-            <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+            <mask>/^.{1,255}$/u</mask>
             <ValidationMessage>Enter a description.</ValidationMessage>
          </description>
       </alert>
@@ -118,7 +118,7 @@
          </enabled>
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._-]){1,255}$/u</mask>
+            <mask>/^([0-9a-zA-Z\._\-]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus and dot.</ValidationMessage>
          </name>
          <type type="OptionField">
@@ -187,12 +187,12 @@
       <test type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z._ ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
+            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
          </name>
          <condition type="TextField">
             <Required>Y</Required>
-            <mask>/^([\t\n\v\f\r 0-9a-zA-Z.:\-,_()%\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+            <mask>/^.{1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
          </condition>
          <action type="OptionField">
