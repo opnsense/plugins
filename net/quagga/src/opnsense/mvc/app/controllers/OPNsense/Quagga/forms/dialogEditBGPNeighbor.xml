@@ -32,4 +32,11 @@
     <label>Send Defaultroute</label>
     <type>checkbox</type>
   </field>
+  <field>
+    <id>neighbor.linkedRoutemap</id>
+    <label>Route-Map</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+  </field>
 </form>
