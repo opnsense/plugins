@@ -11,7 +11,7 @@
   </field>
   <field>
     <id>as-path.action</id>
-    <label>Remote AS</label>
+    <label>Action</label>
     <type>select_multiple</type>
   </field>
   <field>
