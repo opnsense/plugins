@@ -1,0 +1,22 @@
+<form>
+  <field>
+    <id>aspath.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>aspath.number</id>
+    <label>Number</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>aspath.action</id>
+    <label>Remote AS</label>
+    <type>select_multiple</type>
+  </field>
+  <field>
+    <id>aspath.as</id>
+    <label>AS</label>
+    <type>text</type>
+  </field>
+</form>
