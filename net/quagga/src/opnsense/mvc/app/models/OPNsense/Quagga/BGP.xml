@@ -138,7 +138,7 @@
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
+                                <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match>
                         <set type="TextField">
