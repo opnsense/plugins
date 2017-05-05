@@ -1,31 +1,31 @@
 <form>
   <field>
-    <id>routemap.enabled</id>
+    <id>route-map.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
   </field>
   <field>
-    <id>routemap.name</id>
+    <id>route-map.name</id>
     <label>Name</label>
     <type>text</type>
   </field>
   <field>
-    <id>routemap.action</id>
+    <id>route-map.action</id>
     <label>Action</label>
     <type>select_multiple</type>
   </field>
   <field>
-    <id>routemap.ip</id>
+    <id>route-map.ip</id>
     <label>ID</label>
     <type>text</type>
   </field>
   <field>
-    <id>routemap.match</id>
+    <id>route-map.match</id>
     <label>Match</label>
     <type>text</type>
   </field>
     <field>
-    <id>routemap.set</id>
+    <id>route-map.set</id>
     <label>Set</label>
     <type>Text</type>
   </field>
