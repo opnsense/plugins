@@ -177,7 +177,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->aspaths->aspath);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "number", "action", "as" )
+            array("enabled", "name", "number", "action", "as" )
         );
     }
 
