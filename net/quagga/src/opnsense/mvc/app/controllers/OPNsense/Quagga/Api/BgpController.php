@@ -174,7 +174,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
-        $grid = new UIModelGrid($mdlBGP->as-paths->as-path);
+        $grid = new UIModelGrid($mdlBGP->aspaths->aspath);
         return $grid->fetchBindRequest(
             $this->request,
             array("enabled", "number", "action", "as" )
@@ -185,14 +185,14 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('as-paths.as-path.' . $uuid);
+            $node = $mdlBGP->getNodeByReference('aspaths.aspath.' . $uuid);
             if ($node != null) {
                 // return node
-                return array("as-path" => $node->getNodes());
+                return array("aspath" => $node->getNodes());
             }
         } else {
-            $node = $mdlBGP->as-paths->as-path->add();
-            return array("as-path" => $node->getNodes());
+            $node = $mdlBGP->aspaths->aspath->add();
+            return array("aspath" => $node->getNodes());
         }
         return array();
     }
@@ -200,14 +200,14 @@ class BgpController extends ApiMutableModelControllerBase
     public function addAspathAction()
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("as-path")) {
+        if ($this->request->isPost() && $this->request->hasPost("aspath")) {
             $result = array("result" => "failed", "validations" => array());
             $mdlBGP = $this->getModel();
-            $node = $mdlBGP->as-paths->as-path->Add();
-            $node->setNodes($this->request->getPost("as-path"));
+            $node = $mdlBGP->aspaths->aspath->Add();
+            $node->setNodes($this->request->getPost("aspath"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "as-path", $msg->getField());
+                $fieldnm = str_replace($node->__reference, "aspath", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
@@ -226,7 +226,7 @@ class BgpController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlBGP = $this->getModel();
             if ($uuid != null) {
-                if ($mdlBGP->as-paths->as-path->del($uuid)) {
+                if ($mdlBGP->aspaths->aspath->del($uuid)) {
                     $mdlBGP->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -240,17 +240,17 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function setAspathAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("as-path")) {
+        if ($this->request->isPost() && $this->request->hasPost("aspath")) {
             $mdlAspath = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlAspath->getNodeByReference('as-paths.as-path.' . $uuid);
+                $node = $mdlAspath->getNodeByReference('aspaths.aspath.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $as-pathInfo = $this->request->getPost("as-path");
-                    $node->setNodes($as-pathInfo);
+                    $aspathInfo = $this->request->getPost("aspath");
+                    $node->setNodes($aspathInfo);
                     $valMsgs = $mdlAspath->performValidation();
                     foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "as-path", $msg->getField());
+                        $fieldnm = str_replace($node->__reference, "aspath", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
@@ -270,7 +270,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
-        $grid = new UIModelGrid($mdlBGP->route-maps->route-map);
+        $grid = new UIModelGrid($mdlBGP->routemaps->routemap);
         return $grid->fetchBindRequest(
             $this->request,
             array("enabled", "name", "action", "id", "match", "set" )
@@ -281,14 +281,14 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('route-maps.route-map.' . $uuid);
+            $node = $mdlBGP->getNodeByReference('routemaps.routemap.' . $uuid);
             if ($node != null) {
                 // return node
-                return array("route-map" => $node->getNodes());
+                return array("routemap" => $node->getNodes());
             }
         } else {
-            $node = $mdlBGP->route-maps->route-map->add();
-            return array("route-map" => $node->getNodes());
+            $node = $mdlBGP->routemaps->routemap->add();
+            return array("routemap" => $node->getNodes());
         }
         return array();
     }
@@ -296,14 +296,14 @@ class BgpController extends ApiMutableModelControllerBase
     public function addRoutemapAction()
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("route-map")) {
+        if ($this->request->isPost() && $this->request->hasPost("routemap")) {
             $result = array("result" => "failed", "validations" => array());
             $mdlBGP = $this->getModel();
-            $node = $mdlBGP->route-maps->route-map->Add();
-            $node->setNodes($this->request->getPost("route-map"));
+            $node = $mdlBGP->routemaps->routemap->Add();
+            $node->setNodes($this->request->getPost("routemap"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "route-map", $msg->getField());
+                $fieldnm = str_replace($node->__reference, "routemap", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
@@ -322,7 +322,7 @@ class BgpController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlBGP = $this->getModel();
             if ($uuid != null) {
-                if ($mdlBGP->route-maps->route-map->del($uuid)) {
+                if ($mdlBGP->routemaps->routemap->del($uuid)) {
                     $mdlBGP->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -336,17 +336,17 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function setRoutemapAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("route-map")) {
+        if ($this->request->isPost() && $this->request->hasPost("routemap")) {
             $mdlRoutemap = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlRoutemap->getNodeByReference('route-maps.route-map.' . $uuid);
+                $node = $mdlRoutemap->getNodeByReference('routemaps.routemap.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $route-mapInfo = $this->request->getPost("route-map");
-                    $node->setNodes($route-mapInfo);
+                    $routemapInfo = $this->request->getPost("routemap");
+                    $node->setNodes($routemapInfo);
                     $valMsgs = $mdlRoutemap->performValidation();
                     foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "route-map", $msg->getField());
+                        $fieldnm = str_replace($node->__reference, "routemap", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
@@ -393,11 +393,11 @@ class BgpController extends ApiMutableModelControllerBase
     
     public function toggleAsPathsAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'as-paths', 'as-path');
+        return $this->toggle_handler($uuid, 'aspaths', 'aspath');
     }
     
     public function toggleRouteMapsAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'route-maps', 'route-map');
+        return $this->toggle_handler($uuid, 'routemaps', 'routemap');
     }
 }
