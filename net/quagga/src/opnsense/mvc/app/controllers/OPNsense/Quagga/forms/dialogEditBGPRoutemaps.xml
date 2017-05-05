@@ -1,0 +1,32 @@
+<form>
+  <field>
+    <id>routemap.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>routemap.name</id>
+    <label>Name</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>routemap.action</id>
+    <label>Action</label>
+    <type>select_multiple</type>
+  </field>
+  <field>
+    <id>routemap.ip</id>
+    <label>ID</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>routemap.match</id>
+    <label>Match</label>
+    <type>text</type>
+  </field>
+    <field>
+    <id>routemap.set</id>
+    <label>Set</label>
+    <type>Text</type>
+  </field>
+</form>
