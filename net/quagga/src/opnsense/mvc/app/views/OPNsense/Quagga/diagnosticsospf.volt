@@ -352,6 +352,33 @@ POSSIBILITY OF SUCH DAMAGE.
     </tbody>
   </table>
 </script>
+<script type="text/x-template" id="interfacetpl">
+<% _.each(_.keys(ospf_interface), function(interfacename) { %>
+  <% int = ospf_interface[interfacename] %>
+  <h2><%= interfacename %></h2>
+  <table>
+    <tbody>
+      <% _.each(_.keys(int), function(propertyname) { %>
+        <tr>
+          <td><%= translate(propertyname) %></td>
+          <td>
+            <% if (int[propertyname] === false || int[propertyname] === true)  { %>
+              <%= checkmark(int[propertyname]) %>
+            <% } else if (propertyname == 'intervals')  { %>
+              {{ lang._('Hello Interval:') }} <%= int[propertyname]['hello'] %><br />
+              {{ lang._('Dead Interval:') }} <%= int[propertyname]['dead'] %><br />
+              {{ lang._('Wait Interval:') }} <%= int[propertyname]['wait'] %><br />
+              {{ lang._('Retransmit Interval:') }} <%= int[propertyname]['retransmit'] %>
+            <% } else { %>
+              <%= int[propertyname] %>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% }) %>
+</script>
 <script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
 <script>
 
@@ -366,6 +393,25 @@ function translate(data)
   tr['NSSA'] = '{{ lang._('NSSA') }}'
   tr['directly attached'] = '{{ lang._('Directly Attached') }}'
   tr['Full/DR'] = '{{ lang._('Full (Designated Router)') }}'
+  tr['enabled'] = '{{ lang._('Enabled') }}'
+  tr['cost'] = '{{ lang._('Cost') }}'
+  tr['priority'] = '{{ lang._('Priority') }}'
+  tr['router_id'] = '{{ lang._('Router ID') }}'
+  tr['network_type'] = '{{ lang._('Network Type') }}'
+  tr['area'] = '{{ lang._('Area') }}'
+  tr['transmit_delay'] = '{{ lang._('Transmit Delay') }}'
+  tr['state'] = '{{ lang._('State') }}'
+  tr['broadcast'] = '{{ lang._('Broadcast') }}'
+  tr['mtu_mismatch_detection'] = '{{ lang._('MTU Mismatch Detection') }}'
+  tr['address'] = '{{ lang._('Address') }}'
+  tr['designated_router'] = '{{ lang._('Designated Router') }}'
+  tr['designated_router_interface_address'] = '{{ lang._('Designated Router Interface Address') }}'
+  tr['backup_designated_router'] = '{{ lang._('Backup Designated Router') }}'
+  tr['multicast_group_memberships'] = '{{ lang._('Multicast Group Memberships') }}'
+  tr['intervals'] = '{{ lang._('Intervals') }}'
+  tr['hello_due_in'] = '{{ lang._('Hello Due In') }}'
+  tr['neighbor_count'] = '{{ lang._('Neighbor Count') }}'
+  tr['adjacent_neighbor_count'] = '{{ lang._('Adjacent Neighbor Count') }}'
   return _.has(tr,data) ? tr[data] : data
 }
 
@@ -395,6 +441,10 @@ $(document).ready(function() {
     content = _.template($('#neighbortpl').html())(data['response'])
     $('#neighbor').html(content)
   });
+  ajaxCall(url="/api/quagga/diagnostics/ospfinterface", sendData={}, callback=function(data,status) {
+    content = _.template($('#interfacetpl').html())(data['response'])
+    $('#interface').html(content)
+  });
 
 
 });
@@ -407,6 +457,7 @@ $(document).ready(function() {
     <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
     <li><a data-toggle="tab" href="#database">{{ lang._('Database') }}</a></li>
     <li><a data-toggle="tab" href="#neighbor">{{ lang._('Neighbor') }}</a></li>
+    <li><a data-toggle="tab" href="#interface">{{ lang._('Interface') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -417,5 +468,7 @@ $(document).ready(function() {
     <div id="database" class="tab-pane fade in">
     </div>
     <div id="neighbor" class="tab-pane fade in">
+    </div>
+    <div id="interface" class="tab-pane fade in">
     </div>
 </div>
