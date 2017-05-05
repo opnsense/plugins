@@ -177,7 +177,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->as-paths->as-path);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate" )
+            array("enabled", "number", "action", "as" )
         );
     }
 
@@ -273,7 +273,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->route-maps->route-map);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate" )
+            array("enabled", "name", "action", "id", "match", "set" )
         );
     }
 
@@ -393,11 +393,11 @@ class BgpController extends ApiMutableModelControllerBase
     
     public function toggleAsPathsAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'aspaths', 'aspath');
+        return $this->toggle_handler($uuid, 'as-paths', 'as-path');
     }
     
     public function toggleRouteMapsAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'routemaps', 'routemap');
+        return $this->toggle_handler($uuid, 'route-maps', 'route-map');
     }
 }
