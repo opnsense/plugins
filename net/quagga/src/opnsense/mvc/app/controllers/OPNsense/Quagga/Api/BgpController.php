@@ -170,6 +170,198 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }
 
+    public function searchAspathAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->as-paths->as-path);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate" )
+        );
+    }
+
+    public function getAspathAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('as-paths.as-path.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("as-path" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->as-paths->as-path->add();
+            return array("as-path" => $node->getNodes());
+        }
+        return array();
+    }
+
+    public function addAspathAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("as-path")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->as-paths->as-path->Add();
+            $node->setNodes($this->request->getPost("as-path"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "as-path", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+
+    public function delAspathAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->as-paths->as-path->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function setAspathAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("as-path")) {
+            $mdlAspath = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlAspath->getNodeByReference('as-paths.as-path.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $as-pathInfo = $this->request->getPost("as-path");
+                    $node->setNodes($as-pathInfo);
+                    $valMsgs = $mdlAspath->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "as-path", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlAspath->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
+
+    public function searchRoutemapAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->route-maps->route-map);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate" )
+        );
+    }
+
+    public function getRoutemapAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('route-maps.route-map.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("route-map" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->route-maps->route-map->add();
+            return array("route-map" => $node->getNodes());
+        }
+        return array();
+    }
+
+    public function addRoutemapAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("route-map")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->route-maps->route-map->Add();
+            $node->setNodes($this->request->getPost("route-map"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "route-map", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+
+    public function delRoutemapAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->route-maps->route-map->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function setRoutemapAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("route-map")) {
+            $mdlRoutemap = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlRoutemap->getNodeByReference('route-maps.route-map.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $route-mapInfo = $this->request->getPost("route-map");
+                    $node->setNodes($route-mapInfo);
+                    $valMsgs = $mdlRoutemap->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "route-map", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlRoutemap->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
+  
     public function toggle_handler($uuid, $elements, $element)
     {
         $result = array("result" => "failed");
