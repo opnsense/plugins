@@ -85,6 +85,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <name type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </name>                           
                         <number type="IntegerField">
                                 <default>1</default>
                                 <Required>Y</Required>
@@ -134,7 +138,7 @@
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>aspaths.aspath</items>
-                                                <display>number</display>
+                                                <display>name</display>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related item not found</ValidationMessage>
