@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
-    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Router Maps') }}</a></li>    
+    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>    
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
@@ -101,7 +101,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>
 
-    <div id="aspaths" class="tab-pane fade in">
+    <div id="routemaps" class="tab-pane fade in">
         <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
