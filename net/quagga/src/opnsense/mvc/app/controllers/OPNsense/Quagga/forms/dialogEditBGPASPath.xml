@@ -1,21 +1,21 @@
 <form>
   <field>
-    <id>as-path.enabled</id>
+    <id>aspath.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
   </field>
   <field>
-    <id>as-path.number</id>
+    <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
   </field>
   <field>
-    <id>as-path.action</id>
+    <id>aspath.action</id>
     <label>Action</label>
     <type>select_multiple</type>
   </field>
   <field>
-    <id>as-path.as</id>
+    <id>aspath.as</id>
     <label>AS</label>
     <type>text</type>
   </field>
