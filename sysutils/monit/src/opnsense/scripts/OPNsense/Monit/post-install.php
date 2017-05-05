@@ -81,6 +81,9 @@ $alertSettings = array();
 if (!empty($cfgObj->notifications->smtp->notifyemailaddress)) {
     $alertSettings['recipient'] = $cfgObj->notifications->smtp->notifyemailaddress;
 }
+if (!empty($cfgObj->notifications->smtp->fromaddress)) {
+	$alertSettings['format'] = 'from: ' . $cfgObj->notifications->smtp->fromaddress;
+}
 
 // define some tests
 $defaultTests = array(
