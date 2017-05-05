@@ -1,21 +1,21 @@
 <form>
   <field>
-    <id>aspath.enabled</id>
+    <id>as-path.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
   </field>
   <field>
-    <id>aspath.number</id>
+    <id>as-path.number</id>
     <label>Number</label>
     <type>text</type>
   </field>
   <field>
-    <id>aspath.action</id>
+    <id>as-path.action</id>
     <label>Remote AS</label>
     <type>select_multiple</type>
   </field>
   <field>
-    <id>aspath.as</id>
+    <id>as-path.as</id>
     <label>AS</label>
     <type>text</type>
   </field>
