@@ -67,8 +67,8 @@
                         </defaultoriginate>
                 </neighbor>
         </neighbors>
-        <as-paths>
-                <as-path type="ArrayField">
+        <aspaths>
+                <aspath type="ArrayField">
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
@@ -93,10 +93,10 @@
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </as>
-                </as-path> 
-        </as-paths>
-        <route-maps>
-                <route-map type="ArrayField">
+                </aspath> 
+        </aspaths>
+        <routemaps>
+                <routemap type="ArrayField">
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
@@ -127,7 +127,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </set>
-                </route-map> 
-        </route-maps>
+                </routemap> 
+        </routemaps>
     </items>
 </model>
