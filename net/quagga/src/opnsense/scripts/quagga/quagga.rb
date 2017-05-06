@@ -21,9 +21,13 @@ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =end
+
 require 'json'
 require 'shellwords'
 require 'pp'
+
+$QUAGGA_DEBUG = false
+
 class VTYSH
   def initialize(path = '/usr/local/bin/vtysh')
     @path = path
@@ -189,6 +193,7 @@ class OSPF
           # make sure there is an array to write in
           current_if[:unparsed] ||= []
           current_if[:unparsed] << line
+          puts line if $QUAGGA_DEBUG
         end
       end
     end
@@ -229,7 +234,7 @@ class OSPF
           db[router]['external_states'] ||= []
           qta = nil
         else
-          $stderr.puts "unknown heading"
+          puts "unknown heading" if $QUAGGA_DEBUG
         end
       else
         if qta == nil
@@ -286,7 +291,7 @@ class OSPF
           last_line = {ip: $1, cost: $2.to_i, area: $3, asbr: (", ASBR" == $4), type: 'R'}
           route[heading] << last_line
         else
-          #puts line
+          puts line if $QUAGGA_DEBUG
         end
       end
     end
@@ -328,8 +333,7 @@ class OSPF
       when ""
         break
       else
-        # debug
-        #puts line
+        puts line if $QUAGGA_DEBUG
       end
     end
     # general overview has ended - now the area overviews come
@@ -358,7 +362,7 @@ class OSPF
       when "Area has no authentication"
         current_area[:auth] = "none"
       else
-        #puts line
+        puts line if $QUAGGA_DEBUG
       end
     end
     overview
@@ -456,7 +460,7 @@ class OSPFv3
         break
       else
         # debug
-        #puts line
+        puts line if $QUAGGA_DEBUG
       end
     end
     # general overview has ended - now the area overviews come
@@ -472,7 +476,7 @@ class OSPFv3
       when /Number of Area scoped LSAs is (.*)/
         current_area[:number_lsas] = $1.to_i
       else
-        puts line
+        puts line if $QUAGGA_DEBUG
       end
     end
     overview
@@ -564,8 +568,72 @@ class OSPFv3
     database
   end
   
+  def interface
+    lines = @vtysh.execute("show ipv6 ospf6 interface").lines
+    int = {}
+    current_if = {}
+    while line = lines.shift
+      if line.length > 5
+        case line.strip
+        when /(\S+) is (down|up), type ([A-Z]+)/
+          current_if =  int[$1] = {up: ($2 == "up" ? true : false),
+                                   type: $3,
+                                   enabled: true}
+        when /Interface ID: (\d+)/
+          current_if[:id] = $1.to_i
+        when /OSPF not enabled on this interface/
+          current_if[:enabled] = false
+        when /Instance ID (\d+), Interface MTU (\d+) \(autodetect: (\d+)\)/
+          current_if[:instance_id] = $1.to_i
+          current_if[:interface_mtu] = $2.to_i
+          current_if[:interface_mtu_autodetect] = $3.to_i
+        when "Internet Address:"
+          # ignore
+        when /(inet |inet6): (\S+)/
+          current_if[:IPv6] ||= []
+          current_if[:IPv4] ||= []
+          family = $1 == 'inet6' ? :IPv6 : :IPv4
+          address = $2
+          current_if[family] << address
+        when /MTU mismatch detection: (en|dis)abled/
+          current_if[:mtu_mismatch_detection] = $1 == 'en'
+        when /DR: (\S+) BDR: (\S+)/
+          current_if[:designated_router] = $1
+          current_if[:backup_designated_router] = $2
+        when /State (\S+), Transmit Delay (\d+) sec, Priority (\d+)/
+          current_if[:state] = $1
+          current_if[:transmit_delay] = $2.to_i
+          current_if[:priority] = $3.to_i
+        when /Number of I\/F scoped LSAs is (\d+)/
+          current_if[:number_if_scoped_lsas] = $1.to_i
+        when /(\d+) Pending LSAs for (\S+) in Time ([\d:]+)(?: (.*))/
+          current_if[:pending_lsas] ||= {}
+          current_if[:pending_lsas][$2] = {time: $3,
+                                           count: $1,
+                                           flags: $4}
+        when "Timer intervals configured:"
+          # ignore
+        when /Hello (\d+), Dead (\d+), Retransmit (\d+)/
+          current_if[:timers] = {hello: $1.to_i,
+                                 dead: $2.to_i,
+                                 retransmit: $3.to_i }
+        when /Area ID (\S+), Cost (\d+)/
+          current_if[:area_cost] ||= []
+          current_if[:area_cost] << {area: $1, cost: $2.to_i }
+        else
+          puts line if $QUAGGA_DEBUG
+        end
+      end
+    end
+    int
+  end
+  
   private
   def database_qta(lines)
+    # DON'T REMOVE THE SPACES!!!
+    # For some reasons the fields are right aligned with the fields which makes it hard
+    # to parse. I don't know a better way to get the correct offset except automatically.
+    # (Detection of semantic of the fields)
     qta = QuaggaTableReader.new(["Type", "LSId", "AdvRouter", "     Age", "  SeqNum","                       Payload"])
     lines.shift
     qta.read_headline(lines.shift)
@@ -578,7 +646,8 @@ options = {}
 supported_sections = %w{general ospf}
 OptionParser.new do |opts|
   opts.banner = "Usage: #{__FILE__} -s section [section specific params]"
-  opts.on("-d", "--ospf-database") do |od|
+  #### OSPFv2
+  opts.on("-d", "--ospf-database", "Prints the OSPF Database") do |od|
     options[:ospf_database] = od
   end
   opts.on("-r", "--ospf-route", 'print OSPF routing table') do |od|
@@ -593,14 +662,36 @@ OptionParser.new do |opts|
   opts.on("-o", "--ospf-overview", "Print OSPF summary") do |od|
     options[:ospf_overview] = od
   end
+  #### OSPFv3
+    opts.on("-D", "--ospfv3-database", "Prints the OSPFv3 Database") do |od|
+    options[:ospfv3_database] = od
+  end
+  opts.on("-t", "--ospfv3-route", 'print OSPFv3 routing table') do |od|
+    options[:ospfv3_route] = od
+  end
+  opts.on("-I", "--ospfv3-interface", 'print OSPFv3 interface information') do |od|
+    options[:ospfv3_interface] = od
+  end
+  opts.on("-N", "--ospfv3-neighbor", 'Print OSPFv3 neighbors') do |od|
+    options[:ospfv3_neighbors] = od
+  end
+  opts.on("-O", "--ospfv3-overview", "Print OSPFv3 summary") do |od|
+    options[:ospfv3_overview] = od
+  end
+  #### general things about routing
   opts.on("-R", "--general-routes", "Print Routing Table") do |od|
     options[:general_routes] = od
   end
+  ### BGP
   opts.on("-B", "--bgp-overview", "Print an overview of BGP") do |od|
     options[:bgp_overview] = od
   end
+  ### program opts
   opts.on("-H", "--human-readable", "Print the output human readable (not json)") do |od|
     options[:human_readable] = od
+  end
+  opts.on("-X", "--debug", "Prints debug output") do |od|
+    $QUAGGA_DEBUG = true
   end
   opts.on("-h", "--help", "Prints this help") do
     puts opts
@@ -619,9 +710,12 @@ options.keys.each do |k|
   # if it is true
   if options[k]
     begin
-      if k.to_s.include? 'ospf'
+      if k.to_s.include? 'ospf_'
         cmd = k.to_s.split('_').last
         result[k] = ospf.send(cmd)
+      elsif k.to_s.include? 'ospfv3'
+        cmd = k.to_s.split('_').last
+        result[k] = ospfv3.send(cmd)
       elsif k.to_s.include? 'general'
         cmd = k.to_s.split('_').last
         result[k] = general.send(cmd)
@@ -631,12 +725,11 @@ options.keys.each do |k|
       end
     rescue # do nothing on an error
       result[k] = "error"
-      #puts $!
+      puts $! if $QUAGGA_DEBUG
     end
   end
 end
 
-result[:ospf_database] = ospfv3.database
 # ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route, ospf.overview
 if options[:human_readable]
   pp result
