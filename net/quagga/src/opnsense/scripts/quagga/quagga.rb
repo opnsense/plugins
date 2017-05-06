@@ -531,6 +531,46 @@ class OSPFv3
     end
     neighbor
   end
+  def database
+    lines = @vtysh.execute("show ipv6 ospf6 database").lines
+    database = {}
+    mode = :none
+    area = ''
+    qta = :none
+    while line = lines.shift&.strip
+      case line
+      when /Area Scoped Link State Database \(Area (.*)\)/
+        mode = :scoped_link_db
+        database[:scoped_link_db] ||= {}
+        database[:scoped_link_db][$1] = area = []
+        qta = database_qta(lines)
+      when /I\/F Scoped Link State Database \(I\/F (\S+) in Area (.*)\)/
+        mode = :if_scoped_link_state
+        database[:if_scoped_link_state] ||= {}
+        database[:if_scoped_link_state][$1] ||= {}
+        area = database[:if_scoped_link_state][$1][$2] ||= []
+        qta= database_qta(lines)
+      when "AS Scoped Link State Database"
+        mode = :as_scoped
+        area = database[:as_scoped] ||= []
+        qta=database_qta(lines)
+        # note: i have no data for this but i think it looks like the others
+      else
+        if line.length > 10
+          area << qta.read_entry(line)
+        end
+      end
+    end
+    database
+  end
+  
+  private
+  def database_qta(lines)
+    qta = QuaggaTableReader.new(["Type", "LSId", "AdvRouter", "     Age", "  SeqNum","                       Payload"])
+    lines.shift
+    qta.read_headline(lines.shift)
+    qta
+  end
 end
 
 require 'optparse'
@@ -596,6 +636,7 @@ options.keys.each do |k|
   end
 end
 
+result[:ospf_database] = ospfv3.database
 # ospf.database, general.routes, ospf.interface, ospf.neighbors, ospf.route, ospf.overview
 if options[:human_readable]
   pp result
