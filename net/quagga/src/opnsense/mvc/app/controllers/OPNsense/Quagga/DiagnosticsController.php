@@ -37,6 +37,11 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->title = gettext("Diagnostics: OSPF");
         $this->view->pick('OPNsense/Quagga/diagnosticsospf');
     }
+    public function ospfv3Action()
+    {
+        $this->view->title = gettext("Diagnostics: OSPFv3");
+        $this->view->pick('OPNsense/Quagga/diagnosticsospfv3');
+    }
     public function generalAction()
     {
         $this->view->title = gettext("Diagnostics: General");
