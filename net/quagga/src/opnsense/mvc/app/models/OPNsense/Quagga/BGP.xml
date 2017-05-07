@@ -76,6 +76,15 @@
                                 <ValidationMessage>Related server item not found</ValidationMessage>
                                 <Multiple>Y</Multiple>
                                 <Required>N</Required>
+                                <rdirection type="OptionField">
+                                        <Required>N</Required>
+                                        <multiple>N</multiple>
+                                        <default></default>
+                                        <OptionValues>
+                                            <in>In</in>
+                                            <out>Out</out>
+                                        </OptionValues>
+                                </rdirection>    
                         </linkedRoutemap>
                 </neighbor>
         </neighbors>
