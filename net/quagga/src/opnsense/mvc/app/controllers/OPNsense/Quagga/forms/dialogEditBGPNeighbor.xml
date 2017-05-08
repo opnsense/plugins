@@ -42,8 +42,6 @@
   <field>
     <id>neighbor.linkedRoutemap.rdirection</id>
     <label>Direction</label>
-    <type>select_multiple</type>
-    <style>tokenize</style>
-    <allownew>true</allownew>
+    <type>dropdown</type>
   </field>  
 </form>
