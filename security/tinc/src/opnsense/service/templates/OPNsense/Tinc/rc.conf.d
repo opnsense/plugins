@@ -5,7 +5,7 @@
 {%   endif %}
 {% endfor %}
 {% if networks|length > 0 %}
-OPNtincd_enable=YES
+ostincd_enable=YES
 {% else %}
-OPNtincd_enable=NO
+ostincd_enable=NO
 {% endif %}
