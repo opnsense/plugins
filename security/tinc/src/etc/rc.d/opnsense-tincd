@@ -2,7 +2,7 @@
 #
 # $FreeBSD$
 #
-# PROVIDE: ostincd
+# PROVIDE: opnsense-tincd
 # REQUIRE: SERVERS
 # KEYWORD: shutdown
 #
@@ -15,7 +15,7 @@ stop_cmd=ostincd_stop
 start_cmd=ostincd_start
 rcvar=ostincd_enable
 
-load_rc_config $name
+load_rc_config opnsense-tincd
 
 [ -z "$ostincd_enable" ] && ostincd_enable="NO"
 
