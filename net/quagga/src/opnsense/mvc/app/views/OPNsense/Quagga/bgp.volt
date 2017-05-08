@@ -169,7 +169,7 @@ $(document).ready(function() {
       'set':'/api/quagga/bgp/setAspath/',
       'add':'/api/quagga/bgp/addAspath/',
       'del':'/api/quagga/bgp/delAspath/',
-      'toggle':'/api/quagga/bgp/toggleNeighbor/',
+      'toggle':'/api/quagga/bgp/toggleAspath/',
       'options':{selection:false, multiSelect:false}
     }
   );
@@ -179,7 +179,7 @@ $(document).ready(function() {
       'set':'/api/quagga/bgp/setRoutemap/',
       'add':'/api/quagga/bgp/addRoutemap/',
       'del':'/api/quagga/bgp/delRoutemap/',
-      'toggle':'/api/quagga/bgp/toggleNeighbor/',
+      'toggle':'/api/quagga/bgp/toggleRoutemap/',
       'options':{selection:false, multiSelect:false}
     }
   );                
