@@ -81,8 +81,8 @@
                                         <multiple>N</multiple>
                                         <default></default>
                                         <OptionValues>
-                                            <in>In</in>
-                                            <out>Out</out>
+                                            <input>In</input>
+                                            <output>Output</output>
                                         </OptionValues>
                                 </rdirection>    
                         </linkedRoutemap>
