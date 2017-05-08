@@ -9,7 +9,7 @@
 
 . /etc/rc.subr
 
-name=opnsense-tincd
+name=opnsensetincd
 
 stop_cmd=tincd_stop
 start_cmd=tincd_start
