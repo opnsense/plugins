@@ -1,2 +1,2 @@
 tinc_deploy.xml:/usr/local/etc/tinc_deploy.xml
-rc.conf.d:/etc/rc.conf.d/opnsense-tincd
+rc.conf.d:/etc/rc.conf.d/opnsensetincd
