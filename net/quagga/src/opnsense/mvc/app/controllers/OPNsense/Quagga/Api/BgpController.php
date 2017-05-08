@@ -241,21 +241,21 @@ class BgpController extends ApiMutableModelControllerBase
     public function setAspathAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("aspath")) {
-            $mdlAspath = $this->getModel();
+            $mdlNeighbor = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlAspath->getNodeByReference('aspaths.aspath.' . $uuid);
+                $node = $mdlNeighbor->getNodeByReference('aspaths.aspath.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
                     $aspathInfo = $this->request->getPost("aspath");
                     $node->setNodes($aspathInfo);
-                    $valMsgs = $mdlAspath->performValidation();
+                    $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "aspath", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
-                        $mdlAspath->serializeToConfig();
+                        $mdlNeighbor->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
                     }
@@ -337,21 +337,21 @@ class BgpController extends ApiMutableModelControllerBase
     public function setRoutemapAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("routemap")) {
-            $mdlRoutemap = $this->getModel();
+            $mdlNeighbor = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlRoutemap->getNodeByReference('routemaps.routemap.' . $uuid);
+                $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
                     $routemapInfo = $this->request->getPost("routemap");
                     $node->setNodes($routemapInfo);
-                    $valMsgs = $mdlRoutemap->performValidation();
+                    $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "routemap", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
-                        $mdlRoutemap->serializeToConfig();
+                        $mdlNeighbor->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
                     }
