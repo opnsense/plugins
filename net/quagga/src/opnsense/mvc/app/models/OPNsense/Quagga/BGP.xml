@@ -65,7 +65,7 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </defaultoriginate>
-                        <linkedRoutemap type="ModelRelationField">
+                        <linkedRoutemapIn type="ModelRelationField">
                                 <Model>
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
@@ -73,11 +73,23 @@
                                                 <display>name</display>
                                         </template>
                                 </Model>
-                                <ValidationMessage>Related server item not found</ValidationMessage>
-                                <Multiple>Y</Multiple>
+                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
                                 <Required>N</Required> 
-                        </linkedRoutemap>
-                </neighbor>
+                        </linkedRoutemapIn>
+                        <linkedRoutemapOut type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>routemaps.routemap</items>
+                                                <display>name</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required> 
+                        </linkedRoutemapOut>
+            </neighbor>
         </neighbors>
         <aspaths>
                 <aspath type="ArrayField">
