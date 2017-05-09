@@ -57,7 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="updatesource" data-type="string" data-visible="true">{{ lang._('Update Source Address') }}</th>
                     <th data-column-id="nexthopself" data-type="string" data-formatter="rowtoggle">{{ lang._('Next Hop Self') }}</th>
                     <th data-column-id="defaultoriginate" data-type="string" data-formatter="rowtoggle">{{ lang._('Default Originate') }}</th>
-                    <th data-column-id="routemap" data-type="string" data-visible="true">{{ lang._('Route Map') }}</th> 
+                    <th data-column-id="linkedRoutemap" data-type="string" data-visible="true">{{ lang._('Route Map') }}</th> 
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
