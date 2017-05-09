@@ -81,7 +81,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->neighbors->neighbor);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate", "routemap" )
+            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate", "linkedRoutemap" )
         );
     }
 
