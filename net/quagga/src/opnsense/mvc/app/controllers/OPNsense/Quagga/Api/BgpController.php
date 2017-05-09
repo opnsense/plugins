@@ -118,6 +118,7 @@ class BgpController extends ApiMutableModelControllerBase
                 // save config if validated correctly
                 $mdlBGP->serializeToConfig();
                 Config::getInstance()->save();
+                unset($result['validations']);
                 $result["result"] = "saved";
             }
         }
@@ -214,6 +215,7 @@ class BgpController extends ApiMutableModelControllerBase
                 // save config if validated correctly
                 $mdlBGP->serializeToConfig();
                 Config::getInstance()->save();
+                unset($result['validations']);
                 $result["result"] = "saved";
             }
         }
@@ -310,6 +312,7 @@ class BgpController extends ApiMutableModelControllerBase
                 // save config if validated correctly
                 $mdlBGP->serializeToConfig();
                 Config::getInstance()->save();
+                unset($result['validations']);
                 $result["result"] = "saved";
             }
         }
