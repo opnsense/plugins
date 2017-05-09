@@ -33,10 +33,15 @@
     <type>checkbox</type>
   </field>
   <field>
-    <id>neighbor.linkedRoutemap</id>
-    <label>Route-Map</label>
-    <type>select_multiple</type>
-    <style>tokenize</style>
-    <allownew>true</allownew>
+    <id>neighbor.linkedRoutemapIn</id>
+    <label>Route-Map In</label>
+    <type>dropdown</type>
+    <help>Route-Map for Inbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedRoutemapOut</id>
+    <label>Route-Map Out</label>
+    <type>dropdown</type>
+    <help>Route-Map for Outbound direction</help>
   </field>
 </form>
