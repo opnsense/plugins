@@ -28,18 +28,78 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <script type="text/x-template" id="overviewtpl">
+<h2>{{ lang._('General') }}</h2>
+<table>
+  <tbody>
+    <tr>
+      <td>{{ lang._("Router ID") }}</td>
+      <td><%= ospfv3_overview['router_id'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._("Routing Process") }}</td>
+      <td><%= ospfv3_overview['routing_process'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._("Running Time") }}</td>
+      <td><%= ospfv3_overview['running_time'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._("Initial SPF scheduling delay") }}</td>
+      <td><%= ospfv3_overview['intital_spf_scheduling_delay'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._("Hold Time") }}</td>
+      <td>
+        {{ lang._("Minimum Hold Time") }} <%= ospfv3_overview['hold_time']['min'] %><br/>
+        {{ lang._("Maximum Hold Time:") }} <%= ospfv3_overview['hold_time']['max'] %>
+      </td>
+    </tr>
+    <tr>
+      <td>{{ lang._("SPF timer") }}</td>
+      <td><%= ospfv3_overview['spf_timer'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._("Number Of Scoped AS") }}</td>
+      <td><%= ospfv3_overview['number_as_scoped'] %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._("Number Of Areas") }}</td>
+      <td><%= ospfv3_overview['number_of_areas'] %></td>
+    </tr>
+  </tbody>
+</table>
+<h2>{{ lang._('Areas') }}</h2>
+<% if (ospfv3_overview['areas']) { %>
+  <% areas = ospfv3_overview['areas'] %>
+  <% _.each(_.keys(areas), function(areaname) { %>
+    <% area = areas[areaname] %>
+    <h3><%= areaname %></h3>
+    <table>
+      <tbody>
+        <tr>
+          <td>{{ lang._("Number Of LSAs") }}</td>
+          <td><%= area['number_lsas'] %></td>
+        </tr>
+        <tr>
+          <td>{{ lang._("Interfaces") }}</td>
+          <td><%= _.join(area['interfaces'], ", ") %></td>
+        </tr>
+      </tbody>
+    </table>
+  <% }) %>
+<% } %>
 </script>
 
 <script type="text/x-template" id="routestpl">
   <table>
     <thead>
       <tr>
-        <td>{{ lang._('Flags 1') }}</td>
-        <td>{{ lang._('Flags 2') }}</td>
-        <td>{{ lang._('Network') }}</td>
-        <td>{{ lang._('Gateway') }}</td>
-        <td>{{ lang._('Interface') }}</td>
-        <td>{{ lang._('Time') }}</td>
+        <th>{{ lang._('Flags 1') }}</th>
+        <th>{{ lang._('Flags 2') }}</th>
+        <th>{{ lang._('Network') }}</th>
+        <th>{{ lang._('Gateway') }}</th>
+        <th>{{ lang._('Interface') }}</th>
+        <th>{{ lang._('Time') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -58,11 +118,103 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <script type="text/x-template" id="databasetpl">
+  <% if(ospfv3_database['scoped_link_db']) { %>
+    <h2>{{ lang._('Scoped Link Database') }}</h2>
+    <% _.each(_.keys(ospfv3_database['scoped_link_db']), function(areaname) { %>
+      <% area = ospfv3_database['scoped_link_db'][areaname] %>
+      <h3><% areaname %></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>{{ lang._('Type') }}</th>
+            <th>{{ lang._('LS ID') }}</th>
+            <th>{{ lang._('Advertising Router') }}</th>
+            <th>{{ lang._('Age') }}</th>
+            <th>{{ lang._('Sequence Number') }}</th>
+            <th>{{ lang._('Payload') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(area, function(entry) { %>
+            <tr>
+              <td><%= entry['Type'] %></td>
+              <td><%= entry['LSId'] %></td>
+              <td><%= entry['AdvRouter'] %></td>
+              <td><%= entry['Age'] %></td>
+              <td><%= entry['SeqNum'] %></td>
+              <td><%= entry['Payload'] %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% }) %>
+  <% } %>
+  <% if(ospfv3_database['if_scoped_link_state']) { %>
+    <h2>{{ lang._('Interface Scoped Link Database') }}</h2>
+    <% _.each(_.keys(ospfv3_database['if_scoped_link_state']), function(intfname) { %>
+      <% intf = ospfv3_database['if_scoped_link_state'][intfname] %>
+      <% _.each(_.keys(intf), function(areaname) { %>
+        <% area = intf[areaname] %>
+        <h3><%= intfname %> / <%= areaname %></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>{{ lang._('Type') }}</th>
+              <th>{{ lang._('LS ID') }}</th>
+              <th>{{ lang._('Advertising Router') }}</th>
+              <th>{{ lang._('Age') }}</th>
+              <th>{{ lang._('Sequence Number') }}</th>
+              <th>{{ lang._('Payload') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% _.each(area, function(entry) { %>
+              <tr>
+                <td><%= entry['Type'] %></td>
+                <td><%= entry['LSId'] %></td>
+                <td><%= entry['AdvRouter'] %></td>
+                <td><%= entry['Age'] %></td>
+                <td><%= entry['SeqNum'] %></td>
+                <td><%= entry['Payload'] %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% }) %>
+    <% }) %>
+  <% } %>
+  <% if (ospfv3_database['as_scoped']) { %>
+    <h2>{{ lang._('AS Scpoed') }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>{{ lang._('Type') }}</th>
+          <th>{{ lang._('LS ID') }}</th>
+          <th>{{ lang._('Advertising Router') }}</th>
+          <th>{{ lang._('Age') }}</th>
+          <th>{{ lang._('Sequence Number') }}</th>
+          <th>{{ lang._('Payload') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(ospfv3_database['as_scoped'], function(entry) { %>
+          <tr>
+            <td><%= entry['Type'] %></td>
+            <td><%= entry['LSId'] %></td>
+            <td><%= entry['AdvRouter'] %></td>
+            <td><%= entry['Age'] %></td>
+            <td><%= entry['SeqNum'] %></td>
+            <td><%= entry['Payload'] %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
 </script>
 
 <script type="text/x-template" id="interfacetpl">
-<% _.each(_.keys(ospf_interface), function(interfacename) { %>
-  <% int = ospf_interface[interfacename] %>
+<% _.each(_.keys(ospfv3_interface), function(interfacename) { %>
+  <% int = ospfv3_interface[interfacename] %>
   <h2><%= interfacename %></h2>
   <table>
     <tbody>
@@ -72,13 +224,19 @@ POSSIBILITY OF SUCH DAMAGE.
           <td>
             <% if (int[propertyname] === false || int[propertyname] === true)  { %>
               <%= checkmark(int[propertyname]) %>
-            <% } else if (propertyname == 'intervals')  { %>
-              {{ lang._('Hello Interval:') }} <%= int[propertyname]['hello'] %><br />
-              {{ lang._('Dead Interval:') }} <%= int[propertyname]['dead'] %><br />
-              {{ lang._('Wait Interval:') }} <%= int[propertyname]['wait'] %><br />
-              {{ lang._('Retransmit Interval:') }} <%= int[propertyname]['retransmit'] %>
+            <% } else if (propertyname == 'timers')  { %>
+              {{ lang._('Hello Timer:') }} <%= int[propertyname]['hello'] %><br />
+              {{ lang._('Dead Timer:') }} <%= int[propertyname]['dead'] %><br />
+              {{ lang._('Wait Timer:') }} <%= int[propertyname]['wait'] %><br />
+              {{ lang._('Retransmit Timer:') }} <%= int[propertyname]['retransmit'] %>
+            <% } else if (propertyname == 'IPv6' || propertyname == 'IPv4')  { %>
+              <%= _.join(int[propertyname],'<br />') %><br />
+            <% } else if (propertyname == 'area_cost')  { %>
+              <% _.each(int[propertyname], function (ac) { %>
+                <%= ac['area'] %>: <%= ac['cost'] %><br />
+              <% }) %> 
             <% } else { %>
-              <%= int[propertyname] %>
+              <%= translate(int[propertyname]) %>
             <% } %>
           </td>
         </tr>
@@ -120,6 +278,21 @@ function translate(data)
   tr['hello_due_in'] = '{{ lang._('Hello Due In') }}'
   tr['neighbor_count'] = '{{ lang._('Neighbor Count') }}'
   tr['adjacent_neighbor_count'] = '{{ lang._('Adjacent Neighbor Count') }}'
+  tr['timers'] = '{{ lang._('Timers') }}'
+  tr['number_if_scoped_lsas'] = '{{ lang._('Number Of Interface Scoped LSAs') }}'
+  tr['pending_lsas'] = '{{ lang._('Pending LSAs') }}'
+  tr['area_cost'] = '{{ lang._('Area Cost') }}'
+  tr['instance_id'] = '{{ lang._('Instance ID') }}'
+  tr['interface_mtu'] = '{{ lang._('Interface MTU') }}'
+  tr['type'] = '{{ lang._('Type') }}'
+  tr['id'] = '{{ lang._('ID') }}'
+  tr['up'] = '{{ lang._('Up') }}'
+  tr['DR'] = '{{ lang._('Designated Router') }}'
+  tr['BDR'] = '{{ lang._('Backup Designated Router') }}'
+  tr['BROADCAST'] = '{{ lang._('Broadcast') }}'
+  tr['UNKNOWN'] = '{{ lang._('Unknown') }}'
+  tr['POINTOPOINT'] = '{{ lang._('Point to Point') }}'
+  tr['LOOPBACK'] = '{{ lang._('Loopback') }}'
   return _.has(tr,data) ? tr[data] : data
 }
 
@@ -145,13 +318,13 @@ $(document).ready(function() {
     content = _.template($('#routestpl').html())(data['response'])
     $('#routing').html(content)
   });
-  ajaxCall(url="/api/quagga/diagnostics/ospfv3neighbor", sendData={}, callback=function(data,status) {
+  /*ajaxCall(url="/api/quagga/diagnostics/ospfv3neighbor", sendData={}, callback=function(data,status) {
     content = _.template($('#neighbortpl').html())(data['response'])
     $('#neighbor').html(content)
-  });
+  });*/
   ajaxCall(url="/api/quagga/diagnostics/ospfv3interface", sendData={}, callback=function(data,status) {
-    //content = _.template($('#interfacetpl').html())(data['response'])
-    //$('#interface').html(content)
+    content = _.template($('#interfacetpl').html())(data['response'])
+    $('#interface').html(content)
   });
 
 
@@ -163,7 +336,7 @@ $(document).ready(function() {
     <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
     <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
     <li><a data-toggle="tab" href="#database">{{ lang._('Database') }}</a></li>
-    <li><a data-toggle="tab" href="#neighbor">{{ lang._('Neighbor') }}</a></li>
+    <!--<li><a data-toggle="tab" href="#neighbor">{{ lang._('Neighbor') }}</a></li>-->
     <li><a data-toggle="tab" href="#interface">{{ lang._('Interface') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
