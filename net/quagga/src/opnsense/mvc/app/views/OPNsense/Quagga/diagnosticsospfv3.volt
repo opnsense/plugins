@@ -30,123 +30,36 @@ POSSIBILITY OF SUCH DAMAGE.
 <script type="text/x-template" id="overviewtpl">
 </script>
 
+<script type="text/x-template" id="routestpl">
+  <table>
+    <thead>
+      <tr>
+        <td>{{ lang._('Flags 1') }}</td>
+        <td>{{ lang._('Flags 2') }}</td>
+        <td>{{ lang._('Network') }}</td>
+        <td>{{ lang._('Gateway') }}</td>
+        <td>{{ lang._('Interface') }}</td>
+        <td>{{ lang._('Time') }}</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(ospfv3_route, function (route) { %>
+        <tr>
+          <td><%= route['f1'] %></td>
+          <td><%= route['f2'] %></td>
+          <td><%= route['network'] %></td>
+          <td><%= route['gateway'] %></td>
+          <td><%= route['interface'] %></td>
+          <td><%= route['time'] %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</script>
+
 <script type="text/x-template" id="databasetpl">
 </script>
 
-<script type="text/x-template" id="routestpl">
-  <h2>{{ lang._('Network Routing Table') }}</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>{{ lang._('Type') }}</th>
-        <th>{{ lang._('Network') }}</th>
-        <th>{{ lang._('Cost') }}</th>
-        <th>{{ lang._('Area') }}</th>
-        <th>{{ lang._('Via') }}</th>
-        <th>{{ lang._('Via interface') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% _.each(ospf_route['OSPF network routing table'], function(entry) { %>
-        <tr>
-          <td><%= entry["type"] %></td>
-          <td><%= entry["network"] %></td>
-          <td><%= entry["cost"] %></td>
-          <td><%= entry["area"] %></td>
-          <td><%= translate(entry["via"]) %></td>
-          <td><%= entry["via_interface"] %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
-  <h2>{{ lang._('Router Routing Table') }}</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>{{ lang._('Type') }}</th>
-        <th>{{ lang._('Network') }}</th>
-        <th>{{ lang._('Cost') }}</th>
-        <th>{{ lang._('Area') }}</th>
-        <th>{{ lang._('ASBR') }}</th>
-        <th>{{ lang._('Via') }}</th>
-        <th>{{ lang._('Via interface') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% _.each(ospf_route['OSPF router routing table'], function(entry) { %>
-        <tr>
-          <td><%= entry["type"] %></td>
-          <td><%= entry["network"] %></td>
-          <td><%= entry["cost"] %></td>
-          <td><%= entry["area"] %></td>
-          <td><%= checkmark(entry["asbr"]) %></td>
-          <td><%= translate(entry["via"]) %></td>
-          <td><%= entry["via_interface"] %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
-  <h2>{{ lang._('External Routing Table') }}</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>{{ lang._('Type') }}</th>
-        <th>{{ lang._('Network') }}</th>
-        <th>{{ lang._('Cost') }}</th>
-        <th>{{ lang._('Area') }}</th>
-        <th>{{ lang._('Tag') }}</th>
-        <th>{{ lang._('Via') }}</th>
-        <th>{{ lang._('Via interface') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% _.each(ospf_route['OSPF external routing table'], function(entry) { %>
-        <tr>
-          <td><%= entry["type"] %></td>
-          <td><%= entry["network"] %></td>
-          <td><%= entry["cost"] %></td>
-          <td><%= entry["area"] %></td>
-          <td><%= entry["tag"] %></td>
-          <td><%= translate(entry["via"]) %></td>
-          <td><%= entry["via_interface"] %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
-</script>
-
-<script type="text/x-template" id="neighbortpl">
-  <table>
-    <thead>
-      <tr>
-        <th>{{ lang._('Neighbor ID') }}</th>
-        <th>{{ lang._('Priority') }}</th>
-        <th>{{ lang._('State') }}</th>
-        <th>{{ lang._('Dead Time') }}</th>
-        <th>{{ lang._('Address') }}</th>
-        <th>{{ lang._('Interface') }}</th>
-        <th>RXmtL</th>
-        <th>RqstL</th>
-        <th>DBsmL</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% _.each(ospf_neighbors, function(entry) { %>
-        <tr>
-          <td><%= entry["Neighbor ID"] %></td>
-          <td><%= entry["Pri"] %></td>
-          <td><%= translate(entry["State"]) %></td>
-          <td><%= entry["Dead Time"] %></td>
-          <td><%= entry["Address"] %></td>
-          <td><%= entry["Interface"] %></td>
-          <td><%= entry["RXmtL"] %></td>
-          <td><%= entry["RqstL"] %></td>
-          <td><%= entry["DBsmL"] %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
-</script>
 <script type="text/x-template" id="interfacetpl">
 <% _.each(_.keys(ospf_interface), function(interfacename) { %>
   <% int = ospf_interface[interfacename] %>
@@ -237,8 +150,8 @@ $(document).ready(function() {
     $('#neighbor').html(content)
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfv3interface", sendData={}, callback=function(data,status) {
-    content = _.template($('#interfacetpl').html())(data['response'])
-    $('#interface').html(content)
+    //content = _.template($('#interfacetpl').html())(data['response'])
+    //$('#interface').html(content)
   });
 
 
@@ -253,4 +166,15 @@ $(document).ready(function() {
     <li><a data-toggle="tab" href="#neighbor">{{ lang._('Neighbor') }}</a></li>
     <li><a data-toggle="tab" href="#interface">{{ lang._('Interface') }}</a></li>
 </ul>
-
+<div class="tab-content content-box tab-content">
+    <div id="overview" class="tab-pane fade in active">
+    </div>
+    <div id="routing" class="tab-pane fade in">
+    </div>
+    <div id="database" class="tab-pane fade in">
+    </div>
+    <div id="neighbor" class="tab-pane fade in">
+    </div>
+    <div id="interface" class="tab-pane fade in">
+    </div>
+</div>
