@@ -219,27 +219,45 @@ POSSIBILITY OF SUCH DAMAGE.
   <table>
     <tbody>
       <% _.each(_.keys(int), function(propertyname) { %>
-        <tr>
-          <td><%= translate(propertyname) %></td>
-          <td>
-            <% if (int[propertyname] === false || int[propertyname] === true)  { %>
-              <%= checkmark(int[propertyname]) %>
-            <% } else if (propertyname == 'timers')  { %>
-              {{ lang._('Hello Timer:') }} <%= int[propertyname]['hello'] %><br />
-              {{ lang._('Dead Timer:') }} <%= int[propertyname]['dead'] %><br />
-              {{ lang._('Wait Timer:') }} <%= int[propertyname]['wait'] %><br />
-              {{ lang._('Retransmit Timer:') }} <%= int[propertyname]['retransmit'] %>
-            <% } else if (propertyname == 'IPv6' || propertyname == 'IPv4')  { %>
-              <%= _.join(int[propertyname],'<br />') %><br />
-            <% } else if (propertyname == 'area_cost')  { %>
-              <% _.each(int[propertyname], function (ac) { %>
-                <%= ac['area'] %>: <%= ac['cost'] %><br />
-              <% }) %> 
-            <% } else { %>
-              <%= translate(int[propertyname]) %>
-            <% } %>
-          </td>
-        </tr>
+        <% if (propertyname != 'pending_lsas' ) { %>
+          <tr>
+            <td><%= translate(propertyname) %></td>
+            <td>
+              <% if (int[propertyname] === false || int[propertyname] === true)  { %>
+                <%= checkmark(int[propertyname]) %>
+              <% } else if (propertyname == 'timers')  { %>
+                {{ lang._('Hello Timer:') }} <%= int[propertyname]['hello'] %><br />
+                {{ lang._('Dead Timer:') }} <%= int[propertyname]['dead'] %><br />
+                {{ lang._('Wait Timer:') }} <%= int[propertyname]['wait'] %><br />
+                {{ lang._('Retransmit Timer:') }} <%= int[propertyname]['retransmit'] %>
+              <% } else if (propertyname == 'IPv6' || propertyname == 'IPv4')  { %>
+                <%= _.join(int[propertyname],'<br />') %><br />
+              <% } else if (propertyname == 'area_cost')  { %>
+                <% _.each(int[propertyname], function (ac) { %>
+                  <%= ac['area'] %>: <%= ac['cost'] %><br />
+                <% }) %> 
+              <% } else { %>
+                <%= translate(int[propertyname]) %>
+              <% } %>
+            </td>
+          </tr>
+        <% } else { %>
+          <% _.each(_.keys(int[propertyname]), function(lsa) { %>
+          <% mylsa = int[propertyname][lsa] %>
+            <tr>
+              <td><%= lsa %> {{ lang._('Time') }}</td>
+              <td><%= mylsa['time'] %> </td>
+            </tr>
+            <tr>
+              <td><%= lsa %> {{ lang._('Count') }}</td>
+              <td><%= mylsa['Count'] %> </td>
+            </tr>
+            <tr>
+              <td><%= lsa %> {{ lang._('Flags') }}</td>
+              <td><%= mylsa['flags'] %> </td>
+            </tr>
+          <% }) %>
+        <% } %>
       <% }); %>
     </tbody>
   </table>
