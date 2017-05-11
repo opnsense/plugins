@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 "<td>"+value+"</td></tr>");
                             });
                         } else {
-                            $("#infolist").html("<tr><td><br/>{{ lang._('%sError:%s Unable to fetch statistics. Is HAProxy running?') | format('<b>','</b>') }}</td></tr>");
+                            $("#infolist").html("<tr><td><br/>{{ lang._('The statistics could not be fetched. Is HAProxy running?') }}</td></tr>");
                         }
                         $('#processing-dialog').modal('hide');
                     }
