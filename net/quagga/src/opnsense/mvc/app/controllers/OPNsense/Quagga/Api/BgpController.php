@@ -116,6 +116,7 @@ class BgpController extends ApiMutableModelControllerBase
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
+                unset($result['validations']);
                 // save config if validated correctly
                 $mdlBGP->serializeToConfig();
                 Config::getInstance()->save();
