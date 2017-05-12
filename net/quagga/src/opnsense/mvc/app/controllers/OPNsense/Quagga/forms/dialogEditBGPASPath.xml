@@ -3,20 +3,24 @@
     <id>aspath.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <help>Enable / Disable</help>
   </field>
   <field>
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
+    <help>The ACL rule number (1-299)</help>
   </field>
   <field>
     <id>aspath.action</id>
     <label>Action</label>
     <type>select_multiple</type>
+    <help>Action</help>
   </field>
   <field>
     <id>aspath.as</id>
     <label>AS</label>
     <type>text</type>
+    <help>The AS pattern you want to match, regexp allowed. It's not validated so please be careful!</help>
   </field>
 </form>
