@@ -96,11 +96,7 @@
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
-                        </enabled>
-                        <name type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                        </name>                           
+                        </enabled>                         
                         <number type="AutoNumberField">
                                 <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
