@@ -5,11 +5,6 @@
     <type>checkbox</type>
   </field>
   <field>
-    <id>aspath.name</id>
-    <label>Name</label>
-    <type>text</type>
-  </field>  
-  <field>
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
