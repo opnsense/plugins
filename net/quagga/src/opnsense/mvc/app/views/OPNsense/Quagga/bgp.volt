@@ -111,7 +111,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
                     <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('Match') }}</th>
+                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('AS-Path List') }}</th>
                     <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
