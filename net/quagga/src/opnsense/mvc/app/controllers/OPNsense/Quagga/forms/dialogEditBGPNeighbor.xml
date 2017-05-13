@@ -36,12 +36,12 @@
     <id>neighbor.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>
-    <help>Route-Map for Inbound direction</help>
+    <help>Route-Map for inbound direction</help>
   </field>
   <field>
     <id>neighbor.linkedRoutemapOut</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Route-Map for Outbound direction</help>
+    <help>Route-Map for outbound direction</help>
   </field>
 </form>
