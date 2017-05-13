@@ -9,13 +9,13 @@
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Route-map Name</help>
+    <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration.</help>
   </field>
   <field>
     <id>routemap.action</id>
     <label>Action</label>
     <type>select_multiple</type>
-    <help>Action</help>
+    <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
     <id>routemap.id</id>
