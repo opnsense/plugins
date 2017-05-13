@@ -21,7 +21,7 @@
     <id>routemap.id</id>
     <label>ID</label>
     <type>text</type>
-    <help>Route-map ID</help>
+    <help>Route-map ID. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
   </field>
   <field>
     <id>routemap.match</id>
