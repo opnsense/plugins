@@ -15,7 +15,7 @@
     <id>aspath.action</id>
     <label>Action</label>
     <type>select_multiple</type>
-    <help>Action</help>
+    <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
     <id>aspath.as</id>
