@@ -9,7 +9,7 @@
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
-    <help>The ACL rule number (1-299)</help>
+    <help>The ACL rule number (1-299); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL!</help>
   </field>
   <field>
     <id>aspath.action</id>
@@ -21,6 +21,6 @@
     <id>aspath.as</id>
     <label>AS</label>
     <type>text</type>
-    <help>The AS pattern you want to match, regexp allowed. It's not validated so please be careful!</help>
+    <help>The AS pattern you want to match, regexp allowed (e.g. *$ or _1$). It's not validated so please be careful!</help>
   </field>
 </form>
