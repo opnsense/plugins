@@ -97,7 +97,8 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>                         
-                        <number type="AutoNumberField">
+                        <number type="IntegerField">
+                                <default></default>
                                 <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>299</MaximumValue>
@@ -134,7 +135,7 @@
                                         <deny>Deny</deny>
                                 </OptionValues>
                         </action>
-                        <id type="AutoNumberField">
+                        <id type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
