@@ -100,8 +100,8 @@
                         <number type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>299</MaximumValue>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
                         </number>
                         <action type="OptionField">
                                 <default></default>
@@ -138,8 +138,8 @@
                         <id type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>1000</MaximumValue>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
                         </id>
                         <match type="ModelRelationField">
                                 <Model>
