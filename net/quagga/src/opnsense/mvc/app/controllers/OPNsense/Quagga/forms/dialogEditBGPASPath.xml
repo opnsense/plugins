@@ -9,7 +9,7 @@
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
-    <help>The ACL rule number (1-299); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL!</help>
+    <help>The ACL rule number (10-99); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL!</help>
   </field>
   <field>
     <id>aspath.action</id>
