@@ -32,4 +32,16 @@
     <label>Send Defaultroute</label>
     <type>checkbox</type>
   </field>
+  <field>
+    <id>neighbor.linkedRoutemapIn</id>
+    <label>Route-Map In</label>
+    <type>dropdown</type>
+    <help>Route-Map for inbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedRoutemapOut</id>
+    <label>Route-Map Out</label>
+    <type>dropdown</type>
+    <help>Route-Map for outbound direction</help>
+  </field>
 </form>

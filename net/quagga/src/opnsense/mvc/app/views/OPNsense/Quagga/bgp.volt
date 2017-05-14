@@ -31,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
+    <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>    
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
@@ -55,6 +57,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="updatesource" data-type="string" data-visible="true">{{ lang._('Update Source Address') }}</th>
                     <th data-column-id="nexthopself" data-type="string" data-formatter="rowtoggle">{{ lang._('Next Hop Self') }}</th>
                     <th data-column-id="defaultoriginate" data-type="string" data-formatter="rowtoggle">{{ lang._('Default Originate') }}</th>
+                    <th data-column-id="linkedRoutemapIn" data-type="string" data-visible="true">{{ lang._('Route-Map Inbound') }}</th>
+                    <th data-column-id="linkedRoutemapOut" data-type="string" data-visible="true">{{ lang._('Route-Map Outbound') }}</th>                
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -72,6 +76,61 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
+                
+    <div id="aspaths" class="tab-pane fade in">
+        <table id="grid-aspaths" class="table table-responsive" data-editDialog="DialogEditBGPASPaths">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="number" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Number') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
+                    <th data-column-id="as" data-type="string" data-visible="true" data-sortable="false">{{ lang._('AS Number') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="routemaps" class="tab-pane fade in">
+        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
+                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('AS Path List') }}</th>
+                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+                
 </div>
 
 <script type="text/javascript">
@@ -105,8 +164,29 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-
+  $("#grid-aspaths").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchAspath',
+      'get':'/api/quagga/bgp/getAspath/',
+      'set':'/api/quagga/bgp/setAspath/',
+      'add':'/api/quagga/bgp/addAspath/',
+      'del':'/api/quagga/bgp/delAspath/',
+      'toggle':'/api/quagga/bgp/toggleAspath/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
+  $("#grid-routemaps").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchRoutemap',
+      'get':'/api/quagga/bgp/getRoutemap/',
+      'set':'/api/quagga/bgp/setRoutemap/',
+      'add':'/api/quagga/bgp/addRoutemap/',
+      'del':'/api/quagga/bgp/delRoutemap/',
+      'toggle':'/api/quagga/bgp/toggleRoutemap/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );                
     });
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS-Paths')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route-Maps')])}}
