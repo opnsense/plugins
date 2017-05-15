@@ -44,7 +44,6 @@
     <type>dropdown</type>
     <help>Prefix-List for outbound direction</help>
   </field>
-</form>
   <field>
     <id>neighbor.linkedRoutemapIn</id>
     <label>Route-Map In</label>
