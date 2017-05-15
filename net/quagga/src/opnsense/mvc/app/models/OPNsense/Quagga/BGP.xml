@@ -81,7 +81,7 @@
                                 <Model>
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlistp</items>
+                                                <items>prefixlists.prefixlist</items>
                                                 <display>name</display>
                                         </template>
                                 </Model>
