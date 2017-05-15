@@ -32,7 +32,7 @@
     <label>Send Defaultroute</label>
     <type>checkbox</type>
   </field>
-    <field>
+  <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
