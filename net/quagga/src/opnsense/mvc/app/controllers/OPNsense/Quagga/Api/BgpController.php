@@ -81,7 +81,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->neighbors->neighbor);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate", "linkedRoutemapIn", "linkedRoutemapOut" )
+            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate", "linkedPrefixlistIn", "linkedPrefixlistOut", "linkedRoutemapIn", "linkedRoutemapOut" )
         );
     }
 
@@ -269,6 +269,99 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }
 
+    public function searchPrefixlistAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->prefixlists->prefixlist);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "seqnumber", "action", "network" )
+        );
+    }
+    public function getPrefixlistAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('prefixlists.prefixlist.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("prefixlist" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->prefixlists->prefixlist->add();
+            return array("prefixlist" => $node->getNodes());
+        }
+        return array();
+    }
+    public function addPrefixlistAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->prefixlists->prefixlist->Add();
+            $node->setNodes($this->request->getPost("prefixlist"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                unset($result['validations']);
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+    public function delPrefixlistAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->prefixlists->prefixlist->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+    public function setPrefixlistAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('prefixlists.prefixlist.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $prefixlistInfo = $this->request->getPost("prefixlist");
+                    $node->setNodes(prefixlistInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
+    
     public function searchRoutemapAction()
     {
         $this->sessionClose();
@@ -399,6 +492,11 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->toggle_handler($uuid, 'aspaths', 'aspath');
     }
+
+    public function togglePrefixlistAction($uuid)
+    {
+        return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
+    }    
     
     public function toggleRoutemapAction($uuid)
     {
