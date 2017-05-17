@@ -99,7 +99,7 @@
                             <display>name</display>
                         </hosts>
                     </Model>
-                    <ValidationMessage>Related pipe or queue not found</ValidationMessage>
+                    <ValidationMessage>Related network not found</ValidationMessage>
                     <Required>Y</Required>
                 </network>
                 <hostname type="TextField">
