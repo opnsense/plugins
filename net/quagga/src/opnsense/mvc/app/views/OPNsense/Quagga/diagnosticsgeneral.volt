@@ -100,10 +100,15 @@ $(document).ready(function() {
       updateServiceStatusUI(data['status'])
   });
   ajaxCall(url="/api/quagga/diagnostics/generalroutes", sendData={}, callback=function(data,status) {
-  content = _.template($('#routestpl').html())(data['response'])
-  $('#routing').html(content)
-  //$('#routing table').bootgrid({converters: dataconverters})
-});
+    content = _.template($('#routestpl').html())(data['response'])
+    $('#routing').html(content)
+    //$('#routing table').bootgrid({converters: dataconverters})
+  });
+  ajaxCall(url="/api/quagga/diagnostics/generalroutes6", sendData={}, callback=function(data,status) {
+    content = _.template($('#routestpl').html())({general_routes: data['response']['general_routes6']})
+    $('#routing6').html(content)
+    //$('#routing6 table').bootgrid({converters: dataconverters})
+  });
 
 
 });
@@ -111,10 +116,13 @@ $(document).ready(function() {
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#routing">{{ lang._('IPv4 Routing Table') }}</a></li>
+    <li><a data-toggle="tab" href="#routing6">{{ lang._('IPv6 Routing Table') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
     <div id="routing" class="tab-pane fade in active">
+    </div>
+    <div id="routing6" class="tab-pane fade in">
     </div>
 </div>
