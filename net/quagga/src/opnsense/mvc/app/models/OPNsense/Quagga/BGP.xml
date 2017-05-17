@@ -172,7 +172,8 @@
                 </prefixlist> 
         </prefixlists> 
         <routemaps>
-                <routemap type="ArrayField">
+                <routemap>
+                    <general>
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
@@ -181,6 +182,8 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </name>
+                    </general>
+                    <settings>
                         <action type="OptionField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -207,10 +210,13 @@
                                 <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match>
+                    </settings>
+                    <set>
                         <set type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
                         </set>
+                    </set>    
                 </routemap> 
         </routemaps>
     </items>
