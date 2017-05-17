@@ -343,7 +343,7 @@ class BgpController extends ApiMutableModelControllerBase
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
                     $prefixlistInfo = $this->request->getPost("prefixlist");
-                    $node->setNodes(prefixlistInfo);
+                    $node->setNodes($prefixlistInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
