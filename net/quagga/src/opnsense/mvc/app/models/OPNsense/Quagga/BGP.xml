@@ -183,7 +183,7 @@
                                 <Required>Y</Required>
                         </name>
                     </general>
-                    <settings>
+                    <ids>
                         <action type="OptionField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -210,13 +210,13 @@
                                 <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match>
-                    </settings>
-                    <set>
+                    </ids>
+                    <sets>
                         <set type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
                         </set>
-                    </set>    
+                    </sets>    
                 </routemap> 
         </routemaps>
     </items>
