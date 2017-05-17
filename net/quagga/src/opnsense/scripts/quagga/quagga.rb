@@ -99,8 +99,8 @@ class General
   def initialize(vtysh)
     @vtysh = vtysh
   end
-  def routes
-    lines = @vtysh.execute("show ip route").lines
+  def routes(ipv6 = false)
+    lines = @vtysh.execute("show ip#{ipv6 ? 'v6' : ''} route").lines
 
     # headers
     meanings = {}
@@ -123,6 +123,10 @@ class General
       end
     end
     entries
+  end
+  
+  def routes6
+    routes(true)
   end
 end
 
@@ -679,8 +683,11 @@ OptionParser.new do |opts|
     options[:ospfv3_overview] = od
   end
   #### general things about routing
-  opts.on("-R", "--general-routes", "Print Routing Table") do |od|
+  opts.on("-R", "--general-routes", "Print Routing Table (IPv4)") do |od|
     options[:general_routes] = od
+  end
+  opts.on("-6", "--general-routes6", "Print Routing Table (IPv6)") do |od|
+    options[:general_routes6] = od
   end
   ### BGP
   opts.on("-B", "--bgp-overview", "Print an overview of BGP") do |od|
