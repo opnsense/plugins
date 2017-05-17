@@ -2,33 +2,33 @@
   <tab id="routemap-general" description="General Settings">
     <subtab id="routemap-general-settings" description="Adding Route-Maps"> 
       <field>
-        <id>routemap.enabled</id>
+        <id>routemap.general.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
         <help>Enable / Disable</help>
       </field>
       <field>
-        <id>routemap.name</id>
+        <id>routemap.general.name</id>
         <label>Name</label>
         <type>text</type>
         <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration.</help>
       </field>
     </subtab>
-    <subtab id="routemap-general-id" description="Priority and Matching"> 
+    <subtab id="routemap-general-ids" description="Priority and Matching"> 
       <field>
-        <id>routemap.action</id>
+        <id>routemap.ids.action</id>
         <label>Action</label>
         <type>select_multiple</type>
         <help>Set permit for match or deny to negate the rule.</help>
       </field>
       <field>
-        <id>routemap.id</id>
+        <id>routemap.ids.id</id>
         <label>ID</label>
         <type>text</type>
         <help>Route-map ID between 10 and 99. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
       </field>
       <field>
-        <id>routemap.match</id>
+        <id>routemap.ids.match</id>
         <label>AS-Path List</label>
         <type>select_multiple</type>
         <style>tokenize</style>
@@ -36,9 +36,9 @@
         <help>Select the AS-Path list</help>
       </field>
     </subtab>
-    <subtab id="routemap-general-set" description="Set Orders">
+    <subtab id="routemap-general-sets" description="Set Orders">
       <field>
-      <id>routemap.set</id>
+      <id>routemap.sets.set</id>
       <label>Set</label>
       <type>text</type>
       <help>Free text field for your set, please be careful! You can set e.g. "local-prefernce 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
