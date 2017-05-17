@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/x-template" id="overviewtpl">
 <h2>{{ lang._('General') }}</h2>
-<table>
+ <table class="table table-striped">
 <tbody>
   <tr>
     <td>{{ lang._("RFC2328 Conform") }}</td>
@@ -83,7 +83,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </table>
 
 <h2>{{ lang._('Link State Area') }}</h2>
-<table>
+ <table class="table table-striped">
   <thead>
     <tr>
       <th></th>
@@ -112,7 +112,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <% _.each(_.keys(areas), function(areaname) { %>
     <% area = areas[areaname] %>
     <h3><%= areaname %></h3>
-    <table>
+     <table class="table table-striped">
       <tbody>
         <tr>
           <td>{{ lang._('Interfaces: Total') }}</td>
@@ -132,7 +132,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </tr>
       </tbody>
     </table>
-    <table>
+     <table class="table table-striped">
       <thead>
         <tr>
           <th></th>
@@ -161,15 +161,15 @@ POSSIBILITY OF SUCH DAMAGE.
   <h2>{{ lang._('Router Link State Area') }}</h2>
   <% _.each(_.keys(ospf_database[router_id]['router_link_state_area']), function(area) { %>
     <h3>Area <%= area %></h3>
-    <table>
+     <table class="table table-striped">
       <thead>
         <tr>
-          <th>{{ lang._('Link ID') }}</th>
-          <th>{{ lang._('ADV Router') }}</th>
-          <th>{{ lang._('Age') }}</th>
-          <th>{{ lang._('Sequence Number') }}</th>
-          <th>{{ lang._('Checksum') }}</th>
-          <th>{{ lang._('Link Count') }}</th>
+          <th data-column-id="linkid" data-type="string">{{ lang._('Link ID') }}</th>
+          <th data-column-id="advrouter" data-type="string">{{ lang._('ADV Router') }}</th>
+          <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
+          <th data-column-id="seqnr" data-type="string">{{ lang._('Sequence Number') }}</th>
+          <th data-column-id="cksum" data-type="string">{{ lang._('Checksum') }}</th>
+          <th data-column-id="linkcnt" data-type="numeric">{{ lang._('Link Count') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -184,19 +184,19 @@ POSSIBILITY OF SUCH DAMAGE.
           </tr>
         <% }); %>
       </tbody>
-    <table>
+     </table>
   <% }); %>
   <h2>{{ lang._('Net Link State Area') }}</h2>
   <% _.each(_.keys(ospf_database[router_id]['net_link_state_area']), function(area) { %>
-    <h3>Area <%= area %></h3>
-    <table>
+    <h3>{{ lang._('Area:') }} <%= area %></h3>
+     <table class="table table-striped">
       <thead>
         <tr>
-          <th>{{ lang._('Link ID') }}</th>
-          <th>{{ lang._('ADV Router') }}</th>
-          <th>{{ lang._('Age') }}</th>
-          <th>{{ lang._('Sequence Number') }}</th>
-          <th>{{ lang._('Checksum') }}</th>
+          <th data-column-id="linkid" data-type="string">{{ lang._('Link ID') }}</th>
+          <th data-column-id="advrouter" data-type="string">{{ lang._('ADV Router') }}</th>
+          <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
+          <th data-column-id="seqnr" data-type="string">{{ lang._('Sequence Number') }}</th>
+          <th data-column-id="cksum" data-type="string">{{ lang._('Checksum') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -210,18 +210,18 @@ POSSIBILITY OF SUCH DAMAGE.
           </tr>
         <% }); %>
       </tbody>
-    <table>
+     </table>
   <% }); %>
   <h2>{{ lang._('External States') }}</h2>
-  <table>
+   <table class="table table-striped">
     <thead>
       <tr>
-        <th>{{ lang._('Link ID') }}</th>
-        <th>{{ lang._('ADV Router') }}</th>
-        <th>{{ lang._('Age') }}</th>
-        <th>{{ lang._('Sequence Number') }}</th>
-        <th>{{ lang._('Checksum') }}</th>
-        <th>{{ lang._('Route') }}</th>
+        <th data-column-id="linkid" data-type="string">{{ lang._('Link ID') }}</th>
+        <th data-column-id="advrouter" data-type="string">{{ lang._('ADV Router') }}</th>
+        <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
+        <th data-column-id="seqnr" data-type="string">{{ lang._('Sequence Number') }}</th>
+        <th data-column-id="chsum" data-type="string">{{ lang._('Checksum') }}</th>
+        <th data-column-id="route" data-type="string">{{ lang._('Route') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -241,15 +241,15 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 <script type="text/x-template" id="routestpl">
 <h2>{{ lang._('Network Routing Table') }}</h2>
-<table>
+ <table class="table table-striped">
   <thead>
     <tr>
-      <th>{{ lang._('Type') }}</th>
-      <th>{{ lang._('Network') }}</th>
-      <th>{{ lang._('Cost') }}</th>
-      <th>{{ lang._('Area') }}</th>
-      <th>{{ lang._('Via') }}</th>
-      <th>{{ lang._('Via interface') }}</th>
+      <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+      <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
+      <th data-column-id="cost" data-type="numeric">{{ lang._('Cost') }}</th>
+      <th data-column-id="area" data-type="numeric">{{ lang._('Area') }}</th>
+      <th data-column-id="via" data-type="string">{{ lang._('Via') }}</th>
+      <th data-column-id="viainterface" data-type="string">{{ lang._('Via interface') }}</th>
     </tr>
   </thead>
   <tbody>
@@ -266,26 +266,24 @@ POSSIBILITY OF SUCH DAMAGE.
   </tbody>
 </table>
 <h2>{{ lang._('Router Routing Table') }}</h2>
-<table>
+ <table class="table table-striped">
   <thead>
     <tr>
-      <th>{{ lang._('Type') }}</th>
-      <th>{{ lang._('Network') }}</th>
-      <th>{{ lang._('Cost') }}</th>
-      <th>{{ lang._('Area') }}</th>
-      <th>{{ lang._('ASBR') }}</th>
-      <th>{{ lang._('Via') }}</th>
-      <th>{{ lang._('Via interface') }}</th>
+      <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+      <th data-column-id="cost" data-type="numeric">{{ lang._('Cost') }}</th>
+      <th data-column-id="area" data-type="string">{{ lang._('Area') }}</th>
+      <th data-column-id="asbr" data-type="boolean">{{ lang._('ASBR') }}</th>
+      <th data-column-id="via" data-type="string">{{ lang._('Via') }}</th>
+      <th data-column-id="viainterface" data-type="string">{{ lang._('Via interface') }}</th>
     </tr>
   </thead>
   <tbody>
     <% _.each(ospf_route['OSPF router routing table'], function(entry) { %>
       <tr>
         <td><%= entry["type"] %></td>
-        <td><%= entry["network"] %></td>
         <td><%= entry["cost"] %></td>
         <td><%= entry["area"] %></td>
-        <td><%= checkmark(entry["asbr"]) %></td>
+        <td><%= entry["asbr"] %></td>
         <td><%= translate(entry["via"]) %></td>
         <td><%= entry["via_interface"] %></td>
       </tr>
@@ -293,16 +291,15 @@ POSSIBILITY OF SUCH DAMAGE.
   </tbody>
 </table>
 <h2>{{ lang._('External Routing Table') }}</h2>
-<table>
+ <table class="table table-striped">
   <thead>
     <tr>
-      <th>{{ lang._('Type') }}</th>
-      <th>{{ lang._('Network') }}</th>
-      <th>{{ lang._('Cost') }}</th>
-      <th>{{ lang._('Area') }}</th>
-      <th>{{ lang._('Tag') }}</th>
-      <th>{{ lang._('Via') }}</th>
-      <th>{{ lang._('Via interface') }}</th>
+      <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+      <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
+      <th data-column-id="cost" data-type="string">{{ lang._('Cost') }}</th>
+      <th data-column-id="tag" data-type="string">{{ lang._('Tag') }}</th>
+      <th data-column-id="via" data-type="string">{{ lang._('Via') }}</th>
+      <th data-column-id="viainterface" data-type="string">{{ lang._('Via interface') }}</th>
     </tr>
   </thead>
   <tbody>
@@ -311,7 +308,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <td><%= entry["type"] %></td>
         <td><%= entry["network"] %></td>
         <td><%= entry["cost"] %></td>
-        <td><%= entry["area"] %></td>
         <td><%= entry["tag"] %></td>
         <td><%= translate(entry["via"]) %></td>
         <td><%= entry["via_interface"] %></td>
@@ -321,18 +317,18 @@ POSSIBILITY OF SUCH DAMAGE.
 </table>
 </script>
 <script type="text/x-template" id="neighbortpl">
-  <table>
+   <table class="table table-striped">
     <thead>
       <tr>
-        <th>{{ lang._('Neighbor ID') }}</th>
-        <th>{{ lang._('Priority') }}</th>
-        <th>{{ lang._('State') }}</th>
-        <th>{{ lang._('Dead Time') }}</th>
-        <th>{{ lang._('Address') }}</th>
-        <th>{{ lang._('Interface') }}</th>
-        <th>RXmtL</th>
-        <th>RqstL</th>
-        <th>DBsmL</th>
+        <th data-column-id="neighborid" data-type="string">{{ lang._('Neighbor ID') }}</th>
+        <th data-column-id="priority" data-type="numeric">{{ lang._('Priority') }}</th>
+        <th data-column-id="state" data-type="string">{{ lang._('State') }}</th>
+        <th data-column-id="deadtime" data-type="string">{{ lang._('Dead Time') }}</th>
+        <th data-column-id="address" data-type="string">{{ lang._('Address') }}</th>
+        <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
+        <th data-column-id="rxmtl" data-type="numeric">RXmtL</th>
+        <th data-column-id="rqstl" data-type="numeric">RqstL</th>
+        <th data-column-id="dbsml" data-type="numeric">DBsmL</th>
       </tr>
     </thead>
     <tbody>
@@ -356,7 +352,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <% _.each(_.keys(ospf_interface), function(interfacename) { %>
   <% int = ospf_interface[interfacename] %>
   <h2><%= interfacename %></h2>
-  <table>
+   <table class="table table-striped">
     <tbody>
       <% _.each(_.keys(int), function(propertyname) { %>
         <tr>
@@ -420,6 +416,17 @@ function checkmark(bin)
   return "<i class=\"fa " + (bin ? "fa-check-square" : "fa-square") + " text-muted\"></i>";
 }
 
+dataconverters = {
+    boolean: {
+        from: function (value) { return (value == 'true') || (value == true); },
+        to: function (value) { return checkmark(value) }
+    },
+    raw: {
+        from: function (value) { return value },
+        to: function (value) { return value }
+    }
+}
+
 $(document).ready(function() {
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
       updateServiceStatusUI(data['status'])
@@ -432,14 +439,17 @@ $(document).ready(function() {
   ajaxCall(url="/api/quagga/diagnostics/ospfdatabase", sendData={}, callback=function(data,status) {
     content = _.template($('#databasetpl').html())(data['response'])
     $('#database').html(content)
+    $('#database table').bootgrid()
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfroute", sendData={}, callback=function(data,status) {
     content = _.template($('#routestpl').html())(data['response'])
     $('#routing').html(content)
+    $('#routing table').bootgrid({converters: dataconverters})
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfneighbor", sendData={}, callback=function(data,status) {
     content = _.template($('#neighbortpl').html())(data['response'])
     $('#neighbor').html(content)
+    $('#neighbor table').bootgrid()
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfinterface", sendData={}, callback=function(data,status) {
     content = _.template($('#interfacetpl').html())(data['response'])

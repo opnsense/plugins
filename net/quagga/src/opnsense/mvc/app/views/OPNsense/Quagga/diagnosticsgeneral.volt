@@ -31,12 +31,12 @@ POSSIBILITY OF SUCH DAMAGE.
 <table>
   <thead>
     <tr>
-      <th>{{ lang._('Code') }}</th>
-      <th>{{ lang._('Network') }}</th>
-      <th>{{ lang._('Administrative Distance') }}</th>
-      <th>{{ lang._('Metric') }}</th>
-      <th>{{ lang._('Interface') }}</th>
-      <th>{{ lang._('Time') }}</th>
+      <th data-column-id="code" data-type="raw">{{ lang._('Code') }}</th>
+      <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
+      <th data-column-id="ad" data-type="numeric">{{ lang._('Administrative Distance') }}</th>
+      <th data-column-id="metric" data-type="numeric">{{ lang._('Metric') }}</th>
+      <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
+      <th data-column-id="time" data-type="string">{{ lang._('Time') }}</th>
     </tr>
   </thead>
   <tbody>
@@ -58,7 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </table>
 </script>
 
-<script>
+<script type="text/javascript">
 function translate(content) {
   tr = {};
   tr['kernel route'] = '{{ lang._('Kernel Route') }}';
@@ -77,6 +77,24 @@ function translate(content) {
     return content;
   }
 }
+
+dataconverters = {
+    boolean: {
+        from: function (value) { return (value == 'true') || (value == true); },
+        to: function (value) { return checkmark(value) }
+    },
+    raw: {
+        from: function (value) {
+            console.log(value)
+            return value
+        },
+        to: function (value) {
+            console.log(value);
+            return value
+        }
+    }
+}
+
 $(document).ready(function() {
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
       updateServiceStatusUI(data['status'])
@@ -84,6 +102,7 @@ $(document).ready(function() {
   ajaxCall(url="/api/quagga/diagnostics/generalroutes", sendData={}, callback=function(data,status) {
   content = _.template($('#routestpl').html())(data['response'])
   $('#routing').html(content)
+  //$('#routing table').bootgrid({converters: dataconverters})
 });
 
 

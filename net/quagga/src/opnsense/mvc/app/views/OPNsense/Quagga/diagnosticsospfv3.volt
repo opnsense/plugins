@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/x-template" id="overviewtpl">
 <h2>{{ lang._('General') }}</h2>
-<table>
+<table class="table table-striped">
   <tbody>
     <tr>
       <td>{{ lang._("Router ID") }}</td>
@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <% _.each(_.keys(areas), function(areaname) { %>
     <% area = areas[areaname] %>
     <h3><%= areaname %></h3>
-    <table>
+    <table class="table table-striped">
       <tbody>
         <tr>
           <td>{{ lang._("Number Of LSAs") }}</td>
@@ -94,12 +94,12 @@ POSSIBILITY OF SUCH DAMAGE.
   <table>
     <thead>
       <tr>
-        <th>{{ lang._('Flags 1') }}</th>
-        <th>{{ lang._('Flags 2') }}</th>
-        <th>{{ lang._('Network') }}</th>
-        <th>{{ lang._('Gateway') }}</th>
-        <th>{{ lang._('Interface') }}</th>
-        <th>{{ lang._('Time') }}</th>
+        <th data-column-id="flags1" data-type="string">{{ lang._('Flags 1') }}</th>
+        <th data-column-id="flags2" data-type="string">{{ lang._('Flags 2') }}</th>
+        <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
+        <th data-column-id="gateway" data-type="string">{{ lang._('Gateway') }}</th>
+        <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
+        <th data-column-id="time" data-type="string">{{ lang._('Time') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -126,12 +126,12 @@ POSSIBILITY OF SUCH DAMAGE.
       <table>
         <thead>
           <tr>
-            <th>{{ lang._('Type') }}</th>
-            <th>{{ lang._('LS ID') }}</th>
-            <th>{{ lang._('Advertising Router') }}</th>
-            <th>{{ lang._('Age') }}</th>
-            <th>{{ lang._('Sequence Number') }}</th>
-            <th>{{ lang._('Payload') }}</th>
+            <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+            <th data-column-id="lsid" data-type="string">{{ lang._('LS ID') }}</th>
+            <th data-column-id="advrouter" data-type="string">{{ lang._('Advertising Router') }}</th>
+            <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
+            <th data-column-id="seqnr" data-type="numeric">{{ lang._('Sequence Number') }}</th>
+            <th data-column-id="payload" data-type="string">{{ lang._('Payload') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -159,12 +159,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <table>
           <thead>
             <tr>
-              <th>{{ lang._('Type') }}</th>
-              <th>{{ lang._('LS ID') }}</th>
-              <th>{{ lang._('Advertising Router') }}</th>
-              <th>{{ lang._('Age') }}</th>
-              <th>{{ lang._('Sequence Number') }}</th>
-              <th>{{ lang._('Payload') }}</th>
+              <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+              <th data-column-id="lsid" data-type="string">{{ lang._('LS ID') }}</th>
+              <th data-column-id="advrouter" data-type="string">{{ lang._('Advertising Router') }}</th>
+              <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
+              <th data-column-id="seqnr" data-type="numeric">{{ lang._('Sequence Number') }}</th>
+              <th data-column-id="payload" data-type="string">{{ lang._('Payload') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -188,12 +188,12 @@ POSSIBILITY OF SUCH DAMAGE.
     <table>
       <thead>
         <tr>
-          <th>{{ lang._('Type') }}</th>
-          <th>{{ lang._('LS ID') }}</th>
-          <th>{{ lang._('Advertising Router') }}</th>
-          <th>{{ lang._('Age') }}</th>
-          <th>{{ lang._('Sequence Number') }}</th>
-          <th>{{ lang._('Payload') }}</th>
+          <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+          <th data-column-id="lsid" data-type="string">{{ lang._('LS ID') }}</th>
+          <th data-column-id="advrouter" data-type="string">{{ lang._('Advertising Router') }}</th>
+          <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
+          <th data-column-id="seqnr" data-type="numeric">{{ lang._('Sequence Number') }}</th>
+          <th data-column-id="payload" data-type="string">{{ lang._('Payload') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -216,7 +216,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <% _.each(_.keys(ospfv3_interface), function(interfacename) { %>
   <% int = ospfv3_interface[interfacename] %>
   <h2><%= interfacename %></h2>
-  <table>
+  <table class="table table-striped">
     <tbody>
       <% _.each(_.keys(int), function(propertyname) { %>
         <% if (propertyname != 'pending_lsas' ) { %>
@@ -319,6 +319,17 @@ function checkmark(bin)
   return "<i class=\"fa " + (bin ? "fa-check-square" : "fa-square") + " text-muted\"></i>";
 }
 
+dataconverters = {
+    boolean: {
+        from: function (value) { return (value == 'true') || (value == true); },
+        to: function (value) { return checkmark(value) }
+    },
+    raw: {
+        from: function (value) { return value },
+        to: function (value) { return value }
+    }
+}
+
 $(document).ready(function() {
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
       updateServiceStatusUI(data['status'])
@@ -331,10 +342,12 @@ $(document).ready(function() {
   ajaxCall(url="/api/quagga/diagnostics/ospfv3database", sendData={}, callback=function(data,status) {
     content = _.template($('#databasetpl').html())(data['response'])
     $('#database').html(content)
+    $('#database table').bootgrid()
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfv3route", sendData={}, callback=function(data,status) {
     content = _.template($('#routestpl').html())(data['response'])
     $('#routing').html(content)
+    $('#routing table').bootgrid()
   });
   /*ajaxCall(url="/api/quagga/diagnostics/ospfv3neighbor", sendData={}, callback=function(data,status) {
     content = _.template($('#neighbortpl').html())(data['response'])
