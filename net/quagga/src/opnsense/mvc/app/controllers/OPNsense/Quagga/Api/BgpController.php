@@ -439,8 +439,8 @@ class BgpController extends ApiMutableModelControllerBase
                 $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.general.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $routemapInfo = $this->request->getPost("general");
-                    $node->setNodes($routemapInfo);
+                    $generalInfo = $this->request->getPost("general");
+                    $node->setNodes($generalInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "general", $msg->getField());
