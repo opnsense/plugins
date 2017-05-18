@@ -556,6 +556,103 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }    
   
+    public function searchRoutemap3Action()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->routemaps->routemap->sets);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("action", "id", "match" )
+        );
+    }
+
+    public function getRoutemap3Action($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('routemaps.routemap.sets' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("sets" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->routemaps->routemap->sets->add();
+            return array("sets" => $node->getNodes());
+        }
+        return array();
+    }
+
+    public function addRoutemap3Action()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("sets")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->routemaps->routemap->sets->Add();
+            $node->setNodes($this->request->getPost("sets"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "sets", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                unset($result['validations']);
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+
+    public function delRoutemap3Action($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->routemaps->routemap->sets->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function setRoutemap3Action($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("sets")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.sets.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $setsInfo = $this->request->getPost("sets");
+                    $node->setNodes($setsInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "sets", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }    
+    
     public function toggle_handler($uuid, $elements, $element)
     {
         $result = array("result" => "failed");
