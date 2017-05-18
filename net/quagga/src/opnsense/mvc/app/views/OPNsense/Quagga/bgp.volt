@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
-    <!-- <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li> -->    
+    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>  
 </ul>
 </ul>
 
@@ -184,10 +184,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
-                    <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('AS Path List') }}</th>
-                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -268,11 +264,31 @@ $(document).ready(function() {
       'toggle':'/api/quagga/bgp/toggleRoutemap/',
       'options':{selection:false, multiSelect:false}
     }
-  );                
+  ); 
+  $("#grid-ids").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchRoutemap2',
+      'get':'/api/quagga/bgp/getRoutemap2/',
+      'set':'/api/quagga/bgp/setRoutemap2/',
+      'add':'/api/quagga/bgp/addRoutemap2/',
+      'del':'/api/quagga/bgp/delRoutemap2/',
+      'toggle':'/api/quagga/bgp/toggleRoutemap2/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
+  $("#grid-sets").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchRoutemap3',
+      'get':'/api/quagga/bgp/getRoutemap3/',
+      'set':'/api/quagga/bgp/setRoutemap3/',
+      'add':'/api/quagga/bgp/addRoutemap3/',
+      'del':'/api/quagga/bgp/delRoutemap3/',
+      'toggle':'/api/quagga/bgp/toggleRoutemap3/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
     });
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS-Paths')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':'DialogEditBGPPrefixLists','label':lang._('Edit Prefix Lists')])}}
-<!-- {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route-Maps')])}} -->
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route-Maps')])}}
