@@ -68,7 +68,6 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endif %}
 {% endfor %}
    
-    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>  
 </ul>
 </ul>
 
