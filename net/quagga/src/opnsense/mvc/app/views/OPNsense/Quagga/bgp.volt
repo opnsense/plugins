@@ -29,7 +29,67 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 <!-- Navigation bar -->
     
+<!-- START FRAENKI -->
+<ul class="nav nav-tabs" role="tablist"  id="maintabs">
+    <li><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
+    <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
+{% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
+    {% if tab['subtabs']|default(false) %}
+        {# Tab with dropdown #}
 
+        {# Find active subtab #}
+            {% set active_subtab="" %}
+            {% for subtab in tab['subtabs']|default({}) %}
+                {% if subtab[0]==formDialogEditBGPRouteMaps['activetab']|default("") %}
+                    {% set active_subtab=subtab[0] %}
+                {% endif %}
+            {% endfor %}
+
+        <li role="presentation" class="dropdown {% if formDialogEditBGPRouteMaps['activetab']|default("") == active_subtab %}active{% endif %}">
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+                <b><span class="caret"></span></b>
+            </a>
+            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <ul class="dropdown-menu" role="menu">
+                {% for subtab in tab['subtabs']|default({})%}
+                <li class="{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        {# Standard Tab #}
+        <li {% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} class="active" {% endif %}>
+                <a data-toggle="tab" href="#tab_{{tab[0]}}">
+                    <b>{{tab[1]}}</b>
+                </a>
+        </li>
+    {% endif %}
+{% endfor %}
+   
+    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>  
+</ul>
+</ul>
+
+<div class="content-box tab-content">
+    {% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
+        {% if tab['subtabs']|default(false) %}
+            {# Tab with dropdown #}
+            {% for subtab in tab['subtabs']|default({})%}
+                <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %} in active {% endif %}">
+                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if tab['subtabs']|default(false)==false %}
+            <div id="tab_{{tab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} in active {% endif %}">
+                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+<!-- END FRAENKI -->
     
 
 
@@ -144,67 +204,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 
 </div>
 
-   <!-- START FRAENKI -->
-<ul class="nav nav-tabs" role="tablist"  id="maintabs">
-{% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
-    {% if tab['subtabs']|default(false) %}
-        {# Tab with dropdown #}
-
-        {# Find active subtab #}
-            {% set active_subtab="" %}
-            {% for subtab in tab['subtabs']|default({}) %}
-                {% if subtab[0]==formDialogEditBGPRouteMaps['activetab']|default("") %}
-                    {% set active_subtab=subtab[0] %}
-                {% endif %}
-            {% endfor %}
-
-        <li role="presentation" class="dropdown {% if formDialogEditBGPRouteMaps['activetab']|default("") == active_subtab %}active{% endif %}">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
-                <b><span class="caret"></span></b>
-            </a>
-            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
-            <ul class="dropdown-menu" role="menu">
-                {% for subtab in tab['subtabs']|default({})%}
-                <li class="{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% else %}
-        {# Standard Tab #}
-        <li {% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} class="active" {% endif %}>
-                <a data-toggle="tab" href="#tab_{{tab[0]}}">
-                    <b>{{tab[1]}}</b>
-                </a>
-        </li>
-    {% endif %}
-{% endfor %}
-    {# add custom content #}
-    <li><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
-    <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
-    <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
-    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>  
-</ul>
-</ul>
-
-<div class="content-box tab-content">
-    {% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
-        {% if tab['subtabs']|default(false) %}
-            {# Tab with dropdown #}
-            {% for subtab in tab['subtabs']|default({})%}
-                <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %} in active {% endif %}">
-                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if tab['subtabs']|default(false)==false %}
-            <div id="tab_{{tab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} in active {% endif %}">
-                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
-            </div>
-        {% endif %}
-    {% endfor %}
-
-<!-- END FRAENKI -->
     
 <script type="text/javascript">
 $(document).ready(function() {
