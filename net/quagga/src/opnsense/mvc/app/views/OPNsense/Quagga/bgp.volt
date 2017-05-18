@@ -178,8 +178,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>                
                 
-    <div id="routemaps" class="tab-pane fade in">
-        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+    <div id="routemaps-general" class="tab-pane fade in">
+        <table id="grid-routemaps-general" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -256,7 +256,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-  $("#grid-routemaps").UIBootgrid(
+  $("#grid-routemaps-general").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap',
       'get':'/api/quagga/bgp/getRoutemap/',
       'set':'/api/quagga/bgp/setRoutemap/',
