@@ -77,13 +77,13 @@ POSSIBILITY OF SUCH DAMAGE.
             {# Tab with dropdown #}
             {% for subtab in tab['subtabs']|default({})%}
                 <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %} in active {% endif %}">
-                    {{ partial("layout_partials/base_dialog",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
+                    {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
                 </div>
             {% endfor %}
         {% endif %}
         {% if tab['subtabs']|default(false)==false %}
             <div id="tab_{{tab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} in active {% endif %}">
-                {{ partial("layout_partials/base_dialog",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
+                {{ partial("layout_partials/base_dialog",['fields'formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
             </div>
         {% endif %}
     {% endfor %}
