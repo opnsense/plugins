@@ -1,5 +1,5 @@
 <form>
-  <tab id="routemap-general" description="General Settings">
+  <tab id="routemap-general" description="Route-Maps">
     <subtab id="routemap-general-settings" description="Adding Route-Maps"> 
       <field>
         <id>routemap.general.enabled</id>
