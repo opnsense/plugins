@@ -35,17 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
-{% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
-    {% if tab['subtabs']|default(false) %}
-        {# Tab with dropdown #}
 
-        {# Find active subtab #}
-            {% set active_subtab="" %}
-            {% for subtab in tab['subtabs']|default({}) %}
-                {% if subtab[0]==formDialogEditBGPRouteMaps['activetab']|default("") %}
-                    {% set active_subtab=subtab[0] %}
-                {% endif %}
-            {% endfor %}
 
         <li role="presentation" class="dropdown active">
             <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
