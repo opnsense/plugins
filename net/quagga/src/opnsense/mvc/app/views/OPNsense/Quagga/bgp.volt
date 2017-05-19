@@ -52,6 +52,21 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 </ul>
 
+<!-- test -->
+<div class="tab-content content-box tab-content">
+    <div id="general" class="tab-pane fade in active">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
+
+            <hr />
+            <div class="col-md-12">
+                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+            </div>
+        </div>
+    </div>
+                
+<!-- test ende -->
+                
 <div class="content-box tab-content">
     {% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
         {% if tab['subtabs']|default(false) %}
