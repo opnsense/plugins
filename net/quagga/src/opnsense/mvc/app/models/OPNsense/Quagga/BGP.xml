@@ -186,7 +186,7 @@
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>rmatches.rmatch</items>
-                                                <display>id</display>
+                                                <display>name</display>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Match item not found</ValidationMessage>
@@ -209,6 +209,10 @@
        </routemaps>
        <rmatches>
                <rmatch type="ArrayField">
+                        <name type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </name>
                         <action type="OptionField">
                                 <default></default>
                                 <Required>Y</Required>
