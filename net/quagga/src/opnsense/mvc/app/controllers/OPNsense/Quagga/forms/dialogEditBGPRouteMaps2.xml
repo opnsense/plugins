@@ -5,7 +5,7 @@
     <type>checkbox</type>
     <help>Enable / Disable</help>
   </field>
-    <field>
+  <field>
     <id>rmatch.name</id>
     <label>Name</label>
     <type>text</type>
