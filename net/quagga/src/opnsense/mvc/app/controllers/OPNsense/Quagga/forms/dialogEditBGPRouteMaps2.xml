@@ -12,7 +12,7 @@
     <help>Route-map ID between 10 and 99. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
   </field>
   <field>
-    <id>rmatchp.match</id>
+    <id>rmatch.match</id>
     <label>AS-Path List</label>
     <type>select_multiple</type>
     <style>tokenize</style>
