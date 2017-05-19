@@ -466,7 +466,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->rmatches->rmatch);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "action", "id", "match" )
+            array("enabled", "name", "action", "id", "match" )
         );
     }
 
@@ -563,7 +563,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->rsets->rset);
         return $grid->fetchBindRequest(
             $this->request,
-            array("set" )
+            array("enabled", "set" )
         );
     }
 
