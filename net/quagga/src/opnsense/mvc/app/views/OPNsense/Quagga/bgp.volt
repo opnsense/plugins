@@ -28,26 +28,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 <!-- Navigation bar -->
-    
-<!-- START FRAENKI -->
+
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#routemap-names">{{ lang._('Route-Maps') }}</a></li>
+    <li><a data-toggle="tab" href="#routemap-matches">{{ lang._('Route-Map matches') }}</a></li>
+    <li><a data-toggle="tab" href="#routemap-sets">{{ lang._('Route-Map sets') }}</a></li>
 
-
-        <li role="presentation" class="dropdown">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
-                <b><span class="caret"></span></b>
-            </a>
-            <a data-toggle="tab" href="#subtab_routemap-general-settings" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>Route-Maps</b></a>
-            <ul class="dropdown-menu" role="menu">
-                                <li class="active"><a data-toggle="tab" href="#subtab_routemap-general-settings"><i class="fa fa-check-square"></i> Adding Route-Maps</a></li>
-                                <li class=""><a data-toggle="tab" href="#subtab_routemap-general-ids"><i class="fa fa-check-square"></i> Priority and Matching</a></li>
-                                <li class=""><a data-toggle="tab" href="#subtab_routemap-general-sets"><i class="fa fa-check-square"></i> Set Orders</a></li>
-                            </ul>
-        </li>
    
 </ul>
 
@@ -64,13 +54,6 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
                 
-<!-- test ende -->
-                
-
-
-<!-- END FRAENKI -->
-    
-
 
     <div id="neighbors" class="tab-pane fade in">
         <table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditBGPNeighbor">
@@ -157,8 +140,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>                
 
-    <div id="subtab_routemap-general-settings" class="tab-pane fade in">
-        <table id="grid-routemap-general-settings" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+    <div id="routemap-names" class="tab-pane fade in">
+        <table id="routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -181,8 +164,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>                    
                 
-    <div id="subtab_routemap-general-ids" class="tab-pane fade in">
-        <table id="grid-routemap-general-ids" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+    <div id="routemap-matches" class="tab-pane fade in">
+        <table id="routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps2">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -207,8 +190,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>
 
-    <div id="subtab_routemap-general-sets" class="tab-pane fade in">
-        <table id="grid-routemap-general-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+    <div id="routemap-sets" class="tab-pane fade in">
+        <table id="routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps3">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -285,7 +268,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-  $("#grid-routemap-general-settings").UIBootgrid(
+  $("#grid-routemap-names").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap',
       'get':'/api/quagga/bgp/getRoutemap/',
       'set':'/api/quagga/bgp/setRoutemap/',
@@ -295,7 +278,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   ); 
-  $("#grid-routemap-general-ids").UIBootgrid(
+  $("#grid-routemap-matches").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap2',
       'get':'/api/quagga/bgp/getRoutemap2/',
       'set':'/api/quagga/bgp/setRoutemap2/',
@@ -305,7 +288,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-  $("#grid-routemap-general-sets").UIBootgrid(
+  $("#grid-routemap-sets").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap3',
       'get':'/api/quagga/bgp/getRoutemap3/',
       'set':'/api/quagga/bgp/setRoutemap3/',
@@ -322,3 +305,5 @@ $(document).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS-Paths')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':'DialogEditBGPPrefixLists','label':lang._('Edit Prefix Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route-Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps2,'id':'DialogEditBGPRouteMaps2','label':lang._('Edit Route-Map matches')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps3,'id':'DialogEditBGPRouteMaps3','label':lang._('Edit Route-Map sets')])}}
