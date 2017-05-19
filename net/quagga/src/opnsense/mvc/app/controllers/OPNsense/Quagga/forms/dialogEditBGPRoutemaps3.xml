@@ -1,0 +1,7 @@
+<form>
+    <id>rset.set</id>
+    <label>Set</label>
+    <type>text</type>
+    <help>Free text field for your set, please be careful! You can set e.g. "local-prefernce 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
+  </field>
+</form>
