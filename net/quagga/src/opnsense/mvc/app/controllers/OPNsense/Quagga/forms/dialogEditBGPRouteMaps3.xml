@@ -1,4 +1,5 @@
 <form>
+  <field>
     <id>rset.set</id>
     <label>Set</label>
     <type>text</type>
