@@ -66,22 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 
 <!-- test ende -->
                 
-<div class="content-box tab-content">
-    {% for tab in formDialogEditBGPRouteMaps['tabs']|default([]) %}
-        {% if tab['subtabs']|default(false) %}
-            {# Tab with dropdown #}
-            {% for subtab in tab['subtabs']|default({})%}
-                <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %} in active {% endif %}">
-                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if tab['subtabs']|default(false)==false %}
-            <div id="tab_{{tab[0]}}" class="tab-pane fade{% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} in active {% endif %}">
-                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
-            </div>
-        {% endif %}
-    {% endfor %}
+
 
 <!-- END FRAENKI -->
     
