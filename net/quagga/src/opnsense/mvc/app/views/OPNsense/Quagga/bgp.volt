@@ -157,7 +157,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>                
                 
-    <div id="routemaps-general-settings" class="tab-pane fade in">
+    <div id="subtab_routemaps-general-settings" class="tab-pane fade in">
         <table id="grid-routemaps-general" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
