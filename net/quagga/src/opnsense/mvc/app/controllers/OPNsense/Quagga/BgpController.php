@@ -34,6 +34,8 @@ class BgpController extends \OPNsense\Base\IndexController
         $this->view->formDialogEditBGPASPaths = $this->getForm("dialogEditBGPASPath");
         $this->view->formDialogEditBGPPrefixLists = $this->getForm("dialogEditBGPPrefixLists");
         $this->view->formDialogEditBGPRouteMaps = $this->getForm("dialogEditBGPRouteMaps");
+        $this->view->formDialogEditBGPRouteMaps2 = $this->getForm("dialogEditBGPRouteMaps2");
+        $this->view->formDialogEditBGPRouteMaps3 = $this->getForm("dialogEditBGPRouteMaps3");
         $this->view->pick('OPNsense/Quagga/bgp');
     }
 }
