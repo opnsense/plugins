@@ -47,26 +47,17 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% endif %}
             {% endfor %}
 
-        <li role="presentation" class="dropdown {% if formDialogEditBGPRouteMaps['activetab']|default("") == active_subtab %}active{% endif %}">
+        <li role="presentation" class="dropdown active">
             <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
                 <b><span class="caret"></span></b>
             </a>
-            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <a data-toggle="tab" href="#subtab_routemap-general-settings" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>Route-Maps</b></a>
             <ul class="dropdown-menu" role="menu">
-                {% for subtab in tab['subtabs']|default({})%}
-                <li class="{% if formDialogEditBGPRouteMaps['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
-                {% endfor %}
-            </ul>
+                                <li class="active"><a data-toggle="tab" href="#subtab_routemap-general-settings"><i class="fa fa-check-square"></i> Adding Route-Maps</a></li>
+                                <li class=""><a data-toggle="tab" href="#subtab_routemap-general-ids"><i class="fa fa-check-square"></i> Priority and Matching</a></li>
+                                <li class=""><a data-toggle="tab" href="#subtab_routemap-general-sets"><i class="fa fa-check-square"></i> Set Orders</a></li>
+                            </ul>
         </li>
-    {% else %}
-        {# Standard Tab #}
-        <li {% if formDialogEditBGPRouteMaps['activetab']|default("") == tab[0] %} class="active" {% endif %}>
-                <a data-toggle="tab" href="#tab_{{tab[0]}}">
-                    <b>{{tab[1]}}</b>
-                </a>
-        </li>
-    {% endif %}
-{% endfor %}
    
 </ul>
 </ul>
