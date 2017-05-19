@@ -1,5 +1,11 @@
 <form>
   <field>
+    <id>rmatch.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>Give your match a name, it will be linked within Route-Match tab</help>
+  </field>
+  <field>
     <id>rmatch.action</id>
     <label>Action</label>
     <type>select_multiple</type>
