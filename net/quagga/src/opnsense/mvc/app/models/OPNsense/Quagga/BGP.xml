@@ -186,11 +186,11 @@
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>rmatches.rmatch</items>
-                                                <display>name</display>
+                                                <display>id</display>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Match item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
+                                <Multiple>Y</Multiple>
                                 <Required>N</Required> 
                         </linkedmatch>
                         <linkedset type="ModelRelationField">
@@ -198,7 +198,7 @@
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>rsets.rset</items>
-                                                <display>name</display>
+                                                <display>set</display>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Set item not found</ValidationMessage>
