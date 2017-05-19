@@ -1,5 +1,11 @@
 <form>
   <field>
+    <id>rset.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+    <help>Enable / Disable</help>
+  </field>
+  <field>
     <id>rset.set</id>
     <label>Set</label>
     <type>text</type>
