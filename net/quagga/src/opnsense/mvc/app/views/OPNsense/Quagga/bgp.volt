@@ -50,7 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
         </li>
    
 </ul>
-</ul>
 
 <!-- test -->
 <div class="tab-content content-box tab-content">
