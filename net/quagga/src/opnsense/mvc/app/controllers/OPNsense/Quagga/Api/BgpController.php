@@ -369,7 +369,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->routemaps->routemap);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name" )
+            array("enabled", "name", "linkedmatch", "linkedset" )
         );
     }
 
