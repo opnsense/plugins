@@ -171,6 +171,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
                     <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
                     <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('Match') }}</th>
