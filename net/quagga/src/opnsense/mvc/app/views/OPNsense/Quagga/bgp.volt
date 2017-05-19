@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
     
 <!-- START FRAENKI -->
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
-    <li class"active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
