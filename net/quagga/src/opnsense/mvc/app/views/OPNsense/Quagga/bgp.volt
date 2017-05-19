@@ -157,8 +157,8 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>                
                 
-    <div id="subtab_routemaps-general-settings" class="tab-pane fade in">
-        <table id="grid-routemaps-general-settings" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+    <div id="subtab_routemap-general-settings" class="tab-pane fade in">
+        <table id="grid-routemap-general-settings" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -235,7 +235,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-  $("#grid-routemaps-general-settings").UIBootgrid(
+  $("#grid-routemap-general-settings").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap',
       'get':'/api/quagga/bgp/getRoutemap/',
       'set':'/api/quagga/bgp/setRoutemap/',
@@ -245,7 +245,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   ); 
-  $("#grid-ids").UIBootgrid(
+  $("#grid-routemap-general-ids").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap2',
       'get':'/api/quagga/bgp/getRoutemap2/',
       'set':'/api/quagga/bgp/setRoutemap2/',
@@ -255,7 +255,7 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-  $("#grid-sets").UIBootgrid(
+  $("#grid-routemap-general-sets").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap3',
       'get':'/api/quagga/bgp/getRoutemap3/',
       'set':'/api/quagga/bgp/setRoutemap3/',
