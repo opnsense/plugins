@@ -696,4 +696,14 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->toggle_handler($uuid, 'routemaps', 'routemap');
     }
+    
+    public function toggleRoutemap2Action($uuid)
+    {
+        return $this->toggle_handler($uuid, 'rmatches', 'rmatch');
+    }
+    
+    public function toggleRoutemap3Action($uuid)
+    {
+        return $this->toggle_handler($uuid, 'rsets', 'rset');
+    }
 }
