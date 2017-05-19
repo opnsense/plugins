@@ -366,7 +366,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
-        $grid = new UIModelGrid($mdlBGP->routemaps->routemap->general);
+        $grid = new UIModelGrid($mdlBGP->routemaps->routemap);
         return $grid->fetchBindRequest(
             $this->request,
             array("enabled", "name" )
@@ -377,14 +377,14 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('routemaps.routemap.general' . $uuid);
+            $node = $mdlBGP->getNodeByReference('routemaps.routemap' . $uuid);
             if ($node != null) {
                 // return node
-                return array("general" => $node->getNodes());
+                return array("routemap" => $node->getNodes());
             }
         } else {
-            $node = $mdlBGP->routemaps->routemap->general->add();
-            return array("general" => $node->getNodes());
+            $node = $mdlBGP->routemaps->routemap->add();
+            return array("routemap" => $node->getNodes());
         }
         return array();
     }
@@ -392,11 +392,11 @@ class BgpController extends ApiMutableModelControllerBase
     public function addRoutemapAction()
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("general")) {
+        if ($this->request->isPost() && $this->request->hasPost("routemap")) {
             $result = array("result" => "failed", "validations" => array());
             $mdlBGP = $this->getModel();
-            $node = $mdlBGP->routemaps->routemap->general->Add();
-            $node->setNodes($this->request->getPost("general"));
+            $node = $mdlBGP->routemaps->routemap->Add();
+            $node->setNodes($this->request->getPost("routemap"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 $fieldnm = str_replace($node->__reference, "general", $msg->getField());
@@ -419,7 +419,7 @@ class BgpController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlBGP = $this->getModel();
             if ($uuid != null) {
-                if ($mdlBGP->routemaps->routemap->general->del($uuid)) {
+                if ($mdlBGP->routemaps->routemap->del($uuid)) {
                     $mdlBGP->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -433,14 +433,14 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function setRoutemapAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("general")) {
+        if ($this->request->isPost() && $this->request->hasPost("routemap")) {
             $mdlNeighbor = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.general.' . $uuid);
+                $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $generalInfo = $this->request->getPost("general");
-                    $node->setNodes($generalInfo);
+                    $routemapInfo = $this->request->getPost("routemap");
+                    $node->setNodes($routemapInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "general", $msg->getField());
@@ -463,7 +463,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
-        $grid = new UIModelGrid($mdlBGP->routemaps->routemap->ids);
+        $grid = new UIModelGrid($mdlBGP->rmatches->rmatch);
         return $grid->fetchBindRequest(
             $this->request,
             array("action", "id", "match" )
@@ -474,13 +474,13 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('routemaps.routemap.ids' . $uuid);
+            $node = $mdlBGP->getNodeByReference('rmatches.rmatch' . $uuid);
             if ($node != null) {
                 // return node
                 return array("ids" => $node->getNodes());
             }
         } else {
-            $node = $mdlBGP->routemaps->routemap->ids->add();
+            $node = $mdlBGP->rmatches->rmatch->add();
             return array("ids" => $node->getNodes());
         }
         return array();
@@ -489,11 +489,11 @@ class BgpController extends ApiMutableModelControllerBase
     public function addRoutemap2Action()
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("ids")) {
+        if ($this->request->isPost() && $this->request->hasPost("rmatch")) {
             $result = array("result" => "failed", "validations" => array());
             $mdlBGP = $this->getModel();
-            $node = $mdlBGP->routemaps->routemap->ids->Add();
-            $node->setNodes($this->request->getPost("ids"));
+            $node = $mdlBGP->rmatches->rmatch->Add();
+            $node->setNodes($this->request->getPost("rmatch"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 $fieldnm = str_replace($node->__reference, "ids", $msg->getField());
@@ -516,7 +516,7 @@ class BgpController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlBGP = $this->getModel();
             if ($uuid != null) {
-                if ($mdlBGP->routemaps->routemap->ids->del($uuid)) {
+                if ($mdlBGP->rmatches->rmatch->del($uuid)) {
                     $mdlBGP->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -530,17 +530,17 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function setRoutemap2Action($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("ids")) {
+        if ($this->request->isPost() && $this->request->hasPost("rmatch")) {
             $mdlNeighbor = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.ids.' . $uuid);
+                $node = $mdlNeighbor->getNodeByReference('rmatches.rmatch.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $idsInfo = $this->request->getPost("ids");
-                    $node->setNodes($idsInfo);
+                    $rmatchInfo = $this->request->getPost("ids");
+                    $node->setNodes($rmatchInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "ids", $msg->getField());
+                        $fieldnm = str_replace($node->__reference, "rmatch", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
@@ -560,10 +560,10 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
-        $grid = new UIModelGrid($mdlBGP->routemaps->routemap->sets);
+        $grid = new UIModelGrid($mdlBGP->rsets->rset);
         return $grid->fetchBindRequest(
             $this->request,
-            array("action", "id", "match" )
+            array("set" )
         );
     }
 
@@ -571,13 +571,13 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('routemaps.routemap.sets' . $uuid);
+            $node = $mdlBGP->getNodeByReference('rsets.rset' . $uuid);
             if ($node != null) {
                 // return node
                 return array("sets" => $node->getNodes());
             }
         } else {
-            $node = $mdlBGP->routemaps->routemap->sets->add();
+            $node = $mdlBGP->rsets->rset->add();
             return array("sets" => $node->getNodes());
         }
         return array();
@@ -586,11 +586,11 @@ class BgpController extends ApiMutableModelControllerBase
     public function addRoutemap3Action()
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("sets")) {
+        if ($this->request->isPost() && $this->request->hasPost("rset")) {
             $result = array("result" => "failed", "validations" => array());
             $mdlBGP = $this->getModel();
-            $node = $mdlBGP->routemaps->routemap->sets->Add();
-            $node->setNodes($this->request->getPost("sets"));
+            $node = $mdlBGP->rsets->rset->Add();
+            $node->setNodes($this->request->getPost("rset"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 $fieldnm = str_replace($node->__reference, "sets", $msg->getField());
@@ -613,7 +613,7 @@ class BgpController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlBGP = $this->getModel();
             if ($uuid != null) {
-                if ($mdlBGP->routemaps->routemap->sets->del($uuid)) {
+                if ($mdlBGP->rsets->rset->del($uuid)) {
                     $mdlBGP->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -627,14 +627,14 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function setRoutemap3Action($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("sets")) {
+        if ($this->request->isPost() && $this->request->hasPost("rset")) {
             $mdlNeighbor = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlNeighbor->getNodeByReference('routemaps.routemap.sets.' . $uuid);
+                $node = $mdlNeighbor->getNodeByReference('rsets.rset.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $setsInfo = $this->request->getPost("sets");
-                    $node->setNodes($setsInfo);
+                    $rsetInfo = $this->request->getPost("rset");
+                    $node->setNodes($rsetInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "sets", $msg->getField());
