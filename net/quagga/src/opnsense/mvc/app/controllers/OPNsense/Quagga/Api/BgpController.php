@@ -477,11 +477,11 @@ class BgpController extends ApiMutableModelControllerBase
             $node = $mdlBGP->getNodeByReference('rmatches.rmatch' . $uuid);
             if ($node != null) {
                 // return node
-                return array("ids" => $node->getNodes());
+                return array("rmatch" => $node->getNodes());
             }
         } else {
             $node = $mdlBGP->rmatches->rmatch->add();
-            return array("ids" => $node->getNodes());
+            return array("rmatch" => $node->getNodes());
         }
         return array();
     }
@@ -496,7 +496,7 @@ class BgpController extends ApiMutableModelControllerBase
             $node->setNodes($this->request->getPost("rmatch"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "ids", $msg->getField());
+                $fieldnm = str_replace($node->__reference, "rmatch", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
@@ -593,7 +593,7 @@ class BgpController extends ApiMutableModelControllerBase
             $node->setNodes($this->request->getPost("rset"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "sets", $msg->getField());
+                $fieldnm = str_replace($node->__reference, "rset", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
