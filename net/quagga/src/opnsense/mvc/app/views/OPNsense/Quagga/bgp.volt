@@ -141,7 +141,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>                
 
     <div id="routemap-names" class="tab-pane fade in">
-        <table id="routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+        <table id="grid-routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -165,7 +165,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>                    
                 
     <div id="routemap-matches" class="tab-pane fade in">
-        <table id="routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps2">
+        <table id="grid-routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps2">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -191,7 +191,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="routemap-sets" class="tab-pane fade in">
-        <table id="routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps3">
+        <table id="grid-routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps3">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
