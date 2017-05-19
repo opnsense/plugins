@@ -399,7 +399,7 @@ class BgpController extends ApiMutableModelControllerBase
             $node->setNodes($this->request->getPost("routemap"));
             $valMsgs = $mdlBGP->performValidation();
             foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "general", $msg->getField());
+                $fieldnm = str_replace($node->__reference, "routemap", $msg->getField());
                 $result["validations"][$fieldnm] = $msg->getMessage();
             }
             if (count($result['validations']) == 0) {
@@ -443,7 +443,7 @@ class BgpController extends ApiMutableModelControllerBase
                     $node->setNodes($routemapInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "general", $msg->getField());
+                        $fieldnm = str_replace($node->__reference, "routemap", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
@@ -536,7 +536,7 @@ class BgpController extends ApiMutableModelControllerBase
                 $node = $mdlNeighbor->getNodeByReference('rmatches.rmatch.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
-                    $rmatchInfo = $this->request->getPost("ids");
+                    $rmatchInfo = $this->request->getPost("rmatch");
                     $node->setNodes($rmatchInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
@@ -637,7 +637,7 @@ class BgpController extends ApiMutableModelControllerBase
                     $node->setNodes($rsetInfo);
                     $valMsgs = $mdlNeighbor->performValidation();
                     foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "sets", $msg->getField());
+                        $fieldnm = str_replace($node->__reference, "rset", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
