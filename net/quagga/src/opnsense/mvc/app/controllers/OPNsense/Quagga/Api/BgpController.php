@@ -578,7 +578,7 @@ class BgpController extends ApiMutableModelControllerBase
             }
         } else {
             $node = $mdlBGP->rsets->rset->add();
-            return array("sets" => $node->getNodes());
+            return array("rset" => $node->getNodes());
         }
         return array();
     }
