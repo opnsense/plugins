@@ -11,4 +11,16 @@
     <type>text</type>
     <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration.</help>
   </field>
+  <field>
+    <id>routemap.linkedmatch</id>
+    <label>Route-Map Out</label>
+    <type>dropdown</type>
+    <help>Choose your match statement</help>
+  </field>
+  <field>
+    <id>routemap.linkedset</id>
+    <label>Set</label>
+    <type>dropdown</type>
+    <help>Choose your set statement</help>
+  </field>
 </form>
