@@ -181,6 +181,30 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </name>
+                        <linkedmatch type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>rmatches.rmatch</items>
+                                                <display>name</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Match item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required> 
+                        </linkedmatch>
+                        <linkedset type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>rsets.rset</items>
+                                                <display>name</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Set item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required> 
+                        </linkedset>
                 </routemap> 
        </routemaps>
        <rmatches>
