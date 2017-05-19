@@ -172,8 +172,7 @@
                 </prefixlist> 
         </prefixlists> 
         <routemaps>
-                <routemap>
-                    <general type="ArrayField">
+                <routemap type="ArrayField">
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
@@ -182,8 +181,10 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </name>
-                    </general>
-                    <ids type="ArrayField">
+                </routemap> 
+       </routemaps>
+       <rmatches>
+               <rmatch type="ArrayField">
                         <action type="OptionField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -210,14 +211,15 @@
                                 <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match>
-                    </ids>
-                    <sets type="ArrayField">
+              </rmatch>
+      </rmatches>
+      <rsets>
+              <rset type="ArrayField">
                         <set type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
                         </set>
-                    </sets>    
-                </routemap> 
-        </routemaps>
+              </rset>
+      </rsets>
     </items>
 </model>
