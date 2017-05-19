@@ -146,6 +146,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="linkedmatch" data-type="string" data-visible="true">{{ lang._('Match') }}</th>
+                    <th data-column-id="linkedset" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
