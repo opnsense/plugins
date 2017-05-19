@@ -156,7 +156,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>                
-                
+
     <div id="subtab_routemap-general-settings" class="tab-pane fade in">
         <table id="grid-routemap-general-settings" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
@@ -179,7 +179,57 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
+    </div>                    
+                
+    <div id="subtab_routemap-general-ids" class="tab-pane fade in">
+        <table id="grid-routemap-general-ids" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('Match') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
+
+    <div id="subtab_routemap-general-sets" class="tab-pane fade in">
+        <table id="grid-routemap-general-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>                
                 
 </div>
 
