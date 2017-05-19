@@ -158,7 +158,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>                
                 
     <div id="subtab_routemaps-general-settings" class="tab-pane fade in active">
-        <table id="grid-routemaps-general" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+        <table id="grid-routemaps-general-settings" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
