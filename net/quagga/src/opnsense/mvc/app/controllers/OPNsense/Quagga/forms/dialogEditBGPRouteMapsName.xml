@@ -9,18 +9,18 @@
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration.</help>
+    <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration. You have to add a "match" and a "set"</help>
   </field>
   <field>
     <id>routemap.linkedmatch</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Choose your match statement</help>
+    <help>Choose a match statement</help>
   </field>
   <field>
     <id>routemap.linkedset</id>
     <label>Set</label>
     <type>dropdown</type>
-    <help>Choose your set statement</help>
+    <help>Choose a set statement</help>
   </field>
 </form>
