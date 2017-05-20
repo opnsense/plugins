@@ -377,7 +377,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('routemaps.routemap' . $uuid);
+            $node = $mdlBGP->getNodeByReference('routemaps.routemap.' . $uuid);
             if ($node != null) {
                 // return node
                 return array("routemap" => $node->getNodes());
@@ -474,7 +474,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('rmatches.rmatch' . $uuid);
+            $node = $mdlBGP->getNodeByReference('rmatches.rmatch.' . $uuid);
             if ($node != null) {
                 // return node
                 return array("rmatch" => $node->getNodes());
@@ -571,7 +571,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
-            $node = $mdlBGP->getNodeByReference('rsets.rset' . $uuid);
+            $node = $mdlBGP->getNodeByReference('rsets.rset.' . $uuid);
             if ($node != null) {
                 // return node
                 return array("rset" => $node->getNodes());
