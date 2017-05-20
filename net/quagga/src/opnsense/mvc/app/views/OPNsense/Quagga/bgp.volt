@@ -141,7 +141,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>                
 
     <div id="routemap-names" class="tab-pane fade in">
-        <table id="grid-routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+        <table id="grid-routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsName">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -167,7 +167,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>                    
                 
     <div id="routemap-matches" class="tab-pane fade in">
-        <table id="grid-routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps2">
+        <table id="grid-routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsMatch">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -194,7 +194,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="routemap-sets" class="tab-pane fade in">
-        <table id="grid-routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps3">
+        <table id="grid-routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsSet">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -272,32 +272,32 @@ $(document).ready(function() {
     }
   );
   $("#grid-routemap-names").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchRoutemap',
-      'get':'/api/quagga/bgp/getRoutemap/',
-      'set':'/api/quagga/bgp/setRoutemap/',
-      'add':'/api/quagga/bgp/addRoutemap/',
-      'del':'/api/quagga/bgp/delRoutemap/',
-      'toggle':'/api/quagga/bgp/toggleRoutemap/',
+    { 'search':'/api/quagga/bgp/searchRoutemapname',
+      'get':'/api/quagga/bgp/getRoutemapname/',
+      'set':'/api/quagga/bgp/setRoutemapname/',
+      'add':'/api/quagga/bgp/addRoutemapname/',
+      'del':'/api/quagga/bgp/delRoutemapname/',
+      'toggle':'/api/quagga/bgp/toggleRoutemapname/',
       'options':{selection:false, multiSelect:false}
     }
   ); 
   $("#grid-routemap-matches").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchRoutemap2',
-      'get':'/api/quagga/bgp/getRoutemap2/',
-      'set':'/api/quagga/bgp/setRoutemap2/',
-      'add':'/api/quagga/bgp/addRoutemap2/',
-      'del':'/api/quagga/bgp/delRoutemap2/',
-      'toggle':'/api/quagga/bgp/toggleRoutemap2/',
+    { 'search':'/api/quagga/bgp/searchRoutemapmatch',
+      'get':'/api/quagga/bgp/getRoutemapmatch/',
+      'set':'/api/quagga/bgp/setRoutemapmatch/',
+      'add':'/api/quagga/bgp/addRoutemapmatch/',
+      'del':'/api/quagga/bgp/delRoutemapmatch/',
+      'toggle':'/api/quagga/bgp/toggleRoutemapmatch/',
       'options':{selection:false, multiSelect:false}
     }
   );
   $("#grid-routemap-sets").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchRoutemap3',
-      'get':'/api/quagga/bgp/getRoutemap3/',
-      'set':'/api/quagga/bgp/setRoutemap3/',
-      'add':'/api/quagga/bgp/addRoutemap3/',
-      'del':'/api/quagga/bgp/delRoutemap3/',
-      'toggle':'/api/quagga/bgp/toggleRoutemap3/',
+    { 'search':'/api/quagga/bgp/searchRoutemapset',
+      'get':'/api/quagga/bgp/getRoutemapset/',
+      'set':'/api/quagga/bgp/setRoutemapset/',
+      'add':'/api/quagga/bgp/addRoutemapset/',
+      'del':'/api/quagga/bgp/delRoutemapset/',
+      'toggle':'/api/quagga/bgp/toggleRoutemapset/',
       'options':{selection:false, multiSelect:false}
     }
   );
@@ -307,6 +307,6 @@ $(document).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS-Paths')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':'DialogEditBGPPrefixLists','label':lang._('Edit Prefix Lists')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route-Maps')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps2,'id':'DialogEditBGPRouteMaps2','label':lang._('Edit Route-Map matches')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps3,'id':'DialogEditBGPRouteMaps3','label':lang._('Edit Route-Map sets')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMapsName,'id':'DialogEditBGPRouteMapsName','label':lang._('Edit Route-Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMapsMatch,'id':'DialogEditBGPRouteMapsMatch','label':lang._('Edit Route-Map matches')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMapsSet,'id':'DialogEditBGPRouteMapsSet','label':lang._('Edit Route-Map sets')])}}
