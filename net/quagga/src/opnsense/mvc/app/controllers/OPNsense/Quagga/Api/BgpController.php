@@ -362,7 +362,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }
     
-    public function searchRoutemapAction()
+    public function searchRoutemapnameAction()
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
@@ -373,7 +373,7 @@ class BgpController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getRoutemapAction($uuid = null)
+    public function getRoutemapnameAction($uuid = null)
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
@@ -389,7 +389,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array();
     }
 
-    public function addRoutemapAction()
+    public function addRoutemapnameAction()
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("routemap")) {
@@ -413,7 +413,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function delRoutemapAction($uuid)
+    public function delRoutemapnameAction($uuid)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
@@ -431,7 +431,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function setRoutemapAction($uuid)
+    public function setRoutemapnameAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("routemap")) {
             $mdlNeighbor = $this->getModel();
@@ -459,7 +459,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }
     
-    public function searchRoutemap2Action()
+    public function searchRoutemapmatchAction()
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
@@ -470,7 +470,7 @@ class BgpController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getRoutemap2Action($uuid = null)
+    public function getRoutemapmatchAction($uuid = null)
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
@@ -486,7 +486,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array();
     }
 
-    public function addRoutemap2Action()
+    public function addRoutemapmatchAction()
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("rmatch")) {
@@ -510,7 +510,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function delRoutemap2Action($uuid)
+    public function delRoutemapmatchAction($uuid)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
@@ -528,7 +528,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function setRoutemap2Action($uuid)
+    public function setRoutemapmatchAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("rmatch")) {
             $mdlNeighbor = $this->getModel();
@@ -556,7 +556,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }    
   
-    public function searchRoutemap3Action()
+    public function searchRoutemapsetAction()
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
@@ -567,7 +567,7 @@ class BgpController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getRoutemap3Action($uuid = null)
+    public function getRoutemapsetAction($uuid = null)
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
@@ -583,7 +583,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array();
     }
 
-    public function addRoutemap3Action()
+    public function addRoutemapsetAction()
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("rset")) {
@@ -607,7 +607,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function delRoutemap3Action($uuid)
+    public function delRoutemapsetAction($uuid)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
@@ -625,7 +625,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function setRoutemap3Action($uuid)
+    public function setRoutemapsetAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("rset")) {
             $mdlNeighbor = $this->getModel();
@@ -692,17 +692,17 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
     }    
     
-    public function toggleRoutemapAction($uuid)
+    public function toggleRoutemapnameAction($uuid)
     {
         return $this->toggle_handler($uuid, 'routemaps', 'routemap');
     }
     
-    public function toggleRoutemap2Action($uuid)
+    public function toggleRoutemapmatchAction($uuid)
     {
         return $this->toggle_handler($uuid, 'rmatches', 'rmatch');
     }
     
-    public function toggleRoutemap3Action($uuid)
+    public function toggleRoutemapsetAction($uuid)
     {
         return $this->toggle_handler($uuid, 'rsets', 'rset');
     }
