@@ -13,13 +13,13 @@
   </field>
   <field>
     <id>routemap.linkedmatch</id>
-    <label>Route-Map Out</label>
+    <label>Route-Map Match</label>
     <type>dropdown</type>
     <help>Choose a match statement</help>
   </field>
   <field>
     <id>routemap.linkedset</id>
-    <label>Set</label>
+    <label>Route-Map Set</label>
     <type>dropdown</type>
     <help>Choose a set statement</help>
   </field>
