@@ -121,8 +121,6 @@ $(document).ready(function() {
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="routing" class="tab-pane fade in active">
-    </div>
-    <div id="routing6" class="tab-pane fade in">
-    </div>
+    <div id="routing" class="tab-pane fade in active"></div>
+    <div id="routing6" class="tab-pane fade in"></div>
 </div>
