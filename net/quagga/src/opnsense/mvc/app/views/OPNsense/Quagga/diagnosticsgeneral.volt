@@ -116,8 +116,8 @@ $(document).ready(function() {
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#routing">{{ lang._('IPv4 Routing Table') }}</a></li>
-    <li><a data-toggle="tab" href="#routing6">{{ lang._('IPv6 Routing Table') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#routing">{{ lang._('IPv4 Routes') }}</a></li>
+    <li><a data-toggle="tab" href="#routing6">{{ lang._('IPv6 Routes') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
