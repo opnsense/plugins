@@ -9,7 +9,7 @@
         <id>bgp.asnumber</id>
         <label>BGP AS Number</label>
         <type>text</type>
-        <hint>Your AS Number here</hint>
+        <help>Your AS Number here</help>
     </field>
     <field>
         <id>bgp.networks</id>
