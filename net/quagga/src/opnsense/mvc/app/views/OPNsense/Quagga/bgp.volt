@@ -37,11 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#routemap-names">{{ lang._('Route-Maps') }}</a></li>
     <li><a data-toggle="tab" href="#routemap-matches">{{ lang._('Route-Map matches') }}</a></li>
     <li><a data-toggle="tab" href="#routemap-sets">{{ lang._('Route-Map sets') }}</a></li>
-
-   
 </ul>
 
-<!-- test -->
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -53,8 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
-                
-
     <div id="neighbors" class="tab-pane fade in">
         <table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditBGPNeighbor">
             <thead>
@@ -86,7 +81,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-                
     <div id="aspaths" class="tab-pane fade in">
         <table id="grid-aspaths" class="table table-responsive" data-editDialog="DialogEditBGPASPaths">
             <thead>
@@ -112,7 +106,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-
     <div id="prefixlists" class="tab-pane fade in">
         <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditBGPPrefixLists">
             <thead>
@@ -139,7 +132,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>                
-
     <div id="routemap-names" class="tab-pane fade in">
         <table id="grid-routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsName">
             <thead>
@@ -165,7 +157,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>                    
-                
     <div id="routemap-matches" class="tab-pane fade in">
         <table id="grid-routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsMatch">
             <thead>
@@ -192,7 +183,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-
     <div id="routemap-sets" class="tab-pane fade in">
         <table id="grid-routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsSet">
             <thead>
@@ -216,9 +206,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>                
-                
 </div>
-
     
 <script type="text/javascript">
 $(document).ready(function() {
