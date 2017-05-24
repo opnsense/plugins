@@ -241,7 +241,7 @@
                                 </Model>
                                 <ValidationMessage>Related item not found</ValidationMessage>
                                 <Multiple>Y</Multiple>
-                                <Required>N</Required>
+                                <Required>Y</Required>
                         </match>
               </rmatch>
       </rmatches>
