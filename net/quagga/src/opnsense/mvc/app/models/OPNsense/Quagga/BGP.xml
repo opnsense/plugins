@@ -71,7 +71,7 @@
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>prefixlists.prefixlist</items>
                                                 <display>name</display>
-                                                <key>name</key>
+                                                <group>name</group>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
@@ -84,6 +84,7 @@
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>prefixlists.prefixlist</items>
                                                 <display>name</display>
+                                                <group>name</group>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
@@ -96,6 +97,7 @@
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>routemaps.routemap</items>
                                                 <display>name</display>
+                                                <group>name</group>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
@@ -108,7 +110,7 @@
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>routemaps.routemap</items>
                                                 <display>name</display>
-                                                <key>name</key>
+                                                <group>name</group>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
