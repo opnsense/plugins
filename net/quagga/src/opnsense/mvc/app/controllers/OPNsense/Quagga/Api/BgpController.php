@@ -81,7 +81,7 @@ class BgpController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlBGP->neighbors->neighbor);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate", "linkedRoutemapIn", "linkedRoutemapOut" )
+            array("enabled", "address", "remoteas", "updatesource", "nexthopself", "defaultoriginate", "linkedPrefixlistIn", "linkedPrefixlistOut", "linkedRoutemapIn", "linkedRoutemapOut" )
         );
     }
 
@@ -269,18 +269,111 @@ class BgpController extends ApiMutableModelControllerBase
         return array("result" => "failed");
     }
 
-    public function searchRoutemapAction()
+    public function searchPrefixlistAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->prefixlists->prefixlist);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "seqnumber", "action", "network" )
+        );
+    }
+    public function getPrefixlistAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('prefixlists.prefixlist.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("prefixlist" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->prefixlists->prefixlist->add();
+            return array("prefixlist" => $node->getNodes());
+        }
+        return array();
+    }
+    public function addPrefixlistAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->prefixlists->prefixlist->Add();
+            $node->setNodes($this->request->getPost("prefixlist"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                unset($result['validations']);
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+    public function delPrefixlistAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->prefixlists->prefixlist->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+    public function setPrefixlistAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('prefixlists.prefixlist.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $prefixlistInfo = $this->request->getPost("prefixlist");
+                    $node->setNodes($prefixlistInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
+    
+    public function searchRoutemapnameAction()
     {
         $this->sessionClose();
         $mdlBGP = $this->getModel();
         $grid = new UIModelGrid($mdlBGP->routemaps->routemap);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "action", "id", "match", "set" )
+            array("enabled", "name", "linkedmatch", "linkedset" )
         );
     }
 
-    public function getRoutemapAction($uuid = null)
+    public function getRoutemapnameAction($uuid = null)
     {
         $mdlBGP = $this->getModel();
         if ($uuid != null) {
@@ -296,7 +389,7 @@ class BgpController extends ApiMutableModelControllerBase
         return array();
     }
 
-    public function addRoutemapAction()
+    public function addRoutemapnameAction()
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("routemap")) {
@@ -320,7 +413,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function delRoutemapAction($uuid)
+    public function delRoutemapnameAction($uuid)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
@@ -338,7 +431,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function setRoutemapAction($uuid)
+    public function setRoutemapnameAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("routemap")) {
             $mdlNeighbor = $this->getModel();
@@ -365,7 +458,201 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
+    
+    public function searchRoutemapmatchAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->rmatches->rmatch);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "action", "id", "match" )
+        );
+    }
+
+    public function getRoutemapmatchAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('rmatches.rmatch.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("rmatch" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->rmatches->rmatch->add();
+            return array("rmatch" => $node->getNodes());
+        }
+        return array();
+    }
+
+    public function addRoutemapmatchAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("rmatch")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->rmatches->rmatch->Add();
+            $node->setNodes($this->request->getPost("rmatch"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "rmatch", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                unset($result['validations']);
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+
+    public function delRoutemapmatchAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->rmatches->rmatch->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function setRoutemapmatchAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("rmatch")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('rmatches.rmatch.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $rmatchInfo = $this->request->getPost("rmatch");
+                    $node->setNodes($rmatchInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "rmatch", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }    
   
+    public function searchRoutemapsetAction()
+    {
+        $this->sessionClose();
+        $mdlBGP = $this->getModel();
+        $grid = new UIModelGrid($mdlBGP->rsets->rset);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "set" )
+        );
+    }
+
+    public function getRoutemapsetAction($uuid = null)
+    {
+        $mdlBGP = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlBGP->getNodeByReference('rsets.rset.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("rset" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlBGP->rsets->rset->add();
+            return array("rset" => $node->getNodes());
+        }
+        return array();
+    }
+
+    public function addRoutemapsetAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("rset")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlBGP = $this->getModel();
+            $node = $mdlBGP->rsets->rset->Add();
+            $node->setNodes($this->request->getPost("rset"));
+            $valMsgs = $mdlBGP->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "rset", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlBGP->serializeToConfig();
+                Config::getInstance()->save();
+                unset($result['validations']);
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+
+    public function delRoutemapsetAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlBGP = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlBGP->rsets->rset->del($uuid)) {
+                    $mdlBGP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function setRoutemapsetAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("rset")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('rsets.rset.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $rsetInfo = $this->request->getPost("rset");
+                    $node->setNodes($rsetInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "rset", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }    
+    
     public function toggle_handler($uuid, $elements, $element)
     {
         $result = array("result" => "failed");
@@ -399,9 +686,24 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->toggle_handler($uuid, 'aspaths', 'aspath');
     }
+
+    public function togglePrefixlistAction($uuid)
+    {
+        return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
+    }    
     
-    public function toggleRoutemapAction($uuid)
+    public function toggleRoutemapnameAction($uuid)
     {
         return $this->toggle_handler($uuid, 'routemaps', 'routemap');
+    }
+    
+    public function toggleRoutemapmatchAction($uuid)
+    {
+        return $this->toggle_handler($uuid, 'rmatches', 'rmatch');
+    }
+    
+    public function toggleRoutemapsetAction($uuid)
+    {
+        return $this->toggle_handler($uuid, 'rsets', 'rset');
     }
 }

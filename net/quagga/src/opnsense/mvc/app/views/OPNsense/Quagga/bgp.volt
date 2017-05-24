@@ -28,12 +28,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 <!-- Navigation bar -->
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+
+<ul class="nav nav-tabs" role="tablist"  id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS-Path Lists') }}</a></li>
-    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>    
+    <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#routemap-names">{{ lang._('Route-Maps') }}</a></li>
+    <li><a data-toggle="tab" href="#routemap-matches">{{ lang._('Route-Map matches') }}</a></li>
+    <li><a data-toggle="tab" href="#routemap-sets">{{ lang._('Route-Map sets') }}</a></li>
 </ul>
+
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -45,8 +50,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
-
-
     <div id="neighbors" class="tab-pane fade in">
         <table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditBGPNeighbor">
             <thead>
@@ -57,6 +60,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="updatesource" data-type="string" data-visible="true">{{ lang._('Update Source Address') }}</th>
                     <th data-column-id="nexthopself" data-type="string" data-formatter="rowtoggle">{{ lang._('Next Hop Self') }}</th>
                     <th data-column-id="defaultoriginate" data-type="string" data-formatter="rowtoggle">{{ lang._('Default Originate') }}</th>
+                    <th data-column-id="linkedPrefixlistIn" data-type="string" data-visible="true">{{ lang._('Prefix-List Inbound') }}</th>
+                    <th data-column-id="linkedPrefixlistOut" data-type="string" data-visible="true">{{ lang._('Prefix-List Outbound') }}</th>
                     <th data-column-id="linkedRoutemapIn" data-type="string" data-visible="true">{{ lang._('Route-Map Inbound') }}</th>
                     <th data-column-id="linkedRoutemapOut" data-type="string" data-visible="true">{{ lang._('Route-Map Outbound') }}</th>                
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
@@ -76,7 +81,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-                
     <div id="aspaths" class="tab-pane fade in">
         <table id="grid-aspaths" class="table table-responsive" data-editDialog="DialogEditBGPASPaths">
             <thead>
@@ -102,17 +106,66 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-
-    <div id="routemaps" class="tab-pane fade in">
-        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
+    <div id="prefixlists" class="tab-pane fade in">
+        <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditBGPPrefixLists">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Secquence Number') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
+                    <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>                
+    <div id="routemap-names" class="tab-pane fade in">
+        <table id="grid-routemap-names" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsName">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="linkedmatch" data-type="string" data-visible="true">{{ lang._('Match') }}</th>
+                    <th data-column-id="linkedset" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>                    
+    <div id="routemap-matches" class="tab-pane fade in">
+        <table id="grid-routemap-matches" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsMatch">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('AS Path List') }}</th>
-                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('Match') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -130,9 +183,31 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-                
+    <div id="routemap-sets" class="tab-pane fade in">
+        <table id="grid-routemap-sets" class="table table-responsive" data-editDialog="DialogEditBGPRouteMapsSet">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>                
 </div>
-
+    
 <script type="text/javascript">
 $(document).ready(function() {
   var data_get_map = {'frm_bgp_settings':"/api/quagga/bgp/get"};
@@ -174,19 +249,52 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-  $("#grid-routemaps").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchRoutemap',
-      'get':'/api/quagga/bgp/getRoutemap/',
-      'set':'/api/quagga/bgp/setRoutemap/',
-      'add':'/api/quagga/bgp/addRoutemap/',
-      'del':'/api/quagga/bgp/delRoutemap/',
-      'toggle':'/api/quagga/bgp/toggleRoutemap/',
+  $("#grid-prefixlists").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchPrefixlist',
+      'get':'/api/quagga/bgp/getPrefixlist/',
+      'set':'/api/quagga/bgp/setPrefixlist/',
+      'add':'/api/quagga/bgp/addPrefixlist/',
+      'del':'/api/quagga/bgp/delPrefixlist/',
+      'toggle':'/api/quagga/bgp/togglePrefixlist/',
       'options':{selection:false, multiSelect:false}
     }
-  );                
+  );
+  $("#grid-routemap-names").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchRoutemapname',
+      'get':'/api/quagga/bgp/getRoutemapname/',
+      'set':'/api/quagga/bgp/setRoutemapname/',
+      'add':'/api/quagga/bgp/addRoutemapname/',
+      'del':'/api/quagga/bgp/delRoutemapname/',
+      'toggle':'/api/quagga/bgp/toggleRoutemapname/',
+      'options':{selection:false, multiSelect:false}
+    }
+  ); 
+  $("#grid-routemap-matches").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchRoutemapmatch',
+      'get':'/api/quagga/bgp/getRoutemapmatch/',
+      'set':'/api/quagga/bgp/setRoutemapmatch/',
+      'add':'/api/quagga/bgp/addRoutemapmatch/',
+      'del':'/api/quagga/bgp/delRoutemapmatch/',
+      'toggle':'/api/quagga/bgp/toggleRoutemapmatch/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
+  $("#grid-routemap-sets").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchRoutemapset',
+      'get':'/api/quagga/bgp/getRoutemapset/',
+      'set':'/api/quagga/bgp/setRoutemapset/',
+      'add':'/api/quagga/bgp/addRoutemapset/',
+      'del':'/api/quagga/bgp/delRoutemapset/',
+      'toggle':'/api/quagga/bgp/toggleRoutemapset/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
     });
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS-Paths')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route-Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':'DialogEditBGPPrefixLists','label':lang._('Edit Prefix Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMapsName,'id':'DialogEditBGPRouteMapsName','label':lang._('Edit Route-Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMapsMatch,'id':'DialogEditBGPRouteMapsMatch','label':lang._('Edit Route-Map matches')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMapsSet,'id':'DialogEditBGPRouteMapsSet','label':lang._('Edit Route-Map sets')])}}
