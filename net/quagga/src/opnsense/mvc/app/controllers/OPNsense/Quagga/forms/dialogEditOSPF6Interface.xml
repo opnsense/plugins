@@ -1,0 +1,55 @@
+<form>
+  <field>
+    <id>interface.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>interface.interfacename</id>
+    <label>Interface</label>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Select an interface where this settings apply to.</help>
+  </field>
+  <field>
+    <id>interface.area</id>
+    <label>Area</label>
+    <type>text</type>
+    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
+  </field>
+  <field>
+    <id>interface.cost</id>
+    <label>Cost</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.hellointerval</id>
+    <label>Hello Interval</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.deadinterval</id>
+    <label>Dead Interval</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.retransmitinterval</id>
+    <label>Retransmission Interval</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.transmitdelay</id>
+    <label>Retransmission Delay</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.priority</id>
+    <label>Priority</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.networktype</id>
+    <label>Network Type</label>
+    <type>select_multiple</type>
+  </field>
+</form>
