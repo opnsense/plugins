@@ -14,8 +14,10 @@
   <field>
     <id>routemap.linkedmatch</id>
     <label>Route-Map Match</label>
-    <type>dropdown</type>
-    <help>Choose a match statement</help>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <help>Choose one or multiple match statements</help>
   </field>
   <field>
     <id>routemap.linkedset</id>
