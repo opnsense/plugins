@@ -21,9 +21,13 @@ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =end
+
 require 'json'
 require 'shellwords'
 require 'pp'
+
+$QUAGGA_DEBUG = false
+
 class VTYSH
   def initialize(path = '/usr/local/bin/vtysh')
     @path = path
@@ -95,8 +99,8 @@ class General
   def initialize(vtysh)
     @vtysh = vtysh
   end
-  def routes
-    lines = @vtysh.execute("show ip route").lines
+  def routes(ipv6 = false)
+    lines = @vtysh.execute("show ip#{ipv6 ? 'v6' : ''} route").lines
 
     # headers
     meanings = {}
@@ -120,6 +124,10 @@ class General
     end
     entries
   end
+  
+  def routes6
+    routes(true)
+  end
 end
 
 class OSPF
@@ -127,7 +135,7 @@ class OSPF
     @vtysh = vtysh
   end
   def neighbors
-    qta = QuaggaTableReader.new(["Neighbor ID", "Pri State", "Dead Time", "Address", "Interface", "RXmtL", "RqstL", "DBsmL"])
+    qta = QuaggaTableReader.new(["Neighbor ID", "Pri", "State", "Dead Time", "Address", "Interface", "RXmtL", "RqstL", "DBsmL"])
     lines = @vtysh.execute("show ip ospf neighbor").lines
     lines.shift # empty line
     data = []
@@ -189,6 +197,7 @@ class OSPF
           # make sure there is an array to write in
           current_if[:unparsed] ||= []
           current_if[:unparsed] << line
+          puts line if $QUAGGA_DEBUG
         end
       end
     end
@@ -214,22 +223,30 @@ class OSPF
           mode = :router
         when /Router Link States \(Area ([\.\d]+)\)/
           router_link_states_area = $1
-          db[router]['link_state_area'] ||= {}
-          db[router]['link_state_area'][$1] ||= []
-          mode = :link_state
+          db[router]['router_link_state_area'] ||= {}
+          db[router]['router_link_state_area'][$1] ||= []
+          mode = :router_link_state
+          qta = nil
+        when /Net Link States \(Area ([\.\d]+)\)/
+          net_link_states_area = $1
+          db[router]['net_link_state_area'] ||= {}
+          db[router]['net_link_state_area'][$1] ||= []
+          mode = :net_link_state
           qta = nil
         when 'AS External Link States'
           mode = :states
           db[router]['external_states'] ||= []
           qta = nil
         else
-          $stderr.puts "unknown heading"
+          puts "unknown heading" if $QUAGGA_DEBUG
         end
       else
         if qta == nil
           case mode
-          when :link_state
+          when :router_link_state
             qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Link count"])
+          when :net_link_state
+            qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum"])
           when :states
             qta = QuaggaTableReader.new(["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Route\n"])
           else
@@ -240,8 +257,10 @@ class OSPF
         else
           entry = qta.read_entry(line)
           case mode
-          when :link_state
-            db[router]['link_state_area'][router_link_states_area] << entry
+          when :router_link_state
+            db[router]['router_link_state_area'][router_link_states_area] << entry
+          when :net_link_state
+            db[router]['net_link_state_area'][net_link_states_area] << entry
           when :states
             db[router]['external_states'] << entry
           end
@@ -276,7 +295,7 @@ class OSPF
           last_line = {ip: $1, cost: $2.to_i, area: $3, asbr: (", ASBR" == $4), type: 'R'}
           route[heading] << last_line
         else
-          #puts line
+          puts line if $QUAGGA_DEBUG
         end
       end
     end
@@ -318,8 +337,7 @@ class OSPF
       when ""
         break
       else
-        # debug
-        #puts line
+        puts line if $QUAGGA_DEBUG
       end
     end
     # general overview has ended - now the area overviews come
@@ -348,7 +366,7 @@ class OSPF
       when "Area has no authentication"
         current_area[:auth] = "none"
       else
-        #puts line
+        puts line if $QUAGGA_DEBUG
       end
     end
     overview
@@ -410,12 +428,230 @@ class BGP
   end
 end
 
+class OSPFv3
+  def initialize(sh)
+    @vtysh = sh
+  end
+  
+    def overview
+    lines = @vtysh.execute("show ipv6 ospf6").lines
+    overview = {}
+    while line = lines.shift&.strip
+      case line
+      when /OSPFv3 Routing Process \((\d+)\) with Router-ID ([\d\.]+)/
+        overview[:router_id] = $2
+        overview[:routing_process] = $1.to_i
+      when /Initial SPF scheduling delay (\d+) millisec\(s\)/
+        overview[:initial_spf_scheduling_delay] = $1.to_i
+      # this line contains a typo in the output - I made it to work with and without
+      # this typo
+      when /(Min|Max)imum hold time between consecutive SPFs (\d+) milli?second\(s\)/
+        overview[:hold_time] ||= {}
+        overview[:hold_time][$1.downcase] = $2.to_i
+      when "This router is an ASBR (injecting external routing information)"
+        overview[:asbr] = true
+      when /SPF timer is (.*)/
+        overview[:spf_timer] = $1
+      when /Running (.*)/
+        overview[:running_time] = $1
+      when /Number of AS scoped LSAs is (\d+)/
+        overview[:number_as_scoped] = $1.to_i
+      when /Hold time multiplier is currently (\d+)/
+        overview[:current_hold_time_multipier] = $1.to_i
+      when /Number of areas in this router is (\d+)/
+        overview[:number_of_areas] = $1.to_i
+      when ""
+        break
+      else
+        # debug
+        puts line if $QUAGGA_DEBUG
+      end
+    end
+    # general overview has ended - now the area overviews come
+    overview[:areas] = {}
+    current_area = {}
+    while line = lines.shift&.strip
+      case line
+      when /^Area ([\d\.]*)/
+        current_area = {}
+        overview[:areas][$1] = current_area
+      when /Interface attached to this area: (.*)/
+        current_area[:interfaces] = $1.split(" ")
+      when /Number of Area scoped LSAs is (.*)/
+        current_area[:number_lsas] = $1.to_i
+      else
+        puts line if $QUAGGA_DEBUG
+      end
+    end
+    overview
+  end
+  
+  def linkstate
+    lines = @vtysh.execute("show ipv6 ospf6 linkstate").lines
+    linkstate = {}
+    
+    qta = nil
+    current_area = []
+    while line = lines.shift&.strip
+      case line
+      when /SPF Result in Area (.*)/
+        linkstate[$1] = current_area = []
+        qta = QuaggaTableReader.new(["Type","Router-ID", "Net-ID", "Rtr-Bits", "Options", "Cost"])
+        lines.shift
+        qta.read_headline(lines.shift)
+      else
+        if line.length > 10
+          current_area << qta.read_entry(line)
+        end
+      end
+    end
+    linkstate
+  end
+  
+  def route
+    route = []
+    lines = @vtysh.execute("show ipv6 ospf6 route").lines
+    
+    lines.each do |line|
+      f1, f2, network, gateway, interface, time = line.strip.split(/\s+/)
+      route << { f1: f1,
+                 f2: f2,
+                 network: network,
+                 gateway: gateway,
+                 interface: interface,
+                 time: time }
+    end
+    route
+  end
+  
+  def neighbor
+    qta = QuaggaTableReader.new(["Neighbor ID","Pri", "DeadTime", "State/IfState", "Duration I/F[State]"])
+    neighbor = []
+    nb = @vtysh.execute("show ipv6 ospf6 neighbor").lines
+    qta.read_headline(nb.shift.strip)
+    while line = nb.shift&.strip
+      puts line
+      if line.length > 10
+        tmp = qta.read_entry(line)
+        tmp['Pri'] = tmp['Pri'].to_i
+        neighbor << tmp
+      end
+    end
+    neighbor
+  end
+  def database
+    lines = @vtysh.execute("show ipv6 ospf6 database").lines
+    database = {}
+    mode = :none
+    area = ''
+    qta = :none
+    while line = lines.shift&.strip
+      case line
+      when /Area Scoped Link State Database \(Area (.*)\)/
+        mode = :scoped_link_db
+        database[:scoped_link_db] ||= {}
+        database[:scoped_link_db][$1] = area = []
+        qta = database_qta(lines)
+      when /I\/F Scoped Link State Database \(I\/F (\S+) in Area (.*)\)/
+        mode = :if_scoped_link_state
+        database[:if_scoped_link_state] ||= {}
+        database[:if_scoped_link_state][$1] ||= {}
+        area = database[:if_scoped_link_state][$1][$2] ||= []
+        qta= database_qta(lines)
+      when "AS Scoped Link State Database"
+        mode = :as_scoped
+        area = database[:as_scoped] ||= []
+        qta=database_qta(lines)
+        # note: i have no data for this but i think it looks like the others
+      else
+        if line.length > 10
+          area << qta.read_entry(line)
+        end
+      end
+    end
+    database
+  end
+  
+  def interface
+    lines = @vtysh.execute("show ipv6 ospf6 interface").lines
+    int = {}
+    current_if = {}
+    while line = lines.shift
+      if line.length > 5
+        case line.strip
+        when /(\S+) is (down|up), type ([A-Z]+)/
+          current_if =  int[$1] = {up: ($2 == "up" ? true : false),
+                                   type: $3,
+                                   enabled: true}
+        when /Interface ID: (\d+)/
+          current_if[:id] = $1.to_i
+        when /OSPF not enabled on this interface/
+          current_if[:enabled] = false
+        when /Instance ID (\d+), Interface MTU (\d+) \(autodetect: (\d+)\)/
+          current_if[:instance_id] = $1.to_i
+          current_if[:interface_mtu] = $2.to_i
+          current_if[:interface_mtu_autodetect] = $3.to_i
+        when "Internet Address:"
+          # ignore
+        when /(inet |inet6): (\S+)/
+          current_if[:IPv6] ||= []
+          current_if[:IPv4] ||= []
+          family = $1 == 'inet6' ? :IPv6 : :IPv4
+          address = $2
+          current_if[family] << address
+        when /MTU mismatch detection: (en|dis)abled/
+          current_if[:mtu_mismatch_detection] = $1 == 'en'
+        when /DR: (\S+) BDR: (\S+)/
+          current_if[:designated_router] = $1
+          current_if[:backup_designated_router] = $2
+        when /State (\S+), Transmit Delay (\d+) sec, Priority (\d+)/
+          current_if[:state] = $1
+          current_if[:transmit_delay] = $2.to_i
+          current_if[:priority] = $3.to_i
+        when /Number of I\/F scoped LSAs is (\d+)/
+          current_if[:number_if_scoped_lsas] = $1.to_i
+        when /(\d+) Pending LSAs for (\S+) in Time ([\d:]+)(?: (.*))/
+          current_if[:pending_lsas] ||= {}
+          current_if[:pending_lsas][$2] = {time: $3,
+                                           count: $1,
+                                           flags: $4}
+        when "Timer intervals configured:"
+          # ignore
+        when /Hello (\d+), Dead (\d+), Retransmit (\d+)/
+          current_if[:timers] = {hello: $1.to_i,
+                                 dead: $2.to_i,
+                                 retransmit: $3.to_i }
+        when /Area ID (\S+), Cost (\d+)/
+          current_if[:area_cost] ||= []
+          current_if[:area_cost] << {area: $1, cost: $2.to_i }
+        else
+          puts line if $QUAGGA_DEBUG
+        end
+      end
+    end
+    int
+  end
+  
+  private
+  def database_qta(lines)
+    # DON'T REMOVE THE SPACES!!!
+    # For some reasons the fields are right aligned with the fields which makes it hard
+    # to parse. I don't know a better way to get the correct offset except automatically.
+    # (Detection of semantic of the fields)
+    qta = QuaggaTableReader.new(["Type", "LSId", "AdvRouter", "     Age", "  SeqNum","                       Payload"])
+    lines.shift
+    qta.read_headline(lines.shift)
+    qta
+  end
+end
+
 require 'optparse'
 options = {}
 supported_sections = %w{general ospf}
 OptionParser.new do |opts|
   opts.banner = "Usage: #{__FILE__} -s section [section specific params]"
-  opts.on("-d", "--ospf-database") do |od|
+  #### OSPFv2
+  opts.on("-d", "--ospf-database", "Prints the OSPF Database") do |od|
     options[:ospf_database] = od
   end
   opts.on("-r", "--ospf-route", 'print OSPF routing table') do |od|
@@ -430,14 +666,39 @@ OptionParser.new do |opts|
   opts.on("-o", "--ospf-overview", "Print OSPF summary") do |od|
     options[:ospf_overview] = od
   end
-  opts.on("-R", "--general-routes", "Print Routing Table") do |od|
+  #### OSPFv3
+    opts.on("-D", "--ospfv3-database", "Prints the OSPFv3 Database") do |od|
+    options[:ospfv3_database] = od
+  end
+  opts.on("-t", "--ospfv3-route", 'print OSPFv3 routing table') do |od|
+    options[:ospfv3_route] = od
+  end
+  opts.on("-I", "--ospfv3-interface", 'print OSPFv3 interface information') do |od|
+    options[:ospfv3_interface] = od
+  end
+  opts.on("-N", "--ospfv3-neighbor", 'Print OSPFv3 neighbors') do |od|
+    options[:ospfv3_neighbors] = od
+  end
+  opts.on("-O", "--ospfv3-overview", "Print OSPFv3 summary") do |od|
+    options[:ospfv3_overview] = od
+  end
+  #### general things about routing
+  opts.on("-R", "--general-routes", "Print Routing Table (IPv4)") do |od|
     options[:general_routes] = od
   end
+  opts.on("-6", "--general-routes6", "Print Routing Table (IPv6)") do |od|
+    options[:general_routes6] = od
+  end
+  ### BGP
   opts.on("-B", "--bgp-overview", "Print an overview of BGP") do |od|
     options[:bgp_overview] = od
   end
+  ### program opts
   opts.on("-H", "--human-readable", "Print the output human readable (not json)") do |od|
     options[:human_readable] = od
+  end
+  opts.on("-X", "--debug", "Prints debug output") do |od|
+    $QUAGGA_DEBUG = true
   end
   opts.on("-h", "--help", "Prints this help") do
     puts opts
@@ -447,6 +708,7 @@ end.parse!
 # use the lib
 sh = VTYSH.new
 ospf = OSPF.new sh
+ospfv3 = OSPFv3.new sh
 bgp = BGP.new sh
 general = General.new sh
 
@@ -455,9 +717,12 @@ options.keys.each do |k|
   # if it is true
   if options[k]
     begin
-      if k.to_s.include? 'ospf'
+      if k.to_s.include? 'ospf_'
         cmd = k.to_s.split('_').last
         result[k] = ospf.send(cmd)
+      elsif k.to_s.include? 'ospfv3'
+        cmd = k.to_s.split('_').last
+        result[k] = ospfv3.send(cmd)
       elsif k.to_s.include? 'general'
         cmd = k.to_s.split('_').last
         result[k] = general.send(cmd)
@@ -467,7 +732,7 @@ options.keys.each do |k|
       end
     rescue # do nothing on an error
       result[k] = "error"
-      #puts $!
+      puts $! if $QUAGGA_DEBUG
     end
   end
 end

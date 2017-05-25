@@ -1,18 +1,15 @@
 <?php
 /*
     Copyright (C) 2017 Fabian Franz
+    Copyright (C) 2017 Michael Muenz
     All rights reserved.
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
        this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -24,17 +21,9 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
-
 namespace OPNsense\Quagga;
+use OPNsense\Base\BaseModel;
 
-class OspfController extends \OPNsense\Base\IndexController
+class OSPF6 extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->title = gettext("OSPF Settings");
-        $this->view->generalForm = $this->getForm("ospf");
-        $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
-        $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
-        $this->view->pick('OPNsense/Quagga/ospf');
-    }
 }

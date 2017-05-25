@@ -1,18 +1,15 @@
 <?php
 /*
     Copyright (C) 2017 Fabian Franz
+    Copyright (C) 2017 Michael Muenz
     All rights reserved.
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
        this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -27,14 +24,27 @@
 
 namespace OPNsense\Quagga;
 
-class OspfController extends \OPNsense\Base\IndexController
+class DiagnosticsController extends \OPNsense\Base\IndexController
 {
-    public function indexAction()
+    public function bgpAction()
     {
-        $this->view->title = gettext("OSPF Settings");
-        $this->view->generalForm = $this->getForm("ospf");
-        $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
-        $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
-        $this->view->pick('OPNsense/Quagga/ospf');
+        $this->view->title = gettext("Diagnostics: BGP");
+        $this->view->diagnosticsForm = $this->getForm("diagnostics");
+        $this->view->pick('OPNsense/Quagga/diagnosticsbgp');
+    }
+    public function ospfAction()
+    {
+        $this->view->title = gettext("Diagnostics: OSPF");
+        $this->view->pick('OPNsense/Quagga/diagnosticsospf');
+    }
+    public function ospfv3Action()
+    {
+        $this->view->title = gettext("Diagnostics: OSPFv3");
+        $this->view->pick('OPNsense/Quagga/diagnosticsospfv3');
+    }
+    public function generalAction()
+    {
+        $this->view->title = gettext("Diagnostics: General");
+        $this->view->pick('OPNsense/Quagga/diagnosticsgeneral');
     }
 }

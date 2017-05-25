@@ -1,10 +1,4 @@
 <?php
-namespace OPNsense\Quagga\Api;
-
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Quagga\General;
-use \OPNsense\Core\Config;
-
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
@@ -33,6 +27,11 @@ use \OPNsense\Core\Config;
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+ 
+namespace OPNsense\Quagga\Api;
+use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Quagga\General;
+use \OPNsense\Core\Config;
 
 class GeneralController extends ApiControllerBase
 {
