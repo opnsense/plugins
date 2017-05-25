@@ -33,6 +33,18 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>neighbor.linkedPrefixlistIn</id>
+    <label>Prefix-List In</label>
+    <type>dropdown</type>
+    <help>Prefix-List for inbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedPrefixlistOut</id>
+    <label>Prefix-List Out</label>
+    <type>dropdown</type>
+    <help>Prefix-List for outbound direction</help>
+  </field>
+  <field>
     <id>neighbor.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>

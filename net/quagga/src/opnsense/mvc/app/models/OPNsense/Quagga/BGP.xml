@@ -65,12 +65,39 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </defaultoriginate>
+                        <linkedPrefixlistIn type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required> 
+                        </linkedPrefixlistIn>
+                        <linkedPrefixlistOut type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required> 
+                        </linkedPrefixlistOut>
                         <linkedRoutemapIn type="ModelRelationField">
                                 <Model>
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>routemaps.routemap</items>
                                                 <display>name</display>
+                                                <group>name</group>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
@@ -83,6 +110,7 @@
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>routemaps.routemap</items>
                                                 <display>name</display>
+                                                <group>name</group>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
@@ -117,6 +145,36 @@
                         </as>
                 </aspath> 
         </aspaths>
+        <prefixlists>
+                <prefixlist type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <name type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </name>
+                        <seqnumber type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
+                        </seqnumber>
+                        <action type="OptionField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <OptionValues>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
+                        <network type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </network>
+                </prefixlist> 
+        </prefixlists> 
         <routemaps>
                 <routemap type="ArrayField">
                         <enabled type="BooleanField">
