@@ -109,7 +109,7 @@ $(document).ready(function() {
     $('#routing6').html(content)
     //$('#routing6 table').bootgrid({converters: dataconverters})
   });
-  ajaxCall(url="/api/quagga/diagnostics/runningconfig", sendData={}, callback=function(data,status) {
+  ajaxCall(url="/api/quagga/diagnostics/showrunningconfig", sendData={}, callback=function(data,status) {
       $("#runningconfig").text(data['response']);
   });
 
