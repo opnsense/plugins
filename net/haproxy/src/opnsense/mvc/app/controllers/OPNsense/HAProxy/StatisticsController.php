@@ -37,7 +37,7 @@ class StatisticsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = "HAProxy Load Balancer / Statistics";
+        $this->view->title = gettext("HAProxy Load Balancer / Statistics");
         // choose template
         $this->view->pick('OPNsense/HAProxy/statistics');
     }

@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 "<td>"+value+"</td></tr>");
                             });
                         } else {
-                            $("#infolist").html("<tr><td><br/><b>Error:</b> Unable to fetch statistics. Is HAProxy running?</td></tr>");
+                            $("#infolist").html("<tr><td><br/>{{ lang._('The statistics could not be fetched. Is HAProxy running?') }}</td></tr>");
                         }
                         $('#processing-dialog').modal('hide');
                     }
@@ -64,6 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     callback = function (data, status) {
                         if (status == "success") {
                             // status
+                            $("#status_nav").show();
                             $("#grid-status").bootgrid('destroy');
                             var html = [];
                             $.each(data, function (key, value) {
@@ -94,6 +95,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     callback = function (data, status) {
                         if (status == "success") {
                             // counters
+                            $("#counters_nav").show();
                             $("#grid-counters").bootgrid('destroy');
                             var html = [];
                             $.each(data, function (key, value) {
@@ -124,6 +126,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     callback = function (data, status) {
                         if (status == "success") {
                             // tables
+                            $("#tables_nav").show();
                             $("#grid-tables").bootgrid('destroy');
                             var html = [];
                             $.each(data, function (key, value) {
@@ -157,9 +160,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     <li class="active"><a data-toggle="tab" href="#info"><b>{{ lang._('Overview') }}</b></a></li>
-    <li><a data-toggle="tab" href="#status"><b>{{ lang._('Status') }}</b></a></li>
-    <li><a data-toggle="tab" href="#counters"><b>{{ lang._('Counters') }}</b></a></li>
-    <li><a data-toggle="tab" href="#tables"><b>{{ lang._('Stick Tables') }}</b></a></li>
+    <li><a data-toggle="tab" href="#status" id="status_nav" style="display:none"><b>{{ lang._('Status') }}</b></a></li>
+    <li><a data-toggle="tab" href="#counters" id="counters_nav" style="display:none"><b>{{ lang._('Counters') }}</b></a></li>
+    <li><a data-toggle="tab" href="#tables" id="tables_nav" style="display:none"><b>{{ lang._('Stick Tables') }}</b></a></li>
 </ul>
 
 <div class="content-box tab-content">
