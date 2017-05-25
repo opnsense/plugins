@@ -109,7 +109,9 @@ $(document).ready(function() {
     $('#routing6').html(content)
     //$('#routing6 table').bootgrid({converters: dataconverters})
   });
-
+  ajaxCall(url="/api/quagga/diagnostics/runningconfig", sendData={}, callback=function(data,status) {
+      $("#runningconfig").text(data['response']);
+  });
 
 });
 </script>
@@ -118,9 +120,13 @@ $(document).ready(function() {
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#routing">{{ lang._('IPv4 Routes') }}</a></li>
     <li><a data-toggle="tab" href="#routing6">{{ lang._('IPv6 Routes') }}</a></li>
+    <li><a data-toggle="tab" href="#showrun">{{ lang._('Running Configuration') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
     <div id="routing" class="tab-pane fade in active"></div>
     <div id="routing6" class="tab-pane fade in"></div>
+    <div id="showrun" class="tab-pane fade in">
+      <pre id="general-runningconfig"></pre>
+    </div>
 </div>
