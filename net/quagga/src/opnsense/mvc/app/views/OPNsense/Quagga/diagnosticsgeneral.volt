@@ -127,6 +127,6 @@ $(document).ready(function() {
     <div id="routing" class="tab-pane fade in active"></div>
     <div id="routing6" class="tab-pane fade in"></div>
     <div id="showrun" class="tab-pane fade in">
-      <pre id="general-runningconfig"></pre>
+      <pre id="runningconfig"></pre>
     </div>
 </div>
