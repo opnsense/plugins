@@ -59,6 +59,12 @@ class DiagnosticsController extends ApiControllerBase
         $response = $backend->configdRun("quagga diag-bgp summary");
         return array("response" => $response);
     }
+    public function showrunningconfigAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("quagga general-runningconfig");
+        return array("response" => $response);
+    }
     private function get_ospf_information($name)
     {
         $backend = new Backend();
