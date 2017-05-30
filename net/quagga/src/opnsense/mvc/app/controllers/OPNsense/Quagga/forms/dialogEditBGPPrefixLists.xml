@@ -10,7 +10,7 @@
     <label>Name</label>
     <type>text</type>
     <help>The name of your Prefix-List, please choose one near to the result you want to achieve.</help>
-  </field>  
+  </field>
   <field>
     <id>prefixlist.seqnumber</id>
     <label>Number</label>

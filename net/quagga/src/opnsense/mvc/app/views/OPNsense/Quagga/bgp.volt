@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS Path Lists') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
-    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>    
+    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
@@ -59,7 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="linkedPrefixlistIn" data-type="string" data-visible="true">{{ lang._('Prefix List inbound') }}</th>
                     <th data-column-id="linkedPrefixlistOut" data-type="string" data-visible="true">{{ lang._('Prefix List outbound') }}</th>
                     <th data-column-id="linkedRoutemapIn" data-type="string" data-visible="true">{{ lang._('Route Map inbound') }}</th>
-                    <th data-column-id="linkedRoutemapOut" data-type="string" data-visible="true">{{ lang._('Route Map outbound') }}</th>                
+                    <th data-column-id="linkedRoutemapOut" data-type="string" data-visible="true">{{ lang._('Route Map outbound') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -127,7 +127,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
-    </div>                
+    </div>
     <div id="routemaps" class="tab-pane fade in">
         <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
             <thead>
@@ -216,7 +216,7 @@ $(document).ready(function() {
       'toggle':'/api/quagga/bgp/toggleRoutemap/',
       'options':{selection:false, multiSelect:false}
     }
-  );                
+  );
     });
 </script>
 

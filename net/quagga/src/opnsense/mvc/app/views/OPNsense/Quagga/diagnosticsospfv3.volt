@@ -235,7 +235,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <% } else if (propertyname == 'area_cost')  { %>
                 <% _.each(int[propertyname], function (ac) { %>
                   <%= ac['area'] %>: <%= ac['cost'] %><br />
-                <% }) %> 
+                <% }) %>
               <% } else { %>
                 <%= translate(int[propertyname]) %>
               <% } %>

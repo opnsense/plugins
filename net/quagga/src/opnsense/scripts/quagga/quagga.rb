@@ -124,7 +124,7 @@ class General
     end
     entries
   end
-  
+
   def routes6
     routes(true)
   end
@@ -432,7 +432,7 @@ class OSPFv3
   def initialize(sh)
     @vtysh = sh
   end
-  
+
     def overview
     lines = @vtysh.execute("show ipv6 ospf6").lines
     overview = {}
@@ -485,11 +485,11 @@ class OSPFv3
     end
     overview
   end
-  
+
   def linkstate
     lines = @vtysh.execute("show ipv6 ospf6 linkstate").lines
     linkstate = {}
-    
+
     qta = nil
     current_area = []
     while line = lines.shift&.strip
@@ -507,11 +507,11 @@ class OSPFv3
     end
     linkstate
   end
-  
+
   def route
     route = []
     lines = @vtysh.execute("show ipv6 ospf6 route").lines
-    
+
     lines.each do |line|
       f1, f2, network, gateway, interface, time = line.strip.split(/\s+/)
       route << { f1: f1,
@@ -523,7 +523,7 @@ class OSPFv3
     end
     route
   end
-  
+
   def neighbor
     qta = QuaggaTableReader.new(["Neighbor ID","Pri", "DeadTime", "State/IfState", "Duration I/F[State]"])
     neighbor = []
@@ -571,7 +571,7 @@ class OSPFv3
     end
     database
   end
-  
+
   def interface
     lines = @vtysh.execute("show ipv6 ospf6 interface").lines
     int = {}
@@ -631,7 +631,7 @@ class OSPFv3
     end
     int
   end
-  
+
   private
   def database_qta(lines)
     # DON'T REMOVE THE SPACES!!!

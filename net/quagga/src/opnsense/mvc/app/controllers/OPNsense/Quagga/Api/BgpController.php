@@ -30,6 +30,7 @@
  */
 
 namespace OPNsense\Quagga\Api;
+
 use \OPNsense\Quagga\BGP;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
@@ -361,7 +362,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
-    
+
     public function searchRoutemapAction()
     {
         $this->sessionClose();
@@ -458,7 +459,7 @@ class BgpController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
-  
+
     public function toggle_handler($uuid, $elements, $element)
     {
         $result = array("result" => "failed");
@@ -487,7 +488,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->toggle_handler($uuid, 'neighbors', 'neighbor');
     }
-    
+
     public function toggleAspathAction($uuid)
     {
         return $this->toggle_handler($uuid, 'aspaths', 'aspath');
@@ -496,8 +497,8 @@ class BgpController extends ApiMutableModelControllerBase
     public function togglePrefixlistAction($uuid)
     {
         return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
-    }    
-    
+    }
+
     public function toggleRoutemapAction($uuid)
     {
         return $this->toggle_handler($uuid, 'routemaps', 'routemap');

@@ -76,7 +76,7 @@
                                 </Model>
                                 <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
                                 <Multiple>N</Multiple>
-                                <Required>N</Required> 
+                                <Required>N</Required>
                         </linkedPrefixlistIn>
                         <linkedPrefixlistOut type="ModelRelationField">
                                 <Model>
@@ -89,7 +89,7 @@
                                 </Model>
                                 <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
                                 <Multiple>N</Multiple>
-                                <Required>N</Required> 
+                                <Required>N</Required>
                         </linkedPrefixlistOut>
                         <linkedRoutemapIn type="ModelRelationField">
                                 <Model>
@@ -102,7 +102,7 @@
                                 </Model>
                                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
                                 <Multiple>N</Multiple>
-                                <Required>N</Required> 
+                                <Required>N</Required>
                         </linkedRoutemapIn>
                         <linkedRoutemapOut type="ModelRelationField">
                                 <Model>
@@ -115,7 +115,7 @@
                                 </Model>
                                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
                                 <Multiple>N</Multiple>
-                                <Required>N</Required> 
+                                <Required>N</Required>
                         </linkedRoutemapOut>
             </neighbor>
         </neighbors>
@@ -124,7 +124,7 @@
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
-                        </enabled>                         
+                        </enabled>
                         <number type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -143,7 +143,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </as>
-                </aspath> 
+                </aspath>
         </aspaths>
         <prefixlists>
                 <prefixlist type="ArrayField">
@@ -173,8 +173,8 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </network>
-                </prefixlist> 
-        </prefixlists> 
+                </prefixlist>
+        </prefixlists>
         <routemaps>
                 <routemap type="ArrayField">
                         <enabled type="BooleanField">
@@ -215,7 +215,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </set>
-                </routemap> 
+                </routemap>
         </routemaps>
     </items>
 </model>
