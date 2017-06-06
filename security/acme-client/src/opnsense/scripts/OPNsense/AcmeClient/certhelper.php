@@ -343,7 +343,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
             }
 
             // Let acme client generate a new account key
-            $acmecmd = "/usr/local/opnsense/scripts/OPNsense/AcmeClient/acme.sh "
+            $acmecmd = "/usr/local/sbin/acme.sh "
               . implode(" ", $acme_args) . " "
               . "--createAccountKey "
               . "--accountkeylength 4096 "
@@ -388,7 +388,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
         }
 
         // Run acme client to register the account
-        $acmecmd = "/usr/local/opnsense/scripts/OPNsense/AcmeClient/acme.sh "
+        $acmecmd = "/usr/local/sbin/acme.sh "
           . implode(" ", $acme_args) . " "
           . "--registeraccount "
           . "--log-level 2 "
@@ -692,7 +692,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
-    $acmecmd = "/usr/local/opnsense/scripts/OPNsense/AcmeClient/acme.sh "
+    $acmecmd = "/usr/local/sbin/acme.sh "
       . implode(" ", $acme_args) . " "
       . "--${acme_action} "
       . "--domain " . (string)$certObj->name . " "
@@ -759,7 +759,7 @@ function revoke_cert($certObj, $valObj, $acctObj)
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
-    $acmecmd = "/usr/local/opnsense/scripts/OPNsense/AcmeClient/acme.sh "
+    $acmecmd = "/usr/local/sbin/acme.sh "
       . implode(" ", $acme_args) . " "
       . "--revoke "
       . "--domain " . (string)$certObj->name . " "
