@@ -1,5 +1,5 @@
 PLUGIN_NAME=		monit
-PLUGIN_VERSION=		1.1
+PLUGIN_VERSION=		1.2
 PLUGIN_COMMENT=		Proactive system monitoring
 PLUGIN_MAINTAINER=	frank.brendel@eurolog.com
 PLUGIN_DEPENDS=		monit
