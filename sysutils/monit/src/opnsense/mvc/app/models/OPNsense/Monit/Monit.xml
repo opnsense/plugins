@@ -118,7 +118,7 @@
          </enabled>
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\-]){1,255}$/u</mask>
+            <mask>/^([0-9a-zA-Z\._\-\$]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus and dot.</ValidationMessage>
          </name>
          <type type="OptionField">
