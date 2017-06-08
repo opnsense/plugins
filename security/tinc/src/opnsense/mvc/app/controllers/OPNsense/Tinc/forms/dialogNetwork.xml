@@ -36,7 +36,7 @@
       <id>network.cipher</id>
       <label>Cipher</label>
       <type>dropdown</type>
-      <help> The symmetric cipher algorithm used to encrypt UDP packets.
+      <help>The symmetric cipher algorithm used to encrypt UDP packets.
              Any cipher supported by LibreSSL or OpenSSL is recognised.
              Furthermore, specifying "none" will turn off packet encryption.
              It is best to use only those ciphers which support CBC mode
