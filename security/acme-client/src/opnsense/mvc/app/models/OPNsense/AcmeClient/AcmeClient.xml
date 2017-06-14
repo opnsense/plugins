@@ -275,7 +275,7 @@
                     <Required>Y</Required>
                     <default>opnsense</default>
                     <OptionValues>
-                        <opnsense>OPNsense port forward (specify Interface or IP)</opnsense>
+                        <opnsense>OPNsense Web Service (automatic port forward)</opnsense>
                         <haproxy>HAProxy HTTP Frontend Integration (OPNsense plugin)</haproxy>
                     </OptionValues>
                 </http_service>
