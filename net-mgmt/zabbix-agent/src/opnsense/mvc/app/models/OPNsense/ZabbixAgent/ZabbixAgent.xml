@@ -36,6 +36,7 @@
                     <Required>Y</Required>
                     <multiple>Y</multiple>
                     <mask>/^((([0-9a-zA-Z._\-]+:[0-9a-zA-Z._\-]+)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:]+)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid IP addresses, i.e. 10.0.0.1.</ValidationMessage>
                 </listenIP>
