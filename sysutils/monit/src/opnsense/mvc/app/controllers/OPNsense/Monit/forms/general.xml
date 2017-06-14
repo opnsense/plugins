@@ -20,7 +20,9 @@
    <field>
       <id>monit.general.mailserver</id>
       <label>Mail Server</label>
-      <type>text</type>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <style>tokenize</style>
       <help><![CDATA[Comma separated list of SMTP servers for alert delivery.]]></help>
    </field>
    <field>
