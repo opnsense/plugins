@@ -27,7 +27,6 @@
                         <connected>Connected routes (directly attached subnet or host)</connected>
                         <isis>Intermediate System to Intermediate System (IS-IS)</isis>
                         <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                        <pim>Protocol Independent Multicast (PIM)</pim>
                         <rip>Routing Information Protocol (RIP)</rip>
                         <static>Statically configured routes</static>
                 </OptionValues>
