@@ -30,6 +30,8 @@ A list of currently available plugins
 ```
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
+dns/dyndns -- Dynamic DNS Support
+dns/rfc2136 -- RFC-2136 Support
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
