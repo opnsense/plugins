@@ -610,10 +610,9 @@
                     <Required>N</Required>
                 </weight>
                 <checkInterval type="TextField">
-                    <default>2s</default>
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </checkInterval>
                 <checkDownInterval type="TextField">
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
@@ -658,12 +657,11 @@
                         <ssl>SSL</ssl>
                     </OptionValues>
                 </type>
-                <interval type="IntegerField">
-                    <MinimumValue>250</MinimumValue>
-                    <MaximumValue>1000000</MaximumValue>
-                    <default>1000</default>
-                    <ValidationMessage>Please specify a value between 250 and 1000000.</ValidationMessage>
-                    <Required>N</Required>
+                <interval type="TextField">
+                    <default>2s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>Y</Required>
                 </interval>
                 <checkport type="IntegerField">
                     <default></default>
