@@ -35,7 +35,7 @@
         <help></help>
     </field>
     <field>
-        <label>OPNsense</label>
+        <label>OPNsense Web Service</label>
         <type>header</type>
         <style>table_http table_http_opnsense</style>
     </field>
