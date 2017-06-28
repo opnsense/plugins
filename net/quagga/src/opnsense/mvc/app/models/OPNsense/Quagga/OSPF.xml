@@ -81,7 +81,7 @@
                                 <multiple>N</multiple>
                                 <default></default>
                                 <OptionValues>
-                                        <md5>MD5</md5>
+                                        <message-digest>MD5</message-digest>
                                 </OptionValues>
                         </authtype>
                         <authkey type="TextField">
