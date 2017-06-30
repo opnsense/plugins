@@ -1,0 +1,1 @@
+radiusd_enable="{% if helpers.exists('OPNsense.freeradius3.general.enabled') and OPNsense.freeradius3.general.enabled == '1' %}YES{% else %}NO{% endif %}"
