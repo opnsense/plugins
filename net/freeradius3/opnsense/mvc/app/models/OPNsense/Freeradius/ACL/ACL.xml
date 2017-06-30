@@ -1,0 +1,9 @@
+<acl>
+   <page-routing>
+      <name>FreeRADIUS</name>
+      <patterns>
+         <pattern>ui/freeradius/*</pattern>
+         <pattern>api/freeradius/*</pattern>
+      </patterns>
+   </page-routing>
+</acl>
