@@ -32,7 +32,7 @@ namespace OPNsense\Freeradius3\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
-use \OPNsense\Quagga\General;
+use \OPNsense\Freeradius3\General;
 
 /**
  * Class ServiceController
