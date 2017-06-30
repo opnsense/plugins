@@ -1,0 +1,5 @@
+<menu>
+  <Routing cssClass="fa fa-map-signs" order="45">
+    <General VisibleName="General" cssClass="fa fa-cog fa-fw" url="/ui/freeradius3/general/index" order="1"/>
+  </Routing>
+</menu>
