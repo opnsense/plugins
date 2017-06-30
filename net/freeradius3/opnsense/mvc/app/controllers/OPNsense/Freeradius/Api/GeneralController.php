@@ -28,7 +28,7 @@
  *
  */
 
-namespace OPNsense\Freeradius3\Api;
+namespace OPNsense\Freeradius\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Quagga\General;
