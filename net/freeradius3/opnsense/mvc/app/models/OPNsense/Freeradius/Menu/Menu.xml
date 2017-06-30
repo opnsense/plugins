@@ -1,7 +1,7 @@
 <menu>
   <Services>
     <FreeRADIUS VisibleName="FreeRADIUS" cssClass="fa fa-cog fa-fw">
-      <General VisibleName="General" cssClass="fa fa-cog fa-fw" url="/ui/freeradius3/general/index" order="1"/>
+      <General VisibleName="General" cssClass="fa fa-cog fa-fw" url="/ui/freeradius/general/index" order="1"/>
     </FreeRADIUS>
   </Services>
 </menu>
