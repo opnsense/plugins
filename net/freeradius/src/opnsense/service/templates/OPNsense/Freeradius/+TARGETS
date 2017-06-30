@@ -1,3 +1,9 @@
-radiusd:/etc/rc.conf.d/radiusd
 clients.conf:/usr/local/etc/raddb/clients.conf
+hints:/usr/local/etc/raddb/hints
+huntgroups:/usr/local/etc/raddb/huntgroups
+proxy.conf:/usr/local/etc/raddb/proxy.conf
+radius.conf:/usr/local/etc/raddb/radius.conf
+radiusd:/etc/rc.conf.d/radiusd
+sites-enabled/default:/usr/local/etc/raddb/sites-enabled/default
+inner-tunnel/default:/usr/local/etc/raddb/sites-enabled/inner-tunnel
 users:/usr/local/etc/raddb/users
