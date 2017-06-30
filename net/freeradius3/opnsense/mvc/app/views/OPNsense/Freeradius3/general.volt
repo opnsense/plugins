@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-This file is Copyright © 2017 by Fabian Franz
+This file is Copyright © 2017 by Michael Muenz
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -36,20 +36,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     $( document ).ready(function() {
-        var data_get_map = {'frm_general_settings':"/api/quagga/general/get"};
+        var data_get_map = {'frm_general_settings':"/api/freeradius3/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
-        ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
+        ajaxCall(url="/api/freeradius3/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
         });
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/quagga/general/set", formid='frm_general_settings',callback_ok=function(){
-                    ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
+            saveFormToEndpoint(url="/api/freeradius3/general/set", formid='frm_general_settings',callback_ok=function(){
+                    ajaxCall(url="/api/freeradius3/service/reconfigure", sendData={}, callback=function(data,status) {
+                            ajaxCall(url="/api/freeradius3/service/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
                             });
                     });
