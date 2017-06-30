@@ -1,4 +1,5 @@
 clients.conf:/usr/local/etc/raddb/clients.conf
+dictionary:/usr/local/etc/raddb/dictionary
 hints:/usr/local/etc/raddb/hints
 huntgroups:/usr/local/etc/raddb/huntgroups
 proxy.conf:/usr/local/etc/raddb/proxy.conf
@@ -6,4 +7,6 @@ radius.conf:/usr/local/etc/raddb/radius.conf
 radiusd:/etc/rc.conf.d/radiusd
 sites-enabled/default:/usr/local/etc/raddb/sites-enabled/default
 inner-tunnel/default:/usr/local/etc/raddb/sites-enabled/inner-tunnel
+templates.conf:/usr/local/etc/raddb/templates.conf
+trigger.conf:/usr/local/etc/raddb/trigger.con
 users:/usr/local/etc/raddb/users
