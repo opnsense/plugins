@@ -25,14 +25,14 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\Freeradius3;
+namespace OPNsense\Freeradius;
 
 class GeneralController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("Freeradius3-Settings");
+        $this->view->title = gettext("FreeRADIUS-Settings");
         $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/Freeradius3/general');
+        $this->view->pick('OPNsense/Freeradius/general');
     }
 }
