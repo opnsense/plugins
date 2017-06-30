@@ -26,21 +26,21 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-function freeradius3_services()
+function freeradius_services()
 {
     global $config;
 
     $services = array();
 
-    if (isset($config['OPNsense']['freeradius3']['general']['enabled']) && $config['OPNsense']['freeradius3']['general']['enabled'] == 1) {
+    if (isset($config['OPNsense']['freeradius']['general']['enabled']) && $config['OPNsense']['freeradius']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('Freeradius3 let's you run a local radius service instance.'),
+            'description' => gettext('FreeRADIUS lets you run a local radius service instance.'),
             'configd' => array(
-                'restart' => array('freeradius3 restart'),
-                'start' => array('freeradius3 start'),
-                'stop' => array('freeradius3 stop'),
+                'restart' => array('freeradius restart'),
+                'start' => array('freeradius start'),
+                'stop' => array('freeradius stop'),
             ),
-            'name' => 'freeradius3',
+            'name' => 'freeradius',
             'pidfile' => '/var/run/radiusd/radiusd.pid'
         );
     }
