@@ -3,6 +3,6 @@
         <id>general.enabled</id>
         <label>enable</label>
         <type>checkbox</type>
-        <help>This will activate the Freeradius3 service.</help>
+        <help>This will activate the FreeRADIUS service.</help>
     </field>
 </form>
