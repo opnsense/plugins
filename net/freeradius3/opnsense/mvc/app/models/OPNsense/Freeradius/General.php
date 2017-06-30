@@ -1,5 +1,5 @@
 <?php
-namespace OPNsense\Freeradius3;
+namespace OPNsense\Freeradius;
 
 use OPNsense\Base\BaseModel;
 
