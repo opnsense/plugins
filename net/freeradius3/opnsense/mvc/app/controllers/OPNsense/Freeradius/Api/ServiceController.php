@@ -28,27 +28,27 @@
  *
  */
 
-namespace OPNsense\Freeradius3\Api;
+namespace OPNsense\Freeradius\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
-use \OPNsense\Freeradius3\General;
+use \OPNsense\Freeradius\General;
 
 /**
  * Class ServiceController
- * @package OPNsense\Freeradius3
+ * @package OPNsense\Freeradius
  */
 class ServiceController extends ApiControllerBase
 {
     /**
-     * start freeradius3 service (in background)
+     * start freeradius service (in background)
      * @return array
      */
     public function startAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("freeradius3 start", true);
+            $response = $backend->configdRun("freeradius start", true);
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -56,14 +56,14 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * stop freeradius3 service
+     * stop freeradius service
      * @return array
      */
     public function stopAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("freeradius3 stop");
+            $response = $backend->configdRun("freeradius stop");
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -71,14 +71,14 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * restart freeradius3 service
+     * restart freeradius service
      * @return array
      */
     public function restartAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("freeradius3 restart");
+            $response = $backend->configdRun("freeradius restart");
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -86,7 +86,7 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * retrieve status of freeradius3
+     * retrieve status of freeradius
      * @return array
      * @throws \Exception
      */
@@ -94,7 +94,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $mdlGeneral = new General();
-        $response = $backend->configdRun("freeradius3 status");
+        $response = $backend->configdRun("freeradius status");
 
         if (strpos($response, "not running") > 0) {
             if ($mdlGeneral->enabled->__toString() == 1) {
@@ -115,7 +115,7 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * reconfigure freeradius3, generate config and reload
+     * reconfigure freeradius, generate config and reload
      */
     public function reconfigureAction()
     {
@@ -128,11 +128,11 @@ class ServiceController extends ApiControllerBase
 
             $runStatus = $this->statusAction();
 
-            // stop freeradius3 if it is running or not
+            // stop freeradius if it is running or not
             $this->stopAction();
 
             // generate template
-            $backend->configdRun('template reload OPNsense/Freeradius3');
+            $backend->configdRun('template reload OPNsense/Freeradius');
 
             // (res)start daemon
             if ($mdlGeneral->enabled->__toString() == 1) {
