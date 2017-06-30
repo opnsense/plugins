@@ -1,1 +1,3 @@
-
+radiusd:/etc/rc.conf.d/radiusd
+clients.conf:/usr/local/etc/raddb/clients.conf
+users:/usr/local/etc/raddb/users
