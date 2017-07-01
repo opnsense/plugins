@@ -75,7 +75,7 @@ $(document).ready(function() {
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/freeradius/user/set",formid='frm_bgp_settings',callback_ok=function(){
+      saveFormToEndpoint(url="/api/freeradius/user/set",formid='DialogEditFreeRADIUSUser',callback_ok=function(){
         ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
