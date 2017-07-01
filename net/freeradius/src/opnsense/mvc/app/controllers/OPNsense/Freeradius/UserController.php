@@ -23,7 +23,7 @@
 
 namespace OPNsense\Freeradius;
 
-class GeneralController extends \OPNsense\Base\IndexController
+class UserController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
