@@ -184,7 +184,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <% }) %>
   <% } %>
   <% if (ospfv3_database['as_scoped']) { %>
-    <h2>{{ lang._('AS Scpoed') }}</h2>
+    <h2>{{ lang._('AS Scoped') }}</h2>
     <table>
       <thead>
         <tr>
