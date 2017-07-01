@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
 $(document).ready(function() {
-  var data_get_map = {'dialogEditFreeRADIUSUser':"/api/freeradius/user/get"};
+  var data_get_map = {'frm_user':"/api/freeradius/user/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
@@ -75,7 +75,7 @@ $(document).ready(function() {
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/freeradius/user/set",formid='dialogEditFreeRADIUSUser',callback_ok=function(){
+      saveFormToEndpoint(url="/api/freeradius/user/set",formid='frm_user',callback_ok=function(){
         ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
