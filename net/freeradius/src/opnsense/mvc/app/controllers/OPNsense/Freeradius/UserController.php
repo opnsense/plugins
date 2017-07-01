@@ -28,7 +28,7 @@ class GeneralController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->title = gettext("FreeRADIUS-Users");
-        $this->view->userForm = $this->getForm("user");
+        $this->view->formDialogEditFreeRADIUSUser = $this->getForm("DialogEditFreeRADIUSUser");
         $this->view->pick('OPNsense/Freeradius/user');
     }
 }
