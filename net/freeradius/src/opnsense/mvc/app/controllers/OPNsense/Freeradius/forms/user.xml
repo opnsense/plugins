@@ -5,6 +5,11 @@
         <help>This will enable or disable the user account.</help>
     </field>
     <field>
+        <id>user.username</id>
+        <type>text</type>
+        <help>Set the unique username for the user.</help>
+    </field>
+    <field>
         <id>user.password</id>
         <type>text</type>
         <help>Set the password for the user.</help>
