@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="users" class="tab-pane fade in">
-        <table id="grid-users" class="table table-responsive" data-editDialog="DialogEditFreeRADIUSUser">
+        <table id="grid-users" class="table table-responsive" data-editDialog="dialogEditFreeRADIUSUser">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
 $(document).ready(function() {
-  var data_get_map = {'DialogEditFreeRADIUSUser':"/api/freeradius/user/get"};
+  var data_get_map = {'dialogEditFreeRADIUSUser':"/api/freeradius/user/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
@@ -75,7 +75,7 @@ $(document).ready(function() {
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/freeradius/user/set",formid='DialogEditFreeRADIUSUser',callback_ok=function(){
+      saveFormToEndpoint(url="/api/freeradius/user/set",formid='dialogEditFreeRADIUSUser',callback_ok=function(){
         ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
@@ -96,4 +96,4 @@ $(document).ready(function() {
     });
 </script>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSUser,'id':'DialogEditFreeRADIUSUser','label':lang._('Edit User')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSUser,'id':'dialogEditFreeRADIUSUser','label':lang._('Edit User')])}}
