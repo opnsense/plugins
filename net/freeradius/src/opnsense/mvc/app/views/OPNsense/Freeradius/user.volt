@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="users" class="tab-pane fade in">
+      {{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSUser,'id':'dialogEditFreeRADIUSUser','label':lang._('Edit User')])}}
         <table id="grid-users" class="table table-responsive" data-editDialog="dialogEditFreeRADIUSUser">
             <thead>
                 <tr>
