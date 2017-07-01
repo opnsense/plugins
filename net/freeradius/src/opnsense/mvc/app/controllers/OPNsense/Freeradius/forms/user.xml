@@ -1,0 +1,37 @@
+<form>
+    <field>
+        <id>user.enabled</id>
+        <type>checkbox</type>
+        <help>This will enable or disable the user account.</help>
+    </field>
+    <field>
+        <id>user.password</id>
+        <type>text</type>
+        <help>Set the password for the user.</help>
+    </field>
+    <field>
+        <id>user.description</id>
+        <type>text</type>
+        <help>Surname, Lastname, or anything you need to describe.</help>
+    </field>
+    <field>
+        <id>user.ip</id>
+        <type>text</type>
+        <help>Set the IP address the user should receive.</help>
+    </field>
+    <field>
+        <id>user.subnet</id>
+        <type>text</type>
+        <help>Subnet to receive, leave empty for 255.255.255.0</help>
+    </field>
+    <field>
+        <id>user.gateway</id>
+        <type>text</type>
+        <help>The gateway sent to the user.</help>
+    </field>
+    <field>
+        <id>user.vlan</id>
+        <type>text</type>
+        <help>VLAN ID the user get's in, e.g. for 802.1X, leave empty if you don't know what it is.</help>
+    </field>
+</form>
