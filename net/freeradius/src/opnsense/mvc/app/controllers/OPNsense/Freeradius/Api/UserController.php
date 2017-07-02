@@ -51,8 +51,8 @@ class UserController extends ApiMutableModelControllerBase
         $result = array("result"=>"failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
-            $mdlUser = new User();
-            $mdlUser->setNodes($this->request->getPost("user"));
+            $mdluser = new User();
+            $mdluser->setNodes($this->request->getPost("user"));
             // perform validation
             $valMsgs = $mdlUser->performValidation();
             foreach ($valMsgs as $field => $msg) {
@@ -63,7 +63,7 @@ class UserController extends ApiMutableModelControllerBase
             }
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
-                $mdlUser->serializeToConfig();
+                $mdluser->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";
             }
