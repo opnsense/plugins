@@ -67,6 +67,11 @@ def deploy(config_filename):
         # interface name to use
         interface_name = 'tinc%s' % network.get_id()
 
+        # type of interface to use
+        interface_type = 'tun'
+        if network.get_mode() == 'switch':
+            interface_type = 'tap'
+
         # dump Network and host config
         for conf_obj in network.all():
             if conf_obj.is_valid():
@@ -84,7 +89,7 @@ def deploy(config_filename):
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
-            tundev = subprocess.check_output(['/sbin/ifconfig','tun','create']).split()[0]
+            tundev = subprocess.check_output(['/sbin/ifconfig',interface_type,'create']).split()[0]
             subprocess.call(['/sbin/ifconfig',tundev,'name',interface_name])
             subprocess.call(['/sbin/ifconfig',interface_name,'group','tinc'])
             if os.path.islink('/dev/%s' % interface_name):
