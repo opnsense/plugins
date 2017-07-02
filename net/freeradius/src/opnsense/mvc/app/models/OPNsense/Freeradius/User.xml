@@ -32,62 +32,11 @@
                                 <default></default>
                                 <Required>N</Required>
                         </gateway>
-                        <defaultoriginate type="BooleanField">
-                                <default>0</default>
+
+                        <vlan type="TextField">
+                                <default></default>
                                 <Required>N</Required>
-                        </defaultoriginate>
-                        <linkedPrefixlistIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistIn>
-                        <linkedPrefixlistOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistOut>
-                        <linkedRoutemapIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedRoutemapIn>
-                        <linkedRoutemapOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedRoutemapOut>
+                        </vlan>
             </user>
         </users>
     </items>
