@@ -32,7 +32,6 @@
                                 <default></default>
                                 <Required>N</Required>
                         </gateway>
-
                         <vlan type="TextField">
                                 <default></default>
                                 <Required>N</Required>
