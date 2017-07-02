@@ -60,7 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 if (status != "success" || data['status'] != 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Error reconfiguring Tinc') }}",
+                        title: "{{ lang._('Error reconfiguring FreeRADIUS') }}",
                         message: data['status'],
                         draggable: true
                     });
