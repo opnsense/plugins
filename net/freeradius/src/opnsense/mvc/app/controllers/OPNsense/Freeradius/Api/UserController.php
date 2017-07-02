@@ -187,7 +187,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    public function toggleNeighborAction($uuid)
+    public function toggleUserAction($uuid)
     {
         return $this->toggle_handler($uuid, 'users', 'user');
     }
