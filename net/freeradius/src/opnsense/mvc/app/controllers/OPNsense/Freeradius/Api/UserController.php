@@ -139,21 +139,21 @@ class UserController extends ApiMutableModelControllerBase
     public function setUserAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("user")) {
-            $mdlUser = $this->getModel();
+            $mdlSetting = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlUser->getNodeByReference('users.user.' . $uuid);
+                $node = $mdlSetting->getNodeByReference('users.user.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
                     $userInfo = $this->request->getPost("user");
                     $node->setNodes($userInfo);
-                    $valMsgs = $mdlUser->performValidation();
+                    $valMsgs = $mdlSetting->performValidation();
                     foreach ($valMsgs as $field => $msg) {
                         $fieldnm = str_replace($node->__reference, "user", $msg->getField());
                         $result["validations"][$fieldnm] = $msg->getMessage();
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
-                        $mdlUser->serializeToConfig();
+                        $mdlSetting->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
                     }
@@ -168,9 +168,9 @@ class UserController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
-            $mdlUser = $this->getModel();
+            $mdlSetting = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlUser->getNodeByReference($elements . '.'. $element .'.' . $uuid);
+                $node = $mdlSetting->getNodeByReference($elements . '.'. $element .'.' . $uuid);
                 if ($node != null) {
                     if ($node->enabled->__toString() == "1") {
                         $result['result'] = "Disabled";
@@ -180,7 +180,7 @@ class UserController extends ApiMutableModelControllerBase
                         $node->enabled = "1";
                     }
                     // if item has toggled, serialize to config and save
-                    $mdlUser->serializeToConfig();
+                    $mdlSetting->serializeToConfig();
                     Config::getInstance()->save();
                 }
             }
