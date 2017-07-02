@@ -87,7 +87,7 @@ class UserController extends ApiMutableModelControllerBase
             $node = $mdlUser->getNodeByReference('users.user.' . $uuid);
             if ($node != null) {
                 // return node
-                return array("neighbor" => $node->getNodes());
+                return array("user" => $node->getNodes());
             }
         } else {
             $node = $mdlUser->users->user->add();
