@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {   search:'/api/freeradius/user/searchUser',
                 get:'/api/freeradius/user/getUser/',
                 set:'/api/freeradius/user/setUser/',
-                add:'/api/freeradius/user/setUser/',
+                add:'/api/freeradius/user/addUser/',
                 del:'/api/freeradius/user/delUser/',
                 toggle:'/api/freeradius/user/toggleUser/'
             }
