@@ -44,17 +44,6 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
-        $("#grid-clients").UIBootgrid(
-                {   search:'/api/freeradius/user/searchClient',
-                    get:'/api/freeradius/user/getClient/',
-                    set:'/api/freeradius/user/setClient/',
-                    add:'/api/freeradius/user/setClient/',
-                    del:'/api/freeradius/user/delClient/',
-                    toggle:'/api/freeradius/user/toggleClient/'
-                }
-        );
-
-
         /*************************************************************************************************************
          * Commands
          *************************************************************************************************************/
@@ -89,7 +78,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
-    <li><a data-toggle="tab" href="#clients">{{ lang._('Clients') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="users" class="tab-pane fade in active">
@@ -121,34 +109,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-    <div id="hosts" class="tab-pane fade in">
-        <div class="col-md-12">
-            <!-- tab page "clients" -->
-            <table id="grid-clients" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSClient">
-                <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="ip" data-type="string" data-visible="true">{{ lang._('IP Address') }}</th>
-                    <th data-column-id="secret" data-type="string" data-visible="true">{{ lang._('Secret') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-
-        </div>
-    </div>
     <div class="col-md-12">
         <hr/>
         <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
@@ -157,4 +117,3 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSUser,'id':'dialogEditFreeRADIUSUser','label':lang._('Edit User')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSClient,'id':'dialogEditFreeRADIUSClient','label':lang._('Edit Client')])}}
