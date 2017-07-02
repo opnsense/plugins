@@ -35,12 +35,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-users").UIBootgrid(
-            {   search:'/api/freeradius/user/searchUser',
-                get:'/api/freeradius/user/getUser/',
-                set:'/api/freeradius/user/setUser/',
-                add:'/api/freeradius/user/addUser/',
-                del:'/api/freeradius/user/delUser/',
-                toggle:'/api/freeradius/user/toggleUser/'
+            {   'search':'/api/freeradius/user/searchUser',
+                'get':'/api/freeradius/user/getUser/',
+                'set':'/api/freeradius/user/setUser/',
+                'add':'/api/freeradius/user/addUser/',
+                'del':'/api/freeradius/user/delUser/',
+                'toggle':'/api/freeradius/user/toggleUser/'
             }
         );
 
@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         $("#reconfigureAct").click(function(){
             $("#reconfigureAct_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/tinc/service/reconfigure", sendData={}, callback=function(data,status) {
+            ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function(data,status) {
                 // when done, disable progress animation.
                 $("#reconfigureAct_progress").removeClass("fa fa-spinner fa-pulse");
 
