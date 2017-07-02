@@ -71,6 +71,9 @@ class Network(NetwConfObject):
     def get_local_address(self):
         return self._payload['intaddress']
 
+    def get_mode(self):
+        return self._payload['mode']
+
     def get_debuglevel(self):
         if len(self._payload['debuglevel']) > 1:
             return self._payload['debuglevel'][1]
