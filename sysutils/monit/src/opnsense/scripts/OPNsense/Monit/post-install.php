@@ -54,10 +54,6 @@ $LoadAvg1 = $nCPU[0] * 2;
 $LoadAvg5 = $nCPU[0] + ($nCPU[0] / 2);
 $LoadAvg15 = $nCPU[0];
 
-// get FQDN
-$hostName = $cfgObj->system->hostname;
-$domainName = $cfgObj->system->domain;
-
 // inherit SMTP settings from System->Settings->Notifications
 $generalSettings = array();
 if (!empty($cfgObj->notifications->smtp->ipaddress)) {
@@ -101,7 +97,7 @@ $defaultTests = array(
 // define system service
 $systemService = array(
     "enabled" => 1,
-    "name" => $hostName . "." . $domainName,
+    "name" => '$HOST',
     "type" => "system",
     "tests" => ""
 );
