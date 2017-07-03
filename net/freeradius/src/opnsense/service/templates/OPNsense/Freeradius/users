@@ -13,7 +13,6 @@
        Tunnel-Private-Group-Id = {{ user_list.vlan }}
 {%       endif %}
 {%     endif %}
-
 {%   endfor %}
 {% endif %}
 
