@@ -36,12 +36,6 @@
         <help>Subnet to receive, leave empty for 255.255.255.0</help>
     </field>
     <field>
-        <id>user.gateway</id>
-        <label>Gateway Address</label>
-        <type>text</type>
-        <help>The gateway sent to the user.</help>
-    </field>
-    <field>
         <id>user.vlan</id>
         <label>VLAN ID</label>
         <type>text</type>
