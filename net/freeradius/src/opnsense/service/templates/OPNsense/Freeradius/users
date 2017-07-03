@@ -15,7 +15,9 @@
        {{ user_list.gateway }},
 {%       endif %}
 {%       if user_list.vlan is defined %}
-       {{ user_list.vlan }},
+       Tunnel-Type = VLAN,
+       Tunnel-Medium-Type = IEEE-802,
+       Tunnel-Private-Group-Id = {{ user_list.vlan }},
 {%       endif %}
 {%     endif %}
 {%   endfor %}
