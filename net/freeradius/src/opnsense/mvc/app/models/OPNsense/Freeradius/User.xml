@@ -23,14 +23,18 @@
                         <ip type="TextField">
                                 <default></default>
                                 <Required>N</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                         </ip>
                         <subnet type="TextField">
                                 <default></default>
                                 <Required>N</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                         </subnet>
-                        <vlan type="TextField">
+                        <vlan type="IntegerField">
                                 <default></default>
                                 <Required>N</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>4096</MaximumValue>
                         </vlan>
             </user>
         </users>
