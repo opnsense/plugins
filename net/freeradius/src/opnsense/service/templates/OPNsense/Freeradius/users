@@ -1,4 +1,4 @@
-{% if helpers.exists('OPNsense.freeradius.enabled') and OPNsense.freeradius.enabled == '1' %}
+{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
 
 {% if helpers.exists('OPNsense.freeradius.users.user') %}
 {%   for user_list in helpers.toList('OPNsense.freeradius.users.user') %}
