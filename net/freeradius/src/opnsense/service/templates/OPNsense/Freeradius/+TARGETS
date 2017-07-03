@@ -3,4 +3,4 @@ radius.conf:/usr/local/etc/raddb/radius.conf
 radiusd:/etc/rc.conf.d/radiusd
 sites-enabled-default:/usr/local/etc/raddb/sites-enabled/default
 sites-enabled-inner-tunnel:/usr/local/etc/raddb/sites-enabled/inner-tunnel
-users:/usr/local/etc/raddb/users
+users:/usr/local/etc/raddb/mods-config/files/authorize
