@@ -14,9 +14,7 @@
 {%       endif %}
 {%     endif %}
 
-
 {%   endfor %}
-
 {% endif %}
 
 DEFAULT Framed-Protocol == PPP
