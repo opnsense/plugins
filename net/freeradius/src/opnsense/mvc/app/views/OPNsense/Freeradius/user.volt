@@ -91,7 +91,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="ip" data-type="string" data-visible="true">{{ lang._('IP Address') }}</th>
                 <th data-column-id="subnet" data-type="string" data-visible="true">{{ lang._('Subnet') }}</th>
-                <th data-column-id="gateway" data-type="string" data-visible="true">{{ lang._('Gateway Address') }}</th>
                 <th data-column-id="vlan" data-type="string" data-visible="true">{{ lang._('VLAN ID') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
