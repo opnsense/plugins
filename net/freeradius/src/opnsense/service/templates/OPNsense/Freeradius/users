@@ -12,10 +12,11 @@
        Tunnel-Medium-Type = IEEE-802,
        Tunnel-Private-Group-Id = {{ user_list.vlan }}
 {%       endif %}
-
 {%     endif %}
 
+
 {%   endfor %}
+
 {% endif %}
 
 DEFAULT Framed-Protocol == PPP
