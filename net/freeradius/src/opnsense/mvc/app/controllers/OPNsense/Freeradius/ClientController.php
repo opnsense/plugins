@@ -20,13 +20,15 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
+
 namespace OPNsense\Freeradius;
+
 class ClientController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
         $this->view->title = gettext("FreeRADIUS-Clients");
-        $this->view->formDialogEditFreeRADIUSUser = $this->getForm("dialogEditFreeRADIUSClient");
+        $this->view->formDialogEditFreeRADIUSClient = $this->getForm("dialogEditFreeRADIUSClient");
         $this->view->pick('OPNsense/Freeradius/client');
     }
 }
