@@ -6,13 +6,13 @@
 {{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}",
        Framed-Protocol = PPP,
 {%       if user_list.ip is defined %}
-       {{ user_list.ip }},
+       Framed-IP-Address = {{ user_list.ip }},
 {%       endif %}
 {%       if user_list.subnet is defined %}
-       {{ user_list.subnet }},
+       Framed-IP-Netmask = {{ user_list.subnet }},
 {%       endif %}
 {%       if user_list.gateway is defined %}
-       {{ user_list.gateway }},
+       Framed-Route = 0.0.0.0 {{ user_list.gateway }},
 {%       endif %}
 {%       if user_list.vlan is defined %}
        Tunnel-Type = VLAN,
