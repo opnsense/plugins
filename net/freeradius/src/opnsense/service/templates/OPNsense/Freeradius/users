@@ -5,7 +5,7 @@
 {%     if user_list.enabled == '1' %}
 {{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}",
        Framed-Protocol = PPP,
-{%       if user_list.ip defined %}
+{%       if user_list.ip is defined %}
        {{ user_list.ip }},
 {%       endif %}
 {%       if user_list.subnet is defined %}
