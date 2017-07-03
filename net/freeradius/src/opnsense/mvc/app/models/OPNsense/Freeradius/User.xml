@@ -28,10 +28,6 @@
                                 <default></default>
                                 <Required>N</Required>
                         </subnet>
-                        <gateway type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                        </gateway>
                         <vlan type="TextField">
                                 <default></default>
                                 <Required>N</Required>
