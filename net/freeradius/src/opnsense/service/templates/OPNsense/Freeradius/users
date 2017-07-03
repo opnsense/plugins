@@ -134,7 +134,8 @@
 
 
 {% if helpers.exists('OPNsense.freeradius.users.user') %}
-{%   for user_list in helpers.toList(OPNsense.freeradius.users.user) %}
+{%   for user_list in helpers.toList('OPNsense.freeradius.users.user') %}
+{{ user_list }}
 {%     if user_list.enabled == '1' %}
 {{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}",
        Framed-Protocol = PPP,
