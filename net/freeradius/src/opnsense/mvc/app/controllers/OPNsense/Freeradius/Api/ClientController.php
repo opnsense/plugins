@@ -77,7 +77,7 @@ class ClientController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlClient->clients->client);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "clientname", "password", "description", "ip", "subnet", "gateway", "vlan" )
+            array("enabled", "name", "secret", "ip" )
         );
     }
     public function getClientAction($uuid = null)
