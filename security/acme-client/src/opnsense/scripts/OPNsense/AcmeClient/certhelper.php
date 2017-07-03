@@ -689,6 +689,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         }
     }
 
+    // Teach acme.sh about DNS API hook location
+    $proc_env['_SCRIPT_HOME'] = '/usr/local/share/examples/acme.sh';
+
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
