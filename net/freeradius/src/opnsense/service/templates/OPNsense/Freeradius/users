@@ -1,11 +1,7 @@
-{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
-
-TEST
+{% if helpers.exists('OPNsense.Freeradius.general.enabled') and OPNsense.Freeradius.general.enabled == '1' %}
 
 {% if helpers.exists('OPNsense.Freeradius.user.users.user') %}
-TEST2
-{%   for user_list in helpers.toList('OPNsense.freeradius.user.users.user') %}
-TEST3
+{%   for user_list in helpers.toList('OPNsense.Freeradius.user.users.user') %}
 {{ user_list }}
 {%     if user_list.enabled == '1' %}
 {{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}",
