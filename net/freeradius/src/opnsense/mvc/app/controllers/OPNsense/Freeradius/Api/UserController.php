@@ -77,7 +77,7 @@ class UserController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlUser->users->user);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "username", "password", "description", "ip", "subnet", "gateway", "vlan" )
+            array("enabled", "username", "password", "description", "ip", "subnet", "vlan" )
         );
     }
     public function getUserAction($uuid = null)
