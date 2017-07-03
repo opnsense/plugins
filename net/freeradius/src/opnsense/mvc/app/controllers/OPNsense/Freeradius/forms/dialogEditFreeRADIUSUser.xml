@@ -33,7 +33,7 @@
         <id>user.subnet</id>
         <label>Subnetmask</label>
         <type>text</type>
-        <help>Subnet to receive, leave empty for 255.255.255.0</help>
+        <help>Subnet to receive, e.g. 255.255.255.0</help>
     </field>
     <field>
         <id>user.vlan</id>
