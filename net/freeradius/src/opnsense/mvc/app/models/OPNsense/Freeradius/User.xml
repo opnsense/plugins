@@ -11,6 +11,7 @@
                         <username type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
+                                <mask>/^([0-9a-zA-Z._\-){1,128}$/u</mask>
                         </username>
                         <password type="TextField">
                                 <default></default>
