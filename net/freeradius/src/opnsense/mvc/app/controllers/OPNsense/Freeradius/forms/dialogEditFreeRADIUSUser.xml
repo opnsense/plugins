@@ -3,7 +3,7 @@
         <id>user.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>This will enable or disable the user account.</help>
+        <help>This will enable or disable the user account. Allowed characters are 0-9, a-z, A-Z, and ._-</help>
     </field>
     <field>
         <id>user.username</id>
