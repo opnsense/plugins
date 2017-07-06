@@ -1,0 +1,9 @@
+<menu>
+  <Services>
+    <FreeRADIUS VisibleName="FreeRADIUS" cssClass="fa fa-address-book-o">
+      <General VisibleName="General" url="/ui/freeradius/general/index" order="10"/>
+      <User VisibleName="User" url="/ui/freeradius/user/index" order="20"/>
+      <Client VisibleName="Client" url="/ui/freeradius/client/index" order="30"/>
+    </FreeRADIUS>
+  </Services>
+</menu>
