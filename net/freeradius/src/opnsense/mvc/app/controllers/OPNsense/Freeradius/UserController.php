@@ -27,7 +27,7 @@ class UserController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("FreeRADIUS-Users");
+        $this->view->title = gettext("FreeRADIUS Users");
         $this->view->formDialogEditFreeRADIUSUser = $this->getForm("dialogEditFreeRADIUSUser");
         $this->view->pick('OPNsense/Freeradius/user');
     }
