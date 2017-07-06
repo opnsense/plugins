@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <Collectd cssClass="fa fa-address-book-o" url="/ui/collectd/general/index" order="10"/>
+    <Collectd cssClass="fa fa-address-book-o" url="/ui/collectd/general/index" />
   </Services>
 </menu>
