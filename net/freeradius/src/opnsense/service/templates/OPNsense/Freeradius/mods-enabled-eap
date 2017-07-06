@@ -1,3 +1,5 @@
+{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+
 # -*- text -*-
 ##
 ##  eap.conf -- Configuration for EAP types (PEAP, TTLS, etc.)
@@ -641,8 +643,11 @@ eap {
                 #
                 #  allowed values: {no, yes}
                 #
+{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}  
+                use_tunneled_reply = yes
+{%   else %}
                 use_tunneled_reply = no
-
+{%   endif %}
                 #
                 #  The inner tunneled request can be sent
                 #  through a virtual server constructed
@@ -755,7 +760,11 @@ eap {
                 #
                 #  This will cache attributes for the final Access-Accept.
                 #
+{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}  
                 use_tunneled_reply = yes
+{%   else %}
+                use_tunneled_reply = no
+{%   endif %}
 
                 #  When the tunneled session is proxied, the
                 #  home server may not understand EAP-MSCHAP-V2.
