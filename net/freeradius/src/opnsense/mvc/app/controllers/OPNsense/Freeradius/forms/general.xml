@@ -1,8 +1,14 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>enable</label>
+        <label>Enable</label>
         <type>checkbox</type>
         <help>This will activate the FreeRADIUS service.</help>
+    </field>
+    <field>
+        <id>general.vlanassign</id>
+        <label>Enable VLAN assignment</label>
+        <type>checkbox</type>
+        <help>This allows you to dynamically assign VLANs on your physical switchports.</help>
     </field>
 </form>
