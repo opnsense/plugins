@@ -34,7 +34,7 @@ function freeradius_services()
 
     if (isset($config['OPNsense']['freeradius']['general']['enabled']) && $config['OPNsense']['freeradius']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('FreeRADIUS lets you run a local radius service instance.'),
+            'description' => gettext('FreeRADIUS'),
             'configd' => array(
                 'restart' => array('freeradius restart'),
                 'start' => array('freeradius start'),
