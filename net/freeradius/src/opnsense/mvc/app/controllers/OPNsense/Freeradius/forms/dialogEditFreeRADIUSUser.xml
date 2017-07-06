@@ -9,7 +9,7 @@
         <id>user.username</id>
         <label>Username</label>
         <type>text</type>
-        <help>Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#= with up to 128 signs</help>
+        <help>Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#= with up to 128 characters.</help>
     </field>
     <field>
         <id>user.password</id>
@@ -21,7 +21,7 @@
         <id>user.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Surname, Lastname, or anything you need to describe.</help>
+        <help>Given name, last name, or anything you need to describe.</help>
     </field>
     <field>
         <id>user.ip</id>
@@ -39,6 +39,6 @@
         <id>user.vlan</id>
         <label>VLAN ID</label>
         <type>text</type>
-        <help>VLAN ID the user get's in, e.g. for 802.1X, leave empty if you don't know what it is.</help>
+        <help>VLAN ID the user receives, e.g. for 802.1X. Leave empty if you don't know what it is.</help>
     </field>
 </form>
