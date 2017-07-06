@@ -27,7 +27,7 @@ class ClientController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext(FreeRADIUS-Clients);
+        $this->view->title = gettext("FreeRADIUS Clients");
         $this->view->formDialogEditFreeRADIUSClient = $this->getForm("dialogEditFreeRADIUSClient");
         $this->view->pick('OPNsense/Freeradius/client');
     }
