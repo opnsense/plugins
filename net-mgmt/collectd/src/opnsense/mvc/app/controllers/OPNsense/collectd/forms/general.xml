@@ -5,4 +5,10 @@
         <type>checkbox</type>
         <help>This will activate the collectd service.</help>
     </field>
+    <field>
+        <id>general.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>Set the hostname for this system.</help>
+    </field>
 </form>
