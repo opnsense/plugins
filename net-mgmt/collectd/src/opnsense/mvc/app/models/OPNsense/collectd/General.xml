@@ -18,5 +18,17 @@
             <default>10</default>
             <Required>N</Required>
         </interval>
-    </items>
+        <p_network_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_network_enable>
+        <p_network_host type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </p_network_host>
+        <p_network_port type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+        </p_network_port>
+	</items>
 </model>
