@@ -1,0 +1,4 @@
+collectd:/etc/rc.conf.d/collectd
+collectd.conf:/usr/local/etc/collectd.conf
+
+

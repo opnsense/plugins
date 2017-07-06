@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the collectd service.</help>
+    </field>
+</form>
