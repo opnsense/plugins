@@ -27,15 +27,19 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\Freeradius\Api;
+
 use \OPNsense\Freeradius\User;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Base\UIModelGrid;
+
 class UserController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'User';
     static protected $internalModelClass = '\OPNsense\Freeradius\User';
+    
     public function getAction()
     {
         // define list of configurable settings
@@ -46,6 +50,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function setAction()
     {
         $result = array("result"=>"failed");
@@ -70,6 +75,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function searchUserAction()
     {
         $this->sessionClose();
@@ -80,6 +86,7 @@ class UserController extends ApiMutableModelControllerBase
             array("enabled", "username", "password", "description", "ip", "subnet", "vlan" )
         );
     }
+    
     public function getUserAction($uuid = null)
     {
         $mdlUser = $this->getModel();
@@ -95,6 +102,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return array();
     }
+    
     public function addUserAction()
     {
         $result = array("result" => "failed");
@@ -119,6 +127,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function delUserAction($uuid)
     {
         $result = array("result" => "failed");
@@ -136,6 +145,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function setUserAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("user")) {
@@ -187,6 +197,7 @@ class UserController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    
     public function toggleUserAction($uuid)
     {
         return $this->toggle_handler($uuid, 'users', 'user');
