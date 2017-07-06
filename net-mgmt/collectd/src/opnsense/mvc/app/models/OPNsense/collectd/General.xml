@@ -10,5 +10,13 @@
             <default></default>
             <Required>Y</Required>
         </hostname>
+        <fqdnlookup type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </fqdnlookup>
+        <interval type="IntegerField">
+            <default>10</default>
+            <Required>N</Required>
+        </interval>
     </items>
 </model>

@@ -11,4 +11,16 @@
         <type>text</type>
         <help>Set the hostname for this system.</help>
     </field>
+    <field>
+        <id>general.fqdnlookup</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will enable the FQDNLookup option.</help>
+    </field>
+    <field>
+        <id>general.interval</id>
+        <label>Interval</label>
+        <type>text</type>
+        <help>Global interval when to fetch values in seconds.</help>
+		</field>
 </form>
