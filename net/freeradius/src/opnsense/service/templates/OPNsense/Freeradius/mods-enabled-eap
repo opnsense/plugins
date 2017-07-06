@@ -643,7 +643,7 @@ eap {
                 #
                 #  allowed values: {no, yes}
                 #
-{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}  
+{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
                 use_tunneled_reply = yes
 {%   else %}
                 use_tunneled_reply = no
@@ -760,7 +760,7 @@ eap {
                 #
                 #  This will cache attributes for the final Access-Accept.
                 #
-{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}  
+{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
                 use_tunneled_reply = yes
 {%   else %}
                 use_tunneled_reply = no

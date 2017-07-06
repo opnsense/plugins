@@ -49,7 +49,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     public function setAction()
     {
         $result = array("result"=>"failed");
@@ -74,7 +74,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     public function searchClientAction()
     {
         $this->sessionClose();
@@ -85,7 +85,7 @@ class ClientController extends ApiMutableModelControllerBase
             array("enabled", "name", "secret", "ip" )
         );
     }
-    
+
     public function getClientAction($uuid = null)
     {
         $mdlClient = $this->getModel();
@@ -101,7 +101,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return array();
     }
-    
+
     public function addClientAction()
     {
         $result = array("result" => "failed");
@@ -126,7 +126,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     public function delClientAction($uuid)
     {
         $result = array("result" => "failed");
@@ -144,7 +144,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     public function setClientAction($uuid)
     {
         if ($this->request->isPost() && $this->request->hasPost("client")) {
@@ -172,7 +172,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
-    
+
     public function toggle_handler($uuid, $elements, $element)
     {
         $result = array("result" => "failed");
@@ -196,7 +196,7 @@ class ClientController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     public function toggleClientAction($uuid)
     {
         return $this->toggle_handler($uuid, 'clients', 'client');

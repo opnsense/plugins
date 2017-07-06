@@ -46,7 +46,7 @@ class GeneralController extends ApiControllerBase
         }
         return $result;
     }
-    
+
     public function setAction()
     {
         $result = array("result"=>"failed");

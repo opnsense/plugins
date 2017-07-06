@@ -1,15 +1,17 @@
 #!/bin/sh
 
-user=radiusd
-group=radiusd
+RADIUS_FILES=/var/log/radius.log /var/log/radutmp /var/log/radwtmp
+RADIUS_DIRS=/usr/local/etc/raddb /var/run/radiusd /var/log/radacct
+RADIUS_USER=freeradius
+RADIUS_GROUP=freeradius
 
-mkdir -p /var/run/radiusd
-chown $user:$group /var/run/radiusd
-chmod 750 /var/run/radiusd
+for DIR in ${RADIUS_DIRS}; do
+	mkdir -p ${DIR}
+	chmod -R 750 ${DIR}
+	chown -R ${RADIUS_USER}:${RADIUS_GROUP} ${DIR}
+done
 
-mkdir -p /usr/local/etc/raddb/
-chown $user:$group /usr/local/etc/raddb/
-chmod 750 /usr/local/etc/raddb/
-
-chown -R $user:$group /usr/local/etc/raddb
-chown -R $user:$group /var/run/radiusd
+for FILE in ${RADIUS_FILES}; do
+	touch ${FILE}
+	chmod 700 ${FILE}
+done
