@@ -23,4 +23,22 @@
         <type>text</type>
         <help>Global interval when to fetch values in seconds.</help>
 		</field>
-</form>
+    <field>
+        <id>general.p_network_enable</id>
+        <label>Enable network plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the network plugin.</help>
+    </field>
+    <field>
+        <id>general.p_network_host</id>
+        <label>Network collector host</label>
+        <type>text</type>
+        <help>Set the host or IP of the network collector.</help>
+	</field>
+    <field>
+        <id>general.p_network_port</id>
+        <label>Network collector port</label>
+        <type>text</type>
+        <help>Set the port of the network collector.</help>
+	</field>
+	</form>
