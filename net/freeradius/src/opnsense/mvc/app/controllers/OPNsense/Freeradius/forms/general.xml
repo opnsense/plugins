@@ -9,6 +9,6 @@
         <id>general.vlanassign</id>
         <label>Enable VLAN assignment</label>
         <type>checkbox</type>
-        <help>This allows you to dynamically assign VLANs on your physical switchports.</help>
+        <help>This allows you to dynamically assign VLANs on your physical switch ports.</help>
     </field>
 </form>
