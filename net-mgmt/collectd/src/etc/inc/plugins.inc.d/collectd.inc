@@ -34,7 +34,7 @@ function collectd_services()
 
     if (isset($config['OPNsense']['collectd']['general']['enabled']) && $config['OPNsense']['collectd']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('collectd'),
+            'description' => gettext('collectd daemon'),
             'configd' => array(
                 'restart' => array('collectd restart'),
                 'start' => array('collectd start'),
