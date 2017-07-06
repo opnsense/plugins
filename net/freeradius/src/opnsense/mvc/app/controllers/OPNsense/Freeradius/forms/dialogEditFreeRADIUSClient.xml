@@ -15,7 +15,7 @@
         <id>client.secret</id>
         <label>Secret</label>
         <type>text</type>
-        <help>Set the shared secret for the client. Must match on both sides!</help>
+        <help>Set the shared secret for the client. Must match on both sides.</help>
     </field>
     <field>
         <id>client.ip</id>
