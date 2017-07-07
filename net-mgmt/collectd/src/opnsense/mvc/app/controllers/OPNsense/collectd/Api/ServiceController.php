@@ -41,14 +41,14 @@ use \OPNsense\collectd\General;
 class ServiceController extends ApiControllerBase
 {
     /**
-     * start freeradius service (in background)
+     * start collectd service (in background)
      * @return array
      */
     public function startAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("freeradius start", true);
+            $response = $backend->configdRun("collectd start", true);
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -56,14 +56,14 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * stop freeradius service
+     * stop collectd service
      * @return array
      */
     public function stopAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("freeradius stop");
+            $response = $backend->configdRun("collectd stop");
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -71,14 +71,14 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * restart freeradius service
+     * restart collectd service
      * @return array
      */
     public function restartAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("freeradius restart");
+            $response = $backend->configdRun("collectd restart");
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -86,7 +86,7 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * retrieve status of freeradius
+     * retrieve status of collectd
      * @return array
      * @throws \Exception
      */
@@ -94,7 +94,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $mdlGeneral = new General();
-        $response = $backend->configdRun("freeradius status");
+        $response = $backend->configdRun("collectd status");
 
         if (strpos($response, "not running") > 0) {
             if ($mdlGeneral->enabled->__toString() == 1) {
@@ -115,7 +115,7 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * reconfigure freeradius, generate config and reload
+     * reconfigure collectd, generate config and reload
      */
     public function reconfigureAction()
     {
@@ -128,7 +128,7 @@ class ServiceController extends ApiControllerBase
 
             $runStatus = $this->statusAction();
 
-            // stop freeradius if it is running or not
+            // stop collectd if it is running or not
             $this->stopAction();
 
             // generate template
