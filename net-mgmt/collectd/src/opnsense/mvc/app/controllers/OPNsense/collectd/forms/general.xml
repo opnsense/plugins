@@ -13,7 +13,7 @@
     </field>
     <field>
         <id>general.fqdnlookup</id>
-        <label>FQDNLookup</label>
+        <label>FQDN lookup</label>
         <type>checkbox</type>
         <help>This will enable the FQDNLookup option.</help>
     </field>
