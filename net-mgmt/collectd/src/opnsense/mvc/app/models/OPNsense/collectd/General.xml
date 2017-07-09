@@ -41,6 +41,7 @@
         <p_network_password type="TextField">
             <default></default>
 	    <Required>N</Required>
+	    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
 	</p_network_password>
         <p_network_encryption type="BooleanField">
             <default>0</default>
