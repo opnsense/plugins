@@ -34,5 +34,17 @@
 	    <MinimumValue>1</MinimumValue>
 	    <MaximumValue>65535</MaximumValue>
         </p_network_port>
-	</items>
+        <p_network_username type="TextField">
+            <default></default>
+	    <Required>N</Required>
+	</p_network_username>
+        <p_network_password type="TextField">
+            <default></default>
+	    <Required>N</Required>
+	</p_network_password>
+        <p_network_encryption type="BooleanField">
+            <default>0</default>
+	    <Required>N</Required>
+	</p_network_encryption>
+    </items>
 </model>
