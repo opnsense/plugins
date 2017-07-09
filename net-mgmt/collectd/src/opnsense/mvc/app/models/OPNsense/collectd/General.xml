@@ -37,6 +37,7 @@
         <p_network_username type="TextField">
             <default></default>
 	    <Required>N</Required>
+	    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
 	</p_network_username>
         <p_network_password type="TextField">
             <default></default>
