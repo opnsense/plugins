@@ -34,11 +34,29 @@
         <label>Network collector host</label>
         <type>text</type>
         <help>Set the IP address of the network collector.</help>
-	</field>
+    </field>
     <field>
         <id>general.p_network_port</id>
         <label>Network collector port</label>
         <type>text</type>
         <help>Set the port of the network collector.</help>
-	</field>
-	</form>
+    </field>
+    <field>
+        <id>general.p_network_username</id>
+        <label>Network collector username</label>
+        <type>text</type>
+        <help>Set the username to authenticate against network collector (optional).</help>
+    </field>
+    <field>
+        <id>general.p_network_password</id>
+        <label>Network collector password</label>
+        <type>text</type>
+        <help>Set the password to authenticate against network collector (optional).</help>
+    </field>
+    <field>
+        <id>general.p_network_encryption</id>
+        <label>Network collector encryption</label>
+        <type>checkbox</type>
+        <help>Enable encryption for authentication against network collector (optional).</help>
+    </field>
+</form>
