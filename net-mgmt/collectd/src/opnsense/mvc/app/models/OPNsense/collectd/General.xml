@@ -66,6 +66,42 @@
             <Required>N</Required>
 	    <MinimumValue>1</MinimumValue>
 	    <MaximumValue>65535</MaximumValue>
-        </p_graphite_port>	    
+        </p_graphite_port>
+        <p_contextswitch_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_contextswitch_enable>
+        <p_cpu_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_cpu_enable>
+        <p_df_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_df_enable>
+        <p_interface_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_interface_enable>
+        <p_load_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_load_enable>
+        <p_memory_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_memory_enable>
+        <p_processes_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_processes_enable>
+        <p_uptime_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_uptime_enable>
+        <p_users_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_users_enable>
     </items>
 </model>
