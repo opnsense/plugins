@@ -48,5 +48,24 @@
             <default>0</default>
 	    <Required>N</Required>
 	</p_network_encryption>
+        <p_graphite_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_graphite_enable>
+        <p_graphite_node type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </p_graphite_node>
+        <p_graphite_host type="TextField">
+            <default></default>
+            <Required>N</Required>
+	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+        </p_graphite_host>
+        <p_graphite_port type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+	    <MinimumValue>1</MinimumValue>
+	    <MaximumValue>65535</MaximumValue>
+        </p_graphite_port>	    
     </items>
 </model>
