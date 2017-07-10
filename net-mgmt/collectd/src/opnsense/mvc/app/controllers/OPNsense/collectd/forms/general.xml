@@ -59,4 +59,28 @@
         <type>checkbox</type>
         <help>Enable encryption for authentication against network collector (optional).</help>
     </field>
+    <field>
+        <id>general.p_graphite_enable</id>
+        <label>Enable graphite plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the graphite plugin.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_node</id>
+        <label>graphite collector node name</label>
+        <type>text</type>
+        <help>Set the name of the graphite collector.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_host</id>
+        <label>graphite collector host</label>
+        <type>text</type>
+        <help>Set the IP address of the graphite collector.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_port</id>
+        <label>graphite collector port</label>
+        <type>text</type>
+        <help>Set the port of the graphite collector.</help>
+    </field>    
 </form>
