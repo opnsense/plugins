@@ -67,19 +67,19 @@
     </field>
     <field>
         <id>general.p_graphite_node</id>
-        <label>graphite collector node name</label>
+        <label>Graphite collector node name</label>
         <type>text</type>
         <help>Set the name of the graphite collector.</help>
     </field>
     <field>
         <id>general.p_graphite_host</id>
-        <label>graphite collector host</label>
+        <label>Graphite collector host</label>
         <type>text</type>
         <help>Set the IP address of the graphite collector.</help>
     </field>
     <field>
         <id>general.p_graphite_port</id>
-        <label>graphite collector port</label>
+        <label>Graphite collector port</label>
         <type>text</type>
         <help>Set the port of the graphite collector.</help>
     </field>    
