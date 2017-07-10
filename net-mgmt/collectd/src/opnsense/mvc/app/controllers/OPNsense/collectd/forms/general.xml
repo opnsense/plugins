@@ -82,5 +82,59 @@
         <label>Graphite collector port</label>
         <type>text</type>
         <help>Set the port of the graphite collector.</help>
-    </field>    
+    </field>
+    <field>
+        <id>general.p_contextswitch_enable</id>
+        <label>Enable contextswitch plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the contextswitch plugin.</help>
+    </field>
+    <field>
+        <id>general.p_cpu_enable</id>
+        <label>Enable cpu plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the cpu plugin.</help>
+    </field>
+    <field>
+        <id>general.p_df_enable</id>
+        <label>Enable df plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the df plugin.</help>
+    </field>
+    <field>
+        <id>general.p_interface_enable</id>
+        <label>Enable interface plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the interface plugin.</help>
+    </field>
+    <field>
+        <id>general.p_load_enable</id>
+        <label>Enable load plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the load plugin.</help>
+    </field>
+    <field>
+        <id>general.p_memory_enable</id>
+        <label>Enable memory plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the memory plugin.</help>
+    </field>
+    <field>
+        <id>general.p_processes_enable</id>
+        <label>Enable processes plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the processes plugin.</help>
+    </field>
+    <field>
+        <id>general.p_uptime_enable</id>
+        <label>Enable uptime plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the uptime plugin.</help>
+    </field>
+    <field>
+        <id>general.p_users_enable</id>
+        <label>Enable users plugin</label>
+        <type>checkbox</type>
+        <help>This will enable the users plugin.</help>
+    </field>
 </form>
