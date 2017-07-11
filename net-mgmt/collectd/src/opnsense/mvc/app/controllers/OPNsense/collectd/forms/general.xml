@@ -27,7 +27,7 @@
         <id>general.p_network_enable</id>
         <label>Enable network plugin</label>
         <type>checkbox</type>
-        <help>This will enable the network plugin.</help>
+        <help>The Network plugin can send values to other instances</help>
     </field>
     <field>
         <id>general.p_network_host</id>
@@ -39,7 +39,7 @@
         <id>general.p_network_port</id>
         <label>Network collector port</label>
         <type>text</type>
-        <help>Set the port of the network collector.</help>
+        <help>Set the port of the network collector. Collectd is using 25826 per default.</help>
     </field>
     <field>
         <id>general.p_network_username</id>
@@ -63,7 +63,7 @@
         <id>general.p_graphite_enable</id>
         <label>Enable graphite plugin</label>
         <type>checkbox</type>
-        <help>This will enable the graphite plugin.</help>
+        <help>The Graphite plugin stores values in Carbon, the storage layer of Graphite.</help>
     </field>
     <field>
         <id>general.p_graphite_node</id>
@@ -81,60 +81,60 @@
         <id>general.p_graphite_port</id>
         <label>Graphite collector port</label>
         <type>text</type>
-        <help>Set the port of the graphite collector.</help>
+        <help>Set the port of the graphite collector, Graphite is using 2003 per default.</help>
     </field>
     <field>
         <id>general.p_contextswitch_enable</id>
         <label>Enable contextswitch plugin</label>
         <type>checkbox</type>
-        <help>This will enable the contextswitch plugin.</help>
+        <help>The ContextSwitch plugin collects the number of context switches done by the operating system.</help>
     </field>
     <field>
         <id>general.p_cpu_enable</id>
         <label>Enable cpu plugin</label>
         <type>checkbox</type>
-        <help>This will enable the cpu plugin.</help>
+        <help>The CPU plugin collects the amount of time spent by the CPU in various states, most notably executing user code, executing system code, waiting for IO-operations and being idle.</help>
     </field>
     <field>
         <id>general.p_df_enable</id>
         <label>Enable df plugin</label>
         <type>checkbox</type>
-        <help>This will enable the df plugin.</help>
+        <help>The DF plugin collects file system usage information, i. e. basically how much space on a mounted partition is used and how much is available.</help>
     </field>
     <field>
         <id>general.p_interface_enable</id>
         <label>Enable interface plugin</label>
         <type>checkbox</type>
-        <help>This will enable the interface plugin.</help>
+        <help>The Interface plugin collects information about the traffic, packets per second and errors of interfaces.</help>
     </field>
     <field>
         <id>general.p_load_enable</id>
         <label>Enable load plugin</label>
         <type>checkbox</type>
-        <help>This will enable the load plugin.</help>
+        <help>The Load plugin collects the system load.</help>
     </field>
     <field>
         <id>general.p_memory_enable</id>
         <label>Enable memory plugin</label>
         <type>checkbox</type>
-        <help>This will enable the memory plugin.</help>
+        <help>The Memory plugin collects physical memory utilization (Used, buffered, cached and free).</help>
     </field>
     <field>
         <id>general.p_processes_enable</id>
         <label>Enable processes plugin</label>
         <type>checkbox</type>
-        <help>This will enable the processes plugin.</help>
+        <help>The Processes plugin collects the number of processes, grouped by their state (e. g. running, sleeping, zombies, etc.).</help>
     </field>
     <field>
         <id>general.p_uptime_enable</id>
         <label>Enable uptime plugin</label>
         <type>checkbox</type>
-        <help>This will enable the uptime plugin.</help>
+        <help>The Uptime plugin keeps track of the system uptime, providing informations such as the average running time or the maximum reached uptime over a certain period of time.</help>
     </field>
     <field>
         <id>general.p_users_enable</id>
         <label>Enable users plugin</label>
         <type>checkbox</type>
-        <help>This will enable the users plugin.</help>
+        <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
     </field>
 </form>
