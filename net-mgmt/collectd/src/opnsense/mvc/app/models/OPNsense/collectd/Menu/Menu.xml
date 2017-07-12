@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Collectd cssClass="fa fa-area-chart" url="/ui/collectd/general/index" />
+  </Services>
+</menu>
