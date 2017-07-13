@@ -141,7 +141,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     }
     public function getPrefixlistAction($uuid = null)
     {
-        $mdlBGP = $this->getModel();
+        $mdlOSPF = $this->getModel();
         if ($uuid != null) {
             $node = $mdlOSPF->getNodeByReference('prefixlists.prefixlist.' . $uuid);
             if ($node != null) {
