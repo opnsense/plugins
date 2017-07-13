@@ -102,7 +102,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function searchPrefixlistAction()
     {
         $this->sessionClose();
-        $mdlBGP = $this->getModel();
+        $mdlOSPF = $this->getModel();
         $grid = new UIModelGrid($mdlOSPF->prefixlists->prefixlist);
         return $grid->fetchBindRequest(
             $this->request,
