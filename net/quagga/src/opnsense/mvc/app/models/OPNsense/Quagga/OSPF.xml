@@ -27,12 +27,9 @@
                 <multiple>Y</multiple>
                 <default></default>
                 <OptionValues>
-                        <babel>Babel routing protocol (Babel)</babel>
                         <bgp>Border Gateway Protocol (BGP)</bgp>
                         <connected>Connected routes (directly attached subnet or host)</connected>
-                        <isis>Intermediate System to Intermediate System (IS-IS)</isis>
                         <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                        <pim>Protocol Independent Multicast (PIM)</pim>
                         <rip>Routing Information Protocol (RIP)</rip>
                         <static>Statically configured routes</static>
                 </OptionValues>
@@ -60,6 +57,32 @@
                                 <MaximumValue>32</MaximumValue>
                                 <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
                         </netmask>
+                        <linkedPrefixlistIn type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.ospf</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </linkedPrefixlistIn>
+                        <linkedPrefixlistOut type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.ospf</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </linkedPrefixlistOut>                    
                 </network>
         </networks>
         <interfaces>
@@ -144,5 +167,35 @@
                         </networktype>
                 </interface>
         </interfaces>
+        <prefixlists>
+                <prefixlist type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <name type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </name>
+                        <seqnumber type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
+                        </seqnumber>
+                        <action type="OptionField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <OptionValues>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
+                        <network type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </network>
+                </prefixlist>
+        </prefixlists>        
     </items>
 </model>
