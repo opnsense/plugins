@@ -20,4 +20,16 @@
     <type>text</type>
     <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
   </field>
+  <field>
+    <id>neighbor.linkedPrefixlistIn</id>
+    <label>Prefix-List In</label>
+    <type>dropdown</type>
+    <help>Prefix-List for inbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedPrefixlistOut</id>
+    <label>Prefix-List Out</label>
+    <type>dropdown</type>
+    <help>Prefix-List for outbound direction</help>
+  </field>
 </form>
