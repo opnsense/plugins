@@ -22,6 +22,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 namespace OPNsense\Quagga;
+
 use OPNsense\Base\BaseModel;
 
 class OSPF6 extends BaseModel

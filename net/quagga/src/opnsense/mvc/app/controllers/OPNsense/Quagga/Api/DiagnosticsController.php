@@ -29,6 +29,7 @@
  */
 
 namespace OPNsense\Quagga\Api;
+
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
@@ -57,6 +58,12 @@ class DiagnosticsController extends ApiControllerBase
     {
         $backend = new Backend();
         $response = $backend->configdRun("quagga diag-bgp summary");
+        return array("response" => $response);
+    }
+    public function showrunningconfigAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("quagga general-runningconfig");
         return array("response" => $response);
     }
     private function get_ospf_information($name)

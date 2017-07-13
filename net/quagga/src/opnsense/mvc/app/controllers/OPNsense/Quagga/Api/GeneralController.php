@@ -27,8 +27,9 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
- 
+
 namespace OPNsense\Quagga\Api;
+
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Quagga\General;
 use \OPNsense\Core\Config;

@@ -30,6 +30,7 @@
  */
 
 namespace OPNsense\Quagga\Api;
+
 use \OPNsense\Quagga\OSPF;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;

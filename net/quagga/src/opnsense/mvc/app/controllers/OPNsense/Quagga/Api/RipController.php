@@ -29,6 +29,7 @@
  */
 
 namespace OPNsense\Quagga\Api;
+
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Quagga\RIP;
 use \OPNsense\Core\Config;

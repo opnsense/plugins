@@ -32,51 +32,51 @@ POSSIBILITY OF SUCH DAMAGE.
  <table class="table table-striped">
 <tbody>
   <tr>
-    <td>{{ lang._("RFC2328 Conform") }}</td>
+    <td>{{ lang._('RFC2328 Conform') }}</td>
     <td><%= checkmark(ospf_overview['rfc2328_conform']) %></td>
   </tr>
   <tr>
-    <td>{{ lang._("ASBR") }}</td>
+    <td>{{ lang._('ASBR') }}</td>
     <td><%= checkmark(ospf_overview['asbr']) %></td>
   </tr>
   <tr>
-    <td>{{ lang._("Router ID") }}</td>
+    <td>{{ lang._('Router ID') }}</td>
     <td><%= ospf_overview['router_id'] %></td>
   </tr>
   <tr>
-    <td>{{ lang._("RFC1583 Compatibility") }}</td>
+    <td>{{ lang._('RFC1583 Compatibility') }}</td>
     <td><%= checkmark(ospf_overview['rfc1583_compatibility']) %></td>
   </tr>
   <tr>
-    <td>{{ lang._("Opaque Capability") }}</td>
+    <td>{{ lang._('Opaque Capability') }}</td>
     <td><%= checkmark(ospf_overview['opaque_capability']) %></td>
   </tr>
   <tr>
-    <td>{{ lang._("Initial SPF Scheduling Delay") }}</td>
+    <td>{{ lang._('Initial SPF Scheduling Delay') }}</td>
     <td><%= ospf_overview['initial_spf_scheduling_delay'] %></td>
   </tr>
   <tr>
-    <td>{{ lang._("Minimum Hold Time") }}</td>
+    <td>{{ lang._('Minimum Hold Time') }}</td>
     <td><%= ospf_overview['hold_time']['min'] %> {{ lang._('Milliseconds') }}</td>
   </tr>
   <tr>
-    <td>{{ lang._("Maximum Hold Time") }}</td>
+    <td>{{ lang._('Maximum Hold Time') }}</td>
     <td><%= ospf_overview['hold_time']['max'] %> {{ lang._('Milliseconds') }}</td>
   </tr>
   <tr>
-    <td>{{ lang._("Current Hold Time Multipier") }}</td>
+    <td>{{ lang._('Current Hold Time Multipier') }}</td>
     <td><%= ospf_overview['current_hold_time_multipier'] %></td>
   </tr>
   <tr>
-    <td>{{ lang._("SPF Timer") }}</td>
+    <td>{{ lang._('SPF Timer') }}</td>
     <td><%= ospf_overview['spf_timer'] %></td>
   </tr>
   <tr>
-    <td>{{ lang._("Refresh Timer") }}</td>
+    <td>{{ lang._('Refresh Timer') }}</td>
     <td><%= ospf_overview['refresh_timer'] %></td>
   </tr>
   <tr>
-    <td>{{ lang._("Areas Attached Count") }}</td>
+    <td>{{ lang._('Areas Attached Count') }}</td>
     <td><%= ospf_overview['areas_attached_count'] %></td>
   </tr>
 </tbody>

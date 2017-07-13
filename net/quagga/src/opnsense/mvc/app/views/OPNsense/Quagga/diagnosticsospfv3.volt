@@ -32,38 +32,38 @@ POSSIBILITY OF SUCH DAMAGE.
 <table class="table table-striped">
   <tbody>
     <tr>
-      <td>{{ lang._("Router ID") }}</td>
+      <td>{{ lang._('Router ID') }}</td>
       <td><%= ospfv3_overview['router_id'] %></td>
     </tr>
     <tr>
-      <td>{{ lang._("Routing Process") }}</td>
+      <td>{{ lang._('Routing Process') }}</td>
       <td><%= ospfv3_overview['routing_process'] %></td>
     </tr>
     <tr>
-      <td>{{ lang._("Running Time") }}</td>
+      <td>{{ lang._('Running Time') }}</td>
       <td><%= ospfv3_overview['running_time'] %></td>
     </tr>
     <tr>
-      <td>{{ lang._("Initial SPF scheduling delay") }}</td>
+      <td>{{ lang._('Initial SPF scheduling delay') }}</td>
       <td><%= ospfv3_overview['intital_spf_scheduling_delay'] %></td>
     </tr>
     <tr>
-      <td>{{ lang._("Hold Time") }}</td>
+      <td>{{ lang._('Hold Time') }}</td>
       <td>
-        {{ lang._("Minimum Hold Time") }} <%= ospfv3_overview['hold_time']['min'] %><br/>
-        {{ lang._("Maximum Hold Time:") }} <%= ospfv3_overview['hold_time']['max'] %>
+        {{ lang._('Minimum Hold Time') }} <%= ospfv3_overview['hold_time']['min'] %><br/>
+        {{ lang._('Maximum Hold Time:') }} <%= ospfv3_overview['hold_time']['max'] %>
       </td>
     </tr>
     <tr>
-      <td>{{ lang._("SPF timer") }}</td>
+      <td>{{ lang._('SPF timer') }}</td>
       <td><%= ospfv3_overview['spf_timer'] %></td>
     </tr>
     <tr>
-      <td>{{ lang._("Number Of Scoped AS") }}</td>
+      <td>{{ lang._('Number Of Scoped AS') }}</td>
       <td><%= ospfv3_overview['number_as_scoped'] %></td>
     </tr>
     <tr>
-      <td>{{ lang._("Number Of Areas") }}</td>
+      <td>{{ lang._('Number Of Areas') }}</td>
       <td><%= ospfv3_overview['number_of_areas'] %></td>
     </tr>
   </tbody>
@@ -77,11 +77,11 @@ POSSIBILITY OF SUCH DAMAGE.
     <table class="table table-striped">
       <tbody>
         <tr>
-          <td>{{ lang._("Number Of LSAs") }}</td>
+          <td>{{ lang._('Number Of LSAs') }}</td>
           <td><%= area['number_lsas'] %></td>
         </tr>
         <tr>
-          <td>{{ lang._("Interfaces") }}</td>
+          <td>{{ lang._('Interfaces') }}</td>
           <td><%= _.join(area['interfaces'], ", ") %></td>
         </tr>
       </tbody>
@@ -184,7 +184,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <% }) %>
   <% } %>
   <% if (ospfv3_database['as_scoped']) { %>
-    <h2>{{ lang._('AS Scpoed') }}</h2>
+    <h2>{{ lang._('AS Scoped') }}</h2>
     <table>
       <thead>
         <tr>
@@ -235,7 +235,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <% } else if (propertyname == 'area_cost')  { %>
                 <% _.each(int[propertyname], function (ac) { %>
                   <%= ac['area'] %>: <%= ac['cost'] %><br />
-                <% }) %> 
+                <% }) %>
               <% } else { %>
                 <%= translate(int[propertyname]) %>
               <% } %>
