@@ -57,6 +57,32 @@
                                 <MaximumValue>32</MaximumValue>
                                 <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
                         </netmask>
+                        <linkedPrefixlistIn type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.ospf</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </linkedPrefixlistIn>
+                        <linkedPrefixlistOut type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.ospf</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </linkedPrefixlistOut>                    
                 </network>
         </networks>
         <interfaces>
