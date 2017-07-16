@@ -1,0 +1,6 @@
+This plugin contains a full ACME protocol implementation based on the
+acme.sh project.  Acording to the authors, it's probably "the easiest
+and smallest and smartest shell script" to automatically issue and renew
+the free certificates from Let's Encrypt.
+
+WWW: https://github.com/Neilpang/acme.sh

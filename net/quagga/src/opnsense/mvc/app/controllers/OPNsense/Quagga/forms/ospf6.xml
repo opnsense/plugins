@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>ospf6.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the OSPFv3 service if routing protocols are enabled in "General".</help>
+    </field>
+    <field>
+        <id>ospf6.redistribute</id>
+        <label>Route Redistribution</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
+        <hint>Type or select a route source.</hint>
+    </field>
+    <field>
+        <id>ospf6.routerid</id>
+        <label>Router ID</label>
+        <type>text</type>
+        <help>Router ID as IPv4 Address</help>
+    </field>
+</form>

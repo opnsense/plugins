@@ -68,3 +68,16 @@ function haproxy_services()
 
     return $services;
 }
+
+/**
+ *  sync configuration via xmlrpc
+ * @return array
+ */
+function haproxy_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'haproxy';
+    $result['section'] = 'OPNsense.HAProxy';
+    $result['description'] = gettext('HAProxy Load Balancer');
+    return array($result);
+}

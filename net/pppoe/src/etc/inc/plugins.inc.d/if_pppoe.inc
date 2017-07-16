@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich
@@ -30,28 +30,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* BEGIN remove this in 17.1: provide compat for newer plugin on stock 16.7 */
-require_once 'util.inc';
-if (!function_exists('url_safe')) {
-    function url_safe($format, $args = array())
-    {
-        if (!is_array($args)) {
-            /* just in case there's only one argument */
-            $args = array($args);
-        }
-
-        foreach ($args as $id => $arg) {
-            $args[$id] = urlencode($arg);
-        }
-
-        return vsprintf($format, $args);
-    }
-}
-/* END remove this in 17.1 */
-
 function if_pppoe_configure()
 {
-    return array('if_pppoe_configure_do');
+    return array('bootup' => array('if_pppoe_configure_do'));
 }
 
 function if_pppoe_services()
@@ -307,8 +288,6 @@ EOD;
                 chmod("/var/etc/pppoe{$pppoecfg['pppoeid']}-vpn/mpd.secret", 0600);
             }
 
-            legacy_netgraph_attach($pppoe_interface);
-
             mwexec("/usr/local/sbin/mpd5 -b -d /var/etc/pppoe{$pppoecfg['pppoeid']}-vpn -p /var/run/pppoe{$pppoecfg['pppoeid']}-vpn.pid -s poes poes");
 
             break;
@@ -340,6 +319,7 @@ function if_pppoe_interfaces()
             $pppoeifs['virtual'] = true;
             $pppoeifs['if'] = 'pppoe';
             $pppoeifs['descr'] = 'pppoe';
+            $pppoeifs['type'] = 'group';
             $interfaces['pppoe'] = $pppoeifs;
         }
     }

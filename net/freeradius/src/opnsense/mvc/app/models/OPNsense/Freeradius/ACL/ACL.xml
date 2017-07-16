@@ -1,0 +1,9 @@
+<acl>
+   <page-services-freeradius>
+      <name>Services: FreeRADIUS</name>
+      <patterns>
+         <pattern>ui/freeradius/*</pattern>
+         <pattern>api/freeradius/*</pattern>
+      </patterns>
+   </page-services-freeradius>
+</acl>

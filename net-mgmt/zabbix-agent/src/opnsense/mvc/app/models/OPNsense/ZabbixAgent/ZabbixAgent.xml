@@ -1,0 +1,133 @@
+<model>
+    <mount>//OPNsense/ZabbixAgent</mount>
+    <version>1.0.0</version>
+    <description>
+        Enterprise-class open source distributed monitoring agent
+    </description>
+    <items>
+        <!-- local settings that should NOT be synced to another node -->
+        <local>
+            <hostname type="TextField">
+                <Required>Y</Required>
+                <mask>/^.{1,255}$/u</mask>
+                <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+            </hostname>
+        </local>
+        <settings>
+            <main>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <serverList type="CSVListField">
+                    <Required>Y</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid Zabbix server addresses, i.e. 10.0.0.1 or zabbix.example.com.</ValidationMessage>
+                </serverList>
+                <listenPort type="IntegerField">
+                    <default>10050</default>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <Required>Y</Required>
+                </listenPort>
+                <listenIP type="CSVListField">
+                    <Required>Y</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-\*:]+)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid IP addresses, i.e. 10.0.0.1.</ValidationMessage>
+                </listenIP>
+                <sourceIP type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </sourceIP>
+                <logFileSize type="IntegerField">
+                    <default>100</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>5000</MaximumValue>
+                    <Required>Y</Required>
+                </logFileSize>
+                <debugLevel type="OptionField">
+                    <default>val_3</default>
+                    <OptionValues>
+                        <val_0>basic information (0)</val_0>
+                        <val_1>critical information (1)</val_1>
+                        <val_2>error information (2)</val_2>
+                        <val_3>warnings (3, default)</val_3>
+                        <val_4>debugging (4)</val_4>
+                        <val_5>extended debugging (5)</val_5>
+                    </OptionValues>
+                    <Required>Y</Required>
+                </debugLevel>
+            </main>
+            <tuning>
+                <startAgents type="IntegerField">
+                    <default>3</default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>20</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a number between 0 and 20.</ValidationMessage>
+                </startAgents>
+                <bufferSend type="IntegerField">
+                    <default>5</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>3600</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a number between 1 and 3600.</ValidationMessage>
+                </bufferSend>
+                <bufferSize type="IntegerField">
+                    <default>100</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a number between 1 and 10000.</ValidationMessage>
+                </bufferSize>
+                <maxLinesPerSecond type="IntegerField">
+                    <default>100</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a number between 1 and 10000.</ValidationMessage>
+                </maxLinesPerSecond>
+                <timeout type="IntegerField">
+                    <default>3</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>30</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a number between 1 and 30.</ValidationMessage>
+                </timeout>
+            </tuning>
+            <features>
+                <enableActiveChecks type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enableActiveChecks>
+                <activeCheckServers type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid active check receivers, i.e. 10.0.0.1:10051, zabbix.example.com or [::1]:30051.</ValidationMessage>
+                </activeCheckServers>
+                <refreshActiveChecks type="IntegerField">
+                    <default>120</default>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>3600</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a number between 10 and 3600.</ValidationMessage>
+                </refreshActiveChecks>
+                <enableRemoteCommands type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enableRemoteCommands>
+                <logRemoteCommands type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </logRemoteCommands>
+            </features>
+        </settings>
+    </items>
+</model>

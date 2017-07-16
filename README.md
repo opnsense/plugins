@@ -30,17 +30,29 @@ A list of currently available plugins
 ```
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
+dns/dyndns -- Dynamic DNS Support
+dns/rfc2136 -- RFC-2136 Support
+net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
-net/intel-em -- Intel Gigabit Base Driver for em(4) and lem(4)
+net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
-sysutils/boot-delay -- Apply a persistent boot delay
+net/quagga -- Quagga Routing Suite
+net/relayd -- Relayd Load Balancer
+net/upnp -- Universal Plug and Play Service
+net/wol -- Wake on LAN Service
+net-mgmt/collectd -- Collect system and application performance metrics periodically
+net-mgmt/snmp -- SNMP Server via bsnmpd
+net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
+sysutils/boot-delay -- Apply a persistent 10 second boot delay
+sysutils/monit -- Proactive system monitoring
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-security/intrusion-detection-content-pt-open -- IDS PT Research ruleset
+security/acme-client -- Let's Encrypt client
+security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/tinc -- Tinc VPN
 www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```
@@ -64,8 +76,12 @@ below.
 
 The make targets for the root directory:
 
-* list:		print a list of all plugin directories
-* list-full:	print a list of all plugin directories with comments
+* clean:	remove all changes and unknown files
+* lint:		run syntax checks
+* list:		print a list of all plugin directories with comments
+* style-fix:	apply style fixes
+* style:	run style checks
+* sweep:	apply whitespace fixes
 
 The make targets for any plugin directory:
 

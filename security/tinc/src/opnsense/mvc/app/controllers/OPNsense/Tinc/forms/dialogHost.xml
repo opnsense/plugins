@@ -24,6 +24,12 @@
         <help>This machines external address to use</help>
     </field>
     <field>
+        <id>host.extport</id>
+        <label>Ext. Port</label>
+        <type>text</type>
+        <help>This machines external port to use</help>
+    </field>
+    <field>
         <id>host.subnet</id>
         <label>Subnet</label>
         <type>text</type>
@@ -39,7 +45,7 @@
       <id>host.cipher</id>
       <label>Cipher</label>
       <type>dropdown</type>
-      <help> The symmetric cipher algorithm used to encrypt UDP packets.
+      <help>The symmetric cipher algorithm used to encrypt UDP packets.
              Any cipher supported by LibreSSL or OpenSSL is recognised.
              Furthermore, specifying "none" will turn off packet encryption.
              It is best to use only those ciphers which support CBC mode

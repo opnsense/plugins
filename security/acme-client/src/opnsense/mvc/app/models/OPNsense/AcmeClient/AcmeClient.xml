@@ -1,0 +1,519 @@
+<model>
+
+    <mount>//OPNsense/AcmeClient</mount>
+    <version>1.0.0</version>
+    <description>
+        a secure Let's Encrypt plugin
+    </description>
+    <items>
+        <settings>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <autoRenewal type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </autoRenewal>
+            <UpdateCron type="ModelRelationField">
+                <Model>
+                    <queues>
+                        <source>OPNsense.Cron.Cron</source>
+                        <items>jobs.job</items>
+                        <display>description</display>
+                        <filters>
+                            <origin>/AcmeClient/</origin>
+                        </filters>
+                    </queues>
+                </Model>
+                <ValidationMessage>Related cron not found.</ValidationMessage>
+                <Required>N</Required>
+            </UpdateCron>
+            <environment type="OptionField">
+                <Required>Y</Required>
+                <default>prod</default>
+                <OptionValues>
+                    <prod>Production Environment [default]</prod>
+                    <stg>Staging Environment</stg>
+                </OptionValues>
+            </environment>
+            <challengePort type="IntegerField">
+                <default>43580</default>
+                <MinimumValue>1024</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <Required>Y</Required>
+            </challengePort>
+            <restartTimeout type="IntegerField">
+                <default>600</default>
+                <MinimumValue>10</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <Required>Y</Required>
+            </restartTimeout>
+            <haproxyIntegration type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </haproxyIntegration>
+            <haproxyAclRef type="ModelRelationField">
+                <Model>
+                    <acls>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>acls.acl</items>
+                        <display>name</display>
+                    </acls>
+                </Model>
+                <ValidationMessage>Related HAProxy ACL not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyAclRef>
+            <haproxyActionRef type="ModelRelationField">
+                <Model>
+                    <actions>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>actions.action</items>
+                        <display>name</display>
+                    </actions>
+                </Model>
+                <ValidationMessage>Related HAProxy action not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyActionRef>
+            <haproxyServerRef type="ModelRelationField">
+                <Model>
+                    <servers>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>servers.server</items>
+                        <display>name</display>
+                    </servers>
+                </Model>
+                <ValidationMessage>Related HAProxy server not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyServerRef>
+            <haproxyBackendRef type="ModelRelationField">
+                <Model>
+                    <backends>
+                        <source>OPNsense.HAProxy.HAProxy</source>
+                        <items>backends.backend</items>
+                        <display>name</display>
+                    </backends>
+                </Model>
+                <ValidationMessage>Related HAProxy backend not found.</ValidationMessage>
+                <multiple>N</multiple>
+                <Required>N</Required>
+            </haproxyBackendRef>
+        </settings>
+        <accounts>
+            <account type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <email type="EmailField">
+                    <Required>N</Required>
+                </email>
+                <certificateAuthority type="OptionField">
+                    <Required>Y</Required>
+                    <default>letsencrypt</default>
+                    <OptionValues>
+                        <letsencrypt>Let's Encrypt CA</letsencrypt>
+                    </OptionValues>
+                </certificateAuthority>
+                <!-- hidden field; the private key for this account -->
+                <key type="TextField">
+                    <Required>N</Required>
+                </key>
+                <!-- hidden field; last update of this account (unixtime) -->
+                <lastUpdate type="IntegerField">
+                    <Required>N</Required>
+                </lastUpdate>
+            </account>
+        </accounts>
+        <certificates>
+            <certificate type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <altNames type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^.{1,16384}$/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com. Field length is limited to 16384 characters.</ValidationMessage>
+                </altNames>
+                <account type="ModelRelationField">
+                    <Model>
+                        <accounts>
+                            <source>OPNsense.AcmeClient.AcmeClient</source>
+                            <items>accounts.account</items>
+                            <display>name</display>
+                            <filters>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </accounts>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <multiple>N</multiple>
+                    <Required>Y</Required>
+                </account>
+                <validationMethod type="ModelRelationField">
+                    <Model>
+                        <validations>
+                            <source>OPNsense.AcmeClient.AcmeClient</source>
+                            <items>validations.validation</items>
+                            <display>name</display>
+                            <filters>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </validations>
+                    </Model>
+                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <multiple>N</multiple>
+                    <Required>Y</Required>
+                </validationMethod>
+                <restartActions type="ModelRelationField">
+                    <Model>
+                        <actions>
+                            <source>OPNsense.AcmeClient.AcmeClient</source>
+                            <items>actions.action</items>
+                            <display>name</display>
+                            <filters>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </actions>
+                    </Model>
+                    <ValidationMessage>Related restart action not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </restartActions>
+                <autoRenewal type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </autoRenewal>
+                <renewInterval type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                    <default>60</default>
+                </renewInterval>
+                <!-- hidden field; ID of the certificate in Cert Manager -->
+                <certRefId type="TextField">
+                    <Required>N</Required>
+                </certRefId>
+                <!-- hidden field; last update of this certificate (unixtime) -->
+                <lastUpdate type="IntegerField">
+                    <Required>N</Required>
+                </lastUpdate>
+                <!-- hidden field; status of last operation -->
+                <statusCode type="IntegerField">
+                    <Required>N</Required>
+                    <!-- XXX: enable once data migration is working -->
+                    <!-- <default>100</default> -->
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                </statusCode>
+                <!-- hidden field; timestamp for statusCode -->
+                <statusLastUpdate type="IntegerField">
+                    <Required>N</Required>
+                </statusLastUpdate>
+            </certificate>
+        </certificates>
+        <validations>
+            <validation type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <method type="OptionField">
+                    <Required>Y</Required>
+                    <default>http01</default>
+                    <OptionValues>
+                        <http01>HTTP-01</http01>
+                        <dns01>DNS-01</dns01>
+                    </OptionValues>
+                </method>
+                <http_service type="OptionField">
+                    <Required>Y</Required>
+                    <default>opnsense</default>
+                    <OptionValues>
+                        <opnsense>OPNsense Web Service (automatic port forward)</opnsense>
+                        <haproxy>HAProxy HTTP Frontend Integration (OPNsense plugin)</haproxy>
+                    </OptionValues>
+                </http_service>
+                <http_opn_autodiscovery type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </http_opn_autodiscovery>
+                <!-- XXX: we want something more like get_possible_listen_ips() instead -->
+                <http_opn_interface type="InterfaceField">
+                    <Required>N</Required>
+                    <default>wan</default>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </http_opn_interface>
+                <http_opn_ipaddresses type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                </http_opn_ipaddresses>
+                <http_haproxyInject type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </http_haproxyInject>
+                <http_haproxyFrontends type="ModelRelationField">
+                    <Model>
+                        <frontends>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>frontends.frontend</items>
+                            <display>name</display>
+                            <filters>
+                                <mode>/^(http|ssl)$/</mode>
+                                <enabled>/^(?!0).*$/</enabled>
+                            </filters>
+                        </frontends>
+                    </Model>
+                    <ValidationMessage>Related HAProxy frontend not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </http_haproxyFrontends>
+                <dns_service type="OptionField">
+                    <Required>Y</Required>
+                    <default>dns_nsupdate</default>
+                    <OptionValues>
+                        <dns_ad>Alwaysdata.com API</dns_ad>
+                        <dns_ali>aliyun.com API</dns_ali>
+                        <dns_aws>AWS Route 53</dns_aws>
+                        <dns_cf>CloudFlare.com API</dns_cf>
+                        <dns_cx>CloudXNS.com API</dns_cx>
+                        <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_do>Domain-Offensive API</dns_do>
+                        <dns_dp>DNSPod.cn API</dns_dp>
+                        <dns_freedns>FreeDNS API</dns_freedns>
+                        <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
+                        <dns_gd>GoDaddy.com API</dns_gd>
+                        <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
+                        <dns_lexicon>lexicon DNS API</dns_lexicon>
+                        <dns_linode>Linode API</dns_linode>
+                        <dns_lua>LuaDNS.com API</dns_lua>
+                        <dns_me>DNSMadeEasy.com API</dns_me>
+                        <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
+                        <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
+                        <dns_pdns>PowerDNS.com API</dns_pdns>
+                    </OptionValues>
+                </dns_service>
+                <dns_sleep type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000</MaximumValue>
+                    <default>120</default>
+                    <ValidationMessage>Please specify a value between 1 and 10000.</ValidationMessage>
+                    <Required>Y</Required>
+                </dns_sleep>
+                <dns_ad_key type="TextField">
+                    <Required>N</Required>
+                </dns_ad_key>
+                <dns_ali_key type="TextField">
+                    <Required>N</Required>
+                </dns_ali_key>
+                <dns_ali_secret type="TextField">
+                    <Required>N</Required>
+                </dns_ali_secret>
+                <dns_aws_id type="TextField">
+                    <Required>N</Required>
+                </dns_aws_id>
+                <dns_aws_secret type="TextField">
+                    <Required>N</Required>
+                </dns_aws_secret>
+                <dns_cf_email type="TextField">
+                    <Required>N</Required>
+                </dns_cf_email>
+                <dns_cf_key type="TextField">
+                    <Required>N</Required>
+                </dns_cf_key>
+                <dns_cx_key type="TextField">
+                    <Required>N</Required>
+                </dns_cx_key>
+                <dns_cx_secret type="TextField">
+                    <Required>N</Required>
+                </dns_cx_secret>
+                <dns_cyon_user type="TextField">
+                  <Required>N</Required>
+                </dns_cyon_user>
+                <dns_cyon_password type="TextField">
+                  <Required>N</Required>
+                </dns_cyon_password>
+                <dns_do_pid type="TextField">
+                  <Required>N</Required>
+                </dns_do_pid>
+                <dns_do_password type="TextField">
+                  <Required>N</Required>
+                </dns_do_password>
+                <dns_dp_id type="TextField">
+                    <Required>N</Required>
+                </dns_dp_id>
+                <dns_dp_key type="TextField">
+                    <Required>N</Required>
+                </dns_dp_key>
+                <dns_freedns_user type="TextField">
+                    <Required>N</Required>
+                </dns_freedns_user>
+                <dns_freedns_password type="TextField">
+                    <Required>N</Required>
+                </dns_freedns_password>
+                <dns_gandi_livedns_key type="TextField">
+                    <Required>N</Required>
+                </dns_gandi_livedns_key>
+                <dns_gd_key type="TextField">
+                    <Required>N</Required>
+                </dns_gd_key>
+                <dns_gd_secret type="TextField">
+                    <Required>N</Required>
+                </dns_gd_secret>
+                <dns_ispconfig_user type="TextField">
+                    <Required>N</Required>
+                </dns_ispconfig_user>
+                <dns_ispconfig_password type="TextField">
+                    <Required>N</Required>
+                </dns_ispconfig_password>
+                <dns_ispconfig_api type="TextField">
+                    <Required>N</Required>
+                </dns_ispconfig_api>
+                <dns_ispconfig_insecure type="BooleanField">
+                    <Required>N</Required>
+                    <default>1</default>
+                </dns_ispconfig_insecure>
+                <dns_lexicon_provider type="OptionField">
+                    <Required>N</Required>
+                    <default>cloudflare</default>
+                    <OptionValues>
+                        <cloudflare>Cloudflare API</cloudflare>
+                        <namesilo>Namesilo API</namesilo>
+                    </OptionValues>
+                </dns_lexicon_provider>
+                <dns_lexicon_user type="TextField">
+                    <Required>N</Required>
+                </dns_lexicon_user>
+                <dns_lexicon_token type="TextField">
+                    <Required>N</Required>
+                </dns_lexicon_token>
+                <dns_linode_key type="TextField">
+                  <Required>N</Required>
+                </dns_linode_key>
+                <dns_lua_email type="TextField">
+                    <Required>N</Required>
+                </dns_lua_email>
+                <dns_lua_key type="TextField">
+                    <Required>N</Required>
+                </dns_lua_key>
+                <dns_me_key type="TextField">
+                    <Required>N</Required>
+                </dns_me_key>
+                <dns_me_secret type="TextField">
+                    <Required>N</Required>
+                </dns_me_secret>
+                <dns_nsupdate_server type="TextField">
+                    <Required>N</Required>
+                </dns_nsupdate_server>
+                <!-- TODO: maybe we should base64encode this field? -->
+                <dns_nsupdate_key type="TextField">
+                    <Required>N</Required>
+                </dns_nsupdate_key>
+                <dns_ovh_app_key type="TextField">
+                    <Required>N</Required>
+                </dns_ovh_app_key>
+                <dns_ovh_app_secret type="TextField">
+                    <Required>N</Required>
+                </dns_ovh_app_secret>
+                <dns_ovh_consumer_key type="TextField">
+                    <Required>N</Required>
+                </dns_ovh_consumer_key>
+                <dns_ovh_endpoint type="TextField">
+                    <Required>N</Required>
+                </dns_ovh_endpoint>
+                <dns_pdns_url type="TextField">
+                    <Required>N</Required>
+                </dns_pdns_url>
+                <dns_pdns_serverid type="TextField">
+                    <Required>N</Required>
+                </dns_pdns_serverid>
+                <dns_pdns_token type="TextField">
+                    <Required>N</Required>
+                </dns_pdns_token>
+            </validation>
+        </validations>
+        <actions>
+            <action type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>N</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <restart_gui>Restart OPNsense Web UI</restart_gui>
+                        <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
+                        <configd>System or Plugin Command (select below)</configd>
+                    </OptionValues>
+                </type>
+                <configd type="ConfigdActionsField">
+                    <filters>
+                        <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
+                    </filters>
+                    <ValidationMessage>Select a command from the list.</ValidationMessage>
+                    <Required>N</Required>
+                </configd>
+            </action>
+        </actions>
+    </items>
+</model>

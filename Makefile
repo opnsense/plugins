@@ -3,7 +3,7 @@ PAGER?=		less
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
-CATEGORIES=	devel net sysutils security www
+CATEGORIES=	devel dns net net-mgmt sysutils security www
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
@@ -11,11 +11,6 @@ PLUGIN_DIRS+=	${_${CATEGORY}}
 .endfor
 
 list:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ${PLUGIN_DIR}
-.endfor
-
-list-full:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
 	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor

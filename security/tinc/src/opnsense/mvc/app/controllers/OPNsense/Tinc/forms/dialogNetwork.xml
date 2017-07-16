@@ -6,6 +6,13 @@
         <help>Enable this network</help>
     </field>
     <field>
+        <id>network.mode</id>
+        <label>Mode</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>This option selects the way packets are routed to other daemons</help>
+    </field>
+    <field>
         <id>network.name</id>
         <label>Network Name</label>
         <type>text</type>
@@ -18,10 +25,18 @@
         <help>This machines internal address to use and network mask for the whole network</help>
     </field>
     <field>
+        <id>network.pingtimeout</id>
+        <label>PingTimeout</label>
+        <type>text</type>
+        <help>The number of seconds to wait for a response to pings or to allow meta connections to block.
+          If the other end doesn't respond within this time, the connection is terminated, and the others will be notified of this.
+        </help>
+    </field>
+    <field>
       <id>network.cipher</id>
       <label>Cipher</label>
       <type>dropdown</type>
-      <help> The symmetric cipher algorithm used to encrypt UDP packets.
+      <help>The symmetric cipher algorithm used to encrypt UDP packets.
              Any cipher supported by LibreSSL or OpenSSL is recognised.
              Furthermore, specifying "none" will turn off packet encryption.
              It is best to use only those ciphers which support CBC mode
@@ -48,6 +63,12 @@
         <label>Ext. Address</label>
         <type>text</type>
         <help>This machines external address to use</help>
+    </field>
+    <field>
+        <id>network.extport</id>
+        <label>Ext. Port</label>
+        <type>text</type>
+        <help>This machines external port to use</help>
     </field>
     <field>
         <id>network.subnet</id>

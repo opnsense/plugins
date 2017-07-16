@@ -1,0 +1,140 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the collectd service.</help>
+    </field>
+    <field>
+        <id>general.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>Set the hostname for this system.</help>
+    </field>
+    <field>
+        <id>general.fqdnlookup</id>
+        <label>FQDN lookup</label>
+        <type>checkbox</type>
+        <help>This will enable the FQDNLookup option.</help>
+    </field>
+    <field>
+        <id>general.interval</id>
+        <label>Interval</label>
+        <type>text</type>
+        <help>Global interval when to fetch values in seconds.</help>
+    </field>
+    <field>
+        <id>general.p_network_enable</id>
+        <label>Enable network plugin</label>
+        <type>checkbox</type>
+        <help>The Network plugin can send values to other instances</help>
+    </field>
+    <field>
+        <id>general.p_network_host</id>
+        <label>Network collector host</label>
+        <type>text</type>
+        <help>Set the IP address of the network collector.</help>
+    </field>
+    <field>
+        <id>general.p_network_port</id>
+        <label>Network collector port</label>
+        <type>text</type>
+        <help>Set the port of the network collector. Collectd is using 25826 per default.</help>
+    </field>
+    <field>
+        <id>general.p_network_username</id>
+        <label>Network collector username</label>
+        <type>text</type>
+        <help>Set the username to authenticate against network collector (optional).</help>
+    </field>
+    <field>
+        <id>general.p_network_password</id>
+        <label>Network collector password</label>
+        <type>text</type>
+        <help>Set the password to authenticate against network collector (optional).</help>
+    </field>
+    <field>
+        <id>general.p_network_encryption</id>
+        <label>Network collector encryption</label>
+        <type>checkbox</type>
+        <help>Enable encryption for authentication against network collector (optional).</help>
+    </field>
+    <field>
+        <id>general.p_graphite_enable</id>
+        <label>Enable graphite plugin</label>
+        <type>checkbox</type>
+        <help>The Graphite plugin stores values in Carbon, the storage layer of Graphite.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_node</id>
+        <label>Graphite collector node name</label>
+        <type>text</type>
+        <help>Set the name of the graphite collector.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_host</id>
+        <label>Graphite collector host</label>
+        <type>text</type>
+        <help>Set the IP address of the graphite collector.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_port</id>
+        <label>Graphite collector port</label>
+        <type>text</type>
+        <help>Set the port of the graphite collector, Graphite is using 2003 per default.</help>
+    </field>
+    <field>
+        <id>general.p_contextswitch_enable</id>
+        <label>Enable contextswitch plugin</label>
+        <type>checkbox</type>
+        <help>The ContextSwitch plugin collects the number of context switches done by the operating system.</help>
+    </field>
+    <field>
+        <id>general.p_cpu_enable</id>
+        <label>Enable cpu plugin</label>
+        <type>checkbox</type>
+        <help>The CPU plugin collects the amount of time spent by the CPU in various states, most notably executing user code, executing system code, waiting for IO-operations and being idle.</help>
+    </field>
+    <field>
+        <id>general.p_df_enable</id>
+        <label>Enable df plugin</label>
+        <type>checkbox</type>
+        <help>The DF plugin collects file system usage information, i. e. basically how much space on a mounted partition is used and how much is available.</help>
+    </field>
+    <field>
+        <id>general.p_interface_enable</id>
+        <label>Enable interface plugin</label>
+        <type>checkbox</type>
+        <help>The Interface plugin collects information about the traffic, packets per second and errors of interfaces.</help>
+    </field>
+    <field>
+        <id>general.p_load_enable</id>
+        <label>Enable load plugin</label>
+        <type>checkbox</type>
+        <help>The Load plugin collects the system load.</help>
+    </field>
+    <field>
+        <id>general.p_memory_enable</id>
+        <label>Enable memory plugin</label>
+        <type>checkbox</type>
+        <help>The Memory plugin collects physical memory utilization (Used, buffered, cached and free).</help>
+    </field>
+    <field>
+        <id>general.p_processes_enable</id>
+        <label>Enable processes plugin</label>
+        <type>checkbox</type>
+        <help>The Processes plugin collects the number of processes, grouped by their state (e. g. running, sleeping, zombies, etc.).</help>
+    </field>
+    <field>
+        <id>general.p_uptime_enable</id>
+        <label>Enable uptime plugin</label>
+        <type>checkbox</type>
+        <help>The Uptime plugin keeps track of the system uptime, providing informations such as the average running time or the maximum reached uptime over a certain period of time.</help>
+    </field>
+    <field>
+        <id>general.p_users_enable</id>
+        <label>Enable users plugin</label>
+        <type>checkbox</type>
+        <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
+    </field>
+</form>

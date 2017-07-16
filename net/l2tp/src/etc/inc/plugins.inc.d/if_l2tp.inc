@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich
@@ -30,28 +30,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* BEGIN remove this in 17.1: provide compat for newer plugin on stock 16.7 */
-require_once 'util.inc';
-if (!function_exists('url_safe')) {
-    function url_safe($format, $args = array())
-    {
-        if (!is_array($args)) {
-            /* just in case there's only one argument */
-            $args = array($args);
-        }
-
-        foreach ($args as $id => $arg) {
-            $args[$id] = urlencode($arg);
-        }
-
-        return vsprintf($format, $args);
-    }
-}
-/* END remove this in 17.1 */
-
 function if_l2tp_configure()
 {
-    return array('if_l2tp_configure_do');
+    return array('bootup' => array('if_l2tp_configure_do'));
 }
 
 function if_l2tp_services()
@@ -262,8 +243,6 @@ EOD;
             unset($mpdsecret);
             chmod('/var/etc/l2tp-vpn/mpd.secret', 0600);
 
-            legacy_netgraph_attach(get_real_interface($l2tpcfg['interface']));
-
             mwexec('/usr/local/sbin/mpd5 -b -d /var/etc/l2tp-vpn -p /var/run/l2tp-vpn.pid -s l2tps l2tps');
 
             break;
@@ -288,6 +267,7 @@ function if_l2tp_interfaces()
         $oic['networks'] =  array();
         $oic['if'] = 'l2tp';
         $oic['descr'] = 'L2TP';
+        $oic['type'] = 'group';
         $mask = !empty($config['l2tp']['l2tp_subnet']) ? $config['l2tp']['l2tp_subnet'] : 32;
         $oic['networks'][] = array("network" => gen_subnet($config['l2tp']['remoteip'], $mask), "mask" => $mask);
         $interfaces['l2tp'] = $oic;

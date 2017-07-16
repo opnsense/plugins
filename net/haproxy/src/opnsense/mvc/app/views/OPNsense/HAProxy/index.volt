@@ -647,11 +647,11 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogFrontend,'id':'DialogFrontend','label':'Edit Frontend'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogBackend,'id':'DialogBackend','label':'Edit Backend'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogServer,'id':'DialogServer','label':'Edit Server'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHealthcheck,'id':'DialogHealthcheck','label':'Edit Health Check'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':'Edit Action'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAcl,'id':'DialogAcl','label':'Edit ACL'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':'Edit Lua Script'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':'Edit Error File'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogFrontend,'id':'DialogFrontend','label':lang._('Edit Frontend')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogBackend,'id':'DialogBackend','label':lang._('Edit Backend')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogServer,'id':'DialogServer','label':lang._('Edit Server')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHealthcheck,'id':'DialogHealthcheck','label':lang._('Edit Health Check')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Action')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAcl,'id':'DialogAcl','label':lang._('Edit ACL')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':lang._('Edit Lua Script')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error File')])}}

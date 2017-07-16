@@ -35,6 +35,7 @@ require_once("config.inc");
 require_once("certs.inc");
 require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
+
 global $config;
 
 // traverse HAProxy error files
@@ -45,7 +46,7 @@ if (isset($configObj->OPNsense->HAProxy->errorfiles)) {
         $ef_id = (string)$errorfile->id;
         if ($ef_id != "") {
             $ef_content = htmlspecialchars_decode(str_replace("\r", "", (string)$errorfile->content));
-            $ef_filename = "/var/etc/haproxy/errorfiles/" . $ef_id . ".txt" ;
+            $ef_filename = "/var/etc/haproxy/errorfiles/" . $ef_id . ".txt";
             file_put_contents($ef_filename, $ef_content);
             chmod($ef_filename, 0600);
             echo "error file exported to " . $ef_filename . "\n";

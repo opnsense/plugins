@@ -1,0 +1,37 @@
+<form>
+    <field>
+        <id>ospf.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the OSPF service if routing protocols are enabled in "General".</help>
+    </field>
+    <field>
+        <id>ospf.passiveinterfaces</id>
+        <label>Passive Interfaces</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select the interfaces, where no OSPF packets should be sent to.]]></help>
+        <hint>Type or select interface.</hint>
+    </field>
+    <field>
+        <id>ospf.redistribute</id>
+        <label>Route Redistribution</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
+        <hint>Type or select a route source.</hint>
+    </field>
+    <field>
+        <id>ospf.originate</id>
+        <label>Advertise Default Gateway</label>
+        <type>checkbox</type>
+        <help>This will send the information that we have a default gateway.</help>
+    </field>
+    <field>
+        <id>ospf.originatealways</id>
+        <label>Always Advertise Default Gateway</label>
+        <type>checkbox</type>
+        <help>This will send the information that we have a default gateway, regardless of if it is available.</help>
+    </field>
+
+</form>

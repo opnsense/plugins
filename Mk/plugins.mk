@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2016 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2017 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -28,23 +28,12 @@ all: check
 LOCALBASE?=		/usr/local
 PKG!=			which pkg || echo true
 
-PLUGIN_DESC!=		git rev-list HEAD --max-count=1 | cut -c1-9
+PLUGIN_DESC=		pkg-descr
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
 PLUGINSDIR=		${.CURDIR}/../..
 TEMPLATESDIR=		${PLUGINSDIR}/Templates
-
-SRC?=			src
-
-# Setting private mode allows plugins not
-# to show up in the firmware GUI, and must
-# thus be installed during build or console.
-.if "${PLUGIN_PRIVATE}" == ""
-PLUGIN_PREFIX=		os-
-.else
-PLUGIN_PREFIX=		ospriv-
-.endif
 
 PLUGIN_WWW?=		https://opnsense.org/
 PLUGIN_REVISION?=	0
@@ -59,6 +48,15 @@ check:
 .  endif
 .endfor
 
+PLUGIN_DEVEL?=		yes
+
+PLUGIN_PREFIX?=		os-
+.if "${PLUGIN_DEVEL}" != ""
+PLUGIN_SUFFIX?=		-devel
+.endif
+
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 .else
@@ -66,23 +64,26 @@ PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
 
 name: check
-	@echo ${PLUGIN_PREFIX}${PLUGIN_NAME}
+	@echo ${PLUGIN_PKGNAME}
 
 depends: check
 	@echo ${PLUGIN_DEPENDS}
 
 manifest: check
-	@echo "name: ${PLUGIN_PREFIX}${PLUGIN_NAME}"
+	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
-	@echo "origin: opnsense/${PLUGIN_PREFIX}${PLUGIN_NAME}"
+	@echo "origin: opnsense/${PLUGIN_PKGNAME}"
 	@echo "comment: \"${PLUGIN_COMMENT}\""
-	@echo "desc: \"${PLUGIN_DESC}\""
 	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
 	@echo "categories: [ \"${.CURDIR:S/\// /g:[-2]}\" ]"
 	@echo "www: \"${PLUGIN_WWW}\""
 	@echo "prefix: \"${LOCALBASE}\""
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
+.if defined(PLUGIN_NO_ABI)
+	@echo "arch: `pkg config abi | tr '[:upper:]' '[:lower:]' | cut -d: -f1`:*:*"
+	@echo "abi: `pkg config abi | cut -d: -f1`:*:*"
+.endif
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
 	@for PLUGIN_DEPEND in ${PLUGIN_DEPENDS}; do \
@@ -152,21 +153,29 @@ scripts-post:
 	done
 
 install: check
-	@mkdir -p ${DESTDIR}${LOCALBASE}
-	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
-		tar -C ${.CURDIR}/${SRC} -cpf - $${FILE} | \
+	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
+	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 	done
+	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
 	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
+	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
+
+description: check
+	@if [ -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
+		cat ${.CURDIR}/${PLUGIN_DESC}; \
+	fi
 
 metadata: check
 	@mkdir -p ${DESTDIR}
 	@${MAKE} DESTDIR=${DESTDIR} scripts
 	@${MAKE} DESTDIR=${DESTDIR} manifest > ${DESTDIR}/+MANIFEST
+	@${MAKE} DESTDIR=${DESTDIR} description > ${DESTDIR}/+DESC
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
@@ -216,7 +225,7 @@ lint: check
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" \
 	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" \
-	    ! -name "*.tgz" ! -name "*.xml.dist" \
+	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" \
 	    -type f -print0 | xargs -0 -n1 php -l
 
 sweep: check

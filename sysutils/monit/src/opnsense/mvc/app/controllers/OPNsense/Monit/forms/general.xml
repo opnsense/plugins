@@ -1,0 +1,52 @@
+<form>
+   <field>
+      <id>monit.general.enabled</id>
+      <label>Enable monit</label>
+      <type>checkbox</type>
+      <help><![CDATA[Enable or disable monit.]]></help>
+   </field>
+   <field>
+      <id>monit.general.interval</id>
+      <label>Polling Interval</label>
+      <type>text</type>
+      <help><![CDATA[Polling interval in seconds]]></help>
+   </field>
+   <field>
+      <id>monit.general.startdelay</id>
+      <label>Start Delay</label>
+      <type>text</type>
+      <help><![CDATA[On system boot wait before Monit starts checking services.]]></help>
+   </field>
+   <field>
+      <id>monit.general.mailserver</id>
+      <label>Mail Server</label>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <style>tokenize</style>
+      <help><![CDATA[Comma separated list of SMTP servers for alert delivery.]]></help>
+   </field>
+   <field>
+      <id>monit.general.port</id>
+      <label>Mail Server Port</label>
+      <type>text</type>
+      <help><![CDATA[The port of the mail server. Typically 465 for SSL or 25 for TLS and non secure connections.]]></help>
+   </field>
+   <field>
+      <id>monit.general.username</id>
+      <label>Username</label>
+      <type>text</type>
+      <help><![CDATA[The username for authentication.]]></help>
+   </field>
+   <field>
+      <id>monit.general.password</id>
+      <label>Password</label>
+      <type>password</type>
+      <help><![CDATA[The password for authentication.]]></help>
+   </field>
+   <field>
+      <id>monit.general.ssl</id>
+      <label>Secure Connection</label>
+      <type>checkbox</type>
+      <help><![CDATA[Enable encryption.]]></help>
+   </field>
+</form>

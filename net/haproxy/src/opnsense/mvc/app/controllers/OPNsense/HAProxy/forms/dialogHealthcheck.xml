@@ -84,12 +84,42 @@
         <label>Value</label>
         <type>text</type>
         <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
-
-        <help><![CDATA[Specify additional SSL parameters such as force-sslv3, force-tlsv10, force-tlsv11, force-tlsv12, no-sslv3, no-tlsv10, no-tlsv11, no-tlsv12, no-tls-tickets or customize the list of SSL ciphers.<br/>Example: no-sslv3 ciphers HIGH:!DSS:!aNULL@STRENGTH<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
-
     </field>
     <field>
-        <label>Non-HTTP check options</label>
+        <label>Custom TCP check</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>healthcheck.tcp_enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>healthcheck.tcp_sendValue</id>
+        <label>Send data</label>
+        <type>text</type>
+        <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
+    </field>
+    <field>
+        <id>healthcheck.tcp_matchType</id>
+        <label>Match response</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select how to look for a specific pattern in the response.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.tcp_negate</id>
+        <label>Negate condition</label>
+        <type>checkbox</type>
+        <help><![CDATA[Use this to invert the meaning of the expression.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.tcp_matchValue</id>
+        <label>Match pattern</label>
+        <type>text</type>
+        <help><![CDATA[Specify the pattern to look for in the response buffer. If the match is set to binary, then the pattern must be passed as a serie of hexadecimal digits in an even number.]]></help>
+    </field>
+    <field>
+        <label>Other check options</label>
         <type>header</type>
     </field>
     <field>

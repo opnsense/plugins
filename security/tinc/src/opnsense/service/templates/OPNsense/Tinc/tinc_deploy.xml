@@ -4,17 +4,21 @@
 {%     if network.enabled|default('0') == '1' %}
     <network>
         <id>{{network.id}}</id>
+        <mode>{{network.mode}}</mode>
         <hostname>{{network.hostname}}</hostname>
         <network>{{network.name}}</network>
         <intaddress>{{network.intaddress}}</intaddress>
         <privkey><![CDATA[{{network.privkey}}]]></privkey>
         <address>{{network.intaddress}}</address>
+        <port>{{network.extport}}</port>
         <debuglevel>{{network.debuglevel}}</debuglevel>
+        <pingtimeout>{{network.pingtimeout}}</pingtimeout>
         <hosts>
             <host>
                 <hostname>{{network.hostname}}</hostname>
                 <network>{{network.name}}</network>
                 <address>{{network.extaddress}}</address>
+                <port>{{network.extport}}</port>
                 <subnet>{{network.subnet}}</subnet>
                 <pubkey><![CDATA[{{network.pubkey}}]]></pubkey>
                 <cipher>{{network.cipher}}</cipher>
@@ -26,6 +30,7 @@
                 <hostname>{{host.hostname}}</hostname>
                 <network>{{network.name}}</network>
                 <address>{{host.extaddress}}</address>
+                <port>{{network.extport}}</port>
                 <subnet>{{host.subnet}}</subnet>
                 <pubkey><![CDATA[{{host.pubkey}}]]></pubkey>
                 <cipher>{{host.cipher}}</cipher>

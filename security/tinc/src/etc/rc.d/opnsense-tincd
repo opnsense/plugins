@@ -2,32 +2,32 @@
 #
 # $FreeBSD$
 #
-# PROVIDE: tincd
+# PROVIDE: opnsense-tincd
 # REQUIRE: SERVERS
 # KEYWORD: shutdown
 #
 
 . /etc/rc.subr
 
-name=opnsense-tincd
+name=ostincd
 
-stop_cmd=tincd_stop
-start_cmd=tincd_start
-rcvar=OPNtincd_enable
+stop_cmd=ostincd_stop
+start_cmd=ostincd_start
+rcvar=ostincd_enable
 
-load_rc_config $name
+load_rc_config opnsense-tincd
 
-[ -z "$OPNtincd_enable" ] && OPNtincd_enable="NO"
+[ -z "$ostincd_enable" ] && ostincd_enable="NO"
 
 # stop tincd
-tincd_stop()
+ostincd_stop()
 {
 	echo "stopping tincd"
 	/usr/local/opnsense/scripts/OPNsense/Tinc/tincd.py stop
 }
 
 # start tincd
-tincd_start()
+ostincd_start()
 {
 	echo "starting tincd"
 	/usr/local/opnsense/scripts/OPNsense/Tinc/tincd.py start

@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>client.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the client config.</help>
+    </field>
+    <field>
+        <id>client.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the "shortname" for the client.</help>
+    </field>
+    <field>
+        <id>client.secret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <help>Set the shared secret for the client. Must match on both sides.</help>
+    </field>
+    <field>
+        <id>client.ip</id>
+        <label>IP Address or Network with CIDR</label>
+        <type>text</type>
+        <help>Set the IP address of the remote client or the complete network like 10.10.10.0/24</help>
+    </field>
+</form>

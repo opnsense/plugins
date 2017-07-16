@@ -97,10 +97,10 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="id" data-type="number"  data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="id" data-type="number" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -126,7 +126,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
                     <th data-column-id="hostname" data-type="string">{{ lang._('Hostname') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -146,12 +146,12 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
     <div class="col-md-12">
         <hr/>
-        <button class="btn btn-primary"  id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
         <br/><br/>
     </div>
 </div>
 
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogNetwork,'id':'DialogNetwork','label':'Edit Network'])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHost,'id':'DialogHost','label':'Edit Host'])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogNetwork,'id':'DialogNetwork','label':lang._('Edit Network')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHost,'id':'DialogHost','label':lang._('Edit Host')])}}

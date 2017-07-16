@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Tinc</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>
         OPNsense Tinc VPN
     </description>
@@ -21,11 +21,17 @@
                     <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
-                <extaddress type="NetworkField">
+                <extaddress type="TextField">
                     <Required>Y</Required>
-                    <WildcardEnabled>N</WildcardEnabled>
-                    <FieldSeparator>,</FieldSeparator>
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                 </extaddress>
+                <extport type="IntegerField">
+                    <Required>Y</Required>
+                    <default>655</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Port number must be between 1...65535</ValidationMessage>
+                </extport>
                 <intaddress type="NetworkField">
                     <Required>Y</Required>
                     <WildcardEnabled>N</WildcardEnabled>
@@ -36,6 +42,13 @@
                     <NetMaskRequired>Y</NetMaskRequired>
                     <FieldSeparator>,</FieldSeparator>
                 </subnet>
+                <pingtimeout type="IntegerField">
+                    <Required>Y</Required>
+                    <default>5</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Ping timeout must be between 1...65535</ValidationMessage>
+                </pingtimeout>
                 <privkey type="TextField">
                     <Required>Y</Required>
                 </privkey>
@@ -49,6 +62,14 @@
                     <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
                     <default>aes-256-cbc</default>
                 </cipher>
+                <mode type="OptionField">
+                  <Required>Y</Required>
+                  <default>router</default>
+                  <OptionValues>
+                      <router>router</router>
+                      <switch>switch</switch>
+                  </OptionValues>
+                </mode>
                 <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -78,7 +99,7 @@
                             <display>name</display>
                         </hosts>
                     </Model>
-                    <ValidationMessage>Related pipe or queue not found</ValidationMessage>
+                    <ValidationMessage>Related network not found</ValidationMessage>
                     <Required>Y</Required>
                 </network>
                 <hostname type="TextField">
@@ -86,10 +107,16 @@
                     <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
-                <extaddress type="NetworkField">
+                <extport type="IntegerField">
                     <Required>Y</Required>
-                    <WildcardEnabled>N</WildcardEnabled>
-                    <FieldSeparator>,</FieldSeparator>
+                    <default>655</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Port number must be between 1...65535</ValidationMessage>
+                </extport>
+                <extaddress type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                 </extaddress>
                 <subnet type="NetworkField">
                     <Required>Y</Required>

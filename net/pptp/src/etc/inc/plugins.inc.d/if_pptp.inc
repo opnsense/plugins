@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich
@@ -30,28 +30,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* BEGIN remove this in 17.1: provide compat for newer plugin on stock 16.7 */
-require_once 'util.inc';
-if (!function_exists('url_safe')) {
-    function url_safe($format, $args = array())
-    {
-        if (!is_array($args)) {
-            /* just in case there's only one argument */
-            $args = array($args);
-        }
-
-        foreach ($args as $id => $arg) {
-            $args[$id] = urlencode($arg);
-        }
-
-        return vsprintf($format, $args);
-    }
-}
-/* END remove this in 17.1 */
-
 function if_pptp_configure()
 {
-    return array('if_pptp_configure_do');
+    return array('bootup' => array('if_pptp_configure_do'));
 }
 
 function if_pptp_services()
@@ -275,9 +256,6 @@ EOD;
             unset($mpdsecret);
             chmod('/var/etc/pptp-vpn/mpd.secret', 0600);
 
-            /* fixed to WAN elsewhere, no need to extend, but at least make it work */
-            legacy_netgraph_attach(get_real_interface('wan'));
-
             mwexec('/usr/local/sbin/mpd5 -b -d /var/etc/pptp-vpn -p /var/run/pptp-vpn.pid -s pptps pptps');
 
             break;
@@ -301,6 +279,7 @@ function if_pptp_interfaces()
         $oic['networks'] =  array();
         $oic['virtual'] = true;
         $oic['if'] = 'pptp';
+        $oic['type'] = 'group';
         $oic['descr'] = 'pptp';
         $mask = !empty($config['pptpd']['pptp_subnet']) ? $config['pptpd']['pptp_subnet'] : 32;
         if (isset($config['pptpd']['n_pptp_units']) && is_numeric($config['pptpd']['n_pptp_units'])) {

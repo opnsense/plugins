@@ -121,7 +121,6 @@ class SettingsController extends ApiControllerBase
                 $cnf->save();
                 $result["result"] = "saved";
             }
-
         }
 
         return $result;
@@ -143,7 +142,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->frontends->frontend->add() ;
+            $node = $mdlCP->frontends->frontend->add();
             return array("frontend" => $node->getNodes());
         }
         return array();
@@ -252,7 +251,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->frontends->frontend);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "description","frontendid"),
+            array("enabled", "name", "description"),
             "name"
         );
     }
@@ -273,7 +272,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->backends->backend->add() ;
+            $node = $mdlCP->backends->backend->add();
             return array("backend" => $node->getNodes());
         }
         return array();
@@ -382,7 +381,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->backends->backend);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "description", "backendid"),
+            array("enabled", "name", "description"),
             "name"
         );
     }
@@ -403,7 +402,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->servers->server->add() ;
+            $node = $mdlCP->servers->server->add();
             return array("server" => $node->getNodes());
         }
         return array();
@@ -480,7 +479,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->servers->server);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "address", "port", "description", "serverid"),
+            array("name", "address", "port", "description"),
             "name"
         );
     }
@@ -501,7 +500,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->healthchecks->healthcheck->add() ;
+            $node = $mdlCP->healthchecks->healthcheck->add();
             return array("healthcheck" => $node->getNodes());
         }
         return array();
@@ -578,7 +577,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->healthchecks->healthcheck);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "healthcheckid"),
+            array("name", "description"),
             "name"
         );
     }
@@ -599,7 +598,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->acls->acl->add() ;
+            $node = $mdlCP->acls->acl->add();
             return array("acl" => $node->getNodes());
         }
         return array();
@@ -676,7 +675,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->acls->acl);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "aclid"),
+            array("name", "description"),
             "name"
         );
     }
@@ -697,7 +696,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->actions->action->add() ;
+            $node = $mdlCP->actions->action->add();
             return array("action" => $node->getNodes());
         }
         return array();
@@ -774,7 +773,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->actions->action);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "actionid"),
+            array("name", "description"),
             "name"
         );
     }
@@ -795,7 +794,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->luas->lua->add() ;
+            $node = $mdlCP->luas->lua->add();
             return array("lua" => $node->getNodes());
         }
         return array();
@@ -904,7 +903,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->luas->lua);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "name", "description", "luaid"),
+            array("enabled", "name", "description"),
             "name"
         );
     }
@@ -925,7 +924,7 @@ class SettingsController extends ApiControllerBase
             }
         } else {
             // generate new node, but don't save to disc
-            $node = $mdlCP->errorfiles->errorfile->add() ;
+            $node = $mdlCP->errorfiles->errorfile->add();
             return array("errorfile" => $node->getNodes());
         }
         return array();
@@ -1002,7 +1001,7 @@ class SettingsController extends ApiControllerBase
         $grid = new UIModelGrid($mdlCP->errorfiles->errorfile);
         return $grid->fetchBindRequest(
             $this->request,
-            array("name", "description", "errorfileid"),
+            array("name", "description"),
             "name"
         );
     }

@@ -1,0 +1,61 @@
+<form>
+    <field>
+        <id>certificate.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this certificate</help>
+    </field>
+    <field>
+        <id>certificate.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this certificate.</help>
+    </field>
+    <field>
+        <id>certificate.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this certificate.</help>
+    </field>
+    <field>
+        <id>certificate.altNames</id>
+        <label>Alt Names</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Configure additional names that should be part pf the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>You need to forcefully re-issue the certificate if you change "Alt Names" after the certificate was signed by the Let's Encrypt Authority! Use the "issue" button in the Commands column in this case.</div>]]></help>
+        <hint>Enter FQDN here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>certificate.account</id>
+        <label>LE Account</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the Let's Encrypt account to use for this certificate.]]></help>
+    </field>
+    <field>
+        <id>certificate.validationMethod</id>
+        <label>Validation Method</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the Let's Encrypt validation method for this certificate.]]></help>
+    </field>
+    <field>
+        <id>certificate.restartActions</id>
+        <label>Restart Actions</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Choose the actions that should be run after certificate renewal. Basically every application requires a quick restart to reload the updated certificate. If you don't configure a restart action, the in-memory certificate may expire and cause security warnings and other issues.</help>
+    </field>
+    <field>
+        <id>certificate.autoRenewal</id>
+        <label>Auto Renewal</label>
+        <type>checkbox</type>
+        <help>Enable automatic renewal for this certificate to prevent expiration.</help>
+    </field>
+    <field>
+        <id>certificate.renewInterval</id>
+        <label>Renewal Interval</label>
+        <type>text</type>
+        <help><![CDATA[Specifies the days to renew the cert. The max value is 60 days.]]></help>
+    </field>
+</form>
