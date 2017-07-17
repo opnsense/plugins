@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz
@@ -28,15 +29,15 @@
  *
  */
 
-namespace OPNsense\collectd\Api;
+namespace OPNsense\Collectd\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
-use \OPNsense\collectd\General;
+use \OPNsense\Collectd\General;
 
 /**
  * Class ServiceController
- * @package OPNsense\collectd
+ * @package OPNsense\Collectd
  */
 class ServiceController extends ApiControllerBase
 {
@@ -145,4 +146,3 @@ class ServiceController extends ApiControllerBase
         }
     }
 }
-

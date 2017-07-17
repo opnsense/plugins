@@ -1,7 +1,4 @@
 <?php
-namespace OPNsense\collectd;
-
-use OPNsense\Base\BaseModel;
 
 /*
     Copyright (C) 2017 Michael Muenz
@@ -29,6 +26,14 @@ use OPNsense\Base\BaseModel;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-class General extends BaseModel
+namespace OPNsense\Collectd;
+
+class GeneralController extends \OPNsense\Base\IndexController
 {
+    public function indexAction()
+    {
+        $this->view->title = gettext("Collectd settings");
+        $this->view->generalForm = $this->getForm("general");
+        $this->view->pick('OPNsense/Collectd/general');
+    }
 }

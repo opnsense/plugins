@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz
@@ -28,10 +29,10 @@
  *
  */
 
-namespace OPNsense\collectd\Api;
+namespace OPNsense\Collectd\Api;
 
 use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\collectd\General;
+use \OPNsense\Collectd\General;
 use \OPNsense\Core\Config;
 
 class GeneralController extends ApiControllerBase
@@ -46,7 +47,7 @@ class GeneralController extends ApiControllerBase
         }
         return $result;
     }
-    
+
     public function setAction()
     {
         $result = array("result"=>"failed");

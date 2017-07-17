@@ -1,4 +1,5 @@
 <?php
+
 /*
     Copyright (C) 2017 Michael Muenz
     All rights reserved.
@@ -25,14 +26,10 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\collectd;
+namespace OPNsense\Collectd;
 
-class GeneralController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class General extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->title = gettext("collectd settings");
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/collectd/general');
-    }
 }
