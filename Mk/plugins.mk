@@ -238,6 +238,8 @@ sweep: check
 	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+	find ${.CURDIR} -type f -depth 1 -print0 | \
+	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
 style: check
 	@: > ${.CURDIR}/.style.out
