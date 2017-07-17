@@ -1,5 +1,5 @@
 PLUGIN_NAME=		collectd
-PLUGIN_VERSION=		0.1
+PLUGIN_VERSION=		0.2
 PLUGIN_COMMENT=		Collect system and application performance metrics periodically
 PLUGIN_DEPENDS=		collectd5
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
