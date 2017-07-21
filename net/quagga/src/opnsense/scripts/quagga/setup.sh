@@ -16,6 +16,6 @@ chown -R $user:$group /usr/local/etc/quagga
 chown -R $user:$group /var/run/quagga
 
 # logfile (if used)
-touch /var/log/zebra.log
-chown $user:$group /var/log/zebra.log
+touch /var/log/quagga.log
+chown $user:$group /var/log/quagga.log
 
