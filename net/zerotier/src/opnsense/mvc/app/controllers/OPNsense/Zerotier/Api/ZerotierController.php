@@ -166,6 +166,19 @@ class ZerotierController extends ApiMutableModelControllerBase
         return $result;
     }
 
+    public function reconfigureZerotierAction()
+    {
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+            $backend = new Backend();
+            $backend->configdRun("template reload OPNsense/zerotier");
+            $result = trim($backend->configdRun("zerotier restart"));
+            return array("status" => $result);
+        } else {
+            return array("status" => "failed");
+        }
+    }
+
     private function toggleZerotierNetwork($networkId, $enabled)
     {
         $backend = new Backend();

@@ -42,10 +42,24 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#reconfigureZerotier").click(function() {
+            $("#reconfigureZerotierProgress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/zerotier/zerotier/reconfigureZerotier", sendData={}, callback=function(data, status) {
+                $("#reconfigureZerotierProgress").removeClass("fa fa-spinner fa-pulse");
+                if (status != "success" || data['status'] != 'OK') {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_WARNING,
+                        title: "{{ lang._('Error reconfiguring Zerotier') }}",
+                        message: data['status'],
+                        draggable: true
+                    });
+                }
+            });
+        });
+
     });
 
 </script>
-
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
@@ -74,6 +88,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
+    </div>
+    <div class="col-md-12">
+        <hr/>
+        <button class="btn btn-primary" id="reconfigureZerotier" type="button"><b>{{ lang._('Save') }}</b> <i id="reconfigureZerotierProgress" class=""></i></button>
+        <br/><br/>
     </div>
 </div>
 
