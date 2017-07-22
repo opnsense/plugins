@@ -14,3 +14,8 @@ chmod 750 /usr/local/etc/quagga
 # ensure that quagga can read the configuration files
 chown -R $user:$group /usr/local/etc/quagga
 chown -R $user:$group /var/run/quagga
+
+# logfile (if used)
+touch /var/log/quagga.log
+chown $user:$group /var/log/quagga.log
+
