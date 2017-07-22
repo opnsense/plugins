@@ -34,10 +34,7 @@ require_once("interfaces.inc");
 require_once("services.inc");
 require_once('plugins.inc.d/igmpproxy.inc');
 
-$a_igmpproxy = array();
-if (isset($config['igmpproxy']['igmpentry'])) {
-    $a_igmpproxy = &$config['igmpproxy']['igmpentry'];
-}
+$a_igmpproxy = &config_read_array('igmpproxy', 'igmpentry');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['act']) && $_POST['act'] == "del") {

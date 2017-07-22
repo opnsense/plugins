@@ -32,10 +32,7 @@ require_once("services.inc");
 require_once("system.inc");
 require_once("plugins.inc.d/if_l2tp.inc");
 
-if (!isset($config['l2tp']['user'])) {
-    $config['l2tp']['user'] = array();
-}
-$a_secret = &$config['l2tp']['user'];
+$a_secret = &config_read_array('l2tp', 'user');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // delete entry

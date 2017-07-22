@@ -32,10 +32,7 @@ require_once('services.inc');
 require_once("system.inc");
 require_once('plugins.inc.d/if_pptp.inc');
 
-if (!is_array($config['pptpd']['user'])) {
-    $config['pptpd']['user'] = array();
-}
-$a_secret = &$config['pptpd']['user'];
+$a_secret = &config_read_array('pptpd', 'user');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // delete entry

@@ -32,13 +32,7 @@ require_once("services.inc");
 require_once("plugins.inc.d/relayd.inc");
 require_once("interfaces.inc");
 
-if (empty($config['load_balancer']) || !is_array($config['load_balancer'])) {
-    $config['load_balancer'] = array();
-}
-if (empty($config['load_balancer']['virtual_server']) || !is_array($config['load_balancer']['virtual_server'])) {
-    $config['load_balancer']['virtual_server'] = array();
-}
-$a_vs = &$config['load_balancer']['virtual_server'];
+$a_vs = &config_read_array('load_balancer', 'virtual_server');
 
 
 $copy_fields=array('name', 'descr', 'poolname', 'port', 'sitedown', 'ipaddr', 'mode', 'relay_protocol', 'sessiontimeout');

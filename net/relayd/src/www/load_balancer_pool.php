@@ -33,10 +33,7 @@ require_once("services.inc");
 require_once("plugins.inc.d/relayd.inc");
 require_once("interfaces.inc");
 
-if (empty($config['load_balancer']['lbpool']) || !is_array($config['load_balancer']['lbpool'])) {
-    $config['load_balancer']['lbpool'] = array();
-}
-$a_pool = &$config['load_balancer']['lbpool'];
+$a_pool = &config_read_array('load_balancer', 'lbpool');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['act']) && $_POST['act'] == "del") {

@@ -30,11 +30,7 @@
 require_once("guiconfig.inc");
 require_once("interfaces.inc");
 
-if (empty($config['wol']['wolentry']) || !is_array($config['wol']['wolentry'])) {
-    $config['wol'] = array();
-    $config['wol']['wolentry'] = array();
-}
-$a_wol = &$config['wol']['wolentry'];
+$a_wol = &config_read_array('wol', 'wolentry');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

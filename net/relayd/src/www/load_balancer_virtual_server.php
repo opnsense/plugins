@@ -33,10 +33,7 @@ require_once("plugins.inc.d/relayd.inc");
 require_once("services.inc");
 require_once("interfaces.inc");
 
-if (empty($config['load_balancer']['virtual_server']) || !is_array($config['load_balancer']['virtual_server'])) {
-    $config['load_balancer']['virtual_server'] = array();
-}
-$a_vs = &$config['load_balancer']['virtual_server'];
+$a_vs = &config_read_array('load_balancer', 'virtual_server');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['act']) && $_POST['act'] == "del") {

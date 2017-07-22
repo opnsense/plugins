@@ -35,11 +35,7 @@ function wolcmp($a, $b) {
 }
 
 
-if (empty($config['wol']['wolentry']) || !is_array($config['wol']['wolentry'])) {
-    $config['wol'] = array();
-    $config['wol']['wolentry'] = array();
-}
-$a_wol = &$config['wol']['wolentry'];
+$a_wol = &config_read_array('wol', 'wolentry');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_wol[$_GET['id']])) {
