@@ -130,6 +130,11 @@ class ZerotierController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlZerotier = $this->getModel();
             if ($uuid != null) {
+                $node = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
+                if ($node->enabled->__toString() == "1") {
+                    # Ensure we remove the interface before deleting the network
+                    $this->toggleZerotierNetwork($node->networkId, 0);
+                }
                 if ($mdlZerotier->networks->network->del($uuid)) {
                     $mdlZerotier->serializeToConfig();
                     Config::getInstance()->save();
