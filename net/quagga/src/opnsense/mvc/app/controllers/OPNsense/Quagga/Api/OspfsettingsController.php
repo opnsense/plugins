@@ -99,6 +99,16 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             array("enabled", "interfacename", "networktype", "authtype", "area")
         );
     }
+    public function searchPrefixlistAction()
+    {
+        $this->sessionClose();
+        $mdlOSPF = $this->getModel();
+        $grid = new UIModelGrid($mdlOSPF->prefixlists->prefixlist);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "seqnumber", "action", "network" )
+        );
+    }
     public function getNetworkAction($uuid = null)
     {
         $mdlOSPF = $this->getModel();
@@ -129,7 +139,21 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         }
         return array();
     }
-
+    public function getPrefixlistAction($uuid = null)
+    {
+        $mdlOSPF = $this->getModel();
+        if ($uuid != null) {
+            $node = $mdlOSPF->getNodeByReference('prefixlists.prefixlist.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("prefixlist" => $node->getNodes());
+            }
+        } else {
+            $node = $mdlOSPF->prefixlists->prefixlist->add();
+            return array("prefixlist" => $node->getNodes());
+        }
+        return array();
+    }
     public function addNetworkAction()
     {
         $result = array("result" => "failed");
@@ -180,6 +204,29 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+    public function addPrefixlistAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlOSPF = $this->getModel();
+            $node = $mdlOSPF->prefixlists->prefixlist->Add();
+            $node->setNodes($this->request->getPost("prefixlist"));
+            $valMsgs = $mdlOSPF->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (count($result['validations']) == 0) {
+                // save config if validated correctly
+                $mdlOSPF->serializeToConfig();
+                Config::getInstance()->save();
+                unset($result['validations']);
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
     public function delNetworkAction($uuid)
     {
 
@@ -208,6 +255,23 @@ class OspfsettingsController extends ApiMutableModelControllerBase
             $mdlOSPF = $this->getModel();
             if ($uuid != null) {
                 if ($mdlOSPF->interfaces->interface->del($uuid)) {
+                    $mdlOSPF->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+    public function delPrefixlistAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlOSPF = $this->getModel();
+            if ($uuid != null) {
+                if ($mdlOSPF->prefixlists->prefixlist->del($uuid)) {
                     $mdlOSPF->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -276,6 +340,33 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
+    public function setPrefixlistAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
+            $mdlNeighbor = $this->getModel();
+            if ($uuid != null) {
+                $node = $mdlNeighbor->getNodeByReference('prefixlists.prefixlist.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $prefixlistInfo = $this->request->getPost("prefixlist");
+                    $node->setNodes($prefixlistInfo);
+                    $valMsgs = $mdlNeighbor->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
+                    if (count($result['validations']) == 0) {
+                        // save config if validated correctly
+                        $mdlNeighbor->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result = array("result" => "saved");
+                    }
+                    return $result;
+                }
+            }
+        }
+        return array("result" => "failed");
+    }
     public function toggle_handler($uuid, $elements, $element)
     {
 
@@ -310,4 +401,9 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->toggle_handler($uuid, 'interfaces', 'interface');
     }
+    public function togglePrefixlistAction($uuid)
+    {
+        return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
+    }
+
 }

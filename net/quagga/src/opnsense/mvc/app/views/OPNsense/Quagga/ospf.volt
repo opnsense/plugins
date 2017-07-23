@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
         <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
         <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
+        <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
     </ul>
     <div class="tab-content content-box tab-content">
         <div id="general" class="tab-pane fade in active">
@@ -98,7 +99,32 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-
+    <div id="prefixlists" class="tab-pane fade in">
+        <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditPrefixLists">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Secquence Number') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
+                    <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     </div>
 
 <script type="text/javascript">
@@ -142,10 +168,20 @@ $( document ).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-
+  $("#grid-prefixlists").UIBootgrid(
+    { 'search':'/api/quagga/ospfsettings/searchPrefixlist',
+      'get':'/api/quagga/ospfsettings/getPrefixlist/',
+      'set':'/api/quagga/ospfsettings/setPrefixlist/',
+      'add':'/api/quagga/ospfsettings/addPrefixlist/',
+      'del':'/api/quagga/ospfsettings/delPrefixlist/',
+      'toggle':'/api/quagga/ospfsettings/togglePrefixlist/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
 
     });
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':lang._('Edit Interface')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':'DialogEditPrefixLists','label':lang._('Edit Prefix Lists')])}}
