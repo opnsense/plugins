@@ -21,4 +21,3 @@ $("#logtable").bootgrid({
     sortable: false
 });
 </script>
-

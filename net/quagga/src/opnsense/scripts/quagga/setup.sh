@@ -18,4 +18,3 @@ chown -R $user:$group /var/run/quagga
 # logfile (if used)
 touch /var/log/quagga.log
 chown $user:$group /var/log/quagga.log
-
