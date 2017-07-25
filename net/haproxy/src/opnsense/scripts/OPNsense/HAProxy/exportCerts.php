@@ -51,6 +51,9 @@ foreach ($configNodes as $key => $value) {
     // lookup all config nodes
     if (isset($configObj->OPNsense->HAProxy->$key)) {
         foreach ($configObj->OPNsense->HAProxy->$key->children() as $child) {
+            // generate a crt-list for every child node
+            $crtlist = array();
+            $crtlist_filename = "/var/etc/haproxy/ssl/" . (string)$child->id . ".crtlist";
             // search in all matching child elements for ssl data
             foreach ($configNodes[$key] as $sslchild) {
                 if (isset($child->$sslchild)) {
@@ -85,10 +88,30 @@ foreach ($configNodes as $key => $value) {
                                         file_put_contents($output_pem_filename, $pem_content);
                                         chmod($output_pem_filename, 0600);
                                         echo "exported $type to " . $output_pem_filename . "\n";
+                                        // add pem file to crt-list
+                                        $crtlist[] = $output_pem_filename;
                                     }
                                 }
                             }
                         }
+                    }
+                    // generate crt-list file
+                    // (this makes only sense for frontends)
+                    if ( $key == 'frontends' ) {
+                        // ignore if crt-list is empty
+                        if (empty($crtlist)) { continue; }
+                        // check if a default certificate is configured
+                        if (isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
+                            $default_cert = (string)$child->ssl_default_certificate;
+                            $default_cert_filename = "/var/etc/haproxy/ssl/" . $default_cert . ".pem";
+                            // ensure default certificate is the first entry on the list
+                            unset($crtlist[$default_cert]);
+                            array_unshift($crtlist, $default_cert_filename);
+                        }
+                        $crtlist_content = implode("\n", $crtlist) . "\n";
+                        file_put_contents($crtlist_filename, $crtlist_content);
+                        chmod($crtlist_filename, 0600);
+                        echo "exported crt-list to " . $crtlist_filename . "\n";
                     }
                 }
             }
