@@ -133,7 +133,7 @@ class ServiceController extends ApiControllerBase
             $this->stopAction();
 
             // generate template
-            $backend->configdRun('template reload OPNsense/collectd');
+            $backend->configdRun('template reload OPNsense/Collectd');
 
             // (res)start daemon
             if ($mdlGeneral->enabled->__toString() == 1) {
