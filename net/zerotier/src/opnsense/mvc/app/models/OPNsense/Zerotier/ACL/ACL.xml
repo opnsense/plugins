@@ -1,0 +1,9 @@
+<acl>
+    <page-vpn-zerotier>
+        <name>VPN: Zerotier</name>
+        <patterns>
+            <pattern>ui/zerotier/*</pattern>
+            <pattern>api/zerotier/*</pattern>
+        </patterns>
+    </page-vpn-zerotier>
+</acl>
