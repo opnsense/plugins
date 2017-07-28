@@ -35,11 +35,7 @@ require_once("services.inc");
 require_once("interfaces.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
-if (!isset($config['dnsupdates']['dnsupdate'])) {
-    $config['dnsupdates']['dnsupdate'] = array();
-}
-
-$a_rfc2136 = &$config['dnsupdates']['dnsupdate'];
+$a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
 
 if (!empty($_REQUEST['getrfc2136status'])) {
     $first_entry = true;

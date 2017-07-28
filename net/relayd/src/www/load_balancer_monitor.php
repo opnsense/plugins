@@ -33,10 +33,7 @@ require_once("services.inc");
 require_once("plugins.inc.d/relayd.inc");
 require_once("interfaces.inc");
 
-if (empty($config['load_balancer']['monitor_type']) || !is_array($config['load_balancer']['monitor_type'])) {
-    $config['load_balancer']['monitor_type'] = array();
-}
-$a_monitor = &$config['load_balancer']['monitor_type'];
+$a_monitor = &config_read_array('load_balancer', 'monitor_type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['act']) && $_POST['act'] == "del") {

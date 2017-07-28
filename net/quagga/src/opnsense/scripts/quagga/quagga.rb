@@ -119,7 +119,7 @@ class General
       if line.length > 10
         code, network, ad, metric, via, direct, interface, time = line.scan(entry_regex).first
         code = code.split('').map {|c| {short: c, long: meanings[c]}}
-        entries << {code: code, network: (network || direct), ad: ad, metric: metric, interface: interface, time: time }
+        entries << {code: code, network: (network || direct), ad: ad, via: via, metric: metric, interface: interface, time: time }
       end
     end
     entries
@@ -127,6 +127,15 @@ class General
 
   def routes6
     routes(true)
+  end
+
+  def log
+    File.read('/var/log/quagga.log').lines.select {|l| l.strip.length > 10}.map do |line|
+      date, time, service, message = line.split(' ', 4)
+      date = date.split('/').reverse.join(".") # format dd.mm.yyyy
+      service = service.split(':').first if service
+      {date: date, time:time, service: service, message: message }
+    end
   end
 end
 
@@ -433,7 +442,7 @@ class OSPFv3
     @vtysh = sh
   end
 
-    def overview
+  def overview
     lines = @vtysh.execute("show ipv6 ospf6").lines
     overview = {}
     while line = lines.shift&.strip
@@ -647,7 +656,7 @@ end
 
 require 'optparse'
 options = {}
-supported_sections = %w{general ospf}
+
 OptionParser.new do |opts|
   opts.banner = "Usage: #{__FILE__} -s section [section specific params]"
   #### OSPFv2
@@ -688,6 +697,9 @@ OptionParser.new do |opts|
   end
   opts.on("-6", "--general-routes6", "Print Routing Table (IPv6)") do |od|
     options[:general_routes6] = od
+  end
+  opts.on("-l", "--general-log", "Print Logs") do |od|
+    options[:general_log] = od
   end
   ### BGP
   opts.on("-B", "--bgp-overview", "Print an overview of BGP") do |od|

@@ -32,16 +32,8 @@ require_once("filter.inc");
 require_once("services.inc");
 require_once("plugins.inc.d/relayd.inc");
 
-if (empty($config['load_balancer']['lbpool']) || !is_array($config['load_balancer']['lbpool'])) {
-    $a_pool = array();
-} else {
-    $a_pool = &$config['load_balancer']['lbpool'];
-}
-if (empty($config['load_balancer']['virtual_server']) || !is_array($config['load_balancer']['virtual_server'])) {
-    $a_vs = array();
-} else {
-    $a_vs = &$config['load_balancer']['virtual_server'];
-}
+$a_pool = &config_read_array('load_balancer', 'lbpool');
+$a_vs = &config_read_array('load_balancer', 'virtual_server');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['apply'])) {

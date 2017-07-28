@@ -34,11 +34,7 @@ require_once("services.inc");
 require_once("interfaces.inc");
 require_once("plugins.inc.d/dyndns.inc");
 
-if (!isset($config['dyndnses']['dyndns'])) {
-    $config['dyndnses']['dyndns'] = array();
-}
-
-$a_dyndns = &$config['dyndnses']['dyndns'];
+$a_dyndns = &config_read_array('dyndnses', 'dyndns');
 
 if (!empty($_REQUEST['getdyndnsstatus'])) {
     $first_entry = true;
