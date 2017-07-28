@@ -1,1 +1,11 @@
+{% set networks = [] %}
+{% for network in helpers.toList('OPNsense.zerotier.networks.network') %}
+{%   if network.enabled == '1' %}
+{%     do networks.append(network) %}
+{%   endif %}
+{% endfor %}
+{% if networks|length > 0 %}
 zerotier_enable="YES"
+{% else %}
+zerotier_enable="NO"
+{% endif %}

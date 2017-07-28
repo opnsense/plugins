@@ -42,9 +42,16 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data,status) {
+            updateServiceStatusUI(data['status']);
+        });
+
         $("#reconfigureZerotier").click(function() {
             $("#reconfigureZerotierProgress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/zerotier/zerotier/reconfigureZerotier", sendData={}, callback=function(data, status) {
+                ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data,status) {
+                    updateServiceStatusUI(data['status']);
+                });
                 $("#reconfigureZerotierProgress").removeClass("fa fa-spinner fa-pulse");
                 if (status != "success" || data['status'] != 'OK') {
                     BootstrapDialog.show({
@@ -56,7 +63,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
         });
-
     });
 
 </script>
@@ -91,7 +97,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
     <div class="col-md-12">
         <hr/>
-        <button class="btn btn-primary" id="reconfigureZerotier" type="button"><b>{{ lang._('Save') }}</b> <i id="reconfigureZerotierProgress" class=""></i></button>
+        <button class="btn btn-primary" id="reconfigureZerotier" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureZerotierProgress" class=""></i></button>
         <br/><br/>
     </div>
 </div>
