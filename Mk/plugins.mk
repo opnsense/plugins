@@ -199,7 +199,11 @@ PKGDIR?=${WRKDIR}/pkg
 package: check
 	@rm -rf ${WRKSRC}
 	@mkdir -p ${WRKSRC} ${PKGDIR}
+.if !empty(PLUGIN_DEPENDS)
+	@${PKG} install -yA ${PLUGIN_DEPENDS}
+.endif
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} metadata
+	@${PKG} autoremove -y
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} install
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
