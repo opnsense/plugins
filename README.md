@@ -43,6 +43,7 @@ net/quagga -- Quagga Routing Suite
 net/relayd -- Relayd Load Balancer
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
+net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/snmp -- SNMP Server via bsnmpd
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
