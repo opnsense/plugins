@@ -369,7 +369,7 @@ class OSPF
         current_area[:lsa] ||= {}
         current_area[:lsa][$1] = {count: $2.to_i, checksum: $3}
       when /Number of fully adjacent neighbors in this area: (\d+)/
-        current_area[:fully_adjacent_neighbour_count] = $1.to_i
+        current_area[:fully_adjacent_neighbor_count] = $1.to_i
       when /SPF algorithm executed (\d) times/
         current_area[:spf_exec_count] = $1.to_i
       when "Area has no authentication"
