@@ -15,7 +15,7 @@
         <id>general.fqdnlookup</id>
         <label>FQDN lookup</label>
         <type>checkbox</type>
-        <help>This will enable the FQDNLookup option.</help>
+        <help>If Hostname is determined automatically this setting controls whether or not the daemon should try to figure out the "fully qualified domain name", FQDN. This is done using a lookup of the name returned by gethostname.</help>
     </field>
     <field>
         <id>general.interval</id>
