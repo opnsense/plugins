@@ -152,8 +152,8 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^.{1,255}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <mask>/^[^\s^\t^,^;^\\^\/^(^)^\[^\]]{1,255}$/u</mask>
+                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com (max 255 characters).</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
@@ -163,9 +163,9 @@
                 <altNames type="CSVListField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
-                    <mask>/^.{1,16384}$/u</mask>
+                    <mask>/^[^\s^\t^;^\\^\/^(^)^\[^\]]{1,65536}$/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com. Field length is limited to 16384 characters.</ValidationMessage>
+                    <ValidationMessage>Please provide one or more valid FQDNs, i.e. www.example.com or mail.example.com. Field length is limited to 65536 characters.</ValidationMessage>
                 </altNames>
                 <account type="ModelRelationField">
                     <Model>
