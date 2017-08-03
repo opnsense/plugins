@@ -120,6 +120,25 @@ POSSIBILITY OF SUCH DAMAGE.
         };
 
         /**
+         * standard dialog when confirmation is required, wrapper around BootstrapDialog
+         */
+        function stdDialogConfirmation(message, callback) {
+            BootstrapDialog.confirm({
+                title: 'Confirmation Required',
+                message: message,
+                type:BootstrapDialog.TYPE_DANGER,
+                btnCancelLabel: 'Cancel',
+                btnOKLabel: 'Yes',
+                btnOKClass: 'btn-primary',
+                callback: function(result) {
+                    if(result) {
+                        callback();
+                    }
+                }
+            });
+        }
+
+        /**
          * reload bootgrid, return to current selected page
          */
         function std_bootgrid_reload(gridId) {
@@ -315,7 +334,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['sign'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogRemoveItem('Forcefully (re-)issue the selected certificate?',function() {
+                    stdDialogConfirmation('Forcefully (re-)issue the selected certificate?',function() {
                         // Handle HAProxy integration (no-op if not applicable)
                         ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
                             ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){
@@ -335,7 +354,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['revoke'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogRemoveItem('Revoke selected certificate?',function() {
+                    stdDialogConfirmation('Revoke selected certificate?',function() {
                         ajaxCall(url=gridParams['revoke'] + uuid,
                             sendData={},callback=function(data,status){
                                 // reload grid after sign
