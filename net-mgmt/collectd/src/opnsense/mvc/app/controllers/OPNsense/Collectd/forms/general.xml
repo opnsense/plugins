@@ -33,7 +33,7 @@
         <id>general.p_network_host</id>
         <label>Network collector host</label>
         <type>text</type>
-        <help>Set the IP address of the network collector.</help>
+        <help>Set the IP address or FQDN of the network collector.</help>
     </field>
     <field>
         <id>general.p_network_port</id>
