@@ -7,9 +7,9 @@
     </field>
     <field>
         <id>certificate.name</id>
-        <label>Name</label>
+        <label>Common Name</label>
         <type>text</type>
-        <help>Name to identify this certificate.</help>
+        <help>Common Name (CN) for this certificate.</help>
     </field>
     <field>
         <id>certificate.description</id>
