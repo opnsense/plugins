@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
     <hr />
     <div class="col-md-12">
-        <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+        <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
     </div>
 </div>
 
@@ -48,8 +48,10 @@ POSSIBILITY OF SUCH DAMAGE.
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/collectd/general/set", formid='frm_general_settings',callback_ok=function(){
+                    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/collectd/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/collectd/service/status", sendData={}, callback=function(data,status) {
+                                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                                     updateServiceStatusUI(data['status']);
                             });
                     });
