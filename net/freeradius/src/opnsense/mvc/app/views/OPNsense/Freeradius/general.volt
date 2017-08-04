@@ -26,33 +26,36 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
+
 <div class="content-box" style="padding-bottom: 1.5em;">
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
     <hr />
     <div class="col-md-12">
-        <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress" class=""></i></button>
     </div>
 </div>
 
 <script type="text/javascript">
-    $( document ).ready(function() {
+    $( document ).ready(function () {
         var data_get_map = {'frm_general_settings':"/api/freeradius/general/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
+        mapDataToFormUI(data_get_map).done(function (data) {
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
-        ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function(data,status) {
+        ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data, status) {
             updateServiceStatusUI(data['status']);
         });
 
         // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/freeradius/general/set", formid='frm_general_settings',callback_ok=function(){
-                    ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                            });
+        $("#saveAct").click(function () {
+            saveFormToEndpoint(url="/api/freeradius/general/set", formid='frm_general_settings',callback_ok=function () {
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function (data,status) {
+                    ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data,status) {
+                        updateServiceStatusUI(data['status']);
                     });
+                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
     });
