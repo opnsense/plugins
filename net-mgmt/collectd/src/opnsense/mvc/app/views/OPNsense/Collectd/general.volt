@@ -51,9 +51,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/collectd/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/collectd/service/status", sendData={}, callback=function(data,status) {
-                                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                                     updateServiceStatusUI(data['status']);
                             });
+                            $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
         });
