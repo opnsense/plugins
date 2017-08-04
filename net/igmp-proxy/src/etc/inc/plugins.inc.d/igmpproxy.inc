@@ -33,7 +33,7 @@ function igmpproxy_enabled()
 {
     global $config;
 
-    return isset($config['igmpproxy']['igmpentry']);
+    return !empty($config['igmpproxy']['igmpentry']);
 }
 
 function igmpproxy_services()
