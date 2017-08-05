@@ -1,15 +1,15 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable</label>
+        <label>Enable service</label>
         <type>checkbox</type>
         <help>This will activate the ClamAV services clamd and freshclam.</help>
     </field>
     <field>
-        <id>general.hostname</id>
-        <label>Hostname</label>
-        <type>text</type>
-        <help>Set the hostname for this system.</help>
+        <id>general.enabletcp</id>
+        <label>Enable TCP port</label>
+        <type>checkbox</type>
+        <help>This will enable TCP port 3310 in addition to the local socket.</help>
     </field>
     <field>
         <id>general.fqdnlookup</id>
