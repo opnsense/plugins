@@ -12,40 +12,38 @@
         <help>This will enable TCP port 3310 in addition to the local socket.</help>
     </field>
     <field>
-        <id>general.fqdnlookup</id>
-        <label>FQDN lookup</label>
+        <id>general.maxthreads</id>
+        <label>Maximum number of threads running</label>
+        <type>text</type>
+        <help>Maximum number of threads running at the same time.</help>
+    </field>
+    <field>
+        <id>general.maxqueue</id>
+        <label>Maximum number of queued items</label>
+        <type>text</type>
+        <help>Maximum number of queued items (including those being processed by MaxThreads threads). It is recommended to have this value at least twice MaxThreads if possible.</help>
+    </field>
+    <field>
+        <id>general.idletimeout</id>
+        <label>Idle timeout</label>
+        <type>text</type>
+        <help>Waiting for a new job will timeout after this time in seconds.</help>
+    </field>
+    <field>
+        <id>general.maxdirrecursion</id>
+        <label>Max directory recursion</label>
+        <type>text</type>
+        <help>Maximum depth directories are scanned at.</help>
+    </field>
+    <field>
+        <id>general.followdirsym</id>
+        <label>Follow directory symlinks</label>
+        <type>check</type>
+    </field>
+    <field>
+        <id>general.followfilesym</id>
+        <label>Follow regular file symlinks</label>
         <type>checkbox</type>
-        <help>This will enable the FQDNLookup option.</help>
-    </field>
-    <field>
-        <id>general.interval</id>
-        <label>Interval</label>
-        <type>text</type>
-        <help>Global interval when to fetch values in seconds.</help>
-    </field>
-    <field>
-        <id>general.p_network_enable</id>
-        <label>Enable network plugin</label>
-        <type>checkbox</type>
-        <help>The Network plugin can send values to other instances</help>
-    </field>
-    <field>
-        <id>general.p_network_host</id>
-        <label>Network collector host</label>
-        <type>text</type>
-        <help>Set the IP address of the network collector.</help>
-    </field>
-    <field>
-        <id>general.p_network_port</id>
-        <label>Network collector port</label>
-        <type>text</type>
-        <help>Set the port of the network collector. Collectd is using 25826 per default.</help>
-    </field>
-    <field>
-        <id>general.p_network_username</id>
-        <label>Network collector username</label>
-        <type>text</type>
-        <help>Set the username to authenticate against network collector (optional).</help>
     </field>
     <field>
         <id>general.p_network_password</id>
