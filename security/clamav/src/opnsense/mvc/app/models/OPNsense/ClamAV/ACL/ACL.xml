@@ -1,9 +1,9 @@
 <acl>
-   <page-services-collectd>
-      <name>Services: Collectd</name>
+   <page-services-clamav>
+      <name>Services: ClamAV</name>
       <patterns>
-         <pattern>ui/collectd/*</pattern>
-         <pattern>api/collectd/*</pattern>
+         <pattern>ui/clamav/*</pattern>
+         <pattern>api/clamav/*</pattern>
       </patterns>
-   </page-services-collectd>
+   </page-services-clamav>
 </acl>

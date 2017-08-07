@@ -30,6 +30,6 @@ namespace OPNsense\ClamAV;
 
 use OPNsense\Base\BaseModel;
 
-class General extends BaseModel
+class Freshclam extends BaseModel
 {
 }

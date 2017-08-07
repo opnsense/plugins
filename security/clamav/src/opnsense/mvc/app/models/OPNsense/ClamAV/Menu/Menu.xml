@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <Collectd cssClass="fa fa-area-chart" url="/ui/collectd/general/index" />
+    <ClamAV cssClass="fa fa-ambulance" url="/ui/clamav/general/index" />
   </Services>
 </menu>
