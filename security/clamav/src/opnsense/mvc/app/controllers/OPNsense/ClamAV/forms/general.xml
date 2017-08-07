@@ -89,7 +89,7 @@
     </field>
     <field>
         <id>general.scanswf</id>
-        <labelScan SWF</label>
+        <label>Scan SWF</label>
         <type>checkbox</type>
         <help>This option enables scanning within SWF files.</help>
     </field>
