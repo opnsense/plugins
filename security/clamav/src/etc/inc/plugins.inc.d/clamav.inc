@@ -36,9 +36,9 @@ function clamav_services()
         $services[] = array(
             'description' => gettext('clamd daemon'),
             'configd' => array(
-                'restart' => array('clam restart'),
-                'start' => array('clam start'),
-                'stop' => array('clam stop'),
+                'restart' => array('clamav restart'),
+                'start' => array('clamav start'),
+                'stop' => array('clamav stop'),
             ),
             'name' => 'clamd',
             'pidfile' => '/var/run/clamav/clamd.pid'
@@ -49,9 +49,9 @@ function clamav_services()
         $services[] = array(
             'description' => gettext('freshclam daemon'),
             'configd' => array(
-                'restart' => array('freshclam restart'),
-                'start' => array('freshclam start'),
-                'stop' => array('freshclam stop'),
+                'restart' => array('clamav restart'),
+                'start' => array('clamav start'),
+                'stop' => array('clamav stop'),
             ),
             'name' => 'freshclam',
             'pidfile' => '/var/run/clamav/freshclam.pid'
