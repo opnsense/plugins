@@ -34,16 +34,29 @@ function clamav_services()
 
     if (isset($config['OPNsense']['clamav']['general']['enabled']) && $config['OPNsense']['clamav']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('clamav daemon'),
+            'description' => gettext('clamd daemon'),
             'configd' => array(
-                'restart' => array('clamav restart'),
-                'start' => array('clamav start'),
-                'stop' => array('clamav stop'),
+                'restart' => array('clam restart'),
+                'start' => array('clam start'),
+                'stop' => array('clam stop'),
             ),
-            'name' => 'clamav',
+            'name' => 'clamd',
             'pidfile' => '/var/run/clamav/clamd.pid'
         );
     }
 
+    if (isset($config['OPNsense']['clamav']['freshclam']['enabled']) && $config['OPNsense']['clamav']['freshclam']['enabled'] == 1) {
+        $services[] = array(
+            'description' => gettext('freshclam daemon'),
+            'configd' => array(
+                'restart' => array('freshclam restart'),
+                'start' => array('freshclam start'),
+                'stop' => array('freshclam stop'),
+            ),
+            'name' => 'freshclam',
+            'pidfile' => '/var/run/clamav/freshclam.pid'
+        );
+    }
+    
     return $services;
 }
