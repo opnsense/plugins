@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2016 Franco Fichtner <franco@opnsense.org>
-    Copyright (C) 2005-2008 Bill Marquette
+    Copyright (C) 2005-2008 Bill Marquette <bill.marquette@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without

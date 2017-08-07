@@ -23,3 +23,8 @@ ${TARGET}:
 	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
 .  endfor
 .endfor
+
+license:
+	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
+
+.PHONY: license
