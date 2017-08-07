@@ -6,102 +6,105 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
-        <hostname type="TextField">
-            <default></default>
-            <Required>Y</Required>
-	    <mask>/^.{1,64}$/u</mask>
-        </hostname>
-        <fqdnlookup type="BooleanField">
+        <enabletcp type="BooleanField">
             <default>0</default>
-            <Required>N</Required>
-        </fqdnlookup>
-        <interval type="IntegerField">
+            <Required>Y</Required>
+        </enabletcp>
+        <maxthreads type="IntegerField">
             <default>10</default>
             <Required>N</Required>
-        </interval>
-        <p_network_enable type="BooleanField">
+        </maxthreads>
+        <maxqueue type="IntegerField">
+            <default>100</default>
+            <Required>N</Required>
+        </maxqueue>
+        <idletimeout type="IntegerField">
+            <default>30</default>
+            <Required>N</Required>
+        </idletimeout>
+        <maxdirrecursion type="IntegerField">
+            <default>20</default>
+            <Required>N</Required>
+        </maxdirrecursion>
+        <followdirsym type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </p_network_enable>
-        <p_network_host type="TextField">
-            <default></default>
-            <Required>N</Required>
-	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-        </p_network_host>
-        <p_network_port type="IntegerField">
-            <default></default>
-            <Required>N</Required>
-	    <MinimumValue>1</MinimumValue>
-	    <MaximumValue>65535</MaximumValue>
-        </p_network_port>
-        <p_network_username type="TextField">
-            <default></default>
-	    <Required>N</Required>
-	    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
-	</p_network_username>
-        <p_network_password type="TextField">
-            <default></default>
-	    <Required>N</Required>
-	    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
-	</p_network_password>
-        <p_network_encryption type="BooleanField">
+        </followdirsym>
+        <followfilesym type="BooleanField">
             <default>0</default>
-	    <Required>N</Required>
-	</p_network_encryption>
-        <p_graphite_enable type="BooleanField">
+			<Required>N</Required>
+		</followfilesym>
+        <disablecache type="TextField">
+            <default>0</default>
+			<Required>N</Required>
+		</disablecache>
+        <scanpe type="BooleanField">
+            <default>1</default>
+			<Required>N</Required>
+		</scanpe>
+        <scanelf type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanelf>
+        <detectbroken type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </p_graphite_enable>
-        <p_graphite_node type="TextField">
-            <default></default>
-            <Required>N</Required>
-        </p_graphite_node>
-        <p_graphite_host type="TextField">
-            <default></default>
-            <Required>N</Required>
-	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-        </p_graphite_host>
-        <p_graphite_port type="IntegerField">
-            <default></default>
-            <Required>N</Required>
-	    <MinimumValue>1</MinimumValue>
-	    <MaximumValue>65535</MaximumValue>
-        </p_graphite_port>
-        <p_contextswitch_enable type="BooleanField">
+        </detectbroken>
+        <scanole2 type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_contextswitch_enable>
-        <p_cpu_enable type="BooleanField">
+        </scanole2>
+        <ole2blockmarcros type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </ole2blockmarcros>
+        <scanpdf type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_cpu_enable>
-        <p_df_enable type="BooleanField">
+        </scanpdf>
+        <scanswf type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_df_enable>
-        <p_interface_enable type="BooleanField">
+        </scanswf>
+        <scanxmldocs type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_interface_enable>
-        <p_load_enable type="BooleanField">
+        </scanxmldocs>
+        <scanhwp3 type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_load_enable>
-        <p_memory_enable type="BooleanField">
+        </scanhwp3>
+        <scanmailfiles type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_memory_enable>
-        <p_processes_enable type="BooleanField">
+        </scanmailfiles>
+        <scanhtml type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_processes_enable>
-        <p_uptime_enable type="BooleanField">
+        </scanhtml>
+        <scanarchive type="BooleanField">
             <default>1</default>
             <Required>N</Required>
-        </p_uptime_enable>
-        <p_users_enable type="BooleanField">
-            <default>1</default>
+        </scanarchive>
+        <arcblockenc type="BooleanField">
+            <default>0</default>
             <Required>N</Required>
-        </p_users_enable>
-    </items>
+        </arcblockenc>
+        <maxscansize type="TextField">
+            <default>100M</default>
+            <Required>N</Required>
+        </maxscansize>
+		<maxfilesize type="TextField">
+            <default>25M</default>
+            <Required>N</Required>
+        </maxfilesize>
+		<maxrecursion type="IntegerField">
+            <default>16</default>
+            <Required>N</Required>
+        </maxrecursion>
+		<maxfiles type="IntegerField">
+            <default>10000</default>
+            <Required>N</Required>
+        </maxfiles>
+		</items>
 </model>
