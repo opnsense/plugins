@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2016 Deciso B.V. - Ad Schellevis
+    Copyright (c) 2016 Ad Schellevis
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without

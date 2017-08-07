@@ -4,7 +4,7 @@
  * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc
  * Copyright (C) 2008 Ermal Luçi
- * Copyright (C) 2004 Scott Ullrich
+ * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
  * All rights reserved.
  *

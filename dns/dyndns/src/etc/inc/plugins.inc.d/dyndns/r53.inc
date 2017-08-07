@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* Copyright (c) 2011, Dan Myers.
-* Parts copyright (c) 2008, Donovan Schonknecht.
+* Copyright (c) 2011 Dan Myers
+* Copyright (c) 2008 Donovan Schonknecht
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without

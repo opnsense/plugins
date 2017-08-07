@@ -1,0 +1,50 @@
+Copyright (c) 2016 <gitdevmod@github.com>
+Copyright (c) 2015-2016 Ad Schellevis
+Copyright (c) 2005-2008 Bill Marquette <bill.marquette@gmail.com>
+Copyright (c) 2005-2006 Colin Smith <ethethlay@gmail.com>
+Copyright (c) 2011 Dan Myers
+Copyright (c) 2017 David Harrigan
+Copyright (c) 2014-2017 Deciso B.V.
+Copyright (c) 2008 Donovan Schonknecht
+Copyright (c) 2016-2017 EURO-LOG AG
+Copyright (c) 2006 Eric Friesen
+Copyright (c) 2008-2010 Ermal Luçi
+Copyright (c) 2017 Fabian Franz
+Copyright (c) 2014-2017 Franco Fichtner <franco@opnsense.org>
+Copyright (c) 2016-2017 Frank Wall
+Copyright (c) 2010 Jim Pingle <jimp@pfsense.org>
+Copyright (c) 2004-2005 Jonathan Watt <jwatt@jwatt.org>
+Copyright (c) 2015 Jos Schellevis
+Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>
+Copyright (c) 2017 Michael Muenz
+Copyright (c) 2012 Pierre POMES <pierre.pomes@gmail.com>
+Copyright (c) 2004-2012 Scott Ullrich <sullrich@gmail.com>
+Copyright (c) 2010 Seth Mos <seth.mos@dds.nl>
+Copyright (c) 2008 Shrew Soft Inc.
+Copyright (c) 2013 Stanley P. Miller \ stan-qaz
+Copyright (c) 2004-2005 T. Lechat <dev@lechat.org>
+Copyright (c) 2010 Yehuda Katz
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
