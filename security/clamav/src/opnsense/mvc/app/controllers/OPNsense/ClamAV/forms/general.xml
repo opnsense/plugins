@@ -38,7 +38,7 @@
     <field>
         <id>general.followdirsym</id>
         <label>Follow directory symlinks</label>
-        <type>check</type>
+        <type>checkbox</type>
     </field>
     <field>
         <id>general.followfilesym</id>
