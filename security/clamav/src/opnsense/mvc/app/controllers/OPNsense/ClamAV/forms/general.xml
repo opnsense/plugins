@@ -109,30 +109,48 @@
         <id>general.scanmailfiles</id>
         <label>Scan mail files</label>
         <type>checkbox</type>
-        <help>Enable internal e-mail scanner. If you turn off this option, the original files will still be scanned, but without parsing individual messages/attachments.</help>
+        <help>Enable internal e-mail scanner with all defaults enabled. If you turn off this option, the original files will still be scanned, but without parsing individual messages/attachments.</help>
     </field>
     <field>
-        <id>general.p_memory_enable</id>
-        <label>Enable memory plugin</label>
+        <id>general.scanhtml</id>
+        <label>Scan HTML</label>
         <type>checkbox</type>
-        <help>The Memory plugin collects physical memory utilization (Used, buffered, cached and free).</help>
+        <help>Perform HTML normalisation and decryption of MS Script Encoder code.</help>
     </field>
     <field>
-        <id>general.p_processes_enable</id>
-        <label>Enable processes plugin</label>
+        <id>general.scanarchive</id>
+        <label>Scan archives</label>
         <type>checkbox</type>
-        <help>The Processes plugin collects the number of processes, grouped by their state (e. g. running, sleeping, zombies, etc.).</help>
+        <help>ClamAV will scan within archives and compressed files.</help>
     </field>
     <field>
-        <id>general.p_uptime_enable</id>
-        <label>Enable uptime plugin</label>
+        <id>general.arcblockenc</id>
+        <label>Block encrypted archive</label>
         <type>checkbox</type>
-        <help>The Uptime plugin keeps track of the system uptime, providing informations such as the average running time or the maximum reached uptime over a certain period of time.</help>
+        <help>Mark encrypted archives as viruses (Encrypted.Zip, Encrypted.RAR).</help>
     </field>
     <field>
-        <id>general.p_users_enable</id>
-        <label>Enable users plugin</label>
-        <type>checkbox</type>
-        <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
+        <id>general.maxscansize</id>
+        <label>Max scan size</label>
+        <type>text</type>
+        <help>This option sets the maximum amount of data to be scanned for each input file. Archives and other containers are recursively extracted and scanned up to this value.</help>
+    </field>
+     <field>
+        <id>general.maxfilesize</id>
+        <label>Max file size</label>
+        <type>text</type>
+        <help>Files larger than this limit won't be scanned.</help>
+    </field>
+     <field>
+        <id>general.maxrecursion</id>
+        <label>Max recursion</label>
+        <type>text</type>
+        <help>Nested archives are scanned recursively, e.g. if a Zip archive contains a RAR file, all files within it will also be scanned.</help>
+    </field>
+     <field>
+        <id>general.maxfiles</id>
+        <label>Max files</label>
+        <type>text</type>
+        <help>Number of files to be scanned within an archive, a document, or any other container file.</help>
     </field>
 </form>
