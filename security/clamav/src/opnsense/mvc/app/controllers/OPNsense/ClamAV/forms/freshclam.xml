@@ -18,7 +18,7 @@
         <help>Enable verbose logging.</help>
     </field>
     <field>
-        <id>freshclam.databasmirror</id>
+        <id>freshclam.databasemirror</id>
         <label>Database mirror</label>
         <type>text</type>
         <help>database.clamav.net is a round-robin record which points to the most reliable mirrors. DO NOT TOUCH the following line unless you know what you are doing.</help>
