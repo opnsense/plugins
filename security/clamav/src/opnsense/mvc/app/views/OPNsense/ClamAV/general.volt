@@ -54,6 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/clamav/general/set", formid='frm_general_settings',callback_ok=function(){
+					$("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
