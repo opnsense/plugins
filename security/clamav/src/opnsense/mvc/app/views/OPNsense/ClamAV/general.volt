@@ -63,15 +63,6 @@ POSSIBILITY OF SUCH DAMAGE.
             updateServiceStatusUI(data['status']);
         });
 
-    $( document ).ready(function() {
-        var data_get_map = {'frm_freshclam_settings':"/api/clamav/freshclam/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-        });
-        ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
-        });
 
         // link save button to API set action
         $("#saveAct").click(function(){
