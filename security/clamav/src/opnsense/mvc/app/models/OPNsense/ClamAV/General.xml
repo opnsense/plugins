@@ -107,6 +107,28 @@
             <default>10000</default>
             <Required>N</Required>
 	</maxfiles>
-      </general>	      
+      </general>
+      <freshclam>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <logtime type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </logtime>
+        <logverbose type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </logverbose>
+        <databasemirror type="TextField">
+            <default>database.clamav.net</default>
+            <Required>Y</Required>
+        </databasemirror>
+        <timeout type="TextField">
+            <default>60</default>
+            <Required>Y</Required>
+        </timeout>
+      </freshclam>
   </items>
 </model>
