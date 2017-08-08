@@ -26,7 +26,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-
+<?php if (!file_exists('/var/db/clamav/main.cvd')): ?>
+        <div class="alert alert-warning" role="alert" style="min-height: 65px;">
+                <button class='btn btn-primary pull-right' id="dl_sig" type="button">{{ lang._('Download signatures') }}<i id="dl_sig_progress"></i> </button>
+        <div style="margin-top: 8px;" id="dl_sig_err">{{ lang._('No signature db found, please download before starting.')}}</div>
+        </div>
+<?php endif ?>
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -63,5 +68,17 @@ POSSIBILITY OF SUCH DAMAGE.
                     });
             });
         });
+        $("#dl_sig").click(function(){
+            fetchVirusDB(url="/api/clamav/general/freshclam", callback_ok=function(){
+                                        $("#dl_sig_progress").addClass("fa fa-spinner fa-pulse");
+                    ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
+                            ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
+                                    updateServiceStatusUI(data['status']);
+                            });
+                                                        $("#dl_sig_progress").removeClass("fa fa-spinner fa-pulse");
+                    });
+            });
+        });
+
     });
 </script>
