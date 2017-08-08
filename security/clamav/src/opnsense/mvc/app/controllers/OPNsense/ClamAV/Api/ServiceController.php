@@ -49,7 +49,7 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("clamav freshclam", true);
+            $response = $backend->configdRun("clamav freshclam");
             return array("response" => $response);
         } else {
             return array("response" => array());
