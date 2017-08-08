@@ -42,6 +42,20 @@ use \OPNsense\ClamAV\General;
 class ServiceController extends ApiControllerBase
 {
     /**
+     * load the initial signatures
+     * @return array
+     */
+    public function freshclamAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun("clamav freshclam", true);
+            return array("response" => $response);
+        } else {
+            return array("response" => array());
+        }
+    }    
+    /**
      * start clamav service (in background)
      * @return array
      */
