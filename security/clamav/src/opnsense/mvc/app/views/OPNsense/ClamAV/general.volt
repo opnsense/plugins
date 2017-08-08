@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <?php if (!file_exists('/var/db/clamav/main.cvd')): ?>
         <div class="alert alert-warning" role="alert" style="min-height: 65px;">
                 <button class='btn btn-primary pull-right' id="dl_sig" type="button">{{ lang._('Download signatures') }}<i id="dl_sig_progress"></i> </button>
-        <div style="margin-top: 8px;" id="dl_sig_err">{{ lang._('No signature db found, please download before starting.')}}</div>
+        <div style="margin-top: 8px;" id="dl_sig_err">{{ lang._('No signature database found, please download before starting. Download will take several minutes, come back in a few moments until this message is gone.')}}</div>
         </div>
 <?php endif ?>
 <div class="tab-content content-box tab-content">
