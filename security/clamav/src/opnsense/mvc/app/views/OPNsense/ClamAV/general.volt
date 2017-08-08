@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
             <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
             </div>
         </div>
     </div>
@@ -58,6 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
                             });
+							$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
         });
