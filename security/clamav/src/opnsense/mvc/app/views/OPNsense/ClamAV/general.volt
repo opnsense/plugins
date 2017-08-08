@@ -69,7 +69,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
         $("#dl_sig").click(function(){
-            ajaxCall(url="/api/clamav/general/freshclam", callback_ok=function(){
+            ajaxCall(url="/api/clamav/service/freshclam", callback_ok=function(){
                                         $("#dl_sig_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
