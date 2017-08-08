@@ -1,7 +1,8 @@
 <model>
-    <mount>//OPNsense/clamav/general</mount>
+    <mount>//OPNsense/clamav</mount>
     <description>ClamAV configuration</description>
     <items>
+      <general>
         <enabled type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
@@ -105,6 +106,7 @@
 		<maxfiles type="IntegerField">
             <default>10000</default>
             <Required>N</Required>
-        </maxfiles>
-		</items>
+	</maxfiles>
+      </general>	      
+  </items>
 </model>
