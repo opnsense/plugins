@@ -1,9 +1,15 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable service</label>
+        <label>Enable clamd service</label>
         <type>checkbox</type>
-        <help>This will activate the ClamAV services clamd and freshclam.</help>
+        <help>This will activate the ClamAV service clamd.</help>
+    </field>
+    <field>
+        <id>general.fc_enabled</id>
+        <label>Enable freshclam service</label>
+        <type>checkbox</type>
+        <help>This will activate the ClamAV service freshclam.</help>
     </field>
     <field>
         <id>general.enabletcp</id>
@@ -152,5 +158,29 @@
         <label>Max files</label>
         <type>text</type>
         <help>Number of files to be scanned within an archive, a document, or any other container file.</help>
+    </field>
+    <field>
+        <id>general.fc_logtime</id>
+        <label>Freshclam log time</label>
+        <type>checkbox</type>
+        <help>Log time with each message.</help>
+    </field>
+    <field>
+        <id>general.fc_logverbose</id>
+        <label>Freshclam log verbose</label>
+        <type>checkbox</type>
+        <help>Enable verbose logging.</help>
+    </field>
+    <field>
+        <id>general.fc_databasemirror</id>
+        <label>Freshclam database mirror</label>
+        <type>text</type>
+        <help>database.clamav.net is a round-robin record which points to the most reliable mirrors. DO NOT TOUCH the following line unless you know what you are doing.</help>
+    </field>
+    <field>
+        <id>general.fc_timeout</id>
+        <label>Freshclam connect timeout</label>
+        <type>text</type>
+        <help>Timeout in seconds when connecting to database server.</help>
     </field>
 </form>

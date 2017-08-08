@@ -2,11 +2,14 @@
     <mount>//OPNsense/clamav/general</mount>
     <description>ClamAV configuration</description>
     <items>
-      <general>
         <enabled type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <fc_enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </fc_enabled>
         <enabletcp type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
@@ -106,29 +109,22 @@
 		<maxfiles type="IntegerField">
             <default>10000</default>
             <Required>N</Required>
-	</maxfiles>
-      </general>
-      <freshclam>
-        <enabled type="BooleanField">
-            <default>0</default>
-            <Required>Y</Required>
-        </enabled>
-        <logtime type="BooleanField">
+		</maxfiles>
+        <fc_logtime type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </logtime>
-        <logverbose type="BooleanField">
+        </fc_logtime>
+        <fc_logverbose type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </logverbose>
-        <databasemirror type="TextField">
+        </fc_logverbose>
+        <fc_databasemirror type="TextField">
             <default>database.clamav.net</default>
             <Required>Y</Required>
-        </databasemirror>
-        <timeout type="TextField">
+        </fc_databasemirror>
+        <fc_timeout type="TextField">
             <default>60</default>
             <Required>Y</Required>
-        </timeout>
-      </freshclam>
-  </items>
+        </fc_timeout>
+	</items>
 </model>
