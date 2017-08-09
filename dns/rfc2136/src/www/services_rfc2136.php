@@ -33,11 +33,7 @@ require_once("services.inc");
 require_once("system.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
-if (!isset($config['dnsupdates']['dnsupdate'])) {
-    $config['dnsupdates']['dnsupdate'] = array();
-}
-
-$a_rfc2136 = &$config['dnsupdates']['dnsupdate'];
+$a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['act']) && $_POST['act'] == "del" && isset($_POST['id'])) {
