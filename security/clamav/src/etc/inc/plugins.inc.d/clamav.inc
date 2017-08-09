@@ -34,7 +34,7 @@ function clamav_services()
 
     if (isset($config['OPNsense']['clamav']['general']['enabled']) && $config['OPNsense']['clamav']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('clamd daemon'),
+            'description' => gettext('ClamAV Daemon'),
             'configd' => array(
                 'restart' => array('clamav restart'),
                 'start' => array('clamav start'),
