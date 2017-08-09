@@ -1,0 +1,2 @@
+echo "Running migration"
+/usr/local/opnsense/mvc/script/run_migrations.php

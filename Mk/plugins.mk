@@ -128,6 +128,9 @@ scripts-auto:
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
+	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
+		cat ${TEMPLATESDIR}/models >> ${DESTDIR}/+POST_INSTALL; \
+	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
 		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
 		    find -s . -mindepth 2 -type d); do \
