@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <ClamAV cssClass="fa fa-ambulance" url="/ui/clamav/general/index" />
+    <ClamAV cssClass="fa fa-stethoscope" url="/ui/clamav/general/index" />
   </Services>
 </menu>
