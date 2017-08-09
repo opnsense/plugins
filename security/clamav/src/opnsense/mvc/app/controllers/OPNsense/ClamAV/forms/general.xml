@@ -3,13 +3,13 @@
         <id>general.enabled</id>
         <label>Enable clamd service</label>
         <type>checkbox</type>
-        <help>This will activate the ClamAV service clamd.</help>
+        <help>This will activate the clamd service.</help>
     </field>
     <field>
         <id>general.fc_enabled</id>
         <label>Enable freshclam service</label>
         <type>checkbox</type>
-        <help>This will activate the ClamAV service freshclam.</help>
+        <help>This will activate the freshclam service.</help>
     </field>
     <field>
         <id>general.enabletcp</id>
@@ -89,7 +89,7 @@
     </field>
     <field>
         <id>general.scanpdf</id>
-        <label>Scan PDF</label>
+        <label>Scan PDF files</label>
         <type>checkbox</type>
         <help>This option enables scanning within PDF files.</help>
     </field>
@@ -113,9 +113,9 @@
     </field>
     <field>
         <id>general.scanmailfiles</id>
-        <label>Scan mail files</label>
+        <label>Decode mail files</label>
         <type>checkbox</type>
-        <help>Enable internal e-mail scanner with all defaults enabled. If you turn off this option, the original files will still be scanned, but without parsing individual messages/attachments.</help>
+        <help>If you turn off this option, the original files will still be scanned, but without parsing individual messages/attachments.</help>
     </field>
     <field>
         <id>general.scanhtml</id>
