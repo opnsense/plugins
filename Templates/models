@@ -1,2 +1,2 @@
-echo "Running migration"
-/usr/local/opnsense/mvc/script/run_migrations.php
+echo "Migrating %%ARG%%"
+/usr/local/opnsense/mvc/script/run_migrations.php %%ARG%%

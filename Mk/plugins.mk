@@ -129,14 +129,18 @@ scripts-auto:
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
-		cat ${TEMPLATESDIR}/models >> ${DESTDIR}/+POST_INSTALL; \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
+		    find -s . -mindepth 2 -type d); do \
+			cat ${TEMPLATESDIR}/models | \
+			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
+			    ${DESTDIR}/+POST_INSTALL; \
+		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
 		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
 		    find -s . -mindepth 2 -type d); do \
-			echo "echo -n \"Reloading template $${FILE#./}: \"" >> \
-			    ${DESTDIR}/+POST_INSTALL; \
-			echo "/usr/local/sbin/configctl template reload $${FILE#./}" >> \
+			cat ${TEMPLATESDIR}/templates | \
+			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
 	fi
