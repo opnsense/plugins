@@ -43,7 +43,6 @@ class ServiceController extends ApiControllerBase
 {
     /**
      * load the initial signatures
-     * @param string $command test or go fetch
      * @return array
      */
     public function freshclamAction()
