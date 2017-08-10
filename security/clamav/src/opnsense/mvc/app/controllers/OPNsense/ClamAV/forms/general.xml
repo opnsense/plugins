@@ -1,0 +1,180 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable clamd service</label>
+        <type>checkbox</type>
+        <help>This will activate the clamd service.</help>
+    </field>
+    <field>
+        <id>general.fc_enabled</id>
+        <label>Enable freshclam service</label>
+        <type>checkbox</type>
+        <help>This will activate the freshclam service.</help>
+    </field>
+    <field>
+        <id>general.enabletcp</id>
+        <label>Enable TCP port</label>
+        <type>checkbox</type>
+        <help>This will enable TCP port 3310 in addition to the local socket.</help>
+    </field>
+    <field>
+        <id>general.maxthreads</id>
+        <label>Maximum number of threads running</label>
+        <type>text</type>
+        <help>Maximum number of threads running at the same time.</help>
+    </field>
+    <field>
+        <id>general.maxqueue</id>
+        <label>Maximum number of queued items</label>
+        <type>text</type>
+        <help>Maximum number of queued items (including those being processed by MaxThreads threads). It is recommended to have this value at least twice MaxThreads if possible.</help>
+    </field>
+    <field>
+        <id>general.idletimeout</id>
+        <label>Idle timeout</label>
+        <type>text</type>
+        <help>Waiting for a new job will timeout after this time in seconds.</help>
+    </field>
+    <field>
+        <id>general.maxdirrecursion</id>
+        <label>Max directory recursion</label>
+        <type>text</type>
+        <help>Maximum depth directories are scanned at.</help>
+    </field>
+    <field>
+        <id>general.followdirsym</id>
+        <label>Follow directory symlinks</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.followfilesym</id>
+        <label>Follow regular file symlinks</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.disablecache</id>
+        <label>Disable cache</label>
+        <type>checkbox</type>
+        <help>This option allows you to disable the caching feature of the engine.</help>
+    </field>
+    <field>
+        <id>general.scanpe</id>
+        <label>Scan portable executeable</label>
+        <type>checkbox</type>
+        <help>PE stands for Portable Executable - it's an executable file format used in all 32 and 64-bit versions of Windows operating systems.</help>
+    </field>
+    <field>
+        <id>general.scanelf</id>
+        <label>Scan executeable and linking format</label>
+        <type>checkbox</type>
+        <help>Executable and Linking Format is a standard format for UN*X executables.</help>
+    </field>
+    <field>
+        <id>general.detectbroken</id>
+        <label>Detect broken executables</label>
+        <type>checkbox</type>
+        <help>With this option clamav will try to detect broken executables (both PE and ELF) and mark them as Broken.</help>
+    </field>
+    <field>
+        <id>general.scanole2</id>
+        <label>Scan OLE2</label>
+        <type>checkbox</type>
+        <help>This option enables scanning of OLE2 files, such as Microsoft Office documents and .msi files.</help>
+    </field>
+    <field>
+        <id>general.ole2blockmarcros</id>
+        <label>OLE2 block macros</label>
+        <type>checkbox</type>
+        <help>With this option enabled OLE2 files with VBA macros, which were not detected by signatures will be marked as "Heuristics.OLE2.ContainsMacros".</help>
+    </field>
+    <field>
+        <id>general.scanpdf</id>
+        <label>Scan PDF files</label>
+        <type>checkbox</type>
+        <help>This option enables scanning within PDF files.</help>
+    </field>
+    <field>
+        <id>general.scanswf</id>
+        <label>Scan SWF</label>
+        <type>checkbox</type>
+        <help>This option enables scanning within SWF files.</help>
+    </field>
+    <field>
+        <id>general.scanxmldocs</id>
+        <label>Scan XMLDOCS</label>
+        <type>checkbox</type>
+        <help>This option enables scanning xml-based document files supported by libclamav.</help>
+    </field>
+    <field>
+        <id>general.scanhwp3</id>
+        <label>Scan HWP3</label>
+        <type>checkbox</type>
+        <help>This option enables scanning of HWP3 files.</help>
+    </field>
+    <field>
+        <id>general.scanmailfiles</id>
+        <label>Decode mail files</label>
+        <type>checkbox</type>
+        <help>If you turn off this option, the original files will still be scanned, but without parsing individual messages/attachments.</help>
+    </field>
+    <field>
+        <id>general.scanhtml</id>
+        <label>Scan HTML</label>
+        <type>checkbox</type>
+        <help>Perform HTML normalisation and decryption of MS Script Encoder code.</help>
+    </field>
+    <field>
+        <id>general.scanarchive</id>
+        <label>Scan archives</label>
+        <type>checkbox</type>
+        <help>ClamAV will scan within archives and compressed files.</help>
+    </field>
+    <field>
+        <id>general.arcblockenc</id>
+        <label>Block encrypted archive</label>
+        <type>checkbox</type>
+        <help>Mark encrypted archives as viruses (Encrypted.Zip, Encrypted.RAR).</help>
+    </field>
+    <field>
+        <id>general.maxscansize</id>
+        <label>Max scan size</label>
+        <type>text</type>
+        <help>This option sets the maximum amount of data to be scanned for each input file. Archives and other containers are recursively extracted and scanned up to this value.</help>
+    </field>
+     <field>
+        <id>general.maxfilesize</id>
+        <label>Max file size</label>
+        <type>text</type>
+        <help>Files larger than this limit won't be scanned.</help>
+    </field>
+     <field>
+        <id>general.maxrecursion</id>
+        <label>Max recursion</label>
+        <type>text</type>
+        <help>Nested archives are scanned recursively, e.g. if a Zip archive contains a RAR file, all files within it will also be scanned.</help>
+    </field>
+     <field>
+        <id>general.maxfiles</id>
+        <label>Max files</label>
+        <type>text</type>
+        <help>Number of files to be scanned within an archive, a document, or any other container file.</help>
+    </field>
+    <field>
+        <id>general.fc_logverbose</id>
+        <label>Freshclam log verbose</label>
+        <type>checkbox</type>
+        <help>Enable verbose logging.</help>
+    </field>
+    <field>
+        <id>general.fc_databasemirror</id>
+        <label>Freshclam database mirror</label>
+        <type>text</type>
+        <help>database.clamav.net is a round-robin record which points to the most reliable mirrors. DO NOT TOUCH the following line unless you know what you are doing.</help>
+    </field>
+    <field>
+        <id>general.fc_timeout</id>
+        <label>Freshclam connect timeout</label>
+        <type>text</type>
+        <help>Timeout in seconds when connecting to database server.</help>
+    </field>
+</form>

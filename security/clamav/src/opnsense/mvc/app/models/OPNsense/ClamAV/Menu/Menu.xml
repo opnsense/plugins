@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <ClamAV cssClass="fa fa-stethoscope" url="/ui/clamav/general/index" />
+  </Services>
+</menu>

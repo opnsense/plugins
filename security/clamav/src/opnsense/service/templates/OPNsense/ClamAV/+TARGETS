@@ -1,0 +1,4 @@
+clamav_clamd:/etc/rc.conf.d/clamav_clamd
+clamav_freshclam:/etc/rc.conf.d/clamav_freshclam
+clamd.conf:/usr/local/etc/clamd.conf
+freshclam.conf:/usr/local/etc/freshclam.conf

@@ -1,0 +1,9 @@
+<acl>
+   <page-services-clamav>
+      <name>Services: ClamAV</name>
+      <patterns>
+         <pattern>ui/clamav/*</pattern>
+         <pattern>api/clamav/*</pattern>
+      </patterns>
+   </page-services-clamav>
+</acl>
