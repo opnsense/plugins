@@ -54,7 +54,7 @@ class ServiceController extends ApiControllerBase
         } else {
             return array("response" => array());
         }
-    }    
+    }
     /**
      * start clamav service (in background)
      * @return array

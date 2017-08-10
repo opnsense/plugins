@@ -1,8 +1,8 @@
-ClamAV® is an open source (GPL) anti-virus engine used in a 
-variety of situations including email scanning, web scanning, 
-and end point security. It provides a number of utilities 
-including a flexible and scalable multi-threaded daemon, 
-a command line scanner and an advanced tool for automatic 
+ClamAV(r) is an open source (GPL) anti-virus engine used in a
+variety of situations including email scanning, web scanning,
+and end point security. It provides a number of utilities
+including a flexible and scalable multi-threaded daemon,
+a command line scanner and an advanced tool for automatic
 database updates.
 
 WWW: https://www.clamav.net/

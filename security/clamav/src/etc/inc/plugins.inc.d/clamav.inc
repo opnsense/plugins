@@ -57,6 +57,6 @@ function clamav_services()
             'pidfile' => '/var/run/clamav/freshclam.pid'
         );
     }
-    
+
     return $services;
 }
