@@ -43,16 +43,21 @@ class ServiceController extends ApiControllerBase
 {
     /**
      * load the initial signatures
+     * @param string $command test or go fetch
      * @return array
      */
     public function freshclamAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("clamav freshclam");
-            return array("response" => $response);
+            $command = 'clamav freshclam';
+            if ($this->request->hasPost('action')) {
+                $command .= ' go';
+            }
+            $response = trim($backend->configdRun($command));
+            return array('status' => $response);
         } else {
-            return array("response" => array());
+            return array('status' => 'error');
         }
     }
     /**

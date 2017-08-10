@@ -26,12 +26,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<?php if (!file_exists('/var/db/clamav/main.cvd')): ?>
-        <div class="alert alert-warning" role="alert" style="min-height: 65px;">
-                <button class='btn btn-primary pull-right' id="dl_sig" type="button">{{ lang._('Download signatures') }}<i id="dl_sig_progress"></i> </button>
-        <div style="margin-top: 8px;" id="dl_sig_err">{{ lang._('No signature database found, please download before starting. Download will take several minutes, come back in a few moments until this message is gone. If you have memory file system enabled where /var is mounted into RAM you have to download this file with every reboot.')}}</div>
-        </div>
-<?php endif ?>
+
+<div class="alert alert-warning" role="alert" id="dl_sig_alert" style="display:none;min-height:65px;">
+    <button class="btn btn-primary pull-right" id="dl_sig" type="button">{{ lang._('Download signatures') }} <i id="dl_sig_progress"></i></button>
+    <div style="margin-top: 8px;">{{ lang._('No signature database found, please download before use. The download will take several minutes and this message will disappear when it has been completed. If you have memory file system enabled where /var is mounted into RAM you have to download this file with every reboot.')}}</div>
+</div>
+
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -45,40 +45,58 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <script type="text/javascript">
-    $( document ).ready(function() {
-        var data_get_map = {'frm_general_settings':"/api/clamav/general/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-        });
-        ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
-        });
-
-
-        // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/clamav/general/set", formid='frm_general_settings',callback_ok=function(){
-					$("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                    ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                            });
-							$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                    });
-            });
-        });
-        $("#dl_sig").click(function(){
-            ajaxCall(url="/api/clamav/service/freshclam", callback_ok=function(){
-                                        $("#dl_sig_progress").addClass("fa fa-spinner fa-pulse");
-                    ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                            });
-                                                        $("#dl_sig_progress").removeClass("fa fa-spinner fa-pulse");
-                    });
-            });
-        });
-
+function timeoutCheck() {
+    ajaxCall(url="/api/clamav/service/freshclam", sendData={}, callback=function(data,status) {
+        if (data['status'] == 'done') {
+            $("#dl_sig_progress").removeClass("fa fa-spinner fa-pulse");
+            $("#dl_sig").prop("disabled", false);
+            $('#dl_sig_alert').hide();
+        } else {
+            setTimeout(timeoutCheck, 2500);
+        }
     });
+}
+
+$( document ).ready(function() {
+    var data_get_map = {'frm_general_settings':"/api/clamav/general/get"};
+    mapDataToFormUI(data_get_map).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
+
+    ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
+        updateServiceStatusUI(data['status']);
+    });
+
+    ajaxCall(url="/api/clamav/service/freshclam", sendData={}, callback=function(data,status) {
+        if (data['status'] != 'done') {
+            if (data['status'] == 'running') {
+                $("#dl_sig_progress").addClass("fa fa-spinner fa-pulse");
+                $("#dl_sig").prop("disabled", true);
+                setTimeout(timeoutCheck, 2500);
+            }
+            $('#dl_sig_alert').show();
+        }
+    });
+
+    $("#saveAct").click(function(){
+        saveFormToEndpoint(url="/api/clamav/general/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
+                    updateServiceStatusUI(data['status']);
+                });
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#dl_sig").click(function(){
+        $("#dl_sig_progress").addClass("fa fa-spinner fa-pulse");
+        $("#dl_sig").prop("disabled", true);
+        ajaxCall(url="/api/clamav/service/freshclam", sendData={action:1}, callback_ok=function(){
+            setTimeout(timeoutCheck, 2500);
+        });
+    });
+});
 </script>
