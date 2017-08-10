@@ -194,6 +194,30 @@
         <help></help>
     </field>
     <field>
+      <label>DigitalOcean</label>
+      <type>header</type>
+      <style>table_dns table_dns_dgon</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_dgon_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+      <label>DNSimple</label>
+      <type>header</type>
+      <style>table_dns table_dns_dnsimple</style>
+      <help></help>
+    </field>
+    <field>
+        <id>validation.dns_dnsimple_token</id>
+        <label>OAuth Token</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
       <label>Domain-Offensive</label>
       <type>header</type>
       <style>table_dns table_dns_do</style>
@@ -225,6 +249,58 @@
     <field>
         <id>validation.dns_dp_key</id>
         <label>Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>DuckDNS.org</label>
+        <type>header</type>
+        <style>table_dns table_dns_duckdns</style>
+    </field>
+    <field>
+        <id>validation.dns_duckdns_token</id>
+        <label>API Token</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>Dyn Managed DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_dyn</style>
+    </field>
+    <field>
+        <id>validation.dns_dyn_customer</id>
+        <label>Customer</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_dyn_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_dyn_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+
+    <field>
+        <label>Dynu</label>
+        <type>header</type>
+        <style>table_dns table_dns_dynu</style>
+    </field>
+    <field>
+        <id>validation.dns_dynu_clientid</id>
+        <label>Client ID</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_dynu_secret</id>
+        <label>Secret</label>
         <type>text</type>
         <help></help>
     </field>
@@ -274,6 +350,40 @@
         <label>Secret</label>
         <type>text</type>
         <help></help>
+    </field>
+    <field>
+        <label>Hurricane Electric</label>
+        <type>header</type>
+        <style>table_dns table_dns_he</style>
+    </field>
+    <field>
+        <id>validation.dns_he_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_he_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>Infoblox</label>
+        <type>header</type>
+        <style>table_dns table_dns_infoblox</style>
+    </field>
+    <field>
+        <id>validation.dns_infoblox_credentials</id>
+        <label>Credentials</label>
+        <type>text</type>
+        <help>Use the following format: username:password</help>
+    </field>
+    <field>
+        <id>validation.dns_infoblox_server</id>
+        <label>Server</label>
+        <type>text</type>
+        <help>Enter either the IP address or FQDN of your Infoblox appliance.</help>
     </field>
     <field>
         <label>IPSConfig</label>
@@ -374,6 +484,34 @@
         <help></help>
     </field>
     <field>
+        <label>Name.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_namecom</style>
+    </field>
+    <field>
+        <id>validation.dns_namecom_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>validation.dns_namecom_token</id>
+        <label>API Token</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>NS1.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_nsone</style>
+    </field>
+    <field>
+        <id>validation.dns_nsone_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
         <label>nsupdate</label>
         <type>header</type>
         <style>table_dns table_dns_nsupdate</style>
@@ -439,6 +577,28 @@
     <field>
         <id>validation.dns_pdns_token</id>
         <label>Token</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>Vscale</label>
+        <type>header</type>
+        <style>table_dns table_dns_vscale</style>
+    </field>
+    <field>
+        <id>validation.dns_vscale_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <label>Yandex</label>
+        <type>header</type>
+        <style>table_dns table_dns_yandex</style>
+    </field>
+    <field>
+        <id>validation.dns_yandex_token</id>
+        <label>API Token</label>
         <type>text</type>
         <help></help>
     </field>
