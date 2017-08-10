@@ -160,12 +160,6 @@
         <help>Number of files to be scanned within an archive, a document, or any other container file.</help>
     </field>
     <field>
-        <id>general.fc_logtime</id>
-        <label>Freshclam log time</label>
-        <type>checkbox</type>
-        <help>Log time with each message.</help>
-    </field>
-    <field>
         <id>general.fc_logverbose</id>
         <label>Freshclam log verbose</label>
         <type>checkbox</type>
