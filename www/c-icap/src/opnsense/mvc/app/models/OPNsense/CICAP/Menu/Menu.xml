@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <C-ICAP cssClass="fa fa-ambulande" url="/ui/cicap/general/index" />
+    <C-ICAP cssClass="fa fa-ambulance" url="/ui/cicap/general/index" />
   </Services>
 </menu>
