@@ -34,6 +34,7 @@ class GeneralController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("c-icap settings");
         $this->view->generalForm = $this->getForm("general");
+        $this->view->antivirusForm = $this->getForm("antivirus");
         $this->view->pick('OPNsense/CICAP/general');
     }
 }
