@@ -7,26 +7,26 @@
     </field>
     <field>
         <id>antivirus.sendpercentdata</id>
-        <label>Timeout</label>
+        <label>Send percentage data</label>
         <type>text</type>
         <help>The percentage of data that can be sent by the c-icap server before receiving the complete body of a request. This feature in conjuction with the folowing can be useful because if the download of the object takes a lot of time the connection of web client to proxy can be expired.</help>
     </field>
     <field>
         <id>antivirus.startsendpercentdataafter</id>
-        <label>Max keepalive requests</label>
+        <label>Start send pecerantage data</label>
         <type>text</type>
         <help>Only if the object is bigger than size then the percentage of data which defined by SendPercentData sent by the c-icap server before receiving the complete body of request.</help>
     </field>
     <field>
         <id>antivirus.allow204responses</id>
-        <label>Max keepalive timeout</label>
-        <type>text</type>
+        <label>Allow 204 responses</label>
+        <type>checkbox</type>
         <help>Disable 204 responses outside previews for virus_scan if your icap client does not support it.</help>
     </field>
     <field>
         <id>antivirus.passonerror</id>
         <label>Pass on error</label>
-        <type>text</type>
+        <type>checkbox</type>
         <help>Pass the content instead of blocking it, in the case when the virus scanner or the virus_scan module finds an error.</help>
     </field>
     <field>
