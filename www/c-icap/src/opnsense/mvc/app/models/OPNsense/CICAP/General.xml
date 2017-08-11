@@ -33,16 +33,16 @@
         </minsparethreads>
         <maxsparethreads type="IntegerField">
             <default>20</default>
-			<Required>Y</Required>
-		</maxsparethreads>
+	    <Required>Y</Required>
+	</maxsparethreads>
         <threadsperchild type="IntegerField">
             <default>10</default>
-			<Required>Y</Required>
-		</threadsperchild>
+	    <Required>Y</Required>
+	</threadsperchild>
         <maxrequestsperchild type="IntegerField">
             <default>0</default>
-			<Required>Y</Required>
-		</maxrequestsperchild>
+	    <Required>Y</Required>
+	</maxrequestsperchild>
         <listenaddress type="TextField">
             <default>127.0.0.1</default>
             <Required>Y</Required>
