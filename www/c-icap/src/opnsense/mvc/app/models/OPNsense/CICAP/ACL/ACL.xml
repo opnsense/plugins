@@ -1,0 +1,9 @@
+<acl>
+   <page-services-cicap>
+      <name>Services: C-ICAP</name>
+      <patterns>
+         <pattern>ui/cicap/*</pattern>
+         <pattern>api/cicap/*</pattern>
+      </patterns>
+   </page-services-cicap>
+</acl>

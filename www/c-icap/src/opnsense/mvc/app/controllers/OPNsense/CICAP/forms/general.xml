@@ -1,0 +1,80 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable c-icap service</label>
+        <type>checkbox</type>
+        <help>This will activate the c-icap service.</help>
+    </field>
+    <field>
+        <id>general.timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>The time in seconds after which a connection without activity can be cancelled.</help>
+    </field>
+    <field>
+        <id>general.maxkeepaliverequests</id>
+        <label>Max keepalive requests</label>
+        <type>text</type>
+        <help>The maximum number of requests can be served by one connection</help>
+    </field>
+    <field>
+        <id>general.keepalivetimeout</id>
+        <label>Max keepalive timeout</label>
+        <type>text</type>
+        <help>The maximum time in seconds waiting for a new requests before a connection will be closed.</help>
+    </field>
+    <field>
+        <id>general.startservers</id>
+        <label>Start servers</label>
+        <type>text</type>
+        <help>The initial number of server processes. Each server process generates a number of threads, which serve the requests.</help>
+    </field>
+    <field>
+        <id>general.maxservers</id>
+        <label>Max servers</label>
+        <type>text</type>
+        <help>The maximum allowed number of server processes.</help>
+    </field>
+    <field>
+        <id>general.minsparethreads</id>
+        <label>Min spare threads</label>
+        <type>text</type>
+		<help>If the number of the available threads is less than number, the c-icap server starts a new child.</help>
+    </field>
+    <field>
+        <id>general.maxsparethreads</id>
+        <label>Max spare threads</label>
+        <type>test</type>
+		<help>If the number of the available threads is more than number then the c-icap server kills a child.</help>
+    </field>
+    <field>
+        <id>general.threadsperchild</id>
+        <label>Threads per child</label>
+        <type>text</type>
+        <help>The number of threads per child process.</help>
+    </field>
+    <field>
+        <id>general.maxrequestsperchild</id>
+        <label>Max requests per child</label>
+        <type>text</type>
+        <help>The maximum number of requests that a child process can serve. After this number has been reached, process dies.</help>
+    </field>
+    <field>
+        <id>general.listenaddress</id>
+        <label>Listen address</label>
+        <type>text</type>
+        <help>Network address that the c-icap server uses to listen to requests.</help>
+    </field>
+    <field>
+        <id>general.serveradmin</id>
+        <label>Server admin</label>
+        <type>text</type>
+        <help>The Administrator of this server. Used when displaying information about this server.</help>
+    </field>
+    <field>
+        <id>general.servername</id>
+        <label>Servername</label>
+        <type>text</type>
+        <help>A name for this server. Used when displaying information about this server (logs, info service, etc).</help>
+    </field>
+</form>
