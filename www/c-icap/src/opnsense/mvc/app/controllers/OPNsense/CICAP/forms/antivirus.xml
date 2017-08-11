@@ -1,80 +1,38 @@
 <form>
     <field>
-        <id>general.enabled</id>
-        <label>Enable c-icap service</label>
+        <id>antivirus.enable_clamav</id>
+        <label>Enable ClamAV</label>
         <type>checkbox</type>
-        <help>This will activate the c-icap service.</help>
+        <help>This will activate ClamAV</help>
     </field>
     <field>
-        <id>general.timeout</id>
+        <id>antivirus.sendpercentdata</id>
         <label>Timeout</label>
         <type>text</type>
-        <help>The time in seconds after which a connection without activity can be cancelled.</help>
+        <help>The percentage of data that can be sent by the c-icap server before receiving the complete body of a request. This feature in conjuction with the folowing can be useful because if the download of the object takes a lot of time the connection of web client to proxy can be expired.</help>
     </field>
     <field>
-        <id>general.maxkeepaliverequests</id>
+        <id>antivirus.startsendpercentdataafter</id>
         <label>Max keepalive requests</label>
         <type>text</type>
-        <help>The maximum number of requests can be served by one connection</help>
+        <help>Only if the object is bigger than size then the percentage of data which defined by SendPercentData sent by the c-icap server before receiving the complete body of request.</help>
     </field>
     <field>
-        <id>general.keepalivetimeout</id>
+        <id>antivirus.allow204responses</id>
         <label>Max keepalive timeout</label>
         <type>text</type>
-        <help>The maximum time in seconds waiting for a new requests before a connection will be closed.</help>
+        <help>Disable 204 responses outside previews for virus_scan if your icap client does not support it.</help>
     </field>
     <field>
-        <id>general.startservers</id>
-        <label>Start servers</label>
+        <id>antivirus.passonerror</id>
+        <label>Pass on error</label>
         <type>text</type>
-        <help>The initial number of server processes. Each server process generates a number of threads, which serve the requests.</help>
+        <help>Pass the content instead of blocking it, in the case when the virus scanner or the virus_scan module finds an error.</help>
     </field>
     <field>
-        <id>general.maxservers</id>
-        <label>Max servers</label>
+        <id>antivirus.maxobjectsize</id>
+        <label>Max object size</label>
         <type>text</type>
-        <help>The maximum allowed number of server processes.</help>
-    </field>
-    <field>
-        <id>general.minsparethreads</id>
-        <label>Min spare threads</label>
-        <type>text</type>
-		<help>If the number of the available threads is less than number, the c-icap server starts a new child.</help>
-    </field>
-    <field>
-        <id>general.maxsparethreads</id>
-        <label>Max spare threads</label>
-        <type>test</type>
-		<help>If the number of the available threads is more than number then the c-icap server kills a child.</help>
-    </field>
-    <field>
-        <id>general.threadsperchild</id>
-        <label>Threads per child</label>
-        <type>text</type>
-        <help>The number of threads per child process.</help>
-    </field>
-    <field>
-        <id>general.maxrequestsperchild</id>
-        <label>Max requests per child</label>
-        <type>text</type>
-        <help>The maximum number of requests that a child process can serve. After this number has been reached, process dies.</help>
-    </field>
-    <field>
-        <id>general.listenaddress</id>
-        <label>Listen address</label>
-        <type>text</type>
-        <help>Network address that the c-icap server uses to listen to requests.</help>
-    </field>
-    <field>
-        <id>general.serveradmin</id>
-        <label>Server admin</label>
-        <type>text</type>
-        <help>The Administrator of this server. Used when displaying information about this server.</help>
-    </field>
-    <field>
-        <id>general.servername</id>
-        <label>Servername</label>
-        <type>text</type>
-        <help>A name for this server. Used when displaying information about this server (logs, info service, etc).</help>
+        <help>The maximum size of files which will be scanned by antivirus service.You can use K and M indicators to define size in kilobytes or megabytes.</help>
     </field>
 </form>
