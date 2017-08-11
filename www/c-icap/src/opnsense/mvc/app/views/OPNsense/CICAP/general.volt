@@ -42,10 +42,10 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
     <div id="antivirus" class="tab-pane fade in">
         <div class="content-box" style="padding-bottom: 1.5em;">
-            {{ partial("layout_partials/base_form",['fields':antivirusForm,'id':'frm_general_settings'])}}
+            {{ partial("layout_partials/base_form",['fields':antivirusForm,'id':'frm_antivirus_settings'])}}
             <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
+                <button class="btn btn-primary"  id="saveAct2" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct2_progress" class=""></i></button>
             </div>
         </div>
     </div>
@@ -58,10 +58,14 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
+        var data_get_map2 = {'frm_antivirus_settings':"/api/cicap/antivirus/get"};
+        mapDataToFormUI(data_get_map2).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
         ajaxCall(url="/api/cicap/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
         });
-
 
         // link save button to API set action
         $("#saveAct").click(function(){
@@ -72,6 +76,17 @@ POSSIBILITY OF SUCH DAMAGE.
                                     updateServiceStatusUI(data['status']);
                             });
 							$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                    });
+            });
+        });
+        $("#saveAct2").click(function(){
+            saveFormToEndpoint(url="/api/cicap/antivirus/set", formid='frm_antivirus_settings',callback_ok=function(){
+					$("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
+                    ajaxCall(url="/api/cicap/service/reconfigure", sendData={}, callback=function(data,status) {
+                            ajaxCall(url="/api/cicap/service/status", sendData={}, callback=function(data,status) {
+                                    updateServiceStatusUI(data['status']);
+                            });
+							$("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
         });
