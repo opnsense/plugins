@@ -46,7 +46,7 @@
         <listenaddress type="NetworkField">
             <default>::1</default>
 	    <WildcardEnabled>N</WildcardEnabled>
-	    <NetMaskRequired>Y</NetMaskRequired>
+	    <NetMaskRequired>N</NetMaskRequired>
 	    <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
         </listenaddress>
