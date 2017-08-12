@@ -43,8 +43,11 @@
             <default>0</default>
 	    <Required>Y</Required>
 	</maxrequestsperchild>
-        <listenaddress type="TextField">
-            <default>127.0.0.1</default>
+        <listenaddress type="NetworkField">
+            <default>::1</default>
+	    <WildcardEnabled>N</WildcardEnabled>
+	    <NetMaskRequired>Y</NetMaskRequired>
+	    <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
         </listenaddress>
         <serveradmin type="TextField">
