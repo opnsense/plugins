@@ -42,6 +42,18 @@ use \OPNsense\CICAP\General;
 class ServiceController extends ApiControllerBase
 {
     /**
+     * check if ClamAV plugin is installed
+     * @return array
+     */
+    public function checkclamavAction()
+    {
+        $backend = new Backend();
+        $mdlGeneral = new General();
+        $response = $backend->configdRun("cicap checkclamav");
+        return $response;
+    }
+
+    /**
      * start cicap service (in background)
      * @return array
      */
