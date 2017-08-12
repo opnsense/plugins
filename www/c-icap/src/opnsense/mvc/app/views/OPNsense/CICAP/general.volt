@@ -70,23 +70,23 @@ POSSIBILITY OF SUCH DAMAGE.
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/cicap/general/set", formid='frm_general_settings',callback_ok=function(){
-					$("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+		    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/cicap/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/cicap/service/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
                             });
-							$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+			    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
         });
         $("#saveAct2").click(function(){
             saveFormToEndpoint(url="/api/cicap/antivirus/set", formid='frm_antivirus_settings',callback_ok=function(){
-					$("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
+		    $("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/cicap/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/cicap/service/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
                             });
-							$("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
+			    $("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
         });
