@@ -28,7 +28,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#antivirus">{{ lang._('AntiVirus') }}</a></li>
+    <li><a data-toggle="tab" href="#antivirus">{{ lang._('Antivirus') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
