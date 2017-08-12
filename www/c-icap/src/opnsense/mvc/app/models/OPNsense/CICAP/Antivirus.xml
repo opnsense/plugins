@@ -9,17 +9,17 @@
         </enable_clamav>
         <scanfiletypes type="OptionField">
             <default></default>
-			<multiple>Y</multiple>
+	    <multiple>Y</multiple>
             <Required>Y</Required>
-			<OptionValues>
-				<TEXT>Text files</TEXT>
-				<DATA>Binary files</DATA>
-				<EXECUTABLE>Executables</EXECUTABLE>
-				<ARCHIVE>Archives</ARCHIVE>
-				<GIF>GIF animations</GIF>
-				<JPEG>JPEG pictures</JPEG>
-				<MSOFFICE>Microsoft office files</MSOFFICE>
-			</OptionValues>
+	        <OptionValues>
+		    <TEXT>Text files</TEXT>
+		    <DATA>Binary files</DATA>
+		    <EXECUTABLE>Executables</EXECUTABLE>
+		    <ARCHIVE>Archives</ARCHIVE>
+		    <GIF>GIF animations</GIF>
+		    <JPEG>JPEG pictures</JPEG>
+		    <MSOFFICE>Microsoft office files</MSOFFICE>
+		</OptionValues>
         </scanfiletypes>
         <sendpercentdata type="IntegerField">
             <default>5</default>
