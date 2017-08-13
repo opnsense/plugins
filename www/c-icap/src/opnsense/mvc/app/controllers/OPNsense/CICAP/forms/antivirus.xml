@@ -40,6 +40,6 @@
         <id>antivirus.maxobjectsize</id>
         <label>Max object size</label>
         <type>text</type>
-        <help>The maximum size of files which will be scanned by antivirus service.You can use K and M indicators to define size in kilobytes or megabytes.</help>
+        <help>The maximum size of files which will be scanned by antivirus service. You can use K and M indicators to define size in kilobytes or megabytes.</help>
     </field>
 </form>
