@@ -28,7 +28,7 @@
         <id>antivirus.allow204responses</id>
         <label>Allow 204 responses</label>
         <type>checkbox</type>
-        <help>Disable 204 responses outside previews for virus_scan if your icap client does not support it.</help>
+        <help>Disable 204 responses outside previews for virus_scan if your ICAP client does not support it.</help>
     </field>
     <field>
         <id>antivirus.passonerror</id>
