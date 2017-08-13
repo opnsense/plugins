@@ -49,7 +49,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $mdlGeneral = new General();
-        $response = $backend->configdRun("cicap checkclamav");
+        $response = $backend->configdRun("firmware plugin clamav");
         return $response;
     }
 
