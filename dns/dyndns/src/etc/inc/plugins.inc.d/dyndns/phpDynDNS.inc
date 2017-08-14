@@ -1122,20 +1122,25 @@ class updatedns {
         if($successful_update == true) {
             /* Write WAN IP to cache file */
             $wan_ip = $this->_checkIP();
+            $allinterfaces = legacy_config_get_interfaces();
+            $friendlyintf = convert_real_interface_to_friendly_interface_name($this->_if);
+            $intfdescr = $allinterfaces[$friendlyintf]['descr'];
             if ($this->_useIPv6 == false && $wan_ip > 0) {
                 $currentTime = time();
-                notify_all_remote(sprintf(gettext("Dynamic DNS updated IP Address on %s (%s) to %s"), convert_real_interface_to_friendly_descr($this->_if), $this->_if, $wan_ip));
+                notify_all_remote(sprintf(gettext("Dynamic DNS updated IP Address on %s (%s) to %s"), $intfdescr, $this->_if, $wan_ip));
                 log_error("Dynamic DNS: updating cache file {$this->_cacheFile}: {$wan_ip}");
                 @file_put_contents($this->_cacheFile, "{$wan_ip}|{$currentTime}");
-            } else
+            } else {
                 @unlink($this->_cacheFile);
+            }
             if ($this->_useIPv6 == true && $wan_ip > 0) {
                 $currentTime = time();
-                notify_all_remote(sprintf(gettext("Dynamic DNS updated IPv6 Address on %s (%s) to %s"), convert_real_interface_to_friendly_descr($this->_if), $this->_if, $wan_ip));
+                notify_all_remote(sprintf(gettext("Dynamic DNS updated IPv6 Address on %s (%s) to %s"), $intfdescr, $this->_if, $wan_ip));
                 log_error("Dynamic DNS: updating cache file {$this->_cacheFile_v6}: {$wan_ip}");
                 @file_put_contents($this->_cacheFile_v6, "{$wan_ip}|{$currentTime}");
-            } else
+            } else {
                 @unlink($this->_cacheFile_v6);
+            }
         }
         $this->status = $status;
         log_error($status);
