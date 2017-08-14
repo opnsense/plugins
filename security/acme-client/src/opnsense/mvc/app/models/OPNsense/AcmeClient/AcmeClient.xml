@@ -163,9 +163,9 @@
                 <altNames type="CSVListField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
-                    <mask>/^[^\s^\t^;^\\^\/^(^)^\[^\]]{1,65536}$/u</mask>
+                    <mask>/^[^\s^\t^;^\\^\/^(^)^\[^\]]{1,65535}$/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide one or more valid FQDNs, i.e. www.example.com or mail.example.com. Field length is limited to 65536 characters.</ValidationMessage>
+                    <ValidationMessage>Please provide one or more valid FQDNs, i.e. www.example.com or mail.example.com. Field length is limited to 65535 characters.</ValidationMessage>
                 </altNames>
                 <account type="ModelRelationField">
                     <Model>
