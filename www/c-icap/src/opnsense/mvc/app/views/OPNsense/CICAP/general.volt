@@ -66,6 +66,18 @@ POSSIBILITY OF SUCH DAMAGE.
         ajaxCall(url="/api/cicap/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
         });
+		    
+	// check if ClamAV plugin is installed	    
+        ajaxCall(url="/api/cicap/service/checkclamav", sendData={}, callback=function(data,status) {
+	    if (data == "0") {
+                BootstrapDialog.show({
+		    type: BootstrapDialog.TYPE_WARNING,
+		    title: "{{ lang._('No ClamAV plugin found, please install via System > Firmware > Plugins.') }}",
+		    message: data['status'],
+		    draggable: true
+                });
+            }
+        });
 
         // link save button to API set action
         $("#saveAct").click(function(){
