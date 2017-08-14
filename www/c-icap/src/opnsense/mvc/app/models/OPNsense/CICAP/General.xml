@@ -51,12 +51,12 @@
             <Required>Y</Required>
         </listenaddress>
         <serveradmin type="TextField">
-            <default>you@your.address</default>
-            <Required>Y</Required>
+            <default></default>
+            <Required>N</Required>
         </serveradmin>
         <servername type="TextField">
-            <default>YourServerName</default>
-            <Required>Y</Required>
+            <default></default>
+            <Required>N</Required>
         </servername>
 	</items>
 </model>
