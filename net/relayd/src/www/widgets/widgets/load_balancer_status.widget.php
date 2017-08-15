@@ -39,17 +39,8 @@ require_once("plugins.inc.d/relayd.inc");
 $now = time();
 $year = date("Y");
 
-if (!is_array($config['load_balancer'])) {
-    $config['load_balancer'] = array();
-}
-if (!is_array($config['load_balancer']['lbpool'])) {
-    $config['load_balancer']['lbpool'] = array();
-}
-if (!is_array($config['load_balancer']['virtual_server'])) {
-    $config['load_balancer']['virtual_server'] = array();
-}
-$a_vs = &$config['load_balancer']['virtual_server'];
-$a_pool = &$config['load_balancer']['lbpool'];
+$a_vs = &config_read_array('load_balancer', 'virtual_server');
+$a_pool = &config_read_array('load_balancer', 'lbpool');
 $rdr_a = relayd_get_lb_redirects();
 $relay_hosts = relayd_get_lb_summary();
 
