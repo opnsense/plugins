@@ -92,6 +92,7 @@ The make targets for any plugin directory:
 * install:	install to target directory
 * lint:		run syntax checks
 * package:	creates a package
+* upgrade:	upgrades existing package
 * remove:	remove known files from target directory
 * style-fix:	apply style fixes
 * style:	run style checks

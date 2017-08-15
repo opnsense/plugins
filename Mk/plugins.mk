@@ -129,8 +129,8 @@ scripts-auto:
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
-		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
-		    find -s . -mindepth 2 -type d); do \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/mvc/app/models && \
+		    find -s . -depth 2 -type d); do \
 			cat ${TEMPLATESDIR}/models | \
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
@@ -138,7 +138,7 @@ scripts-auto:
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
 		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
-		    find -s . -mindepth 2 -type d); do \
+		    find -s . -depth 2 -type d); do \
 			cat ${TEMPLATESDIR}/templates | \
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
@@ -215,6 +215,17 @@ package: check
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} install
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
+
+upgrade-check: check
+	@if ! ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
+		echo ">>> Cannot find package.  Please run 'pkg install ${PLUGIN_PKGNAME}'" >&2; \
+		exit 1; \
+	fi
+	@rm -rf ${PKGDIR}
+
+upgrade: upgrade-check package
+	@${PKG} delete -fy ${PLUGIN_PKGNAME}
+	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
 	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
