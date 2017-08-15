@@ -99,8 +99,6 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         return;
     }
 
-    $notify_text = '';
-
     if ($verbose) {
         echo 'Configuring RFC 2136 clients...';
         flush();
@@ -183,7 +181,6 @@ EOD;
                 if (($wanip != $cachedipv4) || (($currentTime - $cacheTimev4) > $maxCacheAgeSecs) || $forced) {
                     $upinst .= "update delete {$dnsupdate['host']}. A\n";
                     $upinst .= "update add {$dnsupdate['host']}. {$dnsupdate['ttl']} A {$wanip}\n";
-                    $notify_text .= sprintf(gettext('Dynamic DNS updated IP Address (A) for %s on %s to %s'), $dnsupdate['host'], strtoupper($dnsupdate['interface']), $wanip) . "\n";
                     @file_put_contents($cacheFile, "{$wanip}|{$currentTime}");
                     log_error("Dynamic DNS: updating cache file {$cacheFile}: {$wanip}");
                     $need_update = true;
@@ -211,7 +208,6 @@ EOD;
                 if (($wanipv6 != $cachedipv6) || (($currentTime - $cacheTimev6) > $maxCacheAgeSecs) || $forced) {
                     $upinst .= "update delete {$dnsupdate['host']}. AAAA\n";
                     $upinst .= "update add {$dnsupdate['host']}. {$dnsupdate['ttl']} AAAA {$wanipv6}\n";
-                    $notify_text .= sprintf(gettext('Dynamic DNS updated IPv6 Address (AAAA) for %s on %s to %s'), $dnsupdate['host'], strtoupper($dnsupdate['interface']), $wanipv6) . "\n";
                     @file_put_contents($cacheFile6, "{$wanipv6}|{$currentTime}");
                     log_error("Dynamic DNS: updating cache file {$cacheFile6}: {$wanipv6}");
                     $need_update = true;
@@ -230,16 +226,13 @@ EOD;
             unset($upinst);
             /* invoke nsupdate */
             $cmd = "/usr/local/bin/nsupdate -k /var/etc/K{$i}{$keyname}+157+00000.key";
-            if (isset($dnsupdate['usetcp']))
-              $cmd .= " -v";
+            if (isset($dnsupdate['usetcp'])) {
+                $cmd .= " -v";
+            }
             $cmd .= " /var/etc/nsupdatecmds{$i}";
             mwexec_bg($cmd);
             unset($cmd);
         }
-    }
-
-    if (!empty($notify_text)) {
-        notify_all_remote($notify_text);
     }
 
     if ($verbose) {
