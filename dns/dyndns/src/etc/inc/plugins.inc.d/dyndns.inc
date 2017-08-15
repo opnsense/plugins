@@ -125,6 +125,8 @@ function dyndns_list()
         'opendns' => 'OpenDNS',
         'oray' => 'Oray',
         'ovh-dynhost' => 'OVH DynHOST',
+        'regfish' => 'regfish',
+        'regfish-v6' => 'regfish (v6)',
         'route53' => 'Route 53',
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
