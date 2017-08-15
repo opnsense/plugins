@@ -1,7 +1,7 @@
 <menu>
     <Services>
-        <Proxy>
+        <WebProxy>
             <SSO VisibleName="Single-Sign On" url="/ui/ssoproxyad/"/>
-        </Proxy>
+        </WebProxy>
     </Services>
 </menu>
