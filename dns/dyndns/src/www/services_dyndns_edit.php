@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $reqdfieldsn[] = gettext('Hostname');
         $reqdfields[] = 'username';
         $reqdfieldsn[] = gettext('Username');
-        if ($pconfig['type'] != 'duckdns') {
+        if (!in_array($pconfig['type'], array('duckdns', 'regfish', 'regfish-v6'))) {
             $reqdfields[] = 'password';
             $reqdfieldsn[] = gettext('Password');
         }
