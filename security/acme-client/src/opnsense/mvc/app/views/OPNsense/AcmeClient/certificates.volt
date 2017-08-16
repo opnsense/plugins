@@ -120,25 +120,6 @@ POSSIBILITY OF SUCH DAMAGE.
         };
 
         /**
-         * standard dialog when confirmation is required, wrapper around BootstrapDialog
-         */
-        function stdDialogConfirmation(message, callback) {
-            BootstrapDialog.confirm({
-                title: 'Confirmation Required',
-                message: message,
-                type:BootstrapDialog.TYPE_DANGER,
-                btnCancelLabel: 'Cancel',
-                btnOKLabel: 'Yes',
-                btnOKClass: 'btn-primary',
-                callback: function(result) {
-                    if(result) {
-                        callback();
-                    }
-                }
-            });
-        }
-
-        /**
          * reload bootgrid, return to current selected page
          */
         function std_bootgrid_reload(gridId) {
@@ -198,7 +179,9 @@ POSSIBILITY OF SUCH DAMAGE.
             // link delete selected items action
             $(this).find("*[data-action=deleteSelected]").click(function(){
                 if ( gridParams['del'] != undefined) {
-                    stdDialogRemoveItem("Remove selected items?",function(){
+                    stdDialogConfirm('{{ lang._('Confirm removal') }}',
+                        '{{ lang._('Do you want to remove the selected item?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
                         var rows =$("#"+gridId).bootgrid('getSelectedRows');
                         if (rows != undefined){
                             var deferreds = [];
@@ -300,7 +283,9 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['del'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogRemoveItem('Remove selected item?',function() {
+                    stdDialogConfirm('{{ lang._('Confirm removal') }}',
+                        '{{ lang._('Do you want to remove the selected item?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
                         ajaxCall(url=gridParams['del'] + uuid,
                             sendData={},callback=function(data,status){
                                 // reload grid after delete
@@ -334,7 +319,9 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['sign'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogConfirmation('Forcefully (re-)issue the selected certificate?',function() {
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('Forcefully (re-)issue the selected certificate?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         // Handle HAProxy integration (no-op if not applicable)
                         ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
                             ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){
@@ -354,13 +341,15 @@ POSSIBILITY OF SUCH DAMAGE.
             {
                 if (gridParams['revoke'] != undefined) {
                     var uuid=$(this).data("row-id");
-                    stdDialogConfirmation('Revoke selected certificate?',function() {
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('Revoke selected certificate?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         ajaxCall(url=gridParams['revoke'] + uuid,
                             sendData={},callback=function(data,status){
                                 // reload grid after sign
                                 $("#"+gridId).bootgrid("reload");
                             });
-                    });
+                    }, 'danger');
                 } else {
                     console.log("[grid] action revoke missing")
                 }
