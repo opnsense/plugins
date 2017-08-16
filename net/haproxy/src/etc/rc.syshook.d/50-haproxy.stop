@@ -1,7 +1,3 @@
 #!/bin/sh
 
-. /etc/rc.conf.d/haproxy
-
-if [ "x${haproxy_hardstop}" == "xYES" ]; then
-    /usr/local/etc/rc.d/haproxy hardstop
-fi
+/usr/local/opnsense/scripts/OPNsense/HAProxy/rc-wrapper.sh stop

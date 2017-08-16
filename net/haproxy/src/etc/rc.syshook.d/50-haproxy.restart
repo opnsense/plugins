@@ -1,7 +1,0 @@
-#!/bin/sh
-
-. /etc/rc.conf.d/haproxy
-
-if [ "x${haproxy_hardstop}" == "xYES" ]; then
-    /usr/local/etc/rc.d/haproxy configtest && /usr/local/etc/rc.d/haproxy hardstop
-fi
