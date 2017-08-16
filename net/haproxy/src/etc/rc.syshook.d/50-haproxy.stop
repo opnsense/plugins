@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/local/opnsense/scripts/OPNsense/HAProxy/rc-wrapper.sh stop
