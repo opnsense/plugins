@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <C_ICAP VisibleName="C-ICAP" cssClass="fa fa-ambulance" url="/ui/cicap/general/index" />
+  </Services>
+</menu>
