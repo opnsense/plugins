@@ -1,0 +1,45 @@
+<form>
+    <field>
+        <id>antivirus.enable_clamav</id>
+        <label>Enable ClamAV</label>
+        <type>checkbox</type>
+        <help>This will activate ClamAV</help>
+    </field>
+    <field>
+        <id>antivirus.scanfiletypes</id>
+        <label>Scan for filetypes</label>
+        <type>select_multiple</type>
+		<style>tokenize</style>
+        <help>Choose for which file types to scan, if unsure select all.</help>
+    </field>
+    <field>
+        <id>antivirus.sendpercentdata</id>
+        <label>Send percentage data</label>
+        <type>text</type>
+        <help>The percentage of data that can be sent by the c-icap server before receiving the complete body of a request. This feature in conjuction with the folowing can be useful because if the download of the object takes a lot of time the connection of web client to proxy can be expired.</help>
+    </field>
+    <field>
+        <id>antivirus.startsendpercentdataafter</id>
+        <label>Start send pecerantage data</label>
+        <type>text</type>
+        <help>Only if the object is bigger than size then the percentage of data which defined by SendPercentData sent by the c-icap server before receiving the complete body of request.</help>
+    </field>
+    <field>
+        <id>antivirus.allow204responses</id>
+        <label>Allow 204 responses</label>
+        <type>checkbox</type>
+        <help>Disable 204 responses outside previews for virus_scan if your ICAP client does not support it.</help>
+    </field>
+    <field>
+        <id>antivirus.passonerror</id>
+        <label>Pass on error</label>
+        <type>checkbox</type>
+        <help>Pass the content instead of blocking it, in the case when the virus scanner or the virus_scan module finds an error.</help>
+    </field>
+    <field>
+        <id>antivirus.maxobjectsize</id>
+        <label>Max object size</label>
+        <type>text</type>
+        <help>The maximum size of files which will be scanned by antivirus service. You can use K and M indicators to define size in kilobytes or megabytes.</help>
+    </field>
+</form>
