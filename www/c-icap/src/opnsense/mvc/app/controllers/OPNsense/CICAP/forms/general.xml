@@ -39,13 +39,13 @@
         <id>general.minsparethreads</id>
         <label>Min spare threads</label>
         <type>text</type>
-		<help>If the number of the available threads is less than number, the c-icap server starts a new child.</help>
+        <help>If the number of the available threads is less than number, the c-icap server starts a new child.</help>
     </field>
     <field>
         <id>general.maxsparethreads</id>
         <label>Max spare threads</label>
-        <type>test</type>
-		<help>If the number of the available threads is more than number then the c-icap server kills a child.</help>
+        <type>text</type>
+        <help>If the number of the available threads is more than number then the c-icap server kills a child.</help>
     </field>
     <field>
         <id>general.threadsperchild</id>
