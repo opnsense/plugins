@@ -117,10 +117,7 @@ scripts-auto:
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
-		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			cat ${TEMPLATESDIR}/actions.d >> \
-			    ${DESTDIR}/$${SCRIPT}; \
-		done; \
+		cat ${TEMPLATESDIR}/actions.d >> ${DESTDIR}/+POST_INSTALL; \
 	fi
 	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
