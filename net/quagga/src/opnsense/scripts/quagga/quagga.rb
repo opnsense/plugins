@@ -524,7 +524,7 @@ class OSPFv3
     route
   end
 
-  def neighbor
+  def neighbors
     qta = QuaggaTableReader.new(["Neighbor ID","Pri", "DeadTime", "State/IfState", "Duration I/F[State]"])
     neighbor = []
     nb = @vtysh.execute("show ipv6 ospf6 neighbor").lines
