@@ -42,7 +42,6 @@ require_once("certs.inc");
 require_once("legacy_bindings.inc");
 require_once("interfaces.inc");
 require_once("util.inc");
-require_once("system.inc"); // required for Web UI restart action
 // Some stuff requires the almighty MVC framework.
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
@@ -1055,7 +1054,7 @@ function run_restart_actions($certlist, $modelObj)
             log_error("AcmeClient: running restart action: " . $action->name);
             switch ((string)$action->type) {
                 case 'restart_gui':
-                    $response = system_webgui_configure();
+                    $response = $backend->configdRun('webgui restart 2', true);
                     break;
                 case 'restart_haproxy':
                     $response = $backend->configdRun("haproxy restart");
