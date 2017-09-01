@@ -217,7 +217,7 @@ class ZerotierController extends ApiMutableModelControllerBase
         } elseif (!$enabled) {
             $status = "disabled";
         } else {
-            $status = "unkown";
+            $status = "unknown";
         }
 
         return array("status" => $status);
