@@ -49,11 +49,10 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $backend->configdRun('filter reload');
             $response = $backend->configdRun('quagga start');
+            $backend->configdRun('filter reload');
             return array('response' => $response);
-        }
-        else {
+        } else {
             return array('response' => array());
         }
     }
@@ -68,8 +67,7 @@ class ServiceController extends ApiControllerBase
             $backend = new Backend();
             $response = $backend->configdRun('quagga stop');
             return array('response' => $response);
-        }
-        else {
+        } else {
             return array('response' => array());
         }
     }
@@ -82,11 +80,10 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $backend->configdRun('filter reload');
             $response = $backend->configdRun('quagga restart');
+            $backend->configdRun('filter reload');
             return array('response' => $response);
-        }
-        else {
+        } else {
             return array('response' => array());
         }
     }
@@ -105,18 +102,14 @@ class ServiceController extends ApiControllerBase
         if (strpos($response, 'not running') > 0) {
             if ($mdlGeneral->enabled->__toString() == 1) {
                 $status = 'stopped';
-            }
-            else {
+            } else {
                 $status = 'disabled';
             }
-        }
-        elseif (strpos($response, 'is running') > 0) {
+        } elseif (strpos($response, 'is running') > 0) {
             $status = 'running';
-        }
-        elseif ($mdlGeneral->enabled->__toString() == 0) {
+        } elseif ($mdlGeneral->enabled->__toString() == 0) {
             $status = 'disabled';
-        }
-        else {
+        } else {
             $status = 'unkown';
         }
 
@@ -150,8 +143,7 @@ class ServiceController extends ApiControllerBase
             }
 
             return array('status' => 'ok');
-        }
-        else {
+        } else {
             return array('status' => 'failed');
         }
     }
