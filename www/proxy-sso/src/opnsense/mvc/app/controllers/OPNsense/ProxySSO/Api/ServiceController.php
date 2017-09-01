@@ -4,6 +4,7 @@ namespace OPNsense\ProxySSO\Api;
 
 use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
+use \OPNsense\ProxySSO\ProxySSO;
 
 class ServiceController extends \OPNsense\Proxy\Api\ServiceController
 {
@@ -48,11 +49,12 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
+            $mdl = new ProxySSO();
             $cnf = Config::getInstance()->toArray();
             $hostname = 'HTTP/' . $cnf['system']['hostname'];
             $domain = $cnf['system']['domain'];
             $kerbname = substr(strtoupper($cnf['system']['hostname']), 0, 13) . "-K";
-            $winver = !isset($cnf['OPNsense']['ProxySSO']['ADKerberosImplementation']) || $cnf['OPNsense']['ProxySSO']['ADKerberosImplementation'] == 'W2008' ? '2008' : '2003';
+            $winver = (string)$mdl->ADKerberosImplementation == 'W2008' ? '2008' : '2003';
             $username = escapeshellarg($this->request->getPost("admin_login"));
             $pass = escapeshellarg($this->request->getPost("admin_password"));
 
