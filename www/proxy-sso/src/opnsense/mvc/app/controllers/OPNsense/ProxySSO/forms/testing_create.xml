@@ -1,6 +1,6 @@
 <form>
 	<field>
-		<label>Keytab creation</label>
+		<label>Key Table creation</label>
 		<type>header</type>
 	</field>
 	<field>

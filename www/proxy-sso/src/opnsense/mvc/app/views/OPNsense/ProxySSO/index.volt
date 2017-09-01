@@ -33,19 +33,18 @@
         });
 
         $("#CreateKeytab").click(function() {
-            ajaxCall(url="/api/proxysso/service/createkeytab", sendData={
-                        "admin_login":$("#admin_username").val(),
-                        "admin_password":$("#admin_password").val()}, callback=function(data,status) {
-                $("#kerberos_output").html(data['response']);
-            });
+            ajaxCall(
+                url="/api/proxysso/service/createkeytab",
+                sendData={"admin_login":$("#admin_username").val(), "admin_password":$("#admin_password").val()},
+                callback=function(data,status) { $("#kerberos_output").html(data['response']); }
+            );
         });
 
         $("#TestKerbLogin").click(function() {
-            ajaxCall(url="/api/proxysso/service/testkerblogin", sendData={
-                        "login":$("#username").val(),
-                        "password":$("#password").val()}, callback=function(data,status) {
-                $("#kerberos_output").html(data['response']);
-            });
+            ajaxCall(
+                url="/api/proxysso/service/testkerblogin",
+                sendData={"login":$("#username").val(), "password":$("#password").val()},
+                callback=function(data,status) { $("#kerberos_output").html(data['response']); });
         });
 
         // link save button to API set action
@@ -145,30 +144,27 @@
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
 
         <hr/>
-        <button class="btn btn-primary"  id="applyAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="applyAct_progress" class=""></i></button>
+        <button class="btn btn-primary __mb"  id="applyAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="applyAct_progress" class=""></i></button>
     </div>
 
     <div class="tab-pane fade" id="testing">
 
         {{ partial("layout_partials/base_form",['fields':checkListForm,'id':'frm_CheckList'])}}
         <hr/>
-        <button class="btn btn-primary" id="RefreshCheckList" type="button"><b>{{ lang._('Refresh') }}</b> <i id="refresh_progress" class=""></i></button>
+        <button class="btn btn-primary __mb" id="RefreshCheckList" type="button"><b>{{ lang._('Refresh') }}</b> <i id="refresh_progress" class=""></i></button>
 
-        {{ partial("layout_partials/base_form",['fields':testingCreateForm,'id':'frm_TestingCreate'])}}
-        <button class="btn btn-primary" id="CreateKeytab" type="button"><b>{{ lang._('Create keytab') }}</b></button>
-        <button class="btn btn-primary" id="DeleteKeytab" type="button"><b>{{ lang._('Delete keytab') }}</b></button>
-        <button class="btn btn-primary" id="ShowKeytab" type="button"><b>{{ lang._('Show keytab') }}</b></button>
-        <br/>
-        <br/>
+        <div class="__mb">
+            {{ partial("layout_partials/base_form",['fields':testingCreateForm,'id':'frm_TestingCreate'])}}
+            <button class="btn btn-primary" id="CreateKeytab" type="button"><b>{{ lang._('Create Key Table') }}</b></button>
+            <button class="btn btn-primary" id="DeleteKeytab" type="button"><b>{{ lang._('Delete Key Table') }}</b></button>
+            <button class="btn btn-primary" id="ShowKeytab" type="button"><b>{{ lang._('Show Key Table') }}</b></button>
+        </div>
 
         {{ partial("layout_partials/base_form",['fields':testingTestForm,'id':'frm_TestingTest'])}}
-        <button class="btn btn-primary" id="TestKerbLogin" type="button"><b>{{ lang._('Test Keberos login') }}</b></button>
-        <br/>
-        <br/>
+        <button class="btn btn-primary" id="TestKerbLogin" type="button"><b>{{ lang._('Test Kerberos login') }}</b></button>
 
         <hr/>
         <p><b>{{ lang._('Output') }}</b></p>
         <pre id="kerberos_output"></pre>
-        <br/>
     </div>
 </div>
