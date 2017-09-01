@@ -110,7 +110,7 @@ class ServiceController extends ApiControllerBase
         } elseif ($mdlGeneral->enabled->__toString() == 0) {
             $status = 'disabled';
         } else {
-            $status = 'unkown';
+            $status = 'unknown';
         }
 
 
