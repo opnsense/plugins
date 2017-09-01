@@ -6,13 +6,13 @@ PASS_TMP=/tmp/__tmp_kerb_pass
 while getopts :d:n:k:e:b:u:p: name
 do
     case $name in
-        d) DOMAIN="$OPTARG" ;;			# aka tingnet.local
-        n) PRINCIPAL="$OPTARG" ;;		# aka HTTP/TING
-	k) KERB_COMPUTER_NAME="$OPTARG" ;;	# aka TING-K
-	e) ENCTYPES="$OPTARG" ;;
-	b) BASENAME="$OPTARG" ;;
-	u) USERNAME="$OPTARG" ;;		# LDAP admin username
-	p) PASSWORD="$OPTARG" ;;		# LDAP admin password
+        d) DOMAIN="$OPTARG" ;;              # aka opnsense.local
+        n) PRINCIPAL="$OPTARG" ;;           # aka HTTP/OPNSENSE
+        k) KERB_COMPUTER_NAME="$OPTARG" ;;  # aka OPNSENSE-K
+        e) ENCTYPES="$OPTARG" ;;
+        b) BASENAME="$OPTARG" ;;
+        u) USERNAME="$OPTARG" ;;            # LDAP admin username
+        p) PASSWORD="$OPTARG" ;;            # LDAP admin password
     esac
 done
 
