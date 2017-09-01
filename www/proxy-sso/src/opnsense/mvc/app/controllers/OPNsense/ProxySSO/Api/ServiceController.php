@@ -126,7 +126,7 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
 
         // DNS
         $dns_server = array();
-        $nameservers = preg_grep('/nameserver/', file('/etc/resolv.conf'));
+        $nameservers = preg_grep('/^nameserver/', file('/etc/resolv.conf'));
         $dns_servers = array();
         foreach($nameservers as $key => $record) {
             $parts = explode(' ', $record);
@@ -136,9 +136,9 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
         if(!count($dns_servers)) {
             $dns_server["message"] = gettext("DNS server not found");
         }
-        $output = array("# cat /etc/resolv.conf");
-        exec('cat /etc/resolv.conf', $output);
-        $dns_server["dump"] = implode("\n", $output);
+        $output = "# cat /etc/resolv.conf\n";
+        $output .= file_get_contents('/etc/resolv.conf');
+        $dns_server["dump"] = $output;
 
         // DNS: hostname
         $resolv_direct = chop(shell_exec("drill {$hostname} | grep -A 1 'ANSWER SECTION' | tail -n 1 | awk '{print \$5}'"));
@@ -149,7 +149,10 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
         
         $resolv_reverse = null;
         $dns_hostname_reverse_resolution = array();
+        $output = array();
         if(!empty($resolv_direct) && filter_var($resolv_direct, FILTER_VALIDATE_IP)) {
+            $output[] = "# drill -x {$resolv_direct}";
+            exec("drill -x {$resolv_direct}", $output);
             $resolv_reverse = chop(shell_exec("drill -x {$resolv_direct} | grep -A 1 'ANSWER SECTION' | tail -n 1 | awk '{print \$5}'"));
             if(strtolower($resolv_reverse) != strtolower("{$hostname}.")) {
                 $dns_hostname_reverse_resolution["message"] = gettext("Hostname doesn't resolved to host IP.");
@@ -159,8 +162,6 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
             $dns_hostname_reverse_resolution["message"] = gettext("Hostname doesn't resolved to IP.");
         }
         $dns_hostname_reverse_resolution["status"] = strtolower($resolv_reverse) == strtolower("{$hostname}.") ? "ok" : "failure";
-        $output = array("# drill -x {$resolv_direct}");
-        exec("drill -x {$resolv_direct}", $output);
         $dns_hostname_reverse_resolution["dump"] = implode("\n", $output);
 
 
@@ -214,23 +215,29 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
 
 
         // KERBEROS
+        $krb5_conf = '/etc/krb5.conf';
         $kerberos_config = array();
-        $config_valid = shell_exec("grep '{$cnf->system->domain}' /etc/krb5.conf");
-        $kerberos_config["status"] = file_exists('/etc/krb5.conf') && !empty($config_valid) ? "ok" : "failure";
-        if(!file_exists('/etc/krb5.conf')) {
-            $kerberos_config["message"] = gettext('File /etc/krb5.conf does not exists.');
+        $kerberos_config["status"] = "failure";
+        if(!file_exists($krb5_conf)) {
+            $kerberos_config["message"] = sprintf(gettext('File %s does not exists.'), $krb5_conf);
         }
-        else if (empty($config_valid)) {
-            $kerberos_config["message"] = gettext('SSO is not enabled or kerberos configuration file has invalid content');
+        else{
+            $domainstr = preg_quote($cnf->system->domain);
+            $config_valid = preg_grep("/$domainstr/", file($krb5_conf));
+            $kerberos_config["status"] = file_exists($krb5_conf) && !empty($config_valid) ? "ok" : "failure";
+            if (empty($config_valid)) {
+                $kerberos_config["message"] = gettext('SSO is not enabled or kerberos configuration file has invalid content');
+            }
+            $output = "# cat $krb5_conf\n";
+            $output .= file_get_contents($krb5_conf);
+            $kerberos_config["dump"] = $output;
         }
-        $output = array("# cat /etc/krb5.conf");
-        exec('cat /etc/krb5.conf', $output);
-        $kerberos_config["dump"] = implode("\n", $output);
 
+        $keytab_file = '/usr/local/etc/squid/squid.keytab';
         $keytab = array();
-        $keytab["status"] = file_exists('/usr/local/etc/squid/squid.keytab') ? "ok" : "failure";
-        if(!file_exists('/usr/local/etc/squid/squid.keytab')) {
-            $keytab["message"] = gettext('File /usr/local/etc/squid/squid.keytab does not exists.');
+        $keytab["status"] = file_exists($keytab_file) ? "ok" : "failure";
+        if(!file_exists($keytab_file)) {
+            $keytab["message"] = sprintf(gettext('File %s does not exists.'), $keytab_file);
         }
         $keytab["dump"] = $backend->configdRun("proxysso showkeytab");
 
@@ -240,7 +247,7 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
             $dns_server["status"] = "failure";
             $dns_server["message"] = gettext("LDAP server is not in DNS servers list.");
         }
-        elseif(in_array("127.0.0.1", $dns_servers)) {
+        elseif(in_array("127.0.0.1", $dns_servers) || in_array("::1", $dns_servers)) {
             $dns_server["status"] = "failure";
             $dns_server["message"] = gettext("Do not set localhost as DNS server.");
         }
