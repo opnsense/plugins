@@ -38,8 +38,20 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $result = array('result' => 'failed');
-        $mdlMDNSRepeater = new MDNSRepeater();
-        $result['result'] = $backend->configdRun('mdnsrepeater status');
+        $res = $backend->configdRun('mdnsrepeater status');
+        if (stripos($res, 'is running')) {
+          $result['result'] = 'running';
+        } elseif (stripos($res, 'not running')) {
+            $general = new MDNSRepeater();
+            if ((string)$general->enabled == '1') {
+                $result['result'] = 'stopped';
+            } else {
+                $result['result'] = 'disabled';
+            }
+        }
+        else {
+            $result['message'] = $res;
+        }
         return $result;
     }
 
@@ -56,7 +68,6 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $result = array("result" => "failed");
-        $mdlMDNSRepeater = new MDNSRepeater();
         $result['result'] = $backend->configdRun('mdnsrepeater stop');
         return $result;
     }
