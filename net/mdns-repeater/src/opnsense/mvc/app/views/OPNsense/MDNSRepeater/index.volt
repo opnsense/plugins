@@ -32,7 +32,7 @@ $( document ).ready(function() {
     var data_get_map = {'general': '/api/mdnsrepeater/settings/get'};
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
-        $('.selectpicker').selectpicker('refresh');
+        $('select').selectpicker('refresh');
     });
     ajaxCall(url="/api/mdnsrepeater/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['result']);
