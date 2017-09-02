@@ -29,7 +29,6 @@
 function mdnsrepeater_enabled()
 {
     $mdns_repeater = new \OPNsense\MDNSRepeater\MDNSRepeater();
-{
     if ((string)$mdns_repeater->enabled == '1') {
         return true;
     }
