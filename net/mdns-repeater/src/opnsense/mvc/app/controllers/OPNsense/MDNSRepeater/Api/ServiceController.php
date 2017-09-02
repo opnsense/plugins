@@ -30,7 +30,6 @@ namespace OPNsense\MDNSRepeater\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
-use \OPNsense\MDNSRepeater\MDNSRepeater;
 
 class ServiceController extends ApiControllerBase
 {
@@ -38,7 +37,6 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $result = array('result' => 'failed');
-        $mdlMDNSRepeater = new MDNSRepeater();
         $result['result'] = $backend->configdRun('mdnsrepeater status');
         return $result;
     }
@@ -56,7 +54,6 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $result = array("result" => "failed");
-        $mdlMDNSRepeater = new MDNSRepeater();
         $result['result'] = $backend->configdRun('mdnsrepeater stop');
         return $result;
     }
