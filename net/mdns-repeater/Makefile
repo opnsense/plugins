@@ -1,0 +1,7 @@
+PLUGIN_NAME=       mdns-repeater
+PLUGIN_VERSION=    1.0
+PLUGIN_COMMENT=    Start, stop, configure mdns-repater
+PLUGIN_MAINTAINER= franz.fabian.94@gmail.com
+PLUGIN_DEPENDS=    mdns-repeater
+
+.include "../../Mk/plugins.mk"
