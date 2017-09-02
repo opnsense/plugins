@@ -3,7 +3,7 @@
       <id>mdnsrepeater.enabled</id>
       <label>enabled</label>
       <type>checkbox</type>
-      <help><![CDATA[Enable the repeater.]]></help>
+      <help>Enable the repeater.</help>
    </field>
    <field>
       <id>mdnsrepeater.interfaces</id>
