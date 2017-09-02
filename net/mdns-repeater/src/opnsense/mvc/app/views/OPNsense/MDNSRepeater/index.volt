@@ -35,7 +35,7 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
     ajaxCall(url="/api/mdnsrepeater/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['status']);
+        updateServiceStatusUI(data['result']);
     });
 
     // link save button to API set action
@@ -43,7 +43,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/mdnsrepeater/settings/set", formid='general',callback_ok=function(){
             ajaxCall(url="/api/mdnsrepeater/service/restart", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/mdnsrepeater/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
+                    updateServiceStatusUI(data['result']);
                 });
             });
         });
