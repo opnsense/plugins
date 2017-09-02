@@ -37,6 +37,7 @@ net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
+net/mdns-repeater -- Proxy multicast DNS between networks
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- Quagga Routing Suite
@@ -93,6 +94,7 @@ The make targets for any plugin directory:
 * install:	install to target directory
 * lint:		run syntax checks
 * package:	creates a package
+* upgrade:	upgrades existing package
 * remove:	remove known files from target directory
 * style-fix:	apply style fixes
 * style:	run style checks

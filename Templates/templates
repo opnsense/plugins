@@ -1,0 +1,2 @@
+echo -n "Reloading template %%ARG%%: "
+/usr/local/sbin/configctl template reload %%ARG%%
