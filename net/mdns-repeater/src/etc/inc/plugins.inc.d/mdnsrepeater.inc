@@ -55,7 +55,7 @@ function mdnsrepeater_services()
     }
 
     $services[] = array(
-        'description' => gettext('MDNS Repeater (MDNS Proxy)'),
+        'description' => gettext('MDNS Repeater'),
         'configd' => array(
             'restart' => array('mdnsrepeater restart'),
             'start' => array('mdnsrepeater start'),
