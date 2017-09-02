@@ -1,0 +1,14 @@
+<form>
+   <field>
+      <id>mdnsrepeater.enabled</id>
+      <label>enabled</label>
+      <type>checkbox</type>
+      <help>Enable the repeater.</help>
+   </field>
+   <field>
+      <id>mdnsrepeater.interfaces</id>
+      <label>Listen Interfaces</label>
+      <type>select_multiple</type>
+      <multiple>Y</multiple>
+   </field>
+</form>

@@ -1,0 +1,9 @@
+<acl>
+   <page-services-mdnsrepeater>
+      <name>Services: MDNS Repeatery</name>
+      <patterns>
+         <pattern>ui/mdnsrepeater/*</pattern>
+         <pattern>api/mdnsrepeater/*</pattern>
+      </patterns>
+   </page-services-mdnsrepeater>
+</acl>
