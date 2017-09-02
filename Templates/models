@@ -1,2 +1,1 @@
-echo "Migrating %%ARG%%"
 /usr/local/opnsense/mvc/script/run_migrations.php %%ARG%%
