@@ -1,7 +1,7 @@
-{% if helpers.exists('OPNsense.mdnsrepeater.enabled') and OPNsense.mdnsrepeater.enabled == '1' %}
+{% if helpers.exists('OPNsense.MDNSRepeater.enabled') and OPNsense.MDNSRepeater.enabled == '1' %}
 {% from 'OPNsense/Macros/interface.macro' import physical_interface %}
 mdns_repeater_enable="YES"
-{% set osifnames = OPNsense.mdnsrepeater.interfaces.split(',') %}
+{% set osifnames = OPNsense.MDNSRepeater.interfaces.split(',') %}
 {% set interface_list=[] %}
 {% for i in osifnames %}
 {% do interface_list.append(physical_interface(i)) %}
