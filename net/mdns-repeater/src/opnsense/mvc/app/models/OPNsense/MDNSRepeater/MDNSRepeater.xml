@@ -8,6 +8,7 @@
       <Required>Y</Required>
     </enabled>
     <interfaces type="InterfaceField">
+      <default>lan</default>
       <Required>Y</Required>
       <multiple>Y</multiple>
     </interfaces>
