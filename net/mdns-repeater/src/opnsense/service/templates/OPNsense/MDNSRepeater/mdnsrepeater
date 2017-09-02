@@ -2,7 +2,11 @@
 {% from 'OPNsense/Macros/interface.macro' import physical_interface %}
 mdns_repeater_enable="YES"
 {% set osifnames = OPNsense.mdnsrepeater.interfaces.split(',') %}
-mdns_repeater_interfaces="{% for i in osifnames %}{{ physical_interface(i) }} {% endfor %}"
+{% set interface_list=[] %}
+{% for i in osifnames %}
+{% do interface_list.append(physical_interface(i)) %}
+{% endfor %}
+mdns_repeater_interfaces="{{ interface_list | join(' ') }}"
 {% else %}
 mdns_repeater_enable="NO"
 {% endif %}

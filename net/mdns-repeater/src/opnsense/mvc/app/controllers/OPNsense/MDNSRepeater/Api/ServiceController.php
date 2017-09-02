@@ -47,7 +47,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $result = array('result' => 'failed');
-        $backend->configdRun('template reload OPNsense/mdnsrepeater');
+        $backend->configdRun('template reload OPNsense/MDNSRepeater');
         $result['result'] = $backend->configdRun('mdnsrepeater start');
         return $result;
     }
