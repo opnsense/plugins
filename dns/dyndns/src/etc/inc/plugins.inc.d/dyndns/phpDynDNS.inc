@@ -637,8 +637,8 @@ class updatedns {
                             "content" => "{$this->_dnsIP}",
                             "type" => "A",
                             "name" => "{$this->_dnsHost}",
-                            "proxiable" => false,
-                            "proxied" => false
+                            "proxiable" => $output->result[0]->proxiable,
+                            "proxied" => $output->result[0]->proxied
                         );
                         $data_json = json_encode($hostData);
                         $updateHostId = "https://{$dnsServer}/client/v4/zones/{$zone}/dns_records/{$host}";
