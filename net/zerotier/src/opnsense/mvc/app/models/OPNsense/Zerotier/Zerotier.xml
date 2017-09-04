@@ -1,0 +1,24 @@
+<model>
+    <mount>//OPNsense/zerotier</mount>
+    <description>
+        Zerotier - Virtual Networks That Just Work.
+    </description>
+    <items>
+        <networks>
+            <network type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <networkId type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                </networkId>
+                <description type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </description>
+            </network>
+        </networks>
+    </items>
+</model>

@@ -3,7 +3,7 @@
 /*
     Copyright (C) 2014-2016 Deciso B.V.
     Copyright (C) 2009 Ermal Luçi
-    Copyright (C) 2004 Scott Ullrich
+    Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
     Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
     All rights reserved.
 
@@ -33,10 +33,7 @@ require_once("guiconfig.inc");
 require_once("services.inc");
 require_once('plugins.inc.d/igmpproxy.inc');
 
-if (!isset($config['igmpproxy']['igmpentry'])) {
-    $config['igmpproxy']['igmpentry'] = array();
-}
-$a_igmpproxy = &$config['igmpproxy']['igmpentry'];
+$a_igmpproxy = &config_read_array('igmpproxy', 'igmpentry');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_igmpproxy[$_GET['id']])) {

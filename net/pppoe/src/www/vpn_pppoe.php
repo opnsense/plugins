@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2010 Ermal Luci
+    Copyright (C) 2010 Ermal Luçi
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -32,11 +32,7 @@ require_once("filter.inc");
 require_once("plugins.inc.d/if_pppoe.inc");
 require_once("interfaces.inc");
 
-if (empty($config['pppoes']['pppoe']) || !is_array($config['pppoes']['pppoe'])) {
-    $config['pppoes'] = array();
-    $config['pppoes']['pppoe'] = array();
-}
-$a_pppoes = &$config['pppoes']['pppoe'];
+$a_pppoes = &config_read_array('pppoes', 'pppoe');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['apply'])) {

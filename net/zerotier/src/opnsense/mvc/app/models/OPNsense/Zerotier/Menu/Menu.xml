@@ -1,0 +1,5 @@
+<menu>
+    <VPN>
+        <Zerotier order="30" VisibleName="Zerotier" cssClass="fa fa-lock fa-fw" url="/ui/zerotier/"/>
+    </VPN>
+</menu>

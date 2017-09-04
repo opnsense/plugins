@@ -82,7 +82,7 @@
                                 <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
                                 <Multiple>N</Multiple>
                                 <Required>N</Required>
-                        </linkedPrefixlistOut>                    
+                        </linkedPrefixlistOut>
                 </network>
         </networks>
         <interfaces>
@@ -196,6 +196,6 @@
                                 <Required>Y</Required>
                         </network>
                 </prefixlist>
-        </prefixlists>        
+        </prefixlists>
     </items>
 </model>

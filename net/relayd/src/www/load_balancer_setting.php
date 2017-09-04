@@ -34,13 +34,7 @@ require_once("services.inc");
 require_once("plugins.inc.d/relayd.inc");
 require_once("interfaces.inc");
 
-if (empty($config['load_balancer']) || !is_array($config['load_balancer'])) {
-    $config['load_balancer'] = array();
-}
-
-if (empty($config['load_balancer']['setting']) || !is_array($config['load_balancer']['setting'])) {
-    $config['load_balancer']['setting'] = array();
-}
+config_read_array('load_balancer', 'setting');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig = array();

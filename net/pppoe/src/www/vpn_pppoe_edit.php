@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2005 Scott Ullrich (sullrich@gmail.com)
+    Copyright (C) 2005 Scott Ullrich <sullrich@gmail.com>
     Copyright (C) 2010 Ermal Luçi
     All rights reserved.
 
@@ -50,11 +50,7 @@ function vpn_pppoe_get_id()
     return $vpnid;
 }
 
-if (empty($config['pppoes']['pppoe']) || !is_array($config['pppoes']['pppoe'])) {
-    $config['pppoes'] = array();
-    $config['pppoes']['pppoe'] = array();
-}
-$a_pppoes = &$config['pppoes']['pppoe'];
+$a_pppoes = &config_read_array('pppoes', 'pppoe');
 
 $copy_fields = array('remoteip', 'localip', 'mode', 'interface', 'n_pppoe_units', 'pppoe_subnet', 'dns1', 'dns2', 'descr', 'pppoeid');
 

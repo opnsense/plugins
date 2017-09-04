@@ -1,0 +1,127 @@
+<model>
+    <mount>//OPNsense/clamav/general</mount>
+    <description>ClamAV configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <fc_enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </fc_enabled>
+        <enabletcp type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </enabletcp>
+        <maxthreads type="IntegerField">
+            <default>10</default>
+            <Required>N</Required>
+        </maxthreads>
+        <maxqueue type="IntegerField">
+            <default>100</default>
+            <Required>N</Required>
+        </maxqueue>
+        <idletimeout type="IntegerField">
+            <default>30</default>
+            <Required>N</Required>
+        </idletimeout>
+        <maxdirrecursion type="IntegerField">
+            <default>20</default>
+            <Required>N</Required>
+        </maxdirrecursion>
+        <followdirsym type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </followdirsym>
+        <followfilesym type="BooleanField">
+            <default>0</default>
+	    <Required>N</Required>
+	</followfilesym>
+        <disablecache type="TextField">
+            <default>0</default>
+	    <Required>N</Required>
+	</disablecache>
+        <scanpe type="BooleanField">
+            <default>1</default>
+	    <Required>N</Required>
+	</scanpe>
+        <scanelf type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanelf>
+        <detectbroken type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </detectbroken>
+        <scanole2 type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanole2>
+        <ole2blockmarcros type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </ole2blockmarcros>
+        <scanpdf type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanpdf>
+        <scanswf type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanswf>
+        <scanxmldocs type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanxmldocs>
+        <scanhwp3 type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanhwp3>
+        <scanmailfiles type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanmailfiles>
+        <scanhtml type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanhtml>
+        <scanarchive type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </scanarchive>
+        <arcblockenc type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </arcblockenc>
+        <maxscansize type="TextField">
+            <default>100M</default>
+            <Required>N</Required>
+        </maxscansize>
+	<maxfilesize type="TextField">
+            <default>25M</default>
+            <Required>N</Required>
+        </maxfilesize>
+	<maxrecursion type="IntegerField">
+            <default>16</default>
+            <Required>N</Required>
+        </maxrecursion>
+	<maxfiles type="IntegerField">
+            <default>10000</default>
+            <Required>N</Required>
+	</maxfiles>
+        <fc_logverbose type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </fc_logverbose>
+        <fc_databasemirror type="TextField">
+            <default>database.clamav.net</default>
+            <Required>Y</Required>
+        </fc_databasemirror>
+        <fc_timeout type="TextField">
+            <default>60</default>
+            <Required>Y</Required>
+        </fc_timeout>
+	</items>
+</model>

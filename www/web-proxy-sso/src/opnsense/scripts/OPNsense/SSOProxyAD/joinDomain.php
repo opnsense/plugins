@@ -59,7 +59,7 @@ if ($enabled == 1) {
     if (!file_exists($keytab)) {
         file_put_contents($krb5secret, $domainpassword);
         chmod($krb5secret, 0600);
-        exec('/usr/bin/kinit --password-file="' . $krb5secret . '" ' . $domainuser. "@" . strtoupper($domainname) . " 2>&1", $output_kinit, $error_kinit);
+        exec('/usr/local/bin/kinit --password-file="' . $krb5secret . '" ' . $domainuser. "@" . strtoupper($domainname) . " 2>&1", $output_kinit, $error_kinit);
         if ($error_kinit > 0) {
             $out = implode($output_kinit);
             $return = array('message' => "$out");
@@ -72,7 +72,7 @@ if ($enabled == 1) {
             if ((file_exists($keytab)) and ($error_msktutil <= 0)) {
                 chown($keytab, 'squid');
                 chgrp($keytab, 'squid');
-                exec("/usr/bin/kdestroy 2>&1", $output_kdestroy, $error_kdestroy);
+                exec("/usr/local/bin/kdestroy 2>&1", $output_kdestroy, $error_kdestroy);
                 $return = array('message' => "keytab created");
             } else {
                 $out = implode($output_msktutil);

@@ -37,12 +37,14 @@ net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
+net/mdns-repeater -- Proxy multicast DNS between networks
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- Quagga Routing Suite
 net/relayd -- Relayd Load Balancer
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
+net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/snmp -- SNMP Server via bsnmpd
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
@@ -52,8 +54,10 @@ sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 security/acme-client -- Let's Encrypt client
+security/clamav -- Antivirus engine for detecting malicious threats
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/tinc -- Tinc VPN
+www/c-icap -- c-icap connects your Proxy with a virus scanner
 www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```
 
@@ -90,6 +94,7 @@ The make targets for any plugin directory:
 * install:	install to target directory
 * lint:		run syntax checks
 * package:	creates a package
+* upgrade:	upgrades existing package
 * remove:	remove known files from target directory
 * style-fix:	apply style fixes
 * style:	run style checks

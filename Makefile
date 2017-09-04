@@ -15,6 +15,7 @@ list:
 	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor
 
+# shared targets that are sane to run from the root directory
 TARGETS=	lint sweep style style-fix clean
 
 .for TARGET in ${TARGETS}
@@ -23,3 +24,8 @@ ${TARGET}:
 	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
 .  endfor
 .endfor
+
+license:
+	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
+
+.PHONY: license

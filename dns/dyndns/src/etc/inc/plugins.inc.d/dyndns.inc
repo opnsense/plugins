@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2014-2017 Franco Fichtner <franco@opnsense.org>
-    Copyright (C) 2010 Ermal Luci
+    Copyright (C) 2010 Ermal Luçi
     Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
     Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
     All rights reserved.
@@ -125,6 +125,8 @@ function dyndns_list()
         'opendns' => 'OpenDNS',
         'oray' => 'Oray',
         'ovh-dynhost' => 'OVH DynHOST',
+        'regfish' => 'regfish',
+        'regfish-v6' => 'regfish (v6)',
         'route53' => 'Route 53',
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',

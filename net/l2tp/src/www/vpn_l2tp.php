@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2014-2015 Deciso B.V.
-    Copyright (C) 2005 Scott Ullrich (sullrich@gmail.com)
+    Copyright (C) 2005 Scott Ullrich <sullrich@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,8 @@ require_once("services.inc");
 require_once("system.inc");
 require_once("plugins.inc.d/if_l2tp.inc");
 
-if (!isset($config['l2tp']['radius']) || !is_array($config['l2tp']['radius'])) {
-    $config['l2tp']['radius'] = array();
-}
-$l2tpcfg = &$config['l2tp'];
+$l2tpcfg = &config_read_array('l2tp');
+config_read_array('l2tp', 'radius');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['remoteip'] = $l2tpcfg['remoteip'];

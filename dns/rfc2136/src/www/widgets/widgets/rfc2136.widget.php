@@ -3,7 +3,7 @@
 /*
     Copyright (C) 2017 Franco Fichtner <franco@opnsense.org>
     Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2008 Ermal Luci
+    Copyright (C) 2008 Ermal Luçi
     Copyright (C) 2013 Stanley P. Miller \ stan-qaz
     All rights reserved.
 
@@ -35,11 +35,7 @@ require_once("services.inc");
 require_once("interfaces.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
-if (!isset($config['dnsupdates']['dnsupdate'])) {
-    $config['dnsupdates']['dnsupdate'] = array();
-}
-
-$a_rfc2136 = &$config['dnsupdates']['dnsupdate'];
+$a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
 
 if (!empty($_REQUEST['getrfc2136status'])) {
     $first_entry = true;

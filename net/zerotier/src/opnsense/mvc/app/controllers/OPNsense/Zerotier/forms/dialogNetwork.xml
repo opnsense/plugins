@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>network.networkId</id>
+        <label>Network ID</label>
+        <type>text</type>
+        <help>Zerotier Network ID e.g., 161411d4f6abe4a7</help>
+    </field>
+    <field>
+        <id>network.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description to help identify this network</help>
+    </field>
+</form>

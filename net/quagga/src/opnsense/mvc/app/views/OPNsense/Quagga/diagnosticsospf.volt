@@ -123,8 +123,8 @@ POSSIBILITY OF SUCH DAMAGE.
           <td><%= area['interfaces']['active'] %></td>
         </tr>
         <tr>
-          <td>{{ lang._('Fully Adjacent Neighbour Count') }}</td>
-          <td><%= area['fully_adjacent_neighbour_count'] %></td>
+          <td>{{ lang._('Fully Adjacent Neighbor Count') }}</td>
+          <td><%= area['fully_adjacent_neighbor_count'] %></td>
         </tr>
         <tr>
           <td>{{ lang._('SPF Execution Count') }}</td>

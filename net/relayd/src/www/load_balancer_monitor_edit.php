@@ -75,10 +75,7 @@ $rfc2616 = array(
     505 => "505 HTTP Version Not Supported"
 );
 
-if (empty($config['load_balancer']['monitor_type']) || !is_array($config['load_balancer']['monitor_type'])) {
-    $config['load_balancer']['monitor_type'] = array();
-}
-$a_monitor = &$config['load_balancer']['monitor_type'];
+$a_monitor = &config_read_array('load_balancer', 'monitor_type');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {

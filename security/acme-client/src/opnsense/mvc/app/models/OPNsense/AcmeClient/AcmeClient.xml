@@ -152,8 +152,8 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^.{1,255}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <mask>/^[^\s^\t^,^;^\\^\/^(^)^\[^\]]{1,255}$/u</mask>
+                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com (max 255 characters).</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
@@ -163,9 +163,9 @@
                 <altNames type="CSVListField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
-                    <mask>/^.{1,16384}$/u</mask>
+                    <mask>/^[^\s^\t^;^\\^\/^(^)^\[^\]]{1,65535}$/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com. Field length is limited to 16384 characters.</ValidationMessage>
+                    <ValidationMessage>Please provide one or more valid FQDNs, i.e. www.example.com or mail.example.com. Field length is limited to 65535 characters.</ValidationMessage>
                 </altNames>
                 <account type="ModelRelationField">
                     <Model>
@@ -325,19 +325,30 @@
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cyon>cyon.ch API</dns_cyon>
-                        <dns_do>Domain-Offensive API</dns_do>
+                        <dns_dgon>DigitalOcean API</dns_dgon>
+                        <dns_dnsimple>DNSimple API</dns_dnsimple>
+                        <dns_me>DNSMadeEasy.com API</dns_me>
+                        <dns_do>Domain-Offensive/Resellerinterface/Domainrobot API</dns_do>
                         <dns_dp>DNSPod.cn API</dns_dp>
+                        <dns_duckdns>DuckDNS API</dns_duckdns>
+                        <dns_dyn>Dyn Managed DNS API</dns_dyn>
+                        <dns_dynu>Dynu API</dns_dynu>
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
+                        <dns_he>Hurricane Electric</dns_he>
+                        <dns_infoblox>Infoblox API</dns_infoblox>
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_lua>LuaDNS.com API</dns_lua>
-                        <dns_me>DNSMadeEasy.com API</dns_me>
+                        <dns_namecom>Name.com API</dns_namecom>
+                        <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
+                        <dns_vscale>Vscale API</dns_vscale>
+                        <dns_yandex>Yandex PDD API</dns_yandex>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">

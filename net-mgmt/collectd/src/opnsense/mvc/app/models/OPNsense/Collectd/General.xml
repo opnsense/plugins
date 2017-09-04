@@ -1,0 +1,108 @@
+<model>
+    <mount>//OPNsense/collectd/general</mount>
+    <description>Collectd configuration</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <hostname type="TextField">
+            <default></default>
+            <Required>Y</Required>
+	    <mask>/^.{1,64}$/u</mask>
+        </hostname>
+        <fqdnlookup type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </fqdnlookup>
+        <interval type="IntegerField">
+            <default>10</default>
+            <Required>N</Required>
+        </interval>
+        <p_network_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_network_enable>
+        <p_network_host type="TextField">
+            <default></default>
+            <Required>N</Required>
+	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+	    <mask>/^([0-9a-zA-Z\-\.]){1,1024}$/u</mask>
+        </p_network_host>
+        <p_network_port type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+	    <MinimumValue>1</MinimumValue>
+	    <MaximumValue>65535</MaximumValue>
+        </p_network_port>
+        <p_network_username type="TextField">
+            <default></default>
+	    <Required>N</Required>
+	    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+	</p_network_username>
+        <p_network_password type="TextField">
+            <default></default>
+	    <Required>N</Required>
+	    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+	</p_network_password>
+        <p_network_encryption type="BooleanField">
+            <default>0</default>
+	    <Required>N</Required>
+	</p_network_encryption>
+        <p_graphite_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_graphite_enable>
+        <p_graphite_node type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </p_graphite_node>
+        <p_graphite_host type="TextField">
+            <default></default>
+            <Required>N</Required>
+	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+        </p_graphite_host>
+        <p_graphite_port type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+	    <MinimumValue>1</MinimumValue>
+	    <MaximumValue>65535</MaximumValue>
+        </p_graphite_port>
+        <p_contextswitch_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_contextswitch_enable>
+        <p_cpu_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_cpu_enable>
+        <p_df_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_df_enable>
+        <p_interface_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_interface_enable>
+        <p_load_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_load_enable>
+        <p_memory_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_memory_enable>
+        <p_processes_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_processes_enable>
+        <p_uptime_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_uptime_enable>
+        <p_users_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_users_enable>
+    </items>
+</model>

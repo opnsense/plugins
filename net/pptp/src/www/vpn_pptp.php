@@ -34,10 +34,7 @@ require_once('services.inc');
 require_once("system.inc");
 require_once('plugins.inc.d/if_pptp.inc');
 
-if (!is_array($config['pptpd']['radius'])) {
-    $config['pptpd']['radius'] = array();
-}
-$pptpcfg = &$config['pptpd'];
+$pptpcfg = &config_read_array('pptpd');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['remoteip'] = $pptpcfg['remoteip'];

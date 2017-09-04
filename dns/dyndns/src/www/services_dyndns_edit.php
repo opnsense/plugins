@@ -45,10 +45,7 @@ function is_dyndns_username($uname)
     }
 }
 
-if (!isset($config['dyndnses']['dyndns'])) {
-    $config['dyndnses']['dyndns'] = array();
-}
-$a_dyndns = &$config['dyndnses']['dyndns'];
+$a_dyndns = &config_read_array('dyndnses', 'dyndns');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_dyndns[$_GET['id']])) {
@@ -93,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $reqdfieldsn[] = gettext('Hostname');
         $reqdfields[] = 'username';
         $reqdfieldsn[] = gettext('Username');
-        if ($pconfig['type'] != 'duckdns') {
+        if (!in_array($pconfig['type'], array('duckdns', 'regfish', 'regfish-v6'))) {
             $reqdfields[] = 'password';
             $reqdfieldsn[] = gettext('Password');
         }

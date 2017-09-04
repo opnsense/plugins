@@ -47,4 +47,9 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->title = gettext("Diagnostics: General");
         $this->view->pick('OPNsense/Quagga/diagnosticsgeneral');
     }
+    public function logAction()
+    {
+        $this->view->title = gettext("Diagnostics: Log");
+        $this->view->pick('OPNsense/Quagga/log');
+    }
 }

@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2014-2017 Franco Fichtner <franco@opnsense.org>
- * Copyright (C) 2010 Ermal Luci
+ * Copyright (C) 2010 Ermal Luçi
  * Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
  * All rights reserved.
@@ -33,7 +33,7 @@ function igmpproxy_enabled()
 {
     global $config;
 
-    return isset($config['igmpproxy']['igmpentry']);
+    return !empty($config['igmpproxy']['igmpentry']);
 }
 
 function igmpproxy_services()

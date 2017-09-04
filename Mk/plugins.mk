@@ -116,11 +116,8 @@ scripts-auto:
 			done; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/${SRC}/opnsense/service/conf/actions.d ]; then \
-		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			cat ${TEMPLATESDIR}/actions.d >> \
-			    ${DESTDIR}/$${SCRIPT}; \
-		done; \
+	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
+		cat ${TEMPLATESDIR}/actions.d >> ${DESTDIR}/+POST_INSTALL; \
 	fi
 	@if [ -d ${.CURDIR}/${SRC}/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
@@ -128,12 +125,19 @@ scripts-auto:
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/${SRC}/opnsense/service/templates ]; then \
-		for FILE in $$(cd ${.CURDIR}/${SRC}/opnsense/service/templates && \
-		    find -s . -mindepth 2 -type d); do \
-			echo "echo -n \"Reloading template $${FILE#./}: \"" >> \
+	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/mvc/app/models && \
+		    find -s . -depth 2 -type d); do \
+			cat ${TEMPLATESDIR}/models | \
+			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
-			echo "/usr/local/sbin/configctl template reload $${FILE#./}" >> \
+		done; \
+	fi
+	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
+		    find -s . -depth 2 -type d); do \
+			cat ${TEMPLATESDIR}/templates | \
+			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
 	fi
@@ -201,10 +205,24 @@ PKGDIR?=${WRKDIR}/pkg
 package: check
 	@rm -rf ${WRKSRC}
 	@mkdir -p ${WRKSRC} ${PKGDIR}
+.for DEP in ${PLUGIN_DEPENDS}
+	@if ! ${PKG} info ${DEP} > /dev/null; then ${PKG} install -yA ${DEP}; fi
+.endfor
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} metadata
 	@${MAKE} DESTDIR=${WRKSRC} FLAVOUR=${FLAVOUR} install
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
+
+upgrade-check: check
+	@if ! ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
+		echo ">>> Cannot find package.  Please run 'pkg install ${PLUGIN_PKGNAME}'" >&2; \
+		exit 1; \
+	fi
+	@rm -rf ${PKGDIR}
+
+upgrade: upgrade-check package
+	@${PKG} delete -fy ${PLUGIN_PKGNAME}
+	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
 	mount_unionfs ${.CURDIR}/${SRC} ${DESTDIR}${LOCALBASE}
@@ -237,6 +255,8 @@ sweep: check
 	fi
 	find ${.CURDIR}/${SRC} ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
+	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+	find ${.CURDIR} -type f -depth 1 -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
 style: check

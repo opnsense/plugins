@@ -1,0 +1,9 @@
+<acl>
+   <page-services-collectd>
+      <name>Services: Collectd</name>
+      <patterns>
+         <pattern>ui/collectd/*</pattern>
+         <pattern>api/collectd/*</pattern>
+      </patterns>
+   </page-services-collectd>
+</acl>

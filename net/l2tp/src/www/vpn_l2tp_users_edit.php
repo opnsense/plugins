@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2006 Scott Ullrich (sullrich@gmail.com)
+    Copyright (C) 2006 Scott Ullrich <sullrich@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -48,10 +48,7 @@ require_once("services.inc");
 require_once("system.inc");
 require_once("plugins.inc.d/if_l2tp.inc");
 
-if (empty($config['l2tp']['user']) || !is_array($config['l2tp']['user'])) {
-    $config['l2tp']['user'] = array();
-}
-$a_secret = &$config['l2tp']['user'];
+$a_secret = &config_read_array('l2tp', 'user');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_secret[$_GET['id']])) {

@@ -42,7 +42,6 @@ require_once("certs.inc");
 require_once("legacy_bindings.inc");
 require_once("interfaces.inc");
 require_once("util.inc");
-require_once("system.inc"); // required for Web UI restart action
 // Some stuff requires the almighty MVC framework.
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
@@ -607,6 +606,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['CY_Username'] = (string)$valObj->dns_cyon_user;
                 $proc_env['CY_Password'] = (string)$valObj->dns_cyon_user;
                 break;
+            case 'dns_dgon':
+                $proc_env['DO_API_KEY'] = (string)$valObj->dns_dgon_key;
+                break;
+            case 'dns_dnsimple':
+                $proc_env['DNSimple_OAUTH_TOKEN'] = (string)$valObj->dns_dnsimple_token;
+                break;
             case 'dns_do':
                 $proc_env['DO_PID'] = (string)$valObj->dns_do_pid;
                 $proc_env['DO_PW'] = (string)$valObj->dns_do_password;
@@ -614,6 +619,18 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_dp':
                 $proc_env['DP_Id'] = (string)$valObj->dns_dp_id;
                 $proc_env['DP_Key'] = (string)$valObj->dns_dp_key;
+                break;
+            case 'dns_duckdns':
+                $proc_env['DuckDNS_Token'] = (string)$valObj->dns_duckdns_token;
+                break;
+            case 'dns_dyn':
+                $proc_env['DYN_Customer'] = (string)$valObj->dns_dyn_customer;
+                $proc_env['DYN_Username'] = (string)$valObj->dns_dyn_user;
+                $proc_env['DYN_Password'] = (string)$valObj->dns_dyn_password;
+                break;
+            case 'dns_dynu':
+                $proc_env['Dynu_ClientId'] = (string)$valObj->dns_dynu_clientid;
+                $proc_env['Dynu_Secret'] = (string)$valObj->dns_dynu_secret;
                 break;
             case 'dns_freedns':
                 $proc_env['FREEDNS_User'] = (string)$valObj->dns_freedns_user;
@@ -625,6 +642,14 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
                 $proc_env['GD_Secret'] = (string)$valObj->dns_gd_secret;
+                break;
+            case 'dns_he':
+                $proc_env['HE_Username'] = (string)$valObj->dns_he_user;
+                $proc_env['HE_Password'] = (string)$valObj->dns_he_password;
+                break;
+            case 'dns_infoblox':
+                $proc_env['Infoblox_Creds'] = (string)$valObj->dns_infoblox_credentials;
+                $proc_env['Infoblox_Server'] = (string)$valObj->dns_infoblox_server;
                 break;
             case 'dns_ispconfig':
                 $proc_env['ISPC_User'] = (string)$valObj->dns_ispconfig_user;
@@ -655,6 +680,13 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ME_Key'] = (string)$valObj->dns_me_key;
                 $proc_env['ME_Secret'] = (string)$valObj->dns_me_secret;
                 break;
+            case 'dns_namecom':
+                $proc_env['Namecom_Username'] = (string)$valObj->dns_namecom_user;
+                $proc_env['Namecom_Token'] = (string)$valObj->dns_namecom_token;
+                break;
+            case 'dns_nsone':
+                $proc_env['NS1_Key'] = (string)$valObj->dns_nsone_key;
+                break;
             case 'dns_nsupdate':
                 // Write secret key to filesystem
                 $secret_key_data = (string)$valObj->dns_nsupdate_key . "\n";
@@ -673,6 +705,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['PDNS_Url'] = (string)$valObj->dns_pdns_url;
                 $proc_env['PDNS_ServerId'] = (string)$valObj->dns_pdns_serverid;
                 $proc_env['PDNS_Token'] = (string)$valObj->dns_pdns_token;
+                break;
+            case 'dns_vscale':
+                $proc_env['VSCALE_API_KEY'] = (string)$valObj->dns_vscale_key;
+                break;
+            case 'dns_yandex':
+                $proc_env['PDD_Token'] = (string)$valObj->dns_yandex_token;
                 break;
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);
@@ -1016,7 +1054,7 @@ function run_restart_actions($certlist, $modelObj)
             log_error("AcmeClient: running restart action: " . $action->name);
             switch ((string)$action->type) {
                 case 'restart_gui':
-                    $response = system_webgui_configure();
+                    $response = $backend->configdRun('webgui restart 2', true);
                     break;
                 case 'restart_haproxy':
                     $response = $backend->configdRun("haproxy restart");
