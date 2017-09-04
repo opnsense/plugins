@@ -45,8 +45,22 @@ class ZerotierController extends ApiMutableModelControllerBase
     {
         $result = array();
         if ($this->request->isGet()) {
-            $mdlZerotier = new Zerotier();
+            $mdlZerotier = $this->getModel();
             $result['zerotier'] = $mdlZerotier->getNodes();
+        }
+        return $result;
+    }
+
+    public function setAction()
+    {
+        $result = array("result" => "failed");
+        if($this->request->isPost()) {
+            $mdlZerotier = $this->getModel();
+            $mdlZerotier->setNodes($this->request->getPost("zerotier"));
+            $mdlZerotier->serializeToConfig();
+            Config::getInstance()->save();
+            $enabled = $this->isEnabled($mdlZerotier);
+            $result["result"] = $this->toggleZerotierService($enabled);
         }
         return $result;
     }
@@ -129,8 +143,12 @@ class ZerotierController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlZerotier = $this->getModel();
             if ($uuid != null) {
+                if (!$this->isEnabled($mdlZerotier)) {
+                    $result["result"] = "service_not_enabled";
+                    return $result;
+                }
                 $node = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
-                if ($node->enabled->__toString() == "1") {
+                if ($this->isEnabled($node)) {
                     # Ensure we remove the interface before deleting the network
                     $this->toggleZerotierNetwork($node->networkId, 0);
                 }
@@ -139,7 +157,7 @@ class ZerotierController extends ApiMutableModelControllerBase
                     Config::getInstance()->save();
                     $result["result"] = "deleted";
                 } else {
-                    $result["result"] = "not found";
+                    $result["result"] = "not_found";
                 }
             }
         }
@@ -152,10 +170,14 @@ class ZerotierController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlZerotier = $this->getModel();
             if ($uuid != null) {
+                if (!$this->isEnabled($mdlZerotier)) {
+                    $result["result"] = "service_not_enabled";
+                    return $result;
+                }
                 $node = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
                 if ($node != null) {
                     $networkId = $node->networkId;
-                    if ($node->enabled->__toString() == "1") {
+                    if ($this->isEnabled($node)) {
                         $node->enabled = "0";
                         $result['result'] = $this->toggleZerotierNetwork($networkId, 0);
                     } else {
@@ -170,34 +192,13 @@ class ZerotierController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function reconfigureZerotierAction()
-    {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $backend = new Backend();
-            $backend->configdRun("template reload OPNsense/zerotier");
-            $mdlZerotier = $this->getModel();
-            $action = 'stop';
-            foreach ($mdlZerotier->networks->network->__items as $network) {
-                if ($network->enabled == '1') {
-                    $action = 'restart';
-                    break;
-                }
-            }
-            $result = trim($backend->configdRun("zerotier $action"));
-            return array("status" => $result);
-        } else {
-            return array("status" => "failed");
-        }
-    }
-
     public function statusAction()
     {
         $mdlZerotier = $this->getModel();
         $enabled = false;
 
         foreach ($mdlZerotier->networks->network->__items as $network) {
-            if ($network->enabled == '1') {
+            if ($this->isEnabled($network)) {
                 $enabled = true;
                 break;
             }
@@ -220,7 +221,7 @@ class ZerotierController extends ApiMutableModelControllerBase
             $status = "unknown";
         }
 
-        return array("status" => $status);
+        return array("result" => $status);
     }
 
     private function toggleZerotierNetwork($networkId, $enabled)
@@ -229,4 +230,18 @@ class ZerotierController extends ApiMutableModelControllerBase
         $action = $enabled ? 'join' : 'leave';
         return trim($backend->configdRun("zerotier $action $networkId"));
     }
+
+    private function toggleZerotierService($enabled)
+    {
+        $backend = new Backend();
+        $backend->configdRun("template reload OPNsense/zerotier");
+        $action = $enabled ? "start" : "stop";
+        return trim($backend->configdRun("zerotier $action"));
+    }
+
+    private function isEnabled($node)
+    {
+        return $node->enabled->__toString() == "1";
+    }
+
 }
