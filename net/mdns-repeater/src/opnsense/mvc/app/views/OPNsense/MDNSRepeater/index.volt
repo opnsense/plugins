@@ -41,10 +41,12 @@ $( document ).ready(function() {
     // link save button to API set action
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/mdnsrepeater/settings/set", formid='general',callback_ok=function(){
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/mdnsrepeater/service/restart", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/mdnsrepeater/service/status", sendData={}, callback=function(data,status) {
                     updateServiceStatusUI(data['result']);
                 });
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
@@ -54,8 +56,8 @@ $( document ).ready(function() {
 
 <div class="content-box" style="padding-bottom: 1.5em;">
     {{ partial("layout_partials/base_form",['fields': general,'id':'general'])}}
-    <hr />
     <div class="col-md-12">
-        <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+        <hr />
+        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
     </div>
 </div>
