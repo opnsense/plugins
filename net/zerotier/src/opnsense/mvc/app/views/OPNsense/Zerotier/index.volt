@@ -31,6 +31,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
     $(document).ready(function() {
 
+        var zerotierSettings = {'global': '/api/zerotier/zerotier/get'};
+
+        mapDataToFormUI(zerotierSettings).done(function(data) {
+            formatTokenizersUI();
+            $('select').selectpicker('refresh');
+        });
+
         $("#grid-networks").UIBootgrid(
             {
                 search: '/api/zerotier/zerotier/searchNetwork',
@@ -42,37 +49,55 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
-        ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
+        ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data, status) {
+            updateServiceStatusUI(data['result']);
+            toggleNetworksTab(data['result']);
         });
 
-        $("#reconfigureZerotier").click(function() {
-            $("#reconfigureZerotierProgress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/zerotier/zerotier/reconfigureZerotier", sendData={}, callback=function(data, status) {
-                ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
+        $("#save").click(function() {
+            $("#saveProgress").addClass("fa fa-spinner fa-pulse");
+            saveFormToEndpoint(url="/api/zerotier/zerotier/set", formid="global", callback_ok=function(data, status) {
+                ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data, status) {
+                    updateServiceStatusUI(data['result']);
+                    toggleNetworksTab(data['result']);
                 });
-                $("#reconfigureZerotierProgress").removeClass("fa fa-spinner fa-pulse");
-                if (status != "success" || data['status'] != 'OK') {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Error reconfiguring Zerotier') }}",
-                        message: data['status'],
-                        draggable: true
-                    });
-                }
+                $("#saveProgress").removeClass("fa fa-spinner fa-pulse");
             });
         });
+
+        function toggleNetworksTab(status) {
+            switch(status) {
+                case "disabled":
+                case "service_not_enabled":
+                    $('#ztNetworks').addClass("disabled");
+                    $('#ztNetworksLink').removeAttr("data-toggle");
+                    break;
+                default:
+                    $('#ztNetworks').removeClass("disabled");
+                    $('#ztNetworksLink').attr("data-toggle", "tab");
+            }
+        };
+
     });
 
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+    <li id="ztGlobal" class="active"><a data-toggle="tab" href="#global">{{ lang._('Global') }}</a></li>
+    <li id="ztNetworks"><a id="ztNetworksLink" data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="networks" class="tab-pane fade in active">
+    <div id="global" class="tab-pane fade in active">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form", ['fields': globalForm, 'id': 'global']) }}
+            <hr/>
+            <div class="col-md-12">
+                <button class="btn btn-primary" id="save" type="button"><b>{{ lang._('Save') }}</b> <i id="saveProgress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="networks" class="tab-pane fade in">
         <table id="grid-networks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogNetwork">
             <thead>
                 <tr>
@@ -95,11 +120,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureZerotier" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureZerotierProgress" class=""></i></button>
-        <br/><br/>
-    </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogNetwork,'id':'dialogNetwork','label':lang._('Edit Zerotier Network')]) }}
+{{ partial("layout_partials/base_dialog", ['fields': dialogNetworkForm, 'id': 'dialogNetwork', 'label': lang._('Edit Zerotier Network')]) }}
