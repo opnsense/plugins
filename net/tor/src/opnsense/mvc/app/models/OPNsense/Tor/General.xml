@@ -1,0 +1,66 @@
+<model>
+  <mount>//OPNsense/tor/general</mount>
+  <description>General Tor configuration</description>
+  <items>
+    <enabled type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enabled>
+    <socks_listen_ip type="InterfaceField">
+      <Required>N</Required>
+      <multiple>Y</multiple>
+    </socks_listen_ip>
+    <socks_listen_port type="IntegerField">
+      <default>9050</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </socks_listen_port>
+    <control_port type="IntegerField">
+      <default>9051</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>N</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </control_port>
+    <enablelogfile type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enablelogfile>
+    <logfilelevel type="OptionField">
+      <Required>Y</Required>
+      <multiple>N</multiple>
+      <default>notifications</default>
+      <OptionValues>
+        <critical>Critical</critical>
+        <emergencies>Emergencies</emergencies>
+        <errors>Errors</errors>
+        <alerts>Alerts</alerts>
+        <warnings>Warnings</warnings>
+        <notifications>Notifications</notifications>
+        <informational>Informational</informational>
+        <debugging>Debugging</debugging>
+      </OptionValues>
+    </logfilelevel>
+    <enablesyslog type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+    </enablesyslog>
+    <sysloglevel type="OptionField">
+      <Required>Y</Required>
+      <multiple>N</multiple>
+      <default>notifications</default>
+      <OptionValues>
+        <critical>Critical</critical>
+        <emergencies>Emergencies</emergencies>
+        <errors>Errors</errors>
+        <alerts>Alerts</alerts>
+        <warnings>Warnings</warnings>
+        <notifications>Notifications</notifications>
+        <informational>Informational</informational>
+        <debugging>Debugging</debugging>
+      </OptionValues>
+    </sysloglevel>
+  </items>
+</model>

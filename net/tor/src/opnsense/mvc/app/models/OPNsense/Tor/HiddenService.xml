@@ -1,0 +1,15 @@
+<model>
+  <mount>//OPNsense/tor/hiddenservice</mount>
+  <description>Tor hidden service configuration</description>
+  <items>
+    <service type="ArrayField">
+      <enabled type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </enabled>
+      <name type="TextField">
+        <Required>Y</Required>
+      </name>
+    </service>
+  </items>
+</model>

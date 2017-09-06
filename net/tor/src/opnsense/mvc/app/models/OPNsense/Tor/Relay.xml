@@ -1,0 +1,44 @@
+<model>
+  <mount>//OPNsense/tor/relay</mount>
+  <description>Tor Relay configuration</description>
+  <items>
+    <enabled type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enabled>
+    <host type="TextField">
+      <Required>N</Required>
+    </host>
+    <port type="IntegerField">
+      <default>9090</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </port>
+    <no_advertise type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </no_advertise>
+    <address type="TextField">
+      <Required>N</Required>
+    </address>
+    <nick type="TextField">
+      <Required>N</Required>
+    </nick>
+    <bandwithrate type="IntegerField">
+      <Required>N</Required>
+    </bandwithrate>
+    <bandwithburst type="IntegerField">
+      <Required>N</Required>
+    </bandwithburst>
+    <relay type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+    </relay>
+    <publish type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+    </publish>
+  </items>
+</model>
