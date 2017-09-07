@@ -58,5 +58,8 @@
             <default></default>
             <Required>N</Required>
         </servername>
+        <whiteList type="CSVListField">
+            <Required>N</Required>
+        </whiteList>
 	</items>
 </model>
