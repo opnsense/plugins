@@ -1,3 +1,4 @@
 c_icap:/etc/rc.conf.d/c_icap
 c-icap.conf:/usr/local/etc/c-icap/c-icap.conf
 virus_scan.conf:/usr/local/etc/c-icap/virus_scan.conf
+c-icap.squid.conf:/usr/local/etc/squid/auth/c-icap.conf

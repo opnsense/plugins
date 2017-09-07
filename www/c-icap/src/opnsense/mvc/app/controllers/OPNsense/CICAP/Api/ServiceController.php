@@ -34,6 +34,7 @@ namespace OPNsense\CICAP\Api;
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\CICAP\General;
+use \OPNsense\Proxy\Proxy;
 
 /**
  * Class ServiceController
@@ -150,6 +151,11 @@ class ServiceController extends ApiControllerBase
             // (res)start daemon
             if ($mdlGeneral->enabled->__toString() == 1) {
                 $this->startAction();
+            }
+
+            // restart squid
+            if ((new Proxy())->general->enabled->__toString() == 1) {
+                $backend->configdRun("proxy reconfigure");
             }
 
             return array("status" => "ok");
