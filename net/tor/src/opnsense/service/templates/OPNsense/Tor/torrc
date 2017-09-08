@@ -6,12 +6,12 @@
 ##
 {% if helpers.exists('OPNsense.tor.general.enabled') and OPNsense.tor.general.enabled == '1' %}
 
-SOCKSPort 127.0.0.1:{{ socks_listen_port|default('9050') }} # localhost IPv4
-SOCKSPort [::1]:{{ socks_listen_port|default('9050') }}     # localhost IPv6
+SOCKSPort 127.0.0.1:{{ OPNsense.tor.general.socks_listen_port|default('9050') }} # localhost IPv4
+SOCKSPort [::1]:{{ OPNsense.tor.general.socks_listen_port|default('9050') }}     # localhost IPv6
 
 {% if helpers.exists('OPNsense.tor.general.socks_listen_ip') and OPNsense.tor.general.socks_listen_ip != '' %}
 {% for listen_interface in OPNsense.tor.general.socks_listen_ip.split(',') %}
-#SOCKSPort ip_of_{{ listen_interface }}:{{ socks_listen_port|default('9050') }} # TODO Bind to this address:port too.
+#SOCKSPort ip_of_{{ listen_interface }}:{{ OPNsense.tor.general.socks_listen_port|default('9050') }} # TODO Bind to this address:port too.
 {% endfor %}
 {% endif %}
 
