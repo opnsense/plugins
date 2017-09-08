@@ -49,4 +49,18 @@
     <type>dropdown</type>
     <help>This is the detail level of the log. A higher level means more data is logged.</help>
   </field>
+  <field>
+    <id>general.fascist_firewall</id>
+    <label>Fascist Mode</label>
+    <type>checkbox</type>
+    <help>This try to circumvent censorship. Please note that the fascist mode does not support "Hidden Services".</help>
+  </field>
+  <field>
+    <id>general.fascist_firewall_ports</id>
+    <label>Fascist Firewall Ports</label>
+    <type>select_multiple</type>
+    <help>Open ports by the fascist firewall.</help>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+  </field>
 </form>

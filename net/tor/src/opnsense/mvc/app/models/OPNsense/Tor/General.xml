@@ -62,5 +62,13 @@
         <debugging>Debugging</debugging>
       </OptionValues>
     </sysloglevel>
+    <fascist_firewall type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </fascist_firewall>
+    <fascist_firewall_ports type="CSVListField">
+      <default>80,443</default>
+      <Required>Y</Required>
+    </fascist_firewall_ports>
   </items>
 </model>

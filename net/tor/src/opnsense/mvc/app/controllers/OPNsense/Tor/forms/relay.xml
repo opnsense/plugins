@@ -9,16 +9,12 @@
     <id>relay.host</id>
     <label>Host</label>
     <type>text</type>
+    <advanced>true</advanced>
   </field>
   <field>
     <id>relay.port</id>
     <label>Port</label>
     <type>text</type>
-  </field>
-  <field>
-    <id>relay.no_advertise</id>
-    <label>No Advertise</label>
-    <type>checkbox</type>
   </field>
   <field>
     <id>relay.address</id>
@@ -41,6 +37,16 @@
     <id>relay.bandwithburst</id>
     <label>Bandwith Burst</label>
     <type>text</type>
+  </field>
+  <field>
+    <id>relay.directory_port</id>
+    <label>Directory Port</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>relay.exitrejectprivateip</id>
+    <label>Reject Private IPs</label>
+    <type>checkbox</type>
   </field>
   <field>
     <id>relay.relay</id>

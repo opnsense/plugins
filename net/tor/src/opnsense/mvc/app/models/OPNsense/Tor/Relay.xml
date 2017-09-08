@@ -10,16 +10,18 @@
       <Required>N</Required>
     </host>
     <port type="IntegerField">
-      <default>9090</default>
+      <default>9001</default>
       <MinimumValue>0</MinimumValue>
       <Required>Y</Required>
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </port>
-    <no_advertise type="BooleanField">
-      <default>0</default>
-      <Required>Y</Required>
-    </no_advertise>
+    <directory_port type="IntegerField">
+      <MinimumValue>1</MinimumValue>
+      <Required>N</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </directory_port>
     <address type="TextField">
       <Required>N</Required>
     </address>
@@ -36,6 +38,10 @@
         <default>0</default>
         <Required>Y</Required>
     </relay>
+    <exitrejectprivateip type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+    </exitrejectprivateip>
     <publish type="BooleanField">
         <default>0</default>
         <Required>Y</Required>

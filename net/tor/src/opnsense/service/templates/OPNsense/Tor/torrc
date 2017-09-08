@@ -47,9 +47,14 @@ DataDirectory /usr/local/var/db/tor
 ControlPort {{ OPNsense.tor.general.control_port }}
 {% endif %}
 
-# TODO: maybe add this
-# FascistFirewall 1
-# FirewallPorts 80, 443
+{% if helpers.exists('OPNsense.tor.general.fascist_firewall') and OPNsense.tor.general.fascist_firewall == '1' %}
+FascistFirewall 1
+{%   if helpers.exists('OPNsense.tor.general.fascist_firewall_ports') and OPNsense.tor.general.fascist_firewall_ports != '' %}
+FirewallPorts {{ OPNsense.tor.general.fascist_firewall_ports }}
+{%   endif %}
+{% else %}
+FascistFirewall 0
+{% endif %}
 
 ## If you enable the controlport, be sure to enable one of these
 ## authentication methods, to prevent attackers from accessing it.
@@ -78,18 +83,8 @@ HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
 
 {% if helpers.exists('OPNsense.tor.relay.enabled') and OPNsense.tor.relay.enabled == '1' %}
 
-## Required: what port to advertise for incoming Tor connections.
+ORPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.port|default('9001') }}
 
-#ORPort 9001
-## If you want to listen on a port other than the one advertised in
-## ORPort (e.g. to advertise 443 but bind to 9090), you can do it as
-## follows.  You'll need to do ipchains or other port forwarding
-## yourself to make this work.
-#ORPort 443 NoListen
-#ORPort 127.0.0.1:9090 NoAdvertise
-
-## The IP address or full DNS name for incoming connections to your
-## relay. Leave commented out and Tor will guess.
 {% if helpers.exists('OPNsense.tor.relay.address') and OPNsense.tor.relay.address != '' %}
 Address {{ OPNsense.tor.relay.address }}
 {% endif %}
@@ -129,15 +124,9 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 
 #ContactInfo 0xFFFFFFFF Random Person <nobody AT example dot com>
 
-## Uncomment this to mirror directory information for others. Please do
-## if you have enough bandwidth.
-#DirPort 9030 # what port to advertise for directory connections
-## If you want to listen on a port other than the one advertised in
-## DirPort (e.g. to advertise 80 but bind to 9091), you can do it as
-## follows.  below too. You'll need to do ipchains or other port
-## forwarding yourself to make this work.
-#DirPort 80 NoListen
-#DirPort 127.0.0.1:9091 NoAdvertise
+{% if helpers.exists('OPNsense.tor.relay.directory_port') and OPNsense.tor.relay.directory_port != '' %}
+DirPort {{ OPNsense.tor.relay.directory_port }}
+{% endif %}
 ## Uncomment to return an arbitrary blob of html on your DirPort. Now you
 ## can explain what Tor is if anybody wonders why your IP address is
 ## contacting them. See contrib/tor-exit-notice.html in Tor's source
@@ -158,16 +147,10 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 ## described in the man page or at
 ## https://www.torproject.org/documentation.html
 ##
-## If certain IPs and ports are blocked externally, e.g. by your firewall,
-## you should update your exit policy to reflect this -- otherwise Tor
-## users will be told that those destinations are down.
-##
-## For security, by default Tor rejects connections to private (local)
-## networks, including to the configured primary public IPv4 and IPv6 addresses,
-## and any public IPv4 and IPv6 addresses on any interface on the relay.
-## See the man page entry for ExitPolicyRejectPrivate if you want to allow
-## "exit enclaving".
-##
+{% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
+ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
+{% endif %}
+
 #ExitPolicy accept *:6660-6667,reject *:* # allow irc ports on IPv4 and IPv6 but no more
 #ExitPolicy accept *:119 # accept nntp ports on IPv4 and IPv6 as well as default exit policy
 #ExitPolicy accept *4:119 # accept nntp ports on IPv4 only as well as default exit policy
