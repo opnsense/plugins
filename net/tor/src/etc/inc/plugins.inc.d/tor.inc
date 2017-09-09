@@ -48,7 +48,7 @@ function tor_services()
 
     $services = array();
 
-    if (isset($config['OPNsense']['tor']['general']['enabled']) && $config['OPNsense']['tor']['general']['enabled'] == 1) {
+    if (tor_enabled()) {
         $services[] = array(
             'description' => gettext('The Onion Router'),
             'configd' => array(
