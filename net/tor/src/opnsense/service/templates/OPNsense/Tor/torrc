@@ -86,8 +86,7 @@ FascistFirewall 0
 {%     for service in helpers.toList('OPNsense.tor.hiddenservice.service') %}
 HiddenServiceDir /usr/local/var/db/tor/{{ service.name }}/
 {%       for acl in helpers.toList('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
-{# TODO find a way to make this evaluate to true service seems to have no uuid #}
-{%         if acl.hiddenservice == service.id %}
+{%         if helpers.getUUID(acl.hiddenservice).name == service.name %}
 HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
 {%         endif %}
 {%       endfor %}
