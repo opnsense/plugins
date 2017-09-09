@@ -10,9 +10,22 @@ SOCKSPort 127.0.0.1:{{ OPNsense.tor.general.socks_listen_port|default('9050') }}
 SOCKSPort [::1]:{{ OPNsense.tor.general.socks_listen_port|default('9050') }}     # localhost IPv6
 
 {% if helpers.exists('OPNsense.tor.general.socks_listen_ip') and OPNsense.tor.general.socks_listen_ip != '' %}
-{% for listen_interface in OPNsense.tor.general.socks_listen_ip.split(',') %}
-#SOCKSPort ip_of_{{ listen_interface }}:{{ OPNsense.tor.general.socks_listen_port|default('9050') }} # TODO Bind to this address:port too.
-{% endfor %}
+{%   for listen_interface in OPNsense.tor.general.socks_listen_ip.split(',') %}
+{%     if helpers.exists('interfaces.'+listen_interface+'.ipaddr') %}
+{%       set interface_ip = helpers.getNodeByTag('interfaces.'+listen_interface+'.ipaddr') %}
+{%       if '.' in interface_ip %}
+# {{ listen_interface }}: IPv4
+SOCKSPort {{ interface_ip }}:{{ OPNsense.tor.general.socks_listen_port|default('9050') }}
+{%       endif %}
+{%     endif %}
+{%     if helpers.exists('interfaces.'+listen_interface+'.ipaddrv6') %}
+{%       set interface_ip = helpers.getNodeByTag('interfaces.'+listen_interface+'.ipaddrv6') %}
+{%       if ':' in interface_ip %}
+# {{ listen_interface }}: IPv6
+SOCKSPort [{{ interface_ip }}]:{{ OPNsense.tor.general.socks_listen_port|default('9050') }}
+{%       endif %}
+{%     endif %}
+{%   endfor %}
 {% endif %}
 
 {% if helpers.exists('OPNsense.tor.aclsockspolicy') %}
@@ -61,13 +74,14 @@ FascistFirewall 0
 #HashedControlPassword 16:872860B76453A77D60CA2BB8C1A7042072093276A3D701AD684053EC4C
 #CookieAuthentication 1
 
+{% if helpers.exists('OPNsense.tor.hiddenservice') and helpers.exists('OPNsense.tor.hiddenserviceacl') and helpers.exists('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
+
 ############### This section is just for location-hidden services ###
 
 ## Once you have configured a hidden service, you can look at the
 ## contents of the file ".../hidden_service/hostname" for the address
 ## to tell people.
 
-{% if helpers.exists('OPNsense.tor.hiddenservice') and helpers.exists('OPNsense.tor.hiddenserviceacl') and helpers.exists('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
 {%   if helpers.exists('OPNsense.tor.hiddenservice.service') %}
 {%     for service in helpers.toList('OPNsense.tor.hiddenservice.service') %}
 HiddenServiceDir /usr/local/var/db/tor/{{ service.name }}/

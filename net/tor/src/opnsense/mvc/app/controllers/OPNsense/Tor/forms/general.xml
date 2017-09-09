@@ -9,6 +9,7 @@
     <id>general.socks_listen_ip</id>
     <label>Listen Interfaces</label>
     <type>select_multiple</type>
+    <style>dropdownstyle</style>
     <help>Add more than localhost IP addresses to listen IPs for SOCKS connections.</help>
   </field>
   <field>
@@ -35,6 +36,7 @@
     <id>general.logfilelevel</id>
     <label>Logfile level</label>
     <type>dropdown</type>
+    <style>dropdownstyle</style>
     <help>This is the detail level of the log. A higher level means more data is logged.</help>
   </field>
   <field>
@@ -47,6 +49,7 @@
     <id>general.sysloglevel</id>
     <label>Syslog level</label>
     <type>dropdown</type>
+    <style>dropdownstyle</style>
     <help>This is the detail level of the log. A higher level means more data is logged.</help>
   </field>
   <field>

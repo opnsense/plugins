@@ -37,7 +37,7 @@ $( document ).ready(function() {
     };
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
-        $('select').selectpicker('refresh');
+        $('select.dropdownstyle').selectpicker('refresh');
     });
     ajaxCall(url="/api/tor/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['result']);
