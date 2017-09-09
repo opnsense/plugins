@@ -95,9 +95,9 @@ $( document ).ready(function() {
 </script>
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#acl">{{ lang._('ACL (SOCKS Proxy)') }}</a></li>
+    <li><a data-toggle="tab" href="#acl">{{ lang._('SOCKS Proxy ACL') }}</a></li>
     <li><a data-toggle="tab" href="#hidden">{{ lang._('Hidden Services') }}</a></li>
-    <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Routing (Hidden Services)') }}</a></li>
+    <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Hidden Service Routing') }}</a></li>
     <li><a data-toggle="tab" href="#relay">{{ lang._('Relaying') }}</a></li>
 </ul>
 

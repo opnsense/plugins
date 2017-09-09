@@ -66,4 +66,39 @@
     <allownew>true</allownew>
     <style>tokenize</style>
   </field>
+  <field>
+    <id>general.enable_transparent</id>
+    <label>Enable Transparent Proxy</label>
+    <type>checkbox</type>
+    <help>Enable this, if you want to anonymize traffic originating from a network.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.transparent_port</id>
+    <label>Transparent Port</label>
+    <type>text</type>
+    <help>Port number on which the transparent proxy server should listen. The default is 9040. You should not change this unless you need the port.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.transparent_dns</id>
+    <label>Transparent DNS Port</label>
+    <type>text</type>
+    <help>Port number on which the transparent DNS server should listen. The default is 9053. You should not change this unless you need the port.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.transparent_ip_pool</id>
+    <label>Transparent IP Pool</label>
+    <type>text</type>
+    <help>Enter a network which will be used as an IP Pool to map onion Hosts.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.dns_map_hosts</id>
+    <label>Map Host To IP Pool</label>
+    <type>checkbox</type>
+    <help>Enable this, if you want to map onion services to the IP pool configured above.</help>
+    <advanced>true</advanced>
+  </field>
 </form>

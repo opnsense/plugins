@@ -49,10 +49,7 @@ Log {{ OPNsense.tor.general.logfilelevel }} file /var/log/tor.log
 Log {{ OPNsense.tor.general.sysloglevel }} syslog
 {% endif %}
 
-## Uncomment this to start the process in the background... or use
-## --runasdaemon 1 on the command line. This is ignored on Windows;
-## see the FAQ entry if you want Tor to run as an NT service.
-#RunAsDaemon 1
+
 
 DataDirectory /usr/local/var/db/tor
 
@@ -67,6 +64,13 @@ FirewallPorts {{ OPNsense.tor.general.fascist_firewall_ports }}
 {%   endif %}
 {% else %}
 FascistFirewall 0
+{% endif %}
+
+{% if helpers.exists('OPNsense.tor.general.enable_transparent') and OPNsense.tor.general.enable_transparent == '1' %}
+TransPort {{ OPNsense.tor.general.transparent_port }}
+DNSPort {{ OPNsense.tor.general.transparent_dns }}
+VirtualAddrNetwork {{ OPNsense.tor.general.transparent_ip_pool }}
+AutomapHostsOnResolve {{ OPNsense.tor.general.dns_map_hosts }}
 {% endif %}
 
 ## If you enable the controlport, be sure to enable one of these

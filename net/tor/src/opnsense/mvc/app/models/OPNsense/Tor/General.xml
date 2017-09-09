@@ -70,5 +70,31 @@
       <default>80,443</default>
       <Required>Y</Required>
     </fascist_firewall_ports>
+    <enable_transparent type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enable_transparent>
+    <transparent_port type="IntegerField">
+      <default>9040</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </transparent_port>
+    <transparent_dns type="IntegerField">
+      <default>9053</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </transparent_dns>
+    <transparent_ip_pool type="NetworkField">
+      <default>172.16.251.0/24</default>
+      <Required>Y</Required>
+    </transparent_ip_pool>
+    <dns_map_hosts type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </dns_map_hosts>
   </items>
 </model>
