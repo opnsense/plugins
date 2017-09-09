@@ -51,7 +51,7 @@ Log {{ OPNsense.tor.general.sysloglevel }} syslog
 
 
 
-DataDirectory /usr/local/var/db/tor
+DataDirectory /var/db/tor
 
 {% if helpers.exists('OPNsense.tor.general.control_port') and OPNsense.tor.general.control_port != '' %}
 ControlPort {{ OPNsense.tor.general.control_port }}
@@ -88,7 +88,7 @@ AutomapHostsOnResolve {{ OPNsense.tor.general.dns_map_hosts }}
 
 {%   if helpers.exists('OPNsense.tor.hiddenservice.service') %}
 {%     for service in helpers.toList('OPNsense.tor.hiddenservice.service') %}
-HiddenServiceDir /usr/local/var/db/tor/{{ service.name }}/
+HiddenServiceDir /var/db/tor/{{ service.name }}/
 {%       for acl in helpers.toList('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
 {%         if helpers.getUUID(acl.hiddenservice).name == service.name %}
 HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
