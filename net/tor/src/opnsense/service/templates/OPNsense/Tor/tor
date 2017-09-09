@@ -1,1 +1,6 @@
-tor_enable="{% if helpers.exists('OPNsense.tor.general.enabled') and OPNsense.tor.general.enabled == '1' %}YES{% else %}NO{% endif %}"
+{% if helpers.exists('OPNsense.tor.general.enabled') and OPNsense.tor.general.enabled == '1' %}
+tor_enable="YES"
+tor_opnsense_bootup_run="/usr/local/opnsense/service/scripts/tor/setup.sh"
+{% else %}
+tor_enable="NO"
+{% endif %}
