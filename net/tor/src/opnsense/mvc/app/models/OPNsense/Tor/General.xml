@@ -33,14 +33,11 @@
       <multiple>N</multiple>
       <default>notifications</default>
       <OptionValues>
-        <critical>Critical</critical>
-        <emergencies>Emergencies</emergencies>
-        <errors>Errors</errors>
-        <alerts>Alerts</alerts>
-        <warnings>Warnings</warnings>
-        <notifications>Notifications</notifications>
-        <informational>Informational</informational>
-        <debugging>Debugging</debugging>
+        <err>Errors</err>
+        <warn>Warnings</warn>
+        <notice>Notifications</notice>
+        <info>Informational</info>
+        <debug>Debugging</debug>
       </OptionValues>
     </logfilelevel>
     <enablesyslog type="BooleanField">
@@ -52,14 +49,11 @@
       <multiple>N</multiple>
       <default>notifications</default>
       <OptionValues>
-        <critical>Critical</critical>
-        <emergencies>Emergencies</emergencies>
-        <errors>Errors</errors>
-        <alerts>Alerts</alerts>
-        <warnings>Warnings</warnings>
-        <notifications>Notifications</notifications>
-        <informational>Informational</informational>
-        <debugging>Debugging</debugging>
+        <err>Errors</err>
+        <warn>Warnings</warn>
+        <notice>Notifications</notice>
+        <info>Informational</info>
+        <debug>Debugging</debug>
       </OptionValues>
     </sysloglevel>
     <fascist_firewall type="BooleanField">
