@@ -89,7 +89,7 @@
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </transparent_dns>
     <transparent_ip_pool type="NetworkField">
-      <default>172.16.251.0/24</default>
+      <default>172.29.0.0/16</default>
       <Required>Y</Required>
     </transparent_ip_pool>
     <dns_map_hosts type="BooleanField">
