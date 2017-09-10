@@ -150,29 +150,32 @@ DirPort {{ OPNsense.tor.relay.directory_port }}
 ## distribution for a sample.
 #DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
 
-## A comma-separated list of exit policies. They're considered first
-## to last, and the first match wins.
-##
-## If you want to allow the same ports on IPv4 and IPv6, write your rules
-## using accept/reject *. If you want to allow different ports on IPv4 and
-## IPv6, write your IPv6 rules using accept6/reject6 *6, and your IPv4 rules
-## using accept/reject *4.
-##
-## If you want to _replace_ the default exit policy, end this with either a
-## reject *:* or an accept *:*. Otherwise, you're _augmenting_ (prepending to)
-## the default exit policy. Leave commented to just use the default, which is
-## described in the man page or at
-## https://www.torproject.org/documentation.html
-##
 {% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
 ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
 {% endif %}
 
-#ExitPolicy accept *:6660-6667,reject *:* # allow irc ports on IPv4 and IPv6 but no more
-#ExitPolicy accept *:119 # accept nntp ports on IPv4 and IPv6 as well as default exit policy
-#ExitPolicy accept *4:119 # accept nntp ports on IPv4 only as well as default exit policy
-#ExitPolicy accept6 *6:119 # accept nntp ports on IPv6 only as well as default exit policy
-#ExitPolicy reject *:* # no exits allowed
+
+{% if helpers.exists('OPNsense.tor.exitpolicy') %}
+{%   if helpers.exists('OPNsense.tor.exitpolicy.policy') %}
+# exit node policy
+
+{%     for policy in helpers.toList('OPNsense.tor.exitpolicy.policy') %}
+{%       if policy.enabled == '1' %}
+ExitPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif
+            %} {% if policy.network == '' %}*{% if 'v' in policy.type %}{{ policy.type|replace('v','') }}{% endif%}{% else 
+            %}{{ policy.network }}{% endif 
+            %}{% if 'startport' in policy %}:{{ policy.startport 
+              }}{% if 'endport' in policy %}-{{ policy.endport }}{% endif 
+            %}{% endif %}
+
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}
+
+# default: don't pass anything
+ExitPolicy reject *:*
+ExitPolicy reject6 *:*
 
 
 BridgeRelay {{ OPNsense.tor.relay.relay|default('1') }}

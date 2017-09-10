@@ -90,6 +90,16 @@ $( document ).ready(function() {
           'options':{selection:false, multiSelect:false}
         }
     );
+    $("#grid-exitacl").UIBootgrid(
+        { 'search':'/api/tor/exitacl/searchacl',
+          'get':'/api/tor/exitacl/getacl/',
+          'set':'/api/tor/exitacl/setacl/',
+          'add':'/api/tor/exitacl/addacl/',
+          'del':'/api/tor/exitacl/delacl/',
+          'toggle':'/api/tor/exitacl/toggleacl/',
+          'options':{selection:false, multiSelect:false}
+        }
+    );
 });
 
 </script>
@@ -99,6 +109,7 @@ $( document ).ready(function() {
     <li><a data-toggle="tab" href="#hidden">{{ lang._('Hidden Services') }}</a></li>
     <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Hidden Service Routing') }}</a></li>
     <li><a data-toggle="tab" href="#relay">{{ lang._('Relaying') }}</a></li>
+    <li><a data-toggle="tab" href="#exitnodeacl">{{ lang._('Exit Node ACL') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content" style="padding-bottom: 1.5em;">
@@ -190,8 +201,40 @@ $( document ).ready(function() {
             <button class="btn btn-primary" id="relaysaveAct" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_progress"></i></button>
         </div>
     </div>
+    
+    <div id="exitnodeacl" class="tab-pane fade in">
+        <div class="alert alert-danger" role="alert">
+            {{ lang._('Running an exit node may be lead to legal issues and seized hardware. Be careful with your settings here.') }}
+        </div>
+        <table id="grid-exitacl" class="table table-responsive" data-editDialog="torexitacldlg">
+          <thead>
+              <tr>
+                  <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                  <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                  <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Protocol') }}</th>
+                  <th data-column-id="network" data-type="string" data-visible="true">{{ lang._('Network') }}</th>
+                  <th data-column-id="startport" data-type="string" data-visible="true">{{ lang._('Start Port') }}</th>
+                  <th data-column-id="endport" data-type="string" data-visible="true">{{ lang._('End Port') }}</th>
+                  <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                  <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <td colspan="3"></td>
+                  <td>
+                      <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                      <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                  </td>
+              </tr>
+          </tfoot>
+      </table>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields': toracl,'id':'toracldlg', 'label':lang._('Edit ACL Entry')]) }}
 {{ partial("layout_partials/base_dialog",['fields': hidden_service,'id':'hiddenservicedlg', 'label':lang._('Edit Hidden Service')]) }}
 {{ partial("layout_partials/base_dialog",['fields': hidden_service_acl,'id':'hiddenserviceacl', 'label':lang._('Edit Hidden Service Route')]) }}
+{{ partial("layout_partials/base_dialog",['fields': exitpolicy,'id':'torexitacldlg', 'label':lang._('Edit Exit Node ACL')]) }}

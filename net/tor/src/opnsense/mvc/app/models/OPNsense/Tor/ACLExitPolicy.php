@@ -1,6 +1,5 @@
 <?php
 /*
-
     Copyright (C) 2017 Fabian Franz
     All rights reserved.
 
@@ -24,28 +23,12 @@
     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-
-
 */
-
 
 namespace OPNsense\Tor;
 
-/**
-* Class IndexController
-* @package OPNsense/Tor
-*/
-class IndexController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class ACLExitPolicy extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->title = gettext("The Onion Router");
-        $this->view->general = $this->getForm("general");
-        $this->view->toracl = $this->getForm("acl_sockspolicy");
-        $this->view->hidden_service = $this->getForm("hidden_service");
-        $this->view->hidden_service_acl = $this->getForm("hidden_service_acl");
-        $this->view->relay = $this->getForm("relay");
-        $this->view->exitpolicy = $this->getForm("acl_exitpolicy");
-        $this->view->pick('OPNsense/Tor/general');
-    }
 }
