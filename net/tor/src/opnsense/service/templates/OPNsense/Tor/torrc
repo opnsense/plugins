@@ -55,6 +55,9 @@ DataDirectory /var/db/tor
 
 {% if helpers.exists('OPNsense.tor.general.control_port') and OPNsense.tor.general.control_port != '' %}
 ControlPort {{ OPNsense.tor.general.control_port }}
+
+{{ helpers.readFile("/var/db/tor/hashed_control_password") }}
+
 {% endif %}
 
 {% if helpers.exists('OPNsense.tor.general.fascist_firewall') and OPNsense.tor.general.fascist_firewall == '1' %}
@@ -72,11 +75,6 @@ DNSPort {{ OPNsense.tor.general.transparent_dns }}
 VirtualAddrNetwork {{ OPNsense.tor.general.transparent_ip_pool }}
 AutomapHostsOnResolve {{ OPNsense.tor.general.dns_map_hosts }}
 {% endif %}
-
-## If you enable the controlport, be sure to enable one of these
-## authentication methods, to prevent attackers from accessing it.
-#HashedControlPassword 16:872860B76453A77D60CA2BB8C1A7042072093276A3D701AD684053EC4C
-#CookieAuthentication 1
 
 {% if helpers.exists('OPNsense.tor.hiddenservice') and helpers.exists('OPNsense.tor.hiddenserviceacl') and helpers.exists('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
 
