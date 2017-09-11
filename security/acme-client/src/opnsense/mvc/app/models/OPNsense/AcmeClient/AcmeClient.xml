@@ -1,7 +1,7 @@
 <model>
 
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <description>
         a secure Let's Encrypt plugin
     </description>
@@ -101,6 +101,15 @@
                 <multiple>N</multiple>
                 <Required>N</Required>
             </haproxyBackendRef>
+            <logLevel type="OptionField">
+                <Required>Y</Required>
+                <default>normal</default>
+                <OptionValues>
+                    <normal>normal</normal>
+                    <extended>extended</extended>
+                    <debug>debug</debug>
+                </OptionValues>
+            </logLevel>
         </settings>
         <accounts>
             <account type="ArrayField">
