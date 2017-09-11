@@ -24,6 +24,12 @@
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </control_port>
+    <control_port_password type="TextField">
+      <Required>N</Required>
+    </control_port_password>
+    <control_port_password_hashed type="TextField">
+      <Required>N</Required>
+    </control_port_password_hashed>
     <enablelogfile type="BooleanField">
       <default>0</default>
       <Required>Y</Required>

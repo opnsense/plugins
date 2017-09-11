@@ -30,11 +30,44 @@
 namespace OPNsense\Tor\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Quagga\General;
+use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
+use \OPNsense\Tor\General;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
     static protected $internalModelClass = '\OPNsense\Tor\General';
     static protected $internalModelName = 'general';
+
+    /* override default set action */
+    public function setAction()
+    {
+        $result = array('result'=>'failed');
+        if ($this->request->isPost()) {
+            $mdl = new General();
+            $mdl->setNodes($this->request->getPost('general'));
+
+            // perform validation
+            $valMsgs = $mdl->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                if (!array_key_exists('validations', $result)) {
+                    $result['validations'] = array();
+                }
+                $result['validations']['general.'.$msg->getField()] = $msg->getMessage();
+            }
+
+            if ($valMsgs->count() == 0) {
+                if (empty((string)$mdl->control_port_password) || empty((string)$mdl->control_port_password_hashed)) {
+                    $backend = new Backend();
+                    $keys = json_decode(trim($backend->configdRun('tor genkey')), true);
+                    $mdl->control_port_password_hashed = $keys['hashed_control_password'];
+                    $mdl->control_port_password = $keys['control_password'];
+                }
+                $mdl->serializeToConfig();
+                Config::getInstance()->save();
+                $result['result'] = 'saved';
+            }
+        }
+        return $result;
+    }
 }

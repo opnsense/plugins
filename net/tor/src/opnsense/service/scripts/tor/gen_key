@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PASSWORD=$( /usr/local/bin/openssl rand -base64 32 )
+echo "{"
+echo -n "  \"hashed_control_password\":\""
+tor --quiet --hash-password "$PASSWORD" | tr -d '\n' | tr -d '\r'
+echo "\","
+echo "  \"control_password\":\"$PASSWORD\""
+echo "}"

@@ -55,8 +55,7 @@ DataDirectory /var/db/tor
 
 {% if helpers.exists('OPNsense.tor.general.control_port') and OPNsense.tor.general.control_port != '' %}
 ControlPort {{ OPNsense.tor.general.control_port }}
-
-{{ helpers.readFile("/var/db/tor/hashed_control_password") }}
+HashedControlPassword {{ OPNsense.tor.general.control_port_password_hashed }}
 
 {% endif %}
 
