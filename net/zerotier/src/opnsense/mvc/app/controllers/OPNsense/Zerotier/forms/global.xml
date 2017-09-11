@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>zerotier.enabled</id>
-        <label>Enable the Zerotier Service</label>
+        <label>Enabled</label>
         <type>checkbox</type>
         <help>This will activate the Zerotier service</help>
     </field>

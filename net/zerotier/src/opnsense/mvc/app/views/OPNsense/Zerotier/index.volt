@@ -54,14 +54,14 @@ POSSIBILITY OF SUCH DAMAGE.
             toggleNetworksTab(data['result']);
         });
 
-        $("#save").click(function() {
-            $("#saveProgress").addClass("fa fa-spinner fa-pulse");
+        $("#btn_save_global").click(function() {
+            $("#global_progress").addClass("fa fa-spinner fa-pulse");
             saveFormToEndpoint(url="/api/zerotier/zerotier/set", formid="global", callback_ok=function(data, status) {
                 ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data, status) {
                     updateServiceStatusUI(data['result']);
                     toggleNetworksTab(data['result']);
                 });
-                $("#saveProgress").removeClass("fa fa-spinner fa-pulse");
+                $("#global_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
 
@@ -89,12 +89,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="tab-content content-box tab-content">
     <div id="global" class="tab-pane fade in active">
-        <div class="content-box" style="padding-bottom: 1.5em;">
-            {{ partial("layout_partials/base_form", ['fields': globalForm, 'id': 'global']) }}
-            <hr/>
-            <div class="col-md-12">
-                <button class="btn btn-primary" id="save" type="button"><b>{{ lang._('Save') }}</b> <i id="saveProgress" class=""></i></button>
-            </div>
+        <div class="content-box">
+            {{ partial("layout_partials/base_form", ['fields': globalForm, 'id': 'global', 'apply_btn_id': 'btn_save_global']) }}
         </div>
     </div>
     <div id="networks" class="tab-pane fade in">

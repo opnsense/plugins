@@ -195,14 +195,7 @@ class ZerotierController extends ApiMutableModelControllerBase
     public function statusAction()
     {
         $mdlZerotier = $this->getModel();
-        $enabled = false;
-
-        foreach ($mdlZerotier->networks->network->__items as $network) {
-            if ($this->isEnabled($network)) {
-                $enabled = true;
-                break;
-            }
-        }
+        $enabled = (string)$mdlZerotier->enabled == '1';
 
         $backend = new Backend();
         $response = $backend->configdRun('zerotier status');
