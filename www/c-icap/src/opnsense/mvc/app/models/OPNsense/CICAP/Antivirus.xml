@@ -8,7 +8,7 @@
             <Required>Y</Required>
         </enable_clamav>
         <scanfiletypes type="OptionField">
-            <default>TEXT, DATA, EXECUTABLE, ARCHIVE, GIF, JPEG, MSOFFICE</default>
+            <default>TEXT,DATA,EXECUTABLE,ARCHIVE,GIF,JPEG,MSOFFICE</default>
             <multiple>Y</multiple>
             <Required>Y</Required>
                 <OptionValues>
