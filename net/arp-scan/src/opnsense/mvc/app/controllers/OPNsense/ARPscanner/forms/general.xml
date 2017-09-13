@@ -1,0 +1,18 @@
+<form>
+   <field>
+      <id>arpscanner.interfaces</id>
+      <label>Listen Interfaces</label>
+      <type>select_multiple</type>
+      <multiple>N</multiple>
+      <help>Interface where to find the networks logically linked to.</help>
+   </field>
+   <field>
+      <id>arpscanner.networks</id>
+      <label>Network to probe</label>
+      <type>text</type>
+      <help>multiple network ranges, as: 192.168.1.0/24 172.16.31.0/12
+            If not specified it will scan all the RFC 1918 local area networks.
+      </help>
+   </field>
+
+</form>

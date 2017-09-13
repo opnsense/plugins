@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.arpscan.general') and OPNsense.arpscan.general.Enabled|default("0") == "1" %}
+[general]
+SMTPHost={{ OPNsense.helloworld.general.SMTPHost|default("") }}
+FromEmail={{ OPNsense.helloworld.general.FromEmail|default("") }}
+{% endif %}
