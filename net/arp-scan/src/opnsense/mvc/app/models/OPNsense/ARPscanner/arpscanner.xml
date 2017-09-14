@@ -1,7 +1,7 @@
 <model>
   <mount>//OPNsense/ARPscanner</mount>
   <version>1.0.0</version>
-  <description>ARPscanner settings</description>
+  <description>ARP Scan</description>
   <items>
     <general>
         <interfaces type="InterfaceField">

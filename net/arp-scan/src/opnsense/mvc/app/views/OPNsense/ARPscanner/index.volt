@@ -29,4 +29,14 @@ POSSIBILITY OF SUCH DAMAGE.
 <script type="text/javascript">
 </script>
 
-{{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
+
+<section class="col-xs-12">
+    <div class="content-box">
+        {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
+        
+        <div class="col-md-12">
+            <button class="btn btn-primary"  id="startAct" type="button"><b>{{ lang._('Start') }}</b></button>
+        </div>
+            
+    </div>
+</section>
