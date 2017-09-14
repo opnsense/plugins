@@ -1,9 +1,9 @@
 <acl>
    <page-services-mdnsrepeater>
-      <name>Services: MDNS Repeatery</name>
+      <name>Diagnostics: ARP Scan</name>
       <patterns>
-         <pattern>ui/mdnsrepeater/*</pattern>
-         <pattern>api/mdnsrepeater/*</pattern>
+         <pattern>ui/arpscanner/*</pattern>
+         <pattern>api/arpscanner/*</pattern>
       </patterns>
    </page-services-mdnsrepeater>
 </acl>

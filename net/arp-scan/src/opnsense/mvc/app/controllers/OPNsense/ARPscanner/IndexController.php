@@ -42,7 +42,7 @@ class IndexController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        $this->view->title = gettext('Layer2 network scanner (arp-scan)');
+        $this->view->title = gettext('ARP Scan');
         $this->view->general = $this->getForm("general");
         $this->view->pick('OPNsense/ARPscanner/index');
         
