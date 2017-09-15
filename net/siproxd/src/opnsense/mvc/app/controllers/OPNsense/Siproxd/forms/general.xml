@@ -1,0 +1,93 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable siproxd service</label>
+        <type>checkbox</type>
+        <help>This will activate the siproxd service.</help>
+    </field>
+    <field>
+        <id>general.if_inbound</id>
+        <label>Inbound interface</label>
+		<style>tokenize</style>
+        <type>select_multiple</type>
+        <help>Select the interface where your SIP requests come from.</help>
+    </field>
+    <field>
+        <id>general.if_outbound</id>
+        <label>Outbound interface</label>
+		<style>tokenize</style>
+        <type>select_multiple</type>
+        <help>Select the interface where your SIP requests are going to.</help>
+    </field>
+    <field>
+        <id>general.host_outbound</id>
+        <label>Host outbound</label>
+        <type>text</type>
+        <help>Only use in a double nat scenario where SIP don't know your external public address.</help>
+    </field>
+    <field>
+        <id>general.sip_listen_port</id>
+        <label>SIP listen port</label>
+        <type>text</type>
+        <help>SIP port the service use, default of 5060 is perfectly fine.</help>
+    </field>
+    <field>
+        <id>general.rtp_port_low</id>
+        <label>RTP port low</label>
+        <type>text</type>
+		<help>Beginning of the port range RTP may use.</help>
+    </field>
+    <field>
+        <id>general.rtp_port_high</id>
+        <label>RTP port high</label>
+        <type>text</type>
+		<help>Ending of the port range RTP may use.</help>
+    </field>
+    <field>
+        <id>general.rtp_timeout</id>
+        <label>RTP timeout</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>general.rtp_dscp</id>
+        <label>RTP DSCP</label>
+        <type>text</type>
+		<help>DSCP value to set for RTP packets.</help>
+    </field>
+    <field>
+        <id>general.sip_dscp</id>
+        <label>SIP DSCP</label>
+        <type>text</type>
+		<help>DSCP value to set for SIP packets.</help>
+    </field>
+    <field>
+        <id>general.rtp_input_dejitter</id>
+        <label>RTP input dejitter</label>
+        <type>checkbox</type>
+        <help>De-Jitter inbound packets (defaults to 0)</help>
+    </field>
+    <field>
+        <id>general.rtp_output_dejitter</id>
+        <label>RTP output dejitter</label>
+        <type>checkbox</type>
+        <help>De-Jitter outbound packets (defaults to 0)</help>
+    </field>
+    <field>
+        <id>general.tcp_timeout</id>
+        <label>TCP timeout</label>
+        <type>text</type>
+		<help>Time in seconds when an inactive TCP session will be disconnected.</help>
+    </field>
+    <field>
+        <id>general.tcp_connect_timeout</id>
+        <label>TCP connect timeout</label>
+        <type>text</type>
+		<help>Time in milli seconds siproxd should wait until the connection is established.</help>
+    </field>
+    <field>
+        <id>general.tcp_keepalive</id>
+        <label>TCP keepalive</label>
+        <type>text</type>
+		<help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
+    </field>
+</form>

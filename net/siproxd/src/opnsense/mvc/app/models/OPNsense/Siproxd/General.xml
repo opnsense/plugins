@@ -1,0 +1,85 @@
+<model>
+    <mount>//OPNsense/siproxd/general</mount>
+    <description>Siproxd configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <if_inbound type="InterfaceField">
+            <default></default>
+            <Required>Y</Required>
+        </if_inbound>
+        <if_outbound type="InterfaceField">
+            <default></default>
+            <Required>Y</Required>
+        </if_outbound>
+        <host_outbound type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </host_outbound>
+        <sip_listen_port type="IntegerField">
+            <default>5060</default>
+            <Required>Y</Required>
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>65535</MaximumValue>
+        </sip_listen_port>
+        <rtp_port_low type="IntegerField">
+            <default>7070</default>
+            <Required>Y</Required>
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>65535</MaximumValue>
+        </rtp_port_low>
+        <rtp_port_high type="IntegerField">
+            <default>7089</default>
+            <Required>Y</Required>
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>65535</MaximumValue>			
+        </rtp_port_high>
+        <rtp_timeout type="IntegerField">
+            <default>300</default>
+            <Required>Y</Required>
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>10000</MaximumValue>
+        </rtp_timeout>
+        <rtp_dscp type="IntegerField">
+            <default>46</default>
+			<Required>Y</Required>
+			<MinimumValue>0</MinimumValue>
+			<MaximumValue>64</MaximumValue>			
+		</rtp_dscp>
+        <sip_dscp type="IntegerField">
+            <default>0</default>
+			<Required>Y</Required>
+			<MinimumValue>0</MinimumValue>
+			<MaximumValue>64</MaximumValue>			
+		</sip_dscp>
+        <rtp_input_dejitter type="BooleanField">
+            <default>0</default>
+			<Required>N</Required>
+		</rtp_input_dejitter>
+        <rtp_output_dejitter type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </rtp_output_dejitter>
+        <tcp_timeout type="IntegerField">
+            <default>600</default>
+            <Required>Y</Required>
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>10000</MaximumValue>			
+        </tcp_timeout>
+        <tcp_connect_timeout type="IntegerField">
+            <default>500</default>
+            <Required>Y</Required>
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>10000</MaximumValue>			
+        </tcp_connect_timeout>
+        <tcp_keepalive type="IntegerField">
+            <default>20</default>
+            <Required>Y</Required>
+			<MinimumValue>0</MinimumValue>
+			<MaximumValue>10000</MaximumValue>			
+        </tcp_keepalive>
+	</items>
+</model>

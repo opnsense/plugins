@@ -1,0 +1,3 @@
+siproxd:/etc/rc.conf.d/siproxd
+siproxd.conf:/usr/local/etc/siproxd.conf
+siproxd_passwd.cfg:/usr/local/etc/siproxd_passwd.cfg
