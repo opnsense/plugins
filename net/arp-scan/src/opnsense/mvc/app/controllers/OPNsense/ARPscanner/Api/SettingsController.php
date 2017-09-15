@@ -25,19 +25,18 @@
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
  *
- */
+**/
 
 
-<?php
 namespace OPNsense\ARPscanner\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 
 use \OPNsense\ARPscanner\ARPscanner;
+//~ use \OPNsense\ARPscanner\Api\NetTools;
 
 class SettingsController extends ApiControllerBase
 {
-    
     /* retrieve general settings
      * @return array general settings
      */
@@ -47,9 +46,19 @@ class SettingsController extends ApiControllerBase
     $result = array();
     if ($this->request->isGet()) {
         $mdl = new ARPscanner();
-        $result['result'] = $mdl->getNodes();
+        $result['result'] =  $mdl->getNodes();
+        $result['result']['networks'] = '192.168.1.0/24';
+        //~ $t = NetTools();
+        //~ $t->ciao();
+        //~ $t = $mdl->GetLocalIP();
+        $t = $mdl->test();
+        
+
+    }   
+    return $t;
+    //~ return $result;
     }
-    return $result;
-    }
+    
+
     
 }
