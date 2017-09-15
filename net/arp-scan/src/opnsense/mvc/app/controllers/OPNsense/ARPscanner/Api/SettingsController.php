@@ -37,18 +37,19 @@ use \OPNsense\ARPscanner\ARPscanner;
 
 class SettingsController extends ApiControllerBase
 {
-}
-
-/* retrieve HelloWorld general settings
- * @return array general settings
- */
-public function getAction()
-{
+    
+    /* retrieve general settings
+     * @return array general settings
+     */
+    public function getAction()
+    {
     // define list of configurable settings
     $result = array();
     if ($this->request->isGet()) {
-        $mdlHelloWorld = new HelloWorld();
-        $result['helloworld'] = $mdlHelloWorld->getNodes();
+        $mdl = new ARPscanner();
+        $result['result'] = $mdl->getNodes();
     }
     return $result;
+    }
+    
 }

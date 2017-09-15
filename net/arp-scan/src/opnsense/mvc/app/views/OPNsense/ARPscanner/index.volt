@@ -26,10 +26,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script type="text/javascript">
-</script>
-
-
 <section class="col-xs-12">
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
@@ -37,6 +33,37 @@ POSSIBILITY OF SUCH DAMAGE.
         <div class="col-md-12">
             <button class="btn btn-primary"  id="startAct" type="button"><b>{{ lang._('Start') }}</b></button>
         </div>
-            
+        
     </div>
 </section>
+
+<script type="text/javascript">
+</script>
+
+<!--
+Start scann and get response
+-->
+<script type="text/javascript">
+$( document ).ready(function() {
+    $("#view").click(function(){
+      $.ajax("diag_packet_capture.php",{
+          type: 'get',
+          cache: false,
+          dataType: "json",
+          data: {view: 'view', 'dnsquery': $("#dnsquery:checked").val() ,'detail': $("#detail").val()},
+          success: function(response) {
+            var html = [];
+            $.each(response, function(idx, line){
+                html.push('<tr><td>'+line+'</td></tr>');
+            });
+            $("#capture_output").html(html.join(''));
+            $("#capture").removeClass('hidden');
+            // scroll to capture output
+            $('html, body').animate({
+              scrollTop: $("#capture").offset().top
+            }, 2000);
+          }
+      });
+    });
+});
+</script>
