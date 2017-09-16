@@ -26,9 +26,11 @@
     </control_port>
     <control_port_password type="TextField">
       <Required>N</Required>
+      <mask>/^.+$/</mask>
     </control_port_password>
     <control_port_password_hashed type="TextField">
       <Required>N</Required>
+      <mask>/^.+$/</mask>
     </control_port_password_hashed>
     <enablelogfile type="BooleanField">
       <default>0</default>
@@ -69,6 +71,7 @@
     <fascist_firewall_ports type="CSVListField">
       <default>80,443</default>
       <Required>Y</Required>
+      <mask>/^(\d+,)*\d+$/</mask>
     </fascist_firewall_ports>
     <enable_transparent type="BooleanField">
       <default>0</default>
