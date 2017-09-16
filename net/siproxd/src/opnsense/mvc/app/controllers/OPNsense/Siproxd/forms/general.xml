@@ -8,14 +8,14 @@
     <field>
         <id>general.if_inbound</id>
         <label>Inbound interface</label>
-		<style>tokenize</style>
+	<style>tokenize</style>
         <type>select_multiple</type>
         <help>Select the interface where your SIP requests come from.</help>
     </field>
     <field>
         <id>general.if_outbound</id>
         <label>Outbound interface</label>
-		<style>tokenize</style>
+	<style>tokenize</style>
         <type>select_multiple</type>
         <help>Select the interface where your SIP requests are going to.</help>
     </field>
@@ -35,13 +35,13 @@
         <id>general.rtp_port_low</id>
         <label>RTP port low</label>
         <type>text</type>
-		<help>Beginning of the port range RTP may use.</help>
+	<help>Beginning of the port range RTP may use.</help>
     </field>
     <field>
         <id>general.rtp_port_high</id>
         <label>RTP port high</label>
         <type>text</type>
-		<help>Ending of the port range RTP may use.</help>
+	<help>Ending of the port range RTP may use.</help>
     </field>
     <field>
         <id>general.rtp_timeout</id>
@@ -52,13 +52,13 @@
         <id>general.rtp_dscp</id>
         <label>RTP DSCP</label>
         <type>text</type>
-		<help>DSCP value to set for RTP packets.</help>
+	<help>DSCP value to set for RTP packets.</help>
     </field>
     <field>
         <id>general.sip_dscp</id>
         <label>SIP DSCP</label>
         <type>text</type>
-		<help>DSCP value to set for SIP packets.</help>
+	<help>DSCP value to set for SIP packets.</help>
     </field>
     <field>
         <id>general.rtp_input_dejitter</id>
@@ -76,18 +76,24 @@
         <id>general.tcp_timeout</id>
         <label>TCP timeout</label>
         <type>text</type>
-		<help>Time in seconds when an inactive TCP session will be disconnected.</help>
+	<help>Time in seconds when an inactive TCP session will be disconnected.</help>
     </field>
     <field>
         <id>general.tcp_connect_timeout</id>
         <label>TCP connect timeout</label>
         <type>text</type>
-		<help>Time in milli seconds siproxd should wait until the connection is established.</help>
+	<help>Time in milli seconds siproxd should wait until the connection is established.</help>
     </field>
     <field>
         <id>general.tcp_keepalive</id>
         <label>TCP keepalive</label>
         <type>text</type>
-		<help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
+	<help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
+    </field>
+    <field>
+        <id>general.ua_string</id>
+        <label>Useragent string</label>
+        <type>text</type>
+	<help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
     </field>
 </form>
