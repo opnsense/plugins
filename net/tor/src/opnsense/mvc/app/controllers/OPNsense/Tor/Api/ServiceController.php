@@ -77,6 +77,7 @@ class ServiceController extends ApiControllerBase
      */
     public function restartAction()
     {
+    return [];
         if ($this->request->isPost()) {
             $backend = new Backend();
             $response = $backend->configdRun('tor restart');
@@ -121,6 +122,7 @@ class ServiceController extends ApiControllerBase
      */
     public function reconfigureAction()
     {
+    return [];
         if ($this->request->isPost()) {
             // close session for long running action
             $this->sessionClose();

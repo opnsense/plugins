@@ -9,6 +9,8 @@
       </enabled>
       <name type="TextField">
         <Required>Y</Required>
+      <mask>/^[a-z0-9_-]+$/i</mask>
+      <ValidationMessage>The name should only consist of alphanumeric characters, dashes and underscores.</ValidationMessage>
       </name>
     </service>
   </items>
