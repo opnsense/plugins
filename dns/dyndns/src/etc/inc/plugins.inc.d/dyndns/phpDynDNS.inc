@@ -939,16 +939,19 @@ class updatedns {
                 break;
             case 'namecheap':
                 $tmp = str_replace("^M", "", $data);
-                $ncresponse = @xml2array($tmp);
+                $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
                     $status = "Dynamic DNS: (Error) Server side error.";
-                } else if (preg_match("/request is badly formed/i", $data)) {
+                } elseif (preg_match("/request is badly formed/i", $data)) {
                     $status = "Dynamic DNS: (Error) Badly Formed Request (check your settings).";
-                } else if ($ncresponse['interface-response']['ErrCount'] === "0") {
+                } elseif ((string)$ncresponse->ErrCount === "0") {
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                     $successful_update = true;
-                } else if (is_numeric($ncresponse['interface-response']['ErrCount']) && ($ncresponse['interface-response']['ErrCount'] > 0)) {
-                    $status = "Dynamic DNS: (Error) " . implode(", ", $ncresponse["interface-response"]["errors"]);
+                } elseif (is_numeric((string)$ncresponse->ErrCount) && (string)$ncresponse->ErrCount > 0) {
+                    $status = "Dynamic DNS: (Error) ";
+                    foreach ($xml->errors->children() as $err) {
+                        $status .= (string)$err . " ";
+                    }
                     $successful_update = true;
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
