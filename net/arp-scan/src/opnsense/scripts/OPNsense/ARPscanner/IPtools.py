@@ -1,6 +1,14 @@
 import socket
 import fcntl
 import struct
+import array
+import subprocess
+
+# get_all_interfaces
+from collections import namedtuple
+import re
+import subprocess
+import json
 
 # From linux/sockios.h
 #~ SIOCGIFCONF = 0x8912
@@ -92,3 +100,57 @@ class IPtools(object):
         macbytes = [int(i, 16) for i in newmac.split(':')]
         ifreq = struct.pack('16sH6B8x', ifname, AF_UNIX, *macbytes)
         fcntl.ioctl(s.fileno(), SIOCSIFHWADDR, ifreq)
+
+    
+    @staticmethod
+    def get_interfaces(json_output=False):
+        """
+        Get a list of network interfaces on Linux.
+        """
+        name_pattern = "^(\w+)\s"
+        mac_pattern = ".*?HWaddr[ ]([0-9A-Fa-f:]{17})"
+        ip_pattern = ".*?\n\s+inet[ ]addr:((?:\d+\.){3}\d+)"
+        pattern = re.compile("".join((name_pattern, 
+                                      mac_pattern, 
+                                      ip_pattern,
+                                      )),
+                             flags=re.MULTILINE)
+    
+        ifconfig = subprocess.check_output("ifconfig").decode()
+        interfaces = pattern.findall(ifconfig)
+        Interface = namedtuple("Interface", "name {mac} {ip}".format(
+            mac="mac",
+            ip="ip"))
+        res = [Interface(*interface) for interface in interfaces]
+        if json_output: return json.dumps(res)
+        return res
+
+    @staticmethod
+    def get_interfaces_bsd(json_output=False):
+        """
+        Get a list of network interfaces on BSD.
+        """
+        
+        b = '(^\w+)(.+)([\n\t\s]*)(.*)([\n\t\s]*)(.*?ether[ ])([0-9A-Fa-f:]{17})([\n\t\s]*)(.*?\n\s+inet[ ])((?:\d+\.){3}\d+)'
+        
+        name_pattern = "^(\w+).+[\n\t\s]*.*[\n\t\s]*"
+        mac_pattern = ".*?ether[ ]([0-9A-Fa-f:]{17})[\n\t\s]*"
+        ip_pattern = ".*?\n\s+inet[ ]((?:\d+\.){3}\d+)"
+        pattern = re.compile("".join((name_pattern, 
+                                      mac_pattern, 
+                                      ip_pattern,
+                                      )),
+                             flags=re.MULTILINE)
+    
+        ifconfig = subprocess.check_output(["ifconfig", "-u"]).decode()
+        interfaces = pattern.findall(ifconfig)
+        print(interfaces)
+        Interface = namedtuple("Interface", "name {mac} {ip}".format(
+            mac="mac",
+            ip="ip"))
+        res = [Interface(*interface) for interface in interfaces]
+        if json_output: return json.dumps(res)
+        return res
+
+if __name__ == '__main__':
+    print(IPtools.get_interfaces_bsd(json_output=True))
