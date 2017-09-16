@@ -112,7 +112,7 @@ if __name__ == '__main__':
        print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
     else:
         args.r = ['--localnet']
-    print("Scan interface: {}".format(args.i))
+    #~ print("Scan interface: {}".format(args.i))
 
     ap = ArpScanner(args.i, args.r)
     ap.start()

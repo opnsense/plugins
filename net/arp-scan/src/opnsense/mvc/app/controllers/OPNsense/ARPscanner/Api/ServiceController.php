@@ -47,13 +47,29 @@ class ServiceController extends ApiControllerBase
     return array("status" => $status);
     }
 
-    public function startScan()
+    public function testAction()
     {
+
         $backend = new Backend();
-        $result = array('result' => 'failed');
-        $backend->configdRun('template reload OPNsense/ARPscanner');
-        $result['result'] = $backend->configdRun('arp-scan start');
-        return $result;
+        $bckresult = json_decode(trim($backend->configdRun("arpscanner test")), true);
+        return $bckresult;
+        if ($bckresult !== null) {
+            // only return valid json type responses
+            return $bckresult;
+        }
+        return "error";
+    }
+
+    public function startAction()
+    {
+        if ($this->request->isPost()) {
+            return $this->request;
+            $backend = new Backend();
+            $result = array('result' => 'failed');
+            $result['result'] = json_decode(trim($backend->configdRun('arpscanner start')), true);
+            return $result;
+            }
+        return array("message" => "unable to run config action");
     }
 
 }

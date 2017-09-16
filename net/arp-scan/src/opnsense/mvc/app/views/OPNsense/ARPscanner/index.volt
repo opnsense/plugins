@@ -55,6 +55,25 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
 
+        $("#startScanner").click(function(){
+            $("#responseMsg").removeClass("hidden");
+            ajaxCall(url="/api/arpscanner/service/test", sendData={},callback=function(data,status) {
+                // action to run after reload
+                console.log(data);
+                $("#ifname").html(data['interface']);
+                $("#datetime").html(data['datetime']);
+                $('#netTable tr').not(':first').not(':first').remove()
+                
+                $.each(data['networks'], function(x,y) {
+                    //~ console.log(x,y);
+                    $.each(y, function(z,q){
+                        //~ console.log(q);
+                        $('#netTable tr:last').after("<tr><td>"+q[0]+"</td><td>"+q[1]+"</td><td>"+q[2]+"</td></tr>")
+                    })
+                })
+            });
+            //~ 
+        });
     });
 </script>
 
@@ -148,9 +167,44 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
         
         <div class="col-md-12" style="padding-bottom: 13px;">
-            <button class='btn btn-default' id="stop_arpscanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
-            <button class="btn btn-primary pull-center"  id="start_arpscanner" type="button"><b>{{ lang._('Start') }}</b></button>
+            <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
+            <button class="btn btn-primary pull-center"  id="startScanner" type="button"><b>{{ lang._('Start') }}</b></button>
         </div>
     </div>
+    
+    
+    
 </section>
 
+<section class="col-xs-12">
+    <div id="responseMsg" class="content-box" style="padding: 27px;">
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Interface name</th>
+                    <th>Date time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td><p id="ifname"></p></td>
+                <td><p id="datetime"></p></td>
+            </tbody>
+            
+        </table>
+        <hr>
+        <table id="netTable">
+            <thead>
+                <tr>
+                    <td>IP</td>
+                    <td>MAC</td>
+                    <td>Vendor</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr></tr>
+            </tbody>
+        </table>
+        
+    </div>
+<section>
