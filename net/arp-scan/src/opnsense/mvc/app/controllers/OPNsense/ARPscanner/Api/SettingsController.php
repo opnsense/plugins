@@ -26,14 +26,11 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
 **/
-
-
 namespace OPNsense\ARPscanner\Api;
 
 use \OPNsense\Base\ApiControllerBase;
-
 use \OPNsense\ARPscanner\ARPscanner;
-//~ use \OPNsense\ARPscanner\Api\NetTools;
+use \OPNsense\Core\Config;
 
 class SettingsController extends ApiControllerBase
 {

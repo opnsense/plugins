@@ -8,8 +8,8 @@
    </field>
 -->
    <field>
-      <id>arpscanner.general.interfaces</id>
-      <label>Listen Interfaces</label>
+      <id>arpscanner.general.interface</id>
+      <label>Listen Interface</label>
       <type>dropdown</type>
       <help>Interface where to find the networks logically linked to.</help>
    </field>

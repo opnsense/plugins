@@ -26,7 +26,6 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
-<?php
 namespace OPNsense\ARPscanner\Api;
 
 use \OPNsense\Base\ApiControllerBase;

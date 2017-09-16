@@ -30,11 +30,11 @@ POSSIBILITY OF SUCH DAMAGE.
 <script type="text/javascript">
     $( document ).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
-        console.log(data_get_map);
+        //~ console.log(data_get_map);
         mapDataToFormUI(data_get_map).done(function(data){
             // place actions to run after load, for example update form styles.
-                formatTokenizersUI();
-                $('select').selectpicker('refresh');
+            //~ formatTokenizersUI();
+            $('select').selectpicker('refresh');
         });
 
         // link save button to API set action
@@ -42,8 +42,15 @@ POSSIBILITY OF SUCH DAMAGE.
             saveFormToEndpoint(url="/api/arpscanner/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
                 // action to run after successful save, for example reconfigure service.
                 ajaxCall(url="/api/arpscanner/service/reload", sendData={},callback=function(data,status) {
-                    // action to run after reload
+                // action to run after reload
                 });
+                
+                // useless test
+                //~ data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
+                //~ mapDataToFormUI(data_get_map).done(function(data){
+                    //~ $('select').selectpicker('refresh');
+                //~ });
+                        
             });
         });
 
@@ -128,7 +135,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 <section class="col-xs-12">
-    
     <div class="alert alert-info" role="alert" style="min-height: 65px;">
         <div class="pull-left" style="margin-top: 8px;" id="updatestatus">{{ lang._('ARPscanner is stopped')}}</div>
         <div class="pull-left" style="margin-top: 8px; display:none;" id="updatestatus">{{ lang._('ARPscanner is running')}}</div>   
@@ -138,7 +144,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
         <div class="col-md-12">
-            <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+            <button class="btn btn-primary pull-right"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
         </div>
         
         <div class="col-md-12" style="padding-bottom: 13px;">
