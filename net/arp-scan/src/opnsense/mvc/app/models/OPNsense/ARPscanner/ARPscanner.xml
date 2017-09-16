@@ -9,7 +9,7 @@
           <Required>N</Required>
         </restart>
 -->
-        <interface type="InterfaceField">
+        <interface type="TextField">
           <default>lan</default>
           <Required>Y</Required>
         </interface>
