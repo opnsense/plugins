@@ -29,6 +29,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     $( document ).ready(function() {
+        
+        
+        // CSS fixtures
+        $('.table-responsive td').css('padding-left', '17px');
+        // end CSS fixtures
+        
+    
         var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
         //~ console.log(data_get_map);
         mapDataToFormUI(data_get_map).done(function(data){
