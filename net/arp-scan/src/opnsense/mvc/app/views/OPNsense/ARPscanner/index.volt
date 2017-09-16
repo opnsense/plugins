@@ -38,9 +38,12 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         // link save button to API set action
-        $("#start_arpscanner").click(function(){
+        $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/arpscanner/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
                 // action to run after successful save, for example reconfigure service.
+                ajaxCall(url="/api/arpscanner/service/reload", sendData={},callback=function(data,status) {
+                    // action to run after reload
+                });
             });
         });
 
@@ -134,6 +137,10 @@ POSSIBILITY OF SUCH DAMAGE.
     
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
+        <div class="col-md-12">
+            <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+        </div>
+        
         <div class="col-md-12" style="padding-bottom: 13px;">
             <button class='btn btn-default' id="stop_arpscanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
             <button class="btn btn-primary pull-center"  id="start_arpscanner" type="button"><b>{{ lang._('Start') }}</b></button>

@@ -54,5 +54,36 @@ class SettingsController extends ApiControllerBase
     }
     
 
+    /**
+     * update arpscan settings
+     * @return array status
+     */
+    public function setAction()
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost()) {
+            // load model and update with provided data
+            $mdl = new ARPscanner();
+            $mdl->setNodes($this->request->getPost("arpscanner"));
+    
+            // perform validation
+            $valMsgs = $mdl->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                if (!array_key_exists("validations", $result)) {
+                    $result["validations"] = array();
+                }
+                $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
+            }
+    
+            // serialize model to config and save
+            if ($valMsgs->count() == 0) {
+                $mdl->serializeToConfig();
+                Config::getInstance()->save();
+                $result["result"] = "saved";
+            }
+        }
+        return $result;
+    }
+
     
 }
