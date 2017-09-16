@@ -33,12 +33,12 @@ use \OPNsense\Base\ApiControllerBase;
 class ServiceController extends ApiControllerBase
 {
     
-    public function startAction()
+    public function startScan()
     {
         $backend = new Backend();
         $result = array('result' => 'failed');
-        $backend->configdRun('template reload OPNsense/MDNSRepeater');
-        $result['result'] = $backend->configdRun('mdnsrepeater start');
+        $backend->configdRun('template reload OPNsense/ARPscanner');
+        $result['result'] = $backend->configdRun('arp-scan start');
         return $result;
     }
 

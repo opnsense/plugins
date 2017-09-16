@@ -47,7 +47,7 @@ class SettingsController extends ApiControllerBase
     if ($this->request->isGet()) {
         $mdl = new ARPscanner();
         $result['arpscanner'] =  $mdl->getNodes();
-        $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
+        // $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
         //~ $t = $mdl->test();
     }   
     return $result;
