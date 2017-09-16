@@ -213,15 +213,13 @@ package: check
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
-upgrade-check: check
-	@if ! ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
-		echo ">>> Cannot find package.  Please run 'pkg install ${PLUGIN_PKGNAME}'" >&2; \
-		exit 1; \
-	fi
+upgrade-check:
 	@rm -rf ${PKGDIR}
 
 upgrade: upgrade-check package
-	@${PKG} delete -fy ${PLUGIN_PKGNAME}
+	@if ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
+		${PKG} delete -fy ${PLUGIN_PKGNAME}; \
+	fi
 	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
