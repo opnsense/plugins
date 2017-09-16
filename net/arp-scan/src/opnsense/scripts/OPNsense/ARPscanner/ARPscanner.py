@@ -26,6 +26,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 """
 from subprocess import Popen, PIPE
+import datetime
 import json
 import re
 #~ from IPtools import get_ip_address
@@ -70,13 +71,18 @@ class ArpScanner(object):
             returncode = self.outputs[net].returncode
             if _DEBUG: print(returncode, output, err)
             self.outputs[net] = returncode, output, err
+            self._result = {}
             
             regexp = re.findall('([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)', output, re.I)
             if _DEBUG: print(regexp)
             for netfound in regexp:
-                if not self.result.get(net): self.result[net] = []
-                self.result[net].append((netfound[0].replace('\t', ''), netfound[1], netfound[2]))
-    
+                if not self._result.get(net): self._result[net] = []
+                self._result[net].append((netfound[0].replace('\t', ''), netfound[1], netfound[2]))
+        
+        self.result['interface'] = self.ifname
+        self.result['networks']  = self._result.copy()
+        self.result['datetime']  = datetime.datetime.now().isoformat()
+        
     def view_outputs(self):
         for res in self.outputs:
             print(res)
@@ -106,7 +112,7 @@ if __name__ == '__main__':
        print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
     else:
         args.r = ['--localnet']
-    print("On interface: {}".format(args.i))
+    print("Scan interface: {}".format(args.i))
 
     ap = ArpScanner(args.i, args.r)
     ap.start()
