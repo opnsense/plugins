@@ -213,7 +213,7 @@ package: check
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
-upgrade-check:
+upgrade-check: check
 	@rm -rf ${PKGDIR}
 
 upgrade: upgrade-check package
