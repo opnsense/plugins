@@ -2,6 +2,7 @@
 
 /**
  *    Copyright (C) 2017 Giuseppe De Marco <giuseppe.demarco@unical.it>
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,34 +26,21 @@
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
  *
-**/
+ */
 
+namespace OPNsense\ARPscanner;
 
-namespace OPNsense\ARPscanner\Api;
+use OPNsense\Base\BaseModel;
 
-use \OPNsense\Base\ApiControllerBase;
-
-use \OPNsense\ARPscanner\ARPscanner;
-//~ use \OPNsense\ARPscanner\Api\NetTools;
-
-class SettingsController extends ApiControllerBase
+class ARPscanner extends BaseModel
 {
-    /* retrieve general settings
-     * @return array general settings
-     */
-    public function getAction()
-    {
-    // define list of configurable settings
-    $result = array();
-    if ($this->request->isGet()) {
-        $mdl = new ARPscanner();
-        $result['arpscanner'] =  $mdl->getNodes();
-        $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
-        //~ $t = $mdl->test();
-    }   
-    return $result;
+    
+    public function test(){
+        $command="/sbin/ifconfig";
+        exec($command, $output);
+        return $output;
+        
     }
     
 
-    
 }

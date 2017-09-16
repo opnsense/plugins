@@ -1,12 +1,20 @@
 <form>
+<!--
    <field>
-      <id>arpscanner.interfaces</id>
+      <id>arpscanner.general.restart</id>
+      <label>Restart</label>
+      <type>checkbox</type>
+      <help>Restart current scanning with new values.</help>
+   </field>
+-->
+   <field>
+      <id>arpscanner.general.interfaces</id>
       <label>Listen Interfaces</label>
       <type>dropdown</type>
       <help>Interface where to find the networks logically linked to.</help>
    </field>
    <field>
-      <id>arpscanner.networks</id>
+      <id>arpscanner.general.networks</id>
       <label>Network to probe</label>
       <type>text</type>
       <help>Multiple network ranges, as: 192.168.1.0/24 172.16.31.0/24

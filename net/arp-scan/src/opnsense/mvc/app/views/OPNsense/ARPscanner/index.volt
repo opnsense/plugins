@@ -26,44 +26,118 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
+        console.log(data_get_map);
+        mapDataToFormUI(data_get_map).done(function(data){
+            // place actions to run after load, for example update form styles.
+                formatTokenizersUI();
+                $('select').selectpicker('refresh');
+        });
+
+        // link save button to API set action
+        $("#saveAct").click(function(){
+            saveFormToEndpoint(url="/api/arpscanner/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
+                // action to run after successful save, for example reconfigure service.
+            });
+        });
+
+
+    });
+</script>
+
+<script type="text/javascript">
+
+    /**
+     * prepare for checking scan status
+     */
+    //~ function scanStatusPrepare(rerun) {
+        //~ if ($rerun = false) {
+            //~ $('#scan_status').hide();
+            //~ $('#scanlist').show();
+        //~ }
+        //~ $("#checkscan_progress").addClass("fa fa-spinner fa-pulse");
+        //~ $('#scanstatus').html("{{ lang._('Checking... (may take up to 30 seconds)') }}");
+    //~ }
+
+    /**
+     * retrieve scan status from backend
+     */
+    function scanStatus() {
+        // scan UI
+        //~ scanStatusPrepare(false);
+
+        // request status
+        ajaxGet('/api/arpscanner/status',{},function(data,status){
+            $("#checkscan_progress").removeClass("fa fa-spinner fa-pulse");
+            $('#scanstatus').html(data['status_msg']);
+
+            if (data['status'] == "1") {
+
+                //~ run audit
+                
+            }
+        });
+    }
+
+    /**
+     * perform upgrade, install poller to scan status
+     */
+    function stopScan() {
+        $('#scanlist').hide();
+        $('#scan_status').show();
+        $('#scantab > a').tab('show');
+        $('#scanstatus').html("{{ lang._('Killing...') }}");
+        $("#audit").attr("style","display:none");
+        maj_suffix = '';
+        if ($.upgrade_action == 'maj') {
+            maj_suffix = '_maj';
+        }
+        $("#upgrade" + maj_suffix).attr("style","");
+        $("#upgrade_progress" + maj_suffix).addClass("fa fa-spinner fa-pulse");
+
+        ajaxCall('/api/arpscanner/stop',{upgrade:$.upgrade_action},function() {
+            $('#scanlist').empty();
+            setTimeout(trackStatus, 500);
+        });
+    }
+
+    /**
+     * perform audit, install poller to scan status
+     */
+    function audit() {
+        $.upgrade_action = 'audit';
+        $('#scanlist').hide();
+        $('#scan_status').show();
+        $('#scantab > a').tab('show');
+        $('#scanstatus').html("{{ lang._('Auditing...') }}");
+        $("#audit").attr("style","");
+        $("#audit_progress").addClass("fa fa-spinner fa-pulse");
+
+        ajaxCall('/api/arpscanner/audit', {}, function () {
+            $('#scanlist').empty();
+            setTimeout(trackStatus, 500);
+        });
+    }
+</script>
+
+
 <section class="col-xs-12">
+    
+    <div class="alert alert-info" role="alert" style="min-height: 65px;">
+        <div class="pull-left" style="margin-top: 8px;" id="updatestatus">{{ lang._('ARPscanner is stopped')}}</div>
+        <div class="pull-left" style="margin-top: 8px; display:none;" id="updatestatus">{{ lang._('ARPscanner is running')}}</div>   
+        <button class='btn btn-primary pull-right' id="audit">{{ lang._('Audit now') }} <i id="audit_progress"></i></button>             
+    </div>        
+    
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
-        
-        <div class="col-md-12">
-            <button class="btn btn-primary"  id="startAct" type="button"><b>{{ lang._('Start') }}</b></button>
+        <div class="col-md-12" style="padding-bottom: 13px;">
+            <button class='btn btn-default' id="stop_arpscanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
+            <button class="btn btn-primary pull-center"  id="start_arpscanner" type="button"><b>{{ lang._('Start') }}</b></button>
         </div>
-        
     </div>
 </section>
 
-<script type="text/javascript">
-</script>
-
-<!--
-Start scann and get response
--->
-<script type="text/javascript">
-$( document ).ready(function() {
-    $("#view").click(function(){
-      $.ajax("diag_packet_capture.php",{
-          type: 'get',
-          cache: false,
-          dataType: "json",
-          data: {view: 'view', 'dnsquery': $("#dnsquery:checked").val() ,'detail': $("#detail").val()},
-          success: function(response) {
-            var html = [];
-            $.each(response, function(idx, line){
-                html.push('<tr><td>'+line+'</td></tr>');
-            });
-            $("#capture_output").html(html.join(''));
-            $("#capture").removeClass('hidden');
-            // scroll to capture output
-            $('html, body').animate({
-              scrollTop: $("#capture").offset().top
-            }, 2000);
-          }
-      });
-    });
-});
-</script>

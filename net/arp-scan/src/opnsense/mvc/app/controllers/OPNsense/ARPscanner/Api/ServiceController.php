@@ -32,4 +32,14 @@ namespace OPNsense\ARPscanner\Api;
 use \OPNsense\Base\ApiControllerBase;
 class ServiceController extends ApiControllerBase
 {
+    
+    public function startAction()
+    {
+        $backend = new Backend();
+        $result = array('result' => 'failed');
+        $backend->configdRun('template reload OPNsense/MDNSRepeater');
+        $result['result'] = $backend->configdRun('mdnsrepeater start');
+        return $result;
+    }
+
 }

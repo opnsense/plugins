@@ -1,0 +1,21 @@
+<model>
+  <mount>//OPNsense/ARPscanner</mount>
+  <version>1.0.0</version>
+  <description>ARP Scan</description>
+  <items>
+    <general>
+        <restart type="BooleanField">
+          <Required>N</Required>
+        </restart>
+        <interfaces type="InterfaceField">
+          <default>lan</default>
+          <Required>Y</Required>
+        </interfaces>
+        <networks type="CSVListField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)$/</mask>
+        </networks>
+    </general>
+  </items>
+</model>
