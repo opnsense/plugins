@@ -63,10 +63,9 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
-            return $this->request;
+            $ifname =  $_POST['interface'];
             $backend = new Backend();
-            $result = array('result' => 'failed');
-            $result['result'] = json_decode(trim($backend->configdRun('arpscanner start')), true);
+            $result = json_decode(trim($backend->configdRun('arpscanner start '.$ifname)), true);
             return $result;
             }
         return array("message" => "unable to run config action");

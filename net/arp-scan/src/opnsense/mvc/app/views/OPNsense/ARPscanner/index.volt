@@ -57,17 +57,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#startScanner").click(function(){
             $("#responseMsg").removeClass("hidden");
-            ajaxCall(url="/api/arpscanner/service/test", sendData={},callback=function(data,status) {
+            
+            var ifname = $('select option:selected')[0].value;
+            
+            ajaxCall(url="/api/arpscanner/service/start", sendData={'interface':ifname},callback=function(data,status) {
                 // action to run after reload
-                console.log(data);
+                //~ console.log(data);
                 $("#ifname").html(data['interface']);
                 $("#datetime").html(data['datetime']);
                 $('#netTable tr').not(':first').not(':first').remove()
                 
                 $.each(data['networks'], function(x,y) {
-                    //~ console.log(x,y);
+                    console.log(x,y);
                     $.each(y, function(z,q){
-                        //~ console.log(q);
+                        console.log(q);
                         $('#netTable tr:last').after("<tr><td>"+q[0]+"</td><td>"+q[1]+"</td><td>"+q[2]+"</td></tr>")
                     })
                 })
