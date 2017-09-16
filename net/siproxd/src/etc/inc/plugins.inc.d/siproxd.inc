@@ -34,13 +34,13 @@ function siproxd_services()
 
     if (isset($config['OPNsense']['siproxd']['general']['enabled']) && $config['OPNsense']['siproxd']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('ClamAV Daemon'),
+            'description' => gettext('Siproxd Daemon'),
             'configd' => array(
                 'restart' => array('siproxd restart'),
                 'start' => array('siproxd start'),
                 'stop' => array('siproxd stop'),
             ),
-            'name' => 'clamd',
+            'name' => 'siproxd',
             'pidfile' => '/var/run/siproxd/siproxd.pid'
         );
     }
