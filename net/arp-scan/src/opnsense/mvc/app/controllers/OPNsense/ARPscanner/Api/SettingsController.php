@@ -49,13 +49,14 @@ class SettingsController extends ApiControllerBase
         
         $backend = new Backend();
         $bckresult = trim($backend->configdRun("arpscanner interfaces"));
-        $ifnames = explode(" ", $bckresult);
+        $ifnames = json_decode($bckresult);
         
         $result['arpscanner']['general']['interface'] = array();
         foreach ($ifnames as &$arr) {
-            $ifname = $arr;
+            
+            $ifname = $arr[0];
             $result['arpscanner']['general']['interface'][$ifname] = array();
-            $result['arpscanner']['general']['interface'][$ifname]['value'] = $ifname;
+            $result['arpscanner']['general']['interface'][$ifname]['value'] = join(", ", array($ifname, " (".$arr[2].")") );
         }
         // $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
         //~ $t = $mdl->test();

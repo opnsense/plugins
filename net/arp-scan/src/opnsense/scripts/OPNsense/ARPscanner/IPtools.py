@@ -130,9 +130,6 @@ class IPtools(object):
         """
         Get a list of network interfaces on BSD.
         """
-        
-        b = '(^\w+)(.+)([\n\t\s]*)(.*)([\n\t\s]*)(.*?ether[ ])([0-9A-Fa-f:]{17})([\n\t\s]*)(.*?\n\s+inet[ ])((?:\d+\.){3}\d+)'
-        
         name_pattern = "^(\w+).+[\n\t\s]*.*[\n\t\s]*"
         mac_pattern = ".*?ether[ ]([0-9A-Fa-f:]{17})[\n\t\s]*"
         ip_pattern = ".*?\n\s+inet[ ]((?:\d+\.){3}\d+)"
@@ -144,7 +141,6 @@ class IPtools(object):
     
         ifconfig = subprocess.check_output(["ifconfig", "-u"]).decode()
         interfaces = pattern.findall(ifconfig)
-        print(interfaces)
         Interface = namedtuple("Interface", "name {mac} {ip}".format(
             mac="mac",
             ip="ip"))
