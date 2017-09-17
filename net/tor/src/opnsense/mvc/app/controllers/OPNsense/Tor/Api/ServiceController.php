@@ -72,6 +72,17 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
+     * query tor hidden service hostnames
+     * @return array
+     */
+    public function get_hidden_servicesAction()
+    {
+        $backend = new Backend();
+        $response = json_decode($backend->configdRun('tor gethostnames'));
+        return array('response' => $response);
+    }
+
+    /**
      * restart tor service
      * @return array
      */

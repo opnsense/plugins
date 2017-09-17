@@ -75,7 +75,7 @@ class HiddenserviceController extends ApiMutableModelControllerBase
             $valMsgs = $mdl->performValidation();
 
             foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, 'service', $msg->getField());
+                $fieldnm = str_replace($node->__reference, 'hiddenservice', $msg->getField());
                 $result['validations'][$fieldnm] = $msg->getMessage();
             }
 
@@ -121,7 +121,7 @@ class HiddenserviceController extends ApiMutableModelControllerBase
                     $node->setNodes($info);
                     $valMsgs = $mdl->performValidation();
                     foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, 'service', $msg->getField());
+                        $fieldnm = str_replace($node->__reference, 'hiddenservice', $msg->getField());
                         $result['validations'][$fieldnm] = $msg->getMessage();
                     }
 
