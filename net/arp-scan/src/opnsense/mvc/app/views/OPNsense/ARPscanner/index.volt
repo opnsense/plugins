@@ -81,15 +81,19 @@ POSSIBILITY OF SUCH DAMAGE.
             ajaxCall(url="/api/arpscanner/service/start", sendData={'interface':ifname, 'networks': networks},callback=function(data,status) {
                 // action to run after reload
                 //~ console.log(data);
-                $("#ifname").html(data['interface']);
-                $("#datetime").html(data['datetime']);
-                $('#netTable tr').not(':first').not(':first').remove()
+                $("#ifname").text(data['interface']);
+                $("#datetime").text(data['datetime']);
+                $('#netTable tr').slice(2).remove()
                 
-                $.each(data['networks'], function(x,y) {
+                $.each(data['networks'], function(key_x,network) {
                     //~ console.log(x,y);
-                    $.each(y, function(z,q){
+                    $.each(network, function(key_z,node){
                         //~ console.log(q);
-                        $('#netTable tr:last').after("<tr><td>"+q[0]+"</td><td>"+q[1]+"</td><td>"+q[2]+"</td><td>"+q[3]+"</td></tr>")
+                        ip = node[0];
+                        mac = node[1];
+                        vendor = node[2];
+                        network = node[3];
+                        $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td><td>"+network+"</td></tr>")
                     })
                 })
                 $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
@@ -178,8 +182,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <section class="col-xs-12">
     <div class="alert alert-info" role="alert" style="min-height: 65px;">
-        <div class="pull-left" style="margin-top: 8px;" id="updatestatus">{{ lang._('ARPscanner is stopped')}}</div>
-        <div class="pull-left" style="margin-top: 8px; display:none;" id="updatestatus">{{ lang._('ARPscanner is running')}}</div>   
+        <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('ARPscanner is stopped')}}</div>
+        <div class="pull-left updatestatus" style="margin-top: 8px; display:none;">{{ lang._('ARPscanner is running')}}</div>   
 <!--
         <button class='btn btn-primary pull-right' id="audit">{{ lang._('Audit now') }} <i id="audit_progress"></i></button>             
 -->
@@ -204,8 +208,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <table>
             <thead>
                 <tr>
-                    <th><b>Interface name</b></th>
-                    <th><b>Date time</b></th>
+                    <th><b>{{ lang._('Interface name') }}</b></th>
+                    <th><b>{{ lang._('Date time') }}</b></th>
                 </tr>
             </thead>
             <tbody>
@@ -218,14 +222,14 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="netTable">
             <thead>
                 <tr>
-                    <td><b>IP</b></td>
-                    <td><b>MAC</b></td>
-                    <td><b>Vendor</b></td>
-                    <th><b>Network</b></th>                    
+                    <td><b>{{ lang._('IP') }}</b></td>
+                    <td><b>{{ lang._('MAC') }}</b></td>
+                    <td><b>{{ lang._('Vendor') }}</b></td>
+                    <th><b>{{ lang._('Network') }}</b></th>                    
                 </tr>
             </thead>
             <tbody>
-                <tr></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
             </tbody>
         </table>
         

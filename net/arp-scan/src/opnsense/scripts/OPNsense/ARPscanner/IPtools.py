@@ -44,7 +44,7 @@ SIOCGIFFLAGS =  0x8913
 #~ SIOCSIFFLAGS =  0x8914
 SIOCGIFHWADDR = 0x8927
 SIOCSIFHWADDR = 0x8924
-#~ SIOCGIFADDR = 0x8915
+SIOCGIFADDR = 0x8915
 #~ SIOCSIFADDR = 0x8916
 #~ SIOCGIFNETMASK = 0x891B
 #~ SIOCSIFNETMASK = 0x891C
@@ -68,7 +68,7 @@ class IPtools(object):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         return socket.inet_ntoa(fcntl.ioctl(
             s.fileno(),
-            0x8915,  # SIOCGIFADDR
+            SIOCGIFADDR,
             struct.pack('256s', ifname[:15])
         )[20:24])
     

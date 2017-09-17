@@ -45,7 +45,9 @@ class SettingsController extends ApiControllerBase
     if ($this->request->isGet()) {
         $mdl = new ARPscanner();
         $result['arpscanner'] =  $mdl->getNodes();
-        // returns: {"arpscanner":{"general":{"interface":{"lan":{"value":"lan","selected":1}},"networks":{"10.0.1.0\/24":{"value":"10.0.1.0\/24","selected":1}}}}}
+        // returns: {"arpscanner":{"general":{"interface":
+        // {"lan":{"value":"lan","selected":1}},"networks":
+        // {"10.0.1.0\/24":{"value":"10.0.1.0\/24","selected":1}}}}}
         
         $backend = new Backend();
         $bckresult = trim($backend->configdRun("arpscanner interfaces"));
