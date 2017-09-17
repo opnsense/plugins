@@ -65,13 +65,47 @@ class ArpScanner(object):
         self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
         self._DEBUG = False
     
+    @staticmethod
+    def check_run(ifname):
+        """
+           returns 1 if running on that ifname
+        """
+        # read PID attribute of .current
+        # if PID exists: 
+        #    return 1
+        return 0
+    
+    @staticmethod
+    def status(ifname):
+        """
+            read from .current 
+        """
+        # check_run
+        # return (returncode, output, err)
+        pass
+        
+    def status(self, ifname):
+        # check if tmpfolder/$ifname.current exists
+        # read PID attribute of .current
+        # if PID exists: 
+        #    check if it is not dead: move .current to .last
+        #    return (returncode, output, err) from .last if not .current
+        #
+        # else: 
+        #    write the .current status file 
+        pass
+        
     def run_command(self, os_command, background=False):
         """
            os_command: (list) command to run 
            background: .current and .last file are used for I/O
         """
-
+        
+        
         if background: 
+            # run a child and detach
+            
+            # write json object on every stdout LINE on the file
             pass
         else:
             osc = Popen(os_command, 
@@ -88,6 +122,7 @@ class ArpScanner(object):
         self.result['networks'] = {}
         for net in self.network_list:
             os_command = ["arp-scan", "-I", self.ifname, net]
+            # prepare_start(self.ifname
             self.outputs[net] = self.run_command(os_command)
             #~ self.outputs[net] = returncode, output, err
             regexp = re.findall(self.regexp , self.outputs[net][1], re.I)
@@ -132,5 +167,6 @@ if __name__ == '__main__':
     #~ print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
     
     ap = ArpScanner(args.i, args.r)
+    # ap.check_run()
     ap.start()
     print(ap.get_json())

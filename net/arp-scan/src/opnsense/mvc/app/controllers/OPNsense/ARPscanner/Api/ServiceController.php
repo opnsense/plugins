@@ -47,18 +47,6 @@ class ServiceController extends ApiControllerBase
     return array("status" => $status);
     }
 
-    public function testAction()
-    {
-
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("arpscanner test")), true);
-        if ($bckresult !== null) {
-            // only return valid json type responses
-            return $bckresult;
-        }
-        return "error";
-    }
-
     public function startAction()
     {
         if ($this->request->isPost()) {
