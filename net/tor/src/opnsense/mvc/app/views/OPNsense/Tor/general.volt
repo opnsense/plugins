@@ -32,7 +32,7 @@
 
 $( document ).ready(function() {
     var data_get_map = {
-        'general': '/api/tor/general/get', 
+        'general': '/api/tor/general/get',
         'relay': '/api/tor/relay/get'
     };
     mapDataToFormUI(data_get_map).done(function(data){
@@ -201,7 +201,7 @@ $( document ).ready(function() {
             <button class="btn btn-primary" id="relaysaveAct" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_progress"></i></button>
         </div>
     </div>
-    
+
     <div id="exitnodeacl" class="tab-pane fade in">
         <div class="alert alert-danger" role="alert">
             {{ lang._('Running an exit node may be lead to legal issues and seized hardware. Be careful with your settings here.') }}
