@@ -9,7 +9,7 @@ to find a device using an arp response. Once you’ve found the MAC
 address, you can find more info about that device by matching that MAC 
 address to it’s vendor. 
 
-ARP scanner techniques are very important to understand ARP/MAC responses 
+ARP Scan techniques are very important to understand ARP/MAC responses 
 for penetration tester and diagnosys purpose. It is the first tool for 
 network monitoring, especially against ip collisions, arpspoof and all 
 kind of hijack techniques, like Man-In-The-Middle Attack. It also helps 
