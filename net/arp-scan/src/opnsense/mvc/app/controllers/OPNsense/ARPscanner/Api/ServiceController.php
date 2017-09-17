@@ -52,7 +52,6 @@ class ServiceController extends ApiControllerBase
 
         $backend = new Backend();
         $bckresult = json_decode(trim($backend->configdRun("arpscanner test")), true);
-        return $bckresult;
         if ($bckresult !== null) {
             // only return valid json type responses
             return $bckresult;
@@ -77,8 +76,7 @@ class ServiceController extends ApiControllerBase
     {
 
         $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("arpscanner stop")), true);
-        return $bckresult;
+        $bckresult = trim($backend->configdRun("arpscanner stop"));
         if ($bckresult !== null) {
             // only return valid json type responses
             return $bckresult;

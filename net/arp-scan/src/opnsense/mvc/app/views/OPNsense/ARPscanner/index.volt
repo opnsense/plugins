@@ -66,7 +66,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 // action to run after successful save, for example reconfigure service.
                 ajaxCall(url="/api/arpscanner/service/stop", sendData={},callback=function(data,status) {
                 // action to run after reload
-                console.log(data);
+                //~ console.log(data);
+                $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
                 });
         });
 
