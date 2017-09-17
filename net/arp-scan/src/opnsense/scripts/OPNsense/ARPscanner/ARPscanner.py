@@ -63,22 +63,29 @@ class ArpScanner(object):
         self.network_list   = network_list if network_list else RFC1918_NETWORKS
         self.outputs        = {} # raw outputs from system command
         self.result         = {} # filtered output containing only what needed
+        # regexp used to retrieve data from arp-scan system command stdout
+        self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
         
     def start(self):
         self.result['networks'] = {}
         for net in self.network_list:
             os_command = ["arp-scan", "-I", self.ifname, net]
-            self.outputs[net] = Popen(os_command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            self.outputs[net] = Popen(os_command, 
+                                      stdin=PIPE, 
+                                      stdout=PIPE, 
+                                      stderr=PIPE)
             output, err = self.outputs[net].communicate()
             returncode = self.outputs[net].returncode
             if _DEBUG: print(os_command, returncode, output, err)
             self.outputs[net] = returncode, output, err
-            
-            regexp = re.findall('([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)', output, re.I)
+            regexp = re.findall(self.regexp , output, re.I)
             if _DEBUG: print(regexp)
             for netfound in regexp:
-                if not self.result['networks'].get(net): self.result['networks'][net] = []
-                self.result['networks'][net].append((netfound[0].replace('\t', ''), netfound[1], netfound[2], net.replace('-','')))
+                if not self.result['networks'].get(net): 
+                    self.result['networks'][net] = []
+                self.result['networks'][net].append(
+                    (netfound[0].replace('\t', ''), 
+                     netfound[1], netfound[2], net.replace('-','')))
                 
         self.result['interface'] = self.ifname
         self.result['datetime']  = datetime.datetime.now().isoformat()
