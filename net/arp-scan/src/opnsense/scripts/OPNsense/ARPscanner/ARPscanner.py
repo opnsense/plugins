@@ -69,18 +69,17 @@ class ArpScanner(object):
             self.outputs[net] = Popen(os_command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
             output, err = self.outputs[net].communicate()
             returncode = self.outputs[net].returncode
-            if _DEBUG: print(returncode, output, err)
+            if _DEBUG: print(os_command, returncode, output, err)
             self.outputs[net] = returncode, output, err
-            self._result = {}
+            self.result['networks'] = {}
             
             regexp = re.findall('([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)', output, re.I)
             if _DEBUG: print(regexp)
             for netfound in regexp:
-                if not self._result.get(net): self._result[net] = []
-                self._result[net].append((netfound[0].replace('\t', ''), netfound[1], netfound[2]))
-        
+                if not self.result['networks'].get(net): self.result['networks'][net] = []
+                self.result['networks'][net].append((netfound[0].replace('\t', ''), netfound[1], netfound[2], net.replace('-','')))
+                
         self.result['interface'] = self.ifname
-        self.result['networks']  = self._result.copy()
         self.result['datetime']  = datetime.datetime.now().isoformat()
         
     def view_outputs(self):
@@ -107,13 +106,15 @@ if __name__ == '__main__':
     If not specified it will scan all the RFC 1918 local area networks.""")
     args = parser.parse_args()
     
-    if args.r:
-       plural = '' if len(args.i) == 1 else 's'
-       print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
-    else:
+    if not args.r[0]:
         args.r = ['--localnet']
-    #~ print("Scan interface: {}".format(args.i))
+    elif len(args.r) == 1:
+        args.r = args.r[0].split(',')
 
+    #~ print("Scan interface: {}".format(args.i))    
+    #~ plural = '' if len(args.i) == 1 else 's'
+    #~ print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
+    
     ap = ArpScanner(args.i, args.r)
     ap.start()
     print(ap.get_json())

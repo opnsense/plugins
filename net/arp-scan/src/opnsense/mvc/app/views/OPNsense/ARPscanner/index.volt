@@ -65,9 +65,10 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#startScanner").click(function(){
             $("#responseMsg").removeClass("hidden");
             
-            var ifname = $('select option:selected')[0].value;
-            
-            ajaxCall(url="/api/arpscanner/service/start", sendData={'interface':ifname},callback=function(data,status) {
+            var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
+            var networks = $('#arpscanner\\.general\\.networks').val();
+            //~ console.log(networks);
+            ajaxCall(url="/api/arpscanner/service/start", sendData={'interface':ifname, 'networks': networks},callback=function(data,status) {
                 // action to run after reload
                 //~ console.log(data);
                 $("#ifname").html(data['interface']);
@@ -75,10 +76,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 $('#netTable tr').not(':first').not(':first').remove()
                 
                 $.each(data['networks'], function(x,y) {
-                    console.log(x,y);
+                    //~ console.log(x,y);
                     $.each(y, function(z,q){
-                        console.log(q);
-                        $('#netTable tr:last').after("<tr><td>"+q[0]+"</td><td>"+q[1]+"</td><td>"+q[2]+"</td></tr>")
+                        //~ console.log(q);
+                        $('#netTable tr:last').after("<tr><td>"+q[0]+"</td><td>"+q[1]+"</td><td>"+q[2]+"</td><td>"+q[3]+"</td></tr>")
                     })
                 })
             });
@@ -192,8 +193,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <table>
             <thead>
                 <tr>
-                    <th>Interface name</th>
-                    <th>Date time</th>
+                    <th><b>Interface name</b></th>
+                    <th><b>Date time</b></th>
                 </tr>
             </thead>
             <tbody>
@@ -206,9 +207,10 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="netTable">
             <thead>
                 <tr>
-                    <td>IP</td>
-                    <td>MAC</td>
-                    <td>Vendor</td>
+                    <td><b>IP</b></td>
+                    <td><b>MAC</b></td>
+                    <td><b>Vendor</b></td>
+                    <th><b>Network</b></th>                    
                 </tr>
             </thead>
             <tbody>
