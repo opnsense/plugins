@@ -64,6 +64,7 @@ class ArpScanner(object):
         self.result         = {} # filtered output containing only what needed
         
     def start(self):
+        self.result['networks'] = {}
         for net in self.network_list:
             os_command = ["arp-scan", "-I", self.ifname, net]
             self.outputs[net] = Popen(os_command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
@@ -71,7 +72,6 @@ class ArpScanner(object):
             returncode = self.outputs[net].returncode
             if _DEBUG: print(os_command, returncode, output, err)
             self.outputs[net] = returncode, output, err
-            self.result['networks'] = {}
             
             regexp = re.findall('([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)', output, re.I)
             if _DEBUG: print(regexp)

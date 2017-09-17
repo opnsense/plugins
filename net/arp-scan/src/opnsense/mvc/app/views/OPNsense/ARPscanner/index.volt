@@ -63,7 +63,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
         $("#startScanner").click(function(){
-            $("#responseMsg").removeClass("hidden");
+            //~ $("#responseMsg").removeClass("hidden");
+            $("#scan_progress").addClass("fa fa-spinner fa-pulse");
             
             var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             var networks = $('#arpscanner\\.general\\.networks').val();
@@ -82,8 +83,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         $('#netTable tr:last').after("<tr><td>"+q[0]+"</td><td>"+q[1]+"</td><td>"+q[2]+"</td><td>"+q[3]+"</td></tr>")
                     })
                 })
+                $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
             });
-            //~ 
+            
         });
     });
 </script>
@@ -168,7 +170,9 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="alert alert-info" role="alert" style="min-height: 65px;">
         <div class="pull-left" style="margin-top: 8px;" id="updatestatus">{{ lang._('ARPscanner is stopped')}}</div>
         <div class="pull-left" style="margin-top: 8px; display:none;" id="updatestatus">{{ lang._('ARPscanner is running')}}</div>   
+<!--
         <button class='btn btn-primary pull-right' id="audit">{{ lang._('Audit now') }} <i id="audit_progress"></i></button>             
+-->
     </div>        
     
     <div class="content-box">
@@ -179,7 +183,7 @@ POSSIBILITY OF SUCH DAMAGE.
         
         <div class="col-md-12" style="padding-bottom: 13px;">
             <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
-            <button class="btn btn-primary pull-center"  id="startScanner" type="button"><b>{{ lang._('Start') }}</b></button>
+            <button class="btn btn-primary pull-center"  id="startScanner" type="button"><i id="scan_progress" class=""></i><b>{{ lang._('Start') }}</b></button>
         </div>
     </div>
     
