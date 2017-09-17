@@ -62,8 +62,8 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
-            $ifname =  $_POST['interface'];
-            $networks =  $_POST['networks'];
+            $ifname =  escapeshellarg($_POST['interface']);
+            $networks =  escapeshellarg($_POST['networks']);
             //~ return 'arpscanner start '.$ifname.' '.$networks;
             $backend = new Backend();
             $result = json_decode(trim($backend->configdRun('arpscanner start '.$ifname.' '.$networks)), true);
