@@ -41,17 +41,19 @@ use \OPNsense\Quagga\General;
 class ServiceController extends ApiControllerBase
 {
     /**
-     * start quagga service (in background)
+     * start quagga service and reload filter rules to pass OSPF
+     * before the bogon filter kills the routing protocol packets
      * @return array
      */
     public function startAction()
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("quagga start", true);
-            return array("response" => $response);
+            $response = $backend->configdRun('quagga start');
+            $backend->configdRun('filter reload');
+            return array('response' => $response);
         } else {
-            return array("response" => array());
+            return array('response' => array());
         }
     }
 
@@ -63,10 +65,10 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("quagga stop");
-            return array("response" => $response);
+            $response = $backend->configdRun('quagga stop');
+            return array('response' => $response);
         } else {
-            return array("response" => array());
+            return array('response' => array());
         }
     }
 
@@ -78,10 +80,11 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("quagga restart");
-            return array("response" => $response);
+            $response = $backend->configdRun('quagga restart');
+            $backend->configdRun('filter reload');
+            return array('response' => $response);
         } else {
-            return array("response" => array());
+            return array('response' => array());
         }
     }
 
@@ -94,24 +97,24 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $mdlGeneral = new General();
-        $response = $backend->configdRun("quagga status");
+        $response = $backend->configdRun('quagga status');
 
-        if (strpos($response, "not running") > 0) {
+        if (strpos($response, 'not running') > 0) {
             if ($mdlGeneral->enabled->__toString() == 1) {
-                $status = "stopped";
+                $status = 'stopped';
             } else {
-                $status = "disabled";
+                $status = 'disabled';
             }
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
+        } elseif (strpos($response, 'is running') > 0) {
+            $status = 'running';
         } elseif ($mdlGeneral->enabled->__toString() == 0) {
-            $status = "disabled";
+            $status = 'disabled';
         } else {
-            $status = "unkown";
+            $status = 'unknown';
         }
 
 
-        return array("status" => $status);
+        return array('status' => $status);
     }
 
     /**
@@ -139,9 +142,9 @@ class ServiceController extends ApiControllerBase
                 $this->startAction();
             }
 
-            return array("status" => "ok");
+            return array('status' => 'ok');
         } else {
-            return array("status" => "failed");
+            return array('status' => 'failed');
         }
     }
 }

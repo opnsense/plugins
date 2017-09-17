@@ -122,11 +122,15 @@ class DiagnosticsController extends ApiControllerBase
     private function get_general_information($name)
     {
         $backend = new Backend();
-        return array("response" => json_decode(trim($backend->configdRun("quagga general-$name"))));
+        return array("response" => json_decode(trim($backend->configdRun("quagga general-$name")), true));
     }
     public function generalroutesAction()
     {
         return $this->get_general_information('routes');
+    }
+    public function logAction()
+    {
+        return $this->get_general_information('log')['response']['general_log'];
     }
     public function generalroutes6Action()
     {
