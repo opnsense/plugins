@@ -182,8 +182,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <section class="col-xs-12">
     <div class="alert alert-info" role="alert" style="min-height: 65px;">
-        <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('ARPscanner is stopped')}}</div>
-        <div class="pull-left updatestatus" style="margin-top: 8px; display:none;">{{ lang._('ARPscanner is running')}}</div>   
+        <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is stopped')}}</div>
+        <div class="pull-left updatestatus" style="margin-top: 8px; display:none;">{{ lang._('Scan is running')}}</div>   
 <!--
         <button class='btn btn-primary pull-right' id="audit">{{ lang._('Audit now') }} <i id="audit_progress"></i></button>             
 -->
