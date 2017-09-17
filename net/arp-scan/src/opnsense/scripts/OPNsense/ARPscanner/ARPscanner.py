@@ -32,8 +32,6 @@ import json
 import re
 #~ from IPtools import get_ip_address
 
-_DEBUG=False
-
 RFC1918_NETWORKS = ["192.168.0.0/16",
                     "172.16.0.0/16",
                     "172.26.0.0/16",
@@ -53,7 +51,7 @@ RFC1918_NETWORKS = ["192.168.0.0/16",
                     "172.31.0.0/16",
                     "10.0.0.0/8"]
 
-class ArpScanner(object):
+class ArpScanner(object):    
     def __init__(self, ifname, network_list):
         """
         netif='eth0'
@@ -65,21 +63,35 @@ class ArpScanner(object):
         self.result         = {} # filtered output containing only what needed
         # regexp used to retrieve data from arp-scan system command stdout
         self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
+        self._DEBUG = False
+    
+    def run_command(self, os_command, background=False):
+        """
+           os_command: (list) command to run 
+           background: .current and .last file are used for I/O
+        """
+
+        if background: 
+            pass
+        else:
+            osc = Popen(os_command, 
+                          stdin=PIPE, 
+                          stdout=PIPE, 
+                          stderr=PIPE)
+            output, err = osc.communicate()
+            returncode = osc.returncode
+            if self._DEBUG: print(os_command, returncode, output, err)
+            return returncode, output, err
+        
         
     def start(self):
         self.result['networks'] = {}
         for net in self.network_list:
             os_command = ["arp-scan", "-I", self.ifname, net]
-            self.outputs[net] = Popen(os_command, 
-                                      stdin=PIPE, 
-                                      stdout=PIPE, 
-                                      stderr=PIPE)
-            output, err = self.outputs[net].communicate()
-            returncode = self.outputs[net].returncode
-            if _DEBUG: print(os_command, returncode, output, err)
-            self.outputs[net] = returncode, output, err
-            regexp = re.findall(self.regexp , output, re.I)
-            if _DEBUG: print(regexp)
+            self.outputs[net] = self.run_command(os_command)
+            #~ self.outputs[net] = returncode, output, err
+            regexp = re.findall(self.regexp , self.outputs[net][1], re.I)
+            if self._DEBUG: print(regexp)
             for netfound in regexp:
                 if not self.result['networks'].get(net): 
                     self.result['networks'][net] = []
@@ -106,11 +118,13 @@ if __name__ == '__main__':
     parser.add_argument('-r', nargs='+', help="""multiple network ranges,
     as: 192.168.1.0/24 172.16.31.0/12
     If not specified it will scan all the RFC 1918 local area networks.""")
+    parser.add_argument('-d', action="store_true", required=False, help="background api mode")
+
     args = parser.parse_args()
     
-    if not args.r[0]:
+    if not args.r or len(args.r[0]) == 0:
         args.r = ['--localnet']
-    elif len(args.r) == 1:
+    else:
         args.r = args.r[0].split(',')
 
     #~ print("Scan interface: {}".format(args.i))    
