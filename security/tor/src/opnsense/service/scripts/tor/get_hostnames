@@ -1,0 +1,24 @@
+#!/usr/local/bin/php
+<?php
+
+require_once("config.inc");
+require_once('tor_helper.php');
+use \OPNsense\Tor\HiddenService;
+
+
+$hostnames = array();
+$services = new HiddenService();
+foreach ($services->service->__items as $service) {
+    $directory_name = ((string)$service->name);
+    $hostnamefile = TOR_DATA_DIR . '/' . $directory_name . '/hostname';
+    if (file_exists($hostnamefile)) {
+        $hostname = @file_get_contents($hostnamefile);
+    }
+    if (empty($hostname)) {
+        $hostname = 'not available';
+    }
+    $hostname = trim($hostname);
+    $hostnames[$directory_name] = $hostname;
+}
+
+print json_encode($hostnames);

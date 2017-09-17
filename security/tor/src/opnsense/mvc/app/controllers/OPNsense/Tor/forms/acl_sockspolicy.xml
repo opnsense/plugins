@@ -1,0 +1,25 @@
+<form>
+  <field>
+    <id>policy.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Enabling this will write the policy to the config file.</help>
+  </field>
+  <field>
+    <id>policy.type</id>
+    <label>Protocol</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>policy.network</id>
+    <label>Network</label>
+    <type>text</type>
+    <help>Network on which this ACL is appied.</help>
+  </field>
+  <field>
+    <id>policy.action</id>
+    <label>Action</label>
+    <type>dropdown</type>
+    <help>Reject: Do not allow the connection; Accept: Pass the connection</help>
+  </field>
+</form>

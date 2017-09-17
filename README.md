@@ -57,6 +57,7 @@ security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/tinc -- Tinc VPN
+security/tor -- The Onion Router
 www/c-icap -- c-icap connects your Proxy with a virus scanner
 www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
 ```

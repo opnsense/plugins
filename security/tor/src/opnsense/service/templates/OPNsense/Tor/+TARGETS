@@ -1,0 +1,2 @@
+torrc:/usr/local/etc/tor/torrc
+tor:/etc/rc.conf.d/tor

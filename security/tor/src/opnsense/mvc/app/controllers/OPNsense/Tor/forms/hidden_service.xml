@@ -1,0 +1,14 @@
+<form>
+  <field>
+    <id>hiddenservice.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Enable this hidden service.</help>
+  </field>
+  <field>
+    <id>hiddenservice.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>Enter a directory name for the hidden service. It may consist of lowercase and uppercase characters.</help>
+  </field>
+</form>
