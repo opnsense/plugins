@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
         //~ console.log(data_get_map);
         mapDataToFormUI(data_get_map).done(function(data){
             // place actions to run after load, for example update form styles.
-            //~ formatTokenizersUI();
+            formatTokenizersUI();
             $('select').selectpicker('refresh');
         });
 
@@ -61,6 +61,14 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
+
+        $("#stopScanner").click(function(){
+                // action to run after successful save, for example reconfigure service.
+                ajaxCall(url="/api/arpscanner/service/stop", sendData={},callback=function(data,status) {
+                // action to run after reload
+                console.log(data);
+                });
+        });
 
         $("#startScanner").click(function(){
             //~ $("#responseMsg").removeClass("hidden");
@@ -91,6 +99,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <script type="text/javascript">
+    // WIP: for auditing
 
     /**
      * prepare for checking scan status
@@ -107,62 +116,62 @@ POSSIBILITY OF SUCH DAMAGE.
     /**
      * retrieve scan status from backend
      */
-    function scanStatus() {
-        // scan UI
+    //~ function scanStatus() {
+        //~ // scan UI
         //~ scanStatusPrepare(false);
-
-        // request status
-        ajaxGet('/api/arpscanner/status',{},function(data,status){
-            $("#checkscan_progress").removeClass("fa fa-spinner fa-pulse");
-            $('#scanstatus').html(data['status_msg']);
-
-            if (data['status'] == "1") {
-
+//~ 
+        //~ // request status
+        //~ ajaxGet('/api/arpscanner/status',{},function(data,status){
+            //~ $("#checkscan_progress").removeClass("fa fa-spinner fa-pulse");
+            //~ $('#scanstatus').html(data['status_msg']);
+//~ 
+            //~ if (data['status'] == "1") {
+//~ 
                 //~ run audit
-                
-            }
-        });
-    }
+                //~ 
+            //~ }
+        //~ });
+    //~ }
 
     /**
      * perform upgrade, install poller to scan status
      */
-    function stopScan() {
-        $('#scanlist').hide();
-        $('#scan_status').show();
-        $('#scantab > a').tab('show');
-        $('#scanstatus').html("{{ lang._('Killing...') }}");
-        $("#audit").attr("style","display:none");
-        maj_suffix = '';
-        if ($.upgrade_action == 'maj') {
-            maj_suffix = '_maj';
-        }
-        $("#upgrade" + maj_suffix).attr("style","");
-        $("#upgrade_progress" + maj_suffix).addClass("fa fa-spinner fa-pulse");
-
-        ajaxCall('/api/arpscanner/stop',{upgrade:$.upgrade_action},function() {
-            $('#scanlist').empty();
-            setTimeout(trackStatus, 500);
-        });
-    }
+    //~ function stopScan() {
+        //~ $('#scanlist').hide();
+        //~ $('#scan_status').show();
+        //~ $('#scantab > a').tab('show');
+        //~ $('#scanstatus').html("{{ lang._('Killing...') }}");
+        //~ $("#audit").attr("style","display:none");
+        //~ maj_suffix = '';
+        //~ if ($.upgrade_action == 'maj') {
+            //~ maj_suffix = '_maj';
+        //~ }
+        //~ $("#upgrade" + maj_suffix).attr("style","");
+        //~ $("#upgrade_progress" + maj_suffix).addClass("fa fa-spinner fa-pulse");
+//~ 
+        //~ ajaxCall('/api/arpscanner/stop',{upgrade:$.upgrade_action},function() {
+            //~ $('#scanlist').empty();
+            //~ setTimeout(trackStatus, 500);
+        //~ });
+    //~ }
 
     /**
      * perform audit, install poller to scan status
      */
-    function audit() {
-        $.upgrade_action = 'audit';
-        $('#scanlist').hide();
-        $('#scan_status').show();
-        $('#scantab > a').tab('show');
-        $('#scanstatus').html("{{ lang._('Auditing...') }}");
-        $("#audit").attr("style","");
-        $("#audit_progress").addClass("fa fa-spinner fa-pulse");
-
-        ajaxCall('/api/arpscanner/audit', {}, function () {
-            $('#scanlist').empty();
-            setTimeout(trackStatus, 500);
-        });
-    }
+    //~ function audit() {
+        //~ $.upgrade_action = 'audit';
+        //~ $('#scanlist').hide();
+        //~ $('#scan_status').show();
+        //~ $('#scantab > a').tab('show');
+        //~ $('#scanstatus').html("{{ lang._('Auditing...') }}");
+        //~ $("#audit").attr("style","");
+        //~ $("#audit_progress").addClass("fa fa-spinner fa-pulse");
+//~ 
+        //~ ajaxCall('/api/arpscanner/audit', {}, function () {
+            //~ $('#scanlist').empty();
+            //~ setTimeout(trackStatus, 500);
+        //~ });
+    //~ }
 </script>
 
 
@@ -186,9 +195,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <button class="btn btn-primary pull-center"  id="startScanner" type="button"><i id="scan_progress" class=""></i><b>{{ lang._('Start') }}</b></button>
         </div>
     </div>
-    
-    
-    
 </section>
 
 <section class="col-xs-12">

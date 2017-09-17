@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python2.7
 
 """
@@ -94,12 +95,6 @@ class ArpScanner(object):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-      
-    # This is the correct way to handle accepting multiple arguments.
-    # '+' == 1 or more.
-    # '*' == 0 or more.
-    # '?' == 0 or 1.
-    # An int is an explicit number of arguments to accept.
     parser.add_argument('-i', nargs='?', required=True, help="network interface")
     parser.add_argument('-r', nargs='+', help="""multiple network ranges,
     as: 192.168.1.0/24 172.16.31.0/12
