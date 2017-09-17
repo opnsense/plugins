@@ -1,12 +1,4 @@
 <form>
-<!--
-   <field>
-      <id>arpscanner.general.restart</id>
-      <label>Restart</label>
-      <type>checkbox</type>
-      <help>Restart current scanning with new values.</help>
-   </field>
--->
    <field>
       <id>arpscanner.general.interface</id>
       <label>Listen Interface</label>
@@ -21,5 +13,4 @@
             If not specified it will scan all the RFC 1918 local area networks.
       </help>
    </field>
-
 </form>

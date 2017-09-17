@@ -4,11 +4,6 @@
   <description>ARP Scan</description>
   <items>
     <general>
-<!--
-        <restart type="BooleanField">
-          <Required>N</Required>
-        </restart>
--->
         <interface type="TextField">
           <default>lan</default>
           <Required>Y</Required>
