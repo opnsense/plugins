@@ -26,7 +26,7 @@
     <address type="TextField">
       <Required>N</Required>
       <!-- hostname -->
-      <mask>/^[a-z0-9._-]+$/i</mask>
+      <mask>/^[a-z0-9.-]+$/i</mask>
     </address>
     <nick type="TextField">
       <mask>/^.+$/</mask>
