@@ -111,10 +111,10 @@
             <multiple>N</multiple>
             <Required>Y</Required>
                 <OptionValues>
-                    <0>0 - do not add ;rport to via header</0>
-                    <1>1 - do add ;rport to INCOMING via header only</1>
-                    <2>2 - do add ;rport to OUTGOING via header only</2>
-                    <3>3 - do add ;rport to OUTGOING and INCOMING via headers</3>
+                    <Option1>0 - do not add ;rport to via header</Option1>
+                    <Option2>1 - do add ;rport to INCOMING via header only</Option2>
+                    <Option3>2 - do add ;rport to OUTGOING via header only</Option3>
+                    <Option4>3 - do add ;rport to OUTGOING and INCOMING via headers</Option4>
                 </OptionValues>
         </use_rport> 
     </items>
