@@ -108,6 +108,10 @@ class ArpScanner(ProcessIO):
             # write json object on every stdout LINE on the file
             pass
         else:
+            osc = Popen(os_command, 
+              stdin=PIPE, 
+              stdout=PIPE, 
+              stderr=PIPE)            
             # wait for stdout
             output, err = osc.communicate()
             returncode = osc.returncode
@@ -122,8 +126,6 @@ class ArpScanner(ProcessIO):
             oname is the .out file, where os_command stdout and stderr is stored
         """
         # check if tmpfolder/$ifname.current exists
-        if not os.path.exists(self.tmp):
-            os.makedirs(self.tmp)
         if not os.path.isfile(fpath):
             # this means that there's no .current execution
             pass

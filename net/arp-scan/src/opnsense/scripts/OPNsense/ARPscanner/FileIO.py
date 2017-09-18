@@ -48,6 +48,9 @@ class FileIO(object):
         self.lpath = os.path.sep.join((path, self.lname))
         self.opath = os.path.sep.join((path, self.oname))
         
+        if not os.path.exists(path):
+            os.makedirs(path)
+        
         # file obj
         self.current = open(self.cpath, 'w')
         self.last    = open(self.lpath, 'w')
