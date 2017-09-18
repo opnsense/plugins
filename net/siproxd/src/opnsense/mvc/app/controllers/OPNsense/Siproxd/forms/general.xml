@@ -8,15 +8,13 @@
     <field>
         <id>general.if_inbound</id>
         <label>Inbound interface</label>
-	<style>tokenize</style>
-        <type>select_multiple</type>
+        <type>dropdown</type>
         <help>Select the interface where your SIP requests come from.</help>
     </field>
     <field>
         <id>general.if_outbound</id>
         <label>Outbound interface</label>
-	<style>tokenize</style>
-        <type>select_multiple</type>
+        <type>dropdown</type>
         <help>Select the interface where your SIP requests are going to.</help>
     </field>
     <field>
@@ -94,31 +92,30 @@
         <id>general.tcp_timeout</id>
         <label>TCP timeout</label>
         <type>text</type>
-	    <help>Time in seconds when an inactive TCP session will be disconnected.</help>
+	<help>Time in seconds when an inactive TCP session will be disconnected.</help>
     </field>
     <field>
         <id>general.tcp_connect_timeout</id>
         <label>TCP connect timeout</label>
         <type>text</type>
-	    <help>Time in milli seconds siproxd should wait until the connection is established.</help>
+	<help>Time in milli seconds siproxd should wait until the connection is established.</help>
     </field>
     <field>
         <id>general.tcp_keepalive</id>
         <label>TCP keepalive</label>
         <type>text</type>
-	    <help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
+	<help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
     </field>
     <field>
         <id>general.ua_string</id>
         <label>Useragent string</label>
         <type>text</type>
-	    <help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
+	<help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
     </field>
     <field>
         <id>general.use_rport</id>
         <label>Remote ports in VIA-Header</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-	    <help>This setting is only relevant for double nat scenarios, where default port 5060 would be replaced by a NAT device.</help>
+        <type>dropdown</type>
+	<help>This setting is only relevant for double nat scenarios, where default port 5060 would be replaced by a NAT device.</help>
     </field>
 </form>
