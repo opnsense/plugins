@@ -78,7 +78,9 @@ POSSIBILITY OF SUCH DAMAGE.
             var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             var networks = $('#arpscanner\\.general\\.networks').val();
             //~ console.log(networks);
-            ajaxCall(url="/api/arpscanner/service/start", sendData={'interface':ifname, 'networks': networks},callback=function(data,status) {
+            ajaxCall(url="/api/arpscanner/service/start", 
+            sendData={'interface':ifname, 'networks': networks},
+            callback=function(data,status) {
                 // action to run after reload
                 //~ console.log(data);
                 $("#ifname").text(data['interface']);

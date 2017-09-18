@@ -29,11 +29,12 @@
 from subprocess import Popen, PIPE
 import datetime
 import os.path
-from os import kill, getpid
-import signal
 import json
 import sys
 import re
+
+# imports from custom cls
+from ProcessIO import ProcessIO
 #~ from IPtools import get_ip_address
 
 RFC1918_NETWORKS = ["192.168.0.0/16",
@@ -55,7 +56,7 @@ RFC1918_NETWORKS = ["192.168.0.0/16",
                     "172.31.0.0/16",
                     "10.0.0.0/8"]
 
-class ArpScanner(object):
+class ArpScanner(ProcessIO):
     os_command_filter = """ps ax | grep "ARPscanner\|arp-scan -I" | grep {} | grep -E '^[ 0-9]+'| awk -F' ' '{{print $1}}'"""
     
     def __init__(self, ifname, network_list, background=False):
@@ -73,40 +74,6 @@ class ArpScanner(object):
         self.mode   = background
         self.tmp    = '/tmp/ARPscanner'
         self._DEBUG = False
-    
-    @classmethod
-    def check_run(cls, ifname):
-        """
-           returns PID if running on that ifname
-           else return 0
-        """
-        # read PID attribute of .current
-        # if PID exists: 
-        #    return 1
-        
-        os_command = cls.os_command_filter.format(ifname)
-        osc = Popen(os_command, 
-                      stdin=PIPE, 
-                      stdout=PIPE, 
-                      stderr=PIPE,
-                      shell=True)
-        output, err = osc.communicate()
-        if output: return output
-        return 0
-    
-    @classmethod
-    def stop(cls, ifname):
-        mypid = getpid()
-        pids = [int(i) for i in cls.check_run(ifname).split('\n') if i]
-        killed = []
-        for pid in pids:
-            if pid == mypid: continue
-            try:
-                kill(pid, 9)
-                killed.append(pid)
-            except Exception as e:
-                pass
-        return killed
     
     @staticmethod
     def status(ifname):
@@ -196,7 +163,7 @@ if __name__ == '__main__':
     If not specified it will scan all the RFC 1918 local area networks.""")
     parser.add_argument('-d', action="store_true", required=False, 
                         help="background api mode")
-    parser.add_argument('-c', action="store_true", required=False, 
+    parser.add_argument('-check', action="store_true", required=False, 
                         help="check if arp-san is running on that interface")
     parser.add_argument('-stop', action="store_true", required=False, 
                         help="Stops scanning on that interfaces")
@@ -212,11 +179,11 @@ if __name__ == '__main__':
     #~ plural = '' if len(args.i) == 1 else 's'
     #~ print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
     
-    if args.c:
-        sys.exit(ArpScanner.check_run(args.i))
+    if args.check:
+        sys.exit(ArpScanner.check_run(args.i, ArpScanner.os_command_filter))
 
     if args.stop:
-        sys.exit(ArpScanner.stop(args.i))
+        sys.exit(ArpScanner.stop(args.i, ArpScanner.os_command_filter))
 
     # if args.d -> background run
     ap = ArpScanner(args.i, args.r, 1 if args.d else 0)
