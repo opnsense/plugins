@@ -35,6 +35,7 @@ import re
 
 # imports from custom cls
 from ProcessIO import ProcessIO
+from FileIO import FileIO
 #~ from IPtools import get_ip_address
 
 RFC1918_NETWORKS = ["192.168.0.0/16",
@@ -57,7 +58,12 @@ RFC1918_NETWORKS = ["192.168.0.0/16",
                     "10.0.0.0/8"]
 
 class ArpScanner(ProcessIO):
-    os_command_filter = """ps ax | grep "ARPscanner\|arp-scan -I" | grep {} | grep -v "ps ax "| grep -E '^[ 0-9]+'| awk -F' ' '{{print $1}}'"""
+    os_command_filter = """ps ax | \
+                           grep "ARPscanner\|arp-scan -I" | \
+                           grep {} | \
+                           grep -v "ps ax "| \
+                           grep -E '^[ 0-9]+'| \
+                           awk -F' ' '{{print $1}}'"""
     
     def __init__(self, ifname, network_list, background=False):
         """
@@ -72,49 +78,33 @@ class ArpScanner(ProcessIO):
         self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
         # os_command_filter needs '{}'.format(ifname)
         self.mode   = background
-        self.tmp    = '/tmp/ARPscanner'
         self._DEBUG = False
+        
+        # FileIO contains all the IO files
+        tmp_fileio_path   = '/tmp/ARPscanner'
+        self.tmp    = tmp_fileio_path
+        self.fileio = FileIO(ifname, tmp_fileio_path)
+        
     
-    @staticmethod
-    def status(ifname):
+    def status(self, ifname):
         """
             read from .current 
         """
         # check_run
         # return (returncode, output, err)
         pass
-        
-    def prepare_start(self, ifname):
-        # check if tmpfolder/$ifname.current exists
-        fname = '{}.current'.format(ifname)
-        lname = '{}.last'.format(ifname)
-        fpath = os.path.sep.join((self.tmp, fname))
-        lpath = os.path.sep.join((self.tmp, lname))
-        if not os.path.exists(self.tmp):
-            os.makedirs(self.tmp)
-        if not os.path.isfile(fpath):
-            pass
-        # read PID attribute of .current
-        # if PID exists: 
-        #    check if it is not dead: move .current to .last
-        #    return (returncode, output, err) from .last if not .current
-        #
-        # else: 
-        #    write the .current status file 
-        pass
     
     def run_command(self, os_command, background=False):
         """
            os_command: (list) command to run 
-           background: .current and .last file are used for I/O
-        """
-        osc = Popen(os_command, 
-                      stdin=PIPE, 
-                      stdout=PIPE, 
-                      stderr=PIPE)
-        
+           background: .current .last .out file are used for I/O
+        """                
         if background: 
             # run a child and detach
+            osc = Popen(os_command, 
+              stdout=self.fileio.output, # stdout and stderr on the same 
+              stderr=self.fileio.output)
+            
             # write json object on every stdout LINE on the file
             pass
         else:
@@ -125,6 +115,27 @@ class ArpScanner(ProcessIO):
         
         return returncode, output, err
     
+    def prepare_start(self, ifname):
+        """
+            fname is the .current file, where API object is stored
+            lname is the .last file, where the last scan is stored
+            oname is the .out file, where os_command stdout and stderr is stored
+        """
+        # check if tmpfolder/$ifname.current exists
+        if not os.path.exists(self.tmp):
+            os.makedirs(self.tmp)
+        if not os.path.isfile(fpath):
+            # this means that there's no .current execution
+            pass
+            
+        # read PID attribute of .current
+        # if PID exists: 
+        #    check if it is not dead: move .current to .last
+        #    return (returncode, output, err) from .last if not .current
+        #
+        # else: 
+        #    write the .current status file 
+
     def start(self):
         self.result['networks'] = {}
         for net in self.network_list:
@@ -143,7 +154,8 @@ class ArpScanner(ProcessIO):
                 
         self.result['interface'] = self.ifname
         self.result['datetime']  = datetime.datetime.now().isoformat()
-    
+        # self.fileio.close()
+        
     def view_outputs(self):
         for res in self.outputs:
             print(res)
@@ -187,6 +199,5 @@ if __name__ == '__main__':
 
     # if args.d -> background run
     ap = ArpScanner(args.i, args.r, 1 if args.d else 0)
-    # ap.check_run()
     ap.start()
     print(ap.get_json())
