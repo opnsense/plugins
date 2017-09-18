@@ -26,6 +26,24 @@
         <help>Only use in a double nat scenario where SIP don't know your external public address.</help>
     </field>
     <field>
+        <id>general.hosts_allow_reg</id>
+        <label>Hosts to allow registration</label>
+        <type>text</type>
+        <help>Please specify the internal networks allowed to register here. Leave empty to allow every device.</help>
+    </field>
+    <field>
+        <id>general.hosts_allow_sip</id>
+        <label>Hosts to allow SIP</label>
+        <type>text</type>
+        <help>Here you specify the devices allowed to do SIP connections to siproxd (internal and external).</help>
+    </field>
+    <field>
+        <id>general.hosts_deny_sip</id>
+        <label>Host to deny SIP</label>
+        <type>text</type>
+        <help>Here you specify the networks disallowed to do SIP connections to siproxd. It has a higher priority than 'Hosts to allow SIP'.</help>
+    </field>
+    <field>
         <id>general.sip_listen_port</id>
         <label>SIP listen port</label>
         <type>text</type>
@@ -76,24 +94,31 @@
         <id>general.tcp_timeout</id>
         <label>TCP timeout</label>
         <type>text</type>
-	<help>Time in seconds when an inactive TCP session will be disconnected.</help>
+	    <help>Time in seconds when an inactive TCP session will be disconnected.</help>
     </field>
     <field>
         <id>general.tcp_connect_timeout</id>
         <label>TCP connect timeout</label>
         <type>text</type>
-	<help>Time in milli seconds siproxd should wait until the connection is established.</help>
+	    <help>Time in milli seconds siproxd should wait until the connection is established.</help>
     </field>
     <field>
         <id>general.tcp_keepalive</id>
         <label>TCP keepalive</label>
         <type>text</type>
-	<help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
+	    <help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
     </field>
     <field>
         <id>general.ua_string</id>
         <label>Useragent string</label>
         <type>text</type>
-	<help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
+	    <help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
+    </field>
+    <field>
+        <id>general.use_rport</id>
+        <label>Remote ports in VIA-Header</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+	    <help>This setting is only relevant for double nat scenarios, where default port 5060 would be replaced by a NAT device.</help>
     </field>
 </form>

@@ -19,6 +19,27 @@
             <default></default>
             <Required>N</Required>
         </host_outbound>
+        <hosts_allow_reg type="NetworkField">
+            <default></default>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>Y</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </hosts_allow_reg>
+        <hosts_allow_sip type="NetworkField">
+            <default></default>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>Y</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </hosts_allow_sip>
+        <hosts_deny_sip type="NetworkField">
+            <default></default>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>Y</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </hosts_deny_sip>        
         <sip_listen_port type="IntegerField">
             <default>5060</default>
             <Required>Y</Required>
@@ -85,5 +106,16 @@
             <default></default>
             <Required>N</Required>
         </ua_string>
+        <use_rport type="OptionField">
+            <default>0</default>
+            <multiple>N</multiple>
+            <Required>Y</Required>
+                <OptionValues>
+                    <0>0 - do not add ;rport to via header</0>
+                    <1>1 - do add ;rport to INCOMING via header only</1>
+                    <2>2 - do add ;rport to OUTGOING via header only</2>
+                    <3>3 - do add ;rport to OUTGOING and INCOMING via headers</3>
+                </OptionValues>
+        </use_rport> 
     </items>
 </model>
