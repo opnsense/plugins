@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python2.7
 
 """
@@ -72,7 +71,6 @@ class ArpScanner(ProcessIO):
         """
         self.ifname         = ifname
         self.network_list   = network_list if network_list else RFC1918_NETWORKS
-        self.outputs        = {} # raw outputs from system command
         self.result         = {} # filtered output containing only what needed
         # regexp used to retrieve data from arp-scan system command stdout
         self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
@@ -80,6 +78,7 @@ class ArpScanner(ProcessIO):
         self.mode   = background
         self._DEBUG = False
         
+        self.background = background
         # FileIO contains all the IO files
         tmp_fileio_path   = '/tmp/ARPscanner'
         self.tmp    = tmp_fileio_path
@@ -92,39 +91,24 @@ class ArpScanner(ProcessIO):
         """
         # check_run
         # return (returncode, output, err)
+        # parse json object on every stdout LINE found in the output file 
         pass
     
     def run_command(self, os_command, background=False):
         """
            os_command: (list) command to run 
            background: .current .last .out file are used for I/O
-        """                
-        if background: 
-            # run a child and detach
-            osc = Popen(os_command, 
-              stdout=self.fileio.output, # stdout and stderr on the same 
-              stderr=self.fileio.output)
-            
-            # write json object on every stdout LINE on the file
-            pass
-        else:
-            osc = Popen(os_command, 
-              stdin=PIPE, 
-              stdout=PIPE, 
-              stderr=PIPE)            
-            # wait for stdout
-            output, err = osc.communicate()
-            returncode = osc.returncode
-            if self._DEBUG: print(os_command, returncode, output, err)
-        
-        return returncode, output, err
-    
+        """          
+        # deprecated      
+        pass
+
     def prepare_start(self, ifname):
         """
             fname is the .current file, where API object is stored
             lname is the .last file, where the last scan is stored
             oname is the .out file, where os_command stdout and stderr is stored
         """
+        # WIP:
         # check if tmpfolder/$ifname.current exists
         if not os.path.isfile(fpath):
             # this means that there's no .current execution
@@ -137,15 +121,35 @@ class ArpScanner(ProcessIO):
         #
         # else: 
         #    write the .current status file 
-
+    
     def start(self):
+        """
+            self.result is the dict that will store the obj to dump in json
+        """
+        # WIP: file I/O logic 
         self.result['networks'] = {}
+        self.result['interface'] = self.ifname
+        self.result['datetime']  = datetime.datetime.now().isoformat()
         for net in self.network_list:
             os_command = ["arp-scan", "-I", self.ifname, net]
-            # prepare_start(self.ifname
-            self.outputs[net] = self.run_command(os_command, self.mode)
-            #~ self.outputs[net] = returncode, output, err
-            regexp = re.findall(self.regexp , self.outputs[net][1], re.I)
+            if self.background: 
+                err = 0
+                # run a child and detach
+                osc = Popen(os_command, 
+                  stdout=self.fileio.output, # stdout and stderr on the same 
+                  stderr=self.fileio.output)
+            else:
+                osc = Popen(os_command, 
+                  stdin=PIPE, 
+                  stdout=PIPE, 
+                  stderr=PIPE)   
+
+            # wait for stdout
+            output, err = osc.communicate()
+            returncode = osc.returncode
+            if self._DEBUG: print(os_command, returncode, output, err)
+            # self.outputs[net][1] is the stdout of the command
+            regexp = re.findall(self.regexp , output, re.I)
             if self._DEBUG: print(regexp)
             for netfound in regexp:
                 if not self.result['networks'].get(net): 
@@ -153,11 +157,10 @@ class ArpScanner(ProcessIO):
                 self.result['networks'][net].append(
                     (netfound[0].replace('\t', ''), 
                      netfound[1], netfound[2], net.replace('-','')))
-                
-        self.result['interface'] = self.ifname
-        self.result['datetime']  = datetime.datetime.now().isoformat()
-        # self.fileio.close()
         
+        return returncode, output, err
+        # self.fileio.close()
+    
     def view_outputs(self):
         for res in self.outputs:
             print(res)
