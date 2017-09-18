@@ -77,4 +77,10 @@
         <type>text</type>
         <help>A name for this server. Used when displaying information about this server (logs, info service, etc).</help>
     </field>
+    <field>
+        <id>general.enable_accesslog</id>
+        <label>Enable access logging</label>
+        <type>checkbox</type>
+        <help>This will enable logging of access log.</help>
+    </field>
 </form>
