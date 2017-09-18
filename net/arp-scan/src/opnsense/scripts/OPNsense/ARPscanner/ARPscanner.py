@@ -57,7 +57,7 @@ RFC1918_NETWORKS = ["192.168.0.0/16",
                     "10.0.0.0/8"]
 
 class ArpScanner(ProcessIO):
-    os_command_filter = """ps ax | grep "ARPscanner\|arp-scan -I" | grep {} | grep -E '^[ 0-9]+'| awk -F' ' '{{print $1}}'"""
+    os_command_filter = """ps ax | grep "ARPscanner\|arp-scan -I" | grep {} | grep -v "ps ax "| grep -E '^[ 0-9]+'| awk -F' ' '{{print $1}}'"""
     
     def __init__(self, ifname, network_list, background=False):
         """
