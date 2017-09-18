@@ -231,7 +231,12 @@ umount: check
 clean: check
 	@git reset -q . && git checkout -f . && git clean -xdqf .
 
-lint: check
+lint-desc: check
+	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
+		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
+	fi
+
+lint: lint-desc
 	find ${.CURDIR}/src \
 	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
 	find ${.CURDIR}/src \
