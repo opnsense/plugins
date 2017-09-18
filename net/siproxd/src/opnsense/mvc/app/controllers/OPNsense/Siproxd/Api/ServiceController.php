@@ -42,6 +42,17 @@ use \OPNsense\Siproxd\General;
 class ServiceController extends ApiControllerBase
 {
     /**
+     * show current SIP registrations
+     * @return array
+     */    
+    public function showregistrationsAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("siproxd show-registrations");
+        return array("response" => $response);
+    }
+
+    /**
      * start siproxd service (in background)
      * @return array
      */
