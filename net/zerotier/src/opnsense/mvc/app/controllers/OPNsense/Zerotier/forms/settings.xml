@@ -6,11 +6,16 @@
         <help>This will activate the Zerotier service</help>
     </field>
     <field>
+        <id>zerotier.apiAccessToken</id>
+        <label>API Access Token</label>
+        <type>text</type>
+        <help>Access Token used for the Zerotier API service</help>
+    </field>
+    <field>
         <id>zerotier.localconf</id>
         <label>local.conf settings</label>
         <type>textbox</type>
         <height>10</height>
-        <help>Contains configuration options that apply to the local node</help>
+        <help>A JSON document containing configuration options that apply to the local node</help>
     </field>
 </form>
-
