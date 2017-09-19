@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="alert alert-warning" role="alert" id="dl_sig_alert" style="display:none;min-height:65px;">
     <button class="btn btn-primary pull-right" id="dl_sig" type="button">{{ lang._('Download signatures') }} <i id="dl_sig_progress"></i></button>
-    <div style="margin-top: 8px;">{{ lang._('No signature database found, please download before use. The download will take several minutes and this message will disappear when it has been completed. If you have memory file system enabled where /var is mounted into RAM you have to download this file with every reboot.')}}</div>
+    <div style="margin-top: 8px;">{{ lang._('No signature database found, please download before use. The download will take several minutes and this message will disappear when it has been completed.') }}</div>
 </div>
 
 <div class="tab-content content-box tab-content">
