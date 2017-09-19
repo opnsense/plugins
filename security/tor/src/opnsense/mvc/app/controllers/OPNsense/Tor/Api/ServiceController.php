@@ -148,7 +148,7 @@ class ServiceController extends ApiControllerBase
             $backend->configdRun('template reload OPNsense/Tor');
 
             // (re)start daemon
-            if ($general->enabled->__toString() == 1) {
+            if ($general->enabled->__toString() == '1') {
                 $this->startAction();
             }
 
