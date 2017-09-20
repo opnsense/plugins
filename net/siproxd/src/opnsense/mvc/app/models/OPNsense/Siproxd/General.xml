@@ -107,7 +107,7 @@
             <Required>N</Required>
         </ua_string>
         <use_rport type="OptionField">
-            <default>0</default>
+            <default>Option1</default>
             <multiple>N</multiple>
             <Required>Y</Required>
                 <OptionValues>
