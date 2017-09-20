@@ -9,14 +9,6 @@ use \OPNsense\ProxySSO\ProxySSO;
 class ServiceController extends \OPNsense\Proxy\Api\ServiceController
 {
 
-    public function reconfigureAction()
-    {
-        $backend = new Backend();
-        $backend->configdRun("template reload OPNsense/ProxySSO");
-
-        return parent::reconfigureAction();
-    }
-
     /**
      * show Kerberos keytab for Proxy
      * @return array
