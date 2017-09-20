@@ -1,4 +1,8 @@
 <?php
+namespace OPNsense\Siproxd;
+
+use OPNsense\Base\BaseModel;
+
 /*
     Copyright (C) 2017 Michael Muenz
     All rights reserved.
@@ -21,14 +25,6 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\Siproxd;
-
-class UserController extends \OPNsense\Base\IndexController
+class Domain extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->title = gettext("Siproxd Users");
-        $this->view->formDialogEditSiproxdUser = $this->getForm("dialogEditSiproxdUser");
-        $this->view->pick('OPNsense/Siproxd/user');
-    }
 }

@@ -35,6 +35,7 @@ class GeneralController extends \OPNsense\Base\IndexController
         $this->view->title = gettext("Siproxd settings");
         $this->view->generalForm = $this->getForm("general");
         $this->view->formDialogEditSiproxdUser = $this->getForm("dialogEditSiproxdUser");
+        $this->view->formDialogEditSiproxdDomain = $this->getForm("dialogEditSiproxdDomain");
         $this->view->pick('OPNsense/Siproxd/general');
     }
 }

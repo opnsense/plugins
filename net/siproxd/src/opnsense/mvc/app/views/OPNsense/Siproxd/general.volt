@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
+    <li><a data-toggle="tab" href="#domains">{{ lang._('Outbound Domains') }}</a></li>    
     <li><a data-toggle="tab" href="#showregistrations">{{ lang._('Current registrations') }}</a></li>
 </ul>
     
@@ -64,12 +65,35 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
+    <div id="domains" class="tab-pane fade in">
+        <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditSiproxdDomain">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="host" data-type="string" data-visible="true">{{ lang._('Host') }}</th>
+                    <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>    
     <div id="showregistrations" class="tab-pane fade in">
       <pre id="showregistrations"></pre>
     </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditSiproxdUser,'id':'dialogEditSiproxdUser','label':lang._('Edit User')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditSiproxdDomain,'id':'dialogEditSiproxdDomain','label':lang._('Edit Outbound Domain')])}}
 
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -94,6 +118,16 @@ $( document ).ready(function() {
             'add':'/api/siproxd/user/addUser/',
             'del':'/api/siproxd/user/delUser/',
             'toggle':'/api/siproxd/user/toggleUser/'
+        }
+    );
+
+    $("#grid-domains").UIBootgrid(
+        {   'search':'/api/siproxd/domain/searchUser',
+            'get':'/api/siproxd/domain/getUser/',
+            'set':'/api/siproxd/domain/setUser/',
+            'add':'/api/siproxd/domain/addUser/',
+            'del':'/api/siproxd/domain/delUser/',
+            'toggle':'/api/siproxd/domain/toggleUser/'
         }
     );
 
