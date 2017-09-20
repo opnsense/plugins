@@ -29,12 +29,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     $( document ).ready(function() {
-        
-        
         // CSS fixtures
         $('.table-responsive td').css('padding-left', '17px');
         // end CSS fixtures
-        
     
         var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
         //~ console.log(data_get_map);
@@ -60,7 +57,6 @@ POSSIBILITY OF SUCH DAMAGE.
                         
             });
         });
-
 
         $("#stopScanner").click(function(){
                 // action to run after successful save, for example reconfigure service.
@@ -109,9 +105,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="alert alert-info" role="alert" style="min-height: 65px;">
         <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is stopped')}}</div>
         <div class="pull-left updatestatus" style="margin-top: 8px; display:none;">{{ lang._('Scan is running')}}</div>   
-<!--
-        <button class='btn btn-primary pull-right' id="audit">{{ lang._('Audit now') }} <i id="audit_progress"></i></button>             
--->
     </div>        
     
     <div class="content-box">
@@ -129,7 +122,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <section class="col-xs-12">
     <div id="responseMsg" class="content-box" style="padding: 27px;">
-        
+        <div class="table-responsive">
         <table>
             <thead>
                 <tr>
@@ -157,6 +150,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr><td></td><td></td><td></td><td></td></tr>
             </tbody>
         </table>
-        
-    </div>
+        </div>
+     </div>
 <section>

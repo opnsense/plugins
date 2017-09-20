@@ -72,4 +72,16 @@ class ServiceController extends ApiControllerBase
         return "error";
     }
 
+    public function checkAction()
+    {
+        // test: "configctl arpscanner check em0"
+        $backend = new Backend();
+        $bckresult = json_decode(trim($backend->configdRun("arpscanner check")), true);
+        if ($bckresult !== null) {
+            // only return valid json type responses
+            return $bckresult;
+        }
+        return "error";
+    }
+
 }

@@ -197,10 +197,13 @@ if __name__ == '__main__':
     #~ print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
     
     if args.check:
-        sys.exit(ArpScanner.check_run(args.i, ArpScanner.os_command_filter))
+        pids = ArpScanner.check_run(args.i, ArpScanner.os_command_filter)
+        print(pids)
+        sys.exit(0)
 
     if args.stop:
-        sys.exit(ArpScanner.stop(args.i, ArpScanner.os_command_filter))
+        ArpScanner.stop(args.i, ArpScanner.os_command_filter)
+        sys.exit(0)
 
     # if args.d -> background run
     ap = ArpScanner(args.i, args.r, 1 if args.d else 0)
