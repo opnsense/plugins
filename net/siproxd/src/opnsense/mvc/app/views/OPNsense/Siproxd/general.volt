@@ -122,12 +122,12 @@ $( document ).ready(function() {
     );
 
     $("#grid-domains").UIBootgrid(
-        {   'search':'/api/siproxd/domain/searchUser',
-            'get':'/api/siproxd/domain/getUser/',
-            'set':'/api/siproxd/domain/setUser/',
-            'add':'/api/siproxd/domain/addUser/',
-            'del':'/api/siproxd/domain/delUser/',
-            'toggle':'/api/siproxd/domain/toggleUser/'
+        {   'search':'/api/siproxd/domain/searchDomain',
+            'get':'/api/siproxd/domain/getDomain/',
+            'set':'/api/siproxd/domain/setDomain/',
+            'add':'/api/siproxd/domain/addDomain/',
+            'del':'/api/siproxd/domain/delDomain/',
+            'toggle':'/api/siproxd/domain/toggleDomain/'
         }
     );
 
