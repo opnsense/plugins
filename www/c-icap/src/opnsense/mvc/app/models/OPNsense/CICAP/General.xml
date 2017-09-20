@@ -61,6 +61,6 @@
         <enable_accesslog type="BooleanField">
             <default>1</default>
             <Required>Y</Required>
-        </enable_accesslog>	    
+        </enable_accesslog>
     </items>
 </model>
