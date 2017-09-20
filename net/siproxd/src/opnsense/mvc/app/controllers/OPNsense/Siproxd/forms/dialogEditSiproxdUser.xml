@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>user.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the user account.</help>
+    </field>
+    <field>
+        <id>user.username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and ._-</help>
+    </field>
+    <field>
+        <id>user.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#= with up to 128 characters.</help>
+    </field>
+</form>

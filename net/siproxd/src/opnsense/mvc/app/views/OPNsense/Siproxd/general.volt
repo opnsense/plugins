@@ -29,6 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
     <li><a data-toggle="tab" href="#showregistrations">{{ lang._('Current registrations') }}</a></li>
 </ul>
     
@@ -42,10 +43,33 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
+    <div id="users" class="tab-pane fade in">
+        <table id="grid-users" class="table table-responsive" data-editDialog="dialogEditSiproxdUser">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="username" data-type="string" data-visible="true">{{ lang._('Username') }}</th>
+                    <th data-column-id="password" data-type="string" data-visible="true">{{ lang._('Password') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="showregistrations" class="tab-pane fade in">
       <pre id="showregistrations"></pre>
     </div>
 </div>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditSiproxdUser,'id':'dialogEditSiproxdUser','label':lang._('Edit User')])}}
 
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -62,6 +86,16 @@ $( document ).ready(function() {
     ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });
+
+    $("#grid-users").UIBootgrid(
+        {   'search':'/api/siproxd/user/searchUser',
+            'get':'/api/siproxd/user/getUser/',
+            'set':'/api/siproxd/user/setUser/',
+            'add':'/api/siproxd/user/addUser/',
+            'del':'/api/siproxd/user/delUser/',
+            'toggle':'/api/siproxd/user/toggleUser/'
+        }
+    );
 
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/siproxd/general/set", formid='frm_general_settings',callback_ok=function(){
