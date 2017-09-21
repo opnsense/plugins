@@ -21,19 +21,19 @@
         <id>general.host_outbound</id>
         <label>Host outbound</label>
         <type>text</type>
-        <help>Only use in a double nat scenario where SIP don't know your external public address.</help>
+        <help>Only use in a double nat scenario where SIP don't know your external public address. Format is CSV without spaces and CIDR, like 192.168.0.0/24,10.0.0.0/8.</help>
     </field>
     <field>
         <id>general.hosts_allow_reg</id>
         <label>Hosts to allow registration</label>
         <type>text</type>
-        <help>Please specify the internal networks allowed to register here. Leave empty to allow every device.</help>
+        <help>Please specify the internal networks allowed to register here. Leave empty to allow every device. Format is CSV without spaces and CIDR, like 192.168.0.0/24,10.0.0.0/8.</help>
     </field>
     <field>
         <id>general.hosts_allow_sip</id>
         <label>Hosts to allow SIP</label>
         <type>text</type>
-        <help>Here you specify the devices allowed to do SIP connections to siproxd (internal and external).</help>
+        <help>Here you specify the devices allowed to do SIP connections to siproxd (internal and external). Format is CSV without spaces and CIDR, like 192.168.0.0/24,10.0.0.0/8.</help>
     </field>
     <field>
         <id>general.hosts_deny_sip</id>
