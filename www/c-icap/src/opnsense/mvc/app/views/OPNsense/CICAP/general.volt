@@ -69,8 +69,8 @@ POSSIBILITY OF SUCH DAMAGE.
         ajaxCall(url="/api/cicap/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
         });
-		    
-	// check if ClamAV plugin is installed	    
+
+	// check if ClamAV plugin is installed
         ajaxCall(url="/api/cicap/service/checkclamav", sendData={}, callback=function(data,status) {
 	    if (data == "0") {
                 $('#missing_clamav').show();

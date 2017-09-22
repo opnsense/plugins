@@ -1,7 +1,7 @@
 <form>
    <field>
       <id>mdnsrepeater.enabled</id>
-      <label>enabled</label>
+      <label>Enabled</label>
       <type>checkbox</type>
       <help>Enable the repeater.</help>
    </field>
@@ -10,5 +10,6 @@
       <label>Listen Interfaces</label>
       <type>select_multiple</type>
       <multiple>Y</multiple>
+      <help>At least two interfaces must be selected.</help>
    </field>
 </form>

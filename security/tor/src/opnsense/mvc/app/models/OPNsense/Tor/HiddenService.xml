@@ -1,0 +1,17 @@
+<model>
+  <mount>//OPNsense/tor/hiddenservice</mount>
+  <description>Tor hidden service configuration</description>
+  <items>
+    <service type="ArrayField">
+      <enabled type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </enabled>
+      <name type="TextField">
+        <Required>Y</Required>
+      <mask>/^[a-z0-9_-]+$/i</mask>
+      <ValidationMessage>The name should only consist of alphanumeric characters, dashes and underscores.</ValidationMessage>
+      </name>
+    </service>
+  </items>
+</model>

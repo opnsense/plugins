@@ -35,6 +35,7 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $this->view->title = "VPN: Zerotier";
         $this->view->pick('OPNsense/Zerotier/index');
-        $this->view->formDialogNetwork = $this->getForm("dialogNetwork");
+        $this->view->globalForm = $this->getForm("global");
+        $this->view->dialogNetworkForm = $this->getForm("dialogNetwork");
     }
 }

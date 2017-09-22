@@ -286,11 +286,17 @@ function eval_optional_acme_args()
     $configObj = Config::getInstance()->object();
 
     $acme_args = array();
+
     // Force certificate renewal?
     $acme_args[] = isset($options["F"]) ? "--force" : null;
+
     // Use LE staging environment?
     $acme_args[] = $configObj->OPNsense->AcmeClient->settings->environment == "stg" ? "--staging" : null;
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
+
+    // Set log level
+    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";
+    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "debug" ? "--debug" : null;
 
     // Remove empty and duplicate elements from array
     return(array_unique(array_filter($acme_args)));
@@ -390,7 +396,6 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
         $acmecmd = "/usr/local/sbin/acme.sh "
           . implode(" ", $acme_args) . " "
           . "--registeraccount "
-          . "--log-level 2 "
           . "--home /var/etc/acme-client/home "
           . "--accountconf " . $account_conf_file;
         //echo "DEBUG: executing command: " . $acmecmd . "\n";
@@ -739,7 +744,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
       . "--domain " . (string)$certObj->name . " "
       . $altnames
       . $acme_validation . " "
-      . "--log-level 2 "
       . "--home /var/etc/acme-client/home "
       . "--keylength 4096 "
       . "--accountconf " . $account_conf_file . " "
@@ -804,7 +808,6 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . implode(" ", $acme_args) . " "
       . "--revoke "
       . "--domain " . (string)$certObj->name . " "
-      . "--log-level 2 "
       . "--home /var/etc/acme-client/home "
       . "--keylength 4096 "
       . "--accountconf " . $account_conf_file;
@@ -979,6 +982,7 @@ function import_certificate($certObj, $modelObj)
     // Write changes to config
     // TODO: Legacy code, should be replaced with code from OPNsense framework
     write_config("${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
+    log_error("AcmeClient: ${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
 
     // Update (acme) certificate object (through MVC framework)
     $uuid = $certObj->attributes()->uuid;

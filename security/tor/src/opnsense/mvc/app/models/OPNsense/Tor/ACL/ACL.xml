@@ -1,0 +1,9 @@
+<acl>
+  <page-tor>
+    <name>tor</name>
+    <patterns>
+      <pattern>ui/tor/*</pattern>
+      <pattern>api/tor/*</pattern>
+    </patterns>
+  </page-tor>
+</acl>
