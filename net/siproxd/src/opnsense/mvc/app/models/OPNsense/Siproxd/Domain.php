@@ -1,7 +1,4 @@
 <?php
-namespace OPNsense\Siproxd;
-
-use OPNsense\Base\BaseModel;
 
 /*
     Copyright (C) 2017 Michael Muenz
@@ -24,6 +21,10 @@ use OPNsense\Base\BaseModel;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
+
+namespace OPNsense\Siproxd;
+
+use OPNsense\Base\BaseModel;
 
 class Domain extends BaseModel
 {
