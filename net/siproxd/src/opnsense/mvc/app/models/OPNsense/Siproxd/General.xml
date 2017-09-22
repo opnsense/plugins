@@ -162,10 +162,10 @@
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
         </plugin_fbox_anoncall_networks>
-        <stun_server_enable type="BooleanField">
+        <plugin_stun_server_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </stun_server_enable>
+        </plugin_stun_server_enable>
         <plugin_stun_server_host type="TextField">
             <default></default>
             <Required>N</Required>
