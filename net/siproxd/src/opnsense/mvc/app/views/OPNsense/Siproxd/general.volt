@@ -88,7 +88,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
     </div>    
     <div id="showregistrations" class="tab-pane fade in">
-      <pre id="showregistrations"></pre>
+      <pre id="showregistrations-cmd"></pre>
     </div>
 </div>
 
@@ -104,7 +104,7 @@ $( document ).ready(function() {
     });
 
     ajaxCall(url="/api/siproxd/service/showregistrations", sendData={}, callback=function(data,status) {
-        $("#showregistrations").text(data['response']);
+        $("#showregistrations-cmd").text(data['response']);
     });
                 
     ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
