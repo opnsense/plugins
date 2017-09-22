@@ -1,9 +1,9 @@
 <acl>
-   <page-services-clamav>
-      <name>Services: ClamAV</name>
+   <page-services-siproxd>
+      <name>Services: Siproxd</name>
       <patterns>
-         <pattern>ui/clamav/*</pattern>
-         <pattern>api/clamav/*</pattern>
+         <pattern>ui/siproxd/*</pattern>
+         <pattern>api/siproxd/*</pattern>
       </patterns>
-   </page-services-clamav>
+   </page-services-siproxd>
 </acl>
