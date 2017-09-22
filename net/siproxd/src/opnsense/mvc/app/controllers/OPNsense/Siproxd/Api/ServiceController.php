@@ -146,7 +146,7 @@ class ServiceController extends ApiControllerBase
             // generate template
             $backend->configdRun('template reload OPNsense/Siproxd');
 
-            // (res)start daemon
+            // (re)start daemon
             if ($mdlGeneral->enabled->__toString() == 1) {
                 $this->startAction();
             }
