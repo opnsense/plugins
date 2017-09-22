@@ -116,6 +116,67 @@
                     <Option3 value="2">2 - do add ;rport to OUTGOING via header only</Option3>
                     <Option4 value="3">3 - do add ;rport to OUTGOING and INCOMING via headers</Option4>
                 </OptionValues>
-        </use_rport> 
+        </use_rport>
+        <plugin_defaulttarget_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </plugin_defaulttarget_enable>
+        <plugin_defaulttarget_log type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </plugin_defaulttarget_log>
+        <plugin_defaulttarget_target type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </plugin_defaulttarget_target>
+        <plugin_fix_bogus_via_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </plugin_fix_bogus_via_enable>
+        <plugin_fix_bogus_via_networks type="NetworkField">
+            <default>10.0.0.0/8,172.16.0.0/12,192.168.0.0/16</default>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>Y</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </plugin_fix_bogus_via_networks>
+        <plugin_fix_DTAG_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </plugin_fix_DTAG_enable>
+        <plugin_fix_DTAG_networks type="NetworkField">
+            <default>217.0.23.100/32</default>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>Y</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </plugin_fix_DTAG_networks>
+        <plugin_fbox_anoncall_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </plugin_fbox_anoncall_enable>
+        <plugin_fbox_anoncall_networks type="NetworkField">
+            <default>10.0.0.0/8,172.16.0.0/12,192.168.0.0/16</default>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>Y</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </plugin_fbox_anoncall_networks>
+        <stun_server_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </stun_server_enable>
+        <plugin_stun_server_host type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </plugin_stun_server_host>
+        <plugin_stun_server_port type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+        </plugin_stun_server_port>
+        <plugin_stun_server_period type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+        </plugin_stun_server_period>
     </items>
 </model>
