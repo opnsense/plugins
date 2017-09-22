@@ -58,8 +58,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <tfoot>
                 <tr>
                     <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -80,8 +80,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <tfoot>
                 <tr>
                     <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
                 </tr>
             </tfoot>
