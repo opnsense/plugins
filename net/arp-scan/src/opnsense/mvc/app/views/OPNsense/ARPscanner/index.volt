@@ -154,9 +154,6 @@ POSSIBILITY OF SUCH DAMAGE.
     
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
-        <div class="col-md-12">
-            <button class="btn btn-primary pull-right"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-        </div>
         
         <div class="col-md-12" style="padding-bottom: 13px;">
             <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
