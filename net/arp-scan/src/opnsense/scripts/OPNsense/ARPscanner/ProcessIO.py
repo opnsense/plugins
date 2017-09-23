@@ -43,19 +43,22 @@ class ProcessIO(object):
                       stderr=PIPE,
                       shell=True)
         output, err = osc.communicate()
+        #~ print(output)
         if output:
             pids = [] 
             for pid in output.split(linesep):
                 if pid and int(pid) != mypid:
                     pids.append(int(pid))
-            return pids
+            return pids[:-1]
         return 0
     
     @classmethod
     def stop(cls, ifname, os_command_filter):
         """ stop scanning on that interface """
         mypid = getpid()
-        pids = [int(i) for i in cls.check_run(ifname, os_command_filter)]
+        chkrun = cls.check_run(ifname, os_command_filter)
+        if not chkrun: return []
+        pids = [int(i) for i in chkrun]
         killed = []
         for pid in pids:
             if pid == mypid: continue

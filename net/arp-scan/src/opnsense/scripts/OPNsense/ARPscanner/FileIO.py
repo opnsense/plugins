@@ -30,33 +30,24 @@ import os.path
 class FileIO(object):
     """
         This class manages files where data is read
-        cname is the .current file, where API object is stored
-        lname is the .last file, where the last scan is stored
-        oname is the .out file, where os_command stdout and stderr is stored
-        
-        I'd like to generalize name and objects with lopps over list BUT
-        this class was made to keep all things as readble as possibile!
+        .out and .err file, where os_command stdout and stderr is stored
     """
     def __init__(self, name, path):
         # file names
-        self.cname = '{}.current'.format(name)
-        self.lname = '{}.last'.format(name)
-        self.oname = '{}.out'.format(name)
+        self.nerr = '{}.err'.format(name)
+        self.nout = '{}.out'.format(name)
         
         # file paths
-        self.cpath = os.path.sep.join((path, self.cname))
-        self.lpath = os.path.sep.join((path, self.lname))
-        self.opath = os.path.sep.join((path, self.oname))
+        self.epath = os.path.sep.join((path, self.nerr))
+        self.opath = os.path.sep.join((path, self.nout))
         
         if not os.path.exists(path):
             os.makedirs(path)
         
         # file obj
-        self.current = open(self.cpath, 'w')
-        self.last    = open(self.lpath, 'w')
-        self.output  = open(self.opath, 'w')
+        self.err  = open(self.epath, 'w')
+        self.out  = open(self.opath, 'w')
     
     def close(self):
-        self.current.close()
-        self.last.close()
-        self.output.close()
+        self.err.close()
+        self.out.close()
