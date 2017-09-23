@@ -9,8 +9,7 @@
       <id>arpscanner.general.networks</id>
       <label>Network to probe</label>
       <type>text</type>
-      <help>Multiple CIDR separated by comma: 192.168.1.0/24,172.16.31.0/24.
-            If not specified it will scan all the RFC 1918 local area networks.
+      <help>Network to scan, default: localnet.
       </help>
    </field>
 </form>
