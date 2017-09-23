@@ -43,7 +43,7 @@ class ServiceController extends ApiControllerBase
             $backend = new Backend();
             $result = json_decode(trim($backend->configdRun('arpscanner start '.$ifname.' '.$networks)), true);
             return $result;
-            }
+        }
         return array("message" => "unable to run config action");
     }
 
@@ -55,13 +55,12 @@ class ServiceController extends ApiControllerBase
             $backend = new Backend();
             $result = json_decode(trim($backend->configdRun('arpscanner status '.$ifname)), true);
             return $result;
-            }
+        }
         return array("message" => "this action must be called using the POST method");
     }
 
     public function stopAction()
     {
-
         if ($this->request->isPost()) {
             $ifname =  escapeshellarg($_POST['interface']);
             $backend = new Backend();
