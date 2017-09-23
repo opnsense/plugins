@@ -97,7 +97,12 @@ POSSIBILITY OF SUCH DAMAGE.
                         
             });
         });
-
+        
+        $("#statusScanner").click(function(){
+            value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
+            get_status(value);
+        });
+        
         $("#stopScanner").click(function(){
             // action to run after successful save, for example reconfigure service.
             value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
@@ -156,7 +161,8 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
         
         <div class="col-md-12" style="padding-bottom: 13px;">
-            <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>            
+            <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>           
+            <button class='btn btn-default' id="statusScanner" style="margin-right: 8px;">{{ lang._('Refresh') }} <i id=""></i></button>                         
             <button class="btn btn-primary pull-center"  id="startScanner" type="button"><i id="scan_progress" class=""></i><b>{{ lang._('Start') }}</b></button>
         </div>
     </div>
