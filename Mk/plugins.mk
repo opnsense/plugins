@@ -229,7 +229,9 @@ umount: check
 	umount -f "<above>:${.CURDIR}/src"
 
 clean: check
-	@git reset -q . && git checkout -f . && git clean -xdqf .
+	@git reset -q ${.CURDIR}/src && \
+	    git checkout -f ${.CURDIR}/src && \
+	    git clean -xdqf ${.CURDIR}/src
 
 lint-desc: check
 	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
