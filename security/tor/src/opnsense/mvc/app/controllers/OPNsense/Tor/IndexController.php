@@ -48,4 +48,10 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->exitpolicy = $this->getForm("acl_exitpolicy");
         $this->view->pick('OPNsense/Tor/general');
     }
+
+    public function infoAction()
+    {
+        $this->view->title = gettext("The Onion Router - Information");
+        $this->view->pick('OPNsense/Tor/info');
+    }
 }
