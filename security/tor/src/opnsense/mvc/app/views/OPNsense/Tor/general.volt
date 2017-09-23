@@ -32,15 +32,15 @@
 
 function tor_update_status() {
     ajaxCall(url="/api/tor/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['result']);
+        updateServiceStatusUI(data['status']);
     });
 }
 
 function reload_handler() {
-    $(".reloadAct_progress").addClass("fa fa-spinner fa-pulse");
+    $(".reloadAct_progress").addClass("fa-spin");
     ajaxCall(url="/api/tor/service/reconfigure", sendData={}, callback=function(data,status) {
         tor_update_status();
-        $(".reloadAct_progress").removeClass("fa fa-spinner fa-pulse");
+        $(".reloadAct_progress").removeClass("fa-spin");
     });
 }
 
@@ -155,7 +155,7 @@ $( document ).ready(function() {
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                      <button type="button" class="btn btn-xs btn-default reload_btn"><span class="fa fa-refresh"></span> {{ lang._('Reload Service') }} <i class="reloadAct_progress"></i></button>
+                      <button type="button" class="btn btn-xs btn-default reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
@@ -179,7 +179,7 @@ $( document ).ready(function() {
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                      <button type="button" class="btn btn-xs btn-default reload_btn"><span class="fa fa-refresh"></span> {{ lang._('Reload Service') }} <i class="reloadAct_progress"></i></button>
+                      <button type="button" class="btn btn-xs btn-default reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
@@ -206,7 +206,7 @@ $( document ).ready(function() {
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                         <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                        <button type="button" class="btn btn-xs btn-default reload_btn"><span class="fa fa-refresh"></span> {{ lang._('Reload Service') }} <i class="reloadAct_progress"></i></button>
+                        <button type="button" class="btn btn-xs btn-default reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                     </td>
                 </tr>
             </tfoot>
@@ -245,7 +245,7 @@ $( document ).ready(function() {
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                      <button type="button" class="btn btn-xs btn-default reload_btn"><span class="fa fa-refresh"></span> {{ lang._('Reload Service') }} <i class="reloadAct_progress"></i></button>
+                      <button type="button" class="btn btn-xs btn-default reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
