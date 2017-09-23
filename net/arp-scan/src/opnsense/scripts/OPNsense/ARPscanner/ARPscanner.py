@@ -36,26 +36,6 @@ import re
 # imports from custom cls
 from ProcessIO import ProcessIO
 from FileIO import FileIO
-#~ from IPtools import get_ip_address
-
-#~ RFC1918_NETWORKS = ["192.168.0.0/16",
-                    #~ "172.16.0.0/16",
-                    #~ "172.26.0.0/16",
-                    #~ "172.27.0.0/16",
-                    #~ "172.17.0.0/16",
-                    #~ "172.18.0.0/16",
-                    #~ "172.19.0.0/16",
-                    #~ "172.20.0.0/16",
-                    #~ "172.21.0.0/16",
-                    #~ "172.22.0.0/16",
-                    #~ "172.23.0.0/16",
-                    #~ "172.24.0.0/16",
-                    #~ "172.25.0.0/16",
-                    #~ "172.28.0.0/16",
-                    #~ "172.29.0.0/16",
-                    #~ "172.30.0.0/16",
-                    #~ "172.31.0.0/16",
-                    #~ "10.0.0.0/8"]
 
 class ArpScanner(ProcessIO):
     os_command_filter = """ps ax | \
@@ -107,7 +87,6 @@ class ArpScanner(ProcessIO):
                 self.result['peers'].append(
                     (netfound[0].replace('\t', ''), 
                      netfound[1], netfound[2]))
-            
         #~ return self.result
 
     def start(self):
@@ -122,8 +101,6 @@ class ArpScanner(ProcessIO):
         fileio = FileIO(self.ifname, self.tmp)
         os_command = ["arp-scan", "-I", self.ifname, self.network, 
                       "--retry", "5"]
-        
-        #~ print(os_command)
         # run a child and detach
         osc = Popen(os_command, 
                     stdout=fileio.out, # stdout and stderr on the same 

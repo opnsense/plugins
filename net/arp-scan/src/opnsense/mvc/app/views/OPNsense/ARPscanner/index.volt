@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 
                 setTimeout(function(){
                     get_status(ifname)
+                    //~ $('#arpscanner\\.general\\.interface').prop('id', 'second_cat');
                 }, 2000 );
                 
             } else {
@@ -74,17 +75,10 @@ POSSIBILITY OF SUCH DAMAGE.
                         vendor = peer[2];
                         $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td></tr>")
                     })
-                    
-                //~ check_scanner_status(ifname); 
-                
-                //~ setTimeout(function(){
                 check_scanner_status(ifname)
-                //~ }, 3000 );
-                
+                $("#ifname").text(ifname);
             });
         }
-    
-    
     
     $( document ).ready(function() {
         // CSS fixtures
@@ -97,7 +91,6 @@ POSSIBILITY OF SUCH DAMAGE.
             // place actions to run after load, for example update form styles.
             formatTokenizersUI();
             $('select').selectpicker('refresh');
-            
             // check if the scanner is already running
             first_status = $('#arpscanner\\.general\\.interface option:selected')[0].value;        
             check_scanner_status(first_status);
@@ -124,25 +117,23 @@ POSSIBILITY OF SUCH DAMAGE.
                 //~ console.log(data);
                 $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
                 check_scanner_status(value);
-
                 });
         });
         
         // CHECK STATUS
         // check the status opf the scanner on selected interface
         $("#arpscanner\\.general\\.interface").change(function(){
-            
                 value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
                 get_status(value);
+                $("#ifname").text(value);
+                $("#started").text('');
+                $("#last").text('');    
         });
 
 
         $("#startScanner").click(function(){
             //~ $("#responseMsg").removeClass("hidden");
             $("#scan_progress").addClass("fa fa-spinner fa-pulse");
-
-
-            
             var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             var networks = $('#arpscanner\\.general\\.networks').val();
             //~ console.log(networks);
@@ -154,15 +145,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     $("#ifname").text(data['interface']);
                     $("#started").text(data['started']);
                     $("#last").text(data['last']);                    
-                    
                     flush_table();
-                    
-                    //~ $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
                 });
-            
             check_scanner_status(ifname);
-            //~ setTimeout(function(){ get_status(ifname);}, 2000);
-            
         });
         
         

@@ -28,6 +28,8 @@
 from subprocess import Popen, PIPE
 from os import kill, getpid, linesep
 
+_DEBUG = False
+
 class ProcessIO(object):
     @staticmethod
     def check_run(ifname, os_command_filter):
@@ -43,7 +45,7 @@ class ProcessIO(object):
                       stderr=PIPE,
                       shell=True)
         output, err = osc.communicate()
-        #~ print(output)
+        if _DEBUG: print(output)
         if output:
             pids = [] 
             for pid in output.split(linesep):
