@@ -49,7 +49,7 @@ class ProcessIO(object):
             for pid in output.split(linesep):
                 if pid and int(pid) != mypid:
                     pids.append(int(pid))
-            return pids[:-1]
+            return pids[:]
         return 0
     
     @classmethod

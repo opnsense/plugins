@@ -64,10 +64,9 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $ifname =  escapeshellarg($_POST['interface']);
-            $network =  escapeshellarg($_POST['network']);
             //~ return 'arpscanner start '.$ifname.' '.$networks;
             $backend = new Backend();
-            $result = json_decode(trim($backend->configdRun('arpscanner start '.$ifname.' '.$network)), true);
+            $result = json_decode(trim($backend->configdRun('arpscanner status '.$ifname)), true);
             return $result;
             }
         return array("message" => "unable to run config action");
@@ -90,7 +89,6 @@ class ServiceController extends ApiControllerBase
 
     public function checkAction()
     {
-    
         if ($this->request->isPost()) {
             $ifname =  escapeshellarg($_POST['interface']);
             // test: "configctl arpscanner check em0"

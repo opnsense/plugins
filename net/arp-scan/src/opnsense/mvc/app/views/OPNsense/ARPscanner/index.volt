@@ -29,6 +29,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     
+    function flush_table(){$('#netTable tr').slice(2).remove()}
+    
     var check_state = 0;
     function check_scanner_status(ifname){
         // sets 0 if stopped and 1 if running
@@ -51,13 +53,32 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
                 $("#startScanner").removeClass("disabled")
             }
-            
         }); 
     }
     
+    
+    function get_status(ifname){
+        flush_table();
+        ajaxCall(url="/api/arpscanner/service/status", 
+                sendData={'interface':ifname},
+                callback=function(data,status) {
+                    $.each(data['peers'], function(key_x,peer) {
+                        //~ console.log(peer);
+                        ip = peer[0];
+                        mac = peer[1];
+                        vendor = peer[2];
+                        $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td></tr>")
+                    })
+                    
+                check_scanner_status(ifname); 
+            });
+        }
+    
+    
+    
     $( document ).ready(function() {
         // CSS fixtures
-        $('.table-responsive td').css('padding-left', '17px');
+        //~ $('.table-responsive td').css('padding-left', '17px');
         // end CSS fixtures
     
         var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
@@ -103,6 +124,7 @@ POSSIBILITY OF SUCH DAMAGE.
             
                 value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
                 check_scanner_status(value);
+                get_status(value);
         });
 
 
@@ -121,24 +143,17 @@ POSSIBILITY OF SUCH DAMAGE.
                     // action to run after reload
                     //~ console.log(data);
                     $("#ifname").text(data['interface']);
-                    $("#net").text(data['network']);                    
                     $("#started").text(data['started']);
                     $("#last").text(data['last']);                    
-                    $('#netTable tr').slice(2).remove()
                     
-                    $.each(data['peers'], function(key_x,peer) {
-                        //~ console.log(x,y);
-                        $.each(peer, function(key_z,node){
-                            //~ console.log(q);
-                            ip = node[0];
-                            mac = node[1];
-                            vendor = node[2];
-                            $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td></tr>")
-                        })
-                    })
-                    $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
-            });
-
+                    flush_table();
+                    
+                    //~ $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
+                });
+            
+            check_scanner_status(ifname);
+            setTimeout(function(){ get_status(ifname);}, 9000);
+            
         });
         
         
@@ -174,14 +189,12 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th><b>{{ lang._('Interface name') }}</b></th>
-                    <th><b>{{ lang._('Network') }}</b></th>                    
                     <th><b>{{ lang._('Started') }}</b></th>
                     <th><b>{{ lang._('Last update') }}</b></th>                    
                 </tr>
             </thead>
             <tbody>
                 <td><p id="ifname"></p></td>
-                <td><p id="net"></p></td>                
                 <td><p id="started"></p></td>
                 <td><p id="last"></p></td>                
             </tbody>

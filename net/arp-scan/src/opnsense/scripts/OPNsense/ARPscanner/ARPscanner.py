@@ -152,8 +152,6 @@ if __name__ == '__main__':
     
     if not args.net:
         args.net = '--localnet'
-    
-    print(args.net)
 
     if args.check:
         pids = ArpScanner.check_run(args.i, ArpScanner.os_command_filter)
