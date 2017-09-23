@@ -121,19 +121,19 @@ POSSIBILITY OF SUCH DAMAGE.
                     // action to run after reload
                     //~ console.log(data);
                     $("#ifname").text(data['interface']);
+                    $("#net").text(data['network']);                    
                     $("#started").text(data['started']);
                     $("#last").text(data['last']);                    
                     $('#netTable tr').slice(2).remove()
                     
-                    $.each(data['networks'], function(key_x,network) {
+                    $.each(data['peers'], function(key_x,peer) {
                         //~ console.log(x,y);
-                        $.each(network, function(key_z,node){
+                        $.each(peer, function(key_z,node){
                             //~ console.log(q);
                             ip = node[0];
                             mac = node[1];
                             vendor = node[2];
-                            network = node[3];
-                            $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td><td>"+network+"</td></tr>")
+                            $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td></tr>")
                         })
                     })
                     $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
@@ -174,12 +174,14 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th><b>{{ lang._('Interface name') }}</b></th>
+                    <th><b>{{ lang._('Network') }}</b></th>                    
                     <th><b>{{ lang._('Started') }}</b></th>
                     <th><b>{{ lang._('Last update') }}</b></th>                    
                 </tr>
             </thead>
             <tbody>
                 <td><p id="ifname"></p></td>
+                <td><p id="net"></p></td>                
                 <td><p id="started"></p></td>
                 <td><p id="last"></p></td>                
             </tbody>
@@ -195,7 +197,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </thead>
             <tbody>
-                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td></tr>
             </tbody>
         </table>
         </div>

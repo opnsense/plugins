@@ -103,7 +103,7 @@ class ArpScanner(ProcessIO):
             returns json parsing of arp-scan output
         """
         fout = os.path.sep.join((self.tmp, self.ifname))+'.out'
-        self.result['last_modify'] = time.ctime(os.path.getmtime(fout))
+        self.result['last'] = time.ctime(os.path.getmtime(fout))
         self.result['started'] = time.ctime(os.path.getctime(fout))
         
         with open(fout, 'r') as f:
@@ -129,6 +129,7 @@ class ArpScanner(ProcessIO):
         """
         
         running = self.check_run(self.ifname, self.os_command_filter)
+        print(running)
         if running: return self.status()
 
         fileio = FileIO(self.ifname, self.tmp)
@@ -200,7 +201,6 @@ if __name__ == '__main__':
     
     if args.start:
         ap.start()
-        time.sleep(2)
 
     ap.status()    
     print(ap.get_json())
