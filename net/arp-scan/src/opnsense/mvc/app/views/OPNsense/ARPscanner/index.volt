@@ -144,8 +144,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     $("#started").text(data['started']);
                     $("#last").text(data['last']);                    
                     flush_table();
+                    check_scanner_status(ifname);
                 });
-            check_scanner_status(ifname);
         });
         
         
