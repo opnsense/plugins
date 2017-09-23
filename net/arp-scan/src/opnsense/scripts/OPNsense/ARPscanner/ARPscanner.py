@@ -104,7 +104,7 @@ class ArpScanner(ProcessIO):
         # run a child and detach
         osc = Popen(os_command, 
                     stdout=fileio.out, # stdout and stderr on the same 
-                    stderr=fileio.err)
+                    stderr=fileio.err, bufsize=1)
 
     
     def get_json(self):

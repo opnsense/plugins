@@ -73,6 +73,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     })
                 check_scanner_status(ifname)
                 $("#ifname").text(ifname);
+                $("#started").text(data['started']);
+                $("#last").text(data['last']);   
             });
         }
     
