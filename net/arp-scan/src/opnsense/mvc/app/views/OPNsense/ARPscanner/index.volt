@@ -43,11 +43,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#update_start").show();
                 check_state = 1;
                 $("#scan_progress").addClass("fa fa-spinner fa-pulse");
+                $("#startScanner").addClass("disabled")
             } else {
                 $("#update_stop").show();
                 $("#update_start").hide();
                 check_state = 0;
                 $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
+                $("#startScanner").removeClass("disabled")
             }
             
         }); 
