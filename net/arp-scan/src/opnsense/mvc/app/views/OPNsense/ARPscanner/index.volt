@@ -28,6 +28,26 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 <script type="text/javascript">
+    
+    function check_scanner_status(ifname){
+        sendData={'interface': ifname }
+        //~ // action to run after successful save, for example reconfigure service.
+        ajaxCall(url="/api/arpscanner/service/check", sendData, callback=function(data,status) {
+            // action to run after reload
+            //~ console.log(data);
+            //~ $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
+            if (data.length >= 1){
+                $("#update_stop").hide();
+                $("#update_start").show();
+            } else {
+                $("#update_stop").show();
+                $("#update_start").hide();
+            }
+            
+
+        }); 
+    }
+    
     $( document ).ready(function() {
         // CSS fixtures
         $('.table-responsive td').css('padding-left', '17px');
@@ -39,8 +59,13 @@ POSSIBILITY OF SUCH DAMAGE.
             // place actions to run after load, for example update form styles.
             formatTokenizersUI();
             $('select').selectpicker('refresh');
+            
+            // check if the scanner is already running
+            first_status = $('#arpscanner\\.general\\.interface option:selected')[0].value;        
+            check_scanner_status(first_status);
         });
-
+        
+        
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/arpscanner/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
@@ -48,64 +73,80 @@ POSSIBILITY OF SUCH DAMAGE.
                 ajaxCall(url="/api/arpscanner/service/reload", sendData={},callback=function(data,status) {
                 // action to run after reload
                 });
-                
-                // useless test
-                //~ data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
-                //~ mapDataToFormUI(data_get_map).done(function(data){
-                    //~ $('select').selectpicker('refresh');
-                //~ });
                         
             });
         });
 
         $("#stopScanner").click(function(){
                 // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/arpscanner/service/stop", sendData={},callback=function(data,status) {
+                value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
+                sendData={'interface': value }
+                ajaxCall(url="/api/arpscanner/service/stop", sendData, callback=function(data,status) {
                 // action to run after reload
                 //~ console.log(data);
                 $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
+                check_scanner_status(value);
+
                 });
         });
+        
+        // CHECK STATUS
+        // check the status opf the scanner on selected interface
+        $("#arpscanner\\.general\\.interface").change(function(){
+            
+                value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
+                check_scanner_status(value);
+        });
+
 
         $("#startScanner").click(function(){
             //~ $("#responseMsg").removeClass("hidden");
             $("#scan_progress").addClass("fa fa-spinner fa-pulse");
+
+
             
             var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             var networks = $('#arpscanner\\.general\\.networks').val();
             //~ console.log(networks);
             ajaxCall(url="/api/arpscanner/service/start", 
-            sendData={'interface':ifname, 'networks': networks},
-            callback=function(data,status) {
-                // action to run after reload
-                //~ console.log(data);
-                $("#ifname").text(data['interface']);
-                $("#datetime").text(data['datetime']);
-                $('#netTable tr').slice(2).remove()
-                
-                $.each(data['networks'], function(key_x,network) {
-                    //~ console.log(x,y);
-                    $.each(network, function(key_z,node){
-                        //~ console.log(q);
-                        ip = node[0];
-                        mac = node[1];
-                        vendor = node[2];
-                        network = node[3];
-                        $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td><td>"+network+"</td></tr>")
+                sendData={'interface':ifname, 'networks': networks},
+                callback=function(data,status) {
+                    // action to run after reload
+                    //~ console.log(data);
+                    $("#ifname").text(data['interface']);
+                    $("#datetime").text(data['datetime']);
+                    $('#netTable tr').slice(2).remove()
+                    
+                    $.each(data['networks'], function(key_x,network) {
+                        //~ console.log(x,y);
+                        $.each(network, function(key_z,node){
+                            //~ console.log(q);
+                            ip = node[0];
+                            mac = node[1];
+                            vendor = node[2];
+                            network = node[3];
+                            $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td><td>"+network+"</td></tr>")
+                        })
                     })
-                })
-                $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
+                    $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
             });
             
+            check_scanner_status(value);
+            
         });
-    });
+        
+        
+    }); // END
 </script>
 
 <section class="col-xs-12">
-    <div class="alert alert-info" role="alert" style="min-height: 65px;">
+    <div  id="update_stop" class="alert alert-info" role="alert" style="min-height: 65px;">
         <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is stopped')}}</div>
-        <div class="pull-left updatestatus" style="margin-top: 8px; display:none;">{{ lang._('Scan is running')}}</div>   
     </div>        
+    
+    <div id="update_start"  class="alert alert-warning" role="alert" style="min-height: 65px; display:none;">
+        <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is running')}}</div>   
+    </div> 
     
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}

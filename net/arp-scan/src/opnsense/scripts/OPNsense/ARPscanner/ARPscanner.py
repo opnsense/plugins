@@ -196,18 +196,17 @@ if __name__ == '__main__':
     #~ plural = '' if len(args.i) == 1 else 's'
     #~ print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
     
+    # try/except produced me "Execute error" in configd execution... 
+    # is it strange?
     if args.check:
-        try:
-            pids = ArpScanner.check_run(args.i, ArpScanner.os_command_filter)
-            print(pids)
-            sys.exit(0)
-        except: sys.exit(1)
+        pids = ArpScanner.check_run(args.i, ArpScanner.os_command_filter)
+        print(pids)
+        sys.exit()
 
     if args.stop:
-        try:
-            ArpScanner.stop(args.i, ArpScanner.os_command_filter)
-            sys.exit(0)
-        except: sys.exit(1)
+        killed = ArpScanner.stop(args.i, ArpScanner.os_command_filter)
+        print(killed)
+        sys.exit()
 
     # if args.d -> background run
     ap = ArpScanner(args.i, args.r, 1 if args.d else 0)
