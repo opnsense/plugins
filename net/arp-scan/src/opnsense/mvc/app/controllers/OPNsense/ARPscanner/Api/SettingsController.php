@@ -64,10 +64,9 @@ class SettingsController extends ApiControllerBase
             }
         }
         // $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
-    }   
+        }   
     return $result;
     }
-    
 
     /**
      * update arpscan settings

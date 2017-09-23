@@ -56,7 +56,7 @@ class ServiceController extends ApiControllerBase
             $result = json_decode(trim($backend->configdRun('arpscanner status '.$ifname)), true);
             return $result;
             }
-        return array("message" => "unable to run config action");
+        return array("message" => "this action must be called using the POST method");
     }
 
     public function stopAction()
@@ -70,7 +70,7 @@ class ServiceController extends ApiControllerBase
                 // only return valid json type responses
                 return $bckresult;
             }
-            return "error";
+            return array("message" => "error");
         }
     }
 
@@ -85,7 +85,7 @@ class ServiceController extends ApiControllerBase
                 // only return valid json type responses
                 return $bckresult;
             }
-            return "error";
+            return array("message" => "error");
         }
     }
 

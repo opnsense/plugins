@@ -29,7 +29,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     
-    function flush_table(){$('#netTable tr').slice(2).remove()}
+    function flush_table(){
+        $('#netTable tr').slice(2).remove()
+    }
     
     var check_state = 0;
     function check_scanner_status(ifname){
@@ -76,7 +78,7 @@ POSSIBILITY OF SUCH DAMAGE.
     
     $( document ).ready(function() {
     
-        var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
+        var data_get_map = {'frm_GeneralSettings': "/api/arpscanner/settings/get"};
         //~ console.log(data_get_map);
         mapDataToFormUI(data_get_map).done(function(data){
             // place actions to run after load, for example update form styles.
