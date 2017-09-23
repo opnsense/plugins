@@ -30,6 +30,20 @@
 
 <script type="text/javascript">
 
+function tor_update_status() {
+    ajaxCall(url="/api/tor/service/status", sendData={}, callback=function(data,status) {
+        updateServiceStatusUI(data['status']);
+    });
+}
+
+function reload_handler() {
+    $(".reloadAct_progress").addClass("fa-spin");
+    ajaxCall(url="/api/tor/service/reconfigure", sendData={}, callback=function(data,status) {
+        tor_update_status();
+        $(".reloadAct_progress").removeClass("fa-spin");
+    });
+}
+
 $( document ).ready(function() {
     var data_get_map = {
         'general': '/api/tor/general/get',
@@ -38,9 +52,6 @@ $( document ).ready(function() {
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
         $('select.dropdownstyle').selectpicker('refresh');
-    });
-    ajaxCall(url="/api/tor/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['result']);
     });
 
     // link save button to API set action
@@ -51,15 +62,19 @@ $( document ).ready(function() {
         $(cfg.selector).click(function(){
             saveFormToEndpoint(url=cfg.endpoint, formid=cfg.formid,callback_ok=function(){
                 $(cfg.selector + " .saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/tor/service/restart", sendData={}, callback=function(data,status) {
-                    ajaxCall(url="/api/tor/service/status", sendData={}, callback=function(data,status) {
-                        updateServiceStatusUI(data['result']);
-                    });
+                ajaxCall(url="/api/tor/service/reconfigure", sendData={}, callback=function(data,status) {
+                    tor_update_status();
                     $(cfg.selector + " .saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
         });
     });
+
+    tor_update_status();
+
+    /* allow a user to manually reload the service (for forms which do not do it automatically) */
+    $('.reload_btn').click(reload_handler);
+
     $("#grid-hidden").UIBootgrid(
         { 'search':'/api/tor/hiddenservice/searchservice',
           'get':'/api/tor/hiddenservice/getservice/',
@@ -140,6 +155,7 @@ $( document ).ready(function() {
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                      <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
@@ -163,6 +179,7 @@ $( document ).ready(function() {
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                      <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
@@ -189,6 +206,7 @@ $( document ).ready(function() {
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                         <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                     </td>
                 </tr>
             </tfoot>
@@ -227,6 +245,7 @@ $( document ).ready(function() {
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                      <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
