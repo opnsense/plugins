@@ -46,6 +46,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 check_state = 1;
                 $("#scan_progress").addClass("fa fa-spinner fa-pulse");
                 $("#startScanner").addClass("disabled")
+                
+                setTimeout(function(){
+                    get_status(ifname)
+                }, 2000 );
+                
             } else {
                 $("#update_stop").show();
                 $("#update_start").hide();
@@ -70,7 +75,12 @@ POSSIBILITY OF SUCH DAMAGE.
                         $('#netTable tr:last').after("<tr><td>"+ip+"</td><td>"+mac+"</td><td>"+vendor+"</td></tr>")
                     })
                     
-                check_scanner_status(ifname); 
+                //~ check_scanner_status(ifname); 
+                
+                //~ setTimeout(function(){
+                check_scanner_status(ifname)
+                //~ }, 3000 );
+                
             });
         }
     
@@ -123,7 +133,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#arpscanner\\.general\\.interface").change(function(){
             
                 value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
-                check_scanner_status(value);
                 get_status(value);
         });
 
@@ -152,7 +161,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
             
             check_scanner_status(ifname);
-            setTimeout(function(){ get_status(ifname);}, 9000);
+            //~ setTimeout(function(){ get_status(ifname);}, 2000);
             
         });
         
