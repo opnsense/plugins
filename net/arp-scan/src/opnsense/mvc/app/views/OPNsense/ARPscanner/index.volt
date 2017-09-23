@@ -46,7 +46,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#startScanner").addClass("disabled")
                 setTimeout(function(){
                     get_status(ifname)
-                    //~ $('#arpscanner\\.general\\.interface').prop('id', 'second_cat');
                 }, 2000 );
             } else {
                 $("#update_stop").show();
