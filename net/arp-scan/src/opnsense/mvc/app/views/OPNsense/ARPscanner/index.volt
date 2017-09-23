@@ -29,7 +29,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     
+    var check_state = 0;
     function check_scanner_status(ifname){
+        // sets 0 if stopped and 1 if running
         sendData={'interface': ifname }
         //~ // action to run after successful save, for example reconfigure service.
         ajaxCall(url="/api/arpscanner/service/check", sendData, callback=function(data,status) {
@@ -39,12 +41,15 @@ POSSIBILITY OF SUCH DAMAGE.
             if (data.length >= 1){
                 $("#update_stop").hide();
                 $("#update_start").show();
+                check_state = 1;
+                $("#scan_progress").addClass("fa fa-spinner fa-pulse");
             } else {
                 $("#update_stop").show();
                 $("#update_start").hide();
+                check_state = 0;
+                $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
             }
             
-
         }); 
     }
     
@@ -130,9 +135,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     })
                     $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
             });
-            
-            check_scanner_status(value);
-            
+
         });
         
         
