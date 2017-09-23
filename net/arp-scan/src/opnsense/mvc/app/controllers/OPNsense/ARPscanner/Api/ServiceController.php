@@ -60,6 +60,19 @@ class ServiceController extends ApiControllerBase
         return array("message" => "unable to run config action");
     }
 
+    public function statusAction()
+    {
+        if ($this->request->isPost()) {
+            $ifname =  escapeshellarg($_POST['interface']);
+            $network =  escapeshellarg($_POST['network']);
+            //~ return 'arpscanner start '.$ifname.' '.$networks;
+            $backend = new Backend();
+            $result = json_decode(trim($backend->configdRun('arpscanner start '.$ifname.' '.$network)), true);
+            return $result;
+            }
+        return array("message" => "unable to run config action");
+    }
+
     public function stopAction()
     {
 

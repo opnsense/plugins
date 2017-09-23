@@ -88,14 +88,6 @@ class ArpScanner(ProcessIO):
         self.result['started']  = datetime.datetime.now().isoformat()
         self.result['last_modify']  = datetime.datetime.now().isoformat()
 
-    def run_command(self, os_command, background=False):
-        """
-           os_command: (list) command to run 
-           background: .current .last .out file are used for I/O
-        """          
-        # deprecated      
-        pass
-
     def status(self):
         """
             if arp-scan is running: parse .current file
@@ -112,15 +104,11 @@ class ArpScanner(ProcessIO):
             regexp = re.findall(self.regexp , fcont, re.I)
             if self._DEBUG: print(regexp)
             for netfound in regexp:
-                #~ print(netfound)
-                #~ if not self.result['networks'].get(netfound): 
-                    #~ self.result['networks'][netfound] = []
                 self.result['peers'].append(
                     (netfound[0].replace('\t', ''), 
                      netfound[1], netfound[2]))
             
         #~ return self.result
-        # self.fileio.close()
 
     def start(self):
         """
@@ -129,25 +117,18 @@ class ArpScanner(ProcessIO):
         """
         
         running = self.check_run(self.ifname, self.os_command_filter)
-        print(running)
         if running: return self.status()
 
         fileio = FileIO(self.ifname, self.tmp)
-        os_command = ["nohup", "arp-scan", "-I", self.ifname, self.network, 
-                      "--retry", "5", "&"]
+        os_command = ["arp-scan", "-I", self.ifname, self.network, 
+                      "--retry", "5"]
+        
+        #~ print(os_command)
         # run a child and detach
         osc = Popen(os_command, 
                     stdout=fileio.out, # stdout and stderr on the same 
                     stderr=fileio.err)
-        #~ print(self.check_run(self.ifname, self.os_command_filter))
-        #~ return 1
-        
-        
-    def view_outputs(self):
-        for res in self.outputs:
-            print(res)
-            print('return code: {}\n'.format(self.outputs[res][0]))
-            print(self.outputs[res][1])
+
     
     def get_json(self):
         return json.dumps(self.result)
@@ -157,9 +138,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', nargs='?', required=True, 
                         help="network interface")
-    parser.add_argument('-net', nargs='?', help="""multiple network ranges,
-    as: 192.168.1.0/24 172.16.31.0/12
-    If not specified it will scan all the RFC 1918 local area networks.""")
+    parser.add_argument('-net', nargs='?', help="""network to scan""")
     parser.add_argument('-check', action="store_true", required=False, 
                         help="check if arp-san is running on that interface")
     parser.add_argument('-start', action="store_true", required=False, 
@@ -171,21 +150,11 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    # this sucks but works with configd
-    #~ if args.r is None or len(args.r[0]) == 0:
     if not args.net:
         args.net = '--localnet'
-    #~ else:
-        #~ args. = args.r[0].split(',')
     
-    #~ print(args.net)
-    
-    #~ print("Scan interface: {}".format(args.i))    
-    #~ plural = '' if len(args.i) == 1 else 's'
-    #~ print('Network{} to scan: {}'.format(plural, ' '.join(args.r)))
-    
-    # try/except produced me "Execute error" in configd execution... 
-    # is it strange?
+    print(args.net)
+
     if args.check:
         pids = ArpScanner.check_run(args.i, ArpScanner.os_command_filter)
         print(pids)
@@ -196,7 +165,6 @@ if __name__ == '__main__':
         print(killed)
         sys.exit()
 
-    # if args.d -> background run
     ap = ArpScanner(args.i, args.net)
     
     if args.start:
