@@ -121,7 +121,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     // action to run after reload
                     //~ console.log(data);
                     $("#ifname").text(data['interface']);
-                    $("#datetime").text(data['datetime']);
+                    $("#started").text(data['started']);
+                    $("#last").text(data['last']);                    
                     $('#netTable tr').slice(2).remove()
                     
                     $.each(data['networks'], function(key_x,network) {
@@ -173,12 +174,14 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th><b>{{ lang._('Interface name') }}</b></th>
-                    <th><b>{{ lang._('Date time') }}</b></th>
+                    <th><b>{{ lang._('Started') }}</b></th>
+                    <th><b>{{ lang._('Last update') }}</b></th>                    
                 </tr>
             </thead>
             <tbody>
                 <td><p id="ifname"></p></td>
-                <td><p id="datetime"></p></td>
+                <td><p id="started"></p></td>
+                <td><p id="last"></p></td>                
             </tbody>
             
         </table>
@@ -189,7 +192,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td><b>{{ lang._('IP') }}</b></td>
                     <td><b>{{ lang._('MAC') }}</b></td>
                     <td><b>{{ lang._('Vendor') }}</b></td>
-                    <th><b>{{ lang._('Network') }}</b></th>                    
                 </tr>
             </thead>
             <tbody>

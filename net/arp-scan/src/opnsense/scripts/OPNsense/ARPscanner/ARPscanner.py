@@ -28,6 +28,7 @@
 from subprocess import Popen, PIPE
 import datetime
 import os.path
+import time
 import json
 import sys
 import re
@@ -37,24 +38,24 @@ from ProcessIO import ProcessIO
 from FileIO import FileIO
 #~ from IPtools import get_ip_address
 
-RFC1918_NETWORKS = ["192.168.0.0/16",
-                    "172.16.0.0/16",
-                    "172.26.0.0/16",
-                    "172.27.0.0/16",
-                    "172.17.0.0/16",
-                    "172.18.0.0/16",
-                    "172.19.0.0/16",
-                    "172.20.0.0/16",
-                    "172.21.0.0/16",
-                    "172.22.0.0/16",
-                    "172.23.0.0/16",
-                    "172.24.0.0/16",
-                    "172.25.0.0/16",
-                    "172.28.0.0/16",
-                    "172.29.0.0/16",
-                    "172.30.0.0/16",
-                    "172.31.0.0/16",
-                    "10.0.0.0/8"]
+#~ RFC1918_NETWORKS = ["192.168.0.0/16",
+                    #~ "172.16.0.0/16",
+                    #~ "172.26.0.0/16",
+                    #~ "172.27.0.0/16",
+                    #~ "172.17.0.0/16",
+                    #~ "172.18.0.0/16",
+                    #~ "172.19.0.0/16",
+                    #~ "172.20.0.0/16",
+                    #~ "172.21.0.0/16",
+                    #~ "172.22.0.0/16",
+                    #~ "172.23.0.0/16",
+                    #~ "172.24.0.0/16",
+                    #~ "172.25.0.0/16",
+                    #~ "172.28.0.0/16",
+                    #~ "172.29.0.0/16",
+                    #~ "172.30.0.0/16",
+                    #~ "172.31.0.0/16",
+                    #~ "10.0.0.0/8"]
 
 class ArpScanner(ProcessIO):
     os_command_filter = """ps ax | \
@@ -64,13 +65,13 @@ class ArpScanner(ProcessIO):
                            grep -E '^[ 0-9]+'| \
                            awk -F' ' '{{print $1}}'"""
     
-    def __init__(self, ifname, network_list):
+    def __init__(self, ifname, network):
         """
         netif='eth0'
         network_list=['192.168.0.0/24', ...]
         """
         self.ifname         = ifname
-        self.network_list   = network_list if network_list else RFC1918_NETWORKS
+        self.network        = network
         self.result         = {} # filtered output containing only what needed
         # regexp used to retrieve data from arp-scan system command stdout
         self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
@@ -81,9 +82,11 @@ class ArpScanner(ProcessIO):
         tmp_fileio_path   = '/tmp/ARPscanner'
         self.tmp    = tmp_fileio_path
 
-        self.result['networks'] = {}
+        self.result['peers'] = []
+        self.result['network'] = network
         self.result['interface'] = self.ifname
-        self.result['datetime']  = datetime.datetime.now().isoformat()
+        self.result['started']  = datetime.datetime.now().isoformat()
+        self.result['last_modify']  = datetime.datetime.now().isoformat()
 
     def run_command(self, os_command, background=False):
         """
@@ -99,8 +102,10 @@ class ArpScanner(ProcessIO):
             else: parse .last file
             returns json parsing of arp-scan output
         """
-        peers = []
         fout = os.path.sep.join((self.tmp, self.ifname))+'.out'
+        self.result['last_modify'] = time.ctime(os.path.getmtime(fout))
+        self.result['started'] = time.ctime(os.path.getctime(fout))
+        
         with open(fout, 'r') as f:
             fcont = f.read()
             #~ print(fcont)
@@ -110,11 +115,11 @@ class ArpScanner(ProcessIO):
                 #~ print(netfound)
                 #~ if not self.result['networks'].get(netfound): 
                     #~ self.result['networks'][netfound] = []
-                peers.append(
+                self.result['peers'].append(
                     (netfound[0].replace('\t', ''), 
                      netfound[1], netfound[2]))
             
-        return peers
+        #~ return self.result
         # self.fileio.close()
 
     def start(self):
@@ -124,20 +129,17 @@ class ArpScanner(ProcessIO):
         """
         
         running = self.check_run(self.ifname, self.os_command_filter)
-        if running: return running 
+        if running: return self.status()
 
         fileio = FileIO(self.ifname, self.tmp)
-        for net in self.network_list:
-            self.result['networks'][net] = []
-            os_command = ["nohup", "arp-scan", "-I", self.ifname, net, 
-                          "--retry", "5", "&"]
-            # run a child and detach
-            osc = Popen(os_command, 
-              stdout=fileio.out, # stdout and stderr on the same 
-              stderr=fileio.err)
-            #~ print(self.check_run(self.ifname, self.os_command_filter))
-            self.result['networks'][net].append(net)
-        return 1
+        os_command = ["nohup", "arp-scan", "-I", self.ifname, self.network, 
+                      "--retry", "5", "&"]
+        # run a child and detach
+        osc = Popen(os_command, 
+                    stdout=fileio.out, # stdout and stderr on the same 
+                    stderr=fileio.err)
+        #~ print(self.check_run(self.ifname, self.os_command_filter))
+        #~ return 1
         
         
     def view_outputs(self):
@@ -154,13 +156,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', nargs='?', required=True, 
                         help="network interface")
-    parser.add_argument('-r', nargs='+', help="""multiple network ranges,
+    parser.add_argument('-net', nargs='?', help="""multiple network ranges,
     as: 192.168.1.0/24 172.16.31.0/12
     If not specified it will scan all the RFC 1918 local area networks.""")
     parser.add_argument('-check', action="store_true", required=False, 
                         help="check if arp-san is running on that interface")
     parser.add_argument('-start', action="store_true", required=False, 
-                        help="Stops scanning on that interfaces")                        
+                        help="starts arp-scan")    
     parser.add_argument('-stop', action="store_true", required=False, 
                         help="Stops scanning on that interfaces")
     parser.add_argument('-status', action="store_true", required=False, 
@@ -169,12 +171,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     # this sucks but works with configd
-    if args.r is None or len(args.r[0]) == 0:
-        args.r = ['--localnet',]
-    else:
-        args.r = args.r[0].split(',')
+    #~ if args.r is None or len(args.r[0]) == 0:
+    if not args.net:
+        args.net = '--localnet'
+    #~ else:
+        #~ args. = args.r[0].split(',')
     
-    #~ print(args.r)
+    #~ print(args.net)
     
     #~ print("Scan interface: {}".format(args.i))    
     #~ plural = '' if len(args.i) == 1 else 's'
@@ -193,11 +196,12 @@ if __name__ == '__main__':
         sys.exit()
 
     # if args.d -> background run
-    ap = ArpScanner(args.i, args.r)
+    ap = ArpScanner(args.i, args.net)
     
     if args.start:
         ap.start()
-        print(ap.get_json())
-    
-    if args.status:
-        print(ap.status())
+        time.sleep(2)
+
+    ap.status()    
+    print(ap.get_json())
+
