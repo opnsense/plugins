@@ -38,20 +38,16 @@ POSSIBILITY OF SUCH DAMAGE.
         //~ // action to run after successful save, for example reconfigure service.
         ajaxCall(url="/api/arpscanner/service/check", sendData, callback=function(data,status) {
             // action to run after reload
-            //~ console.log(data);
-            //~ $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
             if (data.length >= 1){
                 $("#update_stop").hide();
                 $("#update_start").show();
                 check_state = 1;
                 $("#scan_progress").addClass("fa fa-spinner fa-pulse");
                 $("#startScanner").addClass("disabled")
-                
                 setTimeout(function(){
                     get_status(ifname)
                     //~ $('#arpscanner\\.general\\.interface').prop('id', 'second_cat');
                 }, 2000 );
-                
             } else {
                 $("#update_stop").show();
                 $("#update_start").hide();
@@ -61,7 +57,6 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         }); 
     }
-    
     
     function get_status(ifname){
         flush_table();
@@ -81,9 +76,6 @@ POSSIBILITY OF SUCH DAMAGE.
         }
     
     $( document ).ready(function() {
-        // CSS fixtures
-        //~ $('.table-responsive td').css('padding-left', '17px');
-        // end CSS fixtures
     
         var data_get_map = {'frm_GeneralSettings':"/api/arpscanner/settings/get"};
         //~ console.log(data_get_map);
@@ -95,7 +87,6 @@ POSSIBILITY OF SUCH DAMAGE.
             first_status = $('#arpscanner\\.general\\.interface option:selected')[0].value;        
             check_scanner_status(first_status);
         });
-        
         
         // link save button to API set action
         $("#saveAct").click(function(){
@@ -109,25 +100,25 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#stopScanner").click(function(){
-                // action to run after successful save, for example reconfigure service.
-                value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
-                sendData={'interface': value }
-                ajaxCall(url="/api/arpscanner/service/stop", sendData, callback=function(data,status) {
-                // action to run after reload
-                //~ console.log(data);
-                $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
-                check_scanner_status(value);
-                });
+            // action to run after successful save, for example reconfigure service.
+            value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
+            sendData={'interface': value }
+            ajaxCall(url="/api/arpscanner/service/stop", sendData, callback=function(data,status) {
+            // action to run after reload
+            //~ console.log(data);
+            $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
+            check_scanner_status(value);
+            });
         });
         
         // CHECK STATUS
         // check the status opf the scanner on selected interface
         $("#arpscanner\\.general\\.interface").change(function(){
-                value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
-                get_status(value);
-                $("#ifname").text(value);
-                $("#started").text('');
-                $("#last").text('');    
+            value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
+            get_status(value);
+            $("#ifname").text(value);
+            $("#started").text('');
+            $("#last").text('');    
         });
 
 
@@ -136,7 +127,6 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#scan_progress").addClass("fa fa-spinner fa-pulse");
             var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             var networks = $('#arpscanner\\.general\\.networks').val();
-            //~ console.log(networks);
             ajaxCall(url="/api/arpscanner/service/start", 
                 sendData={'interface':ifname, 'networks': networks},
                 callback=function(data,status) {
