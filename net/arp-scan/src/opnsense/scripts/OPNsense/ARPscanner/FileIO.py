@@ -25,7 +25,9 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 """
-import os.path
+import fcntl
+import os
+import sys
 
 class FileIO(object):
     """
@@ -46,8 +48,9 @@ class FileIO(object):
         
         # file obj, 1 means the buffer size, small as possibile to flush
         # data soon as possible :)
-        self.err  = open(self.epath, 'w', 1)
-        self.out  = open(self.opath, 'w', 1)
+        # this feature would be better with python3
+        self.err  = open(self.epath, 'wb', buffering=0)
+        self.out  = open(self.opath, 'wb', buffering=0)
         
     
     def close(self):

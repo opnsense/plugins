@@ -97,19 +97,19 @@ class ArpScanner(ProcessIO):
             returns 1 if started
             returns  0 if already running
         """
-        
         running = self.check_run(self.ifname, self.os_command_filter)
         if running: return self.status()
 
         fileio = FileIO(self.ifname, self.tmp)
         os_command = ["arp-scan", "-I", self.ifname, self.network, 
-                      "--retry", "5"]
+                      "--retry", "5" ]
         # run a child and detach
         osc = Popen(os_command, 
-                    stdout=fileio.out, # stdout and stderr on the same 
-                    stderr=fileio.err, bufsize=1)
-
-    
+                    stdout=fileio.out, 
+                    stderr=fileio.err, 
+                    bufsize=0,
+                    shell=False)
+        
     def get_json(self):
         return json.dumps(self.result)
     
