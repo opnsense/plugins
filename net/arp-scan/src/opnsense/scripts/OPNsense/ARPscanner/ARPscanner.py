@@ -27,7 +27,7 @@
 """
 from subprocess import Popen, PIPE
 import datetime
-import os.path
+import os
 import time
 import json
 import sys

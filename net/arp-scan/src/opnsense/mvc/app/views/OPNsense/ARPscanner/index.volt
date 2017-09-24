@@ -164,7 +164,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
         
-        <div class="col-md-12" style="padding-bottom: 13px;">
+        <div class="col-md-12" style="padding-bottom: 13px; padding-top: 13px;">
             <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>           
             <button class='btn btn-default' id="statusScanner" style="margin-right: 8px;">{{ lang._('Refresh') }} <i id=""></i></button>                         
             <button class="btn btn-primary pull-center"  id="startScanner" type="button"><i id="scan_progress" class=""></i><b>{{ lang._('Start') }}</b></button>

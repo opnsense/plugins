@@ -47,8 +47,8 @@ class FileIO(object):
         # file obj, 1 means the buffer size, small as possibile to flush
         # data soon as possible :)
         # this feature would be better with python3
-        self.err  = open(self.epath, 'wb', buffering=0)
-        self.out  = open(self.opath, 'wb', buffering=0)
+        self.err  = open(self.epath, 'w', buffering=0)
+        self.out  = open(self.opath, 'w', buffering=0)
         
     
     def close(self):
