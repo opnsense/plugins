@@ -102,7 +102,7 @@ class ArpScanner(ProcessIO):
 
         fileio = FileIO(self.ifname, self.tmp)
         os_command = ["arp-scan", "-I", self.ifname, self.network, 
-                      "--retry", "5" ]
+                      "--retry", "5"]
         # run a child and detach
         osc = Popen(os_command, 
                     stdout=fileio.out, 
