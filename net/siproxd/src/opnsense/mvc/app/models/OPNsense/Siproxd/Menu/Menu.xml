@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Siproxd cssClass="fa fa-phone" url="/ui/siproxd/general/index" />
+  </Services>
+</menu>
