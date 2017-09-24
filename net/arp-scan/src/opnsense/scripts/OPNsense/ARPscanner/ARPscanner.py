@@ -75,6 +75,9 @@ class ArpScanner(ProcessIO):
             returns json parsing of arp-scan output
         """
         fout = os.path.sep.join((self.tmp, self.ifname))+'.out'
+        if not os.path.exists(fout):
+            return
+        
         self.result['last'] = time.ctime(os.path.getmtime(fout))
         self.result['started'] = time.ctime(os.path.getctime(fout))
         

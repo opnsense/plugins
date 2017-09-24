@@ -44,9 +44,11 @@ class FileIO(object):
         if not os.path.exists(path):
             os.makedirs(path)
         
-        # file obj
-        self.err  = open(self.epath, 'w')
-        self.out  = open(self.opath, 'w')
+        # file obj, 1 means the buffer size, small as possibile to flush
+        # data soon as possible :)
+        self.err  = open(self.epath, 'w', 1)
+        self.out  = open(self.opath, 'w', 1)
+        
     
     def close(self):
         self.err.close()
