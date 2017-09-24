@@ -5,8 +5,6 @@ require_once("config.inc");
 require_once('tor_helper.php');
 use \OPNsense\Tor\HiddenService;
 
-
-$hostnames = array();
 $services = new HiddenService();
 foreach ($services->service->__items as $service) {
     $directory_name = ((string)$service->name);
