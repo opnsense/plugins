@@ -109,7 +109,7 @@ include("head.inc");
                   <table class="table table-striped opnsense_standard_table_form">
                     <tr>
                       <td width="22%">
-                        <strong><?=gettext("Global Settings"); ?></strong>
+                        <strong><?=gettext("Global settings"); ?></strong>
                       </td>
                       <td width="78%" align="right">
                         <small><?=gettext("full help"); ?> </small>
