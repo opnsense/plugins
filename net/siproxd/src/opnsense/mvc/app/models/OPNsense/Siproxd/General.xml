@@ -39,7 +39,7 @@
             <NetMaskRequired>Y</NetMaskRequired>
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
-        </hosts_deny_sip>        
+        </hosts_deny_sip>
         <sip_listen_port type="IntegerField">
             <default>5060</default>
             <Required>Y</Required>
@@ -56,7 +56,7 @@
             <default>7089</default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>			
+            <MaximumValue>65535</MaximumValue>
         </rtp_port_high>
         <rtp_timeout type="IntegerField">
             <default>300</default>
@@ -68,13 +68,13 @@
             <default>46</default>
             <Required>Y</Required>
             <MinimumValue>0</MinimumValue>
-            <MaximumValue>64</MaximumValue>			
+            <MaximumValue>64</MaximumValue>
         </rtp_dscp>
         <sip_dscp type="IntegerField">
             <default>0</default>
             <Required>Y</Required>
             <MinimumValue>0</MinimumValue>
-            <MaximumValue>64</MaximumValue>			
+            <MaximumValue>64</MaximumValue>
         </sip_dscp>
         <rtp_input_dejitter type="BooleanField">
             <default>0</default>
@@ -88,19 +88,19 @@
             <default>600</default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
-            <MaximumValue>10000</MaximumValue>			
+            <MaximumValue>10000</MaximumValue>
         </tcp_timeout>
         <tcp_connect_timeout type="IntegerField">
             <default>500</default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
-            <MaximumValue>10000</MaximumValue>			
+            <MaximumValue>10000</MaximumValue>
         </tcp_connect_timeout>
         <tcp_keepalive type="IntegerField">
             <default>20</default>
             <Required>Y</Required>
             <MinimumValue>0</MinimumValue>
-            <MaximumValue>10000</MaximumValue>			
+            <MaximumValue>10000</MaximumValue>
         </tcp_keepalive>
         <ua_string type="TextField">
             <default></default>
@@ -111,10 +111,10 @@
             <multiple>N</multiple>
             <Required>Y</Required>
                 <OptionValues>
-                    <Option1 value="0">0 - do not add ;rport to via header</Option1>
-                    <Option2 value="1">1 - do add ;rport to INCOMING via header only</Option2>
-                    <Option3 value="2">2 - do add ;rport to OUTGOING via header only</Option3>
-                    <Option4 value="3">3 - do add ;rport to OUTGOING and INCOMING via headers</Option4>
+                    <Option1 value="0">Do not add ;rport to via header (0)</Option1>
+                    <Option2 value="1">Add ;rport to INCOMING via header (1)</Option2>
+                    <Option3 value="2">Add ;rport to OUTGOING via header (2)</Option3>
+                    <Option4 value="3">Add ;rport to OUTGOING and INCOMING via headers (3)</Option4>
                 </OptionValues>
         </use_rport>
         <plugin_defaulttarget_enable type="BooleanField">

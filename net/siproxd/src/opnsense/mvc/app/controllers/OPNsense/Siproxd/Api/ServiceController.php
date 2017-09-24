@@ -44,7 +44,7 @@ class ServiceController extends ApiControllerBase
     /**
      * show current SIP registrations
      * @return array
-     */    
+     */
     public function showregistrationsAction()
     {
         $backend = new Backend();

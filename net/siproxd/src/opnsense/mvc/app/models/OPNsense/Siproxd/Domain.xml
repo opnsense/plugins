@@ -20,7 +20,7 @@
                 <port type="IntegerField">
                     <default>5060</default>
                     <Required>Y</Required>
-                </port>                
+                </port>
             </domain>
         </domains>
     </items>

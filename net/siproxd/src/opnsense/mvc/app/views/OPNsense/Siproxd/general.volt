@@ -30,10 +30,10 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
-    <li><a data-toggle="tab" href="#domains">{{ lang._('Outbound Domains') }}</a></li>    
+    <li><a data-toggle="tab" href="#domains">{{ lang._('Outbound Domains') }}</a></li>
     <li><a data-toggle="tab" href="#showregistrations">{{ lang._('Current registrations') }}</a></li>
 </ul>
-    
+
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -86,7 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
-    </div>    
+    </div>
     <div id="showregistrations" class="tab-pane fade in">
       <pre id="showregistrations-cmd"></pre>
     </div>
@@ -106,7 +106,7 @@ $( document ).ready(function() {
     ajaxCall(url="/api/siproxd/service/showregistrations", sendData={}, callback=function(data,status) {
         $("#showregistrations-cmd").text(data['response']);
     });
-                
+
     ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });

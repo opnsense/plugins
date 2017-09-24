@@ -22,5 +22,5 @@
         <label>Port</label>
         <type>text</type>
         <help>Set the port for this host. Default should be fine for most cases.</help>
-    </field>    
+    </field>
 </form>
