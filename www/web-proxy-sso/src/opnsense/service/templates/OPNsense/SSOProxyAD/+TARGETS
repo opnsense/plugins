@@ -1,2 +1,0 @@
-krb5.conf:/usr/local/etc/ssoproxyad/krb5.conf
-rc.conf:/etc/rc.conf.d/squid/ssoproxyad
