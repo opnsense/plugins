@@ -1,0 +1,69 @@
+<form>
+	<field>
+		<label>Kerberos authentication check-list</label>
+		<type>header</type>
+	</field>
+	<field>
+		<id>hostname</id>
+		<label>Hostname</label>
+		<type>info</type>
+	</field>
+	<field>
+		<id>ldap_server_config</id>
+		<label>LDAP Server configuration</label>
+		<type>info</type>
+	</field>
+	<field>
+		<id>ldap_server</id>
+		<label>LDAP Server</label>
+		<type>info</type>
+	</field>
+	<field>
+		<id>ldap_server_ping</id>
+		<label>LDAP Server accessible</label>
+		<type>info</type>
+		<help>LDAP server ping check.</help>
+	</field>
+	<field>
+		<id>dns_server</id>
+		<label>DNS Server</label>
+		<type>info</type>
+		<help>DNS server address from resolver configuration. <![CDATA[See <a href="/system_general.php">DNS settings</a>]]>.</help>
+	</field>
+	<field>
+		<id>dns_hostname_resolution</id>
+		<label>Hostname DNS lookup</label>
+		<type>info</type>
+		<help>DNS IP resolution for hostname.</help>
+	</field>
+	<field>
+		<id>dns_hostname_reverse_resolution</id>
+		<label>Hostname DNS reverse lookup</label>
+		<type>info</type>
+		<help>Reverse DNS resolution for host IP.</help>
+	</field>
+	<field>
+		<id>dns_ldap_resolution</id>
+		<label>LDAP server DNS lookup</label>
+		<type>info</type>
+		<help>DNS IP resolution for LDAP server name.</help>
+	</field>
+	<field>
+		<id>dns_ldap_reverse_resolution</id>
+		<label>LDAP server DNS reverse lookup</label>
+		<type>info</type>
+		<help>Reverse DNS resolution for LDAP server IP.</help>
+	</field>
+	<field>
+		<id>kerberos_config</id>
+		<label>Kerberos configuration</label>
+		<type>info</type>
+		<help>Kerberos configuration must exist and be valid.</help>
+	</field>
+	<field>
+		<id>keytab</id>
+		<label>Keytab file</label>
+		<type>info</type>
+		<help>Keytab file must exist and be valid.</help>
+	</field>
+</form>

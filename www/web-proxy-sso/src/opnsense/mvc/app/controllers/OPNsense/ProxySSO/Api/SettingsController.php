@@ -1,7 +1,8 @@
 <?php
 
 /**
- *    Copyright (C) 2016 <gitdevmod@github.com>
+ *    Copyright (C) 2017 Smart-Soft
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -24,29 +25,20 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-namespace OPNsense\SSOProxyAD\Api;
+namespace OPNsense\ProxySSO\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Core\Config;
 
+/**
+ * Class SettingsController Handles settings related API actions for the ProxySSO
+ * @package OPNsense\ProxySSO
+ */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\SSOProxyAD\SSOProxyAD';
-    static protected $internalModelName = 'ssoproxyad';
-
-    /**
-     * @return array plain model settings (non repeating items)
-     */
-    protected function getModelNodes()
-    {
-        $settingsNodes = array('general');
-        $result = array();
-        $mdlSSO = $this->getModel();
-        foreach ($settingsNodes as $key) {
-            $result[$key] = $mdlSSO->$key->getNodes();
-        }
-        return $result;
-    }
+    static protected $internalModelName = "ProxySSO";
+    static protected $internalModelClass = "\OPNsense\ProxySSO\ProxySSO";
 }

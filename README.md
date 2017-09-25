@@ -60,7 +60,7 @@ security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only fo
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 www/c-icap -- c-icap connects your Proxy with a virus scanner
-www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
+www/web-proxy-sso -- Kerberos authentication module
 ```
 
 A brief description of how to use the plugins repository
