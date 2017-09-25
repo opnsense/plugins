@@ -1,0 +1,10 @@
+Siproxd is a proxy/masquerading daemon for the SIP protocol.
+It handles registrations of SIP clients on a private IP network
+and performs rewriting of the SIP message bodies to make SIP
+connections work via an masquerading firewall (NAT).
+It allows SIP software clients (like kphone, linphone) or
+SIP hardware clients (Voice over IP phones which are
+SIP-compatible, such as those from Cisco, Grandstream or Snom)
+to work behind an IP masquerading firewall or NAT router.
+
+WWW: http://siproxd.sourceforge.net/
