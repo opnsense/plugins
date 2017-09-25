@@ -1,0 +1,14 @@
+Proofpoint ET Pro is a timely and accurate rule set for detecting
+and blocking advanced threats using your existing network security
+appliances, such as next generation firewalls (NGFW) and network
+intrusion detection / prevention systems (IDS/IPS)
+
+Updated daily and available in SNORT and Suricata formats, ET Pro
+covers more than 40 different categories of network behaviors,
+malware command and control, DoS attacks, botnets, informational
+events, exploits, vulnerabilities, SCADA network protocols, exploit
+kit activity, and more.
+
+LICENSE: https://www.proofpoint.com/us/license
+
+WWW: https://www.proofpoint.com/us/threat-insight/et-pro-ruleset
