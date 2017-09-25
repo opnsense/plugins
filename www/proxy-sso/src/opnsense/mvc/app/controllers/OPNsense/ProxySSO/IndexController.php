@@ -14,4 +14,3 @@ class IndexController extends \OPNsense\Base\IndexController
 		$this->view->checkListForm = $this->getForm("checklist");
 	}
 }
-

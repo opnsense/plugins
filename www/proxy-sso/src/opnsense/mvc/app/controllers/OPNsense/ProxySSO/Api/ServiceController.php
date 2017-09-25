@@ -138,7 +138,7 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
         $output = array("# drill {$hostname}");
         exec("drill {$hostname}", $output);
         $dns_hostname_resolution["dump"] = implode("\n", $output);
-        
+
         $resolv_reverse = null;
         $dns_hostname_reverse_resolution = array();
         $output = array();

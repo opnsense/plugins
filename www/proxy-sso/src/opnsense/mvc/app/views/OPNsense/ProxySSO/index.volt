@@ -85,7 +85,7 @@
             $("#RefreshCheckList").removeClass("disabled");
 
             $.each(data.frm_CheckList, function(index, value){
-                
+
                 // clear data
                 $("#" + index).html("");
                 $(".help-block[for='" + index + "']").html("");

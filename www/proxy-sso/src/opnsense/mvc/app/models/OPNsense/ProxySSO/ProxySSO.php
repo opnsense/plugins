@@ -7,4 +7,3 @@ use OPNsense\Base\BaseModel;
 class ProxySSO extends BaseModel
 {
 }
-
