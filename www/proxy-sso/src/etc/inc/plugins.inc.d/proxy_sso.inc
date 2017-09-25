@@ -3,11 +3,13 @@
 function proxy_sso_configure()
 {
     return [
-        'webproxy_reconfigure' => ['proxy_sso_squid_reconfigure'],
+        'webproxy' => ['proxy_sso_squid_hook:2'],
     ];
 }
 
-function proxy_sso_squid_reconfigure()
+function proxy_sso_squid_hook($verbose, $action)
 {
-    configd_run('template reload OPNsense/ProxySSO');
+    if($action == "reconfigure") {
+        configd_run('template reload OPNsense/ProxySSO');
+    }
 }
