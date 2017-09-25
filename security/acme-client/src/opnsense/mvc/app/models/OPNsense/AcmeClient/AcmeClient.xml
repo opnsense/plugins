@@ -412,6 +412,9 @@
                 <dns_dp_key type="TextField">
                     <Required>N</Required>
                 </dns_dp_key>
+                <dns_duckdns_token type="TextField">
+                    <Required>N</Required>
+                </dns_duckdns_token>
                 <dns_freedns_user type="TextField">
                     <Required>N</Required>
                 </dns_freedns_user>
