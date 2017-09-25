@@ -56,6 +56,7 @@ sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
+security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
