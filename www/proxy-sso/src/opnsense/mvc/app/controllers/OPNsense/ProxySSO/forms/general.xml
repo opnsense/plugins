@@ -1,0 +1,15 @@
+<form>
+	<field>
+		<id>ProxySSO.EnableSSO</id>
+		<label>Enable Single Sign-On</label>
+		<type>checkbox</type>
+		<help>Enable Kerberos based Single Sign-On</help>
+	</field>
+	<field>
+		<id>ProxySSO.ADKerberosImplementation</id>
+		<label>AD Kerberos implementation</label>
+		<type>dropdown</type>
+		<help>Select Windows Server version for AD controller</help>
+	</field>
+</form>
+

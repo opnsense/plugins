@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <WebProxy>
+            <ProxySSO VisibleName="Single Sign-On" cssClass="fa fa-shield fa-fw" order="26" url="/ui/proxysso/" />
+        </WebProxy>
+    </Services>
+</menu>
+
