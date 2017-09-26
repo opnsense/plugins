@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset documentation_url="http://doc.emergingthreats.net/bin/view/Main/EmergingFAQ">
-	<location url="https://rules.emergingthreatspro.com/%%etpro.oinkcode%%/suricata-1.3-enhanced/emerging.rules.tar.gz" prefix="ET Pro"/>
+	<location url="https://rules.emergingthreatspro.com/%%etpro.oinkcode%%/suricata-1.3-enhanced/etpro.rules.tar.gz" prefix="ET Pro"/>
 	<files>
 		<file description="activex" url="inline::rules/activex.rules">et_pro.activex.rules</file>
 		<file description="attack_response" url="inline::rules/attack_response.rules">et_pro.attack_response.rules</file>
