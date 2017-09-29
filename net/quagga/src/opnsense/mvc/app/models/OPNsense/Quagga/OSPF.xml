@@ -6,6 +6,11 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <routerid type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+        </routerid>
         <originate type="BooleanField">
             <default>0</default>
             <Required>Y</Required>

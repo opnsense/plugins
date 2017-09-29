@@ -6,6 +6,13 @@
         <help>This will activate the OSPF service if routing protocols are enabled in "General".</help>
     </field>
     <field>
+        <id>ospf.routerid</id>
+        <label>Router ID</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>If you have a CARP setup, you may want to configure a router id in case of a conflict.</help>
+    </field>
+    <field>
         <id>ospf.passiveinterfaces</id>
         <label>Passive Interfaces</label>
         <type>select_multiple</type>
