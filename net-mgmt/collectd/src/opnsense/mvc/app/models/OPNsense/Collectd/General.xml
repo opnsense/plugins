@@ -113,5 +113,9 @@
             <default>1</default>
             <Required>N</Required>
         </p_users_enable>
+        <advanced type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </advanced>
     </items>
 </model>

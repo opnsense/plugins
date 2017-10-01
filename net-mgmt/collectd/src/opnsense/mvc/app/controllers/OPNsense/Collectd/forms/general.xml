@@ -149,4 +149,11 @@
         <type>checkbox</type>
         <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
     </field>
+    <field>
+        <id>general.advanced</id>
+        <label>Advanced</label>
+        <type>textbox</type>
+        <advanced>true</advanced>
+        <help>Enter any additional options you would like to add to the configuration file here.</help>
+    </field>
 </form>
