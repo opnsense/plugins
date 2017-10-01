@@ -150,7 +150,43 @@
         <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
     </field>
     <field>
-        <id>general.advanced</id>
+        <id>general.p_openvpn_enable</id>
+        <label>Enable openvpn plugin</label>
+        <type>checkbox</type>
+        <help>The OpenVPN plugin reads the status file printed by OpenVP </help>
+    </field>
+    <field>
+        <id>general.p_openvpn_statusfile</id>                  
+        <label>openvpn Status File</label>         
+        <type>text</type>    
+        <help>OpenVPN --status file</help>
+    </field>
+    <field>
+        <id>general.p_openvpn_collectindividualusers</id>
+        <label>openvpn Collect Individual Users</label>
+        <type>checkbox</type>
+        <help>Collect one RRD for each logged in user</help>
+    </field>
+    <field>
+        <id>general.p_openvpn_collectusercount</id>
+        <label>openvpn Collect User Count</label>
+        <type>checkbox</type>
+        <help>Aggregate number of connected users</help>
+    </field>
+    <field>
+        <id>general.p_openvpn_collectcompression</id>
+        <label>openvpn Collect Compression </label>
+        <type>checkbox</type>
+        <help>Store compression statistics</help>
+    </field>
+    <field>
+        <id>general.p_openvpn_improvednamingschema</id>
+        <label>openvpn Improved Naming Schema</label>
+        <type>checkbox</type>
+        <help>Use new NamingSchema</help>
+    </field>
+    <field>
+        <id>general.p_advanced</id>
         <label>Advanced</label>
         <type>textbox</type>
         <advanced>true</advanced>
