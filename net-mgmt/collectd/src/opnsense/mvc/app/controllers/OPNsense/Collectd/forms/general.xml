@@ -185,11 +185,4 @@
         <type>checkbox</type>
         <help>Use new NamingSchema</help>
     </field>
-    <field>
-        <id>general.p_advanced</id>
-        <label>Advanced</label>
-        <type>textbox</type>
-        <advanced>true</advanced>
-        <help>Enter any additional options you would like to add to the configuration file here.</help>
-    </field>
 </form>
