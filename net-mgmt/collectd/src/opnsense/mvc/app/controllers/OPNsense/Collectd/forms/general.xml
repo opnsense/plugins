@@ -185,6 +185,6 @@ So, in the OpenVPN Advanced field you need: "status /var/run/openvpn-status 10" 
         <id>general.p_openvpn_improvednamingschema</id>
         <label>OpenVPN Improved Naming Schema</label>
         <type>checkbox</type>
-        <help>Use new Naming Schema (--status-version=2).</help>
+        <help>When enabled, the filename of the status file will be used as plugin instance and the client's "common name" will be used as type instance.</help>
     </field>
 </form>
