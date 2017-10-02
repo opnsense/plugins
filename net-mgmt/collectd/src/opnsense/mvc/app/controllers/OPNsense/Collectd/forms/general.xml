@@ -153,7 +153,9 @@
         <id>general.p_openvpn_enable</id>
         <label>Enable OpenVPN plugin</label>
         <type>checkbox</type>
-        <help>The OpenVPN plugin reads the status file printed by OpenVPN.</help>
+        <help>The OpenVPN plugin reads the status file printed by OpenVPN. To set up OpenVPN to write to the status file periodically use the --status option of OpenV
+PN. Since OpenVPN can write two different formats, you need to set the required format, too. This is done by setting --status-version to 2.
+So, in the OpenVPN Advanced field you need: "status /var/run/openvpn-status 10" and "status-version 2".</help> 
     </field>
     <field>
         <id>general.p_openvpn_statusfile</id>
