@@ -151,38 +151,38 @@
     </field>
     <field>
         <id>general.p_openvpn_enable</id>
-        <label>Enable openvpn plugin</label>
+        <label>Enable OpenVPN plugin</label>
         <type>checkbox</type>
-        <help>The OpenVPN plugin reads the status file printed by OpenVP </help>
+        <help>The OpenVPN plugin reads the status file printed by OpenVPN.</help>
     </field>
     <field>
-        <id>general.p_openvpn_statusfile</id>                  
-        <label>openvpn Status File</label>         
-        <type>text</type>    
-        <help>OpenVPN --status file</help>
+        <id>general.p_openvpn_statusfile</id>
+        <label>OpenVPN Status File</label>
+        <type>text</type>
+        <help>Specifies the location of the status file (--status).</help>
     </field>
     <field>
         <id>general.p_openvpn_collectindividualusers</id>
-        <label>openvpn Collect Individual Users</label>
+        <label>OpenVPN Collect Individual Users</label>
         <type>checkbox</type>
-        <help>Collect one RRD for each logged in user</help>
+        <help>Sets whether or not traffic information is collected for each connected client individually.</help>
     </field>
     <field>
         <id>general.p_openvpn_collectusercount</id>
-        <label>openvpn Collect User Count</label>
+        <label>OpenVPN Collect User Count</label>
         <type>checkbox</type>
-        <help>Aggregate number of connected users</help>
+        <help>When enabled, the number of currently connected clients or users is collected.</help>
     </field>
     <field>
         <id>general.p_openvpn_collectcompression</id>
-        <label>openvpn Collect Compression </label>
+        <label>OpenVPN Collect Compression</label>
         <type>checkbox</type>
-        <help>Store compression statistics</help>
+        <help>Sets whether or not statistics about the compression used by OpenVPN should be collected.</help>
     </field>
     <field>
         <id>general.p_openvpn_improvednamingschema</id>
-        <label>openvpn Improved Naming Schema</label>
+        <label>OpenVPN Improved Naming Schema</label>
         <type>checkbox</type>
-        <help>Use new NamingSchema</help>
+        <help>Use new Naming Schema (--status-version=2).</help>
     </field>
 </form>
