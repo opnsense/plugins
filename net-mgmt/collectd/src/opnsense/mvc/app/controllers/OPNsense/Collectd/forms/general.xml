@@ -84,6 +84,18 @@
         <help>Set the port of the graphite collector, Graphite is using 2003 per default.</help>
     </field>
     <field>
+        <id>general.p_graphite_prefix</id>
+        <label>Graphite Prefix</label>
+        <type>text</type>
+        <help>Prefix to set before the hostname. If it ends with a dot it creates an own directory.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_postfix</id>
+        <label>Graphite Postfix</label>
+        <type>text</type>
+        <help>String to set after the hostname. For compatibility reason default is collectd, but you can also simply remove it.</help>
+    </field>
+    <field>
         <id>general.p_contextswitch_enable</id>
         <label>Enable contextswitch plugin</label>
         <type>checkbox</type>
