@@ -28,11 +28,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 <script type="text/javascript">
-    
+
     function flush_table(){
         $('#netTable tr').slice(2).remove()
     }
-    
+
     var check_state = 0;
     function check_scanner_status(ifname){
         // sets 0 if stopped and 1 if running
@@ -56,12 +56,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#scan_progress").removeClass("fa fa-spinner fa-pulse");
                 $("#startScanner").removeClass("disabled")
             }
-        }); 
+        });
     }
-    
+
     function get_status(ifname){
         flush_table();
-        ajaxCall(url="/api/arpscanner/service/status", 
+        ajaxCall(url="/api/arpscanner/service/status",
                 sendData={'interface':ifname},
                 callback=function(data,status) {
                     $.each(data['peers'], function(key_x,peer) {
@@ -74,12 +74,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 check_scanner_status(ifname)
                 $("#ifname").text(ifname);
                 $("#started").text(data['started']);
-                $("#last").text(data['last']);   
+                $("#last").text(data['last']);
             });
         }
-    
+
     $( document ).ready(function() {
-    
+
         var data_get_map = {'frm_GeneralSettings': "/api/arpscanner/settings/get"};
         //~ console.log(data_get_map);
         mapDataToFormUI(data_get_map).done(function(data){
@@ -87,10 +87,10 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('select').selectpicker('refresh');
             // check if the scanner is already running
-            first_status = $('#arpscanner\\.general\\.interface option:selected')[0].value;        
+            first_status = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             check_scanner_status(first_status);
         });
-        
+
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/arpscanner/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
@@ -98,15 +98,15 @@ POSSIBILITY OF SUCH DAMAGE.
                 ajaxCall(url="/api/arpscanner/service/reload", sendData={},callback=function(data,status) {
                 // action to run after reload
                 });
-                        
+
             });
         });
-        
+
         $("#statusScanner").click(function(){
             value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             get_status(value);
         });
-        
+
         $("#stopScanner").click(function(){
             // action to run after successful save, for example reconfigure service.
             value = $('#arpscanner\\.general\\.interface option:selected')[0].value;
@@ -118,7 +118,7 @@ POSSIBILITY OF SUCH DAMAGE.
             check_scanner_status(value);
             });
         });
-        
+
         // CHECK STATUS
         // check the status opf the scanner on selected interface
         $("#arpscanner\\.general\\.interface").change(function(){
@@ -126,7 +126,7 @@ POSSIBILITY OF SUCH DAMAGE.
             get_status(value);
             $("#ifname").text(value);
             $("#started").text('');
-            $("#last").text('');    
+            $("#last").text('');
         });
 
 
@@ -135,38 +135,38 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#scan_progress").addClass("fa fa-spinner fa-pulse");
             var ifname = $('#arpscanner\\.general\\.interface option:selected')[0].value;
             var networks = $('#arpscanner\\.general\\.networks').val();
-            ajaxCall(url="/api/arpscanner/service/start", 
+            ajaxCall(url="/api/arpscanner/service/start",
                 sendData={'interface':ifname, 'networks': networks},
                 callback=function(data,status) {
                     // action to run after reload
                     //~ console.log(data);
                     $("#ifname").text(data['interface']);
                     $("#started").text(data['started']);
-                    $("#last").text(data['last']);                    
+                    $("#last").text(data['last']);
                     flush_table();
                     check_scanner_status(ifname);
                 });
         });
-        
-        
+
+
     }); // END
 </script>
 
 <section class="col-xs-12">
     <div  id="update_stop" class="alert alert-info" role="alert" style="min-height: 65px;">
         <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is stopped')}}</div>
-    </div>        
-    
+    </div>
+
     <div id="update_start"  class="alert alert-warning" role="alert" style="min-height: 65px; display:none;">
-        <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is running')}}</div>   
-    </div> 
-    
+        <div class="pull-left updatestatus" style="margin-top: 8px;">{{ lang._('Scan is running')}}</div>
+    </div>
+
     <div class="content-box">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
-        
+
         <div class="col-md-12" style="padding-bottom: 13px; padding-top: 13px;">
-            <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>           
-            <button class='btn btn-default' id="statusScanner" style="margin-right: 8px;">{{ lang._('Refresh') }} <i id=""></i></button>                         
+            <button class='btn btn-default' id="stopScanner" style="margin-right: 8px;">{{ lang._('Stop') }} <i id=""></i></button>
+            <button class='btn btn-default' id="statusScanner" style="margin-right: 8px;">{{ lang._('Refresh') }} <i id=""></i></button>
             <button class="btn btn-primary pull-center"  id="startScanner" type="button"><i id="scan_progress" class=""></i><b>{{ lang._('Start') }}</b></button>
         </div>
     </div>
@@ -180,15 +180,15 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th><b>{{ lang._('Interface name') }}</b></th>
                     <th><b>{{ lang._('Started') }}</b></th>
-                    <th><b>{{ lang._('Last update') }}</b></th>                    
+                    <th><b>{{ lang._('Last update') }}</b></th>
                 </tr>
             </thead>
             <tbody>
                 <td><p id="ifname"></p></td>
                 <td><p id="started"></p></td>
-                <td><p id="last"></p></td>                
+                <td><p id="last"></p></td>
             </tbody>
-            
+
         </table>
         <hr>
         <table id="netTable">

@@ -44,7 +44,7 @@ class ArpScanner(ProcessIO):
                            grep -v "ps ax "| \
                            grep -E '^[ 0-9]+'| \
                            awk -F' ' '{{print $1}}'"""
-    
+
     def __init__(self, ifname, network):
         """
         netif='eth0'
@@ -57,7 +57,7 @@ class ArpScanner(ProcessIO):
         self.regexp =  '([0-9\.]+)[\t]*([\dA-F]{2}(?:[-:][\dA-F]{2}){5})[\t]*([A-Za-z0-9\ \.\-\,\'\(\)]*)'
         # os_command_filter needs '{}'.format(ifname)
         self._DEBUG = False
-        
+
         # FileIO contains all the IO files
         tmp_fileio_path   = '/tmp/ARPscanner'
         self.tmp    = tmp_fileio_path
@@ -77,10 +77,10 @@ class ArpScanner(ProcessIO):
         fout = os.path.sep.join((self.tmp, self.ifname))+'.out'
         if not os.path.exists(fout):
             return
-        
+
         self.result['last'] = time.ctime(os.path.getmtime(fout))
         self.result['started'] = time.ctime(os.path.getctime(fout))
-        
+
         with open(fout, 'r') as f:
             fcont = f.read()
             #~ print(fcont)
@@ -88,7 +88,7 @@ class ArpScanner(ProcessIO):
             if self._DEBUG: print(regexp)
             for netfound in regexp:
                 self.result['peers'].append(
-                    (netfound[0].replace('\t', ''), 
+                    (netfound[0].replace('\t', ''),
                      netfound[1], netfound[2]))
         #~ return self.result
 
@@ -101,35 +101,35 @@ class ArpScanner(ProcessIO):
         if running: return self.status()
 
         fileio = FileIO(self.ifname, self.tmp)
-        os_command = ["arp-scan", "-I", self.ifname, self.network, 
+        os_command = ["arp-scan", "-I", self.ifname, self.network,
                       "--retry", "5"]
         # run a child and detach
-        osc = Popen(os_command, 
-                    stdout=fileio.out, 
-                    stderr=fileio.err, 
+        osc = Popen(os_command,
+                    stdout=fileio.out,
+                    stderr=fileio.err,
                     bufsize=0,
                     shell=False)
-        
+
     def get_json(self):
         return json.dumps(self.result)
-    
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', nargs='?', required=True, 
+    parser.add_argument('-i', nargs='?', required=True,
                         help="network interface")
     parser.add_argument('-net', nargs='?', help="""network to scan""")
-    parser.add_argument('-check', action="store_true", required=False, 
+    parser.add_argument('-check', action="store_true", required=False,
                         help="check if arp-san is running on that interface")
-    parser.add_argument('-start', action="store_true", required=False, 
-                        help="starts arp-scan")    
-    parser.add_argument('-stop', action="store_true", required=False, 
+    parser.add_argument('-start', action="store_true", required=False,
+                        help="starts arp-scan")
+    parser.add_argument('-stop', action="store_true", required=False,
                         help="Stops scanning on that interfaces")
-    parser.add_argument('-status', action="store_true", required=False, 
+    parser.add_argument('-status', action="store_true", required=False,
                         help="Parse arp-scan stdout and return json")
-    
+
     args = parser.parse_args()
-    
+
     if not args.net:
         args.net = '--localnet'
 
@@ -144,10 +144,9 @@ if __name__ == '__main__':
         sys.exit()
 
     ap = ArpScanner(args.i, args.net)
-    
+
     if args.start:
         ap.start()
 
-    ap.status()    
+    ap.status()
     print(ap.get_json())
-

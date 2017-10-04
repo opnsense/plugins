@@ -36,21 +36,21 @@ class FileIO(object):
         # file names
         self.nerr = '{}.err'.format(name)
         self.nout = '{}.out'.format(name)
-        
+
         # file paths
         self.epath = os.path.sep.join((path, self.nerr))
         self.opath = os.path.sep.join((path, self.nout))
-        
+
         if not os.path.exists(path):
             os.makedirs(path)
-        
+
         # file obj, 1 means the buffer size, small as possibile to flush
         # data soon as possible :)
         # this feature would be better with python3
         self.err  = open(self.epath, 'w', buffering=0)
         self.out  = open(self.opath, 'w', buffering=0)
-        
-    
+
+
     def close(self):
         self.err.close()
         self.out.close()

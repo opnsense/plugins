@@ -39,21 +39,21 @@ class ProcessIO(object):
         """
         mypid = getpid()
         os_command = os_command_filter.format(ifname)
-        osc = Popen(os_command, 
-                      stdin=PIPE, 
-                      stdout=PIPE, 
+        osc = Popen(os_command,
+                      stdin=PIPE,
+                      stdout=PIPE,
                       stderr=PIPE,
                       shell=True)
         output, err = osc.communicate()
         if _DEBUG: print(output)
         if output:
-            pids = [] 
+            pids = []
             for pid in output.split(linesep):
                 if pid and int(pid) != mypid:
                     pids.append(int(pid))
             return pids[:]
         return 0
-    
+
     @classmethod
     def stop(cls, ifname, os_command_filter):
         """ stop scanning on that interface """

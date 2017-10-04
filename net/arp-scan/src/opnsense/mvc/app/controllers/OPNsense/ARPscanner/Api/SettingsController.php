@@ -41,31 +41,30 @@ class SettingsController extends ApiControllerBase
     public function getAction()
     {
     // define list of configurable settings
-    $result = array();
-    if ($this->request->isGet()) {
-        $mdl = new ARPscanner();
-        $result['arpscanner'] =  $mdl->getNodes();
-        // returns: {"arpscanner":{"general":{"interface":
-        // {"lan":{"value":"lan","selected":1}},"networks":
-        // {"10.0.1.0\/24":{"value":"10.0.1.0\/24","selected":1}}}}}
-        
-        $backend = new Backend();
-        $bckresult = trim($backend->configdRun("arpscanner interfaces"));
-        $ifnames = json_decode($bckresult);
-        
-        $result['arpscanner']['general']['interface'] = array();
-        
-        if (is_array($ifnames) || is_object($ifnames))
-        {
-            foreach ($ifnames as &$arr) {
-                $ifname = $arr[0];
-                $result['arpscanner']['general']['interface'][$ifname] = array();
-                $result['arpscanner']['general']['interface'][$ifname]['value'] = join(", ", array($ifname, " (".$arr[2].")") );
+        $result = array();
+        if ($this->request->isGet()) {
+            $mdl = new ARPscanner();
+            $result['arpscanner'] =  $mdl->getNodes();
+            // returns: {"arpscanner":{"general":{"interface":
+            // {"lan":{"value":"lan","selected":1}},"networks":
+            // {"10.0.1.0\/24":{"value":"10.0.1.0\/24","selected":1}}}}}
+
+            $backend = new Backend();
+            $bckresult = trim($backend->configdRun("arpscanner interfaces"));
+            $ifnames = json_decode($bckresult);
+
+            $result['arpscanner']['general']['interface'] = array();
+
+            if (is_array($ifnames) || is_object($ifnames)) {
+                foreach ($ifnames as &$arr) {
+                    $ifname = $arr[0];
+                    $result['arpscanner']['general']['interface'][$ifname] = array();
+                    $result['arpscanner']['general']['interface'][$ifname]['value'] = join(", ", array($ifname, " (".$arr[2].")"));
+                }
             }
+            // $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
         }
-        // $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
-        }   
-    return $result;
+        return $result;
     }
 
     /**
@@ -79,7 +78,7 @@ class SettingsController extends ApiControllerBase
             // load model and update with provided data
             $mdl = new ARPscanner();
             $mdl->setNodes($this->request->getPost("arpscanner"));
-    
+
             // perform validation
             $valMsgs = $mdl->performValidation();
             foreach ($valMsgs as $field => $msg) {
@@ -88,7 +87,7 @@ class SettingsController extends ApiControllerBase
                 }
                 $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
             }
-    
+
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
                 $mdl->serializeToConfig();
@@ -98,6 +97,4 @@ class SettingsController extends ApiControllerBase
         }
         return $result;
     }
-
-    
 }

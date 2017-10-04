@@ -87,5 +87,4 @@ class ServiceController extends ApiControllerBase
             return array("message" => "error");
         }
     }
-
 }

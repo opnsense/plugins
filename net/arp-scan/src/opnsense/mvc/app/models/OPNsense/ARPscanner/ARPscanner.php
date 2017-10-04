@@ -34,7 +34,8 @@ use OPNsense\Base\BaseModel;
 
 class ARPscanner extends BaseModel
 {
-    public function test(){
+    public function test()
+    {
         $command="/sbin/ifconfig -l -u";
         exec($command, $output);
         return $output;

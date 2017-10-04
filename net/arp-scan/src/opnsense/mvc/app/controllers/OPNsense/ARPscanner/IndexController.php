@@ -45,7 +45,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->title = gettext('ARP Scan');
         $this->view->general = $this->getForm("general");
         $this->view->pick('OPNsense/ARPscanner/index');
-        
+
         $this->view->generalForm = $this->getForm("general");
     }
 }

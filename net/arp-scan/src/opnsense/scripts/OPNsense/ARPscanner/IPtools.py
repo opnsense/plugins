@@ -3,17 +3,17 @@
 
 #~ Copyright © 2017 Giuseppe De Marco <giuseppe.demarco@unical.it>
 #~ All rights reserved.
-#~ 
+#~
 #~ Redistribution and use in source and binary forms, with or without modification,
 #~ are permitted provided that the following conditions are met:
-#~ 
+#~
 #~ 1.  Redistributions of source code must retain the above copyright notice,
 #~ this list of conditions and the following disclaimer.
-#~ 
+#~
 #~ 2.  Redistributions in binary form must reproduce the above copyright notice,
 #~ this list of conditions and the following disclaimer in the documentation
 #~ and/or other materials provided with the distribution.
-#~ 
+#~
 #~ THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
 #~ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 #~ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -59,7 +59,7 @@ AF_UNIX      = 1
 AF_INET      = 2
 
 class IPtools(object):
-    
+
     @staticmethod
     def get_ip_address(ifname):
         # python2 only
@@ -71,7 +71,7 @@ class IPtools(object):
             SIOCGIFADDR,
             struct.pack('256s', ifname[:15])
         )[20:24])
-    
+
     @staticmethod
     def get_netmask(ifname):
         # python2 only
@@ -79,10 +79,10 @@ class IPtools(object):
         #
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         return socket.inet_ntoa(fcntl.ioctl(
-                s.fileno(), 
-                35099, 
+                s.fileno(),
+                35099,
                 struct.pack('256s', ifname))[20:24])
-    
+
     @staticmethod
     def is_up(ifname):
         ''' Return True if the interface is up, False otherwise. '''
@@ -92,9 +92,9 @@ class IPtools(object):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Get existing device flags
         ifreq = struct.pack('16sh', ifname, 0)
-        flags = struct.unpack('16sh', 
-            fcntl.ioctl(s.fileno(), 
-                        SIOCGIFFLAGS, 
+        flags = struct.unpack('16sh',
+            fcntl.ioctl(s.fileno(),
+                        SIOCGIFFLAGS,
                         ifreq))[1]
 
         # Set new flags
@@ -102,7 +102,7 @@ class IPtools(object):
             return True
         else:
             return False
-    
+
     @staticmethod
     def get_mac(ifname):
         ''' Obtain the device's mac address. '''
@@ -128,7 +128,7 @@ class IPtools(object):
         ifreq = struct.pack('16sH6B8x', ifname, AF_UNIX, *macbytes)
         fcntl.ioctl(s.fileno(), SIOCSIFHWADDR, ifreq)
 
-    
+
     @staticmethod
     def get_interfaces(json_output=False):
         """
@@ -137,12 +137,12 @@ class IPtools(object):
         name_pattern = "^(\w+)\s"
         mac_pattern = ".*?HWaddr[ ]([0-9A-Fa-f:]{17})"
         ip_pattern = ".*?\n\s+inet[ ]addr:((?:\d+\.){3}\d+)"
-        pattern = re.compile("".join((name_pattern, 
-                                      mac_pattern, 
+        pattern = re.compile("".join((name_pattern,
+                                      mac_pattern,
                                       ip_pattern,
                                       )),
                              flags=re.MULTILINE)
-    
+
         ifconfig = subprocess.check_output("ifconfig").decode()
         interfaces = pattern.findall(ifconfig)
         Interface = namedtuple("Interface", "name {mac} {ip}".format(
@@ -160,12 +160,12 @@ class IPtools(object):
         name_pattern = "^(\w+).+[\n\t\s]*.*[\n\t\s]*"
         mac_pattern = ".*?ether[ ]([0-9A-Fa-f:]{17})[\n\t\s]*"
         ip_pattern = ".*?\n\s+inet[ ]((?:\d+\.){3}\d+)"
-        pattern = re.compile("".join((name_pattern, 
-                                      mac_pattern, 
+        pattern = re.compile("".join((name_pattern,
+                                      mac_pattern,
                                       ip_pattern,
                                       )),
                              flags=re.MULTILINE)
-    
+
         ifconfig = subprocess.check_output(["ifconfig", "-u"]).decode()
         interfaces = pattern.findall(ifconfig)
         Interface = namedtuple("Interface", "name {mac} {ip}".format(
