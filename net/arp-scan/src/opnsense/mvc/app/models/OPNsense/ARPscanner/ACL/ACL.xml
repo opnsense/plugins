@@ -1,0 +1,9 @@
+<acl>
+   <page-services-arpscanner>
+      <name>Diagnostics: ARP Scan</name>
+      <patterns>
+         <pattern>ui/arpscanner/*</pattern>
+         <pattern>api/arpscanner/*</pattern>
+      </patterns>
+   </page-services-arpscanner>
+</acl>
