@@ -84,6 +84,10 @@
             <default>0</default>
             <Required>N</Required>
         </rtp_output_dejitter>
+        <proxy_auth_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </proxy_auth_enable>
         <tcp_timeout type="IntegerField">
             <default>600</default>
             <Required>Y</Required>
