@@ -3,7 +3,7 @@
         <id>antivirus.enable_clamav</id>
         <label>Enable ClamAV</label>
         <type>checkbox</type>
-        <help>This will activate ClamAV</help>
+        <help>This will activate ClamAV. The URL of this service is icap://localhost:1344/srv_clamav.</help>
     </field>
     <field>
         <id>antivirus.scanfiletypes</id>
