@@ -10,5 +10,9 @@
             <default>0</default>
             <Required>N</Required>
         </vlanassign>
+        <wispr type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </wispr>
     </items>
 </model>
