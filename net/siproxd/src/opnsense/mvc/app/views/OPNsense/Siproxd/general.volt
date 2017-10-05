@@ -64,6 +64,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
+        <hr />
+        <div class="col-md-12">
+            <button class="btn btn-primary"  id="saveAct_user" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_user_progress" class=""></i></button>
+        </div>
     </div>
     <div id="domains" class="tab-pane fade in">
         <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditSiproxdDomain">
@@ -86,6 +90,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
+        <hr />
+        <div class="col-md-12">
+            <button class="btn btn-primary"  id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_domain_progress" class=""></i></button>
+        </div>
     </div>
     <div id="showregistrations" class="tab-pane fade in">
       <pre id="showregistrations-cmd"></pre>
@@ -139,6 +147,30 @@ $( document ).ready(function() {
                     updateServiceStatusUI(data['status']);
                 });
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_user").click(function(){
+        saveFormToEndpoint(url="/api/siproxd/user/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_user_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/siproxd/service/reconfigure", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
+                    updateServiceStatusUI(data['status']);
+                });
+                $("#saveAct_user_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_domain").click(function(){
+        saveFormToEndpoint(url="/api/siproxd/domain/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_domain_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/siproxd/service/reconfigure", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
+                    updateServiceStatusUI(data['status']);
+                });
+                $("#saveAct_domain_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
