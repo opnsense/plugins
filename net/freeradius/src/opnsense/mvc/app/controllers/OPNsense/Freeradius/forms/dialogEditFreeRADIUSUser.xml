@@ -41,4 +41,16 @@
         <type>text</type>
         <help>VLAN ID the user receives, e.g. for 802.1X. Leave empty if you don't know what it is.</help>
     </field>
+    <field>
+        <id>user.wispr_bw_min_up</id>
+        <label>WISPr Bandwith Min UP</label>
+        <type>text</type>
+        <help>Set the minimum upload bandwith for WISPr attribute.</help>
+    </field>
+    <field>
+        <id>user.wispr_bw_max_up</id>
+        <label>WISPr Bandwith Max UP</label>
+        <type>text</type>
+        <help>Set the maximum upload bandwith for WISPr attribute.</help>
+    </field>
 </form>
