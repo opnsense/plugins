@@ -79,121 +79,127 @@
     <field>
         <id>general.rtp_input_dejitter</id>
         <label>RTP input dejitter</label>
-        <type>checkbox</type>
-        <help>De-Jitter inbound packets (defaults to 0).</help>
+        <type>text</type>
+        <help>De-Jitter inbound packets in ms (default is disabled).</help>
     </field>
     <field>
         <id>general.rtp_output_dejitter</id>
         <label>RTP output dejitter</label>
+        <type>text</type>
+        <help>De-Jitter outbound packets in ms (default is disabled).</help>
+    </field>
+    <field>
+        <id>general.proxy_auth_enable</id>
+        <label>Enable Proxy authentication</label>
         <type>checkbox</type>
-        <help>De-Jitter outbound packets (defaults to 0).</help>
+        <help>Whether or not to enable authentication for clients to Siproxd. If checked please set up clients in the users tab.</help>
     </field>
     <field>
         <id>general.tcp_timeout</id>
         <label>TCP timeout</label>
         <type>text</type>
-	    <help>Time in seconds when an inactive TCP session will be disconnected.</help>
+        <help>Time in seconds when an inactive TCP session will be disconnected.</help>
     </field>
     <field>
         <id>general.tcp_connect_timeout</id>
         <label>TCP connect timeout</label>
         <type>text</type>
-	    <help>Time in milli seconds siproxd should wait until the connection is established.</help>
+        <help>Time in milli seconds siproxd should wait until the connection is established.</help>
     </field>
     <field>
         <id>general.tcp_keepalive</id>
         <label>TCP keepalive</label>
         <type>text</type>
-	    <help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
+        <help>Time in seconds how often siproxd should send an empty Sip-Keep-Alive to hold the connection.</help>
     </field>
     <field>
         <id>general.ua_string</id>
         <label>Useragent string</label>
         <type>text</type>
-	    <help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
+        <help>Siproxd will masquerade the interal UAs to this given string (optional).</help>
     </field>
     <field>
         <id>general.use_rport</id>
         <label>Remote ports in VIA-Header</label>
         <type>dropdown</type>
-	    <help>This setting is only relevant for double nat scenarios, where default port 5060 would be replaced by a NAT device.</help>
+        <help>This setting is only relevant for double nat scenarios, where default port 5060 would be replaced by a NAT device.</help>
     </field>
     <field>
         <id>general.plugin_defaulttarget_enable</id>
         <label>Enable defaulttarget plugin</label>
         <type>checkbox</type>
-	    <help>Enable or disable the defaulttarget plugin.</help>
+        <help>Enable or disable the defaulttarget plugin.</help>
     </field>
     <field>
         <id>general.plugin_defaulttarget_log</id>
         <label>Enable defaulttarget logging</label>
         <type>checkbox</type>
-	    <help>Enable logging of defaulttarget plugin.</help>
+        <help>Enable logging of defaulttarget plugin.</help>
     </field>
     <field>
         <id>general.plugin_defaulttarget_target</id>
         <label>Default target account</label>
         <type>text</type>
-	    <help>Redirect all incoming calls to a given SIP-URI with format sip:internal@ip:port.</help>
+        <help>Redirect all incoming calls to a given SIP-URI with format sip:internal@ip:port.</help>
     </field>
    <field>
         <id>general.plugin_fix_bogus_via_enable</id>
         <label>Enable fix_bogus_via plugin</label>
         <type>checkbox</type>
-	    <help>Enable or disable the fix_bogus_via plugin.</help>
+        <help>Enable or disable the fix_bogus_via plugin.</help>
     </field>
     <field>
         <id>general.plugin_fix_bogus_via_networks</id>
         <label>Networks to replace VIA-Header</label>
         <type>text</type>
-	    <help>Give here a list of networks to replace the VIA-Header. Default should fit for most situations.</help>
+        <help>Give here a list of networks to replace the VIA-Header. Default should fit for most situations.</help>
     </field>
    <field>
         <id>general.plugin_fix_DTAG_enable</id>
         <label>Enable fix_DTAG_networks plugin</label>
         <type>checkbox</type>
-	    <help>Enable or disable the fix_DTAG_networks plugin.</help>
+        <help>Enable or disable the fix_DTAG_networks plugin.</help>
     </field>
     <field>
         <id>general.plugin_fix_DTAG_networks</id>
         <label>DTAG servers</label>
         <type>text</type>
-	    <help>List of networks where to apply the DTAG fix. Default should fit for most situations.</help>
+        <help>List of networks where to apply the DTAG fix. Default should fit for most situations.</help>
     </field>
    <field>
         <id>general.plugin_fbox_anoncall_enable</id>
         <label>Enable fbox_anoncall_networks plugin</label>
         <type>checkbox</type>
-	    <help>Enable or disable the fix_DTAG_networks plugin.</help>
+        <help>Enable or disable the fix_DTAG_networks plugin.</help>
     </field>
     <field>
         <id>general.plugin_fbox_anoncall_networks</id>
         <label>Network list for fbox anoncall plugin</label>
         <type>text</type>
-	    <help>List of networks where to apply the FritzBox Anoncall plugin. Default should fit for most situations.</help>
+        <help>List of networks where to apply the FritzBox Anoncall plugin. Default should fit for most situations.</help>
     </field>
    <field>
         <id>general.plugin_stun_server_enable</id>
         <label>Enable STUN plugin</label>
         <type>checkbox</type>
-	    <help>Enable or disable the STUN plugin.</help>
+        <help>Enable or disable the STUN plugin.</help>
     </field>
     <field>
         <id>general.plugin_stun_server_host</id>
         <label>STUN server</label>
         <type>text</type>
-	    <help>Here you can set the FQDN of your STUN server.</help>
+        <help>Here you can set the FQDN of your STUN server.</help>
     </field>
     <field>
         <id>general.plugin_stun_server_port</id>
         <label>STUN port</label>
         <type>text</type>
-	    <help>Here you can set the port of your STUN server.</help>
+        <help>Here you can set the port of your STUN server.</help>
     </field>
     <field>
         <id>general.plugin_stun_server_period</id>
         <label>STUN period</label>
         <type>text</type>
-	    <help>With STUN periond you can set the time in seconds how often to request for IP info from STUN server.</help>
+        <help>With STUN periond you can set the time in seconds how often to request for IP info from STUN server.</help>
     </field>
 </form>

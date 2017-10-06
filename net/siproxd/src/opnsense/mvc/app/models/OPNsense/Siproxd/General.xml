@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/siproxd/general</mount>
     <description>Siproxd configuration</description>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -76,14 +76,22 @@
             <MinimumValue>0</MinimumValue>
             <MaximumValue>64</MaximumValue>
         </sip_dscp>
-        <rtp_input_dejitter type="BooleanField">
+        <rtp_input_dejitter type="IntegerField">
             <default>0</default>
-            <Required>N</Required>
+            <Required>Y</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>5000</MaximumValue>
         </rtp_input_dejitter>
-        <rtp_output_dejitter type="BooleanField">
+        <rtp_output_dejitter type="IntegerField">
+            <default>0</default>
+            <Required>Y</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>5000</MaximumValue>
+        </rtp_output_dejitter>
+        <proxy_auth_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </rtp_output_dejitter>
+        </proxy_auth_enable>
         <tcp_timeout type="IntegerField">
             <default>600</default>
             <Required>Y</Required>
