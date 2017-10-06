@@ -79,14 +79,14 @@
     <field>
         <id>general.rtp_input_dejitter</id>
         <label>RTP input dejitter</label>
-        <type>checkbox</type>
-        <help>De-Jitter inbound packets (defaults to 0).</help>
+        <type>text</type>
+        <help>De-Jitter inbound packets in ms (default is disabled).</help>
     </field>
     <field>
         <id>general.rtp_output_dejitter</id>
         <label>RTP output dejitter</label>
-        <type>checkbox</type>
-        <help>De-Jitter outbound packets (defaults to 0).</help>
+        <type>text</type>
+        <help>De-Jitter outbound packets in ms (default is disabled).</help>
     </field>
     <field>
         <id>general.proxy_auth_enable</id>
