@@ -64,9 +64,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
-        <hr />
         <div class="col-md-12">
             <button class="btn btn-primary"  id="saveAct_user" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_user_progress" class=""></i></button>
+        <hr />
         </div>
     </div>
     <div id="domains" class="tab-pane fade in">
@@ -90,9 +90,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 </tr>
             </tfoot>
         </table>
-        <hr />
         <div class="col-md-12">
             <button class="btn btn-primary"  id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_domain_progress" class=""></i></button>
+        <hr />
         </div>
     </div>
     <div id="showregistrations" class="tab-pane fade in">
@@ -107,18 +107,6 @@ POSSIBILITY OF SUCH DAMAGE.
 $( document ).ready(function() {
     var data_get_map = {'frm_general_settings':"/api/siproxd/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){
-        formatTokenizersUI();
-        $('.selectpicker').selectpicker('refresh');
-    });
-
-    var data_get_map_user = {'frm_user_settings':"/api/siproxd/user/get"};
-    mapDataToFormUI(data_get_map_user).done(function(data){
-        formatTokenizersUI();
-        $('.selectpicker').selectpicker('refresh');
-    });
-
-    var data_get_map_domain = {'frm_domain_settings':"/api/siproxd/domain/get"};
-    mapDataToFormUI(data_get_map_domain).done(function(data){
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
@@ -164,7 +152,7 @@ $( document ).ready(function() {
     });
 
     $("#saveAct_user").click(function(){
-        saveFormToEndpoint(url="/api/siproxd/user/set", formid='frm_user_settings',callback_ok=function(){
+        saveFormToEndpoint(url="/api/siproxd/user/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_user_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/siproxd/service/reconfigure", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
@@ -176,7 +164,7 @@ $( document ).ready(function() {
     });
 
     $("#saveAct_domain").click(function(){
-        saveFormToEndpoint(url="/api/siproxd/domain/set", formid='frm_domain_settings',callback_ok=function(){
+        saveFormToEndpoint(url="/api/siproxd/domain/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_domain_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/siproxd/service/reconfigure", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/siproxd/service/status", sendData={}, callback=function(data,status) {
