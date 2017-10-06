@@ -53,4 +53,16 @@
         <type>text</type>
         <help>Set the maximum upload bandwith for WISPr attribute.</help>
     </field>
+    <field>
+        <id>user.wispr_bw_min_down</id>
+        <label>WISPr Bandwith Min DOWN</label>
+        <type>text</type>
+        <help>Set the minimum download bandwith for WISPr attribute.</help>
+    </field>
+    <field>
+        <id>user.wispr_bw_max_down</id>
+        <label>WISPr Bandwith Max DOWN</label>
+        <type>text</type>
+        <help>Set the maximum download bandwith for WISPr attribute.</help>
+    </field>
 </form>
