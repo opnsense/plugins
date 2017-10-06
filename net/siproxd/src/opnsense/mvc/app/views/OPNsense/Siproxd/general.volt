@@ -26,6 +26,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
+
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
@@ -65,9 +66,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <div class="col-md-12">
-        <hr />
+            <hr />
             <button class="btn btn-primary"  id="saveAct_user" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_user_progress" class=""></i></button>
-        <br /><br />
+            <br /><br />
         </div>
     </div>
     <div id="domains" class="tab-pane fade in">
@@ -92,9 +93,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <div class="col-md-12">
-        <hr />
+            <hr />
             <button class="btn btn-primary"  id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_domain_progress" class=""></i></button>
-        <br /><br />
+            <br /><br />
         </div>
     </div>
     <div id="showregistrations" class="tab-pane fade in">
