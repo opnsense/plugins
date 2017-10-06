@@ -65,8 +65,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <div class="col-md-12">
-            <button class="btn btn-primary"  id="saveAct_user" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_user_progress" class=""></i></button>
         <hr />
+            <button class="btn btn-primary"  id="saveAct_user" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_user_progress" class=""></i></button>
+        <br /><br />
         </div>
     </div>
     <div id="domains" class="tab-pane fade in">
@@ -91,8 +92,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <div class="col-md-12">
-            <button class="btn btn-primary"  id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_domain_progress" class=""></i></button>
         <hr />
+            <button class="btn btn-primary"  id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_domain_progress" class=""></i></button>
+        <br /><br />
         </div>
     </div>
     <div id="showregistrations" class="tab-pane fade in">
