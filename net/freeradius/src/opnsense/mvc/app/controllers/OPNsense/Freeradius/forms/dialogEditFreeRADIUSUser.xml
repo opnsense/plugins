@@ -45,36 +45,36 @@
         <id>user.wispr_bw_min_up</id>
         <label>WISPr Bandwith Min UP</label>
         <type>text</type>
-        <help>Set the minimum upload bandwith for WISPr attribute.</help>
+        <help>Set the minimum upload bandwith for WISPr attribute. The value is treated as bits/s.</help>
     </field>
     <field>
         <id>user.wispr_bw_max_up</id>
         <label>WISPr Bandwith Max UP</label>
         <type>text</type>
-        <help>Set the maximum upload bandwith for WISPr attribute.</help>
+        <help>Set the maximum upload bandwith for WISPr attribute. The value is treated as bits/s.</help>
     </field>
     <field>
         <id>user.wispr_bw_min_down</id>
         <label>WISPr Bandwith Min DOWN</label>
         <type>text</type>
-        <help>Set the minimum download bandwith for WISPr attribute.</help>
+        <help>Set the minimum download bandwith for WISPr attribute. The value is treated as bits/s.</help>
     </field>
     <field>
         <id>user.wispr_bw_max_down</id>
         <label>WISPr Bandwith Max DOWN</label>
         <type>text</type>
-        <help>Set the maximum download bandwith for WISPr attribute.</help>
+        <help>Set the maximum download bandwith for WISPr attribute. The value is treated as bits/s.</help>
     </field>
     <field>
         <id>user.cs_bw_max_up</id>
         <label>ChilliSpot Bandwith Max UP</label>
         <type>text</type>
-        <help>Set the maximum upload bandwith for ChilliSpot attribute.</help>
+        <help>Set the maximum upload bandwith for ChilliSpot attribute. The value is treated as kbits/s.</help>
     </field>
     <field>
         <id>user.cs_bw_max_down</id>
         <label>ChilliSpot Bandwith Max DOWN</label>
         <type>text</type>
-        <help>Set the maximum download bandwith for ChilliSpot attribute.</help>
+        <help>Set the maximum download bandwith for ChilliSpot attribute. The value is treated as kbits/s.</help>
     </field>
 </form>
