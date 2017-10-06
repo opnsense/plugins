@@ -65,4 +65,16 @@
         <type>text</type>
         <help>Set the maximum download bandwith for WISPr attribute.</help>
     </field>
+    <field>
+        <id>user.cs_bw_max_up</id>
+        <label>ChilliSpot Bandwith Max UP</label>
+        <type>text</type>
+        <help>Set the maximum upload bandwith for ChilliSpot attribute.</help>
+    </field>
+    <field>
+        <id>user.cs_bw_max_down</id>
+        <label>ChilliSpot Bandwith Max DOWN</label>
+        <type>text</type>
+        <help>Set the maximum download bandwith for ChilliSpot attribute.</help>
+    </field>
 </form>
