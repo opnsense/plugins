@@ -86,6 +86,9 @@ AutomapHostsOnResolve {{ OPNsense.tor.general.dns_map_hosts }}
 {%   if helpers.exists('OPNsense.tor.hiddenservice.service') %}
 {%     for service in helpers.toList('OPNsense.tor.hiddenservice.service') %}
 HiddenServiceDir /var/db/tor/{{ service.name }}/
+{%       if (service.clients is defined) and service.clients %}
+HiddenServiceAuthorizeClient {{ service.type }} {{ service.clients }}
+{%       endif %}
 {%       for acl in helpers.toList('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
 {%         if helpers.getUUID(acl.hiddenservice).name == service.name %}
 HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
