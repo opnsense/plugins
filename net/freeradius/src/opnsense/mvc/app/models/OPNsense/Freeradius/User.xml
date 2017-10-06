@@ -1,6 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/user</mount>
     <description>FreeRADIUS user configuration</description>
+    <version>1.0.0</version>
     <items>
         <users>
                 <user type="ArrayField">
