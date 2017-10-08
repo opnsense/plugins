@@ -87,11 +87,11 @@ POSSIBILITY OF SUCH DAMAGE.
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="username" data-type="string" data-visible="true">{{ lang._('Username') }}</th>
-                <th data-column-id="password" data-type="string" data-visible="true">{{ lang._('Password') }}</th>
+                <th data-column-id="password" data-type="string" data-visible="false">{{ lang._('Password') }}</th>
                 <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="ip" data-type="string" data-visible="true">{{ lang._('IP Address') }}</th>
-                <th data-column-id="subnet" data-type="string" data-visible="true">{{ lang._('Subnet') }}</th>
-                <th data-column-id="vlan" data-type="string" data-visible="true">{{ lang._('VLAN ID') }}</th>
+                <th data-column-id="subnet" data-type="string" data-visible="false">{{ lang._('Subnet') }}</th>
+                <th data-column-id="vlan" data-type="string" data-visible="false">{{ lang._('VLAN ID') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
             </thead>
