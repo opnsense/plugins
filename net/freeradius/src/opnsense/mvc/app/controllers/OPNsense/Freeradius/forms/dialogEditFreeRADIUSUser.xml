@@ -14,7 +14,7 @@
     <field>
         <id>user.password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
         <help>Set the password for the user.</help>
     </field>
     <field>
