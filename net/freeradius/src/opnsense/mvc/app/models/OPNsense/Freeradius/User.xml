@@ -55,14 +55,14 @@
                                 <default></default>
                                 <Required>N</Required>
                         </wispr_bw_max_down>
-                        <cs_bw_max_up type="IntegerField">
+                        <chillispot_bw_max_up type="IntegerField">
                                 <default></default>
                                 <Required>N</Required>
-                        </cs_bw_max_up>
-                        <cs_bw_max_down type="IntegerField">
+                        </chillispot_bw_max_up>
+                        <chillispot_bw_max_down type="IntegerField">
                                 <default></default>
                                 <Required>N</Required>
-                        </cs_bw_max_down>
+                        </chillispot_bw_max_down>
             </user>
         </users>
     </items>
