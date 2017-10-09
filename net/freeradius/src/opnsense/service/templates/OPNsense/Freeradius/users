@@ -13,9 +13,9 @@
        WISPr-Bandwidth-Min-Up = {{ user_list.wispr_bw_min_up }}{% endif %}{% if user_list.wispr_bw_max_up is defined %},
        WISPr-Bandwidth-Max-Up = {{ user_list.wispr_bw_max_up }}{% endif %}{% if user_list.wispr_bw_min_down is defined %},
        WISPr-Bandwidth-Min-Down = {{ user_list.wispr_bw_min_down }}{% endif %}{% if user_list.wispr_bw_max_down is defined %},
-       WISPr-Bandwidth-Max-Down = {{ user_list.wispr_bw_max_down }}{% endif %}{% if user_list.cs_bw_max_up is defined %},
-       ChilliSpot-Bandwidth-Max-Up = {{ user_list.cs_bw_max_up }}{% endif %}{% if user_list.cs_bw_max_down is defined %},
-       ChilliSpot-Bandwidth-Max-Down = {{ user_list.cs_bw_max_down }}
+       WISPr-Bandwidth-Max-Down = {{ user_list.wispr_bw_max_down }}{% endif %}{% if user_list.chillispot_bw_max_up is defined %},
+       ChilliSpot-Bandwidth-Max-Up = {{ user_list.chillispot_bw_max_up }}{% endif %}{% if user_list.chillispot_bw_max_down is defined %},
+       ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }}
 {%       endif %}
 
 {%     endif %}
