@@ -33,7 +33,7 @@
         <id>input.disk_mount_points</id>
         <label>Disk Mount Points</label>
         <type>text</type>
-        <help>By default, telegraf gather stats for all mountpoints. Setting mountpoints will restrict the stats to the specified mountpoints. Syntax is ["/"].</help>
+        <help>By default, telegraf gather stats for all mountpoints. Setting mountpoints will restrict the stats to the specified mountpoints.</help>
     </field>
     <field>
         <id>input.disk_ignore_fs</id>
