@@ -34,8 +34,6 @@ class GeneralController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("Telegraf Settings");
         $this->view->generalForm = $this->getForm("general");
-        $this->view->inputForm = $this->getForm("input");
-        $this->view->outputForm = $this->getForm("output"); 
         $this->view->pick('OPNsense/Telegraf/general');
     }
 }
