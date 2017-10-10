@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#baseinfo">{{ lang._('Viruses base info') }}</a></li>
+    <li><a data-toggle="tab" href="#versions">{{ lang._('Versions') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
-    <div id="baseinfo" class="tab-pane fade in">
+    <div id="versions" class="tab-pane fade in">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':versionForm,'id':'frm_version'])}}
         </div>

@@ -165,7 +165,7 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * get ClamAV and bases versions
+     * get ClamAV and signature versions
      */
     public function versionAction()
     {
