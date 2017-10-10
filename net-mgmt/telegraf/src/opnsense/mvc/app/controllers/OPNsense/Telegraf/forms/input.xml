@@ -69,6 +69,6 @@
         <id>input.system</id>
         <label>System</label>
         <type>checkbox</type>
-        <help>Read metrics about system load & uptime
+        <help>Read metrics about system load & uptime</help>
     </field>
 </form>
