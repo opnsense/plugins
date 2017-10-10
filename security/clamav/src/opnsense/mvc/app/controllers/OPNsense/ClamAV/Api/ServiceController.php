@@ -163,4 +163,37 @@ class ServiceController extends ApiControllerBase
             return array("status" => "failed");
         }
     }
+
+    /**
+     * get ClamAV and bases versions
+     */
+    public function versionAction()
+    {
+        $infos = array(
+            "clamav" => array("search" => "Version: "),
+            "main" => array("search" => "main.cvd: "),
+            "daily" => array("search" => "daily.cld: "),
+            "bytecode" => array("search" => "bytecode.cld: "),
+            "signatures" => array("search" => "Total number of signatures: ")
+        );
+        $backend = new Backend();
+        $result = array();
+        $response = $backend->configdRun("clamav version");
+        if ($response != null) {
+            foreach (explode("\n", $response) as $str) {
+                foreach ($infos as $key => $info) {
+                    if (strpos($str, $info["search"]) !== false) {
+                        $version = substr($str, strlen($info["search"]));
+                        if (isset($version)) {
+                            $result[$key] = $version;
+                        }
+                    }
+                }
+            }
+            return array("version" => $result);
+        }
+        else {
+            return array();
+        }
+    }
 }
