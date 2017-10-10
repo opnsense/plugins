@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Telegraf cssClass="fa fa-area-chart" url="/ui/telegraf/general/index" />
+  </Services>
+</menu>

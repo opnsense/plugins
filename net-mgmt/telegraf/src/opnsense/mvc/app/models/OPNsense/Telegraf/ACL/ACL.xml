@@ -1,0 +1,9 @@
+<acl>
+   <page-services-telegraf>
+      <name>Services: Telegraf</name>
+      <patterns>
+         <pattern>ui/telegraf/*</pattern>
+         <pattern>api/telegraf/*</pattern>
+      </patterns>
+   </page-services-telegraf>
+</acl>
