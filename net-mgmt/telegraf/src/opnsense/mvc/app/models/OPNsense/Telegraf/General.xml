@@ -11,7 +11,7 @@
             <default>10</default>
             <Required>Y</Required>
         </interval>
-        <roundinterval type="BooleanFieldField">
+        <roundinterval type="BooleanField">
             <default>1</default>
             <Required>Y</Required>
         </roundinterval>
