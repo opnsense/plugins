@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable telegrad agent</label>
+        <label>Enable Telegraf Agent</label>
         <type>checkbox</type>
         <help>This will activate the telegraf agent.</help>
     </field>
