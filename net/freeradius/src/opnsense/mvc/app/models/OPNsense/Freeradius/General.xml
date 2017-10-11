@@ -1,6 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/general</mount>
     <description>FreeRADIUS configuration</description>
+    <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -10,5 +11,13 @@
             <default>0</default>
             <Required>N</Required>
         </vlanassign>
+        <wispr type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </wispr>
+        <chillispot type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </chillispot>
     </items>
 </model>

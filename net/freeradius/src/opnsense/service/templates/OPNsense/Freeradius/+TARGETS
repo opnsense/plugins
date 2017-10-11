@@ -1,6 +1,5 @@
 clients.conf:/usr/local/etc/raddb/clients.conf
 mods-enabled-eap:/usr/local/etc/raddb/mods-enabled/eap
-radiusd.conf:/usr/local/etc/raddb/radiusd.conf
 radiusd:/etc/rc.conf.d/radiusd
 sites-enabled-default:/usr/local/etc/raddb/sites-enabled/default
 sites-enabled-inner-tunnel:/usr/local/etc/raddb/sites-enabled/inner-tunnel

@@ -11,4 +11,16 @@
         <type>checkbox</type>
         <help>This allows you to dynamically assign VLANs on your physical switch ports.</help>
     </field>
+    <field>
+        <id>general.wispr</id>
+        <label>Enable WISPr attributes</label>
+        <type>checkbox</type>
+        <help>This enables the WISPr attributes assignment via users tab.</help>
+    </field>
+    <field>
+        <id>general.chillispot</id>
+        <label>Enable ChilliSpot attributes</label>
+        <type>checkbox</type>
+        <help>This enables the ChilliSpot attributes assignment via users tab.</help>
+    </field>
 </form>
