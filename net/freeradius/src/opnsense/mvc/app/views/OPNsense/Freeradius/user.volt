@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2016 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
 Copyright (C) 2017 Michael Muenz
 All rights reserved.
 
@@ -70,6 +70,29 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
+      /*************************************************************************************************************
+       * context driven input dialogs
+       *************************************************************************************************************/
+      ajaxGet(url='/api/freeradius/general/get', sendData={}, callback=function(data,status){
+          // since our general data doesn't change during input of new users, we can control the dialog inputs
+          // at once after load. No need for an "onShow" type of event here,
+          // since our changes aren't driven by the dialog form itself.
+          if (data.general != undefined) {
+              $("#frm_dialogEditFreeRADIUSUser  tr").each(function(){
+                  var this_item_name = $(this).attr('for');
+                  var this_item = $(this);
+                  if (this_item_name != undefined) {
+                      $.each(data.general, function(setting_key, setting_value){
+                          var search_item = 'user.' + setting_key +'_';
+                          if (this_item_name.startsWith(search_item) && setting_value == '0') {
+                              // since our form tr rows are visible by default, we only have to hide what isn't needed
+                              this_item.hide();
+                          }
+                      });
+                  }
+              });
+          }
+      });
 
     });
 
