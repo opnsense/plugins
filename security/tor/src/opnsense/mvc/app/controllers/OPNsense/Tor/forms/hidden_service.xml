@@ -3,13 +3,13 @@
     <id>hiddenservice.enabled</id>
     <label>Enable</label>
     <type>checkbox</type>
-    <help>Enable this hidden service.</help>
+    <help>Enable this Onion service.</help>
   </field>
   <field>
     <id>hiddenservice.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Enter a directory name for the hidden service. It may consist of lowercase and uppercase characters.</help>
+    <help>Enter a directory name for the Onion service. It may consist of lowercase and uppercase characters.</help>
   </field>
   <field>
     <id>hiddenservice.type</id>
@@ -23,6 +23,6 @@
     <type>select_multiple</type>
     <style>tokenize</style>
     <allownew>true</allownew>
-    <help>If configured, only clients that are listed here are authorized to access the hidden service.</help>
+    <help>If configured, only clients that are listed here are authorized to access the Onion service.</help>
   </field>
 </form>

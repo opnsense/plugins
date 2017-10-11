@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/tor/hiddenservice</mount>
-  <description>Tor hidden service configuration</description>
+  <description>Tor Onion service configuration</description>
   <version>1.0.0</version>
   <items>
     <service type="ArrayField">

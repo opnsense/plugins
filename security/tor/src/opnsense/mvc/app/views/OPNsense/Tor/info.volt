@@ -56,7 +56,7 @@ $( document ).ready(function() {
 
 </script>
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#hiddennames">{{ lang._('Hidden Service Names') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#hiddennames">{{ lang._('Onion Service Names') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content" style="padding-bottom: 1.5em;">
@@ -64,7 +64,7 @@ $( document ).ready(function() {
         <table style="margin: 10px;">
             <thead>
                 <tr>
-                    <th>{{ lang._('Hidden Service Name') }}</th>
+                    <th>{{ lang._('Onion Service Name') }}</th>
                     <th>{{ lang._('Hostname') }}</th>
                 </tr>
             </thead>

@@ -121,8 +121,8 @@ $( document ).ready(function() {
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#acl">{{ lang._('SOCKS Proxy ACL') }}</a></li>
-    <li><a data-toggle="tab" href="#hidden">{{ lang._('Hidden Services') }}</a></li>
-    <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Hidden Service Routing') }}</a></li>
+    <li><a data-toggle="tab" href="#hidden">{{ lang._('Onion Services') }}</a></li>
+    <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Onion Service Routing') }}</a></li>
     <li><a data-toggle="tab" href="#relay">{{ lang._('Relaying') }}</a></li>
     <li><a data-toggle="tab" href="#exitnodeacl">{{ lang._('Exit Node ACL') }}</a></li>
 </ul>
@@ -190,7 +190,7 @@ $( document ).ready(function() {
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="hiddenservice" data-type="string" data-visible="true">{{ lang._('Hidden Service') }}</th>
+                    <th data-column-id="hiddenservice" data-type="string" data-visible="true">{{ lang._('Onion Service') }}</th>
                     <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
                     <th data-column-id="target_host" data-type="string" data-visible="true">{{ lang._('Target Host') }}</th>
                     <th data-column-id="target_port" data-type="string" data-visible="true">{{ lang._('Target Port') }}</th>
@@ -254,6 +254,6 @@ $( document ).ready(function() {
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields': toracl,'id':'toracldlg', 'label':lang._('Edit ACL Entry')]) }}
-{{ partial("layout_partials/base_dialog",['fields': hidden_service,'id':'hiddenservicedlg', 'label':lang._('Edit Hidden Service')]) }}
-{{ partial("layout_partials/base_dialog",['fields': hidden_service_acl,'id':'hiddenserviceacl', 'label':lang._('Edit Hidden Service Route')]) }}
+{{ partial("layout_partials/base_dialog",['fields': hidden_service,'id':'hiddenservicedlg', 'label':lang._('Edit Onion Service')]) }}
+{{ partial("layout_partials/base_dialog",['fields': hidden_service_acl,'id':'hiddenserviceacl', 'label':lang._('Edit Onion Service Route')]) }}
 {{ partial("layout_partials/base_dialog",['fields': exitpolicy,'id':'torexitacldlg', 'label':lang._('Edit Exit Node ACL')]) }}

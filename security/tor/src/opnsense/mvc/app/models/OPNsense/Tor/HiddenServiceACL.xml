@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/tor/hiddenserviceacl</mount>
-  <description>Tor Hidden Service ACL</description>
+  <description>Tor Onion Service ACL</description>
   <items>
     <hiddenserviceacl type="ArrayField">
       <enabled type="BooleanField">
@@ -15,7 +15,7 @@
             <display>name</display>
           </template>
         </Model>
-        <ValidationMessage>A hidden service must be set.</ValidationMessage>
+        <ValidationMessage>An Onion service must be set.</ValidationMessage>
         <Multiple>N</Multiple>
         <Required>Y</Required>
       </hiddenservice>

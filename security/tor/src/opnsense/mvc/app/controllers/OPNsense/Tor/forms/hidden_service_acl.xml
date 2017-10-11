@@ -3,11 +3,11 @@
     <id>hiddenserviceacl.enabled</id>
     <label>Enable</label>
     <type>checkbox</type>
-    <help>Enable this hidden service.</help>
+    <help>Enable this Onion service.</help>
   </field>
   <field>
     <id>hiddenserviceacl.hiddenservice</id>
-    <label>Hidden Service</label>
+    <label>Onion Service</label>
     <type>dropdown</type>
   </field>
   <field>
