@@ -1,6 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/client</mount>
     <description>FreeRADIUS client configuration</description>
+    <version>1.0.0</version>
     <items>
         <clients>
                 <client type="ArrayField">
