@@ -16,7 +16,7 @@
             <Required>N</Required>
         </influx_database>
         <influx_timeout type="IntegerField">
-            <default></default>
+            <default>5</default>
             <Required>N</Required>
         </influx_timeout>
         <influx_username type="TextField">
