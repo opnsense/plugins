@@ -3,19 +3,19 @@
         <id>input.cpu</id>
         <label>CPU</label>
         <type>checkbox</type>
-        <help>Read metrics about cpu usage.</help>
+        <help>Read metrics about CPU usage.</help>
     </field>
     <field>
         <id>input.cpu_percpu</id>
-        <label>PerCPU</label>
+        <label>Per-CPU</label>
         <type>checkbox</type>
-        <help>Whether to report per-cpu stats or not.</help>
+        <help>Whether to report Per-CPU stats or not.</help>
     </field>
     <field>
         <id>input.cpu_totalcpu</id>
         <label>Total CPU</label>
         <type>checkbox</type>
-        <help>Whether to report total system cpu stats or not.</help>
+        <help>Whether to report total system CPU stats or not.</help>
     </field>
     <field>
         <id>input.cpu_collect_cpu_time</id>
@@ -33,7 +33,7 @@
         <id>input.disk_mount_points</id>
         <label>Disk Mount Points</label>
         <type>text</type>
-        <help>By default, telegraf gather stats for all mountpoints. Setting mountpoints will restrict the stats to the specified mountpoints.</help>
+        <help>By default, Telegraf gather stats for all mountpoints. Setting mountpoints will restrict the stats to the specified mountpoints.</help>
     </field>
     <field>
         <id>input.disk_ignore_fs</id>
