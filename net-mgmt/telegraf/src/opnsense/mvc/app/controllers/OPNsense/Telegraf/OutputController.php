@@ -33,7 +33,7 @@ class OutputController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->title = gettext("Telegraf Outputs");
-        $this->view->outputForm = $this->getForm("output"); 
+        $this->view->outputForm = $this->getForm("output");
         $this->view->pick('OPNsense/Telegraf/output');
     }
 }

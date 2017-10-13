@@ -33,7 +33,7 @@ class InputController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->title = gettext("Telegraf Inputs");
-        $this->view->inputForm = $this->getForm("input"); 
+        $this->view->inputForm = $this->getForm("input");
         $this->view->pick('OPNsense/Telegraf/input');
     }
 }
