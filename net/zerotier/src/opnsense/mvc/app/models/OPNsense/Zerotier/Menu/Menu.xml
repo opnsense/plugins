@@ -1,5 +1,8 @@
 <menu>
     <VPN>
-        <Zerotier order="30" VisibleName="Zerotier" cssClass="fa fa-lock fa-fw" url="/ui/zerotier/"/>
+        <Zerotier order="30" VisibleName="Zerotier" cssClass="fa fa-lock fa-fw">
+            <Settings order="40" VisibleName="Settings" url="/ui/zerotier/"/>
+            <Overview order="50" VisibleName="Overview" url="/ui/zerotier/overview/"/>
+        </Zerotier>
     </VPN>
 </menu>

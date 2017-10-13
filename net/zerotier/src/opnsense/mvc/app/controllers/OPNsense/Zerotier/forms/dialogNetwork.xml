@@ -7,8 +7,8 @@
     </field>
     <field>
         <id>network.description</id>
-        <label>Description</label>
+        <label>Local Description</label>
         <type>text</type>
-        <help>Description to help identify this network</help>
+        <help>Local Description to help identify this network</help>
     </field>
 </form>
