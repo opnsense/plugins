@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>output.influx_enable</id>
+        <label>Enable Influx</label>
+        <type>checkbox</type>
+        <help>This will enable InfluxDB as output.</help>
+    </field>
+    <field>
+        <id>output.influx_url</id>
+        <label>Influx URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.influx_database</id>
+        <label>Database</label>
+        <type>text</type>
+        <help>Set the name of the database on InfluxDB.</help>
+    </field>
+    <field>
+        <id>output.influx_timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Write timeout (for the InfluxDB client), formatted as a string. If not provided, will default to 5s. 0s means no timeout (not recommended).</help>
+    </field>
+    <field>
+        <id>output.influx_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Set the username for authentication.</help>
+    </field>
+    <field>
+        <id>output.influx_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Set the password for authentication.</help>
+    </field>
+</form>
