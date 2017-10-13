@@ -29,13 +29,42 @@
  */
 namespace OPNsense\Zerotier;
 
-class IndexController extends \OPNsense\Base\IndexController
+require_once 'plugins.inc.d/zerotier.inc';
+
+use \OPNsense\Core\Backend;
+
+class OverviewController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("VPN : Zerotier : Settings");
-        $this->view->pick('OPNsense/Zerotier/index');
-        $this->view->settingsForm = $this->getForm("settings");
-        $this->view->dialogNetworkForm = $this->getForm("dialogNetwork");
+        $this->view->title = gettext("VPN : Zerotier : Overview");
+        $this->view->pick('OPNsense/Zerotier/overview');
+        $this->view->information = $this->information();
+        $this->view->networks = $this->listNetworks();
+        $this->view->peers = $this->listPeers();
+    }
+
+    private function information()
+    {
+        return $this->invokeConfigdRun("info_json");
+    }
+
+    private function listNetworks()
+    {
+        return $this->invokeConfigdRun("listnetworks_json");
+    }
+
+    private function listPeers()
+    {
+        return $this->invokeConfigdRun("listpeers_json");
+    }
+
+    private function invokeConfigdRun($action)
+    {
+        if(!zerotier_enabled()) {
+            return (object)[];
+        }
+        $result = json_decode(trim((new Backend())->configdRun("zerotier $action")), true);
+        return $result !== null ? $result : (object)[];
     }
 }

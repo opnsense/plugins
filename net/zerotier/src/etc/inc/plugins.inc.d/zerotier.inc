@@ -29,8 +29,13 @@
 
 function zerotier_enabled()
 {
-    $zerotier = new \OPNsense\Zerotier\Zerotier();
-    return (string)$zerotier->enabled == '1';
+    $mdlZerotier = new \OPNsense\Zerotier\Zerotier();
+    return isEnabled($mdlZerotier);
+}
+
+function isEnabled($node)
+{
+    return $node->enabled->__toString() == "1";
 }
 
 function zerotier_services()
