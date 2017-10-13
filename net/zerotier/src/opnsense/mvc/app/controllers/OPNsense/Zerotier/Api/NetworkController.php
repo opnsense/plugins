@@ -29,43 +29,21 @@
 
 namespace OPNsense\Zerotier\Api;
 
+require_once 'plugins.inc.d/zerotier.inc';
+
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Base\UIModelGrid;
 use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
 use \OPNsense\Zerotier\Zerotier;
 
-class ZerotierController extends ApiMutableModelControllerBase
+class NetworkController extends ApiMutableModelControllerBase
 {
 
     static protected $internalModelName = 'Zerotier';
     static protected $internalModelClass = '\OPNsense\Zerotier\Zerotier';
 
-    public function getAction()
-    {
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlZerotier = $this->getModel();
-            $result['zerotier'] = $mdlZerotier->getNodes();
-        }
-        return $result;
-    }
-
-    public function setAction()
-    {
-        $result = array("result" => "failed");
-        if($this->request->isPost()) {
-            $mdlZerotier = $this->getModel();
-            $mdlZerotier->setNodes($this->request->getPost("zerotier"));
-            $mdlZerotier->serializeToConfig();
-            Config::getInstance()->save();
-            $enabled = $this->isEnabled($mdlZerotier);
-            $result["result"] = $this->toggleZerotierService($enabled);
-        }
-        return $result;
-    }
-
-    public function searchNetworkAction()
+    public function searchAction()
     {
         $this->sessionClose();
         $mdlZerotier = $this->getModel();
@@ -76,7 +54,7 @@ class ZerotierController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getNetworkAction($uuid = null)
+    public function getAction($uuid = null)
     {
         $mdlZerotier = $this->getModel();
         if ($uuid != null) {
@@ -91,30 +69,52 @@ class ZerotierController extends ApiMutableModelControllerBase
         return array();
     }
 
-    public function setNetworkAction()
+    public function infoAction($uuid = null)
+    {
+        $mdlZerotier = $this->getModel();
+        if ($uuid != null) {
+            $network = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
+            if ($network != null) {
+                $networkId = $network->networkId->__toString();
+                return array
+                    (
+                        "title" => gettext("Information on network") . " " . $networkId,
+                        "message" => $this->listZerotierNetwork($networkId)
+                    );
+            }
+        }
+        return array();
+    }
+
+    public function setAction($uuid = null)
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlZerotier = new Zerotier();
-            $mdlZerotier->setNodes($this->request->getPost("network"));
-            $validationMessages = $mdlZerotier->performValidation();
-            foreach ($validationMessages as $field => $msg) {
-                if (!array_key_exists("validation", $result)) {
-                    $result["validations"] = array();
+        if ($this->request->isPost() && $this->request->hasPost("network")) {
+            if($uuid != null) {
+                $mdlZerotier = $this->getModel();
+                $network = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
+                if($network != null) {
+                    $network->setNodes($this->request->getPost("network"));
+                    $validationMessages = $mdlZerotier->performValidation();
+                    foreach ($validationMessages as $field => $msg) {
+                        if (!array_key_exists("validation", $result)) {
+                            $result["validations"] = array();
+                        }
+                        $result["validation"]["network.".$msg->getField()] = $msg->getMessage();
+                    }
+                    if ($validationMessages->count() == 0) {
+                        unset($result["validations"]);
+                        $mdlZerotier->serializeToConfig();
+                        Config::getInstance()->save();
+                        $result["result"] = "saved";
+                    }
                 }
-                $result["validation"]["network.".$msg->getField()] = $msg->getMessage();
-            }
-            if ($validationMessages->count() == 0) {
-                unset($result["validations"]);
-                $mdlZerotier->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
             }
         }
         return $result;
     }
 
-    public function addNetworkAction()
+    public function addAction()
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("network")) {
@@ -137,20 +137,20 @@ class ZerotierController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function delNetworkAction($uuid = null)
+    public function delAction($uuid = null)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
-            $mdlZerotier = $this->getModel();
             if ($uuid != null) {
-                if (!$this->isEnabled($mdlZerotier)) {
+                $mdlZerotier = $this->getModel();
+                if (!isEnabled($mdlZerotier)) {
                     $result["result"] = "service_not_enabled";
                     return $result;
                 }
-                $node = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
-                if ($this->isEnabled($node)) {
+                $network = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
+                if (isEnabled($network)) {
                     # Ensure we remove the interface before deleting the network
-                    $this->toggleZerotierNetwork($node->networkId, 0);
+                    $this->toggleZerotierNetwork($network->networkId, 0);
                 }
                 if ($mdlZerotier->networks->network->del($uuid)) {
                     $mdlZerotier->serializeToConfig();
@@ -164,24 +164,24 @@ class ZerotierController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function toggleNetworkAction($uuid)
+    public function toggleAction($uuid = null)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
-            $mdlZerotier = $this->getModel();
             if ($uuid != null) {
-                if (!$this->isEnabled($mdlZerotier)) {
+                $mdlZerotier = $this->getModel();
+                if (!isEnabled($mdlZerotier)) {
                     $result["result"] = "service_not_enabled";
                     return $result;
                 }
-                $node = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
-                if ($node != null) {
-                    $networkId = $node->networkId;
-                    if ($this->isEnabled($node)) {
-                        $node->enabled = "0";
+                $network = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
+                if ($network != null) {
+                    $networkId = $network->networkId;
+                    if (isEnabled($network)) {
+                        $network->enabled = "0";
                         $result['result'] = $this->toggleZerotierNetwork($networkId, 0);
                     } else {
-                        $node->enabled = "1";
+                        $network->enabled = "1";
                         $result['result'] = $this->toggleZerotierNetwork($networkId, 1);
                     }
                     $mdlZerotier->serializeToConfig();
@@ -192,49 +192,22 @@ class ZerotierController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function statusAction()
-    {
-        $mdlZerotier = $this->getModel();
-        $enabled = (string)$mdlZerotier->enabled == '1';
-
-        $backend = new Backend();
-        $response = $backend->configdRun('zerotier status');
-
-        if (strpos($response, "not running") > 0) {
-            if ($enabled) {
-                $status = "stopped";
-            } else {
-                $status = "disabled";
-            }
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
-        } elseif (!$enabled) {
-            $status = "disabled";
-        } else {
-            $status = "unknown";
-        }
-
-        return array("result" => $status);
-    }
-
     private function toggleZerotierNetwork($networkId, $enabled)
     {
-        $backend = new Backend();
         $action = $enabled ? 'join' : 'leave';
-        return trim($backend->configdRun("zerotier $action $networkId"));
+        return trim((new Backend())->configdRun("zerotier $action $networkId"));
     }
 
-    private function toggleZerotierService($enabled)
+    private function listZerotierNetwork($networkId)
     {
-        $backend = new Backend();
-        $backend->configdRun("template reload OPNsense/zerotier");
-        $action = $enabled ? "start" : "stop";
-        return trim($backend->configdRun("zerotier $action"));
-    }
-
-    private function isEnabled($node)
-    {
-        return $node->enabled->__toString() == "1";
+        $zerotierNetworks = trim((new Backend())->configdRun("zerotier listnetworks"));
+        $zerotierNetworks = explode("200 listnetworks", $zerotierNetworks);
+        foreach($zerotierNetworks as $zerotierNetwork) {
+            if(strpos($zerotierNetwork, $networkId) !== false) {
+                return $zerotierNetwork;
+            }
+        }
+        return gettext("Unable to obtain Zerotier information for network") . " " . $networkId . "! " . gettext("Is the network enabled?");
     }
 
 }
