@@ -15,7 +15,7 @@
         <id>general.roundinterval</id>
         <label>Round Interval</label>
         <type>checkbox</type>
-        <help>Rounds collection interval to 'interval' ie, if interval="10s" then always collect on :00, :10, :20, etc.</help>
+        <help>Rounds collection interval to 'interval', e.g. if interval="10s" then always collect on :00, :10, :20, etc.</help>
     </field>
     <field>
         <id>general.metric_batch_size</id>
@@ -27,7 +27,7 @@
         <id>general.metric_buffer_limit</id>
         <label>Metric Buffer Limit</label>
         <type>text</type>
-        <help>For failed writes, telegraf will cache metric_buffer_limit metrics for each output, and will flush this buffer on a successful write.</help>
+        <help>For failed writes, Telegraf will cache metric_buffer_limit metrics for each output, and will flush this buffer on a successful write.</help>
     </field>
     <field>
         <id>general.collection_jitter</id>
@@ -39,7 +39,7 @@
         <id>general.flush_interval</id>
         <label>Flush Interval</label>
         <type>text</type>
-        <help>Default flushing interval for all outputs. You shouldn't set this below interval.</help>
+        <help>Default flushing interval for all outputs. You should not set this below interval.</help>
     </field>
     <field>
         <id>general.flush_jitter</id>
@@ -51,12 +51,12 @@
         <id>general.hostname</id>
         <label>Hostname</label>
         <type>text</type>
-        <help>Override default hostname, if empty use os.Hostname().</help>
+        <help>Override default hostname, if empty use system hostname.</help>
     </field>
     <field>
         <id>general.omit_hostname</id>
         <label>Omit Hostname</label>
         <type>checkbox</type>
-        <help>If set to true, do no set the "host" tag in the telegraf agent.</help>
+        <help>If set to true, do no set the "host" tag in the Telegraf agent.</help>
     </field>
 </form>
