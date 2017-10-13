@@ -48,6 +48,9 @@ class SettingsController extends ApiMutableModelControllerBase
         $result = array();
         if ($this->request->isGet()) {
             $mdlZerotier = $this->getModel();
+            if(empty($mdlZerotier->localconf->__toString())) {
+                $mdlZerotier->localconf = '{}';
+            }
             $result = array("zerotier" => $mdlZerotier->getNodes());
         }
         return $result;
