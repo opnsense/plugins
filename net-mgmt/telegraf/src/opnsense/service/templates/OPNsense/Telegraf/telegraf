@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.telegraf.general.enabled') and OPNsense.telegraf.general.enabled == '1' %}
+telegraf_enable="YES"
+{% else %}
+telegraf_enable="NO"
+{% endif %}

@@ -49,6 +49,7 @@ net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/snmp -- SNMP Server via bsnmpd
+net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
