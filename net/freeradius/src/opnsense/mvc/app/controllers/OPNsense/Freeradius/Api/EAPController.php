@@ -41,8 +41,8 @@ class EAPController extends ApiControllerBase
         // define list of configurable settings
         $result = array();
         if ($this->request->isGet()) {
-            $mdlGeneral = new General();
-            $result['general'] = $mdlGeneral->getNodes();
+            $mdlEAP = new EAP();
+            $result['eap'] = $mdlEAP->getNodes();
         }
         return $result;
     }
@@ -52,11 +52,11 @@ class EAPController extends ApiControllerBase
         $result = array("result"=>"failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
-            $mdlGeneral = new General();
-            $mdlGeneral->setNodes($this->request->getPost("eap"));
+            $mdlEAP = new EAP();
+            $mdlEAP->setNodes($this->request->getPost("eap"));
 
             // perform validation
-            $valMsgs = $mdlGeneral->performValidation();
+            $valMsgs = $mdlEAP->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
@@ -66,7 +66,7 @@ class EAPController extends ApiControllerBase
 
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
-                $mdlGeneral->serializeToConfig();
+                $mdlEAP->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";
             }
