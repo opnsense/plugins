@@ -27,7 +27,7 @@
 
 namespace OPNsense\Freeradius;
 
-class EAPController extends \OPNsense\Base\IndexController
+class EapController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
