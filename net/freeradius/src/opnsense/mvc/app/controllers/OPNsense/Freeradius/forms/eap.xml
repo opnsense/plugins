@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>eap.enable_client_cert</id>
+        <label>Enable Client Certficate Authentication</label>
+        <type>checkbox</type>
+        <help>This will activate certificate based authentication. Please choose CA and Certificate below and do not forget to roll out certificates to the clients.</help>
+    </field>
+    <field>
+        <id>eap.ca</id>
+        <label>Root Certificate</label>
+        <type>dropdown</type>
+        <help>Choose the Root CA.</help>
+    </field>
+    <field>
+        <id>eap.cert</id>
+        <label>Server Certificate</label>
+        <type>dropdown</type>
+        <help>Choose the certificate the Radius service should use.</help>
+    </field>
+</form>

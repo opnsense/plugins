@@ -4,6 +4,7 @@
       <General url="/ui/freeradius/general/index" order="10"/>
       <User url="/ui/freeradius/user/index" order="20"/>
       <Client url="/ui/freeradius/client/index" order="30"/>
+      <EAP url="/ui/freeradius/eap/index" order="40"/>
     </FreeRADIUS>
   </Services>
 </menu>
