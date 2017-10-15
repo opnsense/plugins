@@ -15,3 +15,6 @@ for FILE in ${RADIUS_FILES}; do
 	touch ${FILE}
 	chmod 700 ${FILE}
 done
+
+# export required data to filesystem
+/usr/local/opnsense/scripts/Freeradius/exportCerts.php > /dev/null 2>&1
