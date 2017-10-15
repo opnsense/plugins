@@ -29,6 +29,6 @@ use OPNsense\Base\BaseModel;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-class EAP extends BaseModel
+class Eap extends BaseModel
 {
 }
