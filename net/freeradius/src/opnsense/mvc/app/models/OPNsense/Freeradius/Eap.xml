@@ -9,12 +9,12 @@
         </enable_client_cert>
         <ca type="CertificateField">
             <default></default>
-            <type>ca</type>
+            <Type>ca</Type>
             <Required>N</Required>
         </ca>
         <cert type="CertificateField">
             <default></default>
-            <type>cert</type>
+            <Type>cert</Type>
             <Required>N</Required>
         </cert>
     </items>
