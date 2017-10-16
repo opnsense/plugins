@@ -45,7 +45,7 @@ $configObj = Config::getInstance()->object();
 foreach ($configNodes as $key => $value) {
     // lookup all config nodes
     if (isset($configObj->OPNsense->Freeradius->$key)) {
-        foreach ($configObj->OPNsense->HAProxy->$key->children() as $child) {
+        foreach ($configObj->OPNsense->Freeradius->$key->children() as $child) {
             // generate a crt-list for every child node
             $crtlist = array();
             $crtlist_filename = "/usr/local/etc/raddb/certs/" . (string)$child->id . ".crtlist";
