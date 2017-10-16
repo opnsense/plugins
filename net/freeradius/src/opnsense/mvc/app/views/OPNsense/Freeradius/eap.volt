@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     $( document ).ready(function () {
-        var data_get_map = {'frm_general_settings':"/api/freeradius/eap/get"};
+        var data_get_map = {'frm_eap_settings':"/api/freeradius/eap/get"};
         mapDataToFormUI(data_get_map).done(function (data) {
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
