@@ -37,15 +37,28 @@ use OPNsense\Monit\Monit;
 
 $mdlMonit = new OPNsense\Monit\Monit;
 
+$cfg = Config::getInstance();
+$cfgObj = $cfg->object();
+$shellObj = new OPNsense\Core\Shell;
+$generalNode = $mdlMonit->getNodeByReference('general');
+
+// generate password for local Monit plugin user
+if (empty($cfgObj->general->httpdUsername) && empty($cfgObj->general->httpdPassword)) {
+   srand();
+   $generalNode->setNodes(array(
+         "httpdUsername" => "root",
+         "httpdPassword" => substr(str_shuffle(str_repeat('0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz', 32)), rand(0, 16), rand(17, 32))
+      )
+   );
+   $mdlMonit->serializeToConfig(false, true);
+   $cfg->save();
+}
+
 $nodes = $mdlMonit->getNodes();
 // test if Monit is already configured
 if (count($nodes['service']) != 0 || count($nodes['test']) != 0) {
     exit;
 }
-
-$cfg = Config::getInstance();
-$cfgObj = $cfg->object();
-$shellObj = new OPNsense\Core\Shell;
 
 // get number of cpus and calculate load average limits
 $nCPU = array();
@@ -130,7 +143,6 @@ $systemService['tests'] = substr($systemService['tests'], 0, -1);
 $rootFsService['tests'] = substr($rootFsService['tests'], 0, -1);
 
 // set general properties
-$generalNode = $mdlMonit->getNodeByReference('general');
 $generalNode->setNodes($generalSettings);
 
 // add an alert with (almost) default settings

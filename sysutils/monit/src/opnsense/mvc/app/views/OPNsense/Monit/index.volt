@@ -68,6 +68,30 @@ POSSIBILITY OF SUCH DAMAGE.
             updateServiceStatusUI(data['status']);
          });
       });
+
+      // show/hide httpd/mmonit options
+      function ShowHideGeneralFields(){
+         if ($('#monit\\.general\\.httpdEnabled')[0].checked) {
+            $('tr[for="monit.general.httpdPort"]').removeClass('hidden');
+            $('tr[for="monit.general.httpdAllow"]').removeClass('hidden');
+            $('tr[for="monit.general.mmonitUrl"]').removeClass('hidden');
+            $('tr[for="monit.general.mmonitTimeout"]').removeClass('hidden');
+            $('tr[for="monit.general.mmonitRegisterCredentials"]').removeClass('hidden');
+         } else {
+            $('tr[for="monit.general.httpdPort"]').addClass('hidden');
+            $('tr[for="monit.general.httpdAllow"]').addClass('hidden');
+            $('tr[for="monit.general.mmonitUrl"]').addClass('hidden');
+            $('tr[for="monit.general.mmonitTimeout"]').addClass('hidden');
+            $('tr[for="monit.general.mmonitRegisterCredentials"]').addClass('hidden');
+         }
+      };
+      $('#monit\\.general\\.httpdEnabled').unbind('click').click(function(){
+         ShowHideGeneralFields();
+      });
+      $('#show_advanced_frm_GeneralSettings').click(function(){
+         ShowHideGeneralFields();
+      });
+
       $('#btn_ApplyGeneralSettings').unbind('click').click(function(){
          $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
          var frm_id = 'frm_GeneralSettings';
@@ -257,7 +281,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 <div class="tab-content content-box tab-content">
    <div id="general" class="tab-pane fade in active">
-      <!-- monit geral settings -->
+      <!-- monit general settings -->
       {{ partial("layout_partials/base_form",['fields':formGeneralSettings,'id':'frm_GeneralSettings','apply_btn_id':'btn_ApplyGeneralSettings'])}}
    </div>
    <div id="alerts" class="tab-pane fade in">
