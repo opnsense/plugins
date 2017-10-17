@@ -288,8 +288,11 @@ eap {
                 #    'c_rehash' is OpenSSL's command.
                 #  3) uncomment the lines below.
                 #  5) Restart radiusd
+{%   if helpers.exists('OPNsense.freeradius.eap.crl') and OPNsense.freeradius.eap.crl != '' %}
+                check_crl = yes
+{%   else %}
         #       check_crl = yes
-
+{%   endif %}
                 # Check if intermediate CAs have been revoked.
         #       check_all_crl = yes
 
