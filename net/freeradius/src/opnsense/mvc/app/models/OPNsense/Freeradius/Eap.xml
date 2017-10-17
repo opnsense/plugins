@@ -17,5 +17,10 @@
             <Type>cert</Type>
             <Required>N</Required>
         </certificate>
+        <crl type="CertificateField">
+            <default></default>
+            <Type>crl</Type>
+            <Required>N</Required>
+        </crl>
     </items>
 </model>
