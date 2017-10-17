@@ -202,8 +202,8 @@ eap {
                 #  In that case, this CA file should contain
                 #  *one* CA certificate.
                 #
-{%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
-                ca_file = ${certdir}/ca_{{ OPNsense.freeradius.eap.ca }}.pem
+{%   if helpers.exists('OPNsense.freeradius.eap.ca') and OPNsense.freeradius.eap.ca != '' %}
+                ca_file = ${certdir}/ca_{{ OPNsense.freeradius.eap.certificate }}.pem
 {%   else %}
                 ca_file = ${cadir}/ca.pem
 {%   endif %}
