@@ -17,4 +17,4 @@ for FILE in ${RADIUS_FILES}; do
 done
 
 # export required data to filesystem
-/usr/local/opnsense/scripts/Freeradius/exportCerts.php > /dev/null 2>&1
+/usr/local/opnsense/scripts/Freeradius/generate_certs.php > /dev/null 2>&1
