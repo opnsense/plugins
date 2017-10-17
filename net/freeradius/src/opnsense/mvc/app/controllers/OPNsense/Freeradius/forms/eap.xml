@@ -12,7 +12,7 @@
         <help>Choose the Root CA.</help>
     </field>
     <field>
-        <id>eap.cert</id>
+        <id>eap.certificate</id>
         <label>Server Certificate</label>
         <type>dropdown</type>
         <help>Choose the certificate the Radius service should use.</help>
