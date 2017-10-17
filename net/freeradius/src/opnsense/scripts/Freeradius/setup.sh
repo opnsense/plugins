@@ -18,3 +18,4 @@ done
 
 # export required data to filesystem
 /usr/local/opnsense/scripts/Freeradius/generate_certs.php > /dev/null 2>&1
+/usr/local/opnsense/scripts/Freeradius/generate_crl.php > /dev/null 2>&1
