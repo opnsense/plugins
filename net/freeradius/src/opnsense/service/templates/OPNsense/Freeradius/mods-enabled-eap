@@ -172,9 +172,14 @@ eap {
         #  ANYONE who has a certificate signed by them can
         #  authenticate via EAP-TLS!  This is likely not what you want.
         tls-config tls-common {
+{% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
+                private_key_password =
+                private_key_file = ${certdir}/cert_{{ OPNsense.freeradius.eap.certificate }}.pem
+                certificate_file = ${certdir}/cert_{{ OPNsense.freeradius.eap.certificate }}.pem
+{%   else %}
                 private_key_password = whatever
                 private_key_file = ${certdir}/server.pem
-
                 #  If Private key & Certificate are located in
                 #  the same file, then private_key_file &
                 #  certificate_file must contain the same file
@@ -186,7 +191,7 @@ eap {
                 #  of the CA certificates used to sign the
                 #  server certificate.
                 certificate_file = ${certdir}/server.pem
-
+{%   endif %}
                 #  Trusted Root CA list
                 #
                 #  ALL of the CA's in this list will be trusted
@@ -197,8 +202,11 @@ eap {
                 #  In that case, this CA file should contain
                 #  *one* CA certificate.
                 #
+{%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
+                ca_file = ${certdir}/ca_{{ OPNsense.freeradius.eap.ca }}.pem
+{%   else %}
                 ca_file = ${cadir}/ca.pem
-
+{%   endif %}
                 #  OpenSSL will automatically create certificate chains,
                 #  unless we tell it to not do that.  The problem is that
                 #  it sometimes gets the chains right from a certificate
@@ -557,7 +565,7 @@ eap {
                         # softfail = no
                 }
         }
-
+{% endif %}
         ## EAP-TLS
         #
         #  As of Version 3.0, the TLS configuration for TLS-based
