@@ -12,10 +12,10 @@
             <Type>ca</Type>
             <Required>N</Required>
         </ca>
-        <cert type="CertificateField">
+        <certificate type="CertificateField">
             <default></default>
             <Type>cert</Type>
             <Required>N</Required>
-        </cert>
+        </certificate>
     </items>
 </model>
