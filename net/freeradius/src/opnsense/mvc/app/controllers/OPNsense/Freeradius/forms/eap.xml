@@ -17,4 +17,10 @@
         <type>dropdown</type>
         <help>Choose the certificate the Radius service should use.</help>
     </field>
+    <field>
+        <id>eap.crl</id>
+        <label>CRL</label>
+        <type>dropdown</type>
+        <help>This enables CRL checking, please restart this service with every change to the CRL.</help>
+    </field>
 </form>
