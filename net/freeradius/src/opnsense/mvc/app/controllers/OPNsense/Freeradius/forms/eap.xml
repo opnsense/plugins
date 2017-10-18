@@ -1,5 +1,11 @@
 <form>
     <field>
+        <id>eap.defult_eap_type</id>
+        <label>Default EAP Type</label>
+        <type>dropdown</type>
+        <help>Set the default EAP type, in most situations MD5 is good.</help>
+    </field>
+    <field>
         <id>eap.enable_client_cert</id>
         <label>Enable Client Certficate Authentication</label>
         <type>checkbox</type>
