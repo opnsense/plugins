@@ -1,6 +1,6 @@
 <form>
     <field>
-        <id>eap.defult_eap_type</id>
+        <id>eap.default_eap_type</id>
         <label>Default EAP Type</label>
         <type>dropdown</type>
         <help>Set the default EAP type, in most situations MD5 is good.</help>
