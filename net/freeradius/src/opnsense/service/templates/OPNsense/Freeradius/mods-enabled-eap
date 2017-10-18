@@ -26,7 +26,9 @@ eap {
         #  then that EAP type takes precedence over the
         #  default type configured here.
         #
-        default_eap_type = md5
+{% if helpers.exists('OPNsense.freeradius.eap.default_eap_type') and OPNsense.freeradius.eap.default_eap_type != '' %}
+        default_eap_type = {{ OPNsense.freeradius.eap.default_eap_type }}
+{% endif %}
 
         #  A list is maintained to correlate EAP-Response
         #  packets with EAP-Request packets.  After a
