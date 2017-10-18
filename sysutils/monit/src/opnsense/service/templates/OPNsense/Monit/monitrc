@@ -30,7 +30,11 @@ set httpd unixsocket /var/run/monit.sock
 
 set daemon {{ OPNsense.monit.general.interval }} with start delay {{ OPNsense.monit.general.startdelay }}
 
+{%  if helpers.exists('OPNsense.monit.general.logfile') %}
 set logfile {{ OPNsense.monit.general.logfile }}
+{%  else %}
+set logfile syslog facility log_daemon
+{%  endif %}
 
 {%  if helpers.exists('OPNsense.monit.general.statefile') %}
 set statefile {{ OPNsense.monit.general.statefile }}

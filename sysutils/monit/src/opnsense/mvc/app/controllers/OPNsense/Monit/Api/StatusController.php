@@ -55,7 +55,7 @@ class StatusController extends ApiControllerBase
 
             // get monit status page
             $request  = "GET /_status?format=text HTTP/1.0\r\n";
-
+            
             // get credentials if configured
             $mdlMonit = new Monit();
             if ($mdlMonit->general->httpdUsername->__toString() != null && trim($mdlMonit->general->httpdUsername->__toString()) !== "" &&

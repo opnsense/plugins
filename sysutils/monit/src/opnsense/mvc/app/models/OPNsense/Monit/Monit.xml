@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/monit</mount>
-   <version>1.0.0</version>
+   <version>1.0.1</version>
    <description>Monit settings</description>
    <items>
       <general>
@@ -75,7 +75,7 @@
          <httpdPort type="IntegerField">
             <default>2812</default>
             <Required>Y</Required>
-            <MinimumValue>0</MinimumValue>
+            <MinimumValue>1</MinimumValue>
             <MaximumValue>65535</MaximumValue>
             <ValidationMessage>Local Monit Port needs to be an integer value between 0 and 65535</ValidationMessage>
          </httpdPort>
