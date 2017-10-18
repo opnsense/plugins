@@ -30,17 +30,17 @@ set httpd unixsocket /var/run/monit.sock
 
 set daemon {{ OPNsense.monit.general.interval }} with start delay {{ OPNsense.monit.general.startdelay }}
 
-{%  if helpers.exists('OPNsense.monit.general.logfile') %}
+{%  if helpers.exists('OPNsense.monit.general.logfile') and OPNsense.monit.general.logfile|default('') != '' %}
 set logfile {{ OPNsense.monit.general.logfile }}
 {%  else %}
 set logfile syslog facility log_daemon
 {%  endif %}
 
-{%  if helpers.exists('OPNsense.monit.general.statefile') %}
+{%  if helpers.exists('OPNsense.monit.general.statefile') and OPNsense.monit.general.statefile|default('') != '' %}
 set statefile {{ OPNsense.monit.general.statefile }}
 {%  endif %}
 
-{%  if helpers.exists('OPNsense.monit.general.eventqueuePath') %}
+{%  if helpers.exists('OPNsense.monit.general.eventqueuePath') and OPNsense.monit.general.eventqueuePath|default('') != '' %}
 {%    set slots = '' %}
 {%    if helpers.exists('OPNsense.monit.general.eventqueueSlots') %}
 {%      set slots = "slots " ~ OPNsense.monit.general.eventqueueSlots %}
