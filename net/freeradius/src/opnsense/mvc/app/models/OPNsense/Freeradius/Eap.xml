@@ -3,6 +3,17 @@
     <description>EAP configuration</description>
     <version>1.0.0</version>
     <items>
+        <default_eap_type type="OptionField">
+            <default>MD5</default>
+            <Required>Y</Required>
+            <multiple>N</multiple>
+            <OptionValues>
+                <md5>MD5</md5>
+                <mschapv2>MSCHAPv2</mschapv2>
+                <peap>PEAP</peap>
+                <ttls>TTLS</ttls>
+            </OptionValues>
+        </default_eap_type>
         <enable_client_cert type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
