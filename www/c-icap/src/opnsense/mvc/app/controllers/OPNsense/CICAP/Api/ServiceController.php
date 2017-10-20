@@ -61,7 +61,7 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("cicap start", true);
+            $response = $backend->configdRun("cicap start");
             return array("response" => $response);
         } else {
             return array("response" => array());
