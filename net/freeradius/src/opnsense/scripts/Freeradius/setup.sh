@@ -16,8 +16,4 @@ for FILE in ${RADIUS_FILES}; do
 	chmod 700 ${FILE}
 done
 
-# clear old certificates and export new ones
-rm -f /usr/local/etc/raddb/certs/ca_*.pem
-rm -f /usr/local/etc/raddb/certs/cert_*.pem
-/usr/local/opnsense/scripts/Freeradius/generate_certs.php > /dev/null 2>&1
-/usr/local/opnsense/scripts/Freeradius/generate_crl.php > /dev/null 2>&1
+/usr/local/opnsense/scripts/Freeradius/generate_certs.php

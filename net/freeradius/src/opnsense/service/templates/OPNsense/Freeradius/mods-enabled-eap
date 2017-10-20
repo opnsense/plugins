@@ -177,8 +177,8 @@ eap {
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
 {%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
                 private_key_password =
-                private_key_file = ${certdir}/cert_{{ OPNsense.freeradius.eap.certificate }}.pem
-                certificate_file = ${certdir}/cert_{{ OPNsense.freeradius.eap.certificate }}.pem
+                private_key_file = ${certdir}/cert_opn.pem
+                certificate_file = ${certdir}/cert_opn.pem
 {%   else %}
                 private_key_password = whatever
                 private_key_file = ${certdir}/server.pem
@@ -205,7 +205,7 @@ eap {
                 #  *one* CA certificate.
                 #
 {%   if helpers.exists('OPNsense.freeradius.eap.ca') and OPNsense.freeradius.eap.ca != '' %}
-                ca_file = ${certdir}/ca_{{ OPNsense.freeradius.eap.certificate }}.pem
+                ca_file = ${certdir}/ca_opn.pem
 {%   else %}
                 ca_file = ${cadir}/ca.pem
 {%   endif %}

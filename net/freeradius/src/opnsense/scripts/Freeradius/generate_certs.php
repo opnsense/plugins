@@ -35,6 +35,12 @@ require_once("legacy_bindings.inc");
 
 use OPNsense\Core\Config;
 
+$cert_pem_filename = '/usr/local/etc/raddb/certs/cert_opn.pem';
+$cert_pem_content = '';
+
+$ca_pem_filename = '/usr/local/etc/raddb/certs/ca_opn.pem';
+$ca_pem_content = '';
+
 // traverse Freeradius plugin for certficiates
 $configObj = Config::getInstance()->object();
 if (isset($configObj->OPNsense->freeradius)) {
@@ -58,21 +64,39 @@ if (isset($configObj->OPNsense->freeradius)) {
                         str_replace("\r", "", base64_decode((string)$cert->prv))
                     ));
                     $pem_content .= "\n";
-                    $output_pem_filename = "/usr/local/etc/raddb/certs/cert_" . $cert_refid . ".pem";
-                    file_put_contents($output_pem_filename, $pem_content);
-                    chmod($output_pem_filename, 0600);
-                    echo "certificate generated " .$output_pem_filename . "\n";
+                    $cert_pem_content .= $pem_content;
                     // generate ca pem file
                     if (!empty($cert->caref)) {
-                        $output_pem_filename = "/usr/local/etc/raddb/certs/ca_" . $cert_refid . ".pem";
                         $cert = (array)$cert;
-                        $ca = ca_chain($cert);
-                        file_put_contents($output_pem_filename, $ca);
-                        chmod($output_pem_filename, 0600);
-                        echo "certificate generated " .$output_pem_filename  ."\n";
+                        $ca_pem_content .= ca_chain($cert);
                     }
+                }
+            }
+        }
+
+        $cert_refid = (string)$find_cert->crl;
+        // if eap has a certificate attached, search for its contents
+        if ($cert_refid != "") {
+            foreach ($configObj->crl as $crl) {
+                if ($cert_refid == (string)$crl->refid && !empty((string)$crl->text)) {
+                    // generate cert pem file
+                    $pem_content = trim(str_replace("\n\n", "\n", str_replace(
+                        "\r",
+                        "",
+                        base64_decode((string)$crl->text)
+                    )));
+                    $pem_content .= "\n";
+                    $ca_pem_content .= $pem_content;
                 }
             }
         }
     }
 }
+
+file_put_contents($cert_pem_filename, $cert_pem_content);
+chmod($cert_pem_filename, 0600);
+echo "Certificates generated $cert_pem_filename\n";
+
+file_put_contents($ca_pem_filename, $ca_pem_content);
+chmod($ca_pem_filename, 0600);
+echo "Certificates generated $ca_pem_filename\n";
