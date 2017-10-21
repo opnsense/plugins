@@ -93,7 +93,7 @@ $( document ).ready(function() {
 
 <div class="tab-content content-box tab-content" style="padding-bottom: 1.5em;">
     <div id="streams" class="tab-pane fade in active">
-        <table style="margin: 10px;">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>{{ lang._('Stream ID') }}</th>
@@ -107,7 +107,7 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="circuits" class="tab-pane fade in">
-        <table style="margin: 10px;">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>{{ lang._('Circuit ID') }}</th>
