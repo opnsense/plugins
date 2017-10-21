@@ -87,7 +87,7 @@ $( document ).ready(function() {
 
 </script>
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#streams">{{ lang._('Sterams') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#streams">{{ lang._('Streams') }}</a></li>
     <li><a data-toggle="tab" href="#circuits">{{ lang._('Circuits') }}</a></li>
 </ul>
 
