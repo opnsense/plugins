@@ -28,15 +28,20 @@ require 'json'
 require 'optparse'
 require 'pp'
 require 'socket'
+require 'rexml/document'
 
 # global for showing debug output if needed
 $TOR_DEBUG = false
+
+
+config = REXML::Document.new(File.new("/conf/config.xml"))
+$TOR_PASSWORD = config.elements['opnsense/OPNsense/tor/general/control_port_password'].text
 
 class TorCTL
 
   def initialize
     @tor = TCPSocket.new("127.0.0.1", 9051)
-    send_query("AUTHENTICATE \"Jsu1GKYFYIsf/Vakxtd1b9zHuB3K1UPKzGyg4eH5iW4=\"")
+    send_query("AUTHENTICATE \"#{$TOR_PASSWORD}\"")
   end
 
 
