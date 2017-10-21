@@ -54,4 +54,19 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->title = gettext("The Onion Router - Information");
         $this->view->pick('OPNsense/Tor/info');
     }
+    public function diagnosticsAction()
+    {
+        $this->view->title = gettext("The Onion Router - Diagnostics");
+        if ($this->is_tor_running()) {
+            $this->view->pick('OPNsense/Tor/diagnostics');
+        }
+        else {
+            $this->view->pick('OPNsense/Tor/error');
+        }
+    }
+    private function is_tor_running()
+    {
+        $status = (new Api\ServiceController())->statusAction();
+        return $status['status'] == 'running';
+    }
 }
