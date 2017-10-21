@@ -44,7 +44,7 @@ $( document ).ready(function() {
         var tmp = '';
         for (var name in data) {
             if (data.hasOwnProperty(name)) {
-                tmp += '<tr><td>' + name + '</td><td>' + data[name] + '</td></tr>';
+                tmp += '<tr><td>' + name + '</td><td>' + data[name].replace("\n",'<br />') + '</td></tr>';
             }
         }
 
@@ -61,7 +61,7 @@ $( document ).ready(function() {
 
 <div class="tab-content content-box tab-content" style="padding-bottom: 1.5em;">
     <div id="hiddennames" class="tab-pane fade in active">
-        <table style="margin: 10px;">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>{{ lang._('Onion Service Name') }}</th>
