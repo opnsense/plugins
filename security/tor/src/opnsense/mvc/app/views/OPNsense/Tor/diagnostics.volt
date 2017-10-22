@@ -44,8 +44,8 @@ $( document ).ready(function() {
         var tmp = '';
         for (var name in data) {
             if (data.hasOwnProperty(name)) {
-                tmp += '<tr><td>' + name + 
-                       '</td><td>' + data[name]['status'] + 
+                tmp += '<tr><td>' + name +
+                       '</td><td>' + data[name]['status'] +
                        '</td><td><ul>';
                 hosts = data[name]['hosts'];
                 for (var host_id in hosts) {
@@ -53,9 +53,9 @@ $( document ).ready(function() {
                         tmp += '<li>' + hosts[host_id]['host'] + ' - ' + hosts[host_id]['nickname'] + '</li>';
                     }
                 }
-                
+
                 tmp += '</ul></td><td><ul>'
-                
+
                 flags = data[name]['flags'];
                 for (var flag_id in flags) {
                     if (flags.hasOwnProperty(flag_id)) {
@@ -72,8 +72,8 @@ $( document ).ready(function() {
         var tmp = '';
         for (var name in data) {
             if (data.hasOwnProperty(name)) {
-                tmp += '<tr><td>' + data[name]['stream_id'] + 
-                       '</td><td>' + data[name]['stream_status'] + 
+                tmp += '<tr><td>' + data[name]['stream_id'] +
+                       '</td><td>' + data[name]['stream_status'] +
                        '</td><td>' + data[name]['circuit_id'] +
                        '</td><td>' + data[name]['destination_host'] +
                        '</td><td>' + data[name]['destination_port'] +

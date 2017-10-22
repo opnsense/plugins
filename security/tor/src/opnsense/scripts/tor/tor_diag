@@ -107,7 +107,7 @@ class TorCTL
         flag_key, flag_value = flag_entry.split('=')
         [flag_key, flag_value.split(',')]
       end.to_h
-      
+
       ret[circuit_id] = { status: status,
                           hosts: hosts,
                           flags: flags }
@@ -163,14 +163,12 @@ if no_param_actions.include? options[:action]
     if data
       puts data.to_json
     else
-      puts  error: "no data" 
+      puts  error: "no data"
     end
   rescue
-    puts error: "execution error", error_str: $! 
+    puts error: "execution error", error_str: $!
   end
 end
 
 #puts tor.get_config("controlport")
 tor.close
-
-
