@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <antispam VisibleName="antispam" cssClass="fa fa-bath fa-fw" url="/ui/antispam/" />
+  </Services>
+</menu>
