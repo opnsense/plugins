@@ -150,7 +150,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $('#DialogAcl').on('shown.bs.modal', function (e) {
             $("#acl\\.expression").change(function(){
                 var service_id = 'table_' + $(this).val();
-                console.log("[debug_X] " + service_id + " | " + "\n")
                 $(".expression_table").hide();
                 // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
@@ -162,7 +161,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $('#DialogAction').on('shown.bs.modal', function (e) {
             $("#action\\.type").change(function(){
                 var service_id = 'table_' + $(this).val();
-                console.log("[debug_Y] " + service_id + " | " + "\n")
                 $(".type_table").hide();
                 // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
@@ -174,7 +172,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $('#DialogBackend').on('shown.bs.modal', function (e) {
             $("#backend\\.healthCheckEnabled").change(function(){
                 var service_id = 'table_healthcheck_' + $(this).is(':checked');
-                console.log("[debug_B] " + service_id + " | " + "\n")
                 $(".healthcheck_table").hide();
                 $("."+service_id).show();
             });
@@ -195,7 +192,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $('#DialogHealthcheck').on('shown.bs.modal', function (e) {
             $("#healthcheck\\.type").change(function(){
                 var service_id = 'table_' + $(this).val();
-                console.log("[debug_Z] " + service_id + " | " + "\n")
                 $(".type_table").hide();
                 // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
@@ -365,34 +361,9 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
+    {# manually add tabs #}
     <li class="active"><a data-toggle="tab" href="#introduction"><b>{{ lang._('Introduction') }}</b></a></li>
 
-    {# add automatically generated tabs #}
-{% for tab in mainForm['tabs']|default([]) %}
-    {% if tab['subtabs']|default(false) %}
-        {# Tab with dropdown #}
-        <li role="presentation" class="dropdown">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
-                <b><span class="caret"></span></b>
-            </a>
-            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
-            <ul class="dropdown-menu" role="menu">
-                {% for subtab in tab['subtabs']|default({})%}
-                <li><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% else %}
-        {# Standard Tab #}
-        <li>
-                <a data-toggle="tab" href="#tab_{{tab[0]}}">
-                    <b>{{tab[1]}}</b>
-                </a>
-        </li>
-    {% endif %}
-{% endfor %}
-
-    {# manually add more tabs #}
     <li role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
             <b><span class="caret"></span></b>
@@ -428,6 +399,31 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" href="#actions"><i class="fa fa-check-square"></i> {{ lang._('Rules') }}</a></li>
         </ul>
     </li>
+
+    {# add automatically generated tabs #}
+    {% for tab in mainForm['tabs']|default([]) %}
+        {% if tab['subtabs']|default(false) %}
+        {# Tab with dropdown #}
+        <li role="presentation" class="dropdown">
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+                <b><span class="caret"></span></b>
+            </a>
+            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <ul class="dropdown-menu" role="menu">
+                {% for subtab in tab['subtabs']|default({})%}
+                <li><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% else %}
+        {# Standard Tab #}
+        <li>
+                <a data-toggle="tab" href="#tab_{{tab[0]}}">
+                    <b>{{tab[1]}}</b>
+                </a>
+        </li>
+        {% endif %}
+    {% endfor %}
 
     <li role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">

@@ -89,7 +89,7 @@
         </subtab>
         <subtab id="haproxy-general-defaults" description="Default Parameters">
             <field>
-                <label>NOTE: Define default parameters for ALL Frontends, Backends and Servers here. They may still be overriden elsewhere.</label>
+                <label>NOTE: Define default parameters for ALL Public Services, Backend Pools and Servers here. They may still be overriden elsewhere.</label>
                 <type>info</type>
             </field>
             <field>

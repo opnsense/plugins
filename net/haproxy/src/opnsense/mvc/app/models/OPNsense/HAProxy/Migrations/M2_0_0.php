@@ -63,8 +63,6 @@ class M2_0_0 extends BaseModelMigration
                     $acl->value = NULL;
                     break;
                 case 'path_starts_with':
-                    echo "DEBUG: migrating : " . (string)$acl->name . "\n";
-                    echo "  DEBUG: value: " . (string)$acl->value . "\n";
                     $acl->expression = 'path_beg';
                     $acl->path_beg = (string)$acl->value;
                     $acl->value = NULL;
@@ -144,7 +142,7 @@ class M2_0_0 extends BaseModelMigration
                     $acl->value = NULL;
                     break;
                 default:
-                    echo "DEBUG: no ACL migration required: " . (string)$acl->name . "\n";
+                    // echo "DEBUG: no ACL migration required: " . (string)$acl->name . "\n";
             }
         }
 
@@ -256,7 +254,7 @@ class M2_0_0 extends BaseModelMigration
                     $action->actionValue = NULL;
                     break;
                 default:
-                    echo "DEBUG: no Action migration required: " . (string)$action->name . "\n";
+                    // echo "DEBUG: no Action migration required: " . (string)$action->name . "\n";
             }
         }
 
@@ -284,7 +282,7 @@ class M2_0_0 extends BaseModelMigration
                     $hc->smtpDomain = NULL;
                     break;
                 default:
-                    echo "DEBUG: no Healthcheck migration required: " . (string)$hc->name . "\n";
+                    // echo "DEBUG: no Healthcheck migration required: " . (string)$hc->name . "\n";
             }
         }
 
