@@ -74,10 +74,10 @@
             <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
                 <b><span class="caret"></span></b>
             </a>
-            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <a data-toggle="tab" href="#subtab_{{ tab['subtabs'][0][0] }}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ tab[1] }}</b></a>
             <ul class="dropdown-menu" role="menu">
-                {% for subtab in tab['subtabs']|default({})%}
-                <li class="{% if settings['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                {% for subtab in tab['subtabs']|default({}) %}
+                <li class="{% if settings['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{ subtab[1] }}</a></li>
                 {% endfor %}
             </ul>
         </li>
@@ -101,13 +101,13 @@
             {# Tab with dropdown #}
             {% for subtab in tab['subtabs']|default({})%}
                 <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if settings['activetab']|default("") == subtab[0] %} in active {% endif %}">
-                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
+                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]]) }}
                 </div>
             {% endfor %}
         {% endif %}
         {% if tab['subtabs']|default(false)==false %}
             <div id="tab_{{tab[0]}}" class="tab-pane fade{% if settings['activetab']|default("") == tab[0] %} in active {% endif %}">
-                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
+                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]]) }}
             </div>
         {% endif %}
     {% endfor %}
