@@ -3,13 +3,13 @@
         <id>action.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this action.</help>
+        <help>Name to identify this rule.</help>
     </field>
     <field>
         <id>action.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this action.</help>
+        <help>Description for this rule.</help>
     </field>
     <field>
         <label>Optional condition</label>
@@ -23,16 +23,16 @@
     </field>
     <field>
         <id>action.linkedAcls</id>
-        <label>Select ACLs</label>
+        <label>Select conditions</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[Select one ore more ACLs to be used as condition for this action.]]></help>
+        <help><![CDATA[Select one ore more conditions to be used for this action.]]></help>
     </field>
     <field>
         <id>action.operator</id>
-        <label>Logical operator (for ACLs)</label>
+        <label>Logical operator for conditions</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose an logical operator to be used to form a condition.]]></help>
+        <help><![CDATA[Choose an logical operator.]]></help>
     </field>
     <field>
         <label>HAProxy function</label>
@@ -42,7 +42,7 @@
         <id>action.type</id>
         <label>Run function</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose an action that should be executed if the condition evaluates to true.]]></help>
+        <help><![CDATA[Choose an HAProxy function that should be executed if the condition evaluates to true.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -51,9 +51,9 @@
     </field>
     <field>
         <id>action.use_backend</id>
-        <label>Use backend</label>
+        <label>Use backend pool</label>
         <type>dropdown</type>
-        <help><![CDATA[HAProxy will use this backend if the condition evaluates to true.]]></help>
+        <help><![CDATA[HAProxy will use this backend pool if the condition evaluates to true.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -319,8 +319,8 @@
     </field>
     <field>
         <id>action.custom</id>
-        <label>Custom Action</label>
-        <type>text</type>
-        <help><![CDATA[Specify a HAProxy Action that is currently not supported by the GUI. Note that the syntax is not verified.]]></help>
+        <label>Option pass-through</label>
+        <type>textbox</type>
+        <help><![CDATA[Specify a HAProxy rule/ACL that is currently not supported by the GUI.<br/><div class="text-info"><b>NOTE:</b> This is strongly discouraged! The syntax will not be checked, use at your own risk!</div>]]></help>
     </field>
 </form>

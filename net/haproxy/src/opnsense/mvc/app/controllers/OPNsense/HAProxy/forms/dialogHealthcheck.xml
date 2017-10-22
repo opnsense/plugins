@@ -3,13 +3,13 @@
         <id>healthcheck.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this ACL.</help>
+        <help>Name to identify this Health Monitor.</help>
     </field>
     <field>
         <id>healthcheck.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this ACL.</help>
+        <help>Description for this Health Monitor.</help>
     </field>
     <field>
         <id>healthcheck.type</id>

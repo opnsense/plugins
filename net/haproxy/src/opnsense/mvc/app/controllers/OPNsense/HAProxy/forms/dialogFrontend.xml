@@ -3,19 +3,19 @@
         <id>frontend.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this frontend</help>
+        <help>Enable this Public Service.</help>
     </field>
     <field>
         <id>frontend.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this frontend.</help>
+        <help>Name to identify this Public Service.</help>
     </field>
     <field>
         <id>frontend.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this frontend.</help>
+        <help>Description for this Public Service.</help>
     </field>
     <field>
         <id>frontend.bind</id>
@@ -23,7 +23,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure listen addresses for this frontend, i.e. 127.0.0.1:8080 or www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
+        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
         <hint>Enter address:port here. Finish with TAB.</hint>
     </field>
     <field>
@@ -37,13 +37,13 @@
         <id>frontend.mode</id>
         <label>Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the running mode or protocol for this frontend.]]></help>
+        <help><![CDATA[Set the running mode or protocol for this Public Service.]]></help>
     </field>
     <field>
         <id>frontend.defaultBackend</id>
-        <label>Default Backend</label>
+        <label>Default Backend Pool</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the default backend to use for this frontend.]]></help>
+        <help><![CDATA[Set the default Backend Pool to use for this Public Service.]]></help>
     </field>
     <field>
         <label>SSL Offloading</label>
@@ -87,7 +87,7 @@
         <id>frontend.tuning_maxConnections</id>
         <label>Max. Connections</label>
         <type>text</type>
-        <help><![CDATA[Set the maximum number of concurrent connections for this frontend.]]></help>
+        <help><![CDATA[Set the maximum number of concurrent connections for this Public Service.]]></help>
     </field>
     <field>
         <id>frontend.tuning_timeoutClient</id>
@@ -160,31 +160,31 @@
         <id>frontend.customOptions</id>
         <label>Option pass-through</label>
         <type>textbox</type>
-        <help><![CDATA[These lines will be added to the HAProxy frontend configuration.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <help><![CDATA[These lines will be added to the HAProxy frontend configuration.<br/><div class="text-info"><b>NOTE:</b> This is strongly discouraged! The syntax will not be checked, use at your own risk!</div>]]></help>
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Actions (ACLs)</label>
+        <label>Rules</label>
         <type>header</type>
     </field>
     <field>
         <id>frontend.linkedActions</id>
-        <label>Actions</label>
+        <label>Select Rules</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[Choose actions to be included in this frontend.]]></help>
-        <hint>Choose actions.</hint>
+        <help><![CDATA[Choose rules to be included in this Public Service.]]></help>
+        <hint>Choose rules.</hint>
     </field>
     <field>
-        <label>Error Files</label>
+        <label>Error Messages</label>
         <type>header</type>
     </field>
     <field>
         <id>frontend.linkedErrorfiles</id>
-        <label>Error files</label>
+        <label>Select Error Messages</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[Choose error files to be included in this backend.]]></help>
-        <hint>Choose error files.</hint>
+        <help><![CDATA[Choose error messages to be included in this Public Service.]]></help>
+        <hint>Choose error messages.</hint>
     </field>
 </form>

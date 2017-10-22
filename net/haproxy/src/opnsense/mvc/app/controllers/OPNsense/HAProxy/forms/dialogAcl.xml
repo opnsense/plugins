@@ -3,13 +3,13 @@
         <id>acl.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this ACL.</help>
+        <help>Name to identify this condition.</help>
     </field>
     <field>
         <id>acl.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this ACL.</help>
+        <help>Description for this condition.</help>
     </field>
     <field>
         <label>Condition</label>
@@ -266,8 +266,8 @@
     </field>
     <field>
         <id>acl.custom_acl</id>
-        <label>Custom ACL</label>
-        <type>text</type>
-        <help><![CDATA[Specify a HAProxy ACL that is currently not supported by the GUI. Note that the syntax is not verified.]]></help>
+        <label>Option pass-through</label>
+        <type>textbox</type>
+        <help><![CDATA[Specify a HAProxy condition/ACL that is currently not supported by the GUI.<br/><div class="text-info"><b>NOTE:</b> This is strongly discouraged! The syntax will not be checked, use at your own risk!</div>]]></help>
     </field>
 </form>
