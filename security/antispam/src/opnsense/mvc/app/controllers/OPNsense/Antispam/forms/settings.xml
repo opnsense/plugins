@@ -5,15 +5,7 @@
                 <id>mail-protection.general.enabled</id>
                 <label>Enable mail-protection</label>
                 <type>checkbox</type>
-                <help>Enable or disable the mail-protection service.</help>
-            </field>
-        </subtab>
-        <subtab id="mail-protection-general-cache-local" description="Local Cache Settings">
-            <field>
-                <id>mail-protection.general.cache.local.cache_mem</id>
-                <label>Memory Cache size in Megabytes</label>
-                <type>text</type>
-                <help><![CDATA[Enter the cache memory size to use or zero to disable completely.]]></help>
+                <help>Enable or disable the mail-protection services.</help>
             </field>
         </subtab>
     </tab>
@@ -123,74 +115,125 @@
                 <type>checkbox</type>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-email" description="Email Blacklists">
-            <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
-            </field>
-        </subtab>
-        <subtab id="mail-protection-anti-spam-forged-recipient" description="Forged Recipient">
-            <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
-            </field>
-        </subtab>
-        <subtab id="mail-protection-anti-spam-milter-headers" description="Milter Headers">
-            <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
-            </field>
-        </subtab>
         <subtab id="mail-protection-anti-spam-mx-check" description="MX Check">
             <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
+                <id>mail-protection.mx-check.enabled</id>
+                <label>Enabled</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>mail-protection.mx_check.expire</id>
+                <label>Expiration</label>
+                <type>text</type>
             </field>
         </subtab>
         <subtab id="mail-protection-anti-spam-phishing" description="Phishing">
             <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
+                <id>mail-protection.phishing.openphish_enabled</id>
+                <label>Enable Openphish</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>mail-protection.phishing.openphish_premium_enabled</id>
+                <label>Enable Openphish Premium</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>mail-protection.phishing.phishtank_enabled</id>
+                <label>Enable Phishtank</label>
+                <type>checkbox</type>
             </field>
         </subtab>
         <subtab id="mail-protection-anti-spam-rate-limit" description="Rate Limit">
             <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
+                <id>mail-protection.rate_limit.per_recipient.count</id>
+                <label>Per Recipient Limit: Mail Count</label>
+                <type>text</type>
             </field>
-        </subtab>
-        <subtab id="mail-protection-anti-spam-rbl" description="Remote Blacklists (RBL)">
             <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
+                <id>mail-protection.rate_limit.per_recipient.time</id>
+                <label>Per Recipient Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_recipient.time_unit</id>
+                <label>Per Recipient Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_ip.count</id>
+                <label>Per IP Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_ip.time</id>
+                <label>Per IP Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_ip.time_unit</id>
+                <label>Per IP Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_ip_from.count</id>
+                <label>Per IP and From Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_ip_from.time</id>
+                <label>Per IP and From Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.per_ip_from.time_unit</id>
+                <label>Per IP and From Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.bounce.count</id>
+                <label>Bounce Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.bounce.time</id>
+                <label>Bounce Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.bounce.time_unit</id>
+                <label>Bounce Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.bounce_ip.count</id>
+                <label>Bounce Limit per IP: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.bounce_ip.time</id>
+                <label>Bounce Limit per IP: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.bounce_ip.time_unit</id>
+                <label>Bounce Limit per IP: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.user.count</id>
+                <label>User Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.user.time</id>
+                <label>User Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>mail-protection.rate_limit.user.time_unit</id>
+                <label>User Limit: Time Unit</label>
+                <type>dropdown</type>
             </field>
         </subtab>
         <subtab id="mail-protection-anti-spam-spamtrap" description="Spam Trap">
@@ -215,37 +258,41 @@
         </subtab>
         <subtab id="mail-protection-anti-spam-spf" description="Sender Policy Framework (SPF)">
             <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
+                <id>mail-protection.spf.spf_cache_size</id>
+                <label>Cache Size</label>
+                <type>text</type>
+                <help>Enter the size of the SPF cache.</help>
+            </field>
+            <field>
+                <id>mail-protection.spf.spf_cache_expire</id>
+                <label>Cache Expiration</label>
+                <type>text</type>
+                <help>Enter how long SPF entries are valid.</help>
             </field>
         </subtab>
     </tab>
     <tab id="mail-protection-anti-malware" description="Anti Malware">
         <subtab id="mail-protection-anti-malware-general" description="General Anti Malware Settings">
             <field>
-                <id>mail-protection.anti-malware.force-reject</id>
+                <id>mail-protection.anti-malware.av.force-reject</id>
                 <label>Force Reject</label>
                 <type>checkbox</type>
                 <help>If set, the mail will be rejected.</help>
             </field>
             <field>
-                <id>mail-protection.anti-malware.attachments-only</id>
+                <id>mail-protection.anti-malware.av.attachments-only</id>
                 <label>Only Scan Attachments</label>
                 <type>checkbox</type>
                 <help>If checked, only attached files are scanned and images are omitted.</help>
             </field>
             <field>
-                <id>mail-protection.anti-malware.max-size</id>
+                <id>mail-protection.anti-malware.av.max-size</id>
                 <label>Maximum Size</label>
                 <type>text</type>
                 <help>If set, a message large than this size will not be scanned.</help>
             </field>
             <field>
-                <id>mail-protection.anti-malware.whitelist</id>
+                <id>mail-protection.anti-malware.av.whitelist</id>
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
@@ -254,12 +301,16 @@
         </subtab>
         <subtab id="mail-protection-anti-malware-surbl" description="SURBL">
             <field>
-                <id>mail-protection.forward.interfaces</id>
-                <label>Proxy interfaces</label>
+                <id>mail-protection.anti-malware.surbl.whitelist</id>
+                <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
-                <help><![CDATA[Select interface(s) the mail-protection will bind to.]]></help>
-                <hint>Type or select interface.</hint>
+            </field>
+            <field>
+                <id>mail-protection.anti-malware.surbl.exceptions</id>
+                <label>Exceptions</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
             </field>
         </subtab>
     </tab>
