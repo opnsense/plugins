@@ -2,10 +2,6 @@
     <tab id="haproxy-general" description="Settings">
         <subtab id="haproxy-general-settings" description="Service Settings">
             <field>
-                <label>NOTE: You need to configure frontends, backends and servers before enabling HAProxy.</label>
-                <type>info</type>
-            </field>
-            <field>
                 <id>haproxy.general.enabled</id>
                 <label>Enable HAProxy</label>
                 <type>checkbox</type>
@@ -225,6 +221,4 @@
             </field>
         </subtab>
     </tab>
-
-    <activetab>haproxy-general-settings</activetab>
 </form>
