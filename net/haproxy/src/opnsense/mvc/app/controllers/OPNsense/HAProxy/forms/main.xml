@@ -1,5 +1,5 @@
 <form>
-    <tab id="haproxy-general" description="General Settings">
+    <tab id="haproxy-general" description="Settings">
         <subtab id="haproxy-general-settings" description="Service Settings">
             <field>
                 <label>NOTE: You need to configure frontends, backends and servers before enabling HAProxy.</label>

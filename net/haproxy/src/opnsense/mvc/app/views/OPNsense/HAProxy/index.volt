@@ -146,6 +146,42 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAcl').on('shown.bs.modal', function (e) {
+            $("#acl\\.expression").change(function(){
+                var service_id = 'table_' + $(this).val();
+                console.log("[debug_X] " + service_id + " | " + "\n")
+                $(".expression_table").hide();
+                // $(".table_"+$(this).val()).show();
+                $("."+service_id).show();
+            });
+            $("#acl\\.expression").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAction').on('shown.bs.modal', function (e) {
+            $("#action\\.type").change(function(){
+                var service_id = 'table_' + $(this).val();
+                console.log("[debug_Y] " + service_id + " | " + "\n")
+                $(".type_table").hide();
+                // $(".table_"+$(this).val()).show();
+                $("."+service_id).show();
+            });
+            $("#action\\.type").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogHealthcheck').on('shown.bs.modal', function (e) {
+            $("#healthcheck\\.type").change(function(){
+                var service_id = 'table_' + $(this).val();
+                console.log("[debug_Z] " + service_id + " | " + "\n")
+                $(".type_table").hide();
+                // $(".table_"+$(this).val()).show();
+                $("."+service_id).show();
+            });
+            $("#healthcheck\\.type").change();
+        })
+
         /***********************************************************************
          * Commands
          **********************************************************************/
