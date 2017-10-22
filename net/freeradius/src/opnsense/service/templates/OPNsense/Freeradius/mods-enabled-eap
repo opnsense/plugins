@@ -26,7 +26,9 @@ eap {
         #  then that EAP type takes precedence over the
         #  default type configured here.
         #
-        default_eap_type = md5
+{% if helpers.exists('OPNsense.freeradius.eap.default_eap_type') and OPNsense.freeradius.eap.default_eap_type != '' %}
+        default_eap_type = {{ OPNsense.freeradius.eap.default_eap_type }}
+{% endif %}
 
         #  A list is maintained to correlate EAP-Response
         #  packets with EAP-Request packets.  After a
@@ -172,9 +174,14 @@ eap {
         #  ANYONE who has a certificate signed by them can
         #  authenticate via EAP-TLS!  This is likely not what you want.
         tls-config tls-common {
+{% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
+                private_key_password =
+                private_key_file = ${certdir}/cert_opn.pem
+                certificate_file = ${certdir}/cert_opn.pem
+{%   else %}
                 private_key_password = whatever
                 private_key_file = ${certdir}/server.pem
-
                 #  If Private key & Certificate are located in
                 #  the same file, then private_key_file &
                 #  certificate_file must contain the same file
@@ -186,7 +193,7 @@ eap {
                 #  of the CA certificates used to sign the
                 #  server certificate.
                 certificate_file = ${certdir}/server.pem
-
+{%   endif %}
                 #  Trusted Root CA list
                 #
                 #  ALL of the CA's in this list will be trusted
@@ -197,8 +204,11 @@ eap {
                 #  In that case, this CA file should contain
                 #  *one* CA certificate.
                 #
+{%   if helpers.exists('OPNsense.freeradius.eap.ca') and OPNsense.freeradius.eap.ca != '' %}
+                ca_file = ${certdir}/ca_opn.pem
+{%   else %}
                 ca_file = ${cadir}/ca.pem
-
+{%   endif %}
                 #  OpenSSL will automatically create certificate chains,
                 #  unless we tell it to not do that.  The problem is that
                 #  it sometimes gets the chains right from a certificate
@@ -280,8 +290,11 @@ eap {
                 #    'c_rehash' is OpenSSL's command.
                 #  3) uncomment the lines below.
                 #  5) Restart radiusd
+{%   if helpers.exists('OPNsense.freeradius.eap.crl') and OPNsense.freeradius.eap.crl != '' %}
+                check_crl = yes
+{%   else %}
         #       check_crl = yes
-
+{%   endif %}
                 # Check if intermediate CAs have been revoked.
         #       check_all_crl = yes
 
@@ -557,7 +570,7 @@ eap {
                         # softfail = no
                 }
         }
-
+{% endif %}
         ## EAP-TLS
         #
         #  As of Version 3.0, the TLS configuration for TLS-based

@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>eap.default_eap_type</id>
+        <label>Default EAP Type</label>
+        <type>dropdown</type>
+        <help>Set the default EAP type.</help>
+    </field>
+    <field>
+        <id>eap.enable_client_cert</id>
+        <label>Enable Client Certficate Authentication</label>
+        <type>checkbox</type>
+        <help>This will activate certificate based authentication. Please choose CA and Certificate below and do not forget to roll out certificates to the clients.</help>
+    </field>
+    <field>
+        <id>eap.ca</id>
+        <label>Root Certificate</label>
+        <type>dropdown</type>
+        <help>Choose the Root CA.</help>
+    </field>
+    <field>
+        <id>eap.certificate</id>
+        <label>Server Certificate</label>
+        <type>dropdown</type>
+        <help>Choose the certificate the Radius service should use.</help>
+    </field>
+    <field>
+        <id>eap.crl</id>
+        <label>CRL</label>
+        <type>dropdown</type>
+        <help>This enables CRL checking, please restart this service with every change to the CRL.</help>
+    </field>
+</form>
