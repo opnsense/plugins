@@ -171,6 +171,27 @@ POSSIBILITY OF SUCH DAMAGE.
         })
 
         // hook into on-show event for dialog to extend layout.
+        $('#DialogBackend').on('shown.bs.modal', function (e) {
+            $("#backend\\.healthCheckEnabled").change(function(){
+                var service_id = 'table_healthcheck_' + $(this).is(':checked');
+                console.log("[debug_B] " + service_id + " | " + "\n")
+                $(".healthcheck_table").hide();
+                $("."+service_id).show();
+            });
+            $("#backend\\.healthCheckEnabled").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogFrontend').on('shown.bs.modal', function (e) {
+            $("#frontend\\.mode").change(function(){
+                var service_id = 'table_' + $(this).val();
+                $(".mode_table").hide();
+                $("."+service_id).show();
+            });
+            $("#frontend\\.mode").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
         $('#DialogHealthcheck').on('shown.bs.modal', function (e) {
             $("#healthcheck\\.type").change(function(){
                 var service_id = 'table_' + $(this).val();

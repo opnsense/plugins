@@ -48,14 +48,15 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Health Checking</label>
-        <type>header</type>
-    </field>
-    <field>
         <id>backend.healthCheckEnabled</id>
-        <label>Enabled</label>
+        <label>Enable Health Checking</label>
         <type>checkbox</type>
         <help><![CDATA[Enable or disable health checking.]]></help>
+    </field>
+    <field>
+        <label>Health Checking</label>
+        <type>header</type>
+        <style>healthcheck_table table_healthcheck_true</style>
     </field>
     <field>
         <id>backend.healthCheck</id>

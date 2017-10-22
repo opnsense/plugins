@@ -48,6 +48,7 @@
     <field>
         <label>SSL Offloading</label>
         <type>header</type>
+        <style>mode_table table_http table_ssl</style>
     </field>
     <field>
         <id>frontend.ssl_enabled</id>
@@ -134,14 +135,19 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Advanced settings</label>
+        <label>HTTP(S) settings</label>
         <type>header</type>
+        <style>mode_table table_http table_ssl</style>
     </field>
     <field>
         <id>frontend.forwardFor</id>
         <label>X-Forwarded-For header</label>
         <type>checkbox</type>
         <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
+    </field>
+    <field>
+        <label>Advanced settings</label>
+        <type>header</type>
     </field>
     <field>
         <id>frontend.connectionBehaviour</id>
