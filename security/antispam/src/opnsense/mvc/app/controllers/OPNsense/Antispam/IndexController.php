@@ -29,7 +29,7 @@
 */
 
 
-namespace OPNsense/Antispam;
+namespace OPNsense\Antispam;
 
 /**
 * Class IndexController
@@ -39,7 +39,8 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("antispam");
+        $this->view->title = gettext("Mail Protection");
+        $this->view->settings = $this->getForm("settings");
         $this->view->pick('OPNsense/Antispam/index');
     }
 }

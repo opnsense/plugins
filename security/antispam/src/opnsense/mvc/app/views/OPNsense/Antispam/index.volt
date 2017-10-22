@@ -1,6 +1,7 @@
 {#
 
     Copyright (C) 2017 Fabian Franz
+    OPNsense® is Copyright © 2014 – 2015 by Deciso B.V.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -27,5 +28,87 @@
 
 #}
 
+<script type="text/javascript">
 
-This plugin has been created but no content exists.
+    $( document ).ready(function() {
+/*
+        var data_get_map = {'frm_proxy':"/api/proxy/settings/get"};
+
+        // load initial data
+        mapDataToFormUI(data_get_map).done(function(){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            // request service status on load and update status box
+            ajaxCall(url="/api/proxy/service/status", sendData={}, callback=function(data,status) {
+                updateServiceStatusUI(data['status']);
+            });
+        });
+*/
+        // update history on tab state and implement navigation
+        if(window.location.hash != "") {
+            $('a[href="' + window.location.hash + '"]').click()
+        }
+        $('.nav-tabs a').on('shown.bs.tab', function (e) {
+            history.pushState(null, null, e.target.hash);
+        });
+
+    });
+
+
+</script>
+
+<ul class="nav nav-tabs" role="tablist"  id="maintabs">
+{% for tab in settings['tabs']|default([]) %}
+    {% if tab['subtabs']|default(false) %}
+        {# Tab with dropdown #}
+
+        {# Find active subtab #}
+            {% set active_subtab="" %}
+            {% for subtab in tab['subtabs']|default({}) %}
+                {% if subtab[0]==settings['activetab']|default("") %}
+                    {% set active_subtab=subtab[0] %}
+                {% endif %}
+            {% endfor %}
+
+        <li role="presentation" class="dropdown {% if settings['activetab']|default("") == active_subtab %}active{% endif %}">
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+                <b><span class="caret"></span></b>
+            </a>
+            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <ul class="dropdown-menu" role="menu">
+                {% for subtab in tab['subtabs']|default({})%}
+                <li class="{% if settings['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        {# Standard Tab #}
+        <li {% if settings['activetab']|default("") == tab[0] %} class="active" {% endif %}>
+                <a data-toggle="tab" href="#tab_{{ tab[0] }}">
+                    <b>{{ tab[1] }}</b>
+                </a>
+        </li>
+    {% endif %}
+{% endfor %}
+    {# add custom content
+    <li><a data-toggle="tab" href="#remote_acls"><b>{{ lang._('Remote Access Control Lists') }}</b></a></li>
+    #}
+</ul>
+
+<div class="content-box tab-content">
+    {% for tab in settings['tabs']|default([]) %}
+        {% if tab['subtabs']|default(false) %}
+            {# Tab with dropdown #}
+            {% for subtab in tab['subtabs']|default({})%}
+                <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if settings['activetab']|default("") == subtab[0] %} in active {% endif %}">
+                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if tab['subtabs']|default(false)==false %}
+            <div id="tab_{{tab[0]}}" class="tab-pane fade{% if settings['activetab']|default("") == tab[0] %} in active {% endif %}">
+                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
