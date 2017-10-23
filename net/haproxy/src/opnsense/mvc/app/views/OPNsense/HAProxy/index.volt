@@ -371,7 +371,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
         <ul class="dropdown-menu" role="menu">
             <li><a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#servers"><i class="fa fa-check-square"></i> {{ lang._('Servers') }}</a></li>
+            <li><a data-toggle="tab" href="#servers"><i class="fa fa-check-square"></i> {{ lang._('Real Servers') }}</a></li>
         </ul>
     </li>
 
@@ -443,12 +443,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <div class="col-md-12">
             <h1>Quick Start Guide</h1>
             <p>{{ lang._('Welcome to the HAProxy plugin! This plugin is designed to offer all the features and flexibility HAProxy is famous for. If you are using HAProxy for the first time, please take some time to get familiar with it. The following information should help you to get started.')}}</p>
-            <p>{{ lang._('Note that you should configure everything in the following order:') }}</p>
+            <p>{{ lang._('Note that you should configure HAProxy in the following order:') }}</p>
             <ul>
-              <li>{{ lang._('Add %sReal Servers:%s All physical or virtual servers that you want HAProxy to use should be added here.') | format('<b>', '</b>') }}</li>
-              <li>{{ lang._('Add %sBackend Pools:%s Group the previously added servers to build a server farm. All servers in a group usually deliver the same content. The Backend Pool cares for health monitoring and load distribution. A Backend Pool must also be configured if you only have a single server.') | format('<b>', '</b>')}}</li>
-              <li>{{ lang._('Add %sPublic Services:%s The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing (or proxying).') | format('<b>', '</b>') }}</li>
-              <li>{{ lang._('Finally enable HAProxy using the %sService Settings%s.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Add %sReal Servers:%s All physical or virtual servers that HAProxy should use to load balance between or proxy to.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Add %sBackend Pools:%s Group the previously added servers to build a server farm. All servers in a group usually deliver the same content. The Backend Pool takes care of health monitoring and load distribution. A Backend Pool must be configured even if you only have a single server.') | format('<b>', '</b>')}}</li>
+              <li>{{ lang._('Add %sPublic Services:%s The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Lastly, enable HAProxy using the %sService Settings%s.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
             <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
@@ -465,6 +465,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sPort:%s The TCP or TCP port that should be used.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._("Please note that advanced mode settings allow you to disable a certain server or to configure it as a backup server in a Backend Pool. Another neat option is the possibility to adjust a server's weight relative to other servers in the same Backend Pool.") }}</p>
+            <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
     </div>
@@ -472,12 +473,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_haproxy-virtual-services-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>Virtual Services</h1>
-            <p>{{ lang._("HAProxy requires two virtual services for it's loadbalancing and proxying features. The following virtual services must be configured for everything that should be served by HAProxy:") }}</p>
+            <p>{{ lang._("HAProxy requires two virtual services for its load balancing and proxying features. The following virtual services must be configured for everything that should be served by HAProxy:") }}</p>
             <ul>
               <li>{{ lang._('%sBackend Pools:%s The HAProxy backend. Group the %spreviously added servers%s to build a server farm. All servers in a group usually deliver the same content. The Backend Pool cares for health monitoring and load distribution. A Backend Pool must also be configured if you only have a single server. The same Backend Pool may be used for multiple Public Services.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
-              <li>{{ lang._('%sPublic Services:%s The HAProxy frontend. The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing (or proxying). Every Public Service needs to be connected to a %spreviously created Backend Pool%s.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._('%sPublic Services:%s The HAProxy frontend. The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying. Every Public Service needs to be connected to a %spreviously created Backend Pool%s.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Remember to add firewall rules for all configured Public Services.') }}</p>
+            <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
     </div>
@@ -485,13 +487,14 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_haproxy-rules-checks-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>Rules &amp; Checks</h1>
-            <p>{{ lang._("These are all optional features, HAProxy can be used without them. After getting used to HAProxy you'll find these optional features pretty useful:") }}</p>
+            <p>{{ lang._("After getting acquainted with HAProxy the following optional features may prove useful:") }}</p>
             <ul>
               <li>{{ lang._('%sHealth Monitors:%s The HAProxy "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
-              <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in (multiple) Rules.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
     </div>

@@ -834,7 +834,7 @@
                         <ssl_sni_beg>SNI TLS extension starts with</ssl_sni_beg>
                         <ssl_sni_end>SNI TLS extension ends with</ssl_sni_end>
                         <ssl_sni_reg>SNI TLS extension regex</ssl_sni_reg>
-                        <custom_acl>Specify a custom ACL</custom_acl>
+                        <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
                 </expression>
                 <negate type="BooleanField">
@@ -1056,7 +1056,7 @@
                         <tcp-response_content_close>tcp-response content close</tcp-response_content_close>
                         <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
                         <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
-                        <custom>Custom Action (HAProxy syntax)</custom>
+                        <custom>Custom rule (option pass-through)</custom>
                     </OptionValues>
                 </type>
                 <use_backend type="ModelRelationField">

@@ -141,8 +141,6 @@ class M2_0_0 extends BaseModelMigration
                     $acl->custom_acl = (string)$acl->value;
                     $acl->value = NULL;
                     break;
-                default:
-                    // echo "DEBUG: no ACL migration required: " . (string)$acl->name . "\n";
             }
         }
 
@@ -253,8 +251,6 @@ class M2_0_0 extends BaseModelMigration
                     $action->custom = (string)$action->actionValue;
                     $action->actionValue = NULL;
                     break;
-                default:
-                    // echo "DEBUG: no Action migration required: " . (string)$action->name . "\n";
             }
         }
 
@@ -281,8 +277,6 @@ class M2_0_0 extends BaseModelMigration
                     $hc->esmtp_domain = (string)$hc->smtpDomain;
                     $hc->smtpDomain = NULL;
                     break;
-                default:
-                    // echo "DEBUG: no Healthcheck migration required: " . (string)$hc->name . "\n";
             }
         }
 

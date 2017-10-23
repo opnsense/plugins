@@ -78,7 +78,7 @@
         <id>backend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.6.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
+        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
         <hint>Choose a persistence type.</hint>
     </field>
     <field>
@@ -142,7 +142,7 @@
         <id>backend.customOptions</id>
         <label>Option pass-through</label>
         <type>textbox</type>
-        <help><![CDATA[These lines will be added to the HAProxy backend configuration.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <help><![CDATA[These lines will be added to the HAProxy backend configuration.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

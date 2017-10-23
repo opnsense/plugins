@@ -28,9 +28,9 @@
     </field>
     <field>
         <id>frontend.bindOptions</id>
-        <label>Advanced Bind Options</label>
+        <label>Bind option pass-through</label>
         <type>text</type>
-        <help><![CDATA[A list of parameters that will be appended to every Listen Address line.<br/>Example: accept-proxy npn http/1.1<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <help><![CDATA[A list of parameters that will be appended to every Listen Address line.<br/>Example: accept-proxy npn http/1.1<br/>]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -76,7 +76,7 @@
         <id>frontend.ssl_customOptions</id>
         <label>Advanced SSL options</label>
         <type>text</type>
-        <help><![CDATA[Specify additional SSL parameters such as force-sslv3, force-tlsv10, force-tlsv11, force-tlsv12, no-sslv3, no-tlsv10, no-tlsv11, no-tlsv12, no-tls-tickets or customize the list of SSL ciphers.<br/>Example: no-sslv3 ciphers HIGH:!DSS:!aNULL@STRENGTH<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <help><![CDATA[Specify additional SSL parameters such as force-sslv3, force-tlsv10, force-tlsv11, force-tlsv12, no-sslv3, no-tlsv10, no-tlsv11, no-tlsv12, no-tls-tickets or customize the list of SSL ciphers.<br/>Example: no-sslv3 ciphers HIGH:!DSS:!aNULL@STRENGTH<br/>]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -160,7 +160,7 @@
         <id>frontend.customOptions</id>
         <label>Option pass-through</label>
         <type>textbox</type>
-        <help><![CDATA[These lines will be added to the HAProxy frontend configuration.<br/><div class="text-info"><b>NOTE:</b> This is strongly discouraged! The syntax will not be checked, use at your own risk!</div>]]></help>
+        <help><![CDATA[These lines will be added to the HAProxy frontend configuration.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
