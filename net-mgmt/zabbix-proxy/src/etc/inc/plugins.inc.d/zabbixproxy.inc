@@ -34,14 +34,14 @@ function zabbixproxy_services()
 
     if (isset($config['OPNsense']['zabbixproxy']['general']['enabled']) && $config['OPNsense']['zabbixproxy']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('zabbix-proxy daemon'),
+            'description' => gettext('zabbixproxy daemon'),
             'configd' => array(
-                'restart' => array('zabbix-proxy restart'),
-                'start' => array('zabbix-proxy start'),
-                'stop' => array('zabbix-proxy stop'),
+                'restart' => array('zabbixproxy restart'),
+                'start' => array('zabbixproxy start'),
+                'stop' => array('zabbixproxy stop'),
             ),
-            'name' => 'zabbix-proxy',
-            'pidfile' => '/var/run/zabbix-proxy.pid'
+            'name' => 'zabbixproxy',
+            'pidfile' => '/var/run/zabbix/zabbix_proxy.pid'
         );
     }
 
