@@ -30,8 +30,14 @@
         <help>The name of this Zabbix instance. It has to match with the defined name in the central Zabbix server.</help>
     </field>
     <field>
+        <id>general.listenip</id>
+        <label>Listen IP</label>
+        <type>text</type>
+        <help>List of comma delimited IP addresses that the trapper should listen on. Trapper will listen on all network interfaces if this parameter is missing.</help>
+    </field>
+    <field>
         <id>general.listenport</id>
-        <label>Liste Port</label>
+        <label>Listen Port</label>
         <type>text</type>
         <help>Listen port for trapper. Default is just fine.</help>
     </field>
@@ -82,12 +88,6 @@
         <label>Start HTTP Pollers</label>
         <type>text</type>
         <help>Number of pre-forked instances of HTTP pollers.</help>
-    </field>
-    <field>
-        <id>general.listenip</id>
-        <label>Listen IP</label>
-        <type>text</type>
-        <help>List of comma delimited IP addresses that the trapper should listen on. Trapper will listen on all network interfaces if this parameter is missing.</help>
     </field>
     <field>
         <id>general.cachesize</id>
