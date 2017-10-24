@@ -54,8 +54,6 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlProxyUserACL = $this->getModel();
-        foreach ($mdlProxyUserACL->general->ACLs->ACL->getNodes() as $uuid => $acl)
-            $mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains = \OPNsense\Proxy\Api\SettingsController::decode($mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains);
         $grid = new UIModelGrid($mdlProxyUserACL->general->ACLs->ACL);
         return $grid->fetchBindRequest($this->request, ["Group", "Name", "Domains", "Black", "Priority", "uuid"], "Priority");
     }
@@ -87,7 +85,6 @@ class SettingsController extends ApiMutableModelControllerBase
             $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority + 1);
         }
         $node = $mdlProxyUserACL->general->ACLs->ACL->Add();
-        $post["Domains"] = \OPNsense\Proxy\Api\SettingsController::encode($post["Domains"]);
         $node->setNodes($post);
         $find = $this->checkName($post["Name"], $post["Group"]);
         if ($find !== true)
@@ -128,7 +125,6 @@ class SettingsController extends ApiMutableModelControllerBase
         if ($node != null)
         {
             // return node
-            $node->Domains = \OPNsense\Proxy\Api\SettingsController::decode((string)$node->Domains);
             return ["ACL" => $node->getNodes()];
         }
 
@@ -156,7 +152,6 @@ class SettingsController extends ApiMutableModelControllerBase
         $result = ["result" => "failed", "validations" => []];
         $ACLInfo = $this->request->getPost("ACL");
         $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
-        $ACLInfo["Domains"] = \OPNsense\Proxy\Api\SettingsController::encode($ACLInfo["Domains"]);
         $old_priority = (string) $node->Priority;
         $new_priority = $ACLInfo["Priority"];
 
