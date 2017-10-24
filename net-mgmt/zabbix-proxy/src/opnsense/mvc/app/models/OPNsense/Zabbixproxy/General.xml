@@ -39,10 +39,6 @@
             <default>5</default>
             <Required>N</Required>
         </startpollers>
-        <startpollers type="IntegerField">
-            <default>5</default>
-            <Required>N</Required>
-        </startpollers>
         <startipmipollers type="IntegerField">
             <default>0</default>
             <Required>N</Required>
@@ -55,10 +51,6 @@
             <default>5</default>
             <Required>N</Required>
         </starttrappers>
-        <startpingers type="IntegerField">
-            <default>1</default>
-            <Required>N</Required>
-        </startpingers>
         <startpingers type="IntegerField">
             <default>1</default>
             <Required>N</Required>
@@ -79,10 +71,6 @@
             <default>8M</default>
             <Required>N</Required>
         </cachesize>
-        <historycachesize type="TextField">
-            <default>16M</default>
-            <Required>N</Required>
-        </historycachesize>
         <historycachesize type="TextField">
             <default>16M</default>
             <Required>N</Required>
