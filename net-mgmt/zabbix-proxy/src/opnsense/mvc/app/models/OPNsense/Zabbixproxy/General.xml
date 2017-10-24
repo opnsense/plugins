@@ -27,6 +27,10 @@
             <default>10051</default>
             <Required>N</Required>
         </listenport>
+        <listenip type="NetworkField">
+            <default></default>
+            <Required>N</Required>
+        </listenip>
         <sourceip type="NetworkField">
             <default></default>
             <Required>N</Required>
@@ -59,10 +63,6 @@
             <default>1</default>
             <Required>N</Required>
         </starthttppollers>
-        <listenip type="NetworkField">
-            <default></default>
-            <Required>N</Required>
-        </listenip>
         <cachesize type="TextField">
             <default>8M</default>
             <Required>N</Required>
