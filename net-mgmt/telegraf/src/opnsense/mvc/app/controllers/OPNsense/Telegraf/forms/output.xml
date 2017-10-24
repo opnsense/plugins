@@ -3,7 +3,7 @@
         <id>output.influx_enable</id>
         <label>Enable Influx</label>
         <type>checkbox</type>
-        <help>This will enable InfluxDB as output.</help>
+        <help>This will enable InfluxDB as output. Format is without square brackets, just like http://192.168.0.1:8086.</help>
     </field>
     <field>
         <id>output.influx_url</id>
