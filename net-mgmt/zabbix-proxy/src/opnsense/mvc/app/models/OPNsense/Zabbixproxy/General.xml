@@ -31,10 +31,6 @@
             <default></default>
             <Required>N</Required>
         </sourceip>
-        <enableremotecommands type="BooleanField">
-            <default>0</default>
-            <Required>N</Required>
-        </enableremotecommands>
         <startpollers type="TextField">
             <default>5</default>
             <Required>N</Required>

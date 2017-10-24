@@ -42,12 +42,6 @@
         <help>Source IP address for outgoing connections.</help>
     </field>
     <field>
-        <id>general.enableremotecommands</id>
-        <label>Enable Remote Commands</label>
-        <type>checkbox</type>
-        <help>Whether remote commands from Zabbix server are allowed.</help>
-    </field>
-    <field>
         <id>general.startpollers</id>
         <label>Start Pollers</label>
         <type>text</type>
