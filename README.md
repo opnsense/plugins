@@ -51,6 +51,7 @@ net-mgmt/collectd -- Collect system and application performance metrics periodic
 net-mgmt/snmp -- SNMP Server via bsnmpd
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
+net-mgmt/zabbix-proxy -- Zabbix-Proxy enables decentralized monitoring
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
 sysutils/smart -- SMART tools
