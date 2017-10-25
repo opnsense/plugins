@@ -170,11 +170,11 @@ class ServiceController extends ApiControllerBase
     public function versionAction()
     {
         $infos = array(
-            "clamav" => array("search" => "Version: "),
-            "main" => array("search" => "main.cvd: "),
-            "daily" => array("search" => "daily.cld: "),
-            "bytecode" => array("search" => "bytecode.cld: "),
-            "signatures" => array("search" => "Total number of signatures: ")
+            "clamav" => array("search" => array("Version: ")),
+            "main" => array("search" => array("main.cvd: ", "main.cld: ")),
+            "daily" => array("search" => array("daily.cvd: ", "daily.cld: ")),
+            "bytecode" => array("search" => array("bytecode.cvd: ", "bytecode.cld: ")),
+            "signatures" => array("search" => array("Total number of signatures: "))
         );
         $backend = new Backend();
         $result = array();
@@ -182,10 +182,12 @@ class ServiceController extends ApiControllerBase
         if ($response != null) {
             foreach (explode("\n", $response) as $str) {
                 foreach ($infos as $key => $info) {
-                    if (strpos($str, $info["search"]) !== false) {
-                        $version = substr($str, strlen($info["search"]));
-                        if (isset($version)) {
-                            $result[$key] = $version;
+                    foreach ($info["search"] as $search) {
+                        if (strpos($str, $search) !== false) {
+                            $version = substr($str, strlen($search));
+                            if (isset($version)) {
+                                $result[$key] = $version;
+                            }
                         }
                     }
                 }

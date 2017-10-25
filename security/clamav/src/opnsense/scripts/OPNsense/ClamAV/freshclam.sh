@@ -26,10 +26,11 @@
 # SUCH DAMAGE.
 
 PIDFILE="/var/run/clamav/freshclam-init.pid"
-DBFILE="/var/db/clamav/main.cvd"
+CVDDBFILE="/var/db/clamav/main.cvd"
+CLDDBFILE="/var/db/clamav/main.cld"
 COMMAND="${1}"
 
-if [ -f ${DBFILE} ]; then
+if [ -f ${CVDDBFILE} -o -f ${CLDDBFILE} ]; then
        echo "done"
 elif pgrep -qF ${PIDFILE} 2> /dev/null; then
        echo "running"
