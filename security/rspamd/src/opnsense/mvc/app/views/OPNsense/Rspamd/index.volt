@@ -31,19 +31,19 @@
 <script type="text/javascript">
 
     $( document ).ready(function() {
-/*
-        var data_get_map = {'frm_proxy':"/api/proxy/settings/get"};
+
+        var data_get_map = {'frm_rspamd':'/api/rspamd/settings/get'};
 
         // load initial data
         mapDataToFormUI(data_get_map).done(function(){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             // request service status on load and update status box
-            ajaxCall(url="/api/proxy/service/status", sendData={}, callback=function(data,status) {
+            ajaxCall(url="/api/rspamd/service/status", sendData={}, callback=function(data,status) {
                 updateServiceStatusUI(data['status']);
             });
         });
-*/
+
         // update history on tab state and implement navigation
         if(window.location.hash != "") {
             $('a[href="' + window.location.hash + '"]').click()

@@ -1,313 +1,313 @@
 <form>
-    <tab id="mail-protection-general" description="General Mail Protection Settings">
-        <subtab id="mail-protection-general-settings" description="General Mail Protection Settings">
+    <tab id="rspamd-general" description="General Settings">
+        <subtab id="rspamd-general-settings" description="General rSpamd Settings">
             <field>
-                <id>mail-protection.general.enabled</id>
-                <label>Enable mail-protection</label>
+                <id>rspamd.general.enabled</id>
+                <label>Enable rspamd</label>
                 <type>checkbox</type>
-                <help>Enable or disable the mail-protection services.</help>
+                <help>Enable or disable the rspamd service.</help>
             </field>
         </subtab>
     </tab>
-    <tab id="mail-protection-anti-spam" description="Spam Protection">
-        <subtab id="mail-protection-anti-spam-graylist" description="Graylisting">
+    <tab id="rspamd-anti-spam" description="Spam Protection">
+        <subtab id="rspamd-anti-spam-graylist" description="Graylisting">
             <field>
-                <id>mail-protection.graylist.expire</id>
+                <id>rspamd.graylist.expire</id>
                 <label>Expiration</label>
                 <type>text</type>
                 <help>Time after which the graylist state expires in days.</help>
             </field>
             <field>
-                <id>mail-protection.graylist.timeout</id>
+                <id>rspamd.graylist.timeout</id>
                 <label>Timeout</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.graylist.max_data_len</id>
+                <id>rspamd.graylist.max_data_len</id>
                 <label>Maximum Data Length</label>
                 <type>text</type>
                 <help>The limit of the length of data to hash.</help>
             </field>
             <field>
-                <id>mail-protection.graylist.ipv4mask</id>
+                <id>rspamd.graylist.ipv4mask</id>
                 <label>IPv4 Mask</label>
                 <type>text</type>
                 <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
             </field>
             <field>
-                <id>mail-protection.graylist.ipv6mask</id>
+                <id>rspamd.graylist.ipv6mask</id>
                 <label>IPv6 Mask</label>
                 <type>text</type>
                 <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-dkim" description="DKIM">
+        <subtab id="rspamd-anti-spam-dkim" description="DKIM">
           <!-- dkim -->
             <field>
-                <id>mail-protection.dkim.cache_size</id>
+                <id>rspamd.dkim.cache_size</id>
                 <label>Cache Size</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.dkim.cache_expire</id>
+                <id>rspamd.dkim.cache_expire</id>
                 <label>Cache Expire</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.dkim.time_jitter</id>
+                <id>rspamd.dkim.time_jitter</id>
                 <label>Time Jitter</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.dkim.trusted_only</id>
+                <id>rspamd.dkim.trusted_only</id>
                 <label>Trusted Only</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.skip_multi</id>
+                <id>rspamd.dkim.skip_multi</id>
                 <label>Skip Multi</label>
                 <type>checkbox</type>
             </field>
             <!-- dkim signing -->
             <field>
-                <id>mail-protection.dkim.allow_envfrom_empty</id>
+                <id>rspamd.dkim.allow_envfrom_empty</id>
                 <label>Allow Environment From Empty</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.allow_hdrfrom_mismatch</id>
+                <id>rspamd.dkim.allow_hdrfrom_mismatch</id>
                 <label>Allow Header From Mismatch</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.allow_hdrfrom_multiple</id>
+                <id>rspamd.dkim.allow_hdrfrom_multiple</id>
                 <label>Allow Header From Multiple</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.allow_username_mismatch</id>
+                <id>rspamd.dkim.allow_username_mismatch</id>
                 <label>Allow Username Mismatch</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.auth_only</id>
+                <id>rspamd.dkim.auth_only</id>
                 <label>Auth Only</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.sign_local</id>
+                <id>rspamd.dkim.sign_local</id>
                 <label>Sign Local</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.try_fallback</id>
+                <id>rspamd.dkim.try_fallback</id>
                 <label>Try Fallback</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.dkim.use_domain</id>
+                <id>rspamd.dkim.use_domain</id>
                 <label>Use Domain</label>
                 <type>dropdown</type>
             </field>
             <field>
-                <id>mail-protection.dkim.use_esld</id>
+                <id>rspamd.dkim.use_esld</id>
                 <label>Use eSLD</label>
                 <type>checkbox</type>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-mx-check" description="MX Check">
+        <subtab id="rspamd-anti-spam-mx-check" description="MX Check">
             <field>
-                <id>mail-protection.mx-check.enabled</id>
+                <id>rspamd.mx-check.enabled</id>
                 <label>Enabled</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.mx_check.expire</id>
+                <id>rspamd.mx_check.expire</id>
                 <label>Expiration</label>
                 <type>text</type>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-phishing" description="Phishing">
+        <subtab id="rspamd-anti-spam-phishing" description="Phishing">
             <field>
-                <id>mail-protection.phishing.openphish_enabled</id>
+                <id>rspamd.phishing.openphish_enabled</id>
                 <label>Enable Openphish</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.phishing.openphish_premium_enabled</id>
+                <id>rspamd.phishing.openphish_premium_enabled</id>
                 <label>Enable Openphish Premium</label>
                 <type>checkbox</type>
             </field>
             <field>
-                <id>mail-protection.phishing.phishtank_enabled</id>
+                <id>rspamd.phishing.phishtank_enabled</id>
                 <label>Enable Phishtank</label>
                 <type>checkbox</type>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-rate-limit" description="Rate Limit">
+        <subtab id="rspamd-anti-spam-rate-limit" description="Rate Limit">
             <field>
-                <id>mail-protection.rate_limit.per_recipient.count</id>
+                <id>rspamd.rate_limit.per_recipient.count</id>
                 <label>Per Recipient Limit: Mail Count</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_recipient.time</id>
+                <id>rspamd.rate_limit.per_recipient.time</id>
                 <label>Per Recipient Limit: Time</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_recipient.time_unit</id>
+                <id>rspamd.rate_limit.per_recipient.time_unit</id>
                 <label>Per Recipient Limit: Time Unit</label>
                 <type>dropdown</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_ip.count</id>
+                <id>rspamd.rate_limit.per_ip.count</id>
                 <label>Per IP Limit: Mail Count</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_ip.time</id>
+                <id>rspamd.rate_limit.per_ip.time</id>
                 <label>Per IP Limit: Time</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_ip.time_unit</id>
+                <id>rspamd.rate_limit.per_ip.time_unit</id>
                 <label>Per IP Limit: Time Unit</label>
                 <type>dropdown</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_ip_from.count</id>
+                <id>rspamd.rate_limit.per_ip_from.count</id>
                 <label>Per IP and From Limit: Mail Count</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_ip_from.time</id>
+                <id>rspamd.rate_limit.per_ip_from.time</id>
                 <label>Per IP and From Limit: Time</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.per_ip_from.time_unit</id>
+                <id>rspamd.rate_limit.per_ip_from.time_unit</id>
                 <label>Per IP and From Limit: Time Unit</label>
                 <type>dropdown</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.bounce.count</id>
+                <id>rspamd.rate_limit.bounce.count</id>
                 <label>Bounce Limit: Mail Count</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.bounce.time</id>
+                <id>rspamd.rate_limit.bounce.time</id>
                 <label>Bounce Limit: Time</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.bounce.time_unit</id>
+                <id>rspamd.rate_limit.bounce.time_unit</id>
                 <label>Bounce Limit: Time Unit</label>
                 <type>dropdown</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.bounce_ip.count</id>
+                <id>rspamd.rate_limit.bounce_ip.count</id>
                 <label>Bounce Limit per IP: Mail Count</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.bounce_ip.time</id>
+                <id>rspamd.rate_limit.bounce_ip.time</id>
                 <label>Bounce Limit per IP: Time</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.bounce_ip.time_unit</id>
+                <id>rspamd.rate_limit.bounce_ip.time_unit</id>
                 <label>Bounce Limit per IP: Time Unit</label>
                 <type>dropdown</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.user.count</id>
+                <id>rspamd.rate_limit.user.count</id>
                 <label>User Limit: Mail Count</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.user.time</id>
+                <id>rspamd.rate_limit.user.time</id>
                 <label>User Limit: Time</label>
                 <type>text</type>
             </field>
             <field>
-                <id>mail-protection.rate_limit.user.time_unit</id>
+                <id>rspamd.rate_limit.user.time_unit</id>
                 <label>User Limit: Time Unit</label>
                 <type>dropdown</type>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-spamtrap" description="Spam Trap">
+        <subtab id="rspamd-anti-spam-spamtrap" description="Spam Trap">
             <field>
-                <id>mail-protection.spamtrap.enabled</id>
+                <id>rspamd.spamtrap.enabled</id>
                 <label>Enabled</label>
                 <type>checkbox</type>
                 <help>Enable this if you want to enable the spam trap.</help>
             </field>
             <field>
-                <id>mail-protection.spamtrap.fuzzy_learning</id>
+                <id>rspamd.spamtrap.fuzzy_learning</id>
                 <label>Fuzzy Leraning</label>
                 <type>checkbox</type>
                 <help>Enable this if you want to enable fuzzy learning.</help>
             </field>
             <field>
-                <id>mail-protection.spamtrap.spam_learning</id>
+                <id>rspamd.spamtrap.spam_learning</id>
                 <label>Bayes Leraning</label>
                 <type>checkbox</type>
                 <help>Enable this if you want to enable bayes learning.</help>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-spam-spf" description="Sender Policy Framework (SPF)">
+        <subtab id="rspamd-anti-spam-spf" description="Sender Policy Framework (SPF)">
             <field>
-                <id>mail-protection.spf.spf_cache_size</id>
+                <id>rspamd.spf.spf_cache_size</id>
                 <label>Cache Size</label>
                 <type>text</type>
                 <help>Enter the size of the SPF cache.</help>
             </field>
             <field>
-                <id>mail-protection.spf.spf_cache_expire</id>
+                <id>rspamd.spf.spf_cache_expire</id>
                 <label>Cache Expiration</label>
                 <type>text</type>
                 <help>Enter how long SPF entries are valid.</help>
             </field>
         </subtab>
     </tab>
-    <tab id="mail-protection-anti-malware" description="Anti Malware">
-        <subtab id="mail-protection-anti-malware-general" description="General Anti Malware Settings">
+    <tab id="rspamd-anti-malware" description="Anti Malware">
+        <subtab id="rspamd-anti-malware-general" description="General Anti Malware Settings">
             <field>
-                <id>mail-protection.av.force-reject</id>
+                <id>rspamd.av.force-reject</id>
                 <label>Force Reject</label>
                 <type>checkbox</type>
                 <help>If set, the mail will be rejected.</help>
             </field>
             <field>
-                <id>mail-protection.av.attachments-only</id>
+                <id>rspamd.av.attachments-only</id>
                 <label>Only Scan Attachments</label>
                 <type>checkbox</type>
                 <help>If checked, only attached files are scanned and images are omitted.</help>
             </field>
             <field>
-                <id>mail-protection.av.max-size</id>
+                <id>rspamd.av.max-size</id>
                 <label>Maximum Size</label>
                 <type>text</type>
                 <help>If set, a message large than this size will not be scanned.</help>
             </field>
             <field>
-                <id>mail-protection.av.whitelist</id>
+                <id>rspamd.av.whitelist</id>
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <help>Mails from IPs entered here will not be scanned.</help>
             </field>
         </subtab>
-        <subtab id="mail-protection-anti-malware-surbl" description="SURBL">
+        <subtab id="rspamd-anti-malware-surbl" description="SURBL">
             <field>
-                <id>mail-protection.surbl.whitelist</id>
+                <id>rspamd.surbl.whitelist</id>
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
             </field>
             <field>
-                <id>mail-protection.surbl.exceptions</id>
+                <id>rspamd.surbl.exceptions</id>
                 <label>Exceptions</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
@@ -315,5 +315,5 @@
         </subtab>
     </tab>
 
-    <activetab>mail-protection-general-settings</activetab>
+    <activetab>rspamd-general-settings</activetab>
 </form>

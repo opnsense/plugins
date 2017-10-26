@@ -149,7 +149,7 @@
             <m>Minutes</m>
             <h>Hours</h>
           </OptionValues>
-        </unit>
+        </time_unit>
       </per_recipient>
       <per_ip>
         <count type="IntegerField">
@@ -170,7 +170,7 @@
             <m>Minutes</m>
             <h>Hours</h>
           </OptionValues>
-        </unit>
+        </time_unit>
       </per_ip>
       <per_ip_from>
         <count type="IntegerField">
@@ -191,7 +191,7 @@
             <m>Minutes</m>
             <h>Hours</h>
           </OptionValues>
-        </unit>
+        </time_unit>
       </per_ip_from>
       <bounce>
         <count type="IntegerField">
@@ -212,7 +212,7 @@
             <m>Minutes</m>
             <h>Hours</h>
           </OptionValues>
-        </unit>
+        </time_unit>
       </bounce>
       <bounce_ip>
         <count type="IntegerField">
@@ -233,7 +233,7 @@
             <m>Minutes</m>
             <h>Hours</h>
           </OptionValues>
-        </unit>
+        </time_unit>
       </bounce_ip>
       <user>
         <count type="IntegerField">
@@ -254,7 +254,7 @@
             <m>Minutes</m>
             <h>Hours</h>
           </OptionValues>
-        </unit>
+        </time_unit>
       </user>
     </rate_limit>
     
