@@ -92,7 +92,8 @@
         <default>v6</default>
         <Required>Y</Required>
         <OptionValues>
-          <!-- TODO -->
+          <header>Header</header>
+          <envelope>Envelope</envelope>
         </OptionValues>
       </use_domain>
       <use_esld type="BooleanField">
