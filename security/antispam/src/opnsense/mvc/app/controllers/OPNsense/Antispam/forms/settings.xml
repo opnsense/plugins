@@ -301,13 +301,13 @@
         </subtab>
         <subtab id="mail-protection-anti-malware-surbl" description="SURBL">
             <field>
-                <id>mail-protection.anti-malware.surbl.whitelist</id>
+                <id>mail-protection.surbl.whitelist</id>
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
             </field>
             <field>
-                <id>mail-protection.anti-malware.surbl.exceptions</id>
+                <id>mail-protection.surbl.exceptions</id>
                 <label>Exceptions</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>

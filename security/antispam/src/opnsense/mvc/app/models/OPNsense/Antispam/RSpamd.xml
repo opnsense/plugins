@@ -303,5 +303,14 @@
         <Required>N</Required>
       </whitelist>
     </av>
+      <whitelist type="CSVListField">
+        <Required>N</Required>
+      </whitelist>
+      <exceptions type="CSVListField">
+        <Required>N</Required>
+      </exceptions>
+    <surbl>
+      
+    </surbl>
   </items>
 </model>
