@@ -29,11 +29,11 @@
 */
 
 
-namespace OPNsense\Antispam;
+namespace OPNsense\Rspamd;
 
 /**
 * Class IndexController
-* @package OPNsense/Antispam
+* @package OPNsense/Rspamd
 */
 class IndexController extends \OPNsense\Base\IndexController
 {
@@ -41,6 +41,6 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("Mail Protection");
         $this->view->settings = $this->getForm("settings");
-        $this->view->pick('OPNsense/Antispam/index');
+        $this->view->pick('OPNsense/Rspamd/index');
     }
 }
