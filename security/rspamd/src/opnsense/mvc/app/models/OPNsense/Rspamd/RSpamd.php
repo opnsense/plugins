@@ -25,7 +25,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\Antispam;
+namespace OPNsense\Rspamd;
 
 use OPNsense\Base\BaseModel;
 
