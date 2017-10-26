@@ -1,5 +1,5 @@
 <model>
-  <mount>//OPNsense/Antispam/RSpamd</mount>
+  <mount>//OPNsense/Rspamd</mount>
   <description>rspamd anti spam filter</description>
   <items>
     <general>
@@ -26,13 +26,13 @@
         <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
         <default>24</default>
       </ipv4mask>
-      <startport type="IntegerField">
+      <ipv6mask type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
         <MaximumValue>128</MaximumValue>
         <default>64</default>
         <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
-      </startport>
+      </ipv6mask>
     </graylist>
     
     <dkim>
@@ -89,7 +89,7 @@
         <Required>Y</Required>
       </try_fallback>
       <use_domain type="OptionField">
-        <default>v6</default>
+        <default>header</default>
         <Required>Y</Required>
         <OptionValues>
           <header>Header</header>

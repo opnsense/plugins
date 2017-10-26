@@ -51,6 +51,43 @@
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             history.pushState(null, null, e.target.hash);
         });
+        
+        
+        
+        // form save event handlers for all defined forms
+        $('[id*="save_"]').each(function(){
+            $(this).click(function() {
+                var frm_id = $(this).closest("form").attr("id");
+                var frm_title = $(this).closest("form").attr("data-title");
+                // save data for General TAB
+                saveFormToEndpoint(url="/api/rspamd/settings/set", formid=frm_id, callback_ok=function(){
+                    // on correct save, perform reconfigure. set progress animation when reloading
+                    $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
+
+                    ajaxCall(url="/api/rspamd/service/reconfigure", sendData={}, callback=function(data,status){
+                        // when done, disable progress animation.
+                        $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
+
+                        if (status != "success" || data['status'] != 'ok' ) {
+                            // fix error handling
+                            BootstrapDialog.show({
+                                type:BootstrapDialog.TYPE_WARNING,
+                                title: frm_title,
+                                message: JSON.stringify(data),
+                                draggable: true
+                            });
+                        } else {
+                            // request service status after successful save and update status box (wait a few seconds before update)
+                            setTimeout(function(){
+                                ajaxCall(url="/api/rspamd/service/status", sendData={}, callback=function(data,status) {
+                                    updateServiceStatusUI(data['status']);
+                                });
+                            },3000);
+                        }
+                    });
+                });
+            });
+        });
 
     });
 

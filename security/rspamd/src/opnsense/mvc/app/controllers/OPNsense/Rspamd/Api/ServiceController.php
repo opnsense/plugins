@@ -34,4 +34,5 @@ use \OPNsense\Base\ApiControllerBase;
 class ServiceController extends ApiControllerBase
 {
     public function statusAction(){ return array('status' => 'running'); }
+    public function reconfigureAction(){ return array('status' => 'ok'); }
 }

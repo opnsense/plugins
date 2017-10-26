@@ -296,6 +296,7 @@
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
+                <allownew>true</allownew>
                 <help>Mails from IPs entered here will not be scanned.</help>
             </field>
         </subtab>
@@ -305,12 +306,14 @@
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
+                <allownew>true</allownew>
             </field>
             <field>
                 <id>rspamd.surbl.exceptions</id>
                 <label>Exceptions</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
+                <allownew>true</allownew>
             </field>
         </subtab>
     </tab>
