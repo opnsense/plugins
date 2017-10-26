@@ -274,25 +274,25 @@
     <tab id="mail-protection-anti-malware" description="Anti Malware">
         <subtab id="mail-protection-anti-malware-general" description="General Anti Malware Settings">
             <field>
-                <id>mail-protection.anti-malware.av.force-reject</id>
+                <id>mail-protection.av.force-reject</id>
                 <label>Force Reject</label>
                 <type>checkbox</type>
                 <help>If set, the mail will be rejected.</help>
             </field>
             <field>
-                <id>mail-protection.anti-malware.av.attachments-only</id>
+                <id>mail-protection.av.attachments-only</id>
                 <label>Only Scan Attachments</label>
                 <type>checkbox</type>
                 <help>If checked, only attached files are scanned and images are omitted.</help>
             </field>
             <field>
-                <id>mail-protection.anti-malware.av.max-size</id>
+                <id>mail-protection.av.max-size</id>
                 <label>Maximum Size</label>
                 <type>text</type>
                 <help>If set, a message large than this size will not be scanned.</help>
             </field>
             <field>
-                <id>mail-protection.anti-malware.av.whitelist</id>
+                <id>mail-protection.av.whitelist</id>
                 <label>Whitelist</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>

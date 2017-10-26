@@ -285,44 +285,23 @@
       </spf_cache_expire>
     </spf>
     
-    
-    
-    <policy type="ArrayField">
-      <enabled type="BooleanField">
+    <av>
+      <force-reject type="BooleanField">
         <default>1</default>
         <Required>Y</Required>
-      </enabled>
-      <type type="OptionField">
-        <default>v6</default>
+      </force-reject>
+      <attachments-only type="BooleanField">
+        <default>1</default>
         <Required>Y</Required>
-        <OptionValues>
-          <v4>IPv4</v4>
-          <v6>IPv6</v6>
-        </OptionValues>
-      </type>
-      <network type="NetworkField">
-        <Required>Y</Required>
-      </network>
-      <startport type="IntegerField">
+      </attachments-only>
+      <max-size type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <MaximumValue>65535</MaximumValue>
-        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-      </startport>
-      <endport type="IntegerField">
-        <MinimumValue>1</MinimumValue>
+        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+      </max-size>
+      <whitelist type="CSVListField">
         <Required>N</Required>
-        <MaximumValue>65535</MaximumValue>
-        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-      </endport>
-      <action type="OptionField">
-          <default>accept</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <accept>Accept</accept>
-            <reject>Reject</reject>
-          </OptionValues>
-      </action>
-    </policy>
+      </whitelist>
+    </av>
   </items>
 </model>
