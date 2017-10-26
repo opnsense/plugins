@@ -130,8 +130,131 @@
     
     <rate_limit>
       <per_recipient>
-        <!-- TODO count time and unit -->
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </unit>
       </per_recipient>
+      <per_ip>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </unit>
+      </per_ip>
+      <per_ip_from>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </unit>
+      </per_ip_from>
+      <bounce>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </unit>
+      </bounce>
+      <bounce_ip>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </unit>
+      </bounce_ip>
+      <user>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </unit>
+      </user>
     </rate_limit>
     
     <spamtrap>
