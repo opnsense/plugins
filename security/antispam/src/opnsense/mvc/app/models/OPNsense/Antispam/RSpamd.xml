@@ -1,0 +1,205 @@
+<model>
+  <mount>//OPNsense/Antispam/RSpamd</mount>
+  <description>rspamd anti spam filter</description>
+  <items>
+    <general>
+      <enabled>
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+    </general>
+    
+    <graylist>
+      <expire type="IntegerField">
+        <Required>N</Required>
+      </expire>
+      <timeout type="IntegerField">
+        <Required>N</Required>
+      </timeout>
+      <max_data_len type="IntegerField">
+        <Required>N</Required>
+      </max_data_len>
+      <ipv4mask type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <MaximumValue>32</MaximumValue>
+        <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
+        <default>24</default>
+      </ipv4mask>
+      <startport type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <MaximumValue>128</MaximumValue>
+        <default>64</default>
+        <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
+      </startport>
+    </graylist>
+    
+    <dkim>
+      <cache_size type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+      </cache_size>
+      <cache_expire type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
+      </cache_expire>
+      <time_jitter type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid time jitter must be set.</ValidationMessage>
+      </time_jitter>
+      <trusted_only type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </trusted_only>
+      <skip_multi type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </skip_multi>
+      <!-- dkim signing -->
+      <allow_envfrom_empty type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_envfrom_empty>
+      <allow_hdrfrom_mismatch type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_hdrfrom_mismatch>
+      <allow_hdrfrom_multiple type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_hdrfrom_multiple>
+      <allow_username_mismatch type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_username_mismatch>
+      <auth_only type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </auth_only>
+      <sign_local type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </sign_local>
+      <try_fallback type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </try_fallback>
+      <use_domain type="OptionField">
+        <default>v6</default>
+        <Required>Y</Required>
+        <OptionValues>
+          <!-- TODO -->
+        </OptionValues>
+      </use_domain>
+      <use_esld type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </use_esld>
+    </dkim>
+    
+    <mx-check>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+      <expire type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
+      </expire>
+    </mx-check>
+    
+    <phishing>
+      <openphish_enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </openphish_enabled>
+      <openphish_premium_enabled>
+        <default>0</default>
+        <Required>Y</Required>
+      </openphish_premium_enabled>
+      <phishtank_enabled>
+        <default>0</default>
+        <Required>Y</Required>
+      </phishtank_enabled>
+    </phishing>
+    
+    <rate_limit>
+      <per_recipient>
+        <!-- TODO count time and unit -->
+      </per_recipient>
+    </rate_limit>
+    
+    <spamtrap>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+      <fuzzy_learning type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </fuzzy_learning>
+      <spam_learning type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </spam_learning>
+    </spamtrap>
+    
+    <spf>
+      <spf_cache_size type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+      </spf_cache_size>
+      <spf_cache_expire type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
+      </spf_cache_expire>
+    </spf>
+    
+    
+    
+    <policy type="ArrayField">
+      <enabled type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </enabled>
+      <type type="OptionField">
+        <default>v6</default>
+        <Required>Y</Required>
+        <OptionValues>
+          <v4>IPv4</v4>
+          <v6>IPv6</v6>
+        </OptionValues>
+      </type>
+      <network type="NetworkField">
+        <Required>Y</Required>
+      </network>
+      <startport type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <MaximumValue>65535</MaximumValue>
+        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+      </startport>
+      <endport type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <MaximumValue>65535</MaximumValue>
+        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+      </endport>
+      <action type="OptionField">
+          <default>accept</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <accept>Accept</accept>
+            <reject>Reject</reject>
+          </OptionValues>
+      </action>
+    </policy>
+  </items>
+</model>
