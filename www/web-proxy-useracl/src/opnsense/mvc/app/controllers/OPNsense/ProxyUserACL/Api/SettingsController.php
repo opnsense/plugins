@@ -36,6 +36,8 @@ use \OPNsense\Base\UIModelGrid;
 use \OPNsense\Auth\AuthenticationFactory;
 use \OPNsense\Proxy\Proxy;
 
+include_once('/usr/local/opnsense/contrib/simplepie/idn/idna_convert.class.php');
+
 /**
  * Class SettingsController Handles settings related API actions for the ProxyUserACL
  * @package OPNsense\ProxySSO
@@ -54,8 +56,12 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $this->sessionClose();
         $mdlProxyUserACL = $this->getModel();
+        foreach ($mdlProxyUserACL->general->ACLs->ACL->getNodes() as $uuid => $acl) {
+            $mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains = $this->decode($mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains);
+        }
         $grid = new UIModelGrid($mdlProxyUserACL->general->ACLs->ACL);
-        return $grid->fetchBindRequest($this->request, ["Group", "Name", "Domains", "Black", "Priority", "uuid"], "Priority");
+        return $grid->fetchBindRequest($this->request, array("Group", "Name", "Domains", "Black", "Priority", "uuid"),
+            "Priority");
     }
 
     /**
@@ -65,45 +71,50 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function addACLAction()
     {
-        if (!$this->request->isPost() || !$this->request->hasPost("ACL"))
-            return ["result" => "failed"];
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("ACL")) {
 
-        $result = ["result" => "failed", "validations" => []];
-        $mdlProxyUserACL = $this->getModel();
-        $post = $this->request->getPost("ACL");
-        $post["Hex"] = $this->strToHex($post["Name"]);
+            $result = array("result" => "failed", "validations" => array());
+            $mdlProxyUserACL = $this->getModel();
+            $post = $this->request->getPost("ACL");
+            $post["Hex"] = $this->strToHex($post["Name"]);
 
-        $count = count($mdlProxyUserACL->general->ACLs->ACL->getNodes());
-        if ($post["Priority"] > $count)
-            $post["Priority"] = $count;
-        foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority", true) as $acl)
-        {
-            $key = $acl->getAttributes()["uuid"];
-            $priority = (string)$mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority;
-            if ($priority < $post["Priority"])
-                break;
-            $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority + 1);
-        }
-        $node = $mdlProxyUserACL->general->ACLs->ACL->Add();
-        $node->setNodes($post);
-        $find = $this->checkName($post["Name"], $post["Group"]);
-        if ($find !== true)
-            $result["validations"]["ACL.Name"] = $find;
-        $valMsgs = $mdlProxyUserACL->performValidation();
+            $count = count($mdlProxyUserACL->general->ACLs->ACL->getNodes());
+            if ($post["Priority"] > $count) {
+                $post["Priority"] = $count;
+            }
+            foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority", true) as $acl) {
+                $key = $acl->getAttributes()["uuid"];
+                $priority = (string)$mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority;
+                if ($priority < $post["Priority"]) {
+                    break;
+                }
+                $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority + 1);
+            }
+            $node = $mdlProxyUserACL->general->ACLs->ACL->Add();
+            $post["Domains"] = \OPNsense\Proxy\Api\SettingsController::encode($post["Domains"]);
+            $node->setNodes($post);
+            $find = $this->checkName($post["Name"], $post["Group"]);
+            if ($find !== true) {
+                $result["validations"]["ACL.Name"] = $find;
+            }
+            $valMsgs = $mdlProxyUserACL->performValidation();
 
-        foreach ($valMsgs as $field => $msg)
-        {
-            $fieldnm = str_replace($node->__reference, "ACL", $msg->getField());
-            $result["validations"][$fieldnm] = $msg->getMessage();
-        }
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "ACL", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
 
-        if (count($result['validations']) > 0)
+            if (count($result['validations']) <= 0) {
+
+                // save config if validated correctly
+                $mdlProxyUserACL->serializeToConfig();
+                Config::getInstance()->save();
+                return array("result" => "saved");
+            }
             return $result;
-
-        // save config if validated correctly
-        $mdlProxyUserACL->serializeToConfig();
-        Config::getInstance()->save();
-        return ["result" => "saved"];
+        }
+        return $result;
     }
 
     /**
@@ -114,21 +125,20 @@ class SettingsController extends ApiMutableModelControllerBase
     public function getACLAction($uuid = null)
     {
         $mdlProxyUserACL = $this->getModel();
-        if ($uuid == null)
-        {
+        if ($uuid == null) {
             // generate new node, but don't save to disc
             $node = $mdlProxyUserACL->general->ACLs->ACL->add();
-            return ["ACL" => $node->getNodes()];
+            return array("ACL" => $node->getNodes());
         }
 
         $node = $mdlProxyUserACL->getNodeByReference('general.ACLs.ACL.' . $uuid);
-        if ($node != null)
-        {
+        if ($node != null) {
             // return node
-            return ["ACL" => $node->getNodes()];
+            $node->Domains = $this->decode((string)$node->Domains);
+            return array("ACL" => $node->getNodes());
         }
 
-        return [];
+        return array();
     }
 
     /**
@@ -138,76 +148,78 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function setACLAction($uuid)
     {
-        if (!$this->request->isPost() || !$this->request->hasPost("ACL"))
-            return ["result" => "failed"];
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("ACL")) {
 
-        $mdlProxyUserACL = $this->getModel();
-        if ($uuid == null)
-            return ["result" => "failed"];
+            $mdlProxyUserACL = $this->getModel();
+            if ($uuid != null) {
 
-        $node = $mdlProxyUserACL->getNodeByReference('general.ACLs.ACL.' . $uuid);
-        if ($node == null)
-            return ["result" => "failed"];
+                $node = $mdlProxyUserACL->getNodeByReference('general.ACLs.ACL.' . $uuid);
+                if ($node != null) {
+                    $result = array("result" => "failed", "validations" => array());
+                    $ACLInfo = $this->request->getPost("ACL");
+                    $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
+                    $ACLInfo["Domains"] = \OPNsense\Proxy\Api\SettingsController::encode($ACLInfo["Domains"]);
+                    $old_priority = (string)$node->Priority;
+                    $new_priority = $ACLInfo["Priority"];
 
-        $result = ["result" => "failed", "validations" => []];
-        $ACLInfo = $this->request->getPost("ACL");
-        $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
-        $old_priority = (string) $node->Priority;
-        $new_priority = $ACLInfo["Priority"];
+                    if ($new_priority < $old_priority) {
+                        if ($new_priority < 0) {
+                            $new_priority = 0;
+                        }
 
-        if ($new_priority < $old_priority)
-        {
-            if ($new_priority < 0)
-                $new_priority = 0;
+                        foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority", true) as $acl) {
+                            $key = $acl->getAttributes()["uuid"];
+                            $priority = (string)$mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority;
+                            if ($priority < $new_priority) {
+                                break;
+                            }
+                            if ($priority >= $old_priority) {
+                                continue;
+                            }
+                            $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority + 1);
+                        }
+                    } elseif (($new_priority > $old_priority)) {
+                        $count = count($mdlProxyUserACL->general->ACLs->ACL->getNodes());
+                        if ($new_priority >= $count) {
+                            $new_priority = $count - 1;
+                            $ACLInfo["Priority"] = $new_priority;
+                        }
+                        foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority") as $acl) {
+                            $key = $acl->getAttributes()["uuid"];
+                            $priority = (string)$mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority;
+                            if ($priority > $new_priority) {
+                                break;
+                            }
+                            if ($priority <= $old_priority) {
+                                continue;
+                            }
+                            $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority - 1);
+                        }
+                    }
+                    $node->setNodes($ACLInfo);
+                    $find = $this->checkName($ACLInfo["Name"], $ACLInfo["Group"]);
+                    if ($find !== true) {
+                        $result["validations"]["ACL.Name"] = $find;
+                    }
+                    $valMsgs = $mdlProxyUserACL->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "ACL", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
 
-            foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority", true) as $acl)
-            {
-                $key = $acl->getAttributes()["uuid"];
-                $priority = (string)$mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority;
-                if ($priority < $new_priority)
-                    break;
-                if ($priority >= $old_priority)
-                    continue;
-                $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority + 1);
+                    if (count($result['validations']) > 0) {
+                        return $result;
+                    }
+
+                    // save config if validated correctly
+                    $mdlProxyUserACL->serializeToConfig();
+                    Config::getInstance()->save();
+                    return array("result" => "saved");
+                }
             }
         }
-        elseif (($new_priority > $old_priority))
-        {
-            $count = count($mdlProxyUserACL->general->ACLs->ACL->getNodes());
-            if ($new_priority >= $count)
-            {
-                $new_priority = $count - 1;
-                $ACLInfo["Priority"] = $new_priority;
-            }
-            foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority") as $acl)
-            {
-                $key = $acl->getAttributes()["uuid"];
-                $priority = (string)$mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority;
-                if ($priority > $new_priority)
-                    break;
-                if ($priority <= $old_priority)
-                    continue;
-                $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)($priority - 1);
-            }
-        }
-        $node->setNodes($ACLInfo);
-        $find = $this->checkName($ACLInfo["Name"], $ACLInfo["Group"]);
-        if ($find !== true)
-            $result["validations"]["ACL.Name"] = $find;
-        $valMsgs = $mdlProxyUserACL->performValidation();
-        foreach ($valMsgs as $field => $msg)
-        {
-            $fieldnm = str_replace($node->__reference, "ACL", $msg->getField());
-            $result["validations"][$fieldnm] = $msg->getMessage();
-        }
-
-        if (count($result['validations']) > 0)
-            return $result;
-
-        // save config if validated correctly
-        $mdlProxyUserACL->serializeToConfig();
-        Config::getInstance()->save();
-        return ["result" => "saved"];
+        return $result;
     }
 
     /**
@@ -217,21 +229,19 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function delACLAction($uuid)
     {
-
-        if (!$this->request->isPost() || $uuid == null)
-            return ["result" => "failed"];
-
-        $mdlProxyUserACL = $this->getModel();
-        if ($mdlProxyUserACL->general->ACLs->ACL->del($uuid))
-        {
-            // if item is removed, serialize to config and save
-            $this->repackPriority();
-            $mdlProxyUserACL->serializeToConfig();
-            Config::getInstance()->save();
-            $result['result'] = 'deleted';
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $uuid != null) {
+            $mdlProxyUserACL = $this->getModel();
+            if ($mdlProxyUserACL->general->ACLs->ACL->del($uuid)) {
+                // if item is removed, serialize to config and save
+                $this->repackPriority();
+                $mdlProxyUserACL->serializeToConfig();
+                Config::getInstance()->save();
+                $result['result'] = 'deleted';
+            } else {
+                $result['result'] = 'not found';
+            }
         }
-        else
-            $result['result'] = 'not found';
 
         return $result;
     }
@@ -244,41 +254,43 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function updownACLAction($uuid)
     {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $uuid != null && $this->request->hasPost("command")) {
 
-        if (!$this->request->isPost() || $uuid == null || !$this->request->hasPost("command"))
-            return ["result" => "failed"];
+            $mdlProxyUserACL = $this->getModel();
+            $count = $this->repackPriority();
+            $nodes = $mdlProxyUserACL->general->ACLs->ACL->getNodes();
+            $acl = $nodes[$uuid];
+            $priority = $acl["Priority"];
+            switch ($this->request->getPost("command")) {
+                case "up":
+                    $new_priority = $priority - 1;
+                    if ($new_priority < 0) {
+                        return array("result" => "success");
+                    }
+                    break;
 
-        $mdlProxyUserACL = $this->getModel();
-        $count = $this->repackPriority();
-        $nodes = $mdlProxyUserACL->general->ACLs->ACL->getNodes();
-        $acl = $nodes[$uuid];
-        $priority = $acl["Priority"];
-        switch ($this->request->getPost("command"))
-        {
-            case "up":
-                $new_priority = $priority - 1;
-                if ($new_priority < 0)
-                    return ["result" => "success"];
-                break;
+                case "down":
+                    $new_priority = $priority + 1;
+                    if ($new_priority >= $count) {
+                        return array("result" => "success");
+                    }
+                    break;
 
-            case "down":
-                $new_priority = $priority + 1;
-                if ($new_priority >= $count)
-                    return ["result" => "success"];
-                break;
-
-            default:
-                return ["result" => "failed"];
-        }
-        foreach ($nodes as $key => $node)
-            if ($node["Priority"] == $new_priority)
-            {
-                $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)$priority;
-                $mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Priority = (string)$new_priority;
-                $mdlProxyUserACL->serializeToConfig();
-                Config::getInstance()->save();
-                return ['result' => 'success'];
+                default:
+                    return array("result" => "failed");
             }
+            foreach ($nodes as $key => $node) {
+                if ($node["Priority"] == $new_priority) {
+                    $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)$priority;
+                    $mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Priority = (string)$new_priority;
+                    $mdlProxyUserACL->serializeToConfig();
+                    Config::getInstance()->save();
+                    return array('result' => 'success');
+                }
+            }
+        }
+        return $result;
     }
 
     private function checkName($user, $search)
@@ -286,42 +298,46 @@ class SettingsController extends ApiMutableModelControllerBase
         $authFactory = new AuthenticationFactory();
         $servers = $authFactory->listServers();
 
-        foreach (explode(',', (new Proxy())->forward->authentication->method) as $method)
-        {
-            if ($method == "")
+        foreach (explode(',', (new Proxy())->forward->authentication->method) as $method) {
+            if ($method == "") {
                 return gettext("No authentication method selected");
+            }
             $server = $servers[$method];
-            switch ($server["type"])
-            {
+            switch ($server["type"]) {
                 case "ldap":
-                    if (!isset($server["ldap_binddn"]))
+                    if (!isset($server["ldap_binddn"])) {
                         return gettext("LDAP user name is not specified");
+                    }
 
-                    if (!isset($server["ldap_bindpw"]))
+                    if (!isset($server["ldap_bindpw"])) {
                         return gettext("LDAP user password is not specified");
+                    }
 
                     $ldapBindURL = strstr($server['ldap_urltype'], "Standard") ? "ldap://" : "ldaps://";
                     $ldapBindURL .= strpos($server['host'], "::") !== false ? "[{$server['host']}]" : $server['host'];
                     $ldapBindURL .= !empty($server['ldap_port']) ? ":{$server['ldap_port']}" : "";
                     $ldap_auth_server = $authFactory->get($server["name"]);
-                    if ($ldap_auth_server->connect($ldapBindURL, $server["ldap_binddn"], $server["ldap_bindpw"]) == false)
+                    if ($ldap_auth_server->connect($ldapBindURL, $server["ldap_binddn"],
+                            $server["ldap_bindpw"]) == false) {
                         return gettext("Error connecting to LDAP server");
+                    }
 
-                    try
-                    {
+                    try {
                         $users = $ldap_auth_server->searchUsers($user, $server["ldap_attr_user"]);
-                    } catch (\Exception $e)
-                    {
+                    } catch (\Exception $e) {
                         break;
                     }
-                    if ($users !== false && count($users) > 0)
+                    if ($users !== false && count($users) > 0) {
                         return true;
+                    }
                     break;
 
                 case "local":
-                    foreach (Config::getInstance()->object()->system->{"$search"} as $item)
-                        if ($user == (string)$item->name)
+                    foreach (Config::getInstance()->object()->system->{"$search"} as $item) {
+                        if ($user == (string)$item->name) {
                             return true;
+                        }
+                    }
                     break;
 
                 default:
@@ -335,8 +351,7 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $mdlProxyUserACL = $this->getModel();
         $count = 0;
-        foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority") as $node)
-        {
+        foreach ($mdlProxyUserACL->general->ACLs->ACL->sortedBy("Priority") as $node) {
             $key = $node->getAttributes()["uuid"];
             $mdlProxyUserACL->general->ACLs->ACL->{$key}->Priority = (string)$count++;
         }
@@ -346,8 +361,21 @@ class SettingsController extends ApiMutableModelControllerBase
     private function strToHex(string $string)
     {
         $hex = '';
-        for ($i = 0; $i < strlen($string); $i++)
+        for ($i = 0; $i < strlen($string); $i++) {
             $hex .= dechex(ord($string[$i]));
+        }
         return $hex;
+    }
+
+    private function decode($domains)
+    {
+        $IDN = new \idna_convert();
+        $result = array();
+        foreach (explode(",", $domains) as $domain) {
+            if ($domain != "") {
+                $result[] = $IDN->decode($domain);
+            }
+        }
+        return implode(",", $result);
     }
 }
