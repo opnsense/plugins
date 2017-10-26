@@ -1,4 +1,4 @@
-PLUGIN_NAME=          antispam
+PLUGIN_NAME=          rspamd
 PLUGIN_VERSION=       0.1
 PLUGIN_COMMENT=       Package to configure rspamd to protect your network from malware and spam
 PLUGIN_DEPENDS=       rspamd os-clamav
