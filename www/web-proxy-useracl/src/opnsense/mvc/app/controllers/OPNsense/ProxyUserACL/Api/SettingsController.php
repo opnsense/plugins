@@ -55,11 +55,15 @@ class SettingsController extends ApiMutableModelControllerBase
         $this->sessionClose();
         $mdlProxyUserACL = $this->getModel();
         foreach ($mdlProxyUserACL->general->ACLs->ACL->getNodes() as $uuid => $acl) {
-            $mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains = $this->decode($mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains);
+            $mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains =
+                $this->decode($mdlProxyUserACL->general->ACLs->ACL->{$uuid}->Domains);
         }
         $grid = new UIModelGrid($mdlProxyUserACL->general->ACLs->ACL);
-        return $grid->fetchBindRequest($this->request, array("Group", "Name", "Domains", "Black", "Priority", "uuid"),
-            "Priority");
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("Group", "Name", "Domains", "Black", "Priority", "uuid"),
+            "Priority"
+        );
     }
 
     /**
@@ -71,7 +75,6 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("ACL")) {
-
             $result = array("result" => "failed", "validations" => array());
             $mdlProxyUserACL = $this->getModel();
             $post = $this->request->getPost("ACL");
@@ -104,7 +107,6 @@ class SettingsController extends ApiMutableModelControllerBase
             }
 
             if (count($result['validations']) <= 0) {
-
                 // save config if validated correctly
                 $mdlProxyUserACL->serializeToConfig();
                 Config::getInstance()->save();
@@ -148,10 +150,8 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("ACL")) {
-
             $mdlProxyUserACL = $this->getModel();
             if ($uuid != null) {
-
                 $node = $mdlProxyUserACL->getNodeByReference('general.ACLs.ACL.' . $uuid);
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
@@ -254,7 +254,6 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $uuid != null && $this->request->hasPost("command")) {
-
             $mdlProxyUserACL = $this->getModel();
             $count = $this->repackPriority();
             $nodes = $mdlProxyUserACL->general->ACLs->ACL->getNodes();
@@ -315,8 +314,11 @@ class SettingsController extends ApiMutableModelControllerBase
                     $ldapBindURL .= strpos($server['host'], "::") !== false ? "[{$server['host']}]" : $server['host'];
                     $ldapBindURL .= !empty($server['ldap_port']) ? ":{$server['ldap_port']}" : "";
                     $ldap_auth_server = $authFactory->get($server["name"]);
-                    if ($ldap_auth_server->connect($ldapBindURL, $server["ldap_binddn"],
-                            $server["ldap_bindpw"]) == false) {
+                    if ($ldap_auth_server->connect(
+                        $ldapBindURL,
+                        $server["ldap_binddn"],
+                        $server["ldap_bindpw"]
+                    ) == false) {
                         return gettext("Error connecting to LDAP server");
                     }
 
