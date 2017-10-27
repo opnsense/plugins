@@ -283,7 +283,7 @@
       <spf_cache_expire type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <ValidationMessage>A valid expiration time in days must be set.</ValidationMessage>
+        <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
       </spf_cache_expire>
     </spf>
     
@@ -306,14 +306,13 @@
         <Required>N</Required>
       </whitelist>
     </av>
+    <surbl>
       <whitelist type="CSVListField">
         <Required>N</Required>
       </whitelist>
       <exceptions type="CSVListField">
         <Required>N</Required>
       </exceptions>
-    <surbl>
-      
     </surbl>
   </items>
 </model>
