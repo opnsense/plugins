@@ -62,7 +62,7 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun('postfix checkrspamd');
+            $response = $backend->configdRun("firmware plugin rspamd");
             return array("response" => $response);
         } else {
             return array("response" => array());
