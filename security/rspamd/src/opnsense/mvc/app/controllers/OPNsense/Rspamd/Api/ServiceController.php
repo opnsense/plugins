@@ -30,9 +30,110 @@
 namespace OPNsense\Rspamd\Api;
 
 use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Core\Backend;
+use \OPNsense\Rspamd\RSpamd;
 
 class ServiceController extends ApiControllerBase
 {
-    public function statusAction(){ return array('status' => 'running'); }
-    public function reconfigureAction(){ return array('status' => 'ok'); }
+    
+    /**
+     * restart rspamd service
+     * @return array
+     */
+    public function restartAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('rspamd restart');
+            return array('response' => $response);
+        } else {
+            return array('response' => array());
+        }
+    }
+
+    /**
+     * retrieve status of rspamd
+     * @return array
+     * @throws \Exception
+     */
+    public function statusAction()
+    {
+        $backend = new Backend();
+        $rspamd = new RSpamd();
+        $response = $backend->configdRun('rspamd status');
+
+        if (strpos($response, 'not running') > 0) {
+            if ((string)$rspamd->general->enabled == 1) {
+                $status = 'stopped';
+            } else {
+                $status = 'disabled';
+            }
+        } elseif (strpos($response, 'is running') > 0) {
+            $status = 'running';
+        } elseif ((string)$rspamd->general->enabled == 0) {
+            $status = 'disabled';
+        } else {
+            $status = 'unknown';
+        }
+
+
+        return array('status' => $status);
+    }
+
+    /**
+     * reconfigure rspamd, generate config and reload
+     */
+    public function reconfigureAction()
+    {
+        if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
+
+            $rspamd = new RSpamd();
+            $backend = new Backend();
+
+            $this->stopAction();
+
+            // generate template
+            $backend->configdRun('template reload OPNsense/Rspamd');
+
+            // (re)start daemon
+            if ((string)$rspamd->general->enabled == '1') {
+                $this->startAction();
+            }
+
+            return array('status' => 'ok');
+        } else {
+            return array('status' => 'failed');
+        }
+    }
+
+    /**
+     * stop rspamd service
+     * @return array
+     */
+    public function stopAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('rspamd stop');
+            return array('response' => $response);
+        } else {
+            return array('response' => array());
+        }
+    }
+    /**
+     * start rspamd service
+     * @return array
+     */
+    public function startAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('rspamd start');
+            return array('response' => $response);
+        } else {
+            return array('response' => array());
+        }
+    }
 }
