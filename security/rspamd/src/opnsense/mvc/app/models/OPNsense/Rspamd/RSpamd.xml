@@ -12,9 +12,11 @@
     <graylist>
       <expire type="IntegerField">
         <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
       </expire>
       <timeout type="IntegerField">
         <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
       </timeout>
       <max_data_len type="IntegerField">
         <Required>N</Required>
@@ -24,7 +26,7 @@
         <Required>N</Required>
         <MaximumValue>32</MaximumValue>
         <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
-        <default>24</default>
+        <default>19</default>
       </ipv4mask>
       <ipv6mask type="IntegerField">
         <MinimumValue>1</MinimumValue>
