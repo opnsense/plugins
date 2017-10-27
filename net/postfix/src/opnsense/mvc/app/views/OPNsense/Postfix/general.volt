@@ -26,9 +26,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<div class="alert alert-warning" role="alert" id="missing_rspamd" style="display:none;min-height:65px;">
-    <div style="margin-top: 8px;">{{ lang._('No Rspamd plugin found, please install via System > Firmware > Plugins.')}}</div>
-</div>
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#antispam">{{ lang._('Antispam') }}</a></li>
@@ -45,6 +42,9 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
     <div id="antispam" class="tab-pane fade in">
         <div class="content-box" style="padding-bottom: 1.5em;">
+	    <div class="alert alert-warning" role="alert" id="missing_rspamd" style="display:none;min-height:65px;">
+                <div style="margin-top: 8px;">{{ lang._('No Rspamd plugin found, please install via System > Firmware > Plugins.')}}</div>
+            </div>
             {{ partial("layout_partials/base_form",['fields':antispamForm,'id':'frm_antispam_settings'])}}
             <hr />
             <div class="col-md-12">
