@@ -20,7 +20,7 @@
             <Required>N</Required>
         </myorigin>
         <inet_interfaces type="TextField">
-            <default>ALL</default>
+            <default>all</default>
             <Required>Y</Required>
         </inet_interfaces>
         <mynetworks type="NetworkField">
