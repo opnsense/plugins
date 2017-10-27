@@ -27,6 +27,8 @@ readme_directory = no
 inet_protocols = all
 meta_directory = /usr/local/libexec/postfix
 shlib_directory = /usr/local/lib/postfix
+relay_domains = hash:/usr/local/etc/postfix/transport
+transport_maps = hash:/usr/local/etc/postfix/transport
 ##########################
 # END SYSTEM DEFAULTS
 ##########################
