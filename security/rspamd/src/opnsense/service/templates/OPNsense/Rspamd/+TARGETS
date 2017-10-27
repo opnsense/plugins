@@ -1,1 +1,3 @@
 rspamd:/etc/rc.conf.d/rspamd
+antivirus.wl:/usr/local/etc/rspamd/local.d/antivirus.wl
+antivirus.conf:/usr/local/etc/rspamd/local.d/antivirus.conf

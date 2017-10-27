@@ -297,8 +297,9 @@
       </attachments-only>
       <max-size type="IntegerField">
         <MinimumValue>1</MinimumValue>
+        <default>20000000</default>
         <Required>N</Required>
-        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+        <ValidationMessage>A valid maximum size in bytes must be set.</ValidationMessage>
       </max-size>
       <whitelist type="CSVListField">
         <Required>N</Required>
