@@ -29,6 +29,6 @@ use OPNsense\Base\BaseModel;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-class General extends BaseModel
+class Antispam extends BaseModel
 {
 }
