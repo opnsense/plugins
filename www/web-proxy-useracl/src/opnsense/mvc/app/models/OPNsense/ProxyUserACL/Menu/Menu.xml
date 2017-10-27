@@ -1,8 +1,7 @@
 <menu>
 	<Services>
 		<WebProxy>
-			<ProxyUserACL VisibleName="Group and User ACL" cssClass="fa fa-shield fa-fw" order="30" url="/ui/proxyuseracl/" >
-			</ProxyUserACL>
+			<ProxyUserACL VisibleName="Group and User ACL" cssClass="fa fa-shield fa-fw" order="30" url="/ui/proxyuseracl/"/>
 		</WebProxy>
 	</Services>
 </menu>
