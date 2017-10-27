@@ -50,6 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#saveAct").click(function () {
             saveFormToEndpoint(url="/api/postfix/general/set", formid='frm_general_settings',callback_ok=function () {
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/postfix/service/maketransport", sendData={});
                 ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function (data,status) {
                     ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function (data,status) {
                         updateServiceStatusUI(data['status']);
