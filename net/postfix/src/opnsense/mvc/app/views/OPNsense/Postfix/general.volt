@@ -85,11 +85,11 @@ POSSIBILITY OF SUCH DAMAGE.
             saveFormToEndpoint(url="/api/postfix/antispam/set", formid='frm_antispam_settings',callback_ok=function(){
 		    $("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/postfix/service/maketransport", sendData={});
-                ajaxCall(url="/api/postfix/antispam/reconfigure", sendData={}, callback=function(data,status) {
-                    ajaxCall(url="/api/postfix/antispam/status", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function(data,status) {
                         updateServiceStatusUI(data['status']);
                     });
-			        $("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
+	            $("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
         });
