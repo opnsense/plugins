@@ -1,4 +1,8 @@
 <?php
+namespace OPNsense\Postfix;
+
+use OPNsense\Base\BaseModel;
+
 /*
     Copyright (C) 2017 Michael Muenz
     All rights reserved.
@@ -25,15 +29,6 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\Postfix;
-
-class GeneralController extends \OPNsense\Base\IndexController
+class General extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->title = gettext("Postfix Settings");
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->antispamForm = $this->getForm("antispam");
-        $this->view->pick('OPNsense/Postfix/general');
-    }
 }

@@ -27,11 +27,28 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-    <hr />
-    <div class="col-md-12">
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress" class=""></i></button>
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#antispam">{{ lang._('Antispam') }}</a></li>
+</ul>
+<div class="tab-content content-box tab-content">
+    <div id="general" class="tab-pane fade in active">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+            <hr />
+            <div class="col-md-12">
+                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="antispam" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':antispamForm,'id':'frm_antispam_settings'])}}
+            <hr />
+            <div class="col-md-12">
+                <button class="btn btn-primary"  id="saveAct2" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct2_progress" class=""></i></button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -39,6 +56,11 @@ POSSIBILITY OF SUCH DAMAGE.
     $( document ).ready(function () {
         var data_get_map = {'frm_general_settings':"/api/postfix/general/get"};
         mapDataToFormUI(data_get_map).done(function (data) {
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
+        var data_get_map2 = {'frm_antivirus_settings':"/api/postfix/antispam/get"};
+        mapDataToFormUI(data_get_map2).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
@@ -56,6 +78,18 @@ POSSIBILITY OF SUCH DAMAGE.
                         updateServiceStatusUI(data['status']);
                     });
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
+            });
+        });
+        $("#saveAct2").click(function(){
+            saveFormToEndpoint(url="/api/postfix/antispam/set", formid='frm_antispam_settings',callback_ok=function(){
+		    $("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/postfix/service/maketransport", sendData={});
+                ajaxCall(url="/api/postfix/antispam/reconfigure", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/postfix/antispam/status", sendData={}, callback=function(data,status) {
+                        updateServiceStatusUI(data['status']);
+                    });
+			        $("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
         });
