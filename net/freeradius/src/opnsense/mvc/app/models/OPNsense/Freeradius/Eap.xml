@@ -4,7 +4,7 @@
     <version>1.0.0</version>
     <items>
         <default_eap_type type="OptionField">
-            <default>MD5</default>
+            <default>md5</default>
             <Required>Y</Required>
             <multiple>N</multiple>
             <OptionValues>
