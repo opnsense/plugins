@@ -8,7 +8,7 @@
         <Required>Y</Required>
       </enabled>
     </general>
-    
+
     <graylist>
       <expire type="IntegerField">
         <Required>N</Required>
@@ -36,7 +36,7 @@
         <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
       </ipv6mask>
     </graylist>
-    
+
     <dkim>
       <cache_size type="IntegerField">
         <MinimumValue>1</MinimumValue>
@@ -103,7 +103,7 @@
         <Required>Y</Required>
       </use_esld>
     </dkim>
-    
+
     <mx-check>
       <enabled type="BooleanField">
         <default>0</default>
@@ -116,7 +116,7 @@
         <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
       </expire>
     </mx-check>
-    
+
     <phishing>
       <openphish_enabled type="BooleanField">
         <default>0</default>
@@ -131,7 +131,7 @@
         <Required>Y</Required>
       </phishtank_enabled>
     </phishing>
-    
+
     <rate_limit>
       <per_recipient>
         <count type="IntegerField">
@@ -268,7 +268,7 @@
         <default>20</default>
       </max_rcpt>
     </rate_limit>
-    
+
     <spamtrap>
       <enabled type="BooleanField">
         <default>0</default>
@@ -283,7 +283,7 @@
         <Required>Y</Required>
       </spam_learning>
     </spamtrap>
-    
+
     <spf>
       <spf_cache_size type="IntegerField">
         <MinimumValue>1</MinimumValue>
@@ -297,7 +297,7 @@
         <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
       </spf_cache_expire>
     </spf>
-    
+
     <av>
       <force-reject type="BooleanField">
         <default>1</default>
@@ -317,6 +317,7 @@
         <Required>N</Required>
       </whitelist>
     </av>
+
     <surbl>
       <whitelist type="CSVListField">
         <Required>N</Required>
