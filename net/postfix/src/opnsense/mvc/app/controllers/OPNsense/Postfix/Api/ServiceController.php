@@ -60,13 +60,10 @@ class ServiceController extends ApiControllerBase
      */
     public function checkrspamdAction()
     {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = $backend->configdRun("firmware plugin rspamd");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
+        $backend = new Backend();
+        $mdlGeneral = new General();
+        $response = $backend->configdRun("firmware plugin rspamd");
+        return $response;
     }
 
     /**
