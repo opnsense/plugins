@@ -356,7 +356,7 @@ class SettingsController extends ApiMutableModelControllerBase
         return $count;
     }
 
-    private function strToHex(string $string)
+    private function strToHex($string)
     {
         $hex = '';
         for ($i = 0; $i < strlen($string); $i++) {
