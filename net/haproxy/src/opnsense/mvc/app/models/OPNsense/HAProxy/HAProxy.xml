@@ -567,7 +567,7 @@
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </port>
                 <checkport type="IntegerField">
                     <default></default>
