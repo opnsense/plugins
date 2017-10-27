@@ -1,0 +1,5 @@
+/usr/local/opnsense/scripts/OPNsense/ProxyUserACL/reconfigure.php
+if [ -f /var/run/squid/squid.pid ]; then
+	service squid reload
+fi
+
