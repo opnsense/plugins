@@ -39,7 +39,7 @@ myhostname = {{ system.hostname }}
 {% if helpers.exists('OPNsense.postfix.general.mydomain') and OPNsense.postfix.general.mydomain != '' %}
 mydomain = {{ OPNsense.postfix.general.mydomain }}
 {% else %}
-mydomain = {{ system.domainname }}
+mydomain = {{ system.domain }}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.myorigin') and OPNsense.postfix.general.myorigin != '' %}
 myorigin = {{ OPNsense.postfix.general.myorigin }}
