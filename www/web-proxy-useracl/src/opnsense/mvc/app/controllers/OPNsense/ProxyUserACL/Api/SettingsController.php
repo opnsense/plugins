@@ -36,8 +36,6 @@ use \OPNsense\Base\UIModelGrid;
 use \OPNsense\Auth\AuthenticationFactory;
 use \OPNsense\Proxy\Proxy;
 
-include_once('/usr/local/opnsense/contrib/simplepie/idn/idna_convert.class.php');
-
 /**
  * Class SettingsController Handles settings related API actions for the ProxyUserACL
  * @package OPNsense\ProxySSO
@@ -369,11 +367,10 @@ class SettingsController extends ApiMutableModelControllerBase
 
     private function decode($domains)
     {
-        $IDN = new \idna_convert();
         $result = array();
         foreach (explode(",", $domains) as $domain) {
             if ($domain != "") {
-                $result[] = $IDN->decode($domain);
+                $result[] = idn_to_utf8($domain);
             }
         }
         return implode(",", $result);
