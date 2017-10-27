@@ -40,6 +40,21 @@ use \OPNsense\Postfix\General;
 class ServiceController extends ApiControllerBase
 {
     /**
+     * make transporttable
+     * @return array
+     */
+    public function maketransportAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('postfix make-transport');
+            return array("response" => $response);
+        } else {
+            return array("response" => array());
+        }
+    }
+    
+    /**
      * start postfix service (in background)
      * @return array
      */
