@@ -14,7 +14,7 @@
     <field>
         <id>general.mydomain</id>
         <label>System Domain</label>
-        <type>test</type>
+        <type>text</type>
         <help>The 'System Domain' parameter specifies the local internet domain name. The default is to use 'System Hostname' minus the first component. It is used as a default value for many other configuration parameters.</help>
     </field>
     <field>
