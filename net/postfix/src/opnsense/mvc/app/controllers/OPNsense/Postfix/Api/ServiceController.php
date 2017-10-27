@@ -53,7 +53,22 @@ class ServiceController extends ApiControllerBase
             return array("response" => array());
         }
     }
-    
+
+    /**
+     * check rspamd
+     * @return array
+     */
+    public function checkrspamdAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('postfix checkrspamd');
+            return array("response" => $response);
+        } else {
+            return array("response" => array());
+        }
+    }
+
     /**
      * start postfix service (in background)
      * @return array
