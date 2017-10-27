@@ -181,7 +181,8 @@ eap {
                 private_key_password =
                 private_key_file = ${certdir}/cert_opn.pem
                 certificate_file = ${certdir}/cert_opn.pem
-{%   else %}
+{%   endif %}              
+{% else %}
                 private_key_password = whatever
                 private_key_file = ${certdir}/server.pem
                 #  If Private key & Certificate are located in
@@ -195,7 +196,6 @@ eap {
                 #  of the CA certificates used to sign the
                 #  server certificate.
                 certificate_file = ${certdir}/server.pem
-{%   endif %}
 {% endif %}
                 #  Trusted Root CA list
                 #
@@ -210,9 +210,9 @@ eap {
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
 {%   if helpers.exists('OPNsense.freeradius.eap.ca') and OPNsense.freeradius.eap.ca != '' %}
                 ca_file = ${certdir}/ca_opn.pem
-{%   else %}
-                ca_file = ${cadir}/ca.pem
 {%   endif %}
+{% else %}
+                ca_file = ${cadir}/ca.pem
 {% endif %}
                 #  OpenSSL will automatically create certificate chains,
                 #  unless we tell it to not do that.  The problem is that
@@ -298,9 +298,9 @@ eap {
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
 {%   if helpers.exists('OPNsense.freeradius.eap.crl') and OPNsense.freeradius.eap.crl != '' %}
                 check_crl = yes
-{%   else %}
-        #       check_crl = yes
 {%   endif %}
+{% else %}
+        #       check_crl = yes
 {% endif %}
                 # Check if intermediate CAs have been revoked.
         #       check_all_crl = yes
