@@ -2,7 +2,7 @@
   <Services>
     <Postfix cssClass="fa fa-envelope fa-fw">
       <General url="/ui/postfix/general/index" order="10"/>
-      <User url="/ui/postfix/domain/index" order="20"/>
+      <Domains url="/ui/postfix/domain/index" order="20"/>
     </Postfix>
   </Services>
 </menu>
