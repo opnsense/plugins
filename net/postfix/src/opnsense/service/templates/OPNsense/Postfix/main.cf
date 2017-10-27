@@ -49,7 +49,7 @@ myorigin = $myhostname
 {% if helpers.exists('OPNsense.postfix.general.inet_interfaces') and OPNsense.postfix.general.inet_interfaces != '' %}
 inet_interfaces = {{ OPNsense.postfix.general.inet_interfaces }}
 {% else %}
-inet_interfaces = ALL
+inet_interfaces = all
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.mynetworks') and OPNsense.postfix.general.mynetworks != '' %}
 mynetworks = {{ OPNsense.postfix.general.mynetworks }}
