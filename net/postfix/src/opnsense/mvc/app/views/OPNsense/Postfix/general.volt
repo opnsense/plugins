@@ -37,21 +37,21 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
     $( document ).ready(function () {
-        var data_get_map = {'frm_general_settings':"/api/freeradius/general/get"};
+        var data_get_map = {'frm_general_settings':"/api/postfix/general/get"};
         mapDataToFormUI(data_get_map).done(function (data) {
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
-        ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data, status) {
+        ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function (data, status) {
             updateServiceStatusUI(data['status']);
         });
 
         // link save button to API set action
         $("#saveAct").click(function () {
-            saveFormToEndpoint(url="/api/freeradius/general/set", formid='frm_general_settings',callback_ok=function () {
+            saveFormToEndpoint(url="/api/postfix/general/set", formid='frm_general_settings',callback_ok=function () {
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function (data,status) {
-                    ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data,status) {
+                ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function (data,status) {
+                    ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function (data,status) {
                         updateServiceStatusUI(data['status']);
                     });
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
