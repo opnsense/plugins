@@ -75,9 +75,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
-</ul>
 <div class="tab-content content-box tab-content">
     <div id="domains" class="tab-pane fade in active">
         <!-- tab page "domains" -->
