@@ -71,7 +71,7 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
 	// check if Rspamd plugin is installed
-        ajaxCall(url="/api/postfix/service/checkrspmad", sendData={}, callback=function(data,status) {
+        ajaxCall(url="/api/postfix/service/checkrspamd", sendData={}, callback=function(data,status) {
 	    if (data == "0") {
                 $('#missing_rspamd').show();
             }
