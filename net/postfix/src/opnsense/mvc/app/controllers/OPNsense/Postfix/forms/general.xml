@@ -39,6 +39,6 @@
         <id>general.banner</id>
         <label>SMTP Banner</label>
         <type>text</type>
-        <help>The smtpd_banner parameter specifies the text that follows the 220 code in the SMTP server's greeting banner. Default is <'System Hostname' ESMTP Postfix>.</help>
+        <help>The smtpd_banner parameter specifies the text that follows the 220 code in the SMTP server's greeting banner. Default is "'System Hostname' ESMTP Postfix".</help>
     </field>
 </form>
