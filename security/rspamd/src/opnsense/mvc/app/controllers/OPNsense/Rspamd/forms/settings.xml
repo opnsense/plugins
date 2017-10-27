@@ -235,6 +235,18 @@
                 <label>User Limit: Time Unit</label>
                 <type>dropdown</type>
             </field>
+            <field>
+                <id>rspamd.rate_limit.whitelisted_rcpts</id>
+                <label>Whitelist Recipients</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.max_rcpt</id>
+                <label>Maximum Recipients</label>
+                <type>text</type>
+            </field>
         </subtab>
         <subtab id="rspamd-anti-spam-spamtrap" description="Spam Trap">
             <field>

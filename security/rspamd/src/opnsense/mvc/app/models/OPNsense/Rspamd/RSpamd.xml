@@ -112,6 +112,7 @@
       <expire type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
+        <default>86400</default>
         <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
       </expire>
     </mx-check>
@@ -258,6 +259,14 @@
           </OptionValues>
         </time_unit>
       </user>
+      <whitelisted_rcpts type="CSVListField">
+        <default>postmaster,mailer-daemon</default>
+      </whitelisted_rcpts>
+      <max_rcpt type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>Y</Required>
+        <default>20</default>
+      </max_rcpt>
     </rate_limit>
     
     <spamtrap>
