@@ -1,0 +1,4 @@
+main.cf:/usr/local/etc/postfix/main.cf
+master.cf:/usr/local/etc/postfix/master.cf
+postfix:/etc/rc.conf.d/postfix
+transport:/usr/local/etc/postfix/transport
