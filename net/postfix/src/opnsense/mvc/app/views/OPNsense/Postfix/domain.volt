@@ -53,6 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         $("#reconfigureAct").click(function(){
             $("#reconfigureAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/postfix/service/make-transport", sendData={});
             ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function(data,status) {
                 // when done, disable progress animation.
                 $("#reconfigureAct_progress").removeClass("fa fa-spinner fa-pulse");
