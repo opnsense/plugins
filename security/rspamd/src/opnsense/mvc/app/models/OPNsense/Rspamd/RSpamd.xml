@@ -61,7 +61,7 @@
       </skip_multi>
       <!-- dkim signing -->
       <allow_envfrom_empty type="BooleanField">
-        <default>0</default>
+        <default>1</default>
         <Required>Y</Required>
       </allow_envfrom_empty>
       <allow_hdrfrom_mismatch type="BooleanField">
@@ -77,11 +77,11 @@
         <Required>Y</Required>
       </allow_username_mismatch>
       <auth_only type="BooleanField">
-        <default>0</default>
+        <default>1</default>
         <Required>Y</Required>
       </auth_only>
       <sign_local type="BooleanField">
-        <default>0</default>
+        <default>1</default>
         <Required>Y</Required>
       </sign_local>
       <try_fallback type="BooleanField">
@@ -97,7 +97,7 @@
         </OptionValues>
       </use_domain>
       <use_esld type="BooleanField">
-        <default>0</default>
+        <default>1</default>
         <Required>Y</Required>
       </use_esld>
     </dkim>
@@ -277,12 +277,13 @@
       <spf_cache_size type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+        <default>2</default>
+        <ValidationMessage>A valid cache size in kilobytes must be set.</ValidationMessage>
       </spf_cache_size>
       <spf_cache_expire type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
+        <ValidationMessage>A valid expiration time in days must be set.</ValidationMessage>
       </spf_cache_expire>
     </spf>
     
