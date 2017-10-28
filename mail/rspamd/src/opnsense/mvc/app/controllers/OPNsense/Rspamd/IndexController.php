@@ -31,6 +31,8 @@
 
 namespace OPNsense\Rspamd;
 
+use \OPNsense\Core\Backend;
+
 /**
 * Class IndexController
 * @package OPNsense/Rspamd
@@ -39,7 +41,9 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("Mail Protection");
+        $backend = new Backend();
+        $this->view->clamav_installed = (trim($backend->configdRun('firmware plugin clamav')) == '1');
+        $this->view->title = gettext("Rspamd Mail Protection");
         $this->view->settings = $this->getForm("settings");
         $this->view->pick('OPNsense/Rspamd/index');
     }

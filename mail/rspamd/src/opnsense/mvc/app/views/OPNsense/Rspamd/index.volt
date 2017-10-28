@@ -94,6 +94,12 @@
 
 </script>
 
+{% if !clamav_installed %}
+<div class="alert alert-warning" role="alert" id="missing_clamav" style="min-height:65px;">
+    <div style="margin-top: 8px;">{{ lang._('No ClamAV plugin found, please install via %sSystem > Firmware > Plugins%s. If the plugin is not installed and enabled, mails cannot be scanned for malware.')|format('<a href="/ui/core/firmware/#plugins">','</a>')}}</div>
+</div>
+{% endif %}
+
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
 {% for tab in settings['tabs']|default([]) %}
     {% if tab['subtabs']|default(false) %}
