@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <antispam VisibleName="Mail Protection" cssClass="fa fa-envelope fa-fw" url="/ui/rspamd/" />
+    <antispam VisibleName="Rspamd" cssClass="fa fa-envelope fa-fw" url="/ui/rspamd/" />
   </Services>
 </menu>
