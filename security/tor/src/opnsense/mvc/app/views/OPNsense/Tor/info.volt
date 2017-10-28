@@ -44,7 +44,7 @@ $( document ).ready(function() {
         var tmp = '';
         for (var name in data) {
             if (data.hasOwnProperty(name)) {
-                tmp += '<tr><td>' + name + '</td><td>' + data[name].replace("\n",'<br />') + '</td></tr>';
+                tmp += '<tr><td>' + name + '</td><td>' + data[name].split("\n").join('<br />') + '</td></tr>';
             }
         }
 
