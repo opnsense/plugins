@@ -115,11 +115,22 @@ $( document ).ready(function() {
           'options':{selection:false, multiSelect:false}
         }
     );
+    $("#grid-hidservauth").UIBootgrid(
+        { 'search':'/api/tor/general/searchhidservauth',
+          'get':'/api/tor/general/gethidservauth/',
+          'set':'/api/tor/general/sethidservauth/',
+          'add':'/api/tor/general/addhidservauth/',
+          'del':'/api/tor/general/delhidservauth/',
+          'toggle':'/api/tor/general/togglehidservauth/',
+          'options':{selection:false, multiSelect:false}
+        }
+    );
 });
 
 </script>
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#hidservauth">{{ lang._('Onion Service Authentication') }}</a></li>
     <li><a data-toggle="tab" href="#acl">{{ lang._('SOCKS Proxy ACL') }}</a></li>
     <li><a data-toggle="tab" href="#hidden">{{ lang._('Onion Services') }}</a></li>
     <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Onion Service Routing') }}</a></li>
@@ -184,6 +195,31 @@ $( document ).ready(function() {
               </tr>
           </tfoot>
       </table>
+    </div>
+    <div id="hidservauth" class="tab-pane fade in">
+        <table id="grid-hidservauth" class="table table-responsive" data-editDialog="hidservauthdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="onion_service" data-type="string" data-visible="true">{{ lang._('Onion Service') }}</th>
+                    <th data-column-id="auth_cookie" data-type="string" data-visible="true">{{ lang._('Authentication Cookie') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
     <div id="hiddenrouting" class="tab-pane fade in">
         <table id="grid-hiddenacl" class="table table-responsive" data-editDialog="hiddenserviceacl">
@@ -257,3 +293,4 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': hidden_service,'id':'hiddenservicedlg', 'label':lang._('Edit Onion Service')]) }}
 {{ partial("layout_partials/base_dialog",['fields': hidden_service_acl,'id':'hiddenserviceacl', 'label':lang._('Edit Onion Service Route')]) }}
 {{ partial("layout_partials/base_dialog",['fields': exitpolicy,'id':'torexitacldlg', 'label':lang._('Edit Exit Node ACL')]) }}
+{{ partial("layout_partials/base_dialog",['fields': hidservauth,'id':'hidservauthdlg', 'label':lang._('Edit Hidden Service Credentials')]) }}
