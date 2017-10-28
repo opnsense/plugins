@@ -45,6 +45,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->hidden_service = $this->getForm("hidden_service");
         $this->view->hidden_service_acl = $this->getForm("hidden_service_acl");
         $this->view->relay = $this->getForm("relay");
+        $this->view->hidservauth = $this->getForm("hidservauth");
         $this->view->exitpolicy = $this->getForm("acl_exitpolicy");
         $this->view->pick('OPNsense/Tor/general');
     }
@@ -53,5 +54,20 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("The Onion Router - Information");
         $this->view->pick('OPNsense/Tor/info');
+    }
+    public function diagnosticsAction()
+    {
+        $this->view->title = gettext("The Onion Router - Diagnostics");
+        if ($this->is_tor_running()) {
+            $this->view->pick('OPNsense/Tor/diagnostics');
+        }
+        else {
+            $this->view->pick('OPNsense/Tor/error');
+        }
+    }
+    private function is_tor_running()
+    {
+        $status = (new Api\ServiceController())->statusAction();
+        return $status['status'] == 'running';
     }
 }

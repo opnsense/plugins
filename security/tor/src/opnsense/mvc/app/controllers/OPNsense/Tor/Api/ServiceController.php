@@ -157,4 +157,24 @@ class ServiceController extends ApiControllerBase
             return array('status' => 'failed');
         }
     }
+    /**
+     * query tor circuits
+     * @return array
+     */
+    public function circuitsAction()
+    {
+        $backend = new Backend();
+        $response = json_decode($backend->configdRun('tor circuit'));
+        return array('response' => $response);
+    }
+    /**
+     * query tor streams
+     * @return array
+     */
+    public function streamsAction()
+    {
+        $backend = new Backend();
+        $response = json_decode($backend->configdRun('tor streams'));
+        return array('response' => $response);
+    }
 }

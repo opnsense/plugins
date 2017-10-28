@@ -88,6 +88,15 @@ VirtualAddrNetwork {{ OPNsense.tor.general.transparent_ip_pool }}
 AutomapHostsOnResolve {{ OPNsense.tor.general.dns_map_hosts }}
 {% endif %}
 
+## Client Authentication
+{% if helpers.exists('OPNsense.tor.general.client_authentications.client_auth') %}
+{%   for service in helpers.toList('OPNsense.tor.general.client_authentications.client_auth') %}
+{%     if service.enabled == '1' %}
+HidServAuth {{ service.onion_service }} {{ service.auth_cookie }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
 {% if helpers.exists('OPNsense.tor.hiddenservice') and helpers.exists('OPNsense.tor.hiddenserviceacl') and helpers.exists('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
 
 ############### This section is just for location-hidden services ###

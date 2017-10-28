@@ -1,8 +1,9 @@
 <menu>
   <Services>
-    <tor VisibleName="Tor" cssClass="fa fa-bolt fa-fw">
-      <configuration VisibleName="Configuration" url="/ui/tor/" />
-      <info VisibleName="Information" url="/ui/tor/index/info" />
-    </tor>
+    <Tor VisibleName="Tor" cssClass="fa fa-bolt fa-fw">
+      <Configuration url="/ui/tor/" />
+      <Information url="/ui/tor/index/info" />
+      <Diagnostics url="/ui/tor/index/diagnostics" />
+    </Tor>
   </Services>
 </menu>
