@@ -181,7 +181,7 @@ eap {
                 private_key_password =
                 private_key_file = ${certdir}/cert_opn.pem
                 certificate_file = ${certdir}/cert_opn.pem
-{%   endif %}              
+{%   endif %}
 {% else %}
                 private_key_password = whatever
                 private_key_file = ${certdir}/server.pem
