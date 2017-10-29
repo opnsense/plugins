@@ -40,21 +40,6 @@ use \OPNsense\Postfix\General;
 class ServiceController extends ApiControllerBase
 {
     /**
-     * make transporttable
-     * @return array
-     */
-    public function maketransportAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = $backend->configdRun('postfix make-transport');
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
      * check rspamd
      * @return array
      */
@@ -159,6 +144,7 @@ class ServiceController extends ApiControllerBase
 
             // generate template
             $backend->configdRun('template reload OPNsense/Postfix');
+            $backend->configdRun('postfix make-transport');
 
             // (res)start daemon
             if ($mdlGeneral->enabled->__toString() == 1) {
