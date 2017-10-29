@@ -1,0 +1,9 @@
+<acl>
+   <page-services-postfix>
+      <name>Services: Postfix</name>
+      <patterns>
+         <pattern>ui/postfix/*</pattern>
+         <pattern>api/postfix/*</pattern>
+      </patterns>
+   </page-services-postfix>
+</acl>

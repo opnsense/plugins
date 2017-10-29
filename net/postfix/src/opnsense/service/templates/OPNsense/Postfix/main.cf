@@ -1,0 +1,75 @@
+{% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
+
+##########################
+# START SYSTEM DEFAULTS
+##########################
+compatibility_level = 2
+queue_directory = /var/spool/postfix
+command_directory = /usr/local/sbin
+daemon_directory = /usr/local/libexec/postfix
+data_directory = /var/db/postfix
+mail_owner = postfix
+unknown_local_recipient_reject_code = 550
+mynetworks_style = host
+debug_peer_level = 2
+debugger_command =
+         PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+         ddd $daemon_directory/$process_name $process_id & sleep 5
+
+sendmail_path = /usr/local/sbin/sendmail
+newaliases_path = /usr/local/bin/newaliases
+mailq_path = /usr/local/bin/mailq
+setgid_group = maildrop
+html_directory = no
+manpage_directory = /usr/local/man
+sample_directory = /usr/local/etc/postfix
+readme_directory = no
+inet_protocols = all
+meta_directory = /usr/local/libexec/postfix
+shlib_directory = /usr/local/lib/postfix
+relay_domains = hash:/usr/local/etc/postfix/transport
+transport_maps = hash:/usr/local/etc/postfix/transport
+##########################
+# END SYSTEM DEFAULTS
+##########################
+
+{% if helpers.exists('OPNsense.postfix.general.myhostname') and OPNsense.postfix.general.myhostname != '' %}
+myhostname = {{ OPNsense.postfix.general.myhostname }}
+{% else %}
+myhostname = {{ system.hostname }}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.mydomain') and OPNsense.postfix.general.mydomain != '' %}
+mydomain = {{ OPNsense.postfix.general.mydomain }}
+{% else %}
+mydomain = {{ system.domain }}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.myorigin') and OPNsense.postfix.general.myorigin != '' %}
+myorigin = {{ OPNsense.postfix.general.myorigin }}
+{% else %}
+myorigin = $myhostname
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.inet_interfaces') and OPNsense.postfix.general.inet_interfaces != '' %}
+inet_interfaces = {{ OPNsense.postfix.general.inet_interfaces }}
+{% else %}
+inet_interfaces = all
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.mynetworks') and OPNsense.postfix.general.mynetworks != '' %}
+mynetworks = {{ OPNsense.postfix.general.mynetworks }}
+{% else %}
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.banner') and OPNsense.postfix.general.banner != '' %}
+smtpd_banner = {{ OPNsense.postfix.general.banner }}
+{% else %}
+smtpd_banner = $myhostname ESMTP Postfix
+{% endif %}
+
+{% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
+smtpd_milters = inet:localhost:11332
+non_smtpd_milters = inet:localhost:11332
+milter_protocol = 6
+milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_authen}
+milter_default_action = accept
+{% endif %}
+
+{% endif %}
