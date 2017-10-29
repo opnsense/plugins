@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir /var/spool/postfix/
+mkdir -p /var/spool/postfix/
 chown root:wheel /var/spool/postfix 
 chmod 755 /var/spool/postfix 
 
