@@ -81,7 +81,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#saveAct").click(function () {
             saveFormToEndpoint(url="/api/postfix/general/set", formid='frm_general_settings',callback_ok=function () {
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/postfix/service/maketransport", sendData={});
                 ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function (data,status) {
                     ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function (data,status) {
                         updateServiceStatusUI(data['status']);
@@ -93,7 +92,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#saveAct2").click(function(){
             saveFormToEndpoint(url="/api/postfix/antispam/set", formid='frm_antispam_settings',callback_ok=function(){
 		    $("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/postfix/service/maketransport", sendData={});
                 ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function(data,status) {
                     ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function(data,status) {
                         updateServiceStatusUI(data['status']);
