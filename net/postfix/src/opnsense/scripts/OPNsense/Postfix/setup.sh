@@ -10,4 +10,4 @@ for DIR in ${POSTFIX_DIRS}; do
 	chown -R ${POSTFIX_USER}:${POSTFIX_GROUP} ${DIR}
 done
 
-
+postmap /usr/local/etc/postfix/transport
