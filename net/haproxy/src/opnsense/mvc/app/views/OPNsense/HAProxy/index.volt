@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2016 Frank Wall
+Copyright (C) 2016-2017 Frank Wall
 OPNsense® is Copyright © 2014 – 2015 by Deciso B.V.
 All rights reserved.
 
@@ -145,6 +145,59 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             }
         );
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAcl').on('shown.bs.modal', function (e) {
+            $("#acl\\.expression").change(function(){
+                var service_id = 'table_' + $(this).val();
+                $(".expression_table").hide();
+                // $(".table_"+$(this).val()).show();
+                $("."+service_id).show();
+            });
+            $("#acl\\.expression").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAction').on('shown.bs.modal', function (e) {
+            $("#action\\.type").change(function(){
+                var service_id = 'table_' + $(this).val();
+                $(".type_table").hide();
+                // $(".table_"+$(this).val()).show();
+                $("."+service_id).show();
+            });
+            $("#action\\.type").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogBackend').on('shown.bs.modal', function (e) {
+            $("#backend\\.healthCheckEnabled").change(function(){
+                var service_id = 'table_healthcheck_' + $(this).is(':checked');
+                $(".healthcheck_table").hide();
+                $("."+service_id).show();
+            });
+            $("#backend\\.healthCheckEnabled").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogFrontend').on('shown.bs.modal', function (e) {
+            $("#frontend\\.mode").change(function(){
+                var service_id = 'table_' + $(this).val();
+                $(".mode_table").hide();
+                $("."+service_id).show();
+            });
+            $("#frontend\\.mode").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogHealthcheck').on('shown.bs.modal', function (e) {
+            $("#healthcheck\\.type").change(function(){
+                var service_id = 'table_' + $(this).val();
+                $(".type_table").hide();
+                // $(".table_"+$(this).val()).show();
+                $("."+service_id).show();
+            });
+            $("#healthcheck\\.type").change();
+        })
 
         /***********************************************************************
          * Commands
@@ -308,50 +361,158 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
-{% for tab in mainForm['tabs']|default([]) %}
-    {% if tab['subtabs']|default(false) %}
+    {# manually add tabs #}
+    <li class="active"><a data-toggle="tab" href="#introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" href="#servers"><i class="fa fa-check-square"></i> {{ lang._('Real Servers') }}</a></li>
+        </ul>
+    </li>
+
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" href="#subtab_haproxy-virtual-services-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="tab" href="#subtab_haproxy-virtual-services-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" href="#backends"><i class="fa fa-check-square"></i> {{ lang._('Backend Pools') }}</a></li>
+            <li><a data-toggle="tab" href="#frontends"><i class="fa fa-check-square"></i> {{ lang._('Public Services') }}</a></li>
+        </ul>
+    </li>
+
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" href="#subtab_haproxy-rules-checks-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="tab" href="#subtab_haproxy-rules-checks-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" href="#healthchecks"><i class="fa fa-check-square"></i> {{ lang._('Health Monitors') }}</a></li>
+            <li><a data-toggle="tab" href="#acls"><i class="fa fa-check-square"></i> {{ lang._('Conditions') }}</a></li>
+            <li><a data-toggle="tab" href="#actions"><i class="fa fa-check-square"></i> {{ lang._('Rules') }}</a></li>
+        </ul>
+    </li>
+
+    {# add automatically generated tabs #}
+    {% for tab in mainForm['tabs']|default([]) %}
+        {% if tab['subtabs']|default(false) %}
         {# Tab with dropdown #}
-
-        {# Find active subtab #}
-            {% set active_subtab="" %}
-            {% for subtab in tab['subtabs']|default({}) %}
-                {% if subtab[0]==mainForm['activetab']|default("") %}
-                    {% set active_subtab=subtab[0] %}
-                {% endif %}
-            {% endfor %}
-
-        <li role="presentation" class="dropdown {% if mainForm['activetab']|default("") == active_subtab %}active{% endif %}">
+        <li role="presentation" class="dropdown">
             <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
                 <b><span class="caret"></span></b>
             </a>
             <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
             <ul class="dropdown-menu" role="menu">
                 {% for subtab in tab['subtabs']|default({})%}
-                <li class="{% if mainForm['activetab']|default("") == subtab[0] %}active{% endif %}"><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                <li><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
                 {% endfor %}
             </ul>
         </li>
-    {% else %}
+        {% else %}
         {# Standard Tab #}
-        <li {% if mainForm['activetab']|default("") == tab[0] %} class="active" {% endif %}>
+        <li>
                 <a data-toggle="tab" href="#tab_{{tab[0]}}">
                     <b>{{tab[1]}}</b>
                 </a>
         </li>
-    {% endif %}
-{% endfor %}
-    {# add custom content #}
-    <li><a data-toggle="tab" href="#frontends"><b>{{ lang._('Frontends') }}</b></a></li>
-    <li><a data-toggle="tab" href="#backends"><b>{{ lang._('Backends') }}</b></a></li>
-    <li><a data-toggle="tab" href="#servers"><b>{{ lang._('Servers') }}</b></a></li>
-    <li><a data-toggle="tab" href="#healthchecks"><b>{{ lang._('Health Checks') }}</b></a></li>
-    <li><a data-toggle="tab" href="#actions"><b>{{ lang._('Actions') }}</b></a></li>
-    <li><a data-toggle="tab" href="#acls"><b>{{ lang._('ACLs') }}</b></a></li>
-    <li><a data-toggle="tab" href="#luas"><b>{{ lang._('Lua Scripts') }}</b></a></li>
-    <li><a data-toggle="tab" href="#errorfiles"><b>{{ lang._('Error Files') }}</b></a></li>
+        {% endif %}
+    {% endfor %}
+
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" href="#subtab_haproxy-advanced-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="tab" href="#subtab_haproxy-advanced-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" href="#errorfiles"><i class="fa fa-check-square"></i> {{ lang._('Error Messages') }}</a></li>
+            <li><a data-toggle="tab" href="#luas"><i class="fa fa-check-square"></i> {{ lang._('Lua Scripts') }}</a></li>
+        </ul>
+    </li>
 </ul>
 
 <div class="content-box tab-content">
+    <div id="introduction" class="tab-pane fade in active">
+        <div class="col-md-12">
+            <h1>Quick Start Guide</h1>
+            <p>{{ lang._('Welcome to the HAProxy plugin! This plugin is designed to offer all the features and flexibility HAProxy is famous for. If you are using HAProxy for the first time, please take some time to get familiar with it. The following information should help you to get started.')}}</p>
+            <p>{{ lang._('Note that you should configure HAProxy in the following order:') }}</p>
+            <ul>
+              <li>{{ lang._('Add %sReal Servers:%s All physical or virtual servers that HAProxy should use to load balance between or proxy to.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Add %sBackend Pools:%s Group the previously added servers to build a server farm. All servers in a group usually deliver the same content. The Backend Pool takes care of health monitoring and load distribution. A Backend Pool must be configured even if you only have a single server.') | format('<b>', '</b>')}}</li>
+              <li>{{ lang._('Add %sPublic Services:%s The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Lastly, enable HAProxy using the %sService Settings%s.') | format('<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
+            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <br/>
+        </div>
+    </div>
+
+    <div id="subtab_haproxy-real-servers-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>Real Servers</h1>
+            <p>{{ lang._('HAProxy needs to know which servers should be used to serve content. The following minimum information must be provided for each server:') }}</p>
+            <ul>
+              <li>{{ lang._('%sFQDN or IP:%s The IP address or fully-qualified domain name that should be used when communicating with your server.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sPort:%s The TCP or UDP port that should be used. If unset, the same port the client connected to will be used.') | format('<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._("Please note that advanced mode settings allow you to disable a certain server or to configure it as a backup server in a Backend Pool. Another neat option is the possibility to adjust a server's weight relative to other servers in the same Backend Pool.") }}</p>
+            <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
+            <br/>
+        </div>
+    </div>
+
+    <div id="subtab_haproxy-virtual-services-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>Virtual Services</h1>
+            <p>{{ lang._("HAProxy requires two virtual services for its load balancing and proxying features. The following virtual services must be configured for everything that should be served by HAProxy:") }}</p>
+            <ul>
+              <li>{{ lang._('%sBackend Pools:%s The HAProxy backend. Group the %spreviously added servers%s to build a server farm. All servers in a group usually deliver the same content. The Backend Pool cares for health monitoring and load distribution. A Backend Pool must also be configured if you only have a single server. The same Backend Pool may be used for multiple Public Services.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._('%sPublic Services:%s The HAProxy frontend. The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying. Every Public Service needs to be connected to a %spreviously created Backend Pool%s.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('Remember to add firewall rules for all configured Public Services.') }}</p>
+            <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
+            <br/>
+        </div>
+    </div>
+
+    <div id="subtab_haproxy-rules-checks-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>Rules &amp; Checks</h1>
+            <p>{{ lang._("After getting acquainted with HAProxy the following optional features may prove useful:") }}</p>
+            <ul>
+              <li>{{ lang._('%sHealth Monitors:%s The HAProxy "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
+            <br/>
+        </div>
+    </div>
+
+    <div id="subtab_haproxy-advanced-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>Advanced Features</h1>
+            <p>{{ lang._("Most of the time these features are not required, but in certain situations they will be handy:") }}</p>
+            <ul>
+              <li>{{ lang._("%sError Messages:%s Return a custom message instead of errors generated by HAProxy. Useful to overwrite HAProxy's internal error messages. The message must represent the full HTTP response and include required HTTP headers.") | format('<b>', '</b>') }}</li>
+              <li>{{ lang._("%sLua scripts:%s Include your own Lua code/scripts to extend HAProxy's functionality. The Lua code can be used in certain %sRules%s, for example.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s and the %sLua Script%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#lua-load" target="_blank">', '</a>') }}</p>
+            <br/>
+        </div>
+    </div>
+
+    {# add automatically generated tabs #}
     {% for tab in mainForm['tabs']|default([]) %}
         {% if tab['subtabs']|default(false) %}
             {# Tab with dropdown #}
@@ -374,8 +535,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="frontendid" data-type="number"  data-visible="false">{{ lang._('Frontend ID') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Frontend Name') }}</th>
+                <th data-column-id="frontendid" data-type="number"  data-visible="false">{{ lang._('Public Service ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Public Service Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -409,8 +570,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="backendid" data-type="number"  data-visible="false">{{ lang._('Backend ID') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Backend Name') }}</th>
+                <th data-column-id="backendid" data-type="number"  data-visible="false">{{ lang._('Backend Pool ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Backend Pool Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -443,7 +604,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer">
             <thead>
             <tr>
-                <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server id') }}</th>
+                <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Server Name') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Server Address') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Server Port') }}</th>
@@ -479,8 +640,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-healthchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogHealthcheck">
             <thead>
             <tr>
-                <th data-column-id="healthcheckid" data-type="number"  data-visible="false">{{ lang._('Health Check ID') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Health Check Name') }}</th>
+                <th data-column-id="healthcheckid" data-type="number"  data-visible="false">{{ lang._('Health Monitor ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Health Monitor Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -513,8 +674,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction">
             <thead>
             <tr>
-                <th data-column-id="actionid" data-type="number"  data-visible="false">{{ lang._('Action ID') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Action Name') }}</th>
+                <th data-column-id="actionid" data-type="number"  data-visible="false">{{ lang._('Rule ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Rule Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -547,8 +708,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAcl">
             <thead>
             <tr>
-                <th data-column-id="aclid" data-type="number"  data-visible="false">{{ lang._('ACL id') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('ACL Name') }}</th>
+                <th data-column-id="aclid" data-type="number"  data-visible="false">{{ lang._('Condition ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Condition Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -582,7 +743,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="luaid" data-type="number"  data-visible="false">{{ lang._('Lua ID') }}</th>
+                <th data-column-id="luaid" data-type="number"  data-visible="false">{{ lang._('Lua Script ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Lua Script Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
@@ -616,8 +777,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-errorfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogErrorfile">
             <thead>
             <tr>
-                <th data-column-id="errorfileid" data-type="number"  data-visible="false">{{ lang._('Error File ID') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                <th data-column-id="errorfileid" data-type="number"  data-visible="false">{{ lang._('Error Message ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Error Message Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -647,11 +808,11 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogFrontend,'id':'DialogFrontend','label':lang._('Edit Frontend')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogBackend,'id':'DialogBackend','label':lang._('Edit Backend')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogFrontend,'id':'DialogFrontend','label':lang._('Edit Public Service')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogBackend,'id':'DialogBackend','label':lang._('Edit Backend Pool')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogServer,'id':'DialogServer','label':lang._('Edit Server')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHealthcheck,'id':'DialogHealthcheck','label':lang._('Edit Health Check')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Action')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAcl,'id':'DialogAcl','label':lang._('Edit ACL')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHealthcheck,'id':'DialogHealthcheck','label':lang._('Edit Health Monitor')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Rule')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAcl,'id':'DialogAcl','label':lang._('Edit Condition')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':lang._('Edit Lua Script')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error File')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error Message')])}}

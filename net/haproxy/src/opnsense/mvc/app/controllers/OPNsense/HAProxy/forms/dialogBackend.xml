@@ -3,32 +3,32 @@
         <id>backend.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this backend</help>
+        <help>Enable this Backend Pool</help>
     </field>
     <field>
         <id>backend.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this backend.</help>
+        <help>Name to identify this Backend Pool.</help>
     </field>
     <field>
         <id>backend.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this backend.</help>
+        <help>Description for this Backend Pool.</help>
     </field>
     <field>
         <id>backend.mode</id>
         <label>Mode</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the running mode or protocol of the backend. Usually the frontend and the backend are in the same mode.]]></help>
+        <help><![CDATA[Set the running mode or protocol of the Backend Pool. Usually the Public Service and the Backend Pool are in the same mode.]]></help>
         <hint>Set the same mode for backend and frontend.</hint>
     </field>
     <field>
         <id>backend.algorithm</id>
         <label>Balancing Algorithm</label>
         <type>dropdown</type>
-        <help><![CDATA[Define the load balancing algorithm to be used in a backend. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.6.html#balance">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#balance">HAProxy documentation</a> for a full description.]]></help>
         <hint>Choose a load balancing algorithm.</hint>
     </field>
     <field>
@@ -48,20 +48,21 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Health Checking</label>
-        <type>header</type>
-    </field>
-    <field>
         <id>backend.healthCheckEnabled</id>
-        <label>Enabled</label>
+        <label>Enable Health Checking</label>
         <type>checkbox</type>
         <help><![CDATA[Enable or disable health checking.]]></help>
     </field>
     <field>
+        <label>Health Checking</label>
+        <type>header</type>
+        <style>healthcheck_table table_healthcheck_true</style>
+    </field>
+    <field>
         <id>backend.healthCheck</id>
-        <label>Health check</label>
+        <label>Health Monitor</label>
         <type>dropdown</type>
-        <help><![CDATA[Select health check for servers in this backend.]]></help>
+        <help><![CDATA[Select Health Monitor for servers in this backend.]]></help>
     </field>
     <field>
         <id>backend.healthCheckLogStatus</id>
@@ -77,7 +78,7 @@
         <id>backend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.6.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
+        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
         <hint>Choose a persistence type.</hint>
     </field>
     <field>
@@ -141,7 +142,7 @@
         <id>backend.customOptions</id>
         <label>Option pass-through</label>
         <type>textbox</type>
-        <help><![CDATA[These lines will be added to the HAProxy backend configuration.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <help><![CDATA[These lines will be added to the HAProxy backend configuration.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -159,27 +160,27 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Actions (ACLs)</label>
+        <label>Rules</label>
         <type>header</type>
     </field>
     <field>
         <id>backend.linkedActions</id>
-        <label>Actions</label>
+        <label>Select Rules</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[Choose actions to be included in this backend.]]></help>
-        <hint>Choose actions.</hint>
+        <help><![CDATA[Choose rules to be included in this Backend Pool.]]></help>
+        <hint>Choose rules.</hint>
     </field>
     <field>
-        <label>Error Files</label>
+        <label>Error Messages</label>
         <type>header</type>
     </field>
     <field>
         <id>backend.linkedErrorfiles</id>
-        <label>Error files</label>
+        <label>Select Error Messages</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[Choose error files to be included in this backend.]]></help>
-        <hint>Choose error files.</hint>
+        <help><![CDATA[Choose error messages to be included in this Backend Pool.]]></help>
+        <hint>Choose error messages.</hint>
     </field>
 </form>
