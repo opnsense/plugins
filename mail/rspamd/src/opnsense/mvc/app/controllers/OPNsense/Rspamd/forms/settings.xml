@@ -267,6 +267,14 @@
                 <type>checkbox</type>
                 <help>Enable this if you want to enable bayes learning.</help>
             </field>
+            <field>
+                <id>rspamd.spamtrap.spam_recipients</id>
+                <label>Recipients</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Enter regular expressions in the form trap@example\.com into this field. The value is automatically enclosed in slashes and the case insensitive option is added.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-anti-spam-spf" description="Sender Policy Framework (SPF)">
             <field>

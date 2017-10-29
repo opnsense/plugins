@@ -282,6 +282,9 @@
         <default>1</default>
         <Required>Y</Required>
       </spam_learning>
+      <spam_recipients type="CSVListField">
+        <Required>N</Required>
+      </spam_recipients>
     </spamtrap>
 
     <spf>

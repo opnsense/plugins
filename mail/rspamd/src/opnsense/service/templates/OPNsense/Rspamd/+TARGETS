@@ -11,3 +11,4 @@ greylist.conf:/usr/local/etc/rspamd/local.d/greylist.conf
 phishing.conf:/usr/local/etc/rspamd/local.d/phishing.conf
 mx_check.conf:/usr/local/etc/rspamd/local.d/mx_check.conf
 ratelimit.conf:/usr/local/etc/rspamd/local.d/ratelimit.conf
+spamtrap.map:/usr/local/etc/rspamd/maps.d/spamtrap.map
