@@ -66,6 +66,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 www/c-icap -- c-icap connects your Proxy with a virus scanner
 www/web-proxy-sso -- Kerberos authentication module
+www/web-proxy-useracl -- Group and user ACL for the web proxy
 ```
 
 A brief description of how to use the plugins repository
