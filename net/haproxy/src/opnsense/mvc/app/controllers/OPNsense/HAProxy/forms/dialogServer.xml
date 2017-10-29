@@ -22,7 +22,7 @@
         <id>server.port</id>
         <label>Port</label>
         <type>text</type>
-        <help><![CDATA[Provide the TCP communication port for this server, i.e. 80 or 443.]]></help>
+        <help><![CDATA[Provide the TCP communication port for this server, i.e. 80 or 443. If set, all connections will be sent to this port. If unset, the same port the client connected to will be used.]]></help>
     </field>
     <field>
         <id>server.mode</id>
