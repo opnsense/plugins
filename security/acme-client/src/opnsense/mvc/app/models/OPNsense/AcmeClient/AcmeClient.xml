@@ -1,7 +1,7 @@
 <model>
 
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <description>
         a secure Let's Encrypt plugin
     </description>
@@ -430,6 +430,12 @@
                 <dns_gd_secret type="TextField">
                     <Required>N</Required>
                 </dns_gd_secret>
+                <dns_he_user type="TextField">
+                    <Required>N</Required>
+                </dns_he_user>
+                <dns_he_password type="TextField">
+                    <Required>N</Required>
+                </dns_he_password>
                 <dns_ispconfig_user type="TextField">
                     <Required>N</Required>
                 </dns_ispconfig_user>

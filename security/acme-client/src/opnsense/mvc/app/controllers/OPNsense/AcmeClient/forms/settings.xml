@@ -27,7 +27,7 @@
         <id>acmeclient.settings.challengePort</id>
         <label>Local HTTP Port</label>
         <type>text</type>
-        <help><![CDATA[When using HTTP-01 as validation method, a local webserver is used to provide acme challenge data to the Let's Encrypt servers. This setting allows you to change the local port of this webserver in case it interferes with another local services. Defaults to port 43580.]]></help>
+        <help><![CDATA[When using HTTP-01 as validation method, a local webserver is used to provide acme challenge data to the Let's Encrypt servers. The local webserver is NOT directly exposed to the outside and should NOT use port 80 or any other well-known port. This setting allows you to change the local port of this webserver in case it interferes with another local service. Defaults to port 43580.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

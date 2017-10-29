@@ -40,7 +40,6 @@ function acmeclient_firewall($fw)
         return;
     }
 
-    // TODO
     $fw->registerAnchor('acme-client/*', 'nat');
     $fw->registerAnchor('acme-client/*', 'rdr');
     $fw->registerAnchor('acme-client/*', 'fw');
@@ -73,18 +72,7 @@ function acmeclient_services()
 }
 
 /**
- *  sync configuration via xmlrpc
- * @return array
- */
-
-/**
-XXX: needs investigation, auto-renewal must be disabled on secondary node(s)
-function acmeclient_xmlrpc_sync()
-{
-    $result = array();
-    $result['id'] = 'acmeclient';
-    $result['section'] = 'OPNsense.acmeclient';
-    $result['description'] = gettext('Let\'s Encrypt client');
-    return array($result);
-}
+ *  NOTE: Does NOT support configuration sync (xmlrpc). The required acme.sh
+ *        state files are missing on the secondary node and thus all attempts
+ *        to renew a certificate on the secondary node would fail.
  */
