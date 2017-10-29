@@ -462,7 +462,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <p>{{ lang._('HAProxy needs to know which servers should be used to serve content. The following minimum information must be provided for each server:') }}</p>
             <ul>
               <li>{{ lang._('%sFQDN or IP:%s The IP address or fully-qualified domain name that should be used when communicating with your server.') | format('<b>', '</b>') }}</li>
-              <li>{{ lang._('%sPort:%s The TCP or TCP port that should be used.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sPort:%s The TCP or UDP port that should be used. If unset, the same port the client connected to will be used.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._("Please note that advanced mode settings allow you to disable a certain server or to configure it as a backup server in a Backend Pool. Another neat option is the possibility to adjust a server's weight relative to other servers in the same Backend Pool.") }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
