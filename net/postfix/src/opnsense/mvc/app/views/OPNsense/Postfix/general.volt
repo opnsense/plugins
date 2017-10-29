@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="antispam" class="tab-pane fade in">
         <div class="content-box" style="padding-bottom: 1.5em;">
 	    <div class="alert alert-warning" role="alert" id="missing_rspamd" style="display:none;min-height:65px;">
-                <div style="margin-top: 8px;">{{ lang._('No Rspamd plugin found, please install via System > Firmware > Plugins.')}}</div>
+                <div style="margin-top: 8px;">{{ lang._('No Rspamd plugin found, please install and come back.')}}</div>
             </div>
             {{ partial("layout_partials/base_form",['fields':antispamForm,'id':'frm_antispam_settings'])}}
             <hr />
