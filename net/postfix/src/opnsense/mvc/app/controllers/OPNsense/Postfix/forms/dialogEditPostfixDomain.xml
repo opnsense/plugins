@@ -9,7 +9,7 @@
         <id>domain.domainname</id>
         <label>Domainname</label>
         <type>text</type>
-        <help>Set the unique domainname to relay for.</help>
+        <help>Set the unique domain name to relay for.</help>
     </field>
     <field>
         <id>domain.destination</id>
