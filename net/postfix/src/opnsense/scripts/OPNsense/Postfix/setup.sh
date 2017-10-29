@@ -5,7 +5,7 @@ chown root:wheel /var/spool/postfix
 chmod 755 /var/spool/postfix 
 
 # Set defaults
-POSTFIX_DIRS="/var/spool/postfix/active /var/spool/postfix/bounce /var/spool/postfix/corrup /var/spool/postfix/defer /var/spool/postfix/deferred /var/spool/postfix/flush /var/spool/postfix/hold /var/spool/postfix/incoming /var/spool/postfix/private /var/spool/postfix/saved /var/spool/postfix/trace /var/db/postfix"
+POSTFIX_DIRS="/var/spool/postfix/active /var/spool/postfix/bounce /var/spool/postfix/corrupt /var/spool/postfix/defer /var/spool/postfix/deferred /var/spool/postfix/flush /var/spool/postfix/hold /var/spool/postfix/incoming /var/spool/postfix/private /var/spool/postfix/saved /var/spool/postfix/trace /var/db/postfix"
 POSTFIX_USER=postfix
 POSTFIX_GROUP=wheel
 
