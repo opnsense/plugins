@@ -6,17 +6,17 @@
     </field>
     <field>
         <id>version.main</id>
-        <label>main.cvd</label>
+        <label>main</label>
         <type>info</type>
     </field>
     <field>
         <id>version.daily</id>
-        <label>daily.cld</label>
+        <label>daily</label>
         <type>info</type>
     </field>
     <field>
         <id>version.bytecode</id>
-        <label>bytecode.cld</label>
+        <label>bytecode</label>
         <type>info</type>
     </field>
     <field>

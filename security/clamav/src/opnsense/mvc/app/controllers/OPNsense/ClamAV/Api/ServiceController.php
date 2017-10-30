@@ -170,27 +170,23 @@ class ServiceController extends ApiControllerBase
     public function versionAction()
     {
         $infos = array(
-            "clamav" => array("search" => array("Version: ")),
-            "main" => array("search" => array("main.cvd: ", "main.cld: ")),
-            "daily" => array("search" => array("daily.cvd: ", "daily.cld: ")),
-            "bytecode" => array("search" => array("bytecode.cvd: ", "bytecode.cld: ")),
-            "signatures" => array("search" => array("Total number of signatures: "))
+            "clamav" => array("Version"),
+            "main" => array("main.cvd", "main.cld"),
+            "daily" => array("daily.cvd", "daily.cld"),
+            "bytecode" => array("bytecode.cvd", "bytecode.cld"),
+            "signatures" => array("Total number of signatures")
         );
         $backend = new Backend();
         $result = array();
-        $response = $backend->configdRun("clamav version");
+        $response = json_decode($backend->configdRun("clamav version"));
         if ($response != null) {
-            foreach (explode("\n", $response) as $str) {
-                foreach ($infos as $key => $info) {
-                    foreach ($info["search"] as $search) {
-                        if (strpos($str, $search) !== false) {
-                            $version = substr($str, strlen($search));
-                            if (isset($version)) {
-                                $result[$key] = $version;
-                            }
-                        }
+            foreach ($response as $key => $value) {
+                foreach ($infos as $info_key => $info) {
+                    if (in_array($key, $info)) {
+                        $result[$info_key] = $value;
                     }
                 }
+
             }
             return array("version" => $result);
         }
