@@ -1,0 +1,9 @@
+<acl>
+  <page-Antispam>
+    <name>antispam</name>
+    <patterns>
+      <pattern>ui/rspamd/*</pattern>
+      <pattern>api/rspamd/*</pattern>
+    </patterns>
+  </page-Antispam>
+</acl>

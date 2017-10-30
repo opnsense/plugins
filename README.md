@@ -52,6 +52,8 @@ net-mgmt/snmp -- SNMP Server via bsnmpd
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
 net-mgmt/zabbix-proxy -- Zabbix-Proxy enables decentralized monitoring
+mail/postfix -- SMTP mail relay
+mail/rspamd -- Protect your network from spam
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
 sysutils/smart -- SMART tools
