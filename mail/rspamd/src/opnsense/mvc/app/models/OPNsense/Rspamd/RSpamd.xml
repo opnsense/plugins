@@ -122,11 +122,11 @@
         <default>0</default>
         <Required>Y</Required>
       </openphish_enabled>
-      <openphish_premium_enabled>
+      <openphish_premium_enabled type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
       </openphish_premium_enabled>
-      <phishtank_enabled>
+      <phishtank_enabled type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
       </phishtank_enabled>
