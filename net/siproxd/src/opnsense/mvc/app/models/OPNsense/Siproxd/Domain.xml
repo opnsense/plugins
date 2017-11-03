@@ -1,0 +1,27 @@
+<model>
+    <mount>//OPNsense/siproxd/domain</mount>
+    <description>Siproxd outbound domain configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <domains>
+            <domain type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                </name>
+                <host type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                </host>
+                <port type="IntegerField">
+                    <default>5060</default>
+                    <Required>Y</Required>
+                </port>
+            </domain>
+        </domains>
+    </items>
+</model>

@@ -1,0 +1,12 @@
+<form>
+	<field>
+		<id>username</id>
+		<label>Username</label>
+		<type>text</type>
+	</field>
+	<field>
+		<id>password</id>
+		<label>Password</label>
+		<type>password</type>
+	</field>
+</form>

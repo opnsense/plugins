@@ -15,3 +15,5 @@ for FILE in ${RADIUS_FILES}; do
 	touch ${FILE}
 	chmod 700 ${FILE}
 done
+
+/usr/local/opnsense/scripts/Freeradius/generate_certs.php

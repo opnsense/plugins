@@ -1,0 +1,9 @@
+<menu>
+  <Services>
+    <Telegraf cssClass="fa fa-area-chart">
+      <General order="10" url="/ui/telegraf/general/index"/>
+      <Input order="20" url="/ui/telegraf/input/index"/>
+      <Output order="30" url="/ui/telegraf/output/index"/>
+    </Telegraf>
+  </Services>
+</menu>

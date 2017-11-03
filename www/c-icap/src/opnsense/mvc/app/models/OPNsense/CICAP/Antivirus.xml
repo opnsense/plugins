@@ -8,18 +8,18 @@
             <Required>Y</Required>
         </enable_clamav>
         <scanfiletypes type="OptionField">
-            <default></default>
-	    <multiple>Y</multiple>
+            <default>TEXT,DATA,EXECUTABLE,ARCHIVE,GIF,JPEG,MSOFFICE</default>
+            <multiple>Y</multiple>
             <Required>Y</Required>
-	        <OptionValues>
-		    <TEXT>Text files</TEXT>
-		    <DATA>Binary files</DATA>
-		    <EXECUTABLE>Executables</EXECUTABLE>
-		    <ARCHIVE>Archives</ARCHIVE>
-		    <GIF>GIF animations</GIF>
-		    <JPEG>JPEG pictures</JPEG>
-		    <MSOFFICE>Microsoft office files</MSOFFICE>
-		</OptionValues>
+                <OptionValues>
+                    <TEXT>Text files</TEXT>
+                    <DATA>Binary files</DATA>
+                    <EXECUTABLE>Executables</EXECUTABLE>
+                    <ARCHIVE>Archives</ARCHIVE>
+                    <GIF>GIF animations</GIF>
+                    <JPEG>JPEG pictures</JPEG>
+                    <MSOFFICE>Microsoft office files</MSOFFICE>
+                </OptionValues>
         </scanfiletypes>
         <sendpercentdata type="IntegerField">
             <default>5</default>
@@ -34,7 +34,7 @@
             <Required>Y</Required>
         </allow204responses>
         <passonerror type="BooleanField">
-            <default>N</default>
+            <default>0</default>
             <Required>Y</Required>
         </passonerror>
         <maxobjectsize type="TextField">

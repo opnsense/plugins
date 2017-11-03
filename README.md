@@ -32,6 +32,14 @@ devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
+mail/postfix -- SMTP mail relay
+mail/rspamd -- Protect your network from spam
+net-mgmt/collectd -- Collect system and application performance metrics periodically
+net-mgmt/snmp -- SNMP Server via bsnmpd
+net-mgmt/telegraf -- Agent for collecting metrics and data
+net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
+net-mgmt/zabbix-proxy -- Zabbix-Proxy enables decentralized monitoring
+net/arp-scan -- Get all peers connected to a local network
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
@@ -42,23 +50,25 @@ net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- Quagga Routing Suite
 net/relayd -- Relayd Load Balancer
+net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
-net-mgmt/collectd -- Collect system and application performance metrics periodically
-net-mgmt/snmp -- SNMP Server via bsnmpd
-net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
+security/acme-client -- Let's Encrypt client
+security/clamav -- Antivirus engine for detecting malicious threats
+security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
+security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
+security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
+security/tinc -- Tinc VPN
+security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-security/acme-client -- Let's Encrypt client
-security/clamav -- Antivirus engine for detecting malicious threats
-security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
-security/tinc -- Tinc VPN
 www/c-icap -- c-icap connects your Proxy with a virus scanner
-www/web-proxy-sso -- Add SSO Active Directory to use in Proxy
+www/web-proxy-sso -- Kerberos authentication module
+www/web-proxy-useracl -- Group and user ACL for the web proxy
 ```
 
 A brief description of how to use the plugins repository

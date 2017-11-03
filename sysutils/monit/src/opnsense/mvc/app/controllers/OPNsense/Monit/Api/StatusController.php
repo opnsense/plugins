@@ -31,6 +31,7 @@
 namespace OPNsense\Monit\Api;
 
 use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Monit\Monit;
 
 /**
  * Class StatusController
@@ -54,6 +55,13 @@ class StatusController extends ApiControllerBase
 
             // get monit status page
             $request  = "GET /_status?format=text HTTP/1.0\r\n";
+
+            // get credentials if configured
+            $mdlMonit = new Monit();
+            if ($mdlMonit->general->httpdUsername->__toString() != null && trim($mdlMonit->general->httpdUsername->__toString()) !== "" &&
+                $mdlMonit->general->httpdPassword->__toString() != null && trim($mdlMonit->general->httpdPassword->__toString()) !== "") {
+                   $request .= "Authorization: Basic " . base64_encode($mdlMonit->general->httpdUsername->__toString() . ":" . $mdlMonit->general->httpdPassword->__toString()) . "\r\n";
+            }
             $request .= "\r\n";
             $count = fwrite($socket, $request);
             $result['count'] = $count;

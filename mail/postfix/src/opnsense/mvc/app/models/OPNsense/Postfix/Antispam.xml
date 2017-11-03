@@ -1,0 +1,11 @@
+<model>
+    <mount>//OPNsense/postfix/antispam</mount>
+    <description>Postfix Antispam configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enable_rspamd type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enable_rspamd>
+    </items>
+</model>

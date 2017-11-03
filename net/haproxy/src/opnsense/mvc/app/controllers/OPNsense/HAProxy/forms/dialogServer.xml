@@ -22,7 +22,7 @@
         <id>server.port</id>
         <label>Port</label>
         <type>text</type>
-        <help><![CDATA[Provide the TCP communication port for this server, i.e. 80 or 443.]]></help>
+        <help><![CDATA[Provide the TCP or UDP communication port for this server, i.e. 80 or 443. If set, all connections will be sent to this port. If unset, the same port the client connected to will be used.]]></help>
     </field>
     <field>
         <id>server.mode</id>
@@ -103,9 +103,9 @@
     </field>
     <field>
         <id>server.advanced</id>
-        <label>Advanced options</label>
+        <label>Option pass-through</label>
         <type>text</type>
-        <help><![CDATA[A list of parameters that will be appended to the server line in every backend where this is will be used.<br/>Example: send-proxy<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>.]]></help>
+        <help><![CDATA[A list of parameters that will be appended to the server line in every backend where this server will be used.<br/>Example: send-proxy<br/>.]]></help>
         <advanced>true</advanced>
     </field>
 </form>

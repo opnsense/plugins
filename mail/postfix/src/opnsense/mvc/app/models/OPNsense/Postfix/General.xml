@@ -1,0 +1,35 @@
+<model>
+    <mount>//OPNsense/postfix/general</mount>
+    <description>Postfix configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <myhostname type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </myhostname>
+        <mydomain type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mydomain>
+        <myorigin type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </myorigin>
+        <inet_interfaces type="TextField">
+            <default>all</default>
+            <Required>Y</Required>
+        </inet_interfaces>
+        <mynetworks type="TextField">
+            <default>127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</default>
+            <Required>Y</Required>
+        </mynetworks>
+        <banner type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </banner>
+    </items>
+</model>

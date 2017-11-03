@@ -14,7 +14,7 @@
     <field>
         <id>user.password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
         <help>Set the password for the user.</help>
     </field>
     <field>
@@ -40,5 +40,41 @@
         <label>VLAN ID</label>
         <type>text</type>
         <help>VLAN ID the user receives, e.g. for 802.1X. Leave empty if you don't know what it is.</help>
+    </field>
+    <field>
+        <id>user.wispr_bw_min_up</id>
+        <label>WISPr Bandwith Min UP</label>
+        <type>text</type>
+        <help>Set the minimum upload bandwith for WISPr attribute. The value is treated as bits/s.</help>
+    </field>
+    <field>
+        <id>user.wispr_bw_max_up</id>
+        <label>WISPr Bandwith Max UP</label>
+        <type>text</type>
+        <help>Set the maximum upload bandwith for WISPr attribute. The value is treated as bits/s.</help>
+    </field>
+    <field>
+        <id>user.wispr_bw_min_down</id>
+        <label>WISPr Bandwith Min DOWN</label>
+        <type>text</type>
+        <help>Set the minimum download bandwith for WISPr attribute. The value is treated as bits/s.</help>
+    </field>
+    <field>
+        <id>user.wispr_bw_max_down</id>
+        <label>WISPr Bandwith Max DOWN</label>
+        <type>text</type>
+        <help>Set the maximum download bandwith for WISPr attribute. The value is treated as bits/s.</help>
+    </field>
+    <field>
+        <id>user.chillispot_bw_max_up</id>
+        <label>ChilliSpot Bandwith Max UP</label>
+        <type>text</type>
+        <help>Set the maximum upload bandwith for ChilliSpot attribute. The value is treated as kbits/s.</help>
+    </field>
+    <field>
+        <id>user.chillispot_bw_max_down</id>
+        <label>ChilliSpot Bandwith Max DOWN</label>
+        <type>text</type>
+        <help>Set the maximum download bandwith for ChilliSpot attribute. The value is treated as kbits/s.</help>
     </field>
 </form>

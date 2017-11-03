@@ -29,8 +29,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="alert alert-warning" role="alert" id="dl_sig_alert" style="display:none;min-height:65px;">
     <button class="btn btn-primary pull-right" id="dl_sig" type="button">{{ lang._('Download signatures') }} <i id="dl_sig_progress"></i></button>
-    <div style="margin-top: 8px;">{{ lang._('No signature database found, please download before use. The download will take several minutes and this message will disappear when it has been completed. If you have memory file system enabled where /var is mounted into RAM you have to download this file with every reboot.')}}</div>
+    <div style="margin-top: 8px;">{{ lang._('No signature database found, please download before use. The download will take several minutes and this message will disappear when it has been completed.') }}</div>
 </div>
+
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#versions">{{ lang._('Versions') }}</a></li>
+</ul>
 
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
@@ -40,6 +45,11 @@ POSSIBILITY OF SUCH DAMAGE.
             <div class="col-md-12">
                 <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
             </div>
+        </div>
+    </div>
+    <div id="versions" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':versionForm,'id':'frm_version'])}}
         </div>
     </div>
 </div>
@@ -60,6 +70,12 @@ function timeoutCheck() {
 $( document ).ready(function() {
     var data_get_map = {'frm_general_settings':"/api/clamav/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
+
+    var version_get_map = {'frm_version':"/api/clamav/service/version"};
+    mapDataToFormUI(version_get_map).done(function(data){
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
@@ -97,6 +113,14 @@ $( document ).ready(function() {
         ajaxCall(url="/api/clamav/service/freshclam", sendData={action:1}, callback_ok=function(){
             setTimeout(timeoutCheck, 2500);
         });
+    });
+
+    // update history on tab state and implement navigation
+    if(window.location.hash != "") {
+        $('a[href="' + window.location.hash + '"]').click()
+    }
+    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+        history.pushState(null, null, e.target.hash);
     });
 });
 </script>

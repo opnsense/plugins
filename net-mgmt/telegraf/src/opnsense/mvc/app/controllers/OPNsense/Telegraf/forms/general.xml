@@ -1,0 +1,62 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable Telegraf Agent</label>
+        <type>checkbox</type>
+        <help>This will activate the telegraf agent.</help>
+    </field>
+    <field>
+        <id>general.interval</id>
+        <label>Interval</label>
+        <type>text</type>
+        <help>Default data collection interval for all inputs in seconds.</help>
+    </field>
+    <field>
+        <id>general.roundinterval</id>
+        <label>Round Interval</label>
+        <type>checkbox</type>
+        <help>Rounds collection interval to 'interval', e.g. if interval="10s" then always collect on :00, :10, :20, etc.</help>
+    </field>
+    <field>
+        <id>general.metric_batch_size</id>
+        <label>Metric Batch Size</label>
+        <type>text</type>
+        <help>Telegraf will send metrics to outputs in batches of at most metric_batch_size metrics. This controls the size of writes that Telegraf sends to output plugins.</help>
+    </field>
+    <field>
+        <id>general.metric_buffer_limit</id>
+        <label>Metric Buffer Limit</label>
+        <type>text</type>
+        <help>For failed writes, Telegraf will cache metric_buffer_limit metrics for each output, and will flush this buffer on a successful write.</help>
+    </field>
+    <field>
+        <id>general.collection_jitter</id>
+        <label>Collection Jitter</label>
+        <type>text</type>
+        <help>Collection jitter is used to jitter the collection by a random amount. Each plugin will sleep for a random time within jitter before collecting. Input value are seconds.</help>
+    </field>
+    <field>
+        <id>general.flush_interval</id>
+        <label>Flush Interval</label>
+        <type>text</type>
+        <help>Default flushing interval for all outputs. You should not set this below interval.</help>
+    </field>
+    <field>
+        <id>general.flush_jitter</id>
+        <label>Flush Jitter</label>
+        <type>text</type>
+        <help>Jitter the flush interval by a random amount. This is primarily to avoid large write spikes for users running a large number of telegraf instances.</help>
+    </field>
+    <field>
+        <id>general.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>Override default hostname, if empty use system hostname.</help>
+    </field>
+    <field>
+        <id>general.omit_hostname</id>
+        <label>Omit Hostname</label>
+        <type>checkbox</type>
+        <help>If set to true, do no set the "host" tag in the Telegraf agent.</help>
+    </field>
+</form>

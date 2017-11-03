@@ -1,0 +1,9 @@
+<acl>
+   <page-services-siproxd>
+      <name>Services: Siproxd</name>
+      <patterns>
+         <pattern>ui/siproxd/*</pattern>
+         <pattern>api/siproxd/*</pattern>
+      </patterns>
+   </page-services-siproxd>
+</acl>

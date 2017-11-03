@@ -1,0 +1,17 @@
+<form>
+  <field>
+    <id>client_auth.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>client_auth.onion_service</id>
+    <label>Host Name</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>client_auth.auth_cookie</id>
+    <label>Authentication Cookie</label>
+    <type>text</type>
+  </field>
+</form>

@@ -31,54 +31,77 @@ POSSIBILITY OF SUCH DAMAGE.
 
     $(document).ready(function() {
 
+        var zerotierSettings = {'settings': '/api/zerotier/settings/get'};
+
+        mapDataToFormUI(zerotierSettings).done(function(data) {
+            formatTokenizersUI();
+            $('select').selectpicker('refresh');
+        });
+
         $("#grid-networks").UIBootgrid(
             {
-                search: '/api/zerotier/zerotier/searchNetwork',
-                get:'/api/zerotier/zerotier/getNetwork/',
-                set:'/api/zerotier/zerotier/setNetwork/',
-                add:'/api/zerotier/zerotier/addNetwork/',
-                del:'/api/zerotier/zerotier/delNetwork/',
-                toggle:'/api/zerotier/zerotier/toggleNetwork/'
+                search: '/api/zerotier/network/search',
+                get:'/api/zerotier/network/get/',
+                set:'/api/zerotier/network/set/',
+                add:'/api/zerotier/network/add/',
+                del:'/api/zerotier/network/del/',
+                info:'/api/zerotier/network/info/',
+                toggle:'/api/zerotier/network/toggle/'
             }
         );
 
-        ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
+        ajaxGet(url="/api/zerotier/settings/status", sendData={}, callback=function(data, status) {
+            updateServiceStatusUI(data['result']);
+            toggleNetworksTab(data['result']);
         });
 
-        $("#reconfigureZerotier").click(function() {
-            $("#reconfigureZerotierProgress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/zerotier/zerotier/reconfigureZerotier", sendData={}, callback=function(data, status) {
-                ajaxCall(url="/api/zerotier/zerotier/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
+        $("#btn_save_settings").click(function() {
+            $("#settings_progress").addClass("fa fa-spinner fa-pulse");
+            saveFormToEndpoint(url="/api/zerotier/settings/set", formid="settings", callback_ok=function(data, status) {
+                ajaxGet(url="/api/zerotier/settings/status", sendData={}, callback=function(data, status) {
+                    updateServiceStatusUI(data['result']);
+                    toggleNetworksTab(data['result']);
                 });
-                $("#reconfigureZerotierProgress").removeClass("fa fa-spinner fa-pulse");
-                if (status != "success" || data['status'] != 'OK') {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Error reconfiguring Zerotier') }}",
-                        message: data['status'],
-                        draggable: true
-                    });
-                }
+                $("#settings_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
+
+        function toggleNetworksTab(status) {
+            switch(status) {
+                case "disabled":
+                case "service_not_enabled":
+                    $('#ztNetworks').addClass("disabled");
+                    $('#ztNetworksLink').removeAttr("data-toggle");
+                    break;
+                default:
+                    $('#ztNetworks').removeClass("disabled");
+                    $('#ztNetworksLink').attr("data-toggle", "tab");
+            }
+        };
+
     });
 
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+    <li id="ztSettings" class="active"><a data-toggle="tab" href="#settings">{{ lang._('Settings') }}</a></li>
+    <li id="ztNetworks"><a id="ztNetworksLink" data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="networks" class="tab-pane fade in active">
+    <div id="settings" class="tab-pane fade in active">
+        <div class="content-box">
+            {{ partial("layout_partials/base_form", ['fields': settingsForm, 'id': 'settings', 'apply_btn_id': 'btn_save_settings']) }}
+        </div>
+    </div>
+    <div id="networks" class="tab-pane fade in">
         <table id="grid-networks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogNetwork">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="networkId" data-type="string" data-visible="true">{{ lang._('Network Id') }}</th>
-                    <th data-column-id="description" data-width="7em" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="networkId" data-width="20em" data-type="string" data-visible="true">{{ lang._('Network Id') }}</th>
+                    <th data-column-id="description" data-width="30em" data-type="string" data-visible="true">{{ lang._('Local Description') }}</th>
+                    <th data-column-id="commands" data-formatter="commandsWithInfo" data-visible="true" data-sortable="false">{{ lang._('Commands') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 </tr>
             </thead>
@@ -95,11 +118,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureZerotier" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureZerotierProgress" class=""></i></button>
-        <br/><br/>
-    </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogNetwork,'id':'dialogNetwork','label':lang._('Edit Zerotier Network')]) }}
+{{ partial("layout_partials/base_dialog", ['fields': dialogNetworkForm, 'id': 'dialogNetwork', 'label': lang._('Edit Zerotier Network')]) }}

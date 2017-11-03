@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/monit</mount>
-   <version>1.0.0</version>
+   <version>1.0.1</version>
    <description>Monit settings</description>
    <items>
       <general>
@@ -46,6 +46,57 @@
             <default>0</default>
             <Required>Y</Required>
          </ssl>
+         <logfile type="TextField">
+            <Required>N</Required>
+            <default>syslog facility log_daemon</default>
+            <mask>/^(\/[^\/ ]*)+\/?|syslog.*$/</mask>
+            <ValidationMessage>Should be a valid absolute path to the log file or the keyword "syslog".</ValidationMessage>
+         </logfile>
+         <statefile type="TextField">
+            <Required>N</Required>
+            <mask>/^(\/[^\/ ]*)+\/?$/</mask>
+            <ValidationMessage>Should be a valid absolute path to the state file.</ValidationMessage>
+         </statefile>
+         <eventqueuePath type="TextField">
+            <Required>N</Required>
+            <mask>/^(\/[^\/ ]*)+\/?$/</mask>
+            <ValidationMessage>Should be a valid absolute path to the eventqueue directory.</ValidationMessage>
+         </eventqueuePath>
+         <eventqueueSlots type="IntegerField">
+            <Required>N</Required>
+            <ValidationMessage>Eventqueue Slots must be a numeric value.</ValidationMessage>
+         </eventqueueSlots>
+         <httpdEnabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+         </httpdEnabled>
+         <httpdUsername type="TextField"/>
+         <httpdPassword type="TextField"/>
+         <httpdPort type="IntegerField">
+            <default>2812</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
+            <ValidationMessage>Local Monit Port needs to be an integer value between 0 and 65535</ValidationMessage>
+         </httpdPort>
+         <httpdAllow type="CSVListField">
+            <Required>N</Required>
+            <multiple>Y</multiple>
+         </httpdAllow>
+         <mmonitUrl type="TextField">
+            <Required>N</Required>
+         </mmonitUrl>
+         <mmonitTimeout type="IntegerField">
+            <default>5</default>
+            <Required>Y</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+            <ValidationMessage>M/Monit Timeout needs to be an integer value between 0 and 86400</ValidationMessage>
+         </mmonitTimeout>
+         <mmonitRegisterCredentials type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+         </mmonitRegisterCredentials>
       </general>
       <alert type="ArrayField">
          <enabled type="BooleanField">

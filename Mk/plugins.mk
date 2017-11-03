@@ -214,14 +214,12 @@ package: check
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
 upgrade-check: check
-	@if ! ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
-		echo ">>> Cannot find package.  Please run 'pkg install ${PLUGIN_PKGNAME}'" >&2; \
-		exit 1; \
-	fi
 	@rm -rf ${PKGDIR}
 
 upgrade: upgrade-check package
-	@${PKG} delete -fy ${PLUGIN_PKGNAME}
+	@if ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
+		${PKG} delete -fy ${PLUGIN_PKGNAME}; \
+	fi
 	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
@@ -231,10 +229,17 @@ umount: check
 	umount -f "<above>:${.CURDIR}/${SRC}"
 
 clean: check
-	@git reset -q . && git checkout -f . && git clean -xdqf .
+	@git reset -q ${.CURDIR}/src && \
+	    git checkout -f ${.CURDIR}/src && \
+	    git clean -xdqf ${.CURDIR}/src
 
-lint: check
-	find ${.CURDIR}/${SRC} \
+lint-desc: check
+	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
+		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
+	fi
+
+lint: lint-desc
+	find ${.CURDIR}/src \
 	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
 	find ${.CURDIR}/${SRC} \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout

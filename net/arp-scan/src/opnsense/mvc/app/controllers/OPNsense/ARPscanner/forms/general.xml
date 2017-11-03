@@ -1,0 +1,15 @@
+<form>
+   <field>
+      <id>arpscanner.general.interface</id>
+      <label>Listen Interface</label>
+      <type>dropdown</type>
+      <help>Interface where to find the networks logically linked to.</help>
+   </field>
+   <field>
+      <id>arpscanner.general.networks</id>
+      <label>Network to probe</label>
+      <type>text</type>
+      <help>Network to scan, default: localnet.
+      </help>
+   </field>
+</form>

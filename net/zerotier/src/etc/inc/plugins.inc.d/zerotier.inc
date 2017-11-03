@@ -29,15 +29,13 @@
 
 function zerotier_enabled()
 {
-    $mdl = new \OPNsense\Zerotier\Zerotier();
+    $mdlZerotier = new \OPNsense\Zerotier\Zerotier();
+    return isEnabled($mdlZerotier);
+}
 
-    foreach ($mdl->networks->network->__items as $network) {
-        if ($network->enabled == '1') {
-            return true;
-        }
-    }
-
-    return false;
+function isEnabled($node)
+{
+    return $node->enabled->__toString() == "1";
 }
 
 function zerotier_services()
