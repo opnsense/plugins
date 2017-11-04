@@ -31,5 +31,9 @@
             <default></default>
             <Required>N</Required>
         </banner>
+        <message_size_limit type="IntegerField">
+            <default>10240000</default>
+            <Required>Y</Required>
+        </message_size_limit>
     </items>
 </model>
