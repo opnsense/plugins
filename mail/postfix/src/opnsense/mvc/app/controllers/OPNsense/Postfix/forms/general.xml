@@ -41,4 +41,10 @@
         <type>text</type>
         <help>The smtpd_banner parameter specifies the text that follows the 220 code in the SMTP server's greeting banner. Default is "'System Hostname' ESMTP Postfix".</help>
     </field>
+    <field>
+        <id>general.message_size_limit</id>
+        <label>Message Size Limit</label>
+        <type>text</type>
+        <help>Set the max size for messages to accept, default is 10240000 Byte which is 10MB. Values must be entered in Bytes.</help>
+    </field>
 </form>
