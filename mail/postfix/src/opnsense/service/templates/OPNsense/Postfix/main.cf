@@ -63,6 +63,9 @@ smtpd_banner = {{ OPNsense.postfix.general.banner }}
 {% else %}
 smtpd_banner = $myhostname ESMTP Postfix
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.message_size_limit') and OPNsense.postfix.general.message_size_limit != '' %}
+message_size_limit = {{ OPNsense.postfix.general.message_size_limit }}
+{% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
 smtpd_milters = inet:localhost:11332
