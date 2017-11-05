@@ -42,12 +42,6 @@
         <help>The smtpd_banner parameter specifies the text that follows the 220 code in the SMTP server's greeting banner. Default is "'System Hostname' ESMTP Postfix".</help>
     </field>
     <field>
-        <id>general.check_recipient_access</id>
-        <label>Check Recipient Access</label>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-    </field>
-    <field>
         <id>general.reject_unauth_pipelining</id>
         <label>Reject Unauthenticated Pipelining</label>
         <type>checkbox</type>

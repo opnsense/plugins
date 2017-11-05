@@ -1,0 +1,4 @@
+{% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.postfix.general.check_recipient_access') %}
+{%   endif %}
+{% endif %}
