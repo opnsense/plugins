@@ -824,7 +824,7 @@
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
-                        <src>Source IP matches IP or Alias</src>
+                        <src>Source IP matches specified IP</src>
                         <nbsrv>Minimum number of usable servers in backend</nbsrv>
                         <traffic_is_http>Traffic is HTTP</traffic_is_http>
                         <traffic_is_ssl>Traffic is SSL</traffic_is_ssl>
