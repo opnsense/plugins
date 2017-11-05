@@ -1023,8 +1023,8 @@
                     <Required>Y</Required>
                     <!-- XXX TODO: use more user-friendly names instead of HAProxys option names -->
                     <OptionValues>
-                        <use_backend>Use specified backend</use_backend>
-                        <use_server>Use specified server</use_server>
+                        <use_backend>Use specified Backend Pool</use_backend>
+                        <use_server>Override server in Backend Pool</use_server>
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>
