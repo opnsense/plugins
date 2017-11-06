@@ -50,7 +50,7 @@
         <id>general.reject_unknown_sender_domain</id>
         <label>Reject Unknown Sender Domain</label>
         <type>checkbox</type>
-        <help>This will reject mails from domains, which do not exist.</help>
+        <help>This will reject mails from domains which do not exist.</help>
     </field>
     <field>
         <id>general.reject_unknown_recipient_domain</id>
