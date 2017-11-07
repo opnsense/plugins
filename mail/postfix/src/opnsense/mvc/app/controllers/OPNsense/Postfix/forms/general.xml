@@ -32,7 +32,9 @@
     <field>
         <id>general.mynetworks</id>
         <label>Trusted Networks</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help>The 'Trusted Networks' parameter specifies the list of trusted SMTP clients. In particular, trusted SMTP clients are allowed to relay mail through Postfix. Please use CIDR notation like 192.168.0.0/24 separated by spaces. IPv6 addresses have to be in square brackets like [::1]/128.</help>
     </field>
     <field>
