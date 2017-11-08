@@ -23,14 +23,18 @@
             <default>all</default>
             <Required>Y</Required>
         </inet_interfaces>
-        <mynetworks type="TextField">
-            <default>127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</default>
+        <mynetworks type="CSVListField">
+            <default>127.0.0.0/8,[::ffff:127.0.0.0]/104,[::1]/128</default>
             <Required>Y</Required>
         </mynetworks>
         <banner type="TextField">
             <default></default>
             <Required>N</Required>
         </banner>
+        <message_size_limit type="IntegerField">
+            <default>51200000</default>
+            <Required>Y</Required>
+        </message_size_limit>
         <check_recipient_access type="ArrayField">
         </check_recipient_access>
         <reject_unauth_pipelining type="BooleanField">
