@@ -47,7 +47,7 @@
         <id>general.message_size_limit</id>
         <label>Message Size Limit</label>
         <type>text</type>
-        <help>Set the max size for messages to accept, default is 10240000 Byte which is 10MB. Values must be entered in Bytes.</help>
+        <help>Set the max size for messages to accept, default is 501200000 Byte which is 50MB. Values must be entered in Bytes.</help>
     </field>
     <field>
         <id>general.reject_unauth_pipelining</id>
