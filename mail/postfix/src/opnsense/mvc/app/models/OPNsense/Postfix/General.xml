@@ -35,6 +35,14 @@
             <default>51200000</default>
             <Required>Y</Required>
         </message_size_limit>
+        <disable_ssl type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </disable_ssl>
+        <disable_weak_ciphers type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </disable_weak_ciphers>
         <check_recipient_access type="ArrayField">
         </check_recipient_access>
         <reject_unauth_pipelining type="BooleanField">
