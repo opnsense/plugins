@@ -64,8 +64,11 @@
         <id>action.use_server</id>
         <label>Use server</label>
         <type>dropdown</type>
-        <help><![CDATA[HAProxy will use this server if the condition evaluates to true.]]></help>
+        <help><![CDATA[HAProxy will use this server instead of other servers that are specified in the Backend Pool. The server must exist in the context where this rule is applied.]]></help>
     </field>
+    <field>
+        <label>NOTE: The specified server must be present in the Backend Pool where this rule is applied.</label>
+        <type>info</type>
     <field>
         <label>Parameters</label>
         <type>header</type>
