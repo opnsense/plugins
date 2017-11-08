@@ -50,6 +50,18 @@
         <help>Set the max size for messages to accept, default is 501200000 Byte which is 50MB. Values must be entered in Bytes.</help>
     </field>
     <field>
+        <id>general.disable_ssl</id>
+        <label>Disable old SSL</label>
+        <type>checkbox</type>
+        <help>Disable SSLv2 and SSLv3, only TLS allowed.</help>
+    </field>
+    <field>
+        <id>general.disable_weak_ciphers</id>
+        <label>Disable weak Ciphers</label>
+        <type>checkbox</type>
+        <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
+    </field>
+    <field>
         <id>general.reject_unauth_pipelining</id>
         <label>Reject Unauthenticated Pipelining</label>
         <type>checkbox</type>
