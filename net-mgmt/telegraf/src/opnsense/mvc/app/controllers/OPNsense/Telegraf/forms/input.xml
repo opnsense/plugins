@@ -71,4 +71,10 @@
         <type>checkbox</type>
         <help>Read metrics about system load and uptime.</help>
     </field>
+    <field>
+        <id>input.network</id>
+        <label>Network</label>
+        <type>checkbox</type>
+        <help>Read network interface metrics.</help>
+    </field>
 </form>
