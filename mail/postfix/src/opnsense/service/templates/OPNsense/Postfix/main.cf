@@ -66,6 +66,15 @@ smtpd_banner = $myhostname ESMTP Postfix
 {% if helpers.exists('OPNsense.postfix.general.message_size_limit') and OPNsense.postfix.general.message_size_limit != '' %}
 message_size_limit = {{ OPNsense.postfix.general.message_size_limit }}
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.disable_ssl') and OPNsense.postfix.general.disable_ssl == '1' %}
+smtpd_tls_mandatory_protocols=!SSLv2,!SSLv3
+smtp_tls_mandatory_protocols=!SSLv2,!SSLv3
+smtpd_tls_protocols=!SSLv2,!SSLv3
+smtp_tls_protocols=!SSLv2,!SSLv3
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.disable_weak_ciphers') and OPNsense.postfix.general.disable_weak_ciphers == '1' %}
+smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
+{% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
 smtpd_milters = inet:localhost:11332
