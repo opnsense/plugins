@@ -824,7 +824,7 @@
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
-                        <src>Source IP matches IP or Alias</src>
+                        <src>Source IP matches specified IP</src>
                         <nbsrv>Minimum number of usable servers in backend</nbsrv>
                         <traffic_is_http>Traffic is HTTP</traffic_is_http>
                         <traffic_is_ssl>Traffic is SSL</traffic_is_ssl>
@@ -1023,8 +1023,8 @@
                     <Required>Y</Required>
                     <!-- XXX TODO: use more user-friendly names instead of HAProxys option names -->
                     <OptionValues>
-                        <use_backend>Use specified backend</use_backend>
-                        <use_server>Use specified server</use_server>
+                        <use_backend>Use specified Backend Pool</use_backend>
+                        <use_server>Override server in Backend Pool</use_server>
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>

@@ -41,4 +41,52 @@
         <type>text</type>
         <help>The smtpd_banner parameter specifies the text that follows the 220 code in the SMTP server's greeting banner. Default is "'System Hostname' ESMTP Postfix".</help>
     </field>
+    <field>
+        <id>general.reject_unauth_pipelining</id>
+        <label>Reject Unauthenticated Pipelining</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.reject_unknown_sender_domain</id>
+        <label>Reject Unknown Sender Domain</label>
+        <type>checkbox</type>
+        <help>This will reject mails from domains which do not exist.</help>
+    </field>
+    <field>
+        <id>general.reject_unknown_recipient_domain</id>
+        <label>Reject Unknown Recipient Domain</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.reject_non_fqdn_sender</id>
+        <label>Reject Non FQDN Sender</label>
+        <type>checkbox</type>
+        <help>For example senders without a domain or only a hostname.</help>
+    </field>
+    <field>
+        <id>general.reject_non_fqdn_recipient</id>
+        <label>Reject Non FQDN Recipient</label>
+        <type>checkbox</type>
+        <help>For example recipients without a domain or only a hostname.</help>
+    </field>
+    <field>
+        <id>general.permit_sasl_authenticated</id>
+        <label>Permit SASL Authenticated</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.permit_tls_clientcerts</id>
+        <label>Permit TLS Client Certificate Authenticated Users</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.permit_mynetworks</id>
+        <label>Permit My Networks</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.reject_unauth_destination</id>
+        <label>Reject Unauthenticated Destination</label>
+        <type>checkbox</type>
+    </field>
 </form>
