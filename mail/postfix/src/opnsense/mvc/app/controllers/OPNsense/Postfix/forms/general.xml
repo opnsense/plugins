@@ -51,13 +51,13 @@
     </field>
     <field>
         <id>general.disable_ssl</id>
-        <label>Disable old SSL</label>
+        <label>Allow TLS Only</label>
         <type>checkbox</type>
         <help>Disable SSLv2 and SSLv3, only TLS allowed.</help>
     </field>
     <field>
         <id>general.disable_weak_ciphers</id>
-        <label>Disable weak Ciphers</label>
+        <label>Disable Weak Ciphers And Algorithms</label>
         <type>checkbox</type>
         <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
     </field>
@@ -101,7 +101,7 @@
     </field>
     <field>
         <id>general.permit_mynetworks</id>
-        <label>Permit My Networks</label>
+        <label>Permit Trusted Networks</label>
         <type>checkbox</type>
     </field>
     <field>
