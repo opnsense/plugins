@@ -305,7 +305,7 @@ switch($action) {
 
     <?php
     } else {
-        echo "No SMART devices.";
+        echo gettext("No SMART devices.");
     }
     break;
   }
