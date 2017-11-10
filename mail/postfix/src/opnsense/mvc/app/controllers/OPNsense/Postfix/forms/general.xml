@@ -32,7 +32,9 @@
     <field>
         <id>general.mynetworks</id>
         <label>Trusted Networks</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help>The 'Trusted Networks' parameter specifies the list of trusted SMTP clients. In particular, trusted SMTP clients are allowed to relay mail through Postfix. Please use CIDR notation like 192.168.0.0/24 separated by spaces. IPv6 addresses have to be in square brackets like [::1]/128.</help>
     </field>
     <field>
@@ -40,6 +42,24 @@
         <label>SMTP Banner</label>
         <type>text</type>
         <help>The smtpd_banner parameter specifies the text that follows the 220 code in the SMTP server's greeting banner. Default is "'System Hostname' ESMTP Postfix".</help>
+    </field>
+    <field>
+        <id>general.message_size_limit</id>
+        <label>Message Size Limit</label>
+        <type>text</type>
+        <help>Set the max size for messages to accept, default is 501200000 Byte which is 50MB. Values must be entered in Bytes.</help>
+    </field>
+    <field>
+        <id>general.disable_ssl</id>
+        <label>Allow TLS Only</label>
+        <type>checkbox</type>
+        <help>Disable SSLv2 and SSLv3, only TLS allowed.</help>
+    </field>
+    <field>
+        <id>general.disable_weak_ciphers</id>
+        <label>Disable Weak Ciphers And Algorithms</label>
+        <type>checkbox</type>
+        <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
     </field>
     <field>
         <id>general.reject_unauth_pipelining</id>
@@ -81,7 +101,7 @@
     </field>
     <field>
         <id>general.permit_mynetworks</id>
-        <label>Permit My Networks</label>
+        <label>Permit Trusted Networks</label>
         <type>checkbox</type>
     </field>
     <field>
