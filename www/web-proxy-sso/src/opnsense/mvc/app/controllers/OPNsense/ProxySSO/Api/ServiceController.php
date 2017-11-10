@@ -42,8 +42,9 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
         if ($this->request->isPost()) {
             $backend = new Backend();
             $mdl = new ProxySSO();
-            $hostname = 'HTTP/' . Config::getInstance()->object()->system->hostname;
-            $domain = Config::getInstance()->object()->system->domain;
+            $cnf = Config::getInstance()->object();
+            $hostname = 'HTTP/' . $cnf->system->hostname;
+            $domain = $cnf->system->domain;
             $kerbname = strtoupper((string)$mdl->KerberosHostName);
             $winver = (string)$mdl->ADKerberosImplementation == 'W2008' ? '2008' : '2003';
             $username = escapeshellarg($this->request->getPost("admin_login"));

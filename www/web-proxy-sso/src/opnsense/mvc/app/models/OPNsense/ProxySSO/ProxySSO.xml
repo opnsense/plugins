@@ -17,7 +17,7 @@
         </OptionValues>
     </ADKerberosImplementation>
     <KerberosHostName type="TextField">
-        <Required>Y</Required>
+        <Required>N</Required>
     </KerberosHostName>
 </items>
 </model>
