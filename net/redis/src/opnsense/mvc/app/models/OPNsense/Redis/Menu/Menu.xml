@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <redis VisibleName="redis" cssClass="fa fa-bath fa-fw" url="/ui/redis/" />
+  </Services>
+</menu>
