@@ -62,6 +62,7 @@
         <id>redis.security.disable_commands</id>
         <label>Disable Commands</label>
         <type>select_multiple</type>
+        <style>tokenize</style>
         <allownew>true</allownew>
         <help>The commands here will be disabled and cannot be used anymore.</help>
       </field>

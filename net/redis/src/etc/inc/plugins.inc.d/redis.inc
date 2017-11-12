@@ -40,7 +40,7 @@ function redis_services()
 {
     $services = array();
 
-    if (rspamd_enabled()) {
+    if (redis_enabled()) {
         $services[] = array(
             'description' => gettext('Redis DB'),
             'configd' => array(
