@@ -10,7 +10,8 @@
       <field>
         <id>redis.general.listen</id>
         <label>Listen Interfaces</label>
-        <type>dropdown</type>
+        <type>select_multiple</type>
+        <style>selectpicker</style>
         <help>Let the Redis server listen on non localhost interfaces.</help>
       </field>
       <field>
