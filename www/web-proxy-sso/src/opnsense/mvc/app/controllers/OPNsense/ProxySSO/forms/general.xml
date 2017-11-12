@@ -13,7 +13,7 @@
 	</field>
 	<field>
 		<id>ProxySSO.KerberosHostName</id>
-		<label>This host Kerberos account name in AD</label>
+		<label>Kerberos Account Name Of This Host In AD</label>
 		<type>text</type>
 		<help>Enter this computer account name to register in AD for kerberos access. Default is hostname with suffix '-K'.</help>
 	</field>
