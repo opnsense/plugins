@@ -1,11 +1,17 @@
 <form>
     <tab id="rspamd-general" description="General Settings">
-        <subtab id="rspamd-general-settings" description="General rSpamd Settings">
+        <subtab id="rspamd-general-settings" description="General Rspamd Settings">
             <field>
                 <id>rspamd.general.enabled</id>
                 <label>Enable rspamd</label>
                 <type>checkbox</type>
                 <help>Enable or disable the rspamd service.</help>
+            </field>
+            <field>
+                <id>rspamd.general.enable_redis_plugin</id>
+                <label>Enable Redis Plugin</label>
+                <type>checkbox</type>
+                <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
             </field>
         </subtab>
     </tab>
