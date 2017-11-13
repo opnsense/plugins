@@ -19,6 +19,10 @@
             <default>0</default>
             <Required>N</Required>
         </chillispot>
+        <enable_daily_sessionlimit type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </enable_daily_sessionlimit>
         <log_destination type="OptionField">
             <default>files</default>
             <Required>Y</Required>
