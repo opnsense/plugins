@@ -79,7 +79,7 @@
     </field>
     <field>
         <id>user.max_session_limit</id>
-        <label>Max Session Limit</label>
+        <label>Max Daily Session</label>
         <type>text</type>
         <help>Set the maximum session limit in seconds. This can be used by the Captive Portal.</help>
     </field>
