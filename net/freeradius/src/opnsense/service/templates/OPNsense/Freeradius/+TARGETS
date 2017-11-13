@@ -1,4 +1,5 @@
 clients.conf:/usr/local/etc/raddb/clients.conf
+dictionary:/usr/local/etc/raddb/dictionary
 mods-enabled-eap:/usr/local/etc/raddb/mods-enabled/eap
 radiusd:/etc/rc.conf.d/radiusd
 radiusd.conf:/usr/local/etc/raddb/radiusd.conf
