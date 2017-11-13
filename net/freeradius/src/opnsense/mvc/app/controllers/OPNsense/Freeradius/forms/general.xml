@@ -24,7 +24,7 @@
         <help>This enables the ChilliSpot attributes assignment via users tab.</help>
     </field>
      <field>
-        <id>general.log_destinaion</id>
+        <id>general.log_destination</id>
         <label>Log to File or Syslog</label>
         <type>dropdown</type>
         <help>Set where to log radius requests, defaults to file.</help>

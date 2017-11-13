@@ -19,14 +19,14 @@
             <default>0</default>
             <Required>N</Required>
         </chillispot>
-        <log_destinaion type="OptionField">
+        <log_destination type="OptionField">
             <default>files</default>
             <Required>Y</Required>
             <OptionValues>
                 <files>files</files>
                 <syslog>syslog</syslog>
             </OptionValues>    
-        </log_destinaion>
+        </log_destination>
         <log_authentication_request type="BooleanField">
             <default>0</default>
             <Required>N</Required>
