@@ -99,6 +99,13 @@
     <div style="margin-top: 8px;">{{ lang._('No ClamAV plugin found, please install via %sSystem > Firmware > Plugins%s. If the plugin is not installed and enabled, mails cannot be scanned for malware.')|format('<a href="/ui/core/firmware/#plugins">','</a>')}}</div>
 </div>
 {% endif %}
+{% if redis_plugin_enabled %}
+{%   if !redis_installed %}
+<div class="alert alert-danger" role="alert" id="missing_redis_plugin" style="min-height:65px;">
+    <div style="margin-top: 8px;">{{ lang._('The Redis plugin is configured to use but it is not installed. Please install it via %sSystem > Firmware > Plugins%s.')|format('<a href="/ui/core/firmware/#plugins">','</a>')}}</div>
+</div>
+{%   endif %}
+{% endif %}
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
 {% for tab in settings['tabs']|default([]) %}
