@@ -1,3 +1,6 @@
+
+{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+
 # -*- text -*-
 #
 #  $Id: a5ac1e60ef117a2c59ace1a9d061d8f70d1da538 $
@@ -79,3 +82,5 @@ counter daily {
         allowed_service_type = Framed-User
         cache_size = 5000
 }
+
+{% endif %}
