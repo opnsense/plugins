@@ -24,7 +24,7 @@
         <help>This enables the ChilliSpot attributes assignment via users tab.</help>
     </field>
     <field>
-        <id>general.enable_daily_sessionlimit</id>
+        <id>general.sessionlimit</id>
         <label>Enable Daily Session Limit</label>
         <type>checkbox</type>
         <help>This enables the Max-Daily-Session attribute assignment via users tab.</help>
