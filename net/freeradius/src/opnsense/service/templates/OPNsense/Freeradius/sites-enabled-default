@@ -1,5 +1,4 @@
 {% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
-{% raw %}
 ######################################################################
 #
 #       As of 2.0.0, FreeRADIUS supports virtual hosts using the
@@ -418,7 +417,7 @@ authorize {
 
         #
         #  Enforce daily limits on time spent logged in.
-{% if helpers.exists('OPNsense.freeradius.general.enable_daily_sessionlimit') and OPNsense.freeradius.general.enable_daily_sessionlimit == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}        
         daily
 {% endif %}
 
@@ -619,7 +618,7 @@ accounting {
         #  Note that accounting requests which are proxied
         #  are also logged in the detail file.
         detail
-{% if helpers.exists('OPNsense.freeradius.general.enable_daily_sessionlimit') and OPNsense.freeradius.general.enable_daily_sessionlimit == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}        
         daily
         sradutmp
 {% endif %}
@@ -955,5 +954,4 @@ post-proxy {
 #       }
 }
 }
-{% endraw %}
 {% endif %}
