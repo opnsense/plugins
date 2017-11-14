@@ -1,4 +1,3 @@
-
 {% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
 
 # -*- text -*-
