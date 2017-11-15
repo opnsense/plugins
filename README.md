@@ -28,6 +28,7 @@ A list of currently available plugins
 =====================================
 
 ```
+databases/redis -- Redis DB
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
 dns/dyndns -- Dynamic DNS Support
