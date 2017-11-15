@@ -29,7 +29,7 @@
 #}
 
 <script type="text/javascript">
-
+    window.redis_installed = {{ redis_installed ? 'true' : 'false' }};
     $( document ).ready(function() {
 
         var data_get_map = {'frm_rspamd':'/api/rspamd/settings/get'};
@@ -50,6 +50,12 @@
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             history.pushState(null, null, e.target.hash);
+        });
+        $('#rspamd\\.general\\.enable_redis_plugin').change(function (evt) {
+            $('#missing_redis_plugin').hide();
+            if (!window.redis_installed && $(this).is(':checked')) {
+                $('#missing_redis_plugin').show();
+            }
         });
         
         
@@ -99,6 +105,9 @@
     <div style="margin-top: 8px;">{{ lang._('No ClamAV plugin found, please install via %sSystem > Firmware > Plugins%s. If the plugin is not installed and enabled, mails cannot be scanned for malware.')|format('<a href="/ui/core/firmware/#plugins">','</a>')}}</div>
 </div>
 {% endif %}
+<div class="alert alert-danger" role="alert" id="missing_redis_plugin" style="min-height:65px;{% if !redis_plugin_enabled or redis_installed %} display:none;{% endif %}">
+    <div style="margin-top: 8px;">{{ lang._('The Redis plugin is configured to use but it is not installed. Please install it via %sSystem > Firmware > Plugins%s.')|format('<a href="/ui/core/firmware/#plugins">','</a>')}}</div>
+</div>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
 {% for tab in settings['tabs']|default([]) %}
