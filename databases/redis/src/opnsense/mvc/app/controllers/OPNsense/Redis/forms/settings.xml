@@ -12,7 +12,7 @@
         <label>Listen Interfaces</label>
         <type>select_multiple</type>
         <style>selectpicker</style>
-        <help>Let the Redis server listen on non localhost interfaces.</help>
+        <help>Let the Redis server listen on non-localhost interfaces.</help>
       </field>
       <field>
         <id>redis.general.protected_mode</id>

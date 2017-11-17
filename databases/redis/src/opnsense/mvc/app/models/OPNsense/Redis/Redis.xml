@@ -8,7 +8,6 @@
         <Required>Y</Required>
       </enabled>
       <listen type="InterfaceField">
-        <default>1</default>
         <Required>N</Required>
         <multiple>Y</multiple>
       </listen>
