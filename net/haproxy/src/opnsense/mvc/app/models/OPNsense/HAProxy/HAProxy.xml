@@ -298,6 +298,31 @@
                 <ssl_customOptions type="TextField">
                     <Required>N</Required>
                 </ssl_customOptions>
+                <ssl_advancedEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ssl_advancedEnabled>
+                <ssl_bindOptions type="OptionField">
+                    <Required>N</Required>
+                    <default>no-sslv3,no-tlsv10,no-tls-tickets</default>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <no-sslv3>no-sslv3</no-sslv3>
+                        <no-tlsv10>no-tlsv10</no-tlsv10>
+                        <no-tlsv11>no-tlsv11</no-tlsv11>
+                        <no-tlsv12>no-tlsv12</no-tlsv12>
+                        <no-tls-tickets>no-tls-tickets</no-tls-tickets>
+                        <force-sslv3>force-sslv3</force-sslv3>
+                        <force-tlsv10>force-tlsv10</force-tlsv10>
+                        <force-tlsv11>force-tlsv11</force-tlsv11>
+                        <force-tlsv12>force-tlsv12</force-tlsv12>
+                        <strict-sni>strict-sni</strict-sni>
+                    </OptionValues>
+                </ssl_bindOptions>
+                <ssl_cipherList type="TextField">
+                    <default>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256</default>
+                    <Required>N</Required>
+                </ssl_cipherList>
                 <tuning_maxConnections type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>500000</MaximumValue>
