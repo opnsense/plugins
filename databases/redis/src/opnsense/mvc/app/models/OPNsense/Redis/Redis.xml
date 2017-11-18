@@ -8,7 +8,6 @@
         <Required>Y</Required>
       </enabled>
       <listen type="InterfaceField">
-        <default>1</default>
         <Required>N</Required>
         <multiple>Y</multiple>
       </listen>
@@ -17,11 +16,11 @@
         <Required>Y</Required>
       </protected_mode>
       <port type="IntegerField">
-        <MinimumValue>0</MinimumValue>
+        <MinimumValue>1</MinimumValue>
         <MaximumValue>65536</MaximumValue>
         <Required>N</Required>
         <default>6379</default>
-        <ValidationMessage>This must be a valid port number or 0.</ValidationMessage>
+        <ValidationMessage>This must be a valid port number.</ValidationMessage>
       </port>
       <log_level type="OptionField">
         <Required>Y</Required>

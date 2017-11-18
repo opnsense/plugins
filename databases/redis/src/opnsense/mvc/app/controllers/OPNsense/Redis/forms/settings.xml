@@ -12,7 +12,7 @@
         <label>Listen Interfaces</label>
         <type>select_multiple</type>
         <style>selectpicker</style>
-        <help>Let the Redis server listen on non localhost interfaces.</help>
+        <help>Let the Redis server listen on non-localhost interfaces.</help>
       </field>
       <field>
         <id>redis.general.protected_mode</id>
@@ -24,7 +24,7 @@
         <id>redis.general.port</id>
         <label>TCP Listen Port</label>
         <type>text</type>
-        <help>Enter a valid TCP port or 0 to disable the TCP port.</help>
+        <help>Enter a valid TCP port.</help>
       </field>
       <field>
         <id>redis.general.log_level</id>
