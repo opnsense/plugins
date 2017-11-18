@@ -24,7 +24,7 @@
         <id>redis.general.port</id>
         <label>TCP Listen Port</label>
         <type>text</type>
-        <help>Enter a valid TCP port or 0 to disable the TCP port.</help>
+        <help>Enter a valid TCP port.</help>
       </field>
       <field>
         <id>redis.general.log_level</id>
