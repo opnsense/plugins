@@ -69,6 +69,7 @@
     <field>
         <label>NOTE: The specified server must be present in the Backend Pool where this rule is applied.</label>
         <type>info</type>
+    </field>
     <field>
         <label>Parameters</label>
         <type>header</type>

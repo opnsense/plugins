@@ -86,6 +86,30 @@
                 <help><![CDATA[These lines will be added to the global settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
                 <advanced>true</advanced>
             </field>
+            <field>
+                <label>SSL default settings</label>
+                <type>header</type>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.ssl_defaultsEnabled</id>
+                <label>Enabled</label>
+                <type>checkbox</type>
+                <help><![CDATA[Enable global SSL default values.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.ssl_bindOptions</id>
+                <label>Bind options</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.tuning.ssl_cipherList</id>
+                <label>Cipher List</label>
+                <type>text</type>
+                <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake.]]></help>
+            </field>
         </subtab>
         <subtab id="haproxy-general-defaults" description="Default Parameters">
             <field>

@@ -186,6 +186,22 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("."+service_id).show();
             });
             $("#frontend\\.mode").change();
+
+            // show/hide SSL offloading
+            $("#frontend\\.ssl_enabled").change(function(){
+                var service_id = 'table_ssl_' + $(this).is(':checked');
+                $(".table_ssl").hide();
+                $("."+service_id).show();
+            });
+            $("#frontend\\.ssl_enabled").change();
+
+            // show/hide advanced SSL settings
+            $("#frontend\\.ssl_advancedEnabled").change(function(){
+                var service_id = 'table_ssl_advanced_' + $(this).is(':checked');
+                $(".table_ssl_advanced").hide();
+                $("."+service_id).show();
+            });
+            $("#frontend\\.ssl_advancedEnabled").change();
         })
 
         // hook into on-show event for dialog to extend layout.

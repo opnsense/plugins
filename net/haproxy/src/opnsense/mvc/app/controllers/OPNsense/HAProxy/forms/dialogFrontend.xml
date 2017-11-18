@@ -46,15 +46,15 @@
         <help><![CDATA[Set the default Backend Pool to use for this Public Service.]]></help>
     </field>
     <field>
-        <label>SSL Offloading</label>
-        <type>header</type>
-        <style>mode_table table_http table_ssl</style>
-    </field>
-    <field>
         <id>frontend.ssl_enabled</id>
-        <label>Enabled</label>
+        <label>Enable SSL offloading</label>
         <type>checkbox</type>
         <help>Enable SSL offloading</help>
+    </field>
+    <field>
+        <label>SSL Offloading</label>
+        <type>header</type>
+        <style>mode_table table_http table_ssl table_ssl_true</style>
     </field>
     <field>
         <id>frontend.ssl_certificates</id>
@@ -74,10 +74,47 @@
     </field>
     <field>
         <id>frontend.ssl_customOptions</id>
-        <label>Advanced SSL options</label>
+        <label>SSL option pass-through</label>
         <type>text</type>
-        <help><![CDATA[Specify additional SSL parameters such as force-sslv3, force-tlsv10, force-tlsv11, force-tlsv12, no-sslv3, no-tlsv10, no-tlsv11, no-tlsv12, no-tls-tickets or customize the list of SSL ciphers.<br/>Example: no-sslv3 ciphers HIGH:!DSS:!aNULL@STRENGTH<br/>]]></help>
+        <help><![CDATA[Pass additional SSL parameters to the HAProxy configuration.]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.ssl_advancedEnabled</id>
+        <label>Enable Advanced settings</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable advanced SSL settings.]]></help>
+    </field>
+    <field>
+        <label>Advanced SSL settings</label>
+        <type>header</type>
+        <style>mode_table table_http table_ssl table_ssl_advanced table_ssl_advanced_true</style>
+    </field>
+    <field>
+        <id>frontend.ssl_bindOptions</id>
+        <label>Bind options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_cipherList</id>
+        <label>Cipher List</label>
+        <type>text</type>
+        <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_hstsEnabled</id>
+        <label>Enable HSTS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HTTP Strict Transport Security.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_hstsMaxAge</id>
+        <label>HSTS max-age</label>
+        <type>text</type>
+        <help><![CDATA[Future requests to the domain should use only HTTPS for the specified time (in seconds): 15768000 = 6 months]]></help>
     </field>
     <field>
         <label>Tuning Options</label>
