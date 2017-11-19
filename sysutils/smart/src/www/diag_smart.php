@@ -137,6 +137,8 @@ switch($action) {
 
     // Get all AD* and DA* (IDE and SCSI) devices currently installed and stores them in the $devs array
     exec("ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devs);
+
+    if (count($devs) > 0) {
     ?>
 
             <div class="content-box tab-content table-responsive">
@@ -302,6 +304,9 @@ switch($action) {
       </section>
 
     <?php
+    } else {
+        echo gettext("No SMART devices.");
+    }
     break;
   }
 }
