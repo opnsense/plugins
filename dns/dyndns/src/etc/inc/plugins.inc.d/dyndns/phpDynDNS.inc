@@ -171,6 +171,7 @@ class updatedns {
             if (!$dnsHost) $this->_error(5);
             break;
         case 'route53':
+        case 'route53-v6':
             if (!$dnsZoneID) $this->_error(8);
             if (!$dnsTTL) $this->_error(9);
             break;
@@ -194,6 +195,7 @@ class updatedns {
         case 'custom-v6':
         case 'he-net-v6':
         case 'regfish-v6':
+        case 'route53-v6':
             $this->_useIPv6 = true;
             break;
         default:
@@ -267,6 +269,7 @@ class updatedns {
             case 'regfish':
             case 'regfish-v6':
             case 'route53':
+            case 'route53-v6':
             case 'selfhost':
             case 'strato':
             case 'staticcling':
@@ -300,7 +303,7 @@ class updatedns {
             log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
         }
 
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53 ') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
@@ -540,6 +543,7 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?system=dyndns&hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard='.$this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NO');
                 break;
             case 'route53':
+            case 'route53-v6':
                 /* Setting Variables */
                 $hostname = "{$this->_dnsHost}.";
                 $ZoneID = $this->_dnsZoneID;
@@ -547,6 +551,7 @@ class updatedns {
                 $SecretAccessKey=$this->_dnsPass;
                 $NewIP=$this->_dnsIP;
                 $NewTTL=$this->_dnsTTL;
+                $RecordType = ($this->_useIPv6) ? "AAAA" : "A";
 
                 /* Set Amazon AWS Credentials for this record */
                 $r53 = new Route53($AccessKeyId, $SecretAccessKey);
@@ -582,12 +587,12 @@ class updatedns {
                     if(!empty($OldIP)) {
                         /* Your Hostname already exists, deleting and creating it again */
                         $changes = array();
-                        $changes[] = $r53->prepareChange(DELETE, $hostname, A, $OldTTL, $OldIP);
-                        $changes[] = $r53->prepareChange(CREATE, $hostname, A, $NewTTL, $NewIP);
+                        $changes[] = $r53->prepareChange(DELETE, $hostname, $RecordType, $OldTTL, $OldIP);
+                        $changes[] = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     } else {
                         /* Your Hostname does not exist yet, creating it */
-                        $changes = $r53->prepareChange(CREATE, $hostname, A, $NewTTL, $NewIP);
+                        $changes = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     }
                 }
@@ -730,7 +735,7 @@ class updatedns {
             default:
                 break;
         }
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $data = curl_exec($ch);
             $this->_checkStatus($ch, $data);
             @curl_close($ch);
@@ -747,7 +752,7 @@ class updatedns {
             log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
         }
         $successful_update = false;
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' && @curl_error($ch)) {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' && @curl_error($ch)) {
             $status = "Curl error occurred: " . curl_error($ch);
             log_error($status);
             $this->status = $status;
@@ -987,6 +992,7 @@ class updatedns {
                 }
                 break;
             case 'route53':
+            case 'route53-v6':
                 $successful_update = true;
                 break;
             case 'custom':
