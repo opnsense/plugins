@@ -35,7 +35,7 @@ use \OPNsense\Rspamd\RSpamd;
 
 class ServiceController extends ApiControllerBase
 {
-    
+
     /**
      * restart rspamd service
      * @return array

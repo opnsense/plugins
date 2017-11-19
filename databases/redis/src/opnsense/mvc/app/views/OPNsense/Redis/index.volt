@@ -51,9 +51,9 @@
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             history.pushState(null, null, e.target.hash);
         });
-        
-        
-        
+
+
+
         // form save event handlers for all defined forms
         $('[id*="save_"]').each(function(){
             $(this).click(function() {

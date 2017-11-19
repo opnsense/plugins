@@ -57,9 +57,9 @@
                 $('#missing_redis_plugin').show();
             }
         });
-        
-        
-        
+
+
+
         // form save event handlers for all defined forms
         $('[id*="save_"]').each(function(){
             $(this).click(function() {

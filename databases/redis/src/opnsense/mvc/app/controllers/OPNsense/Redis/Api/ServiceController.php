@@ -35,7 +35,7 @@ use \OPNsense\Redis\Redis;
 
 class ServiceController extends ApiControllerBase
 {
-    
+
     /**
      * restart redis service
      * @return array
