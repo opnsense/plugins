@@ -1,0 +1,15 @@
+rspamd:/etc/rc.conf.d/rspamd
+antivirus.wl:/usr/local/etc/rspamd/local.d/antivirus.wl
+antivirus.conf:/usr/local/etc/rspamd/local.d/antivirus.conf
+dkim_signing.conf:/usr/local/etc/rspamd/local.d/dkim_signing.conf
+dkim.conf:/usr/local/etc/rspamd/local.d/dkim.conf
+spf.conf:/usr/local/etc/rspamd/local.d/spf.conf
+spamtrap.conf:/usr/local/etc/rspamd/local.d/spamtrap.conf
+surbl-whitelist.inc.local:/var/db/rspamd/surbl-whitelist.inc.local
+2tld.inc.local:/var/db/rspamd/2tld.inc.local
+greylist.conf:/usr/local/etc/rspamd/local.d/greylist.conf
+phishing.conf:/usr/local/etc/rspamd/local.d/phishing.conf
+mx_check.conf:/usr/local/etc/rspamd/local.d/mx_check.conf
+ratelimit.conf:/usr/local/etc/rspamd/local.d/ratelimit.conf
+redis.conf:/usr/local/etc/rspamd/local.d/redis.conf
+spamtrap.map:/usr/local/etc/rspamd/maps.d/spamtrap.map

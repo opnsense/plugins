@@ -1,0 +1,348 @@
+<form>
+    <tab id="rspamd-general" description="General Settings">
+        <subtab id="rspamd-general-settings" description="General Rspamd Settings">
+            <field>
+                <id>rspamd.general.enabled</id>
+                <label>Enable rspamd</label>
+                <type>checkbox</type>
+                <help>Enable or disable the rspamd service.</help>
+            </field>
+            <field>
+                <id>rspamd.general.enable_redis_plugin</id>
+                <label>Enable Redis Plugin</label>
+                <type>checkbox</type>
+                <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
+            </field>
+        </subtab>
+    </tab>
+    <tab id="rspamd-anti-spam" description="Spam Protection">
+        <subtab id="rspamd-anti-spam-graylist" description="Graylisting">
+            <field>
+                <id>rspamd.graylist.expire</id>
+                <label>Expiration</label>
+                <type>text</type>
+                <help>Time after which the graylist state expires in days.</help>
+            </field>
+            <field>
+                <id>rspamd.graylist.timeout</id>
+                <label>Timeout</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.graylist.max_data_len</id>
+                <label>Maximum Data Length</label>
+                <type>text</type>
+                <help>The limit of the length of data to hash.</help>
+            </field>
+            <field>
+                <id>rspamd.graylist.ipv4mask</id>
+                <label>IPv4 Mask</label>
+                <type>text</type>
+                <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
+            </field>
+            <field>
+                <id>rspamd.graylist.ipv6mask</id>
+                <label>IPv6 Mask</label>
+                <type>text</type>
+                <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-spam-dkim" description="DKIM">
+          <!-- dkim -->
+            <field>
+                <id>rspamd.dkim.cache_size</id>
+                <label>Cache Size</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.cache_expire</id>
+                <label>Cache Expire</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.time_jitter</id>
+                <label>Time Jitter</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.trusted_only</id>
+                <label>Trusted Only</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.skip_multi</id>
+                <label>Skip Multi</label>
+                <type>checkbox</type>
+            </field>
+            <!-- dkim signing -->
+            <field>
+                <id>rspamd.dkim.allow_envfrom_empty</id>
+                <label>Allow Environment From Empty</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.allow_hdrfrom_mismatch</id>
+                <label>Allow Header From Mismatch</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.allow_hdrfrom_multiple</id>
+                <label>Allow Header From Multiple</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.allow_username_mismatch</id>
+                <label>Allow Username Mismatch</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.auth_only</id>
+                <label>Auth Only</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.sign_local</id>
+                <label>Sign Local</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.try_fallback</id>
+                <label>Try Fallback</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.use_domain</id>
+                <label>Use Domain</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.dkim.use_esld</id>
+                <label>Use eSLD</label>
+                <type>checkbox</type>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-spam-mx-check" description="MX Check">
+            <field>
+                <id>rspamd.mx-check.enabled</id>
+                <label>Enabled</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.mx_check.expire</id>
+                <label>Expiration</label>
+                <type>text</type>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-spam-phishing" description="Phishing">
+            <field>
+                <id>rspamd.phishing.openphish_enabled</id>
+                <label>Enable Openphish</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.phishing.openphish_premium_enabled</id>
+                <label>Enable Openphish Premium</label>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>rspamd.phishing.phishtank_enabled</id>
+                <label>Enable Phishtank</label>
+                <type>checkbox</type>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-spam-rate-limit" description="Rate Limit">
+            <field>
+                <id>rspamd.rate_limit.per_recipient.count</id>
+                <label>Per Recipient Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_recipient.time</id>
+                <label>Per Recipient Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_recipient.time_unit</id>
+                <label>Per Recipient Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_ip.count</id>
+                <label>Per IP Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_ip.time</id>
+                <label>Per IP Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_ip.time_unit</id>
+                <label>Per IP Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_ip_from.count</id>
+                <label>Per IP and From Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_ip_from.time</id>
+                <label>Per IP and From Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.per_ip_from.time_unit</id>
+                <label>Per IP and From Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.bounce.count</id>
+                <label>Bounce Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.bounce.time</id>
+                <label>Bounce Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.bounce.time_unit</id>
+                <label>Bounce Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.bounce_ip.count</id>
+                <label>Bounce Limit per IP: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.bounce_ip.time</id>
+                <label>Bounce Limit per IP: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.bounce_ip.time_unit</id>
+                <label>Bounce Limit per IP: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.user.count</id>
+                <label>User Limit: Mail Count</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.user.time</id>
+                <label>User Limit: Time</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.user.time_unit</id>
+                <label>User Limit: Time Unit</label>
+                <type>dropdown</type>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.whitelisted_rcpts</id>
+                <label>Whitelist Recipients</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+            </field>
+            <field>
+                <id>rspamd.rate_limit.max_rcpt</id>
+                <label>Maximum Recipients</label>
+                <type>text</type>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-spam-spamtrap" description="Spam Trap">
+            <field>
+                <id>rspamd.spamtrap.enabled</id>
+                <label>Enabled</label>
+                <type>checkbox</type>
+                <help>Enable this if you want to enable the spam trap.</help>
+            </field>
+            <field>
+                <id>rspamd.spamtrap.fuzzy_learning</id>
+                <label>Fuzzy Leraning</label>
+                <type>checkbox</type>
+                <help>Enable this if you want to enable fuzzy learning.</help>
+            </field>
+            <field>
+                <id>rspamd.spamtrap.spam_learning</id>
+                <label>Bayes Leraning</label>
+                <type>checkbox</type>
+                <help>Enable this if you want to enable bayes learning.</help>
+            </field>
+            <field>
+                <id>rspamd.spamtrap.spam_recipients</id>
+                <label>Recipients</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Enter regular expressions in the form trap@example\.com into this field. The value is automatically enclosed in slashes and the case insensitive option is added.</help>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-spam-spf" description="Sender Policy Framework (SPF)">
+            <field>
+                <id>rspamd.spf.spf_cache_size</id>
+                <label>Cache Size</label>
+                <type>text</type>
+                <help>Enter the size of the SPF cache.</help>
+            </field>
+            <field>
+                <id>rspamd.spf.spf_cache_expire</id>
+                <label>Cache Expiration</label>
+                <type>text</type>
+                <help>Enter how long SPF entries are valid.</help>
+            </field>
+        </subtab>
+    </tab>
+    <tab id="rspamd-anti-malware" description="Anti Malware">
+        <subtab id="rspamd-anti-malware-general" description="General Anti Malware Settings">
+            <field>
+                <id>rspamd.av.force-reject</id>
+                <label>Force Reject</label>
+                <type>checkbox</type>
+                <help>If set, the mail will be rejected.</help>
+            </field>
+            <field>
+                <id>rspamd.av.attachments-only</id>
+                <label>Only Scan Attachments</label>
+                <type>checkbox</type>
+                <help>If checked, only attached files are scanned and images are omitted.</help>
+            </field>
+            <field>
+                <id>rspamd.av.max-size</id>
+                <label>Maximum Size</label>
+                <type>text</type>
+                <help>If set, a message large than this size will not be scanned.</help>
+            </field>
+            <field>
+                <id>rspamd.av.whitelist</id>
+                <label>Whitelist</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Mails from IPs entered here will not be scanned.</help>
+            </field>
+        </subtab>
+        <subtab id="rspamd-anti-malware-surbl" description="SURBL">
+            <field>
+                <id>rspamd.surbl.whitelist</id>
+                <label>Whitelist</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+            </field>
+            <field>
+                <id>rspamd.surbl.exceptions</id>
+                <label>Exceptions</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+            </field>
+        </subtab>
+    </tab>
+
+    <activetab>rspamd-general-settings</activetab>
+</form>

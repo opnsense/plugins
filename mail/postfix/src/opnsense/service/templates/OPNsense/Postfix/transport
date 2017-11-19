@@ -1,0 +1,9 @@
+{% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.postfix.domain.domains.domain') %}
+{%     for domain in helpers.toList('OPNsense.postfix.domain.domains.domain') %}
+{%       if domain.enabled == '1' %}
+{{ domain.domainname }} smtp:{{ domain.destination }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}

@@ -1,0 +1,87 @@
+<model>
+    <mount>//OPNsense/postfix/general</mount>
+    <description>Postfix configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <myhostname type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </myhostname>
+        <mydomain type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mydomain>
+        <myorigin type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </myorigin>
+        <inet_interfaces type="TextField">
+            <default>all</default>
+            <Required>Y</Required>
+        </inet_interfaces>
+        <mynetworks type="CSVListField">
+            <default>127.0.0.0/8,[::ffff:127.0.0.0]/104,[::1]/128</default>
+            <Required>Y</Required>
+        </mynetworks>
+        <banner type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </banner>
+        <message_size_limit type="IntegerField">
+            <default>51200000</default>
+            <Required>Y</Required>
+        </message_size_limit>
+        <disable_ssl type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </disable_ssl>
+        <disable_weak_ciphers type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </disable_weak_ciphers>
+        <check_recipient_access type="ArrayField">
+        </check_recipient_access>
+        <reject_unauth_pipelining type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </reject_unauth_pipelining>
+        <check_sender_access type="ArrayField">
+        </check_sender_access>
+        <reject_unknown_sender_domain type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </reject_unknown_sender_domain>
+        <reject_unknown_recipient_domain type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </reject_unknown_recipient_domain>
+        <reject_non_fqdn_sender type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </reject_non_fqdn_sender>
+        <reject_non_fqdn_recipient type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </reject_non_fqdn_recipient>
+        <permit_sasl_authenticated type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </permit_sasl_authenticated>
+        <permit_tls_clientcerts type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </permit_tls_clientcerts>
+        <permit_mynetworks type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </permit_mynetworks>
+        <reject_unauth_destination type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </reject_unauth_destination>
+    </items>
+</model>
