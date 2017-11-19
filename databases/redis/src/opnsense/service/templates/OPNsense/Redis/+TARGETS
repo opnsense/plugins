@@ -1,0 +1,2 @@
+redis.conf:/usr/local/etc/redis.conf
+redis:/etc/rc.conf.d/redis

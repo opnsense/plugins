@@ -1,0 +1,9 @@
+<acl>
+  <page-Redis>
+    <name>redis</name>
+    <patterns>
+      <pattern>ui/redis/*</pattern>
+      <pattern>api/redis/*</pattern>
+    </patterns>
+  </page-Redis>
+</acl>
