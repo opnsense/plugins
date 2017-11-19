@@ -56,7 +56,7 @@
     <id>general.fascist_firewall</id>
     <label>Fascist Mode</label>
     <type>checkbox</type>
-    <help>This try to circumvent censorship. Please note that the fascist mode does not support "Hidden Services".</help>
+    <help>Attempt to circumvent censorship.</help>
   </field>
   <field>
     <id>general.fascist_firewall_ports</id>

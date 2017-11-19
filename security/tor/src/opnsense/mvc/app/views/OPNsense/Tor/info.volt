@@ -44,7 +44,7 @@ $( document ).ready(function() {
         var tmp = '';
         for (var name in data) {
             if (data.hasOwnProperty(name)) {
-                tmp += '<tr><td>' + name + '</td><td>' + data[name] + '</td></tr>';
+                tmp += '<tr><td>' + name + '</td><td>' + data[name].split("\n").join('<br />') + '</td></tr>';
             }
         }
 
@@ -56,15 +56,15 @@ $( document ).ready(function() {
 
 </script>
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#hiddennames">{{ lang._('Hidden Service Names') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#hiddennames">{{ lang._('Onion Service Names') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content" style="padding-bottom: 1.5em;">
     <div id="hiddennames" class="tab-pane fade in active">
-        <table style="margin: 10px;">
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{{ lang._('Hidden Service Name') }}</th>
+                    <th>{{ lang._('Onion Service Name') }}</th>
                     <th>{{ lang._('Hostname') }}</th>
                 </tr>
             </thead>

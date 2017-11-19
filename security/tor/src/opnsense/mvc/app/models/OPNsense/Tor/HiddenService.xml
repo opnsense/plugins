@@ -1,6 +1,7 @@
 <model>
   <mount>//OPNsense/tor/hiddenservice</mount>
-  <description>Tor hidden service configuration</description>
+  <description>Tor Onion service configuration</description>
+  <version>1.0.0</version>
   <items>
     <service type="ArrayField">
       <enabled type="BooleanField">
@@ -9,9 +10,23 @@
       </enabled>
       <name type="TextField">
         <Required>Y</Required>
-      <mask>/^[a-z0-9_-]+$/i</mask>
-      <ValidationMessage>The name should only consist of alphanumeric characters, dashes and underscores.</ValidationMessage>
+        <mask>/^[a-z0-9_-]+$/i</mask>
+        <ValidationMessage>The name should only consist of alphanumeric characters, dashes and underscores.</ValidationMessage>
       </name>
+      <type type="OptionField">
+        <default>basic</default>
+        <Required>Y</Required>
+        <OptionValues>
+            <basic>Basic</basic>
+            <stealth>Stealth</stealth>
+        </OptionValues>
+      </type>
+      <clients type="CSVListField">
+        <multiple>Y</multiple>
+        <Required>N</Required>
+        <mask>/^([a-z0-9_+-]+,)*([a-z0-9_+-]*)$/i</mask>
+        <ValidationMessage>The authorized clients should only consist of alphanumeric characters, dashes, underscores and plus sign.</ValidationMessage>
+      </clients>
     </service>
   </items>
 </model>

@@ -1,0 +1,174 @@
+#!/usr/local/bin/ruby
+=begin
+Copyright 2017 Fabian Franz
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation and/or
+   other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+=end
+
+
+require 'enumerator'
+require 'json'
+require 'optparse'
+require 'pp'
+require 'socket'
+require 'rexml/document'
+
+# global for showing debug output if needed
+$TOR_DEBUG = false
+
+
+config = REXML::Document.new(File.new("/conf/config.xml"))
+$TOR_PASSWORD = config.elements['opnsense/OPNsense/tor/general/control_port_password'].text
+
+class TorCTL
+
+  def initialize
+    @tor = TCPSocket.new("127.0.0.1", 9051)
+    send_query("AUTHENTICATE \"#{$TOR_PASSWORD}\"")
+  end
+
+
+  # new ip: signal NEWNYM
+
+  def get_version
+    { version: send_query("GETINFO version") }
+  end
+
+  def close
+    @tor.puts("QUIT")
+    @tor.close
+  end
+
+  def send_query(str)
+    @tor.puts(str)
+    ret = ''
+    while (data = @tor.gets&.strip) && (!data.start_with? "250 ")
+      begin
+        res = data.scan(/^(\d{3})(.*)$/).first
+        if res[1][0] == '-'
+          ret << res[1][1..-1] + "\n"
+        else
+          ret << res[1] + "\n"
+        end
+      rescue
+        ret << data + "\n"
+      end
+    end
+    ret
+  end
+
+  def get_config(str)
+    send_query("getconf #{str}")
+  end
+
+  def get_info(str)
+    d = send_query("getinfo #{str}")
+    lines = d.lines
+    if lines.first.end_with? "=\n"
+      lines.shift # property=
+      lines.pop # .
+    else
+      lines[0] = lines[0][((lines[0].index "=") + 1)...(lines[0].length)]
+    end
+    lines.join
+  end
+
+  def get_circuit
+    lines = get_info('circuit-status').lines
+    pp lines if $TOR_DEBUG
+    lines.each(&:strip!)
+    ret = {}
+    lines.each do |line|
+      data = line.split(' ')
+      circuit_id = data.shift.to_i
+      status = data.shift
+      hosts = data.shift.split(',').map do |host_nickname|
+        h,n = host_nickname.split('~')
+        { host: h, nickname: n }
+      end
+      flags = data.map do |flag_entry|
+        flag_key, flag_value = flag_entry.split('=')
+        [flag_key, flag_value.split(',')]
+      end.to_h
+
+      ret[circuit_id] = { status: status,
+                          hosts: hosts,
+                          flags: flags }
+    end
+    ret
+  end
+
+  def stream_status
+    stream_status_data = get_info("stream-status")
+    result = []
+    stream_status_data.split(' ').each_slice(4) do |data_set|
+      d_ip, d_port = data_set[3].scan(/(.*):(\d+)/).first
+      result << { stream_id:        data_set[0],
+                  stream_status:    data_set[1],
+                  circuit_id:       data_set[2],
+                  destination_host: d_ip,
+                  destination_port: d_port
+                }
+    end
+    result
+  end
+end
+
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{__FILE__} ARGS"
+  opts.on("-s", "--stream_status", "Print stream status") do |od|
+    options[:action] = :stream_status
+  end
+  opts.on("-c", "--circuit", 'Print the Circuit') do |od|
+    options[:action] = :get_circuit
+  end
+  opts.on("-v", "--version", 'Print the Tor version') do |od|
+    options[:action] = :get_version
+  end
+  opts.on("-x", "--debug", "Prints debug output") do |od|
+    $TOR_DEBUG = true
+  end
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+tor = TorCTL.new
+
+no_param_actions = [:get_circuit, :stream_status, :get_version]
+if no_param_actions.include? options[:action]
+  begin
+    data = tor.send(options[:action])
+    if data
+      puts data.to_json
+    else
+      puts  error: "no data"
+    end
+  rescue
+    puts error: "execution error", error_str: $!
+  end
+end
+
+#puts tor.get_config("controlport")
+tor.close
