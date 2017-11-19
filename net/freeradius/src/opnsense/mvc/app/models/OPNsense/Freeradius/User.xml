@@ -63,6 +63,10 @@
                                 <default></default>
                                 <Required>N</Required>
                         </chillispot_bw_max_down>
+                        <sessionlimit_max_session_limit type="IntegerField">
+                                <default></default>
+                                <Required>N</Required>
+                        </sessionlimit_max_session_limit>
             </user>
         </users>
     </items>
