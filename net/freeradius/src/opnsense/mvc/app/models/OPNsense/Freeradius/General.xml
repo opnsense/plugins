@@ -29,7 +29,7 @@
             <OptionValues>
                 <files>files</files>
                 <syslog>syslog</syslog>
-            </OptionValues>    
+            </OptionValues>
         </log_destination>
         <log_authentication_request type="BooleanField">
             <default>0</default>

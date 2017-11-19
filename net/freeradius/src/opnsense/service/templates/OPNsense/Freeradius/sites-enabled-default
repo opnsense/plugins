@@ -27,7 +27,7 @@ listen {
         type = auth
         ipv6addr = ::
         port = 0
-        
+
         limit {
               max_connections = 16
               lifetime = 0
@@ -58,7 +58,7 @@ authorize {
         -sql
         -ldap
 
-{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}
         daily
 {% endif %}
 
@@ -92,7 +92,7 @@ preacct {
 
 accounting {
         detail
-{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}
         daily
         sradutmp
 {% endif %}

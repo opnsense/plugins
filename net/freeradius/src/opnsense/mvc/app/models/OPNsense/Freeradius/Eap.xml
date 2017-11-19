@@ -19,17 +19,14 @@
             <Required>Y</Required>
         </enable_client_cert>
         <ca type="CertificateField">
-            <default></default>
             <Type>ca</Type>
             <Required>N</Required>
         </ca>
         <certificate type="CertificateField">
-            <default></default>
             <Type>cert</Type>
             <Required>N</Required>
         </certificate>
         <crl type="CertificateField">
-            <default></default>
             <Type>crl</Type>
             <Required>N</Required>
         </crl>
