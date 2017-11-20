@@ -42,10 +42,10 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
         if ($this->request->isPost()) {
             $backend = new Backend();
             $mdl = new ProxySSO();
-            $cnf = Config::getInstance()->toArray();
-            $hostname = 'HTTP/' . $cnf['system']['hostname'];
-            $domain = $cnf['system']['domain'];
-            $kerbname = substr(strtoupper($cnf['system']['hostname']), 0, 13) . "-K";
+            $cnf = Config::getInstance()->object();
+            $hostname = 'HTTP/' . $cnf->system->hostname;
+            $domain = $cnf->system->domain;
+            $kerbname = strtoupper((string)$mdl->KerberosHostName);
             $winver = (string)$mdl->ADKerberosImplementation == 'W2008' ? '2008' : '2003';
             $username = escapeshellarg($this->request->getPost("admin_login"));
             $pass = escapeshellarg($this->request->getPost("admin_password"));
@@ -66,8 +66,8 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $cnf = Config::getInstance()->toArray();
-            $fqdn = $cnf['system']['hostname'].'.'.$cnf['system']['domain'];
+            $cnf = Config::getInstance()->object();
+            $fqdn = $cnf->system->hostname .'.'.$cnf->system->domain;
             $username = escapeshellarg($this->request->getPost("login"));
             $pass = escapeshellarg($this->request->getPost("password"));
 

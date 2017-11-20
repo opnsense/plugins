@@ -16,5 +16,8 @@
             <W2008>Windows 2008 with AES</W2008>
         </OptionValues>
     </ADKerberosImplementation>
+    <KerberosHostName type="TextField">
+        <Required>N</Required>
+    </KerberosHostName>
 </items>
 </model>
