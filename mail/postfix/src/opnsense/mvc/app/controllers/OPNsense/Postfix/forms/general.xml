@@ -77,7 +77,7 @@
         <id>general.smtpclient_security</id>
         <label>SMTP Client Security</label>
         <type>dropdown</type>
-        <help>Choose none to disable TLS for sending mail. Set encrypt to enforce TLS security, please don't use this for Internet wide communication as no every server supports TLS yet. Default is may which will use TLS when offered.</help>
+        <help>Choose "none" to disable TLS for sending mail. Set encrypt to enforce TLS security, please do not use this for Internet wide communication as not every server supports TLS yet. Default is may which will use TLS when offered.</help>
     </field>
     <field>
         <id>general.reject_unauth_pipelining</id>
