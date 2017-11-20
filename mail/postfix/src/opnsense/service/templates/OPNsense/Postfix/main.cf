@@ -78,6 +78,9 @@ smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH
 {% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.certificate') and OPNsense.postfix.general.certificate != '' %}
+smtpd_tls_cert_file = {{ OPNsense.postfix.general.certificate }}
+{% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
 smtpd_milters = inet:localhost:11332
