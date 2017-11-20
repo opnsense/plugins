@@ -79,7 +79,7 @@ smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.certificate') and OPNsense.postfix.general.certificate != '' %}
-smtpd_tls_cert_file = {{ OPNsense.postfix.general.certificate }}
+smtpd_tls_cert_file = /usr/local/etc/postfix/cert_opn.pem
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
