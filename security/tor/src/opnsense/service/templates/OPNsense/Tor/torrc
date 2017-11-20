@@ -97,6 +97,10 @@ HidServAuth {{ service.onion_service }} {{ service.auth_cookie }}
 {%   endfor %}
 {% endif %}
 
+{% if helpers.exists('OPNsense.tor.general.max_memory_in_queues') and OPNsense.tor.general.max_memory_in_queues != '' %}
+MaxMemInQueues {{ OPNsense.tor.general.max_memory_in_queues }} MB
+{% endif %}
+
 {% if helpers.exists('OPNsense.tor.hiddenservice') and helpers.exists('OPNsense.tor.hiddenserviceacl') and helpers.exists('OPNsense.tor.hiddenserviceacl.hiddenserviceacl') %}
 
 ############### This section is just for location-hidden services ###

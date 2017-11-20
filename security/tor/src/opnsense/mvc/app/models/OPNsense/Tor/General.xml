@@ -117,5 +117,9 @@
         </auth_cookie>
       </client_auth>
     </client_authentications>
+    <max_memory_in_queues type="IntegerField">
+      <MinimumValue>0</MinimumValue>
+      <Required>N</Required>
+    </max_memory_in_queues>
   </items>
 </model>

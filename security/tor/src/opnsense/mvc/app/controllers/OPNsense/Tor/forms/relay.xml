@@ -52,7 +52,7 @@
     <id>relay.relay</id>
     <label>Bridge</label>
     <type>checkbox</type>
-    <help>A bridge is a private relay. It is not visible in the public directory. Check this if you want to become a relay (public).</help>
+    <help>A bridge is a private relay. It is not visible in the public directory. Uncheck this if you want to become a public relay.</help>
   </field>
   <field>
     <id>relay.publish</id>
