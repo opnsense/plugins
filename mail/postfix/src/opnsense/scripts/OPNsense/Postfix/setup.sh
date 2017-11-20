@@ -30,3 +30,5 @@ chown -R root:postfix /var/spool/postfix/pid
 postmap /usr/local/etc/postfix/transport
 postmap /usr/local/etc/postfix/recipient_access
 postmap /usr/local/etc/postfix/sender_access
+
+/usr/local/opnsense/scripts/OPNsense/Postfix/generate_certs.php
