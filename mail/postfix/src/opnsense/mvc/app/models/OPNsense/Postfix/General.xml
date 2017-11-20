@@ -43,6 +43,10 @@
             <default>1</default>
             <Required>Y</Required>
         </disable_weak_ciphers>
+        <certificate type="CertificateField">
+            <Type>cert</Type>
+            <Required>N</Required>
+        </certificate>
         <smtpclient_security type="OptionField">
             <default>may</default>
             <Required>Y</Required>
