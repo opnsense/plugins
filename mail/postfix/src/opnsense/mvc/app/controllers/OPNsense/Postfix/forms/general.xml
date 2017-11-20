@@ -68,6 +68,12 @@
         <help>Choose the certificate to use when other servers want to do TLS with you.</help>
     </field>
     <field>
+        <id>general.ca</id>
+        <label>Root CA</label>
+        <type>dropdown</type>
+        <help>Choose the Certificate Authority which signed your certificate.</help>
+    </field>
+    <field>
         <id>general.smtpclient_security</id>
         <label>SMTP Client Security</label>
         <type>dropdown</type>
