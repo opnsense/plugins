@@ -75,6 +75,16 @@ smtp_tls_protocols=!SSLv2,!SSLv3
 {% if helpers.exists('OPNsense.postfix.general.disable_weak_ciphers') and OPNsense.postfix.general.disable_weak_ciphers == '1' %}
 smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
+smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.certificate') and OPNsense.postfix.general.certificate != '' %}
+smtpd_use_tls = yes
+smtpd_tls_cert_file = /usr/local/etc/postfix/cert_opn.pem
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.ca') and OPNsense.postfix.general.ca != '' %}
+smtpd_tls_CAfile = /usr/local/etc/postfix/ca_opn.pem
+{% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
 smtpd_milters = inet:localhost:11332

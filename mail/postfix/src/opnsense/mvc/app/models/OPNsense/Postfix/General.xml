@@ -43,6 +43,23 @@
             <default>1</default>
             <Required>Y</Required>
         </disable_weak_ciphers>
+        <certificate type="CertificateField">
+            <Type>cert</Type>
+            <Required>N</Required>
+        </certificate>
+        <ca type="CertificateField">
+            <Type>ca</Type>
+            <Required>N</Required>
+        </ca>
+        <smtpclient_security type="OptionField">
+            <default>may</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <none>none</none>
+                <may>may</may>
+                <encrypt>encrypt</encrypt>
+            </OptionValues>
+        </smtpclient_security>
         <check_recipient_access type="ArrayField">
         </check_recipient_access>
         <reject_unauth_pipelining type="BooleanField">
