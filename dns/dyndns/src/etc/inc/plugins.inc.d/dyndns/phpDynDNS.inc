@@ -53,40 +53,41 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
- *  DynDNS Dynamic - Last Tested: 12 July 2005
- *  DynDNS Static  - Last Tested: NEVER
- *  DynDNS Custom  - Last Tested: NEVER
- *  No-IP          - Last Tested: 20 July 2008
- *  HN.org         - Last Tested: 12 July 2005
- *  EasyDNS        - Last Tested: 20 July 2008
- *  DHS            - Last Tested: 12 July 2005
- *  ZoneEdit       - Last Tested: NEVER
- *  Dyns           - Last Tested: NEVER
- *  ODS            - Last Tested: 02 August 2005
- *  FreeDNS        - Last Tested: 23 Feb 2011
- *  Loopia         - Last Tested: NEVER
- *  StaticCling    - Last Tested: 27 April 2006
- *  DNSexit        - Last Tested: 20 July 2008
- *  OpenDNS        - Last Tested: 4 August 2008
- *  Namecheap      - Last Tested: 31 August 2010
- *  HE.net         - Last Tested: 7 July 2013
- *  HE.net IPv6    - Last Tested: 7 July 2013
- *  HE.net Tunnel  - Last Tested: 28 June 2011
- *  SelfHost       - Last Tested: 26 December 2011
- *  Amazon Route53 - Last tested: 01 April 2012
- *  DNS-O-Matic    - Last Tested: 9 September 2010
- *  CloudFlare     - Last Tested: 30 May 2013
- *  Eurodns        - Last Tested: 27 June 2013
- *  GratisDNS      - Last Tested: 15 August 2012
- *  OVH DynHOST    - Last Tested: NEVER
- *  City Network   - Last Tested: 13 November 2013
- *  Duck DNS       - Last Tested: 04 March 2015
- *  Google Domains - Last Tested: 20 February 2017
- *  STRATO         - Last Tested: 09 May 2017
- *  3322           - Last Tested: 26 May 2017
- *  Oray           - Last Tested: 26 May 2017
- *  regfish        - Last Tested: 15 August 2017
- *  regfish v6     - Last Tested: 15 August 2017
+ *  DynDNS Dynamic      - Last Tested: 12 July 2005
+ *  DynDNS Static       - Last Tested: NEVER
+ *  DynDNS Custom       - Last Tested: NEVER
+ *  No-IP               - Last Tested: 20 July 2008
+ *  HN.org              - Last Tested: 12 July 2005
+ *  EasyDNS             - Last Tested: 20 July 2008
+ *  DHS                 - Last Tested: 12 July 2005
+ *  ZoneEdit            - Last Tested: NEVER
+ *  Dyns                - Last Tested: NEVER
+ *  ODS                 - Last Tested: 02 August 2005
+ *  FreeDNS             - Last Tested: 23 Feb 2011
+ *  Loopia              - Last Tested: NEVER
+ *  StaticCling         - Last Tested: 27 April 2006
+ *  DNSexit             - Last Tested: 20 July 2008
+ *  OpenDNS             - Last Tested: 4 August 2008
+ *  Namecheap           - Last Tested: 31 August 2010
+ *  HE.net              - Last Tested: 7 July 2013
+ *  HE.net IPv6         - Last Tested: 7 July 2013
+ *  HE.net Tunnel       - Last Tested: 28 June 2011
+ *  SelfHost            - Last Tested: 26 December 2011
+ *  Amazon Route53      - Last Tested: 01 April 2012
+ *  DNS-O-Matic         - Last Tested: 9 September 2010
+ *  CloudFlare          - Last Tested: 30 May 2013
+ *  Eurodns             - Last Tested: 27 June 2013
+ *  GratisDNS           - Last Tested: 15 August 2012
+ *  OVH DynHOST         - Last Tested: NEVER
+ *  City Network        - Last Tested: 13 November 2013
+ *  Duck DNS            - Last Tested: 04 March 2015
+ *  Google Domains      - Last Tested: 20 February 2017
+ *  STRATO              - Last Tested: 09 May 2017
+ *  3322                - Last Tested: 26 May 2017
+ *  Oray                - Last Tested: 26 May 2017
+ *  regfish             - Last Tested: 15 August 2017
+ *  regfish v6          - Last Tested: 15 August 2017
+ *  Amazon Route53 v6   - Last Tested: 19 November 2017
  * +====================================================+
  *
  * @author    E.Kristensen
