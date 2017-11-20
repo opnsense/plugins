@@ -47,6 +47,10 @@
             <Type>cert</Type>
             <Required>N</Required>
         </certificate>
+        <ca type="CertificateField">
+            <Type>ca</Type>
+            <Required>N</Required>
+        </ca>
         <smtpclient_security type="OptionField">
             <default>may</default>
             <Required>Y</Required>
