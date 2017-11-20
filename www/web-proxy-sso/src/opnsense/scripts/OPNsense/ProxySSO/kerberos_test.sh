@@ -25,3 +25,5 @@ rm ${PASS_TMP}
 /usr/local/libexec/squid/negotiate_kerberos_auth_test ${FQDN} | awk '{sub(/Token:/,"YR"); print $0}END{print "QQ"}' | /usr/local/libexec/squid/negotiate_kerberos_auth -s GSS_C_NO_NAME
 
 /usr/local/bin/kdestroy
+
+exit 0
