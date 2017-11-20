@@ -62,6 +62,12 @@
         <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
     </field>
     <field>
+        <id>general.certificate</id>
+        <label>Server Certificate</label>
+        <type>dropdown</type>
+        <help>Choose the certificate to use when other servers want to do TLS with you.</help>
+    </field>
+    <field>
         <id>general.smtpclient_security</id>
         <label>SMTP Client Security</label>
         <type>dropdown</type>
