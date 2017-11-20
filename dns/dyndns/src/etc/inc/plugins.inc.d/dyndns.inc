@@ -128,6 +128,7 @@ function dyndns_list()
         'regfish' => 'regfish',
         'regfish-v6' => 'regfish (v6)',
         'route53' => 'Route 53',
+        'route53-v6' => 'Route 53 (v6)',
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
         'zoneedit' => 'ZoneEdit',
