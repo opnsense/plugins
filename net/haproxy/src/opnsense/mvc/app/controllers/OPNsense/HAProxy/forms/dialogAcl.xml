@@ -3,23 +3,23 @@
         <id>acl.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this ACL.</help>
+        <help>Name to identify this condition.</help>
     </field>
     <field>
         <id>acl.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this ACL.</help>
+        <help>Description for this condition.</help>
     </field>
     <field>
-        <label>Compose expression</label>
+        <label>Condition</label>
         <type>header</type>
     </field>
     <field>
         <id>acl.expression</id>
-        <label>Expression</label>
+        <label>Condition type</label>
         <type>dropdown</type>
-        <hint>Select ACL expression.</hint>
+        <hint>Select condition type.</hint>
     </field>
     <field>
         <id>acl.negate</id>
@@ -28,25 +28,246 @@
         <help><![CDATA[Use this to invert the meaning of the expression.]]></help>
     </field>
     <field>
-        <id>acl.value</id>
-        <label>Value</label>
-        <type>text</type>
-        <help><![CDATA[Specify a value to match with the expression.]]></help>
-    </field>
-    <field>
-        <label>Optional parameters</label>
+        <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_hdr_beg</style>
     </field>
     <field>
-        <id>acl.urlparam</id>
-        <label>URL parameter</label>
+        <id>acl.hdr_beg</id>
+        <label>Host Prefix</label>
         <type>text</type>
-        <help><![CDATA[Specify the URL parameter to be checked for the value specified below.<br/><b>Not used for any other expression.</b>]]></help>
+        <help><![CDATA[HTTP host header starts with string (prefix match)]]></help>
     </field>
     <field>
-        <id>acl.queryBackend</id>
-        <label>Query Backend</label>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_hdr_end</style>
+    </field>
+    <field>
+        <id>acl.hdr_end</id>
+        <label>Host Suffix</label>
+        <type>text</type>
+        <help><![CDATA[HTTP host header ends with string (suffix match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_hdr</style>
+    </field>
+    <field>
+        <id>acl.hdr</id>
+        <label>Host String</label>
+        <type>text</type>
+        <help><![CDATA[HTTP host header matches exact string]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_hdr_reg</style>
+    </field>
+    <field>
+        <id>acl.hdr_reg</id>
+        <label>Host Regex</label>
+        <type>text</type>
+        <help><![CDATA[HTTP host header matches regular expression]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_hdr_sub</style>
+    </field>
+    <field>
+        <id>acl.hdr_sub</id>
+        <label>Host Contains</label>
+        <type>text</type>
+        <help><![CDATA[HTTP host header contains string (substring match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_path_beg</style>
+    </field>
+    <field>
+        <id>acl.path_beg</id>
+        <label>Path Prefix</label>
+        <type>text</type>
+        <help><![CDATA[HTTP request URL path starts with string (prefix match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_path_end</style>
+    </field>
+    <field>
+        <id>acl.path_end</id>
+        <label>Path Suffix</label>
+        <type>text</type>
+        <help><![CDATA[HTTP request URL path ends with string (suffix match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_path</style>
+    </field>
+    <field>
+        <id>acl.path</id>
+        <label>Path Matches</label>
+        <type>text</type>
+        <help><![CDATA[HTTP request URL path matches exact string]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_path_reg</style>
+    </field>
+    <field>
+        <id>acl.path_reg</id>
+        <label>Path Regex</label>
+        <type>text</type>
+        <help><![CDATA[HTTP request URL path matches regular expression]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_path_dir</style>
+    </field>
+    <field>
+        <id>acl.path_dir</id>
+        <label>Subdir matches</label>
+        <type>text</type>
+        <help><![CDATA[HTTP request URL path contains directory (subdir match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_path_sub</style>
+    </field>
+    <field>
+        <id>acl.path_sub</id>
+        <label>Path Contains</label>
+        <type>text</type>
+        <help><![CDATA[HTTP request URL path contains string (substring match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_url_param</style>
+    </field>
+    <field>
+        <id>acl.url_param</id>
+        <label>URL Parameter</label>
+        <type>text</type>
+        <help><![CDATA[Specify the URL parameter to be checked for the value specified below.]]></help>
+    </field>
+    <field>
+        <id>acl.url_param_value</id>
+        <label>Parameter Value</label>
+        <type>text</type>
+        <help><![CDATA[Specify the value for the URL parameter.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_ssl_c_verify_code</style>
+    </field>
+    <field>
+        <id>acl.ssl_c_verify_code</id>
+        <label>SSL Error ID</label>
+        <type>text</type>
+        <help><![CDATA[Specify the SSL/TLS error ID that should be checked for the incoming connection. Please refer to your SSL library's documentation for an exhaustive list of error codes.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_ssl_c_ca_commonname</style>
+    </field>
+    <field>
+        <id>acl.ssl_c_ca_commonname</id>
+        <label>CA Common-Name</label>
+        <type>text</type>
+        <help><![CDATA[Verify the CA Common-Name of the certificate presented by the client against the specified string.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src</style>
+    </field>
+    <field>
+        <id>acl.src</id>
+        <label>Source IP</label>
+        <type>text</type>
+        <help><![CDATA[Verify the source IPv4 address of the client of the session matches the specified IPv4 or IPv6 address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_nbsrv</style>
+    </field>
+    <field>
+        <id>acl.nbsrv</id>
+        <label>Usable Servers</label>
+        <type>text</type>
+        <help><![CDATA[Verify the minimum number of usable servers in the named backend matches the specified value.]]></help>
+    </field>
+    <field>
+        <id>acl.nbsrv_backend</id>
+        <label>Backend</label>
         <type>dropdown</type>
-        <help><![CDATA[Use this backend to count usable servers.<br/><b>Not used for any other expression.</b>]]></help>
+        <help><![CDATA[Use the specified backend to count usable servers. Leave empty to use the current backend.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_ssl_sni</style>
+    </field>
+    <field>
+        <id>acl.ssl_sni</id>
+        <label>SNI Matches</label>
+        <type>text</type>
+        <help><![CDATA[The value of the Server Name TLS extension sent by a client matches the exact string.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_ssl_sni_sub</style>
+    </field>
+    <field>
+        <id>acl.ssl_sni_sub</id>
+        <label>SNI Contains</label>
+        <type>text</type>
+        <help><![CDATA[The value of the Server Name TLS extension sent by a client contains the specified string (substring match).]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_ssl_sni_beg</style>
+    </field>
+    <field>
+        <id>acl.ssl_sni_beg</id>
+        <label>SNI Prefix</label>
+        <type>text</type>
+        <help><![CDATA[The value of the Server Name TLS extension sent by a client starts with the specified string (prefix match).]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_ssl_sni_end</style>
+    </field>
+    <field>
+        <id>acl.ssl_sni_end</id>
+        <label>SNI Suffix</label>
+        <type>text</type>
+        <help><![CDATA[The value of the Server Name TLS extension sent by a client ends with the specified string (suffix match).]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_custom_acl</style>
+    </field>
+    <field>
+        <id>acl.custom_acl</id>
+        <label>Option pass-through</label>
+        <type>textbox</type>
+        <help><![CDATA[Specify a HAProxy condition/ACL that is currently not supported by the GUI.]]></help>
     </field>
 </form>

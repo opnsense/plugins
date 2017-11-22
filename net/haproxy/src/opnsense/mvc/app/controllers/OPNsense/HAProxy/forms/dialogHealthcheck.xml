@@ -3,13 +3,13 @@
         <id>healthcheck.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name to identify this ACL.</help>
+        <help>Name to identify this Health Monitor.</help>
     </field>
     <field>
         <id>healthcheck.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Description for this ACL.</help>
+        <help>Description for this Health Monitor.</help>
     </field>
     <field>
         <id>healthcheck.type</id>
@@ -33,6 +33,7 @@
     <field>
         <label>HTTP check options</label>
         <type>header</type>
+        <style>type_table table_http</style>
     </field>
     <field>
         <id>healthcheck.http_method</id>
@@ -61,6 +62,7 @@
     <field>
         <label>Custom HTTP check</label>
         <type>header</type>
+        <style>type_table table_http</style>
     </field>
     <field>
         <id>healthcheck.http_expressionEnabled</id>
@@ -88,6 +90,7 @@
     <field>
         <label>Custom TCP check</label>
         <type>header</type>
+        <style>type_table table_tcp</style>
     </field>
     <field>
         <id>healthcheck.tcp_enabled</id>
@@ -119,25 +122,64 @@
         <help><![CDATA[Specify the pattern to look for in the response buffer. If the match is set to binary, then the pattern must be passed as a serie of hexadecimal digits in an even number.]]></help>
     </field>
     <field>
-        <label>Other check options</label>
+        <label>Agent check</label>
         <type>header</type>
+        <style>type_table table_agent</style>
     </field>
     <field>
-        <id>healthcheck.agentPort</id>
+        <id>healthcheck.agent_port</id>
         <label>Agent port</label>
         <type>text</type>
         <help><![CDATA[Specify the TCP port used for agent checks.]]></help>
     </field>
     <field>
-        <id>healthcheck.dbUser</id>
-        <label>DB user</label>
+        <label>MySQL check</label>
+        <type>header</type>
+        <style>type_table table_mysql</style>
+    </field>
+    <field>
+        <id>healthcheck.mysql_user</id>
+        <label>MySQL user</label>
         <type>text</type>
         <help><![CDATA[Specify the username to be used for database health checks.]]></help>
     </field>
     <field>
-        <id>healthcheck.smtpDomain</id>
+        <id>healthcheck.mysql_post41</id>
+        <label>MySQL 4.1+</label>
+        <type>checkbox</type>
+        <help><![CDATA[Send checks compatible with MySQL server 4.1 and later.]]></help>
+    </field>
+    <field>
+        <label>PostgreSQL check</label>
+        <type>header</type>
+        <style>type_table table_pgsql</style>
+    </field>
+    <field>
+        <id>healthcheck.pgsql_user</id>
+        <label>PostgreSQL user</label>
+        <type>text</type>
+        <help><![CDATA[Specify the username to be used for database health checks.]]></help>
+    </field>
+    <field>
+        <label>SMTP check</label>
+        <type>header</type>
+        <style>type_table table_smtp</style>
+    </field>
+    <field>
+        <id>healthcheck.smtp_domain</id>
         <label>SMTP domain</label>
         <type>text</type>
-        <help><![CDATA[Specify the domain name to present to the server for SMTP/ESMTP health checks.]]></help>
+        <help><![CDATA[Specify the domain name to present to the server for SMTP health checks.]]></help>
+    </field>
+    <field>
+        <label>ESMTP check</label>
+        <type>header</type>
+        <style>type_table table_esmtp</style>
+    </field>
+    <field>
+        <id>healthcheck.esmtp_domain</id>
+        <label>ESMTP domain</label>
+        <type>text</type>
+        <help><![CDATA[Specify the domain name to present to the server for ESMTP health checks.]]></help>
     </field>
 </form>

@@ -139,12 +139,10 @@ class HAProxy extends BaseModel
      * @param string $description
      * @param string $expression
      * @param string $negate
-     * @param string $value
-     * @param string $urlparam
-     * @param string $querybackend
+     * @param hash $parameters
      * @return string
      */
-    public function newAcl($name, $description = "", $expression, $negate = "0", $value, $urlparam = "", $queryBackend = "")
+    public function newAcl($name, $description = "", $expression, $negate = "0", $parameters = array())
     {
         $acl = $this->acls->acl->Add();
         $uuid = $acl->getAttributes()['uuid'];
@@ -152,9 +150,9 @@ class HAProxy extends BaseModel
         $acl->description = $description;
         $acl->expression = $expression;
         $acl->negate = $negate;
-        $acl->value = $value;
-        $acl->urlparam = $urlparam;
-        $acl->queryBackend = $queryBackend;
+        foreach ($parameters as $key => $value) {
+            $acl->$key = $value;
+        }
         return $uuid;
     }
 
@@ -173,7 +171,7 @@ class HAProxy extends BaseModel
      * @param string $actionValue
      * @return string
      */
-    public function newAction($name, $description = "", $testType, $linkedAcls = "", $operator = "and", $type, $useBackend = "", $useServer = "", $actionName, $actionFind, $actionValue)
+    public function newAction($name, $description = "", $testType, $linkedAcls = "", $operator = "and", $type, $parameters = array())
     {
         $action = $this->actions->action->Add();
         $uuid = $action->getAttributes()['uuid'];
@@ -183,11 +181,9 @@ class HAProxy extends BaseModel
         $action->linkedAcls = $linkedAcls;
         $action->operator = $operator;
         $action->type = $type;
-        $action->useBackend = $useBackend;
-        $action->useServer = $useServer;
-        $action->actionName = $actionName;
-        $action->actionFind = $actionFind;
-        $action->actionValue = $actionValue;
+        foreach ($parameters as $key => $value) {
+            $action->$key = $value;
+        }
         return $uuid;
     }
 
@@ -251,7 +247,6 @@ class HAProxy extends BaseModel
      */
     public function linkAclToAction($acl_uuid, $action_uuid, $replace = false)
     {
-        //$mdl = new HAProxy();
         // ACL must exist
         $acl = $this->getByAclID($acl_uuid);
         if ((string)$acl === false) {
