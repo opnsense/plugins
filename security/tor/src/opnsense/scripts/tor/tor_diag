@@ -36,11 +36,23 @@ $TOR_DEBUG = false
 
 config = REXML::Document.new(File.new("/conf/config.xml"))
 $TOR_PASSWORD = config.elements['opnsense/OPNsense/tor/general/control_port_password'].text
+$TOR_CONTROL_PORT = 9051
+if port = config.elements['opnsense/OPNsense/tor/general/control_port']&.text&.to_i
+  if port > 0
+    $TOR_CONTROL_PORT = port
+  else
+    puts '{"error":"invalid control port found"}'
+    exit
+  end
+else
+  puts '{"error":"no control port found"}'
+  exit
+end
 
 class TorCTL
 
   def initialize
-    @tor = TCPSocket.new("127.0.0.1", 9051)
+    @tor = TCPSocket.new("127.0.0.1", $TOR_CONTROL_PORT)
     send_query("AUTHENTICATE \"#{$TOR_PASSWORD}\"")
   end
 
