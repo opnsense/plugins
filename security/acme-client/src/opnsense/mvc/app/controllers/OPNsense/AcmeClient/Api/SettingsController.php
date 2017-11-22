@@ -200,11 +200,13 @@ class SettingsController extends ApiMutableModelControllerBase
                     $this->getLogger()->error("LE check: HAProxy integration is complete");
                 } else {
                     $integration_changes = true;
-                    // Check if we need to remove relics of incomplete HAProxy integration.
-                    // NOTE: We try to automatically repair a broken HAProxy integration,
-                    //       although the user may have deleted some items intentionally.
-                    //       As long as the HAProxy integration is enabled we assume that
-                    //       this is an error that should *automatically* be fixed.
+                    /**
+                     * Check if we need to remove relics of incomplete HAProxy integration.
+                     * NOTE: We try to automatically repair a broken HAProxy integration,
+                     *       although the user may have deleted some items intentionally.
+                     *       As long as the HAProxy integration is enabled we assume that
+                     *       this is an error that should *automatically* be fixed.
+                     */
                     if ($integration_found and !$integration_complete) {
                         // NOTE: We ignore the return value of the del() calls
                         //       too keep this as simple as possible.
@@ -250,11 +252,10 @@ class SettingsController extends ApiMutableModelControllerBase
                     $acl_uuid = $mdlHAProxy->newAcl(
                         "find_acme_challenge",
                         "Added by Let's Encrypt plugin",
-                        "path_starts_with",
+                        "path_beg",
                         "0",
-                        "/.well-known/acme-challenge/"
+                        array("path_beg" => "/.well-known/acme-challenge/")
                     );
-                    //$this->getLogger()->error("LE acl: ${acl_uuid}");
 
                     // Add a new HAProxy backend
                     $backend_uuid = $mdlHAProxy->newBackend(
@@ -266,7 +267,6 @@ class SettingsController extends ApiMutableModelControllerBase
                         "",
                         ""
                     );
-                    //$this->getLogger()->error("LE backend: ${backend_uuid}");
 
                     // Add a new HAProxy action
                     $action_uuid = $mdlHAProxy->newAction(
@@ -277,13 +277,9 @@ class SettingsController extends ApiMutableModelControllerBase
                         "and",
                         "use_backend",
                         // Use the new backend uuid in field "useBackend"
-                        $backend_uuid,
-                        "",
-                        "",
-                        "",
-                        ""
+                        array("use_backend" => $backend_uuid)
                     );
-                    //$this->getLogger()->error("LE action: ${action_uuid}");
+
                     // NOTE: This action is linked to frontends.
                     $action_ref = $action_uuid;
 
@@ -298,7 +294,6 @@ class SettingsController extends ApiMutableModelControllerBase
                         "0",
                         ""
                     );
-                    //$this->getLogger()->error("LE server: ${server_uuid}");
 
                     // Update hidden fields to signal that HAProxy integration is complete.
                     $mdlAcme->settings->haproxyAclRef = $acl_uuid;
@@ -308,11 +303,9 @@ class SettingsController extends ApiMutableModelControllerBase
 
                     // Link new ACL to HAProxy action
                     $link_acl_result = $mdlHAProxy->linkAclToAction($acl_uuid, $action_uuid);
-                    //$this->getLogger()->error("LE link acl result: ${link_acl_result}");
 
                     // Link new server to HAProxy backend
                     $link_server_result = $mdlHAProxy->linkServerToBackend($server_uuid, $backend_uuid);
-                    //$this->getLogger()->error("LE link server result: ${link_server_result}");
                 }
 
                 // Ensure HAProxy frontend additions have been applied.
@@ -321,7 +314,6 @@ class SettingsController extends ApiMutableModelControllerBase
                     if ((string)$validation->enabled == "1" and
                         (string)$validation->method == "http01" and
                         (string)$validation->http_service == "haproxy") {
-                        //$this->getLogger()->error("LE HAProxy DEBUG: checking validation method: " . (string)$validation->name);
                         // Check if HAProxy frontends were specified.
                         if (empty((string)$validation->http_haproxyFrontends)) {
                             // Skip item, no HAProxy frontends were specified.
@@ -330,7 +322,6 @@ class SettingsController extends ApiMutableModelControllerBase
                         $_frontends = explode(',', $validation->http_haproxyFrontends);
                         // Walk through all linked frontends.
                         foreach ($_frontends as $_frontend) {
-                            //$this->getLogger()->error("LE HAProxy DEBUG: checking frontend: ${_frontend}");
                             $frontend = $mdlHAProxy->getByFrontendID($_frontend);
                             // Make sure the frontend was found in config.
                             if (!is_null($frontend) && !empty((string)$frontend->id)) {
