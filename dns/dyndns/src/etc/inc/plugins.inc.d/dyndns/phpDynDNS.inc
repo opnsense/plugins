@@ -53,40 +53,41 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
- *  DynDNS Dynamic - Last Tested: 12 July 2005
- *  DynDNS Static  - Last Tested: NEVER
- *  DynDNS Custom  - Last Tested: NEVER
- *  No-IP          - Last Tested: 20 July 2008
- *  HN.org         - Last Tested: 12 July 2005
- *  EasyDNS        - Last Tested: 20 July 2008
- *  DHS            - Last Tested: 12 July 2005
- *  ZoneEdit       - Last Tested: NEVER
- *  Dyns           - Last Tested: NEVER
- *  ODS            - Last Tested: 02 August 2005
- *  FreeDNS        - Last Tested: 23 Feb 2011
- *  Loopia         - Last Tested: NEVER
- *  StaticCling    - Last Tested: 27 April 2006
- *  DNSexit        - Last Tested: 20 July 2008
- *  OpenDNS        - Last Tested: 4 August 2008
- *  Namecheap      - Last Tested: 31 August 2010
- *  HE.net         - Last Tested: 7 July 2013
- *  HE.net IPv6    - Last Tested: 7 July 2013
- *  HE.net Tunnel  - Last Tested: 28 June 2011
- *  SelfHost       - Last Tested: 26 December 2011
- *  Amazon Route53 - Last tested: 01 April 2012
- *  DNS-O-Matic    - Last Tested: 9 September 2010
- *  CloudFlare     - Last Tested: 30 May 2013
- *  Eurodns        - Last Tested: 27 June 2013
- *  GratisDNS      - Last Tested: 15 August 2012
- *  OVH DynHOST    - Last Tested: NEVER
- *  City Network   - Last Tested: 13 November 2013
- *  Duck DNS       - Last Tested: 04 March 2015
- *  Google Domains - Last Tested: 20 February 2017
- *  STRATO         - Last Tested: 09 May 2017
- *  3322           - Last Tested: 26 May 2017
- *  Oray           - Last Tested: 26 May 2017
- *  regfish        - Last Tested: 15 August 2017
- *  regfish v6     - Last Tested: 15 August 2017
+ *  DynDNS Dynamic      - Last Tested: 12 July 2005
+ *  DynDNS Static       - Last Tested: NEVER
+ *  DynDNS Custom       - Last Tested: NEVER
+ *  No-IP               - Last Tested: 20 July 2008
+ *  HN.org              - Last Tested: 12 July 2005
+ *  EasyDNS             - Last Tested: 20 July 2008
+ *  DHS                 - Last Tested: 12 July 2005
+ *  ZoneEdit            - Last Tested: NEVER
+ *  Dyns                - Last Tested: NEVER
+ *  ODS                 - Last Tested: 02 August 2005
+ *  FreeDNS             - Last Tested: 23 Feb 2011
+ *  Loopia              - Last Tested: NEVER
+ *  StaticCling         - Last Tested: 27 April 2006
+ *  DNSexit             - Last Tested: 20 July 2008
+ *  OpenDNS             - Last Tested: 4 August 2008
+ *  Namecheap           - Last Tested: 31 August 2010
+ *  HE.net              - Last Tested: 7 July 2013
+ *  HE.net IPv6         - Last Tested: 7 July 2013
+ *  HE.net Tunnel       - Last Tested: 28 June 2011
+ *  SelfHost            - Last Tested: 26 December 2011
+ *  Amazon Route53      - Last Tested: 01 April 2012
+ *  DNS-O-Matic         - Last Tested: 9 September 2010
+ *  CloudFlare          - Last Tested: 30 May 2013
+ *  Eurodns             - Last Tested: 27 June 2013
+ *  GratisDNS           - Last Tested: 15 August 2012
+ *  OVH DynHOST         - Last Tested: NEVER
+ *  City Network        - Last Tested: 13 November 2013
+ *  Duck DNS            - Last Tested: 04 March 2015
+ *  Google Domains      - Last Tested: 20 February 2017
+ *  STRATO              - Last Tested: 09 May 2017
+ *  3322                - Last Tested: 26 May 2017
+ *  Oray                - Last Tested: 26 May 2017
+ *  regfish             - Last Tested: 15 August 2017
+ *  regfish v6          - Last Tested: 15 August 2017
+ *  Amazon Route53 v6   - Last Tested: 19 November 2017
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -171,6 +172,7 @@ class updatedns {
             if (!$dnsHost) $this->_error(5);
             break;
         case 'route53':
+        case 'route53-v6':
             if (!$dnsZoneID) $this->_error(8);
             if (!$dnsTTL) $this->_error(9);
             break;
@@ -194,6 +196,7 @@ class updatedns {
         case 'custom-v6':
         case 'he-net-v6':
         case 'regfish-v6':
+        case 'route53-v6':
             $this->_useIPv6 = true;
             break;
         default:
@@ -267,6 +270,7 @@ class updatedns {
             case 'regfish':
             case 'regfish-v6':
             case 'route53':
+            case 'route53-v6':
             case 'selfhost':
             case 'strato':
             case 'staticcling':
@@ -300,7 +304,7 @@ class updatedns {
             log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
         }
 
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53 ') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
@@ -458,9 +462,10 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, 'https://www.dnsexit.com/RemoteUpdate.sv?login='.$this->_dnsUser. '&password='.$this->_dnsPass.'&host='.$this->_dnsHost.'&myip='.$this->_dnsIP);
                 break;
             case 'loopia':
+                $this->_dnsWildcard = (isset($this->_dnsWildcard) && $this->_dnsWildcard == true) ? 'ON' : 'OFF';
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
-                curl_setopt($ch, CURLOPT_URL, 'https://dns.loopia.se/XDynDNSServer/XDynDNS.php?hostname='.$this->_dnsHost.'&myip='.$this->_dnsIP);
+                curl_setopt($ch, CURLOPT_URL, 'https://dns.loopia.se/XDynDNSServer/XDynDNS.php?hostname='.$this->_dnsHost.'&myip='.$this->_dnsIP.'&wildcard='.$this->_dnsWildcard);
                 break;
             case 'opendns':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") $this->_dnsWildcard = "ON";
@@ -540,6 +545,7 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?system=dyndns&hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard='.$this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NO');
                 break;
             case 'route53':
+            case 'route53-v6':
                 /* Setting Variables */
                 $hostname = "{$this->_dnsHost}.";
                 $ZoneID = $this->_dnsZoneID;
@@ -547,6 +553,7 @@ class updatedns {
                 $SecretAccessKey=$this->_dnsPass;
                 $NewIP=$this->_dnsIP;
                 $NewTTL=$this->_dnsTTL;
+                $RecordType = ($this->_useIPv6) ? "AAAA" : "A";
 
                 /* Set Amazon AWS Credentials for this record */
                 $r53 = new Route53($AccessKeyId, $SecretAccessKey);
@@ -582,12 +589,12 @@ class updatedns {
                     if(!empty($OldIP)) {
                         /* Your Hostname already exists, deleting and creating it again */
                         $changes = array();
-                        $changes[] = $r53->prepareChange(DELETE, $hostname, A, $OldTTL, $OldIP);
-                        $changes[] = $r53->prepareChange(CREATE, $hostname, A, $NewTTL, $NewIP);
+                        $changes[] = $r53->prepareChange(DELETE, $hostname, $RecordType, $OldTTL, $OldIP);
+                        $changes[] = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     } else {
                         /* Your Hostname does not exist yet, creating it */
-                        $changes = $r53->prepareChange(CREATE, $hostname, A, $NewTTL, $NewIP);
+                        $changes = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     }
                 }
@@ -730,7 +737,7 @@ class updatedns {
             default:
                 break;
         }
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $data = curl_exec($ch);
             $this->_checkStatus($ch, $data);
             @curl_close($ch);
@@ -747,7 +754,7 @@ class updatedns {
             log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
         }
         $successful_update = false;
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' && @curl_error($ch)) {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' && @curl_error($ch)) {
             $status = "Curl error occurred: " . curl_error($ch);
             log_error($status);
             $this->status = $status;
@@ -987,6 +994,7 @@ class updatedns {
                 }
                 break;
             case 'route53':
+            case 'route53-v6':
                 $successful_update = true;
                 break;
             case 'custom':
