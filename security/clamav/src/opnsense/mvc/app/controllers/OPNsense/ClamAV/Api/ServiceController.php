@@ -67,7 +67,7 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun("clamav start", true);
+            $response = $backend->configdRun("clamav start");
             return array("response" => $response);
         } else {
             return array("response" => array());
