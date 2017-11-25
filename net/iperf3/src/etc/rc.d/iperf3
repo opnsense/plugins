@@ -1,0 +1,13 @@
+#!/bin/sh
+# REQUIRE: LOGIN DAEMON
+. /etc/rc.subr
+name=iperf3
+rcvar=iperf3_enable
+command_interpreter=/usr/local/bin/ruby
+command=/usr/local/opnsense/scripts/iperf3/ruby_iperf.rb
+iperf3_user=root
+iperf3_pidfile=/var/run/iperf3.pid
+start_cmd="/usr/sbin/daemon -u $iperf3_user -p /var/run/iperf3.pid -f $command"
+load_rc_config $name
+: ${iperf3_enable="YES"}
+run_rc_command "$1"

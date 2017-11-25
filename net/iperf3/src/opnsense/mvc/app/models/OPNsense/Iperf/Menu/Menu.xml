@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <iperf3 VisibleName="iperf3" cssClass="fa fa-bath fa-fw" url="/ui/iperf/" />
+  </Services>
+</menu>
