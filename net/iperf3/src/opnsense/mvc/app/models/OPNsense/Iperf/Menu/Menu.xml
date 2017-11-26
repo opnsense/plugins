@@ -1,5 +1,7 @@
 <menu>
-  <Services>
-    <iperf3 VisibleName="iperf3" cssClass="fa fa-bath fa-fw" url="/ui/iperf/" />
-  </Services>
+  <Interfaces>
+    <Diagnostics>
+      <iperf3 url="/ui/iperf/" />
+    </Diagnostics>
+  </Interfaces>
 </menu>
