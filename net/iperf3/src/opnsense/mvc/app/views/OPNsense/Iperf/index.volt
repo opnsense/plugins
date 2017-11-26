@@ -28,6 +28,75 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
 
+function table_tr_kv(key, value) {
+    return "<tr><td>" + key + "</td><td>" + value + "</td></tr>";
+}
+function table_tr_transpose(key, key_name, list, arr) {
+    data =  "<tr><td>" + key + "</td>";
+    for (var i = 0; i < list.length; i++) {
+      data += "<td>" + arr[list[i]][key_name] + "</td>";
+    }
+    data += "</tr>";
+    return data;
+}
+
+function result_to_html(elements) {
+    var output = '';
+    for (var element_cnt = 0; element_cnt < elements.length; element_cnt++) {
+        var element = elements[element_cnt];
+        output += "%sResult %s%s".replace('%s','<h2>').replace('%s',element_cnt + 1).replace('%s','</h2>');
+        output += '<table class="table table-striped"><tr><td>Interface</td><td>' + element.interface + '</td></tr>' +
+        '<tr><td>Start Time</td><td>' + element.start_time + '</td></tr>' +
+        '<tr><td>Port</td><td>' + element.port + '</td></tr></table>';
+        
+        // only if test did already run
+        if ('result' in element) {
+            var result = element.result,
+                start = result.start,
+                connection = start.connected[0],
+                intervals = result.intervals,
+                test_end = result.end,
+                cpu = test_end.cpu_utilization_percent;
+            // General
+            output += "<h3>General</h3>";
+            output += '<table class="table table-striped">';
+            output += table_tr_kv("Time", start.timestamp.time);
+            output += table_tr_kv("Duration", start.test_start.duration);
+            output += table_tr_kv("Block Size", start.test_start.blksize);
+            output += "</table>";
+            // connection
+            output += "<h3>Connection</h3>";
+            output += '<table class="table table-striped">';
+            output += table_tr_kv("Local Host", connection.local_host);
+            output += table_tr_kv("Local Port", connection.local_port);
+            output += table_tr_kv("Remote Host", connection.remote_host);
+            output += table_tr_kv("Remote Port", connection.remote_port);
+            output += "</table>";
+            // CPU Usage
+            output += "<h3>CPU Usage</h3>";
+            output += '<table class="table table-striped">';
+            output += table_tr_kv("Host Total", cpu.host_total.toFixed(2));
+            output += table_tr_kv("Host User", cpu.host_user.toFixed(2));
+            output += table_tr_kv("Host System", cpu.host_system.toFixed(2));
+            output += table_tr_kv("Remote Total", cpu.remote_total.toFixed(2));
+            output += table_tr_kv("Remote User", cpu.remote_user.toFixed(2));
+            output += table_tr_kv("Remote System", cpu.remote_system.toFixed(2));
+            output += "</table>";
+            // performance data
+            output += "<h3>Performance Data</h3>";
+            output += '<table class="table table-striped">';
+            var fields = ['sum_sent', 'sum_received'];
+            output += table_tr_transpose("Start","start",fields, test_end);
+            output += table_tr_transpose("End","end",fields, test_end);
+            output += table_tr_transpose("Seconds","seconds",fields, test_end);
+            output += table_tr_transpose("Bytes","bytes",fields, test_end);
+            output += table_tr_transpose("Bits Per Second","bits_per_second",fields, test_end);
+            output += "</table>";
+        }
+    }
+    $('#resultcontainer').html(output);
+}
+
 $( document ).ready(function() {
     var data_get_map = {'instance': '/api/iperf/instance/get'};
     mapDataToFormUI(data_get_map).done(function(data){
@@ -57,3 +126,5 @@ $( document ).ready(function() {
         <button class="btn btn-primary" id="create_instance_action" type="button"><b>{{ lang._('Create Instance') }}</b> <i id="create_instance_action_progress"></i></button>
     </div>
 </div>
+
+<div id="resultcontainer" class="content-box"></div>
