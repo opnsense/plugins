@@ -1,6 +1,7 @@
 <model>
   <mount>//OPNsense/Rspamd</mount>
   <description>rspamd anti spam filter</description>
+  <version>0.0.0</version>
   <items>
     <general>
       <enabled type="BooleanField">
