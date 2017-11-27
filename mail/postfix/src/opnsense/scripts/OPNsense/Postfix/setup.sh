@@ -36,9 +36,9 @@ if [ -f /usr/local/etc/postfix/aliases ]; then
        echo "Updateing aliases"
        /usr/local/bin/newaliases
 else
+       echo "Added aliases file"
        touch /usr/local/etc/postfix/aliases
        /usr/local/bin/newaliases
-       echo "Added aliases file"
 fi
 
 
