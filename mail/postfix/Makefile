@@ -1,5 +1,5 @@
 PLUGIN_NAME=		postfix
-PLUGIN_VERSION=		0.1
+PLUGIN_VERSION=		0.2
 PLUGIN_COMMENT=		SMTP mail relay
 PLUGIN_DEPENDS=		postfix-sasl
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
