@@ -69,7 +69,11 @@ class InstanceController extends ApiMutableModelControllerBase
   }
 
   private function send_command($command, $backend) {
-      $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);
+      try {
+          $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);}
+      catch (\Exception $e) {
+          $socket = null;
+      }
       if (!$socket) {
           // in case of an error: try to restart the service and if that fails too
           // don't retry anymore
@@ -84,7 +88,7 @@ class InstanceController extends ApiMutableModelControllerBase
       fwrite($socket, "bye\n");
       fgets($socket);
       fclose($socket);
-      return json_decode($data);
+      return json_decode($data,true);
       
   }
   private function get_real_interface_name($name) {
