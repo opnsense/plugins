@@ -33,10 +33,10 @@ postmap /usr/local/etc/postfix/sender_access
 
 # Check for aliases
 if [ -f /usr/local/etc/postfix/aliases ]; then
-       echo "Updateing aliases"
+       echo "Updating aliases"
        /usr/local/bin/newaliases
 else
-       echo "Added aliases file"
+       echo "Adding aliases"
        touch /usr/local/etc/postfix/aliases
        /usr/local/bin/newaliases
 fi
