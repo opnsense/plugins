@@ -31,4 +31,15 @@ postmap /usr/local/etc/postfix/transport
 postmap /usr/local/etc/postfix/recipient_access
 postmap /usr/local/etc/postfix/sender_access
 
+# Check for aliases
+if [ -f /usr/local/etc/postfix/aliases ]; then
+       echo "Updateing aliases"
+       /usr/local/bin/newaliases
+else
+       touch /usr/local/etc/postfix/aliases
+       /usr/local/bin/newaliases
+       echo "Added aliases file"
+fi
+
+
 /usr/local/opnsense/scripts/OPNsense/Postfix/generate_certs.php
