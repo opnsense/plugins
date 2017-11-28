@@ -29,7 +29,7 @@
 */
 
 
-namespace OPNsense\Iperf;
+namespace OPNsense\iperf;
 
 /**
 * Class IndexController
@@ -39,8 +39,7 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("iperf3");
         $this->view->instance_settings = $this->getForm("instance_settings");
-        $this->view->pick('OPNsense/Iperf/index');
+        $this->view->pick('OPNsense/iperf/index');
     }
 }

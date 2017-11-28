@@ -28,7 +28,7 @@
  *
  */
 
-namespace OPNsense\Iperf;
+namespace OPNsense\iperf;
 
 use OPNsense\Base\BaseModel;
 

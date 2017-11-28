@@ -28,7 +28,7 @@
  *
  */
 
-namespace OPNsense\Iperf\Api;
+namespace OPNsense\iperf\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Core\Backend;
@@ -37,7 +37,7 @@ use \OPNsense\Iperf\FakeInstance;
 
 class InstanceController extends ApiMutableModelControllerBase
 {
-  static protected $internalModelClass = '\OPNsense\Iperf\FakeInstance';
+  static protected $internalModelClass = '\OPNsense\iperf\FakeInstance';
   static protected $internalModelName = 'instance';
   static private $SOCKET_PATH = "unix:///var/run/iperf-manager.sock";
 
