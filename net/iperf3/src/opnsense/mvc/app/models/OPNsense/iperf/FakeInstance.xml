@@ -1,6 +1,5 @@
 <model>
   <mount>//OPNsense/Iperf3</mount>
-  <version>0.0.0</version>
   <description>Fake model for the API - will be never stored to config (only used for defaults, validation etc.).</description>
   <items>
     <interface type="InterfaceField">
