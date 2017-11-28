@@ -66,8 +66,11 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
+
             $backend = new Backend();
-            $response = $backend->configdRun("clamav start", true);
+            $response = $backend->configdRun("clamav start");
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -81,6 +84,9 @@ class ServiceController extends ApiControllerBase
     public function stopAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
+
             $backend = new Backend();
             $response = $backend->configdRun("clamav stop");
             return array("response" => $response);
@@ -96,6 +102,9 @@ class ServiceController extends ApiControllerBase
     public function restartAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
+
             $backend = new Backend();
             $response = $backend->configdRun("clamav restart");
             return array("response" => $response);
@@ -128,7 +137,6 @@ class ServiceController extends ApiControllerBase
         } else {
             $status = "unkown";
         }
-
 
         return array("status" => $status);
     }
@@ -170,25 +178,23 @@ class ServiceController extends ApiControllerBase
     public function versionAction()
     {
         $infos = array(
-            "clamav" => array("search" => "Version: "),
-            "main" => array("search" => "main.cvd: "),
-            "daily" => array("search" => "daily.cld: "),
-            "bytecode" => array("search" => "bytecode.cld: "),
-            "signatures" => array("search" => "Total number of signatures: ")
+            "clamav" => array("Version"),
+            "main" => array("main.cvd", "main.cld"),
+            "daily" => array("daily.cvd", "daily.cld"),
+            "bytecode" => array("bytecode.cvd", "bytecode.cld"),
+            "signatures" => array("Total number of signatures")
         );
         $backend = new Backend();
         $result = array();
-        $response = $backend->configdRun("clamav version");
+        $response = json_decode($backend->configdRun("clamav version"));
         if ($response != null) {
-            foreach (explode("\n", $response) as $str) {
-                foreach ($infos as $key => $info) {
-                    if (strpos($str, $info["search"]) !== false) {
-                        $version = substr($str, strlen($info["search"]));
-                        if (isset($version)) {
-                            $result[$key] = $version;
-                        }
+            foreach ($response as $key => $value) {
+                foreach ($infos as $info_key => $info) {
+                    if (in_array($key, $info)) {
+                        $result[$info_key] = $value;
                     }
                 }
+
             }
             return array("version" => $result);
         }
