@@ -1,0 +1,35 @@
+<form>
+  <field>
+    <id>network.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>network.ipaddr</id>
+    <label>Network Address</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>network.netmask</id>
+    <label>Network Mask</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>network.area</id>
+    <label>Area</label>
+    <type>text</type>
+    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
+  </field>
+  <field>
+    <id>network.linkedPrefixlistIn</id>
+    <label>Prefix-List In</label>
+    <type>dropdown</type>
+    <help>Prefix-List for inbound direction</help>
+  </field>
+  <field>
+    <id>network.linkedPrefixlistOut</id>
+    <label>Prefix-List Out</label>
+    <type>dropdown</type>
+    <help>Prefix-List for outbound direction</help>
+  </field>
+</form>
