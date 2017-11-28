@@ -1,7 +1,7 @@
 <menu>
   <Interfaces>
     <Diagnostics>
-      <iperf3 url="/ui/iperf/" />
+      <iperf url="/ui/iperf/" />
     </Diagnostics>
   </Interfaces>
 </menu>
