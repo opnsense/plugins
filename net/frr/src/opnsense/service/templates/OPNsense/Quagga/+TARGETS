@@ -1,0 +1,6 @@
+bgpd.conf:/usr/local/etc/frr/bgpd.conf
+ospfd.conf:/usr/local/etc/frr/ospfd.conf
+ospf6d.conf:/usr/local/etc/frr/ospf6d.conf
+ripd.conf:/usr/local/etc/frr/ripd.conf
+frr:/etc/rc.conf.d/frr
+zebra.conf:/usr/local/etc/frr/zebra.conf

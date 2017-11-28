@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the routing service.</help>
+    </field>
+    <field>
+        <id>general.enablelogfile</id>
+        <label>Create a logfile</label>
+        <type>checkbox</type>
+        <help>If you check this, a log file will be written to disk.</help>
+    </field>
+    <field>
+        <id>general.logfilelevel</id>
+        <label>Logfile level</label>
+        <type>dropdown</type>
+        <help>This is the detail level of the log. A higher level means more data is logged.</help>
+    </field>
+    <field>
+        <id>general.enablesyslog</id>
+        <label>Send log messages to syslog</label>
+        <type>checkbox</type>
+        <help>Syslog is a service which is made to collect log messages from different software and maybe to a central logging server. Check this box if you have such a setup.</help>
+    </field>
+    <field>
+        <id>general.sysloglevel</id>
+        <label>Syslog level</label>
+        <type>dropdown</type>
+        <help>This is the detail level of the log. A higher level means more data is logged.</help>
+    </field>
+</form>

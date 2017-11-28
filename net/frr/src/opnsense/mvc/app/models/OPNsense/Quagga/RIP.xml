@@ -1,0 +1,45 @@
+<model>
+    <mount>//OPNsense/quagga/rip</mount>
+    <description>RIP Routing configuration</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <version type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>2</MaximumValue>
+            <default>2</default>
+            <Required>Y</Required>
+        </version>
+        <networks type="CSVListField">
+            <default></default>
+            <Required>Y</Required>
+            <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</mask>
+        </networks>
+
+        <passiveinterfaces type="InterfaceField">
+                <Required>N</Required>
+                <multiple>Y</multiple>
+                <default></default>
+                <filters>
+                    <enable>/^(?!0).*$/</enable>
+                </filters>
+        </passiveinterfaces>
+        <redistribute type="OptionField">
+                <Required>N</Required>
+                <multiple>Y</multiple>
+                <default></default>
+                <OptionValues>
+                        <babel>Babel routing protocol (Babel)</babel>
+                        <bgp>Border Gateway Protocol (BGP)</bgp>
+                        <connected>Connected routes (directly attached subnet or host)</connected>
+                        <isis>Intermediate System to Intermediate System (IS-IS)</isis>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                        <pim>Protocol Independent Multicast (PIM)</pim>
+                        <ospf>Open Shortest Path First (OSPF)</ospf>
+                        <static>Statically configured routes</static>
+                </OptionValues>
+        </redistribute>
+    </items>
+</model>

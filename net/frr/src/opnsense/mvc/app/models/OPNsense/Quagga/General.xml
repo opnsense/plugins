@@ -1,0 +1,48 @@
+<model>
+    <mount>//OPNsense/quagga/general</mount>
+    <description>Quagga Routing configuration</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <enablelogfile type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enablelogfile>
+        <logfilelevel type="OptionField">
+            <Required>Y</Required>
+            <multiple>N</multiple>
+            <default>notifications</default>
+            <OptionValues>
+                <critical>Critical</critical>
+                <emergencies>Emergencies</emergencies>
+                <errors>Errors</errors>
+                <alerts>Alerts</alerts>
+                <warnings>Warnings</warnings>
+                <notifications>Notifications</notifications>
+                <informational>Informational</informational>
+                <debugging>Debugging</debugging>
+            </OptionValues>
+        </logfilelevel>
+        <enablesyslog type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enablesyslog>
+        <sysloglevel type="OptionField">
+            <Required>Y</Required>
+            <multiple>N</multiple>
+            <default>notifications</default>
+            <OptionValues>
+                <critical>Critical</critical>
+                <emergencies>Emergencies</emergencies>
+                <errors>Errors</errors>
+                <alerts>Alerts</alerts>
+                <warnings>Warnings</warnings>
+                <notifications>Notifications</notifications>
+                <informational>Informational</informational>
+                <debugging>Debugging</debugging>
+            </OptionValues>
+        </sysloglevel>
+    </items>
+</model>
