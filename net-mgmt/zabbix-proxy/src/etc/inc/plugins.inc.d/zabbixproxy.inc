@@ -34,7 +34,7 @@ function zabbixproxy_services()
 
     if (isset($config['OPNsense']['zabbixproxy']['general']['enabled']) && $config['OPNsense']['zabbixproxy']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('Zabbix-Proxy Daemon'),
+            'description' => gettext('Zabbix Proxy'),
             'configd' => array(
                 'restart' => array('zabbixproxy restart'),
                 'start' => array('zabbixproxy start'),

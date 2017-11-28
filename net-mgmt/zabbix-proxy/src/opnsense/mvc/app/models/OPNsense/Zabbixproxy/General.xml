@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/zabbixproxy/general</mount>
-    <description>Zabbix-Proxy configuration</description>
+    <description>Zabbix Proxy configuration</description>
     <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">

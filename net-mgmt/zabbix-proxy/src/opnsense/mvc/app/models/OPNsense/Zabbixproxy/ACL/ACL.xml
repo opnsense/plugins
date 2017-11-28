@@ -1,6 +1,6 @@
 <acl>
    <page-services-zabbixproxy>
-      <name>Services: Zabbix-Proxy</name>
+      <name>Services: Zabbix Proxy</name>
       <patterns>
          <pattern>ui/zabbixproxy/*</pattern>
          <pattern>api/zabbixproxy/*</pattern>

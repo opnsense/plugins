@@ -3,7 +3,7 @@
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>This will activate the Zabbix-Proxy service.</help>
+        <help>This will activate the Zabbix Proxy service.</help>
     </field>
     <field>
         <id>general.proxymode</id>
