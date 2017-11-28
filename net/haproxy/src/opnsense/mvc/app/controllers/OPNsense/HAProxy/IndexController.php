@@ -41,8 +41,6 @@ class IndexController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        // set page title
-        $this->view->title = gettext("HAProxy Load Balancer");
         // include form definitions
         $this->view->mainForm = $this->getForm("main");
         $this->view->formDialogFrontend = $this->getForm("dialogFrontend");
