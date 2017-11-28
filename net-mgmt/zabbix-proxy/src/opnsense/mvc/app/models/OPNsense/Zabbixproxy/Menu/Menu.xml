@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <Zabbixproxy VisibleName="Zabbix-Proxy" cssClass="fa fa-eye" url="/ui/zabbixproxy/general/index" />
+    <Zabbixproxy VisibleName="Zabbix Proxy" cssClass="fa fa-eye" url="/ui/zabbixproxy/general/index" />
   </Services>
 </menu>
