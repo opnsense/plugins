@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>rip.enabled</id>
+        <label>enable</label>
+        <type>checkbox</type>
+        <help>This will activate the RIP service if the support of routing protocols is enabled in "General".</help>
+    </field>
+    <field>
+        <id>rip.version</id>
+        <label>Version</label>
+        <type>text</type>
+        <help>Choose your RIP version (1 or 2). 1 is classful, 2 supports CIDR.</help>
+    </field>
+    <field>
+        <id>rip.passiveinterfaces</id>
+        <label>Passive Interfaces</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select the interfaces, where no RIP packets should be sent to.]]></help>
+        <hint>Type or select interface.</hint>
+    </field>
+    <field>
+        <id>rip.redistribute</id>
+        <label>Route Redistribution</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
+        <hint>Type or select a route source.</hint>
+    </field>
+    <field>
+        <id>rip.networks</id>
+        <label>Networks</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Enter your networks in CIDR notation like 127.0.0.0/8.</help>
+    </field>
+</form>

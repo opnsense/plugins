@@ -38,7 +38,6 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext('Tinc VPN');
         // link dialogs
         $this->view->formDialogNetwork = $this->getForm("dialogNetwork");
         $this->view->formDialogHost = $this->getForm("dialogHost");

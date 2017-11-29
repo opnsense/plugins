@@ -1,0 +1,30 @@
+<form>
+    <field>
+        <id>bgp.enabled</id>
+        <label>enable</label>
+        <type>checkbox</type>
+        <help>This will activate the bgp service.</help>
+    </field>
+    <field>
+        <id>bgp.asnumber</id>
+        <label>BGP AS Number</label>
+        <type>text</type>
+        <help>Your AS Number here</help>
+    </field>
+    <field>
+        <id>bgp.networks</id>
+        <label>Network</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Select the network to advertise, you have to set a Null route via System -> Routes</help>
+    </field>
+    <field>
+        <id>bgp.redistribute</id>
+        <label>Route Redistribution</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
+        <hint>Type or select a route source.</hint>
+    </field>
+</form>

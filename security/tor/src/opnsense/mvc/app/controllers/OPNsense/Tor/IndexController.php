@@ -31,6 +31,8 @@
 
 namespace OPNsense\Tor;
 
+use OPNsense\Tor\General;
+
 /**
 * Class IndexController
 * @package OPNsense/Tor
@@ -57,8 +59,9 @@ class IndexController extends \OPNsense\Base\IndexController
     }
     public function diagnosticsAction()
     {
+        $general = new General();
         $this->view->title = gettext("The Onion Router - Diagnostics");
-        if ($this->is_tor_running()) {
+        if ($this->is_tor_running() && (int)((string)$general->control_port) > 0) {
             $this->view->pick('OPNsense/Tor/diagnostics');
         }
         else {

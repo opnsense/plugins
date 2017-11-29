@@ -32,7 +32,6 @@ class GeneralController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("Collectd Settings");
         $this->view->generalForm = $this->getForm("general");
         $this->view->pick('OPNsense/Collectd/general');
     }

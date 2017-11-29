@@ -37,18 +37,18 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-            <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
+                <hr />
+                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
             </div>
         </div>
     </div>
     <div id="antivirus" class="tab-pane fade in">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':antivirusForm,'id':'frm_antivirus_settings'])}}
-            <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct2" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct2_progress" class=""></i></button>
+                <hr />
+                <button class="btn btn-primary"  id="saveAct2" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct2_progress"></i></button>
             </div>
         </div>
     </div>

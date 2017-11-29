@@ -32,7 +32,6 @@ class GeneralController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("ClamAV Settings");
         $this->view->generalForm = $this->getForm("general");
         $this->view->versionForm = $this->getForm("version");
         $this->view->pick('OPNsense/ClamAV/general');

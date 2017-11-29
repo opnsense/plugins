@@ -3,13 +3,13 @@
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>This will activate the Zabbix-Proxy service.</help>
+        <help>This will activate the Zabbix Proxy service.</help>
     </field>
     <field>
         <id>general.proxymode</id>
         <label>Proxy Mode</label>
         <type>checkbox</type>
-        <help>Active or passive mode, only switch to passive if you know what you are doing.</help>
+        <help>Active (default) or passive mode, only switch to passive if you know what you are doing.</help>
     </field>
     <field>
         <id>general.server</id>

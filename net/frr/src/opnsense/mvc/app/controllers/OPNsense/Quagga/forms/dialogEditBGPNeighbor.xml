@@ -1,0 +1,59 @@
+<form>
+  <field>
+    <id>neighbor.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.address</id>
+    <label>Peer-IP</label>
+    <type>text</type>
+    <help>Specify the IP of your neighbor.</help>
+  </field>
+  <field>
+    <id>neighbor.remoteas</id>
+    <label>Remote AS</label>
+    <type>text</type>
+    <help>Neighbor AS.</help>
+  </field>
+  <field>
+    <id>neighbor.updatesource</id>
+    <label>Update-Source Interface</label>
+    <type>select_multiple</type>
+    <help>Physical name of the interface facing the peer</help>
+  </field>
+  <field>
+    <id>neighbor.nexthopself</id>
+    <label>Next-Hop-Self</label>
+    <type>checkbox</type>
+  </field>
+    <field>
+    <id>neighbor.defaultoriginate</id>
+    <label>Send Defaultroute</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.linkedPrefixlistIn</id>
+    <label>Prefix-List In</label>
+    <type>dropdown</type>
+    <help>Prefix-List for inbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedPrefixlistOut</id>
+    <label>Prefix-List Out</label>
+    <type>dropdown</type>
+    <help>Prefix-List for outbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedRoutemapIn</id>
+    <label>Route-Map In</label>
+    <type>dropdown</type>
+    <help>Route-Map for inbound direction</help>
+  </field>
+  <field>
+    <id>neighbor.linkedRoutemapOut</id>
+    <label>Route-Map Out</label>
+    <type>dropdown</type>
+    <help>Route-Map for outbound direction</help>
+  </field>
+</form>

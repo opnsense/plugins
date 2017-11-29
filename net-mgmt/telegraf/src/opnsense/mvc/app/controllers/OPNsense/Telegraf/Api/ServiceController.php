@@ -49,8 +49,10 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
             $backend = new Backend();
-            $response = $backend->configdRun("telegraf start", true);
+            $response = $backend->configdRun("telegraf start");
             return array("response" => $response);
         } else {
             return array("response" => array());
@@ -64,6 +66,8 @@ class ServiceController extends ApiControllerBase
     public function stopAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("telegraf stop");
             return array("response" => $response);
@@ -79,6 +83,8 @@ class ServiceController extends ApiControllerBase
     public function restartAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("telegraf restart");
             return array("response" => $response);
@@ -111,7 +117,6 @@ class ServiceController extends ApiControllerBase
         } else {
             $status = "unkown";
         }
-
 
         return array("status" => $status);
     }
