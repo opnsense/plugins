@@ -1,8 +1,7 @@
 PLUGIN_NAME=		arp-scan
-PLUGIN_VERSION=		0.2
+PLUGIN_VERSION=		1
 PLUGIN_COMMENT=		Get all peers connected to a local network
 PLUGIN_MAINTAINER=	giuseppe.demarco@unical.it
 PLUGIN_DEPENDS=		arp-scan
-PLUGIN_DEVEL=		no
 
 .include "../../Mk/plugins.mk"
