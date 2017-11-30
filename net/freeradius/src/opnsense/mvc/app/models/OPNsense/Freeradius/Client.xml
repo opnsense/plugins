@@ -4,23 +4,20 @@
     <version>1.0.0</version>
     <items>
         <clients>
-                <client type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <name type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                        </name>
-                        <secret type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                        </secret>
-                        <ip type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                        </ip>
+            <client type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <secret type="TextField">
+                    <Required>Y</Required>
+                </secret>
+                <ip type="TextField">
+                    <Required>N</Required>
+                </ip>
             </client>
         </clients>
     </items>

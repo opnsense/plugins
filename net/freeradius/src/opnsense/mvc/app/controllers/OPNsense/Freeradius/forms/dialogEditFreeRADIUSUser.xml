@@ -77,4 +77,10 @@
         <type>text</type>
         <help>Set the maximum download bandwith for ChilliSpot attribute. The value is treated as kbits/s.</help>
     </field>
+    <field>
+        <id>user.sessionlimit_max_session_limit</id>
+        <label>Max Daily Session</label>
+        <type>text</type>
+        <help>Set the maximum session limit in seconds. This can be used by the Captive Portal.</help>
+    </field>
 </form>

@@ -19,5 +19,29 @@
             <default>0</default>
             <Required>N</Required>
         </chillispot>
+        <sessionlimit type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </sessionlimit>
+        <log_destination type="OptionField">
+            <default>files</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <files>files</files>
+                <syslog>syslog</syslog>
+            </OptionValues>
+        </log_destination>
+        <log_authentication_request type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </log_authentication_request>
+        <log_authbadpass type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </log_authbadpass>
+        <log_authgoodpass type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </log_authgoodpass>
     </items>
 </model>

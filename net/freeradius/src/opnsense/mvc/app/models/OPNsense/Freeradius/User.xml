@@ -4,65 +4,56 @@
     <version>1.0.0</version>
     <items>
         <users>
-                <user type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <username type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
-                        </username>
-                        <password type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
-                        </password>
-                        <description type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                        </description>
-                        <ip type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-                        </ip>
-                        <subnet type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-                        </subnet>
-                        <vlan type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>4096</MaximumValue>
-                        </vlan>
-                        <wispr_bw_min_up type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                        </wispr_bw_min_up>
-                        <wispr_bw_max_up type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                        </wispr_bw_max_up>
-                        <wispr_bw_min_down type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                        </wispr_bw_min_down>
-                        <wispr_bw_max_down type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                        </wispr_bw_max_down>
-                        <chillispot_bw_max_up type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                        </chillispot_bw_max_up>
-                        <chillispot_bw_max_down type="IntegerField">
-                                <default></default>
-                                <Required>N</Required>
-                        </chillispot_bw_max_down>
+            <user type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <username type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                </username>
+                <password type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+                </password>
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+                <ip type="TextField">
+                    <Required>N</Required>
+                    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                </ip>
+                <subnet type="TextField">
+                    <Required>N</Required>
+                    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                </subnet>
+                <vlan type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4096</MaximumValue>
+                </vlan>
+                <wispr_bw_min_up type="IntegerField">
+                    <Required>N</Required>
+                </wispr_bw_min_up>
+                <wispr_bw_max_up type="IntegerField">
+                    <Required>N</Required>
+                </wispr_bw_max_up>
+                <wispr_bw_min_down type="IntegerField">
+                    <Required>N</Required>
+                </wispr_bw_min_down>
+                <wispr_bw_max_down type="IntegerField">
+                    <Required>N</Required>
+                </wispr_bw_max_down>
+                <chillispot_bw_max_up type="IntegerField">
+                    <Required>N</Required>
+                </chillispot_bw_max_up>
+                <chillispot_bw_max_down type="IntegerField">
+                    <Required>N</Required>
+                </chillispot_bw_max_down>
+                <sessionlimit_max_session_limit type="IntegerField">
+                    <Required>N</Required>
+                </sessionlimit_max_session_limit>
             </user>
         </users>
     </items>
