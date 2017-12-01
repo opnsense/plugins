@@ -28,6 +28,7 @@ A list of currently available plugins
 =====================================
 
 ```
+benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application

@@ -1,0 +1,9 @@
+<acl>
+  <page-Iperf>
+    <name>iperf</name>
+    <patterns>
+      <pattern>ui/iperf/*</pattern>
+      <pattern>api/iperf/*</pattern>
+    </patterns>
+  </page-Iperf>
+</acl>
