@@ -37,7 +37,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $result = array('result' => 'failed');
-        $res = $backend->configdRun('iperf3 status');
+        $res = $backend->configdRun('iperf status');
         if (stripos($res, 'is running')) {
           $result['result'] = 'running';
         } else {
@@ -49,14 +49,14 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         $backend = new Backend();
-        $result = array('result' => $backend->configdRun('iperf3 start'));
+        $result = array('result' => $backend->configdRun('iperf start'));
         return $result;
     }
 
     public function stopAction()
     {
         $backend = new Backend();
-        $result = array("result" => $backend->configdRun('iperf3 stop'));
+        $result = array("result" => $backend->configdRun('iperf stop'));
         return $result;
     }
 

@@ -1,6 +1,6 @@
 <acl>
   <page-Iperf>
-    <name>iperf3</name>
+    <name>iperf</name>
     <patterns>
       <pattern>ui/iperf/*</pattern>
       <pattern>api/iperf/*</pattern>

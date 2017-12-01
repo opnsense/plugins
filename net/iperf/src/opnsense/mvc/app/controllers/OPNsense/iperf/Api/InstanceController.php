@@ -47,7 +47,7 @@ class InstanceController extends ApiMutableModelControllerBase
 
     // if no socket file exist, we know that the service is not running
     if (!file_exists("/var/run/iperf-manager.sock")) {
-      $backend->configdRun('iperf3 start');
+      $backend->configdRun('iperf start');
     }
     if (!isset($_POST['instance']['interface'])) {
       return array('status' => 'error',
@@ -77,7 +77,7 @@ class InstanceController extends ApiMutableModelControllerBase
       if (!$socket) {
           // in case of an error: try to restart the service and if that fails too
           // don't retry anymore
-          $backend->configdRun('iperf3 restart');
+          $backend->configdRun('iperf restart');
           $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);
           if (!$socket) {
               return array('state' => 'error', 'code' => $error_code, 'msg' => $error_msg);

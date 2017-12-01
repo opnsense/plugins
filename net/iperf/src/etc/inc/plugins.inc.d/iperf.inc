@@ -29,7 +29,7 @@
 
 function iperf_firewall($fw)
 {
-    $fw->registerAnchor('iperf/*', 'fw');
+    $fw->registerAnchor('iperf', 'fw');
 }
 
 function iperf_services()
@@ -39,12 +39,12 @@ function iperf_services()
     $services[] = array(
         'description' => gettext('iperf Performance Test'),
         'configd' => array(
-            'restart' => array('iperf3 restart'),
-            'start' => array('iperf3 start'),
-            'stop' => array('iperf3 stop'),
+            'restart' => array('iperf restart'),
+            'start' => array('iperf start'),
+            'stop' => array('iperf stop'),
         ),
         'name' => 'iperf',
-        'pidfile' => '/var/run/iperf3.pid'
+        'pidfile' => '/var/run/iperf.pid'
     );
     return $services;
 }
