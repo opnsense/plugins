@@ -27,23 +27,23 @@
 */
 
 
-function iperf3_firewall($fw)
+function iperf_firewall($fw)
 {
     $fw->registerAnchor('iperf/*', 'fw');
 }
 
-function iperf3_services()
+function iperf_services()
 {
     $services = array();
 
     $services[] = array(
-        'description' => gettext('iperf3 Performance Test'),
+        'description' => gettext('iperf Performance Test'),
         'configd' => array(
             'restart' => array('iperf3 restart'),
             'start' => array('iperf3 start'),
             'stop' => array('iperf3 stop'),
         ),
-        'name' => 'iperf3',
+        'name' => 'iperf',
         'pidfile' => '/var/run/iperf3.pid'
     );
     return $services;
