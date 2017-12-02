@@ -1,4 +1,4 @@
-PLUGIN_NAME=          iperf3
+PLUGIN_NAME=          iperf
 PLUGIN_VERSION=       0.0.1
 PLUGIN_COMMENT=       iperf3 connection speed tester
 PLUGIN_DEPENDS=       iperf3 ruby
