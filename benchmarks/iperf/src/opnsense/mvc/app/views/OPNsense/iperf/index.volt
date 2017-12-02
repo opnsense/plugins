@@ -48,7 +48,7 @@ function result_to_html(elements) {
         output += '<table class="table table-striped"><tr><td>{{ lang._('Interface') }}</td><td>' + element.interface + '</td></tr>' +
         '<tr><td>{{ lang._('Start Time') }}</td><td>' + element.start_time + '</td></tr>' +
         '<tr><td>{{ lang._('Port') }}</td><td>' + element.port + '</td></tr></table>';
-        
+
         // only if test did already run
         if ('result' in element) {
             var result = element.result,

@@ -62,7 +62,7 @@ class InstanceController extends ApiMutableModelControllerBase
                       'error' => 'interface is unknown');
     }
   }
-  
+
   public function queryAction() {
       $backend = new Backend();
       return $this->send_command('query', $backend);
@@ -89,7 +89,7 @@ class InstanceController extends ApiMutableModelControllerBase
       fgets($socket);
       fclose($socket);
       return json_decode($data,true);
-      
+
   }
   private function get_real_interface_name($name) {
       $config = Config::getInstance()->toArray();

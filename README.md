@@ -29,6 +29,7 @@ A list of currently available plugins
 =====================================
 
 ```
+benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
@@ -46,7 +47,6 @@ net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
-net/iperf -- iperf connection speed tester
 net/l2tp -- L2TP server based on MPD5
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/pppoe -- PPPoE server based on MPD5
