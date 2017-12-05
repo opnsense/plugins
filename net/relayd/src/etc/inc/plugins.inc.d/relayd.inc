@@ -140,14 +140,14 @@ function relayd_configure_do($kill_first = false)
 
     foreach ($monitors_a as $type) {
         $type['options'] = isset($type['options']) ? $type['options'] : array();
-        switch($type['type']) {
+        switch ($type['type']) {
             case 'icmp':
             case 'tcp':
-                $check_a[$type['name']] = 'check ' . $type['type'];
+                $check_a[$type['name']] = "check {$type['type']} ";
                 break;
             case 'http':
             case 'https':
-                $check_a[$type['name']] = 'check ' . $type['type']. " ";
+                $check_a[$type['name']] = "check {$type['type']} ";
                 if (!empty($type['options']['path'])) {
                     $check_a[$type['name']] .= "'".$type['options']['path'] . "' ";
                 }
@@ -157,10 +157,12 @@ function relayd_configure_do($kill_first = false)
                 $check_a[$type['name']] .= "code " . $type['options']['code'];
                 break;
             case 'send':
-                $check_a[$type['name']] = "send  ";
+                $check_a[$type['name']] = "check {$type['type']} ";
                 $check_a[$type['name']] .= !empty($type['options']['send']) ? "\"{$type['options']['send']}\"" : "\"\"" ;
                 $check_a[$type['name']] .= " expect ";
                 $check_a[$type['name']] .= !empty($type['options']['expect']) ? "\"{$type['options']['expect']}\"" : "\"\"" ;
+                break;
+            default:
                 break;
         }
     }
