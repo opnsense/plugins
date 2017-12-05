@@ -28,5 +28,5 @@
 #}
 
 <div class="alert alert-warning" role="alert">
-    {{ lang._('This page is not available because Tor is not running. Please go to the %sconfiguration page%s and enable Tor.')|format('<a href="/ui/tor/">','</a>') }}
+    {{ lang._('This page is not available because Tor is not running or the control socket is not configured. Please go to the %sconfiguration page%s and enable Tor.')|format('<a href="/ui/tor/">','</a>') }}
 </div>

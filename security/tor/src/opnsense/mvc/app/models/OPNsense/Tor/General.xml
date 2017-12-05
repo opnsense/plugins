@@ -19,7 +19,7 @@
     </socks_listen_port>
     <control_port type="IntegerField">
       <default>9051</default>
-      <MinimumValue>0</MinimumValue>
+      <MinimumValue>1</MinimumValue>
       <Required>N</Required>
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
@@ -117,5 +117,9 @@
         </auth_cookie>
       </client_auth>
     </client_authentications>
+    <max_memory_in_queues type="IntegerField">
+      <MinimumValue>0</MinimumValue>
+      <Required>N</Required>
+    </max_memory_in_queues>
   </items>
 </model>

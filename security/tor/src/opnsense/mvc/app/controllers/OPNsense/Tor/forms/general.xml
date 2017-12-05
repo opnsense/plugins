@@ -101,4 +101,11 @@
     <help>Enable this, if you want to map onion services to the IP pool configured above.</help>
     <advanced>true</advanced>
   </field>
+  <field>
+    <id>general.max_memory_in_queues</id>
+    <label>Maximum Memory In Queues (MB)</label>
+    <type>text</type>
+    <help>If this amount of memory is reached, Tor will close circuits until 10% of this limit are free again.</help>
+    <advanced>true</advanced>
+  </field>
 </form>
