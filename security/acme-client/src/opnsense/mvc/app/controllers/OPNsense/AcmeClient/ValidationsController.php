@@ -37,7 +37,6 @@ class ValidationsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = "Let's Encrypt Domain Validation Methods";
         // include form definitions
         $this->view->formDialogValidation = $this->getForm("dialogValidation");
         // choose template
