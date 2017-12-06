@@ -37,7 +37,6 @@ class OverviewController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("VPN : Zerotier : Overview");
         $this->view->pick('OPNsense/Zerotier/overview');
         $this->view->information = $this->information();
         $this->view->networks = $this->listNetworks();
