@@ -76,7 +76,7 @@
         <style>type_table table_http-request_auth</style>
     </field>
     <field>
-        <id>action.http-request_auth</id>
+        <id>action.http_request_auth</id>
         <label>Auth Realm</label>
         <type>text</type>
         <help><![CDATA[When HAProxy requests user name and password from the user, this optiomal authentication realm is returned with the response (typically the application's name).]]></help>
@@ -87,7 +87,7 @@
         <style>type_table table_http-request_redirect</style>
     </field>
     <field>
-        <id>action.http-request_redirect</id>
+        <id>action.http_request_redirect</id>
         <label>HTTP Redirect</label>
         <type>text</type>
         <help><![CDATA[Use HAProxy's redirect function to return a HTTP redirection. See <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#redirect">HAProxy's documentation</a> for further details and examples.]]></help>
@@ -98,7 +98,7 @@
         <style>type_table table_http-request_lua</style>
     </field>
     <field>
-        <id>action.http-request_lua</id>
+        <id>action.http_request_lua</id>
         <label>Lua function</label>
         <type>text</type>
         <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
@@ -109,7 +109,7 @@
         <style>type_table table_http-request_use-service</style>
     </field>
     <field>
-        <id>action.http-request_use-service</id>
+        <id>action.http_request_use_service</id>
         <label>Lua service</label>
         <type>text</type>
         <help><![CDATA[Register the specified Lua service. You will most likely need to include/load your Lua code first.]]></help>
@@ -120,13 +120,13 @@
         <style>type_table table_http-request_add-header</style>
     </field>
     <field>
-        <id>action.http-request_add-header_name</id>
+        <id>action.http_request_add_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[Append a HTTP header field with the specified name.]]></help>
     </field>
     <field>
-        <id>action.http-request_add-header_content</id>
+        <id>action.http_request_add_header_content</id>
         <label>Header Content</label>
         <type>text</type>
         <help><![CDATA[The value that should be set for the specified HTTP header. Note that it is possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
@@ -137,13 +137,13 @@
         <style>type_table table_http-request_set-header</style>
     </field>
     <field>
-        <id>action.http-request_set-header_name</id>
+        <id>action.http_request_set_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[Remove the HTTP header field with the specified name and add a new one with the same name. This is useful when passing security information to the server, where the header must not be manipulated by external users.]]></help>
     </field>
     <field>
-        <id>action.http-request_set-header_content</id>
+        <id>action.http_request_set_header_content</id>
         <label>Header Content</label>
         <type>text</type>
         <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
@@ -154,7 +154,7 @@
         <style>type_table table_http-request_del-header</style>
     </field>
     <field>
-        <id>action.http-request_del-header_name</id>
+        <id>action.http_request_del_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[Remove the HTTP header field with the specified name.]]></help>
@@ -165,13 +165,13 @@
         <style>type_table table_http-request_replace-header</style>
     </field>
     <field>
-        <id>action.http-request_replace-header_name</id>
+        <id>action.http_request_replace_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[The name of the HTTP header field.]]></help>
     </field>
     <field>
-        <id>action.http-request_replace-header_regex</id>
+        <id>action.http_request_replace_header_regex</id>
         <label>Regular Expression</label>
         <type>text</type>
         <help><![CDATA[Matches the specified regular expression in all occurrences of the header field.]]></help>
@@ -182,13 +182,13 @@
         <style>type_table table_http-request_replace-value</style>
     </field>
     <field>
-        <id>action.http-request_replace-value_name</id>
+        <id>action.http_request_replace_value_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[The name of the HTTP header field.]]></help>
     </field>
     <field>
-        <id>action.http-request_replace-value_regex</id>
+        <id>action.http_request_replace_value_regex</id>
         <label>Regular Expression</label>
         <type>text</type>
         <help><![CDATA[This is suited for all header fields which are allowed to carry more than one value: Matches the specified regular expression against every comma-delimited value of the header field.]]></help>
@@ -199,7 +199,7 @@
         <style>type_table table_http-response_lua</style>
     </field>
     <field>
-        <id>action.http-response_lua</id>
+        <id>action.http_response_lua</id>
         <label>Lua function</label>
         <type>text</type>
         <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
@@ -210,13 +210,13 @@
         <style>type_table table_http-response_add-header</style>
     </field>
     <field>
-        <id>action.http-response_add-header_name</id>
+        <id>action.http_response_add_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[Append a HTTP header field with the specified name.]]></help>
     </field>
     <field>
-        <id>action.http-response_add-header_content</id>
+        <id>action.http_response_add_header_content</id>
         <label>Header Content</label>
         <type>text</type>
         <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
@@ -227,13 +227,13 @@
         <style>type_table table_http-response_set-header</style>
     </field>
     <field>
-        <id>action.http-response_set-header_name</id>
+        <id>action.http_response_set_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[Remove the HTTP header field with the specified name and add a new one with the same name. This is useful when passing security information to the server, where the header must not be manipulated by external users.]]></help>
     </field>
     <field>
-        <id>action.http-response_set-header_content</id>
+        <id>action.http_response_set_header_content</id>
         <label>Header Content</label>
         <type>text</type>
         <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
@@ -244,7 +244,7 @@
         <style>type_table table_http-response_del-header</style>
     </field>
     <field>
-        <id>action.http-response_del-header_name</id>
+        <id>action.http_response_del_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[Remove the HTTP header field with the specified name.]]></help>
@@ -255,13 +255,13 @@
         <style>type_table table_http-response_replace-header</style>
     </field>
     <field>
-        <id>action.http-response_replace-header_name</id>
+        <id>action.http_response_replace_header_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[The name of the HTTP header field.]]></help>
     </field>
     <field>
-        <id>action.http-response_replace-header_regex</id>
+        <id>action.http_response_replace_header_regex</id>
         <label>Regular Expression</label>
         <type>text</type>
         <help><![CDATA[Matches the specified regular expression in all occurrences of header field.]]></help>
@@ -272,13 +272,13 @@
         <style>type_table table_http-response_replace-value</style>
     </field>
     <field>
-        <id>action.http-response_replace-value_name</id>
+        <id>action.http_response_replace_value_name</id>
         <label>HTTP Header</label>
         <type>text</type>
         <help><![CDATA[The name of the HTTP header field.]]></help>
     </field>
     <field>
-        <id>action.http-response_replace-value_regex</id>
+        <id>action.http_response_replace_value_regex</id>
         <label>Regular Expression</label>
         <type>text</type>
         <help><![CDATA[This is suited for all header fields which are allowed to carry more than one value: Matches the specified regular expression against every comma-delimited value of the header field.]]></help>
@@ -289,7 +289,7 @@
         <style>type_table table_tcp-request_content_lua</style>
     </field>
     <field>
-        <id>action.tcp-request_content_lua</id>
+        <id>action.tcp_request_content_lua</id>
         <label>Lua function</label>
         <type>text</type>
         <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
@@ -300,7 +300,7 @@
         <style>type_table table_tcp-request_content_use-service</style>
     </field>
     <field>
-        <id>action.tcp-request_content_use-service</id>
+        <id>action.tcp_request_content_use_service</id>
         <label>Lua service</label>
         <type>text</type>
         <help><![CDATA[Register the specified Lua service. You will most likely need to include/load your Lua code first.]]></help>
@@ -311,7 +311,7 @@
         <style>type_table table_tcp-response_content_lua</style>
     </field>
     <field>
-        <id>action.tcp-response_content_lua</id>
+        <id>action.tcp_response_content_lua</id>
         <label>Lua function</label>
         <type>text</type>
         <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
