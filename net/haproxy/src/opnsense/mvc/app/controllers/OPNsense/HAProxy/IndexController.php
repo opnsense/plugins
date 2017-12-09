@@ -28,6 +28,7 @@
  *
  */
 namespace OPNsense\HAProxy;
+use OPNsense\HAProxy\HAProxy;
 
 /**
  * Class IndexController
@@ -51,6 +52,9 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->formDialogAcl = $this->getForm("dialogAcl");
         $this->view->formDialogLua = $this->getForm("dialogLua");
         $this->view->formDialogErrorfile = $this->getForm("dialogErrorfile");
+        // set additional view parameters
+        $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
+        $this->view->showIntro = (string)$mdlHAProxy->general->showIntro;
         // pick the template to serve
         $this->view->pick('OPNsense/HAProxy/index');
     }
