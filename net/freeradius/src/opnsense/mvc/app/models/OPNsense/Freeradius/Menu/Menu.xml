@@ -5,6 +5,7 @@
       <User url="/ui/freeradius/user/index" order="20"/>
       <Client url="/ui/freeradius/client/index" order="30"/>
       <EAP url="/ui/freeradius/eap/index" order="40"/>
+      <LogFile VisibleName="Log File" order="80" url="/diag_logs_freeradius.php"/>
     </FreeRADIUS>
   </Services>
 </menu>
