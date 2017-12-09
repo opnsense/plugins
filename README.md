@@ -16,6 +16,7 @@ Plugins can do the following:
 * Enhance the backend services with additional work tasks
 * Allow custom start, stop and early scripts
 * Persistent /boot/loader.conf modifications
+* Additional themes for the web GUI
 
 Now we need your help to enrich the plugins.  Feel free to contact us
 at project AT opnsense DOT org or open GitHub issue to get in touch.
@@ -28,6 +29,7 @@ A list of currently available plugins
 =====================================
 
 ```
+benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application

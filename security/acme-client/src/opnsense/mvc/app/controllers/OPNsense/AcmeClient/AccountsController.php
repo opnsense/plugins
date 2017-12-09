@@ -37,7 +37,6 @@ class AccountsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = "Let's Encrypt Accounts";
         // include form definitions
         $this->view->formDialogAccount = $this->getForm("dialogAccount");
         // choose template

@@ -3,7 +3,8 @@ PAGER?=		less
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
-CATEGORIES=	databases devel dns mail net-mgmt net security sysutils www
+CATEGORIES=	benchmarks databases devel dns mail net-mgmt \
+		net security sysutils www
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*

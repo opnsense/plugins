@@ -37,7 +37,6 @@ class CertificatesController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = "Let's Encrypt Certificates";
         // include form definitions
         $this->view->formDialogCertificate = $this->getForm("dialogCertificate");
         // choose template
