@@ -3,8 +3,8 @@
 {% if helpers.exists('OPNsense.freeradius.user.users.user') %}
 {%   for user_list in helpers.toList('OPNsense.freeradius.user.users.user') %}
 {%     if user_list.enabled == '1' %}
-{{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}"{% if user_list.sessionlimit_max_session_limit is defined %}, Max-Daily-Session := {{ user_list.sessionlimit_max_session_limit }}
-{% endif %}
+{{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}"{% if user_list.sessionlimit_max_session_limit is defined %}, Max-Daily-Session := {{ user_list.sessionlimit_max_session_limit }}{% endif %}
+
        Framed-Protocol = PPP{% if user_list.ip is defined %},
        Framed-IP-Address = {{ user_list.ip }}{% endif %}{% if user_list.subnet is defined %},
        Framed-IP-Netmask = {{ user_list.subnet }}{% endif %}{% if user_list.vlan is defined %},
