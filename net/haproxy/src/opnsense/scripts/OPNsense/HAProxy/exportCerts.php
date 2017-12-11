@@ -32,11 +32,12 @@
 
 // Use legacy code to export certificates to the filesystem.
 require_once("config.inc");
-require_once("certs.inc");
 require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
+use OPNsense\Trust\Trust;
 
 global $config;
+$mdlTrust = new Trust();
 
 // configure ssl elements
 $configNodes = [
@@ -65,21 +66,19 @@ foreach ($configNodes as $key => $value) {
                             // check all known cert types
                             foreach ($certTypes as $type) {
                                 // search for cert (type) in config
-                                foreach ($configObj->$type as $cert) {
-                                    if ($cert_refid == (string)$cert->refid) {
+                                foreach ($mdlTrust->{$type . "s"}->{$type} as $uuid => $cert) {
+                                    if ($cert_refid == $uuid) {
                                         $pem_content = '';
                                         // CRLs require special export
                                         if ($type == 'crl') {
-                                            $crl =& lookup_crl($cert_refid);
-                                            crl_update($crl);
-                                            $pem_content = base64_decode($crl['text']);
+                                            $crl = $mdlTrust->crl_update($cert);
+                                            $pem_content = base64_decode((string)$crl->text);
                                         } else {
                                             $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
                                             $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
                                             // check if a CA is linked
-                                            if (!empty((string)$cert->caref)) {
-                                                $cert = (array)$cert;
-                                                $ca = ca_chain($cert);
+                                            if (!empty((string)$cert->cauuid)) {
+                                                $ca = $mdlTrust->ca_chain($cert);
                                                 $pem_content .= "\n" . $ca;
                                             }
                                         }

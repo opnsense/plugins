@@ -38,13 +38,14 @@
 
 // Use legacy code to manage certificates.
 require_once("config.inc");
-require_once("certs.inc");
 require_once("legacy_bindings.inc");
 require_once("interfaces.inc");
 require_once("util.inc");
 // Some stuff requires the almighty MVC framework.
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Core\Certs;
+use OPNsense\Trust\Trust;
 use OPNsense\Base;
 use OPNsense\AcmeClient\AcmeClient;
 
@@ -822,7 +823,7 @@ function revoke_cert($certObj, $valObj, $acctObj)
 
 function import_certificate($certObj, $modelObj)
 {
-    global $config;
+    $mdlTrust = new Trust();
 
     $cert_id = (string)$certObj->id;
     $cert_filename = "/var/etc/acme-client/certs/${cert_id}/cert.pem";
@@ -848,51 +849,35 @@ function import_certificate($certObj, $modelObj)
     // Read contents from CA file
     $ca_content = @file_get_contents($cert_chain_filename);
     if ($ca_content != false) {
-        $ca_subject = cert_get_subject($ca_content, false);
-        $ca_serial  = cert_get_serial($ca_content, false);
+        $ca_subject = Certs::cert_get_subject($ca_content, false);
+        $ca_serial  = Certs::cert_get_serial($ca_content, false);
         $ca_cn      = local_cert_get_cn($ca_content, false);
-        $ca_issuer  = cert_get_issuer($ca_content, false);
-        $ca_purpose = cert_get_purpose($ca_content, false);
+        $ca_issuer  = Certs::cert_get_issuer($ca_content, false);
+        $ca_purpose = Certs::cert_get_purpose($ca_content, false);
     } else {
         log_error("AcmeClient: unable to read CA certificate content from file");
         return(1);
     }
 
-    // Prepare CA for import in Cert Manager
-    $ca = array();
-    $ca['crt'] = base64_encode($ca_content);
-    $ca['refid'] = uniqid();
     $ca_found = false;
 
     // Check if CA was previously imported
-    $cacnt = 0;
-    foreach ($config['ca'] as $cacrt) {
-        $cacrt_subject = cert_get_subject($cacrt['crt'], true);
-        $cacrt_issuer = cert_get_issuer($cacrt['crt'], true);
+    foreach ($mdlTrust->cas->ca->getChildren() as $uuid => $cacrt) {
+        $cacrt_subject = Certs::cert_get_subject($cacrt->crt->__toString(), true);
+        $cacrt_issuer = Certs::cert_get_issuer($cacrt->crt->__toString(), true);
         if (($ca_subject == $cacrt_subject) and ($ca_issuer == $cacrt_issuer)) {
             // Use old refid instead of generating a new one
-            $ca['refid'] = (string)$cacrt['refid'];
             $ca_found = true;
             break;
         }
-        $cacnt++;
     }
-
-    // Collect required CA information
-    $ca_cn = local_cert_get_cn($ca_content, false);
-    $ca['descr'] = (string)$ca_cn . ' (Let\'s Encrypt)';
-
-    // Prepare CA for import
-    local_ca_import($ca, $ca_content);
-
-    // Update existing CA?
-    if ($ca_found == true) {
-        $config['ca'][$cacnt] = $ca;
-    } else {
-        // Create new CA item
-        $config['ca'][] = $ca;
+    if (!$ca_found) {
         log_error("AcmeClient: importing Let's Encrypt CA: ${ca_cn}");
+        $uuid = null;
     }
+
+    $ca_cn = local_cert_get_cn($ca_content, false);
+    $ca = $mdlTrust->ca_import((string)$ca_cn . ' (Let\'s Encrypt)', base64_encode($ca_content), "", 0, $uuid);
 
     /*
      * Step 2: import certificate
@@ -901,40 +886,29 @@ function import_certificate($certObj, $modelObj)
     // Read contents from certificate file
     $cert_content = @file_get_contents($cert_filename);
     if ($cert_content != false) {
-        $cert_subject = cert_get_subject($cert_content, false);
-        $cert_serial  = cert_get_serial($cert_content, false);
+        $cert_subject = Certs::cert_get_subject($cert_content, false);
+        $cert_serial  = Certs::cert_get_serial($cert_content, false);
         $cert_cn      = local_cert_get_cn($cert_content, false);
-        $cert_issuer  = cert_get_issuer($cert_content, false);
-        $cert_purpose = cert_get_purpose($cert_content, false);
+        $cert_issuer  = Certs::cert_get_issuer($cert_content, false);
+        $cert_purpose = Certs::cert_get_purpose($cert_content, false);
       //echo "DEBUG: importing cert: subject: ${cert_subject}, serial: ${cert_serial}, issuer: ${cert_issuer} \n";
     } else {
         log_error("AcmeClient: unable to read certificate content from file");
         return(1);
     }
 
-    // Prepare certificate for import in Cert Manager
-    $cert = array();
-    $cert_refid = uniqid();
-    $cert['refid'] = $cert_refid;
-    $cert['caref'] = (string)$ca['refid'];
     $import_log_message = 'Imported';
-    $cert_found = false;
+    $uuid = null;
 
     // Check if cert was previously imported
     if (isset($certObj->certRefId)) {
         // Check if the imported certificate can still be found
-        $configObj = Config::getInstance()->object();
-        foreach ($configObj->cert as $cfgCert) {
-            // Check if the IDs matches
-            if ((string)$certObj->certRefId == (string)$cfgCert->refid) {
-                $cert_found = true;
-                break;
-            }
-        }
+        $cert_found = (bool) $mdlTrust->certs->cert->{(string)$certObj->certRefId};
+
         // Existing cert?
         if ($cert_found == true) {
             // Use old refid instead of generating a new one
-            $cert_refid = (string)$certObj->certRefId;
+            $uuid = (string)$certObj->certRefId;
             $import_log_message = 'Updated';
             //echo "DEBUG: updating EXISTING certificate\n";
         }
@@ -952,28 +926,8 @@ function import_certificate($certObj, $modelObj)
 
     // Collect required cert information
     $cert_cn = local_cert_get_cn($cert_content, false);
-    $cert['descr'] = (string)$cert_cn . ' (Let\'s Encrypt)';
-    $cert['refid'] = $cert_refid;
-
-    // Prepare certificate for import
-    cert_import($cert, $cert_content, $key_content);
-
-    // Update existing certificate?
-    if ($cert_found == true) {
-        // FIXME: Do legacy configs really depend on counters?
-        $cnt = 0;
-        foreach ($config['cert'] as $crt) {
-            if ($crt['refid'] == $cert_refid) {
-                //echo "DEBUG: found legacy cert object\n";
-                $config['cert'][$cnt] = $cert;
-                break;
-            }
-            $cnt++;
-        }
-    } else {
-        // Create new certificate item
-        $config['cert'][] = $cert;
-    }
+    $cert = $mdlTrust->cert_import((string)$cert_cn . ' (Let\'s Encrypt)', $cert_content, $key_content, $uuid);
+    $cert->cauuid = $ca->getAttributes()["uuid"];
 
     /*
      * Step 3: update configuration
@@ -981,7 +935,7 @@ function import_certificate($certObj, $modelObj)
 
     // Write changes to config
     // TODO: Legacy code, should be replaced with code from OPNsense framework
-    write_config("${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
+    $mdlTrust->serializeToConfig();
     log_error("AcmeClient: ${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
 
     // Update (acme) certificate object (through MVC framework)
@@ -989,16 +943,16 @@ function import_certificate($certObj, $modelObj)
     $node = $modelObj->getNodeByReference('certificates.certificate.' . $uuid);
     if ($node != null) {
         // Add refid to certObj
-        $node->certRefId = $cert_refid;
+        $node->certRefId = $cert->getAttributes()["uuid"];
         // Set update/create time
         $node->lastUpdate = time();
         // if node was found, serialize to config and save
         $modelObj->serializeToConfig();
-        Config::getInstance()->save();
     } else {
         log_error("AcmeClient: unable to update LE certificate object");
         return(1);
     }
+    Config::getInstance()->save();
 
     return(0);
 }
@@ -1143,49 +1097,6 @@ function local_cert_get_cn($crt, $decode = true)
         }
     }
     return "";
-}
-
-// taken from system_camanager.php
-function local_ca_import(& $ca, $str, $key = "", $serial = 0)
-{
-    global $config;
-
-    $ca['crt'] = base64_encode($str);
-    if (!empty($key)) {
-        $ca['prv'] = base64_encode($key);
-    }
-    if (!empty($serial)) {
-        $ca['serial'] = $serial;
-    }
-    $subject = cert_get_subject($str, false);
-    $issuer = cert_get_issuer($str, false);
-
-    // Find my issuer unless self-signed
-    if ($issuer <> $subject) {
-        $issuer_crt =& lookup_ca_by_subject($issuer);
-        if ($issuer_crt) {
-            $ca['caref'] = $issuer_crt['refid'];
-        }
-    }
-
-    /* Correct if child certificate was loaded first */
-    if (is_array($config['ca'])) {
-        foreach ($config['ca'] as & $oca) {
-            $issuer = cert_get_issuer($oca['crt']);
-            if ($ca['refid']<>$oca['refid'] && $issuer==$subject) {
-                $oca['caref'] = $ca['refid'];
-            }
-        }
-    }
-    if (is_array($config['cert'])) {
-        foreach ($config['cert'] as & $cert) {
-            $issuer = cert_get_issuer($cert['crt']);
-            if ($issuer==$subject) {
-                $cert['caref'] = $ca['refid'];
-            }
-        }
-    }
-    return true;
 }
 
 function base64url_encode($str)

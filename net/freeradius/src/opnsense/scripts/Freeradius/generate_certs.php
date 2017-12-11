@@ -30,16 +30,17 @@
 // use legacy code to generate certs and ca's
 // eventually we need to replace this.
 require_once("config.inc");
-require_once("certs.inc");
 require_once("legacy_bindings.inc");
 
 use OPNsense\Core\Config;
+use OPNsense\Trust\Trust;
 
 $cert_pem_filename = '/usr/local/etc/raddb/certs/cert_opn.pem';
 $cert_pem_content = '';
 
 $ca_pem_filename = '/usr/local/etc/raddb/certs/ca_opn.pem';
 $ca_pem_content = '';
+$mdlTrust = new Trust();
 
 // traverse Freeradius plugin for certficiates
 $configObj = Config::getInstance()->object();
@@ -48,8 +49,8 @@ if (isset($configObj->OPNsense->freeradius)) {
         $cert_refid = (string)$find_cert->certificate;
         // if eap has a certificate attached, search for its contents
         if ($cert_refid != "") {
-            foreach ($configObj->cert as $cert) {
-                if ($cert_refid == (string)$cert->refid) {
+            foreach ($mdlTrust->certs->cert->getChildren() as $uuid => $cert) {
+                if ($cert_refid == $uuid) {
                     // generate cert pem file
                     $pem_content = trim(str_replace("\n\n", "\n", str_replace(
                         "\r",
@@ -66,9 +67,8 @@ if (isset($configObj->OPNsense->freeradius)) {
                     $pem_content .= "\n";
                     $cert_pem_content .= $pem_content;
                     // generate ca pem file
-                    if (!empty($cert->caref)) {
-                        $cert = (array)$cert;
-                        $ca_pem_content .= ca_chain($cert);
+                    if (!empty($cert->cauuid->__toString())) {
+                        $ca_pem_content .= $mdlTrust->ca_chain($cert);
                     }
                 }
             }
@@ -77,8 +77,8 @@ if (isset($configObj->OPNsense->freeradius)) {
         $cert_refid = (string)$find_cert->crl;
         // if eap has a certificate attached, search for its contents
         if ($cert_refid != "") {
-            foreach ($configObj->crl as $crl) {
-                if ($cert_refid == (string)$crl->refid && !empty((string)$crl->text)) {
+            foreach ($mdlTrust->crls->crl->getChildren() as $uuid => $crl) {
+                if ($cert_refid == $uuid && !empty((string)$crl->text)) {
                     // generate cert pem file
                     $pem_content = trim(str_replace("\n\n", "\n", str_replace(
                         "\r",
