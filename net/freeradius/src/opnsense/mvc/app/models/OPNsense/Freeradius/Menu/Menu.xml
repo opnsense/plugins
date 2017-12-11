@@ -2,8 +2,8 @@
   <Services>
     <FreeRADIUS cssClass="fa fa-address-book-o fa-fw">
       <General url="/ui/freeradius/general/index" order="10"/>
-      <User url="/ui/freeradius/user/index" order="20"/>
-      <Client url="/ui/freeradius/client/index" order="30"/>
+      <Users url="/ui/freeradius/user/index" order="20"/>
+      <Clients url="/ui/freeradius/client/index" order="30"/>
       <EAP url="/ui/freeradius/eap/index" order="40"/>
       <LogFile VisibleName="Log File" order="80" url="/diag_logs_freeradius.php"/>
     </FreeRADIUS>
