@@ -39,10 +39,9 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
-
-            <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+                <hr />
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
             </div>
         </div>
     </div>
@@ -170,10 +169,12 @@ $(document).ready(function() {
   // link save button to API set action
   $("#saveAct").click(function(){
       saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_bgp_settings',callback_ok=function(){
+        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
           });
+          $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
         });
       });
   });
