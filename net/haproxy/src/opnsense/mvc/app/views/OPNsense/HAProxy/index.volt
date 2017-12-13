@@ -381,10 +381,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#real-servers-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}real-servers-introduction{% else %}servers-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
         <ul class="dropdown-menu" role="menu">
+            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="real-servers-introduction" href="#subtab_haproxy-real-servers-introduction">{{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#servers">{{ lang._('Real Servers') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="servers-tab" href="#servers">{{ lang._('Real Servers') }}</a></li>
         </ul>
     </li>
 
@@ -392,10 +394,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#virtual-services-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}virtual-services-introduction{% else %}backends-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
         <ul class="dropdown-menu" role="menu">
+            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="virtual-services-introduction" href="#subtab_haproxy-virtual-services-introduction">{{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#backends">{{ lang._('Backend Pools') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="backends-tab" href="#backends">{{ lang._('Backend Pools') }}</a></li>
             <li><a data-toggle="tab" href="#frontends">{{ lang._('Public Services') }}</a></li>
         </ul>
     </li>
@@ -404,10 +408,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#rules-checks-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}rules-checks-introduction{% else %}healthchecks-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
         <ul class="dropdown-menu" role="menu">
+            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="rules-checks-introduction" href="#subtab_haproxy-rules-checks-introduction">{{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#healthchecks">{{ lang._('Health Monitors') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="healthchecks-tab" href="#healthchecks">{{ lang._('Health Monitors') }}</a></li>
             <li><a data-toggle="tab" href="#acls">{{ lang._('Conditions') }}</a></li>
             <li><a data-toggle="tab" href="#actions">{{ lang._('Rules') }}</a></li>
         </ul>
@@ -442,10 +448,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#advanced-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}advanced-introduction{% else %}errorfiles-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_haproxy-rules-checks-introduction">{{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_haproxy-advanced-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="errorfiles-tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
             <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
         </ul>
     </li>
