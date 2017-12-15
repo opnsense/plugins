@@ -10,7 +10,7 @@ if helpers.exists('OPNsense.quagga.ospf.enabled') and OPNsense.quagga.ospf.enabl
 if helpers.exists('OPNsense.quagga.rip.enabled') and OPNsense.quagga.rip.enabled == '1' %} ripd{% endif %}{%
 if helpers.exists('OPNsense.quagga.bgp.enabled') and OPNsense.quagga.bgp.enabled == '1' %} bgpd{% endif %}{%
 if helpers.exists('OPNsense.quagga.ospf6.enabled') and OPNsense.quagga.ospf6.enabled == '1' %} ospf6d{% endif %}{%
-if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}{%
+if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}"
 #quagga_flags="...."
 #quagga_extralibs_path="... ..."
 #router_enable="NO"
