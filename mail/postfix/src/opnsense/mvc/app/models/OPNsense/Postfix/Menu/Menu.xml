@@ -3,7 +3,7 @@
     <Postfix cssClass="fa fa-envelope fa-fw">
       <General url="/ui/postfix/general/index" order="10"/>
       <Domains url="/ui/postfix/domain/index" order="20"/>
-      <Recipient url="/ui/postfix/recipipient/index" order="30"/>
+      <Recipient url="/ui/postfix/recipient/index" order="30"/>
       <Sender url="/ui/postfix/sender/index" order="40"/>
     </Postfix>
   </Services>
