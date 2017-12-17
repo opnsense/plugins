@@ -83,7 +83,7 @@ class SenderController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlSender->senders->sender);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "sendername", "destination" )
+            array("enabled", "address", "action" )
         );
     }
 
