@@ -954,10 +954,12 @@ class updatedns {
                 } elseif ((string)$ncresponse->ErrCount === "0") {
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                     $successful_update = true;
-                } elseif (is_numeric((string)$ncresponse->ErrCount) && (string)$ncresponse->ErrCount > 0) {
+                } elseif (isset($ncresponse->ErrCount) && is_numeric((string)$ncresponse->ErrCount) && (string)$ncresponse->ErrCount > 0) {
                     $status = "Dynamic DNS: (Error) ";
-                    foreach ($xml->errors->children() as $err) {
-                        $status .= (string)$err . " ";
+                    if (isset($ncresponse->errors)) {
+                        foreach ($ncresponse->errors->children() as $err) {
+                            $status .= (string)$err . " ";
+                        }
                     }
                     $successful_update = true;
                 } else {

@@ -13,6 +13,12 @@
                 <type>checkbox</type>
                 <help><![CDATA[Enable HAProxy's graceful stop mode. In this mode HAProxy will continue to process existing connections until they close. Note that this may severely slow down HAProxy's shutdown, depending on the configured timeout values. If graceful stop mode is not enabled, HAProxy will use the hard stop mode where it immediately quits and all established connections are closed. Hard stop mode is recommended.]]></help>
             </field>
+            <field>
+                <id>haproxy.general.showIntro</id>
+                <label>Show introduction pages</label>
+                <type>checkbox</type>
+                <help><![CDATA[Uncheck to hide all additional introduction pages. Requires a manual page reload for the change to take effect.]]></help>
+            </field>
         </subtab>
         <subtab id="haproxy-general-global" description="Global Parameters">
             <field>

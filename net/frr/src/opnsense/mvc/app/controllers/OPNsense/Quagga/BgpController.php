@@ -28,7 +28,6 @@ class BgpController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("BGP Settings");
         $this->view->bgpForm = $this->getForm("bgp");
         $this->view->formDialogEditBGPNeighbor = $this->getForm("dialogEditBGPNeighbor");
         $this->view->formDialogEditBGPASPaths = $this->getForm("dialogEditBGPASPath");

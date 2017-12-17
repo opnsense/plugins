@@ -378,38 +378,44 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#introduction"><b>{{ lang._('Introduction') }}</b></a></li>
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}real-servers-introduction{% else %}servers-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#servers"><i class="fa fa-check-square"></i> {{ lang._('Real Servers') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="real-servers-introduction" href="#subtab_haproxy-real-servers-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="servers-tab" href="#servers">{{ lang._('Real Servers') }}</a></li>
         </ul>
     </li>
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-virtual-services-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}virtual-services-introduction{% else %}backends-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-virtual-services-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#backends"><i class="fa fa-check-square"></i> {{ lang._('Backend Pools') }}</a></li>
-            <li><a data-toggle="tab" href="#frontends"><i class="fa fa-check-square"></i> {{ lang._('Public Services') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="virtual-services-introduction" href="#subtab_haproxy-virtual-services-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="backends-tab" href="#backends">{{ lang._('Backend Pools') }}</a></li>
+            <li><a data-toggle="tab" href="#frontends">{{ lang._('Public Services') }}</a></li>
         </ul>
     </li>
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-rules-checks-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}rules-checks-introduction{% else %}healthchecks-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-rules-checks-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#healthchecks"><i class="fa fa-check-square"></i> {{ lang._('Health Monitors') }}</a></li>
-            <li><a data-toggle="tab" href="#acls"><i class="fa fa-check-square"></i> {{ lang._('Conditions') }}</a></li>
-            <li><a data-toggle="tab" href="#actions"><i class="fa fa-check-square"></i> {{ lang._('Rules') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="rules-checks-introduction" href="#subtab_haproxy-rules-checks-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="healthchecks-tab" href="#healthchecks">{{ lang._('Health Monitors') }}</a></li>
+            <li><a data-toggle="tab" href="#acls">{{ lang._('Conditions') }}</a></li>
+            <li><a data-toggle="tab" href="#actions">{{ lang._('Rules') }}</a></li>
         </ul>
     </li>
 
@@ -418,13 +424,13 @@ POSSIBILITY OF SUCH DAMAGE.
         {% if tab['subtabs']|default(false) %}
         {# Tab with dropdown #}
         <li role="presentation" class="dropdown">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
                 <b><span class="caret"></span></b>
             </a>
-            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <a data-toggle="tab" onclick="$('#subtab_item_{{tab['subtabs'][0][0]}}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
             <ul class="dropdown-menu" role="menu">
                 {% for subtab in tab['subtabs']|default({})%}
-                <li><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                <li><a data-toggle="tab" id="subtab_item_{{subtab[0]}}" href="#subtab_{{subtab[0]}}">{{subtab[1]}}</a></li>
                 {% endfor %}
             </ul>
         </li>
@@ -439,14 +445,16 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endfor %}
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-advanced-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}advanced-introduction{% else %}errorfiles-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-advanced-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#errorfiles"><i class="fa fa-check-square"></i> {{ lang._('Error Messages') }}</a></li>
-            <li><a data-toggle="tab" href="#luas"><i class="fa fa-check-square"></i> {{ lang._('Lua Scripts') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_haproxy-advanced-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="errorfiles-tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
+            <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
         </ul>
     </li>
 </ul>
