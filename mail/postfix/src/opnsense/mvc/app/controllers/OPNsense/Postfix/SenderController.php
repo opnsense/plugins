@@ -29,6 +29,6 @@ class SenderController extends \OPNsense\Base\IndexController
     {
         $this->view->title = gettext("Postfix Senders");
         $this->view->formDialogEditPostfixSender = $this->getForm("dialogEditPostfixSender");
-        $this->view->pick('OPNsense/Postfix/domain');
+        $this->view->pick('OPNsense/Postfix/sender');
     }
 }
