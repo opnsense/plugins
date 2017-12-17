@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
-{%   if helpers.exists('OPNsense.postfix.sender.senders.sender.address') %}
+{%   if helpers.exists('OPNsense.postfix.sender.senders.sender') %}
 {%     for sender_list in helpers.toList('OPNsense.postfix.sender.senders.sender') %}
 {%       if sender_list.enabled == '1' %}
 {{ sender_list.address }} {{ sender_list.action }}
