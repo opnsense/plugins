@@ -1,2 +1,1 @@
 /usr/local/opnsense/mvc/script/run_migrations.php %%ARG%%
-/usr/local/etc/rc.configure_plugins
