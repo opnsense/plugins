@@ -83,7 +83,7 @@ class RecipientController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlRecipient->recipients->recipient);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "recipientname", "destination" )
+            array("enabled", "address", "action" )
         );
     }
 
