@@ -1,6 +1,7 @@
 {% if helpers.exists('OPNsense.redis.general.enabled') and OPNsense.redis.general.enabled == '1' %}
 redis_enable="YES"
 redis_opnsense_bootup_run="/usr/local/opnsense/scripts/redis/setup.sh"
+redis_var_script="/usr/local/opnsense/scripts/redis/setup.sh"
 {% else %}
 redis_enable="NO"
 {% endif %}
