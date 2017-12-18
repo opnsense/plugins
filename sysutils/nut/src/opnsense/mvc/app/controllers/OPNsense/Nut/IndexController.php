@@ -43,7 +43,6 @@ class IndexController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $backend = new Backend();
-        $this->view->title = gettext("Network UPS Tools");
         $this->view->settings = $this->getForm("settings");
         $this->view->pick('OPNsense/Nut/index');
     }
