@@ -1,6 +1,6 @@
 {% if helpers.exists('OPNsense.Nut.general.enabled') and OPNsense.Nut.general.enabled == '1' %}
 nut_enable="YES"
-nut_opnsense_bootup_run="/usr/local/opnsense/scripts/OPNsense/nut/setup.sh"
+nut_opnsense_bootup_run="/usr/local/opnsense/scripts/OPNsense/Nut/setup.sh"
 {% else %}
 nut_enable="NO"
 {% endif %}
