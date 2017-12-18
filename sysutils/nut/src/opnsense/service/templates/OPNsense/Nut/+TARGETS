@@ -1,2 +1,5 @@
 nut:/etc/rc.conf.d/nut
-nut.conf:/usr/local/etc/nut.conf
+nut.conf:/usr/local/etc/nut/nut.conf
+upsd.conf:/usr/local/etc/nut/upsd.conf
+upsd.users:/usr/local/etc/nut/upsd.users
+upsmon.conf:/usr/local/etc/nut/upsmon.conf
