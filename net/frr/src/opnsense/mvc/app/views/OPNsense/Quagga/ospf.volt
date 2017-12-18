@@ -155,8 +155,8 @@ $( document ).ready(function() {
         });
       });
   });
-  
-  
+
+
   /* allow a user to manually reload the service (for forms which do not do it automatically) */
   $('.reload_btn').click(function reload_handler() {
     $(".reloadAct_progress").addClass("fa-spin");
@@ -165,8 +165,8 @@ $( document ).ready(function() {
       $(".reloadAct_progress").removeClass("fa-spin");
     });
   });
-  
-  
+
+
   $("#grid-networks").UIBootgrid(
     { 'search':'/api/quagga/ospfsettings/searchNetwork',
       'get':'/api/quagga/ospfsettings/getNetwork/',
