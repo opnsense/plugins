@@ -31,7 +31,7 @@
 <script type="text/javascript">
     $( document ).ready(function() {
 
-        var data_get_map = {'frm_rspamd':'/api/nut/settings/get'};
+        var data_get_map = {'frm_nut':'/api/nut/settings/get'};
 
         // load initial data
         mapDataToFormUI(data_get_map).done(function(){
