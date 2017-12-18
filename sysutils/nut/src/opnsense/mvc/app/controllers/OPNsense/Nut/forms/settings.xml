@@ -8,286 +8,40 @@
                 <help>Enable or disable the nut service.</help>
             </field>
         </subtab>
+        <subtab id="nut-general-account" description="Nut Account Settings">
+            <field>
+                <id>nut.account.admin_password</id>
+                <label>Admin Password</label>
+                <type>text</type>
+                <help>Set the admin password.</help>
+            </field>
+            <field>
+                <id>nut.account.mon_password</id>
+                <label>Monitor Password</label>
+                <type>text</type>
+                <help>Set the monitor password.</help>
+            </field>
+        </subtab>
     </tab>
     <tab id="nut-ups-type" description="UPS Type">
-        <subtab id="nut-anti-spam-graylist" description="Graylisting">
+        <subtab id="nut-ups-usbhid" description="USBHID-Driver">
             <field>
-                <id>nut.graylist.expire</id>
-                <label>Expiration</label>
-                <type>text</type>
-                <help>Time after which the graylist state expires in days.</help>
-            </field>
-            <field>
-                <id>nut.graylist.timeout</id>
-                <label>Timeout</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.graylist.max_data_len</id>
-                <label>Maximum Data Length</label>
-                <type>text</type>
-                <help>The limit of the length of data to hash.</help>
-            </field>
-            <field>
-                <id>nut.graylist.ipv4mask</id>
-                <label>IPv4 Mask</label>
-                <type>text</type>
-                <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
-            </field>
-            <field>
-                <id>nut.graylist.ipv6mask</id>
-                <label>IPv6 Mask</label>
-                <type>text</type>
-                <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
-            </field>
-        </subtab>
-        <subtab id="nut-anti-spam-dkim" description="DKIM">
-          <!-- dkim -->
-            <field>
-                <id>nut.dkim.cache_size</id>
-                <label>Cache Size</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.dkim.cache_expire</id>
-                <label>Cache Expire</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.dkim.time_jitter</id>
-                <label>Time Jitter</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.dkim.trusted_only</id>
-                <label>Trusted Only</label>
+                <id>nut.usbhid.enable</id>
+                <label>Enable</label>
                 <type>checkbox</type>
+                <help>Enable the USBHID driver.</help>
             </field>
             <field>
-                <id>nut.dkim.skip_multi</id>
-                <label>Skip Multi</label>
-                <type>checkbox</type>
-            </field>
-            <!-- dkim signing -->
-            <field>
-                <id>nut.dkim.allow_envfrom_empty</id>
-                <label>Allow Environment From Empty</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.allow_hdrfrom_mismatch</id>
-                <label>Allow Header From Mismatch</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.allow_hdrfrom_multiple</id>
-                <label>Allow Header From Multiple</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.allow_username_mismatch</id>
-                <label>Allow Username Mismatch</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.auth_only</id>
-                <label>Auth Only</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.sign_local</id>
-                <label>Sign Local</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.try_fallback</id>
-                <label>Try Fallback</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.dkim.use_domain</id>
-                <label>Use Domain</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.dkim.use_esld</id>
-                <label>Use eSLD</label>
-                <type>checkbox</type>
-            </field>
-        </subtab>
-        <subtab id="nut-anti-spam-mx-check" description="MX Check">
-            <field>
-                <id>nut.mx-check.enabled</id>
-                <label>Enabled</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.mx_check.expire</id>
-                <label>Expiration</label>
+                <id>nut.usbhid.name</id>
+                <label>Name</label>
                 <type>text</type>
-            </field>
-        </subtab>
-        <subtab id="nut-anti-spam-phishing" description="Phishing">
-            <field>
-                <id>nut.phishing.openphish_enabled</id>
-                <label>Enable Openphish</label>
-                <type>checkbox</type>
+                <help>Set a name for your UPS.</help>
             </field>
             <field>
-                <id>nut.phishing.openphish_premium_enabled</id>
-                <label>Enable Openphish Premium</label>
-                <type>checkbox</type>
-            </field>
-            <field>
-                <id>nut.phishing.phishtank_enabled</id>
-                <label>Enable Phishtank</label>
-                <type>checkbox</type>
-            </field>
-        </subtab>
-        <subtab id="nut-anti-spam-rate-limit" description="Rate Limit">
-            <field>
-                <id>nut.rate_limit.per_recipient.count</id>
-                <label>Per Recipient Limit: Mail Count</label>
+                <id>nut.usbhid.args</id>
+                <label>Extra Arguments</label>
                 <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_recipient.time</id>
-                <label>Per Recipient Limit: Time</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_recipient.time_unit</id>
-                <label>Per Recipient Limit: Time Unit</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_ip.count</id>
-                <label>Per IP Limit: Mail Count</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_ip.time</id>
-                <label>Per IP Limit: Time</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_ip.time_unit</id>
-                <label>Per IP Limit: Time Unit</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_ip_from.count</id>
-                <label>Per IP and From Limit: Mail Count</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_ip_from.time</id>
-                <label>Per IP and From Limit: Time</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.per_ip_from.time_unit</id>
-                <label>Per IP and From Limit: Time Unit</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.bounce.count</id>
-                <label>Bounce Limit: Mail Count</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.bounce.time</id>
-                <label>Bounce Limit: Time</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.bounce.time_unit</id>
-                <label>Bounce Limit: Time Unit</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.bounce_ip.count</id>
-                <label>Bounce Limit per IP: Mail Count</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.bounce_ip.time</id>
-                <label>Bounce Limit per IP: Time</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.bounce_ip.time_unit</id>
-                <label>Bounce Limit per IP: Time Unit</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.user.count</id>
-                <label>User Limit: Mail Count</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.user.time</id>
-                <label>User Limit: Time</label>
-                <type>text</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.user.time_unit</id>
-                <label>User Limit: Time Unit</label>
-                <type>dropdown</type>
-            </field>
-            <field>
-                <id>nut.rate_limit.whitelisted_rcpts</id>
-                <label>Whitelist Recipients</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <allownew>true</allownew>
-            </field>
-            <field>
-                <id>nut.rate_limit.max_rcpt</id>
-                <label>Maximum Recipients</label>
-                <type>text</type>
-            </field>
-        </subtab>
-        <subtab id="nut-anti-spam-spamtrap" description="Spam Trap">
-            <field>
-                <id>nut.spamtrap.enabled</id>
-                <label>Enabled</label>
-                <type>checkbox</type>
-                <help>Enable this if you want to enable the spam trap.</help>
-            </field>
-            <field>
-                <id>nut.spamtrap.fuzzy_learning</id>
-                <label>Fuzzy Leraning</label>
-                <type>checkbox</type>
-                <help>Enable this if you want to enable fuzzy learning.</help>
-            </field>
-            <field>
-                <id>nut.spamtrap.spam_learning</id>
-                <label>Bayes Leraning</label>
-                <type>checkbox</type>
-                <help>Enable this if you want to enable bayes learning.</help>
-            </field>
-            <field>
-                <id>nut.spamtrap.spam_recipients</id>
-                <label>Recipients</label>
-                <type>select_multiple</type>
-                <style>tokenize</style>
-                <allownew>true</allownew>
-                <help>Enter regular expressions in the form trap@example\.com into this field. The value is automatically enclosed in slashes and the case insensitive option is added.</help>
-            </field>
-        </subtab>
-        <subtab id="nut-anti-spam-spf" description="Sender Policy Framework (SPF)">
-            <field>
-                <id>nut.spf.spf_cache_size</id>
-                <label>Cache Size</label>
-                <type>text</type>
-                <help>Enter the size of the SPF cache.</help>
-            </field>
-            <field>
-                <id>nut.spf.spf_cache_expire</id>
-                <label>Cache Expiration</label>
-                <type>text</type>
-                <help>Enter how long SPF entries are valid.</help>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
     </tab>
