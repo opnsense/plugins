@@ -1,5 +1,6 @@
 {% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
 postfix_opnsense_bootup_run="/usr/local/opnsense/scripts/OPNsense/Postfix/setup.sh"
+postfix_var_script="/usr/local/opnsense/scripts/OPNsense/Postfix/setup.sh"
 postfix_enable="YES"
 {% else %}
 postfix_enable="NO"
