@@ -40,7 +40,7 @@ function nut_services()
 {
     $services = array();
 
-    if (rspamd_enabled()) {
+    if (nut_enabled()) {
         $services[] = array(
             'description' => gettext('Network UPS Tools'),
             'configd' => array(
@@ -49,7 +49,7 @@ function nut_services()
                 'stop' => array('nut stop'),
             ),
             'name' => 'nut',
-            'pidfile' => '/var/run/nut/rspamd.pid'
+            'pidfile' => '/var/run/nut.pid'
         );
     }
     return $services;
