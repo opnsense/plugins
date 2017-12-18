@@ -17,7 +17,7 @@
       <mon_password type="TextField">
         <Required>Y</Required>
         <default>Password</default>
-      </timeout>
+      </mon_password>
     </account>
 
     <usbhid>
