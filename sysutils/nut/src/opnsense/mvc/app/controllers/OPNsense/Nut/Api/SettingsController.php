@@ -33,6 +33,6 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Nut';
+    static protected $internalModelClass = '\OPNsense\Nut\Nut';
     static protected $internalModelName = 'nut';
 }
