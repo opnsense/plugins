@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>recipient.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the recipient rule in this entry.</help>
+    </field>
+    <field>
+        <id>recipient.address</id>
+        <label>Sender Address</label>
+        <type>text</type>
+        <help>Set the recipient address to match.</help>
+    </field>
+    <field>
+        <id>recipient.action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help>Set the action for this address.</help>
+    </field>
+</form>

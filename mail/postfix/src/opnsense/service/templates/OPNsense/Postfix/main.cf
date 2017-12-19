@@ -98,13 +98,13 @@ milter_default_action = accept
 
 {# Sender Restrictions #}
 {% set smtpd_recipient_restrictions=[] %}
-{% if helpers.exists('OPNsense.postfix.general.check_recipient_access') %}
+{% if helpers.exists('OPNsense.postfix.recipient.recipients.recipient') %}
 {% do smtpd_recipient_restrictions.append('check_recipient_access hash:/usr/local/etc/postfix/recipient_access') %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.reject_unauth_pipelining') and OPNsense.postfix.general.reject_unauth_pipelining == '1' %}
 {% do smtpd_recipient_restrictions.append('reject_unauth_pipelining') %}
 {% endif %}
-{% if helpers.exists('OPNsense.postfix.general.check_sender_access') %}
+{% if helpers.exists('OPNsense.postfix.sender.senders.sender') %}
 {% do smtpd_recipient_restrictions.append('check_sender_access hash:/usr/local/etc/postfix/sender_access') %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.reject_unknown_sender_domain') and OPNsense.postfix.general.reject_unknown_sender_domain == '1' %}
