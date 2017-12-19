@@ -31,7 +31,7 @@ namespace OPNsense\Nut\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
-use \OPNsense\Nut;
+use \OPNsense\Nut\Nut;
 
 class ServiceController extends ApiControllerBase
 {
