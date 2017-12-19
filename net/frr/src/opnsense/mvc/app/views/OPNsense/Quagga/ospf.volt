@@ -38,10 +38,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <div id="general" class="tab-pane fade in active">
             <div class="content-box" style="padding-bottom: 1.5em;">
                 {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
-
                 <div class="col-md-12">
                     <hr />
-                    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+                    <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
                 </div>
             </div>
         </div>
@@ -67,6 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.
                   <td>
                       <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                       <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                      <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                   </td>
               </tr>
           </tfoot>
@@ -94,6 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                         <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                     </td>
                 </tr>
             </tfoot>
@@ -120,6 +121,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                     </td>
                 </tr>
             </tfoot>
@@ -128,26 +130,43 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
 <script type="text/javascript">
+
+function quagga_update_status() {
+  ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
+    updateServiceStatusUI(data['status']);
+  });
+}
+
 $( document ).ready(function() {
   var data_get_map = {'frm_ospf_settings':"/api/quagga/ospfsettings/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
   });
-  ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
-      updateServiceStatusUI(data['status']);
-  });
+  quagga_update_status();
 
   // link save button to API set action
   $("#saveAct").click(function(){
       saveFormToEndpoint(url="/api/quagga/ospfsettings/set",formid='frm_ospf_settings',callback_ok=function(){
+        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-          ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
-          });
+          quagga_update_status();
+          $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
         });
       });
   });
+
+
+  /* allow a user to manually reload the service (for forms which do not do it automatically) */
+  $('.reload_btn').click(function reload_handler() {
+    $(".reloadAct_progress").addClass("fa-spin");
+    ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
+      quagga_update_status();
+      $(".reloadAct_progress").removeClass("fa-spin");
+    });
+  });
+
+
   $("#grid-networks").UIBootgrid(
     { 'search':'/api/quagga/ospfsettings/searchNetwork',
       'get':'/api/quagga/ospfsettings/getNetwork/',
@@ -178,8 +197,7 @@ $( document ).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-
-    });
+});
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
