@@ -30,6 +30,7 @@
         <Required>Y</Required>
       </name>
       <args type="TextField">
+        <default>port=auto</default>
         <Required>N</Required>
       </args>
     </usbhid>
