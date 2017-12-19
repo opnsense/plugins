@@ -41,9 +41,10 @@ net-mgmt/collectd -- Collect system and application performance metrics periodic
 net-mgmt/snmp -- SNMP Server via bsnmpd
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix-Proxy enables decentralized monitoring
+net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
 net/arp-scan -- Get all peers connected to a local network
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
+net/frr -- FRR Routing Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
@@ -66,6 +67,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
+sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities

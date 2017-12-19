@@ -3,7 +3,7 @@
         <subtab id="nut-general-settings" description="General Nut Settings">
             <field>
                 <id>nut.general.enable</id>
-                <label>Enable nut</label>
+                <label>Enable Nut</label>
                 <type>checkbox</type>
                 <help>Enable or disable the nut service.</help>
             </field>

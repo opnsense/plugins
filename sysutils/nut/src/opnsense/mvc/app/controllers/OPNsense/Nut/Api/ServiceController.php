@@ -1,7 +1,7 @@
 <?php
-/**
+
+/*
  *    Copyright (C) 2017 Michael Muenz
- *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,6 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\Nut\Api;
@@ -43,6 +42,8 @@ class ServiceController extends ApiControllerBase
     public function restartAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun('nut restart');
             return array('response' => $response);
@@ -75,7 +76,6 @@ class ServiceController extends ApiControllerBase
         } else {
             $status = 'unknown';
         }
-
 
         return array('status' => $status);
     }
@@ -115,6 +115,8 @@ class ServiceController extends ApiControllerBase
     public function stopAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun('nut stop');
             return array('response' => $response);
@@ -129,6 +131,8 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
+            // close session for long running action
+            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun('nut start');
             return array('response' => $response);
