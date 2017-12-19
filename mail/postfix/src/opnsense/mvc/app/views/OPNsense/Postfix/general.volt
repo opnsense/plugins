@@ -34,21 +34,21 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-            <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress" class=""></i></button>
+                <hr />
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
             </div>
         </div>
     </div>
     <div id="antispam" class="tab-pane fade in">
         <div class="content-box" style="padding-bottom: 1.5em;">
-	    <div class="alert alert-warning" role="alert" id="missing_rspamd" style="display:none;min-height:65px;">
+            <div class="alert alert-warning" role="alert" id="missing_rspamd" style="display:none;min-height:65px;">
                 <div style="margin-top: 8px;">{{ lang._('No Rspamd plugin found, please install and come back.')}}</div>
             </div>
             {{ partial("layout_partials/base_form",['fields':antispamForm,'id':'frm_antispam_settings'])}}
-            <hr />
             <div class="col-md-12">
-                <button class="btn btn-primary"  id="saveAct2" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct2_progress" class=""></i></button>
+                <hr />
+                <button class="btn btn-primary" id="saveAct2" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct2_progress"></i></button>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 	// check if Rspamd plugin is installed
         ajaxCall(url="/api/postfix/service/checkrspamd", sendData={}, callback=function(data,status) {
-	    if (data == "0") {
+             if (data == "0") {
                 $('#missing_rspamd').show();
             }
         });
@@ -76,7 +76,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // link save button to API set action
         $("#saveAct").click(function () {
             saveFormToEndpoint(url="/api/postfix/general/set", formid='frm_general_settings',callback_ok=function () {
-            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function (data,status) {
                     ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function (data,status) {
                         updateServiceStatusUI(data['status']);
@@ -87,12 +87,12 @@ POSSIBILITY OF SUCH DAMAGE.
         });
         $("#saveAct2").click(function(){
             saveFormToEndpoint(url="/api/postfix/antispam/set", formid='frm_antispam_settings',callback_ok=function(){
-		    $("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
+                $("#saveAct2_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/postfix/service/reconfigure", sendData={}, callback=function(data,status) {
                     ajaxCall(url="/api/postfix/service/status", sendData={}, callback=function(data,status) {
                         updateServiceStatusUI(data['status']);
                     });
-	            $("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
+                    $("#saveAct2_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
         });

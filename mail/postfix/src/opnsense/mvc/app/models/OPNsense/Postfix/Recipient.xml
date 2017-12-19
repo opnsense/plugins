@@ -17,7 +17,7 @@
                                 <OptionValues>
                                     <OK>OK</OK>
                                     <REJECT>REJECT</REJECT>
-                                </OptionValues>                            
+                                </OptionValues>
                         </action>
             </recipient>
         </recipients>
