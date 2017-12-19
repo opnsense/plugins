@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Nut cssClass="fa fa-battery-full fa-fw" url="/ui/nut/" />
+  </Services>
+</menu>
