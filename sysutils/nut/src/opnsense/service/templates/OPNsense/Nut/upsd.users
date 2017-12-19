@@ -1,7 +1,7 @@
 # Please don't modify this file as your changes might be overwritten with
 # the next update.
 #
-{% if helpers.exists('OPNsense.Nut.general.enabled') and OPNsense.Nut.general.enabled == '1' %}
+{% if helpers.exists('OPNsense.Nut.general.enable') and OPNsense.Nut.general.enable == '1' %}
 {%   if helpers.exists('OPNsense.Nut.account.admin_password') and OPNsense.Nut.account.admin_password != '' %}
 [admin]
 password={{ OPNsense.Nut.account.admin_password }}
