@@ -31,47 +31,10 @@
 
 namespace OPNsense\CICAP\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\CICAP\Antivirus;
-use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class AntivirusController extends ApiControllerBase
+class AntivirusController extends ApiMutableModelControllerBase
 {
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlAntivirus = new Antivirus();
-            $result['antivirus'] = $mdlAntivirus->getNodes();
-        }
-        return $result;
-    }
-
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlAntivirus = new Antivirus();
-            $mdlAntivirus->setNodes($this->request->getPost("antivirus"));
-
-            // perform validation
-            $valMsgs = $mdlAntivirus->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["antivirus.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlAntivirus->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
+    static protected $internalModelName = 'antivirus';
+    static protected $internalModelClass = '\OPNsense\CICAP\Antivirus';
 }
