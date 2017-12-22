@@ -145,6 +145,10 @@ Address {{ OPNsense.tor.relay.address }}
 Nickname {{ OPNsense.tor.relay.nick }}
 {% endif %}
 
+{% if helpers.exists('OPNsense.tor.relay.contact_info') and OPNsense.tor.relay.contact_info != '' %}
+ContactInfo {{ OPNsense.tor.relay.contact_info }}
+{% endif %}
+
 {% if helpers.exists('OPNsense.tor.relay.bandwithrate') and OPNsense.tor.relay.bandwithrate != '' %}
 RelayBandwidthRate {{ OPNsense.tor.relay.bandwithrate }} KBytes
 {% endif %}

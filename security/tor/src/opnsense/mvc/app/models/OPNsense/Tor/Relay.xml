@@ -29,11 +29,14 @@
       <mask>/^[a-z0-9.-]+$/i</mask>
     </address>
     <nick type="TextField">
-      <mask>/^.+$/</mask>
       <Required>N</Required>
       <!-- by docs -->
       <mask>/^[a-zA-Z0-9]+$/</mask>
     </nick>
+    <contact_info type="TextField">
+      <Required>N</Required>
+      <mask><![CDATA[/^[a-zA-Z0-9 !§$%\/\(\)\\@,;.:_\-#+~*\?&<>]+$/]]></mask>
+    </contact_info>
     <bandwithrate type="IntegerField">
       <Required>N</Required>
     </bandwithrate>
