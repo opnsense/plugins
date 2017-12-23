@@ -17,7 +17,7 @@ ldap {
         base_dn = '{{ OPNsense.freeradius.ldap.base_dn }}'
 {%     endif %}
 {%     raw %}
-sasl {
+        sasl {
         }
         update {
                 control:Password-With-Header    += 'userPassword'
@@ -96,6 +96,20 @@ sasl {
                 idle_timeout = 60
 
         }
+        tls {
+                require_cert    = 'allow'
+        }
+        pool {
+                start = ${thread[pool].start_servers}
+                min = ${thread[pool].min_spare_servers}
+                max = ${thread[pool].max_servers}
+                spare = ${thread[pool].max_spare_servers}
+                uses = 0
+                retry_delay = 30
+                lifetime = 0
+                idle_timeout = 60
+        }
+
 }
 {%   endraw %}
 {%   endif %}
