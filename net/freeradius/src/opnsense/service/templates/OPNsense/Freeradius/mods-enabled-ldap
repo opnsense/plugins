@@ -88,7 +88,6 @@ sasl {
                 probes = 3
                 interval = 3
                 ldap_debug = 0x0028
-        }
                 max = ${thread[pool].max_servers}
                 spare = ${thread[pool].max_spare_servers}
                 uses = 0
