@@ -16,7 +16,7 @@ ldap {
 {%     if helpers.exists('OPNsense.freeradius.ldap.base_dn') and OPNsense.freeradius.ldap.base_dn != '' %}
         base_dn = '{{ OPNsense.freeradius.ldap.base_dn }}'
 {%     endif %}
-
+{%     raw %}
 sasl {
         }
         update {
@@ -98,6 +98,6 @@ sasl {
 
         }
 }
-
+{%   endraw %}
 {%   endif %}
 {% endif %}
