@@ -56,8 +56,11 @@ authorize {
         }
         files
         -sql
+{% if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
+        ldap
+{% else %}
         -ldap
-
+{% endif %}
 {% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}
         daily
 {% endif %}
@@ -77,6 +80,11 @@ authenticate {
         Auth-Type MS-CHAP {
                 mschap
         }
+{% if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
+        Auth-Type LDAP {
+                ldap
+        }
+{% endif %}
         mschap
         digest
         eap
