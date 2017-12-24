@@ -36,8 +36,6 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        // set page title, used by the standard template in layouts/default.volt.
-        $this->view->title = "Hello World";
         // pick the template to serve to our users.
         $this->view->pick('OPNsense/HelloWorld/index');
         // fetch form data "general" in
