@@ -12,6 +12,12 @@
         <help>This allows you to dynamically assign VLANs on your physical switch ports.</help>
     </field>
     <field>
+        <id>general.ldap_enabled</id>
+        <label>Enable LDAP</label>
+        <type>checkbox</type>
+        <help>This allows you to bind to an external LDAP server. Be aware that FreeRADIUS will not start if there is no further configuration.</help>
+    </field>
+    <field>
         <id>general.wispr</id>
         <label>Enable WISPr attributes</label>
         <type>checkbox</type>
