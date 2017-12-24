@@ -42,7 +42,6 @@ class IndexController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        $this->view->title = gettext('Monit System Monitoring - Settings');
         $this->view->formGeneralSettings = $this->getForm("general");
         $this->view->formDialogEditAlert = $this->getForm("alerts");
         $this->view->formDialogEditService = $this->getForm("services");
