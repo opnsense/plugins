@@ -30,47 +30,10 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Freeradius\Ldap;
-use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class LdapController extends ApiControllerBase
+class LdapController extends ApiMutableModelControllerBase
 {
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlLDAP = new LDAP();
-            $result['ldap'] = $mdlLDAP->getNodes();
-        }
-        return $result;
-    }
-
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlLDAP = new LDAP();
-            $mdlLDAP->setNodes($this->request->getPost("ldap"));
-
-            // perform validation
-            $valMsgs = $mdlLDAP->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["ldap.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlLDAP->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
+    static protected $internalModelName = 'ldap';
+    static protected $internalModelClass = '\OPNsense\Freeradius\Ldap';
 }
