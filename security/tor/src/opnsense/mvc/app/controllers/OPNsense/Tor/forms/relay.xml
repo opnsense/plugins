@@ -29,6 +29,12 @@
     <help>This may only consist of characters and numbers and is used to identifiy your host.</help>
   </field>
   <field>
+    <id>relay.contact_info</id>
+    <label>Contact Info</label>
+    <type>text</type>
+    <help>You can enter a publicly visible (obfuscated) email address into this field to allow other users to notify you if there are issues with your relay.</help>
+  </field>
+  <field>
     <id>relay.bandwithrate</id>
     <label>Bandwith Rate</label>
     <type>text</type>

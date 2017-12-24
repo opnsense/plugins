@@ -1,6 +1,6 @@
 <?php
-/*
 
+/*
     Copyright (C) 2017 Fabian Franz
     All rights reserved.
 
@@ -24,10 +24,7 @@
     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-
-
 */
-
 
 namespace OPNsense\Tor;
 
@@ -41,7 +38,6 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("The Onion Router");
         $this->view->general = $this->getForm("general");
         $this->view->toracl = $this->getForm("acl_sockspolicy");
         $this->view->hidden_service = $this->getForm("hidden_service");
@@ -54,20 +50,19 @@ class IndexController extends \OPNsense\Base\IndexController
 
     public function infoAction()
     {
-        $this->view->title = gettext("The Onion Router - Information");
         $this->view->pick('OPNsense/Tor/info');
     }
+
     public function diagnosticsAction()
     {
         $general = new General();
-        $this->view->title = gettext("The Onion Router - Diagnostics");
         if ($this->is_tor_running() && (int)((string)$general->control_port) > 0) {
             $this->view->pick('OPNsense/Tor/diagnostics');
-        }
-        else {
+        } else {
             $this->view->pick('OPNsense/Tor/error');
         }
     }
+
     private function is_tor_running()
     {
         $status = (new Api\ServiceController())->statusAction();
