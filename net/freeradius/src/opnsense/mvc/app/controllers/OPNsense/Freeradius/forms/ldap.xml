@@ -15,7 +15,7 @@
         <id>ldap.identity</id>
         <label>Bind User</label>
         <type>text</type>
-        <help>Username to bind to LDAP.</help>
+        <help>Username to bind to LDAP, same format as in Base DN.</help>
     </field>
     <field>
         <id>ldap.password</id>
