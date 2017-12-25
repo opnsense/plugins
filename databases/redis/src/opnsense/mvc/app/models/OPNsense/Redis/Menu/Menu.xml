@@ -1,5 +1,5 @@
 <menu>
-  <Services>
-    <Redis VisibleName="Redis Database" cssClass="fa fa-database fa-fw" url="/ui/redis/" />
-  </Services>
+    <Services>
+        <Redis cssClass="fa fa-database fa-fw" url="/ui/redis/" />
+    </Services>
 </menu>

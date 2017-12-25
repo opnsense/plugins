@@ -28,116 +28,12 @@
 
 namespace OPNsense\Redis\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Redis\Redis;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * restart redis service
-     * @return array
-     */
-    public function restartAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('redis restart');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
-
-    /**
-     * retrieve status of redis
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $redis = new Redis();
-        $response = $backend->configdRun('redis status');
-
-        if (strpos($response, 'not running') > 0) {
-            if ((string)$redis->general->enabled == 1) {
-                $status = 'stopped';
-            } else {
-                $status = 'disabled';
-            }
-        } elseif (strpos($response, 'is running') > 0) {
-            $status = 'running';
-        } elseif ((string)$redis->general->enabled == 0) {
-            $status = 'disabled';
-        } else {
-            $status = 'unknown';
-        }
-
-
-        return array('status' => $status);
-    }
-
-    /**
-     * reconfigure redis, generate config and reload
-     */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
-            $redis = new Redis();
-            $backend = new Backend();
-
-            $this->stopAction();
-
-            // generate template
-            $backend->configdRun('template reload OPNsense/Redis');
-
-            // (re)start daemon
-            if ((string)$redis->general->enabled == '1') {
-                $this->startAction();
-            }
-
-            return array('status' => 'ok');
-        } else {
-            return array('status' => 'failed');
-        }
-    }
-
-    /**
-     * stop redis service
-     * @return array
-     */
-    public function stopAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('redis stop');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
-    /**
-     * start redis service
-     * @return array
-     */
-    public function startAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('redis start');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
+    static protected $internalServiceClass = '\OPNsense\Redis\Redis';
+    static protected $internalServiceTemplate = 'OPNsense/Redis';
+    static protected $internalServiceEnabled = 'general.enabled';
+    static protected $internalServiceName = 'redis';
 }
