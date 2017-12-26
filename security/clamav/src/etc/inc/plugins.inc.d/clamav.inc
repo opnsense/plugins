@@ -45,7 +45,7 @@ function clamav_services()
         );
     }
 
-    if (isset($config['OPNsense']['clamav']['freshclam']['enabled']) && $config['OPNsense']['clamav']['freshclam']['enabled'] == 1) {
+    if (isset($config['OPNsense']['clamav']['fc_enabled']) && $config['OPNsense']['clamav']['fc_enabled'] == 1) {
         $services[] = array(
             'description' => gettext('freshclam daemon'),
             'configd' => array(
