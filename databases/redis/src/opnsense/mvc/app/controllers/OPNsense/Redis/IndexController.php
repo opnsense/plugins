@@ -39,7 +39,6 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("Redis");
         $this->view->settings = $this->getForm("settings");
         $this->view->pick('OPNsense/Redis/index');
     }
