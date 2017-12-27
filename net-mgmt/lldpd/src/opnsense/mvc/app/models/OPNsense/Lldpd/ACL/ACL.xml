@@ -1,0 +1,9 @@
+<acl>
+   <page-services-lldpd>
+      <name>Services: Lldpd</name>
+      <patterns>
+         <pattern>ui/lldpd/*</pattern>
+         <pattern>api/lldpd/*</pattern>
+      </patterns>
+   </page-services-lldpd>
+</acl>
