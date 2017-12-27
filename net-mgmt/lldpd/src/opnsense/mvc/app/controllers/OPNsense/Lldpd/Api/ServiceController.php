@@ -42,6 +42,16 @@ use \OPNsense\Lldpd\General;
 class ServiceController extends ApiControllerBase
 {
     /**
+     * show lldpd neighbors
+     * @return array
+     */    
+    public function neighborAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("lldpd neighbor");
+        return array("response" => $response);
+    }
+    /**
      * start lldpd service (in background)
      * @return array
      */
