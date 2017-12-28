@@ -34,8 +34,10 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-        <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+        <div class="col-md-12" style="padding-bottom: 1.5em;">
+            <hr />
+            <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+        </div>
     </div>
     <div id="neighbor" class="tab-pane fade in">
       <pre id="listneighbor"></pre>
