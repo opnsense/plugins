@@ -26,11 +26,19 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<div class="content-box" style="padding-bottom: 1.5em;">
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbor">{{ lang._('Neighbors') }}</a></li>
+</ul>
+
+<div class="tab-content content-box tab-content">
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-    <div class="col-md-12">
+    <div class="tab-pane fade in active">
         <hr />
         <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+    </div>
+    <div id="neighbor" class="tab-pane fade in">
+      <pre id="listneighbor"></pre>
     </div>
 </div>
 
@@ -44,7 +52,9 @@ POSSIBILITY OF SUCH DAMAGE.
         ajaxCall(url="/api/lldpd/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
         });
-
+        ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
+            $("#listneighbor").text(data['response']);
+        });
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/lldpd/general/set", formid='frm_general_settings',callback_ok=function(){
