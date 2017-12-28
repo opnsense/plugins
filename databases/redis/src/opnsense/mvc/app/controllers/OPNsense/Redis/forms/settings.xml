@@ -95,7 +95,7 @@
     <subtab id="redis-performance-slow-transactions" description="Slow Transactions">
       <field>
         <id>redis.slowlog.slower_than</id>
-        <label>Log Transactions Slower Than (µS)</label>
+        <label>Log Transactions Slower Than (microsecond)</label>
         <type>text</type>
         <help>0: Log everything, Positive Value: Log events that take longer than specified, Negative Value: Log nothing.</help>
       </field>
