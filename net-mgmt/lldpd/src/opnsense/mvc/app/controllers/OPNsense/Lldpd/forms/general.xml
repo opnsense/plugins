@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable</label>
+        <label>Enable LLDP Daemon</label>
         <type>checkbox</type>
         <help>This will activate the LLDPD service.</help>
     </field>
