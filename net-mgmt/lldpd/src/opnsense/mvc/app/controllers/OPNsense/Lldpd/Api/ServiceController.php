@@ -31,15 +31,9 @@
 
 namespace OPNsense\Lldpd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Lldpd\General;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 
-/**
- * Class ServiceController
- * @package OPNsense\Lldpd
- */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
     /**
      * show lldpd neighbors
@@ -51,113 +45,8 @@ class ServiceController extends ApiControllerBase
         $response = $backend->configdRun("lldpd neighbor");
         return array("response" => $response);
     }
-    /**
-     * start lldpd service (in background)
-     * @return array
-     */
-    public function startAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("lldpd start");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * stop lldpd service
-     * @return array
-     */
-    public function stopAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("lldpd stop");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * restart lldpd service
-     * @return array
-     */
-    public function restartAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("lldpd restart");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * retrieve status of lldpd
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $mdlGeneral = new General();
-        $response = $backend->configdRun("lldpd status");
-
-        if (strpos($response, "not running") > 0) {
-            if ($mdlGeneral->enabled->__toString() == 1) {
-                $status = "stopped";
-            } else {
-                $status = "disabled";
-            }
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
-        } elseif ($mdlGeneral->enabled->__toString() == 0) {
-            $status = "disabled";
-        } else {
-            $status = "unkown";
-        }
-
-        return array("status" => $status);
-    }
-
-    /**
-     * reconfigure lldpd, generate config and reload
-     */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
-            $mdlGeneral = new General();
-            $backend = new Backend();
-
-            $runStatus = $this->statusAction();
-
-            // stop lldpd if it is running or not
-            $this->stopAction();
-
-            // generate template
-            $backend->configdRun('template reload OPNsense/Lldpd');
-
-            // (res)start daemon
-            if ($mdlGeneral->enabled->__toString() == 1) {
-                $this->startAction();
-            }
-
-            return array("status" => "ok");
-        } else {
-            return array("status" => "failed");
-        }
-    }
+    static protected $internalServiceClass = '\OPNsense\Lldpd';
+    static protected $internalServiceTemplate = 'OPNsense/Lldpd';
+    static protected $internalServiceEnabled = 'general.enabled';
+    static protected $internalServiceName = 'lldpd';
 }
