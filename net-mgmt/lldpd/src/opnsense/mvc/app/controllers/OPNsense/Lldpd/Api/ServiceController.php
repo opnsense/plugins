@@ -45,7 +45,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdRun("lldpd neighbor");
         return array("response" => $response);
     }
-    static protected $internalServiceClass = '\OPNsense\Lldpd';
+    static protected $internalServiceClass = '\OPNsense\Lldpd\General';
     static protected $internalServiceTemplate = 'OPNsense/Lldpd';
     static protected $internalServiceEnabled = 'general.enabled';
     static protected $internalServiceName = 'lldpd';
