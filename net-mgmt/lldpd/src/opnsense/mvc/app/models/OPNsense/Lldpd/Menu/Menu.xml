@@ -1,5 +1,5 @@
 <menu>
   <Services>
-    <Lldpd cssClass="fa fa-binoculars" url="/ui/lldpd/general/index" />
+    <LLDPd cssClass="fa fa-binoculars" url="/ui/lldpd/general/index" />
   </Services>
 </menu>

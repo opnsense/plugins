@@ -32,21 +32,23 @@
 namespace OPNsense\Lldpd\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
+    static protected $internalServiceClass = '\OPNsense\Lldpd\General';
+    static protected $internalServiceTemplate = 'OPNsense/Lldpd';
+    static protected $internalServiceEnabled = 'enabled';
+    static protected $internalServiceName = 'lldpd';
+
     /**
      * show lldpd neighbors
      * @return array
-     */    
+     */
     public function neighborAction()
     {
         $backend = new Backend();
         $response = $backend->configdRun("lldpd neighbor");
         return array("response" => $response);
     }
-    static protected $internalServiceClass = '\OPNsense\Lldpd\General';
-    static protected $internalServiceTemplate = 'OPNsense/Lldpd';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'lldpd';
 }
