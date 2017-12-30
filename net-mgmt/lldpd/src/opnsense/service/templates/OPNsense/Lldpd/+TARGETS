@@ -1,0 +1,2 @@
+lldpd:/etc/rc.conf.d/lldpd
+lldpd.conf:/usr/local/etc/lldpd.conf
