@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable LLDP Daemon</label>
+        <type>checkbox</type>
+        <help>This will activate the LLDPD service.</help>
+    </field>
+    <field>
+        <id>general.cdp</id>
+        <label>Enable CDP</label>
+        <type>checkbox</type>
+        <help>This will activate the Cisco Discovery Protocol.</help>
+    </field>
+    <field>
+        <id>general.fdp</id>
+        <label>Enable FDP</label>
+        <type>checkbox</type>
+        <help>This will activate the Foundry Discovery Protocol.</help>
+    </field>
+    <field>
+        <id>general.edp</id>
+        <label>Enable EDP</label>
+        <type>checkbox</type>
+        <help>This will activate the Extreme Discovery Protocol.</help>
+    </field>
+    <field>
+        <id>general.sonmp</id>
+        <label>Enable SONMP</label>
+        <type>checkbox</type>
+        <help>This will activate the SONMP Protocol by Nortel.</help>
+    </field>
+</form>
