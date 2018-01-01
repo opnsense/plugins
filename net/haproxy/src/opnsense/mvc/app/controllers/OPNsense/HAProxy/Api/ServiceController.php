@@ -145,7 +145,7 @@ class ServiceController extends ApiControllerBase
             // (res)start daemon
             if ($mdlProxy->general->enabled->__toString() == 1) {
                 if ($runStatus['status'] == "running" && !$force_restart) {
-                    $backend->configdRun("haproxy reconfigure");
+                    $backend->configdRun("haproxy reload");
                 } else {
                     $this->startAction();
                 }
