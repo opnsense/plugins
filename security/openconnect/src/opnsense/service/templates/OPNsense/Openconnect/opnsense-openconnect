@@ -34,7 +34,7 @@ openconnect_start()
 {%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
 {%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
     echo "starting openconnect"  
-	echo "{{ OPNsense.openconnect.general.password }}" | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }} --pid-file=/var/run/openconnect.pid
+	echo "{{ OPNsense.openconnect.general.password }}" | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }} --pid-file=/var/run/openconnect.pid -b
 {%       endif %}
 {%     endif %}
 {%   endif %}
