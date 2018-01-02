@@ -23,7 +23,7 @@ load_rc_config opnsense-openconnect
 openconnect_stop()
 {
 	echo "stopping openconnect"
-	kill `cat /var/run/openconnect.pid`
+	killall openconnect
 }
 
 # start openconnect
