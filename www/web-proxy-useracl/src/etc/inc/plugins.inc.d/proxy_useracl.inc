@@ -28,7 +28,7 @@
  *
  */
 
-function proxy_useracl_reload()
+function proxy_useracl_reconfigure()
 {
     return [
         'webproxy' => ['proxy_useracl_squid_hook:2'],
