@@ -1,1 +1,2 @@
 openconnect:/etc/rc.conf.d/opnsense-openconnect
+opnsense-openconnect:/usr/local/etc/rc.d/opnsense-openconnect

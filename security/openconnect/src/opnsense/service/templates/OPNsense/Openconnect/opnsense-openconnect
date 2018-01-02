@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-openconnect
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=openconnect
+
+stop_cmd=openconnect_stop
+start_cmd=openconnect_start
+rcvar=openconnect_enable
+
+load_rc_config opnsense-openconnect
+
+[ -z "$openconnect_enable" ] && openconnect_enable="NO"
+
+# stop openconnect
+openconnect_stop()
+{
+	echo "stopping openconnect"
+	kill `cat /var/run/openconnect.pid`
+}
+
+# start openconnect
+openconnect_start()
+{
+{% if helpers.exists('OPNsense.openconnect.general.enabled') and OPNsense.openconnect.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.openconnect.general.server') and OPNsense.openconnect.general.server != '' %}
+{%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
+{%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
+    echo "starting openconnect"  
+	echo {{ OPNsense.openconnect.general.password }} | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }}
+{%       endif %}
+{%     endif %}
+{%   endif %}
+{% endif %}
+}
+
+run_rc_command $1
