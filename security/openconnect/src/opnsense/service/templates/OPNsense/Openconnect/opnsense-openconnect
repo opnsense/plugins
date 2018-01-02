@@ -16,6 +16,7 @@ start_cmd=openconnect_start
 rcvar=openconnect_enable
 
 load_rc_config opnsense-openconnect
+pidfile=/var/run/${name}.pid
 
 [ -z "$openconnect_enable" ] && openconnect_enable="NO"
 
