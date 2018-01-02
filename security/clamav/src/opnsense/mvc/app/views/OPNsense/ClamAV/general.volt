@@ -48,7 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="versions" class="tab-pane fade in">
-        <div class="content-box" style="padding-bottom: 1.5em;">
+        <div class="content-box">
             {{ partial("layout_partials/base_form",['fields':versionForm,'id':'frm_version'])}}
         </div>
     </div>
