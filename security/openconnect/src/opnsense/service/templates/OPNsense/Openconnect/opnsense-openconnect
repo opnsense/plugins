@@ -20,6 +20,17 @@ pidfile=/var/run/${name}.pid
 
 [ -z "$openconnect_enable" ] && openconnect_enable="NO"
 
+# status of openconnect
+openconnect_status()
+{
+	 if [ -n "$rc_pid" ]; then
+	     echo "${name} is running as pid $rc_pid."
+	 else
+	     echo "${name} is not running."
+	     return 1
+	 fi
+}
+
 # stop openconnect
 openconnect_stop()
 {
