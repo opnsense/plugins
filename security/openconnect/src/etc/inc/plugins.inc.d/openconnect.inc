@@ -29,7 +29,7 @@
 function openconnect_enabled()
 {
     $model = new \OPNsense\Openconnect\General();
-    if ((string)$model->general->enabled == '1') {
+    if ((string)$model->enabled == '1') {
         return true;
     }
 
