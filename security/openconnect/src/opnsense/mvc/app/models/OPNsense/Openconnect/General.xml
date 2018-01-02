@@ -1,0 +1,23 @@
+<model>
+    <mount>//OPNsense/openconnect/general</mount>
+    <description>Openconnect configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <server type="TextField">
+            <default>server</default>
+            <Required>Y</Required>
+        </server>
+        <user type="TextField">
+            <default>user</default>
+            <Required>Y</Required>
+        </user>
+        <password type="TextField">
+            <default>password</default>
+            <Required>Y</Required>
+        </password>
+    </items>
+</model>

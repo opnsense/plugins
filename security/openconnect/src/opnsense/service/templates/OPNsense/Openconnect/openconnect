@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.openconnect.general.enabled') and OPNsense.openconnect.general.enabled == '1' %}
+openconnect_enable="YES"
+openconnect_flags="{% if helpers.exists('OPNsense.openconnect.general.sonmp') and OPNsense.openconnect.general.sonmp == '1' %} -s{% endif %}"
+{% else %}
+openconnect_enable="NO"
+{% endif %}

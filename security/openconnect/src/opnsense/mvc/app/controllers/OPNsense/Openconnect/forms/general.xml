@@ -1,0 +1,24 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate OpenConnect Client.</help>
+    </field>
+    <field>
+        <id>general.server</id>
+        <label>VPN Server</label>
+        <type>text</type>
+        <help>The FQDN or IP address of the VPN server.</help>
+    </field>
+    <field>
+        <id>general.user</id>
+        <label>Username</label>
+        <type>test</type>
+    </field>
+    <field>
+        <id>general.password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+</form>
