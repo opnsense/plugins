@@ -37,10 +37,10 @@ use OPNsense\Core\Backend;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static $internalServiceClass = '\OPNsense\CICAP\General';
-    static $internalServiceTemplate = 'OPNsense/CICAP';
-    static $internalServiceEnabled = 'enabled';
-    static $internalServiceName = 'cicap';
+    static protected $internalServiceClass = '\OPNsense\CICAP\General';
+    static protected $internalServiceTemplate = 'OPNsense/CICAP';
+    static protected $internalServiceEnabled = 'enabled';
+    static protected $internalServiceName = 'cicap';
 
     /**
      * check if ClamAV plugin is installed
