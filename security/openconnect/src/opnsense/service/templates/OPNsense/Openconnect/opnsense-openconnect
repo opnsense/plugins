@@ -13,10 +13,12 @@ name=openconnect
 
 stop_cmd=openconnect_stop
 start_cmd=openconnect_start
+status_cmd=openconnect_status
 rcvar=openconnect_enable
 
 load_rc_config opnsense-openconnect
 pidfile=/var/run/${name}.pid
+command=/usr/local/sbin/${name}
 
 [ -z "$openconnect_enable" ] && openconnect_enable="NO"
 
