@@ -32,24 +32,24 @@ require_once("system.inc");
 require_once('services.inc');
 require_once("interfaces.inc");
 
-if (empty($config['syslog']['nentries'])) {
+if (empty($config['OPNsense']['Syslog']['NumEntries'])) {
     $nentries = 50;
 } else {
-    $nentries = $config['syslog']['nentries'];
+    $nentries = $config['OPNsense']['Syslog']['NumEntries'];
 }
 
 if ($_POST['clear']) {
-    system_clear_clog($logfile);
+    system_clear_log($logfile);
 }
 
-function dump_clog_vpn($file, $tail, $type)
+function dump_log_vpn($file, $tail, $type)
 {
     global $config;
 
-    $sort = isset($config['syslog']['reverse']) ? '-r' : '';
+    $sort = isset($config['OPNsense']['Syslog']['Reverse']) ? '-r' : '';
     $logarr = array();
 
-    exec("/usr/local/sbin/clog " . escapeshellarg($file) . " | tail {$sort} -n " . escapeshellarg($tail), $logarr);
+    exec("cat " . escapeshellarg($file) . " | tail {$sort} -n " . escapeshellarg($tail), $logarr);
 
     foreach ($logarr as $logent) {
         $logent = preg_split('/\s+/', $logent, 6);
@@ -102,7 +102,7 @@ include("head.inc");
                   </ul>
                 </td>
               </tr>
-              <?php dump_clog_vpn($logfile, $nentries, $logtype); ?>
+              <?php dump_log_vpn($logfile, $nentries, $logtype); ?>
               <tr>
                 <td colspan="4">
                   <form method="post">

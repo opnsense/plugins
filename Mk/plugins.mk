@@ -107,7 +107,7 @@ scripts-pre:
 	done
 
 scripts-auto:
-	@if [ -d ${.CURDIR}/src/etc/rc.syshook.d ]; then \
+	@if [ -d ${.CURDIR}/${SRC}/etc/rc.syshook.d ]; then \
 		for SYSHOOK in early start; do \
 			for FILE in $$(cd ${.CURDIR}/src/etc/rc.syshook.d && \
 			    find -s . -type f -name "*.$${SYSHOOK}"); do \
@@ -119,7 +119,7 @@ scripts-auto:
 	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
 		cat ${TEMPLATESDIR}/actions.d >> ${DESTDIR}/+POST_INSTALL; \
 	fi
-	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
+	@if [ -d ${.CURDIR}/${SRC}/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
 			cat ${TEMPLATESDIR}/rc.loader.d >> \
 			    ${DESTDIR}/$${SCRIPT}; \
@@ -169,7 +169,7 @@ install: check
 	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
 	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
@@ -187,23 +187,23 @@ metadata: check
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
-		    tar -C ${.CURDIR}/src -xpf -; \
+		    tar -C ${.CURDIR}/${SRC} -xpf -; \
 	done
 
 remove: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type f) | while read FILE; do \
 		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
 	done
-	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
+	@(cd ${.CURDIR}/${SRC}; find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
 			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
 	done
 
 WRKDIR?=${.CURDIR}/work
-WRKSRC?=${WRKDIR}/src
+WRKSRC?=${WRKDIR}/${SRC}
 PKGDIR?=${WRKDIR}/pkg
 
 package: check
@@ -227,10 +227,10 @@ upgrade: upgrade-check package
 	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
-	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
+	mount_unionfs ${.CURDIR}/${SRC} ${DESTDIR}${LOCALBASE}
 
 umount: check
-	umount -f "<above>:${.CURDIR}/src"
+	umount -f "<above>:${.CURDIR}/${SRC}"
 
 clean: check
 	@if [ -d ${.CURDIR}/src ]; then \
@@ -247,9 +247,9 @@ lint-desc: check
 lint: lint-desc
 	find ${.CURDIR}/src \
 	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
-	find ${.CURDIR}/src \
+	find ${.CURDIR}/${SRC} \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
-	find ${.CURDIR}/src \
+	find ${.CURDIR}/${SRC} \
 	    ! -name "*.xml" ! -name "*.xml.sample" ! -name "*.eot" \
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" \
@@ -258,13 +258,13 @@ lint: lint-desc
 	    -type f -print0 | xargs -0 -n1 php -l
 
 sweep: check
-	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
+	find ${.CURDIR}/${SRC} -type f -name "*.map" -print0 | \
 	    xargs -0 -n1 rm
-	if grep -nr sourceMappingURL= ${.CURDIR}/src; then \
+	if grep -nr sourceMappingURL= ${.CURDIR}/${SRC}; then \
 		echo "Mentions of sourceMappingURL must be removed"; \
 		exit 1; \
 	fi
-	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
+	find ${.CURDIR}/${SRC} ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 	find ${.CURDIR} -type f -depth 1 -print0 | \
@@ -272,9 +272,9 @@ sweep: check
 
 style: check
 	@: > ${.CURDIR}/.style.out
-	@if [ -d ${.CURDIR}/src ]; then \
+	@if [ -d ${.CURDIR}/${SRC} ]; then \
 	    (phpcs --standard=${.CURDIR}/../../ruleset.xml \
-	    ${.CURDIR}/src || true) > ${.CURDIR}/.style.out; \
+	    ${.CURDIR}/${SRC} || true) > ${.CURDIR}/.style.out; \
 	fi
 	@echo -n "Total number of style warnings: "
 	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
@@ -284,9 +284,9 @@ style: check
 	@rm ${.CURDIR}/.style.out
 
 style-fix: check
-	@if [ -d ${.CURDIR}/src ]; then \
+	@if [ -d ${.CURDIR}/${SRC} ]; then \
 	    phpcbf --standard=${.CURDIR}/../../ruleset.xml \
-	    ${.CURDIR}/src || true; \
+	    ${.CURDIR}/${SRC} || true; \
 	fi
 
 .PHONY:	check
