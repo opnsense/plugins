@@ -14,11 +14,13 @@
     <field>
         <id>general.user</id>
         <label>Username</label>
-        <type>test</type>
+        <type>text</type>
+        <help>The user name for this connection.</help>
     </field>
     <field>
         <id>general.password</id>
         <label>Password</label>
         <type>password</type>
+        <help>The password name for this connection. Be aware that it will stored in cleartext on this device.</help>
     </field>
 </form>
