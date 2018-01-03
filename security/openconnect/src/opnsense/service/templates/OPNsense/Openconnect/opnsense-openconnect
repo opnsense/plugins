@@ -57,6 +57,7 @@ openconnect_start()
 {% endif %}
         sleep 5
 	ifconfig tun30000 name ocvpn0
+	ifconfig ocvpn0 group ocvpn
 	return 0
 }
 
