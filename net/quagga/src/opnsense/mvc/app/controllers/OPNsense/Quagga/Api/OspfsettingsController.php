@@ -404,5 +404,4 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
     }
-
 }

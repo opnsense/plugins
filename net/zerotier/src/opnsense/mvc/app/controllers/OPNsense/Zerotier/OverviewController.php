@@ -60,7 +60,7 @@ class OverviewController extends \OPNsense\Base\IndexController
 
     private function invokeConfigdRun($action)
     {
-        if(!zerotier_enabled()) {
+        if (!zerotier_enabled()) {
             return (object)[];
         }
         $result = json_decode(trim((new Backend())->configdRun("zerotier $action")), true);

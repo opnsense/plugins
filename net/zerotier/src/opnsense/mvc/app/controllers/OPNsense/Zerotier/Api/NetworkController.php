@@ -90,10 +90,10 @@ class NetworkController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $this->request->hasPost("network")) {
-            if($uuid != null) {
+            if ($uuid != null) {
                 $mdlZerotier = $this->getModel();
                 $network = $mdlZerotier->getNodeByReference('networks.network.' . $uuid);
-                if($network != null) {
+                if ($network != null) {
                     $network->setNodes($this->request->getPost("network"));
                     $validationMessages = $mdlZerotier->performValidation();
                     foreach ($validationMessages as $field => $msg) {
@@ -202,12 +202,11 @@ class NetworkController extends ApiMutableModelControllerBase
     {
         $zerotierNetworks = trim((new Backend())->configdRun("zerotier listnetworks"));
         $zerotierNetworks = explode("200 listnetworks", $zerotierNetworks);
-        foreach($zerotierNetworks as $zerotierNetwork) {
-            if(strpos($zerotierNetwork, $networkId) !== false) {
+        foreach ($zerotierNetworks as $zerotierNetwork) {
+            if (strpos($zerotierNetwork, $networkId) !== false) {
                 return $zerotierNetwork;
             }
         }
         return gettext("Unable to obtain Zerotier information for network") . " " . $networkId . "! " . gettext("Is the network enabled?");
     }
-
 }

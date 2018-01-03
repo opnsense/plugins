@@ -283,11 +283,15 @@ function if_pptp_interfaces()
         $oic['descr'] = 'pptp';
         $mask = !empty($config['pptpd']['pptp_subnet']) ? $config['pptpd']['pptp_subnet'] : 32;
         if (isset($config['pptpd']['n_pptp_units']) && is_numeric($config['pptpd']['n_pptp_units'])) {
-            $pptp_subnets = ip_range_to_subnet_array($config['pptpd']['remoteip'],
-              long2ip32(ip2long($config['pptpd']['remoteip'])+($config['pptpd']['n_pptp_units']-1)));
+            $pptp_subnets = ip_range_to_subnet_array(
+                $config['pptpd']['remoteip'],
+                long2ip32(ip2long($config['pptpd']['remoteip'])+($config['pptpd']['n_pptp_units']-1))
+            );
         } else {
-            $pptp_subnets = ip_range_to_subnet_array($config['pptpd']['remoteip'],
-              long2ip32(ip2long($config['pptpd']['remoteip'])));
+            $pptp_subnets = ip_range_to_subnet_array(
+                $config['pptpd']['remoteip'],
+                long2ip32(ip2long($config['pptpd']['remoteip']))
+            );
         }
         foreach ($pptp_subnets as $pptp_subnet) {
             $snparts = explode("/", $pptp_subnet);

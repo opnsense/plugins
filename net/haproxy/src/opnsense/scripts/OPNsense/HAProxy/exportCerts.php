@@ -97,9 +97,11 @@ foreach ($configNodes as $key => $value) {
                     }
                     // generate crt-list file
                     // (this makes only sense for frontends)
-                    if ( $key == 'frontends' ) {
+                    if ($key == 'frontends') {
                         // ignore if crt-list is empty
-                        if (empty($crtlist)) { continue; }
+                        if (empty($crtlist)) {
+                            continue;
+                        }
                         // check if a default certificate is configured
                         if (isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
                             $default_cert = (string)$child->ssl_default_certificate;
