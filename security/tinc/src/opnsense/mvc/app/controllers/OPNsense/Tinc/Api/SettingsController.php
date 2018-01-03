@@ -59,7 +59,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 return array("network" => $node->getNodes());
             }
         }
-        return array() ;
+        return array();
     }
 
     /**
@@ -76,7 +76,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->networks->network->Add();
             }
             $node->setNodes($this->request->getPost("network"));
-            if (empty((string)$node->pubkey) || empty((string)$node->privkey)){
+            if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
                 // generate new keypair
                 $backend = new Backend();
                 $keys = json_decode(trim($backend->configdRun("tinc gen-key")), true);
@@ -117,7 +117,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 $result = $this->validateAndSave();
             }
         }
-        return $result ;
+        return $result;
     }
 
     /**
@@ -166,7 +166,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 return array("host" => $node->getNodes());
             }
         }
-        return array() ;
+        return array();
     }
 
     /**
@@ -217,7 +217,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 $result = $this->validateAndSave();
             }
         }
-        return $result ;
+        return $result;
     }
 
     /**

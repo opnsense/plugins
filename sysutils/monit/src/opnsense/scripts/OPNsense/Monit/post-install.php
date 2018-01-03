@@ -44,14 +44,13 @@ $generalNode = $mdlMonit->getNodeByReference('general');
 
 // generate password for local Monit plugin user
 if (empty($cfgObj->general->httpdUsername) && empty($cfgObj->general->httpdPassword)) {
-   srand();
-   $generalNode->setNodes(array(
+    srand();
+    $generalNode->setNodes(array(
          "httpdUsername" => "root",
          "httpdPassword" => substr(str_shuffle(str_repeat('0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz', 32)), rand(0, 16), rand(17, 32))
-      )
-   );
-   $mdlMonit->serializeToConfig(false, true);
-   $cfg->save();
+      ));
+    $mdlMonit->serializeToConfig(false, true);
+    $cfg->save();
 }
 
 $nodes = $mdlMonit->getNodes();
@@ -91,7 +90,7 @@ if (!empty($cfgObj->notifications->smtp->notifyemailaddress)) {
     $alertSettings['recipient'] = $cfgObj->notifications->smtp->notifyemailaddress;
 }
 if (!empty($cfgObj->notifications->smtp->fromaddress)) {
-	$alertSettings['format'] = 'from: ' . $cfgObj->notifications->smtp->fromaddress;
+    $alertSettings['format'] = 'from: ' . $cfgObj->notifications->smtp->fromaddress;
 }
 
 // define some tests

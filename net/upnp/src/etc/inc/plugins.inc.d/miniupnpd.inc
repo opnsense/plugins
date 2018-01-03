@@ -93,7 +93,7 @@ function miniupnpd_uuid()
     /* md5 hash of wan mac */
     $uuid = md5(get_interface_mac(get_real_interface("wan")));
     /* put uuid in correct format 8-4-4-4-12 */
-    return substr($uuid,0,8).'-'.substr($uuid,9,4).'-'.substr($uuid,13,4).'-'.substr($uuid,17,4).'-'.substr($uuid,21,12);
+    return substr($uuid, 0, 8).'-'.substr($uuid, 9, 4).'-'.substr($uuid, 13, 4).'-'.substr($uuid, 17, 4).'-'.substr($uuid, 21, 12);
 }
 
 function miniupnpd_configure_do($verbose = false)
@@ -128,7 +128,7 @@ function miniupnpd_configure_do($verbose = false)
 
     /* since config is written before this file invoked we don't need to read post data */
     if (!empty($upnp_config['iface_array'])) {
-        foreach(explode(',', $upnp_config['iface_array']) as $iface) {
+        foreach (explode(',', $upnp_config['iface_array']) as $iface) {
             /* Setting the same internal and external interface is not allowed. */
             if ($iface == $upnp_config['ext_iface']) {
                 continue;
@@ -140,13 +140,13 @@ function miniupnpd_configure_do($verbose = false)
                 $bits = find_interface_subnet($if);
                 /* check that the interface has an ip address before adding parameters */
                 if (is_ipaddr($addr)) {
-                  $config_text .= "listening_ip={$if}\n";
-                  if (!$ifaces_active) {
-                      $webgui_ip = $addr;
-                      $ifaces_active = $iface;
-                  } else {
-                      $ifaces_active .= ", {$iface}";
-                  }
+                    $config_text .= "listening_ip={$if}\n";
+                    if (!$ifaces_active) {
+                        $webgui_ip = $addr;
+                        $ifaces_active = $iface;
+                    } else {
+                        $ifaces_active .= ", {$iface}";
+                    }
                 } else {
                     log_error("miniupnpd: Interface {$iface} has no ip address, ignoring");
                 }
@@ -191,7 +191,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* set uuid and serial */
             $config_text .= "uuid=".miniupnpd_uuid()."\n";
-            $config_text .= "serial=".strtoupper(substr(miniupnpd_uuid(),0,8))."\n";
+            $config_text .= "serial=".strtoupper(substr(miniupnpd_uuid(), 0, 8))."\n";
 
             /* set model number */
             $config_text .= "model_number=".file_get_contents("/usr/local/opnsense/version/opnsense")."\n";

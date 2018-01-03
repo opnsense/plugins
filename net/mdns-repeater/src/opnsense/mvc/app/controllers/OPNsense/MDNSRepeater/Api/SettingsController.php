@@ -34,6 +34,6 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
-  static protected $internalModelClass = '\OPNsense\MDNSRepeater\MDNSRepeater';
-  static protected $internalModelName = 'mdnsrepeater';
+    static protected $internalModelClass = '\OPNsense\MDNSRepeater\MDNSRepeater';
+    static protected $internalModelName = 'mdnsrepeater';
 }

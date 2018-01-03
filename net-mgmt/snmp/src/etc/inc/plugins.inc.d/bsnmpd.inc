@@ -85,7 +85,7 @@ read := "{$config['snmpd']['rocommunity']}"
 
 EOD;
 
-    if (isset($config['snmpd']['trapenable']) && preg_match('/^\S+$/', $config['snmpd']['trapserver'])){
+    if (isset($config['snmpd']['trapenable']) && preg_match('/^\S+$/', $config['snmpd']['trapserver'])) {
         $snmpdconf .= <<<EOD
 # SNMP Trap support.
 traphost := {$config['snmpd']['trapserver']}
@@ -112,7 +112,7 @@ begemotSnmpdCommunityString.0.1 = $(read)
 
 EOD;
 
-    if (isset($config['snmpd']['trapenable']) && preg_match('/^\S+$/', $config['snmpd']['trapserver'])){
+    if (isset($config['snmpd']['trapenable']) && preg_match('/^\S+$/', $config['snmpd']['trapserver'])) {
         $snmpdconf .= <<<EOD
 begemotTrapSinkStatus.[$(traphost)].$(trapport) = 4
 begemotTrapSinkVersion.[$(traphost)].$(trapport) = 2
@@ -138,12 +138,11 @@ EOD;
         }
     }
 
-    if (is_port( $config['snmpd']['pollport'] )) {
+    if (is_port($config['snmpd']['pollport'])) {
         $snmpdconf .= <<<EOD
 begemotSnmpdPortStatus.{$bind_to_ip}.{$config['snmpd']['pollport']} = 1
 
 EOD;
-
     }
 
     $snmpdconf .= <<<EOD
@@ -159,7 +158,7 @@ snmpEnableAuthenTraps = 2
 
 EOD;
 
-    if (is_array( $config['snmpd']['modules'] )) {
+    if (is_array($config['snmpd']['modules'])) {
         if (isset($config['snmpd']['modules']['mibii'])) {
             $snmpdconf .= <<<EOD
 begemotSnmpdModulePath."mibII"  = "/usr/lib/snmp_mibII.so"

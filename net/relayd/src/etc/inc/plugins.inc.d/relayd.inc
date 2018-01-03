@@ -158,9 +158,9 @@ function relayd_configure_do($kill_first = false)
                 break;
             case 'send':
                 $check_a[$type['name']] = "check {$type['type']} ";
-                $check_a[$type['name']] .= !empty($type['options']['send']) ? "\"{$type['options']['send']}\"" : "\"\"" ;
+                $check_a[$type['name']] .= !empty($type['options']['send']) ? "\"{$type['options']['send']}\"" : "\"\"";
                 $check_a[$type['name']] .= " expect ";
-                $check_a[$type['name']] .= !empty($type['options']['expect']) ? "\"{$type['options']['expect']}\"" : "\"\"" ;
+                $check_a[$type['name']] .= !empty($type['options']['expect']) ? "\"{$type['options']['expect']}\"" : "\"\"";
                 break;
             default:
                 break;
@@ -197,12 +197,12 @@ function relayd_configure_do($kill_first = false)
             $conf .= "table <{$pool_a[$i]['name']}> {\n";
             foreach ($pool_a[$i]['servers'] as $server) {
                 if (is_subnetv4($server)) {
-                  foreach (relayd_subnetv4_expand($server) as $ip) {
-                      $conf .= "\t{$ip}{$retrytext}\n";
-                  }
-              } else {
-                  $conf .= "\t{$server}{$retrytext}\n";
-              }
+                    foreach (relayd_subnetv4_expand($server) as $ip) {
+                        $conf .= "\t{$ip}{$retrytext}\n";
+                    }
+                } else {
+                    $conf .= "\t{$server}{$retrytext}\n";
+                }
             }
             $conf .= "}\n";
             /* Index by name for easier fetching when we loop through the virtual servers */
@@ -292,7 +292,7 @@ function relayd_configure_do($kill_first = false)
                     }
 
                     $conf .= "}\n";
-                } else  {
+                } else {
                     // redirect mode
                     $conf .= "redirect \"{$name}\" {\n";
                     $conf .= "  listen on {$ip} port {$src_port}\n";
@@ -429,8 +429,8 @@ function relayd_get_lb_summary()
 {
     $relayctl = array();
     exec('/usr/local/sbin/relayctl show summary 2>&1', $relayctl);
-    $relay_hosts=Array();
-    foreach( (array) $relayctl as $line) {
+    $relay_hosts=array();
+    foreach ((array) $relayctl as $line) {
         $t = explode("\t", $line);
         if (isset($t[1])) {
             switch (trim($t[1])) {
