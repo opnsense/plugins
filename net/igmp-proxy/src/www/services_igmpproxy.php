@@ -123,7 +123,7 @@ $main_buttons = array(
                       <td><?=$igmpentry['descr'];?></td>
                       <td>
                          <a href="services_igmpproxy_edit.php?id=<?=$i;?>" title="<?=gettext("Edit this IGMP entry"); ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
-                         <a href="#" data-id="<?=$i;?>" class="act_delete_entry"><button type="button" class="btn btn-xs btn-default"><span class="fa fa-trash text-muted"></span></button></a>
+                         <a href="#" data-id="<?=$i;?>" class="act_delete_entry btn btn-xs btn-default"><i class="fa fa-trash text-muted"></i></a>
                       </td>
                     </tr>
 <?php
