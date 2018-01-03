@@ -1,0 +1,9 @@
+<acl>
+    <page-system-configuration-ScpBackup>
+        <name>System: Configuration: SCP Backup</name>
+        <patterns>
+            <pattern>ui/ScpBackup/*</pattern>
+            <pattern>api/ScpBackup/*</pattern>
+        </patterns>
+    </page-system-configuration-ScpBackup>
+</acl>
