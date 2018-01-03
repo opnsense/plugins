@@ -67,9 +67,9 @@ function openconnect_interfaces()
         return $interfaces;
     }
 
-    $oic = array('enabled' => true);
+    $oic = array('enable' => true);
     $oic['if'] = 'ocvpn';
-    $oic['descr'] = 'OpenConnectVPN';
+    $oic['descr'] = 'OpenConnect';
     $oic['type'] = 'group';
     $oic['virtual'] = true;
     $oic['networks'] = array();
