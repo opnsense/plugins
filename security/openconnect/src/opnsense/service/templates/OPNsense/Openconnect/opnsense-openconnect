@@ -27,9 +27,9 @@ openconnect_status()
 {
 	 if [ -n "$rc_pid" ]; then
 	     echo "${name} is running as pid $rc_pid."
+	     return 0
 	 else
 	     echo "${name} is not running."
-	     return 1
 	 fi
 }
 
@@ -48,7 +48,7 @@ openconnect_start()
 {%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
 {%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
     echo "starting openconnect"  
-	echo "{{ OPNsense.openconnect.general.password }}" | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }} --pid-file=/var/run/openconnect.pid -b -q -i tun30000
+	echo "{{ OPNsense.openconnect.general.password }}" | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }} --pid-file=/var/run/openconnect.pid -b -q -i tun30000 2>&1 > /dev/null
 {%       endif %}
 {%     endif %}
 {%   endif %}
