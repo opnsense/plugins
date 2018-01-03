@@ -181,7 +181,7 @@ $main_buttons = array(
                       <td><?=$dyndns['descr'];?></td>
                       <td>
                         <a href="services_dyndns_edit.php?id=<?=$i;?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
-                        <a href="#" data-id="<?=$i;?>" class="act_delete_service"><button type="button" class="btn btn-xs btn-default"><span class="fa fa-trash text-muted"></span></button></a>
+                        <a href="#" data-id="<?=$i;?>" class="act_delete_service btn btn-xs btn-default"><i class="fa fa-trash text-muted"></i></a>
                       </td>
                     </tr>
 <?php
