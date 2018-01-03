@@ -38,7 +38,7 @@ openconnect_stop()
 {
 	echo "stopping openconnect"
 	killall openconnect
-	ifconfig openconnect0 destroy
+	ifconfig ocvpn0 destroy
 	return 0
 }
 
@@ -56,7 +56,7 @@ openconnect_start()
 {%   endif %}
 {% endif %}
         sleep 5
-	ifconfig tun30000 name openconnect0
+	ifconfig tun30000 name ocvpn0
 	return 0
 }
 
