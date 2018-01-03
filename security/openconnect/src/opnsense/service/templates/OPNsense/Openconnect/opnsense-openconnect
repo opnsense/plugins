@@ -38,6 +38,8 @@ openconnect_stop()
 {
 	echo "stopping openconnect"
 	killall openconnect
+	ifconfig openconnect0 destroy
+	return 0
 }
 
 # start openconnect
@@ -47,12 +49,15 @@ openconnect_start()
 {%   if helpers.exists('OPNsense.openconnect.general.server') and OPNsense.openconnect.general.server != '' %}
 {%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
 {%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
-    echo "starting openconnect"  
+        echo "starting openconnect"  
 	echo "{{ OPNsense.openconnect.general.password }}" | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }} --pid-file=/var/run/openconnect.pid -b -q -i tun30000 2>&1 > /dev/null
 {%       endif %}
 {%     endif %}
 {%   endif %}
 {% endif %}
+        sleep 5
+	ifconfig tun30000 name openconnect0
+	return 0
 }
 
 run_rc_command $1
