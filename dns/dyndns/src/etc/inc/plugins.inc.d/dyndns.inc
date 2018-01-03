@@ -148,20 +148,21 @@ function dyndns_configure_client($conf)
         return;
     }
 
-    $dns = new updatedns($dnsService = $conf['type'],
+    $dns = new updatedns(
+        $dnsService = $conf['type'],
         $dnsHost = $conf['host'],
         $dnsUser = $conf['username'],
         $dnsPass = $conf['password'],
         $dnsWilcard = $conf['wildcard'],
         $dnsMX = $conf['mx'],
         $dnsIf = "{$conf['interface']}",
-        $dnsBackMX = NULL,
-        $dnsServer = NULL,
-        $dnsPort = NULL,
+        $dnsBackMX = null,
+        $dnsServer = null,
+        $dnsPort = null,
         $dnsUpdateURL = "{$conf['updateurl']}",
         $forceUpdate = $conf['force'],
-        $dnsZoneID=$conf['zoneid'],
-        $dnsTTL=$conf['ttl'],
+        $dnsZoneID = $conf['zoneid'],
+        $dnsTTL = $conf['ttl'],
         $dnsResultMatch = "{$conf['resultmatch']}",
         $dnsRequestIf = "{$conf['requestif']}",
         $dnsID = "{$conf['id']}",
