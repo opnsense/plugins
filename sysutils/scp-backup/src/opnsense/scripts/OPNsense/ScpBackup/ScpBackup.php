@@ -36,10 +36,10 @@ require_once("config.inc");
 use OPNsense\Base;
 use OPNsense\Core\Config;
 
-$config = Config::getInstance()->object(); 
+$config = Config::getInstance()->object();
 $scpBackup = $config->OPNsense->ScpBackup;
 
-if(isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1) {
+if (isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1) {
     $hostname = escapeshellarg($scpBackup->hostname);
     $username = escapeshellarg($scpBackup->username);
     $port = $scpBackup->port;
@@ -47,7 +47,7 @@ if(isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1) 
     $identifyFile = "/conf/sshd/ssh_host_rsa_key";
     $configFile = "/conf/config.xml";
 
-    if(!substr($remoteDirectory, -1) == "/") {
+    if (!substr($remoteDirectory, -1) == "/") {
         $remoteDirectory = $remoteDirectory . "/";
     }
 
@@ -59,7 +59,7 @@ if(isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1) 
 
     exec(escapeshellcmd($command), $output, $returnCode);
 
-    if($returnCode != 0) {
+    if ($returnCode != 0) {
         syslog(LOG_ERR, "scp_backup command: return code [$returnCode]");
     }
 }

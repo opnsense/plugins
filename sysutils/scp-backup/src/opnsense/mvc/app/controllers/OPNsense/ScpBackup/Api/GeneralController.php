@@ -48,7 +48,7 @@ class GeneralController extends ApiMutableModelControllerBase
         if ($this->request->isGet()) {
             $mdlGeneral = $this->getModel();
             $publicKey = fopen("/conf/sshd/ssh_host_rsa_key.pub", "r");
-            if($publicKey) {
+            if ($publicKey) {
                 $mdlGeneral->publickey = fread($publicKey, filesize("/conf/sshd/ssh_host_rsa_key.pub"));
                 fclose($publicKey);
             }
@@ -70,11 +70,11 @@ class GeneralController extends ApiMutableModelControllerBase
             foreach ($valMsgs as $field => $msg) {
                 if (!array_key_exists("validation", $result)) {
                     $result["validations"] = array();
-                } 
+                }
                 $result["validations"][$msg->getField()] = $msg->getMessage();
             }
-            if($valMsgs->count() == 0) {
-                if($mdlGeneral->cronuuid->__toString() == "" and $mdlGeneral->enabled->__toString() == "1") {
+            if ($valMsgs->count() == 0) {
+                if ($mdlGeneral->cronuuid->__toString() == "" and $mdlGeneral->enabled->__toString() == "1") {
                     // First Time Save
                     $cronUuid = $mdlCron->newDailyJob("ScpBackup", "scpbackup perform", "Backup config using SCP", "*", "1");
                     if ($mdlCron->performValidation()->count() == 0) {
@@ -89,7 +89,7 @@ class GeneralController extends ApiMutableModelControllerBase
                 } elseif ($mdlGeneral->cronuuid->__toString() != "" and $mdlGeneral->enabled->__toString() == "0") {
                     // Removal of Cron Job and deactivation of the backup
                     $cronUuid = $mdlGeneral->cronuuid->__toString();
-                    if($mdlCron->jobs->job->del($cronUuid)) {
+                    if ($mdlCron->jobs->job->del($cronUuid)) {
                         $mdlCron->serializeToConfig();
                         $mdlGeneral->cronuuid = null;
                         $mdlGeneral->serializeToConfig($validateFullModel = false, $disable_validation = true);
@@ -109,5 +109,4 @@ class GeneralController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-
 }
