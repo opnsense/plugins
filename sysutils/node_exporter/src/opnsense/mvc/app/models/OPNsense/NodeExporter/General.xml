@@ -1,0 +1,66 @@
+<model>
+    <mount>//OPNsense/NodeExporter</mount>
+    <description>
+        node_exporter - Prometheus exporter for hardware and OS metrics.
+    </description>
+    <version>0.1.0</version>
+    <items>
+        <enabled type="BooleanField">
+          <default>0</default>
+          <Required>Y</Required>
+        </enabled>
+        <listenaddress type="TextField">
+          <default>0.0.0.0</default>
+          <Required>Y</Required>
+          <mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</mask>
+          <ValidationMessage>Please provide a valid IPv4 address.</ValidationMessage>
+        </listenaddress>
+        <listenport type="IntegerField">
+          <default>9100</default>
+          <Required>Y</Required>
+          <MinimumValue>1</MinimumValue>
+          <MaximumValue>65535</MaximumValue>
+          <ValidationMessage>Please provide a valid port number between 1 and 65535. Port 9100 is the default.</ValidationMessage>
+        </listenport>
+        <cpu type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </cpu>
+        <exec type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </exec>
+        <filesystem type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </filesystem>
+        <loadavg type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </loadavg>
+        <meminfo type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </meminfo>
+        <netdev type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </netdev>
+        <time type="BooleanField">
+          <default>1</default>
+          <Required>N</Required>
+        </time>
+        <devstat type="BooleanField">
+          <default>0</default>
+          <Required>N</Required>
+        </devstat>
+        <interrupts type="BooleanField">
+          <default>0</default>
+          <Required>N</Required>
+        </interrupts>
+        <ntp type="BooleanField">
+          <default>0</default>
+          <Required>N</Required>
+        </ntp>
+    </items>
+</model>

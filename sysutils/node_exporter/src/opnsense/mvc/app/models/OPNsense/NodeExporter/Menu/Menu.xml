@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+      <NodeExporter VisibleName="Node Exporter" cssClass="fa fa-area-chart" url="/ui/nodeexporter/general/index"/>
+    </Services>
+</menu>
