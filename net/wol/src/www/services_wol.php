@@ -142,10 +142,10 @@ include("head.inc");
                   <table class="table table-striped opnsense_standard_table_form">
                     <thead>
                       <tr>
-                        <td width="22%">
+                        <td style="width:22%">
                           <strong><?=gettext("Wake on LAN");?></strong>
                         </td>
-                        <td width="78%" align="right">
+                        <td style="width:78%; text-align:right">
                           <small><?=gettext("full help"); ?> </small>
                           <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                           &nbsp;&nbsp;

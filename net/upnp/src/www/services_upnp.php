@@ -175,10 +175,10 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <td width="22%">
+                      <td style="width:22%">
                         <strong><?=gettext("UPnP and NAT-PMP Settings");?></strong>
                       </td>
-                      <td width="78%" align="right">
+                      <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
                         <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
                         &nbsp;&nbsp;
@@ -314,8 +314,8 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td width="22%"><a id="help_for_permuser1" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 1");?></td>
-                      <td width="78%">
+                      <td style="width:22%"><a id="help_for_permuser1" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 1");?></td>
+                      <td style="width:78%">
                         <input name="permuser1" type="text" value="<?=$pconfig['permuser1'];?>" />
                         <div class="hidden" for="help_for_permuser1">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?><br/>
@@ -361,8 +361,8 @@ include("head.inc");
                 <table class="table table-striped">
                   <tbody>
                     <tr>
-                     <td width="22%" valign="top">&nbsp;</td>
-                     <td width="78%">
+                     <td style="width:22%; vertical-align:top">&nbsp;</td>
+                     <td style="width:78%">
                        <input name="Submit" type="submit" class="btn btn-primary" value="<?=gettext("Save");?>" />
                      </td>
                     </tr>

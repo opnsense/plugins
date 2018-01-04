@@ -56,13 +56,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% for key, value in information %}
                 {% set value = value | default('null') %}
                 <tr>
-                    <td width="22%">{{ key | e }}</td>
+                    <td style="width:22%">{{ key | e }}</td>
                     {% if value is type ('boolean') %}
-                        <td width="78%">{{ value ? 'true' : 'false' }}</td>
+                        <td style="width:78%">{{ value ? 'true' : 'false' }}</td>
                     {% elseif key == "config" %}
                         {% set config = value %}
                         {% set settings = config["settings"] %}
-                        <td width="78%">
+                        <td style="width:78%">
                             <table class="table">
                                 <tr>
                                     <td><b>{{ lang._("physical") }}</b></td>
@@ -85,7 +85,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             </table>
                         </td>
                     {% else %}
-                        <td width="78%">{{ value | e}}</td>
+                        <td style="width:78%">{{ value | e}}</td>
                     {% endif %}
                 </tr>
                 {% elsefor %}
@@ -124,11 +124,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                     {% for key, value in network %}
                                     {% set value = value | default('null') %}
                                     <tr>
-                                        <td width="22%">{{ key | e }}</td>
+                                        <td style="width:22%">{{ key | e }}</td>
                                         {% if value is type('boolean') %}
-                                            <td width="78%">{{ value == true ? 'true' : 'false' }}</td>
+                                            <td style="width:78%">{{ value == true ? 'true' : 'false' }}</td>
                                         {% elseif value is iterable %}
-                                            <td width="78%">
+                                            <td style="width:78%">
                                                 <table class="table">
                                                     {% if key == "assignedAddresses" %}
                                                         <thead>
@@ -177,7 +177,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                 </table>
                                             </td>
                                         {% else %}
-                                            <td width="78%">{{ value | e }}</td>
+                                            <td style="width:78%">{{ value | e }}</td>
                                         {% endif %}
                                     </tr>
                                     {% endfor %}
@@ -222,11 +222,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                     {% for key, value in peer %}
                                     {% set value = value | default('null') %}
                                     <tr>
-                                        <td width="22%">{{ key | e }}</td>
+                                        <td style="width:22%">{{ key | e }}</td>
                                         {% if value is type('boolean') %}
-                                            <td width="78%">{{ value == true ? 'true' : 'false' }}</td>
+                                            <td style="width:78%">{{ value == true ? 'true' : 'false' }}</td>
                                         {% elseif value is iterable %}
-                                            <td width="78%">
+                                            <td style="width:78%">
                                                 <table class="table">
                                                     {% if key == "paths" %}
                                                         <thead>
@@ -266,7 +266,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                 </table>
                                             </td>
                                         {% else %}
-                                            <td width="78%">{{ value | e }}</td>
+                                            <td style="width:78%">{{ value | e }}</td>
                                         {% endif %}
                                     </tr>
                                     {% endfor %}

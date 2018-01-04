@@ -266,8 +266,8 @@ legacy_html_escape_form_data($pconfig);
               <div class="table-responsive">
                 <table class="table table-striped opnsense_standard_table_form">
                   <tr>
-                    <td width="22%"><strong><?=gettext("PPPoE server configuration");?></strong></td>
-                    <td width="78%" align="right">
+                    <td style="width:22%"><strong><?=gettext("PPPoE server configuration");?></strong></td>
+                    <td style="width:78%; text-align:right">
                       <small><?=gettext("full help"); ?> </small>
                       <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
                     </td>
@@ -530,8 +530,8 @@ legacy_html_escape_form_data($pconfig);
                     </td>
                   </tr>
                   <tr>
-                    <td width="22%" valign="top">&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:22%; vertical-align:top">&nbsp;</td>
+                    <td style="width:78%">
 <?php
                     if (isset($id)) {
                         echo "<input type=\"hidden\" name=\"id\" id=\"id\" value=\"" . htmlspecialchars($id, ENT_QUOTES | ENT_HTML401) . "\" />";

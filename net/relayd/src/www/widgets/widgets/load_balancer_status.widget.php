@@ -52,9 +52,9 @@ $nentries = isset($config['syslog']['nentries']) ? $config['syslog']['nentries']
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th width="10%" class="listhdrr"><?= gettext('Server') ?></th>
-      <th width="10%" class="listhdrr"><?= gettext('Pool') ?></th>
-      <th width="30%" class="listhdr"><?= gettext('Description') ?></th>
+      <th style="width:10%" class="listhdrr"><?= gettext('Server') ?></th>
+      <th style="width:10%" class="listhdrr"><?= gettext('Pool') ?></th>
+      <th style="width:30%" class="listhdr"><?= gettext('Description') ?></th>
     </tr>
   </thead>
   <?php $i = 0; foreach ($a_vs as $vsent) :
@@ -80,7 +80,7 @@ $nentries = isset($config['syslog']['nentries']) ? $config['syslog']['nentries']
       <span style="background-color: <?=$bgcolor?>; display: block"><i><?= $rdr_a[$vsent['name']]['status'] ?></i></span>
       <?=$vsent['ipaddr'].":".$vsent['port'];?><br />
     </td>
-    <td class="listr" align="center" >
+    <td class="listr" style="text-align:center" >
     <table>
     <?php
         foreach ($a_pool as $pool) {
@@ -115,7 +115,7 @@ $nentries = isset($config['syslog']['nentries']) ? $config['syslog']['nentries']
                                 $checked = "checked";
                         }
                         echo "<tr>";
-                        echo "<td bgcolor=\"{$bgcolor}\">&nbsp;{$server['ip']['addr']}:{$pool['port']}&nbsp;</td><td bgcolor=\"{$bgcolor}\">&nbsp;";
+                        echo "<td style=\"background-color:{$bgcolor}\">&nbsp;{$server['ip']['addr']}:{$pool['port']}&nbsp;</td><td style=\"background-color:{$bgcolor}\">&nbsp;";
                         if ($server['ip']['avail']) {
                             echo " ({$server['ip']['avail']}) ";
                         }

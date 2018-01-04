@@ -145,7 +145,7 @@ switch($action) {
               <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="iform" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
-                     <th colspan="2" valign="top" class="listtopic"><?=gettext('Info'); ?></th>
+                     <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('Info'); ?></th>
                     </tr>
                     <tr>
                       <td><?=gettext("Info type"); ?></td>
@@ -172,8 +172,8 @@ switch($action) {
                     </td>
                   </tr>
                   <tr>
-                    <td width="22%" valign="top">&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:22%" style="vertical-align:top">&nbsp;</td>
+                    <td style="width:78%">
                       <input type="hidden" name="action" value="info" />
                       <input type="submit" name="submit" class="btn btn-primary" value="<?=gettext("View"); ?>" />
                     </td>
@@ -190,7 +190,7 @@ switch($action) {
               <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="test" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
-                     <th colspan="2" valign="top" class="listtopic"><?=gettext('Perform Self-tests'); ?></th>
+                     <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('Perform Self-tests'); ?></th>
                     </tr>
                     <tr>
                       <td><?=gettext("Test type"); ?></td>
@@ -217,8 +217,8 @@ switch($action) {
                     </td>
                   </tr>
                   <tr>
-                    <td width="22%" valign="top">&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:22%; vertical-align:top">&nbsp;</td>
+                    <td style="width:78%">
                       <input type="hidden" name="action" value="test" />
                       <input type="submit" name="submit" class="btn btn-primary" value="<?=gettext("Test"); ?>" />
                     </td>
@@ -234,7 +234,7 @@ switch($action) {
               <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="logs" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
-                     <th colspan="2" valign="top" class="listtopic"><?=gettext('View Logs'); ?></th>
+                     <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('View Logs'); ?></th>
                     </tr>
                     <tr>
                       <td><?=gettext("Log type"); ?></td>
@@ -259,8 +259,8 @@ switch($action) {
                     </td>
                   </tr>
                   <tr>
-                    <td width="22%" valign="top">&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:22%; vertical-align:top">&nbsp;</td>
+                    <td style="width:78%">
                       <input type="hidden" name="action" value="logs" />
                       <input type="submit" name="submit" class="btn btn-primary" value="<?=gettext("View"); ?>" />
                     </td>
@@ -276,7 +276,7 @@ switch($action) {
               <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="abort" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
-                     <th colspan="2" valign="top" class="listtopic"><?=gettext('Abort tests'); ?></th>
+                     <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('Abort tests'); ?></th>
                     </tr>
                   <tr>
                     <td><?=gettext("Device: /dev/"); ?></td>
@@ -292,8 +292,8 @@ switch($action) {
                     </td>
                   </tr>
                   <tr>
-                    <td width="22%" valign="top">&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:22%; vertical-align:top">&nbsp;</td>
+                    <td style="width:78%">
                       <input type="hidden" name="action" value="logs" />
                       <input type="submit" name="submit" value="<?=gettext("Abort"); ?>" class="btn btn-primary" onclick="return confirm('<?=gettext("Do you really want to abort the test?"); ?>')" />
                     </td>
