@@ -32,11 +32,11 @@ require_once("widgets/include/smart_status.inc");
 
 ?>
 
-<table class="table table-striped" width="100%" border="0" cellpadding="0" cellspacing="0" summary="smart status">
+<table class="table table-striped" style="width:100%; border:0; cellpadding:0; cellspacing:0">
 	<tr>
-		<td class="widgetsubheader" align="center"><b><?php echo gettext("Drive") ?></b></td>
-		<td class="widgetsubheader" align="center"><b><?php echo gettext("Ident") ?></b></td>
-		<td class="widgetsubheader" align="center"><b><?php echo gettext("SMART Status") ?></b></td>
+		<td class="widgetsubheader" style="text-align:center"><b><?php echo gettext("Drive") ?></b></td>
+		<td class="widgetsubheader" style="text-align:center"><b><?php echo gettext("Ident") ?></b></td>
+		<td class="widgetsubheader" style="text-align:center"><b><?php echo gettext("SMART Status") ?></b></td>
 	</tr>
 
 <?php
@@ -69,8 +69,8 @@ if (count($devs) > 0) {
 ?>
 		<tr>
 			<td class="listlr"><?php echo $dev; ?></td>
-			<td class="listr" align="center"><?php echo $dev_ident; ?></td>
-			<td class="listr" align="center"><span style="background-color:<?php echo $color; ?>">&nbsp;<?php echo $dev_state_translated ?>&nbsp;</span></td>
+			<td class="listr" style="text-align:center"><?php echo $dev_ident; ?></td>
+			<td class="listr" style="text-align:center"><span style="background-color:<?php echo $color; ?>">&nbsp;<?php echo $dev_state_translated ?>&nbsp;</span></td>
 		</tr>
 <?php
     }

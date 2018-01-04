@@ -233,7 +233,7 @@ include("head.inc");
                     <td>
                       <strong><?=gettext("Add/edit - Pool entry"); ?></strong>
                     </td>
-                    <td align="right">
+                    <td style="text-align:right">
                       <small><?=gettext("full help"); ?> </small>
                       <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
                     </td>
@@ -365,7 +365,7 @@ include("head.inc");
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:78%">
                       <br />
                       <input id="save" name="save" type="submit" class="btn btn-primary" value="<?=gettext("Save"); ?>"/>
                       <input type="button" class="btn btn-default" value="<?=gettext("Cancel");?>" onclick="window.location.href='/load_balancer_pool.php'" />

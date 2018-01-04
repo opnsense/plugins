@@ -154,10 +154,10 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <td width="22%">
+                      <td style="width:22%">
                         <strong><?=gettext("SNMP Daemon");?></strong>
                       </td>
-                      <td width="78%" align="right">
+                      <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
                         <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
                         &nbsp;&nbsp;
@@ -217,8 +217,8 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td width="22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
-                      <td width="78%">
+                      <td style="width:22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
+                      <td style="width:78%">
                         <input name="trapenable" type="checkbox" value="yes" <?=!empty($pconfig['trapenable']) ? "checked=\"checked\"" : ""; ?> />
                       </td>
                     </tr>
@@ -265,8 +265,8 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td width="22%"><?=gettext("SNMP Modules");?></td>
-                      <td width="78%">
+                      <td style="width:22%"><?=gettext("SNMP Modules");?></td>
+                      <td style="width:78%">
                         <table class="table table-condensed">
                           <tr>
                             <td>
@@ -339,8 +339,8 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                     <td width="22%" valign="top">&nbsp;</td>
-                     <td width="78%">
+                     <td style="width:22%; vertical-align:top">&nbsp;</td>
+                     <td style="width:78%">
                        <input name="Submit" type="submit" class="btn btn-primary" value="<?=gettext("Save");?>" />
                      </td>
                     </tr>

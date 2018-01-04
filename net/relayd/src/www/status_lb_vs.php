@@ -111,8 +111,8 @@ include("head.inc");
                       }
                       ?>
                     <td>
-                      <table border="0" cellpadding="3" cellspacing="2" summary="status">
-                        <tr><td bgcolor="<?=$bgcolor?>"><?=$rdr_a[$vsent['name']]['status']?> </td></tr>
+                      <table style="border:0; cellpadding:3; cellspacing:2">
+                        <tr><td style="background-color:<?=$bgcolor?>"><?=$rdr_a[$vsent['name']]['status']?> </td></tr>
                       </table>
                       <?=!empty($rdr_a[$vsent['name']]['total']) ?  "Total Sessions: {$rdr_a[$vsent['name']]['total']}" : "";?>
                       <?=!empty($rdr_a[$vsent['name']]['last']) ? "<br />Last: {$rdr_a[$vsent['name']]['last']}" : "";?>
