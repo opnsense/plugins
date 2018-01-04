@@ -10,10 +10,14 @@
         <server type="TextField">
             <default>server</default>
             <Required>Y</Required>
+            <mask>/\S*/</mask>
+            <ValidationMessage>Please provide IP or hostname (no spaces allowed).</ValidationMessage>
         </server>
         <user type="TextField">
             <default>user</default>
             <Required>Y</Required>
+            <mask>/^[a-z0-9._-]{1,32}$/</mask>
+            <ValidationMessage>Please provide a valid username. Allowed characters are a-z0-9._- and it has to be 1-32 characters long.</ValidationMessage>
         </user>
         <password type="TextField">
             <default>password</default>
