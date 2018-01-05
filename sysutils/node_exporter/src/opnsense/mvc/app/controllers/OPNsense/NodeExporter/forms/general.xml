@@ -1,0 +1,80 @@
+<form>
+  <field>
+    <id>general.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+    <help>This will activate the node_exporter plugin.</help>
+  </field>
+  <field>
+    <id>general.listenaddress</id>
+    <label>Listen Address</label>
+    <type>text</type>
+    <help>Set node_exporter's listen address. By default, node_exporter will listen on 0.0.0.0 (all interfaces).</help>
+  </field>
+  <field>
+    <id>general.listenport</id>
+    <label>Listen Port</label>
+    <type>text</type>
+    <help>Set node_exporter's listen port. By default, node_exporter will listen on port 9100.</help>
+  </field>
+  <field>
+    <id>general.cpu</id>
+    <label>CPU Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the CPU collector.</help>
+  </field>
+  <field>
+    <id>general.exec</id>
+    <label>Execution Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the EXEC collector.</help>
+  </field>
+  <field>
+    <id>general.filesystem</id>
+    <label>Filesystem Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the FILESYSTEM collector.</help>
+  </field>
+  <field>
+    <id>general.loadavg</id>
+    <label>Load Average Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the LOADAVG collector.</help>
+  </field>
+  <field>
+    <id>general.meminfo</id>
+    <label>Memory Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the MEMINFO collector.</help>
+  </field>
+  <field>
+    <id>general.netdev</id>
+    <label>Network Interface Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the NETDEV collector.</help>
+  </field>
+  <field>
+    <id>general.time</id>
+    <label>Current Time Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the TIME collector.</help>
+  </field>
+  <field>
+    <id>general.devstat</id>
+    <label>Device Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the DEVSTAT collector.</help>
+  </field>
+  <field>
+    <id>general.interrupts</id>
+    <label>Interrupts Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the INTERRUPTS collector.</help>
+  </field>
+  <field>
+    <id>general.ntp</id>
+    <label>NTP Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the NTP collector.</help>
+  </field>
+</form>

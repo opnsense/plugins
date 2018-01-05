@@ -45,7 +45,7 @@ net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring age
 net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
 net/arp-scan -- Get all peers connected to a local network
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
-net/frr -- FRR Routing Suite
+net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
@@ -55,6 +55,7 @@ net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- Quagga Routing Suite
 net/relayd -- Relayd Load Balancer
+net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
@@ -68,6 +69,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
+sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools

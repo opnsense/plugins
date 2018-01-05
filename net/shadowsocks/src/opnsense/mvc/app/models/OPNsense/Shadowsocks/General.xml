@@ -1,0 +1,35 @@
+<model>
+    <mount>//OPNsense/shadowsocks/general</mount>
+    <description>Shadowsocks configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <serveraddress type="TextField">
+            <default>127.0.0.1</default>
+            <Required>Y</Required>
+            <mask>/\S*/</mask>
+            <ValidationMessage>Please provide a valid hostname or IP address.</ValidationMessage>
+        </serveraddress>
+        <serverport type="IntegerField">
+            <default>8388</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
+            <ValidationMessage>Please provide a valid port number between 1 and 65535.</ValidationMessage>
+        </serverport>
+        <localport type="IntegerField">
+            <default>1080</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
+            <ValidationMessage>Please provide a valid port number between 1 and 65535.</ValidationMessage>
+        </localport>
+        <password type="TextField">
+            <default>password</default>
+            <Required>N</Required>
+        </password>
+    </items>
+</model>

@@ -1,0 +1,9 @@
+<acl>
+   <page-services-shadowsocks>
+      <name>Services: Shadowsocks</name>
+      <patterns>
+         <pattern>ui/shadowsocks/*</pattern>
+         <pattern>api/shadowsocks/*</pattern>
+      </patterns>
+   </page-services-shadowsocks>
+</acl>
