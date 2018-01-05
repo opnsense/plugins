@@ -55,6 +55,7 @@ net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- End of life, superseded by FRR plugin
 net/relayd -- Relayd Load Balancer
+net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/upnp -- Universal Plug and Play Service
 net/wol -- Wake on LAN Service
@@ -68,6 +69,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/monit -- Proactive system monitoring
+sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
