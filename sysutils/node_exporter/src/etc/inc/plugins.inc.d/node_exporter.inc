@@ -2,7 +2,6 @@
 
 /*
  * Copyright (C) 2018 David Harrigan
- * Copyright (C) 2017 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +36,7 @@ function node_exporter_services()
     }
 
     $services[] = array(
-        'description' => gettext('Prometheus Node Exporter'),
+        'description' => gettext('Prometheus Exporter'),
         'configd' => array(
             'restart' => array('node_exporter restart'),
             'start' => array('node_exporter start'),
