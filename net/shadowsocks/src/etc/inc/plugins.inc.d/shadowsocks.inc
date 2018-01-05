@@ -41,7 +41,7 @@ function shadowsocks_services()
                 'stop' => array('shadowsocks stop'),
             ),
             'name' => 'shadowsocks',
-            'pidfile' => '/var/run/shadowsocks.pid'
+            'pidfile' => '/var/run/shadowsocks-libev.pid'
         );
     }
 
