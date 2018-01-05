@@ -32,7 +32,6 @@
 namespace OPNsense\Shadowsocks\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
