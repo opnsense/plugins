@@ -20,6 +20,8 @@ load_rc_config opnsense-openconnect
 pidfile=/var/run/${name}.pid
 command=/usr/local/sbin/${name}
 
+secret=/usr/local/etc/openconnect.secret
+
 [ -z "$openconnect_enable" ] && openconnect_enable="NO"
 
 # status of openconnect
@@ -50,7 +52,7 @@ openconnect_start()
 {%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
 {%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
         echo "starting openconnect"  
-	echo "{{ OPNsense.openconnect.general.password }}" | /usr/local/sbin/openconnect -u {{ OPNsense.openconnect.general.user }} {{ OPNsense.openconnect.general.server }} --pid-file=/var/run/openconnect.pid -b -q -i tun30000 2>&1 > /dev/null
+	cat "$secret" | /usr/local/sbin/openconnect --config=/usr/local/etc/openconnect.conf {{ OPNsense.openconnect.general.server }} 2>&1 > /dev/null
 {%       endif %}
 {%     endif %}
 {%   endif %}
