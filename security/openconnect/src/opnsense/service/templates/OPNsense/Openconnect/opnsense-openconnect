@@ -52,7 +52,7 @@ openconnect_start()
 {%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
 {%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
         echo "starting openconnect"  
-	echo "$secret" | /usr/local/sbin/openconnect --config=/usr/local/etc/openconnect.conf {{ OPNsense.openconnect.general.server }} 2>&1 > /dev/null
+	cat $secret | /usr/local/sbin/openconnect --config=/usr/local/etc/openconnect.conf {{ OPNsense.openconnect.general.server }} 2>&1 > /dev/null
 {%       endif %}
 {%     endif %}
 {%   endif %}
