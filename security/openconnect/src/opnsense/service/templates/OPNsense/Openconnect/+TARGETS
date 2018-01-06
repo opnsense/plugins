@@ -1,0 +1,3 @@
+openconnect:/etc/rc.conf.d/opnsense-openconnect
+openconnect.conf:/usr/local/etc/openconnect.conf
+openconnect.secret:/usr/local/etc/openconnect.secret

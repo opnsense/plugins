@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-openconnect
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=openconnect
+
+stop_cmd=openconnect_stop
+start_cmd=openconnect_start
+status_cmd=openconnect_status
+rcvar=openconnect_enable
+
+load_rc_config opnsense-openconnect
+pidfile=/var/run/${name}.pid
+command=/usr/local/sbin/${name}
+
+secret=/usr/local/etc/openconnect.secret
+
+[ -z "$openconnect_enable" ] && openconnect_enable="NO"
+
+# status of openconnect
+openconnect_status()
+{
+	 if [ -n "$rc_pid" ]; then
+	     echo "${name} is running as pid $rc_pid."
+	     return 0
+	 else
+	     echo "${name} is not running."
+	 fi
+}
+
+# stop openconnect
+openconnect_stop()
+{
+	echo "stopping openconnect"
+	killall openconnect
+	ifconfig ocvpn0 destroy
+	return 0
+}
+
+# start openconnect
+openconnect_start()
+{
+        echo "starting openconnect"
+	/usr/local/sbin/openconnect ${openconnect_flags} < /usr/local/etc/openconnect.secret 2>&1 > /dev/null
+        sleep 5
+	ifconfig tun30000 name ocvpn0
+	ifconfig ocvpn0 group ocvpn
+	return 0
+}
+
+run_rc_command $1
