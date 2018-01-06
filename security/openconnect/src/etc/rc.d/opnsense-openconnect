@@ -47,7 +47,7 @@ openconnect_stop()
 # start openconnect
 openconnect_start()
 {
-        echo "starting openconnect"  
+        echo "starting openconnect"
 	/usr/local/sbin/openconnect ${openconnect_flags} < /usr/local/etc/openconnect.secret 2>&1 > /dev/null
         sleep 5
 	ifconfig tun30000 name ocvpn0
