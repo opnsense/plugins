@@ -3,7 +3,7 @@ openconnect_enable="YES"
 {%   if helpers.exists('OPNsense.openconnect.general.server') and OPNsense.openconnect.general.server != '' %}
 {%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
 {%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}
-openconnect_flags="--config=/usr/local/etc/openconnect.conf {{ OPNsense.openconnect.general.server }} < {{ OPNsense.openconnect.general.password }} 2>&1 > /dev/null
+openconnect_flags="--config=/usr/local/etc/openconnect.conf {{ OPNsense.openconnect.general.server }} < /usr/local/etc/openconnect.secret 2>&1 > /dev/null"
 {%       endif %}
 {%     endif %}
 {%   endif %}
