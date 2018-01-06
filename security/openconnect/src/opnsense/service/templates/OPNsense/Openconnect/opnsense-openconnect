@@ -47,16 +47,8 @@ openconnect_stop()
 # start openconnect
 openconnect_start()
 {
-{% if helpers.exists('OPNsense.openconnect.general.enabled') and OPNsense.openconnect.general.enabled == '1' %}
-{%   if helpers.exists('OPNsense.openconnect.general.server') and OPNsense.openconnect.general.server != '' %}
-{%     if helpers.exists('OPNsense.openconnect.general.user') and OPNsense.openconnect.general.user != '' %}
-{%       if helpers.exists('OPNsense.openconnect.general.password') and OPNsense.openconnect.general.password != '' %}  
         echo "starting openconnect"  
-	/usr/local/sbin/openconnect --config=/usr/local/etc/openconnect.conf {{ OPNsense.openconnect.general.server }} < $secret 2>&1 > /dev/null
-{%       endif %}
-{%     endif %}
-{%   endif %}
-{% endif %}
+	/usr/local/sbin/openconnect ${openconnect_flags} < /usr/local/etc/openconnect.secret 2>&1 > /dev/null
         sleep 5
 	ifconfig tun30000 name ocvpn0
 	ifconfig ocvpn0 group ocvpn
