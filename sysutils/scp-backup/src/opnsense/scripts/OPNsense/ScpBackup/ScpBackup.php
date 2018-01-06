@@ -3,6 +3,7 @@
 
 /**
  *    Copyright (C) 2018 David Harrigan
+ *    Copyright (C) 2018 Fabian Franz
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *
  *    All rights reserved.
@@ -36,6 +37,7 @@ require_once("config.inc");
 use OPNsense\Base;
 use OPNsense\Core\Config;
 
+define('KNOWN_HOSTS_FILE', '/tmp/os_known_hosts');
 $config = Config::getInstance()->object();
 $scpBackup = $config->OPNsense->ScpBackup;
 
@@ -52,8 +54,15 @@ if (isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1)
     }
 
     $remoteDirectoryFullPath = escapeshellarg($remoteDirectory . "config-" . date('Y-m-d-H-i') . ".xml");
+    $hardening_params = '';
 
-    $command = "scp -P $port -i $identifyFile $configFile $username@$hostname:$remoteDirectoryFullPath";
+    if (isset($scpBackup->hardening_enabled) && $scpBackup->hardening_enabled == 1) {
+        if (file_exists(KNOWN_HOSTS_FILE) && is_readable(KNOWN_HOSTS_FILE))
+        {
+            $hardening_params = ' -oStrictHostKeyChecking=yes -oUserKnownHostsFile=' . escapeshellarg(KNOWN_HOSTS_FILE);
+        }
+    }
+    $command = "scp$hardening_params -P $port -i $identifyFile $configFile $username@$hostname:$remoteDirectoryFullPath";
 
     syslog(LOG_WARNING, "scp_backup command: $command");
 
