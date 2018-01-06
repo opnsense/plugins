@@ -43,6 +43,13 @@
       </help>
     </field>
     <field>
+        <id>network.PMTUDiscovery</id>
+        <label>path MTU Discovery</label>
+        <type>checkbox</type>
+        <help>When this option is enabled, tinc will try to discover the path MTU to this node. After the path MTU has been discovered, it will be enforced on the VPN.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>network.debuglevel</id>
         <label>Debug</label>
         <type>dropdown</type>
