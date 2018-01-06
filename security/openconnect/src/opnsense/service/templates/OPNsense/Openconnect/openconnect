@@ -7,7 +7,6 @@ openconnect_flags="--config=/usr/local/etc/openconnect.conf {{ OPNsense.openconn
 {%       endif %}
 {%     endif %}
 {%   endif %}
-openconnect_flags=""
 {% else %}
 openconnect_enable="NO"
 {% endif %}
