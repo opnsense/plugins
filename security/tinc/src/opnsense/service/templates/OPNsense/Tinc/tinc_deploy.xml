@@ -5,6 +5,7 @@
     <network>
         <id>{{network.id}}</id>
         <mode>{{network.mode}}</mode>
+        <PMTUDiscovery>{{network.PMTUDiscovery}}</PMTUDiscovery>
         <hostname>{{network.hostname}}</hostname>
         <network>{{network.name}}</network>
         <intaddress>{{network.intaddress}}</intaddress>

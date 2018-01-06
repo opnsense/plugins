@@ -63,6 +63,7 @@ class Network(NetwConfObject):
         self._payload['intaddress'] = None
         self._payload['debuglevel'] = 'd0'
         self._payload['mode'] = 'switch'
+        self._payload['PMTUDiscovery'] = 'yes'
         self._hosts = list()
 
     def get_id(self):
@@ -87,10 +88,17 @@ class Network(NetwConfObject):
                 hostObj.set(host_prop.tag, host_prop)
             self._hosts.append(hostObj)
 
+    def set_PMTUDiscovery(self, value):
+        if value.text != '1':
+            self._payload['PMTUDiscovery'] = 'no'
+        else:
+            self._payload['PMTUDiscovery'] = 'yes'
+
     def config_text(self):
         result = list()
         result.append('AddressFamily=any')
         result.append('Mode=%(mode)s' % self._payload)
+        result.append('PMTUDiscovery=%(PMTUDiscovery)s' % self._payload)
         result.append('Port=%(port)s' % self._payload)
         result.append('PingTimeout=%(pingtimeout)s' % self._payload)
         for host in self._hosts:
