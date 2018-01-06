@@ -1,0 +1,11 @@
+OpenConnect is an SSL VPN client initially created to support
+Cisco's AnyConnect SSL VPN. It has since been ported to support
+the Juniper SSL VPN which is now known as Pulse Connect Secure.
+
+OpenConnect is released under the GNU Lesser Public License, version 2.1.
+
+Like vpnc, OpenConnect is not officially supported by, or associated
+in any way with, Cisco Systems, Juniper Networks or Pulse Secure.
+It just happens to interoperate with their equipment.
+
+WWW: http://www.infradead.org/openconnect/
