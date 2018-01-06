@@ -1,0 +1,5 @@
+<menu>
+    <VPN>
+      <OpenConnect cssClass="fa fa-lock fa-fw" url="/ui/openconnect/general/index" order="15" />
+    </VPN>
+</menu>

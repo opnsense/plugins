@@ -1,0 +1,9 @@
+<acl>
+    <page-openconnect-config>
+        <name>VPN: OpenConnect configuration</name>
+        <patterns>
+            <pattern>ui/openconnect/*</pattern>
+            <pattern>api/openconnect/*</pattern>
+        </patterns>
+    </page-openconnect-config>
+</acl>

@@ -65,6 +65,7 @@ security/clamav -- Antivirus engine for detecting malicious threats
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
+security/openconnect -- OpenConnect Client
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
