@@ -232,7 +232,7 @@ upgrade-check: check
 
 upgrade: upgrade-check package
 .for NAME in ${PLUGIN_PKGNAMES}
-	@if ${PKG} info ${NAME} > /dev/null; then \
+	@if ${PKG} info ${NAME} 2> /dev/null > /dev/null; then \
 		${PKG} delete -fy ${NAME}; \
 	fi
 .endfor
