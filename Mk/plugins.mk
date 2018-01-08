@@ -51,11 +51,20 @@ check:
 PLUGIN_DEVEL?=		yes
 
 PLUGIN_PREFIX?=		os-
-.if "${PLUGIN_DEVEL}" != ""
 PLUGIN_SUFFIX?=		-devel
-.endif
 
+PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
+			${PLUGIN_PREFIX}${PLUGIN_NAME}
+.for CONFLICT in ${PLUGIN_CONFLICTS}
+PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
+			${PLUGIN_PREFIX}${CONFLICT}
+.endfor
+
+.if "${PLUGIN_DEVEL}" != ""
 PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+.else
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}
+.endif
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
@@ -222,9 +231,11 @@ upgrade-check: check
 	@rm -rf ${PKGDIR}
 
 upgrade: upgrade-check package
-	@if ${PKG} info ${PLUGIN_PKGNAME} > /dev/null; then \
-		${PKG} delete -fy ${PLUGIN_PKGNAME}; \
+.for NAME in ${PLUGIN_PKGNAMES}
+	@if ${PKG} info ${NAME} > /dev/null; then \
+		${PKG} delete -fy ${NAME}; \
 	fi
+.endfor
 	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
