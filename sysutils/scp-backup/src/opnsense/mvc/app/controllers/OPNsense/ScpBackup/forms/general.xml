@@ -30,10 +30,22 @@
     <help>Set the remote directory to backup the config file to.</help>
   </field>
   <field>
-    <id>general.publickey</id>
-    <label>Local Root's Public Key</label>
+    <id>general.privatekey</id>
+    <label>SSH Private Key</label>
     <type>textbox</type>
-    <help>The public key of the local root user. This public key must be added to the remote user's authorized_keys - otherwise backups will fail.</help>
-    <readonly>true</readonly>
+    <help>The private key of the user. The paired public key must be added to the remote user's authorized_keys otherwise backups will fail.</help>
+    <height>10</height>
+  </field>
+  <field>
+    <id>general.stricthostkeycheck</id>
+    <label>Enable StrictHostKeyCheck</label>
+    <type>checkbox</type>
+    <help>If enabled, SSH will never automatically add host keys. The host key value must be provided below.</help>
+  </field>
+  <field>
+    <id>general.hostkey</id>
+    <label>Host Key</label>
+    <type>text</type>
+    <help>The host key to use for connection, only used if StrictHostKeyCheck is enabled.</help>
   </field>
 </form>
