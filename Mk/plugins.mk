@@ -133,7 +133,8 @@ scripts-auto:
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			cat ${TEMPLATESDIR}/configure >> \
+			cat ${TEMPLATESDIR}/configure | \
+			    sed "s:%%ARG%%:$${SCRIPT#+}:g" >> \
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
