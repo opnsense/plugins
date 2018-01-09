@@ -36,4 +36,10 @@
     <help>The public key of the local root user. This public key must be added to the remote user's authorized_keys - otherwise backups will fail.</help>
     <readonly>true</readonly>
   </field>
+  <field>
+    <id>general.hardening_enabled</id>
+    <label>Harden SSH Connection</label>
+    <type>checkbox</type>
+    <help>When this checkbox is enabled, the SSH key exchange will result in an error if the key of the key of the server is not whitelisted.</help>
+  </field>
 </form>

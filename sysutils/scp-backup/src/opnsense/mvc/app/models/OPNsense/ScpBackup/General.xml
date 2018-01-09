@@ -39,5 +39,9 @@
         <cronuuid type="TextField">
           <Required>N</Required>
         </cronuuid>
+        <hardening_enabled type="BooleanField">
+          <default>0</default>
+          <Required>Y</Required>
+        </hardening_enabled>
     </items>
 </model>
