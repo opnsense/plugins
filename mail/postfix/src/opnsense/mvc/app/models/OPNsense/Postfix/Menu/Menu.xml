@@ -5,6 +5,7 @@
       <Domains url="/ui/postfix/domain/index" order="20"/>
       <Recipients url="/ui/postfix/recipient/index" order="30"/>
       <Senders url="/ui/postfix/sender/index" order="40"/>
+      <LogFile VisibleName="Log File" order="50" url="/diag_logs_postfix.php"/>
     </Postfix>
   </Services>
 </menu>
