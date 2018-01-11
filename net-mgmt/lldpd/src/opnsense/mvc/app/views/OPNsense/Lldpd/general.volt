@@ -1,6 +1,6 @@
 {#
  # Copyright (C) 2014-2017 Deciso B.V.
- # Copyright (C) 2017 Michael Muenz
+ # Copyright (C) 2017-2018 Michael Muenz
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -45,6 +45,7 @@
 
 <script type="text/javascript">
 
+// Put API call into a function, needed for auto-refresh 
 function update_neighbor() {
     ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
         $("#listneighbor").text(data['response']);
@@ -62,6 +63,7 @@ $( document ).ready(function () {
         updateServiceStatusUI(data['status']);
     });
 
+    // Call function update_neighbor with a auto-refresh of 3 seconds
     setInterval(update_neighbor, 3000);
 
     // link save button to API set action
