@@ -44,6 +44,13 @@
 </div>
 
 <script type="text/javascript">
+
+function update_neighbor() {
+    ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
+        $("#listneighbor").text(data['response']);
+    });
+}
+
 $( document ).ready(function () {
     var data_get_map = {'frm_general_settings':"/api/lldpd/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){
@@ -54,9 +61,8 @@ $( document ).ready(function () {
     ajaxCall(url="/api/lldpd/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });
-    ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
-        $("#listneighbor").text(data['response']);
-    });
+
+    setInterval(update_neighbor, 3000);
 
     // link save button to API set action
     $("#saveAct").click(function () {
