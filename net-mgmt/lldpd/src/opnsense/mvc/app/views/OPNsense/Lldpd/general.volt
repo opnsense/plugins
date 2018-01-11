@@ -74,9 +74,6 @@ $( document ).ready(function () {
                 ajaxCall(url="/api/lldpd/service/status", sendData={}, callback=function(data,status) {
                     updateServiceStatusUI(data['status']);
                 });
-                ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
-                    $("#listneighbor").text(data['response']);
-                });
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
