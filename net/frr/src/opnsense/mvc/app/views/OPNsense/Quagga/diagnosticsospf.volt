@@ -375,7 +375,7 @@ POSSIBILITY OF SUCH DAMAGE.
   </table>
 <% }) %>
 </script>
-<script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
+<script src="/ui/js/quagga/lodash.js"></script>
 <script>
 
 function translate(data)

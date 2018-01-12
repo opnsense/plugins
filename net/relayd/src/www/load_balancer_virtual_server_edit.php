@@ -143,7 +143,7 @@ include("head.inc");
 
 ?>
 <body>
-  <script type="text/javascript">
+  <script>
     $( document ).ready(function() {
       // collect all known aliases per type
       var all_aliases = {};

@@ -28,7 +28,7 @@
 #}
 
 
-<script type="text/javascript">
+<script>
 
 function tor_update_status() {
     ajaxCall(url='/api/tor/service/status', sendData={}, callback=function(data, status) {
