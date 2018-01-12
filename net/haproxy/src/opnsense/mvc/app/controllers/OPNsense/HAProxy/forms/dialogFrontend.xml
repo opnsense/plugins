@@ -111,6 +111,18 @@
         <help><![CDATA[Enable HTTP Strict Transport Security.]]></help>
     </field>
     <field>
+        <id>frontend.ssl_hstsIncludeSubDomains</id>
+        <label>HSTS includeSubDomains</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable if all present and future subdomains will be HTTPS.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_hstsPreload</id>
+        <label>HSTS preload</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable if you like this domain to be included in the HSTS preload list.]]></help>
+    </field>
+    <field>
         <id>frontend.ssl_hstsMaxAge</id>
         <label>HSTS max-age</label>
         <type>text</type>
