@@ -26,7 +26,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script type="text/javascript">
+<script>
 
 function table_tr_kv(key, value) {
     return "<tr><td>" + key + "</td><td>" + value + "</td></tr>";

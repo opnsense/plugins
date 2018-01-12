@@ -106,7 +106,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditSiproxdUser,'id':'dialogEditSiproxdUser','label':lang._('Edit User')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditSiproxdDomain,'id':'dialogEditSiproxdDomain','label':lang._('Edit Outbound Domain')])}}
 
-<script type="text/javascript">
+<script>
 $( document ).ready(function() {
     var data_get_map = {'frm_general_settings':"/api/siproxd/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){

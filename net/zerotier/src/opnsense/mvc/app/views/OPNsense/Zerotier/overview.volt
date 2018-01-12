@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {% set networksFirstRow = true, peersFirstRow = true %}
 
-<script type="text/javascript">
+<script>
     $(document).ready(function() {
         $("#network_details_collapse_all").click(function() {
             $(".network_details").collapse('toggle');

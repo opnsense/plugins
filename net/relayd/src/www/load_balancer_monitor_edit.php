@@ -189,7 +189,7 @@ $types = array("icmp" => gettext("ICMP"), "tcp" => gettext("TCP"), "http" => get
 
 <body>
 <?php include("fbegin.inc"); ?>
-  <script type="text/javascript">
+  <script>
     $( document ).ready(function() {
         $("#monitor_type").change(function(){
             switch ($(this).val()) {

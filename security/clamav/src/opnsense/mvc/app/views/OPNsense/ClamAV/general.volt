@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
 function timeoutCheck() {
     ajaxCall(url="/api/clamav/service/freshclam", sendData={}, callback=function(data,status) {
         if (data['status'] == 'done') {

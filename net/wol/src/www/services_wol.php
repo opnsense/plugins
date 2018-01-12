@@ -91,7 +91,7 @@ include("head.inc");
 ?>
 
 <body>
-  <script type="text/javascript">
+  <script>
   $( document ).ready(function() {
     // delete host action
     $(".act_delete_entry").click(function(event){
