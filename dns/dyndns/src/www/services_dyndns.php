@@ -74,7 +74,7 @@ $main_buttons = array(
 
 ?>
 <body>
-  <script type="text/javascript">
+  <script>
   $( document ).ready(function() {
     // delete service action
     $(".act_delete_service").click(function(event){

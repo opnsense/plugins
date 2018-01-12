@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
     $( document ).ready(function() {
         var data_get_map = {'frm_input_settings':"/api/telegraf/input/get"};
         mapDataToFormUI(data_get_map).done(function(data){

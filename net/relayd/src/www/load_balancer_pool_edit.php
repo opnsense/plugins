@@ -166,7 +166,7 @@ include("head.inc");
   </select>
 
 <?php include("fbegin.inc"); ?>
-  <script type="text/javascript">
+  <script>
   $( document ).ready(function() {
       // init port type ahead
       var all_aliases = [];

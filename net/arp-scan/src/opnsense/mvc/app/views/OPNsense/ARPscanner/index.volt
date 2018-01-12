@@ -27,7 +27,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 
-<script type="text/javascript">
+<script>
 
     function flush_table(){
         $('#netTable tr').slice(2).remove()

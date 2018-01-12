@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     </div>
 
-<script type="text/javascript">
+<script>
 
 function quagga_update_status() {
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {

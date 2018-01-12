@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
 
 // Put API call into a function, needed for auto-refresh
 function update_neighbor() {

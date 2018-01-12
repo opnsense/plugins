@@ -138,7 +138,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
   endforeach;?>
   </tbody>
 </table>
-<script type="text/javascript">
+<script>
   function dyndns_getstatus()
   {
       scroll(0,0);
