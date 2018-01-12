@@ -1,7 +1,6 @@
 <model>
-
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <description>
         a secure Let's Encrypt plugin
     </description>
@@ -415,6 +414,12 @@
                 <dns_duckdns_token type="TextField">
                     <Required>N</Required>
                 </dns_duckdns_token>
+                <dns_dynu_clientid type="TextField">
+                    <Required>N</Required>
+                </dns_dynu_clientid>
+                <dns_dynu_secret type="TextField">
+                    <Required>N</Required>
+                </dns_dynu_secret>
                 <dns_freedns_user type="TextField">
                     <Required>N</Required>
                 </dns_freedns_user>
