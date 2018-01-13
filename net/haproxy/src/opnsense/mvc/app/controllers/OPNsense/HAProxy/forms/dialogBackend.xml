@@ -82,6 +82,13 @@
         <hint>Choose a persistence type.</hint>
     </field>
     <field>
+        <id>backend.stickiness_dataTypes</id>
+        <label>Stored data types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+    </field>
+    <field>
         <id>backend.stickiness_expire</id>
         <label>Expiration time</label>
         <type>text</type>
@@ -106,6 +113,48 @@
         <label>Cookie length</label>
         <type>text</type>
         <help><![CDATA[The maximum number of characters that will be stored in the stick table (if appropiate table type is selected).]]></help>
+    </field>
+    <field>
+        <id>backend.stickiness_connRatePeriod</id>
+        <label>Connection rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming connection rate over that period, in connections per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_sessRatePeriod</id>
+        <label>Session rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming session rate over that period, in sessions per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_httpReqRatePeriod</id>
+        <label>HTTP request rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_httpErrRatePeriod</id>
+        <label>HTTP error rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request error rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_bytesInRatePeriod</id>
+        <label>Bytes in rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_bytesOutRatePeriod</id>
+        <label>Bytes out rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average outgoing bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <label>Tuning Options</label>
