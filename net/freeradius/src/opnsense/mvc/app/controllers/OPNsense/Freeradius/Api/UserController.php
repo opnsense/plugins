@@ -30,6 +30,8 @@
 
 namespace OPNsense\Freeradius\Api;
 
+use OPNsense\Freeradius\common\CCD;
+use OPNsense\Freeradius\common\OpenVpn;
 use \OPNsense\Freeradius\User;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
@@ -53,7 +55,7 @@ class UserController extends ApiMutableModelControllerBase
 
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlUser = new User();
@@ -64,7 +66,7 @@ class UserController extends ApiMutableModelControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["user.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["user." . $msg->getField()] = $msg->getMessage();
             }
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
@@ -83,7 +85,7 @@ class UserController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlUser->users->user);
         return $grid->fetchBindRequest(
             $this->request,
-            array("enabled", "username", "password", "description", "ip", "subnet", "vlan" )
+            array("enabled", "username", "password", "description", "ip", "subnet", "vlan")
         );
     }
 
@@ -110,7 +112,8 @@ class UserController extends ApiMutableModelControllerBase
             $result = array("result" => "failed", "validations" => array());
             $mdlUser = $this->getModel();
             $node = $mdlUser->users->user->Add();
-            $node->setNodes($this->request->getPost("user"));
+            $newUser = $this->request->getPost("user");
+            $node->setNodes($newUser);
             $valMsgs = $mdlUser->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 $fieldnm = str_replace($node->__reference, "user", $msg->getField());
@@ -123,6 +126,10 @@ class UserController extends ApiMutableModelControllerBase
                 Config::getInstance()->save();
                 unset($result['validations']);
                 $result["result"] = "saved";
+
+                // update CCD in openvpn
+                $ccd = CCD::fromFreeradiusUsers((object)$newUser);
+                OpenVpn::generateCCDconfigurationOnDisk([$ccd]);
             }
         }
         return $result;
@@ -134,10 +141,15 @@ class UserController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlUser = $this->getModel();
             if ($uuid != null) {
+                $userToBeDeleted = $mdlUser->getNodeByReference("users.user.$uuid");
                 if ($mdlUser->users->user->del($uuid)) {
                     $mdlUser->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
+
+                    $ccd = CCD::fromFreeradiusUsers((object)$userToBeDeleted);
+                    OpenVpn::resetToStaticOrDelete($ccd);
+                    // TODO: regenerate CCDs
                 } else {
                     $result['result'] = 'not found';
                 }
@@ -166,6 +178,10 @@ class UserController extends ApiMutableModelControllerBase
                         $mdlSetting->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
+
+                        // update CCD in openvpn
+                        $ccd = CCD::fromFreeradiusUsers((object)$userInfo);
+                        OpenVpn::generateCCDconfigurationOnDisk([$ccd]);
                     }
                     return $result;
                 }
@@ -180,18 +196,28 @@ class UserController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlSetting = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlSetting->getNodeByReference($elements . '.'. $element .'.' . $uuid);
+                $node = $mdlSetting->getNodeByReference($elements . '.' . $element . '.' . $uuid);
                 if ($node != null) {
                     if ($node->enabled->__toString() == "1") {
                         $result['result'] = "Disabled";
                         $node->enabled = "0";
+
+                        $ccd = CCD::fromFreeradiusUsers((object)$node);
+                        var_dump($ccd);
+                        OpenVpn::resetToStaticOrDelete($ccd);
                     } else {
                         $result['result'] = "Enabled";
                         $node->enabled = "1";
+
+                        // update CCD in openvpn
+                        $ccd = CCD::fromFreeradiusUsers((object)$node);
+                        OpenVpn::generateCCDconfigurationOnDisk([$ccd]);
                     }
                     // if item has toggled, serialize to config and save
                     $mdlSetting->serializeToConfig();
                     Config::getInstance()->save();
+
+                    // TODO: regenerate CCDs
                 }
             }
         }
