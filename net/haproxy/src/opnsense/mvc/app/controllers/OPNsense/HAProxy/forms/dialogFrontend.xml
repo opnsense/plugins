@@ -146,6 +146,20 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>frontend.tuning_timeoutHttpReq</id>
+        <label>HTTP Request Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum allowed time to wait for a complete HTTP request. In order to offer DoS protection, it may be required to lower the maximum accepted time to receive a complete HTTP request without affecting the client timeout. This helps protecting against established connections on which nothing is sent. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.tuning_timeoutHttpKeepAlive</id>
+        <label>HTTP Keep-Alive Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum allowed time to wait for a new HTTP request to appear. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Logging Options</label>
         <type>header</type>
     </field>
