@@ -25,13 +25,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 namespace OPNsense\Freeradius\Api;
 
 use \OPNsense\Base\ApiControllerBase;
-use OPNsense\Freeradius\common\CCD;
-use OPNsense\Freeradius\common\OpenVpn;
-use OPNsense\Freeradius\User;
+use \OPNsense\Freeradius\common\CCD;
+use \OPNsense\Freeradius\common\OpenVpn;
+use \OPNsense\Freeradius\User;
 
 /**
  * Class CcdController

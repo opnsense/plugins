@@ -61,8 +61,8 @@ class OpenVpn
                 self::writeCCDforServer($ccd->common_name, $ccdConfigAsString, $server['vpnid']);
             }
         } else {
-            // since the CCD does not exist in static, remove it. This is already more then the current core implementation does
-            // it does nothing in this case
+            // since the CCD does not exist in static, remove it. This is already more then the current
+            //  core implementation does it does nothing in this case
             foreach ($servers as $server) {
                 self::deleteCCDforServer($dynamicCDD->common_name, $server['vpnid']);
             }

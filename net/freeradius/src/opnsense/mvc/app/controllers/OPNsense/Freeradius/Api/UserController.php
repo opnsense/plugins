@@ -149,7 +149,6 @@ class UserController extends ApiMutableModelControllerBase
 
                     $ccd = CCD::fromFreeradiusUsers((object)$userToBeDeleted);
                     OpenVpn::resetToStaticOrDelete($ccd);
-                    // TODO: regenerate CCDs
                 } else {
                     $result['result'] = 'not found';
                 }
@@ -216,8 +215,6 @@ class UserController extends ApiMutableModelControllerBase
                     // if item has toggled, serialize to config and save
                     $mdlSetting->serializeToConfig();
                     Config::getInstance()->save();
-
-                    // TODO: regenerate CCDs
                 }
             }
         }

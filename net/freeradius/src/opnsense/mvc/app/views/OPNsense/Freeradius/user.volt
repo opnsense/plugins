@@ -81,7 +81,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 if (status != "success" || data['status'] != 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Error regenerated CCD`s') }}",
+                        title: "{{ lang._('Error regenerated CCD\'s') }}",
                         message: data['status'],
                         draggable: true
                     });

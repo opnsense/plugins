@@ -66,7 +66,7 @@ class CCD
 
         if (isset($user->ip) && isset($user->subnet)) {
             $ip = $user->ip->__toString();
-            $prefix = self::netmaskToCidrPrefix($user->subnet->__toString());
+            $prefix = self::netmaskToCIDRprefix($user->subnet->__toString());
             $ccd->tunnel_network = "$ip/$prefix";
         }
         return $ccd;
@@ -76,7 +76,7 @@ class CCD
      * @param string $netmask netmask as 255.255.255.0
      * @return int prefix like 24 for the above
      */
-    static public function netmaskToCidrPrefix($netmask) {
+    static public function netmaskToCIDRprefix($netmask) {
         $long = ip2long($netmask);
         $base = ip2long('255.255.255.255');
         return 32-log(($long ^ $base)+1,2);
