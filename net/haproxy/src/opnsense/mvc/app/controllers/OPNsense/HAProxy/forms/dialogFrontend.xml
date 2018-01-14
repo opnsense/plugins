@@ -241,6 +241,20 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>frontend.stickiness_counter</id>
+        <label>Enable sticky counters</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable to be able to retrieve values from sticky counters. If disabled, all values will return 0, rendering many conditions useless.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_counter_key</id>
+        <label>Sticky counter key</label>
+        <type>text</type>
+        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>frontend.stickiness_length</id>
         <label>Max. data length</label>
         <type>text</type>

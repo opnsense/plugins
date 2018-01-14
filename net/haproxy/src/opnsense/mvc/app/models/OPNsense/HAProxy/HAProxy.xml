@@ -454,6 +454,16 @@
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Should be a number between 1 and 5 characters followed by either "k", "m" or "g".</ValidationMessage>
                 </stickiness_size>
+                <stickiness_counter type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </stickiness_counter>
+                <stickiness_counter_key type="TextField">
+                    <default>src</default>
+                    <Required>N</Required>
+                    <mask>/^([0-9a-zA-Z._]){1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters.</ValidationMessage>
+                </stickiness_counter_key>
                 <stickiness_length type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>16384</MaximumValue>
