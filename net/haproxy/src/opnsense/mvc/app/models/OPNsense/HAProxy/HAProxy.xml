@@ -17,6 +17,38 @@
             <showIntro type="BooleanField">
                 <default>1</default>
             </showIntro>
+            <peers>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name1 type="HostnameField">
+                    <Required>N</Required>
+                </name1>
+                <listen1 type="HostnameField">
+                    <Required>N</Required>
+                </listen1>
+                <port1 type="IntegerField">
+                    <default>1024</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </port1>
+                <name2 type="HostnameField">
+                    <Required>N</Required>
+                </name2>
+                <listen2 type="HostnameField">
+                    <Required>N</Required>
+                </listen2>
+                <port2 type="IntegerField">
+                    <default>1024</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </port2>
+            </peers>
             <tuning>
                 <root type="BooleanField">
                     <default>0</default>
