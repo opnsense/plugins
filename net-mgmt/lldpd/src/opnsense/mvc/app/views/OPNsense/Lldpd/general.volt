@@ -45,7 +45,7 @@
 
 <script type="text/javascript">
 
-// Put API call into a function, needed for auto-refresh 
+// Put API call into a function, needed for auto-refresh
 function update_neighbor() {
     ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
         $("#listneighbor").text(data['response']);
