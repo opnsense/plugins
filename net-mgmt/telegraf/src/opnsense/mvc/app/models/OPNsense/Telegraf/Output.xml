@@ -27,5 +27,19 @@
             <default></default>
             <Required>N</Required>
         </influx_password>
+        <graphite_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </graphite_enable>
+        <graphite_server type="TextField">
+            <default>localhost:2003</default>
+            <Required>Y</Required>
+        </graphite_server>
+        <graphite_prefix type="TextField">
+            <Required>N</Required>
+        </graphite_prefix>
+        <graphite_template type="TextField">
+            <Required>N</Required>
+        </graphite_timeout>
     </items>
 </model>
