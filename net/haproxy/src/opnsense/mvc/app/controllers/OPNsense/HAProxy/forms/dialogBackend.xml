@@ -28,7 +28,7 @@
         <id>backend.algorithm</id>
         <label>Balancing Algorithm</label>
         <type>dropdown</type>
-        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#balance">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#balance">HAProxy documentation</a> for a full description.]]></help>
         <hint>Choose a load balancing algorithm.</hint>
     </field>
     <field>
@@ -78,7 +78,7 @@
         <id>backend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
+        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
         <hint>Choose a persistence type.</hint>
     </field>
     <field>
