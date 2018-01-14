@@ -88,7 +88,7 @@ function frr_services()
     if (isset($config['OPNsense']['quagga']['general']['enabled']) &&
         $config['OPNsense']['quagga']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('FRRouting daemon'),
+            'description' => gettext('FRRouting Daemon'),
             'configd' => array(
                 'restart' => array('quagga restart'),
                 'start' => array('quagga start'),
