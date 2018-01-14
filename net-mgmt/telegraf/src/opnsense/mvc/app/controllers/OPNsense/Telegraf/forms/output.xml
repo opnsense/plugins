@@ -35,4 +35,28 @@
         <type>text</type>
         <help>Set the password for authentication.</help>
     </field>
+    <field>
+        <id>output.graphite_enable</id>
+        <label>Enable Graphite</label>
+        <type>checkbox</type>
+        <help>This will enable Graphite as output. Format is without square brackets, just like localhost:2003.</help>
+    </field>
+    <field>
+        <id>output.graphite_server</id>
+        <label>Graphite Server</label>
+        <type>text</type>
+        <help>Set the IP and port where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.graphite_prefix</id>
+        <label>Graphite Prefix</label>
+        <type>text</type>
+        <help>Set an optional prefix to the metrics.</help>
+    </field>
+    <field>
+        <id>output.graphite_template</id>
+        <label>Graphite Template</label>
+        <type>text</type>
+        <help>Use a specific output template. For usage see https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md</help>
+    </field>
 </form>
