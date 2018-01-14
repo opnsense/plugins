@@ -216,7 +216,7 @@
         <id>frontend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stickiness table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#stick-table">HAProxy documentation</a> for further information.]]></help>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.7.html#stick-table">HAProxy documentation</a> for further information.]]></help>
         <hint>Choose a stick-table type.</hint>
     </field>
     <field>

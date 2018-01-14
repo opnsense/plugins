@@ -417,8 +417,8 @@
                         <ipv4>only store IPv4 addresses [default]</ipv4>
                         <ipv6>only store IPv6 addresses</ipv6>
                         <integer>store 32bit integers</integer>
-                        <string>store substrings (max. 32 characters)</string>
-                        <binary>store binary blocks (max. 32 characters)</binary>
+                        <string>store substrings</string>
+                        <binary>store binary blocks</binary>
                     </OptionValues>
                 </stickiness_pattern>
                 <stickiness_dataTypes type="OptionField">
