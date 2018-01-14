@@ -1,8 +1,8 @@
 <?php
 
 /*
- * Copyright (C) 2015 - 2017 Deciso B.V.
  * Copyright (C) 2017 Michael Muenz
+ * Copyright (C) 2015-2017 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,21 @@
 
 namespace OPNsense\Postfix\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Postfix\General;
+use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Postfix\General;
 
 /**
  * Class ServiceController
  * @package OPNsense\Postfix
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
+    static protected $internalServiceClass = '\OPNsense\Postfix\General';
+    static protected $internalServiceTemplate = 'OPNsense/Postfix';
+    static protected $internalServiceEnabled = 'enabled';
+    static protected $internalServiceName = 'postfix';
+
     /**
      * check rspamd
      * @return array
@@ -52,86 +57,9 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
-     * start postfix service (in background)
-     * @return array
-     */
-    public function startAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('postfix start');
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * stop postfix service
-     * @return array
-     */
-    public function stopAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("postfix stop");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * restart postfix service
-     * @return array
-     */
-    public function restartAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("postfix restart");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * retrieve status of postfix
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $mdlGeneral = new General();
-        $response = $backend->configdRun("postfix status");
-
-        if (strpos($response, "not running") > 0) {
-            if ($mdlGeneral->enabled->__toString() == 1) {
-                $status = "stopped";
-            } else {
-                $status = "disabled";
-            }
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
-        } elseif ($mdlGeneral->enabled->__toString() == 0) {
-            $status = "disabled";
-        } else {
-            $status = "unkown";
-        }
-
-        return array("status" => $status);
-    }
-
-    /**
      * reconfigure postfix, generate config and reload
+     *
+     * XXX overwrites the base one for make-transport
      */
     public function reconfigureAction()
     {

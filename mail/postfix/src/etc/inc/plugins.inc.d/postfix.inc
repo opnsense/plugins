@@ -47,3 +47,15 @@ function postfix_services()
 
     return $services;
 }
+
+function postfix_syslog()
+{
+    $syslogconf = array();
+
+    $syslogconf['mail'] = array(
+        'facility' => array('postfix'),
+        'remote' => 'mail',
+    );
+
+    return $syslogconf;
+}
