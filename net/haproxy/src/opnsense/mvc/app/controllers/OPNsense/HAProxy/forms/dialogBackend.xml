@@ -86,7 +86,7 @@
         <label>Stored data types</label>
         <type>select_multiple</type>
         <style>tokenize</style>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>backend.stickiness_expire</id>
