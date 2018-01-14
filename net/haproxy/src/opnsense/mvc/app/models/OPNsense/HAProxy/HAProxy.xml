@@ -411,6 +411,91 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </logging_socketStats>
+                <stickiness_pattern type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ipv4>only store IPv4 addresses [default]</ipv4>
+                        <ipv6>only store IPv6 addresses</ipv6>
+                        <integer>store 32bit integers</integer>
+                        <string>store substrings (max. 32 characters)</string>
+                        <binary>store binary blocks (max. 32 characters)</binary>
+                    </OptionValues>
+                </stickiness_pattern>
+                <stickiness_dataTypes type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <conn_cnt>Connection count</conn_cnt>
+                        <conn_cur>Current connections</conn_cur>
+                        <conn_rate>Connection rate</conn_rate>
+                        <sess_cnt>Session count</sess_cnt>
+                        <sess_rate>Session rate</sess_rate>
+                        <http_req_cnt>HTTP request count</http_req_cnt>
+                        <http_req_rate>HTTP request rate</http_req_rate>
+                        <http_err_cnt>HTTP error count</http_err_cnt>
+                        <http_err_rate>HTTP error rate</http_err_rate>
+                        <bytes_in_cnt>Bytes in count (client to server)</bytes_in_cnt>
+                        <bytes_in_rate>Bytes in rate (client to server)</bytes_in_rate>
+                        <bytes_out_cnt>Bytes out count (server to client)</bytes_out_cnt>
+                        <bytes_out_rate>Bytes out rate (server to client)</bytes_out_rate>
+                    </OptionValues>
+                </stickiness_dataTypes>
+                <stickiness_expire type="TextField">
+                    <Required>Y</Required>
+                    <default>30m</default>
+                    <mask>/^([0-9]{1,5}(?:ms|s|m|h|d)?)/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Should be a number between 1 and 5 characters followed by either "d", "h", "m", "s" or "ms".</ValidationMessage>
+                </stickiness_expire>
+                <stickiness_size type="TextField">
+                    <Required>Y</Required>
+                    <default>50k</default>
+                    <mask>/^([0-9]{1,5}[k|m|g]{1})*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Should be a number between 1 and 5 characters followed by either "k", "m" or "g".</ValidationMessage>
+                </stickiness_size>
+                <stickiness_length type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>16384</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 16384.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_length>
+                <stickiness_connRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_connRatePeriod>
+                <stickiness_sessRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_sessRatePeriod>
+                <stickiness_httpReqRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpReqRatePeriod>
+                <stickiness_httpErrRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpErrRatePeriod>
+                <stickiness_bytesInRatePeriod type="TextField">
+                    <default>1m</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_bytesInRatePeriod>
+                <stickiness_bytesOutRatePeriod type="TextField">
+                    <default>1m</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_bytesOutRatePeriod>
                 <forwardFor type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
