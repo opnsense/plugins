@@ -170,11 +170,14 @@ class OpenVpn
         if (isset($configObj->openvpn)) {
             /** @var \SimpleXMLElement $root */
             $root = $configObj->openvpn;
-            foreach ($root->children() as $name => $vpnServer) {
+            foreach ($root->children() as $tag => $vpnServer) {
                 // if that VPN server has dynamic ccd enabled
-                if ($vpnServer->{'dynamic-ccd-lookup'} == '1') {
-                    // convert that one to an assoc array for easier usage in the toolchain
-                    $servers[$name] = json_decode(json_encode($vpnServer), true);
+                if ($tag == 'openvpn-server') {
+                    if ($vpnServer->{'dynamic-ccd-lookup'} == '1') {
+                        // ensured thats actually a openvpn server and now openvpn-csc .. they are in the same root node
+                        $server = json_decode(json_encode($vpnServer), true);
+                        $servers[$server['description']] = $server;
+                    }
                 }
             }
         }
