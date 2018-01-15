@@ -16,7 +16,6 @@ ldap {
 {%     if helpers.exists('OPNsense.freeradius.ldap.base_dn') and OPNsense.freeradius.ldap.base_dn != '' %}
         base_dn = '{{ OPNsense.freeradius.ldap.base_dn }}'
 {%     endif %}
-{%     raw %}
         sasl {
         }
         update {
@@ -27,13 +26,17 @@ ldap {
         }
         user {
                 base_dn = "${..base_dn}"
-                filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+{%     if helpers.exists('OPNsense.freeradius.ldap.user_filter') and OPNsense.freeradius.ldap.user_filter != '' %}
+                filter = "{{ OPNsense.freeradius.ldap.user_filter }}"
+{%     endif %}
                 sasl {
                 }
         }
         group {
                 base_dn = "${..base_dn}"
+{%     if helpers.exists('OPNsense.freeradius.ldap.group_filter') and OPNsense.freeradius.ldap.group_filter != '' %}
                 filter = '(objectClass=posixGroup)'
+{%     endif %}
                 membership_attribute = 'memberOf'
         }
         profile {
@@ -111,6 +114,5 @@ ldap {
         }
 
 }
-{%   endraw %}
 {%   endif %}
 {% endif %}
