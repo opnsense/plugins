@@ -58,6 +58,11 @@ authorize {
         -sql
 {% if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
         ldap
+        if ((ok || updated) && User-Password) {
+            update control {
+                Auth-Type := ldap
+            }
+        }
 {% else %}
         -ldap
 {% endif %}
