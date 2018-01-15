@@ -70,6 +70,25 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
+        /**
+         * Regenerate CCD
+         */
+        $("#regenerateCCDAct").click(function(){
+            $("#regenerateCCDAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/freeradius/ccd/regenerate", sendData={}, callback=function(data,status) {
+                $("#regenerateCCDAct_progress").removeClass("fa fa-spinner fa-pulse");
+
+                if (status != "success" || data['status'] != 'ok') {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_WARNING,
+                        title: "{{ lang._('Error regenerated CCD\'s') }}",
+                        message: data['status'],
+                        draggable: true
+                    });
+                }
+            });
+        });
+
       /*************************************************************************************************************
        * context driven input dialogs
        *************************************************************************************************************/
@@ -134,6 +153,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <div class="col-md-12">
         <hr/>
         <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+        <button class="btn btn-primary" id="regenerateCCDAct" type="button"><b>{{ lang._('Regenerate CCDs') }}</b> <i id="regenerateCCDAct_progress" class=""></i></button>
         <br/><br/>
     </div>
 </div>
