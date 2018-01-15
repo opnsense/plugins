@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>output.influx_enable</id>
-        <label>Enable Influx</label>
+        <label>Enable Influx Output</label>
         <type>checkbox</type>
         <help>This will enable InfluxDB as output. Format is without square brackets, just like http://192.168.0.1:8086.</help>
     </field>
@@ -37,7 +37,7 @@
     </field>
     <field>
         <id>output.graphite_enable</id>
-        <label>Enable Graphite</label>
+        <label>Enable Graphite Output</label>
         <type>checkbox</type>
         <help>This will enable Graphite as output. Format is without square brackets, just like localhost:2003.</help>
     </field>
@@ -61,7 +61,7 @@
     </field>
     <field>
         <id>output.graylog_enable</id>
-        <label>Enable Graylog</label>
+        <label>Enable Graylog Output</label>
         <type>checkbox</type>
         <help>This will enable Graylog as output. Format is without square brackets, just like localhost:12201.</help>
     </field>
