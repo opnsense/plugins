@@ -16,24 +16,70 @@ ldap {
 {%     if helpers.exists('OPNsense.freeradius.ldap.base_dn') and OPNsense.freeradius.ldap.base_dn != '' %}
         base_dn = '{{ OPNsense.freeradius.ldap.base_dn }}'
 {%     endif %}
-{%     raw %}
         sasl {
         }
         update {
+                control:Auth-Type               := 'radiusAuthType'
+                control:Simultaneous-Use        := 'radiusSimultaneousUse'
+                control:Called-Station-Id       := 'radiusCalledStationId'
+                control:Calling-Station-Id      := 'radiusCallingStationId'
+                control:LM-Password             := 'lmPassword'
+                control:NT-Password             := 'ntPassword'
+                control:LM-Password             := 'sambaLmPassword'
+                control:NT-Password             := 'sambaNtPassword'
+                control:LM-Password             := 'dBCSPwd'
                 control:Password-With-Header    += 'userPassword'
+                control:SMB-Account-CTRL-TEXT   := 'acctFlags'
+                control:Expiration              := 'radiusExpiration'
+                control:NAS-IP-Address          := 'radiusNASIpAddress'
+                reply:Service-Type              := 'radiusServiceType'
+                reply:Framed-Protocol           := 'radiusFramedProtocol'
+                reply:Framed-IP-Address         := 'radiusFramedIPAddress'
+                reply:Framed-IP-Netmask         := 'radiusFramedIPNetmask'
+                reply:Framed-Route              := 'radiusFramedRoute'
+                reply:Framed-Routing            := 'radiusFramedRouting'
+                reply:Filter-Id                 := 'radiusFilterId'
+                reply:Framed-MTU                := 'radiusFramedMTU'
+                reply:Framed-Compression        := 'radiusFramedCompression'
+                reply:Login-IP-Host             := 'radiusLoginIPHost'
+                reply:Login-Service             := 'radiusLoginService'
+                reply:Login-TCP-Port            := 'radiusLoginTCPPort'
+                reply:Callback-Number           := 'radiusCallbackNumber'
+                reply:Callback-Id               := 'radiusCallbackId'
+                reply:Framed-IPX-Network        := 'radiusFramedIPXNetwork'
+                reply:Class                     := 'radiusClass'
+                reply:Session-Timeout           := 'radiusSessionTimeout'
+                reply:Idle-Timeout              := 'radiusIdleTimeout'
+                reply:Termination-Action        := 'radiusTerminationAction'
+                reply:Login-LAT-Service         := 'radiusLoginLATService'
+                reply:Login-LAT-Node            := 'radiusLoginLATNode'
+                reply:Login-LAT-Group           := 'radiusLoginLATGroup'
+                reply:Framed-AppleTalk-Link     := 'radiusFramedAppleTalkLink'
+                reply:Framed-AppleTalk-Network  := 'radiusFramedAppleTalkNetwork'
+                reply:Framed-AppleTalk-Zone     := 'radiusFramedAppleTalkZone'
+                reply:Port-Limit                := 'radiusPortLimit'
+                reply:Login-LAT-Port            := 'radiusLoginLATPort'
+                reply:Reply-Message             := 'radiusReplyMessage'
+                reply:Tunnel-Type               := 'radiusTunnelType'
+                reply:Tunnel-Medium-Type        := 'radiusTunnelMediumType'
+                reply:Tunnel-Private-Group-Id   := 'radiusTunnelPrivateGroupId'
                 control:                        += 'radiusControlAttribute'
                 request:                        += 'radiusRequestAttribute'
                 reply:                          += 'radiusReplyAttribute'
         }
         user {
                 base_dn = "${..base_dn}"
-                filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+{%     if helpers.exists('OPNsense.freeradius.ldap.user_filter') and OPNsense.freeradius.ldap.user_filter != '' %}
+                filter = "{{ OPNsense.freeradius.ldap.user_filter }}"
+{%     endif %}
                 sasl {
                 }
         }
         group {
                 base_dn = "${..base_dn}"
+{%     if helpers.exists('OPNsense.freeradius.ldap.group_filter') and OPNsense.freeradius.ldap.group_filter != '' %}
                 filter = '(objectClass=posixGroup)'
+{%     endif %}
                 membership_attribute = 'memberOf'
         }
         profile {
@@ -111,6 +157,5 @@ ldap {
         }
 
 }
-{%   endraw %}
 {%   endif %}
 {% endif %}
