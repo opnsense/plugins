@@ -24,5 +24,13 @@
             <default>dc=example,dc=domain,dc=com</default>
             <Required>N</Required>
         </base_dn>
+        <user_filter type="TextField">
+            <default>(uid=%{%{Stripped-User-Name}:-%{User-Name}})</default>
+            <Required>N</Required>
+        </user_filter>
+        <group_filter type="TextField">
+            <default>(objectClass=posixGroup)</default>
+            <Required>N</Required>
+        </group_filter>
     </items>
 </model>
