@@ -29,7 +29,7 @@
  */
 namespace OPNsense\HAProxy\Api;
 
-use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\HAProxy\HAProxy;
 
@@ -37,125 +37,12 @@ use \OPNsense\HAProxy\HAProxy;
  * Class ServiceController
  * @package OPNsense\HAProxy
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * start haproxy service (in background)
-     * @return array
-     */
-    public function startAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("haproxy start");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * stop haproxy service
-     * @return array
-     */
-    public function stopAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("haproxy stop");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * restart haproxy service
-     * @return array
-     */
-    public function restartAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun("haproxy restart");
-            return array("response" => $response);
-        } else {
-            return array("response" => array());
-        }
-    }
-
-    /**
-     * retrieve status of haproxy service
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $mdlProxy = new HAProxy();
-        $response = $backend->configdRun("haproxy status");
-
-        if (strpos($response, "not running") > 0) {
-            if ($mdlProxy->general->enabled->__toString() == 1) {
-                $status = "stopped";
-            } else {
-                $status = "disabled";
-            }
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
-        } elseif ($mdlProxy->general->enabled->__toString() == 0) {
-            $status = "disabled";
-        } else {
-            $status = "unkown";
-        }
-
-        return array("status" => $status);
-    }
-
-    /**
-     * reconfigure haproxy, generate config and reload
-     */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            $force_restart = false;
-            // close session for long running action
-            $this->sessionClose();
-
-            $mdlProxy = new HAProxy();
-            $backend = new Backend();
-
-            $runStatus = $this->statusAction();
-
-            // stop haproxy when disabled
-            if ($runStatus['status'] == "running" &&
-               ($mdlProxy->general->enabled->__toString() == 0 || $force_restart)) {
-                $this->stopAction();
-            }
-
-            // generate template
-            $backend->configdRun('template reload OPNsense/HAProxy');
-
-            // (res)start daemon
-            if ($mdlProxy->general->enabled->__toString() == 1) {
-                if ($runStatus['status'] == "running" && !$force_restart) {
-                    $backend->configdRun("haproxy reload");
-                } else {
-                    $this->startAction();
-                }
-            }
-
-            return array("status" => "ok");
-        } else {
-            return array("status" => "failed");
-        }
-    }
+    static protected $internalServiceClass = '\OPNsense\HAProxy\HAProxy';
+    static protected $internalServiceTemplate = 'OPNsense/Haproxy';
+    static protected $internalServiceEnabled = 'general.enabled';
+    static protected $internalServiceName = 'haproxy';
 
     /**
      * run syntax check for haproxy configuration
