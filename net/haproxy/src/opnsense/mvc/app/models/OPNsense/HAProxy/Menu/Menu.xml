@@ -3,6 +3,7 @@
       <HAProxy VisibleName="HAProxy" cssClass="fa fa-truck fa-fw">
           <Settings order="10" url="/ui/haproxy/">
               <GeneralSettings VisibleName="Service Settings" url="/ui/haproxy/#subtab_haproxy-general-settings"/>
+              <PeerSync VisibleName="Peers / Session Sync" url="/ui/haproxy/#subtab_haproxy-general-peers"/>
               <GlobalParameters VisibleName="Global Parameters" url="/ui/haproxy/#subtab_haproxy-general-global"/>
               <DefaultParameters VisibleName="Detault Parameters" url="/ui/haproxy/#subtab_haproxy-general-defaults"/>
               <LoggingConfiguration VisibleName="Logging Configuration" url="/ui/haproxy/#subtab_haproxy-general-logging"/>
