@@ -1,0 +1,80 @@
+<form>
+   <field>
+      <id>relayd.tablecheck.name</id>
+      <label>Name</label>
+      <type>text</type>
+      <help><![CDATA[
+         The name of the table check.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.type</id>
+      <label>Type</label>
+      <type>dropdown</type>
+      <help><![CDATA[<ul>
+         <li>ICMP - Ping hosts in this table to determine whether they are up or not.</li>
+         <li>TCP - Use a simple TCP connect to check that hosts are up.</li>
+         <li>SSL - Perform a complete SSL handshake with each host to check their availability.</li>
+         <li>SEND - Create a TCP connection, send data and check the response.</li>
+         <li>SCRIPT - Execute an external program to check the host state.</li>
+         <li>HTTP(S) - Check response code or message digest from a http(s) request.</li>
+         </ul>]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.path</id>
+      <label>Path</label>
+      <type>text</type>
+      <help><![CDATA[
+         The URL path for HTTP(S) or the script path for SCRIPT checks.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.host</id>
+      <label>Host</label>
+      <type>text</type>
+      <help><![CDATA[
+         The HTTP 'Host' header value.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.code</id>
+      <label>Response Code</label>
+      <type>text</type>
+      <help><![CDATA[
+         The expected response code.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.digest</id>
+      <label>Message Digest</label>
+      <type>text</type>
+      <help><![CDATA[
+         The expected response message digest.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.data</id>
+      <label>Send Data</label>
+      <type>text</type>
+      <help><![CDATA[
+         Send data.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.expect</id>
+      <label>Expect Pattern</label>
+      <type>text</type>
+      <help><![CDATA[
+         Match response against pattern.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.tablecheck.ssl</id>
+      <label>SSL</label>
+      <type>checkbox</type>
+      <help><![CDATA[
+         Use SSL.]]>
+      </help>
+   </field>
+</form>

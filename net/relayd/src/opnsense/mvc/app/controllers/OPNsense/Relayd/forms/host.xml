@@ -1,0 +1,46 @@
+<form>
+   <field>
+      <id>relayd.host.name</id>
+      <label>Name</label>
+      <type>text</type>
+      <help><![CDATA[
+         The name of the host.]]></help>
+   </field>
+   <field>
+      <id>relayd.host.address</id>
+      <label>Address</label>
+      <type>text</type>
+      <help><![CDATA[
+         The backend host address.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.host.ipTTL</id>
+      <label>IP TTL</label>
+      <type>text</type>
+      <help><![CDATA[
+         Change the default time-to-live value in the IP headers for host checks.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.host.priority</id>
+      <label>Route Priority</label>
+      <type>text</type>
+      <help><![CDATA[
+         Change the route priority used when adding a route.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.host.retry</id>
+      <label>Retry Number</label>
+      <type>text</type>
+      <help><![CDATA[
+         The optional retry option adds a tolerance for failed host checks;
+         the check will be retried for this number more times before setting the
+         host state to down.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+</form>

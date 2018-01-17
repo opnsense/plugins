@@ -28,52 +28,20 @@
  *
  */
 
-function relayd_enabled()
-{
-    global $config;
-    
-    return isset($config['OPNsense']['relayd']['general']['enabled']) &&
-    $config['OPNsense']['relayd']['general']['enabled'] == 1;
-}
+namespace OPNsense\Relayd;
 
-function relayd_firewall($fw)
+/**
+ * Class StatusController
+ * @package OPNsense\Relayd
+ */
+class StatusController extends \OPNsense\Base\IndexController
 {
-    if (relayd_enabled()) {
-        $fw->registerAnchor('relayd/*', 'fw');
+    /**
+     * relayd status page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Relayd/status');
     }
-}
-
-function relayd_services()
-{
-    global $config;
-    $services = array();
-    if (relayd_enabled()) {
-        $services[] = array(
-            'description' => gettext('Relayd Load Balancer'),
-            'configd' => array(
-                'restart' => array('relayd restart'),
-                'start' => array('relayd start'),
-                'stop' => array('relayd stop'),
-            ),
-            'name' => 'relayd',
-        );
-    }
-    return $services;
-}
-
-function relayd_xmlrpc_sync()
-{
-    return array(array(
-        'description' => gettext('Relayd Load Balancer'),
-        'section' => 'OPNsense.relayd',
-        'id' => 'relayd',
-    ));
-    
-}
-
-function relayd_syslog()
-{
-    return array('relayd' => array(
-        'facility' => array('relayd'),
-        'remote' => 'relayd'));
 }

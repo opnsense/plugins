@@ -1,0 +1,199 @@
+<form>
+   <field>
+      <id>relayd.virtualserver.name</id>
+      <label>Name</label>
+      <type>text</type>
+      <help><![CDATA[
+         The name of the virtual server.]]></help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.enabled</id>
+      <label>Enable</label>
+      <type>checkbox</type>
+      <help><![CDATA[
+         If unchecked start the virtual server disabled.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.type</id>
+      <label>Server Type</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         <b>Redirections</b><br>
+         &nbsp;&nbsp;&nbsp;Redirections are translated to pf(4) rdr-to rules for stateful<br>
+         &nbsp;&nbsp;&nbsp;forwarding to a target host from a health-checked table on layer 3.<br><br>
+         <b>Relays</b><br>
+         &nbsp;&nbsp;&nbsp;Relays allow application layer load balancing, SSL acceleration,<br>
+         &nbsp;&nbsp;&nbsp;and general purpose TCP proxying on layer 7.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.listen_address</id>
+      <label>Listen Address</label>
+      <type>text</type>
+      <help><![CDATA[
+         Specify an address to listen on.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.listen_startport</id>
+      <label>Listen Port</label>
+      <type>text</type>
+      <help><![CDATA[
+         Specify the port to listen on.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.listen_endport</id>
+      <label>Listen End Port</label>
+      <type>text</type>
+      <help><![CDATA[
+         Specify the end of a port range.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.listen_interface</id>
+      <label>Interface</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         The Interface to listen on. Leave it unset to listen on all interfaces.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_type</id>
+      <label>Transport Type</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         <b>Forward</b> or <b>Route</b> packets to the backend hosts.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_table</id>
+      <label>Table</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Specify the table of target hosts to be used.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_port</id>
+      <label>Port</label>
+      <type>text</type>
+      <help><![CDATA[
+         Specify the destination port.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_interval</id>
+      <label>Check Interval</label>
+      <type>text</type>
+      <help><![CDATA[
+         Override the global interval. I must be a multiple of the global interval.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_timeout</id>
+      <label>Check Timeout</label>
+      <type>text</type>
+      <help><![CDATA[
+         Override the global check timeout.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_tablemode</id>
+      <label>Scheduler</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Set the scheduling algorithm to select a host from the table.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.transport_tablecheck</id>
+      <label>Table Check</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Specify the table check.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.virtualserver.backuptransport_table</id>
+      <label>Backup Table</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Specify the table of target hosts to be used.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+      <field>
+      <id>relayd.virtualserver.backuptransport_interval</id>
+      <label>Backup Check Interval</label>
+      <type>text</type>
+      <help><![CDATA[
+         Override the global interval. I must be a multiple of the global interval.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.backuptransport_timeout</id>
+      <label>Backup Check Timeout</label>
+      <type>text</type>
+      <help><![CDATA[
+         Override the global check timeout.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.backuptransport_tablemode</id>
+      <label>Backup Table Scheduler</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Set the scheduling algorithm to select a host from the table.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.backuptransport_tablecheck</id>
+      <label>Backup Table Check</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Specify the table check.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.sessiontimeout</id>
+      <label>Session Timeout</label>
+      <type>text</type>
+      <help><![CDATA[
+         Specify the inactivity timeout in seconds for established<br>
+         redirections.  The default timeout is 600 seconds (10 minutes).<br>
+         The maximum is 2147483647 seconds (68 years).]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.stickyaddress</id>
+      <label>Sticky Address</label>
+      <type>checkbox</type>
+      <help><![CDATA[
+         It will ensure that multiple connections<br>
+         from the same source are mapped to the same redirection address.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>relayd.virtualserver.protocol</id>
+      <label>Protocol</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Use the specified protocol definition for the relay.]]>
+      </help>
+      <advanced>true</advanced>
+   </field>
+</form>
