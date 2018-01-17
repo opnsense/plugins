@@ -31,7 +31,7 @@
 function relayd_enabled()
 {
     global $config;
-    
+
     return isset($config['OPNsense']['relayd']['general']['enabled']) &&
     $config['OPNsense']['relayd']['general']['enabled'] == 1;
 }
@@ -39,6 +39,7 @@ function relayd_enabled()
 function relayd_firewall($fw)
 {
     if (relayd_enabled()) {
+        $fw->registerAnchor('relayd/*', 'rdr');
         $fw->registerAnchor('relayd/*', 'fw');
     }
 }
@@ -68,7 +69,7 @@ function relayd_xmlrpc_sync()
         'section' => 'OPNsense.relayd',
         'id' => 'relayd',
     ));
-    
+
 }
 
 function relayd_syslog()

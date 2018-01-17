@@ -50,17 +50,17 @@ class ServiceController extends ApiControllerBase
             $this->sessionClose();
         }
         $result['function'] = "configtest";
-        
+
         $result['template'] = $this->callBackend('template');
         if ($result['template'] != 'OK') {
             $result['result'] = "Template error: " . $result['template'];
             return $result;
         }
-        
+
         $result['result'] = $this->callBackend('configtest');
         return $result;
     }
-    
+
     /**
      * reload relayd with new configuration
      * @return array
@@ -71,23 +71,23 @@ class ServiceController extends ApiControllerBase
             $this->sessionClose();
         }
         $result['function'] = "reload";
-        
+
         $result['template'] = $this->callBackend('template');
         if ($result['template'] != 'OK') {
             $result['result'] = "Template error: " . $result['template'];
             return $result;
         }
-        
+
         $status = $this->callBackend('status');
         if (substr($status, 0, 17) != 'relayd is running') {
             $result['result'] = "relayd is not running";
             return $result;
         }
-        
+
         $result['result'] = $this->callBackend('reload');
         return $result;
     }
-    
+
     /**
      * get status of relayd process
      * @return array
@@ -116,7 +116,7 @@ class ServiceController extends ApiControllerBase
         }
         return $result;
     }
-    
+
     /**
      * start relayd service
      * @return array
@@ -130,7 +130,7 @@ class ServiceController extends ApiControllerBase
         }
         return $result;
     }
-    
+
     /**
      * stop relayd service
      * @return array
@@ -144,7 +144,7 @@ class ServiceController extends ApiControllerBase
         }
         return $result;
     }
-    
+
     /**
      * restart relayd service
      * @return array
@@ -158,7 +158,7 @@ class ServiceController extends ApiControllerBase
         }
         return $result;
     }
-    
+
     /**
      * call backend functions
      * @param action

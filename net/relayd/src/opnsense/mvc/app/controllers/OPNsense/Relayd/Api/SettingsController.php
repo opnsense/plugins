@@ -41,7 +41,7 @@ use \OPNsense\Base\UIModelGrid;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    
+
     static protected $internalModelName = 'relayd';
     static protected $internalModelClass = '\OPNsense\Relayd\Relayd';
 
@@ -49,7 +49,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * list with valid model node types
      */
     private $nodeTypes = array('general', 'host', 'tablecheck', 'table', 'protocol', 'virtualserver');
-    
+
     /**
      * query relayd settings
      * @param $nodeType
@@ -78,7 +78,7 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     /**
      * set relayd properties
      * @param $nodeType
@@ -103,7 +103,7 @@ class SettingsController extends ApiMutableModelControllerBase
             }
             if ($node != null) {
                 $relaydInfo = $this->request->getPost("relayd");
-                
+
                 // perform plugin specific validations
                 if ($nodeType == 'virtualserver') {
                     if ($relaydInfo[$nodeType]['type'] == 'redirect') {
@@ -147,7 +147,7 @@ class SettingsController extends ApiMutableModelControllerBase
                             break;
                     }
                 }
-                
+
                 $node->setNodes($relaydInfo[$nodeType]);
                 $valMsgs = $mdlRelayd->performValidation();
                 foreach ($valMsgs as $field => $msg) {
@@ -168,7 +168,7 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     /**
      * delete relayd settings
      * @param $nodeType
@@ -212,7 +212,7 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    
+
     /**
      * search relayd settings
      * @param $nodeType
@@ -246,7 +246,7 @@ class SettingsController extends ApiMutableModelControllerBase
             return $grid->fetchBindRequest($this->request, $fields);
         }
     }
-    
+
     /**
      * validate nodeType
      * @param $nodeType
@@ -258,7 +258,7 @@ class SettingsController extends ApiMutableModelControllerBase
             throw new \Exception('unknown nodeType: ' . $nodeType);
         }
     }
-    
+
     /**
      * delete relations
      * @param $nodeType

@@ -41,7 +41,7 @@ $shellObj = new OPNsense\Core\Shell;
 
 // test if Relayd is already configured
 $nodes = $mdlRelayd->getNodes();
-if (count($nodes['host']) != 0 || 
+if (count($nodes['host']) != 0 ||
     count($nodes['table']) != 0 ||
     count($nodes['tablecheck']) != 0) {
     exit;

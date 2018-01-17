@@ -32,51 +32,51 @@ POSSIBILITY OF SUCH DAMAGE.
       $('#btnRefresh').unbind('click').click(function() {
          ajaxCall(url = "/api/relayd/status/sum", sendData={}, callback = function(result, status) {
             if (status == "success" && result.result === 'ok') {
-            	$('#tableStatus > tbody').empty();
-            	$('#tableStatus > tbody').attr('style', 'display:none;');
-            	/* create a table row for each host and combine 
-            	   virtualserver/table fields afterwards via rowspan */
-            	$.each(result.rows, function (vkey, virtualserver) {
-            	   var vrowspan = 0;
-            	   var trowspan = [];
-            	   var html = '<tr class="vrow"><td id="virtualServer' + vkey + '">';
-            	   html += getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type);
-            	   html += virtualserver.name + ' (' + virtualserver.type + '): ' + virtualserver.status + '</td>';
-            	   var tfirst = true;
-            	   $.each(virtualserver.tables, function(tkey, table) {
-            		   trowspan[tkey] = 0;
-            		   if (tfirst == true) {
-            			   tfirst = false;
-            		   } else {
-            			   html += '<tr>';
-            		   }
-            		   html += '<td id="table' + tkey + '">';
-            		   html += getControlButtons(table.status, tkey, 'table');
-            		   html += table.name + ' ' + table.status + '</td>';
-            		   var hfirst = true;
+		$('#tableStatus > tbody').empty();
+		$('#tableStatus > tbody').attr('style', 'display:none;');
+		/* create a table row for each host and combine
+		   virtualserver/table fields afterwards via rowspan */
+		$.each(result.rows, function (vkey, virtualserver) {
+		   var vrowspan = 0;
+		   var trowspan = [];
+		   var html = '<tr class="vrow"><td id="virtualServer' + vkey + '">';
+		   html += getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type);
+		   html += virtualserver.name + ' (' + virtualserver.type + '): ' + virtualserver.status + '</td>';
+		   var tfirst = true;
+		   $.each(virtualserver.tables, function(tkey, table) {
+			   trowspan[tkey] = 0;
+			   if (tfirst == true) {
+				   tfirst = false;
+			   } else {
+				   html += '<tr>';
+			   }
+			   html += '<td id="table' + tkey + '">';
+			   html += getControlButtons(table.status, tkey, 'table');
+			   html += table.name + ' ' + table.status + '</td>';
+			   var hfirst = true;
                      $.each(table.hosts, function(hkey, host) {
-                    	   if (hfirst == true) {
-                    		   hfirst = false;
+			   if (hfirst == true) {
+				   hfirst = false;
                         } else {
-                        	html += '<tr>';
+				html += '<tr>';
                         }
-                    	   vrowspan++;
-                    	   trowspan[tkey]++;
-                    	   html += '<td>';
-                    	   html += getControlButtons(host.status, hkey, 'host');
-                    	   html += host.name + ' ' + host.status + '</td></tr>';
+			   vrowspan++;
+			   trowspan[tkey]++;
+			   html += '<td>';
+			   html += getControlButtons(host.status, hkey, 'host');
+			   html += host.name + ' ' + host.status + '</td></tr>';
                      });
                      // dummy host for disabled tables
                      if (hfirst == true) {
-                    	   vrowspan++;
-                    	   html += '<td></td>';
+			   vrowspan++;
+			   html += '<td></td>';
                      }
                   });
-            	   
+
                   $('#tableStatus > tbody').append(html);
                   $('#virtualServer' + vkey).attr('rowspan', vrowspan);
                   $.each(trowspan, function(tid, trowspan) {
-                	   $('#table' + tid).attr('rowspan', trowspan);
+			   $('#table' + tid).attr('rowspan', trowspan);
                   });
                   $('#tableStatus > tbody > tr.vrow > td').css('border-top', '2px solid #ddd');
                   $('#tableStatus > tbody').fadeIn();
@@ -86,18 +86,18 @@ POSSIBILITY OF SUCH DAMAGE.
             }
          });
       });
-      
+
 	   // initial load
       $("#btnRefresh").click();
-      
+
    });
-   
+
    // create status and start/stop buttons
    function getControlButtons(status, id, nodeType) {
        var statusClass = "btn btn-xs glyphicon ";
        var controlClass = "btn btn-xs btn-default glyphicon ";
        var action;
-       
+
        if (status.substring(0, 6) === 'active' || status === 'up') {
           statusClass += "btn-success glyphicon-play";
           controlClass += "glyphicon-stop";
@@ -119,14 +119,14 @@ POSSIBILITY OF SUCH DAMAGE.
        html += '<span ' + action + ' class="' + controlClass + '"> </span>&nbsp;';
        return html;
     };
-    
+
     // enable/disable redirects, tables or hosts
     function toggleNode(nodeType, id, action) {
         ajaxCall(url = "/api/relayd/status/toggle/" + nodeType + "/" + id + "/" + action, callback = function(result, status) {
            $("#btnRefresh").click();
         });
      };
-   
+
 </script>
 
 <div class="content-box">

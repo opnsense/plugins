@@ -92,7 +92,7 @@ class StatusController extends ApiControllerBase
         $result["rows"] = $rows;
         return $result;
     }
-    
+
     /**
      * enable/disable relayd objects
      */
@@ -104,7 +104,7 @@ class StatusController extends ApiControllerBase
         $result = array("result" => "failed", "function" => "toggle");
         $output = array();
         $exitcode;
-        if ($nodeType != null && 
+        if ($nodeType != null &&
                 ($nodeType == 'redirect' ||
                  $nodeType == 'table' ||
                  $nodeType == 'host')) {
@@ -116,7 +116,7 @@ class StatusController extends ApiControllerBase
                     $result["output"] = join(' ', $output);
                     if ($exitcode == 0) {
                         $result["result"] = 'ok';
-                    } 
+                    }
                 }
             }
         }

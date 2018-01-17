@@ -212,7 +212,7 @@
          <transport_tablemode type="OptionField">
             <default>roundrobin</default>
             <Required>N</Required>
-            <OptionValues>            
+            <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
                <loadbalance>Load Balance</loadbalance>
@@ -270,7 +270,7 @@
          <backuptransport_tablemode type="OptionField">
             <default>roundrobin</default>
             <Required>N</Required>
-            <OptionValues>            
+            <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
                <loadbalance>Load Balance</loadbalance>
