@@ -5654,11 +5654,11 @@ body {
   border-right: 1px solid #393939;
   border-top: 1px solid #393939;
   border-left: 1px solid #393939;
-  border-bottom: 1px solid black; 
+  border-bottom: 1px solid black;
 }
 
 .nav-tabs > li.active > a {
-  background: #444 !important; 
+  background: #444 !important;
   color: #e1e1e1;}
 
 .nav-tabs > li.active > a,

@@ -37,6 +37,7 @@ dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
+misc/theme-rebellion -- A suitably dark theme
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/snmp -- SNMP Server via bsnmpd
