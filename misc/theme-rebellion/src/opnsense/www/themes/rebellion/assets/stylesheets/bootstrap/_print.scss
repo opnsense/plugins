@@ -7,7 +7,7 @@
 
   * {
     text-shadow: none !important;
-    color: #000 !important; // Black prints faster: h5bp.com/s
+    color: #ccc !important; // Black prints faster: h5bp.com/s
     background: transparent !important;
     box-shadow: none !important;
   }
@@ -65,7 +65,7 @@
   // Chrome (OSX) fix for https://github.com/twbs/bootstrap/issues/11245
   // Once fixed, we can just straight up remove this.
   select {
-    background: #fff !important;
+    background: #555 !important;
   }
 
   // Bootstrap components
@@ -75,7 +75,7 @@
   .table {
     td,
     th {
-      background-color: #fff !important;
+      background-color: #444 !important;
     }
   }
   .btn,
@@ -85,7 +85,7 @@
     }
   }
   .label {
-    border: 1px solid #000;
+    border: 1px solid #aaa;
   }
 
   .table {
@@ -94,7 +94,7 @@
   .table-bordered {
     th,
     td {
-      border: 1px solid #ddd !important;
+      border: 1px solid #666 !important;
     }
   }
 
