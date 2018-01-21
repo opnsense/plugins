@@ -1,8 +1,8 @@
 $colors: (
   orange: #EA7105,
-  lightgrey: #F7F7F7,
-  lightergrey: #FBFBFB,
-  darkgrey: #3C3C3B,
+  lightgrey: #2B2B2B,
+  lightergrey: #232323,
+  darkgrey: #C1C1C1,
   bordergrey: #E5E5E5,
 );
 
@@ -16,7 +16,7 @@ $zindex: (
 // format dashboard widget headers
 .widgetdiv {
     .content-box-head {
-        background: #E8E8E8 !important;
+        background: #454545 !important;
         color: map-get($colors, darkgrey) !important;
         padding-bottom: 1px !important;
         padding-top:  1px !important;
@@ -27,7 +27,7 @@ $zindex: (
         .btn-group {
             .btn {
                 color: map-get($colors, darkgrey) !important;
-                background: #E8E8E8 !important;
+                background: #454545 !important;
                 border: 0px;
                 .glyphicon {
                     color: map-get($colors, darkgrey) !important;
@@ -121,6 +121,7 @@ html, body{
 }
 
 body{
+  touch-action: manipulation;
   min-width: 320px;
 }
 
@@ -167,7 +168,7 @@ body{
 }
 
 .page-side{
-  background: #FFF;
+  background: #222;
   border-right: 1px solid rgba(0,0,0,.15);
   height: 100% !important;
   height: calc(100% - 52px) !important;
@@ -201,8 +202,8 @@ body{
 }
 
 .content-box{
-  background: #FFF;
-  border: 1px solid map-get($colors, bordergrey);;
+  background: #333;
+  border: 1px solid map-get($colors, bordergrey);
 
   @extend .clearfix;
 
@@ -289,7 +290,7 @@ body{
 .login-modal{
 
     &-container{
-        background: #FFF;
+        background: #222;
         border: 1px solid map-get($colors, bordergrey);
         max-width: 400px;
         margin: 100px auto 15px auto;
@@ -362,14 +363,62 @@ body{
   border-bottom: none;
 }
 
-.nav-tabs > li.active {
-  background: #FFF !important;
+.dropdown-menu > li > a,
+.dropdown-header {
+  padding: 3px 10px;
 }
 
-.nav-tabs > li > a{
+.nav-tabs {
+  margin-right: 1px;
+  border-bottom: 1px solid darken(map-get($colors, bordergrey), 30%);
+}
+
+.nav-tabs > li {
   border-radius: 0px;
+  border-top-right-radius: 10px;
+  margin-right: 2px;
+}
+
+.nav-tabs > li > a {
+  background: #232323;
+  border-radius: 0px;
+  border-top-right-radius: 10px;
   margin-right: 0px;
 }
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+  border-right: 1px solid darken(#232323, 5%);
+  border-top: 1px solid darken(#232323, 5%);
+  border-left: 1px solid darken(#232323, 5%);
+  border-bottom: 1px solid darken(map-get($colors, bordergrey), 30%);
+}
+
+.nav-tabs > li.active > a {
+  background: #555 !important;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  border-right: 1px solid darken(map-get($colors, bordergrey), 30%);
+  border-top: 1px solid darken(map-get($colors, bordergrey), 30%);
+  border-left: 1px solid darken(map-get($colors, bordergrey), 30%);
+}
+
+.nav-tabs > li > a.visible-lg-inline-block:not(.pull-right) {
+  border-top-right-radius: 0px !important;
+  padding-left: 10px !important;
+  padding-right: 5px !important;
+}
+
+.nav-tabs > li > a.visible-lg-inline-block.pull-right {
+  border-left: 0px !important;
+  padding-left: 5px !important;
+  padding-right: 10px !important;
+}
+
 
 .nav-tabs.nav-justified{
   border-right:1px solid map-get($colors, bordergrey);
@@ -415,7 +464,7 @@ body{
 }
 
 .btn-default .glyphicon {
-    color: #757575;
+    color: #A1A1S1;
 }
 
 table{
@@ -512,14 +561,14 @@ table{
 .active-menu-title, .active-menu a{
     text-decoration: none;
     position: relative;
-    background-color: #F5F5F5;
+    background-color: #262626;
 
     &:before{
         width: 3px;
     }
 
     &.active{
-        background-color: #E8E8E8;
+        background-color: #454545;
     }
 }
 
@@ -539,6 +588,26 @@ table{
     padding: 10px 20px;
 }
 
+.label-opnsense {
+  /* emulates btn */
+  border: 1px solid transparent;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.label-opnsense-sm {
+  /* emulates btn-sm */
+  padding: 5px 10px;
+}
+
+.label-opnsense-xs {
+  /* emulates btn-xs */
+  padding: 1px 5px;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -547,7 +616,7 @@ table{
   height:5px;
 }
 ::-webkit-scrollbar-track {
-  background: #f7f7f7;
+  background: #2B2B2B;
   box-shadow: 0px 0px 0px;
   border-radius:0;
 }
