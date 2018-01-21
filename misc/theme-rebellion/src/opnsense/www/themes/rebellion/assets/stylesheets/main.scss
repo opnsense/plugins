@@ -1,9 +1,9 @@
 $colors: (
   orange: #EA7105,
-  lightgrey: #f0f0f0
+  lightgrey: #2B2B2B,
   lightergrey: #232323,
-  darkgrey: #dadada,
-  bordergrey: #121212,
+  darkgrey: #C1C1C1,
+  bordergrey: #E5E5E5,
 );
 
 $zindex: (
@@ -16,7 +16,7 @@ $zindex: (
 // format dashboard widget headers
 .widgetdiv {
     .content-box-head {
-        background: #7481f9 !important;
+        background: #454545 !important;
         color: map-get($colors, darkgrey) !important;
         padding-bottom: 1px !important;
         padding-top:  1px !important;
@@ -27,7 +27,7 @@ $zindex: (
         .btn-group {
             .btn {
                 color: map-get($colors, darkgrey) !important;
-                background: #7481f9 !important;
+                background: #454545 !important;
                 border: 0px;
                 .glyphicon {
                     color: map-get($colors, darkgrey) !important;
@@ -168,7 +168,7 @@ body{
 }
 
 .page-side{
-  background: #333;
+  background: #222;
   border-right: 1px solid rgba(0,0,0,.15);
   height: 100% !important;
   height: calc(100% - 52px) !important;
@@ -203,7 +203,7 @@ body{
 
 .content-box{
   background: #333;
-  border: 1px solid map-get($colors, bordergrey);;
+  border: 1px solid map-get($colors, bordergrey);
 
   @extend .clearfix;
 
@@ -290,7 +290,7 @@ body{
 .login-modal{
 
     &-container{
-        background: #333;
+        background: #222;
         border: 1px solid map-get($colors, bordergrey);
         max-width: 400px;
         margin: 100px auto 15px auto;
@@ -313,11 +313,11 @@ body{
         padding: 20px 20px 0 20px;
 
         a{
-            color: #459865;
+            color: #7D7D7D;
             text-decoration: none;
 
             &:hover{
-                color: darken(#d8d8d8, 10%);
+                color: darken(#7D7D7D, 10%);
                 text-decoration: underline;
             }
         }
@@ -380,23 +380,23 @@ body{
 }
 
 .nav-tabs > li > a {
-  background: #212121;
+  background: #232323;
   border-radius: 0px;
   border-top-right-radius: 10px;
   margin-right: 0px;
 }
 
-nav-tabs > li > a,
+.nav-tabs > li > a,
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-  border-right: 1px solid darken(#232323B, 5%);
-  border-top: 1px solid darken(#232323B, 5%);
-  border-left: 1px solid darken(#232323B, 5%);
+  border-right: 1px solid darken(#232323, 5%);
+  border-top: 1px solid darken(#232323, 5%);
+  border-left: 1px solid darken(#232323, 5%);
   border-bottom: 1px solid darken(map-get($colors, bordergrey), 30%);
 }
 
 .nav-tabs > li.active > a {
-  background: #FFF !important;
+  background: #555 !important;
 }
 
 .nav-tabs > li.active > a,
@@ -464,7 +464,7 @@ nav-tabs > li > a,
 }
 
 .btn-default .glyphicon {
-    color: #474747;
+    color: #A1A1S1;
 }
 
 table{
@@ -536,7 +536,7 @@ table{
     }
 
     &:before{
-        background: #434343;
+        background: #EA7105;
         content: "";
         height: 42px;
         min-height: 100%;
@@ -561,19 +561,19 @@ table{
 .active-menu-title, .active-menu a{
     text-decoration: none;
     position: relative;
-    background-color: #484848;
+    background-color: #262626;
 
     &:before{
         width: 3px;
     }
 
     &.active{
-        background-color: #686868;
+        background-color: #454545;
     }
 }
 
 .active-menu a:before{
-    background: #454545;
+    background: #ED9A50;
 }
 
 .alert.alert-danger{
@@ -616,17 +616,17 @@ table{
   height:5px;
 }
 ::-webkit-scrollbar-track {
-  background: #565656;
+  background: #2B2B2B;
   box-shadow: 0px 0px 0px;
   border-radius:0;
 }
 ::-webkit-scrollbar-thumb {
-  background: #383838;
-  border: thin solid #383838;
+  background: #e5e5e5;
+  border: thin solid #e5e5e5;
   border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background:#383838;
+  background:#e5e5e5;
 }
 
 .widgetdiv {

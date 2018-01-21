@@ -14,7 +14,7 @@
   border-top-right-radius: 4px;
 }
 .bootstrap-dialog .bootstrap-dialog-title {
-  color: #fff;
+  color: #ccc;
   display: inline-block;
 }
 .bootstrap-dialog .bootstrap-dialog-button-icon {
@@ -35,13 +35,13 @@
   opacity: 1;
 }
 .bootstrap-dialog.type-default .modal-header {
-  background-color: #553;
+  background-color: #445;
 }
 .bootstrap-dialog.type-default .bootstrap-dialog-title {
-  color: #eee;
+  color: #ccc;
 }
 .bootstrap-dialog.type-info .modal-header {
-  background-color: #B0CDDB;
+  background-color: #454545;
 }
 .bootstrap-dialog.type-primary .modal-header {
   background-color: #EA7105;

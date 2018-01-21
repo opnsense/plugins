@@ -66,7 +66,7 @@
 }
 
 // Apply the mixin to the buttons
-.btn-default { @include btn-styles($btn-default-bg); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
+.btn-default { @include btn-styles($btn-default-bg); text-shadow: 0 1px 0 #222; border-color: #ccc; }
 .btn-primary { @include btn-styles($btn-primary-bg); }
 .btn-success { @include btn-styles($btn-success-bg); }
 .btn-info    { @include btn-styles($btn-info-bg); }
