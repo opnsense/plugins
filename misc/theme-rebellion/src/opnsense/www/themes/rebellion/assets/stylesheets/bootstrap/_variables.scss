@@ -352,11 +352,11 @@ $navbar-padding-vertical:          15px;
 $navbar-collapse-max-height:       340px !default;
 
 $navbar-default-color:             map-get($colors, lightgrey) !default;
-$navbar-default-bg:                map-get($colors, darkgrey) !default;
+$navbar-default-bg:                map-get($colors, rebelgrey) !default;
 $navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
 
 // Navbar links
-$navbar-default-link-color:                map-get($colors, lightgrey) !default;
+$navbar-default-link-color:                map-get($colors, darkgrey) !default;
 $navbar-default-link-hover-color:          map-get($colors, orange) !default;
 $navbar-default-link-hover-bg:             transparent !default;
 $navbar-default-link-active-color:         #aaa !default;
@@ -584,9 +584,9 @@ $modal-title-padding:         15px !default;
 $modal-title-line-height:     $line-height-base !default;
 
 //** Background color of modal content area
-$modal-content-bg:                             #443 !default;
+$modal-content-bg:                             #333 !default;
 //** Modal content border color
-$modal-content-border-color:                   rgba(0,0,0,.2) !default;
+$modal-content-border-color:                   rgba(255,255,255,.6) !default;
 //** Modal content border color **for IE8**
 $modal-content-fallback-border-color:          #999 !default;
 
@@ -698,7 +698,7 @@ $panel-border-radius:         $border-radius-base !default;
 $panel-inner-border:          #ddd !default;
 $panel-footer-bg:             #484848 !default;
 
-$panel-default-text:          $gray-dark !default;
+$panel-default-text:          #c1c1c1 !default;
 $panel-default-border:        #ddd !default;
 $panel-default-heading-bg:    #484848 !default;
 
