@@ -2,8 +2,9 @@ $colors: (
   orange: #EA7105,
   lightgrey: #2B2B2B,
   lightergrey: #232323,
-  darkgrey: #C1C1C1,
+  darkgrey: #C1C1c1,
   bordergrey: #E5E5E5,
+  rebelgrey:  #404040,
 );
 
 $zindex: (
@@ -126,7 +127,7 @@ body{
 }
 
 .page-head{
-  background: map-get($colors, darkgrey);
+  background: map-get($colors, rebelgrey);
   top: 0;
   left: 0;
   position: fixed;
