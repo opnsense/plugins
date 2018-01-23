@@ -17,7 +17,7 @@ $gray-dark:              lighten(#000, 20%) !default;   // #333
 $gray:                   lighten(#000, 33.5%) !default; // #555
 //$gray-light:             lighten(#000, 46.7%) !default; // #777
 $gray-light:              #DDd !default; // #777
-$gray-lighter:           lighten(#000, 93.5%) !default; // #eee
+$gray-lighter:           lighten(#000, 10.0%) !default; // #approx #343434
 
 $brand-primary:         map-get($colors, orange) !default;
 $brand-success:         #9BD275 !default;
