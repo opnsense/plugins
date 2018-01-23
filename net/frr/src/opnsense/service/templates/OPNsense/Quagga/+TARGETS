@@ -4,3 +4,4 @@ ospf6d.conf:/usr/local/etc/frr/ospf6d.conf
 ripd.conf:/usr/local/etc/frr/ripd.conf
 frr:/etc/rc.conf.d/frr
 zebra.conf:/usr/local/etc/frr/zebra.conf
+vtysh.conf:/usr/local/etc/frr/vtysh.conf

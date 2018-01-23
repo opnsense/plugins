@@ -28,7 +28,6 @@ class Ospf6Controller extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("OSPFv3 Settings");
         $this->view->ospf6Form = $this->getForm("ospf6");
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPF6Interface");
         $this->view->pick('OPNsense/Quagga/ospf6');

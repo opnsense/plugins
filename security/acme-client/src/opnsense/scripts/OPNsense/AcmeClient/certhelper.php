@@ -1146,7 +1146,8 @@ function local_cert_get_cn($crt, $decode = true)
 }
 
 // taken from system_camanager.php
-function local_ca_import(& $ca, $str, $key="", $serial=0) {
+function local_ca_import(& $ca, $str, $key = "", $serial = 0)
+{
     global $config;
 
     $ca['crt'] = base64_encode($str);
@@ -1160,9 +1161,9 @@ function local_ca_import(& $ca, $str, $key="", $serial=0) {
     $issuer = cert_get_issuer($str, false);
 
     // Find my issuer unless self-signed
-    if($issuer <> $subject) {
+    if ($issuer <> $subject) {
         $issuer_crt =& lookup_ca_by_subject($issuer);
-        if($issuer_crt) {
+        if ($issuer_crt) {
             $ca['caref'] = $issuer_crt['refid'];
         }
     }
@@ -1171,7 +1172,7 @@ function local_ca_import(& $ca, $str, $key="", $serial=0) {
     if (is_array($config['ca'])) {
         foreach ($config['ca'] as & $oca) {
             $issuer = cert_get_issuer($oca['crt']);
-            if($ca['refid']<>$oca['refid'] && $issuer==$subject) {
+            if ($ca['refid']<>$oca['refid'] && $issuer==$subject) {
                 $oca['caref'] = $ca['refid'];
             }
         }
@@ -1179,7 +1180,7 @@ function local_ca_import(& $ca, $str, $key="", $serial=0) {
     if (is_array($config['cert'])) {
         foreach ($config['cert'] as & $cert) {
             $issuer = cert_get_issuer($cert['crt']);
-            if($issuer==$subject) {
+            if ($issuer==$subject) {
                 $cert['caref'] = $ca['refid'];
             }
         }

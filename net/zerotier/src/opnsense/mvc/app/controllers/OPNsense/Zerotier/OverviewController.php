@@ -37,7 +37,6 @@ class OverviewController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = gettext("VPN : Zerotier : Overview");
         $this->view->pick('OPNsense/Zerotier/overview');
         $this->view->information = $this->information();
         $this->view->networks = $this->listNetworks();
@@ -61,7 +60,7 @@ class OverviewController extends \OPNsense\Base\IndexController
 
     private function invokeConfigdRun($action)
     {
-        if(!zerotier_enabled()) {
+        if (!zerotier_enabled()) {
             return (object)[];
         }
         $result = json_decode(trim((new Backend())->configdRun("zerotier $action")), true);

@@ -37,10 +37,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <div id="general" class="tab-pane fade in active">
             <div class="content-box" style="padding-bottom: 1.5em;">
                 {{ partial("layout_partials/base_form",['fields':ospf6Form,'id':'frm_ospf6_settings'])}}
-
                 <div class="col-md-12">
                     <hr />
-                    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+                    <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
                 </div>
             </div>
         </div>
@@ -74,13 +73,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
     </div>
 
-<script type="text/javascript">
+<script>
 $( document ).ready(function() {
   var data_get_map = {'frm_ospf6_settings':"/api/quagga/ospf6settings/get"};
   mapDataToFormUI(data_get_map).done(function(data){
       formatTokenizersUI();
       $('.selectpicker').selectpicker('refresh');
   });
+
   ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
       updateServiceStatusUI(data['status']);
   });
@@ -88,13 +88,16 @@ $( document ).ready(function() {
   // link save button to API set action
   $("#saveAct").click(function(){
       saveFormToEndpoint(url="/api/quagga/ospf6settings/set",formid='frm_ospf6_settings',callback_ok=function(){
+        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
           ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
           });
+          $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
         });
       });
   });
+
   $("#grid-interfaces").UIBootgrid(
     { 'search':'/api/quagga/ospf6settings/searchInterface',
       'get':'/api/quagga/ospf6settings/getInterface/',
@@ -105,9 +108,7 @@ $( document ).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
-
-
-    });
+});
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':lang._('Edit Interface')])}}

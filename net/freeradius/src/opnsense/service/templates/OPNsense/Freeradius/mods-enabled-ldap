@@ -1,0 +1,161 @@
+{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
+ldap {
+{%     if helpers.exists('OPNsense.freeradius.ldap.server') and OPNsense.freeradius.ldap.server != '' %}
+        server = '{{ OPNsense.freeradius.ldap.protocol }}://{{ OPNsense.freeradius.ldap.server }}'
+{%     endif %}
+
+{%     if helpers.exists('OPNsense.freeradius.ldap.identity') and OPNsense.freeradius.ldap.identity != '' %}
+        identity = '{{ OPNsense.freeradius.ldap.identity }}'
+{%     endif %}
+
+{%     if helpers.exists('OPNsense.freeradius.ldap.password') and OPNsense.freeradius.ldap.password != '' %}
+        password = {{ OPNsense.freeradius.ldap.password }}
+{%     endif %}
+
+{%     if helpers.exists('OPNsense.freeradius.ldap.base_dn') and OPNsense.freeradius.ldap.base_dn != '' %}
+        base_dn = '{{ OPNsense.freeradius.ldap.base_dn }}'
+{%     endif %}
+        sasl {
+        }
+        update {
+                control:Auth-Type               := 'radiusAuthType'
+                control:Simultaneous-Use        := 'radiusSimultaneousUse'
+                control:Called-Station-Id       := 'radiusCalledStationId'
+                control:Calling-Station-Id      := 'radiusCallingStationId'
+                control:LM-Password             := 'lmPassword'
+                control:NT-Password             := 'ntPassword'
+                control:LM-Password             := 'sambaLmPassword'
+                control:NT-Password             := 'sambaNtPassword'
+                control:LM-Password             := 'dBCSPwd'
+                control:Password-With-Header    += 'userPassword'
+                control:SMB-Account-CTRL-TEXT   := 'acctFlags'
+                control:Expiration              := 'radiusExpiration'
+                control:NAS-IP-Address          := 'radiusNASIpAddress'
+                reply:Service-Type              := 'radiusServiceType'
+                reply:Framed-Protocol           := 'radiusFramedProtocol'
+                reply:Framed-IP-Address         := 'radiusFramedIPAddress'
+                reply:Framed-IP-Netmask         := 'radiusFramedIPNetmask'
+                reply:Framed-Route              := 'radiusFramedRoute'
+                reply:Framed-Routing            := 'radiusFramedRouting'
+                reply:Filter-Id                 := 'radiusFilterId'
+                reply:Framed-MTU                := 'radiusFramedMTU'
+                reply:Framed-Compression        := 'radiusFramedCompression'
+                reply:Login-IP-Host             := 'radiusLoginIPHost'
+                reply:Login-Service             := 'radiusLoginService'
+                reply:Login-TCP-Port            := 'radiusLoginTCPPort'
+                reply:Callback-Number           := 'radiusCallbackNumber'
+                reply:Callback-Id               := 'radiusCallbackId'
+                reply:Framed-IPX-Network        := 'radiusFramedIPXNetwork'
+                reply:Class                     := 'radiusClass'
+                reply:Session-Timeout           := 'radiusSessionTimeout'
+                reply:Idle-Timeout              := 'radiusIdleTimeout'
+                reply:Termination-Action        := 'radiusTerminationAction'
+                reply:Login-LAT-Service         := 'radiusLoginLATService'
+                reply:Login-LAT-Node            := 'radiusLoginLATNode'
+                reply:Login-LAT-Group           := 'radiusLoginLATGroup'
+                reply:Framed-AppleTalk-Link     := 'radiusFramedAppleTalkLink'
+                reply:Framed-AppleTalk-Network  := 'radiusFramedAppleTalkNetwork'
+                reply:Framed-AppleTalk-Zone     := 'radiusFramedAppleTalkZone'
+                reply:Port-Limit                := 'radiusPortLimit'
+                reply:Login-LAT-Port            := 'radiusLoginLATPort'
+                reply:Reply-Message             := 'radiusReplyMessage'
+                reply:Tunnel-Type               := 'radiusTunnelType'
+                reply:Tunnel-Medium-Type        := 'radiusTunnelMediumType'
+                reply:Tunnel-Private-Group-Id   := 'radiusTunnelPrivateGroupId'
+                control:                        += 'radiusControlAttribute'
+                request:                        += 'radiusRequestAttribute'
+                reply:                          += 'radiusReplyAttribute'
+        }
+        user {
+                base_dn = "${..base_dn}"
+{%     if helpers.exists('OPNsense.freeradius.ldap.user_filter') and OPNsense.freeradius.ldap.user_filter != '' %}
+                filter = "{{ OPNsense.freeradius.ldap.user_filter }}"
+{%     endif %}
+                sasl {
+                }
+        }
+        group {
+                base_dn = "${..base_dn}"
+{%     if helpers.exists('OPNsense.freeradius.ldap.group_filter') and OPNsense.freeradius.ldap.group_filter != '' %}
+                filter = '(objectClass=posixGroup)'
+{%     endif %}
+                membership_attribute = 'memberOf'
+        }
+        profile {
+        }
+        client {
+                base_dn = "${..base_dn}"
+                filter = '(objectClass=radiusClient)'
+                template {
+                }
+                attribute {
+                        ipaddr                          = 'radiusClientIdentifier'
+                        secret                          = 'radiusClientSecret'
+                }
+        }
+        accounting {
+                reference = "%{tolower:type.%{Acct-Status-Type}}"
+
+                type {
+                        start {
+                                update {
+                                        description := "Online at %S"
+                                }
+                        }
+
+                        interim-update {
+                                update {
+                                        description := "Last seen at %S"
+                                }
+                        }
+
+                        stop {
+                                update {
+                                        description := "Offline at %S"
+                                }
+                        }
+                }
+        }
+
+        post-auth {
+                update {
+                        description := "Authenticated at %S"
+                }
+        }
+
+        options {
+                chase_referrals = yes
+                rebind = yes
+                res_timeout = 10
+                srv_timelimit = 3
+                net_timeout = 1
+                idle = 60
+                probes = 3
+                interval = 3
+                ldap_debug = 0x0028
+                max = ${thread[pool].max_servers}
+                spare = ${thread[pool].max_spare_servers}
+                uses = 0
+                retry_delay = 30
+                lifetime = 0
+                idle_timeout = 60
+
+        }
+        tls {
+                require_cert    = 'allow'
+        }
+        pool {
+                start = ${thread[pool].start_servers}
+                min = ${thread[pool].min_spare_servers}
+                max = ${thread[pool].max_servers}
+                spare = ${thread[pool].max_spare_servers}
+                uses = 0
+                retry_delay = 30
+                lifetime = 0
+                idle_timeout = 60
+        }
+
+}
+{%   endif %}
+{% endif %}

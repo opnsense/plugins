@@ -42,7 +42,6 @@ class IndexController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        $this->view->title = gettext('MDNS Repeater');
         $this->view->general = $this->getForm("general");
         $this->view->pick('OPNsense/MDNSRepeater/index');
     }

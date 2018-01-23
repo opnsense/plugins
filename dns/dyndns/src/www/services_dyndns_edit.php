@@ -178,7 +178,7 @@ include("head.inc");
 ?>
 <body>
 <?php include("fbegin.inc"); ?>
- <script type="text/javascript">
+ <script>
   $( document ).ready(function() {
       $("#type").change(function(){
           $(".opt_field").hide();
@@ -188,6 +188,7 @@ include("head.inc");
                 $(".type_custom").show();
                 break;
               case "route53":
+              case "route53-v6":
                 $(".type_route53").show();
                 break;
               default:
@@ -210,10 +211,10 @@ include("head.inc");
               <div class="table-responsive">
                 <table class="table table-striped opnsense_standard_table_form">
                   <tr>
-                    <td width="22%"><strong><?= gettext("Dynamic DNS client") ?></strong></td>
-                    <td width="78%" align="right">
+                    <td style="width:22%"><strong><?= gettext("Dynamic DNS client") ?></strong></td>
+                    <td style="width:78%; text-align:right">
                       <small><?= gettext("full help") ?> </small>
-                      <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
+                      <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                     </td>
                   </tr>
                   <tr>
@@ -268,30 +269,30 @@ include("head.inc");
 <?php
                        endforeach;?>
                        </select>
-                       <div class="hidden" for="help_for_requestif">
+                       <output class="hidden" for="help_for_requestif">
                          <?= gettext("Note: This is almost always the same as the Interface to Monitor.");?>
-                       </div>
+                       </output>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_host" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Hostname") ?></td>
                     <td>
                       <input name="host" type="text" id="host" value="<?= $pconfig['host'] ?>" />
-                      <div class="hidden" for="help_for_host">
+                      <output class="hidden" for="help_for_host">
                         <?= gettext("Enter the complete host/domain name. example: myhost.dyndns.org") ?><br />
                         <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr class="opt_field type_default type_route53">
                     <td><a id="help_for_mx" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("MX") ?></td>
                     <td>
                       <input name="mx" type="text" id="mx" value="<?= $pconfig['mx'] ?>" />
-                      <div class="hidden" for="help_for_mx">
+                      <output class="hidden" for="help_for_mx">
                         <?= gettext("Note: With a dynamic DNS service you can only use a hostname, not an IP address.") ?>
                         <br />
                         <?= gettext("Set this option only if you need a special MX record. Not all services support this.") ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr class="opt_field type_default type_route53">
@@ -321,50 +322,50 @@ include("head.inc");
                     <td><a id="help_for_username" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Username") ?></td>
                     <td>
                       <input name="username" type="text" id="username" value="<?= $pconfig['username'] ?>" />
-                      <div class="hidden" for="help_for_username">
+                      <output class="hidden" for="help_for_username">
                         <?= gettext("Username is required for all types except Namecheap, FreeDNS and Custom Entries.");?>
                         <br /><?= gettext('Route 53: Enter your Access Key ID.') ?>
                         <br /><?= gettext('Duck DNS: Enter your Token.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_password" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Password") ?></td>
                     <td>
                       <input name="password" type="password" id="password" value="<?= $pconfig['password'] ?>" />
-                      <div class="hidden" for="help_for_password">
+                      <output class="hidden" for="help_for_password">
                         <?=gettext('FreeDNS (freedns.afraid.org): Enter your "Authentication Token" provided by FreeDNS.') ?>
                         <br /><?= gettext('Route 53: Enter your Secret Access Key.') ?>
                         <br /><?= gettext('Duck DNS: Leave blank.') ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr class="opt_field type_route53">
                     <td><a id="help_for_zoneid" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Zone ID") ?></td>
                     <td>
                       <input name="zoneid" type="text" id="zoneid" value="<?= $pconfig['zoneid'] ?>" />
-                      <div class="hidden" for="help_for_zoneid">
+                      <output class="hidden" for="help_for_zoneid">
                         <?= gettext("Enter Zone ID that you received when you created your domain in Route 53.") ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr class="opt_field type_custom">
                     <td><a id="help_for_updateurl" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Update URL") ?></td>
                     <td>
                       <input name="updateurl" type="text" id="updateurl" value="<?= $pconfig['updateurl'] ?>" />
-                      <div class="hidden" for="help_for_updateurl">
+                      <output class="hidden" for="help_for_updateurl">
                         <?= gettext("This is the only field required by for Custom Dynamic DNS, and is only used by Custom Entries.") ?>
                         <br />
                         <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr class="opt_field type_custom">
                     <td><a id="help_for_resultmatch" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Result Match") ?></td>
                     <td>
                       <textarea name="resultmatch" class="formpre" id="resultmatch" cols="65" rows="7"><?= $pconfig['resultmatch'] ?></textarea>
-                      <div class="hidden" for="help_for_resultmatch">
+                      <output class="hidden" for="help_for_resultmatch">
                         <?= gettext("This field is only used by Custom Dynamic DNS Entries.") ?>
                         <br />
                         <?= gettext("This field should be identical to what your dynamic DNS Provider will return if the update succeeds, leave it blank to disable checking of returned results.");?>
@@ -374,16 +375,16 @@ include("head.inc");
                         <?= gettext('If you need to include multiple possible values, separate them with a |. If your provider includes a |, escape it with \|') ?>
                         <br />
                         <?= gettext('Tabs (\t), newlines (\n) and carriage returns (\r) at the beginning or end of the returned results are removed before comparison.') ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr class="opt_field type_route53">
                     <td><a id="help_for_ttl" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("TTL");?></td>
                     <td>
                       <input name="ttl" type="text" id="ttl" value="<?= $pconfig['ttl'] ?>" />
-                      <div class="hidden" for="help_for_ttl">
+                      <output class="hidden" for="help_for_ttl">
                         <?= gettext("Choose TTL for your dns record.") ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>

@@ -2,6 +2,7 @@ clients.conf:/usr/local/etc/raddb/clients.conf
 dictionary:/usr/local/etc/raddb/dictionary
 mods-enabled-counter:/usr/local/etc/raddb/mods-enabled/counter
 mods-enabled-eap:/usr/local/etc/raddb/mods-enabled/eap
+mods-enabled-ldap:/usr/local/etc/raddb/mods-enabled/ldap
 radiusd:/etc/rc.conf.d/radiusd
 radiusd.conf:/usr/local/etc/raddb/radiusd.conf
 sites-enabled-default:/usr/local/etc/raddb/sites-enabled/default

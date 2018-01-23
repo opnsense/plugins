@@ -143,7 +143,7 @@ include("head.inc");
 
 ?>
 <body>
-  <script type="text/javascript">
+  <script>
     $( document ).ready(function() {
       // collect all known aliases per type
       var all_aliases = {};
@@ -195,12 +195,12 @@ include("head.inc");
                 <div class="table-responsive">
                   <table class="table table-striped opnsense_standard_table_form">
                     <tr>
-                      <td width="22%">
+                      <td style="width:22%">
                         <strong><?=gettext("Add/edit - Virtual Server entry"); ?></strong>
                       </td>
-                      <td width="78%" align="right">
+                      <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
-                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
+                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                       </td>
                     </tr>
                     <tr>
@@ -219,21 +219,21 @@ include("head.inc");
                       <td><a id="help_for_ipaddr" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("IP Address"); ?></td>
                       <td>
                         <input type="text" id="ipadd" name="ipaddr" value="<?=$pconfig['ipaddr'];?>" />
-                        <div class="hidden" for="help_for_ipaddr">
+                        <output class="hidden" for="help_for_ipaddr">
                           <?=gettext("This is normally the WAN IP address that you would like the server to listen on. All connections to this IP and port will be forwarded to the pool cluster."); ?>
                           <br /><?=gettext("You may also specify a host alias listed in Firewall -&gt; Aliases here."); ?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Port"); ?></td>
                       <td>
                         <input type="text" name="port" id="port" value="<?=$pconfig['port'];?>" />
-                        <div class="hidden" for="help_for_port">
+                        <output class="hidden" for="help_for_port">
                           <?=gettext("This is the port that the clients will connect to. All connections to this port will be forwarded to the pool cluster."); ?>
                           <br /><?=gettext("If left blank, listening ports from the pool will be used."); ?>
                           <br /><?=gettext("You may also specify a port alias listed in Firewall -&gt; Aliases here."); ?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
@@ -280,10 +280,10 @@ include("head.inc");
                         </select>
 <?php
                         endif; ?>
-                        <div class="hidden" for="help_for_sitedown">
+                        <output class="hidden" for="help_for_sitedown">
                           <?=gettext("The server pool to which clients will be redirected if *ALL* servers in the Virtual Server Pool are offline."); ?>
                           <br /><?=gettext("This option is NOT compatible with the DNS relay protocol."); ?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
@@ -297,12 +297,12 @@ include("head.inc");
                             <?=gettext("Relay");?>
                           </option>
                         </select>
-                        <div class="hidden" for="help_for_mode">
+                        <output class="hidden" for="help_for_mode">
                           <strong><?=gettext("Redirect");?></strong><br/>
                           <?=gettext("Redirections are translated to pf(4) rdr-to rules for stateful forwarding to a target host from a health-checked table on layer 3.");?>
                           <strong><?=gettext("Relay");?></strong><br/>
                           <?=gettext("Relays allow application layer load balancing, TLS acceleration, and general purpose TCP proxying on layer 7.");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr id="protocol">
@@ -323,9 +323,9 @@ include("head.inc");
                       <td><a id="help_for_sessiontimeout" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Session Timeout"); ?></td>
                       <td>
                         <input type="text" name="sessiontimeout" id="sessiontimeout" value="<?=$pconfig['sessiontimeout'];?>" />
-                        <div class="hidden" for="help_for_sessiontimeout">
+                        <output class="hidden" for="help_for_sessiontimeout">
                           <?= sprintf(gettext('This is the timeout in seconds for idle sessions. The default timeout is %s, the maximum is %s (%s years).'), 600, 2147483647, (int)(2147483647 / 60 / 60 / 24 / 365)) ?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                       <td>&nbsp;</td>

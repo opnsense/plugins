@@ -91,7 +91,7 @@ include("head.inc");
 ?>
 
 <body>
-  <script type="text/javascript">
+  <script>
   $( document ).ready(function() {
     // delete host action
     $(".act_delete_entry").click(function(event){
@@ -142,10 +142,10 @@ include("head.inc");
                   <table class="table table-striped opnsense_standard_table_form">
                     <thead>
                       <tr>
-                        <td width="22%">
+                        <td style="width:22%">
                           <strong><?=gettext("Wake on LAN");?></strong>
                         </td>
-                        <td width="78%" align="right">
+                        <td style="width:78%; text-align:right">
                           <small><?=gettext("full help"); ?> </small>
                           <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                           &nbsp;&nbsp;
@@ -172,18 +172,18 @@ include("head.inc");
 <?php
                           endforeach; ?>
                           </select>
-                          <div class="hidden" for="help_for_interface">
+                          <output class="hidden" for="help_for_interface">
                             <?=gettext("Choose which interface the host to be woken up is connected to.");?>
-                          </div>
+                          </output>
                         </td>
                       </tr>
                       <tr>
                         <td><a id="help_for_mac" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("MAC address");?></td>
                         <td>
                           <input name="mac" type="text" id="mac" value="<?=!empty($_GET['mac']) ? htmlspecialchars(strtolower(str_replace("-", ":", $_GET['mac']))) : "";?>" />
-                          <div class="hidden" for="help_for_mac">
+                          <output class="hidden" for="help_for_mac">
                             <?=sprintf(gettext("Enter a MAC address %sin the following format: xx:xx:xx:xx:xx:xx%s"),'<strong>','</strong>');?>
-                          </div>
+                          </output>
                         </td>
                       </tr>
                       <tr>

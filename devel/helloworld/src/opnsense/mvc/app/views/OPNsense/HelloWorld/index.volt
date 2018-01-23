@@ -26,7 +26,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script type="text/javascript">
+<script>
     $( document ).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/helloworld/settings/get"};
         mapDataToFormUI(data_get_map).done(function(data){

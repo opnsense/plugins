@@ -9,7 +9,7 @@ function proxy_sso_configure()
 
 function proxy_sso_squid_hook($verbose, $action)
 {
-    if($action == "reconfigure") {
+    if ($action == "reconfigure") {
         configd_run('template reload OPNsense/ProxySSO');
     }
 }

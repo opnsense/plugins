@@ -1,0 +1,9 @@
+<acl>
+    <page-services-nodeexporter>
+        <name>Services: Prometheus Exporter</name>
+        <patterns>
+            <pattern>ui/nodeexporter/*</pattern>
+            <pattern>api/nodeexporter/*</pattern>
+        </patterns>
+    </page-services-nodeexporter>
+</acl>

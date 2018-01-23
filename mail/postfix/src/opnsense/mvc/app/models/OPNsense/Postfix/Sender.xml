@@ -1,0 +1,25 @@
+<model>
+    <mount>//OPNsense/postfix/sender</mount>
+    <description>Postfix sender configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <senders>
+                <sender type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <address type="TextField">
+                                <Required>Y</Required>
+                        </address>
+                        <action type="OptionField">
+                                <Required>Y</Required>
+                                <OptionValues>
+                                    <OK>OK</OK>
+                                    <REJECT>REJECT</REJECT>
+                                </OptionValues>
+                        </action>
+            </sender>
+        </senders>
+    </items>
+</model>

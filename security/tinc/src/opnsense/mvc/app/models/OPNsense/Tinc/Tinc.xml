@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Tinc</mount>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>
         OPNsense Tinc VPN
     </description>
@@ -70,6 +70,10 @@
                       <switch>switch</switch>
                   </OptionValues>
                 </mode>
+                <PMTUDiscovery type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </PMTUDiscovery>
                 <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>

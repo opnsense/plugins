@@ -60,14 +60,10 @@
                 <encrypt>encrypt</encrypt>
             </OptionValues>
         </smtpclient_security>
-        <check_recipient_access type="ArrayField">
-        </check_recipient_access>
         <reject_unauth_pipelining type="BooleanField">
             <default>1</default>
             <Required>Y</Required>
         </reject_unauth_pipelining>
-        <check_sender_access type="ArrayField">
-        </check_sender_access>
         <reject_unknown_sender_domain type="BooleanField">
             <default>1</default>
             <Required>Y</Required>

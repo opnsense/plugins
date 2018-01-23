@@ -189,7 +189,7 @@ $types = array("icmp" => gettext("ICMP"), "tcp" => gettext("TCP"), "http" => get
 
 <body>
 <?php include("fbegin.inc"); ?>
-  <script type="text/javascript">
+  <script>
     $( document ).ready(function() {
         $("#monitor_type").change(function(){
             switch ($(this).val()) {
@@ -223,10 +223,10 @@ $types = array("icmp" => gettext("ICMP"), "tcp" => gettext("TCP"), "http" => get
                 <div class="table-responsive">
                   <table class="table table-striped opnsense_standard_table_form">
                     <tr>
-                      <td width="22%"><strong><?=gettext("Edit Monitor entry"); ?></strong></td>
-                      <td width="78%" align="right">
+                      <td style="width:22%"><strong><?=gettext("Edit Monitor entry"); ?></strong></td>
+                      <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
-                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
+                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                       </td>
                     </tr>
                     <tr>
@@ -316,8 +316,8 @@ $types = array("icmp" => gettext("ICMP"), "tcp" => gettext("TCP"), "http" => get
                       </td>
                   </tr>
                   <tr>
-                    <td valign="top">&nbsp;</td>
-                    <td width="78%">
+                    <td style="vertical-align:top">&nbsp;</td>
+                    <td style="width:78%">
                       <input name="Submit" type="submit" class="btn btn-primary" value="<?=gettext("Save"); ?>" />
                       <input type="button" class="btn btn-default" value="<?=gettext("Cancel");?>" onclick="window.location.href='/load_balancer_monitor.php'" />
                       <?php if (isset($id)): ?>

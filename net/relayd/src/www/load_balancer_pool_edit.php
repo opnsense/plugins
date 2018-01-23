@@ -166,7 +166,7 @@ include("head.inc");
   </select>
 
 <?php include("fbegin.inc"); ?>
-  <script type="text/javascript">
+  <script>
   $( document ).ready(function() {
       // init port type ahead
       var all_aliases = [];
@@ -233,9 +233,9 @@ include("head.inc");
                     <td>
                       <strong><?=gettext("Add/edit - Pool entry"); ?></strong>
                     </td>
-                    <td align="right">
+                    <td style="text-align:right">
                       <small><?=gettext("full help"); ?> </small>
-                      <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
+                      <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                     </td>
                   </tr>
                   <tr>
@@ -267,19 +267,19 @@ include("head.inc");
                     <td><a id="help_for_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Port"); ?></td>
                     <td>
                       <input type="text" id="port"  name="port" value="<?=$pconfig['port'];?>"/>
-                      <div class="hidden" for="help_for_port">
+                      <output class="hidden" for="help_for_port">
                         <?=gettext("This is the port your servers are listening on."); ?><br />
                         <?=gettext("You may also specify a port alias listed in Firewall -&gt; Aliases here."); ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_retry" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Retry"); ?></td>
                     <td>
                       <input name="retry" type="text" value="<?=$pconfig['retry'];?>"/>
-                      <div for="help_for_retry" class="hidden">
+                      <output for="help_for_retry" class="hidden">
                         <?=gettext("Optionally specify how many times to retry checking a server before declaring it down."); ?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>
@@ -365,7 +365,7 @@ include("head.inc");
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td width="78%">
+                    <td style="width:78%">
                       <br />
                       <input id="save" name="save" type="submit" class="btn btn-primary" value="<?=gettext("Save"); ?>"/>
                       <input type="button" class="btn btn-default" value="<?=gettext("Cancel");?>" onclick="window.location.href='/load_balancer_pool.php'" />

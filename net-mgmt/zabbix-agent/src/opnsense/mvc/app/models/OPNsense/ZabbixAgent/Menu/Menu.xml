@@ -2,9 +2,9 @@
     <Services>
       <ZabbixAgent VisibleName="Zabbix Agent" cssClass="fa fa-certificate fa-fw">
           <Settings order="10" url="/ui/zabbixagent/">
-              <MainSettings VisibleName="Main Settings" url="/ui/zabbixagent/#subtab_zabbixagent-settings-main"/>
-              <Features VisibleName="Features" url="/ui/zabbixagent/#subtab_zabbixagent-settings-features"/>
-              <Tuning VisibleName="Tuning Parameters" url="/ui/zabbixagent/#subtab_zabbixagent-settings-features"/>
+              <Main url="/ui/zabbixagent/#tab_zabbixagent-settings-main"/>
+              <Features url="/ui/zabbixagent/#tab_zabbixagent-settings-features"/>
+              <Tuning url="/ui/zabbixagent/#tab_zabbixagent-settings-tuning"/>
           </Settings>
           <Log VisibleName="Log File" order="50" url="/diag_logs_zabbixagent.php"/>
       </ZabbixAgent>

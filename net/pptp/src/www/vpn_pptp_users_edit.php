@@ -154,10 +154,10 @@ include("head.inc");
               <div class="table-responsive">
                 <table class="table table-striped opnsense_standard_table_form">
                   <tr>
-                    <td width="22%">
+                    <td style="width:22%">
                       <strong><?=gettext("Edit User");?></strong>
                     </td>
-                    <td width="78%" align="right">
+                    <td style="width:78%; text-align:right">
                       <small><?=gettext("full help"); ?> </small>
                       <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                     </td>
@@ -186,9 +186,9 @@ include("head.inc");
                     <td><a id="help_for_ip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("IP address");?></td>
                     <td>
                       <input name="ip" type="text" class="form-control unknown" id="ip" value="<?=htmlspecialchars($pconfig['ip']);?>" />
-                      <div class="hidden" for="help_for_ip">
+                      <output class="hidden" for="help_for_ip">
                         <?=gettext("If you want the user to be assigned a specific IP address, enter it here.");?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>

@@ -46,7 +46,6 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->clamav_installed = (trim($backend->configdRun('firmware plugin clamav')) == '1');
         $this->view->redis_installed = (trim($backend->configdRun('firmware plugin redis')) == '1');
         $this->view->redis_plugin_enabled = ((string)((new RSpamd())->general->enable_redis_plugin)) == '1';
-        $this->view->title = gettext("Rspamd Mail Protection");
         $this->view->settings = $this->getForm("settings");
         $this->view->pick('OPNsense/Rspamd/index');
     }

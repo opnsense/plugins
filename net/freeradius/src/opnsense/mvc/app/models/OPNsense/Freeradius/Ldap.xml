@@ -1,0 +1,36 @@
+<model>
+    <mount>//OPNsense/freeradius/ldap</mount>
+    <description>LDAP configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <protocol type="OptionField">
+            <default>LDAPS</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <LDAP>LDAP</LDAP>
+                <LDAPS>LDAPS</LDAPS>
+            </OptionValues>
+        </protocol>
+        <server type="TextField">
+            <Required>N</Required>
+        </server>
+        <identity type="TextField">
+            <Required>N</Required>
+        </identity>
+        <password type="TextField">
+            <Required>N</Required>
+        </password>
+        <base_dn type="TextField">
+            <default>dc=example,dc=domain,dc=com</default>
+            <Required>N</Required>
+        </base_dn>
+        <user_filter type="TextField">
+            <default>(uid=%{%{Stripped-User-Name}:-%{User-Name}})</default>
+            <Required>N</Required>
+        </user_filter>
+        <group_filter type="TextField">
+            <default>(objectClass=posixGroup)</default>
+            <Required>N</Required>
+        </group_filter>
+    </items>
+</model>

@@ -1,0 +1,1 @@
+if [ -f /usr/local/etc/rc.configure_plugins ]; then /usr/local/etc/rc.configure_plugins %%ARG%%; fi

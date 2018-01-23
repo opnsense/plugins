@@ -29,13 +29,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="content-box" style="padding-bottom: 1.5em;">
     {{ partial("layout_partials/base_form",['fields':eapForm,'id':'frm_eap_settings'])}}
-    <hr />
     <div class="col-md-12">
+        <hr />
         <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress" class=""></i></button>
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
     $( document ).ready(function () {
         var data_get_map = {'frm_eap_settings':"/api/freeradius/eap/get"};
         mapDataToFormUI(data_get_map).done(function (data) {

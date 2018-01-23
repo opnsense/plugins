@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>sender.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the sender address to match for.</help>
+    </field>
+    <field>
+        <id>sender.address</id>
+        <label>Sender Address</label>
+        <type>text</type>
+        <help>Set the sender address to match.</help>
+    </field>
+    <field>
+        <id>sender.action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help>Set the action for this address.</help>
+    </field>
+</form>

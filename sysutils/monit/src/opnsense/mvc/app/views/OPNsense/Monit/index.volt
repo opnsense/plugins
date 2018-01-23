@@ -25,7 +25,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<script type="text/javascript">
+<script>
 
    $( document ).ready(function() {
 
@@ -113,12 +113,9 @@ POSSIBILITY OF SUCH DAMAGE.
                             draggable: true
                         });
                     } else {
-                        // request service status after successful save and update status box (wait a few seconds before update)
-                        setTimeout(function(){
-                            ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
-                                updateServiceStatusUI(data['status']);
-                            });
-                        },3000);
+                        ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
+                            updateServiceStatusUI(data['status']);
+                        });
                     }
                 });
             }

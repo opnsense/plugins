@@ -3,6 +3,7 @@ frr_enable="{% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense
 
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
 frr_opnsense_bootup_run="/usr/local/opnsense/scripts/quagga/setup.sh"
+frr_var_script="/usr/local/opnsense/scripts/quagga/setup.sh"
 {% endif %}
 
 frr_daemons="zebra{%

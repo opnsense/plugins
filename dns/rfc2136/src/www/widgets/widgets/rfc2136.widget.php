@@ -138,7 +138,7 @@ if (!empty($_REQUEST['getrfc2136status'])) {
   endforeach;?>
   </tbody>
 </table>
-<script type="text/javascript">
+<script>
   function rfc2136_getstatus()
   {
       scroll(0,0);

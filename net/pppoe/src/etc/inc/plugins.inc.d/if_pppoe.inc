@@ -308,7 +308,7 @@ function if_pppoe_interfaces()
 
     if (isset($config['pppoes']['pppoe'])) {
         $pppoeifs = array('networks' => array());
-        foreach($config['pppoes']['pppoe'] as $pppoe) {
+        foreach ($config['pppoes']['pppoe'] as $pppoe) {
             if ($pppoe['mode'] == "server") {
                 $mask = !empty($pppoe['pppoe_subnet']) ?  $pppoe['pppoe_subnet'] : 32;
                 $pppoeifs['networks'][] = array("network" => gen_subnet($pppoe['remoteip'], $mask), "mask" => $mask);

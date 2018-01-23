@@ -1,3 +1,10 @@
-FRRouting (FRR) is an IP routing protocol suite for Linux and Unix platforms
-which includes protocol daemons for BGP, IS-IS, OSPF and RIP. FRR has its roots
-in the Quagga project.
+FRRouting (FRR) is an IP routing protocol suite for Linux and Unix
+platforms which includes protocol daemons for BGP, IS-IS, LDP, OSPF,
+PIM, and RIP.
+
+FRR's seamless integration with the native Linux/Unix IP networking stacks
+makes it applicable to a wide variety of use cases including connecting
+hosts/VMs/containers to the network, advertising network services, LAN
+switching and routing, Internet access routers, and Internet peering.
+
+WWW: https://frrouting.org/

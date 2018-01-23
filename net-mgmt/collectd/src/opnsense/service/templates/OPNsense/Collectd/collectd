@@ -1,5 +1,6 @@
 {% if helpers.exists('OPNsense.collectd.general.enabled') and OPNsense.collectd.general.enabled == '1' %}
 collectd_opnsense_bootup_run="/usr/local/opnsense/scripts/OPNsense/Collectd/setup.sh"
+collectd_var_script="/usr/local/opnsense/scripts/OPNsense/Collectd/setup.sh"
 collectd_enable="YES"
 {% else %}
 collectd_enable="NO"

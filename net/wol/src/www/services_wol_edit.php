@@ -105,10 +105,10 @@ legacy_html_escape_form_data($pconfig);
               <div class="table-responsive">
                 <table class="table table-striped opnsense_standard_table_form">
                   <tr>
-                    <td width="22%">
+                    <td style="width:22%">
                       <strong><?=gettext("Edit WOL entry");?></strong>
                     </td>
-                    <td width="78%" align="right">
+                    <td style="width:78%; text-align:right">
                       <small><?=gettext("full help"); ?> </small>
                       <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                     </td>
@@ -125,27 +125,27 @@ legacy_html_escape_form_data($pconfig);
 <?php
                       endforeach; ?>
                       </select>
-                      <div class="hidden" for="help_for_interface">
+                      <output class="hidden" for="help_for_interface">
                         <?=gettext("Choose which interface this host is connected to.");?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_mac" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("MAC address");?></td>
                     <td>
                       <input name="mac" type="text" value="<?=$pconfig['mac'];?>" />
-                      <div class="hidden" for="help_for_mac">
+                      <output class="hidden" for="help_for_mac">
                         <?=gettext("Enter a MAC address in the following format: xx:xx:xx:xx:xx:xx");?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_descr" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Description");?></td>
                     <td>
                       <input name="descr" type="text" value="<?=$pconfig['descr'];?>" />
-                      <div class="hidden" for="help_for_descr">
+                      <output class="hidden" for="help_for_descr">
                         <?=gettext("You may enter a description here for your reference (not parsed).");?>
-                      </div>
+                      </output>
                     </td>
                   </tr>
                   <tr>

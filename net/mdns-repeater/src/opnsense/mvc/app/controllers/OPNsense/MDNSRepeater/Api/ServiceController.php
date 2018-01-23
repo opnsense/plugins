@@ -40,7 +40,7 @@ class ServiceController extends ApiControllerBase
         $result = array('result' => 'failed');
         $res = $backend->configdRun('mdnsrepeater status');
         if (stripos($res, 'is running')) {
-          $result['result'] = 'running';
+            $result['result'] = 'running';
         } elseif (stripos($res, 'not running')) {
             $general = new MDNSRepeater();
             if ((string)$general->enabled == '1') {
@@ -48,8 +48,7 @@ class ServiceController extends ApiControllerBase
             } else {
                 $result['result'] = 'disabled';
             }
-        }
-        else {
+        } else {
             $result['message'] = $res;
         }
         return $result;

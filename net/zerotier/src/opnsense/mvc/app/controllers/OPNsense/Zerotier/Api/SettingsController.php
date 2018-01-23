@@ -48,7 +48,7 @@ class SettingsController extends ApiMutableModelControllerBase
         $result = array();
         if ($this->request->isGet()) {
             $mdlZerotier = $this->getModel();
-            if(empty($mdlZerotier->localconf->__toString())) {
+            if (empty($mdlZerotier->localconf->__toString())) {
                 $mdlZerotier->localconf = '{}';
             }
             $result = array("zerotier" => $mdlZerotier->getNodes());
@@ -59,7 +59,7 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setAction()
     {
         $result = array("result" => "failed");
-        if($this->request->isPost() && $this->request->hasPost("zerotier")) {
+        if ($this->request->isPost() && $this->request->hasPost("zerotier")) {
             $mdlZerotier = $this->getModel();
             $mdlZerotier->setNodes($this->request->getPost("zerotier"));
             $mdlZerotier->serializeToConfig();
@@ -101,5 +101,4 @@ class SettingsController extends ApiMutableModelControllerBase
         $action = $enabled ? "start" : "stop";
         return trim($backend->configdRun("zerotier $action"));
     }
-
 }

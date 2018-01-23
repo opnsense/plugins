@@ -27,7 +27,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script type="text/javascript">
+<script>
 
     $( document ).ready(function() {
 
@@ -352,12 +352,9 @@ POSSIBILITY OF SUCH DAMAGE.
                                 draggable: true
                             });
                         } else {
-                            // request service status after successful save and update status box (wait a few seconds before update)
-                            setTimeout(function(){
-                                ajaxCall(url="/api/haproxy/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                                });
-                            },3000);
+                            ajaxCall(url="/api/haproxy/service/status", sendData={}, callback=function(data,status) {
+                                updateServiceStatusUI(data['status']);
+                            });
                         }
                     });
                 });
@@ -381,38 +378,44 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#introduction"><b>{{ lang._('Introduction') }}</b></a></li>
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}real-servers-introduction{% else %}servers-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Real Servers') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-real-servers-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#servers"><i class="fa fa-check-square"></i> {{ lang._('Real Servers') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="real-servers-introduction" href="#subtab_haproxy-real-servers-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="servers-tab" href="#servers">{{ lang._('Real Servers') }}</a></li>
         </ul>
     </li>
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-virtual-services-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}virtual-services-introduction{% else %}backends-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Virtual Services') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-virtual-services-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#backends"><i class="fa fa-check-square"></i> {{ lang._('Backend Pools') }}</a></li>
-            <li><a data-toggle="tab" href="#frontends"><i class="fa fa-check-square"></i> {{ lang._('Public Services') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="virtual-services-introduction" href="#subtab_haproxy-virtual-services-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="backends-tab" href="#backends">{{ lang._('Backend Pools') }}</a></li>
+            <li><a data-toggle="tab" href="#frontends">{{ lang._('Public Services') }}</a></li>
         </ul>
     </li>
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-rules-checks-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}rules-checks-introduction{% else %}healthchecks-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Rules & Checks') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-rules-checks-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#healthchecks"><i class="fa fa-check-square"></i> {{ lang._('Health Monitors') }}</a></li>
-            <li><a data-toggle="tab" href="#acls"><i class="fa fa-check-square"></i> {{ lang._('Conditions') }}</a></li>
-            <li><a data-toggle="tab" href="#actions"><i class="fa fa-check-square"></i> {{ lang._('Rules') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="rules-checks-introduction" href="#subtab_haproxy-rules-checks-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="healthchecks-tab" href="#healthchecks">{{ lang._('Health Monitors') }}</a></li>
+            <li><a data-toggle="tab" href="#acls">{{ lang._('Conditions') }}</a></li>
+            <li><a data-toggle="tab" href="#actions">{{ lang._('Rules') }}</a></li>
         </ul>
     </li>
 
@@ -421,13 +424,13 @@ POSSIBILITY OF SUCH DAMAGE.
         {% if tab['subtabs']|default(false) %}
         {# Tab with dropdown #}
         <li role="presentation" class="dropdown">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
                 <b><span class="caret"></span></b>
             </a>
-            <a data-toggle="tab" href="#subtab_{{tab['subtabs'][0][0]}}" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
+            <a data-toggle="tab" onclick="$('#subtab_item_{{tab['subtabs'][0][0]}}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
             <ul class="dropdown-menu" role="menu">
                 {% for subtab in tab['subtabs']|default({})%}
-                <li><a data-toggle="tab" href="#subtab_{{subtab[0]}}"><i class="fa fa-check-square"></i> {{subtab[1]}}</a></li>
+                <li><a data-toggle="tab" id="subtab_item_{{subtab[0]}}" href="#subtab_{{subtab[0]}}">{{subtab[1]}}</a></li>
                 {% endfor %}
             </ul>
         </li>
@@ -442,14 +445,16 @@ POSSIBILITY OF SUCH DAMAGE.
     {% endfor %}
 
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button" style="border-left: 1px dashed lightgray;">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" href="#subtab_haproxy-advanced-introduction" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}advanced-introduction{% else %}errorfiles-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" href="#subtab_haproxy-advanced-introduction"><i class="fa fa-check-square"></i> {{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" href="#errorfiles"><i class="fa fa-check-square"></i> {{ lang._('Error Messages') }}</a></li>
-            <li><a data-toggle="tab" href="#luas"><i class="fa fa-check-square"></i> {{ lang._('Lua Scripts') }}</a></li>
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_haproxy-advanced-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="errorfiles-tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
+            <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
         </ul>
     </li>
 </ul>
@@ -467,7 +472,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService Settings%s.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -509,7 +514,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -523,7 +528,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sError Messages:%s Return a custom message instead of errors generated by HAProxy. Useful to overwrite HAProxy's internal error messages. The message must represent the full HTTP response and include required HTTP headers.") | format('<b>', '</b>') }}</li>
               <li>{{ lang._("%sLua scripts:%s Include your own Lua code/scripts to extend HAProxy's functionality. The Lua code can be used in certain %sRules%s, for example.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s and the %sLua Script%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#lua-load" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s and the %sLua Script%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#lua-load" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
