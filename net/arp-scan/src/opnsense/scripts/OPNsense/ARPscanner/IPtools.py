@@ -166,7 +166,8 @@ class IPtools(object):
                                       )),
                              flags=re.MULTILINE)
 
-        ifconfig = subprocess.check_output(["ifconfig", "-u"]).decode()
+        ifconfig_raw = subprocess.check_output(["ifconfig", "-u"]).decode()
+        ifconfig = '\n'.join([ i for i in ifconfig_raw.splitlines() if 'inet6' not in i])
         interfaces = pattern.findall(ifconfig)
         Interface = namedtuple("Interface", "name {mac} {ip}".format(
             mac="mac",
