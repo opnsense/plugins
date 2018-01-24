@@ -31,7 +31,7 @@
             <Required>N</Required>
         </password>
         <cipher type="OptionField">
-            <default>aes-256-cfb</default>
+            <default>AES-256-CFB</default>
             <Required>Y</Required>
             <OptionValues>
                 <aes-256-cfb>AES-256-CFB</aes-256-cfb>
