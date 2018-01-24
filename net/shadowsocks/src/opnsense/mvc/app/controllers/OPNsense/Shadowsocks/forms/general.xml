@@ -3,7 +3,7 @@
         <id>general.enabled</id>
         <label>Enable ShadowSocks Server</label>
         <type>checkbox</type>
-        <help>This will activate the ShadowSocks Server. This let's people around the world connect via ss-local to your server.</help>
+        <help>This will activate the ShadowSocks Server. This lets people around the world connect via ss-local to your server.</help>
     </field>
     <field>
         <id>general.serveraddress</id>
