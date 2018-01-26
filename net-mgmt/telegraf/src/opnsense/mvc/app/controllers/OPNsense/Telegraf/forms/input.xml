@@ -86,7 +86,9 @@
     <field>
         <id>input.ping_hosts</id>
         <label>Ping Hosts</label>
-        <type>test</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help>Set the Hosts to ping in a CSV list.</help>
     </field>
 </form>
