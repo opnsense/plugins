@@ -157,7 +157,7 @@ if (!empty($_REQUEST['getrfc2136status'])) {
           jQuery(divlabel).prop('innerHTML',responseStrings[count]);
       }
   }
-  $( document ).ready(function() {
+  $(window).load(function() {
     // Do the first status check 2 seconds after the dashboard opens
     setTimeout('rfc2136_getstatus()', 2000);
   });

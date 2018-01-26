@@ -157,7 +157,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
           jQuery(divlabel).prop('innerHTML',responseStrings[count]);
       }
   }
-  $( document ).ready(function() {
+  $(window).load(function() {
     // Do the first status check 2 seconds after the dashboard opens
     setTimeout('dyndns_getstatus()', 2000);
   });
