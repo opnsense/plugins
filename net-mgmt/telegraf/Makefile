@@ -1,5 +1,5 @@
 PLUGIN_NAME=		telegraf
-PLUGIN_VERSION=		1.2
+PLUGIN_VERSION=		1.3
 PLUGIN_COMMENT=		Agent for collecting metrics and data
 PLUGIN_DEPENDS=		telegraf
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
