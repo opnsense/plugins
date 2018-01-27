@@ -653,8 +653,21 @@ class updatedns
 
                 /* Get IP for your hostname in Route 53 */
                 if (false !== ($a_result = SearchRecords($records['ResourceRecordSets'], "$hostname"))) {
-                    $OldTTL=$a_result[0][TTL];
-                    $OldIP=$a_result[0][ResourceRecords][0];
+                    /**
+                     * if hostname for ipv4 and ipv6 is the same, a_result contains more than 1 item
+                     * we need to get the item that corresponds to the record type
+                     */
+                    $oldTTLResult = null;
+                    $oldIPResult = null;
+                    foreach ($a_result as $resultItem) {
+                        if ($RecordType === $resultItem['Type']) {
+                            $oldTTLResult = $resultItem[TTL];
+                            $oldIPResult = $resultItem[ResourceRecords][0];
+                        }
+                    }
+
+                    $OldTTL=$oldTTLResult;
+                    $OldIP=$oldIPResult;
                 } else {
                     $OldIP="";
                 }
