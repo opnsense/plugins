@@ -45,5 +45,18 @@ function shadowsocks_services()
         );
     }
 
+    if (isset($config['OPNsense']['shadowsocks']['local']['enabled']) && $config['OPNsense']['shadowsocks']['local']['enabled'] == 1) {
+        $services[] = array(
+            'description' => gettext('shadowsocks-local daemon'),
+            'configd' => array(
+                'restart' => array('shadowsocks restart-local'),
+                'start' => array('shadowsocks start-local'),
+                'stop' => array('shadowsocks stop-local'),
+            ),
+            'name' => 'shadowsocks-local',
+            'pidfile' => '/var/run/ss-local.pid'
+        );
+    }
+
     return $services;
 }
