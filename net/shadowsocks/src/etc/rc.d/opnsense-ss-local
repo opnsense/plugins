@@ -27,6 +27,6 @@ command="/usr/local/bin/ss-local"
 pidfile="/var/run/ss-local.pid"
 required_files="${ss_local_config}"
 
-command_args="-f $pidfile -c $shadowsocks_libev_config"
+command_args="-f $pidfile -c $ss_local_config"
 
 run_rc_command "$1"
