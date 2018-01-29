@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>local.enabled</id>
-        <label>Enable ShadowSocks Server</label>
+        <label>Enable ShadowSocks Local</label>
         <type>checkbox</type>
         <help>This will activate the ShadowSocks Local instance. This lets you tunnel your application to a public ShadowSocks server.</help>
     </field>
