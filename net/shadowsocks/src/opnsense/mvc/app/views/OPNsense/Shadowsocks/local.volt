@@ -41,7 +41,7 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
-        ajaxCall(url="/api/shadowsocks/service/status", sendData={}, callback=function(data,status) {
+        ajaxCall(url="/api/shadowsocks/localservice/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
         });
 
@@ -49,8 +49,8 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/shadowsocks/local/set", formid='frm_local_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                    ajaxCall(url="/api/shadowsocks/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/shadowsocks/service/status", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/shadowsocks/localservice/reconfigure", sendData={}, callback=function(data,status) {
+                            ajaxCall(url="/api/shadowsocks/localservice/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
                             });
                             $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
