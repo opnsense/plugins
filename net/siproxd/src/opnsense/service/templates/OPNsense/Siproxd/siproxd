@@ -1,5 +1,4 @@
 {% if helpers.exists('OPNsense.siproxd.general.enabled') and OPNsense.siproxd.general.enabled == '1' %}
-siproxd_opnsense_bootup_run="/usr/local/opnsense/scripts/OPNsense/Siproxd/setup.sh"
 siproxd_var_script="/usr/local/opnsense/scripts/OPNsense/Siproxd/setup.sh"
 siproxd_enable="YES"
 {% else %}
