@@ -2,7 +2,6 @@ defaultrouter="NO"
 quagga_enable="{% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}YES{% else %}NO{% endif %}"
 
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
-quagga_opnsense_bootup_run="/usr/local/opnsense/scripts/quagga/setup.sh"
 quagga_var_script="/usr/local/opnsense/scripts/quagga/setup.sh"
 {% endif %}
 
