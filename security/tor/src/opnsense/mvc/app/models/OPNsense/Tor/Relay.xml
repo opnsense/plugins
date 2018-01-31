@@ -10,6 +10,10 @@
       <Required>N</Required>
       <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|[a-f0-9:]{2,})$/i</mask>
     </host>
+    <hostv6 type="TextField">
+      <Required>N</Required>
+      <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|[a-f0-9:]{2,})$/i</mask>
+    </hostv6>
     <port type="IntegerField">
       <default>9001</default>
       <MinimumValue>0</MinimumValue>
@@ -19,7 +23,8 @@
     </port>
     <directory_port type="IntegerField">
       <MinimumValue>1</MinimumValue>
-      <Required>N</Required>
+      <Required>Y</Required>
+      <default>9030</default>
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </directory_port>
