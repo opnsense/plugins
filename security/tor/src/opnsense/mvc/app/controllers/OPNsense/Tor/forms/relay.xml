@@ -29,6 +29,20 @@
     <help>The external FQDN of this host.</help>
   </field>
   <field>
+    <id>relay.outboundbind</id>
+    <label>Source IP</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Originate all traffic from this IP</help>
+  </field>
+  <field>
+    <id>relay.outboundbindv6</id>
+    <label>IPv6 Source</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Also originate all IPv6 traffic from this IP</help>
+  </field>
+  <field>
     <id>relay.nick</id>
     <label>Nickname</label>
     <type>text</type>
