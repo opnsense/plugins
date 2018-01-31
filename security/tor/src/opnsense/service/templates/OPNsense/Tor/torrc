@@ -147,6 +147,17 @@ Address {{ OPNsense.tor.relay.address }}
 #OutboundBindAddressExit 10.0.0.4
 #OutboundBindAddressOR 10.0.0.5
 
+
+{% if helpers.exists('OPNsense.tor.relay.outboundbind') and OPNsense.tor.relay.outboundbind != '' %}
+OutboundBindAddress {{ OPNsense.tor.relay.outboundbind }}
+{% endif %}
+
+
+{% if helpers.exists('OPNsense.tor.relay.outboundbindv6') and OPNsense.tor.relay.outboundbindv6 != '' %}
+OutboundBindAddress {{ OPNsense.tor.relay.outboundbindv6 }}
+{% endif %}
+
+
 {% if helpers.exists('OPNsense.tor.relay.nick') and OPNsense.tor.relay.nick != '' %}
 Nickname {{ OPNsense.tor.relay.nick }}
 {% endif %}
@@ -177,14 +188,14 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 
 #ContactInfo 0xFFFFFFFF Random Person <nobody AT example dot com>
 
-{% if helpers.exists('OPNsense.tor.relay.directory_port') and OPNsense.tor.relay.directory_port != '' %}
-DirPort {{ OPNsense.tor.relay.directory_port }}
-{% endif %}
+DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.directory_port|default('9030') }}
+
 ## Uncomment to return an arbitrary blob of html on your DirPort. Now you
 ## can explain what Tor is if anybody wonders why your IP address is
 ## contacting them. See contrib/tor-exit-notice.html in Tor's source
 ## distribution for a sample.
-#DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
+
+DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
 
 {% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
 ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
