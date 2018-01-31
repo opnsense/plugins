@@ -220,6 +220,9 @@ ExitPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif
 {%   endif %}
 {% endif %}
 
+%include /usr/local/etc/torrc.exitpolicy
+
+
 # default: don't pass anything
 ExitPolicy reject *:*
 ExitPolicy reject6 *:*
@@ -230,3 +233,5 @@ PublishServerDescriptor {{ OPNsense.tor.relay.publish|default('0') }}
 {% endif %}
 
 {% endif %}
+
+
