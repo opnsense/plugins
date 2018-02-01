@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
     $( document ).ready(function () {
         var data_get_map = {'frm_ldap_settings':"/api/freeradius/ldap/get"};
         mapDataToFormUI(data_get_map).done(function (data) {
