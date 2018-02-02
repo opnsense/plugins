@@ -32,6 +32,13 @@
         <hint>Choose a load balancing algorithm.</hint>
     </field>
     <field>
+        <id>backend.proxyProtocol</id>
+        <label>Proxy Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[Enforces use of the PROXY protocol over any connection established to the configured servers. The PROXY protocol informs the other end about the layer 3/4 addresses of the incoming connection, so that it can know the client's address or the public address it accessed to, whatever the upper layer protocol. This setting must not be used if the servers are not aware of the PROXY protocol. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#send-proxy">HAProxy documentation</a> for a full description.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>backend.linkedServers</id>
         <label>Servers</label>
         <type>select_multiple</type>

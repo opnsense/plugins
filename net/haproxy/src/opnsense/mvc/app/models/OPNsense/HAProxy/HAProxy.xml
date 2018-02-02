@@ -620,6 +620,13 @@
                         <uri>URI Hash (only HTTP mode)</uri>
                     </OptionValues>
                 </algorithm>
+                <proxyProtocol type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <v1>PROXY protocol version 1</v1>
+                        <v2>PROXY protocol version 2</v2>
+                    </OptionValues>
+                </proxyProtocol>
                 <linkedServers type="ModelRelationField">
                     <Model>
                         <template>
