@@ -623,8 +623,8 @@
                 <proxyProtocol type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
-                        <v1>PROXY protocol version 1</v1>
-                        <v2>PROXY protocol version 2</v2>
+                        <v1>Version 1</v1>
+                        <v2>Version 2</v2>
                     </OptionValues>
                 </proxyProtocol>
                 <linkedServers type="ModelRelationField">
