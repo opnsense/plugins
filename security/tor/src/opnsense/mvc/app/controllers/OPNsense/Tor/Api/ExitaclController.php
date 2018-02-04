@@ -39,10 +39,12 @@ class ExitaclController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Tor\ACLExitPolicy';
     public function searchaclAction()
     {
+        $this->sessionClose();
         return $this->searchBase('policy', array('enabled', 'type', 'network', 'action', 'startport', 'endport'));
     }
     public function getaclAction($uuid = null)
     {
+        $this->sessionClose();
         return $this->getBase('exitpolicy', 'policy', $uuid);
     }
     public function addaclAction()

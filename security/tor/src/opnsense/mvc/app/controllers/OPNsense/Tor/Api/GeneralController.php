@@ -77,11 +77,13 @@ class GeneralController extends ApiMutableModelControllerBase
 
     public function searchhidservauthAction()
     {
+        $this->sessionClose();
         return $this->searchBase('client_authentications.client_auth', array('enabled', 'onion_service', 'auth_cookie'));
     }
 
     public function gethidservauthAction($uuid = null)
     {
+        $this->sessionClose();
         return $this->getBase('client_auth', 'client_authentications.client_auth', $uuid);
     }
 

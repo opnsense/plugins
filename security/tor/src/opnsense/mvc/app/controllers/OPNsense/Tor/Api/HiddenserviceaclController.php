@@ -36,10 +36,12 @@ class HiddenserviceaclController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Tor\HiddenServiceACL';
     public function searchaclAction()
     {
+        $this->sessionClose();
         return $this->searchBase('hiddenserviceacl', array('enabled', 'hiddenservice', 'port', 'target_host', 'target_port'));
     }
     public function getaclAction($uuid = null)
     {
+        $this->sessionClose();
         return $this->getBase('hiddenserviceacl', 'hiddenserviceacl', $uuid);
     }
     public function addaclAction()
