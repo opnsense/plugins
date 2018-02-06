@@ -41,8 +41,9 @@ class BgpController extends ApiMutableModelControllerBase
     public function searchNeighborAction()
     {
         $this->sessionClose();
-        return $this->searchBase('neighbors.neighbor',
-                                  array("enabled",
+        return $this->searchBase(
+            'neighbors.neighbor',
+            array("enabled",
                                         "address",
                                         "remoteas",
                                         "updatesource",
@@ -51,7 +52,8 @@ class BgpController extends ApiMutableModelControllerBase
                                         "linkedPrefixlistIn",
                                         "linkedPrefixlistOut",
                                         "linkedRoutemapIn",
-                                        "linkedRoutemapOut"));
+            "linkedRoutemapOut")
+        );
     }
 
     public function getNeighborAction($uuid = null)
@@ -78,8 +80,10 @@ class BgpController extends ApiMutableModelControllerBase
     public function searchAspathAction()
     {
         $this->sessionClose();
-        return $this->searchBase('aspaths.aspath',
-                                 array("enabled", "number", "action", "as" ));
+        return $this->searchBase(
+            'aspaths.aspath',
+            array("enabled", "number", "action", "as" )
+        );
     }
 
     public function getAspathAction($uuid = null)
@@ -106,8 +110,10 @@ class BgpController extends ApiMutableModelControllerBase
     public function searchPrefixlistAction()
     {
         $this->sessionClose();
-        return $this->searchBase('prefixlists.prefixlist',
-                                 array("enabled", "name", "seqnumber", "action", "network" ));
+        return $this->searchBase(
+            'prefixlists.prefixlist',
+            array("enabled", "name", "seqnumber", "action", "network" )
+        );
     }
     public function getPrefixlistAction($uuid = null)
     {
@@ -133,8 +139,10 @@ class BgpController extends ApiMutableModelControllerBase
     public function searchRoutemapAction()
     {
         $this->sessionClose();
-        return $this->searchBase('routemaps.routemap',
-                                 array("enabled", "name", "action", "id", "match", "set"));
+        return $this->searchBase(
+            'routemaps.routemap',
+            array("enabled", "name", "action", "id", "match", "set")
+        );
     }
 
     public function getRoutemapAction($uuid = null)
