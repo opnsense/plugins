@@ -37,65 +37,68 @@ use \OPNsense\Iperf\FakeInstance;
 
 class InstanceController extends ApiMutableModelControllerBase
 {
-  static protected $internalModelClass = '\OPNsense\iperf\FakeInstance';
-  static protected $internalModelName = 'instance';
-  static private $SOCKET_PATH = "unix:///var/run/iperf-manager.sock";
+    static protected $internalModelClass = '\OPNsense\iperf\FakeInstance';
+    static protected $internalModelName = 'instance';
+    static private $SOCKET_PATH = "unix:///var/run/iperf-manager.sock";
 
   // override base to set model - not used here
-  public function setAction() {
-    $backend = new Backend();
+    public function setAction()
+    {
+        $backend = new Backend();
 
-    // if no socket file exist, we know that the service is not running
-    if (!file_exists("/var/run/iperf-manager.sock")) {
-      $backend->configdRun('iperf start');
-    }
-    if (!isset($_POST['instance']['interface'])) {
-      return array('status' => 'error',
+      // if no socket file exist, we know that the service is not running
+        if (!file_exists("/var/run/iperf-manager.sock")) {
+            $backend->configdRun('iperf start');
+        }
+        if (!isset($_POST['instance']['interface'])) {
+            return array('status' => 'error',
                     'error' => 'interface parameter is missing');
-    }
-    $interface_name = $_POST['instance']['interface'];
-    if ($interface = $this->get_real_interface_name($interface_name)) {
-        // start iperf
-        return $this->send_command("start $interface", $backend);
-    } else {
-        return array('status' => 'error',
+        }
+        $interface_name = $_POST['instance']['interface'];
+        if ($interface = $this->get_real_interface_name($interface_name)) {
+            // start iperf
+            return $this->send_command("start $interface", $backend);
+        } else {
+            return array('status' => 'error',
                       'error' => 'interface is unknown');
+        }
     }
-  }
 
-  public function queryAction() {
-      $backend = new Backend();
-      return $this->send_command('query', $backend);
-  }
+    public function queryAction()
+    {
+        $backend = new Backend();
+        return $this->send_command('query', $backend);
+    }
 
-  private function send_command($command, $backend) {
-      try {
-          $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);}
-      catch (\Exception $e) {
-          $socket = null;
-      }
-      if (!$socket) {
-          // in case of an error: try to restart the service and if that fails too
-          // don't retry anymore
-          $backend->configdRun('iperf restart');
-          $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);
-          if (!$socket) {
-              return array('state' => 'error', 'code' => $error_code, 'msg' => $error_msg);
-          }
-      }
-      fwrite($socket, "$command\n");
-      $data = fgets($socket);
-      fwrite($socket, "bye\n");
-      fgets($socket);
-      fclose($socket);
-      return json_decode($data,true);
-
-  }
-  private function get_real_interface_name($name) {
-      $config = Config::getInstance()->toArray();
-      if (isset($config['interfaces'][$name])) {
-          return $config['interfaces'][$name]['if'];
-      }
-      return null;
-  }
+    private function send_command($command, $backend)
+    {
+        try {
+            $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);
+        } catch (\Exception $e) {
+            $socket = null;
+        }
+        if (!$socket) {
+            // in case of an error: try to restart the service and if that fails too
+            // don't retry anymore
+            $backend->configdRun('iperf restart');
+            $socket = @stream_socket_client(InstanceController::$SOCKET_PATH, $error_code, $error_msg);
+            if (!$socket) {
+                return array('state' => 'error', 'code' => $error_code, 'msg' => $error_msg);
+            }
+        }
+        fwrite($socket, "$command\n");
+        $data = fgets($socket);
+        fwrite($socket, "bye\n");
+        fgets($socket);
+        fclose($socket);
+        return json_decode($data, true);
+    }
+    private function get_real_interface_name($name)
+    {
+        $config = Config::getInstance()->toArray();
+        if (isset($config['interfaces'][$name])) {
+            return $config['interfaces'][$name]['if'];
+        }
+        return null;
+    }
 }
