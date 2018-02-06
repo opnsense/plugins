@@ -26,37 +26,10 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-function shadowsocks_services()
+namespace OPNsense\Shadowsocks;
+
+use OPNsense\Base\BaseModel;
+
+class Local extends BaseModel
 {
-    global $config;
-
-    $services = array();
-
-    if (isset($config['OPNsense']['shadowsocks']['general']['enabled']) && $config['OPNsense']['shadowsocks']['general']['enabled'] == 1) {
-        $services[] = array(
-            'description' => gettext('shadowsocks daemon'),
-            'configd' => array(
-                'restart' => array('shadowsocks restart'),
-                'start' => array('shadowsocks start'),
-                'stop' => array('shadowsocks stop'),
-            ),
-            'name' => 'shadowsocks',
-            'pidfile' => '/var/run/shadowsocks-libev.pid'
-        );
-    }
-
-    if (isset($config['OPNsense']['shadowsocks']['local']['enabled']) && $config['OPNsense']['shadowsocks']['local']['enabled'] == 1) {
-        $services[] = array(
-            'description' => gettext('shadowsockslocal daemon'),
-            'configd' => array(
-                'restart' => array('shadowsockslocal restart'),
-                'start' => array('shadowsockslocal start'),
-                'stop' => array('shadowsockslocal stop'),
-            ),
-            'name' => 'shadowsockslocal',
-            'pidfile' => '/var/run/ss-local.pid'
-        );
-    }
-
-    return $services;
 }
