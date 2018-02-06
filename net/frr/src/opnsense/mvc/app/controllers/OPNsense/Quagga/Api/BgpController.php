@@ -40,17 +40,19 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchNeighborAction()
     {
-        return $this->searchBase('neighbors.neighbor',
-                                  array("enabled",
-                                        "address",
-                                        "remoteas",
-                                        "updatesource",
-                                        "nexthopself",
-                                        "defaultoriginate",
-                                        "linkedPrefixlistIn",
-                                        "linkedPrefixlistOut",
-                                        "linkedRoutemapIn",
-                                        "linkedRoutemapOut"));
+        return $this->searchBase(
+            'neighbors.neighbor',
+            array("enabled",
+                  "address",
+                  "remoteas",
+                  "updatesource",
+                  "nexthopself",
+                  "defaultoriginate",
+                  "linkedPrefixlistIn",
+                  "linkedPrefixlistOut",
+                  "linkedRoutemapIn",
+                  "linkedRoutemapOut")
+        );
     }
 
     public function getNeighborAction($uuid = null)
@@ -76,8 +78,10 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchAspathAction()
     {
-        return $this->searchBase('aspaths.aspath',
-                                 array("enabled", "number", "action", "as" ));
+        return $this->searchBase(
+            'aspaths.aspath',
+            array("enabled", "number", "action", "as" )
+        );
     }
 
     public function getAspathAction($uuid = null)
@@ -103,8 +107,10 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchPrefixlistAction()
     {
-        return $this->searchBase('prefixlists.prefixlist',
-                                 array("enabled", "name", "seqnumber", "action", "network" ));
+        return $this->searchBase(
+            'prefixlists.prefixlist',
+            array("enabled", "name", "seqnumber", "action", "network" )
+        );
     }
     public function getPrefixlistAction($uuid = null)
     {
@@ -129,8 +135,10 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchRoutemapAction()
     {
-        return $this->searchBase('routemaps.routemap',
-                                 array("enabled", "name", "action", "id", "match", "set"));
+        return $this->searchBase(
+            'routemaps.routemap',
+            array("enabled", "name", "action", "id", "match", "set")
+        );
     }
 
     public function getRoutemapAction($uuid = null)
