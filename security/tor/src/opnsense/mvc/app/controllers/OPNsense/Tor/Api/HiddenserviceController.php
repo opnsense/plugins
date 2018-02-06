@@ -36,7 +36,6 @@ class HiddenserviceController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Tor\HiddenService';
     public function searchserviceAction()
     {
-        $this->sessionClose();
         return $this->searchBase('service', array('enabled', 'name'));
     }
     public function getserviceAction($uuid = null)

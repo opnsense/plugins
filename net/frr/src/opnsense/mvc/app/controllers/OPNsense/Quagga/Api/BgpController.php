@@ -40,7 +40,6 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchNeighborAction()
     {
-        $this->sessionClose();
         return $this->searchBase('neighbors.neighbor',
                                   array("enabled",
                                         "address",
@@ -77,7 +76,6 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchAspathAction()
     {
-        $this->sessionClose();
         return $this->searchBase('aspaths.aspath',
                                  array("enabled", "number", "action", "as" ));
     }
@@ -105,7 +103,6 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchPrefixlistAction()
     {
-        $this->sessionClose();
         return $this->searchBase('prefixlists.prefixlist',
                                  array("enabled", "name", "seqnumber", "action", "network" ));
     }
@@ -132,7 +129,6 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchRoutemapAction()
     {
-        $this->sessionClose();
         return $this->searchBase('routemaps.routemap',
                                  array("enabled", "name", "action", "id", "match", "set"));
     }
