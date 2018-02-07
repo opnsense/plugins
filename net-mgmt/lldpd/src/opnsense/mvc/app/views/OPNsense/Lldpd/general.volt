@@ -1,6 +1,6 @@
 {#
  # Copyright (C) 2014-2017 Deciso B.V.
- # Copyright (C) 2017 Michael Muenz
+ # Copyright (C) 2017-2018 Michael Muenz
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -43,7 +43,15 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
+
+// Put API call into a function, needed for auto-refresh
+function update_neighbor() {
+    ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
+        $("#listneighbor").text(data['response']);
+    });
+}
+
 $( document ).ready(function () {
     var data_get_map = {'frm_general_settings':"/api/lldpd/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){
@@ -54,9 +62,9 @@ $( document ).ready(function () {
     ajaxCall(url="/api/lldpd/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });
-    ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
-        $("#listneighbor").text(data['response']);
-    });
+
+    // Call function update_neighbor with a auto-refresh of 3 seconds
+    setInterval(update_neighbor, 3000);
 
     // link save button to API set action
     $("#saveAct").click(function () {
@@ -65,9 +73,6 @@ $( document ).ready(function () {
             ajaxCall(url="/api/lldpd/service/reconfigure", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/lldpd/service/status", sendData={}, callback=function(data,status) {
                     updateServiceStatusUI(data['status']);
-                });
-                ajaxCall(url="/api/lldpd/service/neighbor", sendData={}, callback=function(data,status) {
-                    $("#listneighbor").text(data['response']);
                 });
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });

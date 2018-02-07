@@ -29,4 +29,16 @@
         <type>text</type>
         <help>Set the Base DN in format dc=example,dc=domain,dc=com</help>
     </field>
+    <field>
+        <id>ldap.user_filter</id>
+        <label>User Filter</label>
+        <type>text</type>
+        <help>Set the filter to search for users, for Active Directory change uid to samaccountname.</help>
+    </field>
+    <field>
+        <id>ldap.group_filter</id>
+        <label>Group Filter</label>
+        <type>text</type>
+        <help>Filter for group objects, should match all available group objects a user might be a member of.</help>
+    </field>
 </form>

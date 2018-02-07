@@ -127,7 +127,7 @@ include("head.inc");
 
 ?>
 <body>
-<script type="text/javascript">
+<script>
     $( document ).ready(function() {
         $("#hostres").change(function(){
             if ($('#hostres').prop('checked')) {

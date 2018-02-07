@@ -26,7 +26,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
+<script src="/ui/js/quagga/lodash.js"></script>
 <script type="text/x-template" id="routestpl">
 <table>
   <thead>
@@ -58,7 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </table>
 </script>
 
-<script type="text/javascript">
+<script>
 function translate(content) {
   tr = {};
   tr['kernel route'] = '{{ lang._('Kernel Route') }}';

@@ -138,7 +138,7 @@ smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
 
 smtpd_helo_required = yes
 
-### Syslog tweak, will be removed before stable
-syslog_facility = security
+syslog_facility = mail
+syslog_name = postfix
 
 {% endif %}

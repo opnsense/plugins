@@ -13,9 +13,11 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </domainname>
-                        <destination type="NetworkField">
+                        <destination type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
+                                <mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</mask>
+                                <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[]</ValidationMessage>
                         </destination>
             </domain>
         </domains>

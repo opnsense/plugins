@@ -178,7 +178,7 @@ include("head.inc");
 ?>
 <body>
 <?php include("fbegin.inc"); ?>
- <script type="text/javascript">
+ <script>
   $( document ).ready(function() {
       $("#type").change(function(){
           $(".opt_field").hide();
@@ -188,6 +188,7 @@ include("head.inc");
                 $(".type_custom").show();
                 break;
               case "route53":
+              case "route53-v6":
                 $(".type_route53").show();
                 break;
               default:

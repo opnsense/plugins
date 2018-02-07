@@ -28,7 +28,7 @@ PAGER?=		less
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
-CATEGORIES=	benchmarks databases devel dns mail net-mgmt \
+CATEGORIES=	benchmarks databases devel dns mail misc net-mgmt \
 		net security sysutils www
 
 .for CATEGORY in ${CATEGORIES}

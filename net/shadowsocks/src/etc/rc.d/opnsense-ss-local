@@ -1,0 +1,32 @@
+#!/bin/sh
+# $FreeBSD$
+
+# PROVIDE: ss-local
+# REQUIRE: LOGIN cleanvar
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable shadowsocks-libev:
+# ss_local_enable (bool):  Set to "NO" by default.
+#      Set to "YES" to enable ss-local.
+# ss_local_config (path): Shadowsocks config file.
+#      Defaults to "/usr/local/etc/shadowsocks-libev/local.json"
+
+
+. /etc/rc.subr
+
+name="ss_local"
+rcvar=ss_local_enable
+
+
+load_rc_config $name
+
+: ${ss_local_enable:="NO"}
+: ${ss_local_config="/usr/local/etc/shadowsocks-libev/local.json"}
+
+command="/usr/local/bin/ss-local"
+pidfile="/var/run/ss-local.pid"
+required_files="${ss_local_config}"
+
+command_args="-f $pidfile -c $ss_local_config"
+
+run_rc_command "$1"

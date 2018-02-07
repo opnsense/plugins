@@ -25,7 +25,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-<script type="text/javascript">
+<script>
     window.redis_installed = {{ redis_installed ? 'true' : 'false' }};
     $( document ).ready(function() {
 

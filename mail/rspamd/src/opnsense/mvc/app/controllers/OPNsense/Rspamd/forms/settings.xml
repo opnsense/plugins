@@ -263,13 +263,13 @@
             </field>
             <field>
                 <id>rspamd.spamtrap.fuzzy_learning</id>
-                <label>Fuzzy Leraning</label>
+                <label>Fuzzy Learning</label>
                 <type>checkbox</type>
                 <help>Enable this if you want to enable fuzzy learning.</help>
             </field>
             <field>
                 <id>rspamd.spamtrap.spam_learning</id>
-                <label>Bayes Leraning</label>
+                <label>Bayes Learning</label>
                 <type>checkbox</type>
                 <help>Enable this if you want to enable bayes learning.</help>
             </field>

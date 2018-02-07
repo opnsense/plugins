@@ -1,8 +1,6 @@
 <?php
 
 /*
- *    Copyright (C) 2015-2017 Deciso B.V.
- *    Copyright (C) 2015 Jos Schellevis
  *    Copyright (C) 2017 Fabian Franz
  *    All rights reserved.
  *
@@ -30,378 +28,86 @@
 
 namespace OPNsense\Quagga\Api;
 
-use \OPNsense\Quagga\OSPF;
-use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
 
 class OspfsettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'OSPF';
+    static protected $internalModelName = 'ospf';
     static protected $internalModelClass = '\OPNsense\Quagga\OSPF';
-    public function getAction()
-    {
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlospf = new OSPF();
-            $result['ospf'] = $mdlospf->getNodes();
-        }
-        return $result;
-    }
 
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlospf = new OSPF();
-            $mdlospf->setNodes($this->request->getPost("ospf"));
-
-            // perform validation
-            $valMsgs = $mdlospf->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlospf->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
-
-
-/////////////////////////////////////////////////////////////////////
     public function searchNetworkAction()
     {
-        $this->sessionClose();
-        $mdlOSPF = $this->getModel();
-        $grid = new UIModelGrid($mdlOSPF->networks->network);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array("enabled", "ipaddr", "netmask", "area")
-        );
+        return $this->searchBase('networks.network', array("enabled", "ipaddr", "netmask", "area"));
     }
     public function searchInterfaceAction()
     {
-        $this->sessionClose();
-        $mdlOSPF = $this->getModel();
-        $grid = new UIModelGrid($mdlOSPF->interfaces->interface);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array("enabled", "interfacename", "networktype", "authtype", "area")
-        );
+        return $this->searchBase('interfaces.interface', array("enabled", "interfacename", "networktype", "authtype", "area"));
     }
     public function searchPrefixlistAction()
     {
-        $this->sessionClose();
-        $mdlOSPF = $this->getModel();
-        $grid = new UIModelGrid($mdlOSPF->prefixlists->prefixlist);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array("enabled", "name", "seqnumber", "action", "network" )
-        );
+        return $this->searchBase('prefixlists.prefixlist', array("enabled", "name", "seqnumber", "action", "network" ));
     }
     public function getNetworkAction($uuid = null)
     {
-        $mdlOSPF = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdlOSPF->getNodeByReference('networks.network.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array("network" => $node->getNodes());
-            }
-        } else {
-            $node = $mdlOSPF->networks->network->add();
-            return array("network" => $node->getNodes());
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('network', 'networks.network', $uuid);
     }
     public function getInterfaceAction($uuid = null)
     {
-        $mdlOSPF = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdlOSPF->getNodeByReference('interfaces.interface.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array("interface" => $node->getNodes());
-            }
-        } else {
-            $node = $mdlOSPF->interfaces->interface->add();
-            return array("interface" => $node->getNodes());
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('interface', 'interfaces.interface', $uuid);
     }
     public function getPrefixlistAction($uuid = null)
     {
-        $mdlOSPF = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdlOSPF->getNodeByReference('prefixlists.prefixlist.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array("prefixlist" => $node->getNodes());
-            }
-        } else {
-            $node = $mdlOSPF->prefixlists->prefixlist->add();
-            return array("prefixlist" => $node->getNodes());
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
     public function addNetworkAction()
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("network")) {
-            $result = array("result" => "failed", "validations" => array());
-            $mdlOSPF = $this->getModel();
-            $node = $mdlOSPF->networks->network->Add();
-            $node->setNodes($this->request->getPost("network"));
-            $valMsgs = $mdlOSPF->performValidation();
-
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "network", $msg->getField());
-                $result["validations"][$fieldnm] = $msg->getMessage();
-            }
-
-            if (count($result['validations']) == 0) {
-                // save config if validated correctly
-                $mdlOSPF->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
+        return $this->addBase('network', 'networks.network');
     }
     public function addInterfaceAction()
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("interface")) {
-            $result = array("result" => "failed", "validations" => array());
-            $mdlOSPF = $this->getModel();
-            $node = $mdlOSPF->interfaces->interface->Add();
-            $node->setNodes($this->request->getPost("interface"));
-            $valMsgs = $mdlOSPF->performValidation();
-
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "interface", $msg->getField());
-                $result["validations"][$fieldnm] = $msg->getMessage();
-            }
-
-            if (count($result['validations']) == 0) {
-                // save config if validated correctly
-                $mdlOSPF->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
+        return $this->addBase('interface', 'interfaces.interface');
     }
     public function addPrefixlistAction()
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
-            $result = array("result" => "failed", "validations" => array());
-            $mdlOSPF = $this->getModel();
-            $node = $mdlOSPF->prefixlists->prefixlist->Add();
-            $node->setNodes($this->request->getPost("prefixlist"));
-            $valMsgs = $mdlOSPF->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
-                $result["validations"][$fieldnm] = $msg->getMessage();
-            }
-            if (count($result['validations']) == 0) {
-                // save config if validated correctly
-                $mdlOSPF->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
+        return $this->addBase('prefixlist', 'prefixlists.prefixlist');
     }
     public function delNetworkAction($uuid)
     {
-
-        $result = array("result" => "failed");
-
-        if ($this->request->isPost()) {
-            $mdlOSPF = $this->getModel();
-            if ($uuid != null) {
-                if ($mdlOSPF->networks->network->del($uuid)) {
-                    $mdlOSPF->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('networks.network', $uuid);
     }
     public function delInterfaceAction($uuid)
     {
-
-        $result = array("result" => "failed");
-
-        if ($this->request->isPost()) {
-            $mdlOSPF = $this->getModel();
-            if ($uuid != null) {
-                if ($mdlOSPF->interfaces->interface->del($uuid)) {
-                    $mdlOSPF->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('interfaces.interface', $uuid);
     }
     public function delPrefixlistAction($uuid)
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlOSPF = $this->getModel();
-            if ($uuid != null) {
-                if ($mdlOSPF->prefixlists->prefixlist->del($uuid)) {
-                    $mdlOSPF->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('prefixlists.prefixlist', $uuid);
     }
     public function setNetworkAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("network")) {
-            $mdlNetwork = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlNetwork->getNodeByReference('networks.network.' . $uuid);
-                if ($node != null) {
-                    $result = array("result" => "failed", "validations" => array());
-                    $networkInfo = $this->request->getPost("network");
-
-                    $node->setNodes($networkInfo);
-                    $valMsgs = $mdlNetwork->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "network", $msg->getField());
-                        $result["validations"][$fieldnm] = $msg->getMessage();
-                    }
-
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdlNetwork->serializeToConfig();
-                        Config::getInstance()->save();
-                        $result = array("result" => "saved");
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array("result" => "failed");
+        return $this->setBase('network', 'networks.network', $uuid);
     }
     public function setInterfaceAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("interface")) {
-            $mdlNetwork = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlNetwork->getNodeByReference('interfaces.interface.' . $uuid);
-                if ($node != null) {
-                    $result = array("result" => "failed", "validations" => array());
-                    $interfaceInfo = $this->request->getPost("interface");
-
-                    $node->setNodes($interfaceInfo);
-                    $valMsgs = $mdlNetwork->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "interface", $msg->getField());
-                        $result["validations"][$fieldnm] = $msg->getMessage();
-                    }
-
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdlNetwork->serializeToConfig();
-                        Config::getInstance()->save();
-                        $result = array("result" => "saved");
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array("result" => "failed");
+        return $this->setBase('interface', 'interfaces.interface', $uuid);
     }
     public function setPrefixlistAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("prefixlist")) {
-            $mdlNeighbor = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlNeighbor->getNodeByReference('prefixlists.prefixlist.' . $uuid);
-                if ($node != null) {
-                    $result = array("result" => "failed", "validations" => array());
-                    $prefixlistInfo = $this->request->getPost("prefixlist");
-                    $node->setNodes($prefixlistInfo);
-                    $valMsgs = $mdlNeighbor->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "prefixlist", $msg->getField());
-                        $result["validations"][$fieldnm] = $msg->getMessage();
-                    }
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdlNeighbor->serializeToConfig();
-                        Config::getInstance()->save();
-                        $result = array("result" => "saved");
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array("result" => "failed");
+        return $this->setBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
-    public function toggle_handler($uuid, $elements, $element)
-    {
-
-        $result = array("result" => "failed");
-
-        if ($this->request->isPost()) {
-            $mdlNetwork = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlNetwork->getNodeByReference($elements . '.'. $element .'.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == "1") {
-                        $result['result'] = "Disabled";
-                        $node->enabled = "0";
-                    } else {
-                        $result['result'] = "Enabled";
-                        $node->enabled = "1";
-                    }
-                    // if item has toggled, serialize to config and save
-                    $mdlNetwork->serializeToConfig();
-                    Config::getInstance()->save();
-                }
-            }
-        }
-        return $result;
-    }
-
     public function toggleNetworkAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'networks', 'network');
+        return $this->toggleBase('networks.network', $uuid);
     }
     public function toggleInterfaceAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'interfaces', 'interface');
+        return $this->toggleBase('interfaces.interface', $uuid);
     }
     public function togglePrefixlistAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'prefixlists', 'prefixlist');
+        return $this->toggleBase('prefixlists.prefixlist', $uuid);
     }
 }

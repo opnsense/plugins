@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
     $( document ).ready(function () {
         var data_get_map = {'frm_general_settings':"/api/postfix/general/get", 'frm_antispam_settings':"/api/postfix/antispam/get"};
         mapDataToFormUI(data_get_map).done(function (data) {

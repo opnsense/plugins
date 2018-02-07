@@ -77,4 +77,18 @@
         <type>checkbox</type>
         <help>Read network interface metrics.</help>
     </field>
+    <field>
+        <id>input.ping</id>
+        <label>Ping</label>
+        <type>checkbox</type>
+        <help>Ping Hosts and measure the metrics.</help>
+    </field>
+    <field>
+        <id>input.ping_hosts</id>
+        <label>Ping Hosts</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Set the Hosts to ping in a CSV list.</help>
+    </field>
 </form>

@@ -2,6 +2,7 @@
 
 /**
  *    Copyright (C) 2018 EURO-LOG AG
+ *    Copyright (C) 2016 Franco Fichtner <franco@opnsense.org>
  *
  *    All rights reserved.
  *

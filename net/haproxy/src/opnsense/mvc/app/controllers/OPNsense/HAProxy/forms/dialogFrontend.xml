@@ -111,6 +111,18 @@
         <help><![CDATA[Enable HTTP Strict Transport Security.]]></help>
     </field>
     <field>
+        <id>frontend.ssl_hstsIncludeSubDomains</id>
+        <label>HSTS includeSubDomains</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable if all present and future subdomains will be HTTPS.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_hstsPreload</id>
+        <label>HSTS preload</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable if you like this domain to be included in the HSTS preload list.]]></help>
+    </field>
+    <field>
         <id>frontend.ssl_hstsMaxAge</id>
         <label>HSTS max-age</label>
         <type>text</type>
@@ -131,6 +143,20 @@
         <label>Client Timeout</label>
         <type>text</type>
         <help><![CDATA[Set the maximum inactivity time on the client side. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.tuning_timeoutHttpReq</id>
+        <label>HTTP Request Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum allowed time to wait for a complete HTTP request. In order to offer DoS protection, it may be required to lower the maximum accepted time to receive a complete HTTP request without affecting the client timeout. This helps protecting against established connections on which nothing is sent. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.tuning_timeoutHttpKeepAlive</id>
+        <label>HTTP Keep-Alive Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum allowed time to wait for a new HTTP request to appear. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -181,6 +207,101 @@
         <label>X-Forwarded-For header</label>
         <type>checkbox</type>
         <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
+    </field>
+    <field>
+        <label>Stickiness table</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>frontend.stickiness_pattern</id>
+        <label>Table type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
+        <hint>Choose a stick-table type.</hint>
+    </field>
+    <field>
+        <id>frontend.stickiness_dataTypes</id>
+        <label>Stored data types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+    </field>
+    <field>
+        <id>frontend.stickiness_expire</id>
+        <label>Expiration time</label>
+        <type>text</type>
+        <help><![CDATA[Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds). This configures the maximum duration of an entry in the stick-table since it was last created, refreshed or matched. The maximum duration is slightly above 24 days.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_size</id>
+        <label>Size</label>
+        <type>text</type>
+        <help><![CDATA[Enter a number followed by one of the supported suffixes "k", "m", "g". This configures the maximum number of entries that can fit in the table. This value directly impacts memory usage. Count approximately 50 bytes per entry, plus the size of a string if any.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_counter</id>
+        <label>Enable sticky counters</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable to be able to retrieve values from sticky counters. If disabled, all values will return 0, rendering many conditions useless.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_counter_key</id>
+        <label>Sticky counter key</label>
+        <type>text</type>
+        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_length</id>
+        <label>Max. data length</label>
+        <type>text</type>
+        <help><![CDATA[Specify the maximum length for a value in the stick-table. If the value is larger than this value it will be truncated before being stored. Depending on the stick-table type this repesents either characters or bytes.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_connRatePeriod</id>
+        <label>Connection rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming connection rate over that period, in connections per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_sessRatePeriod</id>
+        <label>Session rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming session rate over that period, in sessions per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_httpReqRatePeriod</id>
+        <label>HTTP request rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_httpErrRatePeriod</id>
+        <label>HTTP error rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request error rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_bytesInRatePeriod</id>
+        <label>Bytes in rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_bytesOutRatePeriod</id>
+        <label>Bytes out rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average outgoing bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <label>Advanced settings</label>

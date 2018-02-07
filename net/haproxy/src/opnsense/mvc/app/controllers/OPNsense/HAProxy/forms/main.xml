@@ -20,6 +20,58 @@
                 <help><![CDATA[Uncheck to hide all additional introduction pages. Requires a manual page reload for the change to take effect.]]></help>
             </field>
         </subtab>
+        <subtab id="haproxy-general-peers" description="Peers / Session Sync">
+            <field>
+                <id>haproxy.general.peers.enabled</id>
+                <label>Enable peers</label>
+                <type>checkbox</type>
+                <help><![CDATA[Enable or disable HAProxy peers. This will propagate entries of any data-types in stick-tables between several HAProxy instances over TCP connections in a multi-master fashion.]]></help>
+            </field>
+            <field>
+                <label>Peer 1</label>
+                <type>header</type>
+            </field>
+            <field>
+                <id>haproxy.general.peers.name1</id>
+                <label>Peer name (FQDN)</label>
+                <type>text</type>
+                <help><![CDATA[The name of the peer. This is usually the full hostname to make it possible for HAProxy to recognize the local peer. If HAProxy is unable to find the local peer it will fail to start.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.peers.listen1</id>
+                <label>Listen address (IP)</label>
+                <type>text</type>
+                <help><![CDATA[The listen address of the local peer or the address of the remote peer.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.peers.port1</id>
+                <label>TCP Port</label>
+                <type>text</type>
+                <help><![CDATA[The TCP port that should be used for connections to this peer. It must not be used by any other service.]]></help>
+            </field>
+            <field>
+                <label>Peer 2</label>
+                <type>header</type>
+            </field>
+            <field>
+                <id>haproxy.general.peers.name2</id>
+                <label>Peer name (FQDN)</label>
+                <type>text</type>
+                <help><![CDATA[The name of the peer. This is usually the full hostname to make it possible for HAProxy to recognize the local peer. If HAProxy is unable to find the local peer it will fail to start.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.peers.listen2</id>
+                <label>Listen address (IP)</label>
+                <type>text</type>
+                <help><![CDATA[The listen address of the local peer or the address of the remote peer.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.peers.port2</id>
+                <label>TCP Port</label>
+                <type>text</type>
+                <help><![CDATA[The TCP port that should be used for connections to this peer. It must not be used by any other service.]]></help>
+            </field>
+        </subtab>
         <subtab id="haproxy-general-global" description="Global Parameters">
             <field>
                 <label>NOTE: Define global parameters for the HAProxy service. They cannot be overriden.</label>

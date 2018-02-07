@@ -30,7 +30,7 @@
 
 namespace OPNsense\Relayd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\Relayd\Relayd;
 
@@ -38,8 +38,13 @@ use \OPNsense\Relayd\Relayd;
  * Class ServiceController
  * @package OPNsense\relayd
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
+    static protected $internalServiceClass = '\OPNsense\Relayd\Relayd';
+    static protected $internalServiceEnabled = 'general.enabled';
+    static protected $internalServiceTemplate = 'OPNsense/Relayd';
+    static protected $internalServiceName = 'relayd';
+    
     /**
      * test relayd configuration
      * @return array
@@ -48,129 +53,27 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $this->sessionClose();
-        }
-        $result['function'] = "configtest";
+            
+            $backend = new Backend();
 
-        $result['template'] = $this->callBackend('template');
-        if ($result['template'] != 'OK') {
-            $result['result'] = "Template error: " . $result['template'];
-            return $result;
-        }
-
-        $result['result'] = $this->callBackend('configtest');
-        return $result;
-    }
-
-    /**
-     * reload relayd with new configuration
-     * @return array
-     */
-    public function reloadAction()
-    {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
-        $result['function'] = "reload";
-
-        $result['template'] = $this->callBackend('template');
-        if ($result['template'] != 'OK') {
-            $result['result'] = "Template error: " . $result['template'];
-            return $result;
-        }
-
-        $status = $this->callBackend('status');
-        if (substr($status, 0, 17) != 'relayd is running') {
-            $result['result'] = "relayd is not running";
-            return $result;
-        }
-
-        $result['result'] = $this->callBackend('reload');
-        return $result;
-    }
-
-    /**
-     * get status of relayd process
-     * @return array
-     */
-    public function statusAction()
-    {
-        $mdlRelayd = new Relayd();
-        $result = array();
-        $result['function'] = 'status';
-        $result['result'] = 'ok';
-        $status = $this->callBackend('status');
-        if (strpos($status, 'not running') > 0) {
-            if ($mdlRelayd->general->enabled->__toString() == '1') {
-                $result['status'] = 'stopped';
-            } else {
-                $result['status'] = 'disabled';
+            $result['function'] = "configtest";
+            $result['template'] = trim($backend->configdRun('template reload OPNsense/Relayd'));
+            if ($result['template'] != 'OK') {
+                $result['result'] = "Template error: " . $result['template'];
+                return $result;
             }
-        } elseif (strpos($status, 'is running') > 0) {
-            $result['status'] = 'running';
-        } elseif ($mdlRelayd->general->enabled->__toString() == '0') {
-            $result['status'] = 'disabled';
+            $result['result'] = trim($backend->configdRun('relayd configtest'));
+            return $result;
         } else {
-            $result['result'] = 'failed';
-            $result['status'] = 'unknown';
-            $result['error'] = $status;
+            return array('status' => 'failed');
         }
-        return $result;
     }
-
+    
     /**
-     * start relayd service
-     * @return array
+     * avoid restarting Relayd on reconfigure
      */
-    public function startAction()
+    protected function reconfigureForceRestart()
     {
-        $result = array("result" => "failed", "function" => "start");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $result['result'] = $this->callBackend('start');
-        }
-        return $result;
-    }
-
-    /**
-     * stop relayd service
-     * @return array
-     */
-    public function stopAction()
-    {
-        $result = array("result" => "failed", "function" => "stop");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $result['result'] = $this->callBackend('stop');
-        }
-        return $result;
-    }
-
-    /**
-     * restart relayd service
-     * @return array
-     */
-    public function restartAction()
-    {
-        $result = array("result" => "failed", "function" => "restart");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $result['result'] = $this->callBackend('restart');
-        }
-        return $result;
-    }
-
-    /**
-     * call backend functions
-     * @param action
-     * @return string
-     */
-    protected function callBackend($action)
-    {
-        $backend = new Backend();
-        if ($action == 'template') {
-            return trim($backend->configdRun('template reload OPNsense/Relayd'));
-        } else {
-            return trim($backend->configdRun('relayd ' . $action));
-        }
+        return 0;
     }
 }

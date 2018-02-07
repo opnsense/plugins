@@ -85,16 +85,17 @@ function frr_services()
 
     $services = array();
 
-    if (isset($config['OPNsense']['quagga']['general']['enabled']) && $config['OPNsense']['quagga']['general']['enabled'] == 1) {
+    if (isset($config['OPNsense']['quagga']['general']['enabled']) &&
+        $config['OPNsense']['quagga']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('Quagga is a deamon to add support of various routing protocols.'),
+            'description' => gettext('FRRouting Daemon'),
             'configd' => array(
                 'restart' => array('quagga restart'),
                 'start' => array('quagga start'),
                 'stop' => array('quagga stop'),
             ),
-            'name' => 'quagga',
-            'pidfile' => '/var/run/quagga/zebra.pid'
+            'name' => 'frr',
+            'pidfile' => '/var/run/frr/zebra.pid'
         );
     }
 

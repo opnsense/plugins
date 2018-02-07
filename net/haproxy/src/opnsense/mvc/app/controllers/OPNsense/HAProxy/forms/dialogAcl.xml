@@ -201,6 +201,214 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_src_bytes_in_rate</style>
+    </field>
+    <field>
+        <id>acl.src_bytes_in_rate_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_bytes_in_rate</id>
+        <label>Incoming bytes rate</label>
+        <type>text</type>
+        <help><![CDATA[The average bytes rate from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_bytes_out_rate</style>
+    </field>
+    <field>
+        <id>acl.src_bytes_out_rate_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_bytes_out_rate</id>
+        <label>Outgoing bytes rate</label>
+        <type>text</type>
+        <help><![CDATA[The average bytes rate to the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_conn_cnt</style>
+    </field>
+    <field>
+        <id>acl.src_conn_cnt_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_conn_cnt</id>
+        <label>Connections count</label>
+        <type>text</type>
+        <help><![CDATA[The cumulative number of connections initiated from the current incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_conn_cur</style>
+    </field>
+    <field>
+        <id>acl.src_conn_cur_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_conn_cur</id>
+        <label>Concurrent connections</label>
+        <type>text</type>
+        <help><![CDATA[The current amount of concurrent connections initiated from the current incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_conn_rate</style>
+    </field>
+    <field>
+        <id>acl.src_conn_rate_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_conn_rate</id>
+        <label>Connection rate</label>
+        <type>text</type>
+        <help><![CDATA[The average connection rate from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_http_err_cnt</style>
+    </field>
+    <field>
+        <id>acl.src_http_err_cnt_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_http_err_cnt</id>
+        <label>HTTP error count</label>
+        <type>text</type>
+        <help><![CDATA[The cumulative number of HTTP errors from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_http_err_rate</style>
+    </field>
+    <field>
+        <id>acl.src_http_err_rate_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_http_err_rate</id>
+        <label>HTTP error rate</label>
+        <type>text</type>
+        <help><![CDATA[The average rate of HTTP errors from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_http_req_cnt</style>
+    </field>
+    <field>
+        <id>acl.src_http_req_cnt_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_http_req_cnt</id>
+        <label>HTTP request count</label>
+        <type>text</type>
+        <help><![CDATA[The cumulative number of HTTP requests from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_http_req_rate</style>
+    </field>
+    <field>
+        <id>acl.src_http_req_rate_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_http_req_rate</id>
+        <label>HTTP request rate</label>
+        <type>text</type>
+        <help><![CDATA[The average rate of HTTP requests from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_kbytes_in</style>
+    </field>
+    <field>
+        <id>acl.src_kbytes_in_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_kbytes_in</id>
+        <label>Data received</label>
+        <type>text</type>
+        <help><![CDATA[The total amount of data received from the incoming connection's source address (in kilobytes).]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_kbytes_out</style>
+    </field>
+    <field>
+        <id>acl.src_kbytes_out_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_kbytes_out</id>
+        <label>Data sent</label>
+        <type>text</type>
+        <help><![CDATA[The total amount of data sent to the incoming connection's source address (in kilobytes).]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_port</style>
+    </field>
+    <field>
+        <id>acl.src_port_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_port</id>
+        <label>Source port</label>
+        <type>text</type>
+        <help><![CDATA[An integer value corresponding to the TCP source port of the connection on the client side, which is the port the client connected from.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_src_sess_cnt</style>
+    </field>
+    <field>
+        <id>acl.src_sess_cnt_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.src_sess_cnt</id>
+        <label>Session count</label>
+        <type>text</type>
+        <help><![CDATA[The cumulative number of connections initiated from the incoming connection's source address.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>expression_table table_nbsrv</style>
     </field>
     <field>

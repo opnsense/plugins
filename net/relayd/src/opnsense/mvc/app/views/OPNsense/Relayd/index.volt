@@ -41,7 +41,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 	   $('#btnReload').unbind('click').click(function(){
 	      $('#btnReloadProgress').addClass("fa fa-spinner fa-pulse");
-	      ajaxCall(url="/api/relayd/service/reload", sendData={}, callback=function(data,status) {
+	      ajaxCall(url="/api/relayd/service/reconfigure", sendData={}, callback=function(data,status) {
 	         $('#btnReloadProgress').removeClass("fa fa-spinner fa-pulse");
 	         $('#btnReload').blur();
 	         $("#responseMsg").removeClass("hidden");
@@ -58,16 +58,16 @@ POSSIBILITY OF SUCH DAMAGE.
 		   formatTokenizersUI();
 	      $('#relayd\\.general\\.log').selectpicker('refresh');
 	      ajaxCall(url="/api/relayd/service/status", sendData={}, callback=function(data,status) {
-		  updateServiceStatusUI(data['status']);
+		       updateServiceStatusUI(data['status']);
 	      });
 	   });
 	   $('#btn_ApplyGeneralSettings').unbind('click').click(function(){
 		   $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
 	      var frm_id = 'frm_GeneralSettings';
 	      saveFormToEndpoint(url = "/api/relayd/settings/set/general/",formid=frm_id,callback_ok=function(){
-		  ajaxCall(url="/api/relayd/service/status", sendData={}, callback=function(data,status) {
-              updateServiceStatusUI(data['status']);
-           });
+		         ajaxCall(url="/api/relayd/service/status", sendData={}, callback=function(data,status) {
+               updateServiceStatusUI(data['status']);
+            });
 	      });
 	      $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
 	      $("#btn_ApplyGeneralSettings").blur();

@@ -58,27 +58,18 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function getAction($nodeType = null, $uuid = null)
     {
-        $result = array("result" => "failed");
-        if ($this->request->isGet() && $nodeType != null) {
+        if ($nodeType != null) {
             $this->validateNodeType($nodeType);
-            $mdlRelayd = new Relayd();
             if ($nodeType == 'general') {
-                $node = $mdlRelayd->getNodeByReference($nodeType);
+                $mdlRelayd = new Relayd();
+                return array('result' => 'ok', 'general' => $mdlRelayd->getNodeByReference('general')->getNodes());
             } else {
-                if($uuid != null) {
-                    $node = $mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
-                } else {
-                    $node = $mdlRelayd->$nodeType->Add();
-                }
-            }
-            if ($node != null) {
-                $result[$nodeType] = $node->getNodes();
-                $result["result"] = "ok";
+                return $this->getBase($nodeType, $nodeType, $uuid);
             }
         }
-        return $result;
+        return array("result" => "failed");
     }
-
+    
     /**
      * set relayd properties
      * @param $nodeType
@@ -88,85 +79,74 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function setAction($nodeType = null, $uuid = null)
     {
-        $result = array("result" => "failed", "validations" => array());
-        if ($this->request->isPost() && $this->request->hasPost("relayd") && $nodeType != null) {
-            $this->validateNodeType($nodeType);
+        if (!$this->request->isPost() || !$this->request->hasPost("relayd") || $nodeType == null) {
+            return array('result' => 'failed');
+        }
+        
+        $this->validateNodeType($nodeType);
+                
+        $relaydInfo = $this->request->getPost("relayd");
+        
+        if ($nodeType == 'general') {
             $mdlRelayd = new Relayd();
-            if ($nodeType == 'general') {
-                $node = $mdlRelayd->getNodeByReference($nodeType);
-            } else {
-                if($uuid != null) {
-                    $node = $mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
-                } else {
-                    $node = $mdlRelayd->$nodeType->Add();
-                }
+            $node = $mdlRelayd->getNodeByReference($nodeType);
+            $node->setNodes($relaydInfo[$nodeType]);
+            if ($relaydInfo['general']['enabled'] == '0') {
+                $svcRelayd = new ServiceController();
+                $svcRelayd->stopAction();
             }
-            if ($node != null) {
-                $relaydInfo = $this->request->getPost("relayd");
-
-                // perform plugin specific validations
-                if ($nodeType == 'virtualserver') {
-                    if ($relaydInfo[$nodeType]['type'] == 'redirect') {
-                        if ($relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
-                            $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin') {
-                            $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for redirects.";
-                        }
-                        if ($relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
-                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin') {
+            $mdlRelayd->serializeToConfig();
+            Config::getInstance()->save();
+            return array("result" => "saved");
+        }
+            
+        // perform plugin specific validations
+        if ($nodeType == 'virtualserver') {
+            if ($relaydInfo[$nodeType]['type'] == 'redirect') {
+                if ($relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
+                    $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin') {
+                        $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for redirects.";
+                    }
+                    if ($relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
+                        $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin') {
                             $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for redirects.";
                         }
-                    }
-                    if ($relaydInfo[$nodeType]['type'] == 'relay') {
-                        if ($relaydInfo[$nodeType]['transport_tablemode'] == 'least-states') {
-                            $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for relays.";
-                        }
-                        if ($relaydInfo[$nodeType]['backuptransport_tablemode'] == 'least-states') {
-                            $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for relays.";
-                        }
-                    }
-                } elseif ($nodeType == 'tablecheck') {
-                    switch ($relaydInfo[$nodeType]['type']) {
-                        case 'send':
-                            if (empty($relaydInfo[$nodeType]['expect'])) {
-                                $result["validations"]['relayd.tablecheck.expect'] = "Expect Pattern cannot be empty.";
-                            }
-                            break;
-                        case 'script':
-                            if(empty($relaydInfo[$nodeType]['path'])) {
-                                $result["validations"]['relayd.tablecheck.path'] = "Script path cannot be empty.";
-                            }
-                            break;
-                        case 'http':
-                            if(empty($relaydInfo[$nodeType]['path'])) {
-                                $result["validations"]['relayd.tablecheck.path'] = "Path cannot be empty.";
-                            }
-                            if(empty($relaydInfo[$nodeType]['code']) && empty($relaydInfo[$nodeType]['digest'])) {
-                                $result["validations"]['relayd.tablecheck.code'] = "Provide one of Response Code or Message Digest.";
-                                $result["validations"]['relayd.tablecheck.digest'] = "Provide one of Response Code or Message Digest.";
-                            }
-                            break;
-                    }
+            }
+            if ($relaydInfo[$nodeType]['type'] == 'relay') {
+                if ($relaydInfo[$nodeType]['transport_tablemode'] == 'least-states') {
+                    $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for relays.";
                 }
-
-                $node->setNodes($relaydInfo[$nodeType]);
-                $valMsgs = $mdlRelayd->performValidation();
-                foreach ($valMsgs as $field => $msg) {
-                    $fieldnm = str_replace($node->__reference, "relayd." . $nodeType, $msg->getField());
-                    $result["validations"][$fieldnm] = $msg->getMessage();
-                }
-                if (empty($result["validations"])) {
-                    unset($result["validations"]);
-                    $result['result'] = 'ok';
-                    $mdlRelayd->serializeToConfig();
-                    Config::getInstance()->save();
-                    if ($nodeType == 'general' && $relaydInfo['general']['enabled'] == '0') {
-                        $svcRelayd = new ServiceController();
-                        $result = $svcRelayd->stopAction();
-                    }
+                if ($relaydInfo[$nodeType]['backuptransport_tablemode'] == 'least-states') {
+                    $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for relays.";
                 }
             }
+        } elseif ($nodeType == 'tablecheck') {
+            switch ($relaydInfo[$nodeType]['type']) {
+                case 'send':
+                    if (empty($relaydInfo[$nodeType]['expect'])) {
+                        $result["validations"]['relayd.tablecheck.expect'] = "Expect Pattern cannot be empty.";
+                    }
+                    break;
+                case 'script':
+                    if(empty($relaydInfo[$nodeType]['path'])) {
+                        $result["validations"]['relayd.tablecheck.path'] = "Script path cannot be empty.";
+                    }
+                    break;
+                case 'http':
+                    if(empty($relaydInfo[$nodeType]['path'])) {
+                        $result["validations"]['relayd.tablecheck.path'] = "Path cannot be empty.";
+                    }
+                    if(empty($relaydInfo[$nodeType]['code']) && empty($relaydInfo[$nodeType]['digest'])) {
+                        $result["validations"]['relayd.tablecheck.code'] = "Provide one of Response Code or Message Digest.";
+                        $result["validations"]['relayd.tablecheck.digest'] = "Provide one of Response Code or Message Digest.";
+                    }
+                    break;
+            }
         }
-        return $result;
+        if (!empty($result["validations"])) {
+            return $result;
+        }
+        return $this->setBase('relayd', $nodeType, $uuid);
     }
 
     /**
@@ -220,11 +200,8 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchAction($nodeType = null)
     {
-        $this->sessionClose();
-        if ($this->request->isPost() && $nodeType != null) {
+        if ($nodeType != null) {
             $this->validateNodeType($nodeType);
-            $mdlRelayd = new Relayd();
-            $grid = new UIModelGrid($mdlRelayd->$nodeType);
             $fields = array();
             switch ($nodeType) {
                 case 'host':
@@ -243,7 +220,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     $fields = array('enabled', 'name', 'type');
                     break;
             }
-            return $grid->fetchBindRequest($this->request, $fields);
+            return $this->searchBase($nodeType, $fields);
         }
     }
 
