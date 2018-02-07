@@ -69,7 +69,7 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
-    
+
     /**
      * set relayd properties
      * @param $nodeType
@@ -82,11 +82,11 @@ class SettingsController extends ApiMutableModelControllerBase
         if (!$this->request->isPost() || !$this->request->hasPost("relayd") || $nodeType == null) {
             return array('result' => 'failed');
         }
-        
+
         $this->validateNodeType($nodeType);
-                
+
         $relaydInfo = $this->request->getPost("relayd");
-        
+
         if ($nodeType == 'general') {
             $mdlRelayd = new Relayd();
             $node = $mdlRelayd->getNodeByReference($nodeType);
@@ -99,7 +99,7 @@ class SettingsController extends ApiMutableModelControllerBase
             Config::getInstance()->save();
             return array("result" => "saved");
         }
-            
+
         // perform plugin specific validations
         if ($nodeType == 'virtualserver') {
             if ($relaydInfo[$nodeType]['type'] == 'redirect') {

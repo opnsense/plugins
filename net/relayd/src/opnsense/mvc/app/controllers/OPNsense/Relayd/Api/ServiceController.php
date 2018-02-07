@@ -44,7 +44,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceEnabled = 'general.enabled';
     static protected $internalServiceTemplate = 'OPNsense/Relayd';
     static protected $internalServiceName = 'relayd';
-    
+
     /**
      * test relayd configuration
      * @return array
@@ -53,7 +53,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         if ($this->request->isPost()) {
             $this->sessionClose();
-            
+
             $backend = new Backend();
 
             $result['function'] = "configtest";
@@ -68,7 +68,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             return array('status' => 'failed');
         }
     }
-    
+
     /**
      * avoid restarting Relayd on reconfigure
      */
