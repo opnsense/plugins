@@ -37,17 +37,14 @@ class OspfsettingsController extends ApiMutableModelControllerBase
 
     public function searchNetworkAction()
     {
-        $this->sessionClose();
         return $this->searchBase('networks.network', array("enabled", "ipaddr", "netmask", "area"));
     }
     public function searchInterfaceAction()
     {
-        $this->sessionClose();
         return $this->searchBase('interfaces.interface', array("enabled", "interfacename", "networktype", "authtype", "area"));
     }
     public function searchPrefixlistAction()
     {
-        $this->sessionClose();
         return $this->searchBase('prefixlists.prefixlist', array("enabled", "name", "seqnumber", "action", "network" ));
     }
     public function getNetworkAction($uuid = null)

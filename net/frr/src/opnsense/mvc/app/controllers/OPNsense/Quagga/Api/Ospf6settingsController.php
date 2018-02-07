@@ -42,7 +42,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Quagga\OSPF6';
     public function searchInterfaceAction()
     {
-        $this->sessionClose();
         return $this->searchBase('interfaces.interface', array("enabled", "interfacename", "area", "networktype"));
     }
     public function getInterfaceAction($uuid = null)
