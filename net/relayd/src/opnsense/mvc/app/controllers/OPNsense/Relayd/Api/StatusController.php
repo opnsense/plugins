@@ -58,7 +58,7 @@ class StatusController extends ApiControllerBase
         $tableId = 0;
         $virtualserver = array();
         $rows = array();
-        foreach ( $output as $line) {
+        foreach ($output as $line) {
             $words = explode("\t", $line);
             $id = trim($words[0]);
             $type = trim($words[1]);

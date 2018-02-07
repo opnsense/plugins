@@ -70,7 +70,6 @@ function relayd_xmlrpc_sync()
         'section' => 'OPNsense.relayd',
         'id' => 'relayd',
     ));
-
 }
 
 function relayd_syslog()

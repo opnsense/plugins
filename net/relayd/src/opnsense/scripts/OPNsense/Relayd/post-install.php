@@ -53,7 +53,7 @@ $tables = array();
 $protocols = array();
 $sticky = 0;
 
-if(!empty($cfgObj->load_balancer->setting)) {
+if (!empty($cfgObj->load_balancer->setting)) {
     $generalSetting = array();
     if (!empty($cfgObj->load_balancer->setting->timeout)) {
         $generalSetting['timeout'] = $cfgObj->load_balancer->setting->timeout;
@@ -75,7 +75,7 @@ if(!empty($cfgObj->load_balancer->setting)) {
     }
 }
 
-if(!empty($cfgObj->load_balancer->monitor_type) && count($cfgObj->load_balancer->monitor_type)) {
+if (!empty($cfgObj->load_balancer->monitor_type) && count($cfgObj->load_balancer->monitor_type)) {
     foreach ($cfgObj->load_balancer->monitor_type as $monitorType) {
         if (!empty($monitorType->name)) {
             $name = $monitorType->name->__toString();
@@ -134,7 +134,7 @@ if(!empty($cfgObj->load_balancer->monitor_type) && count($cfgObj->load_balancer-
     }
 }
 
-if(!empty($cfgObj->load_balancer->lbpool) && count($cfgObj->load_balancer->lbpool)) {
+if (!empty($cfgObj->load_balancer->lbpool) && count($cfgObj->load_balancer->lbpool)) {
     foreach ($cfgObj->load_balancer->lbpool as $lbpool) {
         if (!empty($lbpool->name) &&
             !empty($lbpool->servers &&
@@ -182,12 +182,12 @@ if(!empty($cfgObj->load_balancer->lbpool) && count($cfgObj->load_balancer->lbpoo
 }
 
 $protocolDir = '/usr/local/etc/inc/plugins.inc.d/relayd';
-if(is_dir($protocolDir)) {
+if (is_dir($protocolDir)) {
     $protocolFiles = glob($protocolDir . '/*.proto');
     foreach ($protocolFiles as $protocolFile) {
         $content = file_get_contents($protocolFile);
         preg_match('/^([^\{]*)\{((.|\n|\r)*)\}((\s|\n|\r)*)$/', $content, $acontent);
-        if(preg_match('/^protocol\s+/', trim($acontent[1]))) {
+        if (preg_match('/^protocol\s+/', trim($acontent[1]))) {
             preg_match('/^([^\s]*)\s+([^\s]*)/', trim($acontent[1]), $protocol);
         } else {
             preg_match('/^([^\s]*)\s+([^\s]*)\s+([^\s]*)/', trim($acontent[1]), $protocol);
@@ -213,7 +213,7 @@ if(is_dir($protocolDir)) {
     }
 }
 
-if(!empty($cfgObj->load_balancer->virtual_server) && count($cfgObj->load_balancer->virtual_server)) {
+if (!empty($cfgObj->load_balancer->virtual_server) && count($cfgObj->load_balancer->virtual_server)) {
     foreach ($cfgObj->load_balancer->virtual_server as $virtual_server) {
         if (!empty($virtual_server->name) &&
             !empty($virtual_server->ipaddr) &&
