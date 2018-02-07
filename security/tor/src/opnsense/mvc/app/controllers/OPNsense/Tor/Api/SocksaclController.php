@@ -36,7 +36,6 @@ class SocksaclController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Tor\ACLSocksPolicy';
     public function searchaclAction()
     {
-        $this->sessionClose();
         return $this->searchBase('policy', array('enabled', 'type', 'network', 'action'));
     }
     public function getaclAction($uuid = null)
