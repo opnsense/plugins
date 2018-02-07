@@ -1,9 +1,9 @@
 <form>
    <field>
       <id>relayd.general.enabled</id>
-      <label>Enable load balancer</label>
+      <label>Enable Relayd</label>
       <type>checkbox</type>
-      <help><![CDATA[Enable or disable the Relayd loadbalancer.]]></help>
+      <help><![CDATA[Enable or disable Relayd.]]></help>
    </field>
    <field>
       <id>relayd.general.interval</id>

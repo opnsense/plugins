@@ -1,7 +1,7 @@
 <acl>
    <page-services-relayd>
-      <name>Services: Load Balancer</name>
-      <description>Allow access to the 'Services: Load Balancer' page.</description>
+      <name>Services: Relayd</name>
+      <description>Allow access to the 'Services: Relayd' page.</description>
       <patterns>
          <pattern>ui/relayd/*</pattern>
          <pattern>api/relayd/*</pattern>

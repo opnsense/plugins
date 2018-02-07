@@ -1,6 +1,6 @@
 <menu>
    <Services>
-      <Relayd VisibleName="Load Balancer" cssClass="fa fa-truck fa-fw">
+      <Relayd cssClass="fa fa-truck fa-fw">
          <Settings url="/ui/relayd/"/>
          <Status url="/ui/relayd/status/"/>
          <Log VisibleName="Log File" order="100" url="/diag_logs_relayd.php"/>

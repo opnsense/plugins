@@ -51,7 +51,7 @@ function relayd_services()
     $services = array();
     if (relayd_enabled()) {
         $services[] = array(
-            'description' => gettext('Relayd Load Balancer'),
+            'description' => gettext('Relayd'),
             'configd' => array(
                 'restart' => array('relayd restart'),
                 'start' => array('relayd start'),
@@ -66,7 +66,7 @@ function relayd_services()
 function relayd_xmlrpc_sync()
 {
     return array(array(
-        'description' => gettext('Relayd Load Balancer'),
+        'description' => gettext('Relayd'),
         'section' => 'OPNsense.relayd',
         'id' => 'relayd',
     ));
