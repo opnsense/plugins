@@ -2,7 +2,6 @@
 
 /**
  *    Copyright (C) 2018 EURO-LOG AG
- *    Copyright (C) 2016 Franco Fichtner <franco@opnsense.org>
  *
  *    All rights reserved.
  *
@@ -29,53 +28,26 @@
  *
  */
 
-function relayd_enabled()
-{
-    global $config;
+namespace OPNsense\Relayd;
 
-    return isset($config['OPNsense']['relayd']['general']['enabled']) &&
-    $config['OPNsense']['relayd']['general']['enabled'] == 1;
-}
-
-function relayd_firewall($fw)
+/**
+ * Class IndexController
+ * @package OPNsense\Relayd
+ */
+class IndexController extends \OPNsense\Base\IndexController
 {
-    if (relayd_enabled()) {
-        $fw->registerAnchor('relayd/*', 'rdr');
-        $fw->registerAnchor('relayd/*', 'fw');
+    /**
+     * relayd index page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        $this->view->formGeneralSettings         = $this->getForm("general");
+        $this->view->formDialogEditHost          = $this->getForm("host");
+        $this->view->formDialogEditTableCheck    = $this->getForm("tablecheck");
+        $this->view->formDialogEditTable         = $this->getForm("table");
+        $this->view->formDialogEditProtocol      = $this->getForm("protocol");
+        $this->view->formDialogEditVirtualServer = $this->getForm("virtualserver");
+        $this->view->pick('OPNsense/Relayd/index');
     }
-}
-
-function relayd_services()
-{
-    global $config;
-    $services = array();
-    if (relayd_enabled()) {
-        $services[] = array(
-            'description' => gettext('Relayd Load Balancer'),
-            'configd' => array(
-                'restart' => array('relayd restart'),
-                'start' => array('relayd start'),
-                'stop' => array('relayd stop'),
-            ),
-            'name' => 'relayd',
-        );
-    }
-    return $services;
-}
-
-function relayd_xmlrpc_sync()
-{
-    return array(array(
-        'description' => gettext('Relayd Load Balancer'),
-        'section' => 'OPNsense.relayd',
-        'id' => 'relayd',
-    ));
-
-}
-
-function relayd_syslog()
-{
-    return array('relayd' => array(
-        'facility' => array('relayd'),
-        'remote' => 'relayd'));
 }
