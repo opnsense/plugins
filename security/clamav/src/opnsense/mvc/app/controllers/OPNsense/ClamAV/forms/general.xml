@@ -59,13 +59,13 @@
     </field>
     <field>
         <id>general.scanpe</id>
-        <label>Scan portable executeable</label>
+        <label>Scan portable executable</label>
         <type>checkbox</type>
         <help>PE stands for Portable Executable - it's an executable file format used in all 32 and 64-bit versions of Windows operating systems.</help>
     </field>
     <field>
         <id>general.scanelf</id>
-        <label>Scan executeable and linking format</label>
+        <label>Scan executable and linking format</label>
         <type>checkbox</type>
         <help>Executable and Linking Format is a standard format for UN*X executables.</help>
     </field>
