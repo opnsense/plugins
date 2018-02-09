@@ -30,7 +30,7 @@
 
 namespace OPNsense\Relayd\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Config;
 use \OPNsense\Relayd\Relayd;
 use \OPNsense\Base\UIModelGrid;
@@ -39,7 +39,7 @@ use \OPNsense\Base\UIModelGrid;
  * Class SettingsController
  * @package OPNsense\Relayd
  */
-class SettingsController extends ApiMutableModelControllerBase
+class SettingsController extends ApiControllerBase
 {
 
     static protected $internalModelName = 'relayd';
