@@ -18,6 +18,12 @@
         <help>Port of the remote server.</help>
     </field>
     <field>
+        <id>local.localaddress</id>
+        <label>Local Address</label>
+        <type>text</type>
+        <help>IP address to listen to, this should be your LAN IP address.</help>
+    </field>
+    <field>
         <id>local.localport</id>
         <label>Local Port</label>
         <type>text</type>
