@@ -40,7 +40,7 @@
     <label>IPv6 Source</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Also originate all IPv6 traffic from this IP</help>
+    <help>Originate all IPv6 traffic from this IP</help>
   </field>
   <field>
     <id>relay.nick</id>

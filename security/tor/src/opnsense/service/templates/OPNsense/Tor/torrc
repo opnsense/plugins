@@ -195,7 +195,7 @@ DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.h
 ## contacting them. See contrib/tor-exit-notice.html in Tor's source
 ## distribution for a sample.
 
-DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
+#DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
 
 {% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
 ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
@@ -220,7 +220,6 @@ ExitPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif
 {%   endif %}
 {% endif %}
 
-%include /usr/local/etc/torrc.exitpolicy
 
 
 # default: don't pass anything
