@@ -63,6 +63,7 @@ Log {{ OPNsense.tor.general.sysloglevel }} syslog
 {% endif %}
 
 
+Schedulers KISTLite
 
 DataDirectory /var/db/tor
 
