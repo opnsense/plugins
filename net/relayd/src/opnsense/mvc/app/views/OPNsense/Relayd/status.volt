@@ -101,10 +101,12 @@ POSSIBILITY OF SUCH DAMAGE.
        if (status.substring(0, 6) === 'active' || status === 'up') {
           statusClass += "btn-success glyphicon-play";
           controlClass += "glyphicon-stop";
+          controlTitle = "Stop this " + nodeType;
           action = 'onclick="toggleNode(\'' + nodeType + '\', ' + id + ', \'disable\')""';
        } else if (status === 'disabled') {
           statusClass += "btn-danger glyphicon-stop";
           controlClass += "glyphicon-play";
+          controlTitle = "Start this " + nodeType;
           action = 'onclick="toggleNode(\'' + nodeType + '\', ' + id + ', \'enable\')"';
        } else {
           statusClass += "btn-danger glyphicon-stop";
@@ -115,8 +117,8 @@ POSSIBILITY OF SUCH DAMAGE.
        if (nodeType === 'relay') {
           action = 'disabled="disabled"';
        }
-       var html = '<span class="' + statusClass + '"> </span>&nbsp;';
-       html += '<span ' + action + ' class="' + controlClass + '"> </span>&nbsp;';
+       var html = '<span class="' + statusClass + '" style="cursor: default;"> </span>&nbsp;';
+       html += '<span ' + action + ' class="' + controlClass + '" title="' + controlTitle + '"> </span>&nbsp;';
        return html;
     };
 
