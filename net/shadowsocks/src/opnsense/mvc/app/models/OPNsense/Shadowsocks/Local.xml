@@ -19,6 +19,11 @@
             <MaximumValue>65535</MaximumValue>
             <ValidationMessage>Please provide a valid port number between 1 and 65535.</ValidationMessage>
         </serverport>
+        <localaddress type="HostnameField">
+            <default>127.0.0.1</default>
+            <Required>Y</Required>
+            <ValidationMessage>Please provide a valid hostname or IP address.</ValidationMessage>
+        </localaddress>
         <localport type="IntegerField">
             <default>1080</default>
             <Required>Y</Required>
