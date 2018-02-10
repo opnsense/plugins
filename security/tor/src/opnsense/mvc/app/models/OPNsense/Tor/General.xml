@@ -67,8 +67,10 @@
     <scheduler type="OptionField">
       <Required>Y</Required>
       <multiple>N</multiple>
-      <default>KISTLite</default>
+      <default>KISTLite,Vanilla</default>
       <OptionValues>
+        <KISTLiteVanilla>KISTLite,Vanilla</KISTLiteVanilla>
+        <VanillaKISTLite>Vanilla,KISTLite</VanillaKISTLite>
         <KISTLite>KISTLite</KISTLite>
         <Vanilla>Vanilla</Vanilla>
       </OptionValues>
