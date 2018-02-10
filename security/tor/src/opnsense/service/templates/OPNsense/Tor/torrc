@@ -54,7 +54,6 @@ SOCKSPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif %} {{ polic
 SOCKSPolicy reject *
 SOCKSPolicy reject6 *
 
-
 {% if helpers.exists('OPNsense.tor.general.enablelogfile') and OPNsense.tor.general.enablelogfile == '1' %}
 Log {{ OPNsense.tor.general.logfilelevel }} file /var/log/tor.log
 {% endif %}
@@ -62,9 +61,7 @@ Log {{ OPNsense.tor.general.logfilelevel }} file /var/log/tor.log
 Log {{ OPNsense.tor.general.sysloglevel }} syslog
 {% endif %}
 
-
 Schedulers KISTLite
-
 DataDirectory /var/db/tor
 
 {% if helpers.exists('OPNsense.tor.general.control_port') and OPNsense.tor.general.control_port != '' %}
@@ -126,13 +123,9 @@ HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
 {% endif %}
 
 {% if helpers.exists('OPNsense.tor.relay.enabled') and OPNsense.tor.relay.enabled == '1' %}
-
 ORPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.port|default('9001') }}
-
 {% if helpers.exists('OPNsense.tor.relay.hostv6') and OPNsense.tor.relay.hostv6 != '' %}
-
 ORPort [{{ OPNsense.tor.relay.hostv6 }}]:{{ OPNsense.tor.relay.port|default('9001') }}
-
 {% endif%}
 
 {% if helpers.exists('OPNsense.tor.relay.address') and OPNsense.tor.relay.address != '' %}
@@ -148,16 +141,12 @@ Address {{ OPNsense.tor.relay.address }}
 #OutboundBindAddressExit 10.0.0.4
 #OutboundBindAddressOR 10.0.0.5
 
-
 {% if helpers.exists('OPNsense.tor.relay.outboundbind') and OPNsense.tor.relay.outboundbind != '' %}
 OutboundBindAddress {{ OPNsense.tor.relay.outboundbind }}
 {% endif %}
-
-
 {% if helpers.exists('OPNsense.tor.relay.outboundbindv6') and OPNsense.tor.relay.outboundbindv6 != '' %}
 OutboundBindAddress {{ OPNsense.tor.relay.outboundbindv6 }}
 {% endif %}
-
 
 {% if helpers.exists('OPNsense.tor.relay.nick') and OPNsense.tor.relay.nick != '' %}
 Nickname {{ OPNsense.tor.relay.nick }}
@@ -188,8 +177,9 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 #AccountingStart month 3 15:00
 
 #ContactInfo 0xFFFFFFFF Random Person <nobody AT example dot com>
-
-DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.directory_port|default('9030') }}
+{% if helpers.exists('OPNsense.tor.relay.directory_port') and OPNsense.tor.relay.directory_port != '' %}
+DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.directory_port }}
+{% endif %}
 
 ## Uncomment to return an arbitrary blob of html on your DirPort. Now you
 ## can explain what Tor is if anybody wonders why your IP address is
@@ -201,7 +191,6 @@ DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.h
 {% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
 ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
 {% endif %}
-
 
 {% if helpers.exists('OPNsense.tor.exitpolicy') %}
 {%   if helpers.exists('OPNsense.tor.exitpolicy.policy') %}
@@ -221,17 +210,12 @@ ExitPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif
 {%   endif %}
 {% endif %}
 
-
-
 # default: don't pass anything
 ExitPolicy reject *:*
 ExitPolicy reject6 *:*
-
 
 BridgeRelay {{ OPNsense.tor.relay.relay|default('1') }}
 PublishServerDescriptor {{ OPNsense.tor.relay.publish|default('0') }}
 {% endif %}
 
 {% endif %}
-
-
