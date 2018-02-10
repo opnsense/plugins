@@ -8,7 +8,7 @@
     </enabled>
     <host type="TextField">
       <Required>N</Required>
-      <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/i</mask>
+      <mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</mask>
     </host>
     <hostv6 type="TextField">
       <Required>N</Required>
@@ -16,7 +16,7 @@
     </hostv6>
     <outboundbind type="TextField">
       <Required>N</Required>
-      <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/i</mask>
+      <mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</mask>
     </outboundbind>
     <outboundbindv6 type="TextField">
       <Required>N</Required>
