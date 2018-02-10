@@ -54,6 +54,7 @@ SOCKSPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif %} {{ polic
 SOCKSPolicy reject *
 SOCKSPolicy reject6 *
 
+
 {% if helpers.exists('OPNsense.tor.general.enablelogfile') and OPNsense.tor.general.enablelogfile == '1' %}
 Log {{ OPNsense.tor.general.logfilelevel }} file /var/log/tor.log
 {% endif %}
