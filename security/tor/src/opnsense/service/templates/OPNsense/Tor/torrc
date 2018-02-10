@@ -62,7 +62,19 @@ Log {{ OPNsense.tor.general.logfilelevel }} file /var/log/tor.log
 Log {{ OPNsense.tor.general.sysloglevel }} syslog
 {% endif %}
 
-Schedulers KISTLite
+{% if OPNsense.tor.general.scheduler == 'KISTLiteVanilla' %}
+Scheduler KISTLite,Vanilla
+{% endif %}
+{% if OPNsense.tor.general.scheduler == 'Vanilla' %}
+Scheduler Vanilla
+{% endif %}
+{% if OPNsense.tor.general.scheduler == 'KISTLite' %}
+Scheduler KISTLite
+{% endif %}
+{% if OPNsense.tor.general.scheduler == 'VanillaKISTLite' %}
+Scheduler Vanilla,KISTLite
+{% endif %}
+
 DataDirectory /var/db/tor
 
 {% if helpers.exists('OPNsense.tor.general.control_port') and OPNsense.tor.general.control_port != '' %}

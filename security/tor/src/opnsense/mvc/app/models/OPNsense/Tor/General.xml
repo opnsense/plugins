@@ -64,6 +64,15 @@
         <debug>Debugging</debug>
       </OptionValues>
     </sysloglevel>
+    <scheduler type="OptionField">
+      <Required>Y</Required>
+      <multiple>N</multiple>
+      <default>KISTLite</default>
+      <OptionValues>
+        <KISTLite>KISTLite</KISTLite>
+        <Vanilla>Vanilla</Vanilla>
+      </OptionValues>
+    </scheduler>
     <fascist_firewall type="BooleanField">
       <default>0</default>
       <Required>Y</Required>
