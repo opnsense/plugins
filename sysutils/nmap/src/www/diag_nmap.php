@@ -31,11 +31,7 @@
 
 require_once("guiconfig.inc");
 
-$smartctl = "nmap";
-
-$valid_test_types = array("offline", "short", "long", "conveyance");
-$valid_info_types = array("i", "H", "c", "A", "a");
-$valid_log_types = array("error", "selftest");
+$nmapctl = "nmap";
 
 include("head.inc");
 ?>
@@ -63,10 +59,12 @@ function add_colors($string)
     $patterns[1] = '/filtered/';
     $patterns[2] = '/closed/';
     $patterns[3] = '/Host is up/';
+    $patterns[4] = '/Host seems down./';
     $replacements[0] = '<b><font color="#00cc00">' . gettext("OPEN") . '</font></b>';
     $replacements[1] = '<b><font color="#ff0000">' . gettext("FILTERED") . '</font></b>';
     $replacements[2] = '<b><font color="#ff0000">' . gettext("CLOSED") . '</font></b>';
     $replacements[3] = '<b><font color="#00cc00">' . gettext("HOST IS UP") . '</font></b>';
+    $replacements[4] = '<b><font color="#00cc00">' . gettext("Host seems down.") . '</font></b>';
     ksort($patterns);
     ksort($replacements);
     return preg_replace($patterns, $replacements, $string);
@@ -76,15 +74,12 @@ function add_colors($string)
 // If they "get" a page but don't pass all arguments, smartctl will throw an error
 $action = (isset($_POST['action']) ? $_POST['action'] : $_GET['action']);
 $target = preg_replace("/[^A-Za-z0-9 \/.:-]/", '', $_POST['target']);
-//if (!file_exists('/dev/' . $targetdev)) {
-//    echo "Device does not exist, bailing.";
-//    return;
-//}
+
 switch($action) {
   // Testing devices
   case 'basicping':
   {
-    $output = add_colors(shell_exec($smartctl . " -sS " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sS " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -93,7 +88,7 @@ switch($action) {
   // Testing devices
   case 'basiclongping':
   {
-    $output = add_colors(shell_exec($smartctl . " -sS -p- " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sS -p- " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -102,7 +97,7 @@ switch($action) {
   // Testing devices
   case 'basic':
   {
-    $output = add_colors(shell_exec($smartctl . " -sS -Pn " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sS -Pn " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -111,7 +106,7 @@ switch($action) {
   // Testing devices
   case 'basiclong':
   {
-    $output = add_colors(shell_exec($smartctl . " -sS -Pn -p- " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sS -Pn -p- " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -120,7 +115,7 @@ switch($action) {
   // Testing devices
   case 'tcp':
   {
-    $output = add_colors(shell_exec($smartctl . " -sT " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sT " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -129,7 +124,7 @@ switch($action) {
   // Testing devices
   case 'udp':
   {
-    $output = add_colors(shell_exec($smartctl . " -sU " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sU " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -147,7 +142,7 @@ switch($action) {
   // Testing devices
   case 'web':
   {
-    $output = add_colors(shell_exec($smartctl . " -sS -Pn -p 22,80,88,139,443,445,3389,5000,5001,8000,8080,8443,8888,10000 " . $target));
+    $output = add_colors(shell_exec($nmapctl . " -sS -Pn -p 22,80,88,139,443,445,3389,5000,5001,8000,8080,8443,8888,10000 " . $target));
     echo '<pre>Scanning ' . $target . $output . '
     </pre>';
     break;
@@ -209,8 +204,6 @@ function checktype() {
       </section>
 
     <?php
-    } else {
-        echo gettext("No SMART devices.");
     }
     break;
   }
