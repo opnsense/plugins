@@ -1,0 +1,8 @@
+<acl>
+    <page-services-nmap>
+        <name>Services: NMAP</name>
+        <patterns>
+            <pattern>diag_nmap.php*</pattern>
+        </patterns>
+    </page-services-nmap>
+</acl>

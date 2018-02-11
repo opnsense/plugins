@@ -1,0 +1,5 @@
+<menu>
+    <Lobby>
+        <NMAP VisibleName="NMAP Scanner" url="/diag_nmap.php" cssClass="fa fa-stethoscope fa-fw"/>
+    </Lobby>
+</menu>
