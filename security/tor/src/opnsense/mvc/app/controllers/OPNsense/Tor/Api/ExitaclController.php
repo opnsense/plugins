@@ -1,8 +1,6 @@
 <?php
 
 /*
- *    Copyright (C) 2015-2017 Deciso B.V.
- *    Copyright (C) 2015 Jos Schellevis
  *    Copyright (C) 2017 Fabian Franz
  *    All rights reserved.
  *
@@ -41,129 +39,27 @@ class ExitaclController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Tor\ACLExitPolicy';
     public function searchaclAction()
     {
-        $this->sessionClose();
-        $mdl = $this->getModel();
-        $grid = new UIModelGrid($mdl->policy);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array('enabled', 'type', 'network', 'action', 'startport', 'endport')
-        );
+        return $this->searchBase('policy', array('enabled', 'type', 'network', 'action', 'startport', 'endport'));
     }
     public function getaclAction($uuid = null)
     {
-        $mdl = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdl->getNodeByReference('policy.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array('exitpolicy' => $node->getNodes());
-            }
-        } else {
-            $node = $mdl->policy->add();
-            return array('exitpolicy' => $node->getNodes());
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('exitpolicy', 'policy', $uuid);
     }
     public function addaclAction()
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost() && $this->request->hasPost('exitpolicy')) {
-            $result = array('result' => 'failed', 'validations' => array());
-            $mdl = $this->getModel();
-            $node = $mdl->policy->Add();
-            $node->setNodes($this->request->getPost('exitpolicy'));
-            $valMsgs = $mdl->performValidation();
-
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, 'exitpolicy', $msg->getField());
-                $result['validations'][$fieldnm] = $msg->getMessage();
-            }
-
-            if (count($result['validations']) == 0) {
-                $mdl->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result['result'] = 'saved';
-            }
-        }
-        return $result;
+        return $this->addBase('exitpolicy', 'policy');
     }
     public function delaclAction($uuid)
     {
-
-        $result = array('result' => 'failed');
-
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                if ($mdl->policy->del($uuid)) {
-                    $mdl->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('policy', $uuid);
     }
     public function setaclAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost('exitpolicy')) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference('policy.' . $uuid);
-                if ($node != null) {
-                    $result = array('result' => 'failed', 'validations' => array());
-                    $info = $this->request->getPost('exitpolicy');
-
-                    $node->setNodes($info);
-                    $valMsgs = $mdl->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, 'exitpolicy', $msg->getField());
-                        $result['validations'][$fieldnm] = $msg->getMessage();
-                    }
-
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdl->serializeToConfig();
-                        unset($result['validations']);
-                        Config::getInstance()->save();
-                        $result = array('result' => 'saved');
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array('result' => 'failed');
+        return $this->setBase('exitpolicy', 'policy', $uuid);
     }
-    public function toggle_handler($uuid, $element)
-    {
-
-        $result = array('result' => 'failed');
-
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference($element . '.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == '1') {
-                        $result['result'] = 'Disabled';
-                        $node->enabled = '0';
-                    } else {
-                        $result['result'] = 'Enabled';
-                        $node->enabled = '1';
-                    }
-                    $mdl->serializeToConfig();
-                    Config::getInstance()->save();
-                }
-            }
-        }
-        return $result;
-    }
-
     public function toggleaclAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'policy');
+        return $this->toggleBase('policy', $uuid);
     }
 }

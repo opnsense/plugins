@@ -2,6 +2,7 @@
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz
+ *    Copyright (C) 2018 Fabian Franz
  *
  *    All rights reserved.
  *
@@ -30,176 +31,40 @@
 
 namespace OPNsense\Postfix\Api;
 
-use \OPNsense\Postfix\Sender;
-use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
 
 class SenderController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'Sender';
+    static protected $internalModelName = 'sender';
     static protected $internalModelClass = '\OPNsense\Postfix\Sender';
-
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlSender = new Sender();
-            $result['sender'] = $mdlSender->getNodes();
-        }
-        return $result;
-    }
-
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlSender = new Sender();
-            $mdlSender->setNodes($this->request->getPost("sender"));
-            // perform validation
-            $valMsgs = $mdlSender->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["sender.".$msg->getField()] = $msg->getMessage();
-            }
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlSender->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
 
     public function searchSenderAction()
     {
-        $this->sessionClose();
-        $mdlSender = $this->getModel();
-        $grid = new UIModelGrid($mdlSender->senders->sender);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array("enabled", "address", "action" )
-        );
+        return $this->searchBase('senders.sender', array("enabled", "address", "action"));
     }
 
     public function getSenderAction($uuid = null)
     {
-        $mdlSender = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdlSender->getNodeByReference('senders.sender.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array("sender" => $node->getNodes());
-            }
-        } else {
-            $node = $mdlSender->senders->sender->add();
-            return array("sender" => $node->getNodes());
-        }
-        return array();
+        return $this->getBase('sender', 'senders.sender', $uuid);
     }
 
     public function addSenderAction()
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("sender")) {
-            $result = array("result" => "failed", "validations" => array());
-            $mdlSender = $this->getModel();
-            $node = $mdlSender->senders->sender->Add();
-            $node->setNodes($this->request->getPost("sender"));
-            $valMsgs = $mdlSender->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "sender", $msg->getField());
-                $result["validations"][$fieldnm] = $msg->getMessage();
-            }
-            if (count($result['validations']) == 0) {
-                unset($result['validations']);
-                // save config if validated correctly
-                $mdlSender->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
+        return $this->addBase('sender', 'senders.sender');
     }
 
     public function delSenderAction($uuid)
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlSender = $this->getModel();
-            if ($uuid != null) {
-                if ($mdlSender->senders->sender->del($uuid)) {
-                    $mdlSender->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('senders.sender', $uuid);
     }
 
     public function setSenderAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("sender")) {
-            $mdlSetting = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlSetting->getNodeByReference('senders.sender.' . $uuid);
-                if ($node != null) {
-                    $result = array("result" => "failed", "validations" => array());
-                    $senderInfo = $this->request->getPost("sender");
-                    $node->setNodes($senderInfo);
-                    $valMsgs = $mdlSetting->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "sender", $msg->getField());
-                        $result["validations"][$fieldnm] = $msg->getMessage();
-                    }
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdlSetting->serializeToConfig();
-                        Config::getInstance()->save();
-                        $result = array("result" => "saved");
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array("result" => "failed");
-    }
-
-    public function toggle_handler($uuid, $elements, $element)
-    {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlSetting = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlSetting->getNodeByReference($elements . '.'. $element .'.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == "1") {
-                        $result['result'] = "Disabled";
-                        $node->enabled = "0";
-                    } else {
-                        $result['result'] = "Enabled";
-                        $node->enabled = "1";
-                    }
-                    // if item has toggled, serialize to config and save
-                    $mdlSetting->serializeToConfig();
-                    Config::getInstance()->save();
-                }
-            }
-        }
-        return $result;
+        return $this->setBase('sender', 'senders.sender', $uuid);
     }
 
     public function toggleSenderAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'senders', 'sender');
+        return $this->toggleBase('senders.sender', $uuid);
     }
 }

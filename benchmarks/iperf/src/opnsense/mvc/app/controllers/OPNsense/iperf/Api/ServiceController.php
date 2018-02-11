@@ -39,9 +39,9 @@ class ServiceController extends ApiControllerBase
         $result = array('result' => 'failed');
         $res = $backend->configdRun('iperf status');
         if (stripos($res, 'is running')) {
-          $result['result'] = 'running';
+            $result['result'] = 'running';
         } else {
-          $result['result'] = 'stopped';
+            $result['result'] = 'stopped';
         }
         return $result;
     }

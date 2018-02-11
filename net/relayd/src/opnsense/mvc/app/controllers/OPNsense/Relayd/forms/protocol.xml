@@ -1,0 +1,25 @@
+<form>
+   <field>
+      <id>relayd.protocol.name</id>
+      <label>Name</label>
+      <type>text</type>
+      <help><![CDATA[
+         The name of the protocol definition.]]></help>
+   </field>
+   <field>
+      <id>relayd.protocol.type</id>
+      <label>Type</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         The type of the protocol definition.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.protocol.options</id>
+      <label>Options</label>
+      <type>textbox</type>
+      <help><![CDATA[
+         The protocol options.]]>
+      </help>
+   </field>
+</form>

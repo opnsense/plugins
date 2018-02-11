@@ -1,6 +1,5 @@
 <?php
 /**
- *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
  *
  *    All rights reserved.
@@ -30,46 +29,10 @@
 
 namespace OPNsense\Quagga\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Quagga\RIP;
-use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class RipController extends ApiControllerBase
+class RipController extends ApiMutableModelControllerBase
 {
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlRIP = new RIP();
-            $result['rip'] = $mdlRIP->getNodes();
-        }
-        return $result;
-    }
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlRIP = new RIP();
-            $mdlRIP->setNodes($this->request->getPost("rip"));
-
-            // perform validation
-            $valMsgs = $mdlRIP->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["rip.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlRIP->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
+    static protected $internalModelName = 'rip';
+    static protected $internalModelClass = '\OPNsense\Quagga\RIP';
 }

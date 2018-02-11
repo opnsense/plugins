@@ -2,6 +2,7 @@
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz
+ *    Copyright (C) 2018 Fabian Franz
  *
  *    All rights reserved.
  *
@@ -30,47 +31,10 @@
 
 namespace OPNsense\Postfix\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Postfix\Antispam;
-use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class AntispamController extends ApiControllerBase
+class AntispamController extends ApiMutableModelControllerBase
 {
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlAntispam = new Antispam();
-            $result['antispam'] = $mdlAntispam->getNodes();
-        }
-        return $result;
-    }
-
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlAntispam = new Antispam();
-            $mdlAntispam->setNodes($this->request->getPost("antispam"));
-
-            // perform validation
-            $valMsgs = $mdlAntispam->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["antispam.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlAntispam->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
+    static protected $internalModelName = 'antispam';
+    static protected $internalModelClass = '\OPNsense\Postfix\Antispam';
 }
