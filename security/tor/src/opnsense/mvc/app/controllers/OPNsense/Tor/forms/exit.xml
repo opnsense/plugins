@@ -1,0 +1,25 @@
+<form>
+  <field>
+    <id>exit.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Act as a exit.</help>
+  </field>
+  <field>
+    <id>exit.ipv6</id>
+    <label>Enable IPv6</label>
+    <type>checkbox</type>
+    <help>Allow Exit using IPv6 protocol</help>
+  </field>
+  <field>
+    <id>exit.rejectprivateip</id>
+    <label>Reject Private IPs</label>
+    <type>checkbox</type>
+    <help>Reject exiting to private IP space</help>
+  </field>
+  <field>
+    <id>exit.rejectlocalif</id>
+    <label>Reject Local Interfaces IPs</label>
+    <type>checkbox</type>
+  </field>
+</form>
