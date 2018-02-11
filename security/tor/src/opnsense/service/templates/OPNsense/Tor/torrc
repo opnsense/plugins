@@ -62,6 +62,7 @@ Log {{ OPNsense.tor.general.logfilelevel }} file /var/log/tor.log
 Log {{ OPNsense.tor.general.sysloglevel }} syslog
 {% endif %}
 
+
 {% if OPNsense.tor.general.scheduler == 'KISTLiteVanilla' %}
 Scheduler KISTLite,Vanilla
 {% endif %}
@@ -190,6 +191,7 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 #AccountingStart month 3 15:00
 
 #ContactInfo 0xFFFFFFFF Random Person <nobody AT example dot com>
+
 {% if helpers.exists('OPNsense.tor.relay.directory_port') and OPNsense.tor.relay.directory_port != '' %}
 DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.directory_port }}
 {% endif %}
@@ -198,12 +200,12 @@ DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.h
 ## can explain what Tor is if anybody wonders why your IP address is
 ## contacting them. See contrib/tor-exit-notice.html in Tor's source
 ## distribution for a sample.
-
 #DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
 
 {% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
 ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
 {% endif %}
+
 
 {% if helpers.exists('OPNsense.tor.exitpolicy') %}
 {%   if helpers.exists('OPNsense.tor.exitpolicy.policy') %}
@@ -226,6 +228,7 @@ ExitPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif
 # default: don't pass anything
 ExitPolicy reject *:*
 ExitPolicy reject6 *:*
+
 
 BridgeRelay {{ OPNsense.tor.relay.relay|default('1') }}
 PublishServerDescriptor {{ OPNsense.tor.relay.publish|default('0') }}
