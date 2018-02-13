@@ -12,6 +12,12 @@
     <advanced>true</advanced>
   </field>
   <field>
+    <id>relay.hostv6</id>
+    <label>IPv6 Host</label>
+    <type>text</type>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>relay.port</id>
     <label>Port</label>
     <type>text</type>
@@ -21,6 +27,20 @@
     <label>Address</label>
     <type>text</type>
     <help>The external FQDN of this host.</help>
+  </field>
+  <field>
+    <id>relay.outboundbind</id>
+    <label>Source IP</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Originate all traffic from this IP</help>
+  </field>
+  <field>
+    <id>relay.outboundbindv6</id>
+    <label>IPv6 Source</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Originate all IPv6 traffic from this IP</help>
   </field>
   <field>
     <id>relay.nick</id>

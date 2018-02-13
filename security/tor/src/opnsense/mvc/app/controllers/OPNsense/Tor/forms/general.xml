@@ -53,6 +53,13 @@
     <help>This is the detail level of the log. A higher level means more data is logged.</help>
   </field>
   <field>
+    <id>general.scheduler</id>
+    <label>Scheduler</label>
+    <type>dropdown</type>
+    <style>dropdownstyle</style>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>general.fascist_firewall</id>
     <label>Fascist Mode</label>
     <type>checkbox</type>
