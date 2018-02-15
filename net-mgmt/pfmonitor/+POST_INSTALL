@@ -1,0 +1,4 @@
+if /usr/local/etc/rc.d/configd status > /dev/null; then
+        /usr/local/etc/rc.d/configd restart
+        /usr/local/opnsense/scripts/PFMonitor/checkin.php
+fi
