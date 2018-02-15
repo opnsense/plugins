@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 EURO-LOG AG
+ *    Copyright (C) 2017-2018 EURO-LOG AG
  *
  *    All rights reserved.
  *
@@ -42,241 +42,28 @@ use \OPNsense\Base\UIModelGrid;
 class SettingsController extends ApiControllerBase
 {
 
-
-    //// GENRAL SETTINGS ////
     /**
-    * retrieve monit general settings or return defaults
-    * @return array
-    */
-    public function getGeneralAction()
-    {
-        return $this->get('general');
-    }
-
-    /**
-     * update monit general settings with given properties
-     * @return array
+     * list with valid model node types
      */
-    public function setGeneralAction()
-    {
-        return $this->set('general');
-    }
-
-    //// ALERT SETTINGS ////
+    private $nodeTypes = array('general', 'alert', 'service', 'test');
 
     /**
-     * search alert
-     * @return array
-     */
-    public function searchAlertAction()
-    {
-        $fields = array("enabled", "recipient", "noton", "events", "description");
-        return $this->search('alert', $fields);
-    }
-
-    /**
-     * retrieve monit alert settings or return defaults
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function getAlertAction($uuid = null)
-    {
-        return $this->get('alert', $uuid);
-    }
-
-    /**
-     * set monit alert parameter
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function setAlertAction($uuid = null)
-    {
-        if ($uuid != null) {
-            return $this->set('alert', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    /**
-     * add monit alert parameter
-     * @return array
-     */
-    public function addAlertAction()
-    {
-        return $this->set('alert', null, true);
-    }
-
-    /**
-     * delete monit alert parameter
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function delAlertAction($uuid = null)
-    {
-        if ($uuid != null) {
-            return $this->del('alert', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    /**
-     * toggle monit alert by uuid (enable/disable)
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function toggleAlertAction($uuid)
-    {
-        if ($uuid != null) {
-            return $this->toggle('alert', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    //// SERVICE SETTINGS ////
-
-    /**
-     * search service
-     * @return array
-     */
-    public function searchServiceAction()
-    {
-        $fields = array("enabled", "name", "type", "description");
-        return $this->search('service', $fields);
-    }
-
-    /**
-     * retrieve monit service settings or return defaults
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function getServiceAction($uuid = null)
-    {
-        return $this->get('service', $uuid);
-    }
-
-    /**
-     * set monit service parameter
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function setServiceAction($uuid = null)
-    {
-        if ($uuid != null) {
-            return $this->set('service', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    /**
-     * add monit service parameter
-     * @return array
-     */
-    public function addServiceAction()
-    {
-        return $this->set('service', null, true);
-    }
-
-    /**
-     * delete monit service parameter
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function delServiceAction($uuid = null)
-    {
-        if ($uuid != null) {
-            return $this->del('service', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    /**
-     * toggle monit service by uuid (enable/disable)
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function toggleServiceAction($uuid)
-    {
-        if ($uuid != null) {
-            return $this->toggle('service', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    //// SERVICE TEST SETTINGS ////
-
-    /**
-     * search test
-     * @return array
-     */
-    public function searchTestAction()
-    {
-        $fields = array("name", "condition", "action");
-        return $this->search('test', $fields);
-    }
-
-    /**
-     * retrieve monit service test settings or return defaults
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function getTestAction($uuid = null)
-    {
-        return $this->get('test', $uuid);
-    }
-
-    /**
-     * set monit service test parameter
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function setTestAction($uuid = null)
-    {
-        if ($uuid != null) {
-            return $this->set('test', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    /**
-     * add monit service test parameter
-     * @return array
-     */
-    public function addTestAction()
-    {
-        return $this->set('test', null, true);
-    }
-
-    /**
-     * delete monit service test parameter
-     * @param $uuid item unique id
-     * @return array
-     */
-    public function delTestAction($uuid = null)
-    {
-        if ($uuid != null) {
-            return $this->del('test', $uuid);
-        }
-        return array("result" => "failed");
-    }
-
-    //// ABSTRACT FUNCTIONS ////
-
-    /**
-     * retrieve monit settings
+     * query monit settings
      * @param $nodeType
      * @param $uuid
      * @return result array
      */
-    private function get($nodeType = null, $uuid = null)
+    public function getAction($nodeType = null, $uuid = null)
     {
         $result = array("result" => "failed");
         if ($this->request->isGet() && $nodeType != null) {
+            $this->validateNodeType($nodeType);
             $mdlMonit = new Monit();
-            if ($uuid != null) {
-                $node = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid);
+            if ($nodeType == 'general') {
+                $node = $mdlMonit->getNodeByReference($nodeType);
             } else {
-                if ($nodeType == 'general') {
-                    $node = $mdlMonit->getNodeByReference($nodeType);
+                if ($uuid != null) {
+                    $node = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
                     $node = $mdlMonit->$nodeType->Add();
                 }
@@ -293,26 +80,22 @@ class SettingsController extends ApiControllerBase
      * set monit properties
      * @param $nodeType
      * @param $uuid
-     * @parm $action set or add node
-     * @return result array
+     * @return status array
      */
-    private function set($nodeType = null, $uuid = null, $add = false)
+    public function setAction($nodeType = null, $uuid = null)
     {
-        $result = array("result" => "failed");
+        $result = array("result" => "failed", "validations" => array());
         if ($this->request->isPost() && $this->request->hasPost("monit") && $nodeType != null) {
+            $this->validateNodeType($nodeType);
             $mdlMonit = new Monit();
-            if ($add == false) { // set node
+            if ($nodeType == 'general') {
+                $node = $mdlMonit->getNodeByReference($nodeType);
+            } else {
                 if ($uuid != null) {
                     $node = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
-                    if ($nodeType == 'general') {
-                        $node = $mdlMonit->getNodeByReference($nodeType);
-                    } else {
-                        $node = $mdlMonit->$nodeType->Add();
-                    }
+                    $node = $mdlMonit->$nodeType->Add();
                 }
-            } else {
-                $node = $mdlMonit->$nodeType->Add();
             }
             if ($node != null) {
                 $monitInfo = $this->request->getPost("monit");
@@ -352,11 +135,15 @@ class SettingsController extends ApiControllerBase
                     $fieldnm = str_replace($node->__reference, "monit." . $nodeType, $msg->getField());
                     $result["validations"][$fieldnm] = $msg->getMessage();
                 }
-                if ($valMsgs->count() == 0) {
+                if (empty($result["validations"])) {
+                    unset($result["validations"]);
+                    $result['result'] = 'ok';
                     $mdlMonit->serializeToConfig();
                     Config::getInstance()->save();
-                    $svcMonit = new ServiceController();
-                    $result = $svcMonit->configtestAction();
+                    if ($nodeType == 'general' && $monitInfo['general']['enabled'] == '0') {
+                        $svcMonit = new ServiceController();
+                        $result = $svcMonit->stopAction();
+                    }
                 }
             }
         }
@@ -364,50 +151,31 @@ class SettingsController extends ApiControllerBase
     }
 
     /**
-     * delete monit properties
+     * delete monit settings
      * @param $nodeType
      * @param $uuid
-     * @return result array
+     * @return status array
      */
-    private function del($nodeType = null, $uuid = null)
+    public function delAction($nodeType = null, $uuid = null)
     {
         $result = array("result" => "failed");
-        if ($this->request->isPost() && $nodeType != null) {
-            $mdlMonit = new Monit();
+        if ($nodeType != null) {
+            $this->validateNodeType($nodeType);
             if ($uuid != null) {
+                $mdlMonit = new Monit();
                 $node = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid);
                 if ($node != null) {
                     if ($mdlMonit->$nodeType->del($uuid) == true) {
-                        // remove test from services
+                        // delete relations
                         if ($nodeType == 'test') {
-                            // get a list of all services
-                            $services = $mdlMonit->service->getNodes();
-                            foreach ($services as $serviceUuid => $service) {
-                                foreach ($service['tests'] as $testUuid => $test) {
-                                    // service has a reference to a test
-                                    if ($testUuid == $uuid) {
-                                        // get service model and remove $uuid from tests
-                                        $ref = 'service.' . $serviceUuid . '.tests';
-                                        $tstNode = $mdlMonit->getNodeByReference($ref);
-                                        $svcTests = str_replace($uuid, '', $tstNode->__toString());
-                                        $svcTests = str_replace(',,', ',', $svcTests);
-                                        $svcTests = rtrim($svcTests, ',');
-                                        $svcTests = ltrim($svcTests, ',');
-                                        $mdlMonit->setNodeByReference($ref, $svcTests);
-                                    }
-                                }
-                            }
+                            $nodeName = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
+                            $this->deleteRelations('service', 'tests', $uuid, 'test', $nodeName, $mdlMonit);
                         }
                         $mdlMonit->serializeToConfig();
                         Config::getInstance()->save();
-                        $svcMonit = new ServiceController();
-                        $result = $svcMonit->reloadAction();
+                        $result["result"] = "ok";
                     }
-                } else {
-                    $result['result'] = "not found";
                 }
-            } else {
-                $result['result'] = "uuid not given";
             }
         }
         return $result;
@@ -419,7 +187,7 @@ class SettingsController extends ApiControllerBase
      * @param $uuid
      * @return result array
      */
-    private function toggle($nodeType = null, $uuid = null)
+    public function toggleAction($nodeType = null, $uuid = null)
     {
         $result = array("result" => "failed");
         if ($this->request->isPost() && $nodeType != null) {
@@ -449,16 +217,122 @@ class SettingsController extends ApiControllerBase
     /**
      * search monit settings
      * @param $nodeType
-     * @param requested field list
-     * @return array
+     * @return result array
      */
-    private function search($nodeType = null, &$fields = null)
+    public function searchAction($nodeType = null)
     {
         $this->sessionClose();
-        if ($nodeType != null) {
+        if ($this->request->isPost() && $nodeType != null) {
+            $this->validateNodeType($nodeType);
             $mdlMonit = new Monit();
             $grid = new UIModelGrid($mdlMonit->$nodeType);
+            $fields = array();
+            switch ($nodeType) {
+                case 'alert':
+                    $fields = array("enabled", "recipient", "noton", "events", "description");
+                    break;
+                case 'service':
+                    $fields = array("enabled", "name", "type", "description");
+                    break;
+                case 'test':
+                    $fields = array("name", "condition", "action");
+                    break;
+            }
             return $grid->fetchBindRequest($this->request, $fields);
+        }
+    }
+
+    /**
+     * import system notification settings
+     * @return result array
+     */
+    public function notificationAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+
+            $cfg = Config::getInstance();
+            $cfgObj = $cfg->object();
+            $mdlMonit = new Monit();
+            $node = $mdlMonit->getNodeByReference('general');
+            $generalSettings = array();
+
+            // inherit SMTP settings from System->Settings->Notifications
+            if (!empty($cfgObj->notifications->smtp->ipaddress)) {
+                $generalSettings['mailserver'] = $cfgObj->notifications->smtp->ipaddress;
+            }
+            if (!empty($cfgObj->notifications->smtp->port)) {
+                $generalSettings['port'] = $cfgObj->notifications->smtp->port;
+            }
+            $generalSettings['username'] = $cfgObj->notifications->smtp->username;
+            $generalSettings['password'] = $cfgObj->notifications->smtp->password;
+            if ((!empty($cfgObj->notifications->smtp->tls) && $cfgObj->notifications->smtp->tls == 1)  ||
+                (!empty($cfgObj->notifications->smtp->ssl) && $cfgObj->notifications->smtp->ssl == 1)) {
+                $generalSettings['ssl'] = 1;
+            } else {
+                $generalSettings['ssl'] = 0;
+            }
+
+            // apply them
+            $node->setNodes($generalSettings);
+            $valMsgs = $mdlMonit->performValidation();
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "monit.general.", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
+            if (empty($result["validations"])) {
+                unset($result["validations"]);
+                $result['result'] = 'ok';
+                $mdlMonit->serializeToConfig();
+                Config::getInstance()->save();
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * validate nodeType
+     * @param $nodeType
+     * @throws \Exception
+     */
+    private function validateNodeType($nodeType = null)
+    {
+        if (array_search($nodeType, $this->nodeTypes) === false) {
+            throw new \Exception('unknown nodeType: ' . $nodeType);
+        }
+    }
+
+    /**
+     * delete relations
+     * @param $nodeType
+     * @param $uuid
+     * @param $relNodeType
+     * @param &$mdlMonit
+     * @throws \Exception
+     */
+    private function deleteRelations($nodeType = null, $nodeField = null, $relUuid = null, $relNodeType = null, $relNodeName = null, &$mdlMonit = null)
+    {
+        $nodes = $mdlMonit->$nodeType->getNodes();
+        // get nodes with relations
+        foreach ($nodes as $nodeUuid => $node) {
+            // get relation uuids
+            foreach ($node[$nodeField] as $fieldUuid => $field) {
+                // remove uuid from field
+                if ($fieldUuid == $relUuid) {
+                    $refField = $nodeType . '.' . $nodeUuid . '.' . $nodeField;
+                    $relNode = $mdlMonit->getNodeByReference($refField);
+                    $nodeRels = str_replace($relUuid, '', $relNode->__toString());
+                    $nodeRels = str_replace(',,', ',', $nodeRels);
+                    $nodeRels = rtrim($nodeRels, ',');
+                    $nodeRels = ltrim($nodeRels, ',');
+                    $mdlMonit->setNodeByReference($refField, $nodeRels);
+                    if ($relNode->isEmptyAndRequired()) {
+                        $nodeName = $mdlMonit->getNodeByReference($nodeType . '.' . $nodeUuid . '.name')->__toString();
+                        throw new \Exception("Cannot delete $relNodeType '$relNodeName' from $nodeType '$nodeName'");
+                    }
+                }
+            }
         }
     }
 }
