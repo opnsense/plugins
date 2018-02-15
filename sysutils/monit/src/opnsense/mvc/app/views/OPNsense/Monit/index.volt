@@ -1,6 +1,6 @@
 {#
 
-Copyright © 2017, 2018 by EURO-LOG AG
+Copyright © 2017-2018 by EURO-LOG AG
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
