@@ -168,8 +168,11 @@ class SettingsController extends ApiControllerBase
                     if ($mdlMonit->$nodeType->del($uuid) == true) {
                         // delete relations
                         if ($nodeType == 'test') {
-                            $nodeName = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
-                            $this->deleteRelations('service', 'tests', $uuid, 'test', $nodeName, $mdlMonit);
+                            $nodeName = $mdlMonit->getNodeByReference($nodeType . '.' . $uuid . '.name');
+                            if ($nodeName != null) {
+                                $nodeName = $nodeName->__toString();
+                                $this->deleteRelations('service', 'tests', $uuid, 'test', $nodeName, $mdlMonit);
+                            }
                         }
                         $mdlMonit->serializeToConfig();
                         Config::getInstance()->save();
