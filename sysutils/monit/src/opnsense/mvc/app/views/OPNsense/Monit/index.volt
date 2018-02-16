@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
       * can't do it via base_dialog
       */
 	   $('<button class="btn btn-primary" id="btn_ImportSystemNotification" type="button" style="margin-left: 3px;">' +
-	         '<b> Import System Notification </b>' +
+	         '<b> {{ lang._('Import System Notification')}} </b>' +
 	         '<i id="frm_ImportSystemNotification_progress"></i>' +
 	      '</button>').insertAfter('#btn_ApplyGeneralSettings');
 
