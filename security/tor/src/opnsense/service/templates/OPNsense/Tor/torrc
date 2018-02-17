@@ -213,8 +213,7 @@ ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
 
 {%     for policy in helpers.toList('OPNsense.tor.exitpolicy.policy') %}
 {%       if policy.enabled == '1' %}
-ExitPolicy {{ policy.action }}{% if policy.type == 'v6' %}6{% endif
-            %} {% if policy.network == '' %}*{% if 'v' in policy.type %}{{ policy.type|replace('v','') }}{% endif%}{% else
+ExitPolicy {{ policy.action }} {% if policy.network == 'any' %}*{% if 'v' in policy.type %}{{ policy.type|replace('v','') }}{% endif%}{% else
             %}{{ policy.network }}{% endif
             %}{% if 'startport' in policy %}:{{ policy.startport
               }}{% if 'endport' in policy %}-{{ policy.endport }}{% endif
