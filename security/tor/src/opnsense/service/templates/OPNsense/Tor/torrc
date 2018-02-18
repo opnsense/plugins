@@ -137,7 +137,6 @@ HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
 {% endif %}
 
 {% if helpers.exists('OPNsense.tor.relay.enabled') and OPNsense.tor.relay.enabled == '1' %}
-
 ORPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.port|default('9001') }}
 {% if helpers.exists('OPNsense.tor.relay.hostv6') and OPNsense.tor.relay.hostv6 != '' %}
 ORPort [{{ OPNsense.tor.relay.hostv6 }}]:{{ OPNsense.tor.relay.port|default('9001') }}
@@ -196,6 +195,7 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 {% if helpers.exists('OPNsense.tor.relay.directory_port') and OPNsense.tor.relay.directory_port != '' %}
 DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.directory_port }}
 {% endif %}
+
 ## Uncomment to return an arbitrary blob of html on your DirPort. Now you
 ## can explain what Tor is if anybody wonders why your IP address is
 ## contacting them. See contrib/tor-exit-notice.html in Tor's source
