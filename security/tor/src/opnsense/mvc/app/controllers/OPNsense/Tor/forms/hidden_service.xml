@@ -1,0 +1,28 @@
+<form>
+  <field>
+    <id>hiddenservice.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Enable this Onion service.</help>
+  </field>
+  <field>
+    <id>hiddenservice.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>Enter a directory name for the Onion service. It may consist of lowercase and uppercase characters.</help>
+  </field>
+  <field>
+    <id>hiddenservice.type</id>
+    <label>Authorization type</label>
+    <type>dropdown</type>
+    <help>The type can either be 'Basic' for a general-purpose authorization protocol or 'Stealth' for a less scalable protocol that also hides service activity from unauthorized clients.</help>
+  </field>
+  <field>
+    <id>hiddenservice.clients</id>
+    <label>Authorized clients</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>If configured, only clients that are listed here are authorized to access the Onion service.</help>
+  </field>
+</form>

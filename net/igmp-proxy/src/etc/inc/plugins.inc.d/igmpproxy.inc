@@ -100,7 +100,7 @@ EOD;
 
         if ($igmpcf['address'] <> "") {
             $item = explode(" ", $igmpcf['address']);
-            foreach($item as $iww) {
+            foreach ($item as $iww) {
                 $igmpconf .= "altnet {$iww}\n";
             }
         }

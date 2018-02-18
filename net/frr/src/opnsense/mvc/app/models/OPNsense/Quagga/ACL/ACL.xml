@@ -1,0 +1,9 @@
+<acl>
+   <page-routing>
+      <name>Routing</name>
+      <patterns>
+         <pattern>ui/quagga/*</pattern>
+         <pattern>api/quagga/*</pattern>
+      </patterns>
+   </page-routing>
+</acl>

@@ -42,7 +42,6 @@ require_once("certs.inc");
 require_once("legacy_bindings.inc");
 require_once("interfaces.inc");
 require_once("util.inc");
-require_once("system.inc"); // required for Web UI restart action
 // Some stuff requires the almighty MVC framework.
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
@@ -287,11 +286,17 @@ function eval_optional_acme_args()
     $configObj = Config::getInstance()->object();
 
     $acme_args = array();
+
     // Force certificate renewal?
     $acme_args[] = isset($options["F"]) ? "--force" : null;
+
     // Use LE staging environment?
     $acme_args[] = $configObj->OPNsense->AcmeClient->settings->environment == "stg" ? "--staging" : null;
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
+
+    // Set log level
+    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";
+    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "debug" ? "--debug" : null;
 
     // Remove empty and duplicate elements from array
     return(array_unique(array_filter($acme_args)));
@@ -391,7 +396,6 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
         $acmecmd = "/usr/local/sbin/acme.sh "
           . implode(" ", $acme_args) . " "
           . "--registeraccount "
-          . "--log-level 2 "
           . "--home /var/etc/acme-client/home "
           . "--accountconf " . $account_conf_file;
         //echo "DEBUG: executing command: " . $acmecmd . "\n";
@@ -740,7 +744,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
       . "--domain " . (string)$certObj->name . " "
       . $altnames
       . $acme_validation . " "
-      . "--log-level 2 "
       . "--home /var/etc/acme-client/home "
       . "--keylength 4096 "
       . "--accountconf " . $account_conf_file . " "
@@ -805,7 +808,6 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . implode(" ", $acme_args) . " "
       . "--revoke "
       . "--domain " . (string)$certObj->name . " "
-      . "--log-level 2 "
       . "--home /var/etc/acme-client/home "
       . "--keylength 4096 "
       . "--accountconf " . $account_conf_file;
@@ -980,6 +982,7 @@ function import_certificate($certObj, $modelObj)
     // Write changes to config
     // TODO: Legacy code, should be replaced with code from OPNsense framework
     write_config("${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
+    log_error("AcmeClient: ${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
 
     // Update (acme) certificate object (through MVC framework)
     $uuid = $certObj->attributes()->uuid;
@@ -1055,7 +1058,7 @@ function run_restart_actions($certlist, $modelObj)
             log_error("AcmeClient: running restart action: " . $action->name);
             switch ((string)$action->type) {
                 case 'restart_gui':
-                    $response = system_webgui_configure();
+                    $response = $backend->configdRun('webgui restart 2', true);
                     break;
                 case 'restart_haproxy':
                     $response = $backend->configdRun("haproxy restart");
@@ -1143,7 +1146,8 @@ function local_cert_get_cn($crt, $decode = true)
 }
 
 // taken from system_camanager.php
-function local_ca_import(& $ca, $str, $key="", $serial=0) {
+function local_ca_import(& $ca, $str, $key = "", $serial = 0)
+{
     global $config;
 
     $ca['crt'] = base64_encode($str);
@@ -1157,9 +1161,9 @@ function local_ca_import(& $ca, $str, $key="", $serial=0) {
     $issuer = cert_get_issuer($str, false);
 
     // Find my issuer unless self-signed
-    if($issuer <> $subject) {
+    if ($issuer <> $subject) {
         $issuer_crt =& lookup_ca_by_subject($issuer);
-        if($issuer_crt) {
+        if ($issuer_crt) {
             $ca['caref'] = $issuer_crt['refid'];
         }
     }
@@ -1168,7 +1172,7 @@ function local_ca_import(& $ca, $str, $key="", $serial=0) {
     if (is_array($config['ca'])) {
         foreach ($config['ca'] as & $oca) {
             $issuer = cert_get_issuer($oca['crt']);
-            if($ca['refid']<>$oca['refid'] && $issuer==$subject) {
+            if ($ca['refid']<>$oca['refid'] && $issuer==$subject) {
                 $oca['caref'] = $ca['refid'];
             }
         }
@@ -1176,7 +1180,7 @@ function local_ca_import(& $ca, $str, $key="", $serial=0) {
     if (is_array($config['cert'])) {
         foreach ($config['cert'] as & $cert) {
             $issuer = cert_get_issuer($cert['crt']);
-            if($issuer==$subject) {
+            if ($issuer==$subject) {
                 $cert['caref'] = $ca['refid'];
             }
         }

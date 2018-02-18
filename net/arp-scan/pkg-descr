@@ -1,0 +1,16 @@
+ARP Scan sends ARP packets to hosts on the local network and displays
+any responses that are received.
+
+The Address Resolution Protocol (ARP) uses a simple message format containing
+one address resolution request or response (usually IPv4).
+
+ARP Scan is a simple tool yet very powerful and it represent the only way
+to find a device using an arp response. Once you’ve found the MAC
+address, you can find more info about that device by matching that MAC
+address to it’s vendor.
+
+Arp scan techniques are very important to understand ARP/MAC responses
+for penetration tester and diagnosys purpose. It is the first tool for
+network monitoring, especially against ip collisions, arpspoof and all
+kind of hijack techniques, like Man-In-The-Middle Attack. It also helps
+in cases when someone is spoofing IP address and DoS-ing your server.

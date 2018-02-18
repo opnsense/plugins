@@ -1,0 +1,10 @@
+A secure socks5 proxy, designed to protect your Internet traffic.
+
+Bleeding edge techniques using Asynchronous I/O and Event-driven
+programming. Secured with industry level encryption algorithm.
+Flexible to support custom algorithms. Optimized for mobile device
+and wireless network, without any keep-alive connections.
+Totally free and open source. A worldwide community devoted to
+deliver bug-free code and long-term support.
+
+WWW: https://shadowsocks.org/

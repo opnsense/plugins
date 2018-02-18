@@ -53,40 +53,41 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
- *  DynDNS Dynamic - Last Tested: 12 July 2005
- *  DynDNS Static  - Last Tested: NEVER
- *  DynDNS Custom  - Last Tested: NEVER
- *  No-IP          - Last Tested: 20 July 2008
- *  HN.org         - Last Tested: 12 July 2005
- *  EasyDNS        - Last Tested: 20 July 2008
- *  DHS            - Last Tested: 12 July 2005
- *  ZoneEdit       - Last Tested: NEVER
- *  Dyns           - Last Tested: NEVER
- *  ODS            - Last Tested: 02 August 2005
- *  FreeDNS        - Last Tested: 23 Feb 2011
- *  Loopia         - Last Tested: NEVER
- *  StaticCling    - Last Tested: 27 April 2006
- *  DNSexit        - Last Tested: 20 July 2008
- *  OpenDNS        - Last Tested: 4 August 2008
- *  Namecheap      - Last Tested: 31 August 2010
- *  HE.net         - Last Tested: 7 July 2013
- *  HE.net IPv6    - Last Tested: 7 July 2013
- *  HE.net Tunnel  - Last Tested: 28 June 2011
- *  SelfHost       - Last Tested: 26 December 2011
- *  Amazon Route53 - Last tested: 01 April 2012
- *  DNS-O-Matic    - Last Tested: 9 September 2010
- *  CloudFlare     - Last Tested: 30 May 2013
- *  Eurodns        - Last Tested: 27 June 2013
- *  GratisDNS      - Last Tested: 15 August 2012
- *  OVH DynHOST    - Last Tested: NEVER
- *  City Network   - Last Tested: 13 November 2013
- *  Duck DNS       - Last Tested: 04 March 2015
- *  Google Domains - Last Tested: 20 February 2017
- *  STRATO         - Last Tested: 09 May 2017
- *  3322           - Last Tested: 26 May 2017
- *  Oray           - Last Tested: 26 May 2017
- *  regfish        - Last Tested: 15 August 2017
- *  regfish v6     - Last Tested: 15 August 2017
+ *  DynDNS Dynamic      - Last Tested: 12 July 2005
+ *  DynDNS Static       - Last Tested: NEVER
+ *  DynDNS Custom       - Last Tested: NEVER
+ *  No-IP               - Last Tested: 20 July 2008
+ *  HN.org              - Last Tested: 12 July 2005
+ *  EasyDNS             - Last Tested: 20 July 2008
+ *  DHS                 - Last Tested: 12 July 2005
+ *  ZoneEdit            - Last Tested: NEVER
+ *  Dyns                - Last Tested: NEVER
+ *  ODS                 - Last Tested: 02 August 2005
+ *  FreeDNS             - Last Tested: 23 Feb 2011
+ *  Loopia              - Last Tested: NEVER
+ *  StaticCling         - Last Tested: 27 April 2006
+ *  DNSexit             - Last Tested: 20 July 2008
+ *  OpenDNS             - Last Tested: 4 August 2008
+ *  Namecheap           - Last Tested: 31 August 2010
+ *  HE.net              - Last Tested: 7 July 2013
+ *  HE.net IPv6         - Last Tested: 7 July 2013
+ *  HE.net Tunnel       - Last Tested: 28 June 2011
+ *  SelfHost            - Last Tested: 26 December 2011
+ *  Amazon Route53      - Last Tested: 01 April 2012
+ *  DNS-O-Matic         - Last Tested: 9 September 2010
+ *  CloudFlare          - Last Tested: 30 May 2013
+ *  Eurodns             - Last Tested: 27 June 2013
+ *  GratisDNS           - Last Tested: 15 August 2012
+ *  OVH DynHOST         - Last Tested: NEVER
+ *  City Network        - Last Tested: 13 November 2013
+ *  Duck DNS            - Last Tested: 04 March 2015
+ *  Google Domains      - Last Tested: 20 February 2017
+ *  STRATO              - Last Tested: 09 May 2017
+ *  3322                - Last Tested: 26 May 2017
+ *  Oray                - Last Tested: 26 May 2017
+ *  regfish             - Last Tested: 15 August 2017
+ *  regfish v6          - Last Tested: 15 August 2017
+ *  Amazon Route53 v6   - Last Tested: 19 November 2017
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -98,7 +99,8 @@
  * Custom DNS support by Matt Corallo
  */
 
-class updatedns {
+class updatedns
+{
     var $_cacheFile;
     var $_cacheFile_v6;
     var $_debugFile;
@@ -140,11 +142,28 @@ class updatedns {
      *   - $dnsUser, and $dnsPass indicate HTTP Auth for custom DNS, if they are needed in the URL (GET Variables), include them in $dnsUpdateURL.
      *   - $For custom requests, $dnsUpdateURL is parsed for '%IP%', which is replaced with the new IP.
      */
-    public function __construct ($dnsService = '', $dnsHost = '', $dnsUser = '', $dnsPass = '',
-                $dnsWildcard = 'OFF', $dnsMX = '', $dnsIf = '', $dnsBackMX = '',
-                $dnsServer = '', $dnsPort = '', $dnsUpdateURL = '', $forceUpdate = false,
-                $dnsZoneID ='', $dnsTTL='', $dnsResultMatch = '', $dnsRequestIf = '',
-                $dnsID = '', $dnsVerboseLog = false, $curlIpresolveV4 = false, $curlSslVerifypeer = true) {
+    public function __construct(
+        $dnsService = '',
+        $dnsHost = '',
+        $dnsUser = '',
+        $dnsPass = '',
+        $dnsWildcard = 'OFF',
+        $dnsMX = '',
+        $dnsIf = '',
+        $dnsBackMX = '',
+        $dnsServer = '',
+        $dnsPort = '',
+        $dnsUpdateURL = '',
+        $forceUpdate = false,
+        $dnsZoneID = '',
+        $dnsTTL = '',
+        $dnsResultMatch = '',
+        $dnsRequestIf = '',
+        $dnsID = '',
+        $dnsVerboseLog = false,
+        $curlIpresolveV4 = false,
+        $curlSslVerifypeer = true
+    ) {
 
         /* XXX because the call stack is upside down we need to reassemble config parts here... */
         $conf = array('host' => $dnsHost, 'id' => $dnsID, 'interface' => $dnsIf);
@@ -156,48 +175,75 @@ class updatedns {
         $this->_curlIpresolveV4 = $curlIpresolveV4;
         $this->_curlSslVerifypeer = $curlSslVerifypeer;
         $this->_dnsVerboseLog = $dnsVerboseLog;
-        if ($this->_dnsVerboseLog)
+        if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS: updatedns() starting");
+        }
 
         $dyndnslck = lock("DDNS".$dnsID, LOCK_EX);
 
-        if (!$dnsService) $this->_error(2);
+        if (!$dnsService) {
+            $this->_error(2);
+        }
         switch ($dnsService) {
-        case 'freedns':
-            if (!$dnsHost) $this->_error(5);
-            break;
-        case 'namecheap':
-            if (!$dnsPass) $this->_error(4);
-            if (!$dnsHost) $this->_error(5);
-            break;
-        case 'route53':
-            if (!$dnsZoneID) $this->_error(8);
-            if (!$dnsTTL) $this->_error(9);
-            break;
-        case 'custom':
-            if (!$dnsUpdateURL) $this->_error(7);
-            break;
-        case 'duckdns':
-        case 'regfish':
-        case 'regfish-v6':
-            if (!$dnsUser) $this->_error(3);
-            if (!$dnsHost) $this->_error(5);
-            break;
-        default:
-            if (!$dnsUser) $this->_error(3);
-            if (!$dnsPass) $this->_error(4);
-            if (!$dnsHost) $this->_error(5);
-            break;
+            case 'freedns':
+                if (!$dnsHost) {
+                    $this->_error(5);
+                }
+                break;
+            case 'namecheap':
+                if (!$dnsPass) {
+                    $this->_error(4);
+                }
+                if (!$dnsHost) {
+                    $this->_error(5);
+                }
+                break;
+            case 'route53':
+            case 'route53-v6':
+                if (!$dnsZoneID) {
+                    $this->_error(8);
+                }
+                if (!$dnsTTL) {
+                    $this->_error(9);
+                }
+                break;
+            case 'custom':
+                if (!$dnsUpdateURL) {
+                    $this->_error(7);
+                }
+                break;
+            case 'duckdns':
+            case 'regfish':
+            case 'regfish-v6':
+                if (!$dnsUser) {
+                    $this->_error(3);
+                }
+                if (!$dnsHost) {
+                    $this->_error(5);
+                }
+                break;
+            default:
+                if (!$dnsUser) {
+                    $this->_error(3);
+                }
+                if (!$dnsPass) {
+                    $this->_error(4);
+                }
+                if (!$dnsHost) {
+                    $this->_error(5);
+                }
+                break;
         }
 
         switch ($dnsService) {
-        case 'custom-v6':
-        case 'he-net-v6':
-        case 'regfish-v6':
-            $this->_useIPv6 = true;
-            break;
-        default:
-            $this->_useIPv6 = false;
+            case 'custom-v6':
+            case 'he-net-v6':
+            case 'regfish-v6':
+            case 'route53-v6':
+                $this->_useIPv6 = true;
+                break;
+            default:
+                $this->_useIPv6 = false;
         }
         $this->_dnsService = strtolower($dnsService);
         $this->_dnsUser = $dnsUser;
@@ -214,15 +260,16 @@ class updatedns {
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
         $this->_dnsRequestIf = get_failover_interface($dnsRequestIf);
-        if ($this->_dnsVerboseLog)
+        if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): running get_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
+        }
         $this->_dnsRequestIfIP = get_interface_ip($dnsRequestIf);
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
         $this->_forceUpdateNeeded = $forceUpdate;
 
         // Ensure that we were able to lookup the IP
-        if(!is_ipaddr($this->_dnsIP)) {
+        if (!is_ipaddr($this->_dnsIP)) {
             log_error("Dynamic DNS ({$this->_dnsHost}) There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.");
             unlock($dyndnslck);
             return;
@@ -234,56 +281,57 @@ class updatedns {
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
-            case '3322':
-            case 'citynetwork':
-            case 'cloudflare':
-            case 'custom':
-            case 'custom-v6':
-            case 'dhs':
-            case 'dnsexit':
-            case 'dnsomatic':
-            case 'duckdns':
-            case 'dyndns':
-            case 'dyndns-custom':
-            case 'dyndns-static':
-            case 'dyns':
-            case 'easydns':
-            case 'eurodns':
-            case 'freedns':
-            case 'googledomains':
-            case 'gratisdns':
-            case 'he-net':
-            case 'he-net-tunnelbroker':
-            case 'he-net-v6':
-            case 'hn':
-            case 'loopia':
-            case 'namecheap':
-            case 'noip':
-            case 'noip-free':
-            case 'ods':
-            case 'opendns':
-            case 'ovh-dynhost':
-            case 'oray':
-            case 'regfish':
-            case 'regfish-v6':
-            case 'route53':
-            case 'selfhost':
-            case 'strato':
-            case 'staticcling':
-            case 'zoneedit':
-                $this->_update();
-                if($this->_dnsDummyUpdateDone == true) {
-                    // If a dummy update was needed, then sleep a while and do the update again to put the proper address back.
-                    // Some providers (e.g. No-IP free accounts) need to have at least 1 address change every month.
-                    // If the address has not changed recently, or the user did "Force Update", then the code does
-                    // a dummy address change for providers like this.
-                    sleep(10);
+                case '3322':
+                case 'citynetwork':
+                case 'cloudflare':
+                case 'custom':
+                case 'custom-v6':
+                case 'dhs':
+                case 'dnsexit':
+                case 'dnsomatic':
+                case 'duckdns':
+                case 'dyndns':
+                case 'dyndns-custom':
+                case 'dyndns-static':
+                case 'dyns':
+                case 'easydns':
+                case 'eurodns':
+                case 'freedns':
+                case 'googledomains':
+                case 'gratisdns':
+                case 'he-net':
+                case 'he-net-tunnelbroker':
+                case 'he-net-v6':
+                case 'hn':
+                case 'loopia':
+                case 'namecheap':
+                case 'noip':
+                case 'noip-free':
+                case 'ods':
+                case 'opendns':
+                case 'ovh-dynhost':
+                case 'oray':
+                case 'regfish':
+                case 'regfish-v6':
+                case 'route53':
+                case 'route53-v6':
+                case 'selfhost':
+                case 'strato':
+                case 'staticcling':
+                case 'zoneedit':
                     $this->_update();
-                }
-                break;
-            default:
-                $this->_error(6);
-                break;
+                    if ($this->_dnsDummyUpdateDone == true) {
+                        // If a dummy update was needed, then sleep a while and do the update again to put the proper address back.
+                        // Some providers (e.g. No-IP free accounts) need to have at least 1 address change every month.
+                        // If the address has not changed recently, or the user did "Force Update", then the code does
+                        // a dummy address change for providers like this.
+                        sleep(10);
+                        $this->_update();
+                    }
+                    break;
+                default:
+                    $this->_error(6);
+                    break;
             }
         }
 
@@ -300,7 +348,7 @@ class updatedns {
             log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
         }
 
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53 ') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
@@ -313,15 +361,19 @@ class updatedns {
             case 'dyndns':
             case 'dyndns-static':
             case 'dyndns-custom':
-                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") $this->_dnsWildcard = "ON";
+                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
+                    $this->_dnsWildcard = "ON";
+                }
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "https://members.dyndns.org/nic/update";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?system=dyndns&hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard='.$this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NO');
                 break;
             case 'dhs':
@@ -342,10 +394,12 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 $server = "https://members.dhs.org/nic/hosts";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, '{$server}{$port}');
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
@@ -355,11 +409,13 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 $server = "https://dynupdate.no-ip.com/ducupdate.php";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
-                if(($this->_dnsService == "noip-free") &&
+                }
+                if (($this->_dnsService == "noip-free") &&
                    ($this->_forceUpdateNeeded == true) &&
                    ($this->_dnsDummyUpdateDone == false)) {
                     // Update the IP to a dummy value to force No-IP free accounts to see a change.
@@ -376,20 +432,24 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "https://members.easydns.com/dyn/dyndns.php";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server . $port . '?hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard=' . $this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=' . $this->_dnsBackMX);
                 break;
             case 'hn':
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "http://dup.hn.org/vanity/update";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server . $port . '?ver=1&IP=' . $this->_dnsIP);
                 break;
             case 'zoneedit':
@@ -399,19 +459,23 @@ class updatedns {
 
                 $server = "https://dynamic.zoneedit.com/auth/dynamic.html";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, "{$server}{$port}?host=" .$this->_dnsHost);
                 break;
             case 'dyns':
                 $server = "https://www.dyns.cx/postscript011.php";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server . $port . '?username=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost);
                 break;
             case 'ods':
@@ -419,10 +483,12 @@ class updatedns {
                 $misc_error = "";
                 $server = "ods.org";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 $this->con['socket'] = fsockopen("{$server}{$port}", "7070", $misc_errno, $misc_error, 30);
                 /* Check that we have connected */
                 if (!$this->con['socket']) {
@@ -434,7 +500,7 @@ class updatedns {
                     $this->con['buffer']['all'] = trim(fgets($this->con['socket'], 4096));
                     $code = substr($this->con['buffer']['all'], 0, 3);
                     sleep(1);
-                    switch($code) {
+                    switch ($code) {
                         case 100:
                             fputs($this->con['socket'], "LOGIN ".$this->_dnsUser." ".$this->_dnsPass."\n");
                             break;
@@ -458,20 +524,25 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, 'https://www.dnsexit.com/RemoteUpdate.sv?login='.$this->_dnsUser. '&password='.$this->_dnsPass.'&host='.$this->_dnsHost.'&myip='.$this->_dnsIP);
                 break;
             case 'loopia':
+                $this->_dnsWildcard = (isset($this->_dnsWildcard) && $this->_dnsWildcard == true) ? 'ON' : 'OFF';
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
-                curl_setopt($ch, CURLOPT_URL, 'https://dns.loopia.se/XDynDNSServer/XDynDNS.php?hostname='.$this->_dnsHost.'&myip='.$this->_dnsIP);
+                curl_setopt($ch, CURLOPT_URL, 'https://dns.loopia.se/XDynDNSServer/XDynDNS.php?hostname='.$this->_dnsHost.'&myip='.$this->_dnsIP.'&wildcard='.$this->_dnsWildcard);
                 break;
             case 'opendns':
-                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") $this->_dnsWildcard = "ON";
+                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
+                    $this->_dnsWildcard = "ON";
+                }
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "https://updates.opendns.com/nic/update?hostname=". $this->_dnsHost;
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server .$port);
                 break;
 
@@ -482,7 +553,9 @@ class updatedns {
                 /* Example syntax
                     https://username:password@updates.dnsomatic.com/nic/update?hostname=yourhostname&myip=ipaddress&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG
                 */
-                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") $this->_dnsWildcard = "ON";
+                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
+                    $this->_dnsWildcard = "ON";
+                }
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 /*
                 Reference: https://www.dnsomatic.com/wiki/api
@@ -494,10 +567,12 @@ class updatedns {
                     Encodes the given string according to RFC 3986.
                 */
                 $server = "https://" . rawurlencode($this->_dnsUser) . ":" . rawurlencode($this->_dnsPass) . "@updates.dnsomatic.com/nic/update?hostname=";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard='.$this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NOCHG');
                 break;
             case 'namecheap':
@@ -518,7 +593,7 @@ class updatedns {
             case 'he-net-v6':
                 $server = "https://dyn.dns.he.net/nic/update?";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost . '&password=' . $this->_dnsPass . '&myip=' . $this->_dnsIP);
                 break;
             case 'he-net-tunnelbroker':
@@ -528,18 +603,23 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, $server . 'tid=' . $this->_dnsHost);
                 break;
             case 'selfhost':
-                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") $this->_dnsWildcard = "ON";
+                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
+                    $this->_dnsWildcard = "ON";
+                }
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "https://carol.selfhost.de/nic/update";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?system=dyndns&hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard='.$this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NO');
                 break;
             case 'route53':
+            case 'route53-v6':
                 /* Setting Variables */
                 $hostname = "{$this->_dnsHost}.";
                 $ZoneID = $this->_dnsZoneID;
@@ -547,19 +627,21 @@ class updatedns {
                 $SecretAccessKey=$this->_dnsPass;
                 $NewIP=$this->_dnsIP;
                 $NewTTL=$this->_dnsTTL;
+                $RecordType = ($this->_useIPv6) ? "AAAA" : "A";
 
                 /* Set Amazon AWS Credentials for this record */
                 $r53 = new Route53($AccessKeyId, $SecretAccessKey);
 
                 /* Function to find old values of records in Route 53 */
-                if(!function_exists('Searchrecords')) {
-                    function SearchRecords($records, $name) {
+                if (!function_exists('Searchrecords')) {
+                    function SearchRecords($records, $name)
+                    {
                         if (!is_array($records)) {
                             return false;
                         }
                         $result = array();
-                        foreach($records as $record) {
-                            if(strtolower($record['Name']) == strtolower($name)) {
+                        foreach ($records as $record) {
+                            if (strtolower($record['Name']) == strtolower($name)) {
                                 $result [] = $record;
                             }
                         }
@@ -570,24 +652,37 @@ class updatedns {
                 $records = $r53->listResourceRecordSets("/hostedzone/$ZoneID");
 
                 /* Get IP for your hostname in Route 53 */
-                if(false !== ($a_result = SearchRecords($records['ResourceRecordSets'], "$hostname"))) {
-                    $OldTTL=$a_result[0][TTL];
-                    $OldIP=$a_result[0][ResourceRecords][0];
+                if (false !== ($a_result = SearchRecords($records['ResourceRecordSets'], "$hostname"))) {
+                    /**
+                     * if hostname for ipv4 and ipv6 is the same, a_result contains more than 1 item
+                     * we need to get the item that corresponds to the record type
+                     */
+                    $oldTTLResult = null;
+                    $oldIPResult = null;
+                    foreach ($a_result as $resultItem) {
+                        if ($RecordType === $resultItem['Type']) {
+                            $oldTTLResult = $resultItem[TTL];
+                            $oldIPResult = $resultItem[ResourceRecords][0];
+                        }
+                    }
+
+                    $OldTTL=$oldTTLResult;
+                    $OldIP=$oldIPResult;
                 } else {
                     $OldIP="";
                 }
 
                 /* Check if we need to update DNS Record */
                 if ($OldIP !== $NewIP) {
-                    if(!empty($OldIP)) {
+                    if (!empty($OldIP)) {
                         /* Your Hostname already exists, deleting and creating it again */
                         $changes = array();
-                        $changes[] = $r53->prepareChange(DELETE, $hostname, A, $OldTTL, $OldIP);
-                        $changes[] = $r53->prepareChange(CREATE, $hostname, A, $NewTTL, $NewIP);
+                        $changes[] = $r53->prepareChange(DELETE, $hostname, $RecordType, $OldTTL, $OldIP);
+                        $changes[] = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     } else {
                         /* Your Hostname does not exist yet, creating it */
-                        $changes = $r53->prepareChange(CREATE, $hostname, A, $NewTTL, $NewIP);
+                        $changes = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     }
                 }
@@ -597,7 +692,7 @@ class updatedns {
             case 'custom-v6':
                 if ($this->_dnsUser != '') {
                     if ($this->_curlIpresolveV4) {
-                        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+                        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                     }
                     if ($this->_curlSslVerifypeer) {
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
@@ -611,7 +706,7 @@ class updatedns {
                 break;
             case 'cloudflare':
                 $dnsServer ='api.cloudflare.com';
-                $dnsHost = str_replace(' ','', $this->_dnsHost);
+                $dnsHost = str_replace(' ', '', $this->_dnsHost);
                 $host_names = explode('.', $dnsHost);
                 $bottom_host_name = $host_names[count($host_names) - 2] . '.' . $host_names[count($host_names) - 1];
 
@@ -627,18 +722,18 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, $getZoneId);
                 $output = json_decode(curl_exec($ch));
                 $zone = $output->result[0]->id;
-                if ($zone){ // If zone ID was found get host ID
+                if ($zone) { // If zone ID was found get host ID
                     $getHostId = "https://{$dnsServer}/client/v4/zones/{$zone}/dns_records?name={$this->_dnsHost}";
                     curl_setopt($ch, CURLOPT_URL, $getHostId);
                     $output = json_decode(curl_exec($ch));
                     $host = $output->result[0]->id;
-                    if ($host){ // If host ID was found update host
+                    if ($host) { // If host ID was found update host
                         $hostData = array(
                             "content" => "{$this->_dnsIP}",
                             "type" => "A",
                             "name" => "{$this->_dnsHost}",
-                            "proxiable" => false,
-                            "proxied" => false
+                            "proxiable" => $output->result[0]->proxiable,
+                            "proxied" => $output->result[0]->proxied
                         );
                         $data_json = json_encode($hostData);
                         $updateHostId = "https://{$dnsServer}/client/v4/zones/{$zone}/dns_records/{$host}";
@@ -653,8 +748,9 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "https://eurodyndns.org/update/";
                 $port = "";
-                if($this->_dnsPort)
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
                 break;
             case 'gratisdns':
@@ -664,15 +760,19 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_URL, $server . '?u=' . $this->_dnsUser . '&p=' . $this->_dnsPass . '&h=' . $this->_dnsHost . '&d=' . $domain);
                 break;
             case 'ovh-dynhost':
-                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") $this->_dnsWildcard = "ON";
+                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
+                    $this->_dnsWildcard = "ON";
+                }
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = "https://www.ovh.com/nic/update";
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?system=dyndns&hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard='.$this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NO');
                 break;
             case 'citynetwork':
@@ -680,10 +780,12 @@ class updatedns {
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 $server = 'https://dyndns.citynetwork.se/nic/update';
                 $port = "";
-                if($this->_dnsServer)
+                if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
-                if($this->_dnsPort)
+                }
+                if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
+                }
                 curl_setopt($ch, CURLOPT_URL, $server .$port . '?hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
                 break;
             case 'duckdns':
@@ -730,7 +832,7 @@ class updatedns {
             default:
                 break;
         }
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $data = curl_exec($ch);
             $this->_checkStatus($ch, $data);
             @curl_close($ch);
@@ -741,13 +843,14 @@ class updatedns {
      * Private Function (added 12 July 2005) [beta]
      *   Retrieve Update Status
      */
-    function _checkStatus($ch, $data) {
+    function _checkStatus($ch, $data)
+    {
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): _checkStatus() starting.");
             log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
         }
         $successful_update = false;
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' && @curl_error($ch)) {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' && @curl_error($ch)) {
             $status = "Curl error occurred: " . curl_error($ch);
             log_error($status);
             $this->status = $status;
@@ -758,7 +861,7 @@ class updatedns {
                 break;
             case 'noip':
             case 'noip-free':
-                list($ip,$code) = explode(":",$data);
+                list($ip,$code) = explode(":", $data);
                 switch ($code) {
                     case 0:
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address is current, no update performed.";
@@ -824,13 +927,13 @@ class updatedns {
             case 'easydns':
                 if (preg_match('/NOACCESS/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Authentication Failed: Username and/or Password was Incorrect.";
-                } else if (preg_match('/NOSERVICE/i', $data)) {
+                } elseif (preg_match('/NOSERVICE/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) No Service: Dynamic DNS Service has been disabled for this domain.";
-                } else if (preg_match('/ILLEGAL INPUT/i', $data)) {
+                } elseif (preg_match('/ILLEGAL INPUT/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Illegal Input: Self-Explanatory";
-                } else if (preg_match('/TOOSOON/i', $data)) {
+                } elseif (preg_match('/TOOSOON/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Too Soon: Not Enough Time Has Elapsed Since Last Update";
-                } else if (preg_match('/NOERROR/i', $data)) {
+                } elseif (preg_match('/NOERROR/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Updated Successfully!";
                     $successful_update = true;
                 } else {
@@ -845,12 +948,12 @@ class updatedns {
             case 'zoneedit':
                 if (preg_match('/799/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error 799) Update Failed!";
-                } else if (preg_match('/700/i', $data)) {
+                } elseif (preg_match('/700/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error 700) Update Failed!";
-                } else if (preg_match('/200/i', $data)) {
+                } elseif (preg_match('/200/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
                     $successful_update = true;
-                } else if (preg_match('/201/i', $data)) {
+                } elseif (preg_match('/201/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
@@ -862,13 +965,13 @@ class updatedns {
             case 'dyns':
                 if (preg_match("/400/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - The URL was malformed. Required parameters were not provided.";
-                } else if (preg_match('/402/i', $data)) {
+                } elseif (preg_match('/402/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Update Too Soon - You have tried updating to quickly since last change.";
-                } else if (preg_match('/403/i', $data)) {
+                } elseif (preg_match('/403/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Database Error - There was a server-sided database error.";
-                } else if (preg_match('/405/i', $data)) {
+                } elseif (preg_match('/405/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Hostname Error - The hostname (".$this->_dnsHost.") doesn't belong to you.";
-                } else if (preg_match('/200/i', $data)) {
+                } elseif (preg_match('/200/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
@@ -891,7 +994,7 @@ class updatedns {
                 if (preg_match("/has not changed./i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
                     $successful_update = true;
-                } else if (preg_match("/Updated/i", $data)) {
+                } elseif (preg_match("/Updated/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Changed Successfully!";
                     $successful_update = true;
                 } else {
@@ -904,7 +1007,7 @@ class updatedns {
                 if (preg_match("/is the same/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
                     $successful_update = true;
-                } else if (preg_match("/Success/i", $data)) {
+                } elseif (preg_match("/Success/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Changed Successfully!";
                     $successful_update = true;
                 } else {
@@ -916,19 +1019,19 @@ class updatedns {
             case 'staticcling':
                 if (preg_match("/invalid ip/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - The IP provided was invalid.";
-                } else if (preg_match('/required info missing/i', $data)) {
+                } elseif (preg_match('/required info missing/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - Required parameters were not provided.";
-                } else if (preg_match('/invalid characters/i', $data)) {
+                } elseif (preg_match('/invalid characters/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - Illegal characters in either the username or the password.";
-                } else if (preg_match('/bad password/i', $data)) {
+                } elseif (preg_match('/bad password/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid password.";
-                } else if (preg_match('/account locked/i', $data)) {
+                } elseif (preg_match('/account locked/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) This account has been administratively locked.";
-                } else if (preg_match('/update too frequent/i', $data)) {
+                } elseif (preg_match('/update too frequent/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Updating too frequently.";
-                } else if (preg_match('/DB error/i', $data)) {
+                } elseif (preg_match('/DB error/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Server side error.";
-                } else if (preg_match('/success/i', $data)) {
+                } elseif (preg_match('/success/i', $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
@@ -939,16 +1042,21 @@ class updatedns {
                 break;
             case 'namecheap':
                 $tmp = str_replace("^M", "", $data);
-                $ncresponse = @xml2array($tmp);
+                $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
                     $status = "Dynamic DNS: (Error) Server side error.";
-                } else if (preg_match("/request is badly formed/i", $data)) {
+                } elseif (preg_match("/request is badly formed/i", $data)) {
                     $status = "Dynamic DNS: (Error) Badly Formed Request (check your settings).";
-                } else if ($ncresponse['interface-response']['ErrCount'] === "0") {
+                } elseif ((string)$ncresponse->ErrCount === "0") {
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                     $successful_update = true;
-                } else if (is_numeric($ncresponse['interface-response']['ErrCount']) && ($ncresponse['interface-response']['ErrCount'] > 0)) {
-                    $status = "Dynamic DNS: (Error) " . implode(", ", $ncresponse["interface-response"]["errors"]);
+                } elseif (isset($ncresponse->ErrCount) && is_numeric((string)$ncresponse->ErrCount) && (string)$ncresponse->ErrCount > 0) {
+                    $status = "Dynamic DNS: (Error) ";
+                    if (isset($ncresponse->errors)) {
+                        foreach ($ncresponse->errors->children() as $err) {
+                            $status .= (string)$err . " ";
+                        }
+                    }
                     $successful_update = true;
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
@@ -967,14 +1075,14 @@ class updatedns {
                 */
                 if (preg_match("/Missing parameter/i", $data)) {
                     $status = "Dynamic DNS: (Error) Bad Request - Missing/Invalid Parameters.";
-                } else if (preg_match('/Tunnel not found/i', $data)) {
+                } elseif (preg_match('/Tunnel not found/i', $data)) {
                     $status = "Dynamic DNS: (Error) Bad Request - Invalid Tunnel ID.";
-                } else if (preg_match('/Invalid API key or password/i', $data)) {
+                } elseif (preg_match('/Invalid API key or password/i', $data)) {
                     $status = "Dynamic DNS: (Error) Invalid username or password.";
-                } else if (preg_match('/OK:/i', $data)) {
+                } elseif (preg_match('/OK:/i', $data)) {
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                     $successful_update = true;
-                } else if (preg_match('/This tunnel is already associated with this IP address/i', $data)) {
+                } elseif (preg_match('/This tunnel is already associated with this IP address/i', $data)) {
                     $status = "Dynamic DNS: (Success) No Change In IP Address.";
                     $successful_update = true;
                 } else {
@@ -984,6 +1092,7 @@ class updatedns {
                 }
                 break;
             case 'route53':
+            case 'route53-v6':
                 $successful_update = true;
                 break;
             case 'custom':
@@ -991,34 +1100,33 @@ class updatedns {
                 $successful_update = false;
                 if ($this->_dnsResultMatch == "") {
                     $successful_update = true;
-                }else {
+                } else {
                     $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIP, $this->_dnsResultMatch);
                     $matches = preg_split("/(?<!\\\\)\\|/", $this->_dnsResultMatch);
-                    foreach($matches as $match) {
+                    foreach ($matches as $match) {
                         $match= str_replace("\\|", "|", $match);
-                        if(strcmp($match, trim($data, "\t\n\r")) == 0)
+                        if (strcmp($match, trim($data, "\t\n\r")) == 0) {
                             $successful_update = true;
+                        }
                     }
-                    unset ($matches);
+                    unset($matches);
                 }
-                if ($successful_update == true)
+                if ($successful_update == true) {
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                else
+                } else {
                     $status = "Dynamic DNS: (Error) Result did not match.";
+                }
                 break;
             case 'cloudflare':
                 $output = json_decode($data);
-                if ($output->result->content === $this->_dnsIP){
+                if ($output->result->content === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
                     $successful_update = true;
-                }
-                elseif ($output->errors[0]->code === 9103){
+                } elseif ($output->errors[0]->code === 9103) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with CloudFlare.";
-                }
-                elseif (($output->success) && (!$output->result[0]->id)) {
+                } elseif (($output->success) && (!$output->result[0]->id)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone or Host ID was not found, check your hostname.";
-                }
-                else {
+                } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                 }
@@ -1026,13 +1134,13 @@ class updatedns {
             case 'gratisdns':
                 if (preg_match('/Forkerte værdier/i', $data)) {
                         $status = "Dynamic DNS: (Error) Wrong values - Update could not be completed.";
-                } else if (preg_match('/Bruger login: Bruger eksistere ikke/i', $data)) {
+                } elseif (preg_match('/Bruger login: Bruger eksistere ikke/i', $data)) {
                         $status = "Dynamic DNS: (Error) Unknown username - User does not exist.";
-                } else if (preg_match('/Bruger login: 1Fejl i kodeord/i', $data)) {
+                } elseif (preg_match('/Bruger login: 1Fejl i kodeord/i', $data)) {
                         $status = "Dynamic DNS: (Error) Wrong password - Remember password is case sensitive.";
-                } else if (preg_match('/Domæne kan IKKE administreres af bruger/i', $data)) {
+                } elseif (preg_match('/Domæne kan IKKE administreres af bruger/i', $data)) {
                         $status = "Dynamic DNS: (Error) User unable to administer the selected domain.";
-                } else if (preg_match('/OK/i', $data)) {
+                } elseif (preg_match('/OK/i', $data)) {
                         $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                         $successful_update = true;
                 } else {
@@ -1162,7 +1270,8 @@ class updatedns {
      * Private Function (added 12 July 05) [beta]
      *   Return Error, Set Last Error, and Die.
      */
-    function _error($errorNumber = '1') {
+    function _error($errorNumber = '1')
+    {
         switch ($errorNumber) {
             case 0:
                 break;
@@ -1209,7 +1318,8 @@ class updatedns {
      *      | Written Specifically for pfSense (https://www.pfsense.org) may
      *      | work with other systems. pfSense base is FreeBSD.
      */
-    function _detectChange() {
+    function _detectChange()
+    {
         $currentTime = time();
 
         $wan_ip = $this->_checkIP();
@@ -1248,8 +1358,9 @@ class updatedns {
                 $log_error .= "No Cached IP found.";
             }
         }
-        if ($this->_dnsVerboseLog)
+        if ($this->_dnsVerboseLog) {
             log_error($log_error);
+        }
 
         // Convert seconds = days * hr/day * min/hr * sec/min
         $maxCacheAgeSecs = $this->_dnsMaxCacheAgeDays * 24 * 60 * 60;
@@ -1276,8 +1387,9 @@ class updatedns {
          *   new cache value and return true
          */
         if ($needs_updating == true) {
-            if ($this->_dnsVerboseLog)
+            if ($this->_dnsVerboseLog) {
                 log_error("Dynamic DNS ({$this->_dnsHost}): {$update_reason}");
+            }
             return true;
         }
 
@@ -1290,14 +1402,16 @@ class updatedns {
      *   - This function is only called when a unknown response
      *   - status is returned from a dynamic DNS service provider.
      */
-    function _debug($data) {
+    function _debug($data)
+    {
         $string = date('m-d-y h:i:s').' - ('.$this->_debugID.') - ['.$this->_dnsService.'] - '.$data."\n";
         $file = fopen($this->_debugFile, 'a');
         fwrite($file, $string);
         fclose($file);
     }
 
-    function _checkIP() {
+    function _checkIP()
+    {
         $ip_address = get_dyndns_ip($this->_if, $this->_useIPv6 ? 6 : 4);
         if (!is_ipaddr($ip_address)) {
             if ($this->_dnsVerboseLog) {

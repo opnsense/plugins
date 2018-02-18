@@ -41,7 +41,6 @@ class StatusController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        $this->view->title = gettext('Monit System Monitoring - Status');
         $this->view->pick('OPNsense/Monit/status');
     }
 }

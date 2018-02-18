@@ -1,5 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
+    <version>2.1.0</version>
     <description>
         the HAProxy load balancer
     </description>
@@ -9,6 +10,45 @@
                 <default>0</default>
                 <Required>Y</Required>
             </enabled>
+            <gracefulStop type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </gracefulStop>
+            <showIntro type="BooleanField">
+                <default>1</default>
+            </showIntro>
+            <peers>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name1 type="HostnameField">
+                    <Required>N</Required>
+                </name1>
+                <listen1 type="HostnameField">
+                    <Required>N</Required>
+                </listen1>
+                <port1 type="IntegerField">
+                    <default>1024</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </port1>
+                <name2 type="HostnameField">
+                    <Required>N</Required>
+                </name2>
+                <listen2 type="HostnameField">
+                    <Required>N</Required>
+                </listen2>
+                <port2 type="IntegerField">
+                    <default>1024</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
+                </port2>
+            </peers>
             <tuning>
                 <root type="BooleanField">
                     <default>0</default>
@@ -74,6 +114,31 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <ssl_defaultsEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ssl_defaultsEnabled>
+                <ssl_bindOptions type="OptionField">
+                    <Required>N</Required>
+                    <default>no-sslv3,no-tlsv10,no-tls-tickets</default>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <no-sslv3>no-sslv3</no-sslv3>
+                        <no-tlsv10>no-tlsv10</no-tlsv10>
+                        <no-tlsv11>no-tlsv11</no-tlsv11>
+                        <no-tlsv12>no-tlsv12</no-tlsv12>
+                        <no-tls-tickets>no-tls-tickets</no-tls-tickets>
+                        <force-sslv3>force-sslv3</force-sslv3>
+                        <force-tlsv10>force-tlsv10</force-tlsv10>
+                        <force-tlsv11>force-tlsv11</force-tlsv11>
+                        <force-tlsv12>force-tlsv12</force-tlsv12>
+                        <strict-sni>strict-sni</strict-sni>
+                    </OptionValues>
+                </ssl_bindOptions>
+                <ssl_cipherList type="TextField">
+                    <default>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256</default>
+                    <Required>N</Required>
+                </ssl_cipherList>
             </tuning>
             <defaults>
                 <maxConnections type="IntegerField">
@@ -276,7 +341,6 @@
                     <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </defaultBackend>
-                <!-- XXX: add tag <ssl> once nesting is supported by our framework -->
                 <ssl_enabled type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -294,7 +358,50 @@
                 <ssl_customOptions type="TextField">
                     <Required>N</Required>
                 </ssl_customOptions>
-                <!-- XXX: add tag <tuning> once nesting is supported by our framework -->
+                <ssl_advancedEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ssl_advancedEnabled>
+                <ssl_bindOptions type="OptionField">
+                    <Required>N</Required>
+                    <default>no-sslv3,no-tlsv10,no-tls-tickets</default>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <no-sslv3>no-sslv3</no-sslv3>
+                        <no-tlsv10>no-tlsv10</no-tlsv10>
+                        <no-tlsv11>no-tlsv11</no-tlsv11>
+                        <no-tlsv12>no-tlsv12</no-tlsv12>
+                        <no-tls-tickets>no-tls-tickets</no-tls-tickets>
+                        <force-sslv3>force-sslv3</force-sslv3>
+                        <force-tlsv10>force-tlsv10</force-tlsv10>
+                        <force-tlsv11>force-tlsv11</force-tlsv11>
+                        <force-tlsv12>force-tlsv12</force-tlsv12>
+                        <strict-sni>strict-sni</strict-sni>
+                    </OptionValues>
+                </ssl_bindOptions>
+                <ssl_cipherList type="TextField">
+                    <default>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256</default>
+                    <Required>N</Required>
+                </ssl_cipherList>
+                <ssl_hstsEnabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </ssl_hstsEnabled>
+                <ssl_hstsIncludeSubDomains type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </ssl_hstsIncludeSubDomains>
+                <ssl_hstsPreload type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </ssl_hstsPreload>
+                <ssl_hstsMaxAge type="IntegerField">
+                    <default>15768000</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>1000000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 1000000000.</ValidationMessage>
+                    <Required>Y</Required>
+                </ssl_hstsMaxAge>
                 <tuning_maxConnections type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>500000</MaximumValue>
@@ -306,7 +413,16 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutClient>
-                <!-- XXX: add tag <logging> once nesting is supported by our framework -->
+                <tuning_timeoutHttpReq type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutHttpReq>
+                <tuning_timeoutHttpKeepAlive type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutHttpKeepAlive>
                 <logging_dontLogNull type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -327,6 +443,101 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </logging_socketStats>
+                <stickiness_pattern type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ipv4>only store IPv4 addresses [default]</ipv4>
+                        <ipv6>only store IPv6 addresses</ipv6>
+                        <integer>store 32bit integers</integer>
+                        <string>store substrings</string>
+                        <binary>store binary blocks</binary>
+                    </OptionValues>
+                </stickiness_pattern>
+                <stickiness_dataTypes type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <conn_cnt>Connection count</conn_cnt>
+                        <conn_cur>Current connections</conn_cur>
+                        <conn_rate>Connection rate</conn_rate>
+                        <sess_cnt>Session count</sess_cnt>
+                        <sess_rate>Session rate</sess_rate>
+                        <http_req_cnt>HTTP request count</http_req_cnt>
+                        <http_req_rate>HTTP request rate</http_req_rate>
+                        <http_err_cnt>HTTP error count</http_err_cnt>
+                        <http_err_rate>HTTP error rate</http_err_rate>
+                        <bytes_in_cnt>Bytes in count (client to server)</bytes_in_cnt>
+                        <bytes_in_rate>Bytes in rate (client to server)</bytes_in_rate>
+                        <bytes_out_cnt>Bytes out count (server to client)</bytes_out_cnt>
+                        <bytes_out_rate>Bytes out rate (server to client)</bytes_out_rate>
+                    </OptionValues>
+                </stickiness_dataTypes>
+                <stickiness_expire type="TextField">
+                    <Required>Y</Required>
+                    <default>30m</default>
+                    <mask>/^([0-9]{1,5}(?:ms|s|m|h|d)?)/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Should be a number between 1 and 5 characters followed by either "d", "h", "m", "s" or "ms".</ValidationMessage>
+                </stickiness_expire>
+                <stickiness_size type="TextField">
+                    <Required>Y</Required>
+                    <default>50k</default>
+                    <mask>/^([0-9]{1,5}[k|m|g]{1})*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Should be a number between 1 and 5 characters followed by either "k", "m" or "g".</ValidationMessage>
+                </stickiness_size>
+                <stickiness_counter type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </stickiness_counter>
+                <stickiness_counter_key type="TextField">
+                    <default>src</default>
+                    <Required>N</Required>
+                    <mask>/^([0-9a-zA-Z._]){1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters.</ValidationMessage>
+                </stickiness_counter_key>
+                <stickiness_length type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>16384</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 16384.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_length>
+                <stickiness_connRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_connRatePeriod>
+                <stickiness_sessRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_sessRatePeriod>
+                <stickiness_httpReqRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpReqRatePeriod>
+                <stickiness_httpErrRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpErrRatePeriod>
+                <stickiness_bytesInRatePeriod type="TextField">
+                    <default>1m</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_bytesInRatePeriod>
+                <stickiness_bytesOutRatePeriod type="TextField">
+                    <default>1m</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_bytesOutRatePeriod>
                 <forwardFor type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -446,7 +657,6 @@
                     <default>0</default>
                     <Required>N</Required>
                 </healthCheckLogStatus>
-                <!-- XXX: add tag <stickiness> once nesting is supported by our framework -->
                 <stickiness_pattern type="OptionField">
                     <Required>N</Required>
                     <default>sourceipv4</default>
@@ -457,6 +667,25 @@
                         <rdpcookie>Stick on RDP-Cookie</rdpcookie>
                     </OptionValues>
                 </stickiness_pattern>
+                <stickiness_dataTypes type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <conn_cnt>Connection count</conn_cnt>
+                        <conn_cur>Current connections</conn_cur>
+                        <conn_rate>Connection rate</conn_rate>
+                        <sess_cnt>Session count</sess_cnt>
+                        <sess_rate>Session rate</sess_rate>
+                        <http_req_cnt>HTTP request count</http_req_cnt>
+                        <http_req_rate>HTTP request rate</http_req_rate>
+                        <http_err_cnt>HTTP error count</http_err_cnt>
+                        <http_err_rate>HTTP error rate</http_err_rate>
+                        <bytes_in_cnt>Bytes in count (client to server)</bytes_in_cnt>
+                        <bytes_in_rate>Bytes in rate (client to server)</bytes_in_rate>
+                        <bytes_out_cnt>Bytes out count (server to client)</bytes_out_cnt>
+                        <bytes_out_rate>Bytes out rate (server to client)</bytes_out_rate>
+                    </OptionValues>
+                </stickiness_dataTypes>
                 <stickiness_expire type="TextField">
                     <Required>Y</Required>
                     <default>30m</default>
@@ -482,7 +711,42 @@
                     <ValidationMessage>Please specify a value between 1 and 10000.</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_cookielength>
-                <!-- XXX: add tag <tuning> once nesting is supported by our framework -->
+                <stickiness_connRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_connRatePeriod>
+                <stickiness_sessRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_sessRatePeriod>
+                <stickiness_httpReqRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpReqRatePeriod>
+                <stickiness_httpErrRatePeriod type="TextField">
+                    <default>10s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpErrRatePeriod>
+                <stickiness_bytesInRatePeriod type="TextField">
+                    <default>1m</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_bytesInRatePeriod>
+                <stickiness_bytesOutRatePeriod type="TextField">
+                    <default>1m</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_bytesOutRatePeriod>
                 <tuning_timeoutConnect type="TextField">
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
@@ -558,11 +822,10 @@
                     <Required>Y</Required>
                 </address>
                 <port type="IntegerField">
-                    <default>80</default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </port>
                 <checkport type="IntegerField">
                     <default></default>
@@ -632,7 +895,7 @@
         <healthchecks>
             <healthcheck type="ArrayField">
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>
@@ -670,7 +933,6 @@
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
                     <Required>N</Required>
                 </checkport>
-                <!-- XXX: add tag <http> once nesting is supported by our framework -->
                 <http_method type="OptionField">
                     <Required>N</Required>
                     <default>options</default>
@@ -747,20 +1009,44 @@
                 <tcp_matchValue type="TextField">
                     <Required>N</Required>
                 </tcp_matchValue>
-                <agentPort type="IntegerField">
+                <agent_port type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
                     <Required>N</Required>
-                </agentPort>
-                <dbUser type="TextField">
+                </agent_port>
+                <mysql_user type="TextField">
                     <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
-                </dbUser>
-                <smtpDomain type="TextField">
+                </mysql_user>
+                <mysql_post41 type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </mysql_post41>
+                <pgsql_user type="TextField">
                     <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </pgsql_user>
+                <smtp_domain type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </smtp_domain>
+                <esmtp_domain type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </esmtp_domain>
+                <!-- XXX old values, required for migration to model 2.0.0 -->
+                <agentPort type="IntegerField">
+                    <Required>N</Required>
+                </agentPort>
+                <dbUser type="TextField">
+                    <Required>N</Required>
+                </dbUser>
+                <smtpDomain type="TextField">
                     <Required>N</Required>
                 </smtpDomain>
             </healthcheck>
@@ -771,7 +1057,7 @@
                     <Required>N</Required>
                 </id>
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>
@@ -783,37 +1069,373 @@
                 <expression type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <host_starts_with>Host starts with</host_starts_with>
-                        <host_ends_with>Host ends with</host_ends_with>
-                        <host_matches>Host matches</host_matches>
-                        <host_regex>Host regex</host_regex>
-                        <host_contains>Host contains</host_contains>
-                        <path_starts_with>Path starts with</path_starts_with>
-                        <path_ends_with>Path ends with</path_ends_with>
-                        <path_matches>Path matches</path_matches>
-                        <path_regex>Path regex</path_regex>
-                        <path_contains>Path contains</path_contains>
-                        <url_parameter>URL parameter contains</url_parameter>
+                        <hdr_beg>Host starts with</hdr_beg>
+                        <hdr_end>Host ends with</hdr_end>
+                        <hdr>Host matches</hdr>
+                        <hdr_reg>Host regex</hdr_reg>
+                        <hdr_sub>Host contains</hdr_sub>
+                        <path_beg>Path starts with</path_beg>
+                        <path_end>Path ends with</path_end>
+                        <path>Path matches</path>
+                        <path_reg>Path regex</path_reg>
+                        <path_dir>Path contains subdir</path_dir>
+                        <path_sub>Path contains string</path_sub>
+                        <url_param>URL parameter contains</url_param>
                         <ssl_fc>SSL/TLS connection established</ssl_fc>
-                        <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
-                        <ssl_c_ca_commonname>SSL Client issued by CA common-name</ssl_c_ca_commonname>
-                        <source_ip>Source IP matches IP or Alias</source_ip>
-                        <backendservercount>Minimum count usable servers</backendservercount>
-                        <traffic_is_http>Traffic is http (no value needed)</traffic_is_http>
-                        <traffic_is_ssl>Traffic is ssl (no value needed)</traffic_is_ssl>
-                        <ssl_sni_matches>SNI TLS extension matches</ssl_sni_matches>
-                        <ssl_sni_contains>SNI TLS extension contains</ssl_sni_contains>
-                        <ssl_sni_starts_with>SNI TLS extension starts with</ssl_sni_starts_with>
-                        <ssl_sni_ends_with>SNI TLS extension ends with</ssl_sni_ends_with>
-                        <ssl_sni_regex>SNI TLS extension regex</ssl_sni_regex>
-                        <custom_acl>Custom ACL</custom_acl>
+                        <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
+                        <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
+                        <src>Source IP matches specified IP</src>
+                        <src_is_local>Source IP is local</src_is_local>
+                        <src_port>Source IP: TCP source port</src_port>
+                        <src_bytes_in_rate>Source IP: incoming bytes rate</src_bytes_in_rate>
+                        <src_bytes_out_rate>Source IP: outgoing bytes rate</src_bytes_out_rate>
+                        <src_kbytes_in>Source IP: amount of data received (in kilobytes)</src_kbytes_in>
+                        <src_kbytes_out>Source IP: amount of data sent (in kilobytes)</src_kbytes_out>
+                        <!-- <src_clr_gpc0>Source IP: clear first General Purpose Counter</src_clr_gpc0> -->
+                        <src_conn_cnt>Source IP: cumulative number of connections</src_conn_cnt>
+                        <src_conn_cur>Source IP: concurrent connections</src_conn_cur>
+                        <src_conn_rate>Source IP: connection rate</src_conn_rate>
+                        <!-- <src_get_gpc0>Source IP: get first General Purpose Counter</src_get_gpc0> -->
+                        <!-- <src_get_gpt0>Source IP: get first General Purpose Tag</src_get_gpt0> -->
+                        <!-- <src_gpc0_rate>Source IP: increment rate of the first General Purpose Counter</src_gpc0_rate> -->
+                        <src_http_err_cnt>Source IP: cumulative number of HTTP errors</src_http_err_cnt>
+                        <src_http_err_rate>Source IP: rate of HTTP errors</src_http_err_rate>
+                        <src_http_req_cnt>Source IP: number of HTTP requests</src_http_req_cnt>
+                        <src_http_req_rate>Source IP: rate of HTTP requests</src_http_req_rate>
+                        <!-- <src_inc_gpc0>Source IP: increment the first General Purpose Counter</src_inc_gpc0> -->
+                        <src_sess_cnt>Source IP: cumulative number of connections</src_sess_cnt>
+                        <src_sess_rate>Source IP: session rate</src_sess_rate>
+                        <nbsrv>Minimum number of usable servers in backend</nbsrv>
+                        <traffic_is_http>Traffic is HTTP</traffic_is_http>
+                        <traffic_is_ssl>Traffic is SSL</traffic_is_ssl>
+                        <ssl_sni>SNI TLS extension matches</ssl_sni>
+                        <ssl_sni_sub>SNI TLS extension contains</ssl_sni_sub>
+                        <ssl_sni_beg>SNI TLS extension starts with</ssl_sni_beg>
+                        <ssl_sni_end>SNI TLS extension ends with</ssl_sni_end>
+                        <ssl_sni_reg>SNI TLS extension regex</ssl_sni_reg>
+                        <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
                 </expression>
                 <negate type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
                 </negate>
+                <hdr_beg type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </hdr_beg>
+                <hdr_end type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </hdr_end>
+                <hdr type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </hdr>
+                <hdr_reg type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </hdr_reg>
+                <hdr_sub type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </hdr_sub>
+                <path_beg type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path_beg>
+                <path_end type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path_end>
+                <path type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path>
+                <path_reg type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path_reg>
+                <path_dir type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path_dir>
+                <path_sub type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path_sub>
+                <url_param type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </url_param>
+                <url_param_value type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </url_param_value>
+                <ssl_c_verify_code type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>500000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 500000.</ValidationMessage>
+                    <Required>N</Required>
+                </ssl_c_verify_code>
+                <ssl_c_ca_commonname type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_c_ca_commonname>
+                <src type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </src>
+                <src_bytes_in_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_bytes_in_rate_comparison>
+                <src_bytes_in_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_bytes_in_rate>
+                <src_bytes_out_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_bytes_out_rate_comparison>
+                <src_bytes_out_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_bytes_out_rate>
+                <src_conn_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_conn_cnt_comparison>
+                <src_conn_cnt type="IntegerField">
+                    <Required>N</Required>
+                </src_conn_cnt>
+                <src_conn_cur_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_conn_cur_comparison>
+                <src_conn_cur type="IntegerField">
+                    <Required>N</Required>
+                </src_conn_cur>
+                <src_conn_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_conn_rate_comparison>
+                <src_conn_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_conn_rate>
+                <src_http_err_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_http_err_cnt_comparison>
+                <src_http_err_cnt type="IntegerField">
+                    <Required>N</Required>
+                </src_http_err_cnt>
+                <src_http_err_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_http_err_rate_comparison>
+                <src_http_err_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_http_err_rate>
+                <src_http_req_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_http_req_cnt_comparison>
+                <src_http_req_cnt type="IntegerField">
+                    <Required>N</Required>
+                </src_http_req_cnt>
+                <src_http_req_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_http_req_rate_comparison>
+                <src_http_req_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_http_req_rate>
+                <src_kbytes_in_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_kbytes_in_comparison>
+                <src_kbytes_in type="IntegerField">
+                    <Required>N</Required>
+                </src_kbytes_in>
+                <src_kbytes_out_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_kbytes_out_comparison>
+                <src_kbytes_out type="IntegerField">
+                    <Required>N</Required>
+                </src_kbytes_out>
+                <src_port_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_port_comparison>
+                <src_port type="IntegerField">
+                    <Required>N</Required>
+                </src_port>
+                <src_sess_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_sess_cnt_comparison>
+                <src_sess_cnt type="IntegerField">
+                    <Required>N</Required>
+                </src_sess_cnt>
+                <src_sess_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <default>gt</default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_sess_rate_comparison>
+                <src_sess_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_sess_rate>
+                <nbsrv type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>500000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 500000.</ValidationMessage>
+                    <Required>N</Required>
+                </nbsrv>
+                <nbsrv_backend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
+                    <Required>N</Required>
+                </nbsrv_backend>
+                <ssl_sni type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_sni>
+                <ssl_sni_sub type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_sni_sub>
+                <ssl_sni_beg type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_sni_beg>
+                <ssl_sni_end type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_sni_end>
+                <ssl_sni_reg type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_sni_reg>
+                <custom_acl type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </custom_acl>
+                <!-- XXX old values, required for migration to model 2.0.0 -->
                 <value type="TextField">
                     <Required>N</Required>
                 </value>
@@ -830,13 +1452,14 @@
                     </Model>
                     <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
+                    <Required>N</Required>
                 </queryBackend>
             </acl>
         </acls>
         <actions>
             <action type="ArrayField">
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>
@@ -876,8 +1499,8 @@
                 <type type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <use_backend>Use Backend</use_backend>
-                        <use_server>Use Server</use_server>
+                        <use_backend>Use specified Backend Pool</use_backend>
+                        <use_server>Override server in Backend Pool</use_server>
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>
@@ -908,9 +1531,143 @@
                         <tcp-response_content_close>tcp-response content close</tcp-response_content_close>
                         <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
                         <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
-                        <custom>Custom</custom>
+                        <custom>Custom rule (option pass-through)</custom>
                     </OptionValues>
                 </type>
+                <use_backend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related backend item not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </use_backend>
+                <use_server type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>servers.server</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related server item not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </use_server>
+                <http_request_auth type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_auth>
+                <!-- XXX: add support for all "redirect" parameters as separate fields -->
+                <http_request_redirect type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_redirect>
+                <http_request_lua type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_lua>
+                <http_request_use_service type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_use_service>
+                <http_request_add_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_add_header_name>
+                <http_request_add_header_content type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_add_header_content>
+                <http_request_set_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_set_header_name>
+                <http_request_set_header_content type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_set_header_content>
+                <http_request_del_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_del_header_name>
+                <http_request_replace_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_replace_header_name>
+                <http_request_replace_header_regex type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_replace_header_regex>
+                <http_request_replace_value_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_replace_value_name>
+                <http_request_replace_value_regex type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_replace_value_regex>
+                <http_response_lua type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_lua>
+                <http_response_add_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_add_header_name>
+                <http_response_add_header_content type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_add_header_content>
+                <http_response_set_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_set_header_name>
+                <http_response_set_header_content type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_set_header_content>
+                <http_response_del_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_del_header_name>
+                <http_response_replace_header_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_replace_header_name>
+                <http_response_replace_header_regex type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_replace_header_regex>
+                <http_response_replace_value_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_replace_value_name>
+                <http_response_replace_value_regex type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_replace_value_regex>
+                <tcp_request_content_lua type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </tcp_request_content_lua>
+                <tcp_request_content_use_service type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </tcp_request_content_use_service>
+                <tcp_response_content_lua type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </tcp_response_content_lua>
+                <custom type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </custom>
+                <!-- XXX old values, required for migration to model 2.0.0 -->
                 <useBackend type="ModelRelationField">
                     <Model>
                         <template>
@@ -936,13 +1693,13 @@
                     <Required>N</Required>
                 </useServer>
                 <actionName type="TextField">
-                    <Required>N</Required>
+                     <Required>N</Required>
                 </actionName>
                 <actionFind type="TextField">
-                    <Required>N</Required>
+                     <Required>N</Required>
                 </actionFind>
                 <actionValue type="TextField">
-                    <Required>N</Required>
+                     <Required>N</Required>
                 </actionValue>
             </action>
         </actions>
@@ -956,7 +1713,7 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z_\-]){1,255}$/u</mask>
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>
@@ -976,7 +1733,7 @@
                     <Required>Y</Required>
                 </id>
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z_\-]){1,255}$/u</mask>
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>

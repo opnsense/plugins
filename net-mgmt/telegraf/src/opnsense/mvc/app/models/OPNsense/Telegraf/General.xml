@@ -1,0 +1,47 @@
+<model>
+    <mount>//OPNsense/telegraf/general</mount>
+    <description>Telegraf general configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <interval type="IntegerField">
+            <default>10</default>
+            <Required>Y</Required>
+        </interval>
+        <roundinterval type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </roundinterval>
+        <metric_batch_size type="IntegerField">
+            <default>1000</default>
+            <Required>Y</Required>
+        </metric_batch_size>
+        <metric_buffer_limit type="IntegerField">
+            <default>10000</default>
+            <Required>Y</Required>
+        </metric_buffer_limit>
+        <collection_jitter type="IntegerField">
+            <default>0</default>
+            <Required>Y</Required>
+        </collection_jitter>
+        <flush_interval type="IntegerField">
+            <default>10</default>
+            <Required>Y</Required>
+        </flush_interval>
+        <flush_jitter type="IntegerField">
+            <default>0</default>
+	        <Required>Y</Required>
+	    </flush_jitter>
+        <hostname type="TextField">
+            <default></default>
+	        <Required>N</Required>
+	    </hostname>
+        <omit_hostname type="BooleanField">
+            <default>0</default>
+	        <Required>Y</Required>
+	    </omit_hostname>
+    </items>
+</model>

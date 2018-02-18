@@ -1,0 +1,25 @@
+<model>
+    <mount>//OPNsense/siproxd/user</mount>
+    <description>Siproxd user configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <users>
+            <user type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <username type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                </username>
+                <password type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+                </password>
+            </user>
+        </users>
+    </items>
+</model>

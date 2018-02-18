@@ -1,0 +1,45 @@
+<form>
+   <field>
+      <id>relayd.general.enabled</id>
+      <label>Enable Relayd</label>
+      <type>checkbox</type>
+      <help><![CDATA[Enable or disable Relayd.]]></help>
+   </field>
+   <field>
+      <id>relayd.general.interval</id>
+      <label>Global Check Interval</label>
+      <type>text</type>
+      <help><![CDATA[
+         Set the interval in seconds at which the hosts will be checked.<br>
+         The default interval is 10 seconds.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.general.log</id>
+      <label>State Notification</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Log state notifications after completed host checks.  Either only<br>
+         log the updates to new states or log all state notifications,<br>
+         even if the state didn't change.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.general.prefork</id>
+      <label>Number Of Processes</label>
+      <type>text</type>
+      <help><![CDATA[
+         When using relays, run the specified number of processes to<br>
+         handle relayed connections.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.general.timeout</id>
+      <label>Global Check Timeout</label>
+      <type>text</type>
+      <help><![CDATA[
+         Set the global timeout in milliseconds for checks.  This can be<br>
+         overridden by the timeout value in the table definitions.]]>
+      </help>
+   </field>
+</form>

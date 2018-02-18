@@ -1,0 +1,111 @@
+<form>
+  <tab id="redis-general" description="General Settings">
+    <subtab id="redis-general-settings" description="General Redis Settings">
+      <field>
+        <id>redis.general.enabled</id>
+        <label>Enable Redis</label>
+        <type>checkbox</type>
+        <help>Enable or disable the Redis service.</help>
+      </field>
+      <field>
+        <id>redis.general.listen</id>
+        <label>Listen Interfaces</label>
+        <type>select_multiple</type>
+        <style>selectpicker</style>
+        <help>Let the Redis server listen on non-localhost interfaces.</help>
+      </field>
+      <field>
+        <id>redis.general.protected_mode</id>
+        <label>Enable Protected Mode</label>
+        <type>checkbox</type>
+        <help>Reject Connections from other IP addresses than ::1 and 127.0.0.1.</help>
+      </field>
+      <field>
+        <id>redis.general.port</id>
+        <label>TCP Listen Port</label>
+        <type>text</type>
+        <help>Enter a valid TCP port.</help>
+      </field>
+      <field>
+        <id>redis.general.log_level</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help>Select how detailed the logs should be debug is the most verbose setting.</help>
+      </field>
+      <field>
+        <id>redis.general.syslog_enabled</id>
+        <label>Enable Syslog</label>
+        <type>checkbox</type>
+        <help>Enable Syslog logging.</help>
+      </field>
+      <field>
+        <id>redis.general.syslog_facility</id>
+        <label>Syslog Facility</label>
+        <type>dropdown</type>
+      </field>
+      <field>
+        <id>redis.general.databases</id>
+        <label>Database Count</label>
+        <type>text</type>
+        <help>The number of databases you would like to have.</help>
+      </field>
+    </subtab>
+  </tab>
+  <tab id="redis-restrictions" description="Restrictions">
+    <subtab id="redis-restrictions-security" description="Security Settings">
+      <field>
+        <id>redis.security.password</id>
+        <label>Server Password</label>
+        <type>text</type>
+        <help>Choose a secure value. It is recommended that you generate this password.</help>
+      </field>
+      <field>
+        <id>redis.security.disable_commands</id>
+        <label>Disable Commands</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>The commands here will be disabled and cannot be used anymore.</help>
+      </field>
+    </subtab>
+    <subtab id="redis-restrictions-limits" description="Limits">
+      <field>
+        <id>redis.limits.maxclients</id>
+        <label>Maximum Clients</label>
+        <type>text</type>
+      </field>
+      <field>
+        <id>redis.limits.maxmemory</id>
+        <label>Maximum Memory</label>
+        <type>text</type>
+      </field>
+      <field>
+        <id>redis.limits.maxmemory_policy</id>
+        <label>Maximum Memory Policy</label>
+        <type>dropdown</type>
+      </field>
+      <field>
+        <id>redis.limits.maxmemory_samples</id>
+        <label>Maximum Memory Samples</label>
+        <type>text</type>
+      </field>
+    </subtab>
+  </tab>
+  <tab id="redis-performance" description="Performance and Monitoring">
+    <subtab id="redis-performance-slow-transactions" description="Slow Transactions">
+      <field>
+        <id>redis.slowlog.slower_than</id>
+        <label>Log Transactions Slower Than (microsecond)</label>
+        <type>text</type>
+        <help>0: Log everything, Positive Value: Log events that take longer than specified, Negative Value: Log nothing.</help>
+      </field>
+      <field>
+        <id>redis.slowlog.max_len</id>
+        <label>Maximum Length</label>
+        <type>text</type>
+      </field>
+    </subtab>
+  </tab>
+
+  <activetab>redis-general-settings</activetab>
+</form>

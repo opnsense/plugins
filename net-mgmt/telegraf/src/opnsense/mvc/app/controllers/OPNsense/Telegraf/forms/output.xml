@@ -1,0 +1,74 @@
+<form>
+    <field>
+        <id>output.influx_enable</id>
+        <label>Enable Influx Output</label>
+        <type>checkbox</type>
+        <help>This will enable InfluxDB as output. Format is without square brackets, just like http://192.168.0.1:8086.</help>
+    </field>
+    <field>
+        <id>output.influx_url</id>
+        <label>Influx URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.influx_database</id>
+        <label>Database</label>
+        <type>text</type>
+        <help>Set the name of the database on InfluxDB.</help>
+    </field>
+    <field>
+        <id>output.influx_timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Write timeout (for the InfluxDB client), formatted as a string. If not provided, will default to 5s. 0s means no timeout (not recommended).</help>
+    </field>
+    <field>
+        <id>output.influx_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Set the username for authentication.</help>
+    </field>
+    <field>
+        <id>output.influx_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Set the password for authentication.</help>
+    </field>
+    <field>
+        <id>output.graphite_enable</id>
+        <label>Enable Graphite Output</label>
+        <type>checkbox</type>
+        <help>This will enable Graphite as output. Format is without square brackets, just like localhost:2003.</help>
+    </field>
+    <field>
+        <id>output.graphite_server</id>
+        <label>Graphite Server</label>
+        <type>text</type>
+        <help>Set the IP and port where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.graphite_prefix</id>
+        <label>Graphite Prefix</label>
+        <type>text</type>
+        <help>Set an optional prefix to the metrics.</help>
+    </field>
+    <field>
+        <id>output.graphite_template</id>
+        <label>Graphite Template</label>
+        <type>text</type>
+        <help>Use a specific output template. For usage see https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md</help>
+    </field>
+    <field>
+        <id>output.graylog_enable</id>
+        <label>Enable Graylog Output</label>
+        <type>checkbox</type>
+        <help>This will enable Graylog as output. Format is without square brackets, just like localhost:12201.</help>
+    </field>
+    <field>
+        <id>output.graylog_server</id>
+        <label>Graylog Server</label>
+        <type>text</type>
+        <help>Set the IP and port where metrics shoud be sent to.</help>
+    </field>
+</form>

@@ -37,7 +37,6 @@ class ActionsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->title = "Let's Encrypt Restart Actions";
         // include form definitions
         $this->view->formDialogAction = $this->getForm("dialogAction");
         // choose template

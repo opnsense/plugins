@@ -1,0 +1,9 @@
+<acl>
+  <page-nut>
+    <name>Nut</name>
+    <patterns>
+      <pattern>ui/nut/*</pattern>
+      <pattern>api/nut/*</pattern>
+    </patterns>
+  </page-nut>
+</acl>

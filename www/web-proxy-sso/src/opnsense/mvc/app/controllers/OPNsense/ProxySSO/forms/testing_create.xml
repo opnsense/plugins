@@ -1,0 +1,18 @@
+<form>
+	<field>
+		<label>Key Table creation</label>
+		<type>header</type>
+	</field>
+	<field>
+		<id>admin_username</id>
+		<label>AD admin login</label>
+		<type>text</type>
+		<help>Active Directory user name with administrator rights (this value is not stored in configuration).</help>
+	</field>
+	<field>
+		<id>admin_password</id>
+		<label>AD admin password</label>
+		<type>password</type>
+		<help>Active Directory user password (this value is not stored in configuration).</help>
+	</field>
+</form>

@@ -1,0 +1,337 @@
+<model>
+  <mount>//OPNsense/Rspamd</mount>
+  <description>rspamd anti spam filter</description>
+  <items>
+    <general>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+      <enable_redis_plugin type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_redis_plugin>
+    </general>
+
+    <graylist>
+      <expire type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </expire>
+      <timeout type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </timeout>
+      <max_data_len type="IntegerField">
+        <Required>N</Required>
+      </max_data_len>
+      <ipv4mask type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <MaximumValue>32</MaximumValue>
+        <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
+        <default>19</default>
+      </ipv4mask>
+      <ipv6mask type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <MaximumValue>128</MaximumValue>
+        <default>64</default>
+        <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
+      </ipv6mask>
+    </graylist>
+
+    <dkim>
+      <cache_size type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+      </cache_size>
+      <cache_expire type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
+      </cache_expire>
+      <time_jitter type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid time jitter must be set.</ValidationMessage>
+      </time_jitter>
+      <trusted_only type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </trusted_only>
+      <skip_multi type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </skip_multi>
+      <!-- dkim signing -->
+      <allow_envfrom_empty type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </allow_envfrom_empty>
+      <allow_hdrfrom_mismatch type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_hdrfrom_mismatch>
+      <allow_hdrfrom_multiple type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_hdrfrom_multiple>
+      <allow_username_mismatch type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </allow_username_mismatch>
+      <auth_only type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </auth_only>
+      <sign_local type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </sign_local>
+      <try_fallback type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </try_fallback>
+      <use_domain type="OptionField">
+        <default>header</default>
+        <Required>Y</Required>
+        <OptionValues>
+          <header>Header</header>
+          <envelope>Envelope</envelope>
+        </OptionValues>
+      </use_domain>
+      <use_esld type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </use_esld>
+    </dkim>
+
+    <mx-check>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+      <expire type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <default>86400</default>
+        <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
+      </expire>
+    </mx-check>
+
+    <phishing>
+      <openphish_enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </openphish_enabled>
+      <openphish_premium_enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </openphish_premium_enabled>
+      <phishtank_enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </phishtank_enabled>
+    </phishing>
+
+    <rate_limit>
+      <per_recipient>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </time_unit>
+      </per_recipient>
+      <per_ip>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </time_unit>
+      </per_ip>
+      <per_ip_from>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </time_unit>
+      </per_ip_from>
+      <bounce>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </time_unit>
+      </bounce>
+      <bounce_ip>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </time_unit>
+      </bounce_ip>
+      <user>
+        <count type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+        </count>
+        <time type="IntegerField">
+          <MinimumValue>1</MinimumValue>
+          <Required>N</Required>
+          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+        </time>
+        <time_unit type="OptionField">
+          <default>m</default>
+          <Required>Y</Required>
+          <OptionValues>
+            <s>Seconds</s>
+            <m>Minutes</m>
+            <h>Hours</h>
+          </OptionValues>
+        </time_unit>
+      </user>
+      <whitelisted_rcpts type="CSVListField">
+        <default>postmaster,mailer-daemon</default>
+      </whitelisted_rcpts>
+      <max_rcpt type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>Y</Required>
+        <default>20</default>
+      </max_rcpt>
+    </rate_limit>
+
+    <spamtrap>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+      <fuzzy_learning type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </fuzzy_learning>
+      <spam_learning type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </spam_learning>
+      <spam_recipients type="CSVListField">
+        <Required>N</Required>
+      </spam_recipients>
+    </spamtrap>
+
+    <spf>
+      <spf_cache_size type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <default>2</default>
+        <ValidationMessage>A valid cache size in kilobytes must be set.</ValidationMessage>
+      </spf_cache_size>
+      <spf_cache_expire type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
+      </spf_cache_expire>
+    </spf>
+
+    <av>
+      <force-reject type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </force-reject>
+      <attachments-only type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </attachments-only>
+      <max-size type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <default>20000000</default>
+        <Required>N</Required>
+        <ValidationMessage>A valid maximum size in bytes must be set.</ValidationMessage>
+      </max-size>
+      <whitelist type="CSVListField">
+        <Required>N</Required>
+      </whitelist>
+    </av>
+
+    <surbl>
+      <whitelist type="CSVListField">
+        <Required>N</Required>
+      </whitelist>
+      <exceptions type="CSVListField">
+        <Required>N</Required>
+      </exceptions>
+    </surbl>
+  </items>
+</model>

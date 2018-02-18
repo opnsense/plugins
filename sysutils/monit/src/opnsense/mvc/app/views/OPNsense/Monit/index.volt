@@ -1,6 +1,6 @@
 {#
 
-Copyright © 2017 by EURO-LOG AG
+Copyright © 2017-2018 by EURO-LOG AG
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -25,11 +25,20 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<script type="text/javascript">
+<script>
 
    $( document ).ready(function() {
 
       /**
+      * add button 'Import System Notification'
+      * can't do it via base_dialog
+      */
+	   $('<button class="btn btn-primary" id="btn_ImportSystemNotification" type="button" style="margin-left: 3px;">' +
+	         '<b> {{ lang._('Import System Notification')}} </b>' +
+	         '<i id="frm_ImportSystemNotification_progress"></i>' +
+	      '</button>').insertAfter('#btn_ApplyGeneralSettings');
+
+	   /**
       * UI functions
       */
 
@@ -45,60 +54,76 @@ POSSIBILITY OF SUCH DAMAGE.
 
       $('#btn_reload').unbind('click').click(function(){
          $('#btn_reload_progress').addClass("fa fa-spinner fa-pulse");
-         ajaxCall(url="/api/monit/service/reload", sendData={}, callback=function(data,status) {
+         ajaxCall(url="/api/monit/service/reconfigure", sendData={}, callback=function(data,status) {
             $('#btn_reload_progress').removeClass("fa fa-spinner fa-pulse");
             $('#btn_reload').blur();
-            $("#responseMsg").removeClass("hidden");
-            $("#responseMsg").html(data['result']);
             ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
                updateServiceStatusUI(data['status']);
             });
          });
       });
 
+      $('#btn_ImportSystemNotification').unbind('click').click(function(){
+          $('#frm_ImportSystemNotification_progress').addClass("fa fa-spinner fa-pulse");
+          ajaxCall(url="/api/monit/settings/notification", sendData={}, callback=function(data,status) {
+             $('#frm_ImportSystemNotification_progress').removeClass("fa fa-spinner fa-pulse");
+             $('#btn_ImportSystemNotification').blur();
+             ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
+                mapDataToFormUI({'frm_GeneralSettings':"/api/monit/settings/get/general/"}).done(function(){
+                    formatTokenizersUI();
+                    $('.selectpicker').selectpicker('refresh');
+                    ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
+                       updateServiceStatusUI(data['status']);
+                    });
+                 });
+             });
+          });
+       });
 
       /**
        * general settings
        */
       // load data
-      mapDataToFormUI({'frm_GeneralSettings':"/api/monit/settings/getGeneral"}).done(function(){
+      mapDataToFormUI({'frm_GeneralSettings':"/api/monit/settings/get/general/"}).done(function(){
          formatTokenizersUI();
          $('.selectpicker').selectpicker('refresh');
          ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
             updateServiceStatusUI(data['status']);
          });
       });
+
+      // show/hide httpd/mmonit options
+      function ShowHideGeneralFields(){
+         if ($('#monit\\.general\\.httpdEnabled')[0].checked) {
+            $('tr[for="monit.general.httpdPort"]').removeClass('hidden');
+            $('tr[for="monit.general.httpdAllow"]').removeClass('hidden');
+            $('tr[for="monit.general.mmonitUrl"]').removeClass('hidden');
+            $('tr[for="monit.general.mmonitTimeout"]').removeClass('hidden');
+            $('tr[for="monit.general.mmonitRegisterCredentials"]').removeClass('hidden');
+         } else {
+            $('tr[for="monit.general.httpdPort"]').addClass('hidden');
+            $('tr[for="monit.general.httpdAllow"]').addClass('hidden');
+            $('tr[for="monit.general.mmonitUrl"]').addClass('hidden');
+            $('tr[for="monit.general.mmonitTimeout"]').addClass('hidden');
+            $('tr[for="monit.general.mmonitRegisterCredentials"]').addClass('hidden');
+         }
+      };
+      $('#monit\\.general\\.httpdEnabled').unbind('click').click(function(){
+         ShowHideGeneralFields();
+      });
+      $('#show_advanced_frm_GeneralSettings').click(function(){
+         ShowHideGeneralFields();
+      });
+
       $('#btn_ApplyGeneralSettings').unbind('click').click(function(){
-         $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
+	   $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
          var frm_id = 'frm_GeneralSettings';
-         saveFormToEndpoint(url = "/api/monit/settings/setGeneral",formid=frm_id,callback_ok=function(){
-                // on correct save, perform reconfigure. set progress animation when reloading
-                $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
-
-                //
-                ajaxCall(url="/api/monit/service/restart", sendData={}, callback=function(data,status){
-                    // when done, disable progress animation.
-                    $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-
-                    if (status != "success" || data['result'] != 'OK' ) {
-                        // fix error handling
-                        BootstrapDialog.show({
-                            type:BootstrapDialog.TYPE_WARNING,
-                            title: 'Error',
-                            message: JSON.stringify(data),
-                            draggable: true
-                        });
-                    } else {
-                        // request service status after successful save and update status box (wait a few seconds before update)
-                        setTimeout(function(){
-                            ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
-                                updateServiceStatusUI(data['status']);
-                            });
-                        },3000);
-                    }
-                });
-            }
-         );
+         saveFormToEndpoint(url = "/api/monit/settings/set/general/",formid=frm_id,callback_ok=function(){
+		   ajaxCall(url="/api/monit/service/status", sendData={}, callback=function(data,status) {
+			   updateServiceStatusUI(data['status']);
+            });
+         });
+         $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
          $("#btn_ApplyGeneralSettings").blur();
       });
 
@@ -107,8 +132,8 @@ POSSIBILITY OF SUCH DAMAGE.
        */
       function openAlertDialog(uuid) {
          var editDlg = "DialogEditAlert";
-         var setUrl = "/api/monit/settings/setAlert/";
-         var getUrl = "/api/monit/settings/getAlert/";
+         var setUrl = "/api/monit/settings/set/alert/";
+         var getUrl = "/api/monit/settings/get/alert/";
          var urlMap = {};
          urlMap['frm_' + editDlg] = getUrl + uuid;
          mapDataToFormUI(urlMap).done(function () {
@@ -122,12 +147,12 @@ POSSIBILITY OF SUCH DAMAGE.
       };
 
       $("#grid-alerts").UIBootgrid({
-         'search':'/api/monit/settings/searchAlert',
-         'get':'/api/monit/settings/getAlert/',
-         'set':'/api/monit/settings/setAlert/',
-         'add':'/api/monit/settings/addAlert/',
-         'del':'/api/monit/settings/delAlert/',
-         'toggle':'/api/monit/settings/toggleAlert/'
+         'search':'/api/monit/settings/search/alert/',
+         'get':'/api/monit/settings/get/alert/',
+         'set':'/api/monit/settings/set/alert/',
+         'add':'/api/monit/settings/set/alert/',
+         'del':'/api/monit/settings/del/alert/',
+         'toggle':'/api/monit/settings/toggle/alert/'
       });
 
       /**
@@ -194,12 +219,12 @@ POSSIBILITY OF SUCH DAMAGE.
       $('#monit\\.service\\.interface').on('changed.bs.select', function(e) {ShowHideFields();});
 
       $("#grid-services").UIBootgrid({
-         'search':'/api/monit/settings/searchService',
-         'get':'/api/monit/settings/getService/',
-         'set':'/api/monit/settings/setService/',
-         'add':'/api/monit/settings/addService/',
-         'del':'/api/monit/settings/delService/',
-         'toggle':'/api/monit/settings/toggleService/'
+         'search':'/api/monit/settings/search/service/',
+         'get':'/api/monit/settings/get/service/',
+         'set':'/api/monit/settings/set/service/',
+         'add':'/api/monit/settings/set/service/',
+         'del':'/api/monit/settings/del/service/',
+         'toggle':'/api/monit/settings/toggle/service/'
       });
 
 
@@ -220,8 +245,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
       function openTestDialog(uuid) {
          var editDlg = "TestEditAlert";
-         var setUrl = "/api/monit/settings/setTest/";
-         var getUrl = "/api/monit/settings/getTest/";
+         var setUrl = "/api/monit/settings/set/test/";
+         var getUrl = "/api/monit/settings/get/test/";
          var urlMap = {};
          urlMap['frm_' + editDlg] = getUrl + uuid;
          mapDataToFormUI(urlMap).done(function () {
@@ -235,11 +260,11 @@ POSSIBILITY OF SUCH DAMAGE.
       };
 
       $("#grid-tests").UIBootgrid({
-         'search':'/api/monit/settings/searchTest',
-         'get':'/api/monit/settings/getTest/',
-         'set':'/api/monit/settings/setTest/',
-         'add':'/api/monit/settings/addTest/',
-         'del':'/api/monit/settings/delTest/'
+         'search':'/api/monit/settings/search/test/',
+         'get':'/api/monit/settings/get/test/',
+         'set':'/api/monit/settings/set/test/',
+         'add':'/api/monit/settings/set/test/',
+         'del':'/api/monit/settings/del/test/'
       });
 
    });
@@ -257,7 +282,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 <div class="tab-content content-box tab-content">
    <div id="general" class="tab-pane fade in active">
-      <!-- monit geral settings -->
+      <!-- monit general settings -->
       {{ partial("layout_partials/base_form",['fields':formGeneralSettings,'id':'frm_GeneralSettings','apply_btn_id':'btn_ApplyGeneralSettings'])}}
    </div>
    <div id="alerts" class="tab-pane fade in">

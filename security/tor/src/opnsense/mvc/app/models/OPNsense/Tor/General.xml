@@ -1,0 +1,136 @@
+<model>
+  <mount>//OPNsense/tor/general</mount>
+  <description>General Tor configuration</description>
+  <items>
+    <enabled type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enabled>
+    <socks_listen_ip type="InterfaceField">
+      <Required>N</Required>
+      <multiple>Y</multiple>
+    </socks_listen_ip>
+    <socks_listen_port type="IntegerField">
+      <default>9050</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </socks_listen_port>
+    <control_port type="IntegerField">
+      <default>9051</default>
+      <MinimumValue>1</MinimumValue>
+      <Required>N</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </control_port>
+    <control_port_password type="TextField">
+      <Required>N</Required>
+      <mask>/^.+$/</mask>
+    </control_port_password>
+    <control_port_password_hashed type="TextField">
+      <Required>N</Required>
+      <mask>/^.+$/</mask>
+    </control_port_password_hashed>
+    <enablelogfile type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enablelogfile>
+    <logfilelevel type="OptionField">
+      <Required>Y</Required>
+      <multiple>N</multiple>
+      <default>notifications</default>
+      <OptionValues>
+        <err>Errors</err>
+        <warn>Warnings</warn>
+        <notice>Notifications</notice>
+        <info>Informational</info>
+        <debug>Debugging</debug>
+      </OptionValues>
+    </logfilelevel>
+    <enablesyslog type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+    </enablesyslog>
+    <sysloglevel type="OptionField">
+      <Required>Y</Required>
+      <multiple>N</multiple>
+      <default>notifications</default>
+      <OptionValues>
+        <err>Errors</err>
+        <warn>Warnings</warn>
+        <notice>Notifications</notice>
+        <info>Informational</info>
+        <debug>Debugging</debug>
+      </OptionValues>
+    </sysloglevel>
+    <scheduler type="OptionField">
+      <Required>Y</Required>
+      <multiple>N</multiple>
+      <default>KISTLiteVanilla</default>
+      <OptionValues>
+        <KISTLiteVanilla>KISTLite,Vanilla</KISTLiteVanilla>
+        <VanillaKISTLite>Vanilla,KISTLite</VanillaKISTLite>
+        <KISTLite>KISTLite</KISTLite>
+        <Vanilla>Vanilla</Vanilla>
+      </OptionValues>
+    </scheduler>
+    <fascist_firewall type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </fascist_firewall>
+    <fascist_firewall_ports type="CSVListField">
+      <default>80,443</default>
+      <Required>Y</Required>
+      <mask>/^(\d+,)*\d+$/</mask>
+    </fascist_firewall_ports>
+    <enable_transparent type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enable_transparent>
+    <transparent_port type="IntegerField">
+      <default>9040</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </transparent_port>
+    <transparent_dns type="IntegerField">
+      <default>9053</default>
+      <MinimumValue>0</MinimumValue>
+      <Required>Y</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </transparent_dns>
+    <transparent_ip_pool type="NetworkField">
+      <default>172.29.0.0/16</default>
+      <Required>Y</Required>
+    </transparent_ip_pool>
+    <dns_map_hosts type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </dns_map_hosts>
+    <client_authentications>
+      <client_auth type="ArrayField">
+        <enabled type="BooleanField">
+          <default>1</default>
+          <Required>Y</Required>
+        </enabled>
+        <onion_service type="TextField">
+          <Required>Y</Required>
+          <default>exampleexample23.onion</default>
+          <mask>/^[a-z2-7]{16}\.onion$/i</mask>
+        </onion_service>
+        <auth_cookie type="TextField">
+          <Required>Y</Required>
+          <default>0000000000000000000000</default>
+          <mask>/^[a-z0-9\+\/]{22}$/i</mask>
+        </auth_cookie>
+      </client_auth>
+    </client_authentications>
+    <max_memory_in_queues type="IntegerField">
+      <MinimumValue>0</MinimumValue>
+      <Required>N</Required>
+    </max_memory_in_queues>
+  </items>
+</model>

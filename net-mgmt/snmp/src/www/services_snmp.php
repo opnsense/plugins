@@ -127,7 +127,7 @@ include("head.inc");
 
 ?>
 <body>
-<script type="text/javascript">
+<script>
     $( document ).ready(function() {
         $("#hostres").change(function(){
             if ($('#hostres').prop('checked')) {
@@ -154,12 +154,12 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <td width="22%">
+                      <td style="width:22%">
                         <strong><?=gettext("SNMP Daemon");?></strong>
                       </td>
-                      <td width="78%" align="right">
+                      <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
-                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
+                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                         &nbsp;&nbsp;
                       </td>
                     </tr>
@@ -175,9 +175,9 @@ include("head.inc");
                       <td><a id="help_for_pollport" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Polling Port") ?></td>
                       <td>
                         <input name="pollport" type="text" value="<?=$pconfig['pollport'];?>" />
-                        <div class="hidden" for="help_for_pollport">
+                        <output class="hidden" for="help_for_pollport">
                           <?=gettext("Enter the port to accept polling events on (default 161)");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
@@ -196,9 +196,9 @@ include("head.inc");
                       <td><a id="help_for_rocommunity" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Read Community String");?></td>
                       <td>
                         <input name="rocommunity" type="text" value="<?=$pconfig['rocommunity'];?>" />
-                        <div class="hidden" for="help_for_rocommunity">
+                        <output class="hidden" for="help_for_rocommunity">
                           <?=gettext("The community string is like a password, restricting access to querying SNMP to hosts knowing the community string. Use a strong value here to protect from unauthorized information disclosure.");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                   </tbody>
@@ -217,8 +217,8 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td width="22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
-                      <td width="78%">
+                      <td style="width:22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
+                      <td style="width:78%">
                         <input name="trapenable" type="checkbox" value="yes" <?=!empty($pconfig['trapenable']) ? "checked=\"checked\"" : ""; ?> />
                       </td>
                     </tr>
@@ -226,27 +226,27 @@ include("head.inc");
                       <td><a id="help_for_trapserver" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Trap server");?></td>
                       <td>
                         <input name="trapserver" type="text" value="<?=$pconfig['trapserver'];?>" />
-                        <div class="hidden" for="help_for_trapserver">
+                        <output class="hidden" for="help_for_trapserver">
                           <?=gettext("Enter trap server name");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_trapserverport" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Trap server port") ?></td>
                       <td>
                         <input name="trapserverport" type="text" id="trapserverport" size="40" value="<?=htmlspecialchars($pconfig['trapserverport']) ? htmlspecialchars($pconfig['trapserverport']) : htmlspecialchars(162);?>" />
-                        <div class="hidden" for="help_for_trapserverport">
+                        <output class="hidden" for="help_for_trapserverport">
                           <?=gettext("Enter the port to send the traps to (default 162)");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_trapstring" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enter the SNMP trap string");?></td>
                       <td>
                         <input name="trapstring" type="text" value="<?=$pconfig['trapstring'];?>" />
-                        <div class="hidden" for="help_for_trapstring">
+                        <output class="hidden" for="help_for_trapstring">
                           <?=gettext("Trap string");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                   </tbody>
@@ -265,8 +265,8 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td width="22%"><?=gettext("SNMP Modules");?></td>
-                      <td width="78%">
+                      <td style="width:22%"><?=gettext("SNMP Modules");?></td>
+                      <td style="width:78%">
                         <table class="table table-condensed">
                           <tr>
                             <td>
@@ -339,8 +339,8 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                     <td width="22%" valign="top">&nbsp;</td>
-                     <td width="78%">
+                     <td style="width:22%; vertical-align:top">&nbsp;</td>
+                     <td style="width:78%">
                        <input name="Submit" type="submit" class="btn btn-primary" value="<?=gettext("Save");?>" />
                      </td>
                     </tr>

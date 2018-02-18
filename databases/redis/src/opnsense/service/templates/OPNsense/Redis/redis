@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.redis.general.enabled') and OPNsense.redis.general.enabled == '1' %}
+redis_var_script="/usr/local/opnsense/scripts/redis/setup.sh"
+redis_enable="YES"
+{% else %}
+redis_enable="NO"
+{% endif %}

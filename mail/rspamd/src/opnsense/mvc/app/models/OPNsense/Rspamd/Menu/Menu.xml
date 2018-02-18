@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Rspamd cssClass="fa fa-envelope fa-fw" url="/ui/rspamd/" />
+  </Services>
+</menu>

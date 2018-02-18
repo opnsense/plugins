@@ -1,6 +1,6 @@
 {#
 
-Copyright © 2017 by EURO-LOG AG
+Copyright © 2017-2018 by EURO-LOG AG
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -25,7 +25,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<script type="text/javascript">
+<script>
 
    $( document ).ready(function() {
 
@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
       textArea.innerHTML = encodedString;
       return textArea.value;
    }
-   ajaxCall(url="/api/monit/status/get", sendData={}, callback=function(data,status) {
+   ajaxCall(url="/api/monit/status/get/html", sendData={}, callback=function(data,status) {
             $("#status").html(decodeEntities(data['status']));
          });
     });

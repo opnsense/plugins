@@ -1,0 +1,5 @@
+Postfix attempts to be fast, easy to administer, and secure.
+The outside has a definite Sendmail-ish flavor, but the inside
+is completely different.
+
+WWW: http://www.postfix.org/

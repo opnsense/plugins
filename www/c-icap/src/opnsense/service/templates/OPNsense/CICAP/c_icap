@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.cicap.general.enabled') and OPNsense.cicap.general.enabled == '1' %}
+c_icap_var_script="/usr/local/opnsense/scripts/OPNsense/CICAP/setup.sh"
+c_icap_enable="YES"
+{% else %}
+c_icap_enable="NO"
+{% endif %}

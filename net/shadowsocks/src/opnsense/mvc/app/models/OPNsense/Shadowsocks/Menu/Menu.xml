@@ -1,0 +1,8 @@
+<menu>
+  <Services>
+    <ShadowSocks cssClass="fa fa-eye-slash">
+      <General url="/ui/shadowsocks/general/index" order="10"/>
+      <Local url="/ui/shadowsocks/local/index" order="20"/>
+    </ShadowSocks>
+  </Services>
+</menu>

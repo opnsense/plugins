@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>antispam.enable_rspamd</id>
+        <label>Enable Rspamd Integration</label>
+        <type>checkbox</type>
+        <help>This will allow Postfix to connect to rspamd via milter protocol.</help>
+    </field>
+</form>

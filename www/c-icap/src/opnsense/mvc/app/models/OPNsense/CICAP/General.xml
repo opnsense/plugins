@@ -1,0 +1,70 @@
+<model>
+    <mount>//OPNsense/cicap/general</mount>
+    <description>c-icap configuration</description>
+    <version>1.0.1</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <timeout type="IntegerField">
+            <default>300</default>
+            <Required>Y</Required>
+        </timeout>
+        <maxkeepaliverequests type="IntegerField">
+            <default>100</default>
+            <Required>Y</Required>
+        </maxkeepaliverequests>
+        <keepalivetimeout type="IntegerField">
+            <default>600</default>
+            <Required>Y</Required>
+        </keepalivetimeout>
+        <startservers type="IntegerField">
+            <default>3</default>
+            <Required>Y</Required>
+        </startservers>
+        <maxservers type="IntegerField">
+            <default>10</default>
+            <Required>Y</Required>
+        </maxservers>
+        <minsparethreads type="IntegerField">
+            <default>10</default>
+            <Required>Y</Required>
+        </minsparethreads>
+        <maxsparethreads type="IntegerField">
+            <default>20</default>
+	    <Required>Y</Required>
+	</maxsparethreads>
+        <threadsperchild type="IntegerField">
+            <default>10</default>
+	    <Required>Y</Required>
+	</threadsperchild>
+        <maxrequestsperchild type="IntegerField">
+            <default>0</default>
+	    <Required>Y</Required>
+	</maxrequestsperchild>
+        <listenaddress type="NetworkField">
+            <default>::1</default>
+	    <WildcardEnabled>N</WildcardEnabled>
+	    <NetMaskRequired>N</NetMaskRequired>
+	    <FieldSeparator>,</FieldSeparator>
+            <Required>Y</Required>
+        </listenaddress>
+        <serveradmin type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </serveradmin>
+        <servername type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </servername>
+        <enable_accesslog type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </enable_accesslog>
+        <localSquid type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </localSquid>
+    </items>
+</model>

@@ -1,0 +1,27 @@
+<form>
+    <field>
+        <id>version.clamav</id>
+        <label>ClamAV engine version</label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>version.main</id>
+        <label>main</label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>version.daily</id>
+        <label>daily</label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>version.bytecode</id>
+        <label>bytecode</label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>version.signatures</id>
+        <label>Total number of signatures</label>
+        <type>info</type>
+    </field>
+</form>

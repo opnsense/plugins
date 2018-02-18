@@ -1,0 +1,88 @@
+<form>
+  <field>
+    <id>relay.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Act as a relay.</help>
+  </field>
+  <field>
+    <id>relay.host</id>
+    <label>Host</label>
+    <type>text</type>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>relay.hostv6</id>
+    <label>IPv6 Host</label>
+    <type>text</type>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>relay.port</id>
+    <label>Port</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>relay.address</id>
+    <label>Address</label>
+    <type>text</type>
+    <help>The external FQDN of this host.</help>
+  </field>
+  <field>
+    <id>relay.outboundbind</id>
+    <label>Source IP</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Originate all traffic from this IP</help>
+  </field>
+  <field>
+    <id>relay.outboundbindv6</id>
+    <label>IPv6 Source</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Originate all IPv6 traffic from this IP</help>
+  </field>
+  <field>
+    <id>relay.nick</id>
+    <label>Nickname</label>
+    <type>text</type>
+    <help>This may only consist of characters and numbers and is used to identifiy your host.</help>
+  </field>
+  <field>
+    <id>relay.contact_info</id>
+    <label>Contact Info</label>
+    <type>text</type>
+    <help>You can enter a publicly visible (obfuscated) email address into this field to allow other users to notify you if there are issues with your relay.</help>
+  </field>
+  <field>
+    <id>relay.bandwithrate</id>
+    <label>Bandwith Rate</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>relay.bandwithburst</id>
+    <label>Bandwith Burst</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>relay.directory_port</id>
+    <label>Directory Port</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>relay.exitrejectprivateip</id>
+    <label>Reject Private IPs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>relay.relay</id>
+    <label>Bridge</label>
+    <type>checkbox</type>
+    <help>A bridge is a private relay. It is not visible in the public directory. Uncheck this if you want to become a public relay.</help>
+  </field>
+  <field>
+    <id>relay.publish</id>
+    <label>Publish Server Descriptor</label>
+    <type>checkbox</type>
+  </field>
+</form>

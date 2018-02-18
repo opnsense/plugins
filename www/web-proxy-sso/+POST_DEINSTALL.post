@@ -1,0 +1,4 @@
+rm -f /usr/local/etc/squid/pre-auth/20-negotiate.auth.conf
+if [ -f /var/run/squid/squid.pid ]; then
+	configctl proxy reconfigure
+fi

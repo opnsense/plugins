@@ -138,7 +138,7 @@ if (!empty($_REQUEST['getrfc2136status'])) {
   endforeach;?>
   </tbody>
 </table>
-<script type="text/javascript">
+<script>
   function rfc2136_getstatus()
   {
       scroll(0,0);
@@ -157,7 +157,7 @@ if (!empty($_REQUEST['getrfc2136status'])) {
           jQuery(divlabel).prop('innerHTML',responseStrings[count]);
       }
   }
-  $( document ).ready(function() {
+  $(window).load(function() {
     // Do the first status check 2 seconds after the dashboard opens
     setTimeout('rfc2136_getstatus()', 2000);
   });

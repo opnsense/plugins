@@ -1,0 +1,4 @@
+shadowsocks_libev:/etc/rc.conf.d/shadowsocks_libev
+shadowsocks.conf:/usr/local/etc/shadowsocks-libev/config.json
+ss_local:/etc/rc.conf.d/ss_local
+ss_local.conf:/usr/local/etc/shadowsocks-libev/local.json

@@ -1,0 +1,20 @@
+<form>
+	<field>
+		<id>ProxySSO.EnableSSO</id>
+		<label>Enable Single Sign-On</label>
+		<type>checkbox</type>
+		<help>Enable Kerberos based Single Sign-On</help>
+	</field>
+	<field>
+		<id>ProxySSO.ADKerberosImplementation</id>
+		<label>AD Kerberos implementation</label>
+		<type>dropdown</type>
+		<help>Select Windows Server version for AD controller</help>
+	</field>
+	<field>
+		<id>ProxySSO.KerberosHostName</id>
+		<label>Kerberos Account Name Of This Host In AD</label>
+		<type>text</type>
+		<help>Enter this computer account name to register in AD for kerberos access. Default is hostname with suffix '-K'.</help>
+	</field>
+</form>

@@ -1,0 +1,23 @@
+<model>
+<mount>//OPNsense/ProxySSO</mount>
+<description>
+    Web-proxy Single Sign-On plugin
+</description>
+<items>
+    <EnableSSO type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+    </EnableSSO>
+    <ADKerberosImplementation type="OptionField">
+        <default>W2008</default>
+        <Required>Y</Required>
+        <OptionValues>
+            <W2003>Windows 2003</W2003>
+            <W2008>Windows 2008 with AES</W2008>
+        </OptionValues>
+    </ADKerberosImplementation>
+    <KerberosHostName type="TextField">
+        <Required>N</Required>
+    </KerberosHostName>
+</items>
+</model>

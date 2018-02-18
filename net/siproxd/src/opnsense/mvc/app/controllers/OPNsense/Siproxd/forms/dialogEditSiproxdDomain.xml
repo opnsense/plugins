@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>domain.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the domain account.</help>
+    </field>
+    <field>
+        <id>domain.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set a name for your outbound domain</help>
+    </field>
+    <field>
+        <id>domain.host</id>
+        <label>Host</label>
+        <type>text</type>
+        <help>Set the hostname or IP of the SIP server.</help>
+    </field>
+    <field>
+        <id>domain.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Set the port for this host. Default should be fine for most cases.</help>
+    </field>
+</form>

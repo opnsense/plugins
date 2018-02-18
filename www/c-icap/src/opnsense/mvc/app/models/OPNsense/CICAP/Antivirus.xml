@@ -1,0 +1,45 @@
+<model>
+    <mount>//OPNsense/cicap/antivirus</mount>
+    <description>AntiVirus configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enable_clamav type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enable_clamav>
+        <scanfiletypes type="OptionField">
+            <default>TEXT,DATA,EXECUTABLE,ARCHIVE,GIF,JPEG,MSOFFICE</default>
+            <multiple>Y</multiple>
+            <Required>Y</Required>
+                <OptionValues>
+                    <TEXT>Text files</TEXT>
+                    <DATA>Binary files</DATA>
+                    <EXECUTABLE>Executables</EXECUTABLE>
+                    <ARCHIVE>Archives</ARCHIVE>
+                    <GIF>GIF animations</GIF>
+                    <JPEG>JPEG pictures</JPEG>
+                    <MSOFFICE>Microsoft office files</MSOFFICE>
+                </OptionValues>
+        </scanfiletypes>
+        <sendpercentdata type="IntegerField">
+            <default>5</default>
+            <Required>Y</Required>
+        </sendpercentdata>
+        <startsendpercentdataafter type="TextField">
+            <default>2M</default>
+            <Required>Y</Required>
+        </startsendpercentdataafter>
+        <allow204responses type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </allow204responses>
+        <passonerror type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </passonerror>
+        <maxobjectsize type="TextField">
+            <default>5M</default>
+            <Required>Y</Required>
+        </maxobjectsize>
+	</items>
+</model>

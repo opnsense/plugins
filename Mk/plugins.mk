@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2017 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2018 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -51,11 +51,20 @@ check:
 PLUGIN_DEVEL?=		yes
 
 PLUGIN_PREFIX?=		os-
-.if "${PLUGIN_DEVEL}" != ""
 PLUGIN_SUFFIX?=		-devel
-.endif
 
+PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
+			${PLUGIN_PREFIX}${PLUGIN_NAME}
+.for CONFLICT in ${PLUGIN_CONFLICTS}
+PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
+			${PLUGIN_PREFIX}${CONFLICT}
+.endfor
+
+.if "${PLUGIN_DEVEL}" != ""
 PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+.else
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}
+.endif
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
@@ -117,10 +126,7 @@ scripts-auto:
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
-		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
-			cat ${TEMPLATESDIR}/actions.d >> \
-			    ${DESTDIR}/$${SCRIPT}; \
-		done; \
+		cat ${TEMPLATESDIR}/actions.d >> ${DESTDIR}/+POST_INSTALL; \
 	fi
 	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
@@ -129,16 +135,21 @@ scripts-auto:
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
-		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
-		    find -s . -mindepth 2 -type d); do \
+		for FILE in $$(cd ${.CURDIR}/src/opnsense/mvc/app/models && \
+		    find -s . -depth 2 -type d); do \
 			cat ${TEMPLATESDIR}/models | \
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
+		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
+			cat ${TEMPLATESDIR}/configure | \
+			    sed "s:%%ARG%%:$${SCRIPT#+}:g" >> \
+			    ${DESTDIR}/$${SCRIPT}; \
+		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
 		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
-		    find -s . -mindepth 2 -type d); do \
+		    find -s . -depth 2 -type d); do \
 			cat ${TEMPLATESDIR}/templates | \
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
@@ -216,6 +227,17 @@ package: check
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
+upgrade-check: check
+	@rm -rf ${PKGDIR}
+
+upgrade: upgrade-check package
+.for NAME in ${PLUGIN_PKGNAMES}
+	@if ${PKG} info ${NAME} 2> /dev/null > /dev/null; then \
+		${PKG} delete -fy ${NAME}; \
+	fi
+.endfor
+	@${PKG} add ${PKGDIR}/*.txz
+
 mount: check
 	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
 
@@ -223,9 +245,18 @@ umount: check
 	umount -f "<above>:${.CURDIR}/src"
 
 clean: check
-	@git reset -q . && git checkout -f . && git clean -xdqf .
+	@if [ -d ${.CURDIR}/src ]; then \
+	    git reset -q ${.CURDIR}/src && \
+	    git checkout -f ${.CURDIR}/src && \
+	    git clean -xdqf ${.CURDIR}/src; \
+	fi
 
-lint: check
+lint-desc: check
+	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
+		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
+	fi
+
+lint: lint-desc
 	find ${.CURDIR}/src \
 	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
 	find ${.CURDIR}/src \
@@ -251,12 +282,17 @@ sweep: check
 	find ${.CURDIR} -type f -depth 1 -print0 | \
 	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
 
+STYLEDIRS?=	src/etc/inc/plugins.inc.d src/opnsense
+
 style: check
 	@: > ${.CURDIR}/.style.out
-	@if [ -d ${.CURDIR}/src ]; then \
-	    (phpcs --standard=${.CURDIR}/../../ruleset.xml \
-	    ${.CURDIR}/src || true) > ${.CURDIR}/.style.out; \
+.for STYLEDIR in ${STYLEDIRS}
+	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
+		(phpcs --standard=${.CURDIR}/../../ruleset.xml \
+		    ${.CURDIR}/${STYLEDIR} || true) > \
+		    ${.CURDIR}/.style.out; \
 	fi
+.endfor
 	@echo -n "Total number of style warnings: "
 	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
 	@echo -n "Total number of style errors:   "
@@ -265,9 +301,11 @@ style: check
 	@rm ${.CURDIR}/.style.out
 
 style-fix: check
-	@if [ -d ${.CURDIR}/src ]; then \
-	    phpcbf --standard=${.CURDIR}/../../ruleset.xml \
-	    ${.CURDIR}/src || true; \
+.for STYLEDIR in ${STYLEDIRS}
+	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
+		phpcbf --standard=${.CURDIR}/../../ruleset.xml \
+		    ${.CURDIR}/${STYLEDIR} || true; \
 	fi
+.endfor
 
 .PHONY:	check

@@ -1,0 +1,118 @@
+<form>
+  <field>
+    <id>general.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>This will activate the onion router.</help>
+  </field>
+  <field>
+    <id>general.socks_listen_ip</id>
+    <label>Listen Interfaces</label>
+    <type>select_multiple</type>
+    <style>dropdownstyle</style>
+    <help>Add more than localhost IP addresses to listen IPs for SOCKS connections.</help>
+  </field>
+  <field>
+    <id>general.socks_listen_port</id>
+    <label>SOCKS Port Number</label>
+    <type>text</type>
+    <help>Port number on which the SOCKS server should listen. The default is 9050. You should not change this unless you need the port.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.control_port</id>
+    <label>Control Port</label>
+    <type>text</type>
+    <help>Control Port number on which tor should listen. The default is 9051. You should not change this unless you need the port.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.enablelogfile</id>
+    <label>Create a logfile</label>
+    <type>checkbox</type>
+    <help>If you check this, a log file will be written to disk.</help>
+  </field>
+  <field>
+    <id>general.logfilelevel</id>
+    <label>Logfile level</label>
+    <type>dropdown</type>
+    <style>dropdownstyle</style>
+    <help>This is the detail level of the log. A higher level means more data is logged.</help>
+  </field>
+  <field>
+    <id>general.enablesyslog</id>
+    <label>Send log messages to syslog</label>
+    <type>checkbox</type>
+    <help>Syslog is a service which is made to collect log messages from different software and maybe to a central logging server. Check this box if you have such a setup.</help>
+  </field>
+  <field>
+    <id>general.sysloglevel</id>
+    <label>Syslog level</label>
+    <type>dropdown</type>
+    <style>dropdownstyle</style>
+    <help>This is the detail level of the log. A higher level means more data is logged.</help>
+  </field>
+  <field>
+    <id>general.scheduler</id>
+    <label>Scheduler</label>
+    <type>dropdown</type>
+    <style>dropdownstyle</style>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.fascist_firewall</id>
+    <label>Fascist Mode</label>
+    <type>checkbox</type>
+    <help>Attempt to circumvent censorship.</help>
+  </field>
+  <field>
+    <id>general.fascist_firewall_ports</id>
+    <label>Fascist Firewall Ports</label>
+    <type>select_multiple</type>
+    <help>Open ports by the fascist firewall.</help>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+  </field>
+  <field>
+    <id>general.enable_transparent</id>
+    <label>Enable Transparent Proxy</label>
+    <type>checkbox</type>
+    <help>Enable this, if you want to anonymize traffic originating from a network.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.transparent_port</id>
+    <label>Transparent Port</label>
+    <type>text</type>
+    <help>Port number on which the transparent proxy server should listen. The default is 9040. You should not change this unless you need the port.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.transparent_dns</id>
+    <label>Transparent DNS Port</label>
+    <type>text</type>
+    <help>Port number on which the transparent DNS server should listen. The default is 9053. You should not change this unless you need the port.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.transparent_ip_pool</id>
+    <label>Transparent IP Pool</label>
+    <type>text</type>
+    <help>Enter a network which will be used as an IP Pool to map onion Hosts.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.dns_map_hosts</id>
+    <label>Map Host To IP Pool</label>
+    <type>checkbox</type>
+    <help>Enable this, if you want to map onion services to the IP pool configured above.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>general.max_memory_in_queues</id>
+    <label>Maximum Memory In Queues (MB)</label>
+    <type>text</type>
+    <help>If this amount of memory is reached, Tor will close circuits until 10% of this limit are free again.</help>
+    <advanced>true</advanced>
+  </field>
+</form>

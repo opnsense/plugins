@@ -78,7 +78,7 @@ $main_buttons = array(
 ?>
 
 <body>
-  <script type="text/javascript">
+  <script>
   $( document ).ready(function() {
     // delete pppoe action
     $(".act_delete_pppoe").click(function(event){

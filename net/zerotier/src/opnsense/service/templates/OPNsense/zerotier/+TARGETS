@@ -1,1 +1,2 @@
 zerotier:/etc/rc.conf.d/zerotier
+local.conf:/var/db/zerotier-one/local.conf

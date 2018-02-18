@@ -104,7 +104,7 @@ include("head.inc");
 
 <body>
   <?php include("fbegin.inc"); ?>
-  <script type="text/javascript">
+  <script>
     $( document ).ready(function() {
       /**
        *  Aliases
@@ -149,10 +149,10 @@ include("head.inc");
                 <div class="table-responsive">
                   <table class="table table-striped opnsense_standard_table_form">
                     <tr>
-                      <td width="22%"><strong><?=gettext("IGMP Proxy Edit");?></strong></td>
-                      <td width="78%" align="right">
+                      <td style="width:22%"><strong><?=gettext("IGMP Proxy Edit");?></strong></td>
+                      <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
-                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page" type="button"></i>
+                        <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
                       </td>
                     </tr>
                     <tr>
@@ -173,9 +173,9 @@ include("head.inc");
                       <td><a id="help_for_descr" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Description");?></td>
                       <td>
                         <input name="descr" type="text" class="formfld unknown" id="descr" size="40" value="<?=$pconfig['descr'];?>" />
-                        <div class="hidden" for="help_for_descr">
+                        <output class="hidden" for="help_for_descr">
                           <?=gettext("You may enter a description here for your reference (not parsed).");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
@@ -185,7 +185,7 @@ include("head.inc");
                           <option value="upstream" <?=$pconfig['type'] == "upstream" ?  "selected=\"selected\"" : ""; ?>><?=gettext("Upstream Interface");?></option>
                           <option value="downstream" <?= $pconfig['type'] == "downstream" ? "selected=\"selected\"" : ""; ?>><?=gettext("Downstream Interface");?></option>
                         </select>
-                        <div class="hidden" for="help_for_type">
+                        <output class="hidden" for="help_for_type">
                             <?=gettext("The upstream network interface is the outgoing interface which is".
                               " responsible for communicating to available multicast data sources.".
                               " There can only be one upstream interface.");?>
@@ -193,18 +193,18 @@ include("head.inc");
                           <?=gettext("Downstream network interfaces are the distribution interfaces to the".
                              " destination networks, where multicast clients can join groups and".
                              " receive multicast data. One or more downstream interfaces must be configured.");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_threshold" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Threshold");?></td>
                       <td>
                         <input name="threshold" type="text" class="formfld unknown" id="threshold" value="<?=$pconfig['threshold'];?>" />
-                        <div class="hidden" for="help_for_threshold">
+                        <output class="hidden" for="help_for_threshold">
                           <?=gettext("Defines the TTL threshold for the network interface. ".
                                "Packets with a lower TTL than the threshold value will be ignored. ".
                                "This setting is optional, and by default the threshold is 1.");?>
-                        </div>
+                        </output>
                       </td>
                     </tr>
                   <tr>

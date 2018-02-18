@@ -1,0 +1,31 @@
+<form>
+  <field>
+    <id>hiddenserviceacl.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Enable this Onion service.</help>
+  </field>
+  <field>
+    <id>hiddenserviceacl.hiddenservice</id>
+    <label>Onion Service</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>hiddenserviceacl.port</id>
+    <label>Port</label>
+    <type>text</type>
+    <help>The port number which is exposed in the Tor network.</help>
+  </field>
+  <field>
+    <id>hiddenserviceacl.target_host</id>
+    <label>Target Host</label>
+    <type>text</type>
+    <help>The Target host. Be careful when using localhost as some services may bypass ACLs when connecting from "127.0.0.1" or "::1".</help>
+  </field>
+  <field>
+    <id>hiddenserviceacl.target_port</id>
+    <label>Target Port</label>
+    <type>text</type>
+    <help>Enter the port of your target server.</help>
+  </field>
+</form>

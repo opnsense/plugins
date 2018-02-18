@@ -1,0 +1,3 @@
+rc.conf.d:/etc/rc.conf.d/squid_krb5
+krb5.conf:/etc/krb5.conf
+kerberos.sso.conf:/usr/local/etc/squid/pre-auth/20-negotiate.auth.conf

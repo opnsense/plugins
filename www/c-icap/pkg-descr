@@ -1,0 +1,5 @@
+c-icap is an implementation of an ICAP server. It can be used with HTTP
+proxies that support the ICAP protocol to implement content adaptation
+and filtering services.
+
+WWW: http://c-icap.sourceforge.net/

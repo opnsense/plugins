@@ -1,0 +1,2 @@
+#ATTRIBUTE       Daily-Session-Time      3000    integer
+ATTRIBUTE       Max-Daily-Session       3001    integer

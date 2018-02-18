@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>domain.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable domain routing for this entry.</help>
+    </field>
+    <field>
+        <id>domain.domainname</id>
+        <label>Domainname</label>
+        <type>text</type>
+        <help>Set the unique domain name to relay for.</help>
+    </field>
+    <field>
+        <id>domain.destination</id>
+        <label>Destination</label>
+        <type>text</type>
+        <help>Set the IP or FQDN to where to send the mails to. Empty means MX will be used. You can also add custom ports via :225 or disable MX lookup via squared brackets.</help>
+    </field>
+</form>

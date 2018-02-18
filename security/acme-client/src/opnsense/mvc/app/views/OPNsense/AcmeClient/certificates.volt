@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script type="text/javascript">
+<script>
 
     $( document ).ready(function() {
 

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<ruleset documentation_url="http://doc.emergingthreats.net/bin/view/Main/EmergingFAQ">
+	<location url="https://rules.emergingthreatspro.com/%%etpro.oinkcode%%/suricata-1.3-enhanced/etpro.rules.tar.gz" prefix="ET Pro"/>
+	<files>
+		<file description="activex" url="inline::rules/activex.rules">et_pro.activex.rules</file>
+		<file description="attack_response" url="inline::rules/attack_response.rules">et_pro.attack_response.rules</file>
+		<file description="botcc" url="inline::rules/botcc.portgrouped.rules">et_pro.botcc.portgrouped.rules</file>
+		<file description="botcc" url="inline::rules/botcc.rules">et_pro.botcc.rules</file>
+		<file description="chat" url="inline::rules/chat.rules">et_pro.chat.rules</file>
+		<file description="ciarmy" url="inline::rules/ciarmy.rules">et_pro.ciarmy.rules</file>
+		<file description="compromised" url="inline::rules/compromised.rules">et_pro.compromised.rules</file>
+		<file description="current_events" url="inline::rules/current_events.rules">et_pro.current_events.rules</file>
+		<file description="deleted" url="inline::rules/deleted.rules">et_pro.deleted.rules</file>
+		<file description="dns" url="inline::rules/dns.rules">et_pro.dns.rules</file>
+		<file description="dos" url="inline::rules/dos.rules">et_pro.dos.rules</file>
+		<file description="drop" url="inline::rules/drop.rules">et_pro.drop.rules</file>
+		<file description="dshield" url="inline::rules/dshield.rules">et_pro.dshield.rules</file>
+		<file description="exploit" url="inline::rules/exploit.rules">et_pro.exploit.rules</file>
+		<file description="ftp" url="inline::rules/ftp.rules">et_pro.ftp.rules</file>
+		<file description="games" url="inline::rules/games.rules">et_pro.games.rules</file>
+		<file description="icmp" url="inline::rules/icmp.rules">et_pro.icmp.rules</file>
+		<file description="icmp_info" url="inline::rules/icmp_info.rules">et_pro.icmp_info.rules</file>
+		<file description="imap" url="inline::rules/imap.rules">et_pro.imap.rules</file>
+		<file description="inappropriate" url="inline::rules/inappropriate.rules">et_pro.inappropriate.rules</file>
+		<file description="info" url="inline::rules/info.rules">et_pro.info.rules</file>
+		<file description="malware" url="inline::rules/malware.rules">et_pro.malware.rules</file>
+		<file description="misc" url="inline::rules/misc.rules">et_pro.misc.rules</file>
+		<file description="mobile_malware" url="inline::rules/mobile_malware.rules">et_pro.mobile_malware.rules</file>
+		<file description="netbios" url="inline::rules/netbios.rules">et_pro.netbios.rules</file>
+		<file description="p2p" url="inline::rules/p2p.rules">et_pro.p2p.rules</file>
+		<file description="policy" url="inline::rules/policy.rules">et_pro.policy.rules</file>
+		<file description="pop3" url="inline::rules/pop3.rules">et_pro.pop3.rules</file>
+		<file description="rbn-malvertisers" url="inline::rules/rbn-malvertisers.rules">et_pro.rbn-malvertisers.rules</file>
+		<file description="rbn" url="inline::rules/rbn.rules">et_pro.rbn.rules</file>
+		<file description="rpc" url="inline::rules/rpc.rules">et_pro.rpc.rules</file>
+		<file description="scada" url="inline::rules/scada.rules">et_pro.scada.rules</file>
+		<file description="scada_special" url="inline::rules/scada_special.rules">et_pro.scada_special.rules</file>
+		<file description="scan" url="inline::rules/scan.rules">et_pro.scan.rules</file>
+		<file description="shellcode" url="inline::rules/shellcode.rules">et_pro.shellcode.rules</file>
+		<file description="smtp" url="inline::rules/smtp.rules">et_pro.smtp.rules</file>
+		<file description="snmp" url="inline::rules/snmp.rules">et_pro.snmp.rules</file>
+		<file description="sql" url="inline::rules/sql.rules">et_pro.sql.rules</file>
+		<file description="telnet" url="inline::rules/telnet.rules">et_pro.telnet.rules</file>
+		<file description="tftp" url="inline::rules/tftp.rules">et_pro.tftp.rules</file>
+		<file description="tor" url="inline::rules/tor.rules">et_pro.tor.rules</file>
+		<file description="trojan" url="inline::rules/trojan.rules">et_pro.trojan.rules</file>
+		<file description="user_agents" url="inline::rules/user_agents.rules">et_pro.user_agents.rules</file>
+		<file description="voip" url="inline::rules/voip.rules">et_pro.voip.rules</file>
+		<file description="web_client" url="inline::rules/web_client.rules">et_pro.web_client.rules</file>
+		<file description="web_server" url="inline::rules/web_server.rules">et_pro.web_server.rules</file>
+		<file description="web_specific_apps" url="inline::rules/web_specific_apps.rules">et_pro.web_specific_apps.rules</file>
+		<file description="worm" url="inline::rules/worm.rules">et_pro.worm.rules</file>
+	</files>
+	<properties>
+		<property name="etpro.oinkcode" default=""/>
+	</properties>
+</ruleset>

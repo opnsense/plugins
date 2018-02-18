@@ -1,9 +1,8 @@
 PLUGIN_NAME=		web-proxy-sso
-PLUGIN_VERSION=		0.3
-PLUGIN_REVISION=	1
-PLUGIN_COMMENT=		Add SSO Active Directory to use in Proxy
-PLUGIN_DEPENDS=		msktutil
-PLUGIN_MAINTAINER=	gitdevmod@github.com
-PLUGIN_DEVEL=		yes
+PLUGIN_VERSION=		2.1
+PLUGIN_COMMENT=		Kerberos authentication module
+PLUGIN_DEPENDS=		msktutil cyrus-sasl-gssapi
+PLUGIN_MAINTAINER=	evbevz@gmail.com
+PLUGIN_WWW=		https://smart-soft.ru
 
 .include "../../Mk/plugins.mk"

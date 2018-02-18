@@ -1,0 +1,9 @@
+<form>
+   <field>
+      <id>instance.interface</id>
+      <label>Interface</label>
+      <type>dropdown</type>
+      <multiple>N</multiple>
+      <help>Choose the interface on which the port should be opened.</help>
+   </field>
+</form>

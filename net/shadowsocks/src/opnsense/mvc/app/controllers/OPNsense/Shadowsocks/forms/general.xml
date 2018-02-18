@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable ShadowSocks Server</label>
+        <type>checkbox</type>
+        <help>This will activate the ShadowSocks Server. This lets people around the world connect via ss-local to your server.</help>
+    </field>
+    <field>
+        <id>general.serveraddress</id>
+        <label>Server Address</label>
+        <type>text</type>
+        <help>IP address or hostname of the server.</help>
+    </field>
+    <field>
+        <id>general.serverport</id>
+        <label>Server Port</label>
+        <type>text</type>
+        <help>Port of the server.</help>
+    </field>
+    <field>
+        <id>general.localport</id>
+        <label>Local Port</label>
+        <type>text</type>
+        <help>The local port of the daemon, default is fine.</help>
+    </field>
+    <field>
+        <id>general.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Password to authenticate against the server.</help>
+    </field>
+    <field>
+        <id>general.cipher</id>
+        <label>Cipher</label>
+        <type>dropdown</type>
+        <help>Choose the cipher to use for encryption.</help>
+    </field>
+</form>
