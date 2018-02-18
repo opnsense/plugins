@@ -67,5 +67,17 @@
         <default>0</default>
         <Required>Y</Required>
     </publish>
+    <exitenabled type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </exitenabled>
+    <exitipv6 type="BooleanField">
+      <default>0</default>
+      <Required>N</Required>
+    </exitipv6>
+    <exitrejectlocalif type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+    </exitrejectlocalif>
   </items>
 </model>
