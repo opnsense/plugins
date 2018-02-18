@@ -47,8 +47,7 @@ function reload_handler() {
 $( document ).ready(function() {
     var data_get_map = {
         'general': '/api/tor/general/get',
-        'relay': '/api/tor/relay/get',
-	'exit': '/api/tor/exit/get'
+        'relay': '/api/tor/relay/get'
     };
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
@@ -58,8 +57,7 @@ $( document ).ready(function() {
     // link save button to API set action
     [
       {'selector': '#generalsaveAct', 'endpoint': '/api/tor/general/set', 'formid': 'general'},
-      {'selector': '#relaysaveAct', 'endpoint': '/api/tor/relay/set', 'formid': 'relay'},
-      {'selector': '#exitsaveAct', 'endpoint': '/api/tor/exit/set', 'formid': 'exit'}
+      {'selector': '#relaysaveAct', 'endpoint': '/api/tor/relay/set', 'formid': 'relay'}
     ].forEach(function (cfg) {
         $(cfg.selector).click(function(){
             saveFormToEndpoint(url=cfg.endpoint, formid=cfg.formid,callback_ok=function(){
@@ -137,7 +135,6 @@ $( document ).ready(function() {
     <li><a data-toggle="tab" href="#hidden">{{ lang._('Onion Services') }}</a></li>
     <li><a data-toggle="tab" href="#hiddenrouting">{{ lang._('Onion Service Routing') }}</a></li>
     <li><a data-toggle="tab" href="#relay">{{ lang._('Relaying') }}</a></li>
-    <li><a data-toggle="tab" href="#exit">{{ lang._('Exit Settings') }}</a></li>
     <li><a data-toggle="tab" href="#exitnodeacl">{{ lang._('Exit Node ACL') }}</a></li>
 </ul>
 
@@ -256,13 +253,6 @@ $( document ).ready(function() {
         <div class="col-md-12">
             <hr />
             <button class="btn btn-primary" id="relaysaveAct" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_progress"></i></button>
-        </div>
-    </div>
-    <div id="exit" class="tab-pane fade in">
-        {{ partial("layout_partials/base_form",['fields': exit,'id':'exit'])}}
-        <div class="col-md-12">
-            <hr />
-            <button class="btn btn-primary" id="exitsaveAct" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_progress"></i></button>
         </div>
     </div>
 

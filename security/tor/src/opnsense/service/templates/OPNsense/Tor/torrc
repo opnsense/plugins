@@ -202,10 +202,21 @@ DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.h
 ## distribution for a sample.
 #DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
 
+{% if helpers.exists('OPNsense.tor.relay.exitenabled') %}
+ExitRelay {{ OPNsense.tor.relay.exitenabled }}
+{% endif %}
+
+{% if helpers.exists('OPNsense.tor.relay.exitipv6') %}
+IPv6Exit {{ OPNsense.tor.relay.exitipv6 }}
+{% endif %}
+
 {% if helpers.exists('OPNsense.tor.relay.exitrejectprivateip') %}
 ExitPolicyRejectPrivate {{ OPNsense.tor.relay.exitrejectprivateip }}
 {% endif %}
 
+{% if helpers.exists('OPNsense.tor.relay.exitrejectlocalif') %}
+ExitPolicyRejectLocalInterfaces {{ OPNsense.tor.relay.exitrejectlocalif }}
+{% endif %}
 
 {% if helpers.exists('OPNsense.tor.exitpolicy') %}
 {%   if helpers.exists('OPNsense.tor.exitpolicy.policy') %}

@@ -70,11 +70,6 @@
     <type>text</type>
   </field>
   <field>
-    <id>relay.exitrejectprivateip</id>
-    <label>Reject Private IPs</label>
-    <type>checkbox</type>
-  </field>
-  <field>
     <id>relay.relay</id>
     <label>Bridge</label>
     <type>checkbox</type>
@@ -83,6 +78,29 @@
   <field>
     <id>relay.publish</id>
     <label>Publish Server Descriptor</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>relay.exitenabled</id>
+    <label>Exit Enable</label>
+    <type>checkbox</type>
+    <help>Act as an exit.</help>
+  </field>
+  <field>
+    <id>relay.exitipv6</id>
+    <label>IPv6 Exit</label>
+    <type>checkbox</type>
+    <help>Allow Exit using IPv6 protocol</help>
+  </field>
+  <field>
+    <id>relay.exitrejectprivateip</id>
+    <label>Reject Private IPs</label>
+    <type>checkbox</type>
+    <help>Reject exiting to private IP space</help>
+  </field>
+  <field>
+    <id>relay.exitrejectlocalif</id>
+    <label>Reject Local Interfaces IPs</label>
     <type>checkbox</type>
   </field>
 </form>
