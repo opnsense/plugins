@@ -1,0 +1,6 @@
+<menu>
+    <Services>
+        <WoL VisibleName="Wake on LAN" url="/ui/wol/" cssClass="fa fa-power-off fa-fw">
+        </WoL>
+    </Services>
+</menu>

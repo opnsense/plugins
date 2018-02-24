@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>wake.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help>Choose which interface the host to be woken up is connected to.</help>
+    </field>
+    <field>
+        <id>wake.mac</id>
+        <label>MAC address</label>
+        <type>text</type>
+        <help>Enter a MAC address in the following format: xx:xx:xx:xx:xx:xx.</help>
+    </field>
+</form>
