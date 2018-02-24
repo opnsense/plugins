@@ -48,14 +48,15 @@ class WolController extends ApiMutableModelControllerBase
             if ($this->request->hasPost('uuid')) {
                 $uuid = $this->request->getPost('uuid');
                 $tmp = $wol->getNodeByReference('wolentry.' . $uuid);
-                var_dump($tmp);
                 if ($tmp) {
                   $wolent = $tmp;
+                  $this->wakeHostByNode($wolent, $result);
                 }
-            }
-            $wolent->setNodes($this->request->getPost('wake'));
-            if ($wol->performValidation()->count() == 0) {
-                $this->wakeHostByNode($wolent, $result);
+            } else {
+                $wolent->setNodes($this->request->getPost('wake'));
+                if ($wol->performValidation()->count() == 0) {
+                    $this->wakeHostByNode($wolent, $result);
+                }
             }
         }
         return $result;

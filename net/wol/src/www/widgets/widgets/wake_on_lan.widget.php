@@ -30,12 +30,8 @@ require_once("guiconfig.inc");
 require_once("widgets/include/wake_on_lan.inc");
 require_once("interfaces.inc");
 
-if (isset($config['wol']['wolentry'])) {
-    $wolcomputers = $config['wol']['wolentry'];
-} else {
-    $wolcomputers = array();
-}
-
+use OPNsense\Wol\Wol;
+$wol = new Wol();
 ?>
 <table class="table table-striped table-condensed">
   <thead>
@@ -48,24 +44,24 @@ if (isset($config['wol']['wolentry'])) {
   </thead>
   <tbody>
 <?php
-    foreach ($wolcomputers as $wolent):
-      $is_active = exec("/usr/sbin/arp -an |/usr/bin/grep {$wolent['mac']}| /usr/bin/wc -l|/usr/bin/awk '{print $1;}'");?>
+    foreach ($wol->wolentry->__items as $wolent):
+      $is_active = exec("/usr/sbin/arp -an |/usr/bin/grep {$wolent->mac}| /usr/bin/wc -l|/usr/bin/awk '{print $1;}'");?>
     <tr>
-        <td><?=$wolent['descr'];?><br/><?=$wolent['mac'];?></td>
-        <td><?=htmlspecialchars(convert_friendly_interface_to_friendly_descr($wolent['interface']));?></td>
+        <td><?= $wolent->descr ?><br/><?= $wolent->mac ?></td>
+        <td><?=htmlspecialchars(convert_friendly_interface_to_friendly_descr((string)$wolent->interface));?></td>
         <td>
           <span class="glyphicon glyphicon-<?=$is_active == 1 ? "play" : "remove";?> text-<?=$is_active == 1 ? "success" : "danger";?>" ></span>
           <?=$is_active == 1 ? gettext("Online") : gettext("Offline");?>
         </td>
         <td>
-          <a href="services_wol.php?mac=<?=$wolent['mac'];?>&amp;if=<?=$wolent['interface'];?>">
+          <button class="btn btn-primary btn-sm wakeupbtn" data-mac="<?= $wolent->mac ?>" data-interface="<?= $wolent->interface ?>" data-uuid="<?= $wolent->getAttributes()['uuid'] ?>">
             <span class="glyphicon glyphicon-flash" title="<?=gettext("Wake Up");?>"></span>
-          </a>
+          </button>
         </td>
     </tr>
 <?php
     endforeach;
-    if (count($wolcomputers) == 0):?>
+    if (count($wol->wolentry->__items) == 0):?>
     <tr>
       <td colspan="4" ><?=gettext("No saved WoL addresses");?></td>
     </tr>
@@ -78,3 +74,11 @@ if (isset($config['wol']['wolentry'])) {
     </tr>
   </tfoot>
 </table>
+<script>
+$('.wakeupbtn').click(function(event) {
+    event.preventDefault();
+    var data = this.dataset;
+    $.post('/api/wol/wol/set', {'uuid': data['uuid']}, function(result) {
+    });
+})
+</script>

@@ -39,7 +39,6 @@ $( document ).ready(function() {
     grid.find('.command-wake').click(function(event) {
       event.preventDefault();
       $.post('/api/wol/wol/set', {'uuid': this.dataset['rowId']}, function(data) {
-        console.log(data)
       });
     });
   });
