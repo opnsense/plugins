@@ -4762,7 +4762,6 @@ a.list-group-item-danger {
   border-color: #6c6c6c; }
   .panel-primary > .panel-heading {
     color: #fff;
-    background-color: #3c3c3b;
     border-color: #6c6c6c; }
     .panel-primary > .panel-heading + .panel-collapse > .panel-body {
       border-top-color: #F2790D; }
@@ -6040,15 +6039,7 @@ select:hover,
 	outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
     box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);}
-/*select:hover
-   {
-	color: #FFF;
-	background-color: #393939;
-    border-color: #505050;
-	outline: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
-    box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6); } */
-	
+
 textarea#update_status, textarea#update_status:hover {
 	color:inherit !important;
 	background-color:none !important; 
@@ -6141,8 +6132,8 @@ div.Tokenize ul.TokensContainer li.Token a.Close {
     content: "\f057";
     color: #B13116; }
 
-/*#maintabs[role=tablist] {
-	border-bottom:1px solid #6c6c6c; } */
+#maintabs[role=tablist] {
+	border-bottom:1px solid #6c6c6c; }
 
 .bootstrap-dialog.type-info .modal-header {
 	background-color:#636363 !important; }
