@@ -103,7 +103,7 @@ class SettingsController extends ApiControllerBase
             }
             if ($node != null) {
                 $relaydInfo = $this->request->getPost("relayd");
-                
+
                 // perform plugin specific validations
                 if ($nodeType == 'virtualserver') {
                     if ($relaydInfo[$nodeType]['type'] == 'redirect') {
@@ -147,7 +147,7 @@ class SettingsController extends ApiControllerBase
                             break;
                     }
                 }
-                
+
                 $node->setNodes($relaydInfo[$nodeType]);
                 $valMsgs = $mdlRelayd->performValidation();
                 foreach ($valMsgs as $field => $msg) {
