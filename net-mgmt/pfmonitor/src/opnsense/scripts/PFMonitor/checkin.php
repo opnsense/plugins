@@ -92,8 +92,6 @@ if($vpnreport == "") {
 }
 
 // Prepare final data needed for checkin to pfmonitor
-//$pfstatetext = get_pfstate();
-//$pfstateusage = get_pfstate(true);
 
 $hostname = htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']);
 //$serial = system_get_serial();
@@ -175,48 +173,6 @@ if(date("i") == "00" || date("i") == "10" || date("i") == "20" || date("i") == "
 	$response = curl_exec($scrupload);
 	curl_close($scrupload);
 }
-// Recycle PHP-FPM
-//if(date("i") == "00" || date("i") == "30") {
-//	exec('/etc/rc.php-fpm_restart');
-//}
-
-//if(date("i") == "00" || date("i") == "05" || date("i") == "10" || date("i") == "15" || date("i") == "20" || date("i") == "25" || date("i") == "30" || date("i") == "35" || date("i") == "40" || date("i") == "45" || date("i") == "50" || date("i") == "55") {
-//	$ifdescrs = get_configured_interface_with_descr(false, true);
-//	$senddata = "";
-//	foreach ($ifdescrs as $ifdescr => $ifname) {
-//		$ifinfo = get_interface_info($ifdescr);
-//		//$mac_man = load_mac_manufacturer_table();
-//		$senddata .= "Interface Name: " . strtoupper($ifdescr) . "\n";
-//		$senddata .= "Hardware Interface: " . $ifinfo['hwif'] . "\n";
-//		$senddata .= "Software Interface: " . $ifinfo['if'] . "\n";
-//		$senddata .= "Status: " . $ifinfo['status'] . "\n";
-//		$senddata .= "Media: " . $ifinfo['media'] . "\n";
-//		$senddata .= "MAC Address: " . $ifinfo['macaddr'] . "\n";
-//		$senddata .= "MTU: " . $ifinfo['mtu'] . "\n";
-//		$senddata .= "Primary IP: " . $ifinfo['ipaddr'] . "\n";
-//		$senddata .= "Subnet Mask: " . $ifinfo['subnet'] . "\n";
-//		$senddata .= "Gateway: " . $ifinfo['gateway'] . "\n";
-//		$senddata .= "Link Local: " . $ifinfo['linklocal'] . "\n";
-//		$senddata .= "Primary IPv6: " . $ifinfo['ipaddrv6'] . "\n";
-//		$senddata .= "Subnet Mask v6: " . $ifinfo['subnetv6'] . "\n";
-//		$senddata .= "Gateway v6: " . $ifinfo['gatewayv6'] . "\n";
-//		$senddata .= "IN/OUT Errors: " . $ifinfo['inerrs'] . "/" . $ifinfo['outerrs'] . "\n";
-//		$senddata .= "Collisions: " . $ifinfo['collisions'] . "\n";
-//		$senddata .= "IN/OUT Packets: " . $ifinfo['inpkts'] . "/" . $ifinfo['outpkts'] . " (" . round(($ifinfo['inbytes'] / 1000 / 1000 / 1000)) . " GiB/" . round($ifinfo['outbytes'] / 1000 / 1000 / 1000) . " GiB)\n\n";
-//	}
-//	$senddata = base64_encode($senddata);
-//	$tlmupload = curl_init($tlmurl);
-//	$type = "ints";
-//	$data = array('serial' => $serial, 'type' => $type, 'data' => $senddata);
-//	curl_setopt($tlmupload, CURLOPT_POST, true);
-//	curl_setopt($tlmupload, CURLOPT_POSTFIELDS, http_build_query($data));
-//	curl_setopt($tlmupload, CURLOPT_RETURNTRANSFER, true);
-//	curl_setopt($tlmupload, CURLOPT_CONNECTTIMEOUT, 4);
-//	curl_setopt($tlmupload, CURLOPT_TIMEOUT, 8);
-//	$response = curl_exec($tlmupload);
-//	curl_close($tlmupload);
-//}
-
 
 if($command == "success") {
 	echo $command;
