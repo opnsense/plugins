@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 EURO-LOG AG
+ *    Copyright (C) 2017-2018 EURO-LOG AG
  *
  *    All rights reserved.
  *
@@ -30,7 +30,7 @@
 
 namespace OPNsense\Monit\Api;
 
-use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\Monit\Monit;
 
@@ -38,8 +38,13 @@ use \OPNsense\Monit\Monit;
  * Class ServiceController
  * @package OPNsense\Monit
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
+    static protected $internalServiceClass = '\OPNsense\Monit\Monit';
+    static protected $internalServiceEnabled = 'general.enabled';
+    static protected $internalServiceTemplate = 'OPNsense/Monit';
+    static protected $internalServiceName = 'monit';
+
     /**
      * test monit configuration
      * @return array
@@ -48,129 +53,27 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $this->sessionClose();
-        }
-        $result['function'] = "configtest";
 
-        $result['template'] = $this->callBackend('template');
-        if ($result['template'] != 'OK') {
-            $result['result'] = "Template error: " . $result['template'];
-            return $result;
-        }
+            $backend = new Backend();
 
-        $result['result'] = $this->callBackend('configtest');
-        return $result;
-    }
-
-    /**
-     * reload monit with new configuration
-     * @return array
-     */
-    public function reloadAction()
-    {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
-        $result['function'] = "reload";
-
-        $result['template'] = $this->callBackend('template');
-        if ($result['template'] != 'OK') {
-            $result['result'] = "Template error: " . $result['template'];
-            return $result;
-        }
-
-        $status = $this->callBackend('status');
-        if (substr($status, 0, 16) != 'monit is running') {
-            $result['result'] = "Monit is not running";
-            return $result;
-        }
-
-        $result['result'] = $this->callBackend('reload');
-        return $result;
-    }
-
-    /**
-     * get status of monit process
-     * @return array
-     */
-    public function statusAction()
-    {
-        $mdlMonit = new Monit();
-        $result = array();
-        $result['function'] = 'status';
-        $result['result'] = 'ok';
-        $response = $this->callBackend('status');
-        if (strpos($response, 'not running') > 0) {
-            if ($mdlMonit->general->enabled->__toString() == '1') {
-                $result['status'] = 'stopped';
-            } else {
-                $result['status'] = 'disabled';
+            $result['function'] = "configtest";
+            $result['template'] = trim($backend->configdRun('template reload OPNsense/Monit'));
+            if ($result['template'] != 'OK') {
+                $result['result'] = "Template error: " . $result['template'];
+                return $result;
             }
-        } elseif (strpos($response, 'is running') > 0) {
-            $result['status'] = 'running';
-        } elseif ($mdlMonit->general->enabled->__toString() == '0') {
-            $result['status'] = 'disabled';
+            $result['result'] = trim($backend->configdRun('monit configtest'));
+            return $result;
         } else {
-            $result['result'] = 'failed';
-            $result['status'] = 'unknown';
-            $result['error'] = $status;
+            return array('status' => 'failed');
         }
-        return $result;
     }
 
-    /**
-     * start monit service
-     * @return array
-     */
-    public function startAction()
+     /**
+      * avoid restarting Relayd on reconfigure
+      */
+    protected function reconfigureForceRestart()
     {
-        $result = array("result" => "failed", "function" => "start");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $result['result'] = $this->callBackend('start');
-        }
-        return $result;
-    }
-
-    /**
-     * stop monit service
-     * @return array
-     */
-    public function stopAction()
-    {
-        $result = array("result" => "failed", "function" => "stop");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $result['result'] = $this->callBackend('stop');
-        }
-        return $result;
-    }
-
-    /**
-     * restart monit service
-     * @return array
-     */
-    public function restartAction()
-    {
-        $result = array("result" => "failed", "function" => "restart");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $result['result'] = $this->callBackend('restart');
-        }
-        return $result;
-    }
-
-    /**
-     * call backend functions
-     * @param action
-     * @return string
-     */
-    protected function callBackend($action)
-    {
-        $backend = new Backend();
-        if ($action == 'template') {
-            return trim($backend->configdRun('template reload OPNsense/Monit'));
-        } else {
-            return trim($backend->configdRun('monit ' . $action));
-        }
+        return 0;
     }
 }

@@ -35,15 +35,15 @@ use OPNsense\Core\Config;
 use OPNsense\Core\Shell;
 use OPNsense\Monit\Monit;
 
-$mdlMonit = new OPNsense\Monit\Monit;
+$mdlMonit = new Monit();
 
 $cfg = Config::getInstance();
 $cfgObj = $cfg->object();
 $shellObj = new OPNsense\Core\Shell;
 $generalNode = $mdlMonit->getNodeByReference('general');
 
-// generate password for local Monit plugin user
-if (empty($cfgObj->general->httpdUsername) && empty($cfgObj->general->httpdPassword)) {
+if (empty($cfgObj->OPNsense->monit->general->httpdUsername) && empty($cfgObj->OPNsense->monit->general->httpdPassword)) {
+    print "Generate Monit httpd username and password\n";
     srand();
     $generalNode->setNodes(array(
          "httpdUsername" => "root",

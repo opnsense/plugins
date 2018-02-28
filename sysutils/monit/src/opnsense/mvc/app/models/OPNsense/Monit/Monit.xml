@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/monit</mount>
-   <version>1.0.1</version>
+   <version>1.0.2</version>
    <description>Monit settings</description>
    <items>
       <general>
@@ -26,8 +26,9 @@
             <default>127.0.0.1</default>
             <Required>Y</Required>
             <multiple>Y</multiple>
-            <mask>/^((?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),?)+$/</mask>
-            <ValidationMessage>Mail Server must be a valid IPv4 address</ValidationMessage>
+            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+            <ChangeCase>lower</ChangeCase>
+            <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
          </mailserver>
          <port type="IntegerField">
             <Required>Y</Required>
