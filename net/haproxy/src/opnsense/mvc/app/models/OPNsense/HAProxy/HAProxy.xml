@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <description>
         the HAProxy load balancer
     </description>
@@ -620,6 +620,13 @@
                         <uri>URI Hash (only HTTP mode)</uri>
                     </OptionValues>
                 </algorithm>
+                <proxyProtocol type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <v1>Version 1</v1>
+                        <v2>Version 2</v2>
+                    </OptionValues>
+                </proxyProtocol>
                 <linkedServers type="ModelRelationField">
                     <Model>
                         <template>
