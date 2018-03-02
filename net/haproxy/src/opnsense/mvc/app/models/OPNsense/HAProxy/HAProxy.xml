@@ -1528,6 +1528,7 @@
                         <http-response_del-header>http-response header delete</http-response_del-header>
                         <http-response_replace-header>http-response header replace</http-response_replace-header>
                         <http-response_replace-value>http-response header replace value</http-response_replace-value>
+                        <http-response_set-status>Set HTTP status code in response</http-response_set-status>
                         <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
                         <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
                         <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
@@ -1658,6 +1659,16 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_response_replace_value_regex>
+                <http_response_set_status_code type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>999</MaximumValue>
+                    <ValidationMessage>Please specify a value between 100 and 999.</ValidationMessage>
+                    <Required>N</Required>
+                </http_response_set_status_code>
+                <http_response_set_status_reason type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_set_status_reason>
                 <tcp_request_content_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
