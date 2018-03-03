@@ -1,0 +1,3 @@
+Allow addition of check IP services to be used by custom Dynamic DNS 
+and RFC2136 entries that have the "Use public IP" option enabled, 
+to obtain the current IP address.
