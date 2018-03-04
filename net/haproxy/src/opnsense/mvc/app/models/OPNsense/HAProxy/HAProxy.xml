@@ -664,6 +664,16 @@
                     <default>0</default>
                     <Required>N</Required>
                 </healthCheckLogStatus>
+                <checkInterval type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </checkInterval>
+                <checkDownInterval type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </checkDownInterval>
                 <healthCheckFall type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>100</MaximumValue>
