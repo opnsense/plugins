@@ -78,6 +78,20 @@
         <help><![CDATA[Enable to log health check status updates.]]></help>
     </field>
     <field>
+        <id>backend.healthCheckFall</id>
+        <label>Unhealthy Threshold</label>
+        <type>text</type>
+        <help><![CDATA[The number of consecutive unsuccessful health checks before a server is considered as unavailable.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.healthCheckRise</id>
+        <label>Healthy Threshold</label>
+        <type>text</type>
+        <help><![CDATA[The number of consecutive successful health checks before a server is considered as available.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Stick-table persistence</label>
         <type>header</type>
     </field>

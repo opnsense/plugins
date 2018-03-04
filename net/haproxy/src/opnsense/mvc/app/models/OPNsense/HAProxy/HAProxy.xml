@@ -664,6 +664,18 @@
                     <default>0</default>
                     <Required>N</Required>
                 </healthCheckLogStatus>
+                <healthCheckFall type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <Required>N</Required>
+                </healthCheckFall>
+                <healthCheckRise type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <Required>N</Required>
+                </healthCheckRise>
                 <stickiness_pattern type="OptionField">
                     <Required>N</Required>
                     <default>sourceipv4</default>
