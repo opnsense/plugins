@@ -1,4 +1,4 @@
-PLUGIN_NAME=		theme-cicada
+PLUGIN_NAME=		Theme-Cicada
 PLUGIN_VERSION=		0.1
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		The grey-orange theme
