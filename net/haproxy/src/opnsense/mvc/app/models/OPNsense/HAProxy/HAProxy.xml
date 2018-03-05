@@ -1542,6 +1542,7 @@
                         <http-request_del-header>http-request header delete</http-request_del-header>
                         <http-request_replace-header>http-request header replace</http-request_replace-header>
                         <http-request_replace-value>http-request header replace value</http-request_replace-value>
+                        <http-request_set-path>http-request set-path</http-request_set-path>
                         <http-response_allow>http-response allow</http-response_allow>
                         <http-response_deny>http-response deny</http-response_deny>
                         <http-response_lua>http-response lua script</http-response_lua>
@@ -1641,6 +1642,10 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_request_replace_value_regex>
+                <http_request_set_path type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_set_path>
                 <http_response_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
