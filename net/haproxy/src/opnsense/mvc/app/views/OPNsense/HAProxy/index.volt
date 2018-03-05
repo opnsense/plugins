@@ -507,7 +507,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <div id="subtab_haproxy-rules-checks-introduction" class="tab-pane fade">
         <div class="col-md-12">
-            <h1>{{ lang._('Rules &amp; Checks') }}</h1>
+            <h1>{{ lang._('Rules and Checks') }}</h1>
             <p>{{ lang._("After getting acquainted with HAProxy the following optional features may prove useful:") }}</p>
             <ul>
               <li>{{ lang._('%sHealth Monitors:%s The HAProxy "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
