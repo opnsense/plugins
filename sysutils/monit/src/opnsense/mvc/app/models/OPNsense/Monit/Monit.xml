@@ -198,7 +198,7 @@
          </match>
          <path type="TextField">
             <Required>N</Required>
-            <mask>/^(\/[^\/ ]*)+\/? .*$/</mask>
+            <mask>/^(\/[^\/ ]*)+\/?.*$/</mask>
             <ValidationMessage>Should be a valid absolute file or folder path.</ValidationMessage>
          </path>
          <address type="TextField">
@@ -261,7 +261,7 @@
          </action>
          <path type="TextField">
             <Required>N</Required>
-            <mask>/^(\/[^\/ ]*)+\/? .*$/</mask>
+            <mask>/^(\/[^\/ ]*)+\/?.*$/</mask>
             <ValidationMessage>Should be a valid absolute file path.</ValidationMessage>
          </path>
       </test>
