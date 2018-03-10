@@ -1,8 +1,10 @@
 <menu>
-  <Services>
-    <ClamAV cssClass="fa fa-stethoscope">
-      <Configuration order="10" url="/ui/clamav/general/index"/>
-      <LogFile VisibleName="Log File" order="20" url="/diag_logs_clamav.php"/>
-    </ClamAV>
-  </Services>
+    <Services>
+        <ClamAV cssClass="fa fa-stethoscope">
+            <Configuration order="10" url="/ui/clamav/general/index"/>
+            <Log VisibleName="Log File" order="20" url="/diag_logs_clamav.php?type=clamd">
+                <More url="/diag_logs_clamav.php*" visibility="hidden"/>
+            </Log>
+        </ClamAV>
+    </Services>
 </menu>

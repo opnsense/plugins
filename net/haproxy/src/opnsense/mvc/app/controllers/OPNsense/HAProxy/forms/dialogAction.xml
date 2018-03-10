@@ -286,6 +286,23 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_http-response_set-status</style>
+    </field>
+    <field>
+        <id>action.http_response_set_status_code</id>
+        <label>HTTP Status Code</label>
+        <type>text</type>
+        <help><![CDATA[Replaces the response status code. Must be an integer between 100 and 999.]]></help>
+    </field>
+    <field>
+        <id>action.http_response_set_status_reason</id>
+        <label>HTTP Reason Text</label>
+        <type>text</type>
+        <help><![CDATA[An optional custom reason text for the HTTP status code. If empty the default reason for the specified code will be used.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_tcp-request_content_lua</style>
     </field>
     <field>

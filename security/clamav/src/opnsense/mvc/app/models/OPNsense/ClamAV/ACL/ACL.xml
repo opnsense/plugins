@@ -4,6 +4,7 @@
       <patterns>
          <pattern>ui/clamav/*</pattern>
          <pattern>api/clamav/*</pattern>
+         <pattern>diag_logs_clamav.php*</pattern>
       </patterns>
    </page-services-clamav>
 </acl>

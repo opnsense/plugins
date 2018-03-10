@@ -7,7 +7,7 @@ if (isset($_GET['type']) && ($_GET['type'] === 'clamd' || $_GET['type'] === 'fre
 
 $logfile = "/var/log/clamav/{$type}.log";
 $logclog = false;
-$logsplit = 2;
+$logsplit = 5;
 
 $logpills = array();
 $logpills[] = array(gettext('Clamd'), true, '/diag_logs_clamav.php?type=clamd');
