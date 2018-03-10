@@ -6006,7 +6006,10 @@ label > input[type="radio"] {
   **additional extensions for theme-cicada**
   ******************************************
   *****************************************/
-  
+.fa-refresh::before {
+    content: "\f021";
+	color: #FFFFFF !important; }
+	
 .fa-toggle-off::before {
   color:#ee7822 !important;
   outline:none !important; }
@@ -6186,7 +6189,9 @@ select[disabled]:hover, select[readonly]:hover, fieldset[disabled]:hover,
     cursor: not-allowed;
 	background-color: #68686899;
 	opacity: 0.8;
-	border-color: #ffffff4d; }
+	border:1px solid #ffffff4d; 
+	-webkit-box-shadow: none;
+	box-shadow: none;}
 
 .bootgrid-table th > .column-header-anchor, .bootgrid-table th > .column-header-anchor > .icon, .bootgrid-table th > .column-header-anchor > .glyphicon {
 	color: #fff !important; }
