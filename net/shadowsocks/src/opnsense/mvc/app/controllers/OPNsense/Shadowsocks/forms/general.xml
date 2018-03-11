@@ -34,5 +34,5 @@
         <label>Cipher</label>
         <type>dropdown</type>
         <help>Choose the cipher to use for encryption.</help>
-    </field>    
+    </field>
 </form>

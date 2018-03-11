@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 EURO-LOG AG
+ *    Copyright (C) 2017-2018 EURO-LOG AG
  *
  *    All rights reserved.
  *
@@ -44,57 +44,59 @@ class StatusController extends ApiControllerBase
      * see monit(1)
      * @return array
      */
-    public function getAction()
+    public function getAction($format = 'xml')
     {
-        $result = array("result" => "failed", "function" => "getStatus");
+        $result = array("result" => "failed");
 
-        // connect monit httpd socket defined in monitrc by 'set httpd ...'
-        if (file_exists("/var/run/monit.sock") && filetype("/var/run/monit.sock") == "socket") {
-            // throws an exception therefore no error handling
-            $socket = stream_socket_client("unix:///var/run/monit.sock", $errno, $errstr);
+        $socketPath = "/var/run/monit.sock";
 
-            // get monit status page
-            $request  = "GET /_status?format=text HTTP/1.0\r\n";
+        // map the requested html format from the status page to the Monit text format
+        $format = $format == 'html' ? 'text' : $format;
+
+        // check monit httpd socket defined in monitrc by 'set httpd ...'
+        if (file_exists($socketPath) && filetype($socketPath) == "socket") {
+            // set curl options
+            $ch = curl_init("http://127.0.0.1/_status?format=" . $format);
+            curl_setopt($ch, CURLOPT_UNIX_SOCKET_PATH, $socketPath);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             // get credentials if configured
             $mdlMonit = new Monit();
             if ($mdlMonit->general->httpdUsername->__toString() != null && trim($mdlMonit->general->httpdUsername->__toString()) !== "" &&
                 $mdlMonit->general->httpdPassword->__toString() != null && trim($mdlMonit->general->httpdPassword->__toString()) !== "") {
-                   $request .= "Authorization: Basic " . base64_encode($mdlMonit->general->httpdUsername->__toString() . ":" . $mdlMonit->general->httpdPassword->__toString()) . "\r\n";
+                    curl_setopt($ch, CURLOPT_USERPWD, $mdlMonit->general->httpdUsername->__toString() . ":" . $mdlMonit->general->httpdPassword->__toString());
             }
-            $request .= "\r\n";
-            $count = fwrite($socket, $request);
-            $result['count'] = $count;
-            $result['status'] = '';
-            $result['orig'] = '';
-            $result['httpstatus'] = preg_replace("/\r|\n/", "", fgets($socket));
-            $ignorelines = 1;
-            if ($result['httpstatus'] == 'HTTP/1.0 200 OK') {
-                while (!feof($socket)) {
-                    $line = fgets($socket);
-                    $result['orig'] .= $line;
 
-                    // ignore lines (mostly HTTP headers) until a line starts with 'Monit' e.g. 'Monit 5.20.0 uptime: 2d 23h 2m'
-                    if (substr($line, 0, 5) == 'Monit') {
-                        $ignorelines = 0;
-                    }
-                    if ($ignorelines) {
-                        continue;
-                    }
-                    $result['status'] .= $line;
-                }
+            // send request
+            if (!$response = curl_exec($ch)) {
+                $result['status'] = curl_error($ch);
+                return $result;
+            }
+            $HTTPCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if ($HTTPCode != 200) {
+                $result['status'] = 'Monit returns with code ' . $HTTPCode;
+            } else {
                 $result['result'] = "ok";
-            }
-            fclose($socket);
 
-            // response contains shell color escape codes; convert them to CSS
-            $result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">' . $this->bashColorToCSS($result['status']) . '</pre>';
+                // format the response
+                if ($format == 'xml') {
+                    $result['status'] = simplexml_load_string($response);
+                } elseif ($format === 'text') {
+                    $result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">' . $this->bashColorToCSS($response) . '</pre>';
+                }
+            }
         } else {
-            $result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">
-Either the file /var/run/monit.sock does not exists or it is not a unix socket.
+            $msg = "
+Either the file " . $socketPath . " does not exists or it is not a unix socket.
 Please check if the Monit service is running.
 
-If you have started Monit recently, wait for StartDelay seconds and refresh this page.</pre>';
+If you have started Monit recently, wait for StartDelay seconds and refresh this page.";
+            if ($format == 'xml') {
+                $result['status'] = $msg;
+            } elseif ($format === 'text') {
+                $result['status'] = '<pre style="color:WhiteSmoke;background-color:DimGrey">' . $msg . '</pre>';
+            }
         }
         return $result;
     }

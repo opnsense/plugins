@@ -1,7 +1,6 @@
 {% if helpers.exists('OPNsense.Rspamd.general.enabled') and OPNsense.Rspamd.general.enabled == '1' %}
-rspamd_enable="YES"
-rspamd_opnsense_bootup_run="/usr/local/opnsense/scripts/rspamd/setup.sh"
 rspamd_var_script="/usr/local/opnsense/scripts/rspamd/setup.sh"
+rspamd_enable="YES"
 {% else %}
 rspamd_enable="NO"
 {% endif %}

@@ -1,8 +1,6 @@
 <?php
 
 /*
- *    Copyright (C) 2015-2017 Deciso B.V.
- *    Copyright (C) 2015 Jos Schellevis
  *    Copyright (C) 2017 Fabian Franz
  *    All rights reserved.
  *
@@ -30,10 +28,7 @@
 
 namespace OPNsense\Tor\Api;
 
-use \OPNsense\Tor\HiddenServiceACL;
-use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
 
 class HiddenserviceaclController extends ApiMutableModelControllerBase
 {
@@ -41,130 +36,28 @@ class HiddenserviceaclController extends ApiMutableModelControllerBase
     static protected $internalModelClass = '\OPNsense\Tor\HiddenServiceACL';
     public function searchaclAction()
     {
-        $this->sessionClose();
-        $mdl = $this->getModel();
-        $grid = new UIModelGrid($mdl->hiddenserviceacl);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array('enabled', 'hiddenservice', 'port', 'target_host', 'target_port')
-        );
+        return $this->searchBase('hiddenserviceacl', array('enabled', 'hiddenservice', 'port', 'target_host', 'target_port'));
     }
     public function getaclAction($uuid = null)
     {
-        $mdl = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdl->getNodeByReference('hiddenserviceacl.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array('hiddenserviceacl' => $node->getNodes());
-            }
-        } else {
-            $node = $mdl->hiddenserviceacl->add();
-            return array('hiddenserviceacl' => $node->getNodes());
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('hiddenserviceacl', 'hiddenserviceacl', $uuid);
     }
     public function addaclAction()
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost() && $this->request->hasPost('hiddenserviceacl')) {
-            $result = array('result' => 'failed', 'validations' => array());
-            $mdl = $this->getModel();
-            $node = $mdl->hiddenserviceacl->Add();
-            $node->setNodes($this->request->getPost('hiddenserviceacl'));
-            $valMsgs = $mdl->performValidation();
-
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, 'hiddenserviceacl', $msg->getField());
-                $result['validations'][$fieldnm] = $msg->getMessage();
-            }
-
-            if (count($result['validations']) == 0) {
-                // save config if validated correctly
-                $mdl->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result['result'] = 'saved';
-            }
-        }
-        return $result;
+        return $this->addBase('hiddenserviceacl', 'hiddenserviceacl');
     }
     public function delaclAction($uuid)
     {
-
-        $result = array('result' => 'failed');
-
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                if ($mdl->hiddenserviceacl->del($uuid)) {
-                    $mdl->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('hiddenserviceacl', $uuid);
     }
     public function setaclAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost('hiddenserviceacl')) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference('hiddenserviceacl.' . $uuid);
-                if ($node != null) {
-                    $result = array('result' => 'failed', 'validations' => array());
-                    $info = $this->request->getPost('hiddenserviceacl');
-
-                    $node->setNodes($info);
-                    $valMsgs = $mdl->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, 'hiddenserviceacl', $msg->getField());
-                        $result['validations'][$fieldnm] = $msg->getMessage();
-                    }
-
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdl->serializeToConfig();
-                        unset($result['validations']);
-                        Config::getInstance()->save();
-                        $result = array('result' => 'saved');
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array('result' => 'failed');
-    }
-    public function toggle_handler($uuid, $element)
-    {
-
-        $result = array('result' => 'failed');
-
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference($element . '.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == '1') {
-                        $result['result'] = 'Disabled';
-                        $node->enabled = '0';
-                    } else {
-                        $result['result'] = 'Enabled';
-                        $node->enabled = '1';
-                    }
-                    $mdl->serializeToConfig();
-                    Config::getInstance()->save();
-                }
-            }
-        }
-        return $result;
+        return $this->setBase('hiddenserviceacl', 'hiddenserviceacl', $uuid);
     }
 
     public function toggleaclAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'hiddenserviceacl');
+        return $this->toggleBase('hiddenserviceacl', $uuid);
     }
 }

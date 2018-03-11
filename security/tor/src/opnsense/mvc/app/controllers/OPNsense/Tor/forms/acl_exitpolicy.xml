@@ -9,12 +9,13 @@
     <id>exitpolicy.type</id>
     <label>Protocol</label>
     <type>dropdown</type>
+    <help>Leave at both when specifying network below, otherwise when using wildcards change to match desired network</help>
   </field>
   <field>
     <id>exitpolicy.network</id>
     <label>Network</label>
     <type>text</type>
-    <help>Network on which this ACL is appied.</help>
+    <help>Network on which this ACL is appied. Enter 'any' to use wildcard adressing</help>
   </field>
   <field>
     <id>exitpolicy.startport</id>
