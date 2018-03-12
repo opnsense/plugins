@@ -37,7 +37,7 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
-                        <address type="HostnameField">
+                        <address type="NetworkField">
                                 <default></default>
                                 <Required>Y</Required>
                         </address>
