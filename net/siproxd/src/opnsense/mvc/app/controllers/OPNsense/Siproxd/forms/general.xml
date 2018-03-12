@@ -170,7 +170,7 @@
         <id>general.plugin_fbox_anoncall_enable</id>
         <label>Enable fbox_anoncall_networks plugin</label>
         <type>checkbox</type>
-        <help>Enable or disable the fix_DTAG_networks plugin.</help>
+        <help>Enable or disable the FritzBox Anoncall plugin.</help>
     </field>
     <field>
         <id>general.plugin_fbox_anoncall_networks</id>
