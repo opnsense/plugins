@@ -23,5 +23,8 @@
             <default>0</default>
             <Required>Y</Required>
         </sonmp>
+        <interface type="TextField">
+            <Required>N</Required>
+        </interface>
     </items>
 </model>

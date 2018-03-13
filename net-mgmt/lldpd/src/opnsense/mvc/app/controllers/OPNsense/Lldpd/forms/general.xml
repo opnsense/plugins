@@ -29,4 +29,10 @@
         <type>checkbox</type>
         <help>This will activate the SONMP Protocol by Nortel.</help>
     </field>
+    <field>
+        <id>general.interface</id>
+        <label>Interface Configuration</label>
+        <type>text</type>
+        <help>Select the interfaces you want or you do not want LLDPd send and receive packets. Be sure to set the physical names and not the interface name set via the UI. Default is to use every interface. You can set very complex rules here, but be sure to use correct syntax or LLDPd will not start. For example, with igb*,!igb1,!igb2 lldpd will only use interfaces starting by igb with the exception of igb1 and igb2. While with *,!igb*,!!igb1 lldpd will use all interfaces, except interfaces starting by igb with the exception of igb1.</help>
+    </field>
 </form>
