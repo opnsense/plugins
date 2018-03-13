@@ -4,3 +4,4 @@ postfix:/etc/rc.conf.d/postfix
 transport:/usr/local/etc/postfix/transport
 recipient_access:/usr/local/etc/postfix/recipient_access
 sender_access:/usr/local/etc/postfix/sender_access
+smtp_auth:/usr/local/etc/postfix/smtp_auth
