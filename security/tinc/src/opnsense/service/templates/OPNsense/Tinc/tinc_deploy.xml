@@ -31,7 +31,7 @@
                 <hostname>{{host.hostname}}</hostname>
                 <network>{{network.name}}</network>
                 <address>{{host.extaddress}}</address>
-                <port>{{network.extport}}</port>
+                <port>{{host.extport}}</port>
                 <subnet>{{host.subnet}}</subnet>
                 <pubkey><![CDATA[{{host.pubkey}}]]></pubkey>
                 <cipher>{{host.cipher}}</cipher>
