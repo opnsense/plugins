@@ -6,6 +6,12 @@
                 <label>Enable Nut</label>
                 <type>checkbox</type>
                 <help>Enable or disable the nut service.</help>
+            </field>            
+            <field>
+                <id>nut.general.mode</id>
+                <label>Service Mode</label>
+                <type>dropdown</type>
+                <help>Set the service mode. Currently only standalone and netclient are available.</help>
             </field>
         </subtab>
         <subtab id="nut-general-account" description="Nut Account Settings">
