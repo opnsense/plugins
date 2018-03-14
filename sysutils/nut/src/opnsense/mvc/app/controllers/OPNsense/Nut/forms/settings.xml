@@ -50,6 +50,38 @@
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-netclient" description="Netclient">
+            <field>
+                <id>nut.netclient.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the Netclient driver.</help>
+            </field>
+            <field>
+                <id>nut.netclient.name</id>
+                <label>Name</label>
+                <type>text</type>
+                <help>Set a name for your UPS.</help>
+            </field>
+            <field>
+                <id>nut.netclient.address</id>
+                <label>IP Address</label>
+                <type>text</type>
+                <help>Set the IP address of the remote NUT server.</help>
+            </field>
+            <field>
+                <id>nut.netclient.user</id>
+                <label>Username</label>
+                <type>text</type>
+                <help>Set the username of the remote NUT server.</help>
+            </field>
+            <field>
+                <id>nut.netclient.password</id>
+                <label>Password</label>
+                <type>password</type>
+                <help>Set the password of the remote NUT server.</help>
+            </field>
+        </subtab>
     </tab>
 
     <activetab>nut-general-settings</activetab>
