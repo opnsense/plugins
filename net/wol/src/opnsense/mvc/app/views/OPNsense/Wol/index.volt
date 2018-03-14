@@ -13,8 +13,8 @@ $( document ).ready(function() {
         })
       });
   });
-  
-  
+
+
   var grid = $("#grid-wol-settings").UIBootgrid(
       { 'search':'/api/wol/wol/searchHost',
         'get':'/api/wol/wol/getHost/',
@@ -76,7 +76,7 @@ $( document ).ready(function() {
 </div>
 
 <div class="content-box" style="padding-bottom: 1.5em;">
-    
+
       <table id="grid-wol-settings" class="table table-responsive" data-editDialog="frm_wol_settings">
         <thead>
             <tr>
