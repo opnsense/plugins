@@ -30,6 +30,7 @@ chown -R root:postfix /var/spool/postfix/pid
 postmap /usr/local/etc/postfix/transport
 postmap /usr/local/etc/postfix/recipient_access
 postmap /usr/local/etc/postfix/sender_access
+postmap /usr/local/etc/postfix/smtp_auth
 
 # Check for aliases
 if [ -f /usr/local/etc/postfix/aliases ]; then

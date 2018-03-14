@@ -80,6 +80,30 @@
         <help>Choose "none" to disable TLS for sending mail. Set encrypt to enforce TLS security, please do not use this for Internet wide communication as not every server supports TLS yet. Default is "may" which will use TLS when offered.</help>
     </field>
     <field>
+        <id>general.relayhost</id>
+        <label>Smart Host</label>
+        <type>text</type>
+        <help>Set the IP address or FQDN where all outgoung mails are sent to.</help>
+    </field>
+    <field>
+        <id>general.smtpauth_enabled</id>
+        <label>Enable SMTP Authentication</label>
+        <type>checkbox</type>
+        <help>Check this to enable authentication against your Smarthost.</help>
+    </field>
+    <field>
+        <id>general.smtpauth_user</id>
+        <label>Authentication Username</label>
+        <type>text</type>
+        <help>The username to use for SMTP authentication.</help>
+    </field>
+    <field>
+        <id>general.smtpauth_password</id>
+        <label>Authentication Password</label>
+        <type>password</type>
+        <help>The password to use for SMTP authentication.</help>
+    </field>
+    <field>
         <id>general.reject_unauth_pipelining</id>
         <label>Reject Unauthenticated Pipelining</label>
         <type>checkbox</type>

@@ -88,6 +88,16 @@ smtpd_tls_cert_file = /usr/local/etc/postfix/cert_opn.pem
 smtpd_tls_CAfile = /usr/local/etc/postfix/ca_opn.pem
 {% endif %}
 
+{% if helpers.exists('OPNsense.postfix.general.relayhost') and OPNsense.postfix.general.relayhost != '' %}
+relayhost = {{ OPNsense.postfix.general.relayhost }}
+{% endif %}
+
+{% if helpers.exists('OPNsense.postfix.general.smtpauth_enabled') and OPNsense.postfix.general.smtpauth_enabled != '' %}
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/usr/local/etc/postfix/smtp_auth
+smtp_sasl_security_options =
+{% endif %}
+
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
 smtpd_milters = inet:localhost:11332
 non_smtpd_milters = inet:localhost:11332
