@@ -66,9 +66,9 @@ function nut_services()
         $services[] = array(
             'description' => gettext('Network UPS Monitor'),
             'configd' => array(
-                'restart' => array('nut_mon restart'),
-                'start' => array('nut_mon start'),
-                'stop' => array('nut_mon stop'),
+                'restart' => array('nut restart_mon'),
+                'start' => array('nut start_mon'),
+                'stop' => array('nut stop_mon'),
             ),
             'name' => 'upsmon'
         );
