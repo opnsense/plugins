@@ -36,6 +36,16 @@ function nut_enabled()
     return false;
 }
 
+function nut_netclient()
+{
+    $model = new \OPNsense\Nut\Nut();
+    if ((string)$model->general->mode == 'netclient') {
+        return true;
+    }
+
+    return false;
+}
+
 function nut_services()
 {
     $services = array();
@@ -52,5 +62,17 @@ function nut_services()
             'pidfile' => '/var/run/nut.pid'
         );
     }
+    if (nut_netclient()) {
+        $services[] = array(
+            'description' => gettext('Network UPS Monitor'),
+            'configd' => array(
+                'restart' => array('nut_mon restart'),
+                'start' => array('nut_mon start'),
+                'stop' => array('nut_mon stop'),
+            ),
+            'name' => 'upsmon'
+        );
+    }
+    
     return $services;
 }
