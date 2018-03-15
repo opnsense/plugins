@@ -14,6 +14,15 @@
                 <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
             </field>
         </subtab>
+        <subtab id="rspamd-general-multimap" description="Multimap Settings">
+            <field>
+                <id>rspamd.multimap.badfileextension</id>
+                <label>Blocked File Extensions</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <help>If an attached file has a suffix in this list, the mail will be rejected via an hard reject, which means that the server will be immeadiately informed about the policy violation..</help>
+            </field>
+        </subtab>
     </tab>
     <tab id="rspamd-anti-spam" description="Spam Protection">
         <subtab id="rspamd-anti-spam-graylist" description="Graylisting">
