@@ -267,19 +267,19 @@ include("head.inc");
                     <td><a id="help_for_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Port"); ?></td>
                     <td>
                       <input type="text" id="port"  name="port" value="<?=$pconfig['port'];?>"/>
-                      <output class="hidden" for="help_for_port">
+                      <div class="hidden" data-for="help_for_port">
                         <?=gettext("This is the port your servers are listening on."); ?><br />
                         <?=gettext("You may also specify a port alias listed in Firewall -&gt; Aliases here."); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_retry" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Retry"); ?></td>
                     <td>
                       <input name="retry" type="text" value="<?=$pconfig['retry'];?>"/>
-                      <output for="help_for_retry" class="hidden">
+                      <div class="hidden" data-for="help_for_retry">
                         <?=gettext("Optionally specify how many times to retry checking a server before declaring it down."); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>

@@ -172,18 +172,18 @@ include("head.inc");
 <?php
                           endforeach; ?>
                           </select>
-                          <output class="hidden" for="help_for_interface">
+                          <div class="hidden" data-for="help_for_interface">
                             <?=gettext("Choose which interface the host to be woken up is connected to.");?>
-                          </output>
+                          </div>
                         </td>
                       </tr>
                       <tr>
                         <td><a id="help_for_mac" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("MAC address");?></td>
                         <td>
                           <input name="mac" type="text" id="mac" value="<?=!empty($_GET['mac']) ? htmlspecialchars(strtolower(str_replace("-", ":", $_GET['mac']))) : "";?>" />
-                          <output class="hidden" for="help_for_mac">
+                          <div class="hidden" data-for="help_for_mac">
                             <?=sprintf(gettext("Enter a MAC address %sin the following format: xx:xx:xx:xx:xx:xx%s"),'<strong>','</strong>');?>
-                          </output>
+                          </div>
                         </td>
                       </tr>
                       <tr>

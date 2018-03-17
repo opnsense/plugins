@@ -181,9 +181,9 @@ include("head.inc");
                     <td><a id="help_for_ip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("IP address");?></td>
                     <td>
                       <input name="ip" type="text" value="<?=$pconfig['ip'];?>" />
-                      <output class="hidden" for="help_for_ip">
+                      <div class="hidden" data-for="help_for_ip">
                         <?=gettext("If you want the user to be assigned a specific IP address, enter it here.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>

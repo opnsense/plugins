@@ -125,27 +125,27 @@ legacy_html_escape_form_data($pconfig);
 <?php
                       endforeach; ?>
                       </select>
-                      <output class="hidden" for="help_for_interface">
+                      <div class="hidden" data-for="help_for_interface">
                         <?=gettext("Choose which interface this host is connected to.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_mac" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("MAC address");?></td>
                     <td>
                       <input name="mac" type="text" value="<?=$pconfig['mac'];?>" />
-                      <output class="hidden" for="help_for_mac">
+                      <div class="hidden" data-for="help_for_mac">
                         <?=gettext("Enter a MAC address in the following format: xx:xx:xx:xx:xx:xx");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_descr" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Description");?></td>
                     <td>
                       <input name="descr" type="text" value="<?=$pconfig['descr'];?>" />
-                      <output class="hidden" for="help_for_descr">
+                      <div class="hidden" data-for="help_for_descr">
                         <?=gettext("You may enter a description here for your reference (not parsed).");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>

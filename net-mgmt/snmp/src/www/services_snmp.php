@@ -175,9 +175,9 @@ include("head.inc");
                       <td><a id="help_for_pollport" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Polling Port") ?></td>
                       <td>
                         <input name="pollport" type="text" value="<?=$pconfig['pollport'];?>" />
-                        <output class="hidden" for="help_for_pollport">
+                        <div class="hidden" data-for="help_for_pollport">
                           <?=gettext("Enter the port to accept polling events on (default 161)");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -196,9 +196,9 @@ include("head.inc");
                       <td><a id="help_for_rocommunity" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Read Community String");?></td>
                       <td>
                         <input name="rocommunity" type="text" value="<?=$pconfig['rocommunity'];?>" />
-                        <output class="hidden" for="help_for_rocommunity">
+                        <div class="hidden" data-for="help_for_rocommunity">
                           <?=gettext("The community string is like a password, restricting access to querying SNMP to hosts knowing the community string. Use a strong value here to protect from unauthorized information disclosure.");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -226,27 +226,27 @@ include("head.inc");
                       <td><a id="help_for_trapserver" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Trap server");?></td>
                       <td>
                         <input name="trapserver" type="text" value="<?=$pconfig['trapserver'];?>" />
-                        <output class="hidden" for="help_for_trapserver">
+                        <div class="hidden" data-for="help_for_trapserver">
                           <?=gettext("Enter trap server name");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_trapserverport" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Trap server port") ?></td>
                       <td>
                         <input name="trapserverport" type="text" id="trapserverport" size="40" value="<?=htmlspecialchars($pconfig['trapserverport']) ? htmlspecialchars($pconfig['trapserverport']) : htmlspecialchars(162);?>" />
-                        <output class="hidden" for="help_for_trapserverport">
+                        <div class="hidden" data-for="help_for_trapserverport">
                           <?=gettext("Enter the port to send the traps to (default 162)");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_trapstring" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enter the SNMP trap string");?></td>
                       <td>
                         <input name="trapstring" type="text" value="<?=$pconfig['trapstring'];?>" />
-                        <output class="hidden" for="help_for_trapstring">
+                        <div class="hidden" data-for="help_for_trapstring">
                           <?=gettext("Trap string");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                   </tbody>

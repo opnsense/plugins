@@ -120,27 +120,27 @@ include("head.inc");
                        <td><a id="help_for_timeout" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Timeout") ; ?></td>
                        <td>
                          <input type="text" name="timeout" id="timeout" value="<?=$pconfig['timeout'];?>" />
-                         <output class="hidden" for="help_for_timeout">
+                         <div class="hidden" data-for="help_for_timeout">
                            <?=gettext("Set the global timeout in milliseconds for checks. Leave blank to use the default value of 1000 ms "); ?>
-                         </output>
+                         </div>
                        </td>
                     </tr>
                     <tr>
                        <td><a id="help_for_interval" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interval") ; ?></td>
                        <td>
                          <input type="text" name="interval" id="interval" value="<?=$pconfig['interval']; ?>"/>
-                         <output class="hidden" for="help_for_interval">
+                         <div class="hidden" data-for="help_for_interval">
                            <?=gettext("Set the interval in seconds at which the member of a pool will be checked. Leave blank to use the default interval of 10 seconds"); ?>
-                         </output>
+                         </div>
                       </td>
                    </tr>
                     <tr>
                        <td><a id="help_for_prefork" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Prefork") ; ?></td>
                        <td>
                          <input type="text" name="prefork" id="prefork" value="<?=$pconfig['prefork']; ?>"/>
-                         <output class="hidden" for="help_for_prefork">
+                         <div class="hidden" data-for="help_for_prefork">
                            <?=gettext("Number of processes used by relayd for dns protocol. Leave blank to use the default value of 5 processes"); ?>
-                         </output>
+                         </div>
                       </td>
                    </tr>
                    <tr>
@@ -148,7 +148,7 @@ include("head.inc");
                      <td>
                        <input name="lb_use_sticky" type="checkbox" id="lb_use_sticky" value="yes" <?= !empty($pconfig['lb_use_sticky']) ? 'checked="checked"' : '';?>/>
                        <strong><?=gettext("Use sticky connections"); ?></strong><br />
-                       <output class="hidden" for="help_for_lb_use_sticky">
+                       <div class="hidden" data-for="help_for_lb_use_sticky">
                          <?=gettext("Successive connections will be redirected to the servers " .
                                              "in a round-robin manner with connections from the same " .
                                              "source being sent to the same web server. This 'sticky " .
@@ -156,7 +156,7 @@ include("head.inc");
                                              "refer to this connection. Once the states expire, so will " .
                                              "the sticky connection. Further connections from that host " .
                                              "will be redirected to the next web server in the round-robin."); ?>
-                       </output>
+                       </div>
                      </td>
                    </tr>
                    <tr>
