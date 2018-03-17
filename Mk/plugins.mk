@@ -27,6 +27,10 @@ all: check
 
 LOCALBASE?=		/usr/local
 PKG!=			which pkg || echo true
+ARCH!=			uname -p
+
+PLUGIN_ARCH?=		${ARCH}
+PLUGIN_PHP?=		71
 
 PLUGIN_DESC=		pkg-descr
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
