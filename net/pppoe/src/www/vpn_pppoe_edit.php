@@ -300,9 +300,9 @@ legacy_html_escape_form_data($pconfig);
                     <td><a id="help_for_localip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Server address"); ?></td>
                     <td>
                       <input name="localip" type="text" value="<?=$pconfig['localip'];?>" />
-                      <output class="hidden" for="help_for_localip">
+                      <div class="hidden" data-for="help_for_localip">
                         <?=gettext("Enter the IP address the PPPoE server should give to clients for use as their \"gateway\"."); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -317,18 +317,18 @@ legacy_html_escape_form_data($pconfig);
 <?php
                       endfor;?>
                       </select>
-                      <output class="hidden" for="help_for_n_pppoe_units">
+                      <div class="hidden" data-for="help_for_n_pppoe_units">
                         <?=gettext("Hint: 10 is ten PPPoE clients"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_remoteip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Remote address range"); ?></td>
                     <td>
                       <input name="remoteip" type="text" value="<?=$pconfig['remoteip'];?>" />
-                      <output class="hidden" for="help_for_remoteip">
+                      <div class="hidden" data-for="help_for_remoteip">
                         <?=gettext("Specify the starting address for the client IP address subnet."); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -342,9 +342,9 @@ legacy_html_escape_form_data($pconfig);
 <?php
                       endfor;?>
                       </select>
-                      <output class="hidden" for="help_for_pppoe_subnet">
+                      <div class="hidden" data-for="help_for_pppoe_subnet">
                         <?=gettext("Hint: 24 is 255.255.255.0"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -359,9 +359,9 @@ legacy_html_escape_form_data($pconfig);
                       <input name="dns1" type="text" value="<?=$pconfig['dns1'];?>" />
                       <br />
                       <input name="dns2" type="text" value="<?=$pconfig['dns2'];?>" />
-                      <output class="hidden" for="help_for_dns">
+                      <div class="hidden" data-for="help_for_dns">
                         <?=gettext("If entered they will be given to all PPPoE clients, else LAN DNS and one WAN DNS will go to all clients"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -369,48 +369,48 @@ legacy_html_escape_form_data($pconfig);
                     <td>
                       <input name="radiusenable" type="checkbox" value="yes" <?=!empty($pconfig['radiusenable']) ? "checked=\"checked\"" : ""; ?>/>
                       <strong><?=gettext("Use a RADIUS server for authentication"); ?></strong><br/>
-                      <output class="hidden" for="help_for_radiusenable">
+                      <div class="hidden" data-for="help_for_radiusenable">
                         <?=gettext("When set, all users will be authenticated using " .
                                     "the RADIUS server specified below. The local user database " .
                                     "will not be used."); ?>
-                      </output>
+                      </div>
                       <input name="radacct_enable" type="checkbox" value="yes" <?=!empty($pconfig['radacct_enable']) ? "checked=\"checked\"" : "";?> />
                       <strong><?=gettext("Enable RADIUS accounting"); ?> <br /></strong>
-                      <output class="hidden" for="help_for_radiusenable">
+                      <div class="hidden" data-for="help_for_radiusenable">
                         <?=gettext("Sends accounting packets to the RADIUS server"); ?>.
-                      </output>
+                      </div>
                       <input name="radiussecenable" type="checkbox" value="yes" <?=!empty($pconfig['radiussecenable']) ? "checked=\"checked\"" : "";?> />
                       <strong><?=gettext("Use Backup RADIUS Server"); ?></strong><br />
-                      <output class="hidden" for="help_for_radiusenable">
+                      <div class="hidden" data-for="help_for_radiusenable">
                         <?=gettext("When set, if primary server fails all requests will be sent via backup server"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radius_nasip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("NAS IP Address"); ?></td>
                     <td>
                       <input name="radius_nasip" type="text" id="radius_nasip" value="<?=$pconfig['radius_nasip'];?>" />
-                      <output class="hidden" for="help_for_radius_nasip">
+                      <div class="hidden" data-for="help_for_radius_nasip">
                         <?=gettext("RADIUS server NAS IP Address"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radius_acct_update" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS Accounting Update"); ?></td>
                     <td>
                       <input name="radius_acct_update" type="text"  value="<?=$pconfig['radius_acct_update'];?>" />
-                      <output class="hidden" for="help_for_radius_acct_update">
+                      <div class="hidden" data-for="help_for_radius_acct_update">
                         <?=gettext("RADIUS accounting update period in seconds"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radiusissueips" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS issued IPs"); ?></td>
                     <td>
                       <input name="radiusissueips" value="yes" type="checkbox" <?=!empty($pconfig['radiusissueips']) ? "checked=\"checked\"" : "";?> />
-                      <output class="hidden" for="help_for_radiusissueips">
+                      <div class="hidden" data-for="help_for_radiusissueips">
                         <?=gettext("Issue IP Addresses via RADIUS server."); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -432,20 +432,20 @@ legacy_html_escape_form_data($pconfig);
                           </tr>
                         </tbody>
                       </table>
-                      <output class="hidden" for="help_for_radiusserver">
+                      <div class="hidden" data-for="help_for_radiusserver">
                         <?=gettext("Enter the IP address, authentication port and accounting port (optional) of the RADIUS server."); ?><br />
                         <br /> <?=gettext("standard port 1812 and 1813 accounting"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radiussecret" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS primary shared secret"); ?></td>
                     <td>
                       <input name="radiussecret" type="password"  value="<?=$pconfig['radiussecret'];?>" />
-                      <output class="hidden" for="help_for_radiussecret">
+                      <div class="hidden" data-for="help_for_radiussecret">
                         <?=gettext("Enter the shared secret that will be used to authenticate " .
                                                 "to the RADIUS server"); ?>.
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -467,19 +467,19 @@ legacy_html_escape_form_data($pconfig);
                           </tr>
                         </tbody>
                       </table>
-                      <output class="hidden" for="help_for_radiusserver2">
+                      <div class="hidden" data-for="help_for_radiusserver2">
                         <?=gettext("Enter the IP address, authentication port and accounting port (optional) of the backup RADIUS server."); ?><br />
                         <br /> <?=gettext("standard port 1812 and 1813 accounting"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radiussecret2" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a><?=gettext("RADIUS secondary shared secret"); ?></td>
                     <td>
                       <input name="radiussecret2" type="password" id="radiussecret2" size="20" value="<?=htmlspecialchars($pconfig['radiussecret2']);?>" />
-                      <output class="hidden" for="help_for_radiussecret2">
+                      <div class="hidden" data-for="help_for_radiussecret2">
                         <?=gettext("Enter the shared secret that will be used to authenticate " ."to the RADIUS server"); ?>.
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>

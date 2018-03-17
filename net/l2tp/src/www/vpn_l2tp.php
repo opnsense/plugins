@@ -210,18 +210,18 @@ include("head.inc");
                     <td><a id="help_for_localip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Server Address");?></td>
                     <td>
                       <input name="localip" type="text" id="localip" value="<?=$pconfig['localip'];?>" />
-                      <output class="hidden" for="help_for_localip">
+                      <div class="hidden" data-for="help_for_localip">
                         <?=gettext("Enter the IP address the L2TP server should give to clients for use as their \"gateway\"."); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_remoteip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Remote Address Range");?></td>
                     <td>
                       <input name="remoteip" type="text" id="remoteip" value="<?=$pconfig['remoteip'];?>" />
-                      <output class="hidden" for="help_for_remoteip">
+                      <div class="hidden" data-for="help_for_remoteip">
                         <?=gettext("Specify the starting address for the client IP address subnet.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -240,18 +240,18 @@ include("head.inc");
                                 }
                                 ?>
                       </select>
-                      <output class="hidden" for="help_for_n_l2tp_units">
+                      <div class="hidden" data-for="help_for_n_l2tp_units">
                         <?=gettext("Hint: 10 is ten L2TP clients"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_secret" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Secret");?></td>
                     <td>
                       <input type="password" name="secret" id="secret" value="<?=$pconfig['secret']; ?>" />
-                      <output class="hidden" for="help_for_secret">
+                      <div class="hidden" data-for="help_for_secret">
                         <?=gettext("Specify optional secret shared between peers. Required on some devices/setups.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -265,9 +265,9 @@ include("head.inc");
                           <?=gettext("PAP"); ?>
                         </option>
                       </select>
-                      <output class="hidden" for="help_for_paporchap">
+                      <div class="hidden" data-for="help_for_paporchap">
                         <?=gettext("Specifies which protocol to use for authentication.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -275,9 +275,9 @@ include("head.inc");
                     <td>
                       <input name="l2tp_dns1" type="text" id="l2tp_dns1" value="<?=$pconfig['l2tp_dns1'];?>" /><br/>
                       <input name="l2tp_dns2" type="text" id="l2tp_dns2" value="<?=$pconfig['l2tp_dns2'];?>" />
-                      <output class="hidden" for="help_for_l2tp_dns">
+                      <div class="hidden" data-for="help_for_l2tp_dns">
                         <?=gettext("primary and secondary DNS servers assigned to L2TP clients"); ?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -291,41 +291,41 @@ include("head.inc");
                     <td>
                       <input name="radiusenable" type="checkbox" id="radiusenable" value="yes" <?=($pconfig['radiusenable']) ? "checked=\"checked\"" : "";?>/>
                       <strong> <?=gettext("Use a RADIUS server for authentication");?><br /></strong>
-                      <output class="hidden" for="help_for_radius">
+                      <div class="hidden" data-for="help_for_radius">
                         <?=gettext("When set, all users will be authenticated using the RADIUS server specified below. The local user database will not be used.");?>
-                      </output>
+                      </div>
                       <input name="radacct_enable" type="checkbox" id="radacct_enable" value="yes" <?=($pconfig['radacct_enable']) ? "checked=\"checked\"" : "";?>/>
                       <strong><?=gettext("Enable RADIUS accounting");?></strong><br />
-                      <output class="hidden" for="help_for_radius">
+                      <div class="hidden" data-for="help_for_radius">
                         <?=gettext("Sends accounting packets to the RADIUS server.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radiusserver" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS Server");?></td>
                     <td>
                       <input name="radiusserver" type="text" id="radiusserver" value="<?=$pconfig['radiusserver'];?>" />
-                      <output class="hidden" for="help_for_radiusserver">
+                      <div class="hidden" data-for="help_for_radiusserver">
                         <?=gettext("Enter the IP address of the RADIUS server.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radiussecret" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS Shared Secret");?></td>
                     <td>
                       <input name="radiussecret" type="password" class="form-control pwd" id="radiussecret" value="<?=$pconfig['radiussecret'];?>" />
-                      <output class="hidden" for="help_for_radiussecret">
+                      <div class="hidden" data-for="help_for_radiussecret">
                         <?=gettext("Enter the shared secret that will be used to authenticate to the RADIUS server.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td><a id="help_for_radiusissueips" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS Issued IP's");?></td>
                     <td>
                       <input name="radiusissueips" value="yes" type="checkbox" class="form-control" id="radiusissueips"<?=$pconfig['radiusissueips'] ? " checked=\"checked\"" : "";?>>
-                      <output class="hidden" for="help_for_radiusissueips">
+                      <div class="hidden" data-for="help_for_radiusissueips">
                         <?=gettext("Issue IP Addresses via RADIUS server.");?>
-                      </output>
+                      </div>
                     </td>
                   </tr>
                   <tr>

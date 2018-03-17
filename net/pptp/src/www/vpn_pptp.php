@@ -228,27 +228,27 @@ include("head.inc");
                           }
                           ?>
                         </select>
-                        <output class="hidden" for="help_for_n_pptp_units">
+                        <div class="hidden" data-for="help_for_n_pptp_units">
                           <?=gettext("Hint: 10 is ten PPTP clients"); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_localip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Server address"); ?></td>
                       <td>
                         <input name="localip" type="text" id="localip" value="<?=$pconfig['localip'];?>" />
-                        <output class="hidden" for="help_for_localip">
+                        <div class="hidden" data-for="help_for_localip">
                           <?=gettext("Enter the IP address the PPTP server should give to clients for use as their \"gateway\"."); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_remoteip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Remote address range"); ?></td>
                       <td>
                         <input name="remoteip" type="text" id="remoteip" value="<?=htmlspecialchars($pconfig['remoteip']);?>" />
-                        <output class="hidden" for="help_for_remoteip">
+                        <div class="hidden" data-for="help_for_remoteip">
                           <?=gettext("Specify the starting address for the client IP address subnet."); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -256,9 +256,9 @@ include("head.inc");
                       <td>
                         <input name="pptp_dns1" type="text" id="pptp_dns1" value="<?=$pconfig['pptp_dns1'];?>" /><br />
                         <input name="pptp_dns2" type="text" id="pptp_dns2" value="<?=$pconfig['pptp_dns2'];?>" />
-                        <output class="hidden" for="help_for_pptp_dns">
+                        <div class="hidden" data-for="help_for_pptp_dns">
                           <?=gettext("primary and secondary DNS servers assigned to PPTP clients"); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -272,26 +272,26 @@ include("head.inc");
                       <td>
                         <input name="radiusenable" type="checkbox" id="radiusenable" value="yes" <?=($pconfig['radiusenable']) ? "checked=\"checked\"" : "";?>/>
                         <strong><?=gettext("Use a RADIUS server for authentication"); ?></strong><br/>
-                        <output class="hidden" for="help_for_radius">
+                        <div class="hidden" data-for="help_for_radius">
                           <?=gettext("When set, all users will be authenticated using " .
                           "the RADIUS server specified below. The local user database " .
                           "will not be used."); ?>
-                        </output>
+                        </div>
                         <input name="radacct_enable" type="checkbox" id="radacct_enable" value="yes" <?=($pconfig['radacct_enable']) ? "checked=\"checked\"" : "";?>/>
                         <strong><?=gettext("Enable RADIUS accounting"); ?></strong><br/>
-                        <output class="hidden" for="help_for_radius">
+                        <div class="hidden" data-for="help_for_radius">
                           <?=gettext("Sends accounting packets to the RADIUS server."); ?>
-                        </output>
+                        </div>
                         <input name="radiussecenable" type="checkbox" id="radiussecenable" value="yes" <?=($pconfig['radiussecenable']) ? "checked=\"checked\"" : "";?>/>
                         <strong><?=gettext("Secondary RADIUS server for failover authentication"); ?></strong><br />
-                        <output class="hidden" for="help_for_radius">
+                        <div class="hidden" data-for="help_for_radius">
                           <?=gettext("When set, all requests will go to the secondary server when primary fails"); ?>
-                        </output>
+                        </div>
                         <input name="radiusissueips" value="yes" type="checkbox" id="radiusissueips"<?=($pconfig['radiusissueips']) ? " checked=\"checked\"" : "";?>/>
                         <strong><?=gettext("RADIUS issued IPs"); ?></strong>
-                        <output class="hidden" for="help_for_radius">
+                        <div class="hidden" data-for="help_for_radius">
                           <?=gettext("Issue IP addresses via RADIUS server."); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -304,9 +304,9 @@ include("head.inc");
                       <td><a id="help_for_radius_acct_update" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS Accounting Update"); ?></td>
                       <td>
                           <input name="radius_acct_update" type="text" id="radius_acct_update" value="<?=$pconfig['radius_acct_update'];?>" />
-                          <output class="hidden" for="help_for_radius_acct_update">
+                          <div class="hidden" data-for="help_for_radius_acct_update">
                             <?=gettext("RADIUS accounting update period in seconds"); ?>
-                          </output>
+                          </div>
                       </td>
                     </tr>
                     <tr>
@@ -328,20 +328,20 @@ include("head.inc");
                             </tr>
                           </tbody>
                         </table>
-                        <output class="hidden" for="help_for_radiusserver">
+                        <div class="hidden" data-for="help_for_radiusserver">
                           <?=gettext("Enter the IP address, authentication port and accounting port (optional) of the RADIUS server."); ?><br />
                           <br /> <?=gettext("standard port 1812 and 1813 accounting"); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_radiussecret" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS primary shared secret"); ?></td>
                       <td>
                         <input name="radiussecret" type="password"  value="<?=$pconfig['radiussecret'];?>" />
-                        <output class="hidden" for="help_for_radiussecret">
+                        <div class="hidden" data-for="help_for_radiussecret">
                           <?=gettext("Enter the shared secret that will be used to authenticate " .
                                                   "to the RADIUS server"); ?>.
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -363,19 +363,19 @@ include("head.inc");
                             </tr>
                           </tbody>
                         </table>
-                        <output class="hidden" for="help_for_radiusserver2">
+                        <div class="hidden" data-for="help_for_radiusserver2">
                           <?=gettext("Enter the IP address, authentication port and accounting port (optional) of the backup RADIUS server."); ?><br />
                           <br /> <?=gettext("standard port 1812 and 1813 accounting"); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_radiussecret2" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("RADIUS secondary shared secret"); ?></td>
                       <td>
                         <input name="radiussecret2" type="password" id="radiussecret2" size="20" value="<?=htmlspecialchars($pconfig['radiussecret2']);?>" />
-                        <output class="hidden" for="help_for_radiussecret2">
+                        <div class="hidden" data-for="help_for_radiussecret2">
                           <?=gettext("Enter the shared secret that will be used to authenticate " ."to the RADIUS server"); ?>.
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -383,12 +383,12 @@ include("head.inc");
                       <td>
                         <input name="req128" type="checkbox" id="req128" value="yes" <?=($pconfig['req128']) ? "checked=\"checked\"" : "";?> />
                         <strong><?=gettext("Require 128-bit encryption"); ?></strong>
-                        <output class="hidden" for="help_for_req128">
+                        <div class="hidden" data-for="help_for_req128">
                           <?=gettext("When set, only 128-bit encryption will be accepted. Otherwise " .
                                     "40-bit and 56-bit encryption will be accepted as well. Note that " .
                                     "encryption will always be forced on PPTP connections (i.e. " .
                                     "unencrypted connections will not be accepted)."); ?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>

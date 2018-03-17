@@ -196,18 +196,18 @@ include("head.inc");
                       <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP Port Mapping");?></td>
                       <td>
                        <input name="enable_upnp" type="checkbox" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
-                       <output class="hidden" for="help_for_enable_upnp">
+                       <div class="hidden" data-for="help_for_enable_upnp">
                          <?=gettext("This protocol is often used by Microsoft-compatible systems.");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow NAT-PMP Port Mapping");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
-                       <output class="hidden" for="help_for_enable_natpmp">
+                       <div class="hidden" data-for="help_for_enable_natpmp">
                          <?=gettext("This protocol is often used by Apple-compatible systems.");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                     <tr>
@@ -222,9 +222,9 @@ include("head.inc");
 <?php
                         endforeach;?>
                        </select>
-                       <output class="hidden" for="help_for_ext_iface">
+                       <div class="hidden" data-for="help_for_ext_iface">
                          <?=gettext("Select only your primary WAN interface (interface with your default route). Only one interface is allowed here, not multiple.");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                     <tr>
@@ -242,27 +242,27 @@ include("head.inc");
 <?php
                         endforeach;?>
                        </select>
-                       <output class="hidden" for="help_for_ext_iface">
+                       <div class="hidden" data-for="help_for_ext_iface">
                          <?=gettext("You can select multiple interfaces here.");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Download Speed");?></td>
                       <td>
                         <input name="download" type="text" value="<?=$pconfig['download'];?>" />
-                        <output class="hidden" for="help_for_download">
+                        <div class="hidden" data-for="help_for_download">
                           <?=gettext("(Kbits/second)");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_upload" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Upload Speed");?></td>
                       <td>
                         <input name="upload" type="text" value="<?=$pconfig['upload'];?>" />
-                        <output class="hidden" for="help_for_upload">
+                        <div class="hidden" data-for="help_for_upload">
                           <?=gettext("(Kbits/second)");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -275,27 +275,27 @@ include("head.inc");
                       <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Log NAT-PMP");?></td>
                       <td>
                        <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
-                       <output class="hidden" for="help_for_logpackets">
+                       <div class="hidden" data-for="help_for_logpackets">
                          <?=gettext("Log packets handled by UPnP and NAT-PMP rules?");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Use system time");?></td>
                       <td>
                        <input name="sysuptime" type="checkbox" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
-                       <output class="hidden" for="help_for_sysuptime">
+                       <div class="hidden" data-for="help_for_sysuptime">
                          <?=gettext("Use system uptime instead of UPnP and NAT-PMP service uptime?");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_permdefault" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default deny");?></td>
                       <td>
                        <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
-                       <output class="hidden" for="help_for_permdefault">
+                       <div class="hidden" data-for="help_for_permdefault">
                          <?=gettext("By default deny access to UPnP and NAT-PMP?");?>
-                       </output>
+                       </div>
                       </td>
                     </tr>
                   </tbody>
@@ -317,37 +317,37 @@ include("head.inc");
                       <td style="width:22%"><a id="help_for_permuser1" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 1");?></td>
                       <td style="width:78%">
                         <input name="permuser1" type="text" value="<?=$pconfig['permuser1'];?>" />
-                        <output class="hidden" for="help_for_permuser1">
+                        <div class="hidden" data-for="help_for_permuser1">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?><br/>
                           <?=gettext("Example: allow 1024-65535 192.168.0.0/24 1024-65535");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_permuser2" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 2");?></td>
                       <td>
                         <input name="permuser2" type="text" value="<?=$pconfig['permuser2'];?>" />
-                        <output class="hidden" for="help_for_permuser2">
+                        <div class="hidden" data-for="help_for_permuser2">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_permuser3" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 3");?></td>
                       <td>
                         <input name="permuser3" type="text" value="<?=$pconfig['permuser3'];?>" />
-                        <output class="hidden" for="help_for_permuser3">
+                        <div class="hidden" data-for="help_for_permuser3">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_permuser4" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 4");?></td>
                       <td>
                         <input name="permuser4" type="text" value="<?=$pconfig['permuser4'];?>" />
-                        <output class="hidden" for="help_for_permuser4">
+                        <div class="hidden" data-for="help_for_permuser4">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?>
-                        </output>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
