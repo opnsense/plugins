@@ -20,7 +20,7 @@
                 <label>Blocked File Extensions</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
-                <help>If an attached file has a suffix in this list, the mail will be rejected via an hard reject, which means that the server will be immeadiately informed about the policy violation..</help>
+                <help>If an attached file has a suffix in this list, the mail will be rejected via a hard reject, which means that the server will be immeadiately informed about the policy violation.</help>
             </field>
         </subtab>
     </tab>
