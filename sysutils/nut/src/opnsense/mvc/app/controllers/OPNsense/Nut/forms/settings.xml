@@ -6,7 +6,7 @@
                 <label>Enable Nut</label>
                 <type>checkbox</type>
                 <help>Enable or disable the nut service.</help>
-            </field>            
+            </field>
             <field>
                 <id>nut.general.mode</id>
                 <label>Service Mode</label>

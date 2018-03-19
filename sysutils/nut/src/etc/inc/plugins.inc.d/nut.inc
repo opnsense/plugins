@@ -73,6 +73,6 @@ function nut_services()
             'name' => 'upsmon'
         );
     }
-    
+
     return $services;
 }
