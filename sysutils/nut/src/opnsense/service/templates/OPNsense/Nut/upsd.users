@@ -2,15 +2,19 @@
 # the next update.
 #
 {% if helpers.exists('OPNsense.Nut.general.enable') and OPNsense.Nut.general.enable == '1' %}
-{%   if helpers.exists('OPNsense.Nut.account.admin_password') and OPNsense.Nut.account.admin_password != '' %}
+{%   if helpers.exists('OPNsense.Nut.general.mode') and OPNsense.Nut.general.mode == 'standalone' %}
+{%     if helpers.exists('OPNsense.Nut.account.admin_password') and OPNsense.Nut.account.admin_password != '' %}
 [admin]
 password={{ OPNsense.Nut.account.admin_password }}
 actions=set
 instcmds=all
+{%     endif %}
 {%   endif %}
-{%   if helpers.exists('OPNsense.Nut.account.mon_password') and OPNsense.Nut.account.mon_password != '' %}
+{%   if helpers.exists('OPNsense.Nut.general.mode') and OPNsense.Nut.general.mode == 'standalone' %}
+{%     if helpers.exists('OPNsense.Nut.account.mon_password') and OPNsense.Nut.account.mon_password != '' %}
 [monuser]
 password={{ OPNsense.Nut.account.mon_password }}
 upsmon master
+{%     endif %}
 {%   endif %}
 {% endif %}
