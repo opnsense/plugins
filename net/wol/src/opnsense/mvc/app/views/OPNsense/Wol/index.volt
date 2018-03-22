@@ -62,7 +62,18 @@ $( document ).ready(function() {
 
     // link save button to API set action
     $("#wakeAct").click(function(){
-        saveFormToEndpoint(url="/api/wol/wol/set", formid='frm_wol_wake',callback_ok=function(data){}, true);
+        ajaxCall(url="/api/wol/wol/set", data=getFormData('frm_wol_wake'),callback=function(data, status){
+          BootstrapDialog.show({
+            type: data.status == 'OK' ? BootstrapDialog.TYPE_SUCCESS : BootstrapDialog.TYPE_DANGER,
+            title: "{{ lang._("Result") }}",
+            message: (data.status == 'OK' ? 
+                      '{{ lang._('Magic packet was sent successfully.') }}' :
+                      '{{ lang._('The packet was not sent due to an error. Please consult the logs.') }}<br />' + 
+                      $('<pre>').text(data.error_msg).html()
+                     )
+          });
+        
+        }, true);
     });
 });
 
