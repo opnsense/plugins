@@ -40,3 +40,12 @@ function proxy_useracl_squid_hook()
     configd_run('template reload OPNsense/ProxyUserACL');
     configd_run('proxyuseracl reload');
 }
+
+function proxy_useracl_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'proxyuseracl';
+    $result['section'] = 'OPNsense.ProxyUserACL';
+    $result['description'] = gettext('Group & User Squid ACL');
+    return array($result);
+}
