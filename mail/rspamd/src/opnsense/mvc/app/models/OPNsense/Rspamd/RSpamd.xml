@@ -333,5 +333,12 @@
         <Required>N</Required>
       </exceptions>
     </surbl>
+
+    <multimap>
+      <badfileextension type="CSVListField">
+        <Required>N</Required>
+        <default>exe,dll,scr,com,cmd,js,bat,vbs,ps1,bat,cpl,lnk,msi,msp,reg</default>
+      </badfileextension>
+    </multimap>
   </items>
 </model>
