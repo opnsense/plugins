@@ -428,9 +428,7 @@ dataconverters = {
 }
 
 $(document).ready(function() {
-  ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
-      updateServiceStatusUI(data['status'])
-  });
+  updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/ospfoverview", sendData={}, callback=function(data,status) {
     content = _.template($('#overviewtpl').html())(data['response'])
