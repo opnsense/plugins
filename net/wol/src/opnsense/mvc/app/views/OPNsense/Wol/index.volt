@@ -66,13 +66,13 @@ $( document ).ready(function() {
           BootstrapDialog.show({
             type: data.status == 'OK' ? BootstrapDialog.TYPE_SUCCESS : BootstrapDialog.TYPE_DANGER,
             title: "{{ lang._("Result") }}",
-            message: (data.status == 'OK' ? 
+            message: (data.status == 'OK' ?
                       '{{ lang._('Magic packet was sent successfully.') }}' :
-                      '{{ lang._('The packet was not sent due to an error. Please consult the logs.') }}<br />' + 
+                      '{{ lang._('The packet was not sent due to an error. Please consult the logs.') }}<br />' +
                       $('<pre>').text(data.error_msg).html()
                      )
           });
-        
+
         }, true);
     });
 });
