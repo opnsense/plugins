@@ -162,9 +162,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
 function quagga_update_status() {
-    ajaxCall(url="/api/quagga/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['status']);
-    });
+    updateServiceControlUI('quagga');
 }
 
 $(document).ready(function() {

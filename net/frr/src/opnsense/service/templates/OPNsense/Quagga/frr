@@ -1,4 +1,3 @@
-defaultrouter="NO"
 frr_enable="{% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}YES{% else %}NO{% endif %}"
 
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
@@ -14,5 +13,3 @@ if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.ena
 if helpers.exists('OPNsense.quagga.isis.enabled') and OPNsense.quagga.isis.enabled == '1' %} isisd{% endif %}"
 #frr_flags="...."
 #frr_extralibs_path="... ..."
-#router_enable="NO"
-watchfrr_enable="YES"
