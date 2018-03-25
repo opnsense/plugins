@@ -13,6 +13,7 @@
                 <default></default>
                 <OptionValues>
                         <connected>Connected routes (directly attached subnet or host)</connected>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
                         <static>Statically configured routes</static>
                 </OptionValues>
         </redistribute>
