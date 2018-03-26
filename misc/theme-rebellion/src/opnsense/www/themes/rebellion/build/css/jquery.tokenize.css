@@ -33,7 +33,7 @@ div.Tokenize ul.TokensContainer
     min-height:34px;
     max-height: 170px;
     overflow-y: auto;
-    background-color: Gainsboro;
+    background-color: #111;
 }
 
 div.Tokenize.Disabled ul.TokensContainer,
