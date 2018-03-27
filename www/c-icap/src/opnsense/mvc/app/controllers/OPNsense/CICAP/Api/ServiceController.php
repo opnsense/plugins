@@ -30,6 +30,7 @@ namespace OPNsense\CICAP\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\CICAP\General;
 
 /**
  * Class ServiceController
