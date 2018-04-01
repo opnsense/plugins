@@ -1,16 +1,41 @@
 <script>
+
+function show_wake_result(data) {
+  BootstrapDialog.show({
+    type: data.status == 'OK' ? BootstrapDialog.TYPE_SUCCESS : BootstrapDialog.TYPE_DANGER,
+    title: "{{ lang._("Result") }}",
+    message: (data.status == 'OK' ? 
+              '{{ lang._('Magic packet was sent successfully.') }}' :
+              '{{ lang._('The packet was not sent due to an error. Please consult the logs.') }}<br />' + 
+              $('<pre>').text(data.error_msg).html()
+            ),
+    buttons: [{
+                label: '{{ lang._('Close') }}',
+                action: function(dialog){
+                  dialog.close();
+                }
+            }]
+  });
+}
+
 $( document ).ready(function() {
   // delete host action
   $("#act_wake_all").click(function(event){
       event.preventDefault();
       $.post('/api/wol/wol/wakeall', {}, function(data) {
-        BootstrapDialog.show({
-          type:BootstrapDialog.TYPE_INFO,
-          title: "{{ lang._("Result") }}",
-          message: '<ul>' + (data['results'].map(function(element) {
-              return `<li>${element.mac}: ${element.status}</li>`
-          }).join('')) + '</ul>'
-        })
+          BootstrapDialog.show({
+              type: BootstrapDialog.TYPE_INFO,
+              title: "{{ lang._("Result") }}",
+              message: '<ul>' + (data['results'].map(function(element) {
+                  return `<li>${element.mac}: ${element.status}</li>`
+              }).join('')) + '</ul>',
+              buttons: [{
+                    label: '{{ lang._('Close') }}',
+                    action: function(dialog){
+                        dialog.close();
+                    }
+              }]
+          });
       });
   });
 
@@ -39,6 +64,7 @@ $( document ).ready(function() {
     grid.find('.command-wake').click(function(event) {
       event.preventDefault();
       $.post('/api/wol/wol/set', {'uuid': this.dataset['rowId']}, function(data) {
+        show_wake_result(data);
       });
     });
   });
@@ -63,16 +89,7 @@ $( document ).ready(function() {
     // link save button to API set action
     $("#wakeAct").click(function(){
         ajaxCall(url="/api/wol/wol/set", data=getFormData('frm_wol_wake'),callback=function(data, status){
-          BootstrapDialog.show({
-            type: data.status == 'OK' ? BootstrapDialog.TYPE_SUCCESS : BootstrapDialog.TYPE_DANGER,
-            title: "{{ lang._("Result") }}",
-            message: (data.status == 'OK' ?
-                      '{{ lang._('Magic packet was sent successfully.') }}' :
-                      '{{ lang._('The packet was not sent due to an error. Please consult the logs.') }}<br />' +
-                      $('<pre>').text(data.error_msg).html()
-                     )
-          });
-
+          show_wake_result(data);
         }, true);
     });
 });
