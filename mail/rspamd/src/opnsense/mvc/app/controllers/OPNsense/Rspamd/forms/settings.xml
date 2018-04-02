@@ -158,6 +158,16 @@
                 <label>Enable Phishtank</label>
                 <type>checkbox</type>
             </field>
+            <field>
+                <id>rspamd.phishing.phishtank_map</id>
+                <label>Phishtank Map URL</label>
+                <type>text</type>
+            </field>
+            <field>
+                <id>rspamd.phishing.phishtank_comp_enabled</id>
+                <label>Phishtank Map Compressed</label>
+                <type>checkbox</type>
+            </field>
         </subtab>
         <subtab id="rspamd-anti-spam-rate-limit" description="Rate Limit">
             <field>
