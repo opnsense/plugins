@@ -134,6 +134,14 @@
         <default>0</default>
         <Required>Y</Required>
       </phishtank_enabled>
+      <phishtank_map type="TextField">
+        <default></default>
+        <Required>N</Required>
+      </phishtank_map>
+      <phishtank_map_comp type="BooleanField">
+        <default>0</default>
+        <Required>N</Required>
+      </phishtank_map_comp>
     </phishing>
 
     <rate_limit>
