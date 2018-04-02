@@ -173,12 +173,6 @@
                 <type>text</type>
                 <help>Give a URL where to retrieve the Phishtank feed.</help>
             </field>
-            <field>
-                <id>rspamd.phishing.phishtank_comp_enabled</id>
-                <label>Phishtank Map Compressed</label>
-                <type>checkbox</type>
-                <help>Check this if the URL devliers a compressed file.</help>
-            </field>
         </subtab>
         <subtab id="rspamd-anti-spam-rate-limit" description="Rate Limit">
             <field>
