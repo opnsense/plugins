@@ -126,6 +126,10 @@
         <default>0</default>
         <Required>Y</Required>
       </openphish_enabled>
+      <openphish_map type="TextField">
+        <default></default>
+        <Required>N</Required>
+      </openphish_map>
       <openphish_premium_enabled type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -138,10 +142,10 @@
         <default></default>
         <Required>N</Required>
       </phishtank_map>
-      <phishtank_map_comp type="BooleanField">
+      <phishtank_comp_enabled type="BooleanField">
         <default>0</default>
         <Required>N</Required>
-      </phishtank_map_comp>
+      </phishtank_comp_enabled>
     </phishing>
 
     <rate_limit>
