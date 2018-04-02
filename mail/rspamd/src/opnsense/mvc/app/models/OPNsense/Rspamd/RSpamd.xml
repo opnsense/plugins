@@ -142,10 +142,6 @@
         <default></default>
         <Required>N</Required>
       </phishtank_map>
-      <phishtank_comp_enabled type="BooleanField">
-        <default>0</default>
-        <Required>N</Required>
-      </phishtank_comp_enabled>
     </phishing>
 
     <rate_limit>
