@@ -1,5 +1,8 @@
 <menu>
   <Services>
-    <Nut cssClass="fa fa-battery-full fa-fw" url="/ui/nut/" />
+    <Nut cssClass="fa fa-battery-full fa-fw" url="/ui/nut/">
+      <Configuration order="10" url="/ui/nut/"/>
+      <Diagnostics order="20" url="/ui/nut/diagnostics"/>
+    </Nut>
   </Services>
 </menu>
