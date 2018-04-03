@@ -140,4 +140,11 @@ class ServiceController extends ApiControllerBase
             return array('response' => array());
         }
     }
+    
+    public function upsstatusAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("nut upsstatus");
+        return array("response" => $response);
+    }
 }
