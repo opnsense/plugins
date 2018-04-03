@@ -1,7 +1,0 @@
-<menu>
-    <System>
-      <Configuration>
-        <ScpBackup VisibleName="SCP Backup" url="/ui/scpbackup/general/index"/>
-      </Configuration>
-    </System>
-</menu>
