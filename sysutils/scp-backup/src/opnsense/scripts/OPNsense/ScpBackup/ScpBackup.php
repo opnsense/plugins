@@ -39,12 +39,14 @@ use OPNsense\Core\Config;
 $config = Config::getInstance()->object();
 $scpBackup = $config->OPNsense->ScpBackup;
 
+define('TMP_PRIVATE_KEY', 'tmp-private-key-');
+define('TMP_HOST_KEY', "tmp-host-key-");
+
 if (isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1) {
     $hostname = escapeshellarg($scpBackup->hostname);
     $username = escapeshellarg($scpBackup->username);
     $port = $scpBackup->port;
     $remoteDirectory = empty(trim($scpBackup->remotedirectory)) ? "./" : $scpBackup->remotedirectory;
-    $identifyFile = "/conf/sshd/ssh_host_rsa_key";
     $configFile = "/conf/config.xml";
 
     if (!substr($remoteDirectory, -1) == "/") {
@@ -53,13 +55,40 @@ if (isset($scpBackup) && isset($scpBackup->enabled) && $scpBackup->enabled == 1)
 
     $remoteDirectoryFullPath = escapeshellarg($remoteDirectory . "config-" . date('Y-m-d-H-i') . ".xml");
 
-    $command = "scp -P $port -i $identifyFile $configFile $username@$hostname:$remoteDirectoryFullPath";
+    $tmpPrivateKeyFile = tempnam(sys_get_temp_dir(), TMP_PRIVATE_KEY);
+    $tmpHostKeyFile = tempnam(sys_get_temp_dir(), TMP_HOST_KEY);
+    $strictHostKeyParams = "-oStrictHostKeyChecking=no -oLogLevel=ERROR";
 
-    syslog(LOG_WARNING, "scp_backup command: $command");
+    try {
+        if(file_put_contents($tmpPrivateKeyFile, $scpBackup->privatekey) !== false) {
 
-    exec(escapeshellcmd($command), $output, $returnCode);
+            if($scpBackup->stricthostkeycheck == 1) {
+                $strictHostKeyParams = "-oStrictHostKeyChecking=yes";
+                if(!empty($scpBackup->hostkey) && file_put_contents($tmpHostKeyFile, $scpBackup->hostkey) !== false) {
+                    $strictHostKeyParams = $strictHostKeyParams . " -oUserKnownHostsFile=" . escapeshellarg($tmpHostKeyFile);
+                }
+            }
 
-    if ($returnCode != 0) {
-        syslog(LOG_ERR, "scp_backup command: return code [$returnCode]");
+            $command = "scp $strictHostKeyParams -P $port -i $tmpPrivateKeyFile $configFile $username@$hostname:$remoteDirectoryFullPath";
+            syslog(LOG_WARNING, "scp_backup command: $command");
+            exec(escapeshellcmd($command), $output, $returnCode);
+            
+            if ($returnCode != 0) {
+                syslog(LOG_ERR, "scp_backup command: Return code [$returnCode].");
+            }
+
+        } else {
+            syslog(LOG_ERR, "scp_backup error: Unable to write [$tmpPrivateKeyFile].");
+        }
+    } catch (Exception $e) {
+        syslog(LOG_ERR, "scp_backup error: [$e->getMessage()].");
+    } finally {
+        if(!@unlink($tmpPrivateKeyFile)) {
+            syslog(LOG_ERR, "scp_backup error: Unable to delete [$tmpPrivateKeyFile]. Please manually remove the file.");
+        }
+        if(($scpBackup->stricthostkeycheck == 1) && (!@unlink($tmpHostKeyFile))) {
+            syslog(LOG_ERR, "scp_backup error: Unable to delete [$tmpHostKeyFile]. Please manually remove the file.");
+        }
     }
+
 }

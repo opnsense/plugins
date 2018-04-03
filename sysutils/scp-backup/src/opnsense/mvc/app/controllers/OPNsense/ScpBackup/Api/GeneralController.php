@@ -47,11 +47,6 @@ class GeneralController extends ApiMutableModelControllerBase
         $result = array();
         if ($this->request->isGet()) {
             $mdlGeneral = $this->getModel();
-            $publicKey = fopen("/conf/sshd/ssh_host_rsa_key.pub", "r");
-            if ($publicKey) {
-                $mdlGeneral->publickey = fread($publicKey, filesize("/conf/sshd/ssh_host_rsa_key.pub"));
-                fclose($publicKey);
-            }
             $result['general'] = $mdlGeneral->getNodes();
         }
         return $result;
@@ -65,7 +60,6 @@ class GeneralController extends ApiMutableModelControllerBase
             $backend = new Backend();
             $mdlCron = new Cron();
             $mdlGeneral->setNodes($this->request->getPost("general"));
-            $mdlGeneral->publickey = null;
             $valMsgs = $mdlGeneral->performValidation();
             foreach ($valMsgs as $field => $msg) {
                 if (!array_key_exists("validation", $result)) {
