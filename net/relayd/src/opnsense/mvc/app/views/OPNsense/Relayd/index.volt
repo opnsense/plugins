@@ -114,25 +114,25 @@ POSSIBILITY OF SUCH DAMAGE.
 		   var servertype = $('#relayd\\.virtualserver\\.type').val();
 		   var backuptransport_table = $('#relayd\\.virtualserver\\.backuptransport_table').val();
 
-		   $('tr[for="relayd.virtualserver.transport_type"]').addClass('hidden');
-		   $('tr[for="relayd.virtualserver.stickyaddress"]').addClass('hidden');
-		   $('tr[for="relayd.virtualserver.protocol"]').addClass('hidden');
-		   $('tr[for="relayd.virtualserver.backuptransport_tablemode"]').addClass('hidden');
-		   $('tr[for="relayd.virtualserver.backuptransport_timeout"]').addClass('hidden');
-		   $('tr[for="relayd.virtualserver.backuptransport_interval"]').addClass('hidden');
-         $('tr[for="relayd.virtualserver.backuptransport_tablecheck"]').addClass('hidden');
+		   $('tr[id="row_relayd.virtualserver.transport_type"]').addClass('hidden');
+		   $('tr[id="row_relayd.virtualserver.stickyaddress"]').addClass('hidden');
+		   $('tr[id="row_relayd.virtualserver.protocol"]').addClass('hidden');
+		   $('tr[id="row_relayd.virtualserver.backuptransport_tablemode"]').addClass('hidden');
+		   $('tr[id="row_relayd.virtualserver.backuptransport_timeout"]').addClass('hidden');
+		   $('tr[id="row_relayd.virtualserver.backuptransport_interval"]').addClass('hidden');
+         $('tr[id="row_relayd.virtualserver.backuptransport_tablecheck"]').addClass('hidden');
 		   $('#relayd\\.virtualserver\\.transport_tablemode').empty().append('<option value="roundrobin">Round Robin </option>');
 		   $('#relayd\\.virtualserver\\.backuptransport_tablemode').empty().append('<option value="roundrobin">Round Robin </option>');
 
 		   if(servertype == 'redirect'){
-			   $('tr[for="relayd.virtualserver.transport_type"]').removeClass('hidden');
-			   $('tr[for="relayd.virtualserver.stickyaddress"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.transport_type"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.stickyaddress"]').removeClass('hidden');
 			   $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="least-states">Least States </option>');
 			   $('#relayd\\.virtualserver\\.backuptransport_tablemode').append('<option value="least-states">Least States </option>');
 			   $('#relayd\\.virtualserver\\.transport_tablemode').val('roundrobin');
 			   $('#relayd\\.virtualserver\\.backuptransport_tablemode').val('roundrobin');
 		   } else {
-			   $('tr[for="relayd.virtualserver.protocol"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.protocol"]').removeClass('hidden');
 			   $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="hash">Hash </option>');
 			   $('#relayd\\.virtualserver\\.backuptransport_tablemode').append('<option value="hash">Hash </option>');
 			   $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="loadbalance">Load Balance </option>');
@@ -149,10 +149,10 @@ POSSIBILITY OF SUCH DAMAGE.
 		   $('#relayd\\.virtualserver\\.backuptransport_tablemode').selectpicker('refresh');
 
 		   if(backuptransport_table !== '') {
-			   $('tr[for="relayd.virtualserver.backuptransport_tablemode"]').removeClass('hidden');
-			   $('tr[for="relayd.virtualserver.backuptransport_tablecheck"]').removeClass('hidden');
-			   $('tr[for="relayd.virtualserver.backuptransport_timeout"]').removeClass('hidden');
-			   $('tr[for="relayd.virtualserver.backuptransport_interval"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.backuptransport_tablemode"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.backuptransport_tablecheck"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.backuptransport_timeout"]').removeClass('hidden');
+			   $('tr[id="row_relayd.virtualserver.backuptransport_interval"]').removeClass('hidden');
 		   }
 	   };
 	   $('#DialogEditVirtualServer').on('shown.bs.modal', function() {ShowHideVSFields();});
@@ -162,39 +162,39 @@ POSSIBILITY OF SUCH DAMAGE.
 	   function ShowHideTCFields(){
 		   var tablechecktype = $('#relayd\\.tablecheck\\.type').val();
 
-		   $('tr[for="relayd.tablecheck.path"]').addClass('hidden');
-		   $('tr[for="relayd.tablecheck.host"]').addClass('hidden');
-		   $('tr[for="relayd.tablecheck.code"]').addClass('hidden');
-		   $('tr[for="relayd.tablecheck.digest"]').addClass('hidden');
-		   $('tr[for="relayd.tablecheck.data"]').addClass('hidden');
-		   $('tr[for="relayd.tablecheck.expect"]').addClass('hidden');
-		   $('tr[for="relayd.tablecheck.ssl"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.path"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.host"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.code"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.digest"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.data"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.expect"]').addClass('hidden');
+		   $('tr[id="row_relayd.tablecheck.ssl"]').addClass('hidden');
 
 		   switch (tablechecktype) {
 		      case 'send':
-			   $('tr[for="relayd.tablecheck.data"]').removeClass('hidden');
-			   $('tr[for="relayd.tablecheck.expect"]').removeClass('hidden');
-			   $('tr[for="relayd.tablecheck.ssl"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.data"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.expect"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.ssl"]').removeClass('hidden');
 			      break;
 		      case 'script':
-			   $('tr[for="relayd.tablecheck.path"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.path"]').removeClass('hidden');
 			   break;
 		      case 'http':
 			   var code = $('#relayd\\.tablecheck\\.code').val();
 			   var digest = $('#relayd\\.tablecheck\\.digest').val();
-			   $('tr[for="relayd.tablecheck.path"]').removeClass('hidden');
-			   $('tr[for="relayd.tablecheck.host"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.path"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.host"]').removeClass('hidden');
 			   if (code !== '') {
-				   $('tr[for="relayd.tablecheck.code"]').removeClass('hidden');
-				   $('tr[for="relayd.tablecheck.digest"]').addClass('hidden');
+				   $('tr[id="row_relayd.tablecheck.code"]').removeClass('hidden');
+				   $('tr[id="row_relayd.tablecheck.digest"]').addClass('hidden');
 			   } else if (digest !== '') {
-				   $('tr[for="relayd.tablecheck.code"]').addClass('hidden');
-		            $('tr[for="relayd.tablecheck.digest"]').removeClass('hidden');
+				   $('tr[id="row_relayd.tablecheck.code"]').addClass('hidden');
+		            $('tr[id="row_relayd.tablecheck.digest"]').removeClass('hidden');
 			   } else {
-				   $('tr[for="relayd.tablecheck.code"]').removeClass('hidden');
-		            $('tr[for="relayd.tablecheck.digest"]').removeClass('hidden');
+				   $('tr[id="row_relayd.tablecheck.code"]').removeClass('hidden');
+		            $('tr[id="row_relayd.tablecheck.digest"]').removeClass('hidden');
 			   }
-			   $('tr[for="relayd.tablecheck.ssl"]').removeClass('hidden');
+			   $('tr[id="row_relayd.tablecheck.ssl"]').removeClass('hidden');
 			   break;
 		   }
 	   };
