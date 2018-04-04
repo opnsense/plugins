@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# kill lcdproc when running
+killall lcdproc >/dev/null 2>&1
+killall LCDd  >/dev/null 2>&1
+# exec lcd proc daemon and client
+/usr/local/sbin/LCDd -c /usr/local/etc/LCDd-sdeclcd.conf
+/usr/local/bin/lcdproc -s 127.0.0.1 -p 13666 C M D L

@@ -35,8 +35,27 @@ function proxy_useracl_configure()
     ];
 }
 
-function proxy_useracl_squid_hook()
+function proxy_useracl_squid_hook($verbose, $action)
 {
-    configd_run('template reload OPNsense/ProxyUserACL');
-    configd_run('proxyuseracl reload');
+    if (!in_array($action, ['restart', 'reload', 'start', 'stop'])) {
+        exit;
+    }
+
+    $res = configd_run('template reload OPNsense/ProxyUserACL');
+    if ($verbose) {
+        printf("template reload OPNsense/ProxyUserACL: %s\n", trim($res));
+    }
+    $res = configd_run('proxyuseracl reload');
+    if ($verbose) {
+        printf("proxyuseracl reload: %s\n", trim($res));
+    }
+}
+
+function proxy_useracl_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'proxyuseracl';
+    $result['section'] = 'OPNsense.ProxyUserACL';
+    $result['description'] = gettext('Group & User Squid ACL');
+    return array($result);
 }

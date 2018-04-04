@@ -14,6 +14,15 @@
                 <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
             </field>
         </subtab>
+        <subtab id="rspamd-general-multimap" description="Multimap Settings">
+            <field>
+                <id>rspamd.multimap.badfileextension</id>
+                <label>Blocked File Extensions</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <help>If an attached file has a suffix in this list, the mail will be rejected via a hard reject, which means that the server will be immeadiately informed about the policy violation.</help>
+            </field>
+        </subtab>
     </tab>
     <tab id="rspamd-anti-spam" description="Spam Protection">
         <subtab id="rspamd-anti-spam-graylist" description="Graylisting">
@@ -138,16 +147,31 @@
                 <id>rspamd.phishing.openphish_enabled</id>
                 <label>Enable Openphish</label>
                 <type>checkbox</type>
+                <help>Openphish is a service where phishing URLs get collected and asked by rspamd.</help>
+            </field>
+            <field>
+                <id>rspamd.phishing.openphish_map</id>
+                <label>Openphish Map</label>
+                <type>text</type>
+                <help>Set the URL of the Openphish map file.</help>
             </field>
             <field>
                 <id>rspamd.phishing.openphish_premium_enabled</id>
                 <label>Enable Openphish Premium</label>
                 <type>checkbox</type>
+                <help>Openphish Premium offers more services, please only activate if you have a current license.</help>
             </field>
             <field>
                 <id>rspamd.phishing.phishtank_enabled</id>
                 <label>Enable Phishtank</label>
                 <type>checkbox</type>
+                <help>Enable Phishtank collaborative clearing house for data and information about phishing on the Internet.</help>
+            </field>
+            <field>
+                <id>rspamd.phishing.phishtank_map</id>
+                <label>Phishtank Map URL</label>
+                <type>text</type>
+                <help>Give a URL where to retrieve the Phishtank feed.</help>
             </field>
         </subtab>
         <subtab id="rspamd-anti-spam-rate-limit" description="Rate Limit">

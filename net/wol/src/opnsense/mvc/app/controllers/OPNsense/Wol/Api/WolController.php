@@ -63,7 +63,7 @@ class WolController extends ApiMutableModelControllerBase
     }
 
     public function delHostAction($uuid) {
-        $this->delBase('host', $uuid);
+        $this->delBase('wolentry', $uuid);
     }
     public function searchHostAction()
     {

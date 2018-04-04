@@ -83,8 +83,8 @@
         <id>general.relayhost</id>
         <label>Smart Host</label>
         <type>text</type>
-        <help>Set the IP address where all outgoung mail are sent to.</help>
-    </field>    
+        <help>Set the IP address or FQDN where all outgoung mails are sent to.</help>
+    </field>
     <field>
         <id>general.smtpauth_enabled</id>
         <label>Enable SMTP Authentication</label>

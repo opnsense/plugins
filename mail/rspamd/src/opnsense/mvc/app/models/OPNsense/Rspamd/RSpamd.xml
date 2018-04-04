@@ -126,6 +126,10 @@
         <default>0</default>
         <Required>Y</Required>
       </openphish_enabled>
+      <openphish_map type="TextField">
+        <default></default>
+        <Required>N</Required>
+      </openphish_map>
       <openphish_premium_enabled type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -134,6 +138,10 @@
         <default>0</default>
         <Required>Y</Required>
       </phishtank_enabled>
+      <phishtank_map type="TextField">
+        <default></default>
+        <Required>N</Required>
+      </phishtank_map>
     </phishing>
 
     <rate_limit>
@@ -333,5 +341,12 @@
         <Required>N</Required>
       </exceptions>
     </surbl>
+
+    <multimap>
+      <badfileextension type="CSVListField">
+        <Required>N</Required>
+        <default>exe,dll,scr,com,cmd,js,bat,vbs,ps1,bat,cpl,lnk,msi,msp,reg</default>
+      </badfileextension>
+    </multimap>
   </items>
 </model>

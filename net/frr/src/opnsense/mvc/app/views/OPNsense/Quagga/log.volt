@@ -12,6 +12,10 @@
 </div>
 
 <script>
+$(document).ready(function() {
+    updateServiceControlUI('quagga');
+});
+
 $("#logtable").bootgrid({
     ajax: true,
     navigation: 0,

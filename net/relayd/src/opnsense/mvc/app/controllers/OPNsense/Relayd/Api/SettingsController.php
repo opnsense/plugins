@@ -73,7 +73,7 @@ class SettingsController extends ApiControllerBase
             }
             if ($node != null) {
                 $result['relayd'] = array($nodeType => $node->getNodes());
-                $result['result'] = "ok";
+                $result['result'] = 'ok';
             }
         }
         return $result;

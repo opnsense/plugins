@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2017 Michael Muenz
+    Copyright (C) 2017-2018 Michael Muenz
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,16 @@ function nut_enabled()
     return false;
 }
 
+function nut_netclient()
+{
+    $model = new \OPNsense\Nut\Nut();
+    if ((string)$model->general->mode == 'netclient') {
+        return true;
+    }
+
+    return false;
+}
+
 function nut_services()
 {
     $services = array();
@@ -52,5 +62,17 @@ function nut_services()
             'pidfile' => '/var/run/nut.pid'
         );
     }
+    if (nut_netclient()) {
+        $services[] = array(
+            'description' => gettext('Network UPS Monitor'),
+            'configd' => array(
+                'restart' => array('nut restart'),
+                'start' => array('nut start'),
+                'stop' => array('nut stop'),
+            ),
+            'name' => 'upsmon'
+        );
+    }
+
     return $services;
 }

@@ -160,7 +160,7 @@
                                     <IPv4>IPv4</IPv4>
                                     <IPv6>IPv6</IPv6>
                                 </OptionValues>
-                        </version>                    
+                        </version>
                         <seqnumber type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
