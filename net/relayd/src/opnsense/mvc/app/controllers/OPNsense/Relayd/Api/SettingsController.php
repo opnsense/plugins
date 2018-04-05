@@ -44,12 +44,21 @@ class SettingsController extends ApiControllerBase
 
     static protected $internalModelName = 'relayd';
     static protected $internalModelClass = '\OPNsense\Relayd\Relayd';
+    public $mdlRelayd = null;
 
     /**
      * list with valid model node types
      */
     private $nodeTypes = array('general', 'host', 'tablecheck', 'table', 'protocol', 'virtualserver');
-
+    
+    /**
+     * initialize object properties
+     */
+    public function onConstruct()
+    {
+        $this->mdlRelayd = new Relayd();
+    }
+    
     /**
      * query relayd settings
      * @param $nodeType
@@ -61,14 +70,13 @@ class SettingsController extends ApiControllerBase
         $result = array("result" => "failed");
         if ($this->request->isGet() && $nodeType != null) {
             $this->validateNodeType($nodeType);
-            $mdlRelayd = new Relayd();
             if ($nodeType == 'general') {
-                $node = $mdlRelayd->getNodeByReference($nodeType);
+                $node = $this->mdlRelayd->getNodeByReference($nodeType);
             } else {
                 if($uuid != null) {
-                    $node = $mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
+                    $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
-                    $node = $mdlRelayd->$nodeType->Add();
+                    $node = $this->mdlRelayd->$nodeType->Add();
                 }
             }
             if ($node != null) {
@@ -91,30 +99,41 @@ class SettingsController extends ApiControllerBase
         $result = array("result" => "failed", "validations" => array());
         if ($this->request->isPost() && $this->request->hasPost("relayd") && $nodeType != null) {
             $this->validateNodeType($nodeType);
-            $mdlRelayd = new Relayd();
             if ($nodeType == 'general') {
-                $node = $mdlRelayd->getNodeByReference($nodeType);
+                $node = $this->mdlRelayd->getNodeByReference($nodeType);
             } else {
                 if($uuid != null) {
-                    $node = $mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
+                    $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
-                    $node = $mdlRelayd->$nodeType->Add();
+                    $node = $this->mdlRelayd->$nodeType->Add();
                 }
             }
             if ($node != null) {
                 $relaydInfo = $this->request->getPost("relayd");
-
+                
                 // perform plugin specific validations
                 if ($nodeType == 'virtualserver') {
+                    
+                    // preset defaults for validations
+                    if(empty($relaydInfo[$nodeType]['type'])) {
+                        $relaydInfo[$nodeType]['type'] = $node->type->__toString();
+                    }
+                    if(empty($relaydInfo[$nodeType]['transport_tablemode'])) {
+                        $relaydInfo[$nodeType]['transport_tablemode'] = $node->transport_tablemode->__toString();
+                    }
+                    if(empty($relaydInfo[$nodeType]['backuptransport_tablemode'])) {
+                        $relaydInfo[$nodeType]['backuptransport_tablemode'] = $node->backuptransport_tablemode->__toString();
+                    }
+                    
                     if ($relaydInfo[$nodeType]['type'] == 'redirect') {
                         if ($relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
                             $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin') {
                                 $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for redirects.";
-                            }
-                            if ($relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
-                                $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin') {
-                                    $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for redirects.";
-                                }
+                        }
+                        if ($relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
+                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin') {
+                                $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for redirects.";
+                        }
                     }
                     if ($relaydInfo[$nodeType]['type'] == 'relay') {
                         if ($relaydInfo[$nodeType]['transport_tablemode'] == 'least-states') {
@@ -149,7 +168,7 @@ class SettingsController extends ApiControllerBase
                 }
 
                 $node->setNodes($relaydInfo[$nodeType]);
-                $valMsgs = $mdlRelayd->performValidation();
+                $valMsgs = $this->mdlRelayd->performValidation();
                 foreach ($valMsgs as $field => $msg) {
                     $fieldnm = str_replace($node->__reference, "relayd." . $nodeType, $msg->getField());
                     $result["validations"][$fieldnm] = $msg->getMessage();
@@ -157,7 +176,7 @@ class SettingsController extends ApiControllerBase
                 if (empty($result["validations"])) {
                     unset($result["validations"]);
                     $result['result'] = 'ok';
-                    $mdlRelayd->serializeToConfig();
+                    $this->mdlRelayd->serializeToConfig();
                     Config::getInstance()->save();
                     if ($nodeType == 'general' && $relaydInfo['general']['enabled'] == '0') {
                         $svcRelayd = new ServiceController();
@@ -181,11 +200,10 @@ class SettingsController extends ApiControllerBase
         if ($nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($uuid != null) {
-                $mdlRelayd = new Relayd();
-                $node = $mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
+                $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
                 if ($node != null) {
-                    $nodeName = $mdlRelayd->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
-                    if ($mdlRelayd->$nodeType->del($uuid) == true) {
+                    $nodeName = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
+                    if ($this->mdlRelayd->$nodeType->del($uuid) == true) {
                         // delete relations
                         switch ($nodeType) {
                             case 'host':
@@ -203,7 +221,7 @@ class SettingsController extends ApiControllerBase
                                 $this->deleteRelations('virtualserver', 'protocol', $uuid, 'protocol', $nodeName, $mdlRelayd);
                                 break;
                         }
-                        $mdlRelayd->serializeToConfig();
+                        $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
                         $result["result"] = "ok";
                     }
@@ -223,8 +241,7 @@ class SettingsController extends ApiControllerBase
         $this->sessionClose();
         if ($this->request->isPost() && $nodeType != null) {
             $this->validateNodeType($nodeType);
-            $mdlRelayd = new Relayd();
-            $grid = new UIModelGrid($mdlRelayd->$nodeType);
+            $grid = new UIModelGrid($this->mdlRelayd->$nodeType);
             $fields = array();
             switch ($nodeType) {
                 case 'host':
@@ -267,9 +284,9 @@ class SettingsController extends ApiControllerBase
      * @param &$mdlRelayd
      * @throws \Exception
      */
-    private function deleteRelations($nodeType = null, $nodeField = null, $relUuid = null, $relNodeType = null, $relNodeName = null, &$mdlRelayd = null)
+    private function deleteRelations($nodeType = null, $nodeField = null, $relUuid = null, $relNodeType = null, $relNodeName = null)
     {
-        $nodes = $mdlRelayd->$nodeType->getNodes();
+        $nodes = $this->mdlRelayd->$nodeType->getNodes();
         // get nodes with relations
         foreach ($nodes as $nodeUuid => $node) {
             // get relation uuids
@@ -277,14 +294,14 @@ class SettingsController extends ApiControllerBase
                 // remove uuid from field
                 if ($fieldUuid == $relUuid) {
                     $refField = $nodeType . '.' . $nodeUuid . '.' . $nodeField;
-                    $relNode = $mdlRelayd->getNodeByReference($refField);
+                    $relNode = $this->mdlRelayd->getNodeByReference($refField);
                     $nodeRels = str_replace($relUuid, '', $relNode->__toString());
                     $nodeRels = str_replace(',,', ',', $nodeRels);
                     $nodeRels = rtrim($nodeRels, ',');
                     $nodeRels = ltrim($nodeRels, ',');
-                    $mdlRelayd->setNodeByReference($refField, $nodeRels);
+                    $this->mdlRelayd->setNodeByReference($refField, $nodeRels);
                     if ($relNode->isEmptyAndRequired()) {
-                        $nodeName = $mdlRelayd->getNodeByReference($nodeType . '.' . $nodeUuid . '.name')->__toString();
+                        $nodeName = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $nodeUuid . '.name')->__toString();
                         throw new \Exception("Cannot delete $relNodeType '$relNodeName' from $nodeType '$nodeName'");
                     }
                 }
