@@ -43,6 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 	   $('#btnReload').unbind('click').click(function(){
 	      $('#btnReloadProgress').addClass("fa fa-spinner fa-pulse");
 	      ajaxCall(url="/api/relayd/service/reconfigure", sendData={}, callback=function(data,status) {
+                 updateServiceControlUI('relayd');
 	         $('#btnReloadProgress').removeClass("fa fa-spinner fa-pulse");
 	         $('#btnReload').blur();
 	         $("#responseMsg").removeClass("hidden");
@@ -62,10 +63,10 @@ POSSIBILITY OF SUCH DAMAGE.
 		   $("#frm_GeneralSettings_progress").addClass("fa fa-spinner fa-pulse");
 	      var frm_id = 'frm_GeneralSettings';
 	      saveFormToEndpoint(url = "/api/relayd/settings/set/general/",formid=frm_id,callback_ok=function(){
+	          $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
+	          $("#btn_ApplyGeneralSettings").blur();
                   updateServiceControlUI('relayd');
 	      });
-	      $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-	      $("#btn_ApplyGeneralSettings").blur();
 	   });
 
 	   $("#grid-host").UIBootgrid({
@@ -332,8 +333,8 @@ POSSIBILITY OF SUCH DAMAGE.
    </div>
    <div class="col-md-12">
       <hr/>
-      <button class="btn btn-primary" id="btnConfigTest" type="button"><b>{{ lang._('Test Configuration') }}</b><i id="btnConfigTestProgress" class=""></i></button>
-      <button class="btn btn-primary" id="btnReload" type="button"><b>{{ lang._('Reload Configuration') }}</b><i id="btnReloadProgress" class=""></i></button>
+      <button class="btn btn-primary" id="btnConfigTest" type="button"><b>{{ lang._('Test Configuration') }}</b> <i id="btnConfigTestProgress"></i></button>
+      <button class="btn btn-primary" id="btnReload" type="button"><b>{{ lang._('Reload Configuration') }}</b> <i id="btnReloadProgress"></i></button>
       <br/>
       <br/>
    </div>

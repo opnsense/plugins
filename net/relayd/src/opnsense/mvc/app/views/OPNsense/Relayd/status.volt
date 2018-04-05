@@ -28,6 +28,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript">
    $( document ).ready(function() {
+      updateServiceControlUI('relayd');
 	   // get status and build the table body
       $('#btnRefresh').unbind('click').click(function() {
          ajaxCall(url = "/api/relayd/status/sum", sendData={}, callback = function(result, status) {

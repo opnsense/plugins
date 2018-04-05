@@ -195,11 +195,9 @@ class SettingsController extends ApiControllerBase
                     $result['result'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
                     Config::getInstance()->save();
-                    if ($nodeType == 'general' &&
-                        isset($relaydInfo[$nodeType]['enabled']) &&
-                        $relaydInfo[$nodeType]['enabled'] == '0') {
+                    if ($nodeType == 'general') {
                         $svcRelayd = new ServiceController();
-                        $result = $svcRelayd->stopAction();
+                        $result = $svcRelayd->reconfigureAction();
                     }
                 }
             }
