@@ -328,7 +328,7 @@
             </field>
             <field>
                 <id>rspamd.av.whitelist</id>
-                <label>Whitelist</label>
+                <label>Whitelisted Servers</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
@@ -338,10 +338,11 @@
         <subtab id="rspamd-anti-malware-surbl" description="SURBL">
             <field>
                 <id>rspamd.surbl.whitelist</id>
-                <label>Whitelist</label>
+                <label>Whitelisted Servers</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
+                <help>List of IPs to exclude from SURBL checks.</help>
             </field>
             <field>
                 <id>rspamd.surbl.exceptions</id>
