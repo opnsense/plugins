@@ -342,7 +342,7 @@
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
-                <help>List of IPs to exclude from SURBL checks.</help>
+                <help>List of domains that are not checked by surbl.</help>
             </field>
             <field>
                 <id>rspamd.surbl.exceptions</id>
@@ -350,6 +350,7 @@
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
+                <help>Additional exceptions for TLD rules.</help>
             </field>
         </subtab>
     </tab>
