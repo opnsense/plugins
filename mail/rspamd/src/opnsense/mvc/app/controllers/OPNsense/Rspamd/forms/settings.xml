@@ -30,12 +30,13 @@
                 <id>rspamd.graylist.expire</id>
                 <label>Expiration</label>
                 <type>text</type>
-                <help>Time after which the graylist state expires in days.</help>
+                <help>Time after which the graylist state expires in days. Default is 1 day.</help>
             </field>
             <field>
                 <id>rspamd.graylist.timeout</id>
                 <label>Timeout</label>
                 <type>text</type>
+                <help>Default is 1 Minute.</help>
             </field>
             <field>
                 <id>rspamd.graylist.max_data_len</id>
@@ -135,11 +136,13 @@
                 <id>rspamd.mx-check.enabled</id>
                 <label>Enabled</label>
                 <type>checkbox</type>
+                <help>The MX Check module checks if the domain in a messages SMTP FROM addresses (or the domain in HELO in case SMTP FROM is empty) has at least one connectable MX. If a connectable MX is found this information is cached in Redis.</help>
             </field>
             <field>
                 <id>rspamd.mx_check.expire</id>
                 <label>Expiration</label>
                 <type>text</type>
+                <help>Lifetime of Redis cache - 1 day by default.</help>
             </field>
         </subtab>
         <subtab id="rspamd-anti-spam-phishing" description="Phishing">
@@ -296,13 +299,13 @@
                 <id>rspamd.spf.spf_cache_size</id>
                 <label>Cache Size</label>
                 <type>text</type>
-                <help>Enter the size of the SPF cache.</help>
+                <help>Enter the size of the SPF cache in kilobytes. Default is 2k.</help>
             </field>
             <field>
                 <id>rspamd.spf.spf_cache_expire</id>
                 <label>Cache Expiration</label>
                 <type>text</type>
-                <help>Enter how long SPF entries are valid.</help>
+                <help>Enter how long SPF entries are valid in days, default is 1 day.</help>
             </field>
         </subtab>
     </tab>
