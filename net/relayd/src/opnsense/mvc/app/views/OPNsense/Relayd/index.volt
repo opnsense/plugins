@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
    $( document ).ready(function() {
 
 	   $('#btnConfigTest').unbind('click').click(function(){
+	         $("#responseMsg").addClass("hidden");
 		   $('#btnConfigTestProgress').addClass("fa fa-spinner fa-pulse");
 	      ajaxCall(url="/api/relayd/service/configtest", sendData={}, callback=function(data,status) {
 		   $('#btnConfigTestProgress').removeClass("fa fa-spinner fa-pulse");
@@ -41,13 +42,12 @@ POSSIBILITY OF SUCH DAMAGE.
 	   });
 
 	   $('#btnReload').unbind('click').click(function(){
+	      $("#responseMsg").addClass("hidden");
 	      $('#btnReloadProgress').addClass("fa fa-spinner fa-pulse");
 	      ajaxCall(url="/api/relayd/service/reconfigure", sendData={}, callback=function(data,status) {
                  updateServiceControlUI('relayd');
 	         $('#btnReloadProgress').removeClass("fa fa-spinner fa-pulse");
 	         $('#btnReload').blur();
-	         $("#responseMsg").removeClass("hidden");
-	         $("#responseMsg").html(data['result']);
                  updateServiceControlUI('relayd');
 	      });
 	   });
