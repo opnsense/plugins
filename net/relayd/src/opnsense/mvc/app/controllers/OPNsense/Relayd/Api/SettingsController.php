@@ -50,7 +50,7 @@ class SettingsController extends ApiControllerBase
      * list with valid model node types
      */
     private $nodeTypes = array('general', 'host', 'tablecheck', 'table', 'protocol', 'virtualserver');
-    
+
     /**
      * initialize object properties
      */
@@ -58,7 +58,7 @@ class SettingsController extends ApiControllerBase
     {
         $this->mdlRelayd = new Relayd();
     }
-    
+
     /**
      * query relayd settings
      * @param $nodeType
@@ -73,7 +73,7 @@ class SettingsController extends ApiControllerBase
             if ($nodeType == 'general') {
                 $node = $this->mdlRelayd->getNodeByReference($nodeType);
             } else {
-                if($uuid != null) {
+                if ($uuid != null) {
                     $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
                     $node = $this->mdlRelayd->$nodeType->Add();
@@ -96,72 +96,89 @@ class SettingsController extends ApiControllerBase
      */
     public function setAction($nodeType = null, $uuid = null)
     {
-        $result = array("result" => "failed", "validations" => array());
-        if ($this->request->isPost() && $this->request->hasPost("relayd") && $nodeType != null) {
+        $result = array('result' => 'failed', 'validations' => array());
+        if ($this->request->isPost() && $this->request->hasPost('relayd') && $nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($nodeType == 'general') {
                 $node = $this->mdlRelayd->getNodeByReference($nodeType);
             } else {
-                if($uuid != null) {
+                if ($uuid != null) {
                     $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
                     $node = $this->mdlRelayd->$nodeType->Add();
                 }
             }
             if ($node != null) {
-                $relaydInfo = $this->request->getPost("relayd");
-                
+                $relaydInfo = $this->request->getPost('relayd');
+
                 // perform plugin specific validations
                 if ($nodeType == 'virtualserver') {
-                    
                     // preset defaults for validations
-                    if(empty($relaydInfo[$nodeType]['type'])) {
+                    if (empty($relaydInfo[$nodeType]['type'])) {
                         $relaydInfo[$nodeType]['type'] = $node->type->__toString();
                     }
-                    if(empty($relaydInfo[$nodeType]['transport_tablemode'])) {
+                    if (empty($relaydInfo[$nodeType]['transport_tablemode'])) {
                         $relaydInfo[$nodeType]['transport_tablemode'] = $node->transport_tablemode->__toString();
                     }
-                    if(empty($relaydInfo[$nodeType]['backuptransport_tablemode'])) {
-                        $relaydInfo[$nodeType]['backuptransport_tablemode'] = $node->backuptransport_tablemode->__toString();
+                    if (empty($relaydInfo[$nodeType]['backuptransport_tablemode'])) {
+                        $relaydInfo[$nodeType]['backuptransport_tablemode'] =
+                        $node->backuptransport_tablemode->__toString();
                     }
-                    
+
                     if ($relaydInfo[$nodeType]['type'] == 'redirect') {
                         if ($relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
                             $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin') {
-                                $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for redirects.";
+                                $result['validations']['relayd.virtualserver.transport_tablemode'] = sprintf(
+                                    gettext('Scheduler "%s" not supported for redirects.'),
+                                    $relaydInfo[$nodeType]['transport_tablemode']
+                                );
                         }
                         if ($relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
                             $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin') {
-                                $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for redirects.";
+                                $result['validations']['relayd.virtualserver.backuptransport_tablemode'] = sprintf(
+                                    gettext('Scheduler "%s" not supported for redirects.'),
+                                    $relaydInfo[$nodeType]['backuptransport_tablemode']
+                                );
                         }
                     }
                     if ($relaydInfo[$nodeType]['type'] == 'relay') {
                         if ($relaydInfo[$nodeType]['transport_tablemode'] == 'least-states') {
-                            $result["validations"]['relayd.virtualserver.transport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['transport_tablemode'] . "' not supported for relays.";
+                            $result['validations']['relayd.virtualserver.transport_tablemode'] = sprintf(
+                                gettext('Scheduler "%s" not supported for relays.'),
+                                $relaydInfo[$nodeType]['transport_tablemode']
+                            );
                         }
                         if ($relaydInfo[$nodeType]['backuptransport_tablemode'] == 'least-states') {
-                            $result["validations"]['relayd.virtualserver.backuptransport_tablemode'] = "Scheduler '" . $relaydInfo[$nodeType]['backuptransport_tablemode'] . "' not supported for relays.";
+                            $result['validations']['relayd.virtualserver.backuptransport_tablemode'] = sprintf(
+                                gettext('Scheduler "%s" not supported for relays.'),
+                                $relaydInfo[$nodeType]['backuptransport_tablemode']
+                            );
                         }
                     }
                 } elseif ($nodeType == 'tablecheck') {
                     switch ($relaydInfo[$nodeType]['type']) {
                         case 'send':
                             if (empty($relaydInfo[$nodeType]['expect'])) {
-                                $result["validations"]['relayd.tablecheck.expect'] = "Expect Pattern cannot be empty.";
+                                $result['validations']['relayd.tablecheck.expect'] =
+                                gettext('Expect Pattern cannot be empty.');
                             }
                             break;
                         case 'script':
-                            if(empty($relaydInfo[$nodeType]['path'])) {
-                                $result["validations"]['relayd.tablecheck.path'] = "Script path cannot be empty.";
+                            if (empty($relaydInfo[$nodeType]['path'])) {
+                                $result['validations']['relayd.tablecheck.path'] =
+                                gettext('Script path cannot be empty.');
                             }
                             break;
                         case 'http':
-                            if(empty($relaydInfo[$nodeType]['path'])) {
-                                $result["validations"]['relayd.tablecheck.path'] = "Path cannot be empty.";
+                            if (empty($relaydInfo[$nodeType]['path'])) {
+                                $result['validations']['relayd.tablecheck.path'] =
+                                gettext('Path cannot be empty.');
                             }
-                            if(empty($relaydInfo[$nodeType]['code']) && empty($relaydInfo[$nodeType]['digest'])) {
-                                $result["validations"]['relayd.tablecheck.code'] = "Provide one of Response Code or Message Digest.";
-                                $result["validations"]['relayd.tablecheck.digest'] = "Provide one of Response Code or Message Digest.";
+                            if (empty($relaydInfo[$nodeType]['code']) && empty($relaydInfo[$nodeType]['digest'])) {
+                                $result['validations']['relayd.tablecheck.code'] =
+                                gettext('Provide one of Response Code or Message Digest.');
+                                $result['validations']['relayd.tablecheck.digest'] =
+                                gettext('Provide one of Response Code or Message Digest.');
                             }
                             break;
                     }
@@ -178,7 +195,9 @@ class SettingsController extends ApiControllerBase
                     $result['result'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
                     Config::getInstance()->save();
-                    if ($nodeType == 'general' && $relaydInfo['general']['enabled'] == '0') {
+                    if ($nodeType == 'general' &&
+                        isset($relaydInfo[$nodeType]['enabled']) &&
+                        $relaydInfo[$nodeType]['enabled'] == '0') {
                         $svcRelayd = new ServiceController();
                         $result = $svcRelayd->stopAction();
                     }
@@ -207,23 +226,65 @@ class SettingsController extends ApiControllerBase
                         // delete relations
                         switch ($nodeType) {
                             case 'host':
-                                $this->deleteRelations('table', 'hosts', $uuid, 'host', $nodeName, $mdlRelayd);
+                                $this->deleteRelations(
+                                    'table',
+                                    'hosts',
+                                    $uuid,
+                                    'host',
+                                    $nodeName,
+                                    $this->mdlRelayd
+                                );
                                 break;
                             case 'tablecheck':
-                                $this->deleteRelations('virtualserver', 'transport_tablecheck', $uuid, 'tablecheck', $nodeName, $mdlRelayd);
-                                $this->deleteRelations('virtualserver', 'backuptransport_tablecheck', $uuid, 'tablecheck', $nodeName, $mdlRelayd);
+                                $this->deleteRelations(
+                                    'virtualserver',
+                                    'transport_tablecheck',
+                                    $uuid,
+                                    'tablecheck',
+                                    $nodeName,
+                                    $this->mdlRelayd
+                                );
+                                $this->deleteRelations(
+                                    'virtualserver',
+                                    'backuptransport_tablecheck',
+                                    $uuid,
+                                    'tablecheck',
+                                    $nodeName,
+                                    $this->mdlRelayd
+                                );
                                 break;
                             case 'table':
-                                $this->deleteRelations('virtualserver', 'transport_table', $uuid, 'table', $nodeName, $mdlRelayd);
-                                $this->deleteRelations('virtualserver', 'backuptransport_table', $uuid, 'table', $nodeName, $mdlRelayd);
+                                $this->deleteRelations(
+                                    'virtualserver',
+                                    'transport_table',
+                                    $uuid,
+                                    'table',
+                                    $nodeName,
+                                    $this->mdlRelayd
+                                );
+                                $this->deleteRelations(
+                                    'virtualserver',
+                                    'backuptransport_table',
+                                    $uuid,
+                                    'table',
+                                    $nodeName,
+                                    $this->mdlRelayd
+                                );
                                 break;
                             case 'protocol':
-                                $this->deleteRelations('virtualserver', 'protocol', $uuid, 'protocol', $nodeName, $mdlRelayd);
+                                $this->deleteRelations(
+                                    'virtualserver',
+                                    'protocol',
+                                    $uuid,
+                                    'protocol',
+                                    $nodeName,
+                                    $this->mdlRelayd
+                                );
                                 break;
                         }
                         $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
-                        $result["result"] = "ok";
+                        $result['result'] = 'ok';
                     }
                 }
             }
@@ -284,8 +345,13 @@ class SettingsController extends ApiControllerBase
      * @param &$mdlRelayd
      * @throws \Exception
      */
-    private function deleteRelations($nodeType = null, $nodeField = null, $relUuid = null, $relNodeType = null, $relNodeName = null)
-    {
+    private function deleteRelations(
+        $nodeType = null,
+        $nodeField = null,
+        $relUuid = null,
+        $relNodeType = null,
+        $relNodeName = null
+    ) {
         $nodes = $this->mdlRelayd->$nodeType->getNodes();
         // get nodes with relations
         foreach ($nodes as $nodeUuid => $node) {
@@ -301,7 +367,7 @@ class SettingsController extends ApiControllerBase
                     $nodeRels = ltrim($nodeRels, ',');
                     $this->mdlRelayd->setNodeByReference($refField, $nodeRels);
                     if ($relNode->isEmptyAndRequired()) {
-                        $nodeName = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $nodeUuid . '.name')->__toString();
+                        $nodeName = $this->mdlRelayd->getNodeByReference("{$nodeType}.{$nodeUuid}.name")->__toString();
                         throw new \Exception("Cannot delete $relNodeType '$relNodeName' from $nodeType '$nodeName'");
                     }
                 }

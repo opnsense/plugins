@@ -1,36 +1,32 @@
 <?php
 
-/**
- *    Copyright (C) 2018 EURO-LOG AG
+/*
+ * Copyright (C) 2018 EURO-LOG AG
+ * All rights reserved.
  *
- *    All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace tests\OPNsense\Relayd\Api;
-
-require_once("config.inc");
 
 use \OPNsense\Core\Config;
 
@@ -38,7 +34,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * list with model node types
-     */ 
+     */
     private $nodeTypes = array('host', 'tablecheck', 'table', 'protocol', 'virtualserver');
     
     // holds the SettingsController object
@@ -63,7 +59,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     public function testGet()
     {
         $this->assertInstanceOf('\OPNsense\Relayd\Api\SettingsController', self::$setRelayd);
-        $this->expectException(Exception);
+        $this->expectException(\Exception::class);
         $response = self::$setRelayd->getAction('wrong_node_type');
         $testConfig = [];
         $response = self::$setRelayd->getAction('general');
@@ -124,7 +120,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('general');
         $this->assertCount(1, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.general.interval'], 'Check interval must be greater than 0');
+        $this->assertNotEmpty($response['validations']['relayd.general.interval']);
         
         // set correct interval and incorrect timeout (s. testServiceController)
         $_POST = array('relayd' => ['general' => ['interval' => '10', 'timeout' => 86400, 'enabled' => '0']]);
@@ -145,7 +141,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('host');
         $this->assertCount(1, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.host.name'], 'Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.');
+        $this->assertNotEmpty($response['validations']['relayd.host.name']);
         $this->cleanupNodes('host');
         
         // check mask
@@ -153,8 +149,8 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('host');
         $this->assertCount(2, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.host.name'], 'Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.');
-        $this->assertEquals($response['validations']['relayd.host.address'], 'Please specify a valid servername or IP address.');
+        $this->assertNotEmpty($response['validations']['relayd.host.name']);
+        $this->assertNotEmpty($response['validations']['relayd.host.address']);
         $this->cleanupNodes('host');
         
         // create host for ServiceControllerTest
@@ -176,17 +172,19 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('table');
         $this->assertCount(2, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.table.name'], 'Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.');
-        $this->assertEquals($response['validations']['relayd.table.hosts'], 'Host not found');
+        $this->assertNotEmpty($response['validations']['relayd.table.name']);
+        $this->assertNotEmpty($response['validations']['relayd.table.hosts']);
         $this->cleanupNodes('table');
         
         // create table for ServiceControllerTest
         $_POST = array('current' => '1', 'rowCount' => '7', 'searchPhrase' => 'testHost');
         $response = self::$setRelayd->searchAction('host');
         $this->assertArrayHasKey('total', $response);
-        $_POST = array('relayd' => ['table' => ['name' => 'testTable', 'enabled' => 1, 'hosts' => $response['rows'][0]['uuid']]]);
+        $_POST = array('relayd' => [
+            'table' => ['name' => 'testTable', 'enabled' => 1, 'hosts' => $response['rows'][0]['uuid']]
+        ]);
         $response = self::$setRelayd->setAction('table');
-     }
+    }
     
     /**
      * test setAction for tablechecks
@@ -202,8 +200,8 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('tablecheck');
         $this->assertCount(2, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.tablecheck.name'], 'Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.');
-        $this->assertEquals($response['validations']['relayd.tablecheck.type'], 'option not in list');
+        $this->assertNotEmpty($response['validations']['relayd.tablecheck.name']);
+        $this->assertNotEmpty($response['validations']['relayd.tablecheck.type']);
         $this->cleanupNodes('tablecheck');
         
         // type 'send' without 'expect'
@@ -211,7 +209,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('tablecheck');
         $this->assertCount(1, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.tablecheck.expect'], 'Expect Pattern cannot be empty.');
+        $this->assertNotEmpty($response['validations']['relayd.tablecheck.expect']);
         $this->cleanupNodes('tablecheck');
         
         // type 'script' without 'path'
@@ -219,23 +217,25 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('tablecheck');
         $this->assertCount(1, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.tablecheck.path'], 'Script path cannot be empty.');
+        $this->assertNotEmpty($response['validations']['relayd.tablecheck.path']);
         $this->cleanupNodes('tablecheck');
         
         // type 'http' without 'code' and 'digest'
-        $_POST = array('relayd' => ['tablecheck' => ['name' => 'testTableCheck', 'type' => 'http', 'path' => 'http://www.example.com']]);
+        $_POST = array('relayd' => [
+            'tablecheck' => ['name' => 'testTableCheck', 'type' => 'http', 'path' => 'http://www.example.com']
+        ]);
         $response = self::$setRelayd->setAction('tablecheck');
         $this->assertCount(2, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.tablecheck.code'], 'Provide one of Response Code or Message Digest.');
-        $this->assertEquals($response['validations']['relayd.tablecheck.digest'], 'Provide one of Response Code or Message Digest.');
+        $this->assertNotEmpty($response['validations']['relayd.tablecheck.code']);
+        $this->assertNotEmpty($response['validations']['relayd.tablecheck.digest']);
         $this->cleanupNodes('tablecheck');
         
         // create tablecheck for ServiceControllerTest
         $_POST = array('relayd' => [
             'tablecheck' => [
-                'name' => 'testTableCheck', 
-                'type' => 'http', 
+                'name' => 'testTableCheck',
+                'type' => 'http',
                 'path' => '/',
                 'host' => 'localhost',
                 'code' => '403',
@@ -258,12 +258,14 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('protocol');
         $this->assertCount(2, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.protocol.name'], 'Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.');
-        $this->assertEquals($response['validations']['relayd.protocol.type'], 'option not in list');
+        $this->assertNotEmpty($response['validations']['relayd.protocol.name']);
+        $this->assertNotEmpty($response['validations']['relayd.protocol.type']);
         $this->cleanupNodes('protocol');
         
         // create protocol for ServiceControllerTest
-        $_POST = array('relayd' => ['protocol' => ['name' => 'testProtocol', 'type' => 'tcp', 'options' => 'nodelay, socket buffer 65536']]);
+        $_POST = array('relayd' => [
+            'protocol' => ['name' => 'testProtocol', 'type' => 'tcp', 'options' => 'nodelay, socket buffer 65536']
+        ]);
         $response = self::$setRelayd->setAction('protocol');
         $this->assertEquals($response['result'], 'ok');
     }
@@ -274,7 +276,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
      * @depends testReset
      */
     public function testSetVirtualServer()
-    {   
+    {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         
         // search table and tablecheck
@@ -300,11 +302,11 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('virtualserver');
         $this->assertCount(5, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.virtualserver.name'], 'Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.');
-        $this->assertEquals($response['validations']['relayd.virtualserver.listen_address'], 'Please specify a valid servername or IP address.');
-        $this->assertEquals($response['validations']['relayd.virtualserver.listen_startport'], 'A valid Port number must be specified.');
-        $this->assertEquals($response['validations']['relayd.virtualserver.transport_table'], 'Table not found');
-        $this->assertEquals($response['validations']['relayd.virtualserver.transport_tablecheck'], 'Table check not found');
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.name']);
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.listen_address']);
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.listen_startport']);
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.transport_table']);
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.transport_tablecheck']);
         $this->cleanupNodes('virtualserver');
         
         // wrong tablemodes, missing ModelRelationField targets
@@ -320,7 +322,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('virtualserver');
         $this->assertCount(1, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.virtualserver.transport_tablemode'], 'Scheduler \'least-states\' not supported for relays.');
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.transport_tablemode']);
         $this->cleanupNodes('virtualserver');
         
         // wron scheduler, missing protocol
@@ -341,8 +343,8 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('virtualserver');
         $this->assertCount(2, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
-        $this->assertEquals($response['validations']['relayd.virtualserver.backuptransport_tablemode'], 'Scheduler \'random\' not supported for redirects.');
-        $this->assertEquals($response['validations']['relayd.virtualserver.protocol'], 'Protocol not found');
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.backuptransport_tablemode']);
+        $this->assertNotEmpty($response['validations']['relayd.virtualserver.protocol']);
         $this->cleanupNodes('virtualserver');
 
         // create virtualserver for ServiceControllerTest
@@ -378,7 +380,10 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // generate template and test it by Relayd
         $response = $svcRelayd->configtestAction();
         $this->assertEquals($response['template'], 'OK');
-        $this->assertEquals($response['result'], "global timeout exceeds interval\ntable timeout exceeds interval: testTable:443");
+        $this->assertEquals(
+            $response['result'],
+            "global timeout exceeds interval\ntable timeout exceeds interval: testTable:443"
+        );
         $_POST = array('relayd' => ['general' => ['timeout' => '200']]);
         $response = self::$setRelayd->setAction('general');
         $this->assertEquals($response['result'], 'ok');
@@ -406,7 +411,6 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // status
         $response = $svcRelayd->statusAction();
         $this->assertEquals($response['status'], 'running');
-        
     }
     
     /**
