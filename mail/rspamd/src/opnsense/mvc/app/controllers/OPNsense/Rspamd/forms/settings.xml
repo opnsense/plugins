@@ -345,7 +345,7 @@
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
-                <help>List of domains that are not checked by surbl.</help>
+                <help>List of domains that are not checked by SURBL.</help>
             </field>
             <field>
                 <id>rspamd.surbl.exceptions</id>
