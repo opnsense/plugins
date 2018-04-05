@@ -70,13 +70,14 @@ security/openconnect -- OpenConnect Client
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
+sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/monit -- Proactive system monitoring
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-www/c-icap -- c-icap connects your Proxy with a virus scanner
+www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/web-proxy-sso -- Kerberos authentication module
 www/web-proxy-useracl -- Group and user ACL for the web proxy
 ```
