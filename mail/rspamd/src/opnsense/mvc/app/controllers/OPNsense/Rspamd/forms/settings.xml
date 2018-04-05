@@ -341,7 +341,7 @@
         <subtab id="rspamd-anti-malware-surbl" description="SURBL">
             <field>
                 <id>rspamd.surbl.whitelist</id>
-                <label>Whitelisted Servers</label>
+                <label>Whitelisted Domains</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
