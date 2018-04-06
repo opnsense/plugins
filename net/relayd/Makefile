@@ -5,9 +5,4 @@ PLUGIN_DEPENDS=		relayd
 PLUGIN_COMMENT=		Relayd Load Balancer
 PLUGIN_MAINTAINER=	frank.brendel@eurolog.com
 
-test:
-	@cd /usr/local/opnsense/mvc/tests && \
-	    phpunit --configuration PHPunit.xml \
-	    ${.CURDIR}/src/opnsense/mvc/tests
-
 .include "../../Mk/plugins.mk"

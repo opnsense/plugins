@@ -125,7 +125,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // set correct interval and incorrect timeout (s. testServiceController)
         $_POST = array('relayd' => ['general' => ['interval' => '10', 'timeout' => 86400, 'enabled' => '0']]);
         $response = self::$setRelayd->setAction('general');
-        $this->assertEquals($response['response'], "OK\n\n");
+        $this->assertEquals($response['status'], 'ok');
     }
     
     /**
@@ -386,7 +386,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         );
         $_POST = array('relayd' => ['general' => ['timeout' => '200']]);
         $response = self::$setRelayd->setAction('general');
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
         $response = $svcRelayd->configtestAction();
         $this->assertEquals($response['template'], 'OK');
         $this->assertEquals($response['result'], 'configuration OK');
@@ -398,7 +398,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // enable
         $_POST = array('relayd' => ['general' => ['enabled' => '1']]);
         $response = self::$setRelayd->setAction('general');
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
         
         // reconfigure
         $response = $svcRelayd->reconfigureAction();
