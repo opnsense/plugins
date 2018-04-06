@@ -17,7 +17,7 @@
         </OptionValues>
       </mode>
      <name type="TextField">
-        <default>UPS-Name</default>
+        <default>UPSName</default>
         <Required>Y</Required>
         <mask>/^([0-9a-zA-Z){1,128}$/u</mask>
         <ValidationMessage>Only characters and numbers allowed.</ValidationMessage>
