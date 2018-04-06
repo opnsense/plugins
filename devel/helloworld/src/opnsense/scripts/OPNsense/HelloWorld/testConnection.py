@@ -57,7 +57,7 @@ if os.path.exists(hello_world_config):
             result['message'] = 'test ok!'
         except smtplib.SMTPException as error:
             # unable to send mail
-            result['message'] = '%s'%error
+            result['message'] = '%s' % error
         except socket.error as error:
             # connect error
             if error.strerror is None:

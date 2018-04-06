@@ -312,4 +312,16 @@ style-fix: check
 	fi
 .endfor
 
+style-python: check
+	@if [ -d ${.CURDIR}/src ]; then \
+		pycodestyle --ignore=E501 ${.CURDIR}/src || true; \
+	fi
+
+test: check
+	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \
+		cd /usr/local/opnsense/mvc/tests && \
+		    phpunit --configuration PHPunit.xml \
+		    ${.CURDIR}/src/opnsense/mvc/tests; \
+	fi
+
 .PHONY:	check
