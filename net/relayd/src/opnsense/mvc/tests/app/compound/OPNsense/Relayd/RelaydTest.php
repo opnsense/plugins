@@ -36,15 +36,15 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
      * list with model node types
      */
     private $nodeTypes = array('host', 'tablecheck', 'table', 'protocol', 'virtualserver');
-    
+
     // holds the SettingsController object
     protected static $setRelayd;
-    
+
     public static function setUpBeforeClass()
     {
         self::$setRelayd = new \OPNsense\Relayd\Api\SettingsController;
     }
-    
+
     private function cleanupNodes($nodeType = null)
     {
         $nodes = self::$setRelayd->mdlRelayd->$nodeType->getNodes();
@@ -52,7 +52,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
             self::$setRelayd->mdlRelayd->$nodeType->del($nodeUuid);
         }
     }
-    
+
     /**
      * test getAction
      */
@@ -70,7 +70,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
 
         return $testConfig;
     }
-    
+
     /**
      * test searchAction
      * @depends testGet
@@ -79,16 +79,16 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = array('current' => '1', 'rowCount' => '7');
-        
+
         foreach ($this->nodeTypes as $nodeType) {
             $response = self::$setRelayd->searchAction($nodeType);
             $this->assertArrayHasKey('total', $response);
             $testConfig[$nodeType] = $response['rows'];
         }
-        
+
         return $testConfig;
     }
-    
+
     /**
      * test delAction
      * not really a test if the config is empty, but we will delete something later
@@ -106,7 +106,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // need an assertion here to succeed this test on empty config
         $this->assertTrue(true);
     }
-    
+
     /**
      * test setAction general
      * @depends testReset
@@ -114,20 +114,20 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     public function testSetGeneral()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        
+
         // interval too small
         $_POST = array('relayd' => ['general' => ['interval' => '0']]);
         $response = self::$setRelayd->setAction('general');
         $this->assertCount(1, $response['validations']);
         $this->assertEquals($response['result'], 'failed');
         $this->assertNotEmpty($response['validations']['relayd.general.interval']);
-        
+
         // set correct interval and incorrect timeout (s. testServiceController)
         $_POST = array('relayd' => ['general' => ['interval' => '10', 'timeout' => 86400, 'enabled' => '0']]);
         $response = self::$setRelayd->setAction('general');
         $this->assertEquals($response['status'], 'ok');
     }
-    
+
     /**
      * test setAction for hosts
      * @depends testReset
@@ -135,7 +135,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     public function testSetHost()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        
+
         // empty host name
         $_POST = array('relayd' => ['host' => ['address' => '127.0.0.1']]);
         $response = self::$setRelayd->setAction('host');
@@ -143,7 +143,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response['result'], 'failed');
         $this->assertNotEmpty($response['validations']['relayd.host.name']);
         $this->cleanupNodes('host');
-        
+
         // check mask
         $_POST = array('relayd' => ['host' => ['name' => 'test$Host', 'address' => '127.0.0.$']]);
         $response = self::$setRelayd->setAction('host');
@@ -152,13 +152,13 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($response['validations']['relayd.host.name']);
         $this->assertNotEmpty($response['validations']['relayd.host.address']);
         $this->cleanupNodes('host');
-        
+
         // create host for ServiceControllerTest
         $_POST = array('relayd' => ['host' => ['name' => 'testHost', 'address' => '127.0.0.1']]);
         $response = self::$setRelayd->setAction('host');
         $this->assertEquals($response['result'], 'ok');
     }
-    
+
     /**
      * test setAction for tables
      * @depends testSetHost
@@ -175,7 +175,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($response['validations']['relayd.table.name']);
         $this->assertNotEmpty($response['validations']['relayd.table.hosts']);
         $this->cleanupNodes('table');
-        
+
         // create table for ServiceControllerTest
         $_POST = array('current' => '1', 'rowCount' => '7', 'searchPhrase' => 'testHost');
         $response = self::$setRelayd->searchAction('host');
@@ -185,7 +185,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         ]);
         $response = self::$setRelayd->setAction('table');
     }
-    
+
     /**
      * test setAction for tablechecks
      * @depends testSearch
@@ -194,7 +194,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     public function testSetTableCheck()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        
+
         // wrong option
         $_POST = array('relayd' => ['tablecheck' => ['name' => 'test$Check', 'type' => 'ABCXYZ']]);
         $response = self::$setRelayd->setAction('tablecheck');
@@ -203,7 +203,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($response['validations']['relayd.tablecheck.name']);
         $this->assertNotEmpty($response['validations']['relayd.tablecheck.type']);
         $this->cleanupNodes('tablecheck');
-        
+
         // type 'send' without 'expect'
         $_POST = array('relayd' => ['tablecheck' => ['name' => 'testSend', 'type' => 'send']]);
         $response = self::$setRelayd->setAction('tablecheck');
@@ -211,7 +211,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response['result'], 'failed');
         $this->assertNotEmpty($response['validations']['relayd.tablecheck.expect']);
         $this->cleanupNodes('tablecheck');
-        
+
         // type 'script' without 'path'
         $_POST = array('relayd' => ['tablecheck' => ['name' => 'testScript', 'type' => 'script']]);
         $response = self::$setRelayd->setAction('tablecheck');
@@ -219,7 +219,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response['result'], 'failed');
         $this->assertNotEmpty($response['validations']['relayd.tablecheck.path']);
         $this->cleanupNodes('tablecheck');
-        
+
         // type 'http' without 'code' and 'digest'
         $_POST = array('relayd' => [
             'tablecheck' => ['name' => 'testTableCheck', 'type' => 'http', 'path' => 'http://www.example.com']
@@ -230,7 +230,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($response['validations']['relayd.tablecheck.code']);
         $this->assertNotEmpty($response['validations']['relayd.tablecheck.digest']);
         $this->cleanupNodes('tablecheck');
-        
+
         // create tablecheck for ServiceControllerTest
         $_POST = array('relayd' => [
             'tablecheck' => [
@@ -243,7 +243,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('tablecheck');
         $this->assertEquals($response['result'], 'ok');
     }
-    
+
     /**
      * test setAction for protocols
      * @depends testSearch
@@ -252,7 +252,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     public function testSetProtocol()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        
+
         // missing 'name' wrong 'type'
         $_POST = array('relayd' => ['protocol' => ['name' => 'test$Protocol', 'type' => 'ABCXYZ']]);
         $response = self::$setRelayd->setAction('protocol');
@@ -261,7 +261,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($response['validations']['relayd.protocol.name']);
         $this->assertNotEmpty($response['validations']['relayd.protocol.type']);
         $this->cleanupNodes('protocol');
-        
+
         // create protocol for ServiceControllerTest
         $_POST = array('relayd' => [
             'protocol' => ['name' => 'testProtocol', 'type' => 'tcp', 'options' => 'nodelay, socket buffer 65536']
@@ -269,7 +269,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('protocol');
         $this->assertEquals($response['result'], 'ok');
     }
-    
+
     /**
      * test setAction for virtualservers
      * @depends testSearch
@@ -278,7 +278,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     public function testSetVirtualServer()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        
+
         // search table and tablecheck
         $_POST = array('current' => '1', 'rowCount' => '7', 'searchPhrase' => 'testTable');
         $response = self::$setRelayd->searchAction('table');
@@ -292,7 +292,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->searchAction('protocol');
         $this->assertArrayHasKey('total', $response);
         $protocolUuid = $response['rows'][0]['uuid'];
-        
+
         // check mask, misisng table, tablecheck, wrong/missing listen port/address
         $_POST = array('relayd' => [
             'virtualserver' => [
@@ -308,7 +308,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($response['validations']['relayd.virtualserver.transport_table']);
         $this->assertNotEmpty($response['validations']['relayd.virtualserver.transport_tablecheck']);
         $this->cleanupNodes('virtualserver');
-        
+
         // wrong tablemodes, missing ModelRelationField targets
         $_POST = array('relayd' => [
             'virtualserver' => [
@@ -324,7 +324,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response['result'], 'failed');
         $this->assertNotEmpty($response['validations']['relayd.virtualserver.transport_tablemode']);
         $this->cleanupNodes('virtualserver');
-        
+
         // wron scheduler, missing protocol
         $_POST = array('relayd' => [
             'virtualserver' => [
@@ -362,7 +362,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->setAction('virtualserver');
         $this->assertEquals($response['result'], 'ok');
     }
-    
+
     /**
      * ServiceControllerTest
      * @depends testSetGeneral
@@ -376,7 +376,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     {
         $svcRelayd = new \OPNsense\Relayd\Api\ServiceController;
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        
+
         // generate template and test it by Relayd
         $response = $svcRelayd->configtestAction();
         $this->assertEquals($response['template'], 'OK');
@@ -390,29 +390,29 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = $svcRelayd->configtestAction();
         $this->assertEquals($response['template'], 'OK');
         $this->assertEquals($response['result'], 'configuration OK');
-        
+
         // status
         $response = $svcRelayd->statusAction();
         $this->assertEquals($response['status'], 'disabled');
-        
+
         // enable
         $_POST = array('relayd' => ['general' => ['enabled' => '1']]);
         $response = self::$setRelayd->setAction('general');
         $this->assertEquals($response['status'], 'ok');
-        
+
         // reconfigure
         $response = $svcRelayd->reconfigureAction();
         $this->assertEquals($response['status'], 'ok');
-        
+
         // start
         $response = $svcRelayd->startAction();
         $this->assertEquals($response['response'], "OK\n\n");
-        
+
         // status
         $response = $svcRelayd->statusAction();
         $this->assertEquals($response['status'], 'running');
     }
-    
+
     /**
      * StatusControllerTest
      * @depends testServiceController
@@ -427,12 +427,12 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response['rows'][0]['tables'][1]['name'], 'testTable:443');
         $this->assertEquals($response['rows'][0]['tables'][1]['status'], 'active (1 hosts)');
         $this->assertEquals($response['rows'][0]['tables'][1]['hosts'][1]['name'], '127.0.0.1');
-        
+
         $response = $statRelayd->toggleAction('table', 1, 'disable');
         $this->assertEquals($response['result'], 'ok');
         $this->assertEquals($response['output'], 'command succeeded');
     }
-    
+
     /**
      * cleanup config
      * @depends testStatusController
@@ -442,14 +442,14 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $svcRelayd = new \OPNsense\Relayd\Api\ServiceController;
         $response = $svcRelayd->stopAction();
         $this->assertEquals($response['response'], "OK\n\n");
-        
+
         foreach (array_reverse($this->nodeTypes) as $nodeType) {
             $this->cleanupNodes($nodeType);
         }
-        
+
         $general = self::$setRelayd->mdlRelayd->getNodeByReference('general');
         $general->setNodes(array('enabled' => '0'));
-        
+
         self::$setRelayd->mdlRelayd->serializeToConfig();
         Config::getInstance()->save();
         $this->assertTrue(true);
