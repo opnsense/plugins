@@ -13,6 +13,37 @@
       </enable_redis_plugin>
     </general>
 
+    <milter_headers>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+      <enable_extended_spam_headers type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_extended_spam_headers>
+      <enable_authentication_results type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_authentication_results>
+      <enable_spamd_bar type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_spamd_bar>
+      <skip_local type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </skip_local>
+      <skip_authenticated type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </skip_authenticated>
+      <extended_headers_rcpt type="CSVListField">
+        <mask>/[a-z0-9\.\-@,]+/i</mask>
+        <Required>N</Required>
+      </extended_headers_rcpt>
+    </milter_headers>
+
     <graylist>
       <expire type="IntegerField">
         <Required>N</Required>
