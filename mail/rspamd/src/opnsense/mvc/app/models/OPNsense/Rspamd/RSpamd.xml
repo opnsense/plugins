@@ -39,7 +39,7 @@
         <Required>Y</Required>
       </skip_authenticated>
       <extended_headers_rcpt type="CSVListField">
-        <mask>/[a-z0-9\.\-@,]+/i</mask>
+        <mask>/[a-z0-9\.\-_@,]+/i</mask>
         <Required>N</Required>
       </extended_headers_rcpt>
     </milter_headers>

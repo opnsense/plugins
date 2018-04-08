@@ -35,7 +35,7 @@
                 <id>rspamd.milter_headers.enable_authentication_results</id>
                 <label>Enable Authentication Result Headers</label>
                 <type>checkbox</type>
-                <help>If this checkbox is enabled, a header about the authentication state</help>
+                <help>If this checkbox is enabled, a header about the authentication state will be added.</help>
             </field>
             <field>
                 <id>rspamd.milter_headers.enable_extended_spam_headers</id>
@@ -53,11 +53,13 @@
                 <id>rspamd.milter_headers.skip_local</id>
                 <label>Skip Local</label>
                 <type>checkbox</type>
+                <help>This will skip adding headers for local IPs. If this is unchecked, headers will also be added anyway but if it is checked, the headers will not be added for local IPs.</help>
             </field>
             <field>
                 <id>rspamd.milter_headers.skip_authenticated</id>
                 <label>Skip Authenticated</label>
                 <type>checkbox</type>
+                <help>If the user is authenticated, the headers will not be added if this is enabled. If this is checked, your outgoing mails will very likely not leak information about the the scanner.</help>
             </field>
             <field>
                 <id>rspamd.milter_headers.extended_headers_rcpt</id>
