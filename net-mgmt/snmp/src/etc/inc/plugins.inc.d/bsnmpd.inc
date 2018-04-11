@@ -132,9 +132,7 @@ EOD;
             $bind_to_ip = $config['snmpd']['bindip'];
         } else {
             $if = get_real_interface($config['snmpd']['bindip']);
-            if (does_interface_exist($if)) {
-                $bind_to_ip = find_interface_ip($if);
-            }
+            $bind_to_ip = find_interface_ip($if);
         }
     }
 
