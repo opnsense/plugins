@@ -20,7 +20,54 @@
                 <label>Blocked File Extensions</label>
                 <type>select_multiple</type>
                 <style>tokenize</style>
+                <allownew>true</allownew>
                 <help>If an attached file has a suffix in this list, the mail will be rejected via a hard reject, which means that the server will be immeadiately informed about the policy violation.</help>
+            </field>
+        </subtab>
+        <subtab id="rspamd-general-milter-headers" description="Milter Headers">
+            <field>
+                <id>rspamd.milter_headers.enabled</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>When this checkbox is enabled, you can add additional headers to your mails, which contain information about the scan results.</help>
+            </field>
+            <field>
+                <id>rspamd.milter_headers.enable_authentication_results</id>
+                <label>Enable Authentication Result Headers</label>
+                <type>checkbox</type>
+                <help>If this checkbox is enabled, a header about the authentication state will be added.</help>
+            </field>
+            <field>
+                <id>rspamd.milter_headers.enable_extended_spam_headers</id>
+                <label>Enable Extended Spam Headers</label>
+                <type>checkbox</type>
+                <help>If this checkbox is enabled, a header containing the findings of the scan is added.</help>
+            </field>
+            <field>
+                <id>rspamd.milter_headers.enable_spamd_bar</id>
+                <label>Enable Spamd Bar</label>
+                <type>checkbox</type>
+                <help>Add a header containing a visible indicator of the spam level.</help>
+            </field>
+            <field>
+                <id>rspamd.milter_headers.skip_local</id>
+                <label>Skip Local</label>
+                <type>checkbox</type>
+                <help>This will skip adding headers for local IPs. If this is unchecked, headers will also be added anyway but if it is checked, the headers will not be added for local IPs.</help>
+            </field>
+            <field>
+                <id>rspamd.milter_headers.skip_authenticated</id>
+                <label>Skip Authenticated</label>
+                <type>checkbox</type>
+                <help>If the user is authenticated, the headers will not be added if this is enabled. If this is checked, your outgoing mails will very likely not leak information about the the scanner.</help>
+            </field>
+            <field>
+                <id>rspamd.milter_headers.extended_headers_rcpt</id>
+                <label>Extended Headers Recipients</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Enter a (partial) mail address, which should also receive extended headers. For example: user@example.com or @example.net.</help>
             </field>
         </subtab>
     </tab>
