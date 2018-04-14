@@ -55,26 +55,15 @@
                 var frm_title = $(this).closest("form").attr("data-title");
                 // save data for General TAB
                 saveFormToEndpoint(url="/api/nut/settings/set", formid=frm_id, callback_ok=function(){
-                    // on correct save, perform reconfigure. set progress animation when reloading
+                    // on correct save, perform restart, set progress animation when reloading
                     $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
 
-                    ajaxCall(url="/api/nut/service/reconfigure", sendData={}, callback=function(data,status){
+                    ajaxCall(url="/api/nut/service/restart", sendData={}, callback=function(data,status){
                         // when done, disable progress animation.
                         $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-
-                        if (status != "success" || data['status'] != 'ok' ) {
-                            // fix error handling
-                            BootstrapDialog.show({
-                                type:BootstrapDialog.TYPE_WARNING,
-                                title: frm_title,
-                                message: JSON.stringify(data),
-                                draggable: true
-                            });
-                        } else {
                             ajaxCall(url="/api/nut/service/status", sendData={}, callback=function(data,status) {
                                 updateServiceStatusUI(data['status']);
                             });
-                        }
                     });
                 });
             });
