@@ -70,7 +70,8 @@ function nut_services()
                 'start' => array('nut start'),
                 'stop' => array('nut stop'),
             ),
-            'name' => '/var/db/nut/upsmon.pid'
+            'name' => 'upsmon'
+            'pidfile' => '/var/db/nut/upsmon.pid'
         );
     }
 
