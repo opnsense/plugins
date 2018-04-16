@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <description>
         Enterprise-class open source distributed monitoring agent
     </description>
@@ -8,6 +8,7 @@
         <!-- local settings that should NOT be synced to another node -->
         <local>
             <hostname type="TextField">
+                <default>Zabbix agent</default>
                 <Required>Y</Required>
                 <mask>/^.{1,255}$/u</mask>
                 <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
@@ -20,6 +21,7 @@
                     <Required>Y</Required>
                 </enabled>
                 <serverList type="CSVListField">
+                    <default>127.0.0.1</default>
                     <Required>Y</Required>
                     <multiple>Y</multiple>
                     <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
@@ -33,6 +35,7 @@
                     <Required>Y</Required>
                 </listenPort>
                 <listenIP type="CSVListField">
+                    <default>0.0.0.0</default>
                     <Required>Y</Required>
                     <multiple>Y</multiple>
                     <mask>/^((([0-9a-zA-Z._\-\*:]+)([,]){0,1}))*/u</mask>
