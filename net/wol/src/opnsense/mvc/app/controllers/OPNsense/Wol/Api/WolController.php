@@ -39,7 +39,8 @@ class WolController extends ApiMutableModelControllerBase
     static protected $internalModelName = 'wol';
     static protected $internalModelClass = '\OPNsense\Wol\Wol';
 
-    public function setAction() {
+    public function setAction()
+    {
         $result = array();
         if ($this->request->isPost()) {
             /* input validation */
@@ -49,8 +50,8 @@ class WolController extends ApiMutableModelControllerBase
                 $uuid = $this->request->getPost('uuid');
                 $tmp = $wol->getNodeByReference('wolentry.' . $uuid);
                 if ($tmp) {
-                  $wolent = $tmp;
-                  $this->wakeHostByNode($wolent, $result);
+                    $wolent = $tmp;
+                    $this->wakeHostByNode($wolent, $result);
                 }
             } else {
                 $wolent->setNodes($this->request->getPost('wake'));
@@ -62,7 +63,8 @@ class WolController extends ApiMutableModelControllerBase
         return $result;
     }
 
-    public function delHostAction($uuid) {
+    public function delHostAction($uuid)
+    {
         $this->delBase('wolentry', $uuid);
     }
     public function searchHostAction()
@@ -86,7 +88,8 @@ class WolController extends ApiMutableModelControllerBase
     {
         return $this->setBase('host', 'wolentry', $uuid);
     }
-    public function wakeallAction() {
+    public function wakeallAction()
+    {
         if (!$this->request->isPost()) {
             return array('error' => 'Must be called via POST');
         }
@@ -99,7 +102,8 @@ class WolController extends ApiMutableModelControllerBase
         }
         return $results;
     }
-    private function wakeHostByNode($wolent, &$result) {
+    private function wakeHostByNode($wolent, &$result)
+    {
         $backend = new Backend();
         /* determine broadcast address */
         $cidr = $this->getInterfaceSubnet($wolent->interface);
@@ -112,28 +116,31 @@ class WolController extends ApiMutableModelControllerBase
         $broadcast_ip = escapeshellarg($this->calculateSubnetBroadcast($ipaddr, $cidr));
         $result['status'] = trim($backend->configdRun("wol wake {$broadcast_ip} ". escapeshellarg((string)$wolent->mac)));
     }
-    private function getInterfaceIP($if) {
+    private function getInterfaceIP($if)
+    {
         $cfg = Config::getInstance()->object();
         try {
-          $tmp = (string)$cfg->interfaces->{$if}->ipaddr;
+            $tmp = (string)$cfg->interfaces->{$if}->ipaddr;
           // for example DHCP
-          if (!filter_var($tmp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-              return null;
-          }
-          return $tmp;
+            if (!filter_var($tmp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                return null;
+            }
+            return $tmp;
         } catch (Exception $e) {
             return null;
         }
     }
-    private function getInterfaceSubnet($if) {
+    private function getInterfaceSubnet($if)
+    {
         $cfg = Config::getInstance()->object();
         try {
-        return (string)$cfg->interfaces->{$if}->subnet;
+            return (string)$cfg->interfaces->{$if}->subnet;
         } catch (Exception $e) {
-          return null;
+            return null;
         }
     }
-    private function calculateSubnetBroadcast($ip_addr, $cidr) {
+    private function calculateSubnetBroadcast($ip_addr, $cidr)
+    {
         // TODO undefined offset
         $parts = explode('.', $ip_addr);
         $int_ip = ((int)$parts[0]) << 24 | ((int)$parts[1]) << 16 | ((int)$parts[2]) << 8 | (int)$parts[3];
