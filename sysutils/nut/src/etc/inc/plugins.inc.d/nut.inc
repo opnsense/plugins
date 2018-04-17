@@ -59,7 +59,7 @@ function nut_services()
                 'stop' => array('nut stop'),
             ),
             'name' => 'nut',
-            'pidfile' => '/var/run/nut.pid'
+            'pidfile' => '/var/db/nut/upsd.pid'
         );
     }
     if (nut_netclient()) {
@@ -70,7 +70,8 @@ function nut_services()
                 'start' => array('nut start'),
                 'stop' => array('nut stop'),
             ),
-            'name' => 'upsmon'
+            'name' => 'upsmon',
+            'pidfile' => '/var/db/nut/upsmon.pid'
         );
     }
 

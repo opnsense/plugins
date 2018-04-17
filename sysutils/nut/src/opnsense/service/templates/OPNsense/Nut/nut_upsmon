@@ -1,7 +1,5 @@
 {% if helpers.exists('OPNsense.Nut.general.enable') and OPNsense.Nut.general.enable == '1' %}
-{%   if helpers.exists('OPNsense.Nut.general.mode') and OPNsense.Nut.general.mode == 'netclient' %}
 nut_upsmon_enable="YES"
-{%   else %}
+{% else %}
 nut_upsmon_enable="NO"
-{%   endif %}
 {% endif %}
