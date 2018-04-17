@@ -34,11 +34,9 @@
         mapDataToFormUI(data_get_map).done(function(){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
-            // request service status on load and update status box
-            ajaxCall(url="/api/nut/service/status", sendData={}, callback=function(data,status) {
-                updateServiceStatusUI(data['status']);
-            });
         });
+
+        updateServiceControlUI('nut');
 
         // update history on tab state and implement navigation
         if(window.location.hash != "") {
@@ -58,13 +56,9 @@
                     // on correct save, perform restart, set progress animation when reloading
                     $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/nut/service/reconfigure", sendData={}, callback=function(data,status){
-                        ajaxCall(url="/api/nut/service/restart", sendData={}, callback=function(data,status){
-                            // when done, disable progress animation.
-                            $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-                                ajaxCall(url="/api/nut/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                                });
-                        });
+                        // when done, disable progress animation.
+                        $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
+                        updateServiceControlUI('nut');
                     });
                 });
             });

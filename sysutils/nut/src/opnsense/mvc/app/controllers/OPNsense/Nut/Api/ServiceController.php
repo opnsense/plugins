@@ -34,7 +34,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 {
     static protected $internalServiceClass = '\OPNsense\Nut\Nut';
     static protected $internalServiceTemplate = 'OPNsense/Nut';
-    static protected $internalServiceEnabled = 'general.enabled';
+    static protected $internalServiceEnabled = 'general.enable';
     static protected $internalServiceName = 'nut';
 
     public function upsstatusAction()
