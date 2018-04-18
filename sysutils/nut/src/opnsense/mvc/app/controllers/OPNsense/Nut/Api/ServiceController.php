@@ -39,8 +39,16 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function upsstatusAction()
     {
+        $host = "127.0.0.1";
+        if (!empty((string)$model->netclient->address)) {
+          $host = (string)$model->netclient->address;
+        }
+        $upsname = "UPSName";
+        if (!empty((string)$model->netclient->address)) {
+          $host = (string)$model->netclient->address;
+        }
         $backend = new Backend();
-        $response = $backend->configdRun("nut upsstatus");
+        $response = $backend->configdRun("nut upsstatus '$upsname' . @ . '$host'");
         return array("response" => $response);
     }
 }
