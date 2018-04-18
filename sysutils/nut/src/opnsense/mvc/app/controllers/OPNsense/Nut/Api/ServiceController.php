@@ -1,7 +1,7 @@
 <?php
 
 /*
- *    Copyright (C) 2017 Michael Muenz
+ *    Copyright (C) 2017-2018 Michael Muenz
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function upsstatusAction()
     {
+        $model = new Nut();
         $host = "127.0.0.1";
         if (!empty((string)$model->netclient->address)) {
           $host = (string)$model->netclient->address;
