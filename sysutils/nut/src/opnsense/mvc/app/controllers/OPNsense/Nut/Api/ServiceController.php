@@ -44,8 +44,8 @@ class ServiceController extends ApiMutableServiceControllerBase
           $host = (string)$model->netclient->address;
         }
         $upsname = "UPSName";
-        if (!empty((string)$model->netclient->address)) {
-          $host = (string)$model->netclient->address;
+        if (!empty((string)$model->general->name)) {
+          $upsname = (string)$model->general->name;
         }
         $backend = new Backend();
         $response = $backend->configdRun("nut upsstatus '$upsname' . @ . '$host'");
