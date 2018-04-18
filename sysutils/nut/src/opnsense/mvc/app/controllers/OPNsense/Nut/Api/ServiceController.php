@@ -40,13 +40,14 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function upsstatusAction()
     {
         $model = new Nut();
+        $cnf = Config::getInstance()->object();
         $host = "127.0.0.1";
-        if (!empty((string)$model->netclient->address)) {
-          $host = (string)$model->netclient->address;
+        if (!empty((string)$cnf->netclient->address)) {
+          $host = (string)$cnf->netclient->address;
         }
         $upsname = "UPSName";
-        if (!empty((string)$model->general->name)) {
-          $upsname = (string)$model->general->name;
+        if (!empty((string)$cnf->general->name)) {
+          $upsname = (string)$cnf->general->name;
         }
         $backend = new Backend();
         $response = $backend->configdRun("nut upsstatus '$upsname' . @ . '$host'");
