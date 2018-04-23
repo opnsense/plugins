@@ -9,7 +9,8 @@
        Framed-IP-Address = {{ user_list.ip }},{% endif %}
 {%       if user_list.subnet is defined %}
 
-       Framed-IP-Netmask = {{ user_list.subnet }},{% endif %}
+       Framed-IP-Netmask = {{ user_list.subnet }},
+{%       endif %}
 {%       if user_list.route is defined %}
 {%         for network in user_list.route.split(',') %}
        Framed-Route += "{{ network }}",
