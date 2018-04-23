@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/user</mount>
     <description>FreeRADIUS user configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <users>
             <user type="ArrayField">
@@ -28,6 +28,12 @@
                     <Required>N</Required>
                     <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                 </subnet>
+                <route type="NetworkField">
+                    <Required>N</Required>
+                </route>
+                <ip6 type="NetworkField">
+                    <Required>N</Required>
+                </ip6>
                 <vlan type="IntegerField">
                     <Required>N</Required>
                     <MinimumValue>1</MinimumValue>
