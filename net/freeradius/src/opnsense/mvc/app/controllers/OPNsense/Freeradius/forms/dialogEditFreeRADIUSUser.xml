@@ -36,6 +36,20 @@
         <help>Subnet to receive, e.g. 255.255.255.0</help>
     </field>
     <field>
+        <id>user.route</id>
+        <label>Routes</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Add routes in CIDR notation, e.g. 192.168.2.0/24. Multiple entries are allowed</help>
+    </field>
+    <field>
+        <id>user.ip6</id>
+        <label>IPv6 Address</label>
+        <type>text</type>
+        <help>Set the IPv6 address the user should receive.</help>
+    </field>
+    <field>
         <id>user.vlan</id>
         <label>VLAN ID</label>
         <type>text</type>
