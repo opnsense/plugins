@@ -7,8 +7,9 @@
 
        Framed-Protocol = PPP{% if user_list.ip is defined %},
        Framed-IP-Address = {{ user_list.ip }}{% endif %}{% if user_list.subnet is defined %},
-       Framed-IP-Netmask = {{ user_list.subnet }}{% endif %}{% if user_list.route is defined %},{% for network in user_list.route.split(',') %}
-       Framed-IP-Route += "{{ network.route }}"{% endfor %}{% endif %}{% if user_list.ip6 is defined %},
+       Framed-IP-Netmask = {{ user_list.subnet }}{% endif %}{% if user_list.route is defined %},
+         {% for network in user_list.route.split(',') %}
+       Framed-IP-Route += "{{ network }}"{% endfor %}{% endif %}{% if user_list.ip6 is defined %},
        Framed-IPv6-Address = {{ user_list.ip6 }}{% endif %}{% if user_list.vlan is defined %},
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
