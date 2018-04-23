@@ -5,7 +5,7 @@
 {%     if user_list.enabled == '1' %}
 {{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}"{% if user_list.sessionlimit_max_session_limit is defined %}, Max-Daily-Session := {{ user_list.sessionlimit_max_session_limit }}{% endif %}
 
-       Framed-Protocol = PPP{% if user_list.ip is defined %},
+{% if user_list.ip is defined %}
        Framed-IP-Address = {{ user_list.ip }}{% endif %}{% if user_list.subnet is defined %},
        Framed-IP-Netmask = {{ user_list.subnet }}{% endif %}{% if user_list.route is defined %},
 {%       for network in user_list.route.split(',') %}
@@ -20,8 +20,9 @@
        WISPr-Bandwidth-Min-Down = {{ user_list.wispr_bw_min_down }}{% endif %}{% if user_list.wispr_bw_max_down is defined %},
        WISPr-Bandwidth-Max-Down = {{ user_list.wispr_bw_max_down }}{% endif %}{% if user_list.chillispot_bw_max_up is defined %},
        ChilliSpot-Bandwidth-Max-Up = {{ user_list.chillispot_bw_max_up }}{% endif %}{% if user_list.chillispot_bw_max_down is defined %},
-       ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }}
+       ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }},
 {%       endif %}
+       Framed-Protocol = PPP
 
 {%     endif %}
 
