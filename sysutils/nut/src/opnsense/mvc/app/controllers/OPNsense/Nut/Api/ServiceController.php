@@ -29,6 +29,7 @@
 namespace OPNsense\Nut\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -50,7 +51,7 @@ class ServiceController extends ApiMutableServiceControllerBase
           $upsname = (string)$cnf->general->name;
         }
         $backend = new Backend();
-        $response = $backend->configdRun("nut upsstatus {$upsname} . @ . {$host}");
+        $response = $backend->configdpRun("nut upsstatus", {$upsname}@{$host});
         return array("response" => $response);
     }
 }
