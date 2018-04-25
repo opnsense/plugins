@@ -30,6 +30,7 @@ namespace OPNsense\Nut\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Nut\Nut;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -40,19 +41,17 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function upsstatusAction()
     {
-        $model = new Nut();
-        $cnf = Config::getInstance()->object();
-        $host = "127.0.0.1";
-        if (!empty((string)$cnf->netclient->address)) {
-          $host = (string)$cnf->netclient->address;
+        $mdl = new Nut();
+        $host = '127.0.0.1';
+        if (!empty((string)$mdl->netclient->address)) {
+            $host = (string)$mdl->netclient->address;
         }
-        $upsname = "UPSName";
-        if (!empty((string)$cnf->general->name)) {
-          $upsname = (string)$cnf->general->name;
+        $upsname = 'UPSName';
+        if (!empty((string)$mdl->general->name)) {
+            $upsname = (string)$mdl->general->name;
         }
-        $ups = $upsname . '@' . $host;
         $backend = new Backend();
-        $response = $backend->configdpRun("nut upsstatus", array($ups));
+        $response = $backend->configdpRun('nut upsstatus', array("{$upsname}@{$host}"));
         return array("response" => $response);
     }
 }
