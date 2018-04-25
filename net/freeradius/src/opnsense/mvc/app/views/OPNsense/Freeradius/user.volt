@@ -78,12 +78,12 @@ POSSIBILITY OF SUCH DAMAGE.
           // at once after load. No need for an "onShow" type of event here,
           // since our changes aren't driven by the dialog form itself.
           if (data.general != undefined) {
-              $("#frm_dialogEditFreeRADIUSUser  tr").each(function(){
-                  var this_item_name = $(this).attr('for');
+              $("#frm_dialogEditFreeRADIUSUser tr").each(function () {
+                  var this_item_name = $(this).attr('id');
                   var this_item = $(this);
                   if (this_item_name != undefined) {
                       $.each(data.general, function(setting_key, setting_value){
-                          var search_item = 'user.' + setting_key +'_';
+                          var search_item = 'row_user.' + setting_key +'_';
                           if (this_item_name.startsWith(search_item) && setting_value == '0') {
                               // since our form tr rows are visible by default, we only have to hide what isn't needed
                               this_item.hide();
