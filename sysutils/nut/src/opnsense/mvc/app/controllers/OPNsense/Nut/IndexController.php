@@ -44,7 +44,6 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $backend = new Backend();
         $this->view->settings = $this->getForm("settings");
-        $this->view->diagnosticsForm = $this->getForm("diagnostics");
         $this->view->pick('OPNsense/Nut/index');
     }
 }
