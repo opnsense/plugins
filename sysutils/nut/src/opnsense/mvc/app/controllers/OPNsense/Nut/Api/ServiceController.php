@@ -52,7 +52,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         }
         $ups = $upsname . '@' . $host;
         $backend = new Backend();
-        $response = $backend->configdpRun("nut upsstatus", $ups);
+        $response = $backend->configdpRun("nut upsstatus", array($ups));
         return array("response" => $response);
     }
 }
