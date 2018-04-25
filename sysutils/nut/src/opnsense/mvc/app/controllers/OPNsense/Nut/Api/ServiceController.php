@@ -50,8 +50,9 @@ class ServiceController extends ApiMutableServiceControllerBase
         if (!empty((string)$cnf->general->name)) {
           $upsname = (string)$cnf->general->name;
         }
+        $ups = $upsname . '@' . $host;
         $backend = new Backend();
-        $response = $backend->configdpRun("nut upsstatus", $upsname@$host);
+        $response = $backend->configdpRun("nut upsstatus", $ups);
         return array("response" => $response);
     }
 }
