@@ -157,7 +157,7 @@ class ServiceController extends ApiControllerBase
 		$backend = new Backend();
 		if ($node != null) {
 			$instance = preg_replace("/\./", "_", $node->listenaddress->__toString()) . "_" . $node->listenport->__toString();
-			return trim($backend->configdpRun('ftpproxy ' . $action, array($instance)));
+			return trim($backend->configdpRun('ftpproxy', array($action, $instance)));
 		}
 		if ($action == 'template') {
 			return trim($backend->configdRun('template reload OPNsense/FtpProxy'));
