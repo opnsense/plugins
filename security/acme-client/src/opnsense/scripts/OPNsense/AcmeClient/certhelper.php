@@ -603,6 +603,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['CF_Key'] = (string)$valObj->dns_cf_key;
                 $proc_env['CF_Email'] = (string)$valObj->dns_cf_email;
                 break;
+            case 'dns_cloudns':
+                $proc_env['CLOUDNS_AUTH_ID'] = (string)$valObj->dns_cloudns_auth_id;
+                $proc_env['CLOUDNS_SUB_AUTH_ID'] = (string)$valObj->dns_cloudns_sub_auth_id;
+                $proc_env['CLOUDNS_AUTH_PASSWORD'] = (string)$valObj->dns_cloudns_auth_password;
+                break;
             case 'dns_cx':
                 $proc_env['CX_Key'] = (string)$valObj->dns_cx_key;
                 $proc_env['CX_Secret'] = (string)$valObj->dns_cx_secret;
