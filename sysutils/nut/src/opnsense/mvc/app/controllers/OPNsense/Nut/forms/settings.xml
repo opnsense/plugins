@@ -13,6 +13,12 @@
                 <type>dropdown</type>
                 <help>Set the service mode. Currently only standalone and netclient are available.</help>
             </field>
+            <field>
+                <id>nut.general.name</id>
+                <label>Name</label>
+                <type>text</type>
+                <help>Set a name for your UPS.</help>
+            </field>
         </subtab>
         <subtab id="nut-general-account" description="Nut Account Settings">
             <field>
@@ -38,12 +44,6 @@
                 <help>Enable the USBHID driver.</help>
             </field>
             <field>
-                <id>nut.usbhid.name</id>
-                <label>Name</label>
-                <type>text</type>
-                <help>Set a name for your UPS.</help>
-            </field>
-            <field>
                 <id>nut.usbhid.args</id>
                 <label>Extra Arguments</label>
                 <type>text</type>
@@ -56,12 +56,6 @@
                 <label>Enable</label>
                 <type>checkbox</type>
                 <help>Enable the Netclient driver.</help>
-            </field>
-            <field>
-                <id>nut.netclient.name</id>
-                <label>Name</label>
-                <type>text</type>
-                <help>Set a name for your UPS.</help>
             </field>
             <field>
                 <id>nut.netclient.address</id>

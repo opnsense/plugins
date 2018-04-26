@@ -1,7 +1,7 @@
 <?php
 
 /*
- *    Copyright (C) 2017 Michael Muenz
+ *    Copyright (C) 2017-2018 Michael Muenz
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -28,116 +28,30 @@
 
 namespace OPNsense\Nut\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Nut\Nut;
+use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Nut\Nut;
 
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
+    static protected $internalServiceClass = '\OPNsense\Nut\Nut';
+    static protected $internalServiceTemplate = 'OPNsense/Nut';
+    static protected $internalServiceEnabled = 'general.enable';
+    static protected $internalServiceName = 'nut';
 
-    /**
-     * restart nut service
-     * @return array
-     */
-    public function restartAction()
+    public function upsstatusAction()
     {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('nut restart');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
+        $mdl = new Nut();
+        $host = '127.0.0.1';
+        if (!empty((string)$mdl->netclient->address)) {
+            $host = (string)$mdl->netclient->address;
         }
-    }
-
-    /**
-     * retrieve status of nut
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
+        $upsname = 'UPSName';
+        if (!empty((string)$mdl->general->name)) {
+            $upsname = (string)$mdl->general->name;
+        }
         $backend = new Backend();
-        $nut = new Nut();
-        $response = $backend->configdRun('nut status');
-
-        if (strpos($response, 'not running') > 0) {
-            if ((string)$nut->general->enabled == 1) {
-                $status = 'stopped';
-            } else {
-                $status = 'disabled';
-            }
-        } elseif (strpos($response, 'is running') > 0) {
-            $status = 'running';
-        } elseif ((string)$nut->general->enabled == 0) {
-            $status = 'disabled';
-        } else {
-            $status = 'unknown';
-        }
-
-        return array('status' => $status);
-    }
-
-    /**
-     * reconfigure nut, generate config and reload
-     */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
-            $nut = new Nut();
-            $backend = new Backend();
-
-            $this->stopAction();
-
-            // generate template
-            $backend->configdRun('template reload OPNsense/Nut');
-
-            // (re)start daemon
-            if ((string)$nut->general->enabled == '1') {
-                $this->startAction();
-            }
-
-            return array('status' => 'ok');
-        } else {
-            return array('status' => 'failed');
-        }
-    }
-
-    /**
-     * stop nut service
-     * @return array
-     */
-    public function stopAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('nut stop');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
-    /**
-     * start nut service
-     * @return array
-     */
-    public function startAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-            $backend = new Backend();
-            $response = $backend->configdRun('nut start');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
+        $response = $backend->configdpRun('nut upsstatus', array("{$upsname}@{$host}"));
+        return array("response" => $response);
     }
 }
