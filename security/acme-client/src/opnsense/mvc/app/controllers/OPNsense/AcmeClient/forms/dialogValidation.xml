@@ -150,6 +150,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>ClouDNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_cloudns</style>
+    </field>
+    <field>
+        <id>validation.dns_cloudns_auth_id</id>
+        <label>Auth ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cloudns_sub_auth_id</id>
+        <label>Sub Auth ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cloudns_auth_password</id>
+        <label>Auth Password</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>CloudXNS</label>
         <type>header</type>
         <style>table_dns table_dns_cx</style>

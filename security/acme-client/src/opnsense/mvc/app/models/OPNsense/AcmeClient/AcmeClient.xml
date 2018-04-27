@@ -331,6 +331,7 @@
                         <dns_ali>aliyun.com API</dns_ali>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_cf>CloudFlare.com API</dns_cf>
+                        <dns_cloudns>ClouDNS API</dns_cloudns>
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cyon>cyon.ch API</dns_cyon>
                         <dns_dgon>DigitalOcean API</dns_dgon>
@@ -387,6 +388,15 @@
                 <dns_cf_key type="TextField">
                     <Required>N</Required>
                 </dns_cf_key>
+                <dns_cloudns_auth_id type="TextField">
+                    <Required>N</Required>
+                </dns_cloudns_auth_id>
+                <dns_cloudns_sub_auth_id type="TextField">
+                    <Required>N</Required>
+                </dns_cloudns_sub_auth_id>
+                <dns_cloudns_auth_password type="TextField">
+                    <Required>N</Required>
+                </dns_cloudns_auth_password>
                 <dns_cx_key type="TextField">
                     <Required>N</Required>
                 </dns_cx_key>

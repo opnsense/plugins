@@ -1,7 +1,7 @@
 <?php
 
 /*
- *    Copyright (C) 2017 Michael Muenz
+ *    Copyright (C) 2017-2018 Michael Muenz
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,8 @@
 namespace OPNsense\Nut\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Nut\Nut;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -39,8 +41,17 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function upsstatusAction()
     {
+        $mdl = new Nut();
+        $host = '127.0.0.1';
+        if (!empty((string)$mdl->netclient->address)) {
+            $host = (string)$mdl->netclient->address;
+        }
+        $upsname = 'UPSName';
+        if (!empty((string)$mdl->general->name)) {
+            $upsname = (string)$mdl->general->name;
+        }
         $backend = new Backend();
-        $response = $backend->configdRun("nut upsstatus");
+        $response = $backend->configdpRun('nut upsstatus', array("{$upsname}@{$host}"));
         return array("response" => $response);
     }
 }
