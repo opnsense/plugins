@@ -42,7 +42,6 @@
 {%       if user_list.chillispot_bw_max_down is defined %}
        ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }},
 {%       endif %}
-
        Framed-Protocol = PPP
 
 {%     endif %}
