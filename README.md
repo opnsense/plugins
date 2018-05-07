@@ -39,6 +39,7 @@ mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - grey/orange
 misc/theme-rebellion -- A suitably dark theme
+misc/theme-tukan -- The tukan theme - blue/white
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/snmp -- SNMP Server via bsnmpd
