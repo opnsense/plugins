@@ -33,12 +33,14 @@
         <id>general.bind_address</id>
         <label>Bind SMTP Client Address</label>
         <type>text</type>
+        <advanced>true</advanced>
         <help>Specify the IPv4 address the server should bind to for outgoing connections. In most cases empty is fine.</help>
     </field>
     <field>
         <id>general.bind_address6</id>
         <label>Bind SMTP Client v6 Address</label>
         <type>text</type>
+        <advanced>true</advanced>
         <help>Specify the IPv6 address the server should bind to for outgoing connections. In most cases empty is fine.</help>
     </field>
     <field>
