@@ -56,7 +56,7 @@ function nut_services()
             'stop' => array('nut stop'),
         ),
         'pidfile' => '/var/db/nut/upsmon.pid',
-        'name' => 'upsmon',
+        'name' => 'nut_upsmon',
     );
 
     if (nut_netclient()) {
@@ -71,7 +71,7 @@ function nut_services()
             'stop' => array('nut stop'),
         ),
         'pidfile' => '/var/db/nut/upsd.pid',
-        'name' => 'nut',
+        'name' => 'nut_daemon',
     );
 
     return $services;
