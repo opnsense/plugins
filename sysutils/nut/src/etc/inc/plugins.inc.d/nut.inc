@@ -44,30 +44,35 @@ function nut_services()
 {
     $services = array();
 
-    if (nut_enabled()) {
-        $services[] = array(
-            'description' => gettext('Network UPS Tools'),
-            'configd' => array(
-                'restart' => array('nut restart'),
-                'start' => array('nut start'),
-                'stop' => array('nut stop'),
-            ),
-            'name' => 'nut',
-            'pidfile' => '/var/db/nut/upsd.pid'
-        );
+    if (!nut_enabled()) {
+        return $services;
     }
-    if (nut_enabled() && nut_netclient()) {
-        $services[] = array(
-            'description' => gettext('Network UPS Monitor'),
-            'configd' => array(
-                'restart' => array('nut restart'),
-                'start' => array('nut start'),
-                'stop' => array('nut stop'),
-            ),
-            'name' => 'upsmon',
-            'pidfile' => '/var/db/nut/upsmon.pid'
-        );
+
+    $services[] = array(
+        'description' => gettext('Network UPS Monitor'),
+        'configd' => array(
+            'restart' => array('nut restart'),
+            'start' => array('nut start'),
+            'stop' => array('nut stop'),
+        ),
+        'pidfile' => '/var/db/nut/upsmon.pid',
+        'name' => 'nut_upsmon',
+    );
+
+    if (nut_netclient()) {
+        return $services;
     }
+
+    $services[] = array(
+        'description' => gettext('Network UPS Tools'),
+        'configd' => array(
+            'restart' => array('nut restart'),
+            'start' => array('nut start'),
+            'stop' => array('nut stop'),
+        ),
+        'pidfile' => '/var/db/nut/upsd.pid',
+        'name' => 'nut_daemon',
+    );
 
     return $services;
 }
