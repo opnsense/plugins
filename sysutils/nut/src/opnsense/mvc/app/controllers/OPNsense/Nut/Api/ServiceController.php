@@ -41,6 +41,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function upsstatusAction()
     {
+        $this->sessionClose();
         $mdl = new Nut();
         $host = '127.0.0.1';
         if (!empty((string)$mdl->netclient->address)) {

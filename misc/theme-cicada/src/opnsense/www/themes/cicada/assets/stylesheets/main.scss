@@ -1,8 +1,8 @@
 @charset "UTF-8"
 
 .widgetdiv .content-box-head
-  background: #2D2D2D !important
-  color: #ee7822 !important
+  background: #202020 !important
+  color: #ec6d12 !important
   padding-bottom: 1px !important
   padding-top: 1px !important
   padding-right: 1px !important
@@ -57,7 +57,7 @@ audio:not([controls])
   display: none
 
 a
-  color: #ee7822
+  color: #ec6d12
   text-decoration: none
   background: transparent
   outline: 0
@@ -66,7 +66,7 @@ a
     outline: 0
 
   &:hover, &:focus
-    color: #d76d20
+    color: #ec6d12
     text-decoration: underline
 
 abbr[title]
@@ -583,7 +583,7 @@ td, th
 
 .glyphicon-arrow-down:before
   content: "\e094"
-  color: #B13116 !important
+  color: #EF2A00 !important
 
 .glyphicon-share-alt:before
   content: "\e095"
@@ -1178,7 +1178,7 @@ mark, .mark
   color: inherit
 
 .text-primary
-  color: #ee7822
+  color: #ec6d12
 
 a.text-primary:hover
   color: #b85904
@@ -1209,7 +1209,7 @@ a.text-danger:hover
 
 .bg-primary
   color: #fff
-  background-color: #ee7822
+  background-color: #ec6d12
 
 a.bg-primary:hover
   background-color: #b85904
@@ -2227,10 +2227,10 @@ table
 .table-hover > tbody > tr
   >
     td.active:hover, th.active:hover
-      background-color: #ee7822
+      background-color: #ec6d12
 
   &.active:hover > td, &:hover > .active, &.active:hover > th
-    background-color: #ee7822
+    background-color: #ec6d12
 
 .table >
   thead > tr
@@ -2506,9 +2506,9 @@ select, textarea
   font-size: 14px
   line-height: 1.42857
   color: #FFF
-  background-color: #505050
+  background-color: #2a2a2a
   background-image: none
-  border: 1px solid #1d1d1d
+  border: 1px solid #5a5a5a
   border-radius: 3px
   text-overflow: ellipsis
   max-width: 348px
@@ -2525,9 +2525,9 @@ input
     font-size: 14px
     line-height: 1.42857
     color: #FFF
-    background-color: #505050
+    background-color: #2a2a2a
     background-image: none
-    border: 1px solid #1d1d1d
+    border: 1px solid #5a5a5a
     border-radius: 3px
     text-overflow: ellipsis
     max-width: 348px
@@ -2538,7 +2538,7 @@ input
 select:hover, textarea:hover
   color: #FFF
   background-color: #2a2a2a
-  border-color: #ee7822
+  border-color: #ec6d12
   outline: 0
   -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
   box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
@@ -2547,15 +2547,15 @@ input
   &[type="text"]:hover, &[type="password"]:hover, &[type="datetime"]:hover, &[type="datetime-local"]:hover, &[type="date"]:hover, &[type="month"]:hover, &[type="time"]:hover, &[type="week"]:hover, &[type="number"]:hover, &[type="email"]:hover, &[type="url"]:hover, &[type="search"]:hover, &[type="tel"]:hover, &[type="color"]:hover
     color: #FFF
     background-color: #2a2a2a
-    border-color: #ee7822
+    border-color: #ec6d12
     outline: 0
     -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
     box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
 
 select:focus, textarea:focus
   color: #FFF
-  border-color: #ee7822
-  background-color: #393939
+  border-color: #ec6d12
+  background-color: #232323
   outline: 0
   -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
   box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
@@ -2563,8 +2563,8 @@ select:focus, textarea:focus
 input
   &[type="text"]:focus, &[type="password"]:focus, &[type="datetime"]:focus, &[type="datetime-local"]:focus, &[type="date"]:focus, &[type="month"]:focus, &[type="time"]:focus, &[type="week"]:focus, &[type="number"]:focus, &[type="email"]:focus, &[type="url"]:focus, &[type="search"]:focus, &[type="tel"]:focus, &[type="color"]:focus
     color: #FFF
-    border-color: #ee7822
-    background-color: #393939
+    border-color: #ec6d12
+    background-color: #232323
     outline: 0
     -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
     box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
@@ -3566,7 +3566,6 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
   vertical-align: middle
   cursor: pointer
   background-image: none
-  border: 1px
   white-space: nowrap
   padding: 6px 12px
   font-size: 14px
@@ -3577,29 +3576,30 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
   -ms-user-select: none
   user-select: none
   color: #FFFFFF
-  background-color: #505050
-  border: 1px solid #1d1d1d
+  background-color: #2a2a2a
+  border: 1px solid #5a5a5a
   outline: 0
 
   &:active, &.active
     color: #FF7D1E
     background-color: #2d2d2d
     outline: 0
-    border-color: #1d1d1d
+    border-color: #5a5a5a
     text-decoration: none
 
 .open > .btn.dropdown-toggle
   color: #FF7D1E
   background-color: #2d2d2d
   outline: 0
-  border-color: #1d1d1d
+  border-color: #5a5a5a
   text-decoration: none
 
 .btn
   &:hover, &:focus
-    background-color: #2d2d2d
-    color: #FF7D1E
+    background-color: #292929
+    color: #FFF
     text-decoration: none
+    border: 1px solid #ec6d12
 
   &:active, &.active
     background-image: none
@@ -3672,7 +3672,7 @@ fieldset[disabled] .btn
 
 .act_flush
   &:hover, &:focus
-    color: #ee7822
+    color: #fff
     background-color: #2d2d2d
     border-color: 1px solid #1d1d1d
     outline: 0
@@ -3730,13 +3730,13 @@ fieldset[disabled] .btn-default
 
   &:hover, &:focus, &:active, &.active
     color: #fff
-    background-color: #b85904
+    background-color: #292929
     border-color: 1px solid #1d1d1d
     outline: 0
 
 .open > .btn-primary.dropdown-toggle
   color: #fff
-  background-color: #b85904
+  background-color: #292929
   border-color: 1px solid #1d1d1d
   outline: 0
 
@@ -3749,37 +3749,37 @@ fieldset[disabled] .btn-default
 
 .btn-primary
   &.disabled
-    background-color: #ee7822
+    background-color: #ec6d12
     border-color: #323232
     outline: 0
 
     &:hover, &:focus, &:active, &.active
-      background-color: #ee7822
+      background-color: #ec6d12
       border-color: #323232
       outline: 0
 
   &[disabled]
-    background-color: #ee7822
+    background-color: #ec6d12
     border-color: #323232
     outline: 0
 
     &:hover, &:focus, &:active, &.active
-      background-color: #ee7822
+      background-color: #ec6d12
       border-color: #323232
       outline: 0
 
 fieldset[disabled] .btn-primary
-  background-color: #ee7822
+  background-color: #ec6d12
   border-color: #323232
   outline: 0
 
   &:hover, &:focus, &:active, &.active
-    background-color: #ee7822
+    background-color: #ec6d12
     border-color: #323232
     outline: 0
 
 .btn-primary .badge
-  color: #ee7822
+  color: #ec6d12
   background-color: #fff
 
 .btn-success
@@ -3899,13 +3899,13 @@ fieldset[disabled] .btn-info
 
   &:hover, &:focus, &:active, &.active
     color: #fff
-    background-color: #b85904
-    border-color: #1d1d1d
+    background-color: #292929
+    border: 1px solid #ec6d12
 
 .open > .btn-warning.dropdown-toggle
   color: #fff
-  background-color: #b85904
-  border-color: #1d1d1d
+  background-color: #292929
+  border: 1px solid #ec6d12
 
 .btn-warning
   &:active, &.active
@@ -3995,7 +3995,7 @@ fieldset[disabled] .btn-danger
   background-color: #fff
 
 .btn-link
-  color: #ee7822
+  color: #ec6d12
   font-weight: normal
   cursor: pointer
   border-radius: 0
@@ -4121,7 +4121,7 @@ tbody.collapse.in
   list-style: none
   font-size: 14px
   text-align: left
-  background-color: #424242
+  background-color: #2a2a2a
   border: 1px solid #575757
   border: 1px solid rgba(87, 87, 87, 1)
   border-radius: 3px
@@ -4154,19 +4154,19 @@ tbody.collapse.in
       &:hover, &:focus
         text-decoration: none
         color: #FFFFFF
-        background-color: #ee7822
+        background-color: #ec6d12
 
     .active > a
       color: #fff
       text-decoration: none
       outline: 0
-      background-color: #ee7822
+      background-color: #ec6d12
 
       &:hover, &:focus
         color: #fff
         text-decoration: none
         outline: 0
-        background-color: #ee7822
+        background-color: #ec6d12
 
     .disabled > a
       color: #777777
@@ -4331,7 +4331,7 @@ tbody.collapse.in
       outline: 0
       color: #FFFFFF
       background-color: #2a2a2a
-      border-color: #ee7822
+      border-color: #ec6d12
       -webkit-box-shadow: inset 0 0px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
       box-shadow: inset 0 0px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
 
@@ -4339,7 +4339,7 @@ tbody.collapse.in
     outline: 0
     color: #FFFFFF
     background-color: #2a2a2a
-    border-color: #ee7822
+    border-color: #ec6d12
     -webkit-box-shadow: inset 0 0px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
     box-shadow: inset 0 0px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
 
@@ -4623,16 +4623,19 @@ tbody.collapse.in
       position: relative
       display: block
       padding: 10px 15px
-      background-color: #424242
-      color: #FFF
-      border: 1px solid #2d2d2d
+      background-color: #3e3e3e
+      color: #929292
+      border-left: 1px solid #565656
+      border-right: 1px solid #565656
+      border-top: 1px solid #565656
+      border-bottom: 1px solid #565656
 
     &#menu_messages
       > a
         position: relative
         display: block
         padding: none
-        color: #ee7822
+        color: #ec6d12
         background-color: transparent
         border: none
 
@@ -4643,8 +4646,7 @@ tbody.collapse.in
       &:hover, &:focus
         text-decoration: none
         background-color: #2d2d2d
-        color: #ee7822
-        border-bottom: 1px solid #2d2d2d
+        color: #ec6d12
 
 a:focus
   text-decoration: underline
@@ -4686,7 +4688,6 @@ a:focus
     > a
       margin-right: 2px
       line-height: 1.42857
-      border: 1px solid #6c6c6c
       border-radius: 3px 3px 0 0
       cursor: pointer
 
@@ -4694,15 +4695,15 @@ a:focus
         border-color: #4e4e4e #4e4e4e #4e4e4e
 
     &.active > a
-      color: #ee7822
-      background-color: #393939
+      color: #ec6d12
+      background-color: #2a2a2a
       border: 1px solid #6b6a6a
       border-bottom-color: transparent
       cursor: pointer
 
       &:hover, &:focus
-        color: #ee7822
-        background-color: #393939
+        color: #ec6d12
+        background-color: #2a2a2a
         border: 1px solid #6b6a6a
         border-bottom-color: transparent
         cursor: pointer
@@ -4715,11 +4716,11 @@ a:focus
 
   &.active > a
     color: #fff
-    background-color: #ee7822
+    background-color: #ec6d12
 
     &:hover, &:focus
       color: #fff
-      background-color: #ee7822
+      background-color: #ec6d12
 
 .nav-stacked > li
   float: none
@@ -4785,7 +4786,6 @@ a:focus
   position: relative
   min-height: 50px
   margin-bottom: 0
-  border: 1px solid transparent
 
   &:before
     content: " "
@@ -5087,7 +5087,7 @@ a:focus
       color: #F7F7F7
 
       &:hover, &:focus
-        color: #ee7822
+        color: #ec6d12
         background-color: transparent
 
     .active > a
@@ -5127,13 +5127,13 @@ a:focus
     color: #F7F7F7
 
     &:hover
-      color: #ee7822
+      color: #ec6d12
 
   .btn-link
     color: #F7F7F7
 
     &:hover, &:focus
-      color: #ee7822
+      color: #ec6d12
 
     &[disabled]
       &:hover, &:focus
@@ -5145,7 +5145,7 @@ a:focus
       color: #F7F7F7
 
       &:hover, &:focus
-        color: #ee7822
+        color: #ec6d12
         background-color: transparent
 
     .active > a
@@ -5335,41 +5335,41 @@ fieldset[disabled] .navbar-inverse .btn-link
         a
           &:hover, &:focus
             color: #FFFFFF
-            background-color: #ee7822
+            background-color: #ec6d12
             border-color: #303030
 
         span
           &:hover, &:focus
             color: #FFFFFF
-            background-color: #ee7822
+            background-color: #ec6d12
             border-color: #303030
 
     .active >
       a
         z-index: 2
         color: #FFFFFF
-        background-color: #ee7822
+        background-color: #ec6d12
         border-color: #1d1d1d
         cursor: default
 
         &:hover, &:focus
           z-index: 2
           color: #FFFFFF
-          background-color: #ee7822
+          background-color: #ec6d12
           border-color: #1d1d1d
           cursor: default
 
       span
         z-index: 2
         color: #FFFFFF
-        background-color: #ee7822
+        background-color: #ec6d12
         border-color: #1d1d1d
         cursor: default
 
         &:hover, &:focus
           z-index: 2
           color: #FFFFFF
-          background-color: #ee7822
+          background-color: #ec6d12
           border-color: #1d1d1d
           cursor: default
 
@@ -5519,7 +5519,7 @@ a.label
       border-color: #323232
 
 .label-primary
-  background-color: #ee7822
+  background-color: #ec6d12
 
   &[href]
     &:hover, &:focus
@@ -5551,7 +5551,7 @@ a.label
       border-color: #323232
 
 .label-danger
-  background-color: #B13116
+  background-color: #CE2804
 
   &[href]
     &:hover, &:focus
@@ -5584,12 +5584,12 @@ a.label
   padding: 1px 5px
 
 a.list-group-item.active > .badge
-  color: #ee7822
+  color: #ec6d12
   background-color: #fff
 
 .nav-pills >
   .active > a > .badge
-    color: #ee7822
+    color: #ec6d12
     background-color: #fff
 
   li > a > .badge
@@ -5663,7 +5663,7 @@ a.badge
 
 a.thumbnail
   &:hover, &:focus, &.active
-    border-color: #ee7822
+    border-color: #ec6d12
 
 .alert
   padding: 15px
@@ -5707,8 +5707,10 @@ a.thumbnail
 
 .alert-info
   background-color: #424242
-  border-color: #605f5f
+  border-color: #515151
   color: #ffffff
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
 
   hr
     border-top-color: #B13116
@@ -5717,8 +5719,8 @@ a.thumbnail
     color: #B13116
 
 .alert-warning
-  background-color: #303030
-  border-color: #EE7822
+  background-color: #202020
+  border-color: #b13116
   color: #FFF
 
   hr
@@ -5728,7 +5730,7 @@ a.thumbnail
     color: #df8a13
 
 .alert-danger
-  background-color: #2d2d2d
+  background-color: #202020
   border-color: #B13116
   color: #FFFFFF !important
 
@@ -5769,7 +5771,7 @@ a.thumbnail
   line-height: 20px
   color: #fff
   text-align: center
-  background-color: #ee7822
+  background-color: #ec6d12
   position: relative
   z-index: 2
   -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15)
@@ -5822,7 +5824,7 @@ a.thumbnail
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent)
 
 .progress-bar-warning
-  background-color: #c86710
+  background-color: #CCB717
   color: #FFFFFF !important
 
 .progress-striped .progress-bar-warning
@@ -5831,7 +5833,7 @@ a.thumbnail
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent)
 
 .progress-bar-danger
-  background-color: #F05050
+  background-color: #cf3624
 
 .progress-striped .progress-bar-danger
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent)
@@ -5877,7 +5879,7 @@ a.thumbnail
   display: block
   padding: 6px 8px
   margin-bottom: -1px
-  background-color: #4E4E4E
+  background-color: #3E3E3E
 
   &:last-child
     margin-bottom: 0
@@ -5898,8 +5900,8 @@ a.list-group-item
 
   &:hover, &:focus
     text-decoration: none
-    color: #ee7822
-    background-color: #2d2d2d
+    color: #ec6d12
+    background-color: #2a2a2a
 
   &:hover:before, &:focus:before
     background: #FFFFFF
@@ -5932,7 +5934,7 @@ a.list-group-item
       z-index: 2
 
     &:before, &:hover:before, &:focus:before
-      background: #ee7822
+      background: #ec6d12
       content: ""
       height: 42px
       left: 0
@@ -5965,7 +5967,7 @@ a.list-group-item
       color: #fedcbd
 
     + .collapse > .list-group-item:before, &:hover + .collapse > .list-group-item:before, &:focus + .collapse > .list-group-item:before
-      background: #ee7822
+      background: #ec6d12
       content: ""
       height: 42px
       left: 0
@@ -6079,11 +6081,6 @@ a.list-group-item-danger
 
 .panel
   margin-bottom: 20px
-  background-color: #fff
-  border: 1px solid transparent
-  border-radius: 3px
-  -webkit-box-shadow: 0 1px 1px rgb(41, 41, 41)
-  box-shadow: 0 1px 1px rgb(41, 41, 41)
 
 .panel-body
   padding: 15px
@@ -6100,7 +6097,7 @@ a.list-group-item-danger
 
 .panel-heading
   padding: 10px 15px
-  border-bottom: 1px solid transparent
+  border-bottom: 1px solid #515151
   border-top-right-radius: 2px
   border-top-left-radius: 2px
   background-color: #2D2D2D !important
@@ -6350,40 +6347,39 @@ a.list-group-item-danger
       border-bottom: 1px solid #ddd
 
 .panel-default
-  border-color: #6c6c6c
+  border: 1px solid #515151
 
   >
     .panel-heading
       color: #fff
-      border-color: #6c6c6c
+      border-color: #515151
 
       + .panel-collapse > .panel-body
-        border-top-color: #6c6c6c
+        border-top-color: #515151
 
       .badge
         color: #f5f5f5
         background-color: #2d2d2d333
 
     .panel-footer + .panel-collapse > .panel-body
-      border-bottom-color: #6c6c6c
+      border-bottom-color: #515151
 
 .panel-primary
-  border-color: #6c6c6c
+  border: 1px solid #515151
 
   >
     .panel-heading
       color: #fff
-      border-color: #6c6c6c
 
       + .panel-collapse > .panel-body
-        border-top-color: #ee7822
+        border-top-color: #ec6d12
 
       .badge
-        color: #ee7822
+        color: #ec6d12
         background-color: #fff
 
     .panel-footer + .panel-collapse > .panel-body
-      border-bottom-color: #ee7822
+      border-bottom-color: #ec6d12
 
 .panel-success
   border-color: #9BD275
@@ -6514,7 +6510,7 @@ a.list-group-item-danger
   filter: alpha(opacity = 100)
 
   &:hover, &:focus
-    color: #ee7822
+    color: #B0B0B0
     text-decoration: none
     cursor: pointer
     opacity: 1
@@ -6614,8 +6610,8 @@ button.close
 
   .table-hover > tbody > tr:hover >
     td, th
-      background-color: #2d2d2d
-      color: #ee7822
+      background-color: #2a2a2a
+      color: #ec6d12
 
 .modal-footer
   padding: 5px
@@ -7284,9 +7280,9 @@ body
   left: 0
   position: fixed
   width: 100%
-  border-bottom: 1px solid #292929
+  border-bottom: 1px solid #171717
   z-index: 2
-  background-color: #333
+  background-color: #202020
 
 .page-content
   height: calc(100% - 52px)
@@ -7298,13 +7294,22 @@ body
     height: 100%
 
 .page-content-head
-  border-bottom: 1px solid #323232
-  background: #3e3e3e
+  .container-fluid
+    background-color: #393939
+    margin-left: 20px
+    margin-right: 20px
+    border: 1px solid #515151
+    border-radius: 3px
+    min-height: 38px
+    height: auto
+    padding: 10px 20px 10px 20px
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
+
   padding-bottom: 15px
   padding-top: 20px
 
 .content-box-head
-  background: #3e3e3e
   padding-bottom: 15px
   padding-top: 20px
 
@@ -7312,17 +7317,14 @@ body
   width: 100%
 
 .page-content-head h1, .content-box-head h1, .page-content-head h2, .content-box-head h2, .page-content-head h3, .content-box-head h3
-  line-height: 1
   margin: 0
 
 .page-content-main
-  background: #303030
   min-height: calc(100% - 64px)
   padding: 15px 0 73px
 
 .page-side
-  background: #393939
-  border-right: 1px solid #323232
+  background: #202020
   height: 100% !important
   height: calc(100% - 52px) !important
   left: 0
@@ -7334,15 +7336,14 @@ body
 
 .page-side-nav--active
   background: #F7F7F7
-  border-left: 3px solid #ee7822
+  border-left: 3px solid #ec6d12
 
 .page-foot
-  background: #303030
   bottom: 0
   border: none
   font-size: 12px
   padding: 20px 0
-  position: fixed
+  position: static
   width: 100%
   z-index: 2
 
@@ -7350,7 +7351,9 @@ body
   padding: 0px 0px
   margin: 0px 0px
   background: #3e3e3e
-  border: 1px solid #565656
+  border: 1px solid #515151
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
 
   hr
     border: none
@@ -7399,7 +7402,7 @@ body
     padding-top: 0 !important
 
 .page-login
-  background: #292929
+  background-color: #202020
 
   .container
     min-height: 100%
@@ -7412,22 +7415,18 @@ body
   font-size: 12px
 
 .login-modal-container
-  background: #FFF
   border: 1px solid #686868
   max-width: 400px
   margin: 100px auto 15px auto
 
 .login-modal-head
-  background-color: #2a2a2a
   height: 75px
   padding: 0 20px
 
 .login-modal-content
   padding: 20px 20px 20px 20px
-  background-color: #2a2a2a
 
 .login-modal-foot
-  background: #F7F7F7
   border-top: 1px solid #E5E5E5
   height: 60px
   padding: 20px 20px 0 20px
@@ -7481,30 +7480,16 @@ body
     margin-right: 2px
 
     > a
-      background: #424242
       border-radius: 0px
       border-top-right-radius: 10px
       margin-right: 0px
-      background-color: #424242
-      border-right: 1px solid #6c6c6c
-      border-top: 1px solid #6c6c6c
-      border-left: 1px solid #6c6c6c
-      border-bottom: 1px solid #6c6c6c
-      border-right: 1px solid #565656
-      border-top: 1px solid #565656
-      border-left: 1px solid #565656
-      border-bottom: 1px solid none
       outline: 0
 
       &:hover, &:focus
-        border-right: 1px solid #565656
-        border-top: 1px solid #565656
-        border-left: 1px solid #565656
-        border-bottom: 1px solid none
         outline: 0
 
     &.active > a
-      background: #2d2d2d !important
+      background: #2a2a2a !important
       outline: 0
       border-right: 1px solid #565656
       border-top: 1px solid #565656
@@ -7614,7 +7599,7 @@ body
       padding-left: 44px
 
   &:before
-    background: #ee7822
+    background: #ec6d12
     content: ""
     height: 42px
     min-height: 100%
@@ -7633,22 +7618,22 @@ body
 .active-menu-title, .active-menu a
   text-decoration: none
   position: relative
-  background-color: #3e3e3e
+  background-color: #393939
 
 .active-menu-title:before, .active-menu a:before
   width: 3px
 
 .active-menu-title.active
-  background-color: #2d2d2d
-  color: #ee7822
+  background-color: #292929
+  color: #ec6d12
 
 .active-menu a
   &.active
-    background-color: #2d2d2d
-    color: #ee7822
+    background-color: #292929
+    color: #ec6d12
 
   &:before
-    background: #ee7822
+    background: #ec6d12
 
 .alert.alert-danger
   color: #FFF !important
@@ -7716,6 +7701,10 @@ select
 #grid-log th[data-column-id="__timestamp__"], #filter-log-entries th[data-column-id="__timestamp__"]
   min-width: 3.5em
 
+#grid-top
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.77)
+
 @media screen and (max-width: 767px)
   .table-responsive
     margin-bottom: 0
@@ -7777,7 +7766,7 @@ textarea#update_status
     border-top: none !important
 
 .fa-toggle-off::before
-  color: #ee7822 !important
+  color: #ec6d12 !important
   outline: none !important
 
 .fa-toggle-on::before
@@ -7790,6 +7779,10 @@ textarea#update_status
 .fa-times-circle::before
   content: "\f057"
   color: #B13116
+
+.fa-refresh::before
+  content: "\f021"
+  color: #FFF
 
 .panel-heading h3:hover
   color: #FFFFFF
@@ -7805,7 +7798,7 @@ h3
     text-decoration: underline
 
   &:hover, &:focus
-    color: #ee7822
+    color: #ec6d12
     text-decoration: underline
 
 text
@@ -7828,7 +7821,7 @@ text
   stroke: rgb(143, 143, 143) !important
 
 .table-condensed.table-hover
-  border: 1px solid #696969
+  border: 1px solid #515151
 
 ul.TokensContainer
   border-radius: 3px
@@ -7845,18 +7838,18 @@ div.Tokenize ul
       color: #FFFFFF !important
 
     &:hover, &:focus
-      border-color: #ee7822 !important
+      border-color: #ec6d12 !important
       background-color: #2a2a2a !important
       -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
       box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6)
 
-    border: 1px solid #1d1d1d !important
-    background-color: #4e4e4e !important
+    border: 1px solid #5a5a5a !important
+    background-color: #2a2a2a !important
     color: #FFFFFF !important
 
   &.Dropdown
-    border: 1px solid #1d1d1d !important
-    background-color: #4e4e4e !important
+    border: 1px solid #5a5a5a !important
+    background-color: #2a2a2a !important
     color: #FFFFFF !important
 
   &.TokensContainer li
@@ -7865,7 +7858,7 @@ div.Tokenize ul
       border: 1px solid #303030 !important
 
     &.Placeholder
-      color: #777777 !important
+      color: #505050 !important
 
     &.Token a.Close
       color: #FFFFFF !important
@@ -7882,8 +7875,8 @@ div.Tokenize ul
     background-color: #4b4b4b !important
 
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu
-  color: #ee7822
-  background-color: #424242
+  color: #fff
+  background-color: #2a2a2a
   border-color: #1d1d1d
 
 .btn-group.bootstrap-select
@@ -7897,16 +7890,27 @@ div.Tokenize ul
     background: none !important
 
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus
-  color: #ee7822 !important
+  color: #FFF !important
   text-decoration: none !important
-  background-color: #2d2d2d !important
+  background-color: #ec6d12 !important
 
 .bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon, .input-group-addon
   top: 0
-  background-color: #ee7822 !important
-  border: 1px solid #ee7822 !important
+  background-color: #ec6d12 !important
+  border: 1px solid #ec6d12 !important
 
 .nvtooltip
   background-color: rgb(60, 60, 60) !important
   color: rgba(0, 0, 0, 1) !important
   border: 1px solid rgb(255, 127, 14) !important
+
+.glyphicon
+  &.glyphicon-play.text-muted, &.glyphicon-remove.text-muted, &.glyphicon-remove-sign.text-muted, &.glyphicon-info-sign.text-muted
+    color: #eac80a !important
+
+.fa.fa-play.text-muted::before
+  color: #eac80a !important
+
+#chart, #chart_intf_in, #chart_intf_out, #chart_top_ports, #chart_top_sources, #traffic_graph_widget_chart_in, #traffic_graph_widget_chart_out
+  background-color: #292929
+  border: 1px solid #515151

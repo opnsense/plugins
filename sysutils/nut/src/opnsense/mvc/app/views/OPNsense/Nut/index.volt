@@ -46,8 +46,8 @@
 
         updateServiceControlUI('nut');
 
-        // call function update_diagnostics with a auto-refresh of 3 seconds
-        setInterval(update_diagnostics, 10000);
+        // call function update_diagnostics with a auto-refresh of 2 seconds
+        setInterval(update_diagnostics, 2000);
 
         // update history on tab state and implement navigation
         if(window.location.hash != "") {
