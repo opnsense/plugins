@@ -828,7 +828,6 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . "--revoke "
       . "--domain " . (string)$certObj->name . " "
       . "--home /var/etc/acme-client/home "
-      . "--keylength 4096 "
       . "--accountconf " . $account_conf_file . " "
       . $ecc_param;
     //echo "DEBUG: executing command: " . $acmecmd . "\n";
