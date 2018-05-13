@@ -39,6 +39,12 @@
         <help><![CDATA[Set the Let's Encrypt validation method for this certificate.]]></help>
     </field>
     <field>
+        <id>certificate.keyLength</id>
+        <label>Key Length</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specify the domain key length: 2048, 3072, 4096, 8192 or ec-256, ec-384.]]></help>
+    </field>
+    <field>
         <id>certificate.restartActions</id>
         <label>Restart Actions</label>
         <type>select_multiple</type>
