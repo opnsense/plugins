@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2014-2017 Franco Fichtner <franco@opnsense.org>
+ * Copyright (C) 2014-2018 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2010 Ermal Luçi
  * Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
@@ -126,13 +126,16 @@ begemotSnmpdCommunityDisable    = 1
 
 EOD;
 
-    $bind_to_ip = "0.0.0.0";
-    if (isset($config['snmpd']['bindip'])) {
+    $bind_to_ip = '0.0.0.0';
+    if (!empty($config['snmpd']['bindip'])) {
         if (is_ipaddr($config['snmpd']['bindip'])) {
             $bind_to_ip = $config['snmpd']['bindip'];
         } else {
             $if = get_real_interface($config['snmpd']['bindip']);
-            $bind_to_ip = find_interface_ip($if);
+            $bind_to_ip_maybe = find_interface_ip($if);
+            if (is_ipaddr($bind_to_ip_maybe)) {
+                $bind_to_ip = $bind_to_ip_maybe;
+            }
         }
     }
 
