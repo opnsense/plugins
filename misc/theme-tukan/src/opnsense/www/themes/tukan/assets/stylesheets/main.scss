@@ -3,7 +3,6 @@
 .widgetdiv .content-box-head
   background: #30596f !important
   color: #FFF !important
-  border: 1px solid #fff
   padding-bottom: 1px !important
   padding-top: 1px !important
   padding-right: 1px !important
@@ -195,14 +194,13 @@ optgroup
   font-weight: bold
 
 table
-  border-collapse: collapse
+  border-collapse: none
   border-spacing: 0
   color: #000
   background-color: #F0F0F0
 
 td, th
   padding: 0
-  border-bottom: 1px solid #e3e3e3
 
 @media print
   *
@@ -2103,18 +2101,21 @@ th
         padding: 10px 0px 10px 20px
         line-height: 1.42857
         vertical-align: top
+        border-top: 1px solid #e3e3e3
 
     tbody > tr >
       th, td
         padding: 10px 0px 10px 20px
         line-height: 1.42857
         vertical-align: top
+        border-top: 1px solid #e3e3e3
 
     tfoot > tr >
       th, td
         padding: 10px 0px 10px 20px
         line-height: 1.42857
         vertical-align: top
+        border-top: 1px solid #e3e3e3
 
     thead > tr > th
       vertical-align: bottom
@@ -2871,6 +2872,8 @@ select
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover
   cursor: not-allowed
@@ -2878,6 +2881,8 @@ fieldset[disabled]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 textarea
   &[disabled]:hover, &[readonly]:hover
@@ -2886,6 +2891,8 @@ textarea
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover textarea:hover
   cursor: not-allowed
@@ -2893,6 +2900,8 @@ fieldset[disabled]:hover textarea:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="text"]
   &[disabled]:hover, &[readonly]:hover
@@ -2901,6 +2910,8 @@ input[type="text"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="text"]:hover
   cursor: not-allowed
@@ -2908,6 +2919,8 @@ fieldset[disabled]:hover input[type="text"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="password"]
   &[disabled]:hover, &[readonly]:hover
@@ -2916,6 +2929,8 @@ input[type="password"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="password"]:hover
   cursor: not-allowed
@@ -2923,6 +2938,8 @@ fieldset[disabled]:hover input[type="password"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="datetime"]
   &[disabled]:hover, &[readonly]:hover
@@ -2931,6 +2948,8 @@ input[type="datetime"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="datetime"]:hover
   cursor: not-allowed
@@ -2938,6 +2957,8 @@ fieldset[disabled]:hover input[type="datetime"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="datetime-local"]
   &[disabled]:hover, &[readonly]:hover
@@ -2946,6 +2967,8 @@ input[type="datetime-local"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="datetime-local"]:hover
   cursor: not-allowed
@@ -2953,6 +2976,8 @@ fieldset[disabled]:hover input[type="datetime-local"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="date"]
   &[disabled]:hover, &[readonly]:hover
@@ -2961,6 +2986,8 @@ input[type="date"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="date"]:hover
   cursor: not-allowed
@@ -2968,6 +2995,8 @@ fieldset[disabled]:hover input[type="date"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="month"]
   &[disabled]:hover, &[readonly]:hover
@@ -2976,6 +3005,8 @@ input[type="month"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="month"]:hover
   cursor: not-allowed
@@ -2983,6 +3014,8 @@ fieldset[disabled]:hover input[type="month"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="time"]
   &[disabled]:hover, &[readonly]:hover
@@ -2991,6 +3024,8 @@ input[type="time"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="time"]:hover
   cursor: not-allowed
@@ -2998,6 +3033,8 @@ fieldset[disabled]:hover input[type="time"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="week"]
   &[disabled]:hover, &[readonly]:hover
@@ -3006,6 +3043,8 @@ input[type="week"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="week"]:hover
   cursor: not-allowed
@@ -3013,6 +3052,8 @@ fieldset[disabled]:hover input[type="week"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="number"]
   &[disabled]:hover, &[readonly]:hover
@@ -3021,6 +3062,8 @@ input[type="number"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="number"]:hover
   cursor: not-allowed
@@ -3028,6 +3071,8 @@ fieldset[disabled]:hover input[type="number"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="email"]
   &[disabled]:hover, &[readonly]:hover
@@ -3036,6 +3081,8 @@ input[type="email"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="email"]:hover
   cursor: not-allowed
@@ -3043,6 +3090,8 @@ fieldset[disabled]:hover input[type="email"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="url"]
   &[disabled]:hover, &[readonly]:hover
@@ -3051,6 +3100,8 @@ input[type="url"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="url"]:hover
   cursor: not-allowed
@@ -3058,6 +3109,8 @@ fieldset[disabled]:hover input[type="url"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="search"]
   &[disabled]:hover, &[readonly]:hover
@@ -3066,6 +3119,8 @@ input[type="search"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="search"]:hover
   cursor: not-allowed
@@ -3073,6 +3128,8 @@ fieldset[disabled]:hover input[type="search"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="tel"]
   &[disabled]:hover, &[readonly]:hover
@@ -3081,6 +3138,8 @@ input[type="tel"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="tel"]:hover
   cursor: not-allowed
@@ -3088,6 +3147,8 @@ fieldset[disabled]:hover input[type="tel"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 input[type="color"]
   &[disabled]:hover, &[readonly]:hover
@@ -3096,6 +3157,8 @@ input[type="color"]
     color: #a8a8a8
     opacity: 1.0
     filter: alpha(opacity = 100)
+    -webkit-box-shadow: none
+    box-shadow: none
 
 fieldset[disabled]:hover input[type="color"]:hover
   cursor: not-allowed
@@ -3103,6 +3166,8 @@ fieldset[disabled]:hover input[type="color"]:hover
   color: #a8a8a8
   opacity: 1.0
   filter: alpha(opacity = 100)
+  -webkit-box-shadow: none
+  box-shadow: none
 
 textarea
   height: auto
@@ -3598,7 +3663,6 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
   vertical-align: middle
   cursor: pointer
   background-image: none
-  border: 1px
   white-space: nowrap
   padding: 6px 12px
   font-size: 14px
@@ -4069,10 +4133,9 @@ fieldset[disabled] .btn-link
     text-decoration: none
 
 .btn-lg, .btn-group-lg > .btn
-  padding: 10px 16px
+  padding: 9px 12px
   font-size: 18px
   line-height: 1.33
-  border-radius: 6px
 
 .btn-sm, .btn-group-sm > .btn
   padding: 5px 10px
@@ -4106,7 +4169,7 @@ input
 
   &.in
     opacity: 1
-    filter: alpha(opacity = 10)
+    filter: alpha(opacity = 100)
 
 .collapse
   display: none
@@ -4824,6 +4887,11 @@ a:focus
 
   .active
     display: block
+
+.tab-pane .content-box
+  border: none !important
+  box-shadow: none
+  -webkit-box-shadow: none
 
 .nav-tabs .dropdown-menu
   margin-top: -1px
@@ -5712,10 +5780,10 @@ a.thumbnail
 .alert
   padding: 15px
   margin-bottom: 20px
-  border: 1px solid transparent
+  border: 1px solid #c2c2c2
   border-radius: 3px
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
   h4
     margin-top: 0
@@ -5763,9 +5831,9 @@ a.thumbnail
     color: #DA4829
 
 .alert-warning
-  background-color: #202020
-  border-color: #b13116
-  color: #FFF
+  background-color: #fff
+  border: 1px solid #d12d0a
+  color: #000
 
   hr
     border-top-color: #f7e1b5
@@ -6124,12 +6192,10 @@ a.list-group-item-danger
   line-height: 1.3
 
 .panel
+  border: 1px solid #c2c2c2
   margin-bottom: 20px
-  background-color: #fff
-  border: 1px solid transparent
-  border-radius: 3px
-  -webkit-box-shadow: 0 3px 3px rgba(42, 42, 42, 0.1)
-  box-shadow: 0 3px 3px rgba(42, 42, 42, 0.1)
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
 .panel-body
   padding: 15px
@@ -6146,7 +6212,7 @@ a.list-group-item-danger
 
 .panel-heading
   padding: 10px 15px
-  border-bottom: 1px solid transparent
+  border-bottom: 1px solid #c2c2c2
   border-top-right-radius: 2px
   border-top-left-radius: 2px
   background-color: #30596f
@@ -6395,41 +6461,35 @@ a.list-group-item-danger
     + .panel-collapse .panel-body
       border-bottom: 1px solid #ddd
 
-.panel-default
-  border-color: #c2c2c2
+.panel-default >
+  .panel-heading
+    color: #fff
+    border-color: #c2c2c2
 
-  >
-    .panel-heading
-      color: #fff
-      border-color: #c2c2c2
+    + .panel-collapse > .panel-body
+      border-top-color: #c2c2c2
 
-      + .panel-collapse > .panel-body
-        border-top-color: #c2c2c2
+    .badge
+      color: #f5f5f5
+      background-color: #2d2d2d333
 
-      .badge
-        color: #f5f5f5
-        background-color: #2d2d2d333
+  .panel-footer + .panel-collapse > .panel-body
+    border-bottom-color: #c2c2c2
 
-    .panel-footer + .panel-collapse > .panel-body
-      border-bottom-color: #c2c2c2
+.panel-primary >
+  .panel-heading
+    color: #FFF
+    border-color: #c2c2c2
 
-.panel-primary
-  border-color: #c2c2c2
+    + .panel-collapse > .panel-body
+      border-top-color: #FF8B00
 
-  >
-    .panel-heading
-      color: #FFF
-      border-color: #c2c2c2
+    .badge
+      color: #FF8B00
+      background-color: #fff
 
-      + .panel-collapse > .panel-body
-        border-top-color: #FF8B00
-
-      .badge
-        color: #FF8B00
-        background-color: #fff
-
-    .panel-footer + .panel-collapse > .panel-body
-      border-bottom-color: #FF8B00
+  .panel-footer + .panel-collapse > .panel-body
+    border-bottom-color: #FF8B00
 
 .panel-success
   border-color: #9BD275
@@ -6823,10 +6883,10 @@ button.close
   background-color: #fff
   background-clip: padding-box
   border: 1px solid #ccc
-  border: 1px solid rgba(0, 0, 0, 0.2)
+  border: 1px solid rgba(0, 0, 0, 0.3)
   border-radius: 6px
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
   white-space: normal
 
   &.top
@@ -7356,8 +7416,8 @@ body
     min-height: 38px
     height: auto
     padding: 10px 20px 10px 20px
-    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.27)
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
   background: #FFF
   padding-bottom: 15px
@@ -7398,7 +7458,6 @@ body
   border-left: 3px solid #FF8B00
 
 .page-foot
-  position: static
   bottom: 0
   border: none
   font-size: 12px
@@ -7411,8 +7470,8 @@ body
   margin: 0px 0px
   background: none
   border: 1px solid #c2c2c2
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
   hr
     border: none
@@ -7776,8 +7835,8 @@ option
   min-width: 3.5em
 
 #grid-top
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
 @media screen and (max-width: 767px)
   .table-responsive
@@ -7825,17 +7884,15 @@ label > input
 
 textarea#update_status
   color: inherit !important
-  background-color: none !important
   -webkit-box-shadow: none !important
   box-shadow: none !important
-  border-top: none !important
+  border: none !important
 
   &:hover
     color: inherit !important
-    background-color: none !important
     -webkit-box-shadow: none !important
     box-shadow: none !important
-    border-top: none !important
+    border: none !important
 
 .fa-toggle-off::before
   color: #FF8B00 !important
