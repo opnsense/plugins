@@ -9,7 +9,6 @@
         <id>antivirus.scanfiletypes</id>
         <label>Scan for filetypes</label>
         <type>select_multiple</type>
-		<style>tokenize</style>
         <help>Choose for which file types to scan, if unsure select all.</help>
     </field>
     <field>

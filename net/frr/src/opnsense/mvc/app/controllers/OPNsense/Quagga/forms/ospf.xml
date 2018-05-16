@@ -16,7 +16,6 @@
         <id>ospf.passiveinterfaces</id>
         <label>Passive Interfaces</label>
         <type>select_multiple</type>
-        <style>tokenize</style>
         <help><![CDATA[Select the interfaces, where no OSPF packets should be sent to.]]></help>
         <hint>Type or select interface.</hint>
     </field>
@@ -24,7 +23,6 @@
         <id>ospf.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
-        <style>tokenize</style>
         <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
         <hint>Type or select a route source.</hint>
     </field>
