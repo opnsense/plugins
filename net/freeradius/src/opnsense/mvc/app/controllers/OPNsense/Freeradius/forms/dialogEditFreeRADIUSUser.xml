@@ -92,6 +92,18 @@
         <help>Set the maximum download bandwith for ChilliSpot attribute. The value is treated as kbits/s.</help>
     </field>
     <field>
+        <id>user.mikrotik_vlan_id_number</id>
+        <label>Mikrotik VLAN ID</label>
+        <type>text</type>
+        <help>Set the Mikrotik VLAN ID attribute. Mikrotik uses own attributes for VLAN assignment.</help>
+    </field>
+    <field>
+        <id>user.mikrotik_vlan_id_type</id>
+        <label>Mikrotik VLAN Type</label>
+        <type>text</type>
+        <help>Set the Mikrotik VLAN type attribute. For general use a value of 0 is fine.</help>
+    </field>
+    <field>
         <id>user.sessionlimit_max_session_limit</id>
         <label>Max Daily Session</label>
         <type>text</type>
