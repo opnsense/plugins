@@ -33,7 +33,7 @@
             $("#listdiagnostics").text(data['response']);
         });
     }
- 
+
     $( document ).ready(function() {
 
         var data_get_map = {'frm_nut':'/api/nut/settings/get'};
