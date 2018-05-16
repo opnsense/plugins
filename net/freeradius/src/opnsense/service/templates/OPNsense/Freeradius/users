@@ -46,7 +46,7 @@
        Mikrotik_Wireless_VLANID = {{ user_list.mikrotik_vlan_id_number }},
 {%       endif %}
 {%       if user_list.mikrotik_vlan_id_type is defined %}
-       Mikrotik_Wireless_VLANIDtype = {{ user_list.mikrotik_vlan_id_type }},
+       Mikrotik_Wireless_VLANID-Type = {{ user_list.mikrotik_vlan_id_type }},
 {%       endif %}
        Framed-Protocol = PPP
 
