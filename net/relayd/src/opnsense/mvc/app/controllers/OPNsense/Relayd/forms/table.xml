@@ -18,7 +18,6 @@
       <id>relayd.table.hosts</id>
       <label>Hosts</label>
       <type>select_multiple</type>
-      <style>tokenize</style>
       <help><![CDATA[
          This is a list with backend hosts]]>
       </help>
