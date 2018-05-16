@@ -58,6 +58,12 @@
                 <chillispot_bw_max_down type="IntegerField">
                     <Required>N</Required>
                 </chillispot_bw_max_down>
+                <mikrotik_vlan_id_number type="IntegerField">
+                    <Required>N</Required>
+                </mikrotik_vlan_id_number>
+                <mikrotik_vlan_id_type type="IntegerField">
+                    <Required>N</Required>
+                </mikrotik_vlan_id_type>
                 <sessionlimit_max_session_limit type="IntegerField">
                     <Required>N</Required>
                 </sessionlimit_max_session_limit>
