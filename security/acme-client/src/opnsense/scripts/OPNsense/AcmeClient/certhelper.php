@@ -740,6 +740,13 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Teach acme.sh about DNS API hook location
     $proc_env['_SCRIPT_HOME'] = '/usr/local/share/examples/acme.sh';
 
+    // Get the chosen key length from xml and trim the parameter before passing to acme client
+    $key_length = (string) $certObj->keyLength;
+    $key_length = substr($key_length, 4 );
+    if($key_length == 'ec256' || $key_length == 'ec384') {
+        $key_length = substr_replace($key_length, '-', 2,0);
+    }
+
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
@@ -750,7 +757,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
       . $altnames
       . $acme_validation . " "
       . "--home /var/etc/acme-client/home "
-      . "--keylength 4096 "
+      . "--keylength " . $key_length . " " 
       . "--accountconf " . $account_conf_file . " "
       . "--certpath ${cert_filename} "
       . "--keypath ${key_filename} "
@@ -806,6 +813,13 @@ function revoke_cert($certObj, $valObj, $acctObj)
     // Generate certificate filenames
     $cert_id = (string)$certObj->id;
 
+    // Check if EC certificate is used, if yes add the --ecc parameter to acme client
+    $key_length = (string) $certObj->keyLength;
+    $ecc_param =  " ";
+    if($key_length == 'key_ec256' || $key_length == 'key_ec384') {
+        $ecc_param =  "--ecc";
+    }
+
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
@@ -814,8 +828,8 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . "--revoke "
       . "--domain " . (string)$certObj->name . " "
       . "--home /var/etc/acme-client/home "
-      . "--keylength 4096 "
-      . "--accountconf " . $account_conf_file;
+      . "--accountconf " . $account_conf_file . " "
+      . $ecc_param;
     //echo "DEBUG: executing command: " . $acmecmd . "\n";
     $result = mwexec($acmecmd);
 
