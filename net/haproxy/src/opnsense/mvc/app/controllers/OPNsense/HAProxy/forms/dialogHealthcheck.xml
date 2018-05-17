@@ -21,7 +21,7 @@
         <id>healthcheck.interval</id>
         <label>Check interval</label>
         <type>text</type>
-        <help><![CDATA[Select interval (in milliseconds) between two consecutive health checks.]]></help>
+        <help><![CDATA[Select interval (in milliseconds) between two consecutive health checks. This value can be overriden in backend pool and real server configuration.]]></help>
     </field>
     <field>
         <id>healthcheck.checkport</id>
