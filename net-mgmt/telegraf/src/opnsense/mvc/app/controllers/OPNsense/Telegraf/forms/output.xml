@@ -60,6 +60,12 @@
         <help>Use a specific output template. For usage see https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md</help>
     </field>
     <field>
+        <id>output.graphite_verify</id>
+        <label>Graphite SSL Verification</label>
+        <type>checkbox</type>
+        <help>This will enable verification of a secure connection to Graphite. Default is disabled for compatibility reasons.</help>
+    </field>
+    <field>
         <id>output.graylog_enable</id>
         <label>Enable Graylog Output</label>
         <type>checkbox</type>
