@@ -4,7 +4,7 @@
 /**
  *    Based in parts on certs.inc and system_camanager.php (thus the extended copyright notice).
  *
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2018 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *    Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  *    Copyright (C) 2008 Shrew Soft Inc
@@ -49,6 +49,8 @@ use OPNsense\Base;
 use OPNsense\AcmeClient\AcmeClient;
 
 global $config;
+global $postponed_updates;
+$postponed_updates = array();
 
 /* CLI arguments:
  *  -a (action)
@@ -103,6 +105,9 @@ switch ($options["a"]) {
         log_error("invalid argument specified");
         exit(1);
 }
+
+// Write certificate status updates to configuration
+dump_postponed_updates();
 
 // ALL certificate work starts here. First we do some common validation and
 // make sure that everything is prepared for acme client to run.
@@ -1114,17 +1119,39 @@ function run_restart_actions($certlist, $modelObj)
 */
 function log_cert_acme_status($certObj, $modelObj, $statusCode)
 {
+    global $postponed_updates;
+
     $uuid = $certObj->attributes()->uuid;
     $node = $modelObj->getNodeByReference('certificates.certificate.' . $uuid);
     if ($node != null) {
-        $node->statusCode = $statusCode;
-        $node->statusLastUpdate = time();
-        // serialize to config and save
-        $modelObj->serializeToConfig();
-        Config::getInstance()->save();
+        $postponed_updates[] = array(
+          'uuid' => (string)$uuid,
+          'statusCode' => $statusCode,
+          'statusLastUpdate' => time());
     } else {
         log_error("AcmeClient: unable to update acme status for certificate " . (string)$certObj->name);
         return(1);
+    }
+}
+
+/* Write postponed certificate status updates to the configuration.
+ * This workaround seems to fix the "Node no longer exists" error
+ * that haunted us for quite some time.
+*/
+function dump_postponed_updates()
+{
+    global $postponed_updates;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+
+    foreach ($postponed_updates as $pupdate) {
+        $node = $modelObj->getNodeByReference('certificates.certificate.' . $pupdate['uuid']);
+        if ($node != null) {
+            $node->statusCode = $pupdate['statusCode'];
+            $node->statusLastUpdate = $pupdate['statusLastUpdate'];
+            // serialize to config and save
+            $modelObj->serializeToConfig();
+            Config::getInstance()->save();
+        }
     }
 }
 
