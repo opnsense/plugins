@@ -1,0 +1,54 @@
+<form>
+    <field>
+        <label>Layout</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>ShowTitlebar</id>
+        <label>Show Titlebar</label>
+        <type>checkbox</type>
+        <help>Display the standard Swagger UI titlebar</help>
+    </field>
+    <field>
+        <id>ShowHeader</id>
+        <label>Show Header</label>
+        <type>checkbox</type>
+        <help>Display the title and description of the OpenAPI file</help>
+    </field>
+    <field>
+        <id>ShowAuthorize</id>
+        <label>Show Authorize Button</label>
+        <type>checkbox</type>
+        <help>Display Authorize button</help>
+    </field>
+    <field>
+        <id>ShowServers</id>
+        <label>Show Server List</label>
+        <type>checkbox</type>
+        <help>Display Servers dropdown list</help>
+    </field>
+    <field>
+        <id>Expanded</id>
+        <label>Expand All Sections</label>
+        <type>checkbox</type>
+        <help>Expand or collapse all sections on the page by default</help>
+    </field>
+    <field>
+        <label>Test Server</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>ServerUri</id>
+        <label>URI</label>
+        <type>text</type>
+        <help>The URI for of the test server</help>
+        <hint>https://opnsense.local/api</hint>
+    </field>
+    <field>
+        <id>ServerKey</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>API key that is filled in by default</help>
+        <hint>Default API key for 'Try this now'</hint>
+    </field>
+ </form>

@@ -1,0 +1,10 @@
+<acl>
+   <page-services-swaggerui>
+      <name>Help: Swagger UI - Interactive API Reference</name>
+      <description>Allow access to the 'Swagger UI interactive API Reference' pages.</description>
+      <patterns>
+         <pattern>ui/swaggerui/*</pattern>
+         <pattern>api/swaggerui/*</pattern>
+      </patterns>
+   </page-services-swaggerui>
+</acl>

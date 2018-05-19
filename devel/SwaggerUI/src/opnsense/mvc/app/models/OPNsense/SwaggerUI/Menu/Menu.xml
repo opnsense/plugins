@@ -1,0 +1,9 @@
+<menu>
+    <Help>
+      <SwaggerUI VisibleName="Swagger UI" cssClass="fa fa-graduation-cap fa-fw">
+          <Settings VisibleName="Configuration" order="10" url="/ui/swaggerui/"/>
+          <Core VisibleName="Core API" order="20" url="/ui/swaggerui/core/"/>
+          <Plugins VisibleName="Plugin API" order="80" url="/ui/swaggerui/plugins/"/>
+      </SwaggerUI>
+    </Help>
+</menu>

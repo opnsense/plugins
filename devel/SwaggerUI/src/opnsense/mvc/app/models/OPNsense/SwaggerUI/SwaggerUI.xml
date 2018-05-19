@@ -1,0 +1,36 @@
+<model>
+    <mount>//OPNsense/swaggerui</mount>
+    <description>
+        Swagger UI Settings 
+    </description>
+    <items>
+        <general>
+            <ShowTitlebar type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </ShowTitlebar>
+            <ShowHeader type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </ShowHeader>
+            <ShowAuthorize type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </ShowAuthorize>
+            <ShowServers type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </ShowServers>
+            <Expanded type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </Expanded>
+            <ServerUri type="TextField">
+                <Required>N</Required>
+            </ServerUri>
+            <ServerKey type="TextField">
+                <Required>N</Required>
+            </ServerKey>
+        </general>
+    </items>
+</model>
