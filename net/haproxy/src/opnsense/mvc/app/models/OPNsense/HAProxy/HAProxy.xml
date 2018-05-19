@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.2.0</version>
+    <version>2.3.0</version>
     <description>
         the HAProxy load balancer
     </description>
@@ -686,14 +686,40 @@
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
                     <Required>N</Required>
                 </healthCheckRise>
+                <persistence type="OptionField">
+                    <Required>N</Required>
+                    <default>sticktable</default>
+                    <OptionValues>
+                        <sticktable>Stick-table persistence [default]</sticktable>
+                        <cookie>Cookie-based persistence (HTTP/HTTPS only)</cookie>
+                    </OptionValues>
+                </persistence>
+                <persistence_cookiemode type="OptionField">
+                    <Required>Y</Required>
+                    <default>piggyback</default>
+                    <OptionValues>
+                        <piggyback>Piggyback on existing cookie</piggyback>
+                        <new>Insert new cookie</new>
+                    </OptionValues>
+                </persistence_cookiemode>
+                <persistence_cookiename type="TextField">
+                    <default>SRVCOOKIE</default>
+                    <Required>N</Required>
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){1,1024}$/u</mask>
+                    <ValidationMessage>Does not look like a valid cookie name (most special characters are not allowed).</ValidationMessage>
+                </persistence_cookiename>
+                <persistence_stripquotes type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </persistence_stripquotes>
                 <stickiness_pattern type="OptionField">
                     <Required>N</Required>
                     <default>sourceipv4</default>
                     <OptionValues>
-                        <sourceipv4>Stick on Source-IP [default]</sourceipv4>
-                        <sourceipv6>Stick on Source-IPv6</sourceipv6>
-                        <cookievalue>Stick on existing Cookie value</cookievalue>
-                        <rdpcookie>Stick on RDP-Cookie</rdpcookie>
+                        <sourceipv4>Source-IP [default]</sourceipv4>
+                        <sourceipv6>Source-IPv6</sourceipv6>
+                        <cookievalue>Existing cookie value</cookievalue>
+                        <rdpcookie>RDP-Cookie</rdpcookie>
                     </OptionValues>
                 </stickiness_pattern>
                 <stickiness_dataTypes type="OptionField">
@@ -835,6 +861,9 @@
         </backends>
         <servers>
             <server type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
                 <name type="TextField">
                     <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>

@@ -176,6 +176,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("."+service_id).show();
             });
             $("#backend\\.healthCheckEnabled").change();
+
+            $("#backend\\.persistence").change(function(){
+                var persistence_id = 'table_persistence_' + $(this).val();
+                $(".persistence_table").hide();
+                $("."+persistence_id).show();
+            });
+            $("#backend\\.persistence").change();
         })
 
         // hook into on-show event for dialog to extend layout.
