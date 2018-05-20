@@ -1,0 +1,51 @@
+<form>
+    <tab id="nginx-general" description="General Settings">
+        <subtab id="nginx-general-settings" description="General Settings">
+            <field>
+                <id>nginx.general.enabled</id>
+                <label>Enable nginx</label>
+                <type>checkbox</type>
+                <help>Enable or disable the nginx service.</help>
+            </field>
+        </subtab>
+        <subtab id="nginx-http-global" description="Global HTTP Settings">
+            <field>
+                <id>nginx.http.enabled</id>
+                <label>Enable sendfile</label>
+                <type>checkbox</type>
+                <help>Enable sendfile support (faster).</help>
+            </field>
+            <field>
+                <id>nginx.http.keepalive_timeout</id>
+                <label>Keepalive Timeout</label>
+                <type>text</type>
+                <help>After this idle time, the client gets disconnected.</help>
+            </field>
+            <field>
+                <id>nginx.http.default_type</id>
+                <label>Default MIME-Type</label>
+                <type>text</type>
+                <help>This content type is sent if the file extension is unknown.</help>
+            </field>
+        </subtab>
+    </tab>
+    <tab id="nginx-mail" description="E-Mail">
+        <subtab id="nginx-mail-pop3" description="POP3">
+            <field>
+                <id>nginx.mail.pop.enabled</id>
+                <label>Enable sendfile</label>
+                <type>checkbox</type>
+                <help>Enable sendfile support (faster).</help>
+            </field>
+        </subtab>
+        <subtab id="nginx-mail-pop3" description="IMAP">
+            <field>
+                <id>nginx.mail.imap.enabled</id>
+                <label>Enable sendfile</label>
+                <type>checkbox</type>
+                <help>Enable sendfile support (faster).</help>
+            </field>
+        </subtab>
+    </tab>
+    <activetab>nginx-general-settings</activetab>
+</form>

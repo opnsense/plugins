@@ -1,0 +1,12 @@
+<form>
+  <field>
+    <id>userlist.name</id>
+    <label>Name</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>userlist.users</id>
+    <label>Users</label>
+    <type>select_multiple</type>
+  </field>
+</form>

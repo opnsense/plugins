@@ -1,0 +1,12 @@
+<form>
+  <field>
+    <id>upstream.description</id>
+    <label>Beschreibung</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream.serverentries</id>
+    <label>Server Entries</label>
+    <type>select_multiple</type>
+  </field>
+</form>

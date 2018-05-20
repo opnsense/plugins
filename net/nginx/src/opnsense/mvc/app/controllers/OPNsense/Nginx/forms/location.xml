@@ -1,0 +1,74 @@
+<form>
+  <field>
+    <id>location.urlpattern</id>
+    <label>URL Pattern</label>
+    <type>text</type>
+    <help>The URL pattern to match.</help>
+  </field>
+  <field>
+    <id>location.matchtype</id>
+    <label>Match Type</label>
+    <type>dropdown</type>
+    <help>Choose how to match on "URL Pattern".</help>
+  </field>
+  <field>
+    <id>location.enable_secrules</id>
+    <label>Enable Security Rules</label>
+    <type>checkbox</type>
+    <help>Enable WAF</help>
+  </field>
+  <field>
+    <id>location.xss_block_score</id>
+    <label>Block XSS Score</label>
+    <type>text</type>
+    <help>Block XSS with a score above the specified value using generic detection.</help>
+  </field>
+  <field>
+    <id>location.sqli_block_score</id>
+    <label>Block SQL Injection Score</label>
+    <type>text</type>
+    <help>Block SQL injection with a score above the specified value using generic detection.</help>
+  </field>
+  <field>
+    <id>location.custom_policy</id>
+    <label>Custom Security Policy</label>
+    <type>select_multiple</type>
+    <help>Select custom security policies.</help>
+  </field>
+  <field>
+    <id>location.root</id>
+    <label>File System Root</label>
+    <type>text</type>
+    <help>Enter the file system root from which the files are served.</help>
+  </field>
+  <field>
+    <id>location.index</id>
+    <label>Index File</label>
+    <type>select_multiple</type>
+    <help>Enter a list of file extensions, which are served instead of a directory. It is common to use index.html or index.php here.</help>
+  </field>
+  <field>
+    <id>location.autoindex</id>
+    <label>Automatic Index</label>
+    <type>checkbox</type>
+    <help>Check this to serve a file list when a directory is requested. This is useful for serving multiple files with someone without a web application. It is recommended to use this option only with authentication.</help>
+  </field>
+  <field>
+    <id>location.authbasic</id>
+    <label>Basic Authentication</label>
+    <type>text</type>
+    <help>Enter the realm for this directory and enable authentication.</help>
+  </field>
+  <field>
+    <id>location.authbasicuserfile</id>
+    <label>Basic Credentials List</label>
+    <type>dropdown</type>
+    <help>Select a credential list to use.</help>
+  </field>
+  <field>
+    <id>location.force_https</id>
+    <label>Force HTTPS</label>
+    <type>checkbox</type>
+    <help>Force encrypted connections.</help>
+  </field>
+</form>

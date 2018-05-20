@@ -1,0 +1,17 @@
+<form>
+  <field>
+    <id>upstream_server.description</id>
+    <label>Beschreibung</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream_server.server</id>
+    <label>Server</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream_server.priority</id>
+    <label>Server Priority</label>
+    <type>text</type>
+  </field>
+</form>

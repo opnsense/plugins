@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <nginx VisibleName="nginx" cssClass="fa fa-bath fa-fw" url="/ui/nginx/" />
+  </Services>
+</menu>
