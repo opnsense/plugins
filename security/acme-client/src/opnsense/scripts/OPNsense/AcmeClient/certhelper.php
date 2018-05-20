@@ -4,7 +4,7 @@
 /**
  *    Based in parts on certs.inc and system_camanager.php (thus the extended copyright notice).
  *
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2018 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *    Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  *    Copyright (C) 2008 Shrew Soft Inc
@@ -49,6 +49,8 @@ use OPNsense\Base;
 use OPNsense\AcmeClient\AcmeClient;
 
 global $config;
+global $postponed_updates;
+$postponed_updates = array();
 
 /* CLI arguments:
  *  -a (action)
@@ -103,6 +105,9 @@ switch ($options["a"]) {
         log_error("invalid argument specified");
         exit(1);
 }
+
+// Write certificate status updates to configuration
+dump_postponed_updates();
 
 // ALL certificate work starts here. First we do some common validation and
 // make sure that everything is prepared for acme client to run.
@@ -740,6 +745,13 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Teach acme.sh about DNS API hook location
     $proc_env['_SCRIPT_HOME'] = '/usr/local/share/examples/acme.sh';
 
+    // Get the chosen key length from xml and trim the parameter before passing to acme client
+    $key_length = (string) $certObj->keyLength;
+    $key_length = substr($key_length, 4);
+    if ($key_length == 'ec256' || $key_length == 'ec384') {
+        $key_length = substr_replace($key_length, '-', 2, 0);
+    }
+
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
@@ -750,7 +762,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
       . $altnames
       . $acme_validation . " "
       . "--home /var/etc/acme-client/home "
-      . "--keylength 4096 "
+      . "--keylength " . $key_length . " "
       . "--accountconf " . $account_conf_file . " "
       . "--certpath ${cert_filename} "
       . "--keypath ${key_filename} "
@@ -806,6 +818,13 @@ function revoke_cert($certObj, $valObj, $acctObj)
     // Generate certificate filenames
     $cert_id = (string)$certObj->id;
 
+    // Check if EC certificate is used, if yes add the --ecc parameter to acme client
+    $key_length = (string) $certObj->keyLength;
+    $ecc_param =  " ";
+    if ($key_length == 'key_ec256' || $key_length == 'key_ec384') {
+        $ecc_param =  "--ecc";
+    }
+
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
@@ -814,8 +833,8 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . "--revoke "
       . "--domain " . (string)$certObj->name . " "
       . "--home /var/etc/acme-client/home "
-      . "--keylength 4096 "
-      . "--accountconf " . $account_conf_file;
+      . "--accountconf " . $account_conf_file . " "
+      . $ecc_param;
     //echo "DEBUG: executing command: " . $acmecmd . "\n";
     $result = mwexec($acmecmd);
 
@@ -1100,17 +1119,39 @@ function run_restart_actions($certlist, $modelObj)
 */
 function log_cert_acme_status($certObj, $modelObj, $statusCode)
 {
+    global $postponed_updates;
+
     $uuid = $certObj->attributes()->uuid;
     $node = $modelObj->getNodeByReference('certificates.certificate.' . $uuid);
     if ($node != null) {
-        $node->statusCode = $statusCode;
-        $node->statusLastUpdate = time();
-        // serialize to config and save
-        $modelObj->serializeToConfig();
-        Config::getInstance()->save();
+        $postponed_updates[] = array(
+          'uuid' => (string)$uuid,
+          'statusCode' => $statusCode,
+          'statusLastUpdate' => time());
     } else {
         log_error("AcmeClient: unable to update acme status for certificate " . (string)$certObj->name);
         return(1);
+    }
+}
+
+/* Write postponed certificate status updates to the configuration.
+ * This workaround seems to fix the "Node no longer exists" error
+ * that haunted us for quite some time.
+*/
+function dump_postponed_updates()
+{
+    global $postponed_updates;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+
+    foreach ($postponed_updates as $pupdate) {
+        $node = $modelObj->getNodeByReference('certificates.certificate.' . $pupdate['uuid']);
+        if ($node != null) {
+            $node->statusCode = $pupdate['statusCode'];
+            $node->statusLastUpdate = $pupdate['statusLastUpdate'];
+            // serialize to config and save
+            $modelObj->serializeToConfig();
+            Config::getInstance()->save();
+        }
     }
 }
 
