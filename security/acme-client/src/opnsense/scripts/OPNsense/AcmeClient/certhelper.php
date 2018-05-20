@@ -747,9 +747,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Get the chosen key length from xml and trim the parameter before passing to acme client
     $key_length = (string) $certObj->keyLength;
-    $key_length = substr($key_length, 4 );
-    if($key_length == 'ec256' || $key_length == 'ec384') {
-        $key_length = substr_replace($key_length, '-', 2,0);
+    $key_length = substr($key_length, 4);
+    if ($key_length == 'ec256' || $key_length == 'ec384') {
+        $key_length = substr_replace($key_length, '-', 2, 0);
     }
 
     // Run acme client
@@ -762,7 +762,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
       . $altnames
       . $acme_validation . " "
       . "--home /var/etc/acme-client/home "
-      . "--keylength " . $key_length . " " 
+      . "--keylength " . $key_length . " "
       . "--accountconf " . $account_conf_file . " "
       . "--certpath ${cert_filename} "
       . "--keypath ${key_filename} "
@@ -821,7 +821,7 @@ function revoke_cert($certObj, $valObj, $acctObj)
     // Check if EC certificate is used, if yes add the --ecc parameter to acme client
     $key_length = (string) $certObj->keyLength;
     $ecc_param =  " ";
-    if($key_length == 'key_ec256' || $key_length == 'key_ec384') {
+    if ($key_length == 'key_ec256' || $key_length == 'key_ec384') {
         $ecc_param =  "--ecc";
     }
 
