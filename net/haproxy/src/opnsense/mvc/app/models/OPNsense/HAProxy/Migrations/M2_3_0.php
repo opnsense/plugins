@@ -30,7 +30,7 @@ namespace OPNsense\HAProxy\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 
-class M2_7_0 extends BaseModelMigration
+class M2_3_0 extends BaseModelMigration
 {
     public function run($model)
     {
