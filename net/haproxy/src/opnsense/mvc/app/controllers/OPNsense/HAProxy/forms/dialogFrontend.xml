@@ -200,7 +200,7 @@
     <field>
         <label>HTTP(S) settings</label>
         <type>header</type>
-        <style>mode_table table_http table_ssl</style>
+        <style>mode_table table_http</style>
     </field>
     <field>
         <id>frontend.forwardFor</id>

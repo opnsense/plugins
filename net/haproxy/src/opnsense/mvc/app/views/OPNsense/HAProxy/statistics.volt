@@ -43,14 +43,16 @@ POSSIBILITY OF SUCH DAMAGE.
             $('#updatelist').empty();
             ajaxGet(url = "/api/haproxy/statistics/info/", sendData={},
                     callback = function (data, status) {
+                        $("#infolist > tbody").empty();
+                        $("#infolist > thead").hide();
                         if (status == "success") {
-                            $("#infolist").html("<tr><th>{{ lang._('Name') }}</th><th>{{ lang._('Value') }}</th></tr>");
+                            $("#infolist > thead").show();
                             $.each(data, function (key, value) {
-                                $('#infolist').append('<tr><td>'+key+'</td>' +
+                                $('#infolist > tbody').append('<tr><td>'+key+'</td>' +
                                 "<td>"+value+"</td></tr>");
                             });
                         } else {
-                            $("#infolist").html("<tr><td><br/>{{ lang._('The statistics could not be fetched. Is HAProxy running?') }}</td></tr>");
+                            $("#infolist > tbody").append("<tr><td colspan=2 style='text-align:center;'><br/>{{ lang._('The statistics could not be fetched. Is HAProxy running?') }}<br/><br/></td></tr>");
                         }
                         $('#processing-dialog').modal('hide');
                     }
@@ -170,6 +172,14 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="info" class="tab-pane fade in active">
         <!-- tab page "info" -->
         <table id="infolist" class="table table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>{{ lang._('Name') }}</th>
+                    <th>{{ lang._('Value') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
         </table>
         <div  class="col-sm-12">
             <div class="row">

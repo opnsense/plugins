@@ -77,7 +77,7 @@
         <id>server.checkInterval</id>
         <label>Check Interval</label>
         <type>text</type>
-        <help><![CDATA[Sets the interval (in milliseconds) for running health checks on this server. This setting takes precedence. If set, the interval in the healthcheck is ignored.]]></help>
+        <help><![CDATA[Sets the interval (in milliseconds) for running health checks on this server. This setting takes precedence over default values in health monitors. It can still be overwritten from the backend pool.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
