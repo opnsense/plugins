@@ -82,17 +82,18 @@ $( document ).ready(function() {
             });
         });
     });
-    
-    $("#grid-hidservauth").UIBootgrid(
-        { 'search':'/api/tor/general/searchhidservauth',
-          'get':'/api/tor/general/gethidservauth/',
-          'set':'/api/tor/general/sethidservauth/',
-          'add':'/api/tor/general/addhidservauth/',
-          'del':'/api/tor/general/delhidservauth/',
-          'toggle':'/api/tor/general/togglehidservauth/',
-          'options':{selection:false, multiSelect:false}
-        }
-    );
+    ['upstream', 'upstream-server', 'location', 'credential', 'userlist'].forEach(function(element) {
+        $("#grid-http-" + element).UIBootgrid(
+            { 'search':'/api/nginx/settings/search' + element,
+              'get':'/api/nginx/settings/get' + element + '/',
+              'set':'/api/nginx/settings/set' + element + '/',
+              'add':'/api/nginx/settings/add' + element + '/',
+              'del':'/api/nginx/settings/del' + element + '/',
+              // 'toggle':'/api/nginx/settings/togglehidservauth/',
+              'options':{selection:false, multiSelect:false}
+            }
+        );
+    });
 
 });
 
@@ -102,10 +103,123 @@ $( document ).ready(function() {
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('HTTP(S)')}}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-location" href="#subtab_nginx-http-location">{{ lang._('Location')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-credential" href="#subtab_nginx-http-credential">{{ lang._('Credential')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-userlist" href="#subtab_nginx-http-userlist">{{ lang._('User List')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-upstream-server" href="#subtab_nginx-http-upstream-server">{{ lang._('Upstream Server')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-upstream" href="#subtab_nginx-http-upstream">{{ lang._('Upstream')}}</a>
+            </li>
+        </ul>
+    </li>
 </ul>
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
+    <div id="subtab_nginx-http-location" class="tab-pane fade">
+        <table id="grid-http-location" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="locationdlg">
+            <thead>
+            <tr>
+                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
+                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    
+    <div id="subtab_nginx-http-upstream" class="tab-pane fade">
+        <table id="grid-http-upstream" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamdlg">
+            <thead>
+            <tr>
+                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
+                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-http-credential" class="tab-pane fade">
+        <table id="grid-http-credential" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="credentialdlg">
+            <thead>
+            <tr>
+                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
+                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-http-userlist" class="tab-pane fade">
+        <table id="grid-http-userlist" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="userlistdlg">
+            <thead>
+            <tr>
+                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
+                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 
