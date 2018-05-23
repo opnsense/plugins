@@ -35,10 +35,17 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#network_details_collapse_all").click(function() {
             $(".network_details").collapse('toggle');
         });
-    });
-    $(document).ready(function() {
+
         $("#peer_details_collapse_all").click(function() {
             $(".peer_details").collapse('toggle');
+        });
+
+        // update history on tab state and implement navigation
+        if(window.location.hash != "") {
+            $('a[href="' + window.location.hash + '"]').click()
+        }
+        $('.nav-tabs a').on('shown.bs.tab', function (e) {
+            history.pushState(null, null, e.target.hash);
         });
     });
 </script>
