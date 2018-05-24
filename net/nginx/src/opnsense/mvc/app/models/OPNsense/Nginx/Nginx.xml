@@ -56,11 +56,11 @@
       </serverentries>
     </upstream>
 
-    <upstream_server>
+    <upstream_server type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>
       </description>
-      <server type="HostField">
+      <server type="HostnameField">
         <Required>Y</Required>
       </server>
       <priority type="IntegerField">
@@ -69,11 +69,10 @@
       </priority>
     </upstream_server>
 
-    <location>
+    <location type="ArrayField">
       <urlpattern type="TextField">
         <Required>Y</Required>
       </urlpattern>
-      <!-- TODO fill data -->
       <matchtype type="OptionField">
         <default>0</default>
         <Required>Y</Required>
@@ -126,6 +125,9 @@
         <Required>N</Required>
       </force_https>
     </location>
+
+    <custom_policy type="ArrayField">
+    </custom_policy>
     <!-- TODO add settings.xml stuff -->
 
   </items>

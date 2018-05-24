@@ -26,12 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Rspamd\Api;
+namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Rspamd\RSpamd';
-    static protected $internalModelName = 'rspamd';
+    static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
+    static protected $internalModelName = 'nginx';
 }

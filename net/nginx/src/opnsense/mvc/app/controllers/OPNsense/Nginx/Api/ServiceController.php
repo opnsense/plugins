@@ -26,14 +26,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Rspamd\Api;
+namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Rspamd\RSpamd';
-    static protected $internalServiceTemplate = 'OPNsense/Rspamd';
+    static protected $internalServiceClass = '\OPNsense\Nginx\Nginx';
+    static protected $internalServiceTemplate = 'OPNsense/Nginx';
     static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'rspamd';
+    static protected $internalServiceName = 'nginx';
 }
