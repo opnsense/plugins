@@ -65,15 +65,15 @@ POSSIBILITY OF SUCH DAMAGE.
                         <td style="width:78%">
                             <table class="table">
                                 <tr>
-                                    <td><b>{{ lang._("physical") }}</b></td>
+                                    <td><b>{{ lang._('physical') }}</b></td>
                                     <td colspan="4">{{ config["physical"] ? 'true' : 'false' }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>{{ lang._("settings") }}</b></td>
-                                    <td><b>{{ lang._("portMappingEnabled") }}</b></td>
-                                    <td><b>{{ lang._("primaryPort") }}</b></td>
-                                    <td><b>{{ lang._("softwareUpdate") }}</b></td>
-                                    <td><b>{{ lang._("softwareUpdateChannel") }}</b></td>
+                                    <td><b>{{ lang._('settings') }}</b></td>
+                                    <td><b>{{ lang._('portMappingEnabled') }}</b></td>
+                                    <td><b>{{ lang._('primaryPort') }}</b></td>
+                                    <td><b>{{ lang._('softwareUpdate') }}</b></td>
+                                    <td><b>{{ lang._('softwareUpdateChannel') }}</b></td>
                                 </tr>
                                 <tr>
                                     <td>&nbsp;</td>
@@ -89,7 +89,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% endif %}
                 </tr>
                 {% elsefor %}
-                    <tr><td>{{ lang._("Unable to retrieve Zerotier information. Is the service enabled and is there internet connectivity?") }}</td></tr>
+                    <tr><td>{{ lang._('Unable to retrieve Zerotier information. Is the service enabled and is there internet connectivity?') }}</td></tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -106,11 +106,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                     <tr>
                                         <th colspan="2">
                                             <i class="fa fa-chevron-down" style="cursor: pointer;" data-toggle="collapse" data-target="#{{ network['nwid'] | e }}"></i>
-                                            {{ lang._("Network Id") }} : {{ network['nwid'] | e }} ({{ network['name'] | e }})
+                                            {{ lang._('Network Id') }} : {{ network['nwid'] | e }} ({{ network['name'] | e }})
                                             {% if networksFirstRow == true %}
                                             {% set networksFirstRow = false %}
                                             <div class="pull-right">
-                                                <i class="fa fa-expand" id="network_details_collapse_all" style="cursor: pointer;" data-toggle="tooltip" title="{{ lang._("collapse/expand all") }}"></i> &nbsp;
+                                                <i class="fa fa-expand" id="network_details_collapse_all" style="cursor: pointer;" data-toggle="tooltip" title="{{ lang._('collapse/expand all') }}"></i> &nbsp;
                                             </div>
                                             {% endif %}
                                         </th>
@@ -133,7 +133,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                     {% if key == "assignedAddresses" %}
                                                         <thead>
                                                             <tr>
-                                                                <td>{{ lang._("Addresses") }}</td
+                                                                <td>{{ lang._('Addresses') }}</td
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -145,17 +145,17 @@ POSSIBILITY OF SUCH DAMAGE.
                                                                 {% endfor %}
                                                             {% else %}
                                                                 <tr>
-                                                                    <td>{{ lang._("No addresses currently defined.") }}</td>
+                                                                    <td>{{ lang._('No addresses currently defined.') }}</td>
                                                                 </tr>
                                                             {% endif %}
                                                         <tbody>
                                                     {% elseif key == "routes" %}
                                                         <thead>
                                                             <tr>
-                                                                <td>{{ lang._("target") }}</td>
-                                                                <td>{{ lang._("via") }}</td>
-                                                                <td>{{ lang._("metric") }}</td>
-                                                                <td>{{ lang._("flags") }}</td>
+                                                                <td>{{ lang._('target') }}</td>
+                                                                <td>{{ lang._('via') }}</td>
+                                                                <td>{{ lang._('metric') }}</td>
+                                                                <td>{{ lang._('flags') }}</td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -170,7 +170,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                                     </tr>
                                                                 {% endfor %}
                                                             {% else %}
-                                                                <tr><td colspan="4">{{ lang._("No routes currently defined.") }}</td></tr>
+                                                                <tr><td colspan="4">{{ lang._('No routes currently defined.') }}</td></tr>
                                                             {% endif %}
                                                         </tbody>
                                                     {% endif %}
@@ -186,7 +186,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         </div>
                     </div>
                     {% elsefor %}
-                        {{ lang._("Unable to retrieve Zerotier network information. Is the service enabled, do you have enabled networks and is there internet connectivity?") }}
+                        {{ lang._('Unable to retrieve Zerotier network information. Is the service enabled, do you have enabled networks and is there internet connectivity?') }}
                     {% endfor %}
                 </section>
             </div>
@@ -204,11 +204,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                     <tr>
                                         <th colspan="2">
                                             <i class="fa fa-chevron-down" style="cursor: pointer;" data-toggle="collapse" data-target="#{{ peer['address'] | e }}"></i>
-                                            {{ lang._("Peer") }} : {{ peer['address'] | e }} ({{ peer['role'] | e }})
+                                            {{ lang._('Peer') }} : {{ peer['address'] | e }} ({{ peer['role'] | e }})
                                             {% if peersFirstRow == true %}
                                             {% set peersFirstRow = false %}
                                             <div class="pull-right">
-                                                <i class="fa fa-expand" id="peer_details_collapse_all" style="cursor: pointer;" data-toggle="tooltip" title="{{ lang._("collapse/expand all") }}"></i> &nbsp;
+                                                <i class="fa fa-expand" id="peer_details_collapse_all" style="cursor: pointer;" data-toggle="tooltip" title="{{ lang._('collapse/expand all') }}"></i> &nbsp;
                                             </div>
                                             {% endif %}
                                         </th>
@@ -231,14 +231,14 @@ POSSIBILITY OF SUCH DAMAGE.
                                                     {% if key == "paths" %}
                                                         <thead>
                                                             <tr>
-                                                                <td>{{ lang._("active") }}</td>
-                                                                <td>{{ lang._("address") }}</td>
-                                                                <td>{{ lang._("expired") }}</td>
-                                                                <td>{{ lang._("lastReceive") }}</td>
-                                                                <td>{{ lang._("lastSend") }}</td>
-                                                                <td>{{ lang._("linkQuality") }}</td>
-                                                                <td>{{ lang._("preferred") }}</td>
-                                                                <td>{{ lang._("trustedPathId") }}</td>
+                                                                <td>{{ lang._('active') }}</td>
+                                                                <td>{{ lang._('address') }}</td>
+                                                                <td>{{ lang._('expired') }}</td>
+                                                                <td>{{ lang._('lastReceive') }}</td>
+                                                                <td>{{ lang._('lastSend') }}</td>
+                                                                <td>{{ lang._('linkQuality') }}</td>
+                                                                <td>{{ lang._('preferred') }}</td>
+                                                                <td>{{ lang._('trustedPathId') }}</td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -258,7 +258,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                                 {% endfor %}
                                                             {% else %}
                                                                 <tr>
-                                                                    <td colspan="4">{{ lang._("No routes currently defined.") }}</td>
+                                                                    <td colspan="4">{{ lang._('No routes currently defined.') }}</td>
                                                                 </tr>
                                                             {% endif %}
                                                         </tbody>
@@ -275,7 +275,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         </div>
                     </div>
                     {% elsefor %}
-                        {{ lang._("Unable to retrieve Zerotier peer information. Is the service enabled and is there internet connectivity?") }}
+                        {{ lang._('Unable to retrieve Zerotier peer information. Is the service enabled and is there internet connectivity?') }}
                     {% endfor %}
                 </section>
             </div>
