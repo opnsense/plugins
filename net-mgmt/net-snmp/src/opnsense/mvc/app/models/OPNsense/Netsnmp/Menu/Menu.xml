@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Net-SNMP cssClass="fa fa-database" url="/ui/netsnmp/general/index" />
+  </Services>
+</menu>

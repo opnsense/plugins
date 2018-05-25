@@ -1,0 +1,9 @@
+<acl>
+   <page-services-netsnmp>
+      <name>Services: Net-SNMP</name>
+      <patterns>
+         <pattern>ui/netsnmp/*</pattern>
+         <pattern>api/netsnmp/*</pattern>
+      </patterns>
+   </page-services-netsnmp>
+</acl>
