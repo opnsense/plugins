@@ -44,12 +44,13 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="users" class="tab-pane fade in">
-        <table id="grid-users" class="table table-responsive" data-editDialog="dialogEditSiproxdUser">
+        <table id="grid-users" class="table table-responsive" data-editDialog="dialogEditNetsnmpUser">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="username" data-type="string" data-visible="true">{{ lang._('Username') }}</th>
                     <th data-column-id="password" data-type="string" data-visible="true">{{ lang._('Password') }}</th>
+                    <th data-column-id="enckey" data-type="string" data-visible="true">{{ lang._('Encryption Key') }}</th>
                 </tr>
             </thead>
             <tbody>
