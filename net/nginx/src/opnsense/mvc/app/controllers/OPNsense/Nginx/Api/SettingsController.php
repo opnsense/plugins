@@ -34,4 +34,167 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
     static protected $internalModelName = 'nginx';
+
+    // User List
+
+    public function searchuserlistAction()
+    {
+        return $this->searchBase('userlist', array('name', 'users'));
+    }
+
+    public function getuserlistAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('userlist', 'userlist', $uuid);
+    }
+
+    public function adduserlistAction()
+    {
+        return $this->addBase('userlist', 'userlist');
+    }
+
+    public function deluserlistAction($uuid)
+    {
+        return $this->delBase('userlist', $uuid);
+    }
+
+    public function setuserlistAction($uuid)
+    {
+        return $this->setBase('userlist', 'userlist', $uuid);
+    }
+
+    // Credential
+    public function searchcredentialAction()
+    {
+        return $this->searchBase('credential', array('username'));
+    }
+
+    public function getcredentialAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('credential', 'credential', $uuid);
+    }
+
+    public function addcredentialAction()
+    {
+        return $this->addBase('credential', 'credential');
+    }
+
+    public function delcredentialAction($uuid)
+    {
+        return $this->delBase('credential', $uuid);
+    }
+
+    public function setcredentialAction($uuid)
+    {
+        return $this->setBase('credential', 'credential', $uuid);
+    }
+
+    // Upstream
+    public function searchupstreamAction()
+    {
+        return $this->searchBase('upstream', array('description', 'serverentries'));
+    }
+
+    public function getupstreamAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('upstream', 'upstream', $uuid);
+    }
+
+    public function addupstreamAction()
+    {
+        return $this->addBase('upstream', 'upstream');
+    }
+
+    public function delupstreamAction($uuid)
+    {
+        return $this->delBase('upstream', $uuid);
+    }
+
+    public function setupstreamAction($uuid)
+    {
+        return $this->setBase('upstream', 'upstream', $uuid);
+    }
+
+    // Upstream Server
+    public function searchupstreamserverAction()
+    {
+        return $this->searchBase('upstream_server', array('description', 'server', 'priority'));
+    }
+
+    public function getupstreamserverAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('upstream_server', 'upstream_server', $uuid);
+    }
+
+    public function addupstreamserverAction()
+    {
+        return $this->addBase('upstream_server', 'upstream_server');
+    }
+
+    public function delupstreamserverAction($uuid)
+    {
+        return $this->delBase('upstream_server', $uuid);
+    }
+
+    public function setupstreamserverAction($uuid)
+    {
+        return $this->setBase('upstream_server', 'upsteam_server', $uuid);
+    }
+
+    // Location
+    public function searchlocationAction()
+    {
+        return $this->searchBase('location', array('location', 'matchtype', 'enable_secrules'));
+    }
+
+    public function getlocationAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('location', 'location', $uuid);
+    }
+
+    public function addlocationAction()
+    {
+        return $this->addBase('location', 'location');
+    }
+
+    public function dellocationAction($uuid)
+    {
+        return $this->delBase('location', $uuid);
+    }
+
+    public function setlocationAction($uuid)
+    {
+        return $this->setBase('location', 'location', $uuid);
+    }
+
+    // Custom Policy
+    public function searchcustompolicyAction()
+    {
+        return $this->searchBase('custom_policy', array());
+    }
+
+    public function getcustompolicyAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('custompolicy', 'custom_policy', $uuid);
+    }
+
+    public function addcustompolicyAction()
+    {
+        return $this->addBase('custompolicy', 'custom_policy');
+    }
+
+    public function delcustompolicyAction($uuid)
+    {
+        return $this->delBase('custom_policy', $uuid);
+    }
+
+    public function setcustompolicyAction($uuid)
+    {
+        return $this->setBase('custompolicy', 'custom_policy', $uuid);
+    }
 }

@@ -82,14 +82,14 @@ $( document ).ready(function() {
             });
         });
     });
-    ['upstream', 'upstream-server', 'location', 'credential', 'userlist'].forEach(function(element) {
-        $("#grid-http-" + element).UIBootgrid(
+    ['upstream', 'upstreamserver', 'location', 'credential', 'userlist'].forEach(function(element) {
+        $("#grid-" + element).UIBootgrid(
             { 'search':'/api/nginx/settings/search' + element,
               'get':'/api/nginx/settings/get' + element + '/',
               'set':'/api/nginx/settings/set' + element + '/',
               'add':'/api/nginx/settings/add' + element + '/',
               'del':'/api/nginx/settings/del' + element + '/',
-              // 'toggle':'/api/nginx/settings/togglehidservauth/',
+              // 'toggle':'/api/nginx/settings/toggle' + element + '/',
               'options':{selection:false, multiSelect:false}
             }
         );
@@ -131,11 +131,38 @@ $( document ).ready(function() {
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
     <div id="subtab_nginx-http-location" class="tab-pane fade">
-        <table id="grid-http-location" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="locationdlg">
+        <table id="grid-location" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="locationdlg">
             <thead>
             <tr>
                 <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
+                <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
+                <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
+                <th data-column-id="enable_secrules" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('WAF Enabled') }}</th>
+                <th data-column-id="force_https" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="subtab_nginx-http-upstream-server" class="tab-pane fade">
+        <table id="grid-upstreamserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamserverdlg">
+            <thead>
+            <tr>
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="server" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="priority" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Priority') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
@@ -155,11 +182,11 @@ $( document ).ready(function() {
     
     
     <div id="subtab_nginx-http-upstream" class="tab-pane fade">
-        <table id="grid-http-upstream" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamdlg">
+        <table id="grid-upstream" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamdlg">
             <thead>
             <tr>
-                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="serverentries" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Servers') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
@@ -177,11 +204,10 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="subtab_nginx-http-credential" class="tab-pane fade">
-        <table id="grid-http-credential" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="credentialdlg">
+        <table id="grid-credential" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="credentialdlg">
             <thead>
             <tr>
-                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
-                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="username" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Username') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
@@ -199,11 +225,11 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="subtab_nginx-http-userlist" class="tab-pane fade">
-        <table id="grid-http-userlist" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="userlistdlg">
+        <table id="grid-userlist" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="userlistdlg">
             <thead>
             <tr>
-                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
-                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
+                <th data-column-id="users" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Users') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
@@ -225,6 +251,7 @@ $( document ).ready(function() {
 
 
 {{ partial("layout_partials/base_dialog",['fields': upstream,'id':'upstreamdlg', 'label':lang._('Edit Upstream')]) }}
+{{ partial("layout_partials/base_dialog",['fields': upstream_server,'id':'upstreamserverdlg', 'label':lang._('Edit Upstream')]) }}
 {{ partial("layout_partials/base_dialog",['fields': location,'id':'locationdlg', 'label':lang._('Edit Location')]) }}
 {{ partial("layout_partials/base_dialog",['fields': credential,'id':'credentialdlg', 'label':lang._('Edit Credential')]) }}
 {{ partial("layout_partials/base_dialog",['fields': userlist,'id':'userlistdlg', 'label':lang._('Edit User List')]) }}

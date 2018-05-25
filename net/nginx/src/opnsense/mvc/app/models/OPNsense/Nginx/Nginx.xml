@@ -27,6 +27,7 @@
         </Model>
         <ValidationMessage>Selected user not found</ValidationMessage>
         <Required>Y</Required>
+        <multiple>Y</multiple>
       </users>
     </userlist>
 
@@ -53,6 +54,7 @@
         </Model>
         <ValidationMessage>Selected server not found</ValidationMessage>
         <Required>Y</Required>
+        <multiple>Y</multiple>
       </serverentries>
     </upstream>
 
@@ -75,7 +77,13 @@
       </urlpattern>
       <matchtype type="OptionField">
         <default>0</default>
-        <Required>Y</Required>
+        <OptionValues>
+          <option1 value="=">Exact Match ("=")</option1>
+          <option2 value="~">Case Sensitive Match ("~")</option2>
+          <option3 value="~*">Case Insensitive Match ("~*")</option3>
+          <option4 value="^~">Don't check regular expressions on logest prefix match ("^~")</option4>
+        </OptionValues>
+        <Required>N</Required>
       </matchtype>
       <enable_secrules type="BooleanField">
         <default>0</default>
@@ -87,7 +95,7 @@
       <sqli_block_score type="BooleanField">
         <Required>N</Required>
       </sqli_block_score>
-      <serverentries type="ModelRelationField">
+      <custom_policy type="ModelRelationField">
         <Model>
           <template>
             <source>OPNsense.Nginx.Nginx</source>
@@ -96,8 +104,9 @@
           </template>
         </Model>
         <ValidationMessage>Selected server not found</ValidationMessage>
-        <Required>Y</Required>
-      </serverentries>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </custom_policy>
       <root type="TextField">
         <Required>N</Required>
       </root>
@@ -119,7 +128,8 @@
           </template>
         </Model>
         <ValidationMessage>Selected server not found</ValidationMessage>
-        <Required>Y</Required>
+        <Required>N</Required>
+        <multiple>Y</multiple>
       </authbasicuserfile>
       <force_https type="TextField">
         <Required>N</Required>
