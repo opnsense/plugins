@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
+    <li><a data-toggle="tab" href="#users">{{ lang._('SNMPv3 Users') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
