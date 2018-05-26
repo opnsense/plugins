@@ -40,7 +40,7 @@ function netsnmp_services()
                 'start' => array('netsnmp start'),
                 'stop' => array('netsnmp stop'),
             ),
-            'name' => 'netsnmp',
+            'name' => 'snmpd',
             'pidfile' => '/var/run/net_snmpd.pid'
         );
     }
