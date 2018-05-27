@@ -15,12 +15,12 @@
         <id>user.password</id>
         <label>Password</label>
         <type>text</type>
-        <help>Set the password for the user.</help>
+        <help>Set the password for the user. Minimum is 8 characters.</help>
     </field>
     <field>
         <id>user.enckey</id>
         <label>Encryption Key</label>
         <type>text</type>
-        <help>Set the encryption key to secure the connection between client and this host.</help>
+        <help>Set the encryption key to secure the connection between client and this host. Minimum is 8 characters.</help>
     </field>
 </form>
