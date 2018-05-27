@@ -29,176 +29,36 @@
 
 namespace OPNsense\Netsnmp\Api;
 
-use \OPNsense\Netsnmp\User;
-use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
 
 class UserController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'User';
+    static protected $internalModelName = 'user';
     static protected $internalModelClass = '\OPNsense\Netsnmp\User';
-
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlUser = new User();
-            $result['user'] = $mdlUser->getNodes();
-        }
-        return $result;
-    }
-
-    public function setAction()
-    {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlUser = new User();
-            $mdlUser->setNodes($this->request->getPost("user"));
-            // perform validation
-            $valMsgs = $mdlUser->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["user.".$msg->getField()] = $msg->getMessage();
-            }
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlUser->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
 
     public function searchUserAction()
     {
-        $this->sessionClose();
-        $mdlUser = $this->getModel();
-        $grid = new UIModelGrid($mdlUser->users->user);
-        return $grid->fetchBindRequest(
-            $this->request,
-            array("enabled", "username", "password", "enckey" )
-        );
+        return $this->searchBase('users.user', array("enabled", "username", "password", "enckey"));
     }
-
     public function getUserAction($uuid = null)
     {
-        $mdlUser = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdlUser->getNodeByReference('users.user.' . $uuid);
-            if ($node != null) {
-                // return node
-                return array("user" => $node->getNodes());
-            }
-        } else {
-            $node = $mdlUser->users->user->add();
-            return array("user" => $node->getNodes());
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('user', 'users.user', $uuid);
     }
-
     public function addUserAction()
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost() && $this->request->hasPost("user")) {
-            $result = array("result" => "failed", "validations" => array());
-            $mdlUser = $this->getModel();
-            $node = $mdlUser->users->user->Add();
-            $node->setNodes($this->request->getPost("user"));
-            $valMsgs = $mdlUser->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                $fieldnm = str_replace($node->__reference, "user", $msg->getField());
-                $result["validations"][$fieldnm] = $msg->getMessage();
-            }
-            if (count($result['validations']) == 0) {
-                unset($result['validations']);
-                // save config if validated correctly
-                $mdlUser->serializeToConfig();
-                Config::getInstance()->save();
-                unset($result['validations']);
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
+        return $this->addBase('user', 'users.user');
     }
-
     public function delUserAction($uuid)
     {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlUser = $this->getModel();
-            if ($uuid != null) {
-                if ($mdlUser->users->user->del($uuid)) {
-                    $mdlUser->serializeToConfig();
-                    Config::getInstance()->save();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->delBase('users.user', $uuid);
     }
-
     public function setUserAction($uuid)
     {
-        if ($this->request->isPost() && $this->request->hasPost("user")) {
-            $mdlSetting = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlSetting->getNodeByReference('users.user.' . $uuid);
-                if ($node != null) {
-                    $result = array("result" => "failed", "validations" => array());
-                    $userInfo = $this->request->getPost("user");
-                    $node->setNodes($userInfo);
-                    $valMsgs = $mdlSetting->performValidation();
-                    foreach ($valMsgs as $field => $msg) {
-                        $fieldnm = str_replace($node->__reference, "user", $msg->getField());
-                        $result["validations"][$fieldnm] = $msg->getMessage();
-                    }
-                    if (count($result['validations']) == 0) {
-                        // save config if validated correctly
-                        $mdlSetting->serializeToConfig();
-                        Config::getInstance()->save();
-                        $result = array("result" => "saved");
-                    }
-                    return $result;
-                }
-            }
-        }
-        return array("result" => "failed");
+        return $this->setBase('user', 'users.user', $uuid);
     }
-
-    public function toggle_handler($uuid, $elements, $element)
-    {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            $mdlSetting = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdlSetting->getNodeByReference($elements . '.'. $element .'.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == "1") {
-                        $result['result'] = "Disabled";
-                        $node->enabled = "0";
-                    } else {
-                        $result['result'] = "Enabled";
-                        $node->enabled = "1";
-                    }
-                    // if item has toggled, serialize to config and save
-                    $mdlSetting->serializeToConfig();
-                    Config::getInstance()->save();
-                }
-            }
-        }
-        return $result;
-    }
-
     public function toggleUserAction($uuid)
     {
-        return $this->toggle_handler($uuid, 'users', 'user');
+        return $this->toggleBase('users.user', $uuid);
     }
 }
