@@ -26,24 +26,30 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+function netsnmp_enabled()
+{
+    $model = new \OPNsense\Netsnmp\General();
+    return (string)$model->enabled == '1';
+}
+
 function netsnmp_services()
 {
-    global $config;
-
     $services = array();
 
-    if (isset($config['OPNsense']['netsnmp']['general']['enabled']) && $config['OPNsense']['netsnmp']['general']['enabled'] == 1) {
-        $services[] = array(
-            'description' => gettext('Net-SNMP Daemon'),
-            'configd' => array(
-                'restart' => array('netsnmp restart'),
-                'start' => array('netsnmp start'),
-                'stop' => array('netsnmp stop'),
-            ),
-            'name' => 'snmpd',
-            'pidfile' => '/var/run/net_snmpd.pid'
-        );
+    if (!netsnmp_enabled()) {
+        return $services;
     }
+
+    $services[] = array(
+        'description' => gettext('Net-SNMP Daemon'),
+        'configd' => array(
+            'restart' => array('netsnmp restart'),
+            'start' => array('netsnmp start'),
+            'stop' => array('netsnmp stop'),
+        ),
+        'name' => 'snmpd',
+        'pidfile' => '/var/run/net_snmpd.pid'
+    );
 
     return $services;
 }
