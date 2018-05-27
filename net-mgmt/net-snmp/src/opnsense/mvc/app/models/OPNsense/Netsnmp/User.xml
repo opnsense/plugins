@@ -17,12 +17,12 @@
                 <password type="TextField">
                     <default></default>
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){8,64}$/u</mask>
                 </password>
                 <enckey type="TextField">
                     <default></default>
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){8,64}$/u</mask>
                 </enckey>
             </user>
         </users>
