@@ -1,0 +1,3 @@
+snmpd:/etc/rc.conf.d/snmpd
+snmpd_usercredentials.conf:/var/net-snmp/snmpd.conf
+snmpd.conf:/usr/local/share/snmp/snmpd.conf

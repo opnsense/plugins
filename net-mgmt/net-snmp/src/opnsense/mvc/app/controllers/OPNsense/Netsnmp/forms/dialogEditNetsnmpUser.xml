@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>user.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the user account.</help>
+    </field>
+    <field>
+        <id>user.username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Set the unique username for the user.</help>
+    </field>
+    <field>
+        <id>user.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Set the password for the user. Minimum is 8 characters.</help>
+    </field>
+    <field>
+        <id>user.enckey</id>
+        <label>Encryption Key</label>
+        <type>text</type>
+        <help>Set the encryption key to secure the connection between client and this host. Minimum is 8 characters.</help>
+    </field>
+</form>
