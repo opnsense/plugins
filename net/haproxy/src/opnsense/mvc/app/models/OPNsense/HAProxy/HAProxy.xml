@@ -640,7 +640,8 @@
                     <Required>N</Required>
                 </linkedServers>
                 <source type="TextField">
-                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
                     <Required>N</Required>
                 </source>
@@ -941,7 +942,8 @@
                     <Required>N</Required>
                 </checkDownInterval>
                 <source type="TextField">
-                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
                     <Required>N</Required>
                 </source>
