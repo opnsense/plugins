@@ -1,0 +1,33 @@
+<model>
+    <mount>//OPNsense/netsnmp/user</mount>
+    <description>Netsnmp user configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <users>
+            <user type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <username type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-]){1,64}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 64 characters. Allowed characters are 0-9a-zA-Z._-</ValidationMessage>
+                </username>
+                <password type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){8,64}$/u</mask>
+                    <ValidationMessage>Should be a string between 8 and 64 characters. Allowed characters are 0-9a-zA-Z._-!$%/()+#=</ValidationMessage>
+                </password>
+                <enckey type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){8,64}$/u</mask>
+                    <ValidationMessage>Should be a string between 8 and 64 characters. Allowed characters are 0-9a-zA-Z._-!$%/()+#=</ValidationMessage>
+                </enckey>
+            </user>
+        </users>
+    </items>
+</model>
