@@ -38,6 +38,7 @@
  *    - Oray (oray.com)
  *    - regfish (regfish.de)
  *    - regfish IPv6 (regfish.de)
+ *    - All-Inkl.com (all-inkl.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -88,6 +89,7 @@
  *  regfish             - Last Tested: 15 August 2017
  *  regfish v6          - Last Tested: 15 August 2017
  *  Amazon Route53 v6   - Last Tested: 19 November 2017
+ *  All-Inkl.com        - Last Tested: 27 May 2018
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -319,6 +321,7 @@ class updatedns
                 case 'strato':
                 case 'staticcling':
                 case 'zoneedit':
+                case 'all-inkl':
                     $this->_update();
                     if ($this->_dnsDummyUpdateDone == true) {
                         // If a dummy update was needed, then sleep a while and do the update again to put the proper address back.
@@ -829,6 +832,12 @@ class updatedns
                 $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&{$family}={$this->_dnsIP}&forcehost=1&token={$this->_dnsUser}";
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
+            case 'all-inkl':
+                $needsIP = FALSE;
+                $server = 'https://dyndns.kasserver.com/';
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . 'myip=' . $this->_dnsIP);
+            break; 
             default:
                 break;
         }
@@ -1240,6 +1249,22 @@ class updatedns
                     log_error("Dynamic DNS: PAYLOAD: {$data}");
                     $this->_debug($data);
                 }
+            case 'all-inkl':
+                if (preg_match('/good\s'.$this->_dnsIP.'/i', $data)) {
+                    $status = $status_intro . $success_str . gettext("IP Address Changed Successfully!") . " (" . $this->_dnsIP . ")";
+                    $successful_update = true;
+                } else if (preg_match('/good/i', $data)) {
+                    $status = $status_intro . $error_str . gettext("Result did not match.");
+                } else if (preg_match("/\s401\sUnauthorized/i", $header)) {
+                    $status = $status_intro . $error_str . gettext("Invalid username or password");
+                } else {
+                    $status = $status_intro . "(" . gettext("Unknown Response") . ")";
+                    log_error($status_intro . gettext("PAYLOAD:") . " " . $header.$data);
+                    $this->_debug($data);
+                    $this->_debug($header);
+            }
+            break; 
+                
             default:
                 break;
         }
