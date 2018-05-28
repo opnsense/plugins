@@ -42,6 +42,7 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
+net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
 net-mgmt/snmp -- SNMP Server via bsnmpd
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent

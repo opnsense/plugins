@@ -18,6 +18,6 @@
         <syscontact type="TextField">
             <default></default>
             <Required>N</Required>
-        </syscontact>        
+        </syscontact>
     </items>
 </model>
