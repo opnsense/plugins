@@ -132,6 +132,7 @@ function dyndns_list()
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
         'zoneedit' => 'ZoneEdit',
+        'all-inkl' => 'All-Inkl.com',
     );
 }
 
