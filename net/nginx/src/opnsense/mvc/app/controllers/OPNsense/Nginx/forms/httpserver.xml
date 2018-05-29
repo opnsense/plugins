@@ -1,0 +1,55 @@
+<form>
+  <field>
+    <id>httpserver.servername</id>
+    <label>Server Name</label>
+    <type>select_multiple</type>
+  </field>
+  <field>
+    <id>httpserver.locations</id>
+    <label>Locations</label>
+    <type>select_multiple</type>
+  </field>
+  <field>
+    <id>httpserver.root</id>
+    <label>Root</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>httpserver.tls_cert</id>
+    <label>TLS Certificate</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>httpserver.access_log_format</id>
+    <label>Access Log Format</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>httpserver.charset</id>
+    <label>Charset</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>httpserver.http_sonly</id>
+    <label>HTTPS Only</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>httpserver.block_nonpublic_data</id>
+    <label>Block Configuration Files</label>
+    <type>checkbox</type>
+    <help>Blocks files like .htaccess files or other files not intended for the public.</help>
+  </field>
+  <field>
+    <id>httpserver.naxsi_extensive_log</id>
+    <label>Extensive Naxsi Log</label>
+    <type>checkbox</type>
+    <help>Provide a more verbose WAF log for fixing false positives before going live.</help>
+  </field>
+  <field>
+    <id>httpserver.sendfile</id>
+    <label>Enable Sendfile</label>
+    <type>checkbox</type>
+    <help>Allow the daemon to use the sendfile function.</help>
+  </field>
+</form>
