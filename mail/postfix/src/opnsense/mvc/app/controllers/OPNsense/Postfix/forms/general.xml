@@ -30,6 +30,20 @@
         <help>The 'Listen IPs' parameter specifies the IP address to listen to. Default is to listen on all interfaces.</help>
     </field>
     <field>
+        <id>general.bind_address</id>
+        <label>Bind SMTP Client Address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv4 address the server should bind to for outgoing connections. In most cases empty is fine.</help>
+    </field>
+    <field>
+        <id>general.bind_address6</id>
+        <label>Bind SMTP Client v6 Address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv6 address the server should bind to for outgoing connections. In most cases empty is fine.</help>
+    </field>
+    <field>
         <id>general.mynetworks</id>
         <label>Trusted Networks</label>
         <type>select_multiple</type>

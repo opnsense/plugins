@@ -55,6 +55,12 @@ inet_interfaces = {{ OPNsense.postfix.general.inet_interfaces }}
 {% else %}
 inet_interfaces = all
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.bind_address') and OPNsense.postfix.general.bind_address != '' %}
+smtp_bind_address = {{ OPNsense.postfix.general.bind_address }}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.bind_address6') and OPNsense.postfix.general.bind_address6 != '' %}
+smtp_bind_address6 = {{ OPNsense.postfix.general.bind_address6 }}
+{% endif %}
 {% if helpers.exists('OPNsense.postfix.general.mynetworks') and OPNsense.postfix.general.mynetworks != '' %}
 mynetworks = {{ OPNsense.postfix.general.mynetworks.replace(',', ' ') }}
 {% else %}
