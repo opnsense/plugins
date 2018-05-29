@@ -23,7 +23,7 @@ class CoreController extends \OPNsense\Base\IndexController
         $this->view->hideHeader    = $data['general']['ShowHeader'] == "0";
         $this->view->collapsed     = $data['general']['Expanded'] == "0";
 
-        $this->view->json          = '/ui/js/swaggerui/core.json';
+        $this->view->json          = '/ui/js/swaggerui/opnsense.json';
 
         // choose template
         $this->view->pick('OPNsense/SwaggerUI/swaggerui');

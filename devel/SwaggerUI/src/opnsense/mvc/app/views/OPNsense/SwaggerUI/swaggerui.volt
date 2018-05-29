@@ -2,12 +2,44 @@
 <script src="/ui/js/swaggerui/swagger-ui-bundle.js"></script>
 <script src="/ui/js/swaggerui/swagger-ui-standalone-preset.js"></script>
 
+<!-- Fix the Version Badges -->
+<style>
+    .swagger-ui .info .title small pre {
+        border: unset;
+        background-color: unset;
+        padding: 2px;
+    }
+</style>
+
+<!-- Fix the Models bottom padding -->
+<style>
+    .swagger-ui .wrapper {
+        padding-bottom: 1px;
+    }
+</style>
+
+<!-- Fix the background on dark themes -->
 <style>
     .swagger-ui {
         margin:0;
         background: #fafafa;
     }
+    table.parameters {
+        color: unset;
+        background-color: unset;
+    }
+    table.responses-table {
+        color: unset;
+        background-color: unset;
+    }
+    table.model {
+        color: unset;
+        background-color: unset;
+    }
+</style>
 
+<!-- Fix the Swagger broken logo due to XSS prevention -->
+<style>
     div.topbar-wrapper > a.link > img[width="30"] {
                     display: none
     }
@@ -22,6 +54,7 @@
         box-sizing: inherit;
     }
 */
+
     {% if hideServers %}
         .global-server-container {
             display: none
@@ -95,6 +128,7 @@
         const ui = SwaggerUIBundle({
             validatorUrl: null,             // Prevent XSS
             url: "{{ json }}",              // Link to api
+
             dom_id: '#swagger-ui',
 
             {% if collapsed %}
@@ -116,4 +150,5 @@
         })
         window.ui = ui
     }
+
 </script>
