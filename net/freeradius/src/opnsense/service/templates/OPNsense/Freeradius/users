@@ -5,19 +5,50 @@
 {%     if user_list.enabled == '1' %}
 {{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}"{% if user_list.sessionlimit_max_session_limit is defined %}, Max-Daily-Session := {{ user_list.sessionlimit_max_session_limit }}{% endif %}
 
-       Framed-Protocol = PPP{% if user_list.ip is defined %},
-       Framed-IP-Address = {{ user_list.ip }}{% endif %}{% if user_list.subnet is defined %},
-       Framed-IP-Netmask = {{ user_list.subnet }}{% endif %}{% if user_list.vlan is defined %},
+{%       if user_list.ip is defined %}
+       Framed-IP-Address = {{ user_list.ip }},
+{%       endif %}
+{%       if user_list.subnet is defined %}
+       Framed-IP-Netmask = {{ user_list.subnet }},
+{%       endif %}
+{%       if user_list.route is defined %}
+{%         for network in user_list.route.split(',') %}
+       Framed-Route += "{{ network }}",
+{%         endfor %}
+{%       endif %}
+{%       if user_list.ip6 is defined %}
+       Framed-IPv6-Address = {{ user_list.ip6 }},
+{%       endif %}
+{%       if user_list.vlan is defined %}
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
-       Tunnel-Private-Group-Id = {{ user_list.vlan }}{% endif %}{% if user_list.wispr_bw_min_up is defined %},
-       WISPr-Bandwidth-Min-Up = {{ user_list.wispr_bw_min_up }}{% endif %}{% if user_list.wispr_bw_max_up is defined %},
-       WISPr-Bandwidth-Max-Up = {{ user_list.wispr_bw_max_up }}{% endif %}{% if user_list.wispr_bw_min_down is defined %},
-       WISPr-Bandwidth-Min-Down = {{ user_list.wispr_bw_min_down }}{% endif %}{% if user_list.wispr_bw_max_down is defined %},
-       WISPr-Bandwidth-Max-Down = {{ user_list.wispr_bw_max_down }}{% endif %}{% if user_list.chillispot_bw_max_up is defined %},
-       ChilliSpot-Bandwidth-Max-Up = {{ user_list.chillispot_bw_max_up }}{% endif %}{% if user_list.chillispot_bw_max_down is defined %},
-       ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }}
+       Tunnel-Private-Group-Id = {{ user_list.vlan }},
 {%       endif %}
+{%       if user_list.wispr_bw_min_up is defined %}
+       WISPr-Bandwidth-Min-Up = {{ user_list.wispr_bw_min_up }},
+{%       endif %}
+{%       if user_list.wispr_bw_max_up is defined %}
+       WISPr-Bandwidth-Max-Up = {{ user_list.wispr_bw_max_up }},
+{%       endif %}
+{%       if user_list.wispr_bw_min_down is defined %}
+       WISPr-Bandwidth-Min-Down = {{ user_list.wispr_bw_min_down }},
+{%       endif %}
+{%       if user_list.wispr_bw_max_down is defined %}
+       WISPr-Bandwidth-Max-Down = {{ user_list.wispr_bw_max_down }},
+{%       endif %}
+{%       if user_list.chillispot_bw_max_up is defined %}
+       ChilliSpot-Bandwidth-Max-Up = {{ user_list.chillispot_bw_max_up }},
+{%       endif %}
+{%       if user_list.chillispot_bw_max_down is defined %}
+       ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }},
+{%       endif %}
+{%       if user_list.mikrotik_vlan_id_number is defined %}
+       Mikrotik-Wireless-VLANID = {{ user_list.mikrotik_vlan_id_number }},
+{%       endif %}
+{%       if user_list.mikrotik_vlan_id_type is defined %}
+       Mikrotik-Wireless-VLANID-Type = {{ user_list.mikrotik_vlan_id_type }},
+{%       endif %}
+       Framed-Protocol = PPP
 
 {%     endif %}
 

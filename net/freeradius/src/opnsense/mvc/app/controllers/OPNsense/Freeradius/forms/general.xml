@@ -30,6 +30,12 @@
         <help>This enables the ChilliSpot attributes assignment via users tab.</help>
     </field>
     <field>
+        <id>general.mikrotik</id>
+        <label>Enable Mikrotik attributes</label>
+        <type>checkbox</type>
+        <help>This enables the Mikrotik attributes assignment via users tab.</help>
+    </field>
+    <field>
         <id>general.sessionlimit</id>
         <label>Enable Daily Session Limit</label>
         <type>checkbox</type>
