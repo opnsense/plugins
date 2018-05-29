@@ -2461,10 +2461,10 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-	background-color: #68686899;
+	background-color: #686868;
 	opacity: 0.8;
 	filter: alpha(opacity=80);
-	border-color: #ffffff4d; }
+	border-color: #ffffff; }
 
   select[disabled]:hover, select[readonly]:hover, fieldset[disabled]:hover,
   textarea[disabled]:hover,
@@ -2515,10 +2515,10 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-	background-color: #68686899;
+	background-color: #686868;
 	opacity: 0.8;
 	filter: alpha(opacity=80);
-	border:1px solid #ffffff4d;
+	border:1px solid #ffffff;
 	-webkit-box-shadow: none;
 	box-shadow: none; }
 
@@ -6104,11 +6104,17 @@ label > input[type="radio"] {
   min-width: 100%;
   max-width: 100%; }
 
-  /*****************************************
-  ******************************************
-  **additional extensions for theme-cicada**
-  ******************************************
-  *****************************************/
+/* fields in firewall schedule */
+[data-state="lightcoral"] {
+  background-color: lightcoral; }
+
+[data-state="white"] {
+  background-color: inherit; }
+
+[data-state="red"] {
+  background-color: #ec6d12; }
+
+  /*additional extensions for theme-cicada*/
 
 #tab_1 #maintabs {
     border-bottom: 1px solid #565656; }

@@ -6194,8 +6194,6 @@ a.list-group-item-danger
 .panel
   border: 1px solid #c2c2c2
   margin-bottom: 20px
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
 .panel-body
   padding: 15px
@@ -6461,34 +6459,42 @@ a.list-group-item-danger
     + .panel-collapse .panel-body
       border-bottom: 1px solid #ddd
 
-.panel-default >
-  .panel-heading
-    color: #fff
-    border-color: #c2c2c2
+.panel-default
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
-    + .panel-collapse > .panel-body
-      border-top-color: #c2c2c2
+  >
+    .panel-heading
+      color: #fff
+      border-color: #c2c2c2
 
-    .badge
-      color: #f5f5f5
-      background-color: #2d2d2d333
+      + .panel-collapse > .panel-body
+        border-top-color: #c2c2c2
 
-  .panel-footer + .panel-collapse > .panel-body
-    border-bottom-color: #c2c2c2
+      .badge
+        color: #f5f5f5
+        background-color: #2d2d2d333
 
-.panel-primary >
-  .panel-heading
-    color: #FFF
-    border-color: #c2c2c2
+    .panel-footer + .panel-collapse > .panel-body
+      border-bottom-color: #c2c2c2
 
-    + .panel-collapse > .panel-body
-      border-top-color: #FF8B00
+.panel-primary
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3)
 
-    .badge
-      color: #FF8B00
-      background-color: #fff
+  >
+    .panel-heading
+      color: #FFF
+      border-color: #c2c2c2
 
-  .panel-footer + .panel-collapse > .panel-body
+      + .panel-collapse > .panel-body
+        border-top-color: #FF8B00
+
+      .badge
+        color: #FF8B00
+        background-color: #fff
+
+   .panel-footer + .panel-collapse > .panel-body
     border-bottom-color: #FF8B00
 
 .panel-success
@@ -7875,9 +7881,18 @@ label > input
       min-width: 100%
       max-width: 100%
 
-/******************************************
- ****additional extensions for theme-tukan***
- ******************************************
+/* fields in firewall schedule
+
+[data-state="lightcoral"]
+  background-color: lightcoral
+
+[data-state="white"]
+  background-color: inherit
+
+[data-state="red"]
+  background-color: #ffe83e
+
+/*additional extensions for theme-tukan
 
 #tab_1 #maintabs
   border-bottom: 1px solid #c2c2c2
@@ -8056,6 +8071,7 @@ div.Tokenize ul
 
 #system_log-widgets.content-box
   border: none
+  box-shadow: none
 
 #chart, #chart_intf_in, #chart_intf_out, #chart_top_ports, #chart_top_sources, #traffic_graph_widget_chart_in, #traffic_graph_widget_chart_out
   background-color: #FFF

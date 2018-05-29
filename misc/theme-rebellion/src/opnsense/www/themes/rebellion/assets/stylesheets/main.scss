@@ -645,3 +645,65 @@ select {
   background-repeat: no-repeat;
   background-position: right;
   background-image: url(/ui/themes/opnsense/build/images/caret.png) !important;}
+
+  #grid-log th[data-column-id="__timestamp__"],
+#filter-log-entries th[data-column-id="__timestamp__"] {
+  min-width: 3.5em;
+}
+
+.table-responsive {
+  @media screen and (max-width: $screen-xs-max) {
+    margin-bottom: 0;
+    > .table {
+      > thead,
+      > tbody,
+      > tfoot {
+        > tr {
+          > th,
+          > td {
+            white-space: normal;
+          }
+        }
+      }
+    }
+  }
+}
+
+label>input[type="checkbox"],
+label>input[type="radio"] {
+  margin-right: .4em;
+  float:left;
+}
+
+div[data-for*="help_for"] {
+  padding-top: .4em;
+}
+
+#log-settings label[for^="act"] {
+  margin-right: 1.5em;
+}
+
+#log-settings table>tbody>tr>td {
+  vertical-align: middle;
+}
+
+#log-settings select#filterlogentries,
+#log-settings select#filterlogentriesupdateinterval {
+  width: 5em;
+}
+
+#log-settings select#filterlogentriesinterfaces {
+  min-width: 100%;
+  max-width: 100%;
+}
+
+/* fields in firewall schedule */
+[data-state="lightcoral"] {
+  background-color: lightcoral;
+}
+[data-state="white"] {
+  background-color: inherit;
+}
+[data-state="red"] {
+  background-color: #ec6d12;
+}
