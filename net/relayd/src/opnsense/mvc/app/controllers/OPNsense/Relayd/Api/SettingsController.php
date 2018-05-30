@@ -35,6 +35,8 @@ use \OPNsense\Core\Config;
 use \OPNsense\Relayd\Relayd;
 use \OPNsense\Base\UIModelGrid;
 
+require_once("util.inc");
+
 /**
  * Class SettingsController
  * @package OPNsense\Relayd
@@ -60,6 +62,17 @@ class SettingsController extends ApiControllerBase
     }
 
     /**
+     * check if changes to the relayd settings were made
+     * @return result array
+     */
+    public function dirtyAction()
+    {
+        $result = array('status' => 'ok');
+        $result['relayd']['dirty'] = is_subsystem_dirty('Relayd');
+        return $result;
+    }
+
+    /**
      * query relayd settings
      * @param $nodeType
      * @param $uuid
@@ -81,7 +94,7 @@ class SettingsController extends ApiControllerBase
             }
             if ($node != null) {
                 $result['relayd'] = array($nodeType => $node->getNodes());
-                $result['result'] = 'ok';
+                $result['status'] = 'ok';
             }
         }
         return $result;
@@ -192,13 +205,10 @@ class SettingsController extends ApiControllerBase
                 }
                 if (empty($result["validations"])) {
                     unset($result["validations"]);
-                    $result['result'] = 'ok';
+                    $result['status'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
-                    Config::getInstance()->save();
-                    if ($nodeType == 'general') {
-                        $svcRelayd = new ServiceController();
-                        $result = $svcRelayd->reconfigureAction();
-                    }
+                    $cfgRelayd = Config::getInstance()->save();
+                    mark_subsystem_dirty('Relayd');
                 }
             }
         }
@@ -282,7 +292,8 @@ class SettingsController extends ApiControllerBase
                         }
                         $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
-                        $result['result'] = 'ok';
+                        mark_subsystem_dirty('Relayd');
+                        $result['status'] = 'ok';
                     }
                 }
             }
@@ -319,7 +330,9 @@ class SettingsController extends ApiControllerBase
                     $fields = array('enabled', 'name', 'type');
                     break;
             }
-            return $grid->fetchBindRequest($this->request, $fields);
+            $result = $grid->fetchBindRequest($this->request, $fields);
+            $result['dirty'] = is_subsystem_dirty('Relayd');
+            return $result;
         }
     }
 

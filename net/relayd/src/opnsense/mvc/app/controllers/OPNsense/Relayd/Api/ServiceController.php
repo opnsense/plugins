@@ -32,6 +32,8 @@ use \OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\Relayd\Relayd;
 
+require_once("util.inc");
+
 /**
  * Class ServiceController
  * @package OPNsense\relayd
@@ -50,6 +52,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function configtestAction()
     {
         if ($this->request->isPost()) {
+            $result['status'] = 'ok';
             $this->sessionClose();
 
             $backend = new Backend();
@@ -62,6 +65,47 @@ class ServiceController extends ApiMutableServiceControllerBase
             }
             $result['result'] = trim($backend->configdRun('relayd configtest'));
             return $result;
+        } else {
+            return array('status' => 'failed');
+        }
+    }
+
+    /**
+     * reconfigure relayd
+     * @return array
+     */
+    public function reconfigureAction()
+    {
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+            $lock = lock('Relayd', LOCK_EX);
+            if ($lock) {
+                $result = $this->configtestAction();
+                $result['function'] = "reconfigure";
+                $result['status'] = 'failed';
+                if ($result['template'] == 'OK' && preg_match('/configuration OK$/', $result['result']) == 1) {
+                    $status = $this->statusAction();
+                    $backend = new Backend();
+                    $mdlRelayd = $this->getModel();
+                    if ($mdlRelayd->general->enabled->__toString() != 1 && $status['status'] == 'running') {
+                        $result['result'] = trim($backend->configdRun('relayd stop'));
+                    } else {
+                        if ($status['status'] != 'running') {
+                            $result['result'] = trim($backend->configdRun('relayd start'));
+                        } else {
+                            $result['result'] = trim($backend->configdRun('relayd reload'));
+                        }
+                    }
+                    if ($result['result'] == 'OK') {
+                        clear_subsystem_dirty('Relayd');
+                        $result['status'] = 'ok';
+                    }
+                }
+                unlock($lock);
+                return $result;
+            } else {
+                throw new \Exception("Cannot get lock");
+            }
         } else {
             return array('status' => 'failed');
         }
