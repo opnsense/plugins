@@ -82,7 +82,7 @@ $( document ).ready(function() {
             });
         });
     });
-    ['upstream', 'upstreamserver', 'location', 'credential', 'userlist'].forEach(function(element) {
+    ['upstream', 'upstreamserver', 'location', 'credential', 'userlist', 'httpserver'].forEach(function(element) {
         $("#grid-" + element).UIBootgrid(
             { 'search':'/api/nginx/settings/search' + element,
               'get':'/api/nginx/settings/get' + element + '/',
@@ -123,6 +123,9 @@ $( document ).ready(function() {
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-upstream" href="#subtab_nginx-http-upstream">{{ lang._('Upstream')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-server" href="#subtab_nginx-http-httpserver">{{ lang._('HTTP Server')}}</a>
             </li>
         </ul>
     </li>
@@ -232,6 +235,31 @@ $( document ).ready(function() {
                 <th data-column-id="users" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Users') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-http-httpserver" class="tab-pane fade">
+        <table id="grid-httpserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="httpserverdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="servername" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Servername') }}</th>
+                    <th data-column-id="https_only" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('HTTPS Only') }}</th>
+                    <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
+                    <th data-column-id="listen_http_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
+                    <th data-column-id="listen_https_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>

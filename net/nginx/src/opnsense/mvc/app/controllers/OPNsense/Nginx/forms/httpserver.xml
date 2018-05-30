@@ -20,6 +20,11 @@
     <type>dropdown</type>
   </field>
   <field>
+    <id>httpserver.ca</id>
+    <label>CA Certificate</label>
+    <type>dropdown</type>
+  </field>
+  <field>
     <id>httpserver.access_log_format</id>
     <label>Access Log Format</label>
     <type>dropdown</type>
@@ -30,9 +35,10 @@
     <type>dropdown</type>
   </field>
   <field>
-    <id>httpserver.http_sonly</id>
+    <id>httpserver.https_only</id>
     <label>HTTPS Only</label>
     <type>checkbox</type>
+    <help>If you check this box, a TLS encrypted connection is enforced.</help>
   </field>
   <field>
     <id>httpserver.block_nonpublic_data</id>

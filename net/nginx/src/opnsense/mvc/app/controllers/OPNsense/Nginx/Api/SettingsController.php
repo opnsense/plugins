@@ -197,4 +197,31 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('custompolicy', 'custom_policy', $uuid);
     }
+    
+    // http server
+    public function searchhttpserverAction()
+    {
+        return $this->searchBase('http_server', array('servername', 'https_only', 'certificate', 'listen_http_port', 'listen_https_port'));
+    }
+
+    public function gethttpserverAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('httpserver', 'http_server', $uuid);
+    }
+
+    public function addhttpserverAction()
+    {
+        return $this->addBase('httpserver', 'http_server');
+    }
+
+    public function delhttpserverAction($uuid)
+    {
+        return $this->delBase('http_server', $uuid);
+    }
+
+    public function sethttpserverAction($uuid)
+    {
+        return $this->setBase('httpserver', 'http_server', $uuid);
+    }
 }

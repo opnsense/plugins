@@ -76,7 +76,6 @@
         <Required>Y</Required>
       </urlpattern>
       <matchtype type="OptionField">
-        <default>0</default>
         <OptionValues>
           <option1 value="=">Exact Match ("=")</option1>
           <option2 value="~">Case Sensitive Match ("~")</option2>
@@ -139,6 +138,75 @@
     <custom_policy type="ArrayField">
     </custom_policy>
     <!-- TODO add settings.xml stuff -->
+    
+    <http_server type="ArrayField">
+      <servername type="CSVListField">
+        <Required>Y</Required>
+      </servername>
+      <listen_http_port type="PortField">
+        <Required>Y</Required>
+        <default>80</default>
+      </listen_http_port>
+      <listen_https_port type="PortField">
+        <Required>Y</Required>
+        <default>443</default>
+      </listen_https_port>
+      <locations type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>location</items>
+            <display>urlpattern</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected location(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </locations>
+      <root type="TextField">
+        <Required>N</Required>
+      </root>
+      <certificate type="CertificateField">
+        <Type>cert</Type>
+        <Required>N</Required>
+      </certificate>
+      <ca type="CertificateField">
+        <Type>ca</Type>
+        <Required>N</Required>
+      </ca>
+      <access_log_format type="OptionField">
+        <default>default</default>
+        <OptionValues>
+          <default>Default</default>
+          <anonymized>Anonymized</anonymized>
+          <disabled>Disabled</disabled>
+        </OptionValues>
+        <Required>N</Required>
+      </access_log_format>
+      <charset type="OptionField">
+        <default>utf-8</default>
+        <OptionValues>
+          <utf-8>utf-8</utf-8>
+        </OptionValues>
+        <Required>N</Required>
+      </charset>
+      <https_only type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </https_only>
+      <block_nonpublic_data type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </block_nonpublic_data>
+      <naxsi_extensive_log type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </naxsi_extensive_log>
+      <sendfile type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </sendfile>
+    </http_server>
 
   </items>
 </model>
