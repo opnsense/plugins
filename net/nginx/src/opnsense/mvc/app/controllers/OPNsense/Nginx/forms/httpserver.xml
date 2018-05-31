@@ -17,7 +17,7 @@
     <type>text</type>
   </field>
   <field>
-    <id>httpserver.tls_cert</id>
+    <id>httpserver.certificate</id>
     <label>TLS Certificate</label>
     <type>dropdown</type>
   </field>
