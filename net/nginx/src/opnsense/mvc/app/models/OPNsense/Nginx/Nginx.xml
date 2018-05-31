@@ -144,11 +144,11 @@
         <Required>Y</Required>
       </servername>
       <listen_http_port type="PortField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <default>80</default>
       </listen_http_port>
       <listen_https_port type="PortField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <default>443</default>
       </listen_https_port>
       <locations type="ModelRelationField">
@@ -191,7 +191,7 @@
           <anonymized>Anonymized</anonymized>
           <disabled>Disabled</disabled>
         </OptionValues>
-        <Required>N</Required>
+        <Required>Y</Required>
       </access_log_format>
       <charset type="OptionField">
         <default>utf-8</default>

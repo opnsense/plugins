@@ -1,0 +1,2 @@
+nginx:/etc/rc.conf.d/nginx
+nginx.conf:/tmp/nginx.conf

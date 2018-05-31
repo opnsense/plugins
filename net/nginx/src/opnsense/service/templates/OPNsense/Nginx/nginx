@@ -1,0 +1,5 @@
+nginx_enable="{% if helpers.exists('OPNsense.nginx.general.enabled') and OPNsense.nginx.general.enabled == '1' %}YES{% else %}NO{% endif %}"
+
+{% if helpers.exists('OPNsense.nginx.general.enabled') and OPNsense.nginx.general.enabled == '1' %}
+# nginx_var_script="/usr/local/opnsense/scripts/nginx/setup.sh"
+{% endif %}
