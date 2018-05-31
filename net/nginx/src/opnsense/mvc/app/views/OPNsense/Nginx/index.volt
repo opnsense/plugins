@@ -33,7 +33,7 @@ $( document ).ready(function() {
     // load initial data
     mapDataToFormUI(data_get_map).done(function(){
         formatTokenizersUI();
-        $('.selectpicker').selectpicker('refresh');
+        $('select[data-allownew="false"]').selectpicker('refresh')
         updateServiceControlUI('nginx');
     });
 

@@ -2,6 +2,8 @@
   <field>
     <id>httpserver.servername</id>
     <label>Server Name</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
     <type>select_multiple</type>
   </field>
   <field>
@@ -23,6 +25,12 @@
     <id>httpserver.ca</id>
     <label>CA Certificate</label>
     <type>dropdown</type>
+  </field>
+  <field>
+    <id>httpserver.verify_client</id>
+    <label>Verify Client Certificate</label>
+    <type>dropdown</type>
+    <help><![CDATA[<ul><li>On: the certificate is requested and validated. Use this option to protect a service with TLS authentication.</li><li>Off: The certificate is not requested. Choose this option for a normal website.</li><li>Optional: The certificate is requested and validated if existing. Choose this option for websites, with TLS login support or mixed TLS protected API and web content.</li><li>Optional, don't verify: Do accept the certificate and let the application choose what to do. Choose this option, for the same reasons as optional but in this case, the request is passed to the backend without rejecting untrusted certificates.</li></ul>]]></help>
   </field>
   <field>
     <id>httpserver.access_log_format</id>
