@@ -80,27 +80,29 @@ class ServiceController extends ApiMutableServiceControllerBase
             $this->sessionClose();
             $lock = lock('Relayd', LOCK_EX);
             if ($lock) {
-                $result = $this->configtestAction();
                 $result['function'] = "reconfigure";
                 $result['status'] = 'failed';
-                if ($result['template'] == 'OK' && preg_match('/configuration OK$/', $result['result']) == 1) {
-                    $status = $this->statusAction();
-                    $backend = new Backend();
-                    $mdlRelayd = $this->getModel();
-                    if ($mdlRelayd->general->enabled->__toString() != 1 && $status['status'] == 'running') {
-                        $result['result'] = trim($backend->configdRun('relayd stop'));
-                    } else {
+                $mdlRelayd = new Relayd();
+                $backend = new Backend();
+                $status = $this->statusAction();
+                if ($mdlRelayd->general->enabled->__toString() == 1) {
+                    $result = $this->configtestAction();
+                    if ($result['template'] == 'OK' && preg_match('/configuration OK$/', $result['result']) == 1) {
                         if ($status['status'] != 'running') {
                             $result['result'] = trim($backend->configdRun('relayd start'));
                         } else {
                             $result['result'] = trim($backend->configdRun('relayd reload'));
                         }
+                    } else {
+                        return $result;
                     }
-                    if ($result['result'] == 'OK') {
-                        clear_subsystem_dirty('Relayd');
-                        $result['status'] = 'ok';
+                } else {
+                    if ($status['status'] == 'running') {
+                        $result['result'] = trim($backend->configdRun('relayd stop'));
                     }
                 }
+                clear_subsystem_dirty('Relayd');
+                $result['status'] = 'ok';
                 unlock($lock);
                 return $result;
             } else {

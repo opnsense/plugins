@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
    $( document ).ready(function() {
 
 	   /**
-	     * get the isSubsystemDirty value
+	     * get the isSubsystemDirty value and print a notice
 	     */
 	   function isSubsystemDirty() {
 		   ajaxGet(url="/api/relayd/settings/dirty", sendData={}, callback=function(data,status) {
@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 	   /**
 	     * chain std_bootgrid_reload from opnsense_bootgrid_plugin.js
-	     * to get the isSubsystemDirty state
+	     * to get the isSubsystemDirty state on "UIBootgrid" changes
 	     */
 	   var opn_std_bootgrid_reload = std_bootgrid_reload;
 	   std_bootgrid_reload = function(gridId) {
@@ -61,18 +61,13 @@ POSSIBILITY OF SUCH DAMAGE.
 	   $('#btnApplyConfig').unbind('click').click(function(){
 	      $('#btnApplyConfigProgress').addClass("fa fa-spinner fa-pulse");
 	      ajaxCall(url="/api/relayd/service/reconfigure", sendData={}, callback=function(data,status) {
-		   $("#responseMsg").addClass("hidden");
-		   isSubsystemDirty();
-		   updateServiceControlUI('relayd');
-		   if (data.status == "ok") {
-			   $("#responseMsg").removeClass('alert-danger');
-			   $("#responseMsg").addClass('alert-info');
-		   } else {
-			   $("#responseMsg").removeClass('alert-info');
-	            $("#responseMsg").addClass('alert-danger');
-		   }
-		   $("#responseMsg").html(data['result']);
-		   $("#responseMsg").removeClass("hidden");
+		      $("#responseMsg").addClass("hidden");
+		      isSubsystemDirty();
+		      updateServiceControlUI('relayd');
+		      if (data.result) {
+               $("#responseMsg").html(data['result']);
+               $("#responseMsg").removeClass("hidden");
+		      }
 	         $('#btnApplyConfigProgress').removeClass("fa fa-spinner fa-pulse");
             $('#btnApplyConfig').blur();
 	      });
@@ -92,9 +87,9 @@ POSSIBILITY OF SUCH DAMAGE.
 	   $("#btnSaveGeneralProgress").addClass("fa fa-spinner fa-pulse");
 	      var frm_id = 'frm_GeneralSettings';
 	      saveFormToEndpoint(url = "/api/relayd/settings/set/general/",formid=frm_id,callback_ok=function(){
-		   $("#responseMsg").addClass("hidden");
-		   updateServiceControlUI('relayd');
-		   isSubsystemDirty();
+		      $("#responseMsg").addClass("hidden");
+		      updateServiceControlUI('relayd');
+		      isSubsystemDirty();
 	         $("#btnSaveGeneralProgress").removeClass("fa fa-spinner fa-pulse");
             $("#btnSaveGeneral").blur();
 	      });
@@ -237,7 +232,7 @@ POSSIBILITY OF SUCH DAMAGE.
    <button class="btn btn-primary pull-right" id="btnApplyConfig" type="button"><b>{{ lang._('Apply changes') }}</b> <i id="btnApplyConfigProgress"></i></button>
    {{ lang._('The Relayd configuration has been changed') }} <br /> {{ lang._('You must apply the changes in order for them to take effect.')}}
 </div>
-<div class="alert hidden" role="alert" id="responseMsg"></div>
+<div class="alert alert-info hidden" role="alert" id="responseMsg"></div>
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General Settings') }}</a></li>
    <li><a data-toggle="tab" href="#host">{{ lang._('Backend Hosts') }}</a></li>
