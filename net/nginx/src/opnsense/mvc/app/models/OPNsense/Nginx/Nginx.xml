@@ -107,6 +107,10 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_secrules>
+      <enable_learning_mode type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_learning_mode>
       <xss_block_score type="IntegerField">
         <Required>N</Required>
       </xss_block_score>

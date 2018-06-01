@@ -18,6 +18,12 @@
     <help>Enable WAF</help>
   </field>
   <field>
+    <id>location.enable_learning_mode</id>
+    <label>Learning Mode</label>
+    <type>checkbox</type>
+    <help>Enable learning mode means nothing is blocked but logged.</help>
+  </field>
+  <field>
     <id>location.xss_block_score</id>
     <label>Block XSS Score</label>
     <type>text</type>
