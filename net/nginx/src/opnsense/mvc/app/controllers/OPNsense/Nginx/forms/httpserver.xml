@@ -9,6 +9,7 @@
   <field>
     <id>httpserver.locations</id>
     <label>Locations</label>
+    <style>selectpicker</style>
     <type>select_multiple</type>
   </field>
   <field>

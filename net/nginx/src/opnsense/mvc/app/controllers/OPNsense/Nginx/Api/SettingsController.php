@@ -141,13 +141,13 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function setupstreamserverAction($uuid)
     {
-        return $this->setBase('upstream_server', 'upsteam_server', $uuid);
+        return $this->setBase('upstream_server', 'upstream_server', $uuid);
     }
 
     // Location
     public function searchlocationAction()
     {
-        return $this->searchBase('location', array('location', 'matchtype', 'enable_secrules'));
+        return $this->searchBase('location', array('urlpattern', 'matchtype', 'enable_secrules', 'force_https'));
     }
 
     public function getlocationAction($uuid = null)

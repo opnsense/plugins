@@ -65,10 +65,29 @@
       <server type="HostnameField">
         <Required>Y</Required>
       </server>
+      <port type="PortField">
+        <Required>Y</Required>
+      </port>
       <priority type="IntegerField">
         <MinimumValue>0</MinimumValue>
         <Required>Y</Required>
       </priority>
+      <max_conns type="IntegerField">
+        <Required>N</Required>
+      </max_conns>
+      <max_fails type="IntegerField">
+        <Required>N</Required>
+      </max_fails>
+      <fail_timeout type="IntegerField">
+        <Required>N</Required>
+      </fail_timeout>
+      <no_use type="OptionField">
+        <OptionValues>
+          <down>Permanently Unreachable</down>
+          <backup>Backup Server</backup>
+        </OptionValues>
+        <Required>N</Required>
+      </no_use>
     </upstream_server>
 
     <location type="ArrayField">
@@ -91,7 +110,7 @@
       <xss_block_score type="IntegerField">
         <Required>N</Required>
       </xss_block_score>
-      <sqli_block_score type="BooleanField">
+      <sqli_block_score type="IntegerField">
         <Required>N</Required>
       </sqli_block_score>
       <custom_policy type="ModelRelationField">

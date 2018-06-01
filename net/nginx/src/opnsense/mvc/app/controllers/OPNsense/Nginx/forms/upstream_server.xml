@@ -10,8 +10,33 @@
     <type>text</type>
   </field>
   <field>
+    <id>upstream_server.port</id>
+    <label>Port</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>upstream_server.priority</id>
     <label>Server Priority</label>
     <type>text</type>
+  </field>
+  <field>
+    <id>upstream_server.max_conns</id>
+    <label>Maximum Connections</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream_server.max_fails</id>
+    <label>Maximum Failures</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream_server.fail_timeout</id>
+    <label>Fail Timeout</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream_server.no_use</id>
+    <label>Do Not Use</label>
+    <type>dropdown</type>
   </field>
 </form>
