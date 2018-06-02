@@ -220,9 +220,9 @@
         <Required>Y</Required>
       </verify_client>
       <access_log_format type="OptionField">
-        <default>default</default>
+        <default>main</default>
         <OptionValues>
-          <default>Default</default>
+          <main>Default</main>
           <anonymized>Anonymized</anonymized>
           <disabled>Disabled</disabled>
         </OptionValues>
