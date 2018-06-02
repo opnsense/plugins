@@ -50,31 +50,31 @@ foreach ($http_servers as $http_server) {
   if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate']))
   {
     // try to find the reference
-      $cert = find_cert($http_server['certificate']);
-      if (!isset($cert)) {
-        next;
-      }
-      $hostname = explode(',', $http_server['servername'])[0];
-      export_pem_file(
-        '/usr/local/etc/nginx/key/' . $hostname . '.pem',
-        $cert['crt']
-      );
-      export_pem_file(
-        '/usr/local/etc/nginx/key/' . $hostname . '.key',
-        $cert['prv']
-      );
-      if (!empty($http_server['ca'])) {
-        foreach ($http_server['ca'] as $caref) {
-          $ca = find_ca($caref);
-          if (isset($ca)) {
-            export_pem_file(                                                          
-              '/usr/local/etc/nginx/key/' . $hostname . '_ca.pem',                       
-              $ca['prv']                                                            
-            );
-          }
+    $cert = find_cert($http_server['certificate']);
+    if (!isset($cert)) {
+      next;
+    }
+    $hostname = explode(',', $http_server['servername'])[0];
+    export_pem_file(
+      '/usr/local/etc/nginx/key/' . $hostname . '.pem',
+      $cert['crt']
+    );
+    export_pem_file(
+      '/usr/local/etc/nginx/key/' . $hostname . '.key',
+      $cert['prv']
+    );
+    if (!empty($http_server['ca'])) {
+      foreach ($http_server['ca'] as $caref) {
+        $ca = find_ca($caref);
+        if (isset($ca)) {
+          export_pem_file(                                                          
+            '/usr/local/etc/nginx/key/' . $hostname . '_ca.pem',                       
+            $ca['crt']                                                            
+          );
         }
       }
+    }
   }
 }
-
+// end export certificates
 

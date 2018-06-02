@@ -1,5 +1,15 @@
 <form>
   <field>
+    <id>httpserver.listen_http_port</id>
+    <label>HTTP Listen Port</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>httpserver.listen_https_port</id>
+    <label>HTTPS Listen Port</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>httpserver.servername</id>
     <label>Server Name</label>
     <allownew>true</allownew>
