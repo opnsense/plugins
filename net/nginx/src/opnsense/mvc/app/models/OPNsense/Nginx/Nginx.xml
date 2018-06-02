@@ -129,6 +129,18 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </custom_policy>
+      <upstream type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected upstream not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </upstream>
       <root type="TextField">
         <Required>N</Required>
       </root>

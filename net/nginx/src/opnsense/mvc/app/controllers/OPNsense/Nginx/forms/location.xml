@@ -42,6 +42,13 @@
     <help>Select custom security policies.</help>
   </field>
   <field>
+    <id>location.upstream</id>
+    <label>Upstream Servers</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>Select an upstream to proxy to.</help>
+  </field>
+  <field>
     <id>location.root</id>
     <label>File System Root</label>
     <type>text</type>
