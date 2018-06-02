@@ -1,2 +1,3 @@
 nginx:/etc/rc.conf.d/nginx
 nginx.conf:/tmp/nginx.conf
+mime.types:/tmp/mime.types
