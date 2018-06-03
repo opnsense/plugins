@@ -504,7 +504,7 @@ legacy_html_escape_form_data($pconfig);
                         foreach($pconfig['users_username'] as $item_idx => $user):?>
                           <tr>
                             <td>
-                              <div style="cursor:pointer;" class="act-removerow btn btn-default btn-xs" alt="remove"><span class="glyphicon glyphicon-minus"></span></div>
+                              <div style="cursor:pointer;" class="act-removerow btn btn-default btn-xs" alt="remove"><i class="fa fa-minus fa-fw"></i></div>
                             </td>
                             <td>
                               <input name="users_username[]" type="text" value="<?=$user;?>" />
@@ -522,7 +522,7 @@ legacy_html_escape_form_data($pconfig);
                         <tfoot>
                           <tr>
                             <td colspan="4">
-                              <div id="addNew" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><span class="glyphicon glyphicon-plus"></span></div>
+                              <div id="addNew" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><i class="fa fa-plus fa-fw"></i></div>
                             </td>
                           </tr>
                         </tfoot>

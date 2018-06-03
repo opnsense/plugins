@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include("head.inc");
 legacy_html_escape_form_data($a_pppoes);
 $main_buttons = array(
-    array('label'=>gettext("add a new pppoe instance"), 'href'=>'vpn_pppoe_edit.php'),
+    array('label' => gettext('Add'), 'href' => 'vpn_pppoe_edit.php'),
 );
 
 ?>
@@ -122,8 +122,7 @@ $main_buttons = array(
                     <td><?=gettext("Local IP");?></td>
                     <td><?=gettext("Number of users");?></td>
                     <td><?=gettext("Description");?></td>
-                    <td>
-                    </td>
+                    <td class="text-nowrap"></td>
                   </tr>
 <?php
                   $i = 0;
@@ -133,11 +132,11 @@ $main_buttons = array(
                     <td><?=$pppoe['localip'];?></td>
                     <td><?=$pppoe['n_pppoe_units'];?></td>
                     <td><?=$pppoe['descr'];?></td>
-                    <td>
+                    <td class="text-nowrap">
                       <a href="vpn_pppoe_edit.php?id=<?=$i;?>" title="<?=gettext("edit pppoe instance"); ?>" class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-pencil"></span>
+                        <i class="fa fa-pencil fa-fw"></i>
                       </a>
-                      <button data-id="<?=$i;?>" type="button" class="act_delete_pppoe btn btn-xs btn-default"><span class="fa fa-trash text-muted"></span></button>
+                      <button data-id="<?=$i;?>" type="button" class="act_delete_pppoe btn btn-xs btn-default"><i class="fa fa-trash fa-fw"></i></button>
                     </td>
                   </tr>
 <?php
