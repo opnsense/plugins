@@ -157,7 +157,8 @@ include("head.inc");
                     </tr>
                     <tr>
                       <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Interface");?></td>
-                      <td> <select name="ifname" id="ifname" >
+                      <td>
+                        <select class="selectpicker" name="ifname" id="ifname" >
 <?php
                         foreach (get_configured_interface_with_descr() as $ifnam => $ifdescr):?>
                           <option value="<?=$ifnam;?>" <?=$ifnam == $pconfig['ifname'] ? "selected=\"selected\"" :"";?>>
@@ -181,7 +182,7 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_type" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Type");?></td>
                       <td>
-                        <select name="type" class="formselect" id="type" >
+                        <select class="selectpicker" name="type" id="type">
                           <option value="upstream" <?=$pconfig['type'] == "upstream" ?  "selected=\"selected\"" : ""; ?>><?=gettext("Upstream Interface");?></option>
                           <option value="downstream" <?= $pconfig['type'] == "downstream" ? "selected=\"selected\"" : ""; ?>><?=gettext("Downstream Interface");?></option>
                         </select>
@@ -227,13 +228,13 @@ include("head.inc");
                         foreach($pconfig['networks_network'] as $item_idx => $network):?>
                           <tr>
                             <td>
-                              <div style="cursor:pointer;" class="act-removerow btn btn-default btn-xs" alt="remove"><span class="glyphicon glyphicon-minus"></span></div>
+                              <div style="cursor:pointer;" class="act-removerow btn btn-default btn-xs" alt="remove"><i class="fa fa-minus fa-fw"></i></div>
                             </td>
                             <td>
                               <input name="networks_network[]" type="text" id="network_<?=$item_idx;?>" value="<?=$network;?>" />
                             </td>
                             <td>
-                              <select name="networks_mask[]" data-network-id="network_<?=$item_idx;?>" class="ipv4v6net" id="mask<?=$item_idx;?>">
+                              <select name="networks_mask[]" data-network-id="network_<?=$item_idx;?>" class="selectpicker ipv4v6net" id="mask<?=$item_idx;?>" data-length="3" data-width="auto">
 <?php
                                 for ($i = 128; $i > 0; $i--):?>
                                 <option value="<?=$i;?>" <?= $pconfig['networks_mask'][$item_idx] == $i ?  "selected=\"selected\"" : ""?>>
@@ -250,7 +251,7 @@ include("head.inc");
                         <tfoot>
                           <tr>
                             <td colspan="4">
-                              <div id="addNew" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><span class="glyphicon glyphicon-plus"></span></div>
+                              <div id="addNew" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><i class="fa fa-plus fa-fw"></i></div>
                             </td>
                           </tr>
                         </tfoot>
