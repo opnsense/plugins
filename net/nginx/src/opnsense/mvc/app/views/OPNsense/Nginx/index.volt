@@ -51,6 +51,12 @@ $( document ).ready(function() {
         }
     });
 
+    $('.reload_btn').click(function() {
+      $(".reloadAct_progress").addClass("fa-spin");
+      ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status) {
+          $(".reloadAct_progress").removeClass("fa-spin");
+      });
+    });
 
 
     // form save event handlers for all defined forms
@@ -137,7 +143,6 @@ $( document ).ready(function() {
         <table id="grid-location" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="locationdlg">
             <thead>
             <tr>
-                <!--<th data-column-id="enabled" data-formatter="rowtoggle" data-sortable="false"  data-width="6em">{{ lang._('Enabled') }}</th>-->
                 <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
                 <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
                 <th data-column-id="enable_secrules" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('WAF Enabled') }}</th>
@@ -152,7 +157,7 @@ $( document ).ready(function() {
                 <td></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
                 </td>
             </tr>
             </tfoot>
@@ -176,7 +181,7 @@ $( document ).ready(function() {
                 <td></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
                 </td>
             </tr>
             </tfoot>
@@ -200,7 +205,7 @@ $( document ).ready(function() {
                 <td></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
                 </td>
             </tr>
             </tfoot>
@@ -221,7 +226,7 @@ $( document ).ready(function() {
                 <td></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
                 </td>
             </tr>
             </tfoot>
@@ -243,7 +248,7 @@ $( document ).ready(function() {
                 <td></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
                 </td>
             </tr>
             </tfoot>
@@ -268,7 +273,7 @@ $( document ).ready(function() {
                 <td></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
                 </td>
             </tr>
             </tfoot>

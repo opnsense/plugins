@@ -29,6 +29,7 @@
             </field>
         </subtab>
     </tab>
+    <!--
     <tab id="nginx-mail" description="E-Mail">
         <subtab id="nginx-mail-pop3" description="POP3">
             <field>
@@ -47,5 +48,6 @@
             </field>
         </subtab>
     </tab>
+    -->
     <activetab>nginx-general-settings</activetab>
 </form>
