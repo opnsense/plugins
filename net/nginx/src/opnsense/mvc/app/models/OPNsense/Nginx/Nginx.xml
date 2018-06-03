@@ -7,11 +7,21 @@
         <default>0</default>
         <Required>Y</Required>
       </enabled>
-      <enable_redis_plugin type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable_redis_plugin>
     </general>
+    <http>
+      <sendfile type="BooleanField">
+        <default>0</default>
+        <Required>N</Required>
+      </sendfile>
+      <keepalive_timeout type="IntegerField">
+        <default>60</default>
+        <Required>N</Required>
+      </keepalive_timeout>
+      <default_type type="TextField">
+        <Required>N</Required>
+      </default_type>
+    </http>
+    
 
     <userlist type="ArrayField">
       <name type="TextField">
