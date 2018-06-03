@@ -125,7 +125,7 @@ $main_buttons = array(
                       <th><?=gettext("Hostname");?></th>
                       <th><?=gettext("Cached IP");?></th>
                       <th><?=gettext("Description");?></th>
-                      <th></th>
+                      <th class"text-nowrap"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -186,9 +186,9 @@ $main_buttons = array(
                         }?>
                       </td>
                       <td><?=$rfc2136['descr'];?></td>
-                      <td>
+                      <td class="text-nowrap">
                         <a href="services_rfc2136_edit.php?id=<?=$i;?>" class="btn btn-xs btn-default"><i class="fa fa-pencil fa-fw"></i></a>
-                        <a href="#" data-id="<?=$i;?>" class="act_delete_service btn btn-xs btn-default"><i class="fa fa-trash fa-fw text-muted"></i></a>
+                        <a href="#" data-id="<?=$i;?>" class="act_delete_service btn btn-xs btn-default"><i class="fa fa-trash fa-fw"></i></a>
                       </td>
                     </tr>
 <?php
