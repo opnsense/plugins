@@ -147,7 +147,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Location
     public function searchlocationAction()
     {
-        return $this->searchBase('location', array('urlpattern', 'matchtype', 'enable_secrules', 'force_https'));
+        return $this->searchBase('location', array('description','urlpattern', 'matchtype', 'enable_secrules', 'force_https'));
     }
 
     public function getlocationAction($uuid = null)

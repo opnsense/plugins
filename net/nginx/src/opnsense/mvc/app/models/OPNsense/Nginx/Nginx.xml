@@ -91,6 +91,9 @@
     </upstream_server>
 
     <location type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
       <urlpattern type="TextField">
         <Required>Y</Required>
       </urlpattern>
@@ -191,7 +194,7 @@
           <template>
             <source>OPNsense.Nginx.Nginx</source>
             <items>location</items>
-            <display>urlpattern</display>
+            <display>description</display>
           </template>
         </Model>
         <ValidationMessage>Selected location(s) not found</ValidationMessage>

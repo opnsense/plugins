@@ -1,5 +1,10 @@
 <form>
   <field>
+    <id>location.description</id>
+    <label>Description</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>location.urlpattern</id>
     <label>URL Pattern</label>
     <type>text</type>
