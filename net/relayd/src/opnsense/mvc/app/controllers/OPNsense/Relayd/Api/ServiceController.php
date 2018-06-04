@@ -120,7 +120,7 @@ class ServiceController extends ApiMutableServiceControllerBase
                 $result['status'] = 'ok';
                 $this->lock(1);
                 $mdlRelayd = new Relayd();
-                $mdlRelayd->configChanged(false);
+                $mdlRelayd->configChanged(0);
                 return $result;
             } else {
                 throw new \Exception("Cannot get lock");

@@ -40,7 +40,7 @@ class Relayd extends BaseModel
 {
     /**
      * get, set, unset configuration state
-     * @param $action - null = get, true = set, false = unset
+     * @param $status - null = get, 1 = set, 0 = unset
      * @return bool
      */
     public function configChanged($status = null)
@@ -48,9 +48,9 @@ class Relayd extends BaseModel
         if ($status === null) {
             return file_exists("/tmp/relayd.dirty");
         } elseif ($status === true) {
-            return touch("/tmp/relayd.dirty");
+            return @touch("/tmp/relayd.dirty");
         } elseif ($status === false) {
-            return unlink("/tmp/relayd.dirty");
+            return @unlink("/tmp/relayd.dirty");
         }
     }
 }

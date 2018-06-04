@@ -206,7 +206,7 @@ class SettingsController extends ApiControllerBase
                     $result['status'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
                     $cfgRelayd = Config::getInstance()->save();
-                    $this->mdlRelayd->configChanged(true);
+                    $this->mdlRelayd->configChanged(1);
                 }
             }
         }
@@ -290,7 +290,7 @@ class SettingsController extends ApiControllerBase
                         }
                         $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
-                        $this->mdlRelayd->configChanged(true);
+                        $this->mdlRelayd->configChanged(1);
                         $result['status'] = 'ok';
                     }
                 }
