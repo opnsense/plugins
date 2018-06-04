@@ -1,3 +1,4 @@
 nginx:/etc/rc.conf.d/nginx
 nginx.conf:/usr/local/etc/nginx/nginx.conf
+webgui.conf:/usr/local/etc/nginx/nginx_web.conf
 mime.types:/usr/local/etc/nginx/mime.types
