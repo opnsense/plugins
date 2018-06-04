@@ -32,8 +32,6 @@ use \OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
 use \OPNsense\Relayd\Relayd;
 
-require_once("util.inc");
-
 /**
  * Class ServiceController
  * @package OPNsense\relayd
@@ -44,6 +42,25 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceEnabled = 'general.enabled';
     static protected $internalServiceTemplate = 'OPNsense/Relayd';
     static protected $internalServiceName = 'relayd';
+    private $internalLockHandle = null;
+
+    /**
+     * simple lock mechanism
+     */
+    private function lock($release = null)
+    {
+        if ($release != null) {
+            flock($this->internalLockHandle, LOCK_UN);
+            fclose($this->internalLockHandle);
+            return true;
+        }
+
+        $this->internalLockHandle = fopen("/tmp/relayd.lock", "w+");
+        if ($this->internalLockHandle != null && flock($this->internalLockHandle, LOCK_EX)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * test relayd configuration
@@ -78,8 +95,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         if ($this->request->isPost()) {
             $this->sessionClose();
-            $lock = lock('Relayd', LOCK_EX);
-            if ($lock) {
+            if ($this->lock()) {
                 $result['function'] = "reconfigure";
                 $result['status'] = 'failed';
                 $mdlRelayd = new Relayd();
@@ -101,9 +117,10 @@ class ServiceController extends ApiMutableServiceControllerBase
                         $result['result'] = trim($backend->configdRun('relayd stop'));
                     }
                 }
-                clear_subsystem_dirty('Relayd');
                 $result['status'] = 'ok';
-                unlock($lock);
+                $this->lock(1);
+                $mdlRelayd = new Relayd();
+                $mdlRelayd->configChanged(false);
                 return $result;
             } else {
                 throw new \Exception("Cannot get lock");

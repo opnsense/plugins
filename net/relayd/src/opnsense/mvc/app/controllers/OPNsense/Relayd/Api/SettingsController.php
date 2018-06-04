@@ -35,8 +35,6 @@ use \OPNsense\Core\Config;
 use \OPNsense\Relayd\Relayd;
 use \OPNsense\Base\UIModelGrid;
 
-require_once("util.inc");
-
 /**
  * Class SettingsController
  * @package OPNsense\Relayd
@@ -68,7 +66,7 @@ class SettingsController extends ApiControllerBase
     public function dirtyAction()
     {
         $result = array('status' => 'ok');
-        $result['relayd']['dirty'] = is_subsystem_dirty('Relayd');
+        $result['relayd']['dirty'] = $this->mdlRelayd->configChanged();
         return $result;
     }
 
@@ -208,7 +206,7 @@ class SettingsController extends ApiControllerBase
                     $result['status'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
                     $cfgRelayd = Config::getInstance()->save();
-                    mark_subsystem_dirty('Relayd');
+                    $this->mdlRelayd->configChanged(true);
                 }
             }
         }
@@ -292,7 +290,7 @@ class SettingsController extends ApiControllerBase
                         }
                         $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
-                        mark_subsystem_dirty('Relayd');
+                        $this->mdlRelayd->configChanged(true);
                         $result['status'] = 'ok';
                     }
                 }
@@ -331,7 +329,7 @@ class SettingsController extends ApiControllerBase
                     break;
             }
             $result = $grid->fetchBindRequest($this->request, $fields);
-            $result['dirty'] = is_subsystem_dirty('Relayd');
+            $result['dirty'] = $this->mdlRelayd->configChanged();
             return $result;
         }
     }
