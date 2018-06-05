@@ -37,45 +37,54 @@ function relayd_enabled()
 
 function relayd_firewall($fw)
 {
-    if (relayd_enabled()) {
-        $fw->registerAnchor('relayd/*', 'rdr');
-        $fw->registerAnchor('relayd/*', 'fw');
+    if (!relayd_enabled()) {
+        return;
     }
+
+    $fw->registerAnchor('relayd/*', 'rdr');
+    $fw->registerAnchor('relayd/*', 'fw');
 }
 
 function relayd_services()
 {
-    global $config;
-
     $services = array();
 
-    if (relayd_enabled()) {
-        $services[] = array(
-            'description' => gettext('Relayd'),
-            'configd' => array(
-                'restart' => array('relayd restart'),
-                'start' => array('relayd start'),
-                'stop' => array('relayd stop'),
-            ),
-            'name' => 'relayd',
-        );
+    if (!relayd_enabled()) {
+        return $services;
     }
+
+    $services[] = array(
+        'description' => gettext('Relayd Load Balancer'),
+        'configd' => array(
+            'restart' => array('relayd restart'),
+            'start' => array('relayd start'),
+            'stop' => array('relayd stop'),
+        ),
+        'name' => 'relayd',
+    );
 
     return $services;
 }
 
 function relayd_xmlrpc_sync()
 {
-    return array(array(
-        'description' => gettext('Relayd'),
+    $result = array();
+
+    $result[] = array(
+        'description' => gettext('Relayd Load Balancer'),
         'section' => 'OPNsense.relayd',
-        'id' => 'relayd',
-    ));
+        /* kept for backwards compat: */
+        'id' => 'lb',
+    );
+
+    return $result;
 }
 
 function relayd_syslog()
 {
-    return array('relayd' => array(
-        'facility' => array('relayd'),
-        'remote' => 'relayd'));
+    $logfacilities = array();
+
+    $logfacilities['relayd'] = array('facility' => array('relayd'), 'remote' => 'relayd');
+
+    return $logfacilities;
 }
