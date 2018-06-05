@@ -21,7 +21,6 @@
         <Required>N</Required>
       </default_type>
     </http>
-    
 
     <userlist type="ArrayField">
       <name type="TextField">
@@ -184,7 +183,79 @@
     </location>
 
     <custom_policy type="ArrayField">
+      <name type="TextField">
+        <Required>Y</Required>
+      </name>
+      <authbasicuserfile type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>naxsi_rule</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected rule not found</ValidationMessage>
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+      </authbasicuserfile>
+      <value type="IntegerField">
+        <Required>Y</Required>
+      </value>
+      <operator type="OptionField">
+        <Required>Y</Required>
+        <default>&gt;=</default>
+        <OptionValues>
+          <option1 value="&gt;=">Bigger or Equal</option1>
+          <option2 value="&gt;">Bigger</option2>
+          <option3 value="&lt;">Lesser</option3>
+          <option4 value="&lt;=">Lesser or Equal</option4>
+          <option5 value="=">Equal</option5>
+        </OptionValues>
+      </operator>
+      <action type="OptionField">
+        <Required>Y</Required>
+        <default>Block</default>
+        <OptionValues>
+          <BLOCK>Block Request</BLOCK>
+          <ALLOW>Allow Request</ALLOW>
+          <DROP>Drop The Connection</DROP>
+          <LOG>Log Request</LOG>
+        </OptionValues>
+      </action>
     </custom_policy>
+
+    <naxsi_rule type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <url type="TextField">
+        <Required>N</Required>
+      </url>
+      <url_regex type="TextField">
+        <Required>N</Required>
+      </url_regex>
+      <args type="TextField">
+        <Required>N</Required>
+      </args>
+      <headers type="TextField">
+        <Required>N</Required>
+      </headers>
+      <dollar_args_var type="TextField">
+      </dollar_args_var>
+      <dollar_body_var type="TextField">
+      </dollar_body_var>
+      <dollar_headers_var type="TextField">
+      </dollar_headers_var>
+      <file_extension type="TextField">
+        <Required>N</Required>
+      </file_extension>
+      <raw_body type="TextField">
+        <Required>N</Required>
+      </raw_body>
+      <name type="TextField">
+        <Required>N</Required>
+      </name>
+    </naxsi_rule>
     <!-- TODO add settings.xml stuff -->
     
     <http_server type="ArrayField">
