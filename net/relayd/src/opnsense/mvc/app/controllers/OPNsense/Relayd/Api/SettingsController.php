@@ -60,6 +60,17 @@ class SettingsController extends ApiControllerBase
     }
 
     /**
+     * check if changes to the relayd settings were made
+     * @return result array
+     */
+    public function dirtyAction()
+    {
+        $result = array('status' => 'ok');
+        $result['relayd']['dirty'] = $this->mdlRelayd->configChanged();
+        return $result;
+    }
+
+    /**
      * query relayd settings
      * @param $nodeType
      * @param $uuid
@@ -81,7 +92,7 @@ class SettingsController extends ApiControllerBase
             }
             if ($node != null) {
                 $result['relayd'] = array($nodeType => $node->getNodes());
-                $result['result'] = 'ok';
+                $result['status'] = 'ok';
             }
         }
         return $result;
@@ -192,12 +203,10 @@ class SettingsController extends ApiControllerBase
                 }
                 if (empty($result["validations"])) {
                     unset($result["validations"]);
-                    $result['result'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
-                    Config::getInstance()->save();
-                    if ($nodeType == 'general') {
-                        $svcRelayd = new ServiceController();
-                        $result = $svcRelayd->reconfigureAction();
+                    $cfgRelayd = Config::getInstance()->save();
+                    if ($this->mdlRelayd->configDirty()) {
+                        $result['status'] = 'ok';
                     }
                 }
             }
@@ -282,7 +291,9 @@ class SettingsController extends ApiControllerBase
                         }
                         $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
-                        $result['result'] = 'ok';
+                        if ($this->mdlRelayd->configDirty()) {
+                            $result['status'] = 'ok';
+                        }
                     }
                 }
             }
@@ -319,7 +330,9 @@ class SettingsController extends ApiControllerBase
                     $fields = array('enabled', 'name', 'type');
                     break;
             }
-            return $grid->fetchBindRequest($this->request, $fields);
+            $result = $grid->fetchBindRequest($this->request, $fields);
+            $result['dirty'] = $this->mdlRelayd->configChanged();
+            return $result;
         }
     }
 

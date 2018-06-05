@@ -1,0 +1,113 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: os-relayd
+# REQUIRE: NETWORKING syslogd
+# BEFORE:  DAEMON
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="osrelayd"
+rcvar="osrelayd_enable"
+
+load_rc_config $name
+
+: ${relayd_enable="NO"}
+
+command="/usr/local/sbin/relayd"
+cmd_string="relayd: parent"
+relayctl="/usr/local/sbin/relayctl"
+pidfile="/var/run/osrelayd.pid"
+
+
+relayd_start () {
+   relayd_status
+   if [ $? -eq 0 ]; then
+      debug "relayd_start: relayd ist already running"
+      return 0
+   fi
+   debug "relayd_start: start relayd"
+   run_rc_command "start"
+   if [ $? -eq 0 ]; then
+      i=0
+      status="nok"
+      # give relayd some time to start
+      while [ $i -ne 3 ]; do
+         ps_pid=`ps ax -o pid= -o command= | grep "$cmd_string" | grep -v grep | awk '{ print $1 }'`
+         if [ -z "$ps_pid" ]; then
+            status="Cannot get pid for $command"
+         else
+            status="ok"
+            break
+         fi
+         echo $status
+         sleep 1
+         i=$(( $i + 1 ))
+      done
+      if [ $status != 'ok' ]; then
+         err 1 "$status"
+      fi
+      echo $ps_pid > $pidfile
+      return $?
+   fi
+   return 1
+}
+
+relayd_stop () {
+   relayd_status
+   if [ $? -eq 1 ]; then
+      return 0
+   fi
+   run_rc_command "stop"
+   if [ $? -ne 0 ]; then
+      err 1 "Cannot stop relayd with pid from $pidfile"
+   fi
+   rm -f $pidfile
+   return $?
+}
+
+relayd_restart () {
+   relayd_stop
+   if [ $? -ne 0 ]; then
+      return $?
+   fi
+   sleep 1
+   relayd_start
+   return $?
+}
+
+relayd_status () {
+
+   run_rc_command "status"
+   return $?
+}
+
+relayd_reload () {
+   $relayctl reload
+}
+
+case $1 in
+   start)
+      relayd_start
+      exit $?
+      ;;
+   stop)
+      relayd_stop
+      exit $?
+      ;;
+   restart)
+      relayd_restart
+      exit $?
+      ;;
+   status)
+      relayd_status
+      exit $?
+      ;;
+   reload)
+      relayd_reload;
+      exit $?
+      ;;
+esac

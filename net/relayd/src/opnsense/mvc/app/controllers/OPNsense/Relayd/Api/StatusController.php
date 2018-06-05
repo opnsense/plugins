@@ -31,6 +31,7 @@
 namespace OPNsense\Relayd\Api;
 
 use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Core\Backend;
 use \OPNsense\Relayd\Relayd;
 
 /**
@@ -45,11 +46,10 @@ class StatusController extends ApiControllerBase
     public function sumAction()
     {
         $result = array("result" => "failed");
+        $backend = new Backend();
         $output = array();
-        $exitcode;
-        exec('/usr/local/sbin/relayctl show summary 2>&1', $output, $exitcode);
-        if ($exitcode != 0) {
-            $result["output"] = join(' ', $output);
+        $output = explode("\n", trim($backend->configdRun('relayd summary')));
+        if (empty($output[0])) {
             return $result;
         }
         $result["result"] = 'ok';
@@ -102,8 +102,6 @@ class StatusController extends ApiControllerBase
             $this->sessionClose();
         }
         $result = array("result" => "failed", "function" => "toggle");
-        $output = array();
-        $exitcode;
         if ($nodeType != null &&
                 ($nodeType == 'redirect' ||
                  $nodeType == 'table' ||
@@ -112,11 +110,12 @@ class StatusController extends ApiControllerBase
                     ($action == 'enable' ||
                      $action == 'disable')) {
                 if ($id != null && $id > 0) {
-                    exec("/usr/local/sbin/relayctl $nodeType $action $id 2>&1", $output, $exitcode);
-                    $result["output"] = join(' ', $output);
-                    if ($exitcode == 0) {
+                    $backend = new Backend();
+                    $result["output"] = $backend->configdRun("relayd toggle $nodeType $action $id");
+                    if (isset($result["output"])) {
                         $result["result"] = 'ok';
                     }
+                    $result["output"] = trim($result["output"]);
                 }
             }
         }

@@ -42,6 +42,25 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceEnabled = 'general.enabled';
     static protected $internalServiceTemplate = 'OPNsense/Relayd';
     static protected $internalServiceName = 'relayd';
+    private $internalLockHandle = null;
+
+    /**
+     * simple lock mechanism
+     */
+    private function lock($release = null)
+    {
+        if ($release != null) {
+            flock($this->internalLockHandle, LOCK_UN);
+            fclose($this->internalLockHandle);
+            return true;
+        }
+
+        $this->internalLockHandle = fopen("/tmp/relayd.lock", "w+");
+        if ($this->internalLockHandle != null && flock($this->internalLockHandle, LOCK_EX)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * test relayd configuration
@@ -50,6 +69,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function configtestAction()
     {
         if ($this->request->isPost()) {
+            $result['status'] = 'ok';
             $this->sessionClose();
 
             $backend = new Backend();
@@ -62,6 +82,50 @@ class ServiceController extends ApiMutableServiceControllerBase
             }
             $result['result'] = trim($backend->configdRun('relayd configtest'));
             return $result;
+        } else {
+            return array('status' => 'failed');
+        }
+    }
+
+    /**
+     * reconfigure relayd
+     * @return array
+     */
+    public function reconfigureAction()
+    {
+        if ($this->request->isPost()) {
+            if ($this->lock()) {
+                $this->sessionClose();
+                $result['function'] = "reconfigure";
+                $result['status'] = 'failed';
+                $mdlRelayd = new Relayd();
+                $backend = new Backend();
+                $status = $this->statusAction();
+                if ($mdlRelayd->general->enabled->__toString() == 1) {
+                    $result = $this->configtestAction();
+                    if ($result['template'] == 'OK' && preg_match('/configuration OK$/', $result['result']) == 1) {
+                        if ($status['status'] != 'running') {
+                            $result['result'] = trim($backend->configdRun('relayd start'));
+                        } else {
+                            $result['result'] = trim($backend->configdRun('relayd reload'));
+                        }
+                    } else {
+                        return $result;
+                    }
+                } else {
+                    if ($status['status'] == 'running') {
+                        $result['result'] = trim($backend->configdRun('relayd stop'));
+                    }
+                }
+                $this->lock(1);
+                $mdlRelayd = new Relayd();
+                if ($mdlRelayd->configClean()) {
+                    $result['status'] = 'ok';
+                }
+                return $result;
+            } else {
+                throw new \Exception("Cannot get lock");
+            }
         } else {
             return array('status' => 'failed');
         }
