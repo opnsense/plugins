@@ -54,7 +54,7 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
 net/mdns-repeater -- Proxy multicast DNS between networks
-net/nginx -- nginx proxy and webserver
+net/nginx -- Nginx HTTP server and reverse proxy
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- End of life, superseded by FRR plugin
