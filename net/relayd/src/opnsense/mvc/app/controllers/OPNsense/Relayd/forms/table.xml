@@ -1,0 +1,25 @@
+<form>
+   <field>
+      <id>relayd.table.name</id>
+      <label>Name</label>
+      <type>text</type>
+      <help><![CDATA[
+         The name of the table.]]></help>
+   </field>
+   <field>
+      <id>relayd.table.enabled</id>
+      <label>Enable</label>
+      <type>checkbox</type>
+      <help><![CDATA[
+         If unchecked start the table disabled.]]>
+      </help>
+   </field>
+   <field>
+      <id>relayd.table.hosts</id>
+      <label>Hosts</label>
+      <type>select_multiple</type>
+      <help><![CDATA[
+         This is a list with backend hosts]]>
+      </help>
+   </field>
+</form>
