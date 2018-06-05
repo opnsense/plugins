@@ -389,6 +389,10 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $svcRelayd = new \OPNsense\Relayd\Api\ServiceController;
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
+        // stop possibly running service
+        $response = $svcRelayd->stopAction();
+        $this->assertEquals($response['response'], "OK\n\n");
+
         // generate template and test it by Relayd
         $response = $svcRelayd->configtestAction();
         $this->assertEquals($response['template'], 'OK');

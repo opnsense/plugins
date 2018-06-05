@@ -203,10 +203,11 @@ class SettingsController extends ApiControllerBase
                 }
                 if (empty($result["validations"])) {
                     unset($result["validations"]);
-                    $result['status'] = 'ok';
                     $this->mdlRelayd->serializeToConfig();
                     $cfgRelayd = Config::getInstance()->save();
-                    $this->mdlRelayd->configChanged(1);
+                    if ($this->mdlRelayd->configDirty()) {
+                        $result['status'] = 'ok';
+                    }
                 }
             }
         }
@@ -290,8 +291,9 @@ class SettingsController extends ApiControllerBase
                         }
                         $this->mdlRelayd->serializeToConfig();
                         Config::getInstance()->save();
-                        $this->mdlRelayd->configChanged(1);
-                        $result['status'] = 'ok';
+                        if ($this->mdlRelayd->configDirty()) {
+                            $result['status'] = 'ok';
+                        }
                     }
                 }
             }

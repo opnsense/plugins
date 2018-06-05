@@ -94,8 +94,8 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function reconfigureAction()
     {
         if ($this->request->isPost()) {
-            $this->sessionClose();
             if ($this->lock()) {
+                $this->sessionClose();
                 $result['function'] = "reconfigure";
                 $result['status'] = 'failed';
                 $mdlRelayd = new Relayd();
@@ -117,10 +117,11 @@ class ServiceController extends ApiMutableServiceControllerBase
                         $result['result'] = trim($backend->configdRun('relayd stop'));
                     }
                 }
-                $result['status'] = 'ok';
                 $this->lock(1);
                 $mdlRelayd = new Relayd();
-                $mdlRelayd->configChanged(0);
+                if ($mdlRelayd->configClean()) {
+                    $result['status'] = 'ok';
+                }
                 return $result;
             } else {
                 throw new \Exception("Cannot get lock");

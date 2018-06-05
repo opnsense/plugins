@@ -39,18 +39,29 @@ use OPNsense\Base\BaseModel;
 class Relayd extends BaseModel
 {
     /**
-     * get, set, unset configuration state
-     * @param $status - null = get, 1 = set, 0 = unset
+     * get configuration state
      * @return bool
      */
-    public function configChanged($status = null)
+    public function configChanged()
     {
-        if ($status === null) {
-            return file_exists("/tmp/relayd.dirty");
-        } elseif ($status === true) {
-            return @touch("/tmp/relayd.dirty");
-        } elseif ($status === false) {
-            return @unlink("/tmp/relayd.dirty");
-        }
+        return file_exists("/tmp/relayd.dirty");
+    }
+
+    /**
+     * mark configuration as changed
+     * @return bool
+     */
+    public function configDirty()
+    {
+        return @touch("/tmp/relayd.dirty");
+    }
+
+    /**
+     * mark configuration as consistent with the running config
+     * @return bool
+     */
+    public function configClean()
+    {
+        return @unlink("/tmp/relayd.dirty");
     }
 }
