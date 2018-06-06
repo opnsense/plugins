@@ -1,7 +1,7 @@
 <form>
   <field>
     <id>upstream.description</id>
-    <label>Beschreibung</label>
+    <label>Description</label>
     <type>text</type>
   </field>
   <field>

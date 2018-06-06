@@ -24,7 +24,7 @@
   </field>
   <field>
     <id>httpserver.root</id>
-    <label>Root</label>
+    <label>File System Root</label>
     <type>text</type>
   </field>
   <field>

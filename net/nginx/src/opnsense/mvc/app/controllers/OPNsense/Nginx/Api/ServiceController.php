@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017 Fabian Franz
+ * Copyright (C) 2018 Fabian Franz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
