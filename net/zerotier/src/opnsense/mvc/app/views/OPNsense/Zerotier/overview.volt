@@ -251,7 +251,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                                                         <td>{{ path["expired"] ? 'true' : 'false' }}</td>
                                                                         <td>{{ path["lastReceive"] | e }}</td>
                                                                         <td>{{ path["lastSend"] | e }}</td>
-                                                                        <td>{{ path["linkQuality"] | e }}</td>
+                                                                        <td>
+                                                                        {% if path["linkQuality"] is defined %}
+                                                                            {{ path["linkQuality"] | e }}
+                                                                        {% endif %}
+                                                                        <td>
                                                                         <td>{{ path["preferred"] | e }}</td>
                                                                         <td>{{ path["trustedPathId"] | e }}</td>
                                                                     </tr>
