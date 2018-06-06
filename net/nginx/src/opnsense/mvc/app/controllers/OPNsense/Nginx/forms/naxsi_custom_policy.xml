@@ -1,0 +1,31 @@
+<form>
+    <field>
+        <id>custompolicy.name</id>
+        <type>text</type>
+        <label>Name</label>
+    </field>
+    <field>
+        <id>custompolicy.naxsi_rules</id>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <style>tokenize</style>
+        <label>Rules</label>
+    </field>
+    <field>
+        <id>custompolicy.value</id>
+        <type>text</type>
+        <label>Value</label>
+    </field>
+    <field>
+        <id>custompolicy.operator</id>
+        <type>dropdown</type>
+        <style>selectpicker</style>
+        <label>Operator</label>
+    </field>
+    <field>
+        <id>custompolicy.action</id>
+        <type>dropdown</type>
+        <style>selectpicker</style>
+        <label>Action</label>
+    </field>
+</form>

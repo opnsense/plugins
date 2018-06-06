@@ -224,4 +224,31 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('httpserver', 'http_server', $uuid);
     }
+
+    // naxsi rules
+    public function searchnaxsiruleAction()
+    {
+        return $this->searchBase('naxsi_rule', array('description', 'ruletype', 'url'));
+    }
+
+    public function getnaxsiruleAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('naxsi_rule', 'naxsi_rule', $uuid);
+    }
+
+    public function addnaxsiruleAction()
+    {
+        return $this->addBase('naxsi_rule', 'naxsi_rule');
+    }
+
+    public function delnaxsiruleAction($uuid)
+    {
+        return $this->delBase('naxsi_rule', $uuid);
+    }
+
+    public function setnaxsiruleAction($uuid)
+    {
+        return $this->setBase('naxsi_rule', 'naxsi_rule', $uuid);
+    }
 }

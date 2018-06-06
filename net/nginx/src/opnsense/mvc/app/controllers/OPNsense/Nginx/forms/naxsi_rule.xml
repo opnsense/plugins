@@ -1,0 +1,63 @@
+<form>
+    <field>
+        <id>naxsi_rule.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.ruletype</id>
+        <label>Rule Type</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>naxsi_rule.url</id>
+        <label>URL</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.url_regex</id>
+        <label>URL Regex</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.args</id>
+        <label>Arguments</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.headers</id>
+        <label>Headers</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_args_var</id>
+        <label>dollar_args_var</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_body_var</id>
+        <label>dollar_body_var</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_headers_var</id>
+        <label>dollar_headers_var</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.file_extension</id>
+        <label>File Extension</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.raw_body</id>
+        <label>Raw Body</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.name</id>
+        <label>Name</label>
+        <type>text</type>
+    </field>
+
+</form>

@@ -88,14 +88,20 @@ $( document ).ready(function() {
             });
         });
     });
-    ['upstream', 'upstreamserver', 'location', 'credential', 'userlist', 'httpserver'].forEach(function(element) {
+    ['upstream',
+    'upstreamserver',
+    'location',
+    'credential',
+    'userlist',
+    'httpserver',
+    'custompolicy',
+    'naxsirule'].forEach(function(element) {
         $("#grid-" + element).UIBootgrid(
             { 'search':'/api/nginx/settings/search' + element,
               'get':'/api/nginx/settings/get' + element + '/',
               'set':'/api/nginx/settings/set' + element + '/',
               'add':'/api/nginx/settings/add' + element + '/',
               'del':'/api/nginx/settings/del' + element + '/',
-              // 'toggle':'/api/nginx/settings/toggle' + element + '/',
               'options':{selection:false, multiSelect:false}
             }
         );
@@ -133,6 +139,12 @@ $( document ).ready(function() {
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-server" href="#subtab_nginx-http-httpserver">{{ lang._('HTTP Server')}}</a>
             </li>
+            <!-- not for developer preview <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-custompolicy" href="#subtab_nginx-http-custompolicy">{{ lang._('Naxsi WAF Policy')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-naxsirule" href="#subtab_nginx-http-naxsirule">{{ lang._('Naxsi WAF Rule')}}</a>
+            </li>-->
         </ul>
     </li>
 </ul>
@@ -280,6 +292,54 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-custompolicy" class="tab-pane fade">
+        <table id="grid-custompolicy" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="custompolicydlg">
+            <thead>
+                <tr>
+                    <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="operator" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
+                    <th data-column-id="value" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Value') }}</th>
+                    <th data-column-id="action" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-http-naxsirule" class="tab-pane fade">
+        <table id="grid-naxsirule" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="naxsiruledlg">
+            <thead>
+                <tr>
+                    <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="operator" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
+                    <th data-column-id="value" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Value') }}</th>
+                    <th data-column-id="action" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 
@@ -290,4 +350,6 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': credential,'id':'credentialdlg', 'label':lang._('Edit Credential')]) }}
 {{ partial("layout_partials/base_dialog",['fields': userlist,'id':'userlistdlg', 'label':lang._('Edit User List')]) }}
 {{ partial("layout_partials/base_dialog",['fields': httpserver,'id':'httpserverdlg', 'label':lang._('Edit HTTP Server')]) }}
+{{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
+{{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
 

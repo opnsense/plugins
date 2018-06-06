@@ -186,7 +186,7 @@
       <name type="TextField">
         <Required>Y</Required>
       </name>
-      <authbasicuserfile type="ModelRelationField">
+      <naxsi_rules type="ModelRelationField">
         <Model>
           <template>
             <source>OPNsense.Nginx.Nginx</source>
@@ -197,7 +197,7 @@
         <ValidationMessage>Selected rule not found</ValidationMessage>
         <Required>Y</Required>
         <multiple>Y</multiple>
-      </authbasicuserfile>
+      </naxsi_rules>
       <value type="IntegerField">
         <Required>Y</Required>
       </value>
@@ -228,6 +228,13 @@
       <description type="TextField">
         <Required>Y</Required>
       </description>
+      <ruletype type="OptionField">
+        <OptionValues>
+          <main>Main Rule</main>
+          <basic>Basic Rule</basic>
+        </OptionValues>
+        <Required>Y</Required>
+      </ruletype>
       <url type="TextField">
         <Required>N</Required>
       </url>

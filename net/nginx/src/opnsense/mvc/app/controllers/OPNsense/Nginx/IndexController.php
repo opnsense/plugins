@@ -39,10 +39,6 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        /*$backend = new Backend();
-        $this->view->clamav_installed = (trim($backend->configdRun('firmware plugin clamav')) == '1');
-        $this->view->redis_installed = (trim($backend->configdRun('firmware plugin redis')) == '1');
-        $this->view->redis_plugin_enabled = ((string)((new RSpamd())->general->enable_redis_plugin)) == '1';*/
         $this->view->settings = $this->getForm("settings");
         $this->view->upstream_server = $this->getForm("upstream_server");
         $this->view->upstream = $this->getForm("upstream");
@@ -50,6 +46,8 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->credential = $this->getForm("credential");
         $this->view->userlist = $this->getForm("userlist");
         $this->view->httpserver = $this->getForm("httpserver");
+        $this->view->naxsi_rule = $this->getForm("naxsi_rule");
+        $this->view->naxsi_custom_policy = $this->getForm("naxsi_custom_policy");
         $this->view->pick('OPNsense/Nginx/index');
     }
 }
