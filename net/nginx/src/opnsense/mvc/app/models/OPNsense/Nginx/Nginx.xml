@@ -235,32 +235,60 @@
         </OptionValues>
         <Required>Y</Required>
       </ruletype>
+      <message type="TextField">
+        <Required>Y</Required>
+        <pattern>/^[^"]+$/</pattern>
+      </message>
       <url type="TextField">
         <Required>N</Required>
+        <pattern>/^[^"]+$/</pattern>
       </url>
       <url_regex type="TextField">
         <Required>N</Required>
+        <pattern>/^[^"]+$/</pattern>
       </url_regex>
-      <args type="TextField">
-        <Required>N</Required>
+      <match_value type="TextField">
+        <Required>Y</Required>
+        <pattern>/^[^"]+$/</pattern>
+      </match_value>
+      <match_type type="OptionField">
+        <Required>Y</Required>
+        <default>mz</default>
+        <OptionValue>
+          <mz>Match Zone</mz>
+          <wl>Whitelist</wl>
+        </OptionValue>
+      </match_type>
+      <score type="IntegerField">
+        <Required>Y</Required>
+        <default>8</default>
+      </score>
+      <regex type="BooleanField">
+        <Required>Y</Required>
+      </regex>
+      <args type="BooleanField">
+        <Required>Y</Required>
       </args>
-      <headers type="TextField">
-        <Required>N</Required>
+      <headers type="BooleanField">
+        <Required>Y</Required>
       </headers>
       <dollar_args_var type="TextField">
+        <pattern>/^[^"]+$/</pattern>
       </dollar_args_var>
       <dollar_body_var type="TextField">
+        <pattern>/^[^"]+$/</pattern>
       </dollar_body_var>
       <dollar_headers_var type="TextField">
+        <pattern>/^[^"]+$/</pattern>
       </dollar_headers_var>
-      <file_extension type="TextField">
-        <Required>N</Required>
+      <file_extension type="BooleanField">
+        <Required>Y</Required>
       </file_extension>
-      <raw_body type="TextField">
-        <Required>N</Required>
+      <raw_body type="BooleanField">
+        <Required>Y</Required>
       </raw_body>
-      <name type="TextField">
-        <Required>N</Required>
+      <name type="BooleanField">
+        <Required>Y</Required>
       </name>
     </naxsi_rule>
     <!-- TODO add settings.xml stuff -->
