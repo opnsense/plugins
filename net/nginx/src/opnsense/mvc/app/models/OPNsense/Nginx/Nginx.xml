@@ -254,10 +254,10 @@
       <match_type type="OptionField">
         <Required>Y</Required>
         <default>mz</default>
-        <OptionValue>
+        <OptionValues>
           <mz>Match Zone</mz>
           <wl>Whitelist</wl>
-        </OptionValue>
+        </OptionValues>
       </match_type>
       <score type="IntegerField">
         <Required>Y</Required>

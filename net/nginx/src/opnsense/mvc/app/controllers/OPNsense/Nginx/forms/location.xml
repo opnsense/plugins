@@ -44,6 +44,7 @@
     <id>location.custom_policy</id>
     <label>Custom Security Policy</label>
     <type>select_multiple</type>
+    <style>selectpicker</style>
     <help>Select custom security policies.</help>
   </field>
   <field>

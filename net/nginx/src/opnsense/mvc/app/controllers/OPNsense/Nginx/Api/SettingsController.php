@@ -174,7 +174,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Custom Policy
     public function searchcustompolicyAction()
     {
-        return $this->searchBase('custom_policy', array());
+        return $this->searchBase('custom_policy', array('name', 'operator', 'value', 'action'));
     }
 
     public function getcustompolicyAction($uuid = null)
@@ -228,7 +228,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // naxsi rules
     public function searchnaxsiruleAction()
     {
-        return $this->searchBase('naxsi_rule', array('description', 'ruletype', 'url'));
+        return $this->searchBase('naxsi_rule', array('description', 'ruletype', 'message'));
     }
 
     public function getnaxsiruleAction($uuid = null)

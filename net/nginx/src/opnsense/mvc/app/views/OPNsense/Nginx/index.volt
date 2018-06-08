@@ -320,10 +320,9 @@ $( document ).ready(function() {
         <table id="grid-naxsirule" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="naxsiruledlg">
             <thead>
                 <tr>
-                    <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="operator" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
-                    <th data-column-id="value" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Value') }}</th>
-                    <th data-column-id="action" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="ruletype" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Rule Type') }}</th>
+                    <th data-column-id="message" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Message') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
