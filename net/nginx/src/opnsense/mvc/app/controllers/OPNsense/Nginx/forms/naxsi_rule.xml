@@ -10,6 +10,17 @@
         <type>text</type>
     </field>
     <field>
+        <id>naxsi_rule.negate</id>
+        <label>Negate</label>
+        <type>checkbox</type>
+        <help>If this is box is checked, the score will be added if the rule does not match. Use with care.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.identifier</id>
+        <label>ID</label>
+        <type>text</type>
+    </field>
+    <field>
         <id>naxsi_rule.ruletype</id>
         <label>Rule Type</label>
         <type>dropdown</type>
@@ -67,9 +78,10 @@
         <type>checkbox</type>
     </field>
     <field>
-        <id>naxsi_rule.url_regex</id>
-        <label>URL Regex</label>
+        <id>naxsi_rule.dollar_url</id>
+        <label>URL or URL Pattern</label>
         <type>text</type>
+        <help>Enter the name of a parameter to match.</help>
     </field>
     <field>
         <id>naxsi_rule.dollar_args_var</id>

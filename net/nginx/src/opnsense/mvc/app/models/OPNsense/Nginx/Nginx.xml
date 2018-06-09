@@ -214,7 +214,7 @@
       </operator>
       <action type="OptionField">
         <Required>Y</Required>
-        <default>Block</default>
+        <default>BLOCK</default>
         <OptionValues>
           <BLOCK>Block Request</BLOCK>
           <ALLOW>Allow Request</ALLOW>
@@ -239,26 +239,33 @@
         <Required>Y</Required>
         <pattern>/^[^"]+$/</pattern>
       </message>
+      <identifier type="IntegerField">
+        <Required>Y</Required>
+        <minValue>1000</minValue>
+      </identifier>
       <url type="TextField">
         <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
       </url>
-      <url_regex type="TextField">
+      <dollar_url type="TextField">
         <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
-      </url_regex>
+      </dollar_url>
       <match_value type="TextField">
         <Required>Y</Required>
         <pattern>/^[^"]+$/</pattern>
       </match_value>
       <match_type type="OptionField">
         <Required>Y</Required>
-        <default>mz</default>
+        <default>id</default>
         <OptionValues>
-          <mz>Match Zone</mz>
+          <id>Blacklist</id>
           <wl>Whitelist</wl>
         </OptionValues>
       </match_type>
+      <negate type="BooleanField">
+        <Required>Y</Required>
+      </negate>
       <score type="IntegerField">
         <Required>Y</Required>
         <default>8</default>
