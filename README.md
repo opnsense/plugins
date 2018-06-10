@@ -54,7 +54,6 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
 net/mdns-repeater -- Proxy multicast DNS between networks
-net/nginx -- Nginx HTTP server and reverse proxy
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- End of life, superseded by FRR plugin
@@ -82,6 +81,7 @@ sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
+www/nginx -- Nginx HTTP server and reverse proxy
 www/web-proxy-sso -- Kerberos authentication module
 www/web-proxy-useracl -- Group and user ACL for the web proxy
 ```
