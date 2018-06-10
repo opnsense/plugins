@@ -139,12 +139,12 @@ $( document ).ready(function() {
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-server" href="#subtab_nginx-http-httpserver">{{ lang._('HTTP Server')}}</a>
             </li>
-            <!-- not for developer preview <li>
+            <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-custompolicy" href="#subtab_nginx-http-custompolicy">{{ lang._('Naxsi WAF Policy')}}</a>
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-naxsirule" href="#subtab_nginx-http-naxsirule">{{ lang._('Naxsi WAF Rule')}}</a>
-            </li>-->
+            </li>
         </ul>
     </li>
 </ul>
