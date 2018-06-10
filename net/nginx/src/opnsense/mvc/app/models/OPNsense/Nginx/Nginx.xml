@@ -8,6 +8,7 @@
         <Required>Y</Required>
       </enabled>
     </general>
+
     <http>
       <sendfile type="BooleanField">
         <default>0</default>
@@ -45,7 +46,7 @@
         <Required>Y</Required>
       </username>
       <password type="TextField">
-        <Required>N</Required>
+        <Required>Y</Required>
       </password>
     </credential>
 
@@ -298,7 +299,6 @@
         <Required>Y</Required>
       </name>
     </naxsi_rule>
-    <!-- TODO add settings.xml stuff -->
     
     <http_server type="ArrayField">
       <servername type="CSVListField">
