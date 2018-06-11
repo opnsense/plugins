@@ -1,5 +1,5 @@
 <menu>
    <Services>
-      <FtpProxy VisibleName="FTP Proxy" cssClass="fa fa-bolt fa-fw" url="/ui/ftpproxy/"/>
+      <FtpProxy VisibleName="FTP Proxy" cssClass="fa fa-bolt fa-fw" url="/ui/ftpproxy"/>
    </Services>
 </menu>
