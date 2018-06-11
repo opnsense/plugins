@@ -2,18 +2,14 @@
     <Services>
       <!-- using LE prefix for proper sorting -->
       <LEAcmeClient VisibleName="Let's Encrypt" cssClass="fa fa-certificate fa-fw">
-          <Settings order="10" url="/ui/acmeclient/">
-              <GeneralSettings VisibleName="Service Settings" url="/ui/acmeclient/#general-settings"/>
+          <Settings order="10" url="/ui/acmeclient">
+              <General url="/ui/acmeclient#general-settings"/>
           </Settings>
-          <Accounts VisibleName="Accounts" order="20" url="/ui/acmeclient/accounts/">
-          </Accounts>
-          <Validations VisibleName="Validation Methods" order="30" url="/ui/acmeclient/validations/">
-          </Validations>
-          <Actions VisibleName="Restart Actions" order="40" url="/ui/acmeclient/actions/">
-          </Actions>
-          <Certificates order="50" url="/ui/acmeclient/certificates/">
-          </Certificates>
-          <Log VisibleName="Log File" order="60" url="/diag_logs_acmeclient.php"/>
+          <Accounts VisibleName="Accounts" order="20" url="/ui/acmeclient/accounts"/>
+          <Validations VisibleName="Validation Methods" order="30" url="/ui/acmeclient/validations"/>
+          <Actions VisibleName="Restart Actions" order="40" url="/ui/acmeclient/actions"/>
+          <Certificates order="50" url="/ui/acmeclient/certificates"/>
+          <LogFile VisibleName="Log File" order="60" url="/diag_logs_acmeclient.php"/>
       </LEAcmeClient>
     </Services>
 </menu>
