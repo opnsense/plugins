@@ -600,9 +600,20 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Ali_Key'] = (string)$valObj->dns_ali_key;
                 $proc_env['Ali_Secret'] = (string)$valObj->dns_ali_secret;
                 break;
+            case 'dns_autodns':
+                $proc_env['AUTODNS_USER'] = (string)$valObj->dns_autodns_user;
+                $proc_env['AUTODNS_PASSWORD'] = (string)$valObj->dns_autodns_password;
+                $proc_env['AUTODNS_CONTEXT'] = (string)$valObj->dns_autodns_context;
+                break;
             case 'dns_aws':
                 $proc_env['AWS_ACCESS_KEY_ID'] = (string)$valObj->dns_aws_id;
                 $proc_env['AWS_SECRET_ACCESS_KEY'] = (string)$valObj->dns_aws_secret;
+                break;
+            case 'dns_azure':
+                $proc_env['AZUREDNS_SUBSCRIPTIONID'] = (string)$valObj->dns_azuredns_subscriptionid;
+                $proc_env['AZUREDNS_TENANTID'] = (string)$valObj->dns_azuredns_tenantid;
+                $proc_env['AZUREDNS_APPID'] = (string)$valObj->dns_azuredns_appid;
+                $proc_env['AZUREDNS_CLIENTSECRET'] = (string)$valObj->dns_azuredns_clientsecret;
                 break;
             case 'dns_cf':
                 $proc_env['CF_Key'] = (string)$valObj->dns_cf_key;
@@ -621,6 +632,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['CY_Username'] = (string)$valObj->dns_cyon_user;
                 $proc_env['CY_Password'] = (string)$valObj->dns_cyon_user;
                 break;
+            case 'dns_da':
+                $proc_env['DA_Api'] = (string)$valObj->dns_da_key;
+                $proc_env['DA_Api_Insecure'] = (string)$valObj->dns_da_insecure;
+                break;
             case 'dns_dgon':
                 $proc_env['DO_API_KEY'] = (string)$valObj->dns_dgon_key;
                 break;
@@ -634,6 +649,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_dp':
                 $proc_env['DP_Id'] = (string)$valObj->dns_dp_id;
                 $proc_env['DP_Key'] = (string)$valObj->dns_dp_key;
+                break;
+            case 'dns_dreamhost':
+                $proc_env['DH_API_KEY'] = (string)$valObj->dns_dh_key;
                 break;
             case 'dns_duckdns':
                 $proc_env['DuckDNS_Token'] = (string)$valObj->dns_duckdns_token;
@@ -666,11 +684,23 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Infoblox_Creds'] = (string)$valObj->dns_infoblox_credentials;
                 $proc_env['Infoblox_Server'] = (string)$valObj->dns_infoblox_server;
                 break;
+            case 'dns_inwx':
+                $proc_env['INWX_User'] = (string)$valObj->dns_inwx_user;
+                $proc_env['INWX_Password'] = (string)$valObj->dns_inws_password;
+                break;
             case 'dns_ispconfig':
                 $proc_env['ISPC_User'] = (string)$valObj->dns_ispconfig_user;
                 $proc_env['ISPC_Password'] = (string)$valObj->dns_ispconfig_password;
                 $proc_env['ISPC_Api'] = (string)$valObj->dns_ispconfig_api;
                 $proc_env['ISPC_Api_Insecure'] = (string)$valObj->dns_ispconfig_insecure;
+                break;
+            case 'dns_kinghost':
+                $proc_env['KINGHOST_username'] = (string)$valObj->dns_kinghost_username;
+                $proc_env['KINGHOST_Password'] = (string)$valObj->dns_kinghost_password;
+                break;
+            case 'dns_knot':
+                $proc_env['KNOT_SERVER'] = (string)$valObj->dns_knot_server;
+                $proc_env['KNOT_KEY'] = (string)$valObj->dns_knot_key;
                 break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
@@ -699,6 +729,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Namecom_Username'] = (string)$valObj->dns_namecom_user;
                 $proc_env['Namecom_Token'] = (string)$valObj->dns_namecom_token;
                 break;
+            case 'dns_namesilo':
+                $proc_env['Namesilo_Key'] = (string)$valObj->dns_namesilo_key;
+                // Namesilo applies changes to DNS records only every 15 minutes.
+                $acme_hook_options[] = "--dnssleep 960";
+                break;
             case 'dns_nsone':
                 $proc_env['NS1_Key'] = (string)$valObj->dns_nsone_key;
                 break;
@@ -706,7 +741,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Write secret key to filesystem
                 $secret_key_data = (string)$valObj->dns_nsupdate_key . "\n";
                 file_put_contents($secret_key_filename, $secret_key_data);
-
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
                 break;
@@ -721,11 +755,28 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['PDNS_ServerId'] = (string)$valObj->dns_pdns_serverid;
                 $proc_env['PDNS_Token'] = (string)$valObj->dns_pdns_token;
                 break;
+            case 'dns_selectel':
+                $proc_env['SL_Key'] = (string)$valObj->dns_sl_key;
+                break;
+            case 'dns_servercow':
+                $proc_env['SERVERCOW_API_Username'] = (string)$valObj->dns_servercow_username;
+                $proc_env['SERVERCOW_API_Password'] = (string)$valObj->dns_servercow_password;
+                break;
+            case 'dns_unoeuro':
+                $proc_env['UNO_Key'] = (string)$valObj->dns_uno_key;
+                $proc_env['UNO_User'] = (string)$valObj->dns_uno_user;
+                break;
             case 'dns_vscale':
                 $proc_env['VSCALE_API_KEY'] = (string)$valObj->dns_vscale_key;
                 break;
             case 'dns_yandex':
                 $proc_env['PDD_Token'] = (string)$valObj->dns_yandex_token;
+                break;
+            case 'dns_zilore':
+                $proc_env['Zilore_Key'] = (string)$valObj->dns_zilore_key;
+                break;
+            case 'dns_zonomi':
+                $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
                 break;
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);

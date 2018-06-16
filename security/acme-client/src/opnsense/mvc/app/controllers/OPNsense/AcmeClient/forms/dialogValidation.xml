@@ -120,6 +120,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>autoDNS (InternetX)</label>
+        <type>header</type>
+        <style>table_dns table_dns_autodns</style>
+    </field>
+    <field>
+        <id>validation.dns_autodns_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_autodns_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_autodns_context</id>
+        <label>Context</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>AWS Route53</label>
         <type>header</type>
         <style>table_dns table_dns_aws</style>
@@ -132,6 +152,31 @@
     <field>
         <id>validation.dns_aws_secret</id>
         <label>AWS Secret</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Azure DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_azure</style>
+    </field>
+    <field>
+        <id>validation.dns_azuredns_subscriptionid</id>
+        <label>Subscription ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_azuredns_tenantid</id>
+        <label>Tenant ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_azuredns_appid</id>
+        <label>APP ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_azuredns_clientsecret</id>
+        <label>Client Secret</label>
         <type>text</type>
     </field>
     <field>
@@ -200,6 +245,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>DirectAdmin</label>
+        <type>header</type>
+        <style>table_dns table_dns_da</style>
+    </field>
+    <field>
+        <id>validation.dns_da_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_da_insecure</id>
+        <label>Disable SSL Verification</label>
+        <type>checkbox</type>
+    </field>
+    <field>
         <label>DigitalOcean</label>
         <type>header</type>
         <style>table_dns table_dns_dgon</style>
@@ -247,6 +307,16 @@
     <field>
         <id>validation.dns_dp_key</id>
         <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>DreamHost</label>
+        <type>header</type>
+        <style>table_dns table_dns_dreamhost</style>
+    </field>
+    <field>
+        <id>validation.dns_dh_key</id>
+        <label>API Key</label>
         <type>text</type>
     </field>
     <field>
@@ -367,6 +437,21 @@
         <help>Enter either the IP address or FQDN of your Infoblox appliance.</help>
     </field>
     <field>
+        <label>INWX</label>
+        <type>header</type>
+        <style>table_dns table_dns_inwx</style>
+    </field>
+    <field>
+        <id>validation.dns_inwx_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_inws_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>IPSConfig</label>
         <type>header</type>
         <style>table_dns table_dns_ispconfig</style>
@@ -390,6 +475,36 @@
         <id>validation.dns_ispconfig_insecure</id>
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
+    </field>
+    <field>
+        <label>KingHost</label>
+        <type>header</type>
+        <style>table_dns table_dns_kinghost</style>
+    </field>
+    <field>
+        <id>validation.dns_kinghost_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_kinghost_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Knot</label>
+        <type>header</type>
+        <style>table_dns table_dns_knot</style>
+    </field>
+    <field>
+        <id>validation.dns_knot_server</id>
+        <label>Server</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_knot_key</id>
+        <label>Key</label>
+        <type>text</type>
     </field>
     <field>
         <label>lexicon</label>
@@ -467,6 +582,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Namesilo</label>
+        <type>header</type>
+        <style>table_dns table_dns_namesilo</style>
+    </field>
+    <field>
+        <id>validation.dns_namesilo_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>NS1.com</label>
         <type>header</type>
         <style>table_dns table_dns_nsone</style>
@@ -541,6 +666,46 @@
         <type>text</type>
     </field>
     <field>
+        <label>selectel</label>
+        <type>header</type>
+        <style>table_dns table_dns_selectel</style>
+    </field>
+    <field>
+        <id>validation.dns_sl_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Servercow</label>
+        <type>header</type>
+        <style>table_dns table_dns_servercow</style>
+    </field>
+    <field>
+        <id>validation.dns_servercow_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_servercow_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>UnoEuro</label>
+        <type>header</type>
+        <style>table_dns table_dns_unoeuro</style>
+    </field>
+    <field>
+        <id>validation.dns_uno_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_uno_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Vscale</label>
         <type>header</type>
         <style>table_dns table_dns_vscale</style>
@@ -558,6 +723,26 @@
     <field>
         <id>validation.dns_yandex_token</id>
         <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Zilore</label>
+        <type>header</type>
+        <style>table_dns table_dns_zilore</style>
+    </field>
+    <field>
+        <id>validation.dns_zilore_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>zonomi.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_zonomi</style>
+    </field>
+    <field>
+        <id>validation.dns_zm_key</id>
+        <label>API Key</label>
         <type>text</type>
     </field>
 </form>
