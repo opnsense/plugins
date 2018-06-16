@@ -348,8 +348,9 @@
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
-                        <dns_do>Domain-Offensive/Resellerinterface/Domainrobot API</dns_do>
+                        <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_dp>DNSPod.cn API</dns_dp>
+                        <dns_do>Domain-Offensive/Resellerinterface/Domainrobot API</dns_do>
                         <dns_dreamhost>DreamHost DNS API</dns_dreamhost>
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
@@ -366,7 +367,6 @@
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_lua>LuaDNS.com API</dns_lua>
-                        <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
                         <dns_nsone>NS1.com API</dns_nsone>

@@ -258,6 +258,7 @@
         <id>validation.dns_da_insecure</id>
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
+        <help><![CDATA[Uncheck this box if you have a valid SSL certificate for your DirectAdmin installation]]></help>
     </field>
     <field>
         <label>DigitalOcean</label>
@@ -278,6 +279,7 @@
         <id>validation.dns_dnsimple_token</id>
         <label>OAuth Token</label>
         <type>text</type>
+        <help><![CDATA[Note that this is the account token not the user token.]]></help>
     </field>
     <field>
         <label>Domain-Offensive</label>
@@ -475,6 +477,7 @@
         <id>validation.dns_ispconfig_insecure</id>
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
+        <help><![CDATA[Uncheck this box if you have a valid SSL certificate for your ISPConfig installation]]></help>
     </field>
     <field>
         <label>KingHost</label>
@@ -500,11 +503,13 @@
         <id>validation.dns_knot_server</id>
         <label>Server</label>
         <type>text</type>
+        <help><![CDATA[Knot server address, like: dns.example.com]]></help>
     </field>
     <field>
         <id>validation.dns_knot_key</id>
         <label>Key</label>
         <type>text</type>
+        <help><![CDATA[Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2 ]]></help>
     </field>
     <field>
         <label>lexicon</label>
