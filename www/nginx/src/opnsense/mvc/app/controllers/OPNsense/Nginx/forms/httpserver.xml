@@ -49,6 +49,11 @@
     <type>dropdown</type>
   </field>
   <field>
+    <id>httpserver.enable_acme_support</id>
+    <label>Enable Let's Encrypt Plugin Support</label>
+    <type>checkbox</type>
+  </field>
+  <field>
     <id>httpserver.charset</id>
     <label>Charset</label>
     <type>dropdown</type>
