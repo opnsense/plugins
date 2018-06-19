@@ -42,6 +42,12 @@
 {%       if user_list.chillispot_bw_max_down is defined %}
        ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }},
 {%       endif %}
+{%       if user_list.mikrotik_vlan_id_number is defined %}
+       Mikrotik-Wireless-VLANID = {{ user_list.mikrotik_vlan_id_number }},
+{%       endif %}
+{%       if user_list.mikrotik_vlan_id_type is defined %}
+       Mikrotik-Wireless-VLANID-Type = {{ user_list.mikrotik_vlan_id_type }},
+{%       endif %}
        Framed-Protocol = PPP
 
 {%     endif %}

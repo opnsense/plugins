@@ -60,12 +60,12 @@ function dump_clog_vpn($file, $tail, $type)
         }
 
         echo "<tr>\n";
-        echo "<td class=\"listlr nowrap\">" . htmlspecialchars(join(" ", array_slice($logent, 0, 3))) . "</td>\n";
+        echo "<td>" . htmlspecialchars(join(" ", array_slice($logent, 0, 3))) . "</td>\n";
 
         if ($llent[0] == "login") {
-            echo "<td class=\"listr\"><span class=\"glyphicon glyphicon-arrow-right\" aria-hidden=\"true\" alt=\"in\"></span></td>\n";
+            echo "<td><span class=\"fa fa-arrow-right fa-fw\" aria-hidden=\"true\" alt=\"in\"></span></td>\n";
         } else {
-            echo "<td class=\"listr\"><span class=\"glyphicon glyphicon-arrow-left\" aria-hidden=\"true\" alt=\"out\"></span></td>\n";
+            echo "<td><span class=\"fa fa-arrow-left fa-fw\" aria-hidden=\"true\" alt=\"out\"></span></td>\n";
         }
 
         echo "<td class=\"listr\">" . htmlspecialchars($llent[3]) . "</td>\n";
@@ -88,10 +88,10 @@ include("head.inc");
           <div class="table-responsive">
             <table class="table table-striped table-sort">
               <tr>
-                <td class="listhdrr"><?=gettext("Time");?></td>
-                <td class="listhdrr"><?=gettext("Action");?></td>
-                <td class="listhdrr"><?=gettext("User");?></td>
-                <td class="listhdrr"><?=gettext("IP address");?></td>
+                <td><?=gettext("Time");?></td>
+                <td><?=gettext("Action");?></td>
+                <td><?=gettext("User");?></td>
+                <td><?=gettext("IP address");?></td>
               </tr>
               <tr>
                 <td colspan="4">

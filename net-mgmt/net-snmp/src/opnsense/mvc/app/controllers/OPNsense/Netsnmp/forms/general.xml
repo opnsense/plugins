@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable SNMP Service</label>
+        <type>checkbox</type>
+        <help>This will activate the snmpd service.</help>
+    </field>
+    <field>
+        <id>general.community</id>
+        <label>SNMP Community</label>
+        <type>text</type>
+        <help>Set the community string to use.</help>
+    </field>
+    <field>
+        <id>general.syslocation</id>
+        <label>SNMP Location</label>
+        <type>text</type>
+        <help>Set location where this unit is.</help>
+    </field>
+    <field>
+        <id>general.syscontact</id>
+        <label>SNMP Contact</label>
+        <type>text</type>
+        <help>Set the contact address to use.</help>
+    </field>
+</form>

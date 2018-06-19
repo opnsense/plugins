@@ -23,7 +23,6 @@
         <id>bgp.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
-        <style>tokenize</style>
         <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
         <hint>Type or select a route source.</hint>
     </field>

@@ -65,7 +65,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $response = self::$setRelayd->getAction('general');
         $testConfig['general'] = $response['relayd']['general'];
 
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
         $this->assertArrayHasKey('enabled', $response['relayd']['general']);
 
         return $testConfig;
@@ -100,7 +100,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         foreach (array_reverse($this->nodeTypes) as $nodeType) {
             foreach ($testConfig[$nodeType] as $node) {
                 $response = self::$setRelayd->delAction($nodeType, $node['uuid']);
-                $this->assertEquals($response['result'], 'ok');
+                $this->assertEquals($response['status'], 'ok');
             }
         }
         // need an assertion here to succeed this test on empty config
@@ -126,6 +126,18 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         $_POST = array('relayd' => ['general' => ['interval' => '10', 'timeout' => 86400, 'enabled' => '0']]);
         $response = self::$setRelayd->setAction('general');
         $this->assertEquals($response['status'], 'ok');
+    }
+
+    /**
+     * test dirtyAction
+     * @depends testSetGeneral
+     */
+    public function testDirtyAction()
+    {
+        $this->assertInstanceOf('\OPNsense\Relayd\Api\SettingsController', self::$setRelayd);
+        $response = self::$setRelayd->dirtyAction();
+        $this->assertEquals($response['status'], 'ok');
+        $this->assertEquals($response['relayd']['dirty'], true);
     }
 
     /**
@@ -156,7 +168,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // create host for ServiceControllerTest
         $_POST = array('relayd' => ['host' => ['name' => 'testHost', 'address' => '127.0.0.1']]);
         $response = self::$setRelayd->setAction('host');
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
     }
 
     /**
@@ -241,7 +253,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
                 'code' => '403',
                 'ssl' => '1']]);
         $response = self::$setRelayd->setAction('tablecheck');
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
     }
 
     /**
@@ -267,7 +279,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
             'protocol' => ['name' => 'testProtocol', 'type' => 'tcp', 'options' => 'nodelay, socket buffer 65536']
         ]);
         $response = self::$setRelayd->setAction('protocol');
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
     }
 
     /**
@@ -360,7 +372,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
                 'protocol' => $protocolUuid
             ]]);
         $response = self::$setRelayd->setAction('virtualserver');
-        $this->assertEquals($response['result'], 'ok');
+        $this->assertEquals($response['status'], 'ok');
     }
 
     /**
@@ -376,6 +388,10 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     {
         $svcRelayd = new \OPNsense\Relayd\Api\ServiceController;
         $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        // stop possibly running service
+        $response = $svcRelayd->stopAction();
+        $this->assertEquals($response['response'], "OK\n\n");
 
         // generate template and test it by Relayd
         $response = $svcRelayd->configtestAction();
@@ -403,10 +419,6 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
         // reconfigure
         $response = $svcRelayd->reconfigureAction();
         $this->assertEquals($response['status'], 'ok');
-
-        // start
-        $response = $svcRelayd->startAction();
-        $this->assertEquals($response['response'], "OK\n\n");
 
         // status
         $response = $svcRelayd->statusAction();

@@ -2031,10 +2031,10 @@ th {
     padding: 10px 0px 10px 20px;
     line-height: 1.428571429;
     vertical-align: top;
-    border-top: 1px solid #111; }
+    border-top: 1px solid #aaa; }
   .table > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 1px solid #111; }
+    border-bottom: 1px solid #aaa; }
   .table > caption + thead > tr:first-child > th,
   .table > caption + thead > tr:first-child > td,
   .table > colgroup + thead > tr:first-child > th,
@@ -2045,7 +2045,7 @@ th {
     font-family: 'SourceSansProSemibold';
     font-weight: normal; }
   .table > tbody + tbody {
-    border-top: 2px solid #111; }
+    border-top: 2px solid #aaa; }
   .table .table {
     background-color: #333; }
 
@@ -2058,14 +2058,14 @@ th {
   padding: 5px; }
 
 .table-bordered {
-  border: 1px solid #111; }
+  border: 1px solid #aaa; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td,
   .table-bordered > tbody > tr > th,
   .table-bordered > tbody > tr > td,
   .table-bordered > tfoot > tr > th,
   .table-bordered > tfoot > tr > td {
-    border: 1px solid #111; }
+    border: 1px solid #aaa; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td {
     border-bottom-width: 2px; }
@@ -4548,7 +4548,7 @@ a.list-group-item-danger {
     border-bottom-right-radius: 2px; }
 .panel > .panel-body + .table,
 .panel > .panel-body + .table-responsive {
-  border-top: 1px solid #111; }
+  border-top: 1px solid #aaa; }
 .panel > .table > tbody:first-child > tr:first-child th,
 .panel > .table > tbody:first-child > tr:first-child td {
   border-top: 0; }
@@ -5846,3 +5846,50 @@ select {
   background-repeat: no-repeat;
   background-position: right;
   background-image: url(/ui/themes/opnsense/build/images/caret.png) !important; }
+
+#grid-log th[data-column-id="__timestamp__"],
+#filter-log-entries th[data-column-id="__timestamp__"] {
+  min-width: 3.5em; }
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    margin-bottom: 0; }
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > tfoot > tr > td {
+      white-space: normal; } }
+
+label > input[type="checkbox"],
+label > input[type="radio"] {
+  margin-right: .4em;
+  float: left; }
+
+div[data-for*="help_for"] {
+  padding-top: .4em; }
+
+#log-settings label[for^="act"] {
+  margin-right: 1.5em; }
+
+#log-settings table > tbody > tr > td {
+  vertical-align: middle; }
+
+#log-settings select#filterlogentries,
+#log-settings select#filterlogentriesupdateinterval {
+  width: 5em; }
+
+#log-settings select#filterlogentriesinterfaces {
+  min-width: 100%;
+  max-width: 100%; }
+
+/* fields in firewall schedule */
+[data-state="lightcoral"] {
+  background-color: lightcoral; }
+
+[data-state="white"] {
+  background-color: inherit; }
+
+[data-state="red"] {
+  background-color: #ec6d12; }

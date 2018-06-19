@@ -167,7 +167,7 @@
     <field>
         <id>validation.dns_cloudns_auth_password</id>
         <label>Auth Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <label>CloudXNS</label>
@@ -197,7 +197,7 @@
     <field>
         <id>validation.dns_cyon_password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <label>DigitalOcean</label>
@@ -232,7 +232,7 @@
     <field>
         <id>validation.dns_do_password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <label>DNSPod</label>
@@ -277,7 +277,7 @@
     <field>
         <id>validation.dns_dyn_password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <label>Dynu</label>
@@ -307,7 +307,7 @@
     <field>
         <id>validation.dns_freedns_password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <label>Gandi LiveDNS</label>
@@ -347,7 +347,7 @@
     <field>
         <id>validation.dns_he_password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <label>Infoblox</label>
@@ -379,7 +379,7 @@
     <field>
         <id>validation.dns_ispconfig_password</id>
         <label>Password</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <id>validation.dns_ispconfig_api</id>

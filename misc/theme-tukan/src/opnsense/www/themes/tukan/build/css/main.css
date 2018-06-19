@@ -2229,7 +2229,7 @@ legend {
   margin-bottom: 20px;
   font-size: 21px;
   line-height: inherit;
-  color: #2d2d2d333;
+  color: #2d2d2d;
   border: 0;
   border-bottom: 1px solid #e5e5e5; }
 
@@ -3951,8 +3951,7 @@ tbody.collapse.in {
       .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
         color: #FF8B00;
         background-color: transparent; }
-
-    .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+ .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
       color: #555;
       background-color: #2b2b2b; }
     .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a, .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {
@@ -4015,7 +4014,7 @@ tbody.collapse.in {
         color: #fff;
         background-color: transparent; }
 
-    .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
+ .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
       color: #fff;
       background-color: #090909; }
 
@@ -4034,7 +4033,6 @@ tbody.collapse.in {
 
     .navbar-inverse .btn-link[disabled]:hover, .navbar-inverse .btn-link[disabled]:focus, fieldset[disabled] .navbar-inverse .btn-link:hover, fieldset[disabled] .navbar-inverse .btn-link:focus {
       color: #3e3e3e; }
-
 
 .breadcrumb {
   padding: 8px 15px;
@@ -4840,7 +4838,7 @@ a.list-group-item-danger {
       border-top-color: #c2c2c2; }
     .panel-default > .panel-heading .badge {
       color: #f5f5f5;
-      background-color: #2d2d2d333; }
+      background-color: #2d2d2d; }
   .panel-default > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #c2c2c2; }
   .panel-primary {
@@ -6123,9 +6121,17 @@ label > input[type="radio"] {
   min-width: 100%;
   max-width: 100%; }
 
-  /******************************************
-  ***additional extensions for theme-tukan***
-  ******************************************/
+/* fields in firewall schedule */
+[data-state="lightcoral"] {
+  background-color: lightcoral; }
+
+[data-state="white"] {
+  background-color: inherit; }
+
+[data-state="red"] {
+  background-color: #ffe83e; }
+
+  /*additional extensions for theme-tukan*/
 
 #tab_1 #maintabs {
     border-bottom: 1px solid #c2c2c2; }
@@ -6252,5 +6258,5 @@ div.Tokenize ul.TokensContainer li.Token a.Close {
 
 .glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
 	color: #000 !important;}
-#system_log-widgets.content-box {border:none;}
+#system_log-widgets.content-box {border:none; box-shadow: none;}
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #FFF; border: 1px solid #c2c2c2; }

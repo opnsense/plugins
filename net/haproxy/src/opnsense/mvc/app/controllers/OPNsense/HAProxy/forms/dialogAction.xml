@@ -25,7 +25,6 @@
         <id>action.linkedAcls</id>
         <label>Select conditions</label>
         <type>select_multiple</type>
-        <style>tokenize</style>
         <help><![CDATA[Select one or more conditions to be used for this rule.]]></help>
     </field>
     <field>
@@ -192,6 +191,17 @@
         <label>Regular Expression</label>
         <type>text</type>
         <help><![CDATA[This is suited for all header fields which are allowed to carry more than one value: Matches the specified regular expression against every comma-delimited value of the header field.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_http-request_set-path</style>
+    </field>
+    <field>
+        <id>action.http_request_set_path</id>
+        <label>Set Path</label>
+        <type>text</type>
+        <help><![CDATA[Rewrites the request path. The query string, if any, is left intact. If a scheme and authority is found before the path, they are left intact as well.]]></help>
     </field>
     <field>
         <label>Parameters</label>

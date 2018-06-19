@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.2.0</version>
+    <version>2.3.0</version>
     <description>
         the HAProxy load balancer
     </description>
@@ -640,7 +640,8 @@
                     <Required>N</Required>
                 </linkedServers>
                 <source type="TextField">
-                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
                     <Required>N</Required>
                 </source>
@@ -664,14 +665,62 @@
                     <default>0</default>
                     <Required>N</Required>
                 </healthCheckLogStatus>
+                <checkInterval type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </checkInterval>
+                <checkDownInterval type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </checkDownInterval>
+                <healthCheckFall type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <Required>N</Required>
+                </healthCheckFall>
+                <healthCheckRise type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <Required>N</Required>
+                </healthCheckRise>
+                <persistence type="OptionField">
+                    <Required>N</Required>
+                    <default>sticktable</default>
+                    <OptionValues>
+                        <sticktable>Stick-table persistence [default]</sticktable>
+                        <cookie>Cookie-based persistence (HTTP/HTTPS only)</cookie>
+                    </OptionValues>
+                </persistence>
+                <persistence_cookiemode type="OptionField">
+                    <Required>Y</Required>
+                    <default>piggyback</default>
+                    <OptionValues>
+                        <piggyback>Piggyback on existing cookie</piggyback>
+                        <new>Insert new cookie</new>
+                    </OptionValues>
+                </persistence_cookiemode>
+                <persistence_cookiename type="TextField">
+                    <default>SRVCOOKIE</default>
+                    <Required>N</Required>
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){1,1024}$/u</mask>
+                    <ValidationMessage>Does not look like a valid cookie name (most special characters are not allowed).</ValidationMessage>
+                </persistence_cookiename>
+                <persistence_stripquotes type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </persistence_stripquotes>
                 <stickiness_pattern type="OptionField">
                     <Required>N</Required>
                     <default>sourceipv4</default>
                     <OptionValues>
-                        <sourceipv4>Stick on Source-IP [default]</sourceipv4>
-                        <sourceipv6>Stick on Source-IPv6</sourceipv6>
-                        <cookievalue>Stick on existing Cookie value</cookievalue>
-                        <rdpcookie>Stick on RDP-Cookie</rdpcookie>
+                        <sourceipv4>Source-IP [default]</sourceipv4>
+                        <sourceipv6>Source-IPv6</sourceipv6>
+                        <cookievalue>Existing cookie value</cookievalue>
+                        <rdpcookie>RDP-Cookie</rdpcookie>
                     </OptionValues>
                 </stickiness_pattern>
                 <stickiness_dataTypes type="OptionField">
@@ -813,6 +862,9 @@
         </backends>
         <servers>
             <server type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
                 <name type="TextField">
                     <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
@@ -890,7 +942,8 @@
                     <Required>N</Required>
                 </checkDownInterval>
                 <source type="TextField">
-                    <mask>/^((([0-9a-zA-Z._\-\*]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please specify a valid source address, i.e. 10.0.0.1 or loadbalancer.example.com:50000. Port range as start-end, i.e. 10.0.0.1:50000-60000.</ValidationMessage>
                     <Required>N</Required>
                 </source>
@@ -1520,6 +1573,7 @@
                         <http-request_del-header>http-request header delete</http-request_del-header>
                         <http-request_replace-header>http-request header replace</http-request_replace-header>
                         <http-request_replace-value>http-request header replace value</http-request_replace-value>
+                        <http-request_set-path>http-request set-path</http-request_set-path>
                         <http-response_allow>http-response allow</http-response_allow>
                         <http-response_deny>http-response deny</http-response_deny>
                         <http-response_lua>http-response lua script</http-response_lua>
@@ -1619,6 +1673,10 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_request_replace_value_regex>
+                <http_request_set_path type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_set_path>
                 <http_response_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>

@@ -52,18 +52,18 @@ include("fbegin.inc");
 
       <section class="col-xs-12">
 
-<?
+<?php
 
-// Highlates the words "PASSED", "FAILED", and "WARNING".
+// Highlights the words "PASSED", "FAILED", and "WARNING".
 function add_colors($string)
 {
     // To add words keep arrayes matched by numbers
     $patterns[0] = '/PASSED/';
     $patterns[1] = '/FAILED/';
     $patterns[2] = '/Warning/';
-    $replacements[0] = '<b><font color="#00ff00">' . gettext("PASSED") . '</font></b>';
-    $replacements[1] = '<b><font color="#ff0000">' . gettext("FAILED") . '</font></b>';
-    $replacements[2] = '<font color="#ff0000">' . gettext("Warning") . '</font>';
+    $replacements[0] = '<span class="text-success">' . gettext("PASSED") . '</span>';
+    $replacements[1] = '<span class="text-danger">' . gettext("FAILED") . '</span>';
+    $replacements[2] = '<span class="text-warning>' . gettext("WARNING") . '</span>';
     ksort($patterns);
     ksort($replacements);
     return preg_replace($patterns, $replacements, $string);
@@ -74,16 +74,16 @@ function add_colors($string)
 $action = (isset($_POST['action']) ? $_POST['action'] : $_GET['action']);
 $targetdev = basename($_POST['device']);
 if (!file_exists('/dev/' . $targetdev)) {
-    echo "Device does not exist, bailing.";
+    echo gettext("Device does not exist, bailing.");
     return;
 }
+
 switch($action) {
   // Testing devices
   case 'test':
-  {
     $test = $_POST['testType'];
     if (!in_array($test, $valid_test_types)) {
-      echo "Invalid test type, bailing.";
+      echo gettext("Invalid test type, bailing.");
       return;
     }
     $output = add_colors(shell_exec($smartctl . " -t " . escapeshellarg($test) . " /dev/" . escapeshellarg($targetdev)));
@@ -95,60 +95,51 @@ switch($action) {
     </form>
     </pre>';
     break;
-  }
 
   // Info on devices
   case 'info':
-  {
     $type = $_POST['type'];
     if (!in_array($type, $valid_info_types)) {
-      echo "Invalid info type, bailing.";
+      echo gettext("Invalid info type, bailing.");
       return;
     }
     $output = add_colors(shell_exec($smartctl . " -" . escapeshellarg($type) . " /dev/" . escapeshellarg($targetdev)));
     echo "<pre>$output</pre>";
     break;
-  }
 
   // View logs
   case 'logs':
-  {
     $type = $_POST['type'];
     if (!in_array($type, $valid_log_types)) {
-      echo "Invalid log type, bailing.";
+      echo gettext("Invalid log type, bailing.");
       return;
     }
     $output = add_colors(shell_exec($smartctl . " -l " . escapeshellarg($type) . " /dev/" . escapeshellarg($targetdev)));
     echo "<pre>$output</pre>";
     break;
-  }
 
   // Abort tests
   case 'abort':
-  {
     $output = shell_exec($smartctl . " -X /dev/" . escapeshellarg($targetdev));
     echo "<pre>$output</pre>";
     break;
-  }
 
   // Default page, prints the forms to view info, test, etc...
   default:
-  {
-
     // Get all AD* and DA* (IDE and SCSI) devices currently installed and stores them in the $devs array
     exec("ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devs);
 
-    if (count($devs) > 0) {
+    if (count($devs) > 0):
     ?>
 
             <div class="content-box tab-content table-responsive">
-              <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="iform" id="iform">
+              <form action="<?= html_safe($_SERVER['PHP_SELF']) ?>" method="post" name="iform" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
                      <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('Info'); ?></th>
                     </tr>
                     <tr>
-                      <td><?=gettext("Info type"); ?></td>
+                      <td><?= gettext("Info type") ?></td>
                       <td><div class="radio">
                       <label><input type="radio" name="type" value="i" /><?=gettext("Info"); ?></label>&nbsp;
                       <label><input type="radio" name="type" value="H" checked="checked" /><?=gettext("Health"); ?></label>&nbsp;
@@ -162,12 +153,9 @@ switch($action) {
                     <td><?=gettext("Device: /dev/"); ?></td>
                     <td >
                       <select name="device" class="form-control">
-                      <?php
-                      foreach($devs as $dev)
-                      {
+                      <?php foreach($devs as $dev) {
                         echo "<option value=\"" . $dev . "\">" . $dev . "</option>";
-                      }
-                      ?>
+                      } ?>
                       </select>
                     </td>
                   </tr>
@@ -183,11 +171,9 @@ switch($action) {
             </div>
       </section>
 
-
       <section class="col-xs-12">
-
             <div class="content-box tab-content table-responsive">
-              <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="test" id="iform">
+              <form action="<?= html_safe($_SERVER['PHP_SELF']) ?>" method="post" name="test" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
                      <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('Perform Self-tests'); ?></th>
@@ -196,7 +182,7 @@ switch($action) {
                       <td><?=gettext("Test type"); ?></td>
                       <td>
                   <div class="radio">
-                    <label><input type="radio" name="testType" value="offline" /><?=gettext("Offline"); ?></label>&nbsp;
+                        <label><input type="radio" name="testType" value="offline" /><?=gettext("Offline"); ?></label>&nbsp;
                         <label><input type="radio" name="testType" value="short" checked="checked" /><?=gettext("Short"); ?></label>&nbsp;
                         <label><input type="radio" name="testType" value="long" /><?=gettext("Long"); ?></label>&nbsp;
                         <label><input type="radio" name="testType" value="conveyance" /><?=gettext("Conveyance (ATA Disks Only)"); ?></label>
@@ -205,14 +191,11 @@ switch($action) {
                     </tr>
                   <tr>
                     <td><?=gettext("Device: /dev/"); ?></td>
-                    <td >
+                    <td>
                       <select name="device" class="form-control">
-                      <?php
-                      foreach($devs as $dev)
-                      {
-                        echo "<option value=\"" . $dev . "\">" . $dev . "</option>";
-                      }
-                      ?>
+                      <?php foreach($devs as $dev) {
+                        echo "<option value=\"$dev\">$dev</option>";
+                      } ?>
                       </select>
                     </td>
                   </tr>
@@ -231,17 +214,17 @@ switch($action) {
 
       <section class="col-xs-12">
             <div class="content-box tab-content table-responsive">
-              <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="logs" id="iform">
+              <form action="<?= html_safe($_SERVER['PHP_SELF']) ?>" method="post" name="logs" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
                      <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('View Logs'); ?></th>
                     </tr>
                     <tr>
-                      <td><?=gettext("Log type"); ?></td>
+                      <td><?= gettext("Log type"); ?></td>
                       <td>
                         <div class="radio">
-                  <label><input type="radio" name="type" value="error" checked="checked" /><?=gettext("Error"); ?></label>&nbsp;
-                      <label><input type="radio" name="type" value="selftest" /><?=gettext("Self-test"); ?></label>
+                          <label><input type="radio" name="type" value="error" checked="checked" /><?=gettext("Error"); ?></label>&nbsp;
+                          <label><input type="radio" name="type" value="selftest" /><?=gettext("Self-test"); ?></label>
                         </div>
                       </td>
                     </tr>
@@ -249,12 +232,9 @@ switch($action) {
                     <td><?=gettext("Device: /dev/"); ?></td>
                     <td >
                       <select name="device" class="form-control">
-                      <?php
-                      foreach($devs as $dev)
-                      {
-                        echo "<option value=\"" . $dev . "\">" . $dev . "</option>";
-                      }
-                      ?>
+                      <?php foreach($devs as $dev) {
+                        echo "<option value=\"$dev\">$dev</option>";
+                      } ?>
                       </select>
                     </td>
                   </tr>
@@ -273,21 +253,18 @@ switch($action) {
 
       <section class="col-xs-12">
             <div class="content-box tab-content table-responsive">
-              <form action="<?= $_SERVER['PHP_SELF']?>" method="post" name="abort" id="iform">
+              <form action="<?= html_safe($_SERVER['PHP_SELF']) ?>" method="post" name="abort" id="iform">
                 <table class="table table-striped __nomb">
                    <tr>
-                     <th colspan="2" style="vertical-align:top" class="listtopic"><?=gettext('Abort tests'); ?></th>
+                     <th colspan="2" style="vertical-align:top" class="listtopic"><?= gettext('Abort tests'); ?></th>
                     </tr>
                   <tr>
                     <td><?=gettext("Device: /dev/"); ?></td>
                     <td >
                       <select name="device" class="form-control">
-                      <?php
-                      foreach($devs as $dev)
-                      {
-                        echo "<option value=\"" . $dev . "\">" . $dev . "</option>";
-                      }
-                      ?>
+                      <?php foreach($devs as $dev) {
+                        echo "<option value=\"$dev\">$dev</option>";
+                      } ?>
                       </select>
                     </td>
                   </tr>
@@ -304,26 +281,25 @@ switch($action) {
       </section>
 
     <?php
-    } else {
+    else:
         echo gettext("No SMART devices.");
-    }
+    endif;
     break;
-  }
 }
 
 // print back button on pages
-if(isset($_POST['submit']) && $_POST['submit'] != "Save")
-{
-  echo '<br /><a class="btn btn-primary" href="' . $_SERVER['PHP_SELF'] . '">' . gettext("Back") . '</a>';
+if(isset($_POST['submit']) && $_POST['submit'] != "Save") {
+  echo '<br /><a class="btn btn-primary" href="' . html_safe($_SERVER['PHP_SELF']) . '">' . gettext("Back") . '</a>';
 }
 ?>
 <br />
-<?php if ($ulmsg) echo "<p><strong>" . $ulmsg . "</strong></p>\n"; ?>
+<?php if ($ulmsg) {
+  echo "<p><strong>" . html_safe($ulmsg) . "</strong></p>\n";
+} ?>
 
     </section>
   </div>
 </div>
 </section>
-
 
 <?php include("foot.inc"); ?>

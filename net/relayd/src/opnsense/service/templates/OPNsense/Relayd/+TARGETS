@@ -1,2 +1,2 @@
 relayd.conf:/usr/local/etc/relayd.conf
-rc.conf.d:/etc/rc.conf.d/relayd
+rc.conf.d:/etc/rc.conf.d/osrelayd

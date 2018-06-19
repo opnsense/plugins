@@ -47,15 +47,15 @@ $wol = new Wol();
     foreach ($wol->wolentry->__items as $wolent):
       $is_active = exec("/usr/sbin/arp -an |/usr/bin/grep {$wolent->mac}| /usr/bin/wc -l|/usr/bin/awk '{print $1;}'");?>
     <tr>
-        <td><?= $wolent->descr ?><br/><?= $wolent->mac ?></td>
+        <td><?= !empty((string)$wolent->descr) ? $wolent->descr : gettext('Unnamed entry') ?><br/><?= $wolent->mac ?></td>
         <td><?=htmlspecialchars(convert_friendly_interface_to_friendly_descr((string)$wolent->interface));?></td>
         <td>
-          <span class="glyphicon glyphicon-<?=$is_active == 1 ? "play" : "remove";?> text-<?=$is_active == 1 ? "success" : "danger";?>" ></span>
+          <i class="fa fa-<?=$is_active == 1 ? "play" : "remove";?> fa-fw text-<?=$is_active == 1 ? "success" : "danger";?>" ></i>
           <?=$is_active == 1 ? gettext("Online") : gettext("Offline");?>
         </td>
         <td>
-          <button class="btn btn-primary btn-sm wakeupbtn" data-mac="<?= $wolent->mac ?>" data-interface="<?= $wolent->interface ?>" data-uuid="<?= $wolent->getAttributes()['uuid'] ?>">
-            <span class="glyphicon glyphicon-flash" title="<?=gettext("Wake Up");?>"></span>
+          <button class="btn btn-primary btn-xs wakeupbtn" data-mac="<?= $wolent->mac ?>" data-interface="<?= $wolent->interface ?>" data-uuid="<?= $wolent->getAttributes()['uuid'] ?>">
+            <i class="fa fa-bolt fa-fw" title="<?=gettext("Wake Up");?>"></i>
           </button>
         </td>
     </tr>

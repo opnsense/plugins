@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.3.0</version>
-    <description>
-        a secure Let's Encrypt plugin
-    </description>
+    <version>1.4.0</version>
+    <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
             <enabled type="BooleanField">
@@ -205,6 +203,17 @@
                     <multiple>N</multiple>
                     <Required>Y</Required>
                 </validationMethod>
+                <keyLength type="OptionField">
+                    <Required>Y</Required>
+                    <default>key_4096</default>
+                    <OptionValues>
+                        <key_2048>2048 bit</key_2048>
+                        <key_3072>3072 bit</key_3072>
+                        <key_4096>4096 bit</key_4096>
+                        <key_ec256>ec-256</key_ec256>
+                        <key_ec384>ec-384</key_ec384>
+                    </OptionValues>
+                </keyLength>
                 <restartActions type="ModelRelationField">
                     <Model>
                         <actions>
