@@ -118,6 +118,12 @@
         <help>The password to use for SMTP authentication.</help>
     </field>
     <field>
+        <id>general.enforce_recipient_check</id>
+        <label>Enforce Recipient Relay Check</label>
+        <type>checkbox</type>
+        <help>If you enable this, every entry in Recipients will be checked against. When there is no match mail will be rejected. Be aware that it does not matter if the action is "OK" or "REJECT". This setup allows you to run postfix in front of an internal system and already rejecting unsolicited mail at the border.</help>
+    </field>
+    <field>
         <id>general.reject_unauth_pipelining</id>
         <label>Reject Unauthenticated Pipelining</label>
         <type>checkbox</type>
@@ -127,12 +133,6 @@
         <label>Reject Unknown Sender Domain</label>
         <type>checkbox</type>
         <help>This will reject mails from domains which do not exist.</help>
-    </field>
-    <field>
-        <id>general.enforce_recipient_check</id>
-        <label>Enforce Recipient Relay Check</label>
-        <type>checkbox</type>
-        <help>If you enable this, every entry in Recipients will be checked against. When there is no match mail will be rejected. Be aware that it does not matter if the action is "OK" or "REJECT". This setup allows you to run postfix in front of an internal system and already rejecting unsolicited mail at the border.</help>
     </field>
     <field>
         <id>general.reject_unknown_recipient_domain</id>
