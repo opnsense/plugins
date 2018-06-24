@@ -1,6 +1,9 @@
 <?php
 
 /*
+ * Copyright (C) 2017-2018 Franco Fichtner <franco@opnsense.org>
+ * Copyright (C) 2016 IT-assistans Sverige AB
+ * Copyright (C) 2015-2016 Deciso B.V.
  * Copyright (C) 2018 Fabian Franz
  * All rights reserved.
  *
@@ -29,6 +32,7 @@
 namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -36,4 +40,64 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/Nginx';
     static protected $internalServiceEnabled = 'general.enabled';
     static protected $internalServiceName = 'nginx';
+
+    /**
+    *  override parent method - stopping nginx is not allowed because otherwise you would loose
+    *  access to the web interface
+    */
+    public function stopAction()
+    {
+        return array('status' => 'failed');
+    }
+    
+    
+    /**
+     * reconfigure with optional stop, generate config and start / reload
+     * @return array response message
+     * @throws \Exception when configd action fails
+     * @throws \ReflectionException when model can't be instantiated
+     */
+    public function reconfigureAction()
+    {
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+            $model = $this->getModel();
+            $backend = new Backend();
+            if ($this->reconfigureForceRestart()) {
+                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' stop');
+            }
+            $backend->configdRun('template reload ' . escapeshellarg(static::$internalServiceTemplate));
+            $runStatus = $this->statusAction();
+            if ($runStatus['status'] != 'running') {
+                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' start');
+            } else {
+                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' reload');
+            }
+            return array('status' => 'ok');
+        } else {
+            return array('status' => 'failed');
+        }
+    }
+
+    /**
+     * retrieve status of service
+     * @return array response message
+     * @throws \Exception when configd action fails
+     */
+    public function statusAction()
+    {
+        $backend = new Backend();
+        $model = $this->getModel();
+        $response = $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' status');
+
+        if (strpos($response, 'not running') > 0) {
+            $status = 'stopped';
+        } elseif (strpos($response, 'is running') > 0) {
+            $status = 'running';
+        } else {
+            $status = 'unknown';
+        }
+
+        return array('status' => $status);
+    }
 }
