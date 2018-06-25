@@ -19,8 +19,8 @@
             <default></default>
             <Required>N</Required>
         </syscontact>
-        <listen type="CSVListField">
-            <default></default>
+        <listen type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
         </listen>
     </items>
