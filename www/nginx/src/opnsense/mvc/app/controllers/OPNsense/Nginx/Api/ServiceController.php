@@ -64,14 +64,14 @@ class ServiceController extends ApiMutableServiceControllerBase
             $model = $this->getModel();
             $backend = new Backend();
             if ($this->reconfigureForceRestart()) {
-                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' stop');
+                $backend->configdRun('nginx stop');
             }
-            $backend->configdRun('template reload ' . escapeshellarg(static::$internalServiceTemplate));
+            $backend->configdRun('template reload OPNsense/Nginx');
             $runStatus = $this->statusAction();
             if ($runStatus['status'] != 'running') {
-                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' start');
+                $backend->configdRun('nginx start');
             } else {
-                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' reload');
+                $backend->configdRun('nginx reload');
             }
             return array('status' => 'ok');
         } else {
@@ -88,7 +88,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $backend = new Backend();
         $model = $this->getModel();
-        $response = $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' status');
+        $response = $backend->configdRun('nginx status');
 
         if (strpos($response, 'not running') > 0) {
             $status = 'stopped';

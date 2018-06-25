@@ -73,7 +73,7 @@ $( document ).ready(function() {
                     // when done, disable progress animation.
                     $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
 
-                    if (status != "success" || data['status'] != 'ok' ) {
+                    if (data != undefined && (status != "success" || data['status'] != 'ok')) {
                         // fix error handling
                         BootstrapDialog.show({
                             type:BootstrapDialog.TYPE_WARNING,
