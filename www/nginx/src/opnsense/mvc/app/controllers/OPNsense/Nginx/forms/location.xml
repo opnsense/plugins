@@ -85,6 +85,12 @@
     <help>Select a credential list to use.</help>
   </field>
   <field>
+    <id>location.advanced_acl</id>
+    <label>Enable Advanced ACLs</label>
+    <type>checkbox</type>
+    <help>Send an authentication request to the OPNsense backend for advanced access control.</help>
+  </field>
+  <field>
     <id>location.force_https</id>
     <label>Force HTTPS</label>
     <type>checkbox</type>
