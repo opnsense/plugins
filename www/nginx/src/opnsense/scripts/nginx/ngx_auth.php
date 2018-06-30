@@ -51,4 +51,5 @@ if (password_auth()) {
     header("HTTP/1.1 200 OK");
 } else {
     header("HTTP/1.1 401 Authorization Required");
+    header('WWW-Authenticate: Basic realm="OPNsense Protected Area - Authentication Required"');
 }
