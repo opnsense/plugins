@@ -21,7 +21,7 @@
         <id>validation.method</id>
         <label>Challenge Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt challenge type. You'll have to add configuration for the selected challenge type below.]]></help>
+        <help>Set the Let's Encrypt challenge type. You'll have to add configuration for the selected challenge type below.</help>
     </field>
     <field>
         <label>HTTP-01</label>
@@ -92,7 +92,7 @@
         <id>validation.dns_sleep</id>
         <label>Sleep Time</label>
         <type>text</type>
-        <help><![CDATA[The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.]]></help>
+        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.</help>
     </field>
     <field>
         <label>Alwaysdata</label>
@@ -258,7 +258,7 @@
         <id>validation.dns_da_insecure</id>
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
-        <help><![CDATA[Uncheck this box if you have a valid SSL certificate for your DirectAdmin installation]]></help>
+        <help>Uncheck this box if you have a valid SSL certificate for your DirectAdmin installation.</help>
     </field>
     <field>
         <label>DigitalOcean</label>
@@ -279,7 +279,7 @@
         <id>validation.dns_dnsimple_token</id>
         <label>OAuth Token</label>
         <type>text</type>
-        <help><![CDATA[Note that this is the account token not the user token.]]></help>
+        <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
         <label>Domain-Offensive</label>
@@ -477,7 +477,7 @@
         <id>validation.dns_ispconfig_insecure</id>
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
-        <help><![CDATA[Uncheck this box if you have a valid SSL certificate for your ISPConfig installation]]></help>
+        <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
     </field>
     <field>
         <label>KingHost</label>
@@ -503,13 +503,13 @@
         <id>validation.dns_knot_server</id>
         <label>Server</label>
         <type>text</type>
-        <help><![CDATA[Knot server address, like: dns.example.com]]></help>
+        <help>Knot server address, like: dns.example.com</help>
     </field>
     <field>
         <id>validation.dns_knot_key</id>
         <label>Key</label>
         <type>text</type>
-        <help><![CDATA[Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2 ]]></help>
+        <help>Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2</help>
     </field>
     <field>
         <label>lexicon</label>
@@ -620,7 +620,7 @@
         <id>validation.dns_nsupdate_key</id>
         <label>Secret Key</label>
         <type>textbox</type>
-        <help><![CDATA[Requires the the whole key file in a format that is compatible with nsupdate.]]></help>
+        <help>Requires the whole key file in a format that is compatible with nsupdate.</help>
     </field>
     <field>
         <label>OVH</label>
@@ -657,13 +657,13 @@
         <id>validation.dns_pdns_url</id>
         <label>URL</label>
         <type>text</type>
-        <help><![CDATA[Specify the URL for your PowerDNS server, i.e. http://ns.example.com:8081.]]></help>
+        <help>Specify the URL for your PowerDNS server, i.e. http://ns.example.com:8081.</help>
     </field>
     <field>
         <id>validation.dns_pdns_serverid</id>
         <label>Server ID</label>
         <type>text</type>
-        <help><![CDATA[Specify the Server ID of your PowerDNS server, i.e. localhost.]]></help>
+        <help>Specify the Server ID of your PowerDNS server, i.e. localhost.</help>
     </field>
     <field>
         <id>validation.dns_pdns_token</id>
