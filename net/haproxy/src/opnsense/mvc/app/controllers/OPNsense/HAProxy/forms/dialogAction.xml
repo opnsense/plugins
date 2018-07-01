@@ -25,6 +25,7 @@
         <id>action.linkedAcls</id>
         <label>Select conditions</label>
         <type>select_multiple</type>
+        <style>tokenize</style>
         <help><![CDATA[Select one or more conditions to be used for this rule.]]></help>
     </field>
     <field>
