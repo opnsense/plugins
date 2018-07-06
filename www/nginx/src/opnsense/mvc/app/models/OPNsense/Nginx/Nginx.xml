@@ -164,6 +164,18 @@
       <root type="TextField">
         <Required>N</Required>
       </root>
+      <rewrites type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>http_rewrite</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </rewrites>
       <index type="CSVListField">
         <Required>N</Required>
       </index>
@@ -335,6 +347,18 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </locations>
+      <rewrites type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>http_rewrite</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </rewrites>
       <root type="TextField">
         <Required>N</Required>
       </root>
@@ -393,6 +417,29 @@
         <Required>Y</Required>
       </sendfile>
     </http_server>
+    
+    <http_rewrite type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </description>
+      <source type="TextField">
+        <Required>Y</Required>
+      </source>
+      <destination type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </destination>
+      <flag type="OptionField">
+        <OptionValues>
+          <break>Stop processing rules</break>
+          <last>Stop processing rules and find location</last>
+          <redirect>Redirect</redirect>
+          <permanent>Permanent</permanent>
+        </OptionValues>
+        <Required>N</Required>
+      </flag>
+    </http_rewrite>
 
   </items>
 </model>

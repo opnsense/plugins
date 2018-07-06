@@ -17,6 +17,13 @@
     <help>Choose how to match on "URL Pattern".</help>
   </field>
   <field>
+    <id>location.rewrites</id>
+    <label>URL Rewriting</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <help>Choose URL rewriting rules.</help>
+  </field>
+  <field>
     <id>location.enable_secrules</id>
     <label>Enable Security Rules</label>
     <type>checkbox</type>

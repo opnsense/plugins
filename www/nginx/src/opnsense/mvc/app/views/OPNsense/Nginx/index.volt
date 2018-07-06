@@ -94,6 +94,7 @@ $( document ).ready(function() {
     'credential',
     'userlist',
     'httpserver',
+    'httprewrite',
     'custompolicy',
     'naxsirule'].forEach(function(element) {
         $("#grid-" + element).UIBootgrid(
@@ -138,6 +139,9 @@ $( document ).ready(function() {
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-server" href="#subtab_nginx-http-httpserver">{{ lang._('HTTP Server')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-rewrite" href="#subtab_nginx-http-rewrite">{{ lang._('URL Rewriting')}}</a>
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-custompolicy" href="#subtab_nginx-http-custompolicy">{{ lang._('Naxsi WAF Policy')}}</a>
@@ -292,6 +296,30 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-rewrite" class="tab-pane fade">
+        <table id="grid-httprewrite" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="httprewritedlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="source" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Source URL') }}</th>
+                    <th data-column-id="destination" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Destination URL') }}</th>
+                    <th data-column-id="flag" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Flag') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-http-custompolicy" class="tab-pane fade">
         <table id="grid-custompolicy" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="custompolicydlg">
             <thead>
@@ -349,6 +377,7 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': credential,'id':'credentialdlg', 'label':lang._('Edit Credential')]) }}
 {{ partial("layout_partials/base_dialog",['fields': userlist,'id':'userlistdlg', 'label':lang._('Edit User List')]) }}
 {{ partial("layout_partials/base_dialog",['fields': httpserver,'id':'httpserverdlg', 'label':lang._('Edit HTTP Server')]) }}
+{{ partial("layout_partials/base_dialog",['fields': httprewrite,'id':'httprewritedlg', 'label':lang._('Edit URL Rewrite')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
 

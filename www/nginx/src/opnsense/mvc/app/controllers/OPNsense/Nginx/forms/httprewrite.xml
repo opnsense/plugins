@@ -1,0 +1,27 @@
+<form>
+  <field>
+    <id>httprewrite.description</id>
+    <label>Short description (to display)</label>
+    <type>text</type>
+    <help>Enter a short description like a name for this redirect.</help>
+  </field>
+  <field>
+    <id>httprewrite.source</id>
+    <label>Original URL Pattern (Regex)</label>
+    <type>text</type>
+    <help>Enter a regular expression to match the URL</help>
+  </field>
+  <field>
+    <id>httprewrite.destination</id>
+    <label>New URL Pattern</label>
+    <type>text</type>
+    <help>You may use replacement strings like $1 for the first match group from the source here.</help>
+  </field>
+  <field>
+    <id>httprewrite.flag</id>
+    <label>Flag</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>Stop rule processing (break) and perform (internal) redirect (last). Return a moved permanently status code (301) or a teporary redirect (302).</help>
+  </field>
+</form>

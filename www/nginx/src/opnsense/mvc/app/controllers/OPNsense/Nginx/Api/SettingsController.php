@@ -251,4 +251,31 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('naxsi_rule', 'naxsi_rule', $uuid);
     }
+    
+    // http url rewriting
+    public function searchhttprewriteAction()
+    {
+        return $this->searchBase('http_rewrite', array('description', 'source', 'destination', 'flag'));
+    }
+
+    public function gethttprewriteAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('httprewrite', 'http_rewrite', $uuid);
+    }
+
+    public function addhttprewriteAction()
+    {
+        return $this->addBase('httprewrite', 'http_rewrite');
+    }
+
+    public function delhttprewriteAction($uuid)
+    {
+        return $this->delBase('http_rewrite', $uuid);
+    }
+
+    public function sethttprewriteAction($uuid)
+    {
+        return $this->setBase('httprewrite', 'http_rewrite', $uuid);
+    }
 }

@@ -46,6 +46,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->credential = $this->getForm("credential");
         $this->view->userlist = $this->getForm("userlist");
         $this->view->httpserver = $this->getForm("httpserver");
+        $this->view->httprewrite = $this->getForm("httprewrite");
         $this->view->naxsi_rule = $this->getForm("naxsi_rule");
         $this->view->naxsi_custom_policy = $this->getForm("naxsi_custom_policy");
         $this->view->pick('OPNsense/Nginx/index');

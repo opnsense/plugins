@@ -23,6 +23,13 @@
     <type>select_multiple</type>
   </field>
   <field>
+    <id>httpserver.rewrites</id>
+    <label>URL Rewriting</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <help>Choose URL rewriting rules.</help>
+  </field>
+  <field>
     <id>httpserver.root</id>
     <label>File System Root</label>
     <type>text</type>
