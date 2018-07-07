@@ -19,5 +19,9 @@
             <default></default>
             <Required>N</Required>
         </syscontact>
+        <listen type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+        </listen>
     </items>
 </model>

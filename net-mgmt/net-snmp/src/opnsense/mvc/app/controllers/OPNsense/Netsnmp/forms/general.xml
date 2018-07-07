@@ -23,4 +23,12 @@
         <type>text</type>
         <help>Set the contact address to use.</help>
     </field>
+    <field>
+        <id>general.listen</id>
+        <label>Listen IPs</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IP addresses the service should listen to.</help>
+    </field>
 </form>

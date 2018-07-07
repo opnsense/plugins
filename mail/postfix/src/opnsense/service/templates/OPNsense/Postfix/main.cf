@@ -112,6 +112,10 @@ milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_authen}
 milter_default_action = accept
 {% endif %}
 
+{% if helpers.exists('OPNsense.postfix.general.enforce_recipient_check') and OPNsense.postfix.general.enforce_recipient_check == '1' %}
+relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
+{% endif %}
+
 {# Sender Restrictions #}
 {% set smtpd_recipient_restrictions=[] %}
 {% if helpers.exists('OPNsense.postfix.recipient.recipients.recipient') %}

@@ -1,8 +1,8 @@
 <menu>
     <VPN>
       <Tinc cssClass="fa fa-lock fa-fw" order="100">
-        <config VisibleName="Configuration" order="10" url="/ui/tinc/"/>
-        <log VisibleName="Log File" order="20" url="/diag_logs_tinc.php"/>
+        <Configuration order="10" url="/ui/tinc"/>
+        <LogFile VisibleName="Log File" order="20" url="/diag_logs_tinc.php"/>
       </Tinc>
     </VPN>
 </menu>

@@ -300,7 +300,6 @@
                     <default>1</default>
                     <Required>N</Required>
                 </http_opn_autodiscovery>
-                <!-- XXX: we want something more like get_possible_listen_ips() instead -->
                 <http_opn_interface type="InterfaceField">
                     <Required>N</Required>
                     <default>wan</default>

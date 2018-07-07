@@ -1,5 +1,5 @@
 <menu>
     <Services>
-        <Redis cssClass="fa fa-database fa-fw" url="/ui/redis/" />
+        <Redis cssClass="fa fa-database fa-fw" url="/ui/redis" />
     </Services>
 </menu>

@@ -1,10 +1,10 @@
 <menu>
     <Services>
       <ZabbixAgent VisibleName="Zabbix Agent" cssClass="fa fa-certificate fa-fw">
-          <Settings order="10" url="/ui/zabbixagent/">
-              <Main url="/ui/zabbixagent/#tab_zabbixagent-settings-main"/>
-              <Features url="/ui/zabbixagent/#tab_zabbixagent-settings-features"/>
-              <Tuning url="/ui/zabbixagent/#tab_zabbixagent-settings-tuning"/>
+          <Settings order="10" url="/ui/zabbixagent">
+              <Main url="/ui/zabbixagent#tab_zabbixagent-settings-main"/>
+              <Features url="/ui/zabbixagent#tab_zabbixagent-settings-features"/>
+              <Tuning url="/ui/zabbixagent#tab_zabbixagent-settings-tuning"/>
           </Settings>
           <Log VisibleName="Log File" order="50" url="/diag_logs_zabbixagent.php"/>
       </ZabbixAgent>
