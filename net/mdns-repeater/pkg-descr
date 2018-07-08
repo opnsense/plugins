@@ -1,4 +1,4 @@
-mdns-repeater is a Multicast DNS repeater. Multicast DNS uses the 224.0.0.51
+mdns-repeater is a Multicast DNS repeater. Multicast DNS uses the 224.0.0.251
 address, which is "administratively scoped" and does not leave the subnet.
 
 This program re-broadcast mDNS packets from one interface to other interfaces.
