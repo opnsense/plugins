@@ -27,6 +27,6 @@
             <Required>N</Required>
             <mask>/^[a-zA-Z0-9]$/</mask>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
-        </user>
+        </servercert>
     </items>
 </model>
