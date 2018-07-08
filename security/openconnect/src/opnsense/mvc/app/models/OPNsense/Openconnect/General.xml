@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/openconnect/general</mount>
     <description>Openconnect configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -23,5 +23,19 @@
             <default>password</default>
             <Required>Y</Required>
         </password>
+        <servercert type="TextField">
+            <Required>N</Required>
+            <mask>/^[a-z0-9]{40,64}$/</mask>
+            <ValidationMessage>Please provide a valid hash.</ValidationMessage>
+        </servercert>
+        <hash type="OptionField">
+            <default>sha256</default>
+            <multiple>N</multiple>
+            <Required>Y</Required>
+                <OptionValues>
+                    <sha256>SHA256</sha256>
+                    <sha1>SHA1</sha1>
+                </OptionValues>
+        </hash>
     </items>
 </model>
