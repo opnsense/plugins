@@ -23,5 +23,10 @@
             <default>password</default>
             <Required>Y</Required>
         </password>
+        <servercert type="TextField">
+            <Required>N</Required>
+            <mask>/^[a-zA-Z0-9]$/</mask>
+            <ValidationMessage>Please provide a valid hash.</ValidationMessage>
+        </user>
     </items>
 </model>
