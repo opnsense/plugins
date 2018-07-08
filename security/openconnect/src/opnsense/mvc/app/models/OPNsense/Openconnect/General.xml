@@ -27,5 +27,14 @@
             <Required>N</Required>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
         </servercert>
+        <hash type="OptionField">
+            <default>sha256</default>
+            <multiple>N</multiple>
+            <Required>N</Required>
+                <OptionValues>
+                    <sha256>sha256</sha256>
+                    <sha1>sha1</sha1>
+                </OptionValues>
+        </hash>
     </items>
 </model>
