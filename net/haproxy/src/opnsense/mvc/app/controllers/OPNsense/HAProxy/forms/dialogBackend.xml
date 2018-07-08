@@ -283,6 +283,7 @@
         <id>backend.linkedActions</id>
         <label>Select Rules</label>
         <type>select_multiple</type>
+        <style>tokenize</style>
         <help><![CDATA[Choose rules to be included in this Backend Pool.]]></help>
         <hint>Choose rules.</hint>
     </field>

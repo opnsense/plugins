@@ -328,6 +328,7 @@
         <id>frontend.linkedActions</id>
         <label>Select Rules</label>
         <type>select_multiple</type>
+        <style>tokenize</style>
         <help><![CDATA[Choose rules to be included in this Public Service.]]></help>
         <hint>Choose rules.</hint>
     </field>
