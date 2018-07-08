@@ -25,7 +25,6 @@
         </password>
         <servercert type="TextField">
             <Required>N</Required>
-            <mask>/^[a-z0-9]$/</mask>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
         </servercert>
     </items>
