@@ -33,8 +33,8 @@
             <multiple>N</multiple>
             <Required>Y</Required>
                 <OptionValues>
-                    <sha256>sha256</sha256>
-                    <sha1>sha1</sha1>
+                    <sha256>SHA256</sha256>
+                    <sha1>SHA1</sha1>
                 </OptionValues>
         </hash>
     </items>
