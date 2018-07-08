@@ -25,12 +25,13 @@
         </password>
         <servercert type="TextField">
             <Required>N</Required>
+            <mask>/^[a-z0-9]{40,64}$/</mask>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
         </servercert>
         <hash type="OptionField">
             <default>sha256</default>
             <multiple>N</multiple>
-            <Required>N</Required>
+            <Required>Y</Required>
                 <OptionValues>
                     <sha256>sha256</sha256>
                     <sha1>sha1</sha1>
