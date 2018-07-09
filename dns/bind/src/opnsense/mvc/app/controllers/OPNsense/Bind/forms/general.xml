@@ -1,0 +1,24 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable BIND Daemon</label>
+        <type>checkbox</type>
+        <help>This will activate the BIND daemon.</help>
+    </field>
+    <field>
+        <id>general.listenv4</id>
+        <label>Listen IPs</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IPv4 addresses the service should listen to.</help>
+    </field>
+    <field>
+        <id>general.listenv6</id>
+        <label>Listen IPv6</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IPv6 addresses the service should listen to.</help>
+    </field>
+</form>

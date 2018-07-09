@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>acl.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the ACL.</help>
+    </field>
+    <field>
+        <id>acl.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this ACL.</help>
+    </field>
+    <field>
+        <id>acl.networks</id>
+        <label>Network List</label>
+        <type>text</type>
+        <help>List of networks for this ACL.</help>
+    </field>
+</form>
