@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.bind.general.enabled') and OPNsense.bind.general.enabled == '1' %}
+named_var_script="/usr/local/opnsense/scripts/OPNsense/Bind/setup.sh"
+named_enable="YES"
+{% else %}
+named_enable="NO"
+{% endif %}
