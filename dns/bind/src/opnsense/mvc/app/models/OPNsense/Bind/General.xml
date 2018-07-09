@@ -8,12 +8,16 @@
             <Required>Y</Required>
         </enabled>
         <listenv4 type="NetworkField">
+            <default>127.0.0.1</default>
             <FieldSeparator>;</FieldSeparator>
-            <Required>N</Required>
+            <Required>Y</Required>
+            <asList>Y</asList>
         </listenv4>
         <listenv6 type="NetworkField">
+            <default>::1</default>
             <FieldSeparator>;</FieldSeparator>
-            <Required>N</Required>
+            <Required>Y</Required>
+            <asList>Y</asList>
         </listenv6>
     </items>
 </model>
