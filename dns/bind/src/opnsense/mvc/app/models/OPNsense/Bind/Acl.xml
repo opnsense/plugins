@@ -19,6 +19,7 @@
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
                     <Required>Y</Required>
+                    <asList>Y</asList>
                 </networks>
             </acl>
         </acls>
