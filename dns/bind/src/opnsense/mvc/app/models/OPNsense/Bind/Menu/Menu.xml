@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <BIND cssClass="fa fa-map-marked" url="/ui/bind/general/index" />
+  </Services>
+</menu>
