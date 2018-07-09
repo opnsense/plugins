@@ -33,7 +33,7 @@ class GeneralController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->generalForm = $this->getForm("general");
-        $this->view->formDialogEditBindACL = $this->getForm("dialogEditBindACL");
+        $this->view->formDialogEditBindAcl = $this->getForm("dialogEditBindAcl");
         $this->view->pick('OPNsense/Bind/general');
     }
 }
