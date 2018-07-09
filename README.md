@@ -74,7 +74,6 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
-sysutils/monit -- Proactive system monitoring
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools

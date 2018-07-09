@@ -1,6 +1,0 @@
-Monit is a utility for managing and monitoring processes,
-files, directories, devices and network services on a Unix system.
-Monit conducts automatic maintenance and repair and can execute
-meaningful causal actions in error situations.
-
-WWW: http://mmonit.com/monit/
