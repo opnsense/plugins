@@ -1,0 +1,7 @@
+BIND implements the DNS protocols. The DNS protocols are part of
+the core Internet standards. They specify the process by which
+one computer can find another computer on the basis of its name.
+The BIND software distribution contains all of the software
+necessary for asking and answering name service questions.
+
+WWW: https://www.isc.org
