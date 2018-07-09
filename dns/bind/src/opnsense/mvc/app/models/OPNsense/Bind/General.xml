@@ -19,5 +19,10 @@
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv6>
+        <forwarders type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+            <asList>Y</asList>
+        </forwarders>
     </items>
 </model>
