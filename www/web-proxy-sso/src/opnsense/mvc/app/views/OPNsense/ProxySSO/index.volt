@@ -114,7 +114,7 @@
 
                 // clear data
                 $("#" + index).html("");
-                $(".help-block[for='" + index + "']").html("");
+                $(".help-block[id*='" + index + "']").html("");
 
                 if(value.status == "ok") {
                     jQuery('<div/>', {
@@ -122,7 +122,7 @@
                         class: 'fa fa-check-circle text-success',
                     }).appendTo("#" + index);
                     if(value.message) {
-                        $(".help-block[for='" + index + "']").html(value.message);
+                        $(".help-block[id*='" + index + "']").html(value.message);
                     }
                 }
                 else if(value.status == "failure") {
@@ -131,7 +131,7 @@
                         class: 'fa fa-times-circle text-danger',
                     }).appendTo("#" + index);
                     if(value.message) {
-                        $(".help-block[for='" + index + "']").html(value.message);
+                        $(".help-block[id*='" + index + "']").html(value.message);
                     }
                 }
                 else {
@@ -143,7 +143,7 @@
                         id: index + '_dump',
                         text: htmlDecode(value.dump),
                         class: 'hidden',
-                    }).appendTo(".help-block[for='" + index + "']");
+                    }).appendTo(".help-block[id*='" + index + "']");
                     jQuery('<a/>', {
                         text: "{{ lang._('Show dump') }}",
                         href: 'javascript:showDump("' + index + '");',
