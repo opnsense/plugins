@@ -22,6 +22,7 @@
         <listen type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
+            <asList>Y</asList>
         </listen>
     </items>
 </model>
