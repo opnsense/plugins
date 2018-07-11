@@ -26,6 +26,6 @@ namespace OPNsense\Bind;
 
 use OPNsense\Base\BaseModel;
 
-class ACL extends BaseModel
+class Acl extends BaseModel
 {
 }

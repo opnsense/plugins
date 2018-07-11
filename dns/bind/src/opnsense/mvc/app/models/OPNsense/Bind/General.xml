@@ -8,12 +8,21 @@
             <Required>Y</Required>
         </enabled>
         <listenv4 type="NetworkField">
-            <FieldSeparator>;</FieldSeparator>
-            <Required>N</Required>
+            <default>127.0.0.1</default>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>Y</Required>
+            <asList>Y</asList>
         </listenv4>
         <listenv6 type="NetworkField">
-            <FieldSeparator>;</FieldSeparator>
-            <Required>N</Required>
+            <default>::1</default>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>Y</Required>
+            <asList>Y</asList>
         </listenv6>
+        <forwarders type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+            <asList>Y</asList>
+        </forwarders>
     </items>
 </model>

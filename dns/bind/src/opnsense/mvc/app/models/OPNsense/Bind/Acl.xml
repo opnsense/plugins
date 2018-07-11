@@ -17,8 +17,9 @@
                 </name>
                 <networks type="NetworkField">
                     <default></default>
-                    <FieldSeparator>;</FieldSeparator>
+                    <FieldSeparator>,</FieldSeparator>
                     <Required>Y</Required>
+                    <asList>Y</asList>
                 </networks>
             </acl>
         </acls>
