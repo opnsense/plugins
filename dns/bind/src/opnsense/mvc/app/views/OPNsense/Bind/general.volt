@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="acls" class="tab-pane fade in">
-        <table id="grid-acls" class="table table-responsive" data-editDialog="dialogEditBindACL">
+        <table id="grid-acls" class="table table-responsive" data-editDialog="dialogEditBindAcl">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -73,7 +73,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindACL,'id':'dialogEditBindACL','label':lang._('Edit ACL')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
 
 <script>
 $( document ).ready(function() {
@@ -88,12 +88,12 @@ $( document ).ready(function() {
     });
 
     $("#grid-acls").UIBootgrid(
-        {   'search':'/api/bind/acl/searchACL',
-            'get':'/api/bind/acl/getACL/',
-            'set':'/api/bind/acl/setACL/',
-            'add':'/api/bind/acl/addACL/',
-            'del':'/api/bind/acl/delACL/',
-            'toggle':'/api/bind/acl/toggleACL/'
+        {   'search':'/api/bind/acl/searchAcl',
+            'get':'/api/bind/acl/getAcl/',
+            'set':'/api/bind/acl/setAcl/',
+            'add':'/api/bind/acl/addAcl/',
+            'del':'/api/bind/acl/delAcl/',
+            'toggle':'/api/bind/acl/toggleAcl/'
         }
     );
 

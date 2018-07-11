@@ -31,33 +31,33 @@ namespace OPNsense\Bind\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class ACLController extends ApiMutableModelControllerBase
+class AclController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'acl';
-    static protected $internalModelClass = '\OPNsense\Bind\ACL';
+    static protected $internalModelClass = '\OPNsense\Bind\Acl';
 
-    public function searchACLAction()
+    public function searchAclAction()
     {
         return $this->searchBase('acls.acl', array("enabled", "name", "networks"));
     }
-    public function getACLAction($uuid = null)
+    public function getAclAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('acl', 'acls.acl', $uuid);
     }
-    public function addACLAction()
+    public function addAclAction()
     {
         return $this->addBase('acl', 'acls.acl');
     }
-    public function delACLAction($uuid)
+    public function delAclAction($uuid)
     {
         return $this->delBase('acls.acl', $uuid);
     }
-    public function setACLAction($uuid)
+    public function setAclAction($uuid)
     {
         return $this->setBase('acl', 'acls.acl', $uuid);
     }
-    public function toggleACLAction($uuid)
+    public function toggleAclAction($uuid)
     {
         return $this->toggleBase('acls.acl', $uuid);
     }
