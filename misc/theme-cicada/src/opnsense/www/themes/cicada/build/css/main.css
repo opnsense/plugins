@@ -5950,7 +5950,7 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 	-webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
 	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);}
-  
+
 button.toggle-sidebar.glyphicon.glyphicon-chevron-left, button.toggle-sidebar.glyphicon.glyphicon-chevron-right{
 	position:absolute;
 	-webkit-transition: all 0.1s ease;
@@ -6268,7 +6268,7 @@ textarea#update_status, textarea#update_status:hover {
     color: #ec6d12;
 }
 #navigation > .fa-search::before, .fa-refresh::before {
-	color:inherit !important; }		
+	color:inherit !important; }
 #totals .fa-search::before {
     color: #FFF !important;
 	background-color: #ec6d12;
@@ -6339,7 +6339,7 @@ div.Tokenize ul.TokensContainer, div.Tokenize ul.Dropdown {
 
 .tokenize > .tokens-container > .token > .dismiss::after {
 	color:#FFFFFF !important; }
-	
+
 .tokenize.focus > .tokens-container {
 	border-color:#ec6d12 !important;
 	background-color:#2a2a2a !important;
@@ -6352,15 +6352,15 @@ div.Tokenize ul.TokensContainer, div.Tokenize ul.Dropdown {
 	background-color: #2a2a2a !important;}
 
 .tokenize > .tokens-container > .tokenize > .tokens-container > .token-search {
-	color:#FFFFFF !important; 
+	color:#FFFFFF !important;
 	border:none !important;}
-	
+
 .tokenize > .tokens-container > .token, .tokenize > .tokens-container > .placeholder, .tokenize > .tokens-container > .token-search {
 	border:none !important;}
 
-.tokenize > .tokens-container > .token-search > input { 
+.tokenize > .tokens-container > .token-search > input {
 	border:none !important;}
-	
+
 .bootgrid-table th > .column-header-anchor, .bootgrid-table th > .column-header-anchor > .icon, .bootgrid-table th > .column-header-anchor > .glyphicon {
 	color: #fff !important; }
 .bootgrid-table th:hover {
