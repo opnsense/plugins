@@ -1,0 +1,2 @@
+nginx_enable="YES"
+nginx_var_script="/usr/local/opnsense/scripts/nginx/setup.php"

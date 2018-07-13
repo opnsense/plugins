@@ -1,0 +1,2 @@
+php_fpm_enable="YES"
+command_args="-R"

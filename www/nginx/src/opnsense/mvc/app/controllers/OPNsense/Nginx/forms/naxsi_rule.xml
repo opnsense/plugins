@@ -1,0 +1,110 @@
+<form>
+    <field>
+        <id>naxsi_rule.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.message</id>
+        <label>Message</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.negate</id>
+        <label>Negate</label>
+        <type>checkbox</type>
+        <help>If this is box is checked, the score will be added if the rule does not match. Use with care.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.identifier</id>
+        <label>ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.ruletype</id>
+        <label>Rule Type</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>naxsi_rule.regex</id>
+        <label>Use Regular Expressions</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.match_value</id>
+        <label>Match Value</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>naxsi_rule.match_type</id>
+        <label>Match Type</label>
+        <type>dropdown</type>
+        <style>selectpicker</style>
+    </field>
+    <field>
+        <id>naxsi_rule.args</id>
+        <label>Arguments</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.url</id>
+        <label>URL</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.headers</id>
+        <label>Headers</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.body</id>
+        <label>Body</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.name</id>
+        <label>Name</label>
+        <type>checkbox</type>
+        <help>Check this box to match the variable name and not its content when matching any of the above checkboxes.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.file_extension</id>
+        <label>File Extension</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.raw_body</id>
+        <label>Raw Body</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_url</id>
+        <label>URL or URL Pattern</label>
+        <type>text</type>
+        <help>Enter the name of a parameter to match.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_args_var</id>
+        <label>Named Argument</label>
+        <type>text</type>
+        <help>Enter the name of a parameter to match.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_body_var</id>
+        <label>Named Body Variable</label>
+        <type>text</type>
+        <help>Enter the name of a variable in the HTTP body to match.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.dollar_headers_var</id>
+        <label>Named Header</label>
+        <type>text</type>
+        <help>Enter the name of an HTTP header to match.</help>
+    </field>
+    <field>
+        <id>naxsi_rule.score</id>
+        <label>Score</label>
+        <type>text</type>
+    </field>
+
+</form>

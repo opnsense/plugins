@@ -1,0 +1,445 @@
+<model>
+  <mount>//OPNsense/Nginx</mount>
+  <description>nginx web server, reverse proxy and waf</description>
+  <items>
+    <general>
+      <enabled type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enabled>
+    </general>
+
+    <webgui>
+      <limitnetworks type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </limitnetworks>
+    </webgui>
+
+    <http>
+      <sendfile type="BooleanField">
+        <default>0</default>
+        <Required>N</Required>
+      </sendfile>
+      <keepalive_timeout type="IntegerField">
+        <default>60</default>
+        <Required>N</Required>
+      </keepalive_timeout>
+      <default_type type="TextField">
+        <Required>N</Required>
+      </default_type>
+    </http>
+
+    <userlist type="ArrayField">
+      <name type="TextField">
+        <Required>Y</Required>
+      </name>
+      <users type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>credential</items>
+            <display>username</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected user not found</ValidationMessage>
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+      </users>
+    </userlist>
+
+    <credential type="ArrayField">
+      <username type="TextField">
+        <Required>Y</Required>
+      </username>
+      <password type="TextField">
+        <Required>Y</Required>
+      </password>
+    </credential>
+
+    <upstream type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <serverentries type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream_server</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected server not found</ValidationMessage>
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+      </serverentries>
+    </upstream>
+
+    <upstream_server type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <server type="HostnameField">
+        <Required>Y</Required>
+      </server>
+      <port type="PortField">
+        <Required>Y</Required>
+      </port>
+      <priority type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>Y</Required>
+      </priority>
+      <max_conns type="IntegerField">
+        <Required>N</Required>
+      </max_conns>
+      <max_fails type="IntegerField">
+        <Required>N</Required>
+      </max_fails>
+      <fail_timeout type="IntegerField">
+        <Required>N</Required>
+      </fail_timeout>
+      <no_use type="OptionField">
+        <OptionValues>
+          <down>Permanently Unreachable</down>
+          <backup>Backup Server</backup>
+        </OptionValues>
+        <Required>N</Required>
+      </no_use>
+    </upstream_server>
+
+    <location type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <urlpattern type="TextField">
+        <Required>Y</Required>
+      </urlpattern>
+      <matchtype type="OptionField">
+        <OptionValues>
+          <option1 value="=">Exact Match ("=")</option1>
+          <option2 value="~">Case Sensitive Match ("~")</option2>
+          <option3 value="~*">Case Insensitive Match ("~*")</option3>
+          <option4 value="^~">Don't check regular expressions on logest prefix match ("^~")</option4>
+        </OptionValues>
+        <Required>N</Required>
+      </matchtype>
+      <enable_secrules type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_secrules>
+      <enable_learning_mode type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_learning_mode>
+      <xss_block_score type="IntegerField">
+        <Required>N</Required>
+      </xss_block_score>
+      <sqli_block_score type="IntegerField">
+        <Required>N</Required>
+      </sqli_block_score>
+      <custom_policy type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>custom_policy</items>
+            <display>name</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected server not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </custom_policy>
+      <upstream type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected upstream not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </upstream>
+      <root type="TextField">
+        <Required>N</Required>
+      </root>
+      <rewrites type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>http_rewrite</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </rewrites>
+      <index type="CSVListField">
+        <Required>N</Required>
+      </index>
+      <autoindex type="BooleanField">
+        <Required>N</Required>
+      </autoindex>
+      <authbasic type="TextField">
+        <Required>N</Required>
+      </authbasic>
+      <authbasicuserfile type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>userlist</items>
+            <display>name</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected server not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </authbasicuserfile>
+      <advanced_acl type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </advanced_acl>
+      <force_https type="TextField">
+        <Required>N</Required>
+      </force_https>
+    </location>
+
+    <custom_policy type="ArrayField">
+      <name type="TextField">
+        <Required>Y</Required>
+      </name>
+      <naxsi_rules type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>naxsi_rule</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected rule not found</ValidationMessage>
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+      </naxsi_rules>
+      <value type="IntegerField">
+        <Required>Y</Required>
+      </value>
+      <operator type="OptionField">
+        <Required>Y</Required>
+        <default>&gt;=</default>
+        <OptionValues>
+          <option1 value="&gt;=">Bigger or Equal</option1>
+          <option2 value="&gt;">Bigger</option2>
+          <option3 value="&lt;">Lesser</option3>
+          <option4 value="&lt;=">Lesser or Equal</option4>
+          <option5 value="=">Equal</option5>
+        </OptionValues>
+      </operator>
+      <action type="OptionField">
+        <Required>Y</Required>
+        <default>BLOCK</default>
+        <OptionValues>
+          <BLOCK>Block Request</BLOCK>
+          <ALLOW>Allow Request</ALLOW>
+          <DROP>Drop The Connection</DROP>
+          <LOG>Log Request</LOG>
+        </OptionValues>
+      </action>
+    </custom_policy>
+
+    <naxsi_rule type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <ruletype type="OptionField">
+        <OptionValues>
+          <main>Main Rule</main>
+          <basic>Basic Rule</basic>
+        </OptionValues>
+        <Required>Y</Required>
+      </ruletype>
+      <message type="TextField">
+        <Required>Y</Required>
+        <pattern>/^[^"]+$/</pattern>
+      </message>
+      <identifier type="IntegerField">
+        <Required>Y</Required>
+        <minValue>1000</minValue>
+      </identifier>
+      <url type="TextField">
+        <Required>N</Required>
+        <pattern>/^[^"]+$/</pattern>
+      </url>
+      <dollar_url type="TextField">
+        <Required>N</Required>
+        <pattern>/^[^"]+$/</pattern>
+      </dollar_url>
+      <match_value type="TextField">
+        <Required>Y</Required>
+        <pattern>/^[^"]+$/</pattern>
+      </match_value>
+      <match_type type="OptionField">
+        <Required>Y</Required>
+        <default>id</default>
+        <OptionValues>
+          <id>Blacklist</id>
+          <wl>Whitelist</wl>
+        </OptionValues>
+      </match_type>
+      <negate type="BooleanField">
+        <Required>Y</Required>
+      </negate>
+      <score type="IntegerField">
+        <Required>Y</Required>
+        <default>8</default>
+      </score>
+      <regex type="BooleanField">
+        <Required>Y</Required>
+      </regex>
+      <args type="BooleanField">
+        <Required>Y</Required>
+      </args>
+      <headers type="BooleanField">
+        <Required>Y</Required>
+      </headers>
+      <dollar_args_var type="TextField">
+        <pattern>/^[^"]+$/</pattern>
+      </dollar_args_var>
+      <dollar_body_var type="TextField">
+        <pattern>/^[^"]+$/</pattern>
+      </dollar_body_var>
+      <dollar_headers_var type="TextField">
+        <pattern>/^[^"]+$/</pattern>
+      </dollar_headers_var>
+      <file_extension type="BooleanField">
+        <Required>Y</Required>
+      </file_extension>
+      <raw_body type="BooleanField">
+        <Required>Y</Required>
+      </raw_body>
+      <name type="BooleanField">
+        <Required>Y</Required>
+      </name>
+    </naxsi_rule>
+    
+    <http_server type="ArrayField">
+      <servername type="CSVListField">
+        <Required>Y</Required>
+      </servername>
+      <listen_http_port type="PortField">
+        <Required>N</Required>
+        <default>80</default>
+      </listen_http_port>
+      <listen_https_port type="PortField">
+        <Required>N</Required>
+        <default>443</default>
+      </listen_https_port>
+      <locations type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>location</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected location(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </locations>
+      <rewrites type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>http_rewrite</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </rewrites>
+      <root type="TextField">
+        <Required>N</Required>
+      </root>
+      <certificate type="CertificateField">
+        <Type>cert</Type>
+        <Required>N</Required>
+      </certificate>
+      <ca type="CertificateField">
+        <Type>ca</Type>
+        <Required>N</Required>
+      </ca>
+      <verify_client type="OptionField">
+        <default>Off</default>
+        <OptionValues>
+          <off>Off</off>
+          <on>On</on>
+          <optional>Optional</optional>
+          <optional_no_ca>Optional, don't verify</optional_no_ca>
+        </OptionValues>
+        <Required>Y</Required>
+      </verify_client>
+      <access_log_format type="OptionField">
+        <default>main</default>
+        <OptionValues>
+          <main>Default</main>
+          <anonymized>Anonymized</anonymized>
+          <disabled>Disabled</disabled>
+        </OptionValues>
+        <Required>Y</Required>
+      </access_log_format>
+      <enable_acme_support type="BooleanField">
+        <Required>Y</Required>
+        <default>1</default>
+      </enable_acme_support>
+      <charset type="OptionField">
+        <default>utf-8</default>
+        <OptionValues>
+          <utf-8>utf-8</utf-8>
+        </OptionValues>
+        <Required>N</Required>
+      </charset>
+      <https_only type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </https_only>
+      <block_nonpublic_data type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </block_nonpublic_data>
+      <naxsi_extensive_log type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </naxsi_extensive_log>
+      <sendfile type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </sendfile>
+    </http_server>
+    
+    <http_rewrite type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </description>
+      <source type="TextField">
+        <Required>Y</Required>
+      </source>
+      <destination type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </destination>
+      <flag type="OptionField">
+        <OptionValues>
+          <break>Stop processing rules</break>
+          <last>Stop processing rules and find location</last>
+          <redirect>Redirect</redirect>
+          <permanent>Permanent</permanent>
+        </OptionValues>
+        <Required>N</Required>
+      </flag>
+    </http_rewrite>
+
+  </items>
+</model>
