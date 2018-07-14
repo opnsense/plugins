@@ -204,8 +204,8 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
-    
-    
+
+
     <div id="subtab_nginx-http-upstream" class="tab-pane fade">
         <table id="grid-upstream" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamdlg">
             <thead>
@@ -380,4 +380,3 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': httprewrite,'id':'httprewritedlg', 'label':lang._('Edit URL Rewrite')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
-

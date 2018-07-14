@@ -197,7 +197,7 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('custompolicy', 'custom_policy', $uuid);
     }
-    
+
     // http server
     public function searchhttpserverAction()
     {
@@ -251,7 +251,7 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('naxsi_rule', 'naxsi_rule', $uuid);
     }
-    
+
     // http url rewriting
     public function searchhttprewriteAction()
     {

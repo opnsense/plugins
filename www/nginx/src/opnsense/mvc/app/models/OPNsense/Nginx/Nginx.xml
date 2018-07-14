@@ -322,7 +322,7 @@
         <Required>Y</Required>
       </name>
     </naxsi_rule>
-    
+
     <http_server type="ArrayField">
       <servername type="CSVListField">
         <Required>Y</Required>
@@ -417,7 +417,7 @@
         <Required>Y</Required>
       </sendfile>
     </http_server>
-    
+
     <http_rewrite type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>

@@ -49,8 +49,8 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         return array('status' => 'failed');
     }
-    
-    
+
+
     /**
      * reconfigure with optional stop, generate config and start / reload
      * @return array response message

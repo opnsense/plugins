@@ -69,9 +69,9 @@ foreach ($http_servers as $http_server) {
       foreach ($http_server['ca'] as $caref) {
         $ca = find_ca($caref);
         if (isset($ca)) {
-          export_pem_file(                                                          
-            '/usr/local/etc/nginx/key/' . $hostname . '_ca.pem',                       
-            $ca['crt']                                                            
+          export_pem_file(
+            '/usr/local/etc/nginx/key/' . $hostname . '_ca.pem',
+            $ca['crt']
           );
         }
       }
@@ -103,4 +103,3 @@ foreach ($nginx->userlist->__items as $user_list) {
         unset($file);
     }
 }
-

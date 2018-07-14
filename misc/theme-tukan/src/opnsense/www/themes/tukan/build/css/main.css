@@ -5956,7 +5956,7 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 	-webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
 	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);}
-  
+
 button.toggle-sidebar.glyphicon.glyphicon-chevron-left, button.toggle-sidebar.glyphicon.glyphicon-chevron-right{
 	position:absolute;
 	-webkit-transition: all 0.1s ease;
@@ -6320,7 +6320,7 @@ stroke: rgb(143, 143, 143) !important; }
 
 .tokenize > .tokens-container > .token > .dismiss::after {
 	color:#000 !important; }
-	
+
 .tokenize.focus > .tokens-container {
 	border-color: #00A7FF !important;
 	background-color:none !important;
@@ -6334,9 +6334,9 @@ stroke: rgb(143, 143, 143) !important; }
 .tokenize > .tokens-container > .tokenize > .tokens-container > .token-search {
 	color:#FFFFFF !important; }
 
-.tokenize > .tokens-container > .token-search > input { 
+.tokenize > .tokens-container > .token-search > input {
 	border:none !important;}
-	
+
 .bootgrid-table th > .column-header-anchor, .bootgrid-table th > .column-header-anchor > .icon, .bootgrid-table th > .column-header-anchor > .glyphicon {
 	color: #000 !important; }
 .bootgrid-table th:hover {
