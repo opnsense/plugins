@@ -1,0 +1,9 @@
+<acl>
+  <page-Nginx>
+    <name>nginx</name>
+    <patterns>
+      <pattern>ui/nginx/*</pattern>
+      <pattern>api/nginx/*</pattern>
+    </patterns>
+  </page-Nginx>
+</acl>
