@@ -93,6 +93,12 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    var data_get_map2 = {'frm_dnsbl_settings':"/api/bind/dnsbl/get"};
+    mapDataToFormUI(data_get_map2).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
+
     ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });
