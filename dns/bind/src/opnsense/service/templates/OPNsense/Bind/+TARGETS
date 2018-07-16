@@ -1,0 +1,2 @@
+named:/etc/rc.conf.d/named
+named.conf:/usr/local/etc/namedb/named.conf
