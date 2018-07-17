@@ -1,0 +1,9 @@
+<acl>
+   <page-services-bind>
+      <name>Services: BIND</name>
+      <patterns>
+         <pattern>ui/bind/*</pattern>
+         <pattern>api/bind/*</pattern>
+      </patterns>
+   </page-services-bind>
+</acl>
