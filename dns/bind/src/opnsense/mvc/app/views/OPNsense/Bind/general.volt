@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':dnsblForm,'id':'frm_dnsbl_settings'])}}
             <div class="col-md-12">
                 <hr />
-                <button class="btn btn-primary"  id="saveAct_acl" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_acl_progress"></i></button>
+                <button class="btn btn-primary"  id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_dnsbl_progress"></i></button>
             </div>
         </div>
     </div>
