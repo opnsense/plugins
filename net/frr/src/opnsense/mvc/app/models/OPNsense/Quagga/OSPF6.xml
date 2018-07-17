@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf6</mount>
     <description>OSPFv3 Routing configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -13,6 +13,7 @@
                 <default></default>
                 <OptionValues>
                         <connected>Connected routes (directly attached subnet or host)</connected>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
                         <static>Statically configured routes</static>
                 </OptionValues>
         </redistribute>

@@ -23,4 +23,16 @@
         <type>password</type>
         <help>The password name for this connection. Be aware that it will stored in cleartext on this device.</help>
     </field>
+    <field>
+        <id>general.servercert</id>
+        <label>Certificate Hash</label>
+        <type>text</type>
+        <help>If you have a wildcard certificate or the CA is untrusted, you have to enter the SHA hash of the certificate to force a connect.</help>
+    </field>
+    <field>
+        <id>general.hash</id>
+        <label>Certificate Hash Type</label>
+        <type>dropdown</type>
+        <help>Select the type of hash. Possible values are SHA256 or SHA1.</help>
+    </field>
 </form>

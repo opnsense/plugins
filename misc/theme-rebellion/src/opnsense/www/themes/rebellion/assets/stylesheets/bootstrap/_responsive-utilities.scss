@@ -127,6 +127,14 @@
   @include responsive-invisibility('.hidden-sm');
 }
 
+/* COLLAPSE SIDEBAR @media*/
+@media (max-width: 768px), (max-height: 669px) {
+  .toggle-sidebar {
+    display: none !important;
+  }
+}
+/* COLLAPSE SIDEBAR @media END*/
+
 @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
   @include responsive-invisibility('.hidden-md');
 }

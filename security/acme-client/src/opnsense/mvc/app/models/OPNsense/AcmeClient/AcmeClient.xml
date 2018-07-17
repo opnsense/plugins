@@ -337,16 +337,20 @@
                     <OptionValues>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
+                        <dns_autodns>autoDNS (InternetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
+                        <dns_azure>Azure DNS API</dns_azure>
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cloudns>ClouDNS API</dns_cloudns>
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_da>DirectAdmin API</dns_da>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
                         <dns_me>DNSMadeEasy.com API</dns_me>
-                        <dns_do>Domain-Offensive/Resellerinterface/Domainrobot API</dns_do>
                         <dns_dp>DNSPod.cn API</dns_dp>
+                        <dns_do>Domain-Offensive/Resellerinterface/Domainrobot API</dns_do>
+                        <dns_dreamhost>DreamHost DNS API</dns_dreamhost>
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
                         <dns_dynu>Dynu API</dns_dynu>
@@ -355,17 +359,26 @@
                         <dns_gd>GoDaddy.com API</dns_gd>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
+                        <dns_inwx>INWX XMLRPC API</dns_inwx>
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
+                        <dns_kinghost>KingHost DNS API</dns_kinghost>
+                        <dns_knot>Knot (knsupdate) DNS API</dns_knot>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_namecom>Name.com API</dns_namecom>
+                        <dns_namesilo>Namesilo.com API</dns_namesilo>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
+                        <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
+                        <dns_servercow>Servercow API v1</dns_servercow>
+                        <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_vscale>Vscale API</dns_vscale>
                         <dns_yandex>Yandex PDD API</dns_yandex>
+                        <dns_zilore>Zilore DNS API</dns_zilore>
+                        <dns_zonomi>zonomi.com domain API</dns_zonomi>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">
@@ -384,12 +397,33 @@
                 <dns_ali_secret type="TextField">
                     <Required>N</Required>
                 </dns_ali_secret>
+                <dns_autodns_user type="TextField">
+                    <Required>N</Required>
+                </dns_autodns_user>
+                <dns_autodns_password type="TextField">
+                    <Required>N</Required>
+                </dns_autodns_password>
+                <dns_autodns_context type="TextField">
+                    <Required>N</Required>
+                </dns_autodns_context>
                 <dns_aws_id type="TextField">
                     <Required>N</Required>
                 </dns_aws_id>
                 <dns_aws_secret type="TextField">
                     <Required>N</Required>
                 </dns_aws_secret>
+                <dns_azuredns_subscriptionid type="TextField">
+                    <Required>N</Required>
+                </dns_azuredns_subscriptionid>
+                <dns_azuredns_tenantid type="TextField">
+                    <Required>N</Required>
+                </dns_azuredns_tenantid>
+                <dns_azuredns_appid type="TextField">
+                    <Required>N</Required>
+                </dns_azuredns_appid>
+                <dns_azuredns_clientsecret type="TextField">
+                    <Required>N</Required>
+                </dns_azuredns_clientsecret>
                 <dns_cf_email type="TextField">
                     <Required>N</Required>
                 </dns_cf_email>
@@ -417,6 +451,13 @@
                 <dns_cyon_password type="TextField">
                   <Required>N</Required>
                 </dns_cyon_password>
+                <dns_da_key type="TextField">
+                    <Required>N</Required>
+                </dns_da_key>
+                <dns_da_insecure type="BooleanField">
+                    <Required>N</Required>
+                    <default>1</default>
+                </dns_da_insecure>
                 <dns_dgon_key type="TextField">
                   <Required>N</Required>
                 </dns_dgon_key>
@@ -435,6 +476,9 @@
                 <dns_dp_key type="TextField">
                     <Required>N</Required>
                 </dns_dp_key>
+                <dns_dh_key type="TextField">
+                    <Required>N</Required>
+                </dns_dh_key>
                 <dns_duckdns_token type="TextField">
                     <Required>N</Required>
                 </dns_duckdns_token>
@@ -480,6 +524,12 @@
                 <dns_infoblox_server type="TextField">
                     <Required>N</Required>
                 </dns_infoblox_server>
+                <dns_inwx_user type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_user>
+                <dns_inws_password type="TextField">
+                    <Required>N</Required>
+                </dns_inws_password>
                 <dns_ispconfig_user type="TextField">
                     <Required>N</Required>
                 </dns_ispconfig_user>
@@ -493,6 +543,18 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_ispconfig_insecure>
+                <dns_kinghost_username type="TextField">
+                    <Required>N</Required>
+                </dns_kinghost_username>
+                <dns_kinghost_password type="TextField">
+                    <Required>N</Required>
+                </dns_kinghost_password>
+                <dns_knot_server type="TextField">
+                    <Required>N</Required>
+                </dns_knot_server>
+                <dns_knot_key type="TextField">
+                    <Required>N</Required>
+                </dns_knot_key>
                 <dns_lexicon_provider type="OptionField">
                     <Required>N</Required>
                     <default>cloudflare</default>
@@ -528,6 +590,9 @@
                 <dns_namecom_token type="TextField">
                     <Required>N</Required>
                 </dns_namecom_token>
+                <dns_namesilo_key type="TextField">
+                    <Required>N</Required>
+                </dns_namesilo_key>
                 <dns_nsone_key type="TextField">
                     <Required>N</Required>
                 </dns_nsone_key>
@@ -559,12 +624,33 @@
                 <dns_pdns_token type="TextField">
                     <Required>N</Required>
                 </dns_pdns_token>
+                <dns_sl_key type="TextField">
+                    <Required>N</Required>
+                </dns_sl_key>
+                <dns_servercow_username type="TextField">
+                    <Required>N</Required>
+                </dns_servercow_username>
+                <dns_servercow_password type="TextField">
+                    <Required>N</Required>
+                </dns_servercow_password>
+                <dns_uno_key type="TextField">
+                    <Required>N</Required>
+                </dns_uno_key>
+                <dns_uno_user type="TextField">
+                    <Required>N</Required>
+                </dns_uno_user>
                 <dns_vscale_key type="TextField">
                     <Required>N</Required>
                 </dns_vscale_key>
                 <dns_yandex_token type="TextField">
                     <Required>N</Required>
                 </dns_yandex_token>
+                <dns_zilore_key type="TextField">
+                    <Required>N</Required>
+                </dns_zilore_key>
+                <dns_zm_key type="TextField">
+                    <Required>N</Required>
+                </dns_zm_key>
             </validation>
         </validations>
         <actions>
