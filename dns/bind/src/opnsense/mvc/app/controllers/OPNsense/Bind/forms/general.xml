@@ -22,6 +22,12 @@
         <help>Set the IPv6 addresses the service should listen to.</help>
     </field>
     <field>
+        <id>general.port</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>Set the port the service should listen to.</help>
+    </field>
+    <field>
         <id>general.forwarders</id>
         <label>DNS Forwarders</label>
         <style>tokenize</style>
