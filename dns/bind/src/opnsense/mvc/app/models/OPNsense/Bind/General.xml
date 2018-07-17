@@ -19,14 +19,14 @@
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv6>
+        <port type="PortField">
+            <default>53530</default>
+            <Required>Y</Required>
+        </port>
         <forwarders type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
             <asList>Y</asList>
         </forwarders>
-        <port type="PortField">
-            <default>53530</default>
-            <Required>Y</Required>
-        </port>
     </items>
 </model>
