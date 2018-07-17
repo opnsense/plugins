@@ -23,7 +23,9 @@ rm -f easylist-raw
 fetch -q https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o easyprivacy
 
 # AdGuard:
-fetch -q https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o adguard
+fetch -q https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o adguard-raw
+sed "/\.$/d" adguard-raw > adguard
+rm -f adguard-raw
 
 # NoCoin:
 fetch -q https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o nocoin
