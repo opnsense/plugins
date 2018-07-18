@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <BIND cssClass="fa fa-tags" url="/ui/bind/general/index" />
+  </Services>
+</menu>

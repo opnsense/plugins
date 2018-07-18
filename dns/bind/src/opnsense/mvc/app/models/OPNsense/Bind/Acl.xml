@@ -1,0 +1,27 @@
+<model>
+    <mount>//OPNsense/bind/acl</mount>
+    <description>BIND ACL configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <acls>
+            <acl type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
+                </name>
+                <networks type="NetworkField">
+                    <default></default>
+                    <FieldSeparator>,</FieldSeparator>
+                    <Required>Y</Required>
+                    <asList>Y</asList>
+                </networks>
+            </acl>
+        </acls>
+    </items>
+</model>

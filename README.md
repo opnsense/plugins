@@ -33,6 +33,7 @@ benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
+dns/bind -- BIND domain name service
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 mail/postfix -- SMTP mail relay
