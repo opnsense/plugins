@@ -137,8 +137,8 @@ $( document ).ready(function() {
                 });
             });
         });
-    });    
-    
+    });
+
     $("#saveAct_acl").click(function(){
         saveFormToEndpoint(url="/api/bind/acl/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
