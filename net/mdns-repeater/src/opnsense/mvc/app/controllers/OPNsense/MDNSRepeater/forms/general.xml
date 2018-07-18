@@ -9,7 +9,6 @@
       <id>mdnsrepeater.interfaces</id>
       <label>Listen Interfaces</label>
       <type>select_multiple</type>
-      <multiple>Y</multiple>
       <help>At least two interfaces must be selected.</help>
    </field>
 </form>
