@@ -33,6 +33,7 @@ namespace OPNsense\Bind\Api;
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Bind\General;
+use OPNsense\Bind\Dnsbl;
 
 /**
  * Class ServiceController
@@ -44,4 +45,16 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/Bind';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'bind';
+
+    public function dnsblAction()
+    {
+        $this->sessionClose();
+        $mdl = new Dnsbl();
+        if (!empty((string)$mdl->type)) {
+            $list = (string)$mdl->type;
+        }
+        $backend = new Backend();
+        $response = $backend->configdpRun('bind dnsbl', $list);
+        return array("response" => $response);
+    }
 }
