@@ -1,0 +1,20 @@
+<model>
+    <mount>//OPNsense/bind/dnsbl</mount>
+    <description>DNSBL configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <type type="OptionField">
+            <default>all</default>
+            <Required>N</Required>
+            <OptionValues>
+                <ad>ADWare Lists</ad>
+                <mw>Malware Lists</mw>
+                <all>All in one</all>
+            </OptionValues>
+        </type>
+    </items>
+</model>
