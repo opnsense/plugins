@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Copyright (c) 2018 Michael Muenz <m.muenz@gmail.com>
+# Copyright (c) 2018 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -25,108 +26,78 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-SORT=/usr/bin/sort
-UNIQ=/usr/bin/uniq
-CD=/usr/bin/cd
-CAT=/bin/cat
-AWK=/usr/bin/awk
 FETCH="/usr/bin/fetch -qT 5"
-RM="/bin/rm -f"
 
-RAWDIR="/usr/local/etc/namedb/raw/"
-WORKDIR="/usr/local/etc/namedb/"
+DESTDIR="/usr/local/etc/namedb"
+WORKDIRPREFIX="/tmp/binddnsbl."
+WORKDIR="${WORKDIRPREFIX}${$}"
 
-/bin/mkdir -p $RAWDIR
-/usr/sbin/chown bind:bind $RAWDIR
-/bin/chmod -R 755 $RAWDIR
+rm -rf ${WORKDIRPREFIX}*
+mkdir -p ${WORKDIR}
 
-
-# Download all lists:
-
-# EasyList:
 easylist() {
-$CD $RAWDIR
-${FETCH} https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt -o easylist-raw
-sed "/\.$/d" easylist-raw > easylist
-${RM} easylist-raw
+	# EasyList
+	${FETCH} https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt -o ${WORKDIR}/easylist-raw
+	sed "/\.$/d" ${WORKDIR}/easylist-raw > ${WORKDIR}/easylist
+	rm ${WORKDIR}/easylist-raw
 }
 
-# EasyPrivacy:
 easyprivacy() {
-$CD $RAWDIR
-${FETCH} https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o easyprivacy-raw
-sed "/\.$/d" easyprivacy-raw > easyprivacy
-${RM} easyprivacy-raw
+	# EasyPrivacy
+	${FETCH} https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o ${WORKDIR}/easyprivacy-raw
+	sed "/\.$/d" ${WORKDIR}/easyprivacy-raw > ${WORKDIR}/easyprivacy
+	rm ${WORKDIR}/easyprivacy-raw
 }
 
-# AdGuard:
 adguard() {
-$CD $RAWDIR
-${FETCH} https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o adguard-raw
-sed "/\.$/d" adguard-raw > adguard
-${RM} adguard-raw
+	# AdGuard
+	${FETCH} https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o ${WORKDIR}/adguard-raw
+	sed "/\.$/d" ${WORKDIR}/adguard-raw > ${WORKDIR}/adguard
+	rm ${WORKDIR}/adguard-raw
 }
 
-# NoCoin:
 nocoin() {
-$CD $RAWDIR
-${FETCH} https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o nocoin
+	# NoCoin
+	${FETCH} https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o ${WORKDIR}/nocoin
 }
 
-# RansomWare Tracker abuse.ch:
 rwtracker() {
-$CD $RAWDIR
-${FETCH} https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt -o rwtracker-comments
-sed '/^#/ d' rwtracker-comments > rwtracker
-${RM} rwtracker-comments
+	# RansomWare Tracker abuse.ch
+	${FETCH} https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt -o ${WORKDIR}/rwtracker-comments
+	sed '/^#/ d' ${WORKDIR}/rwtracker-comments > ${WORKDIR}/rwtracker
+	rm ${WORKDIR}/rwtracker-comments
 }
 
-# MalwareDomains:
 mwdomains() {
-$CD $RAWDIR
-${FETCH} http://malwaredomains.lehigh.edu/files/justdomains -o malwaredomains-comments
-sed '/^#/ d' malwaredomains-comments > malwaredomains
-${RM} malwaredomains-comments
+	# MalwareDomains
+	${FETCH} http://malwaredomains.lehigh.edu/files/justdomains -o ${WORKDIR}/malwaredomains-comments
+	sed '/^#/ d' ${WORKDIR}/malwaredomains-comments > ${WORKDIR}/malwaredomains
+	rm ${WORKDIR}/malwaredomains-comments
 }
 
-# Put all files in correct format
-convert() {
-$CD $RAWDIR
-FILES=`ls -1`
+install() {
+	# Put all files in correct format
+	for FILE in $(find ${WORKDIR} -type f); do
+		awk '{ print "zone " $1 " " $2 " {type master; file \"/usr/local/etc/namedb/master/blacklist.db\"; };" }' ${FILE} | sort -u > ${FILE}.inc
+	done
+	# Merge resulting files (/dev/null in case there are none)
+        cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
+	chown bind:bind ${DESTDIR}/dnsbl.inc
+        rm -rf ${WORKDIR}
+}
 
-for i in $FILES; do
-  $AWK '{ print "zone " $1 " " $2 " {type master; file \"/usr/local/etc/namedb/master/blacklist.db\"; };" }' $i | $SORT | $UNIQ > $WORKDIR/$i.inc
+for CAT in $(echo ${1} | tr ',' ' '); do
+	case "${CAT}" in
+	ad)
+		easylist
+		easyprivacy
+		nocoin
+		;;
+	mw)
+		rwtracker
+		mwdomains
+		;;
+	esac
 done
-}
 
-# Depending on the options
-RETVAL=0
-case "$1" in
-   "")
-      echo "Usage: $0 ad|mw|all"
-      RETVAL=1
-      ;;
-   ad)
-      easylist
-      easyprivacy
-      nocoin
-      convert
-      $CAT $WORKDIR/easylist.inc $WORKDIR/easyprivacy.inc $WORKDIR/adguard.inc | $SORT | $UNIQ > $WORKDIR/all.inc
-      ;;
-   mw)
-      rwtracker
-      mwdomains
-      convert
-      $CAT $WORKDIR/nocoin.inc $WORKDIR/rwtracker.inc $WORKDIR/malwaredomains.inc | $SORT | $UNIQ > $WORKDIR/all.inc
-      ;;
-   all)
-      easylist
-      easyprivacy
-      nocoin
-      rwtracker
-      mwdomains
-      convert
-      $CAT $WORKDIR/easylist.inc $WORKDIR/easyprivacy.inc $WORKDIR/adguard.inc $WORKDIR/nocoin.inc $WORKDIR/rwtracker.inc $WORKDIR/malwaredomains.inc | $SORT | $UNIQ > $WORKDIR/all.inc
-      ;;
-esac
-exit $RETVAL
+install

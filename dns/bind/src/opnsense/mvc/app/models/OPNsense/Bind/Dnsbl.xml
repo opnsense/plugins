@@ -8,12 +8,11 @@
             <Required>Y</Required>
         </enabled>
         <type type="OptionField">
-            <default>all</default>
             <Required>N</Required>
+            <Multiple>Y</Multiple>
             <OptionValues>
                 <ad>ADWare Lists</ad>
                 <mw>Malware Lists</mw>
-                <all>All in one</all>
             </OptionValues>
         </type>
     </items>
