@@ -88,6 +88,9 @@ install() {
 
 for CAT in $(echo ${1} | tr ',' ' '); do
 	case "${CAT}" in
+	ag)
+	        adguard
+		;;
 	el)
 		easylist
 		;;
