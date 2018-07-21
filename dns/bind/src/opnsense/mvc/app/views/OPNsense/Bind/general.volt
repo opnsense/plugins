@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
 </ul>
 
@@ -40,6 +41,15 @@ POSSIBILITY OF SUCH DAMAGE.
             <div class="col-md-12">
                 <hr />
                 <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="dnsbl" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':dnsblForm,'id':'frm_dnsbl_settings'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary"  id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_dnsbl_progress"></i></button>
             </div>
         </div>
     </div>
@@ -83,6 +93,12 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    var data_get_map2 = {'frm_dnsbl_settings':"/api/bind/dnsbl/get"};
+    mapDataToFormUI(data_get_map2).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
+
     ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });
@@ -105,6 +121,20 @@ $( document ).ready(function() {
                     updateServiceStatusUI(data['status']);
                 });
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_dnsbl").click(function(){
+        saveFormToEndpoint(url="/api/bind/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
+        $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/bind/service/dnsbl", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
+                        updateServiceStatusUI(data['status']);
+                    });
+                    $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
     });

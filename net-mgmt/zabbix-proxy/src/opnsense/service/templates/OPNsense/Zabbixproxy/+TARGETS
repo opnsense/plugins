@@ -1,2 +1,3 @@
 zabbix_proxy:/etc/rc.conf.d/zabbix_proxy
 zabbix_proxy.conf:/usr/local/etc/zabbix3/zabbix_proxy.conf
+zabbix_proxy.psk:/usr/local/etc/zabbix3/zabbix_proxy.psk

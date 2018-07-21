@@ -113,4 +113,25 @@
         <type>text</type>
         <help>Specifies how long we wait for agent, SNMP device or external check (in seconds).</help>
     </field>
+    <field>
+        <id>general.encryption</id>
+        <label>PSK based encryption</label>
+        <type>checkbox</type>
+        <help>Enable PSK based encryption for communicating with the Zabbix server</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.encryptionidentity</id>
+        <label>PSK Identity</label>
+        <type>text</type>
+        <help>The PSK identity configured on the Zabbix server</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.encryptionpsk</id>
+        <label>PSK</label>
+        <type>text</type>
+        <help>The PSK configured on the Zabbix server</help>
+        <advanced>true</advanced>
+    </field>
 </form>
