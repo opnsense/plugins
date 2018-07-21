@@ -1056,8 +1056,8 @@ function import_certificate($certObj, $modelObj)
 
     // Write changes to config
     // TODO: Legacy code, should be replaced with code from OPNsense framework
-    write_config("${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
-    log_error("AcmeClient: ${import_log_message} Let's Encrypt SSL certificate: ${cert_cn}");
+    write_config("${import_log_message} Let's Encrypt X.509 certificate: ${cert_cn}");
+    log_error("AcmeClient: ${import_log_message} Let's Encrypt X.509 certificate: ${cert_cn}");
 
     // Update (acme) certificate object (through MVC framework)
     $uuid = $certObj->attributes()->uuid;
@@ -1137,6 +1137,9 @@ function run_restart_actions($certlist, $modelObj)
                     break;
                 case 'restart_haproxy':
                     $response = $backend->configdRun("haproxy restart");
+                    break;
+                case 'restart_nginx':
+                    $response = $backend->configdRun("nginx restart");
                     break;
                 case 'configd':
                     // Make sure a configd command was specified.
