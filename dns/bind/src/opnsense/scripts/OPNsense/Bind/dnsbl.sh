@@ -88,13 +88,19 @@ install() {
 
 for CAT in $(echo ${1} | tr ',' ' '); do
 	case "${CAT}" in
-	ad)
+	el)
 		easylist
+		;;
+        ep)
 		easyprivacy
+		;;
+        nc)
 		nocoin
 		;;
-	mw)
+	rw)
 		rwtracker
+		;;
+        mw)
 		mwdomains
 		;;
 	esac
