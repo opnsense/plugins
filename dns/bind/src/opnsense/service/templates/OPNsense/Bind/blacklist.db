@@ -1,5 +1,5 @@
 $TTL    86400  
-@       IN      SOA     opnsense.local. hostmaster.opnsense.local. (
+@       IN      SOA     opnsense.localdomain. hostmaster.opnsense.localdomain. (
                2018072201
                     28800
                      7200
@@ -10,3 +10,4 @@ $TTL    86400
                 A       127.0.0.1 
 @       IN      A       127.0.0.1 
 *       IN      A       127.0.0.1
+*       IN      AAAA    ::1
