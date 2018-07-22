@@ -11,8 +11,12 @@
             <Required>N</Required>
             <Multiple>Y</Multiple>
             <OptionValues>
-                <ad>ADWare Lists</ad>
-                <mw>Malware Lists</mw>
+                <ag>AdGuard List</ag>
+                <el>Easy List</el>
+                <ep>Easyprivacy List</ep>
+                <mw>Malwaredomain List</mw>
+                <nc>NoCoin List</nc>
+                <rw>Ransomware Tracker List</rw>
             </OptionValues>
         </type>
     </items>
