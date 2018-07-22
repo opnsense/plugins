@@ -54,4 +54,12 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdpRun('bind dnsbl', array((string)$mdl->type));
         return array("response" => $response);
     }
+
+    public function dnsblcronAction()
+    {
+        $this->sessionClose();
+        $backend = new Backend();
+        $response = $backend->configdpRun('bind dnsblcron');
+        return array("response" => $response);
+    }
 }
