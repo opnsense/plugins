@@ -81,29 +81,29 @@ install() {
 		awk '{ print "zone " $1 " " $2 " {type master; file \"/usr/local/etc/namedb/master/blacklist.db\"; };" }' ${FILE} | sort -u > ${FILE}.inc
 	done
 	# Merge resulting files (/dev/null in case there are none)
-        cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
+	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
 	chown bind:bind ${DESTDIR}/dnsbl.inc
-        rm -rf ${WORKDIR}
+	rm -rf ${WORKDIR}
 }
 
 for CAT in $(echo ${1} | tr ',' ' '); do
 	case "${CAT}" in
 	ag)
-	        adguard
+		adguard
 		;;
 	el)
 		easylist
 		;;
-        ep)
+	ep)
 		easyprivacy
 		;;
-        nc)
+	nc)
 		nocoin
 		;;
 	rw)
 		rwtracker
 		;;
-        mw)
+	mw)
 		mwdomains
 		;;
 	esac
