@@ -1,2 +1,3 @@
+blacklist.db:/usr/local/etc/namedb/master/blacklist.db
 named:/etc/rc.conf.d/named
 named.conf:/usr/local/etc/namedb/named.conf
