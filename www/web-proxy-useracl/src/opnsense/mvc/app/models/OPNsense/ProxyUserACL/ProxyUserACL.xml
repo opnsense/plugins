@@ -2,20 +2,20 @@
     <mount>//OPNsense/ProxyUserACL</mount>
     <version>1.0.0</version>
     <description>
-        Group and User ACL settings
+        Group, User and IP ACL settings
     </description>
     <items>
         <general>
             <ACLs>
                 <ACL type="ArrayField">
-                    <Name type="TextField">
+                    <ACLName type="TextField">
                         <Required>Y</Required>
-                    </Name>
+                    </ACLName>
                     <Hex type="TextField">
                         <Required>Y</Required>
                     </Hex>
                     <Domains type="CSVListField">
-                        <Required>N</Required>
+                        <Required>Y</Required>
                     </Domains>
                     <Black type="OptionField">
                         <Required>Y</Required>
@@ -35,8 +35,13 @@
                         <OptionValues>
                             <group>Group</group>
                             <user>User</user>
+                            <ip>IP</ip>
                         </OptionValues>
                     </Group>
+                    <Name type="TextField">
+                    </Name>
+                    <Source type="CSVListField">
+                    </Source>
                 </ACL>
             </ACLs>
         </general>

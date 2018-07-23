@@ -57,7 +57,7 @@ class SettingsController extends ApiMutableModelControllerBase
         $grid = new UIModelGrid($mdlProxyUserACL->general->ACLs->ACL);
         return $grid->fetchBindRequest(
             $this->request,
-            array('Group', 'Name', 'Domains', 'Black', 'Priority', 'uuid'),
+            array('Group', 'ACLName', 'Name', 'Source', 'Domains', 'Black', 'Priority', 'uuid'),
             'Priority'
         );
     }
@@ -74,7 +74,11 @@ class SettingsController extends ApiMutableModelControllerBase
             $result = array("result" => "failed", "validations" => array());
             $mdlProxyUserACL = $this->getModel();
             $post = $this->request->getPost("ACL");
-            $post["Hex"] = $this->strToHex($post["Name"]);
+
+            if ($post["Name"])
+                $post["Hex"] = $this->strToHex($post["Name"]);
+            else
+                $post["Hex"] = $this->strToHex($post["Source"]);
 
             $count = count($mdlProxyUserACL->general->ACLs->ACL->getNodes());
             if ($post["Priority"] > $count) {
@@ -149,7 +153,12 @@ class SettingsController extends ApiMutableModelControllerBase
                 if ($node != null) {
                     $result = array("result" => "failed", "validations" => array());
                     $ACLInfo = $this->request->getPost("ACL");
-                    $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
+
+                    if ($ACLInfo["Name"])
+                        $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
+                    else
+                        $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Source"]);
+
                     $old_priority = (string)$node->Priority;
                     $new_priority = $ACLInfo["Priority"];
 
@@ -284,6 +293,10 @@ class SettingsController extends ApiMutableModelControllerBase
 
     private function checkName($user, $search)
     {
+        if ($search == "ip") {
+            return true;
+        }
+
         $authFactory = new AuthenticationFactory();
         $servers = $authFactory->listServers();
 

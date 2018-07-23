@@ -1,9 +1,8 @@
 <form>
     <field>
-        <id>ACL.Name</id>
+        <id>ACL.ACLName</id>
         <label>Name</label>
         <type>text</type>
-        <help>Enter a name of user/group. Group name is case sensitive.</help>
     </field>
     <field>
         <id>ACL.Priority</id>
@@ -13,9 +12,28 @@
     </field>
     <field>
         <id>ACL.Group</id>
-        <label>Group/User</label>
+        <label>Type</label>
         <type>dropdown</type>
-        <help>Group or User ACL</help>
+        <help>Group, User or IP ACL</help>
+    </field>
+    <field>
+        <id>ACL.Name</id>
+        <label>Group or User Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>ACL.Source</id>
+        <label>IP sources</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Enter sources IP address.
+        <div class="alert alert-info">
+            <b>Examples:</b><br/>
+            <b class="text-primary">IP: 192.168.0.1</b><br/>
+            <b class="text-primary">Subnet: 192.168.0.0/24 or 192.168.1.0/255.255.255.0</b><br/>
+            <b class="text-primary">IP-Range: 192.168.1.1-192.168.1.10</b><br/>
+        </div>]]></help>
     </field>
     <field>
         <id>ACL.Black</id>
