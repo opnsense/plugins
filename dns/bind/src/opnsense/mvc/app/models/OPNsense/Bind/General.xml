@@ -28,5 +28,12 @@
             <Required>N</Required>
             <asList>Y</asList>
         </forwarders>
+        <logsize type="IntegerField">
+            <default>5</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.<ValidationMessage>
+        </logsize>
     </items>
 </model>
