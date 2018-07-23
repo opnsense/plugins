@@ -23,7 +23,7 @@
     </field>
     <field>
         <id>ACL.Source</id>
-        <label>IP sources</label>
+        <label>IP/Subnet</label>
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>

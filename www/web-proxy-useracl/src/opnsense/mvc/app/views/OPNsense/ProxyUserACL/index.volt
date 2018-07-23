@@ -143,7 +143,7 @@
                             <th data-column-id="ACLName" data-type="string"
                                 data-sortable="false">{{ lang._('Description') }}</th>
                             <th data-column-id="Group" data-width="10em" data-type="string"
-                                data-sortable="false">{{ lang._('Source') }}</th>
+                                data-sortable="false">{{ lang._('Target Type') }}</th>
                             <th data-column-id="targets" data-width="10em" data-formatter="targets"
                                 data-sortable="false">{{ lang._('Targets') }}</th>
                             <th data-column-id="Black" data-width="10em" data-type="string"
