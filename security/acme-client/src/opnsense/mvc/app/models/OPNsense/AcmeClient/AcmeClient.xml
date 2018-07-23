@@ -677,6 +677,7 @@
                     <OptionValues>
                         <restart_gui>Restart OPNsense Web UI</restart_gui>
                         <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
+                        <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <configd>System or Plugin Command (select below)</configd>
                     </OptionValues>
                 </type>
