@@ -78,7 +78,7 @@ mwdomains() {
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
-		awk '{ print "zone " $1 " " $2 " {type master; file \"/usr/local/etc/namedb/master/blacklist.db\"; };" }' ${FILE} | sort -u > ${FILE}.inc
+		awk '{ print "zone " $1 " " $2 " {type master; file \"/usr/local/etc/namedb/master/blacklist.db\"; notify no; };" }' ${FILE} | sort -u > ${FILE}.inc
 	done
 	# Merge resulting files (/dev/null in case there are none)
 	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
