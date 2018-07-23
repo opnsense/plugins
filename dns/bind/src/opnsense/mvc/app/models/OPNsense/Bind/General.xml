@@ -33,7 +33,7 @@
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>1000</MaximumValue>
-            <ValidationMessage>Choose a value between 1 and 1000.<ValidationMessage>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </logsize>
     </items>
 </model>
