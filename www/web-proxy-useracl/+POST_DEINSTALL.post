@@ -1,6 +1,7 @@
-rm -f /usr/local/etc/squid/pre-auth/ProxyUserACL.conf
+rm -f /usr/local/etc/squid/auth/ProxyUserACL.conf
 rm -f /usr/local/etc/squid/groupACL_*.txt
 rm -f /usr/local/etc/squid/userACL_*.txt
 if [ -f /var/run/squid/squid.pid ]; then
-	service squid reload
+	echo -n "Reloading proxy..."
+	configctl proxy reload
 fi

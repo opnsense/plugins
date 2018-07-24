@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Smart-Soft
+ *    Copyright (C) 2017-2018 Smart-Soft
  *
  *    All rights reserved.
  *
@@ -30,12 +30,21 @@
 
 namespace OPNsense\ProxyUserACL;
 
-class IndexController extends \OPNsense\Base\IndexController
+/**
+ * Class TimesController
+ * @package OPNsense\ProxyUserACL
+ */
+class TimesController extends \OPNsense\Base\IndexController
 {
+    /**
+     * time rules index page
+     * @throws \Exception
+     */
     public function indexAction()
     {
+        // set page title, used by the standard template in layouts/default.volt.
         // pick the template to serve to our users.
-        $this->view->pick('OPNsense/ProxyUserACL/index');
-        $this->view->formDialogACL = $this->getForm("dialogACL");
+        $this->view->pick('OPNsense/ProxyUserACL/times');
+        $this->view->formDialogTimes = $this->getForm("dialogTimes");
     }
 }

@@ -30,8 +30,21 @@
 
 namespace OPNsense\ProxyUserACL;
 
-use OPNsense\Base\BaseModel;
-
-class ProxyUserACL extends BaseModel
+/**
+ * Class ArpsController
+ * @package OPNsense\ProxyUserACL
+ */
+class ArpsController extends \OPNsense\Base\IndexController
 {
+    /**
+     * MAC-addresses index page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        // set page title, used by the standard template in layouts/default.volt.
+        // pick the template to serve to our users.
+        $this->view->pick('OPNsense/ProxyUserACL/arps');
+        $this->view->formDialogArps = $this->getForm("dialogArps");
+    }
 }

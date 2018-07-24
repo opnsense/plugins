@@ -1,30 +1,6 @@
 <form>
     <field>
-        <id>ACL.Name</id>
-        <label>Name</label>
-        <type>text</type>
-        <help>Enter a name of user/group. Group name is case sensitive.</help>
-    </field>
-    <field>
-        <id>ACL.Priority</id>
-        <label>Priority</label>
-        <type>text</type>
-        <help>Rule priority</help>
-    </field>
-    <field>
-        <id>ACL.Group</id>
-        <label>Group/User</label>
-        <type>dropdown</type>
-        <help>Group or User ACL</help>
-    </field>
-    <field>
-        <id>ACL.Black</id>
-        <label>Black/White</label>
-        <type>dropdown</type>
-        <help>Black or White list</help>
-    </field>
-    <field>
-        <id>ACL.Domains</id>
+        <id>Domain.Names</id>
         <label>Domains</label>
         <type>select_multiple</type>
         <style>tokenize</style>

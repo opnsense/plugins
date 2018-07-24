@@ -1,0 +1,11 @@
+<form>
+    <field>
+        <id>Src.Names</id>
+        <label>Source IPs</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Type subnets from which you want to set access, use a comma or press Enter for new item. <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+        <hint>Type subnet addresses (ex. 192.168.2.0/24)</hint>
+    </field>
+</form>

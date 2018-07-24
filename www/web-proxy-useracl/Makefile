@@ -1,5 +1,5 @@
 PLUGIN_NAME=		web-proxy-useracl
-PLUGIN_VERSION=		1.1
+PLUGIN_VERSION=		2.0
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		Group and user ACL for the web proxy
 PLUGIN_MAINTAINER=	kekek2@ya.ru

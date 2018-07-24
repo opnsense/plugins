@@ -1,0 +1,18 @@
+<form>
+    <field>
+        <id>Agent.Names</id>
+        <label>Browser/user-agents</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Access by user-agents.<br/>
+        You may use a regular expression, use a comma or press Enter for new item.<br/>
+        <div class="alert alert-info">
+            <b>Examples:</b><br/>
+            <b class="text-primary">^(.)+Macintosh(.)+Firefox/37\.0</b> -> matches on <b>Macintosh version of Firefox revision 37.0</b><br/>
+            <b class="text-primary">^Mozilla</b> -> matches on <b>all Mozilla based browsers</b><br/>
+        </div>
+        <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+        <hint>Regular expressions are allowed.</hint>
+    </field>
+</form>

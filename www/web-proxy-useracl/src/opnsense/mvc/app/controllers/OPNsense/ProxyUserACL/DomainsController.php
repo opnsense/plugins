@@ -30,8 +30,21 @@
 
 namespace OPNsense\ProxyUserACL;
 
-use OPNsense\Base\BaseModel;
-
-class ProxyUserACL extends BaseModel
+/**
+ * Class DomainsController
+ * @package OPNsense\ProxyUserACL
+ */
+class DomainsController extends \OPNsense\Base\IndexController
 {
+    /**
+     * domains index page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        // set page title, used by the standard template in layouts/default.volt.
+        // pick the template to serve to our users.
+        $this->view->pick('OPNsense/ProxyUserACL/domains');
+        $this->view->formDialogDomains = $this->getForm("dialogDomains");
+    }
 }

@@ -1,25 +1,199 @@
 <model>
     <mount>//OPNsense/ProxyUserACL</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>
         Group and User ACL settings
     </description>
     <items>
         <general>
-            <ACLs>
-                <ACL type="ArrayField">
-                    <Name type="TextField">
+            <Users>
+                <User type="ArrayField">
+                    <Names type="CSVListField">
                         <Required>Y</Required>
-                    </Name>
-                    <Hex type="TextField">
+                    </Names>
+                    <Hex type="CSVListField">
                         <Required>Y</Required>
                     </Hex>
-                    <Domains type="CSVListField">
+                    <Group type="OptionField">
+                        <Required>Y</Required>
+                        <default>group</default>
+                        <OptionValues>
+                            <group>Group</group>
+                            <user>User</user>
+                        </OptionValues>
+                    </Group>
+                    <Server type="AuthenticationServerField">
+                        <Required>Y</Required>
+                        <multiple>N</multiple>
+                    </Server>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </User>
+            </Users>
+            <Domains>
+                <Domain type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Domain>
+            </Domains>
+            <Agents>
+                <Agent type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Agent>
+            </Agents>
+            <Times>
+                <Time type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Time>
+            </Times>
+            <Mimes>
+                <Mime type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Mime>
+            </Mimes>
+            <Srcs>
+                <Src type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Src>
+            </Srcs>
+            <Dsts>
+                <Dst type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Dst>
+            </Dsts>
+            <Arps>
+                <Arp type="ArrayField">
+                    <Names type="CSVListField">
+                        <Required>Y</Required>
+                    </Names>
+                    <id type="AutoNumberField">
+                        <Required>Y</Required>
+                    </id>
+                </Arp>
+            </Arps>
+            <HTTPAccesses>
+                <HTTPAccess type="ArrayField">
+                    <Users type="ModelRelationField">
+                        <Model>
+                            <Users>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Users.User</items>
+                                <display>Names</display>
+                            </Users>
+                        </Model>
+                        <ValidationMessage>Related user not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Users>
+                    <Domains type="ModelRelationField">
+                        <Model>
+                            <Domains>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Domains.Domain</items>
+                                <display>Names</display>
+                            </Domains>
+                        </Model>
+                        <ValidationMessage>Related domain not found</ValidationMessage>
                         <Required>N</Required>
                     </Domains>
+                    <Agents type="ModelRelationField">
+                        <Model>
+                            <Agents>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Agents.Agent</items>
+                                <display>Names</display>
+                            </Agents>
+                        </Model>
+                        <ValidationMessage>Related agent not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Agents>
+                    <Times type="ModelRelationField">
+                        <Model>
+                            <Times>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Times.Time</items>
+                                <display>Names</display>
+                            </Times>
+                        </Model>
+                        <ValidationMessage>Related time not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Times>
+                    <Mimes type="ModelRelationField">
+                        <Model>
+                            <Mimes>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Mimes.Mime</items>
+                                <display>Names</display>
+                            </Mimes>
+                        </Model>
+                        <ValidationMessage>Related mime not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Mimes>
+                    <Srcs type="ModelRelationField">
+                        <Model>
+                            <Srcs>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Srcs.Src</items>
+                                <display>Names</display>
+                            </Srcs>
+                        </Model>
+                        <ValidationMessage>Related src not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Srcs>
+                    <Dsts type="ModelRelationField">
+                        <Model>
+                            <Dsts>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Dsts.Dst</items>
+                                <display>Names</display>
+                            </Dsts>
+                        </Model>
+                        <ValidationMessage>Related dst not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Dsts>
+                    <Arps type="ModelRelationField">
+                        <Model>
+                            <Arps>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Arps.Arp</items>
+                                <display>Names</display>
+                            </Arps>
+                        </Model>
+                        <ValidationMessage>Related arp not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Arps>
                     <Black type="OptionField">
                         <Required>Y</Required>
-                        <default>Black</default>
+                        <default>deny</default>
                         <OptionValues>
                             <deny>Black</deny>
                             <allow>White</allow>
@@ -29,16 +203,204 @@
                         <default>0</default>
                         <Required>Y</Required>
                     </Priority>
-                    <Group type="OptionField">
+                </HTTPAccess>
+            </HTTPAccesses>
+            <SSLs>
+                <SSL type="ArrayField">
+                    <Users type="ModelRelationField">
+                        <Model>
+                            <Users>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Users.User</items>
+                                <display>Names</display>
+                            </Users>
+                        </Model>
+                        <ValidationMessage>Related user not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Users>
+                    <Domains type="ModelRelationField">
+                        <Model>
+                            <Domains>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Domains.Domain</items>
+                                <display>Names</display>
+                            </Domains>
+                        </Model>
+                        <ValidationMessage>Related domain not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Domains>
+                    <Agents type="ModelRelationField">
+                        <Model>
+                            <Agents>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Agents.Agent</items>
+                                <display>Names</display>
+                            </Agents>
+                        </Model>
+                        <ValidationMessage>Related agent not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Agents>
+                    <Times type="ModelRelationField">
+                        <Model>
+                            <Times>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Times.Time</items>
+                                <display>Names</display>
+                            </Times>
+                        </Model>
+                        <ValidationMessage>Related time not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Times>
+                    <Mimes type="ModelRelationField">
+                        <Model>
+                            <Mimes>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Mimes.Mime</items>
+                                <display>Names</display>
+                            </Mimes>
+                        </Model>
+                        <ValidationMessage>Related mime not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Mimes>
+                    <Srcs type="ModelRelationField">
+                        <Model>
+                            <Srcs>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Srcs.Src</items>
+                                <display>Names</display>
+                            </Srcs>
+                        </Model>
+                        <ValidationMessage>Related src not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Srcs>
+                    <Dsts type="ModelRelationField">
+                        <Model>
+                            <Dsts>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Dsts.Dst</items>
+                                <display>Names</display>
+                            </Dsts>
+                        </Model>
+                        <ValidationMessage>Related dst not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Dsts>
+                    <Arps type="ModelRelationField">
+                        <Model>
+                            <Arps>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Arps.Arp</items>
+                                <display>Names</display>
+                            </Arps>
+                        </Model>
+                        <ValidationMessage>Related arp not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Arps>
+                </SSL>
+            </SSLs>
+            <ICAPs>
+                <ICAP type="ArrayField">
+                    <Users type="ModelRelationField">
+                        <Model>
+                            <Users>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Users.User</items>
+                                <display>Names</display>
+                            </Users>
+                        </Model>
+                        <ValidationMessage>Related user not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Users>
+                    <Domains type="ModelRelationField">
+                        <Model>
+                            <Domains>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Domains.Domain</items>
+                                <display>Names</display>
+                            </Domains>
+                        </Model>
+                        <ValidationMessage>Related domain not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Domains>
+                    <Agents type="ModelRelationField">
+                        <Model>
+                            <Agents>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Agents.Agent</items>
+                                <display>Names</display>
+                            </Agents>
+                        </Model>
+                        <ValidationMessage>Related agent not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Agents>
+                    <Times type="ModelRelationField">
+                        <Model>
+                            <Times>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Times.Time</items>
+                                <display>Names</display>
+                            </Times>
+                        </Model>
+                        <ValidationMessage>Related time not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Times>
+                    <Mimes type="ModelRelationField">
+                        <Model>
+                            <Mimes>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Mimes.Mime</items>
+                                <display>Names</display>
+                            </Mimes>
+                        </Model>
+                        <ValidationMessage>Related mime not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Mimes>
+                    <Srcs type="ModelRelationField">
+                        <Model>
+                            <Srcs>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Srcs.Src</items>
+                                <display>Names</display>
+                            </Srcs>
+                        </Model>
+                        <ValidationMessage>Related src not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Srcs>
+                    <Dsts type="ModelRelationField">
+                        <Model>
+                            <Dsts>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Dsts.Dst</items>
+                                <display>Names</display>
+                            </Dsts>
+                        </Model>
+                        <ValidationMessage>Related dst not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Dsts>
+                    <Arps type="ModelRelationField">
+                        <Model>
+                            <Arps>
+                                <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
+                                <items>general.Arps.Arp</items>
+                                <display>Names</display>
+                            </Arps>
+                        </Model>
+                        <ValidationMessage>Related arp not found</ValidationMessage>
+                        <Required>N</Required>
+                    </Arps>
+                    <Black type="OptionField">
                         <Required>Y</Required>
-                        <default>group</default>
+                        <default>deny</default>
                         <OptionValues>
-                            <group>Group</group>
-                            <user>User</user>
+                            <deny>Black</deny>
+                            <allow>White</allow>
                         </OptionValues>
-                    </Group>
-                </ACL>
-            </ACLs>
+                    </Black>
+                    <Priority type="IntegerField">
+                        <default>0</default>
+                        <Required>Y</Required>
+                    </Priority>
+                </ICAP>
+            </ICAPs>
         </general>
     </items>
 </model>

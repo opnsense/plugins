@@ -2,7 +2,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Smart-Soft
+ *    Copyright (C) 2017-2018 Smart-Soft
  *
  *    All rights reserved.
  *
@@ -33,13 +33,28 @@ require_once('script/load_phalcon.php');
 
 use \OPNsense\ProxyUserACL\ProxyUserACL;
 use \OPNsense\Core\Config;
+use \OPNsense\Proxy\Proxy;
 
 $mdlProxyUserACL = new ProxyUserACL();
-$domain = strtoupper((string) Config::getInstance()->object()->system->domain);
+$domain = strtoupper((string)Config::getInstance()->object()->system->domain);
 
 array_map('unlink', glob("/usr/local/etc/squid/ACL_useracl_*.txt"));
-foreach ($mdlProxyUserACL->getNodeByReference('general.ACLs.ACL')->getNodes() as $acl) {
-    file_put_contents("/usr/local/etc/squid/ACL_useracl_" .
-        $acl["Priority"] . ".txt", $acl["Name"] . "\n" .
-        ($acl["Group"]["user"]["selected"] == "1" ? $acl["Name"] . "@" . $domain . "\n" : ""));
+foreach ($mdlProxyUserACL->getNodeByReference('general.Users.User')->getChildren() as $User) {
+    foreach (explode(",", (new Proxy())->forward->authentication->method->__toString()) as $method) {
+        if ($User->Server->__toString() == $method) {
+            if ($User->Group->__toString() == "user") {
+                $users = [];
+                foreach (array_filter(explode(",", $User->Names->__toString())) as $user) {
+                    $users[] = urlencode($user) . "@" . $domain;
+                }
+                $domain_users = implode("\n", $users);
+            } else {
+                $domain_users = "";
+            }
+            file_put_contents("/usr/local/etc/squid/ACL_useracl_" . $User->id->__toString() . ".txt",
+                implode("\n", array_filter(explode(",",
+                    $User->Names->__toString()))) . "\n" . $domain_users . "\n");
+            break;
+        }
+    }
 }

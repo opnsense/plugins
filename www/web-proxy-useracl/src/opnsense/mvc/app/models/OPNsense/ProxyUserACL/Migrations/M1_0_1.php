@@ -28,10 +28,37 @@
  *
  */
 
-namespace OPNsense\ProxyUserACL;
+namespace OPNsense\ProxyUserACL\Migrations;
 
-use OPNsense\Base\BaseModel;
+use OPNsense\Base\BaseModelMigration;
+use OPNsense\Core\Config;
 
-class ProxyUserACL extends BaseModel
+
+class M1_0_1 extends BaseModelMigration
 {
+    public function run($model)
+    {
+        parent::run($model);
+
+        foreach (Config::getInstance()->object()->OPNsense->ProxyUserACL->general->ACLs->ACL as $acl) {
+
+            $user = $model->general->Users->User->add();
+            $user->Names = $acl->Name->__toString();
+            $user->Hex = $acl->Hex->__toString();
+            $user->Group = $acl->Group->__toString();
+            $user->Server = $acl->Server->__toString();
+
+            $domain = $model->general->Domains->Domain->add();
+            $domain->Names = $acl->Domains->__toString();
+
+            $new_acl = $model->general->HTTPAccesses->HTTPAccess->add();
+            $new_acl->Users = $user->getAttributes()["uuid"];
+            $new_acl->Domains = $domain->getAttributes()["uuid"];
+
+            unset($acl);
+        }
+
+        $model->serializeToConfig();
+        Config::getInstance()->save();
+    }
 }

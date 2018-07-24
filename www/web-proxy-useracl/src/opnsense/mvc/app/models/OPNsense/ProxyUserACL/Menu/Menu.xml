@@ -1,7 +1,17 @@
 <menu>
     <Services>
-        <WebProxy>
-            <ProxyUserACL VisibleName="Groups and Users" order="30" url="/ui/proxyuseracl"/>
-        </WebProxy>
+        <ProxyUserACL>
+            <Httpaccesses VisibleName="http access" url="/ui/proxyuseracl/httpaccesses/" order="10"/>
+            <SSL VisibleName="SSL Bump" url="/ui/proxyuseracl/ssls/" order="20"/>
+            <ICAP VisibleName="ICAP enable" url="/ui/proxyuseracl/icaps/" order="30"/>
+            <Users url="/ui/proxyuseracl/users/" order="40"/>
+            <Domains url="/ui/proxyuseracl/domains/" order="50"/>
+            <Srcs VisibleName="Source IPs" url="/ui/proxyuseracl/srcs/" order="60"/>
+            <Dsts VisibleName="Destination IPs" url="/ui/proxyuseracl/dsts/" order="70"/>
+            <Agents VisibleName="Browser/user-agents" url="/ui/proxyuseracl/agents/" order="80"/>
+            <Time url="/ui/proxyuseracl/times/" order="90"/>
+            <Mimes VisibleName="Mime types" url="/ui/proxyuseracl/mimes/" order="100"/>
+            <Arps VisibleName="MAC addresses" url="/ui/proxyuseracl/arps/" order="110"/>
+        </ProxyUserACL>
     </Services>
 </menu>

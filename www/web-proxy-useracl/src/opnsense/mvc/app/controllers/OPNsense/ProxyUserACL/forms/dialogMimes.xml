@@ -1,0 +1,18 @@
+<form>
+    <field>
+        <id>Mime.Names</id>
+        <label>Mime types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Access by specific MIME type reply.<br/>
+        You may use a regular expression, use a comma or press Enter for new item.<br/>
+        <div class="alert alert-info">
+            <b>Examples:</b><br/>
+            <b class="text-primary">video/flv</b> -> matches on <b>Flash Video</b><br/>
+            <b class="text-primary">application/x-javascript</b> -> matches on <b>javascripts</b><br/>
+        </div>
+        <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+        <hint>Regular expressions are allowed.</hint>
+    </field>
+</form>

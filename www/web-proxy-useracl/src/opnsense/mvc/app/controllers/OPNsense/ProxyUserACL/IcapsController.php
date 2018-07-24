@@ -30,8 +30,21 @@
 
 namespace OPNsense\ProxyUserACL;
 
-use OPNsense\Base\BaseModel;
-
-class ProxyUserACL extends BaseModel
+/**
+ * Class IcapsController
+ * @package OPNsense\ProxyUserACL
+ */
+class IcapsController extends \OPNsense\Base\IndexController
 {
+    /**
+     * ICAP rules index page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        // set page title, used by the standard template in layouts/default.volt.
+        // pick the template to serve to our users.
+        $this->view->pick('OPNsense/ProxyUserACL/icaps');
+        $this->view->formDialogIcaps = $this->getForm("dialogIcaps");
+    }
 }

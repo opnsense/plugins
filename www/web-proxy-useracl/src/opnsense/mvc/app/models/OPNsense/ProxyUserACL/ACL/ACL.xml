@@ -1,0 +1,9 @@
+<acl>
+    <page-services-proxy-user-acl>
+        <name>Services: Proxy: Group and User ACL</name>
+        <patterns>
+            <pattern>ui/proxyuseracl/*</pattern>
+            <pattern>api/proxyuseracl/*</pattern>
+        </patterns>
+    </page-services-proxy-user-acl>
+</acl>

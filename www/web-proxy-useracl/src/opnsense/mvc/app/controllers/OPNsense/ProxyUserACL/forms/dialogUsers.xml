@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>User.Names</id>
+        <label>Name</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Enter a name of user/group. Group name is case sensitive.</help>
+    </field>
+    <field>
+        <id>User.Group</id>
+        <label>Group/User</label>
+        <type>dropdown</type>
+        <help>Group or User ACL</help>
+    </field>
+    <field>
+        <id>User.Server</id>
+        <label>Authentication method</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select Authentication method]]></help>
+    </field>
+</form>

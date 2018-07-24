@@ -1,1 +1,3 @@
-ProxyUserACL.conf:/usr/local/etc/squid/auth/ProxyUserACL.conf
+acls.conf:/usr/local/etc/squid/pre-ssl/ProxyUserACL.conf
+http_access.conf:/usr/local/etc/squid/auth/ProxyUserACL.conf
+ssl_nobump.conf:/usr/local/etc/squid/ssl/ProxyUserACL.conf

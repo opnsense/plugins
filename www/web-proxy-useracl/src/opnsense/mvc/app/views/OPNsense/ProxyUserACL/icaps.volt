@@ -1,5 +1,5 @@
 {#
-Copyright (C) 2017 Smart-Soft
+Copyright (C) 2017-2018 Smart-Soft
 
 All rights reserved.
 
@@ -26,17 +26,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script>
+<script type="text/javascript">
 
     $(document).ready(function () {
         grid = $("#grid-acl").UIBootgrid(
             {
-                'search': '/api/proxyuseracl/settings/searchACL',
-                'get': '/api/proxyuseracl/settings/getACL/',
-                'set': '/api/proxyuseracl/settings/setACL/',
-                'add': '/api/proxyuseracl/settings/addACL/',
-                'del': '/api/proxyuseracl/settings/delACL/',
-                'toggle': '/api/proxyuseracl/settings/toggleACL/',
+                'search': '/api/proxyuseracl/icaps/searchACL',
+                'get': '/api/proxyuseracl/icaps/getACL/',
+                'set': '/api/proxyuseracl/icaps/setACL/',
+                'add': '/api/proxyuseracl/icaps/addACL/',
+                'del': '/api/proxyuseracl/icaps/delACL/',
+                'toggle': '/api/proxyuseracl/icaps/toggleACL/',
                 options: {
                     formatters: {
                         "commands": function (column, row) {
@@ -112,19 +112,15 @@ POSSIBILITY OF SUCH DAMAGE.
         <tr>
             <td colspan="2">
                 <table id="grid-acl" class="table table-condensed table-hover table-striped table-responsive"
-                       data-editDialog="DialogACL">
+                       data-editDialog="DialogIcaps">
                     <thead>
                     <tr>
                         <th data-column-id="Priority" data-width="10em" data-type="string" data-sortable="false"
                             data-visible="true">{{ lang._('Number') }}</th>
-                        <th data-column-id="Group" data-width="10em" data-type="string"
-                            data-sortable="false">{{ lang._('Group') }}</th>
                         <th data-column-id="Black" data-width="10em" data-type="string"
                             data-sortable="false">{{ lang._('Black') }}</th>
-                        <th data-column-id="Name" data-type="string"
-                            data-sortable="false">{{ lang._('Name') }}</th>
-                        <th data-column-id="Domains" data-type="string" data-sortable="false"
-                            data-visible="true">{{ lang._('Domains') }}</th>
+                        <th data-column-id="Visible" data-type="string" data-sortable="false"
+                            data-visible="true">{{ lang._('Name') }}</th>
                         <th data-column-id="updown" data-width="7em" data-formatter="updown"
                             data-sortable="false">{{ lang._('Priority') }}</th>
                         <th data-column-id="commands" data-width="7em" data-formatter="commands"
@@ -149,7 +145,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </tr>
     </table>
 </div>
-<button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b><i
+<button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i
             id="reconfigureAct_progress" class=""></i></button>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogACL,'id':'DialogACL','label':lang._('Edit user/group white and black lists')]) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogIcaps,'id':'DialogIcaps','label':lang._('Edit ICAP white and black lists')]) }}

@@ -30,8 +30,21 @@
 
 namespace OPNsense\ProxyUserACL;
 
-use OPNsense\Base\BaseModel;
-
-class ProxyUserACL extends BaseModel
+/**
+ * Class SslsController
+ * @package OPNsense\ProxyUserACL
+ */
+class SslsController extends \OPNsense\Base\IndexController
 {
+    /**
+     * SSL Bump rules index page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        // set page title, used by the standard template in layouts/default.volt.
+        // pick the template to serve to our users.
+        $this->view->pick('OPNsense/ProxyUserACL/ssls');
+        $this->view->formDialogSsls = $this->getForm("dialogSsls");
+    }
 }

@@ -30,8 +30,21 @@
 
 namespace OPNsense\ProxyUserACL;
 
-use OPNsense\Base\BaseModel;
-
-class ProxyUserACL extends BaseModel
+/**
+ * Class HttpaccessesController
+ * @package OPNsense\ProxyUserACL
+ */
+class HttpaccessesController extends \OPNsense\Base\IndexController
 {
+    /**
+     * http_access index page
+     * @throws \Exception
+     */
+    public function indexAction()
+    {
+        // set page title, used by the standard template in layouts/default.volt.
+        // pick the template to serve to our users.
+        $this->view->pick('OPNsense/ProxyUserACL/httpaccesses');
+        $this->view->formDialogHttpaccesses = $this->getForm("dialogHttpaccesses");
+    }
 }

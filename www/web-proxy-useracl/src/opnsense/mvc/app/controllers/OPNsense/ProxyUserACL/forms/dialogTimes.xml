@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>Time.Names</id>
+        <label>Time</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Type time at which you want to set access in following format:<br>
+        [day-abbrevs] [h1:m1-h2:m2]<br>
+        day-abbrevs:<br>
+        S - Sunday<br>
+        M - Monday<br>
+        T - Tuesday<br>
+        W - Wednesday<br>
+        H - Thursday<br>
+        F - Friday<br>
+        A - Saturday<br>
+        h1:m1 must be less than h2:m2<br>
+        Use a comma or press Enter for new item.
+        <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+    </field>
+</form>

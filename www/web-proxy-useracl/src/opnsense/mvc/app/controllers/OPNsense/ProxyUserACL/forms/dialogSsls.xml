@@ -1,0 +1,50 @@
+<form>
+    <field>
+        <id>SSL.Users</id>
+        <label>User/group</label>
+        <type>dropdown</type>
+        <help>Select a user/group.</help>
+    </field>
+    <field>
+        <id>SSL.Domains</id>
+        <label>Domains</label>
+        <type>dropdown</type>
+        <help>Select destination domains.</help>
+    </field>
+    <field>
+        <id>SSL.Srcs</id>
+        <label>Source IPs</label>
+        <type>dropdown</type>
+        <help>Select Source IPs</help>
+    </field>
+    <field>
+        <id>SSL.Dsts</id>
+        <label>Destination IPs</label>
+        <type>dropdown</type>
+        <help>Select Destination IPs</help>
+    </field>
+    <field>
+        <id>SSL.Agents</id>
+        <label>Browser/user-agents</label>
+        <type>dropdown</type>
+        <help>Select browser/user-agents</help>
+    </field>
+    <field>
+        <id>SSL.Times</id>
+        <label>Time</label>
+        <type>dropdown</type>
+        <help>Select times restrictions</help>
+    </field>
+    <field>
+        <id>SSL.Mimes</id>
+        <label>Mime types</label>
+        <type>dropdown</type>
+        <help>Select MIME type reply</help>
+    </field>
+    <field>
+        <id>SSL.Arps</id>
+        <label>MAC addresses</label>
+        <type>dropdown</type>
+        <help>Select MAC-addresses</help>
+    </field>
+</form>
