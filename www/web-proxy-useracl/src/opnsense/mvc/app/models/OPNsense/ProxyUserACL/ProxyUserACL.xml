@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/ProxyUserACL</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>
         Group and User ACL settings
     </description>
