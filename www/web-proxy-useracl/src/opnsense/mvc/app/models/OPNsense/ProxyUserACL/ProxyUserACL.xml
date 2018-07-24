@@ -2,7 +2,7 @@
     <mount>//OPNsense/ProxyUserACL</mount>
     <version>1.0.0</version>
     <description>
-        Group, User and IP ACL settings
+        Group and User ACL settings
     </description>
     <items>
         <general>

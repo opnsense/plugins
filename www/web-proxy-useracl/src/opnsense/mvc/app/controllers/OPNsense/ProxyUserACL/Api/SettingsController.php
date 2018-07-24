@@ -75,10 +75,11 @@ class SettingsController extends ApiMutableModelControllerBase
             $mdlProxyUserACL = $this->getModel();
             $post = $this->request->getPost("ACL");
 
-            if ($post["Name"])
-                $post["Hex"] = $this->strToHex($post["Name"]);
-            else
+            if ($post["Source"]) {
                 $post["Hex"] = $this->strToHex($post["Source"]);
+            } else {
+                $post["Hex"] = $this->strToHex($post["Name"]);
+            }
 
             $count = count($mdlProxyUserACL->general->ACLs->ACL->getNodes());
             if ($post["Priority"] > $count) {
@@ -154,10 +155,11 @@ class SettingsController extends ApiMutableModelControllerBase
                     $result = array("result" => "failed", "validations" => array());
                     $ACLInfo = $this->request->getPost("ACL");
 
-                    if ($ACLInfo["Name"])
-                        $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
-                    else
+                    if ($ACLInfo["Source"]) {
                         $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Source"]);
+                    } else {
+                        $ACLInfo["Hex"] = $this->strToHex($ACLInfo["Name"]);
+                    }
 
                     $old_priority = (string)$node->Priority;
                     $new_priority = $ACLInfo["Priority"];
