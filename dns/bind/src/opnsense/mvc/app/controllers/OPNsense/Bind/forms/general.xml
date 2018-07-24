@@ -35,4 +35,10 @@
         <allownew>true</allownew>
         <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
     </field>
+    <field>
+        <id>general.logsize</id>
+        <label>Logsize in MB</label>
+        <type>text</type>
+        <help>Set the amount how big a logfile can growth.</help>
+    </field>
 </form>
