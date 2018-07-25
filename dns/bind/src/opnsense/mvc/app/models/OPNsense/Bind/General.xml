@@ -42,5 +42,17 @@
             <MaximumValue>99</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 99.</ValidationMessage>
         </maxcachesize>
+        <recursion type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.bind.acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                    <group>name</group>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+            <Required>N</Required>
+        </recursion>
     </items>
 </model>
