@@ -6,4 +6,4 @@ $TTL    86400
                    864000
                      3600 )
 @               NS      localhost.
-$INCLUDE /etc/bind/db.blocklist
+$INCLUDE /usr/local/etc/namedb/dnsbl.inc
