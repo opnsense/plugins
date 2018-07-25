@@ -19,5 +19,9 @@
                 <rw>Ransomware Tracker List</rw>
             </OptionValues>
         </type>
+        <whitelists type="CSVListField">
+            <default></default>
+            <Required>N</Required>
+        </whitelists>
     </items>
 </model>
