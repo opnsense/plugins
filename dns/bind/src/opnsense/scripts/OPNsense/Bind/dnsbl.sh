@@ -80,7 +80,7 @@ mwdomains() {
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
-		awk '{ if (length($1) < 245) print " "$1" CNAME .\n*."$1" CNAME ."}' ${FILE} | sort -u > ${FILE}.inc
+		awk '{ if (length($1) < 245) print ""$1" CNAME .\n*."$1" CNAME ."}' ${FILE} | sort -u > ${FILE}.inc
 	done
 	# Merge resulting files (/dev/null in case there are none)
 	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
