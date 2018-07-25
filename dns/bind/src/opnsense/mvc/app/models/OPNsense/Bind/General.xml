@@ -44,9 +44,11 @@
         </maxcachesize>
         <recursion type="ModelRelationField">
             <Model>
+                <template>
                     <source>OPNsense.bind.acl</source>
                     <items>acls.acl</items>
                     <display>name</display>
+                </template>
             </Model>
             <Multiple>N</Multiple>
             <Required>N</Required>
