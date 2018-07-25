@@ -48,7 +48,6 @@
                     <source>OPNsense.bind.acl</source>
                     <items>acls.acl</items>
                     <display>name</display>
-                    <group>name</group>
                 </template>
             </Model>
             <Multiple>Y</Multiple>
