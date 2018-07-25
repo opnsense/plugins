@@ -11,3 +11,7 @@ chmod 755 /var/dump
 mkdir -p /var/stats
 chown -R bind:bind /var/stats
 chmod 755 /var/stats
+
+mkdir -p /var/log/named
+chown -R bind:bind /var/log/named
+chmod 755 /var/log/named
