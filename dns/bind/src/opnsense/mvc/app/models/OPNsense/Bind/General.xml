@@ -35,5 +35,12 @@
             <MaximumValue>1000</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </logsize>
+        <maxcachesize type="IntegerField">
+            <default>80</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>99</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 99.</ValidationMessage>
+        </maxcachesize>
     </items>
 </model>
