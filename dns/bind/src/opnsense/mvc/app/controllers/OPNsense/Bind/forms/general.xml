@@ -41,4 +41,10 @@
         <type>text</type>
         <help>Set the amount how big a logfile can growth.</help>
     </field>
+    <field>
+        <id>general.maxcachesize</id>
+        <label>Maximum Cache Size</label>
+        <type>text</type>
+        <help>How much memory in percent the cache can use from the system. Default is 80%.</help>
+    </field>
 </form>
