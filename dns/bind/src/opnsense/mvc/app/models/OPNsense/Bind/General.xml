@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
