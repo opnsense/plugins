@@ -54,5 +54,14 @@
             <Required>N</Required>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
         </recursion>
+        <dnssecvalidation type="OptionField">
+            <OptionValues>
+                <No>no</No>
+                <Auto>auto</Auto>
+            </OptionValues>
+            <default>No</default>
+            <Multiple>N</Multiple>
+            <Required>N</Required>
+        </dnssecvalidation>
     </items>
 </model>
