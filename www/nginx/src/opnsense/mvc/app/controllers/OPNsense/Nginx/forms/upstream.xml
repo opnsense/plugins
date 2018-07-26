@@ -10,4 +10,51 @@
     <style>selectpicker</style>
     <type>select_multiple</type>
   </field>
+  <field>
+    <id>upstream.tls_client_certificate</id>
+    <label>TLS: Client Certificate</label>
+    <help>Authenticate on the Server using a client certificate.</help>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>upstream.tls_name_override</id>
+    <label>TLS: Servername override</label>
+    <help>Use another hostname for SNI and certificate validation.</help>
+    <type>text</type>
+  </field>
+  <field>
+    <id>upstream.tls_protocol_versions</id>
+    <label>TLS: Supported Versions</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+  </field>
+  <field>
+    <id>upstream.tls_session_reuse</id>
+    <label>TLS: Session Reuse</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>upstream.tls_trusted_certificate</id>
+    <label>TLS: Trusted Certificate</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+  </field>
+  <field>
+    <id>upstream.tls_verify</id>
+    <label>TLS: Verify Certificate</label>
+    <type>checkbox</type>
+    <help>Don't turn it off unless you really know what you are doing!</help>
+  </field>
+  <field>
+    <id>upstream.tls_verify_depth</id>
+    <label>TLS: Verify Depth</label>
+    <type>text</type>
+    <help>Choose how many sub-CAs can be between the server certificate and a trusted CA. 1 means the certificate has to be signed directly by a CA.</help>
+  </field>
+  <field>
+    <id>upstream.store</id>
+    <label>Store</label>
+    <type>checkbox</type>
+    <help>Store the response on the local storage.</help>
+  </field>
 </form>
