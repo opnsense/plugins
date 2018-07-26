@@ -45,7 +45,7 @@
         <recursion type="ModelRelationField">
             <Model>
                 <template>
-                    <source>OPNsense.bind.acl</source>
+                    <source>OPNsense.Bind.Acl</source>
                     <items>acls.acl</items>
                     <display>name</display>
                 </template>
