@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.0</version>
+   <version>1.0.1</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -181,6 +181,14 @@
                <route>Route</route>
             </OptionValues>
          </transport_type>
+         <routing_interface type="InterfaceField">
+            <Required>N</Required>
+            <multiple>N</multiple>
+            <filters>
+               <enable>/^(?!0).*$/</enable>
+               <ipaddr>/^((?!dhcp).)*$/</ipaddr>
+            </filters>
+         </routing_interface>
          <transport_table type="ModelRelationField">
             <Model>
                <template>
