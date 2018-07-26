@@ -56,12 +56,12 @@
         </recursion>
         <dnssecvalidation type="OptionField">
             <OptionValues>
-                <No>no</No>
-                <Auto>auto</Auto>
+                <no>No</no>
+                <auto>Auto</auto>
             </OptionValues>
-            <default>No</default>
+            <default>no</default>
             <Multiple>N</Multiple>
-            <Required>N</Required>
+            <Required>Y</Required>
         </dnssecvalidation>
     </items>
 </model>
