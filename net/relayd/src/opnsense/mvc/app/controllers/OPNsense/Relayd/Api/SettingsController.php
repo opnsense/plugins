@@ -153,7 +153,7 @@ class SettingsController extends ApiControllerBase
                         }
                         if ($relaydInfo[$nodeType]['transport_type'] == 'route' &&
                             empty($relaydInfo[$nodeType]['routing_interface'])) {
-                                $result['validations']['relayd.virtualserver.routing_interface'] = 
+                                $result['validations']['relayd.virtualserver.routing_interface'] =
                                     gettext('Routing interface cannot be empty');
                         }
                     }
