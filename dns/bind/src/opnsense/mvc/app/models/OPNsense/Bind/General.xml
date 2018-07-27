@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -19,10 +19,49 @@
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv6>
+        <port type="PortField">
+            <default>53530</default>
+            <Required>Y</Required>
+        </port>
         <forwarders type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
             <asList>Y</asList>
         </forwarders>
+        <logsize type="IntegerField">
+            <default>5</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </logsize>
+        <maxcachesize type="IntegerField">
+            <default>80</default>
+            <Required>Y</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>99</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 99.</ValidationMessage>
+        </maxcachesize>
+        <recursion type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>N</Multiple>
+            <Required>N</Required>
+            <ValidationMessage>Choose an ACL.</ValidationMessage>
+        </recursion>
+        <dnssecvalidation type="OptionField">
+            <OptionValues>
+                <no>No</no>
+                <auto>Auto</auto>
+            </OptionValues>
+            <default>no</default>
+            <Multiple>N</Multiple>
+            <Required>Y</Required>
+        </dnssecvalidation>
     </items>
 </model>

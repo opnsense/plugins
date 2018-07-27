@@ -127,7 +127,7 @@ $( document ).ready(function() {
 
     $("#saveAct_dnsbl").click(function(){
         saveFormToEndpoint(url="/api/bind/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
-        $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
+        $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/bind/service/dnsbl", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
                     ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {

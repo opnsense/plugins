@@ -22,11 +22,41 @@
         <help>Set the IPv6 addresses the service should listen to.</help>
     </field>
     <field>
+        <id>general.port</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>Set the port the service should listen to.</help>
+    </field>
+    <field>
         <id>general.forwarders</id>
         <label>DNS Forwarders</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
+    </field>
+    <field>
+        <id>general.logsize</id>
+        <label>Logsize in MB</label>
+        <type>text</type>
+        <help>Set the amount how big a logfile can growth.</help>
+    </field>
+    <field>
+        <id>general.maxcachesize</id>
+        <label>Maximum Cache Size</label>
+        <type>text</type>
+        <help>How much memory in percent the cache can use from the system. Default is 80%.</help>
+    </field>
+    <field>
+        <id>general.recursion</id>
+        <label>Recursion</label>
+        <type>dropdown</type>
+        <help>Define an ACL where you allow which clients can resolve via this service. Usually use your local LAN.</help>
+    </field>
+    <field>
+        <id>general.dnssecvalidation</id>
+        <label>DNSSEC Validation</label>
+        <type>dropdown</type>
+        <help>Default is "No". Set to "Auto" to use the static trust anchor configuration by the system.</help>
     </field>
 </form>

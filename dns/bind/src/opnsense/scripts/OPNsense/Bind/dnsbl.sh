@@ -38,63 +38,74 @@ mkdir -p ${WORKDIR}
 easylist() {
 	# EasyList
 	${FETCH} https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt -o ${WORKDIR}/easylist-raw
-	sed "/\.$/d" ${WORKDIR}/easylist-raw > ${WORKDIR}/easylist
+	sed "/\.$/d" ${WORKDIR}/easylist-raw | sed "/^#/ d" | sed "/\_/d" > ${WORKDIR}/easylist
 	rm ${WORKDIR}/easylist-raw
 }
 
 easyprivacy() {
 	# EasyPrivacy
 	${FETCH} https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o ${WORKDIR}/easyprivacy-raw
-	sed "/\.$/d" ${WORKDIR}/easyprivacy-raw > ${WORKDIR}/easyprivacy
+	sed "/\.$/d" ${WORKDIR}/easyprivacy-raw | sed "/^#/ d" | sed "/\_/d" > ${WORKDIR}/easyprivacy
 	rm ${WORKDIR}/easyprivacy-raw
 }
 
 adguard() {
 	# AdGuard
 	${FETCH} https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o ${WORKDIR}/adguard-raw
-	sed "/\.$/d" ${WORKDIR}/adguard-raw > ${WORKDIR}/adguard
+	sed "/\.$/d" ${WORKDIR}/adguard-raw | sed "/^#/ d" | sed "/\_/d" > ${WORKDIR}/adguard
 	rm ${WORKDIR}/adguard-raw
 }
 
 nocoin() {
 	# NoCoin
-	${FETCH} https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o ${WORKDIR}/nocoin
+	${FETCH} https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o ${WORKDIR}/nocoin-raw
+	sed "/\.$/d" ${WORKDIR}/nocoin-raw | sed "/^#/ d" | sed "/\_/d" > ${WORKDIR}/nocoin
+	rm ${WORKDIR}/nocoin-raw
 }
 
 rwtracker() {
 	# RansomWare Tracker abuse.ch
-	${FETCH} https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt -o ${WORKDIR}/rwtracker-comments
-	sed '/^#/ d' ${WORKDIR}/rwtracker-comments > ${WORKDIR}/rwtracker
-	rm ${WORKDIR}/rwtracker-comments
+	${FETCH} https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt -o ${WORKDIR}/rwtracker-raw
+	sed "/\.$/d" ${WORKDIR}/rwtracker-raw | sed "/^#/ d" | sed "/\_/d" > ${WORKDIR}/rwtracker
+	rm ${WORKDIR}/rwtracker-raw
 }
 
 mwdomains() {
 	# MalwareDomains
-	${FETCH} http://malwaredomains.lehigh.edu/files/justdomains -o ${WORKDIR}/malwaredomains-comments
-	sed '/^#/ d' ${WORKDIR}/malwaredomains-comments > ${WORKDIR}/malwaredomains
-	rm ${WORKDIR}/malwaredomains-comments
+	${FETCH} http://malwaredomains.lehigh.edu/files/justdomains -o ${WORKDIR}/malwaredomains-raw
+	sed "/\.$/d" ${WORKDIR}/malwaredomains-raw | sed "/^#/ d" | sed "/\_/d" > ${WORKDIR}/malwaredomains
+	rm ${WORKDIR}/malwaredomains-raw
 }
 
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
-		awk '{ print "zone " $1 " " $2 " {type master; file \"/usr/local/etc/namedb/master/blacklist.db\"; };" }' ${FILE} | sort -u > ${FILE}.inc
+		awk '{ if (length($1) < 245) print ""$1" CNAME .\n*."$1" CNAME ."}' ${FILE} | sort -u > ${FILE}.inc
 	done
 	# Merge resulting files (/dev/null in case there are none)
-        cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
+	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
 	chown bind:bind ${DESTDIR}/dnsbl.inc
-        rm -rf ${WORKDIR}
+	rm -rf ${WORKDIR}
 }
 
 for CAT in $(echo ${1} | tr ',' ' '); do
 	case "${CAT}" in
-	ad)
+	ag)
+		adguard
+		;;
+	el)
 		easylist
+		;;
+	ep)
 		easyprivacy
+		;;
+	nc)
 		nocoin
 		;;
-	mw)
+	rw)
 		rwtracker
+		;;
+	mw)
 		mwdomains
 		;;
 	esac
