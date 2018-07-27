@@ -76,7 +76,7 @@
  *  Amazon Route53      - Last Tested: 01 April 2012
  *  DNS-O-Matic         - Last Tested: 9 September 2010
  *  CloudFlare          - Last Tested: 30 May 2013
- *  Eurodns             - Last Tested: 27 June 2013
+ *  Eurodns             - Last Tested: 25 July 2018
  *  GratisDNS           - Last Tested: 15 August 2012
  *  OVH DynHOST         - Last Tested: NEVER
  *  City Network        - Last Tested: 13 November 2013
@@ -746,7 +746,7 @@ class updatedns
             case 'eurodns':
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
-                $server = "https://eurodyndns.org/update/";
+                $server = "https://update.eurodyndns.org/update/";
                 $port = "";
                 if ($this->_dnsPort) {
                     $port = ":" . $this->_dnsPort;
