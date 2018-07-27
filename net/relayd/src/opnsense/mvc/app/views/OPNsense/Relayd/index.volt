@@ -107,9 +107,11 @@ POSSIBILITY OF SUCH DAMAGE.
       // show/hide options depending on other options
       function ShowHideVSFields(){
          var servertype = $('#relayd\\.virtualserver\\.type').val();
+         var transport_type = $('#relayd\\.virtualserver\\.transport_type').val();
          var backuptransport_table = $('#relayd\\.virtualserver\\.backuptransport_table').val();
 
          $('tr[id="row_relayd.virtualserver.transport_type"]').addClass('hidden');
+         $('tr[id="row_relayd.virtualserver.routing_interface"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.stickyaddress"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.protocol"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.backuptransport_tablemode"]').addClass('hidden');
@@ -121,6 +123,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
          if(servertype == 'redirect'){
             $('tr[id="row_relayd.virtualserver.transport_type"]').removeClass('hidden');
+            if(transport_type == 'route'){
+               $('tr[id="row_relayd.virtualserver.routing_interface"]').removeClass('hidden');
+            }
             $('tr[id="row_relayd.virtualserver.stickyaddress"]').removeClass('hidden');
             $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="least-states">Least States </option>');
             $('#relayd\\.virtualserver\\.backuptransport_tablemode').append('<option value="least-states">Least States </option>');
@@ -152,6 +157,7 @@ POSSIBILITY OF SUCH DAMAGE.
       };
       $('#DialogEditVirtualServer').on('shown.bs.modal', function() {ShowHideVSFields();});
       $('#relayd\\.virtualserver\\.type').on('changed.bs.select', function(e) {ShowHideVSFields();});
+      $('#relayd\\.virtualserver\\.transport_type').on('changed.bs.select', function(e) {ShowHideVSFields();});
       $('#relayd\\.virtualserver\\.backuptransport_table').on('changed.bs.select', function(e) {ShowHideVSFields();});
 
       function ShowHideTCFields(){

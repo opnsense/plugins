@@ -151,6 +151,11 @@ class SettingsController extends ApiControllerBase
                                     $relaydInfo[$nodeType]['backuptransport_tablemode']
                                 );
                         }
+                        if ($relaydInfo[$nodeType]['transport_type'] == 'route' &&
+                            empty($relaydInfo[$nodeType]['routing_interface'])) {
+                                $result['validations']['relayd.virtualserver.routing_interface'] =
+                                    gettext('Routing interface cannot be empty');
+                        }
                     }
                     if ($relaydInfo[$nodeType]['type'] == 'relay') {
                         if ($relaydInfo[$nodeType]['transport_tablemode'] == 'least-states') {
