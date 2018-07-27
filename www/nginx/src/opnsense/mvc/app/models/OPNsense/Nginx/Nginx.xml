@@ -73,6 +73,49 @@
         <Required>Y</Required>
         <multiple>Y</multiple>
       </serverentries>
+      <store type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </store>
+      <tls_enable type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </tls_enable>
+      <tls_client_certificate type="CertificateField">
+        <Type>cert</Type>
+        <Required>N</Required>
+      </tls_client_certificate>
+      <tls_name_override type="HostnameField">
+        <Required>N</Required>
+      </tls_name_override>
+      <tls_protocol_versions type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <TLSv1 value="TLSv1">TLSv1</TLSv1>
+          <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
+          <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
+          <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
+        </OptionValues>
+        <Required>N</Required>
+      </tls_protocol_versions>
+      <tls_session_reuse type="BooleanField">
+        <Required>Y</Required>
+        <default>1</default>
+      </tls_session_reuse>
+      <tls_trusted_certificate type="CertificateField">
+        <Type>ca</Type>
+        <multiple>Y</multiple>
+        <Required>N</Required>
+      </tls_trusted_certificate>
+      <tls_verify type="BooleanField">
+        <Required>Y</Required>
+        <default>1</default>
+      </tls_verify>
+      <tls_verify_depth type="IntegerField">
+        <Required>N</Required>
+        <default>1</default>
+        <MinimumValue>1</MinimumValue>
+      </tls_verify_depth>
     </upstream>
 
     <upstream_server type="ArrayField">

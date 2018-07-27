@@ -11,9 +11,16 @@
     <type>select_multiple</type>
   </field>
   <field>
+    <id>upstream.tls_enable</id>
+    <label>Enable TLS (HTTPS)</label>
+    <help>Authenticate on the Server using a client certificate.</help>
+    <type>checkbox</type>
+  </field>
+  <field>
     <id>upstream.tls_client_certificate</id>
     <label>TLS: Client Certificate</label>
     <help>Authenticate on the Server using a client certificate.</help>
+    <style>selectpicker</style>
     <type>dropdown</type>
   </field>
   <field>
@@ -43,7 +50,7 @@
     <id>upstream.tls_verify</id>
     <label>TLS: Verify Certificate</label>
     <type>checkbox</type>
-    <help>Don't turn it off unless you really know what you are doing!</help>
+    <help>Don't turn it off unless you really know what you are doing! Never do it because a random website tells you to do.</help>
   </field>
   <field>
     <id>upstream.tls_verify_depth</id>
