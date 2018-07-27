@@ -2,4 +2,5 @@ blacklist.db:/usr/local/etc/namedb/master/blacklist.db
 named:/etc/rc.conf.d/named
 named.conf:/usr/local/etc/namedb/named.conf
 rndc.conf:/usr/local/etc/namedb/rndc.conf
+whitelist.db:/usr/local/etc/namedb/master/whitelist.db
 whitelist.inc:/usr/local/etc/namedb/whitelist.inc
