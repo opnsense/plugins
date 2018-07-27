@@ -11,4 +11,12 @@
         <type>select_multiple</type>
         <help>Select which kind of DNSBL you want to use.</help>
     </field>
+    <field>
+        <id>dnsbl.whitelists</id>
+        <label>Whitelist Domains</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>List of domains to whitelist. It will add a entry for the domains itself and all sub domains.</help>
+    </field>
 </form>
