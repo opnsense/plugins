@@ -1,0 +1,158 @@
+.tokenize {
+  > .tokens-container {
+    position: relative;
+    list-style: none;
+    padding: 0 0 5px 5px;
+    height: auto;
+    min-height: 34px;
+    cursor: text;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    &.disabled {
+      background-color: #eee;
+      cursor: not-allowed;
+    }
+  }
+  &.focus > .tokens-container {
+    outline: 0;
+    border-color: #66afe9;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  }
+  > .tokens-container {
+    &.input-sm {
+      padding: 0 0 4px 4px;
+      min-height: 30px;
+    }
+    &.input-lg {
+      padding: 0 0 9px 9px;
+      min-height: 46px;
+    }
+    > {
+      .token {
+        padding: 0 1.2em 0 5px;
+        background-color: #111111;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        border: 1px solid #cdd5e3;
+        display: inline-block;
+        margin: 5px 5px 0 0;
+        position: relative;
+        vertical-align: middle;
+      }
+      .placeholder, .token-search {
+        border: 1px solid #cdd5e3;
+        display: inline-block;
+        margin: 5px 5px 0 0;
+        position: relative;
+        vertical-align: middle;
+      }
+    }
+  }
+  &.sortable > .tokens-container > .token {
+    cursor: move;
+  }
+  &.single > .tokens-container > .token {
+    display: block;
+    border-color: #fff;
+    background-color: transparent;
+  }
+  &.sortable > .tokens-container > .token.shadow {
+    border-color: #ccc;
+    background-color: #ccc;
+    filter: alpha(opacity = 50);
+    opacity: .2;
+  }
+  > .tokens-container {
+    > {
+      .placeholder, .token-search {
+        padding: 0;
+        border-color: #fff;
+      }
+      .placeholder {
+        color: #ccc;
+      }
+      .token-search > input {
+        padding: 0;
+        margin: 0;
+        line-height: 1em;
+        border: 1px solid #fff;
+        background: transparent;
+        border-left: none;
+        border-right: none;
+        outline: none;
+        width: 100%;
+        &::-ms-clear {
+          display: none;
+        }
+      }
+    }
+    &.input-sm > {
+      .placeholder, .token-search, .token {
+        margin: 4px 4px 0 0;
+      }
+    }
+    &.input-lg > {
+      .placeholder, .token-search, .token {
+        margin: 9px 9px 0 0;
+      }
+    }
+    > .token {
+      &.pending-delete {
+        background-color: #5b72a4;
+        border-color: #425c96;
+        color: #fff;
+        > .dismiss {
+          color: #aaa;
+        }
+      }
+      > .dismiss {
+        position: absolute;
+        right: 5px;
+        color: #a9b9d8;
+        text-decoration: none;
+        cursor: pointer;
+        &:after {
+          content: "×";
+        }
+      }
+    }
+  }
+}
+
+.tokenize-dropdown {
+  position: absolute;
+  display: none;
+  > .dropdown-menu {
+    min-height: 10px;
+    width: 100%;
+    display: block;
+    margin: -1px 0 0 0;
+    visibility: visible;
+    opacity: 1;
+    li {
+      cursor: pointer;
+      > a .tokenize-highlight {
+        font-weight: bold;
+      }
+      &.locked {
+        padding: 3px 20px;
+        color: #333;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+      }
+      > a {
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+      }
+      &:not(.active) a {
+        &:hover, &:focus {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
