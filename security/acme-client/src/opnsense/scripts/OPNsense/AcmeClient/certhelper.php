@@ -809,6 +809,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         $key_length = substr_replace($key_length, '-', 2, 0);
     }
 
+    // if OCSP Extension is turned on pass --ocsp parameter to acme client
+    if (isset($certObj->ocsp)) {
+        $acme_args[] = "--ocsp";
+    }
+
     // Run acme client
     // NOTE: We "export" certificates to our own directory, so we don't have to deal
     // with domain names in filesystem, but instead can use the ID of our certObj.
