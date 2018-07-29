@@ -9,9 +9,11 @@ if (stristr($_SERVER['CONTENT_TYPE'], 'json') === false) {
     exit(0);
 }
 
-if ($json_data = json_decode(file_get_contents('php://input'))) {
+if ($json_data = json_decode(file_get_contents('php://input'), true)) {
   http_response_code(204);
+  // inject some data for a log viewer to get a relation with the server entry
   $json_data['server_time'] = time();
+  $json_data['server_uuid'] = $_SERVER['SERVER-UUID'];
   $json_data = json_encode($json_data);
   file_put_contents($log_file, $json_data . PHP_EOL, FILE_APPEND | LOCK_EX);
 } else {
