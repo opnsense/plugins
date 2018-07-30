@@ -1,7 +1,7 @@
 PLUGIN_NAME=		bind
 PLUGIN_VERSION=		0.7
 PLUGIN_COMMENT=		BIND domain name service
-PLUGIN_DEPENDS=		bind913
+PLUGIN_DEPENDS=		bind912
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
 PLUGIN_DEVEL=		yes
 
