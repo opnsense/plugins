@@ -2,6 +2,6 @@ PLUGIN_NAME=		rfc2136
 PLUGIN_VERSION=		1.3
 PLUGIN_COMMENT=		RFC-2136 Support
 PLUGIN_MAINTAINER=	franco@opnsense.org
-PLUGIN_DEPENDS=		bind913
+PLUGIN_DEPENDS=		bind912
 
 .include "../../Mk/plugins.mk"
