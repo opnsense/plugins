@@ -799,8 +799,19 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Get the chosen key length from xml and trim the parameter before passing to acme client
     $key_length = (string) $certObj->keyLength;
     $key_length = substr($key_length, 4);
+
     if ($key_length == 'ec256' || $key_length == 'ec384') {
+
+        if ($acme_action == "renew") {
+            // if it's renew then pass --ecc to acme client to locate the correct cert directory
+            $acme_args[] = "--ecc";
+        }
         $key_length = substr_replace($key_length, '-', 2, 0);
+    }
+
+    // if OCSP Extension is turned on pass --ocsp parameter to acme client
+    if (isset($certObj->ocsp)) {
+        $acme_args[] = "--ocsp";
     }
 
     // Run acme client

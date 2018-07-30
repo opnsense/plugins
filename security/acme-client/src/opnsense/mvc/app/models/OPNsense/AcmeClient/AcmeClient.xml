@@ -214,6 +214,10 @@
                         <key_ec384>ec-384</key_ec384>
                     </OptionValues>
                 </keyLength>
+                <ocsp type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </ocsp>
                 <restartActions type="ModelRelationField">
                     <Model>
                         <actions>
