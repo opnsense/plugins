@@ -45,6 +45,12 @@
         <help><![CDATA[Specify the domain key length: 2048, 3072, 4096, 8192 or ec-256, ec-384.]]></help>
     </field>
     <field>
+        <id>certificate.ocsp</id>
+        <label>OCSP Must Staple</label>
+        <type>checkbox</type>
+        <help>Generate and add OCSP Must Staple extension to the certificate.</help>
+    </field>
+    <field>
         <id>certificate.restartActions</id>
         <label>Restart Actions</label>
         <type>select_multiple</type>
