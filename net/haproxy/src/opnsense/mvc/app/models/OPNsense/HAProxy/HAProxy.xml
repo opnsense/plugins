@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
     <description>
         the HAProxy load balancer
     </description>
@@ -14,6 +14,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </gracefulStop>
+            <seamlessReload type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </seamlessReload>
             <showIntro type="BooleanField">
                 <default>1</default>
             </showIntro>

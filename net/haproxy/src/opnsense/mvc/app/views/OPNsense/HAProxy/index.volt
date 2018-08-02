@@ -340,22 +340,20 @@ POSSIBILITY OF SUCH DAMAGE.
             $(this).click(function(){
                 var frm_id = $(this).closest("form").attr("id");
                 var frm_title = $(this).closest("form").attr("data-title");
+
+                // set progress animation
+                $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
+
                 // save data for tab
                 saveFormToEndpoint(url="/api/haproxy/settings/set",formid=frm_id,callback_ok=function(){
-                    // set progress animation when reloading
-                    $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
 
                     // on correct save, perform reconfigure
-                    ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status){
-                        // when done, disable progress animation.
-                        $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-
-                        if (status != "success" || data['status'] != 'ok' ) {
-                            // fix error handling
+                    ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                        if (status != "success" || data['status'] != 'ok') {
                             BootstrapDialog.show({
-                                type:BootstrapDialog.TYPE_WARNING,
-                                title: frm_title,
-                                message: JSON.stringify(data),
+                                type: BootstrapDialog.TYPE_WARNING,
+                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                message: data['status'],
                                 draggable: true
                             });
                         } else {
@@ -363,7 +361,10 @@ POSSIBILITY OF SUCH DAMAGE.
                                 updateServiceStatusUI(data['status']);
                             });
                         }
+                        // when done, disable progress animation.
+                        $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
                     });
+
                 });
             });
         });

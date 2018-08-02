@@ -40,7 +40,7 @@ use \OPNsense\HAProxy\HAProxy;
 class ServiceController extends ApiMutableServiceControllerBase
 {
     static protected $internalServiceClass = '\OPNsense\HAProxy\HAProxy';
-    static protected $internalServiceTemplate = 'OPNsense/Haproxy';
+    static protected $internalServiceTemplate = 'OPNsense/HAProxy';
     static protected $internalServiceEnabled = 'general.enabled';
     static protected $internalServiceName = 'haproxy';
 
@@ -59,5 +59,13 @@ class ServiceController extends ApiMutableServiceControllerBase
         // finally run the syntax check
         $response = $backend->configdRun("haproxy configtest");
         return array("result" => $response);
+    }
+
+    /**
+     * reconfigure force restart check, return zero for soft-reload
+     */
+    protected function reconfigureForceRestart()
+    {
+        return 0;
     }
 }
