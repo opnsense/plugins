@@ -1,8 +1,7 @@
 PLUGIN_NAME=		acme-client
-PLUGIN_VERSION=		1.15
-PLUGIN_REVISION=	2
+PLUGIN_VERSION=		1.16
 PLUGIN_COMMENT=		Let's Encrypt client
 PLUGIN_MAINTAINER=	opnsense@moov.de
-PLUGIN_DEPENDS=		acme.sh bind913
+PLUGIN_DEPENDS=		acme.sh bind912
 
 .include "../../Mk/plugins.mk"
