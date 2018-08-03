@@ -278,4 +278,31 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('httprewrite', 'http_rewrite', $uuid);
     }
+
+    // http security headers
+    public function searchsecurity_headerAction()
+    {
+        return $this->searchBase('security_header', array('description'));
+    }
+
+    public function getsecurity_headerAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('security_header', 'security_header', $uuid);
+    }
+
+    public function addsecurity_headerAction()
+    {
+        return $this->addBase('security_header', 'security_header');
+    }
+
+    public function delsecurity_headerAction($uuid)
+    {
+        return $this->delBase('security_header', $uuid);
+    }
+
+    public function setsecurity_headerAction($uuid)
+    {
+        return $this->setBase('security_header', 'security_header', $uuid);
+    }
 }

@@ -1,0 +1,101 @@
+<form>
+  <field>
+    <id>security_header.referrer</id>
+    <label>Referrer</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help><![CDATA[
+      <ul>
+        <li>Same Origin: The header will be sent if you stay on the same server using the same protocol (no data leak)</li>
+        <li>No Referrer When Downgrade: Prevents sending a referrer when switching from HTTPS to HTTP</li>
+        <li>Origin, Strict-Origin: Always send the header but no path or query information. Strict Origin additionally suppressed the header on downgrades.</li>
+        <li>(Strict) Origin When Cross Origin: Full Referrer on the same origin, and like (Strict) Origin when cross domain.</li>
+        <li>Unsafe URL: Sends the full URL to all pages</li>
+      </ul> ]]></help>
+  </field>
+  <field>
+    <id>security_header.xssprotection</id>
+    <label>XSS Protection</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help><![CDATA[
+      <ul>
+        <li>Block: The browser should block the response</li>
+        <li>Off: Allow Anything</li>
+        <li>On: The Browser decides how to handle it.</li>
+      </ul> ]]></help>
+  </field>
+  <field>
+    <id>security_header.content_type_options</id>
+    <label>Don't Sniff Content Type</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.strict_transport_security.time</id>
+    <label>Strict Transport Security: Time</label>
+    <type>text</type>
+    <help>A time in seconds in which the transport security (TLS) should be enforced.</help>
+  </field>
+  <field>
+    <id>security_header.strict_transport_security.include_subdomains</id>
+    <label>Strict Transport Security: Include Subdomains</label>
+    <type>checkbox</type>
+    <help>If checked, also subdomains are affected.</help>
+  </field>
+  <field>
+    <id>security_header.hpkp.keys</id>
+    <label>HTTP Public Key Pinning: Fingerprints</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help><![CDATA[ Enter a comma separated list of public key fingerprints here.
+    You can find some documentetion about this feature in the
+    <a href="https://developer.mozilla.org/de/docs/Web/Security/Public_Key_Pinning">Mozilla Wiki</a>.
+    It is not recommended to use this feature with short lived certificates.]]></help>
+  </field>
+  <field>
+    <id>security_header.hpkp.include_subdomains</id>
+    <label>HTTP Public Key Pinning: Include Subdomains</label>
+    <type>checkbox</type>
+    <help>If checked, also subdomains are affected.</help>
+  </field>
+  <field>
+    <id>security_header.enable_csp</id>
+    <label>Content Security Policy: Enable CSP</label>
+    <type>checkbox</type>
+    <help>If checked, the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp.default-src.enabled</id>
+    <label>Content Security Policy: Enable Default Source</label>
+    <type>checkbox</type>
+    <help>If checked, the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp.default-src.data_urls</id>
+    <label>Content Security Policy: Enable Data URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp.default-src.http_urls</id>
+    <label>Content Security Policy: Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+  </field>
+  <field>
+    <id>security_header.csp.default-src.inline</id>
+    <label>Content Security Policy: Enable Inline Scripting</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp.default-src.eval</id>
+    <label>Content Security Policy: Enable Eval</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp.default-src.self</id>
+    <label>Content Security Policy: Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+  </field>
+</form>

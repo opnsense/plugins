@@ -484,5 +484,36 @@
       </flag>
     </http_rewrite>
 
+    <security_header type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <referrer type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <no-referrer>No Referrer</no-referrer>
+          <no-referrer-when-downgrade>No Referrer When Downgrading</no-referrer-when-downgrade>
+          <same-origin>Same Origin (recommended)</same-origin>
+          <origin>Origin</origin>
+          <strict-origin>Strict Origin</strict-origin>
+          <strict-origin-when-cross-origin>Strict Origin When Cross Origin</strict-origin-when-cross-origin>
+          <origin-when-cross-origin>Origin When Cross Origin</origin-when-cross-origin>
+          <unsafe-url>Unsafe URL</unsafe-url>
+        </OptionValues>
+        <Required>N</Required>
+      </referrer>
+      <xssprotection type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <val1 value="1; mode=block">Block</val1>
+          <val2 value="0">Off</val2>
+          <val3 value="1">On</val3>
+        </OptionValues>
+        <Required>N</Required>
+      </xssprotection>
+      <content_type_options type="BooleanField">
+        <Required>N</Required>
+      </content_type_options>
+    </security_header>
   </items>
 </model>
