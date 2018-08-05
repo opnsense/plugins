@@ -1,6 +1,6 @@
 PLUGIN_NAME=		theme-tukan
-PLUGIN_VERSION=		1.1
+PLUGIN_VERSION=		1.2
 PLUGIN_COMMENT=		The tukan theme - blue/white
-PLUGIN_MAINTAINER=	martin@team-rebellion.net
+PLUGIN_MAINTAINER=	rene@team-rebellion.net
 
 .include "../../Mk/plugins.mk"
