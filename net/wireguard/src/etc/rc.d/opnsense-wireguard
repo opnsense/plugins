@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-wireguard
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=wireguard
+
+stop_cmd=wireguard_stop
+start_cmd=wireguard_start
+status_cmd=wireguard_status
+rcvar=wireguard_enable
+
+load_rc_config opnsense-wireguard
+pidfile=`pgrep -f wg-quick`
+command=/usr/local/bin/wg-quick
+
+[ -z "$wireguard_enable" ] && wireguard_enable="NO"
+
+# status of wireguard
+wireguard_status()
+{
+	 if [ -n "$rc_pid" ]; then
+	     echo "${name} is running as pid $rc_pid."
+	     return 0
+	 else
+	     echo "${name} is not running."
+	 fi
+}
+
+# stop wireguard
+wireguard_stop()
+{
+    echo "starting wireguard"
+    config=`cd /usr/local/etc/wireguard && ls -1 *.conf`
+    for STARTER in $config; do
+        $command down $STARTER
+        return 0
+    done
+}
+
+# start wireguard
+wireguard_start()
+{
+    echo "starting wireguard"
+    config=`cd /usr/local/etc/wireguard && ls -1 *.conf`
+    for STARTER in $config; do
+        $command up $STARTER
+        return 0
+    done
+}
+
+run_rc_command $1

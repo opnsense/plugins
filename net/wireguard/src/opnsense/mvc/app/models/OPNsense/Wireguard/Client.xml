@@ -1,0 +1,53 @@
+<model>
+    <mount>//OPNsense/wireguard/client</mount>
+    <description>Wireguard Client configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <clients>
+            <client type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
+                </name>
+                <pubkey type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </pubkey>
+                <port type="PortField">
+                    <default>5555</default>
+                    <Required>Y</Required>
+                </port>
+                <tunneladdress type="NetworkField">
+                    <default></default>
+                    <FieldSeparator>,</FieldSeparator>
+                    <Required>Y</Required>
+                    <asList>Y</asList>
+                </tunneladdress>
+                <serveraddress type="NetworkField">
+                    <default>remote.server</default>
+                    <Required>Y</Required>
+                </serveraddress>
+                <serverport type="PortField">
+                    <default>5555</default>
+                    <Required>Y</Required>
+                </serverport>
+                <servertunneladdress type="NetworkField">
+                    <default></default>
+                    <FieldSeparator>,</FieldSeparator>
+                    <Required>Y</Required>
+                    <asList>Y</asList>
+                </servertunneladdress>
+                <serverpubkey type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                </serverpubkey>
+            </client>
+        </clients>
+    </items>
+</model>

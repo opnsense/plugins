@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable Wireguard</label>
+        <type>checkbox</type>
+        <help>This will activate Wireguard and start all enabled instances.</help>
+    </field>
+</form>

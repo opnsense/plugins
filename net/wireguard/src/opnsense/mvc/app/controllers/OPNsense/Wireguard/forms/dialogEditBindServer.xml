@@ -1,0 +1,34 @@
+<form>
+    <field>
+        <id>server.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the server config.</help>
+    </field>
+    <field>
+        <id>server.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this instance.</help>
+    </field>
+    <field>
+        <id>server.pubkey</id>
+        <label>Public Key</label>
+        <type>text</type>
+        <help>Public key of this instance. After saving this field is automatically and you can give out the key to other parties.</help>
+    </field>
+    <field>
+        <id>server.port</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>Set port for this instance to listen to.</help>
+    </field>
+    <field>
+        <id>server.tunneladdress</id>
+        <label>Tunnel Address</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>List of addresses to configure on the tunnel adapter. Please use CIDR notation like 10.0.0.1/24.</help>
+    </field>
+</form>

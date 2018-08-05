@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.wireguard.general.enabled') and OPNsense.wireguard.general.enabled == '1' %}
+wireguard_var_script="/usr/local/opnsense/scripts/OPNsense/Wireguard/setup.sh"
+wireguard_enable="YES"
+{% else %}
+wireguard_enable="NO"
+{% endif %}

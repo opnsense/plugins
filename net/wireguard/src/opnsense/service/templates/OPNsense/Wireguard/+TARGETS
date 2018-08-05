@@ -1,0 +1,2 @@
+opnsense-wireguard:/etc/rc.conf.d/opnsense-wireguard
+wireguard.conf:/usr/local/etc/wireguard/wireguard.conf

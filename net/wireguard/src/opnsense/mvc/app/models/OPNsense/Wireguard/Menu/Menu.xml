@@ -1,0 +1,5 @@
+<menu>
+  <VPN>
+    <Wireguard cssClass="fa fa-key" url="/ui/wireguard/general/index" />
+  </VPN>
+</menu>
