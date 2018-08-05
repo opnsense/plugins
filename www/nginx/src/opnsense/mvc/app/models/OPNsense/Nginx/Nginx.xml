@@ -512,8 +512,51 @@
         <Required>N</Required>
       </xssprotection>
       <content_type_options type="BooleanField">
-        <Required>N</Required>
+        <Required>Y</Required>
       </content_type_options>
+      <strict_transport_security>
+        <time type="IntegerField">
+          <Required>N</Required>
+        </time>
+        <include_subdomains>
+          <Required>Y</Required>
+          <default>1</default>
+        </include_subdomains>
+      </strict_transport_security>
+      <hpkp>
+        <keys type="CSVListField">
+          <Required>N</Required>
+          <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
+        </keys>
+        <include_subdomains>
+          <Required>Y</Required>
+        </include_subdomains>
+      </hpkp>
+      <enable_csp type="BooleanField">
+        <Required>Y</Required>
+      </enable_csp>
+      <csp>
+        <default-src>
+          <enabled type="BooleanField">
+            <Required>Y</Required>
+          </enabled>
+          <data_urls type="BooleanField">
+            <Required>Y</Required>
+          </data_urls>
+          <http_urls type="CSVListField">
+            <Required>Y</Required>
+          </http_urls>
+          <inline type="BooleanField">
+            <Required>Y</Required>
+          </inline>
+          <eval type="BooleanField">
+            <Required>Y</Required>
+          </eval>
+          <self type="BooleanField">
+            <Required>Y</Required>
+          </self>
+        </default-src>
+      </csp>
     </security_header>
   </items>
 </model>
