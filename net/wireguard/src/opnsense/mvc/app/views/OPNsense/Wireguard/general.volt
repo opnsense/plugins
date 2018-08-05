@@ -45,7 +45,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
-    <div id="acls" class="tab-pane fade in">
+    <div id="clients" class="tab-pane fade in">
         <table id="grid-clients" class="table table-responsive" data-editDialog="dialogEditWireguardClient">
             <thead>
                 <tr>
