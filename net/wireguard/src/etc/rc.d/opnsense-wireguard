@@ -36,8 +36,8 @@ wireguard_status()
 # stop wireguard
 wireguard_stop()
 {
-    echo "starting wireguard"
-    config=`cd /usr/local/etc/wireguard && ls -1 *.conf`
+    echo "stopping wireguard"
+    config=`ls -1 /usr/local/etc/wireguard/*.conf`
     for STARTER in $config; do
         $command down $STARTER
         return 0
@@ -48,7 +48,7 @@ wireguard_stop()
 wireguard_start()
 {
     echo "starting wireguard"
-    config=`cd /usr/local/etc/wireguard && ls -1 *.conf`
+    config=`ls -1 /usr/local/etc/wireguard/*.conf`
     for STARTER in $config; do
         $command up $STARTER
         return 0
