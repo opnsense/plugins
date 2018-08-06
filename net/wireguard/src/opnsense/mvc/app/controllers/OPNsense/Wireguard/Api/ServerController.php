@@ -30,6 +30,7 @@
 namespace OPNsense\Wireguard\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Core\Backend;
 
 class ServerController extends ApiMutableModelControllerBase
 {
@@ -45,9 +46,26 @@ class ServerController extends ApiMutableModelControllerBase
         $this->sessionClose();
         return $this->getBase('server', 'servers.server', $uuid);
     }
-    public function addServerAction()
+    public function addServerAction($uuid = null)
     {
-        return $this->addBase('server', 'servers.server');
+        if ($this->request->isPost() && $this->request->hasPost("server")) {
+            if ($uuid != null) {
+                $node = $this->getModel()->getNodeByReference('servers.server.'.$uuid);
+            } else {
+                $node = $this->getModel()->servers->server->Add();
+            }
+            $node->setNodes($this->request->getPost("server"));
+            if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
+                // generate new keypair
+                $backend = new Backend();
+                $keyspriv = json_decode(trim($backend->configdpRun("wireguard genkey", 'private')), true);
+                $keyspub = json_decode(trim($backend->configdpRun("wireguard genkey", 'public')), true);
+                $node->privkey = (string)$keyspriv;
+                $node->pubkey = (string)$keyspub;
+            }
+            return $this->validateAndSave($node, 'server');
+        }
+        return array("result"=>"failed");
     }
     public function delServerAction($uuid)
     {
