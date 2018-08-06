@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 # Copyright (c) 2018 Michael Muenz <m.muenz@gmail.com>
 #
