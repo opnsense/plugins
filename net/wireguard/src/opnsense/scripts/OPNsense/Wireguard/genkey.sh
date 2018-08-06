@@ -46,7 +46,7 @@ public() {
 
 case "$1" in
 	private)
-    cleanup
+                cleanup
 		private
 		;;
 	public)
