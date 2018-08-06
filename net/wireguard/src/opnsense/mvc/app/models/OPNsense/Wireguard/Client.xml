@@ -22,7 +22,6 @@
                     <Required>Y</Required> 
                 </instance>
                 <pubkey type="TextField">
-                    <default></default>
                     <Required>N</Required>
                 </pubkey>
                 <port type="PortField">
