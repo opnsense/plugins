@@ -14,7 +14,7 @@
     <field>
         <id>client.instance</id>
         <label>Instance</label>
-        <type>dropdown</type>
+        <type>info</type>
         <help>Set the instance number needed for interface calculation. It has to be unique for each instance.</help>
     </field>
     <field>
