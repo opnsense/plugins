@@ -24,6 +24,12 @@
         <help>Public key of this instance.</help>
     </field>
     <field>
+        <id>client.privkey</id>
+        <label>Private Key</label>
+        <type>text</type>
+        <help>Private key of this instance.</help>
+    </field>
+    <field>
         <id>client.port</id>
         <label>Listen Port</label>
         <type>text</type>
