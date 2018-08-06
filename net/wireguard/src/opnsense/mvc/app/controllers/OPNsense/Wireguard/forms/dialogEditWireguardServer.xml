@@ -24,6 +24,12 @@
         <help>Public key of this instance. After saving this field is automatically and you can give out the key to other parties.</help>
     </field>
     <field>
+        <id>server.privkey</id>
+        <label>Private Key</label>
+        <type>text</type>
+        <help>Private key of this instance. Please keep it save.</help>
+    </field>
+    <field>
         <id>server.port</id>
         <label>Listen Port</label>
         <type>text</type>
