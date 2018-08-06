@@ -15,21 +15,11 @@
                     <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
                 </name>
-                <instance type="OptionField">
-                    <default>1</default>
-                    <Required>Y</Required>
-                    <OptionValues>
-                        <1>1</1>
-                        <2>2</2>
-                        <3>3</3>
-                        <4>4</4>
-                        <5>5</5>
-                        <6>6</6>
-                        <7>7</7>
-                        <8>8</8>
-                        <9>9</9>
-                        <10>10</10>
-                    </OptionValues> 
+                <instance type="AutoNumberField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>19</MaximumValue>
+                    <ValidationMessage>Maximum number of instances reached</ValidationMessage>
+                    <Required>Y</Required> 
                 </instance>
                 <pubkey type="TextField">
                     <default></default>
