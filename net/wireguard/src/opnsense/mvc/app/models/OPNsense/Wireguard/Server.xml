@@ -22,12 +22,10 @@
                     <Required>Y</Required> 
                 </instance>
                 <pubkey type="TextField">
-                    <default></default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </pubkey>
                 <privkey type="TextField">
-                    <default></default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </privkey>
                 <port type="PortField">
                     <default>51820</default>
