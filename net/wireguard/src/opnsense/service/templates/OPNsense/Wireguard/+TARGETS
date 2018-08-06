@@ -1,2 +1,3 @@
 opnsense-wireguard:/etc/rc.conf.d/opnsense-wireguard
-wireguard.conf:/usr/local/etc/wireguard/wireguard.conf
+wireguard-client.conf:/usr/local/etc/wireguard/wgc[OPNsense.wireguard.clients.client.%.instance].conf
+wireguard-server.conf:/usr/local/etc/wireguard/wgs[OPNsense.wireguard.servers.server.%.instance].conf
