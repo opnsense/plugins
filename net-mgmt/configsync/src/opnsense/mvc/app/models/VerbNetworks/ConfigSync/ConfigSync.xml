@@ -1,0 +1,68 @@
+<model>
+    <mount>//VerbNetworks/configsync</mount>
+    <description>Verb Networks "Configuration Sync" application</description>
+    <version>0.1.0</version>
+    <items>
+        <settings>
+
+            <Enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </Enabled>
+
+            <Provider type="OptionField">
+                <Required>Y</Required>
+                <multiple>N</multiple>
+                <default>awss3</default>
+                <OptionValues>
+                    <awss3>Amazon Web Services S3</awss3>
+                </OptionValues>
+            </Provider>
+            
+            <ProviderKey type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([a-zA-Z0-9]){16,128}$/u</Mask>
+                <ValidationMessage>Must provide a valid Storage Provider API key value</ValidationMessage>
+            </ProviderKey>
+            
+            <ProviderSecret type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([a-zA-Z0-9\+\/]){16,128}$/u</Mask>
+                <ValidationMessage>Must provide a valid Storage Provider API key secret value</ValidationMessage>
+            </ProviderSecret>
+            
+            <StorageBucket type="TextField">
+                <default>[storage-bucket]</default>
+                <Required>Y</Required>
+                <Mask>/^[a-zA-Z0-9\-\.]{3,64}$/</Mask>
+                <ValidationMessage>Must provide a valid storage-bucket name</ValidationMessage>
+            </StorageBucket>
+            
+            <StoragePath type="TextField">
+                <default>[storage-path]</default>
+                <Required>Y</Required>
+                <Mask>/^[a-zA-Z0-9\!\-\_\.\*\'\@\:\$\=\+\;\,\/]{1,1024}$/u</Mask>
+                <ValidationMessage>Must provide a valid storage-path value</ValidationMessage>
+            </StoragePath>
+
+            <Interval type="IntegerField">
+                <default>10</default>
+                <MinimumValue>3</MinimumValue>
+                <MaximumValue>999999</MaximumValue>
+                <Required>Y</Required>
+                <ValidationMessage>Must provide an integer value between 3 and 999999</ValidationMessage>
+            </Interval>
+
+            <SystemHostid type="TextField">
+                <default>[system-hostid]</default>
+                <Required>N</Required>
+            </SystemHostid>
+            
+            <StorageProviderLink type="TextField">
+                <default>[storage-provider-link]</default>
+                <Required>N</Required>
+            </StorageProviderLink>
+                        
+        </settings>
+    </items>
+</model>

@@ -1,0 +1,8 @@
+Configuration Sync is a tool designed to one-way synchronize the system 
+configuration files from the OPNsense host to S3 compatible object data storage 
+in close to real time.  While the tool has the effect of being a great 
+configuration backup tool the intent is to provide a tool that stores the 
+OPNsense system configuration in a location that is readily addressable using 
+DevOps automation tools such as Terraform.
+
+WWW: https://github.com/verbnetworks/opnsense-plugin-configsync

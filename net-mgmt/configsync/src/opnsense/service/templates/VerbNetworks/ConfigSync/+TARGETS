@@ -1,0 +1,2 @@
+configsync:/etc/rc.conf.d/configsync
+configsync.conf:/usr/local/etc/configsync/configsync.conf

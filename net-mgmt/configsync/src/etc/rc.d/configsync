@@ -1,0 +1,78 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: configsync
+
+# Add the following /etc/rc.conf.d/configsync entry to enable configsync:
+# configsync_enable="YES"
+
+
+. /etc/rc.subr
+
+name=configsync
+rcvar=${name}_enable
+
+load_rc_config $name
+configsync_enable=${configsync_enable:-"NO"}
+configsync_configfile=${configsync_configfile:-"/usr/local/etc/configsync/configsync.conf"}
+
+configsync_flags="-c ${configsync_configfile}"
+command=/usr/local/opnsense/scripts/VerbNetworks/ConfigSync/MonitorDaemon.py
+pidfile=/var/run/configsync-monitordaemon.pid
+
+start_cmd="configsync_start_cmd"
+start_precmd="configsync_prestart_cmd"
+stop_cmd="configsync_stop_cmd"
+restart_cmd="configsync_restart_cmd"
+status_cmd="configsync_status_cmd"
+
+configsync_prestart_cmd() {
+    mkdir -p /var/db/configsync
+}
+
+configsync_start_cmd() {
+    if [ ! -e ${pidfile} ]; then
+        echo "${name} is starting..."
+        ${command} ${configsync_flags}
+        sleep 1
+    else
+        if [ $(ps -o pid= -p `cat ${pidfile}` | wc -l) -gt 0 ]; then
+            echo "${name} is already running!"
+        else
+            rm -f ${pidfile}
+            echo "${name} is starting..."
+            ${command} ${configsync_flags}
+            sleep 1
+        fi
+    fi
+}
+
+configsync_stop_cmd() {
+    if [ -e ${pidfile} ] && [ $(ps -o pid= -p `cat ${pidfile}` | wc -l) -gt 0 ]; then
+        echo "${name} is stopping..."
+        if [ -e ${pidfile} ]; then
+            kill `cat ${pidfile}`
+        fi
+        rm -f ${pidfile}
+        sleep 1
+    else
+        echo "${name} is not running?"
+    fi
+}
+
+configsync_restart_cmd() {
+    configsync_stop_cmd
+    configsync_start_cmd
+}
+
+configsync_status_cmd() {
+    if [ -e ${pidfile} ] && [ $(ps -o pid= -p `cat ${pidfile}` | wc -l) -gt 0 ]; then
+        echo "${name} is running"
+    else
+        echo "${name} is not running"
+    fi
+}
+
+run_rc_command "$1"

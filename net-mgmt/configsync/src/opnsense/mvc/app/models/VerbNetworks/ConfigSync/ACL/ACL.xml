@@ -1,0 +1,9 @@
+<acl>
+    <page-user-configsync>
+        <name>System: Configuration Sync</name>
+        <patterns>
+            <pattern>ui/configsync/*</pattern>
+            <pattern>api/configsync/*</pattern>
+        </patterns>
+    </page-user-configsync>
+</acl>

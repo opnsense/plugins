@@ -1,0 +1,9 @@
+<menu>
+    <System>
+        <ConfigSync VisibleName="Configuration Sync" cssClass="fa fa-exchange fa-fw">
+            <ConfigSyncSettings VisibleName="Settings" url="/ui/configsync/settings" order="10"/>
+            <ConfigSyncStatus VisibleName="Synced Configurations" url="/ui/configsync/files" order="20"/>
+            <ConfigSyncLogFile VisibleName="Log File" url="/diag_logs_configsync.php" order="30"/>
+        </ConfigSync>
+    </System>
+</menu>
