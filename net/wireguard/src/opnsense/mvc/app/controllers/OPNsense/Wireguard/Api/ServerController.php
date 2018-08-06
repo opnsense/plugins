@@ -65,8 +65,8 @@ class ServerController extends ApiMutableModelControllerBase
             if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
                 // generate new keypair
                 $backend = new Backend();
-                $keyspriv = json_decode(trim($backend->configdRun("wireguard genkey", private)), true);
-                $keyspub = json_decode(trim($backend->configdRun("wireguard genkey", public)), true);
+                $keyspriv = json_decode(trim($backend->configdpRun("wireguard genkey", private)), true);
+                $keyspub = json_decode(trim($backend->configdpRun("wireguard genkey", public)), true);
                 $node->privkey = (string)$keyspriv;
                 $node->pubkey = (string)$keyspub;
             }
