@@ -528,6 +528,9 @@
           <Required>N</Required>
           <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
         </keys>
+        <time type="IntegerField">
+          <Required>N</Required>
+        </time>
         <include_subdomains>
           <Required>Y</Required>
         </include_subdomains>

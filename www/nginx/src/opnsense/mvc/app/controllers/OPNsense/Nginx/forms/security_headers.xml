@@ -54,6 +54,11 @@
     It is not recommended to use this feature with short lived certificates.]]></help>
   </field>
   <field>
+    <id>security_header.hpkp.time</id>
+    <label>HTTP Public Key Pinning: Max Age</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>security_header.hpkp.include_subdomains</id>
     <label>HTTP Public Key Pinning: Include Subdomains</label>
     <type>checkbox</type>
