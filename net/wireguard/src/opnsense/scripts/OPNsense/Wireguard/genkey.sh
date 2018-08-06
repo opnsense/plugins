@@ -36,7 +36,7 @@ cleanup() {
 
 private() {
 	# Generate a private key and put it to /tmp
-	${GENPRIV} > ${TMPDIR}/wireguard.priv
+	umask 077 && ${GENPRIV} > ${TMPDIR}/wireguard.priv
 }
 
 public() {
