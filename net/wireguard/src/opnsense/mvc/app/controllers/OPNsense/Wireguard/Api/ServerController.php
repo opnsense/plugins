@@ -53,9 +53,26 @@ class ServerController extends ApiMutableModelControllerBase
     {
         return $this->delBase('servers.server', $uuid);
     }
-    public function setServerAction($uuid)
+    public function setServerAction($uuid = null)
     {
-        return $this->setBase('server', 'servers.server', $uuid);
+        if ($this->request->isPost() && $this->request->hasPost("server")) {
+            if ($uuid != null) {
+                $node = $this->getModel()->getNodeByReference('servers.server.'.$uuid);
+            } else {
+                $node = $this->getModel()->servers->server->Add();
+            }
+            $node->setNodes($this->request->getPost("server"));
+            if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
+                // generate new keypair
+                $backend = new Backend();
+                $keyspriv = json_decode(trim($backend->configdRun("wireguard genkey", private)), true);
+                $keyspub = json_decode(trim($backend->configdRun("wireguard genkey", public)), true);
+                $node->privkey = (string)$keyspriv;
+                $node->pubkey = (string)$keyspub;
+            }
+            return $this->validateAndSave($node, 'server');
+        }
+        return array("result"=>"failed");
     }
     public function toggleServerAction($uuid)
     {
