@@ -95,10 +95,10 @@ if (!empty($_REQUEST['getrfc2136status'])) {
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th><?=gettext("Interface");?></th>
-      <th><?=gettext("Server");?></th>
-      <th><?=gettext("Hostname");?></th>
-      <th><?=gettext("Cached IP");?></th>
+      <th style="width:15%;"><?=gettext("Interface");?></th>
+      <th style="width:15%;"><?=gettext("Server");?></th>
+      <th style="width:25%;"><?=gettext("Hostname");?></th>
+      <th style="width:45%;"><?=gettext("Cached IP");?></th>
     </tr>
   </thead>
   <tbody>
