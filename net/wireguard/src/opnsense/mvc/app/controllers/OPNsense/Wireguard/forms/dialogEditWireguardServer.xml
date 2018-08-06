@@ -12,6 +12,12 @@
         <help>Set the name for this instance.</help>
     </field>
     <field>
+        <id>server.instance</id>
+        <label>Instance</label>
+        <type>dropdown</type>
+        <help>Set the instance number needed for interface calculation. It has to be unique for each instance.</help>
+    </field>
+    <field>
         <id>server.pubkey</id>
         <label>Public Key</label>
         <type>text</type>
