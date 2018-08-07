@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/client</mount>
     <description>Wireguard Client configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <items>
         <clients>
             <client type="ArrayField">
@@ -15,19 +15,9 @@
                     <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
                 </name>
-                <instance type="AutoNumberField">
-                    <MinimumValue>0</MinimumValue>
-                    <MaximumValue>19</MaximumValue>
-                    <ValidationMessage>Maximum number of instances reached</ValidationMessage>
-                    <Required>Y</Required> 
-                </instance>
                 <pubkey type="TextField">
                     <Required>N</Required>
                 </pubkey>
-                <port type="PortField">
-                    <default>5555</default>
-                    <Required>Y</Required>
-                </port>
                 <tunneladdress type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
@@ -42,16 +32,6 @@
                     <default>5555</default>
                     <Required>Y</Required>
                 </serverport>
-                <servertunneladdress type="NetworkField">
-                    <default></default>
-                    <FieldSeparator>,</FieldSeparator>
-                    <Required>Y</Required>
-                    <asList>Y</asList>
-                </servertunneladdress>
-                <serverpubkey type="TextField">
-                    <default></default>
-                    <Required>Y</Required>
-                </serverpubkey>
             </client>
         </clients>
     </items>
