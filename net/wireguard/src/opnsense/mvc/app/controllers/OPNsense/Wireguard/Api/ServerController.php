@@ -58,10 +58,10 @@ class ServerController extends ApiMutableModelControllerBase
             if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
                 // generate new keypair
                 $backend = new Backend();
-                $keyspriv = json_decode(trim($backend->configdpRun("wireguard genkey", 'private')), true);
-                $keyspub = json_decode(trim($backend->configdpRun("wireguard genkey", 'public')), true);
-                $node->privkey = (string)$keyspriv;
-                $node->pubkey = (string)$keyspub;
+                $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
+                $keyspub = $backend->configdpRun("wireguard genkey", 'public');
+                $node->privkey = $keyspriv;
+                $node->pubkey = $keyspub;
             }
             return $this->validateAndSave($node, 'server');
         }
@@ -83,10 +83,10 @@ class ServerController extends ApiMutableModelControllerBase
             if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
                 // generate new keypair
                 $backend = new Backend();
-                $keyspriv = json_decode(trim($backend->configdpRun("wireguard genkey", 'private')), true);
-                $keyspub = json_decode(trim($backend->configdpRun("wireguard genkey", 'public')), true);
-                $node->privkey = (string)$keyspriv;
-                $node->pubkey = (string)$keyspub;
+                $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
+                $keyspub = $backend->configdpRun("wireguard genkey", 'public');
+                $node->privkey = $keyspriv;
+                $node->pubkey = $keyspub;
             }
             return $this->validateAndSave($node, 'server');
         }
