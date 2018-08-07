@@ -30,9 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#clients">{{ lang._('Client') }}</a></li>    
     <li><a data-toggle="tab" href="#servers">{{ lang._('Server') }}</a></li>
-
+    <li><a data-toggle="tab" href="#clients">{{ lang._('Client') }}</a></li>  
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -154,7 +153,7 @@ $( document ).ready(function() {
 
     $("#saveAct_client").click(function(){
         saveFormToEndpoint(url="/api/wireguard/client/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
+        $("#saveAct_client_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/wireguard/service/status", sendData={}, callback=function(data,status) {
                     updateServiceStatusUI(data['status']);
@@ -166,7 +165,7 @@ $( document ).ready(function() {
 
     $("#saveAct_server").click(function(){
         saveFormToEndpoint(url="/api/wireguard/server/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
+        $("#saveAct_server_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/wireguard/service/status", sendData={}, callback=function(data,status) {
                     updateServiceStatusUI(data['status']);
