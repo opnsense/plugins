@@ -27,14 +27,14 @@
     </field>
     <field>
         <id>client.serveraddress</id>
-        <label>Remote Server Address</label>
+        <label>Endpoint Address</label>
         <type>text</type>
-        <help>Set public IP address the remote server listens to.</help>
+        <help>Set public IP address the endpoint listens to.</help>
     </field>
     <field>
         <id>client.serverport</id>
-        <label>Remote Server Port</label>
+        <label>Endpoint Port</label>
         <type>text</type>
-        <help>Set port the remote server listens to.</help>
+        <help>Set port the endpoint listens to.</help>
     </field>
 </form>
