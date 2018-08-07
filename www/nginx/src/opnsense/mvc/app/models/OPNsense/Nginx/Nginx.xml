@@ -459,6 +459,18 @@
         <default>1</default>
         <Required>Y</Required>
       </sendfile>
+      <security_header type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>security_header</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected security rule not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </security_header>
     </http_server>
 
     <http_rewrite type="ArrayField">
@@ -514,52 +526,51 @@
       <content_type_options type="BooleanField">
         <Required>Y</Required>
       </content_type_options>
-      <strict_transport_security>
-        <time type="IntegerField">
-          <Required>N</Required>
-        </time>
-        <include_subdomains>
-          <Required>Y</Required>
-          <default>1</default>
-        </include_subdomains>
-      </strict_transport_security>
-      <hpkp>
-        <keys type="CSVListField">
-          <Required>N</Required>
-          <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
-        </keys>
-        <time type="IntegerField">
-          <Required>N</Required>
-        </time>
-        <include_subdomains>
-          <Required>Y</Required>
-        </include_subdomains>
-      </hpkp>
+      <strict_transport_security_time type="IntegerField">
+        <Required>N</Required>
+      </strict_transport_security_time>
+      <strict_transport_security_include_subdomains type="BooleanField">
+        <Required>Y</Required>
+        <default>1</default>
+      </strict_transport_security_include_subdomains>
+      <hpkp_keys type="CSVListField">
+        <Required>N</Required>
+        <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
+      </hpkp_keys>
+      <hpkp_report_only type="BooleanField">
+        <Required>Y</Required>
+      </hpkp_report_only>
+      <hpkp_time type="IntegerField">
+        <Required>N</Required>
+      </hpkp_time>
+      <hpkp_include_subdomains type="BooleanField">
+        <Required>Y</Required>
+      </hpkp_include_subdomains>
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>
-      <csp>
-        <default-src>
-          <enabled type="BooleanField">
-            <Required>Y</Required>
-          </enabled>
-          <data_urls type="BooleanField">
-            <Required>Y</Required>
-          </data_urls>
-          <http_urls type="CSVListField">
-            <Required>Y</Required>
-          </http_urls>
-          <inline type="BooleanField">
-            <Required>Y</Required>
-          </inline>
-          <eval type="BooleanField">
-            <Required>Y</Required>
-          </eval>
-          <self type="BooleanField">
-            <Required>Y</Required>
-          </self>
-        </default-src>
-      </csp>
+      <csp_report_only type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_report_only>
+      <csp_default_src_enabled type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_enabled>
+      <csp_default_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_data_urls>
+      <csp_default_src_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_default_src_http_urls>
+      <csp_default_src_inline type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_inline>
+      <csp_default_src_eval type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_eval>
+      <csp_default_src_self type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_self>
     </security_header>
   </items>
 </model>

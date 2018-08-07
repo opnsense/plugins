@@ -1,5 +1,11 @@
 <form>
   <field>
+    <id>security_header.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>This is only for your reference.</help>
+  </field>
+  <field>
     <id>security_header.referrer</id>
     <label>Referrer</label>
     <style>selectpicker</style>
@@ -31,19 +37,19 @@
     <type>checkbox</type>
   </field>
   <field>
-    <id>security_header.strict_transport_security.time</id>
+    <id>security_header.strict_transport_security_time</id>
     <label>Strict Transport Security: Time</label>
     <type>text</type>
     <help>A time in seconds in which the transport security (TLS) should be enforced.</help>
   </field>
   <field>
-    <id>security_header.strict_transport_security.include_subdomains</id>
+    <id>security_header.strict_transport_security_include_subdomains</id>
     <label>Strict Transport Security: Include Subdomains</label>
     <type>checkbox</type>
     <help>If checked, also subdomains are affected.</help>
   </field>
   <field>
-    <id>security_header.hpkp.keys</id>
+    <id>security_header.hpkp_keys</id>
     <label>HTTP Public Key Pinning: Fingerprints</label>
     <type>select_multiple</type>
     <style>tokenize</style>
@@ -54,12 +60,18 @@
     It is not recommended to use this feature with short lived certificates.]]></help>
   </field>
   <field>
-    <id>security_header.hpkp.time</id>
+    <id>security_header.hpkp_report_only</id>
+    <label>HTTP Public Key Pinning: Report Only</label>
+    <type>checkbox</type>
+    <help>If you only want to test it, you can check this box (policy will be deployed but not enforced).</help>
+  </field>
+  <field>
+    <id>security_header.hpkp_time</id>
     <label>HTTP Public Key Pinning: Max Age</label>
     <type>text</type>
   </field>
   <field>
-    <id>security_header.hpkp.include_subdomains</id>
+    <id>security_header.hpkp_include_subdomains</id>
     <label>HTTP Public Key Pinning: Include Subdomains</label>
     <type>checkbox</type>
     <help>If checked, also subdomains are affected.</help>
@@ -71,35 +83,35 @@
     <help>If checked, the CSP is enabled.</help>
   </field>
   <field>
-    <id>security_header.csp.default-src.enabled</id>
+    <id>security_header.csp_default_src_enabled</id>
     <label>Content Security Policy: Enable Default Source</label>
     <type>checkbox</type>
     <help>If checked, the CSP is enabled.</help>
   </field>
   <field>
-    <id>security_header.csp.default-src.data_urls</id>
+    <id>security_header.csp_default_src_data_urls</id>
     <label>Content Security Policy: Enable Data URLs</label>
     <type>checkbox</type>
   </field>
   <field>
-    <id>security_header.csp.default-src.http_urls</id>
+    <id>security_header.csp_default_src_http_urls</id>
     <label>Content Security Policy: Enable HTTP(S) URLs</label>
     <type>select_multiple</type>
     <allownew>true</allownew>
     <style>tokenize</style>
   </field>
   <field>
-    <id>security_header.csp.default-src.inline</id>
+    <id>security_header.csp_default_src_inline</id>
     <label>Content Security Policy: Enable Inline Scripting</label>
     <type>checkbox</type>
   </field>
   <field>
-    <id>security_header.csp.default-src.eval</id>
+    <id>security_header.csp_default_src_eval</id>
     <label>Content Security Policy: Enable Eval</label>
     <type>checkbox</type>
   </field>
   <field>
-    <id>security_header.csp.default-src.self</id>
+    <id>security_header.csp_default_src_self</id>
     <label>Content Security Policy: Enable Same Origin (recommended)</label>
     <type>checkbox</type>
   </field>
