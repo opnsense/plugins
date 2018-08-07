@@ -36,12 +36,12 @@ cleanup() {
 
 private() {
 	# Generate a private key and put it to /tmp
-	umask 077 && ${GENPRIV} > ${TMPDIR}/wireguard.priv
+	umask 077 && ${GENPRIV} > ${TMPDIR}/wireguard.priv && cat ${TMPDIR}/wireguard.priv
 }
 
 public() {
 	# Generate a public key and put it to /tmp
-	cat ${TMPDIR}/wireguard.priv | ${GENPUB} > ${TMPDIR}/wireguard.pub
+	cat ${TMPDIR}/wireguard.priv | ${GENPUB} > ${TMPDIR}/wireguard.pub && cat ${TMPDIR}/wireguard.pub
 }
 
 case "$1" in
