@@ -40,8 +40,8 @@
                 <peers type="ModelRelationField">
                     <Model>
                         <template>
-                            <source>OPNsense.Bind.Acl</source>
-                            <items>acls.acl</items>
+                            <source>OPNsense.Wireguard.Client</source>
+                            <items>clients.client</items>
                             <display>name</display>
                         </template>
                     </Model>
