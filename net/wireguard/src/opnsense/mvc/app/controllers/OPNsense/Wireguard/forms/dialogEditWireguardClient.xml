@@ -12,28 +12,10 @@
         <help>Set the name for this instance.</help>
     </field>
     <field>
-        <id>client.instance</id>
-        <label>Instance</label>
-        <type>info</type>
-        <help>Set the instance number needed for interface calculation. It has to be unique for each instance.</help>
-    </field>
-    <field>
         <id>client.pubkey</id>
         <label>Public Key</label>
         <type>text</type>
         <help>Public key of this instance.</help>
-    </field>
-    <field>
-        <id>client.privkey</id>
-        <label>Private Key</label>
-        <type>text</type>
-        <help>Private key of this instance.</help>
-    </field>
-    <field>
-        <id>client.port</id>
-        <label>Listen Port</label>
-        <type>text</type>
-        <help>Set port for this instance to listen to.</help>
     </field>
     <field>
         <id>client.tunneladdress</id>
@@ -54,19 +36,5 @@
         <label>Remote Server Port</label>
         <type>text</type>
         <help>Set port the remote server listens to.</help>
-    </field>
-    <field>
-        <id>client.servertunneladdress</id>
-        <label>Server Tunnel Address</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>List of addresses on the server tunnel adapter. Please use CIDR notation like 10.0.0.1/24.</help>
-    </field>
-    <field>
-        <id>client.serverpubkey</id>
-        <label>Remote Server Public Key</label>
-        <type>text</type>
-        <help>Set public key of the remote server here.</help>
     </field>
 </form>
