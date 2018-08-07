@@ -46,7 +46,6 @@
     <field>
         <id>server.peers</id>
         <label>Peers</label>
-        <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>List of peers for this server.</help>
