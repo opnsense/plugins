@@ -20,20 +20,20 @@
     <field>
         <id>server.pubkey</id>
         <label>Public Key</label>
-        <type>text</type>
-        <help>Public key of this instance. After saving this field is automatically and you can give out the key to other parties.</help>
+        <type>info</type>
+        <help>Public key of this instance. After saving you will see here your public key.</help>
     </field>
     <field>
         <id>server.privkey</id>
         <label>Private Key</label>
-        <type>text</type>
-        <help>Private key of this instance. Please keep it save.</help>
+        <type>info</type>
+        <help>Private key of this instance. After saving you will see here your public key, please keep it safe.</help>
     </field>
     <field>
         <id>server.port</id>
         <label>Listen Port</label>
         <type>text</type>
-        <help>Set port for this instance to listen to.</help>
+        <help>Set port for this instance to listen on.</help>
     </field>
     <field>
         <id>server.tunneladdress</id>

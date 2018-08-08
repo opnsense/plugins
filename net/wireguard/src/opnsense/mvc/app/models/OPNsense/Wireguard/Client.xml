@@ -29,7 +29,7 @@
                     <Required>Y</Required>
                 </serveraddress>
                 <serverport type="PortField">
-                    <default>5555</default>
+                    <default>51820</default>
                     <Required>Y</Required>
                 </serverport>
             </client>
