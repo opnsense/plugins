@@ -45,11 +45,11 @@ public() {
 }
 
 case "$1" in
-	private)
+        private)
                 cleanup
-		private
-		;;
-	public)
-		public
-		;;
+                private
+                ;;
+        public)
+                public
+                ;;
 esac
