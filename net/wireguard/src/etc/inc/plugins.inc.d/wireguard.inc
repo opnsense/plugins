@@ -52,3 +52,20 @@ function wireguard_services()
 
     return $services;
 }
+
+function wireguard_interfaces()
+{
+    $interfaces = array();
+    if (!wireguard_enabled()) {
+        return $interfaces;
+    }
+    $oic = array('enable' => true);
+    $oic['if'] = 'wireguard';
+    $oic['descr'] = 'WireGuard';
+    $oic['type'] = 'group';
+    $oic['virtual'] = true;
+    $oic['networks'] = array();
+    $interfaces['wg'] = $oic;
+    return $interfaces;
+}
+
