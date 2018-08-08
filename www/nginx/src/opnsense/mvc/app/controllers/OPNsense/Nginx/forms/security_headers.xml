@@ -115,4 +115,24 @@
     <label>Content Security Policy: Enable Same Origin (recommended)</label>
     <type>checkbox</type>
   </field>
+  <field>
+    <id>security_header.csp_default_src_blob</id>
+    <label>Content Security Policy: Enable Blobs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_mediastream</id>
+    <label>Content Security Policy: Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_filesystem</id>
+    <label>Content Security Policy: Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_none</id>
+    <label>Content Security Policy: Forbid Explicitly</label>
+    <type>checkbox</type>
+  </field>
 </form>

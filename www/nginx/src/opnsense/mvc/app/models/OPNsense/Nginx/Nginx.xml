@@ -571,6 +571,18 @@
       <csp_default_src_self type="BooleanField">
         <Required>Y</Required>
       </csp_default_src_self>
+      <csp_default_src_blob type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_blob>
+      <csp_default_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_mediastream>
+      <csp_default_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_filesystem>
+      <csp_default_src_none type="BooleanField">
+        <Required>Y</Required>
+      </csp_default_src_none>
     </security_header>
   </items>
 </model>
