@@ -37,9 +37,10 @@ wireguard_status()
 wireguard_stop()
 {
     echo "stopping wireguard"
-    config=`ls -1 /usr/local/etc/wireguard/*.conf`
+    config=`cd /usr/local/etc/wireguard/ && ls -1 *.conf | cut -d. -f1`
     for STARTER in $config; do
         $command down $STARTER
+	ifconfig destroy $STARTER
         return 0
     done
 }
@@ -48,9 +49,10 @@ wireguard_stop()
 wireguard_start()
 {
     echo "starting wireguard"
-    config=`ls -1 /usr/local/etc/wireguard/*.conf`
+    config=`cd /usr/local/etc/wireguard/ && ls -1 *.conf | cut -d. -f1`
     for STARTER in $config; do
         $command up $STARTER
+	ifconfig $STARTER group wireguard
         return 0
     done
 }
