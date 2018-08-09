@@ -17,7 +17,7 @@ status_cmd=wireguard_status
 rcvar=wireguard_enable
 
 load_rc_config opnsense-wireguard
-pidfile=`pgrep -f wg-quick`
+pidfile=`pgrep -f wireguard-go`
 command=/usr/local/bin/wg-quick
 
 [ -z "$wireguard_enable" ] && wireguard_enable="NO"
