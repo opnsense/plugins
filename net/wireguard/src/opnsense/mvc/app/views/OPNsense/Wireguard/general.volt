@@ -115,10 +115,6 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    ajaxCall(url="/api/wireguard/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['status']);
-    });
-
     $("#grid-clients").UIBootgrid(
         {   'search':'/api/wireguard/client/searchClient',
             'get':'/api/wireguard/client/getClient/',
@@ -143,9 +139,6 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/wireguard/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/wireguard/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
-                });
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
@@ -155,9 +148,6 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/wireguard/client/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_client_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/wireguard/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
-                });
                 $("#saveAct_client_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
@@ -167,9 +157,6 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/wireguard/server/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_server_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/wireguard/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
-                });
                 $("#saveAct_server_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
