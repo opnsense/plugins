@@ -10,7 +10,6 @@
             <default></default>
             <filters>
                 <enable>/^(?!0).*$/</enable>
-                <if>/^(?!openvpn|ipsec|enc).*$/i</if>
             </filters>
         </interface>
         <mac type="TextField">
