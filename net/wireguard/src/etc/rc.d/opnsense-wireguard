@@ -30,7 +30,6 @@ wireguard_stop()
     for STARTER in $config; do
         $command down $STARTER
 	ifconfig destroy $STARTER
-        return 0
     done
 }
 
@@ -42,7 +41,6 @@ wireguard_start()
     for STARTER in $config; do
         $command up $STARTER
 	ifconfig $STARTER group wireguard
-        return 0
     done
 }
 
