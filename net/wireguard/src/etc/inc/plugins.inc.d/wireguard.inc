@@ -47,7 +47,7 @@ function wireguard_services()
             'start' => array('wireguard start'),
             'stop' => array('wireguard stop'),
         ),
-        'name' => 'wg-quick'
+        'name' => 'wireguard-go'
     );
 
     return $services;
