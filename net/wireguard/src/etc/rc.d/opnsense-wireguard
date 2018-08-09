@@ -22,17 +22,6 @@ command=/usr/local/bin/wg-quick
 
 [ -z "$wireguard_enable" ] && wireguard_enable="NO"
 
-# status of wireguard
-wireguard_status()
-{
-	 if [ -n "$rc_pid" ]; then
-	     echo "${name} is running as pid $rc_pid."
-	     return 0
-	 else
-	     echo "${name} is not running."
-	 fi
-}
-
 # stop wireguard
 wireguard_stop()
 {
