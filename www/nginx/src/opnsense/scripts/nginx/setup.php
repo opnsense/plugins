@@ -33,7 +33,7 @@ function find_ca($refid) {
   }
 }
 
-// export certificates
+// export server certificates
 if (!isset($config['OPNsense']['Nginx'])) {
   die("nginx is not configured");
 }
@@ -78,7 +78,52 @@ foreach ($http_servers as $http_server) {
     }
   }
 }
-// end export certificates
+// end export server certificates
+
+// begin export client and upstream trust certificates
+if (isset($nginx['upstream'])) {
+    if (is_array($nginx['upstream']) && !isset($nginx['upstream']['description'])) {
+        $upstreams = $nginx['upstream'];
+    } else {
+        $upstreams = array($nginx['upstream']);
+    }
+
+    foreach ($upstreams as $upstream) {
+        $upstream_uuid = $upstream['@attributes']['uuid'];
+        if (!empty($upstream['tls_enable']) && $upstream['tls_enable'] == '1')
+        {
+            // try to find the reference
+            if (!empty($upstream['tls_client_certificate'])) {
+                $cert = find_cert($upstream['tls_client_certificate']);
+                if (isset($cert)) {
+                    $hostname = explode(',', $http_server['servername'])[0];
+                    export_pem_file(
+                        '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.pem',
+                        $cert['crt']
+                    );
+                    export_pem_file(
+                        '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.key',
+                        $cert['prv']
+                    );
+                }
+            }
+            if (!empty($upstream['tls_trusted_certificate'])) {
+                $cas = array();
+                foreach ($http_server['ca'] as $caref) {
+                    $ca = find_ca($caref);
+                    if (isset($ca)) {
+                        $cas[] = $ca;
+                    }
+                }
+                export_pem_file(
+                    '/usr/local/etc/nginx/key/trust_upstream_' . $upstream_uuid . '.pem',
+                    implode("\n", $cas)
+                );
+            }
+        }
+    }
+}
+// end export client and upstream trust certificates
 
 // export users
 $nginx = new Nginx();
