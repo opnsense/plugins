@@ -51,10 +51,10 @@
                 <p>
                     Configuration Sync is a tool designed to one-way synchronize the system 
                     configuration files from the OPNsense host to S3 compatible object data 
-                    storage in close to real time.  While the tool has the effect of being 
-                    a great configuration backup tool the intent is to provide a tool that
-                    stores the OPNsense system configuration in a location that is readily
-                    addressable using DevOps automation tools such as Terraform.
+                    storage in close to real time.  While the tool has the side effect of
+                    being a great configuration backup tool the intent is to provide a tool
+                    that stores the OPNsense system configuration in a location that is
+                    readily addressable in DevOps automation scenarios.
                 </p>
                 
                 <p>
@@ -68,22 +68,24 @@
                     The user-interface within the Configuration Sync plugin provides no
                     direct way to access or download the configuration files that
                     have been synced out to the storage-provider.  Use the storage-provider
-                    web-console or other CLI tool to access and download as required.
+                    web-console or other toolchain to access and download as required.
                 </p>
                 
                 <h2>Supported Versions</h2>
                 <p>
-                    Configuration Sync is a tool requires OPNsense 18.7.x or better
-                    to support alert-message dialogues in the Settings page.  The alert-messages
-                    are purely cosmetic and previous OPNsense versions are known to work
-                    under the hood even if the alert-messages appear to get "stuck" and not progress.
+                    Configuration Sync is a tool requires OPNsense 18.7.1 or better
+                    to correctly display alert-message dialogues in the Settings page.  The
+                    alert-messages are purely a cosmetic user-interface thing and previous
+                    OPNsense versions are known to work under the hood even if the user
+                    message appears to get "stuck" and not progress.
                 </p>
                 
                 <h2>Example AWS IAM policy</h1>
                 <p>Consider the AWS IAM policy below to restrict the resources and actions available 
                     to the AWS access-key used.  Of particular note is that this policy does not 
                     require <code>GetObject</code> actions which hence prevents these credentials
-                    being re-purposed to gain access to previous system configurations via AWS-S3 storage.
+                    being re-purposed to gain access to previous system configurations via AWS-S3
+                    storage.
                 </p>
 <pre>{
     "Version": "2012-10-17",
