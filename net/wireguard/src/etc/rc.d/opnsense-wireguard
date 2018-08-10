@@ -17,7 +17,6 @@ status_cmd=wireguard_status
 rcvar=wireguard_enable
 
 load_rc_config opnsense-wireguard
-pidfile=`pgrep -f wireguard-go`
 command=/usr/local/bin/wg-quick
 
 [ -z "$wireguard_enable" ] && wireguard_enable="NO"
@@ -26,10 +25,11 @@ command=/usr/local/bin/wg-quick
 wireguard_stop()
 {
     echo "stopping wireguard"
-    config=`cd /usr/local/etc/wireguard/ && ls -1 *.conf | cut -d. -f1`
+    config=`find /usr/local/etc/wireguard/* -name '*.conf' -exec basename {} \; | cut -d. -f1`
     for STARTER in $config; do
         $command down $STARTER
 	ifconfig destroy $STARTER
+	pkill -f wg-quick
     done
 }
 
@@ -37,7 +37,7 @@ wireguard_stop()
 wireguard_start()
 {
     echo "starting wireguard"
-    config=`cd /usr/local/etc/wireguard/ && ls -1 *.conf | cut -d. -f1`
+    config=`find /usr/local/etc/wireguard/* -name '*.conf' -exec basename {} \; | cut -d. -f1`
     for STARTER in $config; do
         $command up $STARTER
 	ifconfig $STARTER group wireguard
