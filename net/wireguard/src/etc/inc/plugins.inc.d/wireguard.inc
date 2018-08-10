@@ -60,7 +60,7 @@ function wireguard_interfaces()
         return $interfaces;
     }
     $oic = array('enable' => true);
-    $oic['if'] = 'wireguard';
+    $oic['if'] = 'wg';
     $oic['descr'] = 'WireGuard';
     $oic['type'] = 'group';
     $oic['virtual'] = true;
