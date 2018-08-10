@@ -25,7 +25,7 @@ command=/usr/local/bin/wg-quick
 wireguard_stop()
 {
     echo "stopping wireguard"
-    config=`find /usr/local/etc/wireguard/* -name '*.conf' -exec basename {} \; | cut -d. -f1`
+    config=$(find /usr/local/etc/wireguard/* -name '*.conf' -exec basename {} \; | cut -d. -f1)
     for STARTER in $config; do
         $command down $STARTER
 	ifconfig destroy $STARTER
@@ -37,7 +37,7 @@ wireguard_stop()
 wireguard_start()
 {
     echo "starting wireguard"
-    config=`find /usr/local/etc/wireguard/* -name '*.conf' -exec basename {} \; | cut -d. -f1`
+    config=$(find /usr/local/etc/wireguard/* -name '*.conf' -exec basename {} \; | cut -d. -f1)
     for STARTER in $config; do
         $command up $STARTER
 	ifconfig $STARTER group wireguard
