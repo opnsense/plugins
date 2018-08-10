@@ -29,7 +29,7 @@ restart_cmd="configsync_restart_cmd"
 status_cmd="configsync_status_cmd"
 
 configsync_prestart_cmd() {
-    mkdir -p /var/db/configsync
+    mkdir -p /var/cache/configsync
 }
 
 configsync_start_cmd() {

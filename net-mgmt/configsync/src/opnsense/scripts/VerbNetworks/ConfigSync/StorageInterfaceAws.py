@@ -44,7 +44,7 @@ class StorageInterfaceAws(StorageInterface):
 
     storage_configs_full_path='{storage_path}/{hostname}'
     storage_use_gzip_encoding=True
-    storage_list_objects_cache='/var/db/configsync/list_objects'
+    storage_list_objects_cache='/var/cache/configsync/list_objects'
     aws_request_timeout = 60    # NB: list_objects can take a long time when there are a large number of items to page through
 
     __aws_key_id = None
