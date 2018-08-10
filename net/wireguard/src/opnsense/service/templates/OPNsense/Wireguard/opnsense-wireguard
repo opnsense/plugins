@@ -5,7 +5,7 @@ wireguard_enable="YES"
 {%   set activeservers=[] %}
 {%     for servers in helpers.toList('OPNsense.wireguard.server.servers.server') %}
 {%       if servers.enabled == '1' %}
-{%       do activeservers.append(servers.instance) %}
+{%       do activeservers.append("wg" + servers.instance) %}
 {%       endif %}
 {%     endfor %}
 {%   endif %}
