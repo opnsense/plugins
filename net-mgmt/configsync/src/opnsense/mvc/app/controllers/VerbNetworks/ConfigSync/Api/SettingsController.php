@@ -33,7 +33,6 @@ use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
 use \OPNsense\Base\ApiControllerBase;
 use \VerbNetworks\ConfigSync\ConfigSync;
-use \VerbNetworks\ConfigSync\ControllerUtils;
 
 class SettingsController extends ApiControllerBase
 {
@@ -44,7 +43,7 @@ class SettingsController extends ApiControllerBase
         if ($this->request->isGet()) {
             $model_ConfigSync = new ConfigSync();
             $response['configsync'] = $model_ConfigSync->getNodes();
-            $response['configsync']['settings']['SystemHostid'] = ControllerUtils::getHostid();
+            $response['configsync']['settings']['SystemHostid'] = $this->getHostid();
         }
         return $response;
     }
@@ -56,7 +55,7 @@ class SettingsController extends ApiControllerBase
         if ($this->request->isPost()) {
             $model_ConfigSync = new ConfigSync();
             $model_ConfigSync->setNodes($this->request->getPost("configsync"));
-            $response["validations"] = ControllerUtils::unpackValidationMessages($model_ConfigSync, 'configsync');
+            $response["validations"] = $this->unpackValidationMessages($model_ConfigSync, 'configsync');
             
             if (0 == count($response["validations"])) {
                 $model_ConfigSync->serializeToConfig();
@@ -76,7 +75,7 @@ class SettingsController extends ApiControllerBase
         if ($this->request->isPost()) {
             $model_ConfigSync = new ConfigSync();
             $model_ConfigSync->setNodes($this->request->getPost("configsync"));
-            $response["validations"] = ControllerUtils::unpackValidationMessages($model_ConfigSync, 'configsync');
+            $response["validations"] = $this->unpackValidationMessages($model_ConfigSync, 'configsync');
             
             if (0 == count($response["validations"])) {
                 $data = $this->request->getPost("configsync");
@@ -110,6 +109,25 @@ class SettingsController extends ApiControllerBase
             }
         }
         
+        return $response;
+    }
+    
+    private function getHostid()
+    {
+        $hostid = '00000000-0000-0000-0000-000000000000';
+        if (file_exists('/etc/hostid')) {
+            $hostid = trim(file_get_contents('/etc/hostid'));
+        }
+        return $hostid;
+    }
+    
+    private function unpackValidationMessages($model, $namespace)
+    {
+        $response = array();
+        $validation_messages = $model->performValidation();
+        foreach ($validation_messages as $field => $message) {
+            $response[$namespace.'.'.$message->getField()] = $message->getMessage();
+        }
         return $response;
     }
 }
