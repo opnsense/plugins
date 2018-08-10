@@ -25,12 +25,10 @@
                     <asList>Y</asList>
                 </tunneladdress>
                 <serveraddress type="NetworkField">
-                    <default>remote.server</default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </serveraddress>
                 <serverport type="PortField">
-                    <default>51820</default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </serverport>
             </client>
         </clients>
