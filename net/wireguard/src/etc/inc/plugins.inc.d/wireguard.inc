@@ -68,4 +68,3 @@ function wireguard_interfaces()
     $interfaces['wg'] = $oic;
     return $interfaces;
 }
-

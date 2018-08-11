@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Server') }}</a></li>
-    <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>  
+    <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -161,6 +161,6 @@ $( document ).ready(function() {
             });
         });
     });
-    
+
 });
 </script>

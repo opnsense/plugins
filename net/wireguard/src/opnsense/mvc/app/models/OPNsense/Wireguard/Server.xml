@@ -19,7 +19,7 @@
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>19</MaximumValue>
                     <ValidationMessage>Maximum number of instances reached</ValidationMessage>
-                    <Required>Y</Required> 
+                    <Required>Y</Required>
                 </instance>
                 <pubkey type="TextField">
                     <Required>N</Required>
