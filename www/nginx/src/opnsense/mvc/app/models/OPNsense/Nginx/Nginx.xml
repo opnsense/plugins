@@ -556,34 +556,277 @@
       </csp_report_only>
       <csp_default_src_enabled type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_enabled>
       <csp_default_src_data_urls type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_data_urls>
       <csp_default_src_http_urls type="CSVListField">
         <Required>Y</Required>
       </csp_default_src_http_urls>
       <csp_default_src_inline type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_inline>
       <csp_default_src_eval type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_eval>
       <csp_default_src_self type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_self>
       <csp_default_src_blob type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_blob>
       <csp_default_src_mediastream type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_mediastream>
       <csp_default_src_filesystem type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_filesystem>
       <csp_default_src_none type="BooleanField">
         <Required>Y</Required>
+        <default>0</default>
       </csp_default_src_none>
+      <csp_script_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_enabled>
+      <csp_script_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_data_urls>
+      <csp_script_src_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_script_src_http_urls>
+      <csp_script_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_inline>
+      <csp_script_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_eval>
+      <csp_script_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_self>
+      <csp_script_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_blob>
+      <csp_script_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_mediastream>
+      <csp_script_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_filesystem>
+      <csp_script_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_script_src_none>
+      <csp_img_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_enabled>
+      <csp_img_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_data_urls>
+      <csp_img_src_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_img_src_http_urls>
+      <csp_img_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_inline>
+      <csp_img_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_eval>
+      <csp_img_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_self>
+      <csp_img_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_blob>
+      <csp_img_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_mediastream>
+      <csp_img_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_filesystem>
+      <csp_img_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_img_src_none>
+      <csp_style_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_enabled>
+      <csp_style_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_data_urls>
+      <csp_style_src_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_style_src_http_urls>
+      <csp_style_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_inline>
+      <csp_style_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_eval>
+      <csp_style_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_self>
+      <csp_style_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_blob>
+      <csp_style_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_mediastream>
+      <csp_style_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_filesystem>
+      <csp_style_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_style_src_none>
+      <csp_media_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_enabled>
+      <csp_media_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_data_urls>
+      <csp_media_src_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_media_src_http_urls>
+      <csp_media_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_inline>
+      <csp_media_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_eval>
+      <csp_media_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_self>
+      <csp_media_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_blob>
+      <csp_media_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_mediastream>
+      <csp_media_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_filesystem>
+      <csp_media_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_media_src_none>
+      <csp_font_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_enabled>
+      <csp_font_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_data_urls>
+      <csp_font_src_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_font_src_http_urls>
+      <csp_font_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_inline>
+      <csp_font_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_eval>
+      <csp_font_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_self>
+      <csp_font_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_blob>
+      <csp_font_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_mediastream>
+      <csp_font_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_filesystem>
+      <csp_font_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_font_src_none>
+      <csp_form_action_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_enabled>
+      <csp_form_action_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_data_urls>
+      <csp_form_action_http_urls type="CSVListField">
+        <Required>Y</Required>
+      </csp_form_action_http_urls>
+      <csp_form_action_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_inline>
+      <csp_form_action_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_eval>
+      <csp_form_action_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_self>
+      <csp_form_action_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_blob>
+      <csp_form_action_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_mediastream>
+      <csp_form_action_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_filesystem>
+      <csp_form_action_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_form_action_none>
     </security_header>
   </items>
 </model>
