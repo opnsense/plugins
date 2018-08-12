@@ -8821,7 +8821,7 @@ body {
   bottom: 0;
   border: none;
   font-size: 12px;
-  padding: 20px 0;
+  padding: 0;
   width: 100%;
   z-index: 2;
 }
@@ -9602,26 +9602,19 @@ textarea#update_status {
   color: #B13116;
 }
 
-.fa-refresh::before {
-  content: "\f021";
-  color: #FFF;
-}
-
 .fa-question-circle::before {
   content: "\f059";
   cursor: pointer;
   color: #ec6d12;
 }
 
-#navigation > .fa-search::before, .fa-refresh::before {
-  color: inherit !important;
-}
+.page-content-main .fa-search::before,.page-content-main .fa-refresh::before {
+    color: #FFFFFF !important; }
 
 #totals .fa-search::before {
-  color: #FFF !important;
   background-color: #ec6d12;
-  padding: 5px;
-  border-radius: 4px;
+  padding: 2px;
+  border-radius: 2px;
   border: 1px solid #5A5A5A;
 }
 
@@ -9822,4 +9815,7 @@ div.Tokenize ul {
 }
 .bootstrap-dialog.type-success .modal-header {
   background-color: #c35d12 !important;
+}
+.dashboard_grid_column table {
+  table-layout: fixed;
 }
