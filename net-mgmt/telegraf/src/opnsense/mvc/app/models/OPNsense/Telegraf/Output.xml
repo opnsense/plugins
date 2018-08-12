@@ -63,6 +63,7 @@
             <Required>N</Required>
         </elastic_timeout>
         <elastic_indexname type="TextField">
+            <default>telegraf-%Y.%m.%d</default>
             <Required>N</Required>
         </elastic_indexname>
     </items>
