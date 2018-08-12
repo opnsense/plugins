@@ -99,6 +99,6 @@
         <id>output.elastic_indexname</id>
         <label>Index Name</label>
         <type>text</type>
-        <help>Set the index name, default is "telegraf-%Y.%m.%d".</help>
+        <help>Set the index name.</help>
     </field>
 </form>
