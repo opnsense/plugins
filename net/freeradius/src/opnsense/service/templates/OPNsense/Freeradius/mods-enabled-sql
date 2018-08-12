@@ -5,7 +5,7 @@ sql {
         driver = "rlm_sql_sqlite"
         sqlite {
                 # Path to the sqlite database
-                filename = "/tmp/freeradius.db"
+                filename = "/usr/local/etc/raddb/freeradius.db"
 
                 # How long to wait for write locks on the database to be
                 # released (in ms) before giving up.
