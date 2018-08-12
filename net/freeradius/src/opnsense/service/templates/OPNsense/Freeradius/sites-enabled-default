@@ -55,7 +55,7 @@ authorize {
                 ok = return
         }
         files
-{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
         sql
 {% else %}
         -sql
@@ -114,7 +114,7 @@ accounting {
         sradutmp
 {% endif %}
         unix
-{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
         sql
 {% else %}
         -sql
@@ -124,7 +124,7 @@ accounting {
 }
 
 session {
-{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}        
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
         sql
 {% endif %}
 }
