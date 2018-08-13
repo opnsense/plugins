@@ -21,27 +21,25 @@
             
             <ProviderKey type="TextField">
                 <Required>Y</Required>
-                <Mask>/^([a-zA-Z0-9]){16,128}$/u</Mask>
+                <Mask>/^[a-z0-9]{16,128}$/i</Mask>
                 <ValidationMessage>Must provide a valid Storage Provider API key value</ValidationMessage>
             </ProviderKey>
             
             <ProviderSecret type="TextField">
                 <Required>Y</Required>
-                <Mask>/^([a-zA-Z0-9\+\/]){16,128}$/u</Mask>
+                <Mask>/^[a-z0-9\+\/]{16,128}$/i</Mask>
                 <ValidationMessage>Must provide a valid Storage Provider API key secret value</ValidationMessage>
             </ProviderSecret>
             
             <StorageBucket type="TextField">
-                <default>[storage-bucket]</default>
                 <Required>Y</Required>
-                <Mask>/^[a-zA-Z0-9\-\.]{3,64}$/</Mask>
+                <Mask>/^[a-z0-9\-\.]{3,64}$/i</Mask>
                 <ValidationMessage>Must provide a valid storage-bucket name</ValidationMessage>
             </StorageBucket>
             
             <StoragePath type="TextField">
-                <default>[storage-path]</default>
                 <Required>Y</Required>
-                <Mask>/^[a-zA-Z0-9\!\-\_\.\*\'\@\:\$\=\+\;\,\/]{1,1024}$/u</Mask>
+                <Mask>/^[a-z0-9\!\-\_\.\*\'\@\:\$\=\+\;\,\/]{1,1024}$/i</Mask>
                 <ValidationMessage>Must provide a valid storage-path value</ValidationMessage>
             </StoragePath>
 
