@@ -118,11 +118,10 @@ class SettingsController extends ApiControllerBase
     
     private function getHostid()
     {
-        $hostid = '00000000-0000-0000-0000-000000000000';
         if (file_exists('/etc/hostid')) {
-            $hostid = trim(file_get_contents('/etc/hostid'));
+            return trim(file_get_contents('/etc/hostid'));
         }
-        return $hostid;
+        return '00000000-0000-0000-0000-000000000000';
     }
     
     private function unpackValidationMessages($model, $namespace)
