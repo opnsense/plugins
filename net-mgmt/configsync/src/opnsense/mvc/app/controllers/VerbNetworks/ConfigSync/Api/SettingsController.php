@@ -89,7 +89,6 @@ class SettingsController extends ApiControllerBase
                         escapeshellarg($data['settings']['StorageBucket']),
                         escapeshellarg($data['settings']['StoragePath'])
                     );
-                    file_put_contents('/tmp/debug', $configd_run);
                     $response = json_decode(trim($backend->configdRun($configd_run)), true);
                     if (empty($response)) {
                         $response = array(
