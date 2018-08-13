@@ -16,8 +16,7 @@
         <id>configsync.settings.ProviderKey</id>
         <label>API Key</label>
         <type>text</type>
-        <help><![CDATA[Storage provider API key.<br/>
-        <b>NOTE:</b> Consider applying a storage-provider policy to this key that only permits <code>ListBucket</code> and <code>PutObject</code> operations within the storage-bucket and storage-path.]]></help>
+        <help><![CDATA[Storage provider API key.  Consider applying a storage-provider policy to this key that only permits <code>ListBucket</code> and <code>PutObject</code> operations within the storage-bucket and storage-path.]]></help>
     </field>
     <field>
         <id>configsync.settings.ProviderSecret</id>
@@ -29,15 +28,13 @@
         <id>configsync.settings.StorageBucket</id>
         <label>Storage Bucket</label>
         <type>text</type>
-        <help><![CDATA[Storage provider bucket name to be used.<br/>
-        <b>NOTE:</b> the storage-bucket must exist prior to use, the Configuration Sync feature <u>will not</u> attempt to create the bucket for you.]]></help>
+        <help><![CDATA[Storage provider bucket name to be used.  The storage-bucket must exist prior to use, the Configuration Sync feature <em>will not</em> attempt to create the bucket for you.]]></help>
     </field>
     <field>
         <id>configsync.settings.StoragePath</id>
         <label>Storage Path</label>
         <type>text</type>
-        <help><![CDATA[The base storage-path used to sync configuration data to.<br/>
-        <b>NOTE:</b> the Configuration Sync feature <u>will</u> create the required storage-path if API key has permissions to do so.  It is recommended that you consider applying policy to the API Key that restricts access within the bucket to this storage-path only.]]></help>
+        <help><![CDATA[The base storage-path used to sync configuration data to.  The Configuration Sync feature <em>will</em> create the required storage-path if API key has permissions to do so.  It is recommended that you consider applying policy to the API Key that restricts access within the bucket to this storage-path only.]]></help>
     </field>
     <field>
         <id>configsync.settings.Interval</id>
