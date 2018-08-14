@@ -27,69 +27,25 @@
 
 <script>
     
-    function sortTable() {
-        // Credit: https://www.w3schools.com/howto/howto_js_sort_table.asp
-        var table, rows, switching, i, x, y, shouldSwitch;
-        table = document.getElementById("filelist");
-        switching = true;
-        while (switching) {
-            switching = false;
-            rows = table.getElementsByTagName("tr");
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("td")[0];
-                y = rows[i + 1].getElementsByTagName("td")[0];
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-            }
-        }
-    }    
-
-    /**
-     * updateFileTable
-     */
-    function updateFileTable() {
-        
-        $("#responseMsg").removeClass("hidden").removeClass("alert-danger").addClass('alert-info').html("Retreiving list of configuration files available at the storage-provider...");
-        
-        ajaxGet('/api/configsync/files/get', {}, function (data, status) {
-            if(status == 'parsererror' || data['status'] != 'success') {
-                $("#responseMsg").addClass("alert-danger").removeClass('alert-info').html("Unable to retrieve list of configuration files at the storage-provider");
-                $('#filelist > tbody').empty();
-            }
-            else {
-                $("#responseMsg").addClass('hidden').html("");
-                $('#filelist > tbody').empty();
-                $.each(data['data'], function(filename, filedata) {
-                    $('#filelist > tbody').append(
-                        '<tr>' +
-                        '<td>' + filedata['Created'] + '</td>' +
-                        '<td>' + filedata['LastModified'] + '</td>' +
-                        '<td>' + filedata['Key'] + '</td>' +
-                        '</tr>'
-                    );
-                });
-                sortTable();
-            }
-        });
+    function updateGridFilesTable() {
+    
+        $("#grid-files").UIBootgrid(
+            {   search:'/api/configsync/files/list',
+                options:{
+                    rowCount:[10, 25, 100, -1] ,
+                    ajax: true,
+                    url: "/api/configsync/files/list",
+                },                
+            },
+        );    
     }
 
-    /**
-     * $(document).ready
-     */
     $(document).ready(function() {
         updateServiceControlUI('configsync');
-        updateFileTable(true);
+        updateGridFilesTable();
     });
-    
-</script>
 
+</script>
 
 <div class="container-fluid">
     <div class="row">
@@ -98,16 +54,20 @@
     <div class="row">
         <div class="col-md-12" id="content">
             
-            <table class="table table-striped table-condensed table-responsive" id="filelist">
-              <thead>
+            <table id="grid-files" class="table table-condensed table-hover table-striped table-responsive">
+                <thead>
                 <tr>
-                  <th>{{ lang._('Created') }}</th>
-                  <th>{{ lang._('Synced') }}</th>
-                  <th>{{ lang._('Storage Provider Path') }}</th>
+                    <th data-column-id="timestamp_created" data-width="14em" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Created') }}</th>
+                    <th data-column-id="timestamp_synced" data-width="14em" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Synced') }}</th>
+                    <th data-column-id="path" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Storage Provider Path') }}</th>
+                    
+                    <th data-column-id="storage_etag" data-type="string" data-sortable="false" data-visible="false">{{ lang._('Storage ETag') }}</th>
+                    <th data-column-id="storage_class" data-type="string" data-sortable="false" data-visible="false">{{ lang._('Storage Class') }}</th>
+                    <th data-column-id="storage_size" data-type="string" data-sortable="false" data-visible="false">{{ lang._('Storage Size') }}</th>
                 </tr>
-              </thead>
-              <tbody>
-              </tbody>
+                </thead>
+                <tbody>
+                </tbody>
             </table>
             
         </div>

@@ -35,13 +35,67 @@ use \OPNsense\Core\Backend;
 class FilesController extends ApiControllerBase
 {
     
-    public function getAction()
+    public function listAction()
     {
-        $response = array("status"=>"fail", "message" => "Invalid request");
-
-        if ($this->request->isGet()) {
+        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        
+        if ($this->request->isPost()) {
+            
+            $current_page = 1;
+            if($this->request->hasPost('current')) {
+                $current_page = (int)$this->request->getPost('current');
+            }
+            
+            $row_count = -1;
+            if($this->request->hasPost('rowCount')) {
+                $row_count = (int)$this->request->getPost('rowCount');
+            }
+            
+            $filter = '';
+            if($this->request->hasPost('searchPhrase')) {
+                $filter = (string)$this->request->getPost('searchPhrase');
+            }
+            
             $backend = new Backend();
-            $response = json_decode(trim($backend->configdRun("configsync awss3_get_file_list")), true);
+            $configd_run = sprintf(
+                    'configsync awss3_get_file_list --filter=%s', 
+                    escapeshellarg($filter)
+            );
+            $backend_response = json_decode(trim($backend->configdRun($configd_run)), true);
+            
+            if($backend_response['status'] !== 'success') {
+                return $response;
+            }
+            
+            $response_dataset = array(
+                'current'=> $current_page,
+                'rowCount'=> 0,
+                'rows'=> array(),
+                'total'=> count($backend_response['data']),
+            );
+            
+            $index_first = ($current_page - 1) * $row_count;
+            if($row_count >= 0) {
+                $index_last = ($current_page * $row_count) - 1;
+            } else {
+                $index_last = count($backend_response['data']) - 1;
+            }
+            
+            foreach($backend_response['data'] as $row_index => $properties) {
+                if($row_index >= $index_first && $row_index <= $index_last) {
+                    array_push($response_dataset['rows'],array(
+                        'timestamp_created'=> $properties['Created'],
+                        'timestamp_synced'=> $properties['LastModified'],
+                        'path'=> $properties['Key'],
+                        'storage_class'=> $properties['StorageClass'],
+                        'storage_size'=> $properties['Size'],
+                        'storage_etag'=> $properties['ETag'],
+                    ));
+                }
+            };
+            $response_dataset['rowCount'] = count($response_dataset['rows']);
+            
+            return $response_dataset;
         }
         
         return $response;

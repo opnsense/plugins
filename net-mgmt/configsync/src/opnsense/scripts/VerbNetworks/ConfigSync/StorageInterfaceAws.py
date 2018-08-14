@@ -62,6 +62,7 @@ class StorageInterfaceAws(StorageInterface):
         parser.add_argument('--key_secret', type=str, help='AWS key secret')
         parser.add_argument('--bucket', type=str, help='AWS S3 bucket name')
         parser.add_argument('--path', type=str, help='Base path within the bucket to use')
+        parser.add_argument('--filter', type=str, help='Filter expression on get_file_list action')
 
         args = parser.parse_args()
 
@@ -78,11 +79,11 @@ class StorageInterfaceAws(StorageInterface):
         elif args.action == 'sync_config_missing':
             return self.sync_config_missing()
         elif args.action == 'get_file_list':
-            return self.get_file_list()
+            return self.get_file_list(string_filter=args.filter)
 
         return {'status': 'fail', 'message': 'Unable to invoke StorageInterfaceAws of ConfigSync'}
 
-    def get_file_list(self):
+    def get_file_list(self, string_filter=None):
         config = self.read_config('awss3')
         if config is None:
             return {'status': 'fail', 'message': 'No configuration for awss3 available' }
@@ -92,7 +93,18 @@ class StorageInterfaceAws(StorageInterface):
             storage_path=config['storagepath'],
             hostname=self.get_system_hostname()
         )
-        return self.list_objects(bucket=config['storagebucket'], path=prefix_path, use_cached=True)
+        response = self.list_objects(bucket=config['storagebucket'], path=prefix_path, use_cached=True)
+        sorted_items = []
+        for filename_key in sorted(response['data'].keys(), reverse=True):
+            if string_filter is None or len(string_filter) == 0:
+                sorted_items.append(response['data'][filename_key])
+            else:
+                for item_k, item_v in response['data'][filename_key].items():
+                    if string_filter in item_v:
+                        sorted_items.append(response['data'][filename_key])
+                        break
+        response['data'] = sorted_items
+        return response
 
     def test_parameters(self, key_id, key_secret, bucket, path):
 
@@ -273,9 +285,9 @@ class StorageInterfaceAws(StorageInterface):
             'data': url
         }
 
-    def list_objects(self, bucket, path, continuation_token=None, max_keys=1000, use_cached=False):
+    def list_objects(self, bucket, path, continuation_token=None, max_keys_per_request=1000, use_cached=False):
 
-        params = {'list-type': 2, 'max-keys': max_keys, 'prefix': path}
+        params = {'list-type': 2, 'max-keys': max_keys_per_request, 'prefix': path}
         if continuation_token is not None:
             params['continuation-token'] = continuation_token
 
@@ -341,12 +353,13 @@ class StorageInterfaceAws(StorageInterface):
 
             if 'ListBucketResult' in data and 'NextContinuationToken' in data['ListBucketResult']:
                 next_token = data['ListBucketResult']['NextContinuationToken']
-                next_data = self.list_objects(bucket, path, continuation_token=next_token, max_keys=max_keys)
+                next_data = self.list_objects(bucket, path, continuation_token=next_token, max_keys_per_request=max_keys_per_request)
                 if next_data['status'] != 'success':
                     return {'status': 'fail', 'message': next_data['message'], 'data': next_data['data']}
                 contents.update(next_data['data'])
 
-            self.set_cache(data=contents, path=self.storage_list_objects_cache, keydata=[url])
+            if continuation_token is None:
+                self.set_cache(data=contents, path=self.storage_list_objects_cache, keydata=[url])
             return {
                 'status': 'success',
                 'message': 'Successful AWS S3 object list GET',
@@ -356,15 +369,6 @@ class StorageInterfaceAws(StorageInterface):
             'status': 'fail',
             'message': 'Response data is not XML format as expected',
             'data': r.content
-        }
-
-    def get_local_metadata(self, etag):
-        return {
-            'filetype': None,
-            'mtime': None,
-            'bytes': None,
-            'md5': None,
-            'hostid': None,
         }
 
 
