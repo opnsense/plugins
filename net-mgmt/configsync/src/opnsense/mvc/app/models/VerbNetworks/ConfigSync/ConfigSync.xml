@@ -52,12 +52,10 @@
             </Interval>
 
             <SystemHostid type="TextField">
-                <default>[system-hostid]</default>
                 <Required>N</Required>
             </SystemHostid>
             
             <StorageProviderLink type="TextField">
-                <default>[storage-provider-link]</default>
                 <Required>N</Required>
             </StorageProviderLink>
                         
