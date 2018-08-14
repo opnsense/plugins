@@ -89,4 +89,9 @@
     <type>checkbox</type>
     <help>Allow the daemon to use the sendfile function.</help>
   </field>
+  <field>
+    <id>httpserver.security_header</id>
+    <label>Security Header</label>
+    <type>dropdown</type>
+  </field>
 </form>
