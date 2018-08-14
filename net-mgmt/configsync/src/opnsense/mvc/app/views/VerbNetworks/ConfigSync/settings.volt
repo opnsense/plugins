@@ -175,7 +175,7 @@
         });
 
         $("#testAction").click(function(){
-            $("#responseMsg").removeClass("hidden").removeClass("alert-danger").addClass('alert-info').html("Running tests...");
+            $("#responseMsg").removeClass("hidden").removeClass("alert-danger").addClass('alert-info').html("{{ lang._('Running tests') }}...");
             saveFormToEndpoint(
                 url = '/api/configsync/settings/test', 
                 formid ='frm_Settings', 
@@ -190,14 +190,14 @@
         });
         
         $("#saveAction").click(function(){
-            $("#responseMsg").removeClass("hidden").removeClass("alert-danger").addClass('alert-info').html("Saving settings...");
+            $("#responseMsg").removeClass("hidden").removeClass("alert-danger").addClass('alert-info').html("{{ lang._('Saving settings') }}...");
             saveFormToEndpoint(
                 url = '/api/configsync/settings/set', 
                 formid = 'frm_Settings', 
                 callback_ok = function(){
-                    $("#responseMsg").html("Configuration Sync service settings saved.");
+                    $("#responseMsg").html("{{ lang._('Configuration Sync service settings saved') }}.");
                     ajaxCall(url = "/api/configsync/service/reload", sendData = {}, callback = function(data, status) {
-                        $("#responseMsg").html("Configuration Sync service settings saved and reloaded.");
+                        $("#responseMsg").html("{{ lang._('Configuration Sync service settings saved and reloaded') }}.");
                     });
                 },
                 disable_dialog = true 
