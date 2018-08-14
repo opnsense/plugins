@@ -103,4 +103,16 @@
     <type>checkbox</type>
     <help>Force encrypted connections.</help>
   </field>
+  <field>
+    <id>location.php_enable</id>
+    <label>Pass Request To PHP Interpreter</label>
+    <type>checkbox</type>
+    <help>Only use this setting if you know what you are doing. If not, expect your machine to get compromised.</help>
+  </field>
+  <field>
+    <id>location.php_override_scriptname</id>
+    <label>PHP Router Script</label>
+    <type>checkbox</type>
+    <help>If you set this setting, all requests are sent to this script instead of the URL in the request path.</help>
+  </field>
 </form>

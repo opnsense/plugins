@@ -247,6 +247,13 @@
       <force_https type="TextField">
         <Required>N</Required>
       </force_https>
+      <php_enable type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </php_enable>
+      <php_override_scriptname type="TextField">
+        <Required>N</Required>
+      </php_override_scriptname>
     </location>
 
     <custom_policy type="ArrayField">
