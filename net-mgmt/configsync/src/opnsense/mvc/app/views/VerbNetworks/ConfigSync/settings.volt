@@ -143,16 +143,19 @@
             link_url += $('#configsync\\.settings\\.StorageBucket').val() + '/';
             link_url += $('#configsync\\.settings\\.StoragePath').val() + '/';
 
-            var link_name = 's3://';
-            link_name += $('#configsync\\.settings\\.StorageBucket').val() + '/';
-            link_name += $('#configsync\\.settings\\.StoragePath').val();
+            var link_text = 's3://';
+            link_text += $('#configsync\\.settings\\.StorageBucket').val() + '/';
+            link_text += $('#configsync\\.settings\\.StoragePath').val();
         }
-        $('#configsync\\.settings\\.StorageProviderLink').html('<a target="_blank" href="' + link_url +'">' + link_name + '</a>');
+        $('#configsync\\.settings\\.StorageProviderLink').html(
+            $('<a/>', {
+                text: link_text,
+                target: '_blank',
+                href: link_url,
+            })
+        );
     }
     
-    /**
-     * $(document).ready
-     */
     $(document).ready(function() {
         
         updateServiceControlUI('configsync');
@@ -177,7 +180,7 @@
                 url='/api/configsync/settings/test', 
                 formid='frm_Settings', 
                 callback_ok=function(data){
-                    if(data['status'] != 'success') {
+                    if(data['status'] !== 'success') {
                         $("#responseMsg").removeClass("alert-info").addClass('alert-danger');
                     }
                     $("#responseMsg").html(data['message']);
