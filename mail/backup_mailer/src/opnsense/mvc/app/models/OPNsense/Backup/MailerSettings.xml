@@ -3,30 +3,26 @@
     <version>1.0.0</version>
     <description>OPNsense Mailer Backup Settings</description>
     <items>
-        <MailEnabled type="BooleanField">
+        <Enabled type="BooleanField">
           <default>0</default>
           <Required>Y</Required>
-        </MailEnabled>
+        </Enabled>
         <Receiver type="EmailField">
             <Required>Y</Required>
         </Receiver>
-        <SmtpHost type="TextField">
+        <SmtpHost type="HostnameField">
             <Required>Y</Required>
         </SmtpHost>
         <SmtpPort type="IntegerField">
             <Required>Y</Required>
         </SmtpPort>
-        <SmtpSSL type="BooleanField">
+        <SmtpTLS type="BooleanField">
           <default>1</default>
           <Required>Y</Required>
-        </SmtpSSL>
-        <SmtpUsername type="TextField"/>
-        <SmtpPassword type="TextField"/>
-        <GpgEmail type="EmailField">
-            <Required>Y</Required>
-        </GpgEmail>
-        <GpgPublicKey type="TextField">
-            <Required>Y</Required>
-        </GpgPublicKey>
+        </SmtpTLS>
+        <SmtpUsername type="TextField"  />
+        <SmtpPassword type="TextField"  />
+        <GpgEmail     type="EmailField" />
+        <GpgPublicKey type="TextField"  />
     </items>
 </model>

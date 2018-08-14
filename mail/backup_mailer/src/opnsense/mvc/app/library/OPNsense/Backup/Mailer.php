@@ -23,7 +23,7 @@ class Mailer extends Base implements IBackupProvider
         $fields = array();
 
         $fields[] = array(
-            "name" => "MailEnabled",
+            "name" => "Enabled",
             "type" => "checkbox",
             "label" => gettext("Enable"),
             "value" => null
@@ -47,9 +47,9 @@ class Mailer extends Base implements IBackupProvider
             "value" => null
         );
         $fields[] = array(
-            "name" => "SmtpSSL",
+            "name" => "SmtpTLS",
             "type" => "checkbox",
-            "label" => gettext("Use SSL"),
+            "label" => gettext("Use TLS"),
             "value" => null
         );
         $fields[] = array(
@@ -67,13 +67,13 @@ class Mailer extends Base implements IBackupProvider
         $fields[] = array(
             "name" => "GpgEmail",
             "type" => "text",
-            "label" => gettext("GPG Email"),
+            "label" => gettext("GPG Email (Optional)"),
             "value" => null
         );
         $fields[] = array(
             "name" => "GpgPublicKey",
             "type" => "textarea",
-            "label" => gettext("GPG Public Key"),
+            "label" => gettext("GPG Public Key (Optional)"),
             "value" => null
         );
         $mailer = new MailerSettings();
@@ -116,7 +116,7 @@ class Mailer extends Base implements IBackupProvider
     {
         $cnf = Config::getInstance();
         $mailer = new MailerSettings();
-        if ($cnf->isValid() && !empty((string)$mailer->MailEnabled)) {
+        if ($cnf->isValid() && !empty((string)$mailer->Enabled)) {
             $confdata = file_get_contents('/conf/config.xml');
             $result = self::sendEmail($mailer, $confdata);
         }
@@ -131,7 +131,7 @@ class Mailer extends Base implements IBackupProvider
     public function isEnabled()
     {
         $mailer = new MailerSettings();
-        return (string)$mailer->MailEnabled === "1";
+        return (string)$mailer->Enabled === "1";
     }
 
     public function sendEmail($config, $confdata)
@@ -140,6 +140,7 @@ class Mailer extends Base implements IBackupProvider
         $smtpPassword = (string)$config->SmtpPassword;
         $gpgPublicKey = (string)$config->GpgPublicKey;
         $gpgEmail     = (string)$config->GpgEmail;
+        $email        = (string)$config->Receiver;
 
         $date     = date('Y-m-d');
         $hostname = gethostname();
@@ -148,15 +149,15 @@ class Mailer extends Base implements IBackupProvider
         $mail = new \PHPMailer(true);
         $mail->IsHTML(true);
         $mail->IsSMTP();
-        $mail->SetFrom($gpgEmail);
-        $mail->AddAddress((string)$config->Receiver);
+        $mail->SetFrom($email);
+        $mail->AddAddress($email);
         $mail->Host    = (string)$config->SmtpHost;
         $mail->Port    = (string)$config->SmtpPort;
         $mail->Subject = $hostname . ' OPNsense config backup ' . $date;
         $mail->Body    = $hostname . ' config backup file';
 
-        if ((string)$config->SmtpSSL === "1") {
-            $mail->SMTPSecure = 'ssl';
+        if ((string)$config->SmtpTLS === "1") {
+            $mail->SMTPSecure = 'tls';
         } else {
             $mail->SMTPOptions = array(
                 'ssl' => array(
@@ -173,11 +174,17 @@ class Mailer extends Base implements IBackupProvider
             $mail->Password = $smtpPassword;
         }
 
-        self::import_key($gpgPublicKey);
+        if ($gpgPublicKey != "") {
+            self::import_key($gpgPublicKey);
+        }
 
-        self::encrypt_data($confdata, $gpgEmail);
+        if ($gpgEmail != "") {
+            self::encrypt_data($confdata, $gpgEmail);
+        } else {
+            file_put_contents("backup", $confdata);
+        }
 
-        $attachmentName = 'config_' . gethostname() . '_' . $date . '.xml.asc';
+        $attachmentName = 'config_' . $hostname . '_' . $date . '.xml.asc';
         $mail->AddAttachment('backup', $attachmentName);
 
         $mail->Send();
@@ -186,23 +193,20 @@ class Mailer extends Base implements IBackupProvider
     }
 
     function import_key($gpgPublicKey) {
-        $gpgPublicKeyFile = "key.asc";
+        $descriptorspec = array(
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("file", "/tmp/import_key_error.txt", "w")
+        );
 
-        if ($gpgPublicKey != "") {
-            file_put_contents($gpgPublicKeyFile, $gpgPublicKey);
+        $process = proc_open('gpg --import', $descriptorspec, $pipes);
 
-            $descriptorspec = array(
-                0 => array("pipe", "r"),
-                1 => array("pipe", "w"),
-                2 => array("file", "/tmp/import_key_error.txt", "a")
-            );
+        if (is_resource($process)) {
+            fwrite($pipes[0], $gpgPublicKey);
+            fclose($pipes[0]);
+            fclose($pipes[1]);
 
-            $process = proc_open('gpg --import < ' . $gpgPublicKeyFile, $descriptorspec, $pipes);
-
-            if (is_resource($process)) {
-                fclose($pipes[0]);
-                proc_close($process);
-            }
+            proc_close($process);
         }
     }
 
@@ -210,11 +214,11 @@ class Mailer extends Base implements IBackupProvider
         $descriptorspec = array(
             0 => array("pipe", "r"),
             1 => array("pipe", "w"),
-            2 => array("file", "/tmp/encrypt_data_error.txt", "a")
+            2 => array("file", "/tmp/encrypt_data_error.txt", "w")
         );
 
         $process = proc_open(
-            'gpg --trust-model always --batch --yes --output backup --encrypt --recipient ' . escapeshellarg($gpgEmail),
+            'gpg --trust-model always --batch --yes --encrypt --output - --recipient ' . escapeshellarg($gpgEmail),
             $descriptorspec,
             $pipes
         );
@@ -222,6 +226,17 @@ class Mailer extends Base implements IBackupProvider
         if (is_resource($process)) {
             fwrite($pipes[0], $confdata);
             fclose($pipes[0]);
+
+            do {
+                $string = fread($pipes[1], 8192);
+                if (strlen($string) == 0) {
+                    break;
+                }
+                $config .= $string;
+            } while(true);
+            fclose($pipes[1]);
+            file_put_contents("backup", $config);
+
             proc_close($process);
         }
     }
