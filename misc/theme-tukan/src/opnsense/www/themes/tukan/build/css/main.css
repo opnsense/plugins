@@ -6374,3 +6374,4 @@ stroke: rgb(143, 143, 143) !important; }
 	color: #000 !important;}
 #system_log-widgets.content-box {border:none; box-shadow: none;}
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #FFF; border: 1px solid #c2c2c2; }
+.bootstrap-dialog.type-success .modal-header {background-color: #427795 !important;}

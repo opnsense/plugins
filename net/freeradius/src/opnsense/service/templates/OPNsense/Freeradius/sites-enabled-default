@@ -55,7 +55,11 @@ authorize {
                 ok = return
         }
         files
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
+        sql
+{% else %}
         -sql
+{% endif %}
 {% if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
         ldap
         if ((ok || updated) && User-Password) {
@@ -110,12 +114,19 @@ accounting {
         sradutmp
 {% endif %}
         unix
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
+        sql
+{% else %}
         -sql
+{% endif %}
         exec
         attr_filter.accounting_response
 }
 
 session {
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
+        sql
+{% endif %}
 }
 
 post-auth {

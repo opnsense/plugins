@@ -1,0 +1,46 @@
+{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
+
+sql {
+        driver = "rlm_sql_sqlite"
+        sqlite {
+                # Path to the sqlite database
+                filename = "/usr/local/etc/raddb/freeradius.db"
+
+                # How long to wait for write locks on the database to be
+                # released (in ms) before giving up.
+                busy_timeout = 200
+
+                # If the file above does not exist and bootstrap is set
+                # a new database file will be created, and the SQL statements
+                # contained within the bootstrap file will be executed.
+                bootstrap = "${modconfdir}/${..:name}/main/sqlite/schema.sql"
+        }
+        dialect = "sqlite"
+        radius_db = "radius"
+        acct_table1 = "radacct"
+        acct_table2 = "radacct"
+        postauth_table = "radpostauth"
+        authcheck_table = "radcheck"
+        groupcheck_table = "radgroupcheck"
+        authreply_table = "radreply"
+        groupreply_table = "radgroupreply"
+        usergroup_table = "radusergroup"
+        delete_stale_sessions = yes
+        pool {
+                start = ${thread[pool].start_servers}
+                min = ${thread[pool].min_spare_servers}
+                max = ${thread[pool].max_servers}
+                spare = ${thread[pool].max_spare_servers}
+                uses = 0
+                retry_delay = 30
+                lifetime = 0
+                idle_timeout = 60
+        }
+        client_table = "nas"
+        group_attribute = "SQL-Group"
+        $INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+{%   endif %}
+{% endif %}

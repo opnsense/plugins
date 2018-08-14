@@ -50,6 +50,20 @@
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-apcsmart" description="APCSMART-Driver">
+            <field>
+                <id>nut.apcsmart.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the APCSMART driver.</help>
+            </field>
+            <field>
+                <id>nut.apcsmart.args</id>
+                <label>Extra Arguments</label>
+                <type>text</type>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
         <subtab id="nut-ups-netclient" description="Netclient">
             <field>
                 <id>nut.netclient.enable</id>

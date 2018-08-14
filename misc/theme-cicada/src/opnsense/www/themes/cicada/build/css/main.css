@@ -6397,3 +6397,6 @@ div.Tokenize ul.TokensContainer, div.Tokenize ul.Dropdown {
 	color: #eac80a !important;}
 #system_log-widgets.content-box {border:none;}
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #292929; border: 1px solid #515151; }
+.bootstrap-dialog.type-success .modal-header {
+    background-color: #c35d12 !important;
+}
