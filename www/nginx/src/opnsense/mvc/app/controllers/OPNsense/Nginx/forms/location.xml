@@ -112,7 +112,7 @@
   <field>
     <id>location.php_override_scriptname</id>
     <label>PHP Router Script</label>
-    <type>checkbox</type>
+    <type>text</type>
     <help>If you set this setting, all requests are sent to this script instead of the URL in the request path.</help>
   </field>
 </form>
