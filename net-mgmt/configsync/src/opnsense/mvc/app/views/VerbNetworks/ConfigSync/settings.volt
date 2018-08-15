@@ -160,13 +160,8 @@
         
         updateServiceControlUI('configsync');
         
-        $("#configsync\\.settings\\.StorageBucket").change(function(){
-            updateFullURI();
-        });
-        
-        $("#configsync\\.settings\\.StoragePath").change(function(){
-            updateFullURI();
-        });
+        $("#configsync\\.settings\\.StorageBucket").change(updateFullURI);
+        $("#configsync\\.settings\\.StoragePath").change(updateFullURI);
         
         mapDataToFormUI({frm_Settings:"/api/configsync/settings/get"}).done(function(data){
             formatTokenizersUI();
