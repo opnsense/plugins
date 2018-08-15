@@ -199,6 +199,5 @@
             );
             updateServiceControlUI('configsync');
         });
-
     });
 </script>
