@@ -814,7 +814,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     }
 
     // if OCSP Extension is turned on pass --ocsp parameter to acme client
-    if (isset($certObj->ocsp)) {
+    if (isset($certObj->ocsp) and ($certObj->ocsp == 1)) {
         $acme_args[] = "--ocsp";
     }
 
