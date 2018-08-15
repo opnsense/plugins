@@ -147,13 +147,17 @@
             link_text += $('#configsync\\.settings\\.StorageBucket').val() + '/';
             link_text += $('#configsync\\.settings\\.StoragePath').val();
         }
-        $('#configsync\\.settings\\.StorageProviderLink').html(
-            $('<a/>', {
-                text: link_text,
-                target: '_blank',
-                href: link_url,
-            })
-        );
+        if($('#configsync\\.settings\\.StorageBucket').val().length >= 3 && $('#configsync\\.settings\\.StoragePath').val().length > 0) {
+            $('#configsync\\.settings\\.StorageProviderLink').html(
+                $('<a/>', {
+                    text: link_text,
+                    target: '_blank',
+                    href: link_url,
+                })
+            );
+        } else {
+            $('#configsync\\.settings\\.StorageProviderLink').html("{{ lang._('Please provide') }} <b>Storage Bucket</b> {{ lang._('and') }} <b>Storage Path</b> {{ lang._('values') }}");
+        }
     }
     
     $(document).ready(function() {
