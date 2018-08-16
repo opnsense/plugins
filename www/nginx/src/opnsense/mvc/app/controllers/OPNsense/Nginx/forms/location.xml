@@ -59,7 +59,7 @@
     <label>Upstream Servers</label>
     <type>dropdown</type>
     <style>selectpicker</style>
-    <help>Select an upstream to proxy to.</help>
+    <help>Select an upstream to proxy to or connect via FastCGI if chosen.</help>
   </field>
   <field>
     <id>location.root</id>
@@ -71,13 +71,15 @@
     <id>location.index</id>
     <label>Index File</label>
     <type>select_multiple</type>
-    <help>Enter a list of file extensions, which are served instead of a directory. It is common to use index.html or index.php here.</help>
+    <help>Enter a list of file extensions, which are served instead of a directory. It is common to use index.html or
+      index.php here.</help>
   </field>
   <field>
     <id>location.autoindex</id>
     <label>Automatic Index</label>
     <type>checkbox</type>
-    <help>Check this to serve a file list when a directory is requested. This is useful for serving multiple files with someone without a web application. It is recommended to use this option only with authentication.</help>
+    <help>Check this to serve a file list when a directory is requested. This is useful for serving multiple files with
+      someone without a web application. It is recommended to use this option only with authentication.</help>
   </field>
   <field>
     <id>location.authbasic</id>
@@ -105,14 +107,17 @@
   </field>
   <field>
     <id>location.php_enable</id>
-    <label>Pass Request To PHP Interpreter</label>
+    <label>Pass Request To Local PHP Interpreter / Threat Upstream As FastCGI</label>
     <type>checkbox</type>
-    <help>Only use this setting if you know what you are doing. If not, expect your machine to get compromised.</help>
+    <help>Only use this setting if you know what you are doing. If not, expect your machine to get compromised.
+      Use this setting when you want to run a local PHP application or call an external upstream, if selected,
+      via FastCGI. Example upstreams are PHP-FPM or Rails via FastCGI API.</help>
   </field>
   <field>
     <id>location.php_override_scriptname</id>
-    <label>PHP Router Script</label>
+    <label>(PHP) Router Script</label>
     <type>text</type>
-    <help>If you set this setting, all requests are sent to this script instead of the URL in the request path.</help>
+    <help>If you set this setting, all requests are sent to this script instead of the request path (URL).
+      Not using this setting on a remote instance can be dangerous.</help>
   </field>
 </form>
