@@ -319,10 +319,14 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
     $account_conf_file = $account_conf_dir . "/account.conf";
     $account_key_file = $account_conf_dir . "/account.key";
+    $account_json_file = $account_conf_dir . "/account.json";
+    $account_ca_file = $account_conf_dir . "/ca.conf";
     $acme_conf = array();
     $acme_conf[] = "CERT_HOME='/var/etc/acme-client/home'";
     $acme_conf[] = "LOG_FILE='/var/log/acme.sh.log'";
     $acme_conf[] = "ACCOUNT_KEY_PATH='" . $account_key_file . "'";
+    $acme_conf[] = "ACCOUNT_JSON_PATH='" . $account_json_file . "'";
+    $acme_conf[] = "CA_CONF='" . $account_ca_file . "'";
     if (!empty((string)$acctObj->email)) {
         $acme_conf[] = "ACCOUNT_EMAIL='" . (string)$acctObj->email . "'";
     }
@@ -810,7 +814,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     }
 
     // if OCSP Extension is turned on pass --ocsp parameter to acme client
-    if (isset($certObj->ocsp)) {
+    if (isset($certObj->ocsp) and ($certObj->ocsp == 1)) {
         $acme_args[] = "--ocsp";
     }
 
