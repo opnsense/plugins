@@ -77,4 +77,28 @@
         <type>text</type>
         <help>Set the IP and port where metrics shoud be sent to.</help>
     </field>
+    <field>
+        <id>output.elastic_enable</id>
+        <label>Enable Elasticsearch Output</label>
+        <type>checkbox</type>
+        <help>This will enable Elasticsearch as output. Format is without square brackets, just like http://192.168.0.1:9200.</help>
+    </field>
+    <field>
+        <id>output.elastic_url</id>
+        <label>Elasticsearch URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.elastic_timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Write timeout (for the Elasticsearch client), formatted as a string. If not provided, will default to 5s. 0s means no timeout (not recommended).</help>
+    </field>
+    <field>
+        <id>output.elastic_indexname</id>
+        <label>Index Name</label>
+        <type>text</type>
+        <help>Set the index name.</help>
+    </field>
 </form>
