@@ -27,7 +27,7 @@ wireguard_stop()
     echo "stopping wireguard"
     for STARTER in ${wireguard_config}; do
         $command down $STARTER
-	ifconfig destroy $STARTER
+	ifconfig $STARTER destroy
 	pkill -f wg-quick
     done
 }
