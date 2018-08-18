@@ -231,7 +231,9 @@ class StorageInterfaceAws(StorageInterface):
             # update the list_objects cache
             self.list_objects(bucket=config['storagebucket'], path=prefix_path, use_cached=False)
 
-        return {'status': 'success', 'message': 'Successfully PUT all AWS S3 objects', 'data': target_paths}
+        return {'status': 'success', 'message': 'Successfully PUT {} AWS S3 objects'.format(
+            len(config_list)
+        ), 'data': target_paths}
 
     def put_object(self, bucket, path, content, content_type=None, content_encoding=None, object_tags=None):
 
