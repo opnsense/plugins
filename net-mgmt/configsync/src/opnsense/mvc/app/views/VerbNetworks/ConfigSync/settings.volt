@@ -156,7 +156,7 @@
                 })
             );
         } else {
-            $('#configsync\\.settings\\.StorageProviderLink').html("{{ lang._('Please provide') }} <b>Storage Bucket</b> {{ lang._('and') }} <b>Storage Path</b> {{ lang._('values') }}");
+            $('#configsync\\.settings\\.StorageProviderLink').html("{{ lang._('Please provide %sStorage Bucket%s and %sStorage Path%s values')|format('<b>','</b>','<b>','</b>') }}");
         }
     }
     
