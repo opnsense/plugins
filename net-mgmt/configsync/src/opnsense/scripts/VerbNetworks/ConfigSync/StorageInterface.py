@@ -35,11 +35,10 @@ import random
 import shutil
 import hashlib
 import StringIO
+import xmltodict
 import subprocess
 import ConfigParser
 from calendar import timegm
-
-from xmltodict import xmltodict
 
 
 class StorageInterfaceException(Exception):
