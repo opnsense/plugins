@@ -18,12 +18,6 @@
         <help>HTTP Port this service listens on. Zero means disabled.</help>
     </field>
     <field>
-        <id>general.httpsport</id>
-        <label>HTTPS Port</label>
-        <type>text</type>
-        <help>HTTPS Port this services listens on.</help>
-    </field>
-    <field>
         <id>general.dnsmode</id>
         <label>DNS Mode</label>
         <type>dropdown</type>
