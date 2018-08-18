@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable ntopng</label>
+        <type>checkbox</type>
+        <help>This will activate ntopng.</help>
+    </field>
+</form>
