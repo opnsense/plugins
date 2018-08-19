@@ -52,7 +52,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function checkredisAction()
     {
         $backend = new Backend();
-        $mdlGeneral = new General();
         $response = $backend->configdRun("firmware plugin redis");
         return $response;
     }
