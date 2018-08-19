@@ -56,7 +56,7 @@ class FilesController extends ApiControllerBase
             
             $backend = new Backend();
             $configd_run = sprintf(
-                'configsync awss3_get_file_list --filter=%s',
+                'configsync awss3_get_synced --filter=%s',
                 escapeshellarg($filter)
             );
             $backend_response = json_decode(trim($backend->configdRun($configd_run)), true);

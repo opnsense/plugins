@@ -55,14 +55,14 @@ class StorageInterfaceAws(StorageInterface):
         parser = argparse.ArgumentParser(description='AWS S3 storage interface for ConfigSync')
         parser.add_argument('action',
             type=str,
-            choices=['test_parameters', 'sync_config_current', 'sync_config_missing', 'get_file_list'],
+            choices=['test_parameters', 'sync_current', 'sync_all', 'get_synced'],
             help='Interface action requested'
         )
         parser.add_argument('--key_id', type=str, help='AWS key id')
         parser.add_argument('--key_secret', type=str, help='AWS key secret')
         parser.add_argument('--bucket', type=str, help='AWS S3 bucket name')
         parser.add_argument('--path', type=str, help='Base path within the bucket to use')
-        parser.add_argument('--filter', type=str, help='Filter expression on get_file_list action')
+        parser.add_argument('--filter', type=str, help='Filter expression on get_synced action')
 
         args = parser.parse_args()
 
@@ -74,16 +74,16 @@ class StorageInterfaceAws(StorageInterface):
 
         if args.action == 'test_parameters':
             return self.test_parameters(key_id=args.key_id, key_secret=args.key_secret, bucket=args.bucket, path=args.path)
-        elif args.action == 'sync_config_current':
-            return self.sync_config_current()
-        elif args.action == 'sync_config_missing':
-            return self.sync_config_missing()
-        elif args.action == 'get_file_list':
-            return self.get_file_list(string_filter=args.filter)
+        elif args.action == 'sync_current':
+            return self.sync_current()
+        elif args.action == 'sync_all':
+            return self.sync_all()
+        elif args.action == 'get_synced':
+            return self.get_synced(string_filter=args.filter)
 
         return {'status': 'fail', 'message': 'Unable to invoke StorageInterfaceAws of ConfigSync'}
 
-    def get_file_list(self, string_filter=None):
+    def get_synced(self, string_filter=None):
         config = self.read_config('awss3')
         if config is None:
             return {'status': 'fail', 'message': 'No configuration for awss3 available' }
@@ -153,11 +153,11 @@ class StorageInterfaceAws(StorageInterface):
 
         return response
 
-    def sync_config_current(self):
+    def sync_current(self):
         config_list = [(self.system_config_current_file, 'config-current.xml')]
         return self.sync_configs(config_list, overwrite_existing=True)
 
-    def sync_config_missing(self):
+    def sync_all(self):
         config_list = [(self.system_config_current_file, 'config-current.xml')]
         for backup_file in os.listdir(self.system_config_backups_path):
             if backup_file.endswith('.xml'):
