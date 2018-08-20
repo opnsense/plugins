@@ -51,7 +51,7 @@ easyprivacy() {
 
 pornall() {
 	# PornAll
-	${FETCH} https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o ${WORKDIR}/pornall-raw
+	${FETCH} https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_all.list -o ${WORKDIR}/pornall-raw
 	sed "/\.$/d" ${WORKDIR}/pornall-raw | sed "/^#/d" | sed "/\_/d" > ${WORKDIR}/pornall
 	rm ${WORKDIR}/pornall-raw
 }
