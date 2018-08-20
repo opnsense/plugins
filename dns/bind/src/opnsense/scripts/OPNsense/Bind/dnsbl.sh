@@ -52,8 +52,8 @@ easyprivacy() {
 emdlist() {
 	# EasyPrivacy
 	${FETCH} https://hosts-file.net/emd.txt -o ${WORKDIR}/emdlist-raw
-	sed "/\.$/d" ${WORKDIR}/easyprivacy-raw | sed "/^#/d" | sed "/\_/d" | sed "/localhost/d" | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/emdlist
-	rm ${WORKDIR}/easyprivacy-raw
+	sed "/\.$/d" ${WORKDIR}/emdlst-raw | sed "/^#/d" | sed "/\_/d" | sed "/localhost/d" | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/emdlist
+	rm ${WORKDIR}/emdlist-raw
 }
 
 adguard() {
