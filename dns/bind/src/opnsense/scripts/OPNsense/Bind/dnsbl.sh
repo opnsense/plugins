@@ -49,8 +49,22 @@ easyprivacy() {
 	rm ${WORKDIR}/easyprivacy-raw
 }
 
+pornall() {
+	# PornAll
+	${FETCH} https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o ${WORKDIR}/pornall-raw
+	sed "/\.$/d" ${WORKDIR}/pornall-raw | sed "/^#/d" | sed "/\_/d" > ${WORKDIR}/pornall
+	rm ${WORKDIR}/pornall-raw
+}
+
+porntop() {
+	# PornTop1M
+	${FETCH} https://raw.githubusercontent.com/chadmayfield/pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list -o ${WORKDIR}/porntop-raw
+	sed "/\.$/d" ${WORKDIR}/porntop-raw | sed "/^#/d" | sed "/\_/d" > ${WORKDIR}/porntop
+	rm ${WORKDIR}/porntop-raw
+}
+
 emdlist() {
-	# EasyPrivacy
+	# EMD
 	${FETCH} https://hosts-file.net/emd.txt -o ${WORKDIR}/emdlist-raw
 	sed "/\.$/d" ${WORKDIR}/emdlist-raw | sed "/^#/d" | sed "/\_/d" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/emdlist
 	rm ${WORKDIR}/emdlist-raw
@@ -117,6 +131,12 @@ for CAT in $(echo ${1} | tr ',' ' '); do
 		;;
 	mw)
 		mwdomains
+		;;
+	pa)
+		pornall
+		;;
+	pt)
+		porntop
 		;;
 	esac
 done
