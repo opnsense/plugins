@@ -37,24 +37,22 @@ class LogsController extends ApiControllerBase
     private $nginx;
     public function accessesAction($uuid = null) {
         $this->nginx = new Nginx();
-        // emulate rest API -> /accesses delivers a list of servers with access logs
         if (!isset($uuid)) {
+            // emulate REST API -> /accesses delivers a list of servers with access logs
             return $this->list_vhosts();
-        }
-        // emulate GET call for a specific log /accesses/uuid
-        else {
+        } else {
+            // emulate REST call for a specific log /accesses/uuid
             return $this->call_configd('access', $uuid);
         }
     }
 
     public function errorsAction($uuid = null) {
         $this->nginx = new Nginx();
-        // emulate rest API -> /errors delivers a list of servers with error logs
         if (!isset($uuid)) {
+            // emulate REST API -> /errors delivers a list of servers with error logs
             return $this->list_vhosts();
-        }
-        // emulate GET call for a specific log /errors/uuid
-        else {
+        } else {
+            // emulate REST call for a specific log /errors/uuid
             return $this->call_configd('error', $uuid);
         }
     }
@@ -64,8 +62,8 @@ class LogsController extends ApiControllerBase
             $this->response->setStatusCode(404, "Not Found");
         }
 
-        $backed = new Backend();
-        $data = $backed->configdRun('nginx log ' . $type . ' ' . $uuid);
+        $backend = new Backend();
+        $data = $backend->configdRun('nginx log ' . $type . ' ' . $uuid);
         return json_decode($data, true);
     }
 
