@@ -28,8 +28,6 @@
 
 namespace OPNsense\Nginx;
 
-require 'config.inc';
-
 class AccessLogParser
 {
     private $file_name;

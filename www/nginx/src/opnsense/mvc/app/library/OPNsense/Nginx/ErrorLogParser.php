@@ -28,8 +28,6 @@
 
 namespace OPNsense\Nginx;
 
-require 'config.inc';
-
 class ErrorLogParser
 {
     private $file_name;
