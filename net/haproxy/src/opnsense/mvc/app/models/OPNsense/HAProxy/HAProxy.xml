@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
     <description>
         the HAProxy load balancer
     </description>
@@ -14,6 +14,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </gracefulStop>
+            <seamlessReload type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </seamlessReload>
             <showIntro type="BooleanField">
                 <default>1</default>
             </showIntro>
@@ -1561,6 +1565,7 @@
                     <OptionValues>
                         <use_backend>Use specified Backend Pool</use_backend>
                         <use_server>Override server in Backend Pool</use_server>
+                        <map_use_backend>Map domains to backend pools using a map file</map_use_backend>
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>
@@ -1777,6 +1782,30 @@
                 <actionValue type="TextField">
                      <Required>N</Required>
                 </actionValue>
+                <map_use_backend_file type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>mapfiles.mapfile</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related map file item not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </map_use_backend_file>
+                <map_use_backend_default type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related backend pool item not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </map_use_backend_default>
             </action>
         </actions>
         <luas>
@@ -1839,5 +1868,25 @@
                 </content>
             </errorfile>
         </errorfiles>
+        <mapfiles>
+            <mapfile type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <name type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <content type="TextField">
+                    <Required>Y</Required>
+                </content>
+            </mapfile>
+        </mapfiles>
     </items>
 </model>

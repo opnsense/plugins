@@ -354,4 +354,21 @@
         <type>textbox</type>
         <help><![CDATA[Specify a HAProxy rule/ACL that is currently not supported by the GUI.]]></help>
     </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_map_use_backend</style>
+    </field>
+    <field>
+        <id>action.map_use_backend_file</id>
+        <label>Map file</label>
+        <type>dropdown</type>
+        <help><![CDATA[HAProxy will extract the Host header from the HTTP request and search the map file for a match. If a match is found, the backend pool from the map file will be used.]]></help>
+    </field>
+    <field>
+        <id>action.map_use_backend_default</id>
+        <label>Default backend pool</label>
+        <type>dropdown</type>
+        <help><![CDATA[HAProxy will use this backend pool if no match is found in the map file.]]></help>
+    </field>
 </form>

@@ -1005,4 +1005,102 @@ class SettingsController extends ApiControllerBase
             "name"
         );
     }
+
+    /**
+     * retrieve mapfile settings or return defaults
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function getMapfileAction($uuid = null)
+    {
+        $mdlCP = new HAProxy();
+        if ($uuid != null) {
+            $node = $mdlCP->getNodeByReference('mapfiles.mapfile.'.$uuid);
+            if ($node != null) {
+                // return node
+                return array("mapfile" => $node->getNodes());
+            }
+        } else {
+            // generate new node, but don't save to disc
+            $node = $mdlCP->mapfiles->mapfile->add();
+            return array("mapfile" => $node->getNodes());
+        }
+        return array();
+    }
+
+    /**
+     * update mapfile with given properties
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function setMapfileAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("mapfile")) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('mapfiles.mapfile.'.$uuid);
+                if ($node != null) {
+                    $node->setNodes($this->request->getPost("mapfile"));
+                    return $this->save($mdlCP, $node, "mapfile");
+                }
+            }
+        }
+        return array("result"=>"failed");
+    }
+
+    /**
+     * add new mapfile and set with attributes from post
+     * @return array
+     */
+    public function addMapfileAction()
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost() && $this->request->hasPost("mapfile")) {
+            $mdlCP = new HAProxy();
+            $node = $mdlCP->mapfiles->mapfile->Add();
+            $node->setNodes($this->request->getPost("mapfile"));
+            return $this->save($mdlCP, $node, "mapfile");
+        }
+        return $result;
+    }
+
+    /**
+     * delete mapfile by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function delMapfileAction($uuid)
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                if ($mdlCP->mapfiles->mapfile->del($uuid)) {
+                    // if item is removed, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * search mapfiles
+     * @return array
+     */
+    public function searchMapfilesAction()
+    {
+        $this->sessionClose();
+        $mdlCP = new HAProxy();
+        $grid = new UIModelGrid($mdlCP->mapfiles->mapfile);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("name", "description"),
+            "name"
+        );
+    }
 }
