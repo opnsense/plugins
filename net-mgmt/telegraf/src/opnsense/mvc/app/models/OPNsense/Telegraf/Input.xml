@@ -27,7 +27,7 @@
             <default></default>
             <Required>N</Required>
         </disk_mount_points>
-        <disk_ignore_fs type="TextField">
+        <disk_ignore_fs type="CSVListField">
             <default></default>
             <Required>N</Required>
         </disk_ignore_fs>
