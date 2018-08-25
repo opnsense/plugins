@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <% if (log_type === 'errors') { %>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Severity</th>
+            <th>Number</th>
+            <th>Message</th>
+            <% } else { %>
+            <th>Time</th>
+            <th>Remote IP</th>
+            <th>Username</th>
+            <th>Status</th>
+            <th>Size</th>
+            <th>User Agent</th>
+            <th>Request Line</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody><%= table_body %></tbody>
+</table>
