@@ -38,4 +38,6 @@ class AccessLogLine
     public $size;
     public $user_agent;
     public $request_line;
+    public $forwarded_for;
+    public $http_referer;
 }

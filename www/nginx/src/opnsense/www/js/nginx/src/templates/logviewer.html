@@ -13,7 +13,9 @@
             <th>Username</th>
             <th>Status</th>
             <th>Size</th>
+            <th>Referer</th>
             <th>User Agent</th>
+            <th>Forwarded For</th>
             <th>Request Line</th>
             <% } %>
         </tr>
@@ -30,7 +32,9 @@
             <td><input type="text" value="<%= model.escape('username') %>" name="username" /></td>
             <td><input type="text" value="<%= model.escape('status') %>" name="status" /></td>
             <td><input type="text" value="<%= model.escape('size') %>" name="size" /></td>
+            <td><input type="text" value="<%= model.escape('http_referer') %>" name="http_referer" /></td>
             <td><input type="text" value="<%= model.escape('user_agent') %>" name="user_agent" /></td>
+            <td><input type="text" value="<%= model.escape('forwarded_for') %>" name="forwarded_for" /></td>
             <td><input type="text" value="<%= model.escape('request_line') %>" name="request_line" /></td>
             <% } %>
         </tr>

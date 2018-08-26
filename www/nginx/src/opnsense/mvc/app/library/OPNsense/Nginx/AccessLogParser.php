@@ -34,7 +34,7 @@ class AccessLogParser
     private $lines;
     private $result;
 
-    private const LogLineRegex = '/(\S+) - (\S+) \[([\d\sa-z\:\-\/\+]+)\] "([^"]+?)" (\d+) (\d+) "([^"]+?)"/i';
+    private const LogLineRegex = '/(\S+) - (\S+) \[([\d\sa-z\:\-\/\+]+)\] "([^"]+?)" (\d+) (\d+) "([^"]*?)" "([^"]*?)" "([^"]*?)"/i';
 
     function __construct($file_name)
     {
@@ -51,7 +51,9 @@ class AccessLogParser
             $container->request_line = $data[4];
             $container->status = $data[5];
             $container->size = $data[6];
-            $container->user_agent = $data[7];
+            $container->user_agent = $data[8];
+            $container->http_referer = $data[7];
+            $container->forwarded_for = $data[9];
         }
         return $container;
     }
