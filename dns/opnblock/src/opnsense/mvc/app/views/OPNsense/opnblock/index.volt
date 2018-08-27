@@ -40,5 +40,4 @@
         </ul>
     </p>
     <br> <span style="font-family: Courier; font-size: 13px; border-radius: 5px 5px 5px 5px; background-color: #fff; color: #000; padding: 5px; margin: 5px;">You're using OPNblock version: 0.1-dev</span>
-    <br>
-    <br> </div>
+</div>
