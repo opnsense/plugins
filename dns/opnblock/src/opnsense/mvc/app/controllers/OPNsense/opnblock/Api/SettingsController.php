@@ -1,10 +1,10 @@
 <?php
 namespace OPNsense\opnblock\Api;
 
-use \OPNsense\Base\ApiControllerBase;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\opnblock\opnblock;
 use \OPNsense\Core\Config;
-class SettingsController extends ApiControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
     public function getAction()
     {
