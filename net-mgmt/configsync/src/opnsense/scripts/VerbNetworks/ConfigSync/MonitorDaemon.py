@@ -64,7 +64,7 @@ class MonitorDaemon(object):
 
     def main(self):
 
-        parser = argparse.ArgumentParser(description='configsync-monitordaemon')
+        parser = argparse.ArgumentParser(description=self.name)
         parser.add_argument('--config', '-c', type=str, metavar='<config-file>', required=True,
                             help='Configuration file to use and load')
         parser.add_argument('--foreground', '-F', action='store_true',
@@ -166,7 +166,7 @@ class MonitorDaemon(object):
         return stdout.strip()
 
     def load_configsync_config(self):
-        self.log('info', 'Loading monitordaemon configuration: ', data=self.config_file)
+        self.log('info', 'Loading MonitorDaemon configuration: ', data=self.config_file)
 
         if not os.path.isfile(self.config_file):
             raise MonitorDaemonException('Unable to find configuration file', self.config_file)
@@ -174,18 +174,18 @@ class MonitorDaemon(object):
         config = ConfigParser.ConfigParser()
         config.read(self.config_file)
 
-        if 'monitordaemon' not in config.sections():
-            raise MonitorDaemonException('Unable to locate required configuration section', 'monitordaemon')
+        if 'monitor_daemon' not in config.sections():
+            raise MonitorDaemonException('Unable to locate required configuration section', 'monitor_daemon')
 
         self.config_file_mtime = os.path.getmtime(self.config_file)
         self.log('debug', 'configuration file modify time', data=self.config_file_mtime)
 
         monitor_configurations = {}
-        for option, value in config.items('monitordaemon'):
+        for option, value in config.items('monitor_daemon'):
             if option.lower() == 'enabled':
                 self.enabled = True if int(value) == 1 else False
                 self.log('debug', 'configuration enabled', data=self.enabled)
-            elif option.lower() == 'interval':
+            elif option.lower() == 'monitor_daemon_interval':
                 self.interval = int(value)
                 self.log('debug', 'configuration interval', data=self.interval)
             else:
@@ -193,7 +193,7 @@ class MonitorDaemon(object):
 
         self.monitors = []
         for index in range(0, (len(monitor_configurations)/2 + 1)):
-            pattern_key = 'checksumpattern_{}'.format(index)
+            pattern_key = 'checksum_pattern_{}'.format(index)
             action_key = 'action_{}'.format(index)
             if pattern_key not in monitor_configurations.keys() or action_key not in monitor_configurations.keys():
                 continue

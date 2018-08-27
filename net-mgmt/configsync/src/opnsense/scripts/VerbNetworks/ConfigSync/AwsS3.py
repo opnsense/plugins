@@ -1,6 +1,6 @@
-<?php
+#!/usr/local/bin/python2.7
 
-/*
+"""
     Copyright (c) 2018 Verb Networks Pty Ltd <contact@verbnetworks.com>
     Copyright (c) 2018 Nicholas de Jong <me@nicholasdejong.com>
     All rights reserved.
@@ -25,43 +25,11 @@
     ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+"""
 
-function configsync_enabled()
-{
-    $model_configsync = new \VerbNetworks\ConfigSync\ConfigSync();
-    return $model_configsync->settings->enabled->__toString() == "1";
-}
+from StorageInterfaceS3Compatible import StorageInterfaceS3Compatible
 
-function configsync_services()
-{
-    $services = array();
 
-    if (!configsync_enabled()) {
-        return $services;
-    }
-
-    $services[] = array(
-        'description' => gettext('Configuration Sync Daemon'),
-        'configd' => array(
-            'restart' => array('configsync restart'),
-            'start' => array('configsync start'),
-            'stop' => array('configsync stop'),
-        ),
-        'name' => 'configsync',
-        'pidfile' => '/var/run/configsync-monitordaemon.pid'
-    );
-
-    return $services;
-}
-
-function configsync_syslog()
-{
-    $logfacilities = array();
-
-    $logfacilities['configsync'] = array(
-        'facility' => array('configsync', 'configsync-monitordaemon'),
-    );
-
-    return $logfacilities;
-}
+if __name__ == '__main__':
+    Interface = StorageInterfaceS3Compatible()
+    Interface.response_output(**Interface.main(config_section='aws_s3'))

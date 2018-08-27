@@ -35,7 +35,6 @@ import random
 import shutil
 import hashlib
 import StringIO
-import xmltodict
 import subprocess
 import ConfigParser
 from calendar import timegm
@@ -50,6 +49,7 @@ class StorageInterface(object):
     system_config_backups_path='/conf/backup'
     system_config_current_file='/conf/config.xml'
     service_config_file='/usr/local/etc/configsync/configsync.conf'
+    cache_path='/var/cache/configsync'
 
     def read_consistent(self, filename, return_meta=None, __attempt=1, __max_attempts=16):
 
@@ -131,7 +131,7 @@ class StorageInterface(object):
             return digest.hexdigest()
         raise StorageInterfaceException('Unsupported output type', output_type)
 
-    def content_digest(self, content, digest_method='md5', output_type='hexdigest', buffer_size=4096):
+    def content_digest(self, content, digest_method='md5', output_type='hexdigest'):
 
         if digest_method == 'md5':
             digest = hashlib.md5()
@@ -165,9 +165,6 @@ class StorageInterface(object):
         with gzip.GzipFile(fileobj=out, mode='wb') as f:
             f.write(content)
         return out.getvalue()
-
-    def xml_to_dict(self, xml):
-        return xmltodict.parse(xml_input=xml)
 
     def read_config(self, section):
         if not os.path.isfile(self.service_config_file):
@@ -213,13 +210,16 @@ class StorageInterface(object):
             if '-' in input and 'T' in input and ':' in input and '.' in input and input.endswith('Z'):
                 t = time.strptime(input.split('.')[0], '%Y-%m-%dT%H:%M:%S')
 
+            # 2018-08-14 07:28:05+00:00
+            elif '-' in input and ' ' in input and ':' in input and '.' not in input and input.endswith('+00:00'):
+                t = time.strptime(input, '%Y-%m-%d %H:%M:%S+00:00')
+
             # 2018-08-04T07:44:45Z
             elif '-' in input and 'T' in input and ':' in input and '.' not in input and input.endswith('Z'):
                 t = time.strptime(input, '%Y-%m-%dT%H:%M:%SZ')
 
             # 20180804T074445Z
-            elif '-' not in input and 'T' in input and ':' not in input and '.' not in input and input.endswith(
-                    'Z'):
+            elif '-' not in input and 'T' in input and ':' not in input and '.' not in input and input.endswith('Z'):
                 t = time.strptime(input, '%Y%m%dT%H%M%SZ')
 
             # 20180804Z074445
@@ -237,27 +237,25 @@ class StorageInterface(object):
         except ValueError as e:
             return input
 
-        #return time.strftime('%Y-%m-%d %H:%M:%S', t)
-        #return time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time.mktime(t)))
         return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timegm(t)))
-
-    def get_cache(self, path, keydata):
-        if not os.path.isdir(os.path.dirname(path)):
-            return None
-        fullpath = path + '.' + self.gen_cache_key(keydata)
-        if not os.path.isfile(fullpath):
-            return None
-        with open(fullpath, 'rb') as f:
-            data = json.load(f)
-        return data
-
-    def set_cache(self, data, path, keydata):
-        if not os.path.isdir(os.path.dirname(path)):
-            return False
-        fullpath = path + '.' + self.gen_cache_key(keydata)
-        with open(fullpath, 'wb') as f:
-            json.dump(data, f)
-        return True
 
     def gen_cache_key(self, keydata):
         return self.content_digest(json.dumps(keydata))
+
+    def get_cache(self, keydata, prefix='cache_data'):
+        if not os.path.isdir(self.cache_path):
+            return None
+        full_path = os.path.join(self.cache_path, '{}.{}'.format(prefix, self.gen_cache_key(keydata)))
+        if not os.path.isfile(full_path):
+            return None
+        with open(full_path, 'rb') as f:
+            data = json.load(f)
+        return data
+
+    def set_cache(self, data, keydata, prefix='cache_data'):
+        if not os.path.isdir(self.cache_path):
+            return False
+        full_path = os.path.join(self.cache_path, '{}.{}'.format(prefix, self.gen_cache_key(keydata)))
+        with open(full_path, 'wb') as f:
+            json.dump(data, f)
+        return True

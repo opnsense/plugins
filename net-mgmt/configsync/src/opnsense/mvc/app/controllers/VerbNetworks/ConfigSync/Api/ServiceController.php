@@ -90,7 +90,7 @@ class ServiceController extends ApiControllerBase
             $backend = new Backend();
             $backend_result = trim($backend->configdRun('configsync restart'));
             if (strtoupper($backend_result) == "OK") {
-                $response = array("status"=>"success", "message" => "ConfigSync service stopped");
+                $response = array("status"=>"success", "message" => "ConfigSync service restarted");
             }
         }
         

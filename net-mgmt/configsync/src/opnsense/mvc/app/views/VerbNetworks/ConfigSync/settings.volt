@@ -122,7 +122,7 @@
 </div>
 
 <style>
-    #configsync\.settings\.StorageFullURI, #configsync\.settings\.SystemHostid {
+    #ConfigSync\.settings\.StorageFullURI, #ConfigSync\.settings\.system_host_id {
         line-height: 34px;
         display: inline-block;
         vertical-align: middle;
@@ -138,17 +138,17 @@
      * updateFullURI
      */
     function updateFullURI() {
-        if($('#configsync\\.settings\\.Provider').val() === 'awss3') {
+        if($('#ConfigSync\\.settings\\.provider').val() === 'aws_s3') {
             var link_url = 'https://s3.console.aws.amazon.com/s3/buckets/';
-            link_url += $('#configsync\\.settings\\.StorageBucket').val() + '/';
-            link_url += $('#configsync\\.settings\\.StoragePath').val() + '/';
+            link_url += $('#ConfigSync\\.settings\\.storage_bucket').val() + '/';
+            link_url += $('#ConfigSync\\.settings\\.storage_path_prefix').val() + '/';
 
             var link_text = 's3://';
-            link_text += $('#configsync\\.settings\\.StorageBucket').val() + '/';
-            link_text += $('#configsync\\.settings\\.StoragePath').val();
+            link_text += $('#ConfigSync\\.settings\\.storage_bucket').val() + '/';
+            link_text += $('#ConfigSync\\.settings\\.storage_path_prefix').val();
         }
-        if($('#configsync\\.settings\\.StorageBucket').val().length >= 3 && $('#configsync\\.settings\\.StoragePath').val().length > 0) {
-            $('#configsync\\.settings\\.StorageProviderLink').html(
+        if($('#ConfigSync\\.settings\\.storage_bucket').val().length >= 3 && $('#ConfigSync\\.settings\\.storage_path_prefix').val().length > 0) {
+            $('#ConfigSync\\.settings\\.storage_provider_link').html(
                 $('<a/>', {
                     text: link_text,
                     target: '_blank',
@@ -156,7 +156,7 @@
                 })
             );
         } else {
-            $('#configsync\\.settings\\.StorageProviderLink').html("{{ lang._('Please provide %sStorage Bucket%s and %sStorage Path%s values')|format('<b>','</b>','<b>','</b>') }}");
+            $('#ConfigSync\\.settings\\.storage_provider_link').html("{{ lang._('Please provide %sStorage Bucket%s and %sStorage Path%s values')|format('<b>','</b>','<b>','</b>') }}");
         }
     }
     
@@ -164,8 +164,8 @@
         
         updateServiceControlUI('configsync');
         
-        $("#configsync\\.settings\\.StorageBucket").change(updateFullURI);
-        $("#configsync\\.settings\\.StoragePath").change(updateFullURI);
+        $("#ConfigSync\\.settings\\.storage_bucket").change(updateFullURI);
+        $("#ConfigSync\\.settings\\.storage_path_prefix").change(updateFullURI);
         
         mapDataToFormUI({frm_Settings:"/api/configsync/settings/get"}).done(function(data){
             formatTokenizersUI();
@@ -197,6 +197,9 @@
                     $("#responseMsg").html("{{ lang._('Configuration Sync service settings saved') }}.");
                     ajaxCall(url = "/api/configsync/service/reload", sendData = {}, callback = function(data, status) {
                         $("#responseMsg").html("{{ lang._('Configuration Sync service settings saved and reloaded') }}.");
+                        ajaxCall(url = "/api/configsync/service/restart", sendData = {}, callback = function(data, status) {
+                            updateServiceControlUI('configsync');
+                        });
                     });
                 },
                 disable_dialog = true 

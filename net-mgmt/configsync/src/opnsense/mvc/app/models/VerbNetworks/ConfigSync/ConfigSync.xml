@@ -1,63 +1,67 @@
 <model>
-    <mount>//VerbNetworks/configsync</mount>
+    <mount>//VerbNetworks/ConfigSync</mount>
     <description>Verb Networks "Configuration Sync" application</description>
     <version>0.1.0</version>
     <items>
         <settings>
 
-            <Enabled type="BooleanField">
-                <default>0</default>
-                <Required>Y</Required>
-            </Enabled>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <required>Y</required>
+            </enabled>
 
-            <Provider type="OptionField">
-                <Required>Y</Required>
+            <provider type="OptionField">
+                <required>Y</required>
                 <multiple>N</multiple>
-                <default>awss3</default>
-                <OptionValues>
-                    <awss3>Amazon Web Services S3</awss3>
-                </OptionValues>
-            </Provider>
+                <default>aws_s3</default>
+                <optionvalues>
+                    <aws_s3>Amazon Web Services - S3</aws_s3>
+                    <!--
+                    <gc_storage>Google Cloud - Storage</gc_storage>
+                    <do_spaces>Digital Ocean - Spaces</do_spaces>
+                    -->
+                </optionvalues>
+            </provider>
             
-            <ProviderKey type="TextField">
-                <Required>Y</Required>
-                <Mask>/^[a-z0-9]{16,128}$/i</Mask>
-                <ValidationMessage>Must provide a valid Storage Provider API key value</ValidationMessage>
-            </ProviderKey>
+            <provider_key type="TextField">
+                <required>Y</required>
+                <mask>/^[a-z0-9]{16,128}$/i</mask>
+                <validationmessage>Must provide a valid Storage Provider API key value</validationmessage>
+            </provider_key>
             
-            <ProviderSecret type="TextField">
-                <Required>Y</Required>
-                <Mask>/^[a-z0-9\+\/]{16,128}$/i</Mask>
-                <ValidationMessage>Must provide a valid Storage Provider API key secret value</ValidationMessage>
-            </ProviderSecret>
+            <provider_secret type="TextField">
+                <required>Y</required>
+                <mask>/^[a-z0-9\+\/]{16,128}$/i</mask>
+                <validationmessage>Must provide a valid Storage Provider API key secret value</validationmessage>
+            </provider_secret>
             
-            <StorageBucket type="TextField">
-                <Required>Y</Required>
-                <Mask>/^[a-z0-9\-\.]{3,64}$/i</Mask>
-                <ValidationMessage>Must provide a valid storage-bucket name</ValidationMessage>
-            </StorageBucket>
+            <storage_bucket type="TextField">
+                <required>Y</required>
+                <mask>/^[a-z0-9\-\.]{3,64}$/i</mask>
+                <validationmessage>Must provide a valid storage-bucket name</validationmessage>
+            </storage_bucket>
             
-            <StoragePath type="TextField">
-                <Required>Y</Required>
-                <Mask>/^[a-z0-9\!\-\_\.\*\'\@\:\$\=\+\;\,\/]{1,1024}$/i</Mask>
-                <ValidationMessage>Must provide a valid storage-path value</ValidationMessage>
-            </StoragePath>
+            <storage_path_prefix type="TextField">
+                <required>Y</required>
+                <mask>/^[a-z0-9\!\-\_\.\*\'\@\:\$\=\+\;\,\/]{1,1024}$/i</mask>
+                <validationmessage>Must provide a valid storage-path value</validationmessage>
+            </storage_path_prefix>
 
-            <Interval type="IntegerField">
+            <monitor_daemon_interval type="IntegerField">
                 <default>10</default>
-                <MinimumValue>3</MinimumValue>
-                <MaximumValue>999999</MaximumValue>
-                <Required>Y</Required>
-                <ValidationMessage>Must provide an integer value between 3 and 999999</ValidationMessage>
-            </Interval>
+                <minimumvalue>3</minimumvalue>
+                <maximumvalue>999999</maximumvalue>
+                <required>Y</required>
+                <validationmessage>Must provide an integer value between 3 and 999999</validationmessage>
+            </monitor_daemon_interval>
 
-            <SystemHostid type="TextField">
-                <Required>N</Required>
-            </SystemHostid>
+            <system_host_id type="TextField">
+                <required>N</required>
+            </system_host_id>
             
-            <StorageProviderLink type="TextField">
-                <Required>N</Required>
-            </StorageProviderLink>
+            <storage_provider_link type="TextField">
+                <required>N</required>
+            </storage_provider_link>
                         
         </settings>
     </items>

@@ -42,8 +42,8 @@ class SettingsController extends ApiControllerBase
         $response = array();
         if ($this->request->isGet()) {
             $model_ConfigSync = new ConfigSync();
-            $response['configsync'] = $model_ConfigSync->getNodes();
-            $response['configsync']['settings']['SystemHostid'] = $this->getHostid();
+            $response['ConfigSync'] = $model_ConfigSync->getNodes();
+            $response['ConfigSync']['settings']['system_host_id'] = $this->getHostid();
         }
         return $response;
     }
@@ -54,8 +54,8 @@ class SettingsController extends ApiControllerBase
         
         if ($this->request->isPost()) {
             $model_ConfigSync = new ConfigSync();
-            $model_ConfigSync->setNodes($this->request->getPost("configsync"));
-            $response["validations"] = $this->unpackValidationMessages($model_ConfigSync, 'configsync');
+            $model_ConfigSync->setNodes($this->request->getPost('ConfigSync'));
+            $response["validations"] = $this->unpackValidationMessages($model_ConfigSync, 'ConfigSync');
             
             if (0 == count($response["validations"])) {
                 $model_ConfigSync->serializeToConfig();
@@ -74,26 +74,26 @@ class SettingsController extends ApiControllerBase
         
         if ($this->request->isPost()) {
             $model_ConfigSync = new ConfigSync();
-            $model_ConfigSync->setNodes($this->request->getPost("configsync"));
-            $response["validations"] = $this->unpackValidationMessages($model_ConfigSync, 'configsync');
+            $model_ConfigSync->setNodes($this->request->getPost('ConfigSync'));
+            $response["validations"] = $this->unpackValidationMessages($model_ConfigSync, 'ConfigSync');
             
             if (0 == count($response["validations"])) {
-                $data = $this->request->getPost("configsync");
+                $data = $this->request->getPost('ConfigSync');
                 $backend = new Backend();
                 
-                if ('awss3' == $data['settings']['Provider']) {
+                if ('aws_s3' == $data['settings']['provider']) {
                     $configd_run = sprintf(
-                        'configsync awss3_test_parameters --key_id=%s --key_secret=%s --bucket=%s --path=%s',
-                        escapeshellarg($data['settings']['ProviderKey']),
-                        escapeshellarg($data['settings']['ProviderSecret']),
-                        escapeshellarg($data['settings']['StorageBucket']),
-                        escapeshellarg($data['settings']['StoragePath'])
+                        'configsync aws_s3_test_parameters --key_id=%s --key_secret=%s --bucket=%s --path_prefix=%s',
+                        escapeshellarg($data['settings']['provider_key']),
+                        escapeshellarg($data['settings']['provider_secret']),
+                        escapeshellarg($data['settings']['storage_bucket']),
+                        escapeshellarg($data['settings']['storage_path_prefix'])
                     );
                     $response = json_decode(trim($backend->configdRun($configd_run)), true);
                     if (empty($response)) {
                         $response = array(
                             "status" => "fail",
-                            "message" => "Error calling configsync awss3_test_parameters via configd"
+                            "message" => "Error calling configsync aws_s3_test_parameters via configd"
                         );
                     }
                 } else {
