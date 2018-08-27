@@ -2,7 +2,7 @@
 # opnblock, opnblock.sh
 
 # prep temp storage and conf file
-rm -r '/tmp/hosts.working' '/var/unbound/opnblock.conf'
+rm '/tmp/hosts.working' '/var/unbound/opnblock.conf'
 touch '/tmp/hosts.working'
 
 # setup variables for curl'ing
@@ -19,4 +19,4 @@ awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $2 !~ whitelist {gsub("\r",
 awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /var/unbound/opnblock.conf
 
 # clear the temp storage!
-rm -r '/tmp/hosts.working'
+rm '/tmp/hosts.working'
