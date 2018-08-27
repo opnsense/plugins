@@ -6957,6 +6957,13 @@ body {
   z-index: 2;
 }
 
+section.page-content-main div.tab-content {
+  border-top: 1px solid #999999 !important;
+}
+section.page-content-main ul + div.tab-content {
+  border-top: 0px !important;
+}
+
 .content-box {
   background: #333;
   border: 1px solid #E5E5E5;
@@ -7165,7 +7172,7 @@ a.list-group-item.active-menu-title.collapsed {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item {
   padding-left: 10px !important;
   font-size: 11px !important;
-  background-color: #393939 e6 !important;
+  background-color: #393939 !important;
 }
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item.menu-level-3-item.active {
   color: #ec6d12 !important;
@@ -7174,7 +7181,7 @@ a.list-group-item.active-menu-title.collapsed {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item {
   padding-left: 10px !important;
   font-size: 11px !important;
-  background-color: #393939 e6 !important;
+  background-color: #393939 !important;
 }
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {
   padding-left: 10px !important;
