@@ -202,6 +202,15 @@ body{
   z-index: map-get($zindex, footer);
 }
 
+section.page-content-main {
+    div.tab-content {
+        border-top: 1px solid #999999 !important;
+    }
+    ul + div.tab-content {
+        border-top: 0px !important;
+    }
+}
+
 .content-box{
   background: #333;
   border: 1px solid map-get($colors, bordergrey);
@@ -442,7 +451,7 @@ a.list-group-item.active-menu-title.collapsed {
         > div.collapse.in > a.list-group-item {
           padding-left: 10px !important;
           font-size: 11px !important;
-          background-color: #393939e6 !important;
+          background-color: #393939 !important;
           &.menu-level-3-item.active {
             color: #ec6d12 !important;
             background-color: #2a2a2a !important;
@@ -452,7 +461,7 @@ a.list-group-item.active-menu-title.collapsed {
       > a.list-group-item {
         padding-left: 10px !important;
         font-size: 11px !important;
-        background-color: #393939e6 !important;
+        background-color: #393939 !important;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
