@@ -1,0 +1,23 @@
+<model>
+    <mount>//OPNsense/opnblock</mount>
+    <version>0.1</version>
+    <description>Ad-blocker for Unbound DNS</description>
+    <items>
+        <!-- container -->
+        <general>
+            <!-- fields -->
+            <Enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </Enabled>
+            <whitelist type="TextField">
+                <default></default>
+                <Required>N</Required>
+            </whitelist>
+            <blacklist type="TextField">
+                <default></default>
+                <Required>N</Required>
+            </blacklist>
+        </general>
+    </items>
+</model>

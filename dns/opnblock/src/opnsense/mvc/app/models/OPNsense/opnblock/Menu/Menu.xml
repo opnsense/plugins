@@ -1,0 +1,5 @@
+<menu>
+  <Lobby>
+    <OPNblock cssClass="fa fa-hand-paper-o" url="/ui/opnblock" />
+  </Lobby>
+</menu>

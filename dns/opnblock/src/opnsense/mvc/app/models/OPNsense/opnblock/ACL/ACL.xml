@@ -1,0 +1,9 @@
+<acl>
+   <page-lobby-opnblock>
+      <name>Lobby: OPNblock</name>
+      <patterns>
+         <pattern>ui/opnblock/*</pattern>
+         <pattern>api/opnblock/*</pattern>
+      </patterns>
+   </page-lobby-opnblock>
+</acl>
