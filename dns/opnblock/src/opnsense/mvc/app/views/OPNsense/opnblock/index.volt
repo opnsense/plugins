@@ -9,7 +9,7 @@
         
         $("#saveAct").click(function () {
             saveFormToEndpoint(url = "/api/opnblock/settings/set", formid = 'frm_GeneralSettings', callback_ok = function () {
-                ajaxCall(url = "/api/opnblock/service/refreshAction", sendData = {}, callback = function (data, status) {
+                ajaxCall(url = "/api/opnblock/service/refresh", sendData = {}, callback = function (data, status) {
                     $("#responseMsg").html(data['message']);
                     });
                 });
