@@ -17,7 +17,7 @@
         });
 </script>
 <div class="alert alert-info hidden" role="alert" id="responseMsg"> </div>
-<div class="col-md-6"> {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
+<div class="col-md-6"> {{ partial("layout_partials/base_form",['fields':general,'id':'frm_GeneralSettings'])}}
     <br>
     <br>
     <button class="btn btn-success" id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
