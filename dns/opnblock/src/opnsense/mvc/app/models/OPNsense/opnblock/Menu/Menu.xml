@@ -1,5 +1,7 @@
 <menu>
-  <Lobby>
-    <OPNblock cssClass="fa fa-hand-paper-o" url="/ui/opnblock" />
-  </Lobby>
+     <Services>
+         <Unbound>
+             <OPNblock cssClass="fa fa-hand-paper-o" url="/ui/opnblock" />
+         </Unbound>
+     </Services>
 </menu>
