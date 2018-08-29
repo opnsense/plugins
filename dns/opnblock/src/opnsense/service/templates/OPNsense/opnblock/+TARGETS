@@ -1,1 +1,2 @@
 opnblock.conf:/usr/local/etc/opnblock/opnblock.conf
+rc.conf.d:/etc/rc.conf.d/opnblock
