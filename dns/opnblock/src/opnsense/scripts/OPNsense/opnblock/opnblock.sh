@@ -1,13 +1,12 @@
 # !/bin/sh
 # opnblock, opnblock.sh
 
+# include config-generated blacklist/whitelist, commas replaced with spaces
+. /usr/local/opnsense/scripts/OPNsense/opnblock/data.sh
+
 # prep temp storage and conf file
 rm '/tmp/hosts.working' '/var/unbound/opnblock.conf'
 touch '/tmp/hosts.working'
-
-# setup variables for curl'ing
-whitelist=$(awk -F '=' '{if (! ($0 ~ /^;/) && $0 ~ /whitelist/) print $2}'  /usr/local/etc/opnblock/opnblock.conf);
-blacklist=$(awk -F '=' '{if (! ($0 ~ /^;/) && $0 ~ /blacklist/) print $2}'  /usr/local/etc/opnblock/opnblock.conf);
 
 # curl all the lists!
 for url in $blacklist; do
