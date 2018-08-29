@@ -24,43 +24,42 @@
     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-
-
 */
-
 
 namespace OPNsense\Nginx;
 
-/**
-* Class IndexController
-* @package OPNsense/Nginx
-*/
-class IndexController extends \OPNsense\Base\IndexController
+class AccessLogParser
 {
-    /**
-     * show the configuration page /ui/nginx
-     * @throws \Exception when a form cannot be loaded
-     */
-    public function indexAction()
+    private $file_name;
+    private $lines;
+    private $result;
+
+    private const LogLineRegex = '/(\S+) - (\S+) \[([\d\sa-z\:\-\/\+]+)\] "([^"]+?)" (\d+) (\d+) "([^"]*?)" "([^"]*?)" "([^"]*?)"/i';
+
+    function __construct($file_name)
     {
-        $this->view->settings = $this->getForm("settings");
-        $this->view->upstream_server = $this->getForm("upstream_server");
-        $this->view->upstream = $this->getForm("upstream");
-        $this->view->location = $this->getForm("location");
-        $this->view->credential = $this->getForm("credential");
-        $this->view->userlist = $this->getForm("userlist");
-        $this->view->httpserver = $this->getForm("httpserver");
-        $this->view->httprewrite = $this->getForm("httprewrite");
-        $this->view->naxsi_rule = $this->getForm("naxsi_rule");
-        $this->view->naxsi_custom_policy = $this->getForm("naxsi_custom_policy");
-        $this->view->security_headers = $this->getForm("security_headers");
-        $this->view->pick('OPNsense/Nginx/index');
+        $this->file_name = $file_name;
+        $this->lines = file($this->file_name);
+        $this->result = array_map([$this, 'parse_line'], $this->lines);
+    }
+    private function parse_line($line) {
+        $container = new AccessLogLine();
+        if (preg_match(self::LogLineRegex, $line, $data)) {
+            $container->remote_ip = $data[1];
+            $container->username = $data[2];
+            $container->time = $data[3];
+            $container->request_line = $data[4];
+            $container->status = $data[5];
+            $container->size = $data[6];
+            $container->user_agent = $data[8];
+            $container->http_referer = $data[7];
+            $container->forwarded_for = $data[9];
+        }
+        return $container;
     }
 
-    /**
-     * show the nginx logs page /ui/nginx/index/logs
-     */
-    public function logsAction() {
-        $this->view->pick('OPNsense/Nginx/logs');
+    public function get_result() {
+        return $this->result;
     }
+
 }
