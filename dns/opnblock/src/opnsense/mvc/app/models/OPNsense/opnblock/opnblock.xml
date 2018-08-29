@@ -10,11 +10,11 @@
                 <default>0</default>
                 <Required>Y</Required>
             </enabled>
-            <whitelist type="TextField">
+            <whitelist type="CSVListField">
                 <default></default>
                 <Required>N</Required>
             </whitelist>
-            <blacklist type="TextField">
+            <blacklist type="CSVListField">
                 <default></default>
                 <Required>N</Required>
             </blacklist>
