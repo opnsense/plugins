@@ -1,2 +1,2 @@
 opnblock.conf:/usr/local/etc/opnblock/opnblock.conf
-rc.conf.d:/etc/rc.conf.d/opnblock
+rc.conf:/usr/local/opnsense/scripts/OPNsense/opnblock/data.sh
