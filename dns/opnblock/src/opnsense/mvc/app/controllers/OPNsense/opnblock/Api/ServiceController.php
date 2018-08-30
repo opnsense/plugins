@@ -6,6 +6,13 @@ use \OPNsense\Core\Backend;
 
 class ServiceController extends ApiControllerBase
 {
+    
+    public function reloadAction()
+    {
+            $backend = new Backend();
+            $backend->configdRun("template reload OPNsense/opnblock");       
+    }
+    
     public function refreshAction()
     {
         if ($this->request->isPost()) {
@@ -16,13 +23,4 @@ class ServiceController extends ApiControllerBase
         return array("message" => gettext("Something went wrong..."));
     }
     
-    public function reloadAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-             // refresh backend
-               $backend->configdRun('template reload OPNsense/opnblock');       
-        }
-        return array("message" => gettext("Something went wrong..."));
-    }
 }
