@@ -13,7 +13,6 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend = new Backend();
         $response = $backend->configdpRun('UnboundBL refresh');
         return array("message" => $response);
-        return array("message" => gettext("UnboundBL's lists have been updated! Please restart your Unbound DNS server."));
     }
     public function reloadAction()
     {
@@ -21,6 +20,6 @@ class ServiceController extends ApiMutableServiceControllerBase
         $mdl = new UnboundBL();
         $backend = new Backend();
         $backend->configdRun("template reload OPNsense/UnboundBL");
-        return array("message" => gettext("Refreshed."));
+        return;
     }
 }
