@@ -3,18 +3,18 @@
         <id>opnblock.general.Enabled</id>
         <label>Enable OPNblock</label>
         <type>checkbox</type>
-        <help>Turn off and on OPNblock's service. This will not control your Unbound DNS server instance.</help>
+        <help> <help><![CDATA[Turn off and on. This will basically clear your opnblock.conf file, so it can remain in your Unbound configuration but not affect connectivity.]]></help></help>
     </field>
     <field>
         <id>opnblock.general.whitelist</id>
         <label>Whitelist</label>
         <type>text</type>
-	<help>Enter simple whitelist regex entries, such as /(api.solvemedia.com)/ seperated by a space.</help>
+	 <help><![CDATA[Enter the domains that you would like to whitelist (eg. remove from blacklist files).]]></help>
     </field>
     <field>
         <id>opnblock.general.blacklist</id>
         <label>Blacklist</label>
         <type>text</type>
-        <help>Enter your list of external host-file URL's (both http:// or https://). They must be in host-file format, eg. 0.0.0.0 domain.com. Please note that pihole styled lists, containing simple domains, are not yet supported by OPNblock.</help>
+        <help><![CDATA[Enter the blacklist URL's you would like to parse and use.]]></help>
     </field>
 </form>
