@@ -8,8 +8,8 @@
     <field>
         <id>opnblock.general.whitelist</id>
         <label>Whitelist</label>
-		<help>Enter simple whitelist regex entries, such as /(api.solvemedia.com)/ seperated by a space.</help>
         <type>text</type>
+	<help>Enter simple whitelist regex entries, such as /(api.solvemedia.com)/ seperated by a space.</help>
     </field>
     <field>
         <id>opnblock.general.blacklist</id>
