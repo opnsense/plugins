@@ -1,7 +1,7 @@
 <menu>
      <Services>
          <Unbound>
-             <UnboundBL cssClass="fa fa-hand-paper-o" url="/ui/UnboundBL" />
+             <UnboundBL VisibleName="DNSBL" url="/ui/UnboundBL" />
          </Unbound>
      </Services>
 </menu>
