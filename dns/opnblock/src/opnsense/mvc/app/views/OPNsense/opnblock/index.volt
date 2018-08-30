@@ -13,7 +13,7 @@
             status) {
             $("#responseMsg").text(data['message']);
         });
-        ajaxCall(url = "/api/helloworld/service/reload", sendData = {}, callback = function (data,
+        ajaxCall(url = "/api/opnblock/service/reload", sendData = {}, callback = function (data,
             status) {
             $("#responseMsg").text(data['message']);
         });
