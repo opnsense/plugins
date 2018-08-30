@@ -8,13 +8,18 @@
     <field>
         <id>UnboundBL.general.whitelist</id>
         <label>Whitelist</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
 	 <help><![CDATA[Enter the domains that you would like to whitelist (eg. remove from blacklist files).]]></help>
     </field>
     <field>
         <id>UnboundBL.general.blacklist</id>
         <label>Blacklist</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help><![CDATA[Enter the blacklist URL's you would like to parse and use.]]></help>
     </field>
 </form>
+
