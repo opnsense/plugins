@@ -3,7 +3,7 @@
         <id>opnblock.general.Enabled</id>
         <label>Enable OPNblock</label>
         <type>checkbox</type>
-        <help> <help><![CDATA[Turn off and on. This will basically clear your opnblock.conf file, so it can remain in your Unbound configuration but not affect connectivity.]]></help></help>
+        <help><![CDATA[Turn off and on. This will basically clear your opnblock.conf file, so it can remain in your Unbound configuration but not affect connectivity.]]></help>
     </field>
     <field>
         <id>opnblock.general.whitelist</id>
