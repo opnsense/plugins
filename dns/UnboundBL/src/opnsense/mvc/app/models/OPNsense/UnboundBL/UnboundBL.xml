@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/UnboundBL</mount>
-    <version>0.1</version>
-    <description>Ad-blocker for Unbound DNS</description>
+    <version>0.2</version>
+    <description>DNSBL for Unbound DNS</description>
     <items>
         <general>
             <enabled type="BooleanField">
