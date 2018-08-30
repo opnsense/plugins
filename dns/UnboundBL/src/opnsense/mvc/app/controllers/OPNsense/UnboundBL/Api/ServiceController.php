@@ -1,26 +1,17 @@
-<?php
 namespace OPNsense\UnboundBL\Api;
-
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-
-class ServiceController extends ApiControllerBase
+use OPNsense\Base\ApiMutableServiceControllerBase;
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    
-    public function reloadAction()
+    static protected $internalServiceClass = '\OPNsense\UnboundBL';
+    static protected $internalServiceTemplate = 'OPNsense/UnboundBL';
+    static protected $internalServiceEnabled = 'enabled';
+    static protected $internalServiceName = 'UnboundBL';
+    public function UnboundBLAction()
     {
-            $backend = new Backend();
-            $backend->configdRun("template reload OPNsense/UnboundBL");       
+        $this->sessionClose();
+        $mdl = new UnboundBL();
+        $backend = new Backend();
+        $response = $backend->configdpRun('UnboundBL', array((string)$mdl->type));
+        return array("response" => $response);
     }
-    
-    public function refreshAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-                $backend->configdRun("UnboundBL refresh");
-                return array("message" => gettext("UnboundBL's lists have been updated! Please restart your Unbound DNS server."));
-        }
-        return array("message" => gettext("Something went wrong..."));
-    }
-    
 }
