@@ -12,7 +12,6 @@ class ServiceController extends ApiControllerBase
             $backend = new Backend();
                 // refresh backend
                 $backend->configdRun('template reload OPNsense/opnblock');
-                // refresh and build lists for unbound (opnblock.conf)
                 $backend->configdRun("opnblock refresh");
                 return array("message" => gettext("OPNblock's lists have been updated! Please restart your Unbound DNS server."));
         }
