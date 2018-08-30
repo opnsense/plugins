@@ -6,6 +6,9 @@ use \OPNsense\opnblock\opnblock;
 use \OPNsense\Core\Config;
 class SettingsController extends ApiMutableModelControllerBase
 {
+// why do I need these two lines below and why can't I instantiate without 'em?
+    static protected $internalModelName = 'opnblock-class';
+    static protected $internalModelClass = '\OPNsense\opnblock\class';
     public function getAction()
     {
         $result = array();
