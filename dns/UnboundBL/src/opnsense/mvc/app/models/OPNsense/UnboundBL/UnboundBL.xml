@@ -16,7 +16,7 @@
                     <ValidationMessage>Please provide a valid URL!</ValidationMessage>
                 </blacklist>
                 <whitelist type="CSVListField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <multiple>Y</multiple>
                     <ChangeCase>lower</ChangeCase>
                 </whitelist>
