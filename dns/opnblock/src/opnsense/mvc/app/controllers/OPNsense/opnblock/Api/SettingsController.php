@@ -1,14 +1,11 @@
 <?php
 namespace OPNsense\opnblock\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Base\ApiModelControllerBase;
 use \OPNsense\opnblock\opnblock;
 use \OPNsense\Core\Config;
-class SettingsController extends ApiMutableModelControllerBase
+class SettingsController extends ApiModelControllerBase
 {
-// why do I need these two lines below and why can't I instantiate without 'em?
-    static protected $internalModelName = 'opnblock-class';
-    static protected $internalModelClass = '\OPNsense\opnblock\class';
     public function getAction()
     {
         $result = array();
