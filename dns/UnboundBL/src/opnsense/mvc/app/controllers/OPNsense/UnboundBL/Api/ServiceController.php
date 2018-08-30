@@ -6,12 +6,21 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/UnboundBL';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'UnboundBL';
-    public function UnboundBLAction()
+    public function refreshAction()
     {
         $this->sessionClose();
         $mdl = new UnboundBL();
         $backend = new Backend();
-        $response = $backend->configdpRun('UnboundBL', array((string)$mdl->type));
-        return array("response" => $response);
+        $response = $backend->configdpRun('UnboundBL refresh');
+        return array("message" => $response);
+        return array("message" => gettext("UnboundBL's lists have been updated! Please restart your Unbound DNS server."));
+    }
+    public function reloadAction()
+    {
+        $this->sessionClose();
+        $mdl = new UnboundBL();
+        $backend = new Backend();
+        $backend->configdRun("template reload OPNsense/UnboundBL");
+        return array("message" => gettext("Refreshed."));
     }
 }
