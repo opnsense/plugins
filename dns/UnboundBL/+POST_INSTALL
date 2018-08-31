@@ -1,2 +1,0 @@
-chmod 755 /usr/local/opnsense/scripts/OPNsense/UnboundBL/UnboundBL.sh
-chmod 755 /usr/local/opnsense/scripts/OPNsense/UnboundBL/data.sh
