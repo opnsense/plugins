@@ -5,7 +5,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 {
     static protected $internalServiceClass = '\OPNsense\UnboundBL';
     static protected $internalServiceTemplate = 'OPNsense/UnboundBL';
-    static protected $internalServiceEnabled = 'enabled';
+    static protected $internalServiceEnabled = 'Enabled';
     static protected $internalServiceName = 'UnboundBL';
     public function refreshAction()
     {
