@@ -9,7 +9,7 @@
                 <Required>Y</Required>
             </enabled>
                 <blacklist type="CSVListField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <multiple>Y</multiple>
                     <mask>^(https?|ftp?|http):\/\/[^\s\/$.?#].[^\s]*$</mask>
                     <ChangeCase>lower</ChangeCase>
