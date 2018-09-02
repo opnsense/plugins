@@ -1,0 +1,27 @@
+<form>
+  <field>
+    <id>limit_request_connection.description</id>
+    <label>Description</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>limit_request_connection.limit_zone</id>
+    <label>Limit Zone</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>limit_request_connection.connection_count</id>
+    <label>Connection Count (Streams Only)</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>limit_request_connection.burst</id>
+    <label>Burst (HTTP Only)</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>limit_request_connection.nodelay</id>
+    <label>No Delay (HTTP Only)</label>
+    <type>text</type>
+  </field>
+</form>

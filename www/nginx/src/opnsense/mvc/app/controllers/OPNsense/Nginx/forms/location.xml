@@ -62,6 +62,13 @@
     <help>Select an upstream to proxy to or connect via FastCGI if chosen.</help>
   </field>
   <field>
+    <id>location.limit_request_connections</id>
+    <label>Limit Requests</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <help>If you choose multiple limits, the strictest will be used.</help>
+  </field>
+  <field>
     <id>location.root</id>
     <label>File System Root</label>
     <type>text</type>
