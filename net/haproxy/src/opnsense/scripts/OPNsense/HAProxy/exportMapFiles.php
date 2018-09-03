@@ -1,8 +1,10 @@
+#!/usr/local/bin/php
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2016-2018 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,39 +27,29 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-namespace OPNsense\HAProxy;
+// Use legacy code to export certificates to the filesystem.
+require_once("config.inc");
+require_once("certs.inc");
+require_once("legacy_bindings.inc");
+use OPNsense\Core\Config;
 
-use OPNsense\HAProxy\HAProxy;
+global $config;
 
-/**
- * Class IndexController
- * @package OPNsense\HAProxy
- */
-class IndexController extends \OPNsense\Base\IndexController
-{
-    /**
-     * haproxy index page
-     * @throws \Exception
-     */
-    public function indexAction()
-    {
-        // include form definitions
-        $this->view->mainForm = $this->getForm("main");
-        $this->view->formDialogFrontend = $this->getForm("dialogFrontend");
-        $this->view->formDialogBackend = $this->getForm("dialogBackend");
-        $this->view->formDialogServer = $this->getForm("dialogServer");
-        $this->view->formDialogHealthcheck = $this->getForm("dialogHealthcheck");
-        $this->view->formDialogAction = $this->getForm("dialogAction");
-        $this->view->formDialogAcl = $this->getForm("dialogAcl");
-        $this->view->formDialogLua = $this->getForm("dialogLua");
-        $this->view->formDialogErrorfile = $this->getForm("dialogErrorfile");
-        $this->view->formDialogMapfile = $this->getForm("dialogMapfile");
-        // set additional view parameters
-        $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
-        $this->view->showIntro = (string)$mdlHAProxy->general->showIntro;
-        // pick the template to serve
-        $this->view->pick('OPNsense/HAProxy/index');
+// traverse HAProxy map files
+$configObj = Config::getInstance()->object();
+if (isset($configObj->OPNsense->HAProxy->mapfiles)) {
+    foreach ($configObj->OPNsense->HAProxy->mapfiles->children() as $mapfile) {
+        $mf_name = (string)$mapfile->name;
+        $mf_id = (string)$mapfile->id;
+        if ($mf_id != "") {
+            $mf_content = htmlspecialchars_decode(str_replace("\r", "", (string)$mapfile->content));
+            $mf_filename = "/var/etc/haproxy/mapfiles/" . $mf_id . ".txt";
+            file_put_contents($mf_filename, $mf_content);
+            chmod($mf_filename, 0600);
+            echo "map file exported to " . $mf_filename . "\n";
+        }
     }
 }

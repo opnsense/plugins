@@ -9,9 +9,15 @@
             </field>
             <field>
                 <id>haproxy.general.gracefulStop</id>
-                <label>Graceful Stop</label>
+                <label>Graceful stop</label>
                 <type>checkbox</type>
                 <help><![CDATA[Enable HAProxy's graceful stop mode. In this mode HAProxy will continue to process existing connections until they close. Note that this may severely slow down HAProxy's shutdown, depending on the configured timeout values. If graceful stop mode is not enabled, HAProxy will use the hard stop mode where it immediately quits and all established connections are closed. Hard stop mode is recommended.]]></help>
+            </field>
+            <field>
+                <id>haproxy.general.seamlessReload</id>
+                <label>Seamless reload</label>
+                <type>checkbox</type>
+                <help><![CDATA[HAProxy will handle service restarts in a way that no connections are dropped. This is the best restart mode, because it has no impact on user experience. That being said, there might be edge cases where seamless reloads lead to unexpected behaviour.]]></help>
             </field>
             <field>
                 <id>haproxy.general.showIntro</id>
