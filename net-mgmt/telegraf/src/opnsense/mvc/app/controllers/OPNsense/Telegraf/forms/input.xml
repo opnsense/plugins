@@ -38,7 +38,9 @@
     <field>
         <id>input.disk_ignore_fs</id>
         <label>Disk Ignore FS</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Ignore some mountpoints by filesystem type. For example (dev)tmpfs (usually present on /run, /var/run, /dev/shm or /dev).</help>
     </field>
     <field>
