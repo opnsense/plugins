@@ -94,4 +94,11 @@
     <label>Security Header</label>
     <type>dropdown</type>
   </field>
+  <field>
+    <id>httpserver.limit_request_connections</id>
+    <label>Limit Requests</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <help>If you choose multiple limits, the strictest will be used.</help>
+  </field>
 </form>

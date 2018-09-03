@@ -305,4 +305,60 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('security_header', 'security_header', $uuid);
     }
+
+    // access limit zone headers
+    public function searchlimit_zoneAction()
+    {
+        return $this->searchBase('limit_zone',
+            array('description', 'key', 'size', 'rate', 'rate_unit'));
+    }
+
+    public function getlimit_zoneAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('limit_zone', 'limit_zone', $uuid);
+    }
+
+    public function addlimit_zoneAction()
+    {
+        return $this->addBase('limit_zone', 'limit_zone');
+    }
+
+    public function dellimit_zoneAction($uuid)
+    {
+        return $this->delBase('limit_zone', $uuid);
+    }
+
+    public function setlimit_zoneAction($uuid)
+    {
+        return $this->setBase('limit_zone', 'limit_zone', $uuid);
+    }
+
+    // limit_request_connection
+    public function searchlimit_request_connectionAction()
+    {
+        return $this->searchBase('limit_request_connection',
+            array('description', 'limit_zone', 'nodelay', 'burst', 'connection_count'));
+    }
+
+    public function getlimit_request_connectionAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('limit_request_connection', 'limit_request_connection', $uuid);
+    }
+
+    public function addlimit_request_connectionAction()
+    {
+        return $this->addBase('limit_request_connection', 'limit_request_connection');
+    }
+
+    public function dellimit_request_connectionAction($uuid)
+    {
+        return $this->delBase('limit_request_connection', $uuid);
+    }
+
+    public function setlimit_request_connectionAction($uuid)
+    {
+        return $this->setBase('limit_request_connection', 'limit_request_connection', $uuid);
+    }
 }

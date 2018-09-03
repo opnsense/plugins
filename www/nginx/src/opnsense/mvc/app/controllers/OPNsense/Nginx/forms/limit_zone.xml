@@ -1,0 +1,27 @@
+<form>
+  <field>
+    <id>limit_zone.description</id>
+    <label>Description</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>limit_zone.key</id>
+    <label>Key</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>limit_zone.size</id>
+    <label>Size (MB)</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>limit_zone.rate</id>
+    <label>Rate</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>limit_zone.rate_unit</id>
+    <label>Rate Unit</label>
+    <type>dropdown</type>
+  </field>
+</form>

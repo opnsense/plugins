@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -255,6 +255,18 @@
       <php_override_scriptname type="TextField">
         <Required>N</Required>
       </php_override_scriptname>
+      <limit_request_connections type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>limit_request_connection</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected limit zone not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </limit_request_connections>
     </location>
 
     <custom_policy type="ArrayField">
@@ -479,6 +491,18 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </security_header>
+      <limit_request_connections type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>limit_request_connection</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected limit zone not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </limit_request_connections>
     </http_server>
 
     <http_rewrite type="ArrayField">
@@ -835,5 +859,68 @@
         <default>0</default>
       </csp_form_action_none>
     </security_header>
+
+    <limit_zone type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <key type="OptionField">
+        <default>binary_remote_addr</default>
+        <OptionValues>
+          <binary_remote_addr>Remote IP Address</binary_remote_addr>
+        </OptionValues>
+        <Required>Y</Required>
+      </key>
+      <rate_unit type="OptionField">
+        <default>r/s</default>
+        <OptionValues>
+          <val1 value="r/s">Requests Per Second</val1>
+          <val2 value="r/m">Requests Per Minute</val2>
+        </OptionValues>
+        <Required>Y</Required>
+      </rate_unit>
+      <size type="IntegerField">
+        <Required>Y</Required>
+        <default>10</default>
+        <MinimumValue>1</MinimumValue>
+      </size>
+      <rate type="IntegerField">
+        <Required>Y</Required>
+        <default>20</default>
+        <MinimumValue>1</MinimumValue>
+      </rate>
+    </limit_zone>
+
+    <limit_request_connection type="ArrayField">
+      <limit_zone type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>limit_zone</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected limit zone not found</ValidationMessage>
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+      </limit_zone>
+      <connection_count type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>Y</Required>
+        <default>5</default>
+      </connection_count>
+      <burst type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+        <default>20</default>
+      </burst>
+      <nodelay type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </nodelay>
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+    </limit_request_connection>
   </items>
 </model>
