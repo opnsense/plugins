@@ -36,6 +36,12 @@
         <help>This enables the Mikrotik attributes assignment via users tab.</help>
     </field>
     <field>
+        <id>general.sqlite</id>
+        <label>Enable SQLite</label>
+        <type>checkbox</type>
+        <help>This enables SQLite module and accounting.</help>
+    </field>
+    <field>
         <id>general.sessionlimit</id>
         <label>Enable Daily Session Limit</label>
         <type>checkbox</type>
