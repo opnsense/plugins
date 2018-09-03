@@ -8,6 +8,12 @@ haproxy_hardstop=NO
 {% else %}
 haproxy_hardstop=YES
 {% endif %}
+{% if helpers.exists('OPNsense.HAProxy.general.seamlessReload') and OPNsense.HAProxy.general.seamlessReload|default("0") == "1" %}
+haproxy_socket="/var/run/haproxy.socket"
+haproxy_softreload=YES
+{% else %}
+haproxy_softreload=NO
+{% endif %}
 {% else %}
 haproxy_enable=NO
 {% endif %}

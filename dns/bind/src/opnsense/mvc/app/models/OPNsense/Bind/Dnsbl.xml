@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/dnsbl</mount>
     <description>DNSBL configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -13,9 +13,12 @@
             <OptionValues>
                 <ag>AdGuard List</ag>
                 <el>Easy List</el>
+                <emd>EMD Malicious Domains List</emd>
                 <ep>Easyprivacy List</ep>
                 <mw>Malwaredomain List</mw>
                 <nc>NoCoin List</nc>
+                <pa>PornAll List</pa>
+                <pt>PornTop1M List</pt>
                 <rw>Ransomware Tracker List</rw>
             </OptionValues>
         </type>

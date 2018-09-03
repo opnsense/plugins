@@ -59,7 +59,14 @@
     <label>Upstream Servers</label>
     <type>dropdown</type>
     <style>selectpicker</style>
-    <help>Select an upstream to proxy to.</help>
+    <help>Select an upstream to proxy to or connect via FastCGI if chosen.</help>
+  </field>
+  <field>
+    <id>location.limit_request_connections</id>
+    <label>Limit Requests</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <help>If you choose multiple limits, the strictest will be used.</help>
   </field>
   <field>
     <id>location.root</id>
@@ -102,5 +109,17 @@
     <label>Force HTTPS</label>
     <type>checkbox</type>
     <help>Force encrypted connections.</help>
+  </field>
+  <field>
+    <id>location.php_enable</id>
+    <label>Pass Request To Local PHP Interpreter / Threat Upstream As FastCGI</label>
+    <type>checkbox</type>
+    <help>Only use this setting if you know what you are doing. If not, expect your machine to get compromised. Use this setting when you want to run a local PHP application or call an external upstream, if selected, via FastCGI. Example upstreams are PHP-FPM or Rails via FastCGI API.</help>
+  </field>
+  <field>
+    <id>location.php_override_scriptname</id>
+    <label>(PHP) Router Script</label>
+    <type>text</type>
+    <help>If you set this setting, all requests are sent to this script instead of the request path (URL). Not using this setting on a remote instance can be dangerous.</help>
   </field>
 </form>

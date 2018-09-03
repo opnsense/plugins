@@ -16,6 +16,7 @@
               <Acls VisibleName="ACLs" url="/ui/haproxy#acls"/>
               <Luas VisibleName="Lua Scripts" url="/ui/haproxy#luas"/>
               <Errorfiles VisibleName="Error Files" url="/ui/haproxy#errorfiles"/>
+              <Mapfiles VisibleName="Map Files" url="/ui/haproxy#mapfiles"/>
           </Settings>
           <Statistics order="20" url="/ui/haproxy/statistics">
               <Overview VisibleName="Overview" url="/ui/haproxy/statistics#info"/>
