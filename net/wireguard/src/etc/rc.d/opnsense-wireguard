@@ -38,7 +38,7 @@ wireguard_start()
     echo "starting wireguard"
     for STARTER in ${wireguard_config}; do
         $command up $STARTER
-	ifconfig $STARTER group wireguard
+	ifconfig $STARTER group wg
     done
 }
 
