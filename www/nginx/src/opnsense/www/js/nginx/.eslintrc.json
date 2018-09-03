@@ -1,0 +1,10 @@
+{
+    "parserOptions": {
+    "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "rules": {
+        "semi": "warn",
+        "no-extra-semi": "error"
+    }
+}

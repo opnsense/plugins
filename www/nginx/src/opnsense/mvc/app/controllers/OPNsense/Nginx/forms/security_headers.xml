@@ -1,0 +1,547 @@
+<form>
+  <field>
+    <id>security_header.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>This is only for your reference.</help>
+  </field>
+  <field>
+    <id>security_header.referrer</id>
+    <label>Referrer</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help><![CDATA[
+      <ul>
+        <li>Same Origin: The header will be sent if you stay on the same server using the same protocol (no data leak)</li>
+        <li>No Referrer When Downgrade: Prevents sending a referrer when switching from HTTPS to HTTP</li>
+        <li>Origin, Strict-Origin: Always send the header but no path or query information. Strict Origin additionally suppressed the header on downgrades.</li>
+        <li>(Strict) Origin When Cross Origin: Full Referrer on the same origin, and like (Strict) Origin when cross domain.</li>
+        <li>Unsafe URL: Sends the full URL to all pages</li>
+      </ul> ]]></help>
+  </field>
+  <field>
+    <id>security_header.xssprotection</id>
+    <label>XSS Protection</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help><![CDATA[
+      <ul>
+        <li>Block: The browser should block the response</li>
+        <li>Off: Allow Anything</li>
+        <li>On: The Browser decides how to handle it.</li>
+      </ul> ]]></help>
+  </field>
+  <field>
+    <id>security_header.content_type_options</id>
+    <label>Don't Sniff Content Type</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.strict_transport_security_time</id>
+    <label>Strict Transport Security: Time</label>
+    <type>text</type>
+    <help>A time in seconds in which the transport security (TLS) should be enforced.</help>
+  </field>
+  <field>
+    <id>security_header.strict_transport_security_include_subdomains</id>
+    <label>Strict Transport Security: Include Subdomains</label>
+    <type>checkbox</type>
+    <help>If checked, also subdomains are affected.</help>
+  </field>
+  <field>
+    <id>security_header.hpkp_keys</id>
+    <label>HTTP Public Key Pinning: Fingerprints</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help><![CDATA[ Enter a comma separated list of public key fingerprints here.
+    You can find some documentetion about this feature in the
+    <a href="https://developer.mozilla.org/de/docs/Web/Security/Public_Key_Pinning">Mozilla Wiki</a>.
+    It is not recommended to use this feature with short lived certificates.]]></help>
+  </field>
+  <field>
+    <id>security_header.hpkp_report_only</id>
+    <label>HTTP Public Key Pinning: Report Only</label>
+    <type>checkbox</type>
+    <help>If you only want to test it, you can check this box (policy will be deployed but not enforced).</help>
+  </field>
+  <field>
+    <id>security_header.hpkp_time</id>
+    <label>HTTP Public Key Pinning: Max Age</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>security_header.hpkp_include_subdomains</id>
+    <label>HTTP Public Key Pinning: Include Subdomains</label>
+    <type>checkbox</type>
+    <help>If checked, also subdomains are affected.</help>
+  </field>
+  <field>
+    <id>security_header.enable_csp</id>
+    <label>Content Security Policy: Enable</label>
+    <type>checkbox</type>
+    <help>If checked, the CSP is enabled.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Default Source</label>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_default_src_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Script Source</label>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_script_src_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Image Source</label>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_img_src_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Stylesheet Source</label>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_style_src_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Media Source</label>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_media_src_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Font Source</label>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_font_src_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+  <field>
+    <type>header</type>
+    <label>Content Security Policy: Form Action</label>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>If checked, this part of the CSP is enabled.</help>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_data_urls</id>
+    <label>Enable Data URLs</label>
+    <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_http_urls</id>
+    <label>Enable HTTP(S) URLs</label>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+      You can use wildcards here like https://*.exmaple.com.</help>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_inline</id>
+    <label>Enable Inline Scripting</label>
+    <type>checkbox</type>
+    <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+      Examples are the script and the style tags.</help>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_eval</id>
+    <label>Enable Eval</label>
+    <type>checkbox</type>
+    <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_self</id>
+    <label>Enable Same Origin (recommended)</label>
+    <type>checkbox</type>
+    <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_blob</id>
+    <label>Enable Blobs</label>
+    <type>checkbox</type>
+    <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_mediastream</id>
+    <label>Enable Media Streams</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_filesystem</id>
+    <label>Enable File System URLs</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>security_header.csp_form_action_none</id>
+    <label>Forbid Explicitly</label>
+    <type>checkbox</type>
+    <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+  </field>
+</form>

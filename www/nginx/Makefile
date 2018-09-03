@@ -1,8 +1,7 @@
-PLUGIN_NAME=          nginx
-PLUGIN_VERSION=       0.4
-PLUGIN_COMMENT=       Nginx HTTP server and reverse proxy
-PLUGIN_DEPENDS=       nginx
-PLUGIN_MAINTAINER=    franz.fabian.94@gmail.com
-PLUGIN_DEVEL=         yes
+PLUGIN_NAME=		nginx
+PLUGIN_VERSION=		1.0
+PLUGIN_COMMENT=		Nginx HTTP server and reverse proxy
+PLUGIN_DEPENDS=		nginx
+PLUGIN_MAINTAINER=	franz.fabian.94@gmail.com
 
 .include "../../Mk/plugins.mk"
