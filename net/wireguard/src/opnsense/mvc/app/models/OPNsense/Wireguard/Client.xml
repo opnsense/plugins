@@ -24,7 +24,7 @@
                     <Required>Y</Required>
                     <asList>Y</asList>
                 </tunneladdress>
-                <serveraddress type="NetworkField">
+                <serveraddress type="HostnameField">
                     <Required>N</Required>
                 </serveraddress>
                 <serverport type="PortField">
