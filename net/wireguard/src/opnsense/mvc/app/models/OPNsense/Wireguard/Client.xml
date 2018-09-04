@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/client</mount>
     <description>Wireguard Client configuration</description>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <items>
         <clients>
             <client type="ArrayField">
@@ -24,7 +24,7 @@
                     <Required>Y</Required>
                     <asList>Y</asList>
                 </tunneladdress>
-                <serveraddress type="NetworkField">
+                <serveraddress type="HostnameField">
                     <Required>N</Required>
                 </serveraddress>
                 <serverport type="PortField">

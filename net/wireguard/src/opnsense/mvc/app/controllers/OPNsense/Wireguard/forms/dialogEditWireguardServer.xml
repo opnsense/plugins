@@ -20,13 +20,13 @@
     <field>
         <id>server.pubkey</id>
         <label>Public Key</label>
-        <type>info</type>
+        <type>text</type>
         <help>Public key of this instance. After saving you will see here your public key.</help>
     </field>
     <field>
         <id>server.privkey</id>
         <label>Private Key</label>
-        <type>info</type>
+        <type>text</type>
         <help>Private key of this instance. After saving you will see here your public key, please keep it safe.</help>
     </field>
     <field>
