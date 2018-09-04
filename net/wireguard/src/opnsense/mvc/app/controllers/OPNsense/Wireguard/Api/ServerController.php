@@ -55,7 +55,7 @@ class ServerController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->servers->server->Add();
             }
             $node->setNodes($this->request->getPost("server"));
-            if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
+            if (empty((string)$node->pubkey) && empty((string)$node->privkey)) {
                 // generate new keypair
                 $backend = new Backend();
                 $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
@@ -80,7 +80,7 @@ class ServerController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->servers->server->Add();
             }
             $node->setNodes($this->request->getPost("server"));
-            if (empty((string)$node->pubkey) || empty((string)$node->privkey)) {
+            if (empty((string)$node->pubkey) && empty((string)$node->privkey)) {
                 // generate new keypair
                 $backend = new Backend();
                 $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
