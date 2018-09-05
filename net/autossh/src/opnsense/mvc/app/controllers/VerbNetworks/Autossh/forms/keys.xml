@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>key.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Provide a name for this key.</help>
+    </field>
+    <field>
+        <id>key.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Select the type of SSH key to be generated - can't be modified after the key has been generated.</help>
+    </field>
+    <field>
+        <id>key.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Free form input to describe this sshkey (not parsed).</help>
+    </field>
+    <field>
+        <id>key.key_fingerprint</id>
+        <label>Fingerprint</label>
+        <type>info</type>
+        <help>SSH key fingerprint for reference.</help>
+    </field>
+</form>

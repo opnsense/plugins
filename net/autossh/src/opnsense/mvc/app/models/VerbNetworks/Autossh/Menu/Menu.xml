@@ -1,0 +1,9 @@
+<menu>
+    <VPN>
+        <Autossh VisibleName="Autossh" cssClass="fa fa-chain fa-fw">
+            <AutosshTunnels VisibleName="Tunnel Settings" url="/ui/autossh/settings" order="10"/>
+            <AutosshStatus VisibleName="Connection Status" url="/ui/autossh/status" order="20"/>
+            <AutosshLogFile VisibleName="Log File" url="/diag_logs_autossh.php" order="30"/>
+        </Autossh>
+    </VPN>
+</menu>

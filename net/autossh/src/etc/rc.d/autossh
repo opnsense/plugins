@@ -1,0 +1,182 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: autossh
+
+# Add the following /etc/rc.conf.d/autossh entry to enable autossh:
+# autossh_enable="YES"
+
+
+. /etc/rc.subr
+
+name=autossh
+rcvar=${name}_enable
+
+load_rc_config $name
+autossh_enable=${autossh_enable:-"NO"}
+autossh_loglevel=${autossh_loglevel:-1}
+autossh_monitor_port_min=${autossh_monitor_port_min:-0}
+autossh_monitor_port_max=${autossh_monitor_port_max:-0}
+autossh_monitor_poll_interval=${autossh_monitor_poll_interval:-60}
+autossh_configfile=${autossh_configfile:-"/usr/local/etc/autossh/autossh.conf"}
+
+autossh_flags="-N -y -F ${autossh_configfile}"
+command=/usr/local/bin/autossh
+pidfile=/dev/null
+
+start_cmd="autossh_start_cmd"
+stop_cmd="autossh_stop_cmd"
+status_cmd="autossh_status_cmd"
+restart_cmd="autossh_restart_cmd"
+
+extra_commands="start_tunnel stop_tunnel status_tunnel restart_tunnel"
+start_tunnel_cmd="autossh_start_tunnel_cmd"
+stop_tunnel_cmd="autossh_stop_tunnel_cmd"
+status_tunnel_cmd="autossh_status_tunnel_cmd"
+restart_tunnel_cmd="autossh_restart_tunnel_cmd"
+
+autossh_load_rc_config() {
+    tunnel_uuids=`cat ${autossh_configfile} | grep '^Host ' | cut -d' ' -f2`
+}
+
+autossh_start_cmd() {
+    local tunnel_uuid
+    for tunnel_uuid in ${tunnel_uuids}; do
+        autossh_start_tunnel_cmd ${tunnel_uuid}
+    done
+}
+
+autossh_stop_cmd() {
+    local tunnel_uuid
+    for tunnel_uuid in ${tunnel_uuids}; do
+        autossh_stop_tunnel_cmd ${tunnel_uuid}
+    done
+}
+
+autossh_restart_cmd() {
+    local tunnel_uuid
+    for tunnel_uuid in ${tunnel_uuids}; do
+        autossh_restart_tunnel_cmd ${tunnel_uuid}
+    done
+}
+
+autossh_status_cmd() {
+    local tunnel_uuid
+    for tunnel_uuid in ${tunnel_uuids}; do
+        autossh_status_tunnel_cmd ${tunnel_uuid}
+    done
+}
+
+autossh_start_tunnel_cmd() {
+    local tunnel_uuid=${1}
+    if [ -z ${tunnel_uuid} ]; then
+        echo "Fail: no tunnel_uuid supplied to start_tunnel command."
+        exit 1
+    fi
+
+    local autosshd_pidfile="/var/run/autossh.${tunnel_uuid}.pid"
+
+    export AUTOSSH_GATETIME=0
+    export AUTOSSH_DEBUG=${autossh_loglevel}
+    export AUTOSSH_POLL=${autossh_monitor_poll_interval}
+    export AUTOSSH_PORT=`__autossh_random_port ${autossh_monitor_port_min} ${autossh_monitor_port_max}`
+
+    __autossh_exec_config_helper
+
+    if [ ! -e ${autosshd_pidfile} ]; then
+        echo "Starting ${name} tunnel ${tunnel_uuid} ..."
+        daemon -S -P ${autosshd_pidfile} -r -t "autossh-daemon.${tunnel_uuid}" -T "autosshd" -u "root" ${command} ${autossh_flags} ${tunnel_uuid}
+        sleep 1
+    else
+        if [ $(ps -o pid= -p `cat ${autosshd_pidfile}` | wc -l) -gt 0 ]; then
+            echo "${name} tunnel ${tunnel_uuid} already running pid:`cat ${autosshd_pidfile}`"
+        else
+            echo "Starting ${name} tunnel ${tunnel_uuid} (removing old pid file) ..."
+            rm -f ${autosshd_pidfile}
+            daemon -S -P ${autosshd_pidfile} -r -t "autossh-daemon.${tunnel_uuid}" -T "autosshd" -u "root" ${command} ${autossh_flags} ${tunnel_uuid}
+            sleep 1
+        fi
+    fi
+    if [ ! -e ${autosshd_pidfile} ]; then
+        echo "Fail: unable to start ${name} tunnel ${tunnel_uuid} ..."
+    fi
+}
+
+autossh_stop_tunnel_cmd() {
+    local tunnel_uuid=${1}
+    if [ -z ${tunnel_uuid} ]; then
+        echo "Fail: no tunnel_uuid supplied to stop_tunnel command."
+        exit 1
+    fi
+    local pidfile="/var/run/autossh.${tunnel_uuid}.pid"
+    local infofile="/var/run/autossh.${tunnel_uuid}.info"
+    if [ -e ${pidfile} ] && [ $(ps -o pid= -p `cat ${pidfile}` | wc -l) -gt 0 ]; then
+        echo "Stopping ${name} tunnel ${tunnel_uuid} ..."
+        if [ -e ${pidfile} ]; then
+            kill `cat ${pidfile}`
+        fi
+        rm -f ${pidfile}
+        rm -f ${infofile}
+        sleep 1
+    else
+        echo "${name} tunnel ${tunnel_uuid} is not running?"
+    fi
+}
+
+autossh_restart_tunnel_cmd() {
+    local tunnel_uuid=${1}
+    if [ -z ${tunnel_uuid} ]; then
+        echo "Fail: no tunnel_uuid supplied to restart_tunnel command."
+        exit 1
+    fi
+    local pidfile="/var/run/autossh.${tunnel_uuid}.pid"
+    if [ -f ${pidfile} ]; then
+        autossh_stop_tunnel_cmd ${tunnel_uuid}
+    fi
+    autossh_start_tunnel_cmd ${tunnel_uuid}
+}
+
+autossh_status_tunnel_cmd() {
+    local tunnel_uuid=${1}
+    if [ -z ${tunnel_uuid} ]; then
+        echo "Fail: no tunnel_uuid supplied to status_tunnel command."
+        exit 1
+    fi
+    local pidfile="/var/run/autossh.${tunnel_uuid}.pid"
+    if [ -e ${pidfile} ] && [ $(ps -o pid= -p `cat ${pidfile}` | wc -l) -gt 0 ]; then
+        echo "${name} tunnel ${tunnel_uuid} is running pid:`cat ${pidfile}`"
+    else
+        echo "${name} tunnel ${tunnel_uuid} is NOT running"
+    fi
+}
+
+__autossh_random_port() {
+    local min_port=${1}
+    local max_port=${2}
+    local do_search=1
+    local random_port=0
+    while [ ${do_search} -gt 0 ]; do
+        local random_port=$(expr `jot -r 1 0 $(expr $(expr ${max_port} - ${min_port}) \/ 2)` \* 2 + ${min_port})
+        if [ $(netstat -anW -p tcp | grep LISTEN | grep "\.${random_port} " | wc -l | tr -d ' ') -eq 0 ]; then
+            do_search=0
+        fi
+    done
+    echo ${random_port}
+}
+
+__autossh_exec_config_helper() {
+    local result=`configctl autossh config_helper`
+    if [ $(echo ${result} | grep '"success"' | wc -l | tr -d ' ' ) -lt 1 ]; then
+        echo "Fail: autossh config_helper: ${result}"
+        exit 1
+    fi
+}
+
+autossh_load_rc_config
+if [ $(echo ${1} | grep "_tunnel" | wc -l | tr -d ' ') -eq 0 ]; then
+    run_rc_command "${1}"
+else
+    run_rc_command "${1}" "${2}"
+fi

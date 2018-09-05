@@ -1,0 +1,200 @@
+<form>
+    <field>
+        <id>tunnel.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this Autossh tunnel.</help>
+    </field>
+    <field>
+        <id>tunnel.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Free form text field available to describe this connection if required.]]></help>
+    </field>
+
+    <!-- standard options -->
+
+    <field>
+        <id>tunnel.user</id>
+        <label>User</label>
+        <type>text</type>
+        <help><![CDATA[Provide the connection username for this connection.]]></help>
+    </field>
+    <field>
+        <id>tunnel.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help><![CDATA[Provide the hostname or address to use for this connection.]]></help>
+    </field>
+    <field>
+        <id>tunnel.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help><![CDATA[Provide the TCP port number, defaults to <code>22</code> if not provided.]]></help>
+    </field>
+    <field>
+        <id>tunnel.ssh_key</id>
+        <label>SSH key name</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the SSH key by name to use for this connection - this key must be generated prior to creating a ssh-tunnel.]]></help>
+    </field>
+    <field>
+        <id>tunnel.strict_host_key_checking</id>
+        <label>Strict Host Key Checking</label>
+        <type>dropdown</type>
+        <help><![CDATA[Sets the ssh-server host key checking behaviour. Refer to <code>StrictHostKeyChecking</code> ssh-client option.]]></help>
+    </field>
+    <field>
+        <id>tunnel.bind_interface</id>
+        <label>Bind Interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the interface to bind and originate this SSH connection from.]]></help>
+    </field>
+    <field>
+        <id>tunnel.local_forward</id>
+        <label>Local Forward</label>
+        <type>text</type>
+        <help><![CDATA[The local port forward definition, for example <code>2222&nbsp;127.0.0.1:22</code> would make the remote system TCP22 available at TCP2222 on this system at 127.0.0.1. Leave empty for no local forwarding. Refer to <code>LocalForward</code> ssh-client option.]]></help>
+    </field>
+    <field>
+        <id>tunnel.remote_forward</id>
+        <label>Remote Forward</label>
+        <type>text</type>
+        <help><![CDATA[The remote port forward definition, for example <code>*:2222&nbsp;127.0.0.1:22</code> would allow network users on the remote site to connect to TCP2222 which forwards to TCP22 on this system at 127.0.0.1. Leave empty for no remote forwarding. Refer to <code>RemoteForward</code> ssh-client option.]]></help>
+    </field>
+    <field>
+        <id>tunnel.dynamic_forward</id>
+        <label>Dynamic Forward</label>
+        <type>text</type>
+        <help><![CDATA[Specifies that a TCP port be forwarded as a SOCKS proxy over the SSH channel, for example <code>*:1080</code> would allow local network users to use this system as a SOCKS proxy appearing as if at the remote system. Leave empty for no dynamic forwarding. Refer to <code>DynamicForward</code> ssh-client option.]]></help>
+    </field>
+    <field>
+        <id>tunnel.gateway_ports</id>
+        <label>Gateway Ports</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies whether remote hosts are allowed to connect to local forwarded ports. Refer to <code>GatewayPorts</code> ssh-client option.]]></help>
+    </field>
+
+    <!-- advanced options -->
+
+    <field>
+        <id>tunnel.address_family</id>
+        <label>Address Family</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies which address family to use when connecting. Refer to <code>AddressFamily</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.check_host_ip</id>
+        <label>Check Host IP</label>
+        <type>dropdown</type>
+        <help><![CDATA[If set to yes the ssh-client will additionally check the host IP address in the known_hosts file. Refer to <code>CheckHostIP</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.ciphers</id>
+        <label>Ciphers</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Specifies the ciphers allowed and their order of preference. Refer to <code>Ciphers</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.compression</id>
+        <label>Compression</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies whether to use compression. Refer to <code>Compression</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.connection_attempts</id>
+        <label>Connection Attempts</label>
+        <type>text</type>
+        <help><![CDATA[Specifies the number of tries (one per second) to make before exiting. Refer to <code>ConnectionAttempts</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.connect_timeout</id>
+        <label>Connect Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Specifies the timeout (in seconds) used when connecting to the SSH server, instead of using the default system TCP timeout. Refer to <code>ConnectTimeout</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.host_key_algorithms</id>
+        <label>Host Key Algorithms</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Specifies the host key algorithms that the client wants to use in order of preference. Refer to <code>HostKeyAlgorithms</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.kex_algorithms</id>
+        <label>Key Exchange Algorithms</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Specifies the available key exchange (KEX) algorithms. Refer to <code>KeyExchangeAlgorithms</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.log_level</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help><![CDATA[Gives the verbosity level that is used when logging messages from ssh. Refer to <code>LogLevel</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.macs</id>
+        <label>MACs</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Specifies the MAC (message authentication code) algorithms in order of preference. Refer to <code>MACs</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.pubkey_accepted_key_types</id>
+        <label>Pubkey Accepted Key Types</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Specifies the key types that will be used for public key authentication. Refer to <code>PubkeyAcceptedKeyTypes</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.rekey_limit</id>
+        <label>Rekey Limit</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies the maximum amount of time or data before the session key is renegotiated. Refer to <code>RekeyLimit</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.server_alive_count_max</id>
+        <label>Server Alive Count Max</label>
+        <type>text</type>
+        <help><![CDATA[Sets the number of server alive messages which may be sent without the ssh-client receiving any messages back from the server. Refer to <code>ServerAliveCountMax</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.server_alive_interval</id>
+        <label>Server Alive Interval</label>
+        <type>text</type>
+        <help><![CDATA[Sets a timeout interval in seconds after which if no data has been received from the server, ssh will send a message through the encrypted channel to request a response from the server. Refer to <code>ServerAliveInterval</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.tcp_keep_alive</id>
+        <label>TCP Keep Alive</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies whether the system should send TCP keepalive messages to the other side. Refer to <code>TCPKeepAlive</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.update_host_keys</id>
+        <label>Update Host Keys</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies whether ssh-client should accept notifications of additional hostkeys from the server sent after authentication has completed. Refer to <code>UpdateHostKeys</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>tunnel.verify_host_key_dns</id>
+        <label>Verify Host Key DNS</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specifies whether to verify the remote key using DNSSEC and SSHFP resource records. Refer to <code>VerifyHostKeyDNS</code> ssh-client option.]]></help>
+        <advanced>true</advanced>
+    </field>
+
+</form>

@@ -1,0 +1,388 @@
+<model>
+    <mount>//VerbNetworks/Autossh</mount>
+    <description>Verb Networks "Autossh" plugin</description>
+    <version>0.1.0</version>
+    <items>
+
+        <keys>
+            <key type="ArrayField">
+
+                <name type="TextField">
+                    <required>Y</required>
+                    <mask>/^([0-9a-z\ \.\-\,\_\@\:]){1,128}$/i</mask>
+                    <validationmessage>Must provide a valid key name value</validationmessage>
+                </name>
+
+                <type type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>rsa2048</default>
+                    <optionvalues>
+                        <dsa1024>DSA-1024</dsa1024>
+                        <ecdsa256>ECDSA-256</ecdsa256>
+                        <ecdsa384>ECDSA-384</ecdsa384>
+                        <ecdsa521>ECDSA-521</ecdsa521>
+                        <ed25519>Ed25519</ed25519>
+                        <rsa1024>RSA-1024</rsa1024>
+                        <rsa2048>RSA-2048</rsa2048>
+                        <rsa4096>RSA-4096</rsa4096>
+                    </optionvalues>
+                </type>
+
+                <key_private type="TextField">
+                    <required>N</required>
+                </key_private>
+
+                <key_public type="TextField">
+                    <required>N</required>
+                </key_public>
+
+                <key_fingerprint type="TextField">
+                    <required>N</required>
+                </key_fingerprint>
+
+                <timestamp type="TextField">
+                    <required>N</required>
+                </timestamp>
+
+                <description type="TextField">
+                    <required>N</required>
+                    <mask>/^([0-9a-z\ \.\-\,\_\@\:]){0,1024}$/i</mask>
+                    <validationmessage>Invalid description string</validationmessage>
+                </description>
+
+            </key>
+        </keys>
+
+        <tunnels>
+            <tunnel type="ArrayField">
+
+                <!-- non ssh-client option attributes -->
+
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+
+                <description type="TextField">
+                    <required>N</required>
+                    <mask>/^([0-9a-z\ \.\-\,\_\@\:]){0,1024}$/i</mask>
+                    <validationmessage>Invalid description string</validationmessage>
+                </description>
+
+                <!-- model relationship -->
+
+                <ssh_key type="ModelRelationField">
+                    <Model>
+                        <key>
+                            <source>VerbNetworks.Autossh.Autossh</source>
+                            <items>keys.key</items>
+                            <display>name</display>
+                        </key>
+                    </Model>
+                    <validationmessage>Related ssh-key not found</validationmessage>
+                    <required>Y</required>
+                </ssh_key>
+
+                <!-- ssh client options -->
+                <!-- http://man.openbsd.org/OpenBSD-current/man5/ssh_config.5 -->
+
+                <address_family type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>any</default>
+                    <optionvalues>
+                        <any>IPv4 or IPv6</any>
+                        <inet>IPv4 only</inet>
+                        <inet6>IPv6 only</inet6>
+                    </optionvalues>
+                </address_family>
+
+                <bind_interface type="InterfaceField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                </bind_interface>
+
+                <check_host_ip type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>yes</default>
+                    <optionvalues>
+                        <yes>Yes</yes>
+                        <no>No</no>
+                    </optionvalues>
+                </check_host_ip>
+
+                <ciphers type="OptionField">
+                    <required>Y</required>
+                    <multiple>Y</multiple>
+                    <default>ciphers_01,ciphers_02,ciphers_03,ciphers_04,ciphers_05,ciphers_06</default>
+                    <optionvalues>
+                        <ciphers_01>chacha20-poly1305@openssh.com</ciphers_01>
+                        <ciphers_02>aes128-ctr</ciphers_02>
+                        <ciphers_03>aes192-ctr</ciphers_03>
+                        <ciphers_04>aes256-ctr</ciphers_04>
+                        <ciphers_05>aes128-gcm@openssh.com</ciphers_05>
+                        <ciphers_06>aes256-gcm@openssh.com</ciphers_06>
+                    </optionvalues>
+                </ciphers>
+
+                <compression type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>no</default>
+                    <optionvalues>
+                        <yes>Yes</yes>
+                        <no>No</no>
+                    </optionvalues>
+                </compression>
+
+                <connection_attempts type="IntegerField">
+                    <default>5</default>
+                    <required>Y</required>
+                    <minimumvalue>1</minimumvalue>
+                    <maximumvalue>9999</maximumvalue>
+                    <validationmessage>Provide valid integer between 1 and 9999</validationmessage>
+                </connection_attempts>
+
+                <connect_timeout type="IntegerField">
+                    <default>15</default>
+                    <required>Y</required>
+                    <minimumvalue>1</minimumvalue>
+                    <maximumvalue>3600</maximumvalue>
+                    <validationmessage>Provide valid value between 1 and 3600</validationmessage>
+                </connect_timeout>
+
+                <dynamic_forward type="TextField">
+                    <required>N</required>
+                    <mask>/^([0-9a-z\ \.\-\_\:\*]){0,256}$/i</mask>
+                    <validationmessage>Must provide valid SSH client DynamicForward string</validationmessage>
+                </dynamic_forward>
+
+                <gateway_ports type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>no</default>
+                    <optionvalues>
+                        <yes>Yes</yes>
+                        <no>No</no>
+                    </optionvalues>
+                </gateway_ports>
+
+                <host_key_algorithms type="OptionField">
+                    <required>Y</required>
+                    <multiple>Y</multiple>
+                    <default>host_key_algorithms_01,host_key_algorithms_02,host_key_algorithms_03,host_key_algorithms_04,host_key_algorithms_05,host_key_algorithms_06,host_key_algorithms_07,host_key_algorithms_08,host_key_algorithms_09,host_key_algorithms_10</default>
+                    <optionvalues>
+                        <host_key_algorithms_01>ecdsa-sha2-nistp256-cert-v01@openssh.com</host_key_algorithms_01>
+                        <host_key_algorithms_02>ecdsa-sha2-nistp384-cert-v01@openssh.com</host_key_algorithms_02>
+                        <host_key_algorithms_03>ecdsa-sha2-nistp521-cert-v01@openssh.com</host_key_algorithms_03>
+                        <host_key_algorithms_04>ssh-ed25519-cert-v01@openssh.com</host_key_algorithms_04>
+                        <host_key_algorithms_05>ssh-rsa-cert-v01@openssh.com</host_key_algorithms_05>
+                        <host_key_algorithms_06>ecdsa-sha2-nistp256</host_key_algorithms_06>
+                        <host_key_algorithms_07>ecdsa-sha2-nistp384</host_key_algorithms_07>
+                        <host_key_algorithms_08>ecdsa-sha2-nistp521</host_key_algorithms_08>
+                        <host_key_algorithms_09>ssh-ed25519</host_key_algorithms_09>
+                        <host_key_algorithms_10>ssh-rsa</host_key_algorithms_10>
+                    </optionvalues>
+                </host_key_algorithms>
+
+                <hostname type="TextField">
+                    <required>Y</required>
+                    <mask>/^([0-9a-z\.\-\:]){1,512}$/i</mask>
+                    <validationmessage>Provide a valid hostname or host-address string</validationmessage>
+                </hostname>
+
+                <kex_algorithms type="OptionField">
+                    <required>Y</required>
+                    <multiple>Y</multiple>
+                    <default>kex_algorithms_01,kex_algorithms_02,kex_algorithms_03,kex_algorithms_04,kex_algorithms_05,kex_algorithms_06,kex_algorithms_07,kex_algorithms_08,kex_algorithms_09,kex_algorithms_10,kex_algorithms_11</default>
+                    <optionvalues>
+                        <kex_algorithms_01>curve25519-sha256</kex_algorithms_01>
+                        <kex_algorithms_02>curve25519-sha256@libssh.org</kex_algorithms_02>
+                        <kex_algorithms_03>ecdh-sha2-nistp256</kex_algorithms_03>
+                        <kex_algorithms_04>ecdh-sha2-nistp384</kex_algorithms_04>
+                        <kex_algorithms_05>ecdh-sha2-nistp521</kex_algorithms_05>
+                        <kex_algorithms_06>diffie-hellman-group-exchange-sha256</kex_algorithms_06>
+                        <kex_algorithms_07>diffie-hellman-group16-sha512</kex_algorithms_07>
+                        <kex_algorithms_08>diffie-hellman-group18-sha512</kex_algorithms_08>
+                        <kex_algorithms_09>diffie-hellman-group-exchange-sha1</kex_algorithms_09>
+                        <kex_algorithms_10>diffie-hellman-group14-sha256</kex_algorithms_10>
+                        <kex_algorithms_11>diffie-hellman-group14-sha1</kex_algorithms_11>
+                    </optionvalues>
+                </kex_algorithms>
+
+                <local_forward type="TextField">
+                    <required>N</required>
+                    <mask>/^([0-9a-z\ \.\-\_\:\*]){0,256}$/i</mask>
+                    <validationmessage>Must provide valid SSH client LocalForward string</validationmessage>
+                </local_forward>
+
+                <log_level type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>INFO</default>
+                    <optionvalues>
+                        <QUIET>Quiet</QUIET>
+                        <FATAL>Fatal</FATAL>
+                        <ERROR>Error</ERROR>
+                        <INFO>Info</INFO>
+                        <VERBOSE>Verbose</VERBOSE>
+                        <DEBUG1>Debug Level 1</DEBUG1>
+                        <DEBUG2>Debug Level 2</DEBUG2>
+                        <DEBUG3>Debug Level 3</DEBUG3>
+                    </optionvalues>
+                </log_level>
+
+                <macs type="OptionField">
+                    <required>Y</required>
+                    <multiple>Y</multiple>
+                    <default>macs_01,macs_02,macs_03,macs_04,macs_05,macs_06,macs_07,macs_08,macs_09,macs_10</default>
+                    <optionvalues>
+                        <macs_01>umac-64-etm@openssh.com</macs_01>
+                        <macs_02>umac-128-etm@openssh.com</macs_02>
+                        <macs_03>hmac-sha2-256-etm@openssh.com</macs_03>
+                        <macs_04>hmac-sha2-512-etm@openssh.com</macs_04>
+                        <macs_05>hmac-sha1-etm@openssh.com</macs_05>
+                        <macs_06>umac-64@openssh.com</macs_06>
+                        <macs_07>umac-128@openssh.com</macs_07>
+                        <macs_08>hmac-sha2-256</macs_08>
+                        <macs_09>hmac-sha2-512</macs_09>
+                        <macs_10>hmac-sha1</macs_10>
+                    </optionvalues>
+                </macs>
+
+                <port type="IntegerField">
+                    <required>N</required>
+                    <minimumvalue>1</minimumvalue>
+                    <maximumvalue>65535</maximumvalue>
+                    <validationmessage>Provide valid TCP port number</validationmessage>
+                </port>
+
+                <pubkey_accepted_key_types type="OptionField">
+                    <required>Y</required>
+                    <multiple>Y</multiple>
+                    <default>pubkey_accepted_key_types_01,pubkey_accepted_key_types_02,pubkey_accepted_key_types_03,pubkey_accepted_key_types_04,pubkey_accepted_key_types_05,pubkey_accepted_key_types_06,pubkey_accepted_key_types_07,pubkey_accepted_key_types_08,pubkey_accepted_key_types_09,pubkey_accepted_key_types_10</default>
+                    <optionvalues>
+                        <pubkey_accepted_key_types_01>ecdsa-sha2-nistp256-cert-v01@openssh.com</pubkey_accepted_key_types_01>
+                        <pubkey_accepted_key_types_02>ecdsa-sha2-nistp384-cert-v01@openssh.com</pubkey_accepted_key_types_02>
+                        <pubkey_accepted_key_types_03>ecdsa-sha2-nistp521-cert-v01@openssh.com</pubkey_accepted_key_types_03>
+                        <pubkey_accepted_key_types_04>ssh-ed25519-cert-v01@openssh.com</pubkey_accepted_key_types_04>
+                        <pubkey_accepted_key_types_05>ssh-rsa-cert-v01@openssh.com</pubkey_accepted_key_types_05>
+                        <pubkey_accepted_key_types_06>ecdsa-sha2-nistp256</pubkey_accepted_key_types_06>
+                        <pubkey_accepted_key_types_07>ecdsa-sha2-nistp384</pubkey_accepted_key_types_07>
+                        <pubkey_accepted_key_types_08>ecdsa-sha2-nistp521</pubkey_accepted_key_types_08>
+                        <pubkey_accepted_key_types_09>ssh-ed25519</pubkey_accepted_key_types_09>
+                        <pubkey_accepted_key_types_10>ssh-rsa</pubkey_accepted_key_types_10>
+                    </optionvalues>
+                </pubkey_accepted_key_types>
+
+                <rekey_limit type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>rekey_limit_01</default>
+                    <optionvalues>
+                        <rekey_limit_01>default none</rekey_limit_01>
+                        <rekey_limit_02>1G 1h</rekey_limit_02>
+                        <rekey_limit_03>1G 4h</rekey_limit_03>
+                        <rekey_limit_04>1G 8h</rekey_limit_04>
+                        <rekey_limit_05>2G 1h</rekey_limit_05>
+                        <rekey_limit_06>2G 4h</rekey_limit_06>
+                        <rekey_limit_07>2G 8h</rekey_limit_07>
+                        <rekey_limit_08>4G 1h</rekey_limit_08>
+                        <rekey_limit_09>4G 4h</rekey_limit_09>
+                        <rekey_limit_10>4G 8h</rekey_limit_10>
+                    </optionvalues>
+                </rekey_limit>
+
+                <remote_forward type="TextField">
+                    <required>N</required>
+                    <mask>/^([0-9a-z\ \.\-\_\:\*]){0,256}$/i</mask>
+                    <validationmessage>Must provide valid SSH client RemoteForward string</validationmessage>
+                </remote_forward>
+
+                <server_alive_count_max type="IntegerField">
+                    <default>3</default>
+                    <required>Y</required>
+                    <minimumvalue>1</minimumvalue>
+                    <maximumvalue>9999</maximumvalue>
+                    <validationmessage>Provide valid integer between 1 and 9999</validationmessage>
+                </server_alive_count_max>
+
+                <server_alive_interval type="IntegerField">
+                    <default>30</default>
+                    <required>Y</required>
+                    <minimumvalue>0</minimumvalue>
+                    <maximumvalue>3600</maximumvalue>
+                    <validationmessage>Provide valid integer between 0 and 3600</validationmessage>
+                </server_alive_interval>
+
+                <strict_host_key_checking type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>accept-new</default>
+                    <optionvalues>
+                        <accept-new>Accept New - allow first new key</accept-new>
+                        <yes>Yes - deny host key changes</yes>
+                        <no>No - allow any host key</no>
+                    </optionvalues>
+                </strict_host_key_checking>
+
+                <tcp_keep_alive type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>yes</default>
+                    <optionvalues>
+                        <yes>Yes</yes>
+                        <no>No</no>
+                    </optionvalues>
+                </tcp_keep_alive>
+
+                <tunnel type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>no</default>
+                    <optionvalues>
+                        <no>No</no>
+                        <ethernet>Layer 2 - Ethernet</ethernet>
+                        <point-to-point>Layer 3 - Point to Point</point-to-point>
+                    </optionvalues>
+                </tunnel>
+
+                <tunnel_device type="TextField">
+                    <required>N</required>
+                    <mask>/^([0-9any\:]){0,16}$/i</mask>
+                    <validationmessage>Provide a valid tunnel device value</validationmessage>
+                </tunnel_device>
+
+                <update_host_keys type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>yes</default>
+                    <optionvalues>
+                        <yes>Yes</yes>
+                        <no>No</no>
+                    </optionvalues>
+                </update_host_keys>
+
+                <user type="TextField">
+                    <required>Y</required>
+                    <mask>/^([0-9a-z\.\-\_]){1,128}$/i</mask>
+                    <validationmessage>Provide a valid user string</validationmessage>
+                </user>
+
+                <verify_host_key_dns type="OptionField">
+                    <required>Y</required>
+                    <multiple>N</multiple>
+                    <default>no</default>
+                    <optionvalues>
+                        <yes>Yes</yes>
+                        <no>No</no>
+                    </optionvalues>
+                </verify_host_key_dns>
+
+            </tunnel>
+        </tunnels>
+
+    </items>
+</model>

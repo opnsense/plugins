@@ -1,0 +1,9 @@
+<acl>
+    <page-vpn-autossh>
+        <name>VPN: Autossh</name>
+        <patterns>
+            <pattern>ui/autossh/*</pattern>
+            <pattern>api/autossh/*</pattern>
+        </patterns>
+    </page-vpn-autossh>
+</acl>

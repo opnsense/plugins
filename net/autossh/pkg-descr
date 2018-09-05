@@ -1,0 +1,6 @@
+The Autossh plugin for OPNsense is a tool for establishing, maintaining and
+managing reliable SSH tunnels with remote hosts.  It can be used to solve a
+wide range of connection challenges through the (sometimes creative) use of
+TCP port-forwards.
+
+WWW: https://github.com/verbnetworks/opnsense-plugin-autossh
