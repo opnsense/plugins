@@ -44,7 +44,7 @@ function tinc_syslog()
     $logfacilities = array();
 
     $logfacilities['tinc'] = array(
-        'facility' => array(),
+        'facility' => array('tincd'),
         'remote' => 'vpn',
     );
     $mdl = new \OPNsense\Tinc\Tinc();
