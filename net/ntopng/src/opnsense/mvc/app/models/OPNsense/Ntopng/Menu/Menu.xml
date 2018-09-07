@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <Ntopng cssClass="fa fa-binoculars fa-fw" url="/ui/ntopng/general/index" />
+    </Services>
+</menu>

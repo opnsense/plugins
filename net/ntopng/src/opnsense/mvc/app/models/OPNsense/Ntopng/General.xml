@@ -1,0 +1,28 @@
+<model>
+    <mount>//OPNsense/ntopng/general</mount>
+    <description>ntopng configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <interface type="InterfaceField">
+            <Required>N</Required>
+            <Multiple>N</Multiple>
+        </interface>
+        <httpport type="PortField">
+            <Required>Y</Required>
+            <default>3000</default>
+        </httpport>
+        <dnsmode type="OptionField">
+            <Required>N</Required>
+            <OptionValues>
+                <Option0 value="0">Decode DNS responses and resolve only local numeric IPs</Option0>
+                <Option1 value="1">Decode DNS responses and resolve all numeric IPs</Option1>
+                <Option2 value="2">Decode DNS responses and do not resolve numeric IPs</Option2>
+                <Option3 value="3">Do not decode DNS responses and do not resolve numeric IPs</Option3>
+            </OptionValues>
+        </dnsmode>
+    </items>
+</model>
