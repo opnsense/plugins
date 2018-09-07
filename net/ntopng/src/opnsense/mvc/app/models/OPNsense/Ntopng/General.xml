@@ -11,11 +11,9 @@
             <Required>N</Required>
             <Multiple>N</Multiple>
         </interface>
-        <httpport type="IntegerField">
-            <Required>Y</Required>
+        <httpport type="PortField">
+            <Required>N</Required>
             <default>3000</default>
-            <MinimumValue>0</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
         </httpport>
         <dnsmode type="OptionField">
             <Required>N</Required>
