@@ -37,6 +37,10 @@ namespace OPNsense\Nginx;
 */
 class IndexController extends \OPNsense\Base\IndexController
 {
+    /**
+     * show the configuration page /ui/nginx
+     * @throws \Exception when a form cannot be loaded
+     */
     public function indexAction()
     {
         $this->view->settings = $this->getForm("settings");
@@ -50,6 +54,15 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->naxsi_rule = $this->getForm("naxsi_rule");
         $this->view->naxsi_custom_policy = $this->getForm("naxsi_custom_policy");
         $this->view->security_headers = $this->getForm("security_headers");
+        $this->view->limit_request_connection = $this->getForm("limit_request_connection");
+        $this->view->limit_zone = $this->getForm("limit_zone");
         $this->view->pick('OPNsense/Nginx/index');
+    }
+
+    /**
+     * show the nginx logs page /ui/nginx/index/logs
+     */
+    public function logsAction() {
+        $this->view->pick('OPNsense/Nginx/logs');
     }
 }

@@ -53,6 +53,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->formDialogAcl = $this->getForm("dialogAcl");
         $this->view->formDialogLua = $this->getForm("dialogLua");
         $this->view->formDialogErrorfile = $this->getForm("dialogErrorfile");
+        $this->view->formDialogMapfile = $this->getForm("dialogMapfile");
         // set additional view parameters
         $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
         $this->view->showIntro = (string)$mdlHAProxy->general->showIntro;
