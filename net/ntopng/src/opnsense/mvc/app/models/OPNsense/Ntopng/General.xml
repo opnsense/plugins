@@ -12,7 +12,7 @@
             <Multiple>N</Multiple>
         </interface>
         <httpport type="PortField">
-            <Required>N</Required>
+            <Required>Y</Required>
             <default>3000</default>
         </httpport>
         <dnsmode type="OptionField">
