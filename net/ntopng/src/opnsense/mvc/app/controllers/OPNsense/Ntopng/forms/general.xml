@@ -15,7 +15,7 @@
         <id>general.httpport</id>
         <label>HTTP Port</label>
         <type>text</type>
-        <help>HTTP Port this service listens on. Zero means disabled.</help>
+        <help>HTTP Port this service listens on. Leave this field empty to disable the UI.</help>
     </field>
     <field>
         <id>general.dnsmode</id>
