@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable ntopng</label>
+        <type>checkbox</type>
+        <help>This will activate ntopng.</help>
+    </field>
+    <field>
+        <id>general.interface</id>
+        <label>Interfaces</label>
+        <type>dropdown</type>
+        <help>Select the interface to listen to.</help>
+    </field>
+    <field>
+        <id>general.httpport</id>
+        <label>HTTP Port</label>
+        <type>text</type>
+        <help>HTTP Port this service listens on.</help>
+    </field>
+    <field>
+        <id>general.dnsmode</id>
+        <label>DNS Mode</label>
+        <type>dropdown</type>
+        <help>Sets the DNS resolution mode.</help>
+    </field>
+</form>
