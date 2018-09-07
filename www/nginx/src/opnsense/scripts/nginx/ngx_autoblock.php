@@ -7,11 +7,32 @@ use OPNsense\Firewall\Alias;
 use OPNsense\Nginx\AccessLogParser;
 use OPNsense\Core\Config;
 
+function nginx_print_error($msg) {
+    echo json_encode(
+        array('status' => 'error', 'message' => $msg)
+    );
+}
+
+function add_to_blocklist($tablename, $ip) {
+    $escaped = escapeshellarg($ip);
+    $descriptorspec = array(
+        1 => array('file', "/dev/null", 'w'),
+        2 => array('file', "/dev/null", "w")
+    );
+
+    $process = proc_open("/sbin/pfctl -t ${tablename} -T add ${escaped}", $descriptorspec, $pipes);
+
+    if (is_resource($process)) {
+        proc_close($process);
+    }
+}
+
 $permanent_ban_file = '/var/log/nginx/permanentban.access.log';
 $autoblock_alias_name = 'nginx_autoblock';
+$tablename = 'virusprot';
 
 if (!file_exists($permanent_ban_file)) {
-    echo "No Log exists - nothing to do";
+    nginx_print_error('No Log exists - nothing to do');
     exit(0);
 }
 
@@ -25,7 +46,7 @@ $blacklist_element = null;
 foreach ($model->aliases->alias->__items as $alias) {
     if ((string)$alias->name == $autoblock_alias_name) {
         if ((string)$alias->type != 'host') {
-            echo "alias is misconfigured - exiting";
+            nginx_print_error('alias is misconfigured - exiting');
             exit(0);
         } else {
             $blacklist_element = $alias;
@@ -50,7 +71,11 @@ $val_result = $model->performValidation(false);
 if (count($val_result) == 0) {
     $model->serializeToConfig();
     Config::getInstance()->save();
-    echo "saved"; exit(0);
+    echo '{"status":"saved"}';
 }
 
+// all ips are used because the others may not be set for some reason
+foreach ($result as $ip) {
+    add_to_blocklist('virusprot', $ip);
+}
 
