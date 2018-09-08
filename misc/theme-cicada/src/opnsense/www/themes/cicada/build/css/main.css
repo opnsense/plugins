@@ -3468,7 +3468,6 @@ tbody.collapse.in {
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
-  color: #555555;
   text-align: center;
   background-color: #eeeeee;
   border: 1px solid #ccc;
@@ -4965,7 +4964,7 @@ a.list-group-item-danger {
   opacity: 1;
   filter: alpha(opacity=100); }
   .close:hover, .close:focus {
-    color: #B0B0B0;
+    color: #000;
     text-decoration: none;
     cursor: pointer;
     opacity: 1;
@@ -5862,28 +5861,27 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 #navigation.col-sidebar-left {width:70px;background-color: transparent !important; overflow: hidden;}
 #navigation.col-sidebar-left > div.row {height:100% !important;}
 #navigation.col-sidebar-left > div.row > nav.page-side-nav {width:70px; background-color:#202020 !important; height:100% !important;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {font-size:11px;text-align:center;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {font-size:12px;text-align:center;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa {visibility: visible; font-size:28px;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {visibility: visible; font-size:28px;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.__iconspacer {padding-left:7px;padding-right:7px;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.__iconspacer {width:50px; height:30px; padding:0px;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
 	width: 70px;
 	height: 70px;
-    padding-left: 10px;
-	padding-right: 10px;
-	padding-top:15px;
-	padding-bottom:15px;
-	border-bottom:2px solid #393939; }
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing > a.list-group-item {padding-left: 10px !important;font-size: 11px !important; display: block !important; position: absolute !important; left: 70px !important; margin-top:-70px !important;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapsing > a.list-group-item {padding-left: 10px !important;font-size: 11px !important; display: block !important; position: absolute !important; left: 148px !important; margin-top:-28px !important;}
+    padding-left: 0px;
+	padding-right: 0px;
+	padding-top:12px;
+	border-bottom:2px solid #2a2a2a99; }
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing > a.list-group-item {padding-left: 10px !important;font-size: 12px !important; display: block !important; position: absolute !important; left: 70px !important; margin-top:-70px !important;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapsing > a.list-group-item {padding-left: 10px !important;font-size: 12px !important; display: block !important; position: absolute !important; left: 148px !important; margin-top:-28px !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item.active-menu-title, a.list-group-item.active-menu-title.collapsed {color: #FFF !important;background-color: #2a2a2a !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item[aria-expanded="true"] {color: #ec6d12 !important;background-color: #2a2a2a !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item[aria-expanded="true"] {color: #ec6d12 !important;background-color: #2a2a2a !important;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item {padding-left: 10px !important;font-size: 11px !important; background-color: #393939e6 !important;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item {padding-left: 10px !important;font-size: 11px !important; background-color: #393939e6 !important;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item {padding-left: 10px !important;font-size: 12px !important; background-color: #393939e6 !important;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item {padding-left: 10px !important;font-size: 12px !important; background-color: #393939e6 !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item.menu-level-3-item.active {color: #ec6d12 !important;background-color: #2a2a2a !important;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {padding-left: 10px !important;font-size: 11px !important;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsed > a.list-group-item {padding-left: 10px !important; font-size: 11px !important;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {padding-left: 10px !important;font-size: 12px !important;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsed > a.list-group-item {padding-left: 10px !important; font-size: 12px !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {color: #ec6d12 !important;background-color: #2a2a2a !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {text-decoration: none !important;color: #ec6d12 !important;background-color: #2a2a2a !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.active-menu-title {color: #ec6d12 !important;background-color: #2a2a2a !important;}
@@ -5894,12 +5892,13 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 /* Sub Level One */
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in {
 	width:150px;
-	font-size:11px;
+	font-size:12px;
     display: block;
     z-index: 10;
     position: absolute;
 	left: 70px;
 	margin-top:-70px;
+	padding-bottom: 1px;			  
 	height:auto;
 	border:1px solid #515151;
 	-webkit-transition: width 0.1s;
@@ -5910,7 +5909,7 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing {
 	width:0px;
-	font-size:11px;
+	font-size:12px;
 	position: absolute;
 	display: block;
 	z-index: 10;
@@ -5924,12 +5923,12 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 /* Sub Level Two */
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
 	width:150px;
-	font-size:11px;
+	font-size:12px;
     display: block;
     z-index: 10;
     position: absolute;
 	left: 148px;
-	margin-top:-28px;
+	margin-top:-29px;
 	height:auto;
 	border:1px solid #515151;
 	-webkit-transition: width 0.1s;
@@ -5940,7 +5939,7 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapsing {
 	width:0px;
-	font-size:11px;
+	font-size:12px;
 	position: absolute;
 	display: block;
 	z-index: 10;
@@ -5951,22 +5950,6 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 	-moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
 	box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);}
 
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left, button.toggle-sidebar.glyphicon.glyphicon-chevron-right{
-	position:absolute;
-	-webkit-transition: all 0.1s ease;
-	-moz-transition: all 0.1s ease;
-	-o-transition: all 0.1s ease;
-	-ms-transition: all 0.1s ease;
-	transition: all 0.1s ease;
-}
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left:active, button.toggle-sidebar.glyphicon.glyphicon-chevron-right:active {
-	position:absolute;
-	-webkit-transform: rotate(180deg);
-	-moz-transform: rotate(180deg);
-	-o-transform: rotate(180deg);
-	-ms-transform: rotate(180deg);
-	transform: rotate(180deg);
-}
 button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus, button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus { outline:none;}
 button.toggle-sidebar {color:#FFF; background-color:transparent; font-size:14px;border:none;margin-top: 18px;float:left;}
 
@@ -6253,29 +6236,20 @@ textarea#update_status, textarea#update_status:hover {
 .fa-toggle-on::before {
   outline:none !important; }
 
-.fa-search, .glyphicon-search::before {
-    content: "\e003";
-	color: #FFFFFF !important; }
+.fa-search::before, .glyphicon-search::before {
+    content: "\e003"; }
 .fa-times-circle::before {
     content: "\f057";
     color: #B13116; }
 .fa-refresh::before {
-    content: "\f021";
-    color: #FFF; }
+    content: "\f021"; }
 .fa-question-circle::before {
     content: "\f059";
     cursor: pointer;
     color: #ec6d12;
 }
-#navigation > .fa-search::before, .fa-refresh::before {
-	color:inherit !important; }
-#totals .fa-search::before {
-    color: #FFF !important;
-	background-color: #ec6d12;
-	padding: 5px;
-	border-radius: 4px;
-	border: 1px solid #5A5A5A;
-}
+div.container-fluid > .fa-search::before, div.container-fluid  > .fa-refresh::before {
+    color: #FFFFFF !important; }
 .panel-heading h3:hover, h3:focus {color: #FFFFFF;
 	text-decoration: none; }
 
