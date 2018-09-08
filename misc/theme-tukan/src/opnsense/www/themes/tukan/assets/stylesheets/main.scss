@@ -5550,7 +5550,7 @@ tbody.collapse.in {
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
-  color: #555555;
+  color: #FFF;
   text-align: center;
   background-color: #eeeeee;
   border: 1px solid #ccc;
@@ -6482,7 +6482,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
     li {
       display: inline-block;
       + li:before {
-        content: "/ ";
+        content: "/ ";
         padding: 0 5px;
         color: #ccc;
       }
@@ -9038,7 +9038,7 @@ main.page-content.col-lg-12 {
     }
     > nav > #mainmenu > div > {
       a.list-group-item {
-        font-size: 11px;
+        font-size: 12px;
         text-align: center;
         > span {
           &.fa, &.glyphicon {
@@ -9046,22 +9046,22 @@ main.page-content.col-lg-12 {
             font-size: 28px;
           }
           &.__iconspacer {
-            padding-left: 7px;
-            padding-right: 7px;
+            width: 50px;
+            height: 30px;
+            padding: 0px;
           }
         }
         width: 70px;
         height: 70px;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 15px;
-        padding-bottom: 15px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 12px;
         border-bottom: 2px solid #1b313e;
       }
       div {
         &.collapsing > a.list-group-item {
           padding-left: 10px !important;
-          font-size: 11px !important;
+          font-size: 12px !important;
           display: block !important;
           position: absolute !important;
           left: 70px !important;
@@ -9069,7 +9069,7 @@ main.page-content.col-lg-12 {
         }
         &.collapse.in > div.collapsing > a.list-group-item {
           padding-left: 10px !important;
-          font-size: 11px !important;
+          font-size: 12px !important;
           display: block !important;
           position: absolute !important;
           left: 148px !important;
@@ -9091,7 +9091,7 @@ main.page-content.col-lg-12 {
             }
             > div.collapse.in > a.list-group-item {
               padding-left: 10px !important;
-              font-size: 11px !important;
+              font-size: 12px !important;
               background-color: #294C5FE6 !important;
               &.menu-level-3-item.active {
                 color: #000 !important;
@@ -9101,17 +9101,17 @@ main.page-content.col-lg-12 {
           }
           > a.list-group-item {
             padding-left: 10px !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
             background-color: #294C5FE6 !important;
           }
           > div.collapse > a.list-group-item {
             padding-left: 10px !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
           }
         }
         &.collapsed > a.list-group-item {
           padding-left: 10px !important;
-          font-size: 11px !important;
+          font-size: 12px !important;
           background-color: #FFF !important;
         }
         &.collapse.in > a.list-group-item:hover {
@@ -9147,7 +9147,7 @@ a.list-group-item:focus {
   }
   &.collapse.in {
     width: 150px;
-    font-size: 11px;
+    font-size: 12px;
     display: block;
     z-index: 10;
     position: absolute;
@@ -9164,7 +9164,7 @@ a.list-group-item:focus {
   }
   &.collapsing {
     width: 0px;
-    font-size: 11px;
+    font-size: 12px;
     position: absolute;
     display: block;
     z-index: 10;
@@ -9178,7 +9178,7 @@ a.list-group-item:focus {
   &.collapse.in > div {
     &.collapse.in {
       width: 150px;
-      font-size: 11px;
+      font-size: 12px;
       display: block;
       z-index: 10;
       position: absolute;
@@ -9195,7 +9195,7 @@ a.list-group-item:focus {
     }
     &.collapsing {
       width: 0px;
-      font-size: 11px;
+      font-size: 12px;
       position: absolute;
       display: block;
       z-index: 10;
@@ -9215,22 +9215,6 @@ a.list-group-item:focus {
 
 button.toggle-sidebar {
   &.glyphicon {
-    &.glyphicon-chevron-left, &.glyphicon-chevron-right {
-      position: absolute;
-      -webkit-transition: all 0.1s ease;
-      -moz-transition: all 0.1s ease;
-      -o-transition: all 0.1s ease;
-      -ms-transition: all 0.1s ease;
-      transition: all 0.1s ease;
-    }
-    &.glyphicon-chevron-left:active, &.glyphicon-chevron-right:active {
-      position: absolute;
-      -webkit-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -o-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      transform: rotate(180deg);
-    }
     &.glyphicon-chevron-left:focus, &.glyphicon-chevron-right:focus {
       outline: none;
     }
@@ -9639,9 +9623,8 @@ textarea#update_status {
   outline: none !important;
 }
 
-.page-head .fa-search, .glyphicon-search::before {
+.fa-search::before, .glyphicon-search::before {
   content: "\e003";
-  color: #FFFFFF;
 }
 
 .glyphicon.glyphicon-search::before {
@@ -9659,16 +9642,14 @@ textarea#update_status {
   cursor: pointer;
 }
 
-.fa-search::before, .fa-refresh::before {
-  color: #FFFFFF !important;
+.fa-refresh::before {
+  content: "\f021";
 }
 
-#totals .fa-search::before {
-  color: #FFF !important;
-  background-color: #ff7e25;
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #8A8A8A;
+div.container-fluid > {
+  .fa-search::before, .fa-refresh::before {
+    color: #FFFFFF !important;
+  }
 }
 
 .panel-heading h3:hover {
@@ -9816,6 +9797,7 @@ h3 {
   background-color: #FFF;
   border: 1px solid #c2c2c2;
 }
+
 .bootstrap-dialog.type-success .modal-header {
   background-color: #427795 !important;
 }
