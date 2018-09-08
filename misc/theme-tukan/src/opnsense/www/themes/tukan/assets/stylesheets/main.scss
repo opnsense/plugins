@@ -8862,7 +8862,7 @@ body {
   bottom: 0;
   border: none;
   font-size: 12px;
-  padding: 20px 0;
+  padding: 0;
   width: 100%;
   z-index: 2;
 }
@@ -9659,15 +9659,13 @@ textarea#update_status {
   cursor: pointer;
 }
 
-.fa-search::before, .fa-refresh::before {
-  color: #FFFFFF !important;
-}
+.page-content-main .fa-search::before,.page-content-main .fa-refresh::before {
+    color: #FFFFFF !important; }
 
 #totals .fa-search::before {
-  color: #FFF !important;
   background-color: #ff7e25;
-  padding: 5px;
-  border-radius: 4px;
+  padding: 2px;
+  border-radius: 2px;
   border: 1px solid #8A8A8A;
 }
 
@@ -9818,4 +9816,7 @@ h3 {
 }
 .bootstrap-dialog.type-success .modal-header {
   background-color: #427795 !important;
+}
+.dashboard_grid_column table {
+  table-layout: fixed;
 }

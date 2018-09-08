@@ -5755,7 +5755,7 @@ body {
   bottom: 0;
   border:none;
   font-size: 12px;
-  padding: 20px 0;
+  padding: 0;
   width: 100%;
   z-index: 2; }
 
@@ -6281,13 +6281,12 @@ textarea#update_status, textarea#update_status:hover {
     content: "\f059";
     color: #ff7e25;
     cursor: pointer; }
-.fa-search::before, .fa-refresh::before {
+.page-content-main .fa-search::before,.page-content-main .fa-refresh::before {
     color: #FFFFFF !important; }
 #totals .fa-search::before {
-	color: #FFF !important;
     background-color: #ff7e25;
-	padding: 5px;
-	border-radius: 4px;
+	padding: 2px;
+	border-radius: 2px;
 	border: 1px solid #8A8A8A; }
 
 .panel-heading h3:hover, h3:focus {color: #FFFFFF;
@@ -6375,3 +6374,6 @@ stroke: rgb(143, 143, 143) !important; }
 #system_log-widgets.content-box {border:none; box-shadow: none;}
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #FFF; border: 1px solid #c2c2c2; }
 .bootstrap-dialog.type-success .modal-header {background-color: #427795 !important;}
+.dashboard_grid_column table {
+  table-layout: fixed;
+}
