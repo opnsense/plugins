@@ -19,6 +19,7 @@
   <field>
     <id>upstream.tls_client_certificate</id>
     <label>TLS: Client Certificate</label>
+    <advanced>true</advanced>
     <help>Authenticate on the Server using a client certificate.</help>
     <style>selectpicker</style>
     <type>dropdown</type>
@@ -50,17 +51,20 @@
     <id>upstream.tls_verify</id>
     <label>TLS: Verify Certificate</label>
     <type>checkbox</type>
+    <advanced>true</advanced>
     <help>Don't turn it off unless you really know what you are doing! Never do it because a random website tells you to do.</help>
   </field>
   <field>
     <id>upstream.tls_verify_depth</id>
     <label>TLS: Verify Depth</label>
     <type>text</type>
+    <advanced>true</advanced>
     <help>Choose how many sub-CAs can be between the server certificate and a trusted CA. 1 means the certificate has to be signed directly by a CA.</help>
   </field>
   <field>
     <id>upstream.store</id>
     <label>Store</label>
+    <advanced>true</advanced>
     <type>checkbox</type>
     <help>Store the response on the local storage.</help>
   </field>

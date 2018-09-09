@@ -66,6 +66,7 @@
     <label>Limit Requests</label>
     <type>select_multiple</type>
     <style>selectpicker</style>
+    <advanced>true</advanced>
     <help>If you choose multiple limits, the strictest will be used.</help>
   </field>
   <field>
@@ -121,5 +122,12 @@
     <label>(PHP) Router Script</label>
     <type>text</type>
     <help>If you set this setting, all requests are sent to this script instead of the request path (URL). Not using this setting on a remote instance can be dangerous.</help>
+  </field>
+  <field>
+    <id>location.honeypot</id>
+    <label>Honeypot</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the honeypot, all requests to this location will go to a special temporary log which will be used to block the IP. This is dangerous because you may accidentally block legitimate users or search engines. The result is available as a special alias in the firewall section. For example you can trigger on locations of Wordpress for phpMyAdmin if you are not using it.</help>
   </field>
 </form>

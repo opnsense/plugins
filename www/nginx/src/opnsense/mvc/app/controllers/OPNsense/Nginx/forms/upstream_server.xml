@@ -37,6 +37,7 @@
   <field>
     <id>upstream_server.no_use</id>
     <label>Do Not Use</label>
+    <advanced>true</advanced>
     <type>dropdown</type>
   </field>
 </form>
