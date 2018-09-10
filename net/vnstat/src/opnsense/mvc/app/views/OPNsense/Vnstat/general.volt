@@ -96,10 +96,10 @@ $( document ).ready(function() {
     });
 
     // Call function update_neighbor with a auto-refresh of 3 seconds
-    setInterval(update_hourly, 30000);
-    setInterval(update_daily, 30000);
-    setInterval(update_weekly, 30000);
-    setInterval(update_monthly, 30000);
+    setInterval(update_hourly, 3000);
+    setInterval(update_daily, 3000);
+    setInterval(update_weekly, 3000);
+    setInterval(update_monthly, 3000);
     
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/vnstat/general/set", formid='frm_general_settings',callback_ok=function(){
