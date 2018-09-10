@@ -66,5 +66,20 @@
             <default>telegraf-%Y.%m.%d</default>
             <Required>N</Required>
         </elastic_indexname>
+        <prometheus_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </prometheus_enable>
+        <prometheus_listen type="PortField">
+            <default>9273</default>
+            <Required>N</Required>
+        </prometheus_listen>
+        <prometheus_exclude type="CSVListField">
+            <Required>N</Required>
+        </prometheus_exclude>
+        <prometheus_stringaslabel type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </prometheus_stringaslabel>
     </items>
 </model>
