@@ -120,7 +120,7 @@
         <help>Collectors to enable, valid entries are "gocollector" and "process". If unset, both are enabled.</help>
     </field>
     <field>
-        <id>output.prometheus_indexname</id>
+        <id>output.prometheus_stringaslabel</id>
         <label>Prometheus String as Label</label>
         <type>checkbox</type>
         <help>Send string metrics as Prometheus labels.</help>
