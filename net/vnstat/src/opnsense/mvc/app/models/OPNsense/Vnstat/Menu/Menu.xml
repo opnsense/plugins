@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <Vnstat cssClass="fa fa-metric" url="/ui/vnstat/general/index" />
+  </Services>
+</menu>
