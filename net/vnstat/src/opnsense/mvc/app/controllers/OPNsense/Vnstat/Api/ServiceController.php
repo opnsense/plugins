@@ -60,7 +60,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      * list daily statistics
      * @return array
      */
-    public function hourlyAction()
+    public function dailyAction()
     {
         $backend = new Backend();
         $response = $backend->configdRun("vnstat daily");
@@ -71,7 +71,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      * list weekly statistics
      * @return array
      */
-    public function hourlyAction()
+    public function weeklyAction()
     {
         $backend = new Backend();
         $response = $backend->configdRun("vnstat weekly");
@@ -82,7 +82,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      * list monthly statistics
      * @return array
      */
-    public function hourlyAction()
+    public function monthlyAction()
     {
         $backend = new Backend();
         $response = $backend->configdRun("vnstat monthly");
