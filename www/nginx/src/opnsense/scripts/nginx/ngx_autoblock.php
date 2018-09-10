@@ -28,6 +28,7 @@
  */
 
 require_once('config.inc');
+require_once('IPv6.inc');
 
 use OPNsense\Firewall\Alias;
 use OPNsense\Nginx\AccessLogParser;
@@ -53,6 +54,7 @@ function exec_hidden($command): void
 }
 function add_to_blocklist($tablename, $ip) {
     $escaped = escapeshellarg($ip);
+    echo $ip . PHP_EOL;
     exec_hidden("/sbin/pfctl -t ${tablename} -T add ${escaped}");
 }
 
@@ -86,7 +88,7 @@ $model = new Alias();
 $blacklist_element = null;
 foreach ($model->aliases->alias->__items as $alias) {
     if ((string)$alias->name == $autoblock_alias_name) {
-        if ((string)$alias->type != 'host') {
+        if ((string)$alias->type != 'network') {
             nginx_print_error('alias is misconfigured - exiting');
             exit(0);
         } else {
@@ -100,20 +102,29 @@ foreach ($model->aliases->alias->__items as $alias) {
 if ($blacklist_element == null) {
     $blacklist_element = $model->aliases->alias->Add();
     $blacklist_element->name = $autoblock_alias_name;
-    $blacklist_element->type = "host";
+    $blacklist_element->type = "network";
 }
 
 $alias_ips = explode("\n", $blacklist_element->content);
-$new_ips = array_map( function ($row) { return $row->remote_ip; }, $log_lines);
+$new_ips = array_map( function ($row) {
+    if(stripos($row->remote_ip, '.') !== false) {
+        return $row->remote_ip;
+    }
+    // in case of IPv6, we have to use the network address instead
+    // danger of DoS because the attacker should have at least 2 ** 64 IPs
+    return Net_IPv6::getNetmask($row->remote_ip, 64) . '/64';
+}, $log_lines);
 $result = array_filter(array_unique(array_merge($alias_ips, $new_ips)));
 
 $blacklist_element->content = implode("\n", $result);
 $val_result = $model->performValidation(false);
-if (count($val_result) == 0) {
-    $model->serializeToConfig();
-    Config::getInstance()->save();
-    echo '{"status":"saved"}';
+if (count($val_result) !== 0) {
+    print_r($val_result);
+    exit(1);
 }
+$model->serializeToConfig();
+Config::getInstance()->save();
+echo '{"status":"saved"}';
 
 // all ips are used because the others may not be set for some reason
 foreach ($result as $ip) {
