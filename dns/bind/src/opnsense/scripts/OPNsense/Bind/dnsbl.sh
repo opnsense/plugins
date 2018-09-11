@@ -133,7 +133,7 @@ for CAT in $(echo ${1} | tr ',' ' '); do
 		mwdomains
 		;;
 	pa)
-		pornall
+		porntop
 		;;
 	pt)
 		porntop
