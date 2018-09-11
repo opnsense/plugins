@@ -44,7 +44,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/Ntopng';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'ntopng';
-    
+
     /**
      * check if Redis plugin is installed
      * @return array

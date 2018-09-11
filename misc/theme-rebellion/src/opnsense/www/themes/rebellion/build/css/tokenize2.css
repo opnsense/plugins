@@ -6,6 +6,7 @@
   height: auto;
   min-height: 34px;
   cursor: text;
+  color: #111;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -30,6 +31,7 @@
 }
 .tokenize > .tokens-container > .token {
   padding: 0 1.2em 0 5px;
+  color: #ccc;
   background-color: #111111;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;

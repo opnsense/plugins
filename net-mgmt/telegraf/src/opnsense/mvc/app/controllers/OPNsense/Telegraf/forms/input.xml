@@ -80,6 +80,12 @@
         <help>Read network interface metrics.</help>
     </field>
     <field>
+        <id>input.pf</id>
+        <label>PF</label>
+        <type>checkbox</type>
+        <help>Read PF values via pfctl.</help>
+    </field>
+    <field>
         <id>input.ping</id>
         <label>Ping</label>
         <type>checkbox</type>
