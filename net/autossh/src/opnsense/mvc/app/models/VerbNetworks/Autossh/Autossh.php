@@ -43,7 +43,7 @@ class Autossh extends BaseModel
     public function setConfigChangeOn()
     {
         touch($this->config_status_filename);
-        return true;
+        return;
     }
     
     public function setConfigChangeOff()
@@ -51,6 +51,6 @@ class Autossh extends BaseModel
         if (file_exists($this->config_status_filename)) {
             unlink($this->config_status_filename);
         }
-        return true;
+        return;
     }
 }

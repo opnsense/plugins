@@ -250,7 +250,7 @@
                         },
                         code_wrap: function(column, row) {
                             if(row[column.id].length > 0) {
-                                return '<code>' + row[column.id] + '</code>';
+                                return '<code>' + $('<span/>', {'text': row[column.id]}).text() + '</code>';
                             }
                             return '';
                         },

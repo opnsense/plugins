@@ -9,13 +9,13 @@
         <id>key.type</id>
         <label>Type</label>
         <type>dropdown</type>
-        <help>Select the type of SSH key to be generated - can't be modified after the key has been generated.</help>
+        <help>Select the type of SSH key to be generated - cannot be modified after the key has been generated.</help>
     </field>
     <field>
         <id>key.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Free form input to describe this sshkey (not parsed).</help>
+        <help>Free form input to describe this SSH key (not parsed).</help>
     </field>
     <field>
         <id>key.key_fingerprint</id>

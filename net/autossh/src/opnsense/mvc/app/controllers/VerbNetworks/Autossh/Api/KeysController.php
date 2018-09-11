@@ -82,11 +82,11 @@ class KeysController extends ApiControllerBase
                 $data['key_fingerprint'] = str_replace('md5:', '', strtolower($fingerprint_elements[1]));
                 unset($data['key_private']);
                 
-                return array('key' => $data);
+                return array('key'=>$data);
             }
         } else {
             $node = $model->keys->key->add();
-            return array('key' => $node->getNodes());
+            return array('key'=>$node->getNodes());
         }
         return array();
     }
@@ -95,8 +95,8 @@ class KeysController extends ApiControllerBase
     {
         $ssh_key_restrictions = 'command="",no-agent-forwarding,no-pty,no-user-rc,no-X11-forwarding';
         $info = array(
-            'title' => 'SSH public key',
-            'message' => 'Unknown ssh-key',
+            'title'=>'SSH public key',
+            'message'=>'Unknown ssh-key',
         );
         if ($uuid != null) {
             $model = new Autossh();
@@ -122,7 +122,7 @@ class KeysController extends ApiControllerBase
         $response = array(
             'status'=>'fail',
             'result'=>'failed',
-            'message' => 'Invalid request'
+            'message'=>'Invalid request'
         );
         if ($this->request->isPost() && $this->request->hasPost('key')) {
             $model = new Autossh();
@@ -132,7 +132,7 @@ class KeysController extends ApiControllerBase
                     $post_data = $this->request->getPost('key');
                     unset($post_data['type']);
                     $node->setNodes($post_data);
-                    $response = $this->save($model, $node, 'key');
+                    return $this->save($model, $node, 'key');
                 }
             }
         }
@@ -144,7 +144,7 @@ class KeysController extends ApiControllerBase
         $response = array(
             'status'=>'fail',
             'result'=>'failed',
-            'message' => 'Invalid request'
+            'message'=>'Invalid request'
         );
         if ($this->request->isPost() && $this->request->hasPost('key')) {
             $model = new Autossh();
@@ -158,14 +158,18 @@ class KeysController extends ApiControllerBase
                 $configd_run = sprintf('autossh key_gen --key_type=%s', escapeshellarg($post_data['type']));
                 $backend_response = json_decode(trim($backend->configdRun($configd_run)), true);
                 if (empty($backend_response)) {
-                    $response['message'] = 'Error calling autossh key_gen via configd';
+                    return array('status'=>'fail', 'message'=>'Error calling autossh key_gen via configd');
                 } elseif ($backend_response['status'] === 'success') {
                     $node->setNodes(array_merge($post_data, $backend_response['data']));
-                    $response = $this->save($model, $node, 'key');
+                    return $this->save($model, $node, 'key');
                 }
             } else {
-                $response['validations'] = $validate['validations'];
-                $response['message'] = 'Validation errors';
+                return array(
+                    'status'=>'fail',
+                    'result'=>'failed',
+                    'validations'=>$validate['validations'],
+                    'message'=>'Validation errors'
+                );
             }
         }
         return $response;
@@ -173,16 +177,16 @@ class KeysController extends ApiControllerBase
 
     public function delAction($uuid = null)
     {
-        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
         if ($this->request->isPost()) {
             $model = new Autossh();
             if ($uuid != null) {
                 if ($model->keys->key->del($uuid)) {
                     $model->serializeToConfig();
                     Config::getInstance()->save();
-                    $response['result'] = 'deleted';
+                    return array('status'=>'success', 'result'=>'deleted', 'message'=>'Okay, item deleted');
                 } else {
-                    $response['result'] = 'not found';
+                    return array('status'=>'fail', 'result'=>'not found', 'message'=>'Item not found, nothing deleted');
                 }
             }
         }
@@ -204,7 +208,7 @@ class KeysController extends ApiControllerBase
     
     private function validate($model, $node = null, $reference = null)
     {
-        $result = array('status'=>'fail', 'validations' => array());
+        $result = array('status'=>'fail', 'validations'=>array());
         $validation_messages = $model->performValidation();
         foreach ($validation_messages as $field => $message) {
             if ($node != null) {

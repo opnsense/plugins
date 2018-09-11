@@ -9,7 +9,7 @@
         <id>tunnel.description</id>
         <label>Description</label>
         <type>text</type>
-        <help><![CDATA[Free form text field available to describe this connection if required.]]></help>
+        <help>Free form text field available to describe this connection if required.</help>
     </field>
 
     <!-- standard options -->
@@ -18,13 +18,13 @@
         <id>tunnel.user</id>
         <label>User</label>
         <type>text</type>
-        <help><![CDATA[Provide the connection username for this connection.]]></help>
+        <help>Provide the username for this connection.</help>
     </field>
     <field>
         <id>tunnel.hostname</id>
         <label>Hostname</label>
         <type>text</type>
-        <help><![CDATA[Provide the hostname or address to use for this connection.]]></help>
+        <help>Provide the hostname or address to use for this connection.</help>
     </field>
     <field>
         <id>tunnel.port</id>
@@ -36,7 +36,7 @@
         <id>tunnel.ssh_key</id>
         <label>SSH key name</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the SSH key by name to use for this connection - this key must be generated prior to creating a ssh-tunnel.]]></help>
+        <help>Select the SSH key by name to use for this connection - this key must be generated prior to creating a ssh-tunnel.</help>
     </field>
     <field>
         <id>tunnel.strict_host_key_checking</id>
@@ -48,7 +48,7 @@
         <id>tunnel.bind_interface</id>
         <label>Bind Interface</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the interface to bind and originate this SSH connection from.]]></help>
+        <help>Select the interface to bind and originate this SSH connection from.</help>
     </field>
     <field>
         <id>tunnel.local_forward</id>

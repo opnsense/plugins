@@ -252,10 +252,8 @@
                     </optionvalues>
                 </macs>
 
-                <port type="IntegerField">
+                <port type="PortField">
                     <required>N</required>
-                    <minimumvalue>1</minimumvalue>
-                    <maximumvalue>65535</maximumvalue>
                     <validationmessage>Provide valid TCP port number</validationmessage>
                 </port>
 

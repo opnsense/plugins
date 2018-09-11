@@ -39,11 +39,11 @@ class ServiceController extends ApiControllerBase
 
     public function isConfigChangeAction()
     {
-        $response = array("status"=>"fail", "message" => "Invalid request");
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
 
         if ($this->request->isGet()) {
             $model = new Autossh();
-            $response = array("status"=>"success", "data" => $model->isConfigChange(), "message"=>null);
+            return array('status'=>'success', 'data'=>$model->isConfigChange(), 'message'=>null);
         }
         
         return $response;
@@ -51,36 +51,36 @@ class ServiceController extends ApiControllerBase
     
     public function reloadAction()
     {
-        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
 
         if ($this->request->isPost()) {
             $backend = new Backend();
             
             $backend_template_response = trim($backend->configdRun('template reload VerbNetworks/Autossh'));
             if (strtoupper($backend_template_response) !== 'OK') {
-                $response['message'] = 'Error while reloading template files, review configd logs for more information';
-                return $response;
+                return array('status'=>'fail',
+                    'message'=>'Error while reloading template files, review configd logs for more information');
             }
             
             $backend_autossh_response = trim($backend->configdRun('autossh config_helper'));
             if (empty($backend_autossh_response) || strpos($backend_autossh_response, 'success') === false) {
                 if (empty($backend_autossh_response)) {
-                    $response['message'] = 'Unknown error occured while performing autossh config_helper, review '
-                                         . 'configd logs for more information';
-                    return $response;
+                    return array('status'=>'fail',
+                        'message'=>'Unknown error occured while performing autossh config_helper, '
+                        . 'review configd logs for more information');
                 }
                 $backend_autossh_response = @json_decode($backend_autossh_response, true);
                 if (isset($backend_autossh_response['message'])) {
-                    $response['message'] = $backend_autossh_response['message'];
+                    return array('status'=>'fail', 'message'=>$backend_autossh_response['message']);
                 } else {
-                    $response['message'] = $backend_autossh_response;
+                    return array('status'=>'fail', 'message'=>$backend_autossh_response);
                 }
                 return $response;
             }
             
-            $response = array('status'=>'success', 'message' => 'Autossh reload okay');
             $model = new Autossh();
             $model->setConfigChangeOff();
+            return array('status'=>'success', 'message'=>'Autossh reload okay');
         }
         
         return $response;
@@ -88,13 +88,13 @@ class ServiceController extends ApiControllerBase
 
     public function statusAction()
     {
-        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
         if ($this->request->isPost() && $this->request->hasPost('id')) {
             $backend_result = $this->backendStandardAction('status_tunnel', $this->request->getPost('id'));
             if (false === strpos($backend_result, ' not running')) {
-                $response = array('status'=>'running');
+                return array('status'=>'running');
             } else {
-                $response = array('status'=>'stopped');
+                return array('status'=>'stopped');
             }
         }
 
@@ -103,13 +103,13 @@ class ServiceController extends ApiControllerBase
 
     public function startAction()
     {
-        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
         if ($this->request->isPost() && $this->request->hasPost('id')) {
             $backend_result = $this->backendStandardAction('start_tunnel', $this->request->getPost('id'));
             if (false !== strpos($backend_result, 'Starting autossh tunnel ')) {
-                $response = array('status'=>'success', 'message' => $backend_result);
+                return array('status'=>'success', 'message'=>$backend_result);
             } else {
-                $response['message'] = 'Backend request failed';
+                return array('status'=>'fail', 'message'=>'Backend request failed');
             }
         }
         return $response;
@@ -117,13 +117,13 @@ class ServiceController extends ApiControllerBase
 
     public function restartAction()
     {
-        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
         if ($this->request->isPost() && $this->request->hasPost('id')) {
             $backend_result = $this->backendStandardAction('restart_tunnel', $this->request->getPost('id'));
             if (false !== strpos($backend_result, 'Starting autossh tunnel ')) {
-                $response = array('status'=>'success', 'message' => $backend_result);
+                return array('status'=>'success', 'message'=>$backend_result);
             } else {
-                $response['message'] = 'Backend request failed';
+                return array('status'=>'fail', 'message'=>'Backend request failed');
             }
         }
         return $response;
@@ -131,13 +131,13 @@ class ServiceController extends ApiControllerBase
     
     public function stopAction()
     {
-        $response = array('status'=>'fail', 'message' => 'Invalid request');
+        $response = array('status'=>'fail', 'message'=>'Invalid request');
         if ($this->request->isPost() && $this->request->hasPost('id')) {
             $backend_result = $this->backendStandardAction('stop_tunnel', $this->request->getPost('id'));
             if (false !== strpos($backend_result, 'Stopping autossh tunnel ')) {
-                $response = array('status'=>'success', 'message' => $backend_result);
+                return array('status'=>'success', 'message'=>$backend_result);
             } else {
-                $response['message'] = 'Backend request failed';
+                return array('status'=>'fail', 'message'=>'Backend request failed');
             }
         }
         return $response;
@@ -146,10 +146,10 @@ class ServiceController extends ApiControllerBase
     public function connectionStatusAction()
     {
         $response = array(
-            'current' => 1,
-            'rowCount' => null,
-            'rows' => array(),
-            'total' => null
+            'current'=>1,
+            'rowCount'=>null,
+            'rows'=>array(),
+            'total'=>null
         );
         
         if ($this->request->isGet()) {
@@ -168,10 +168,10 @@ class ServiceController extends ApiControllerBase
                 }
                 
                 $forward_data = array(
-                    'local' => htmlspecialchars($tunnel['local_forward']),
-                    'dynamic' => htmlspecialchars($tunnel['dynamic_forward']),
-                    'remote' => htmlspecialchars($tunnel['remote_forward']),
-                    'tunnel' => htmlspecialchars($tunnel['tunnel_device'])
+                    'local'=>$tunnel['local_forward'],
+                    'dynamic'=>$tunnel['dynamic_forward'],
+                    'remote'=>$tunnel['remote_forward'],
+                    'tunnel'=>$tunnel['tunnel_device']
                 );
                 
                 $backend = new Backend();
@@ -181,7 +181,7 @@ class ServiceController extends ApiControllerBase
                 );
                 $backend_result = @json_decode(trim($backend->configdRun($configd_run)), true);
                 
-                $status_data = array('enabled' => null);
+                $status_data = array('enabled'=>null);
                 if (isset($backend_result['status']) && $backend_result['status'] === 'success') {
                     $last_healthy = (int)strtotime($backend_result['data']['last_healthy']);
                     if (empty($last_healthy)) {
@@ -195,20 +195,20 @@ class ServiceController extends ApiControllerBase
                     }
                     
                     $status_data = array(
-                        'enabled' => $backend_result['data']['enabled'],
-                        'uptime' => $backend_result['data']['uptime'],
-                        'last_healthy' => $last_healthy,
-                        'starts' =>  $backend_result['data']['starts'],
+                        'enabled'=>$backend_result['data']['enabled'],
+                        'uptime'=>$backend_result['data']['uptime'],
+                        'last_healthy'=>$last_healthy,
+                        'starts'=> $backend_result['data']['starts'],
                     );
                 }
                 
                 $response['rows'][] = array(
-                    'uuid' => $tunnel['uuid'],
-                    'connection' => htmlspecialchars($connection),
-                    'bind_interface' => $tunnel['bind_interface'],
-                    'forwards' => $forward_data,
-                    'ssh_key' => htmlspecialchars($tunnel['ssh_key']),
-                    'status' => $status_data
+                    'uuid'=>$tunnel['uuid'],
+                    'connection'=>$connection,
+                    'bind_interface'=>$tunnel['bind_interface'],
+                    'forwards'=>$forward_data,
+                    'ssh_key'=>$tunnel['ssh_key'],
+                    'status'=>$status_data
                 );
             }
         }

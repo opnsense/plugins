@@ -72,12 +72,12 @@ class TunnelsController extends ApiControllerBase
         if ($uuid != null) {
             $node = $model->getNodeByReference('tunnels.tunnel.'.$uuid);
             if ($node != null) {
-                $data = array('tunnel' => $node->getNodes());
+                $data = array('tunnel'=>$node->getNodes());
                 return $data;
             }
         } else {
             $node = $model->tunnels->tunnel->add();
-            $data = array('tunnel' => $node->getNodes());
+            $data = array('tunnel'=>$node->getNodes());
             $data['tunnel']['known_host'] = 'new connection, no known host value';
             return $data;
         }
@@ -87,8 +87,8 @@ class TunnelsController extends ApiControllerBase
     public function infoAction($uuid = null)
     {
         $info = array(
-            'title' => 'SSH server known host keys',
-            'message' => null,
+            'title'=>'SSH server known host keys',
+            'message'=>null,
         );
         if ($uuid != null) {
             $backend = new Backend();
@@ -114,7 +114,7 @@ class TunnelsController extends ApiControllerBase
         $response = array(
             'status'=>'fail',
             'result'=>'failed',
-            'message' => 'Invalid request'
+            'message'=>'Invalid request'
         );
         if ($this->request->isPost() && $this->request->hasPost('tunnel')) {
             $model = new Autossh();
@@ -123,7 +123,7 @@ class TunnelsController extends ApiControllerBase
                 if ($node !== null) {
                     $post_data = $this->request->getPost('tunnel');
                     $node->setNodes($post_data);
-                    $response = $this->save($model, $node, 'tunnel');
+                    return $this->save($model, $node, 'tunnel');
                 }
             }
         }
@@ -135,7 +135,7 @@ class TunnelsController extends ApiControllerBase
         $response = array(
             'status'=>'fail',
             'result'=>'failed',
-            'message' => 'Invalid request'
+            'message'=>'Invalid request'
         );
         if ($this->request->isPost() && $this->request->hasPost('tunnel')) {
             $model = new Autossh();
@@ -145,10 +145,14 @@ class TunnelsController extends ApiControllerBase
             
             $validate = $this->validate($model, $node, 'tunnel');
             if (count($validate['validations']) == 0) {
-                $response = $this->save($model, $node, 'tunnel');
+                return $this->save($model, $node, 'tunnel');
             } else {
-                $response['validations'] = $validate['validations'];
-                $response['message'] = 'Validation errors';
+                return array(
+                    'status'=>'fail',
+                    'result'=>'failed',
+                    'validations'=>$validate['validations'],
+                    'message'=>'Validation errors'
+                );
             }
         }
         return $response;
@@ -159,7 +163,7 @@ class TunnelsController extends ApiControllerBase
         $response = array(
             'status'=>'fail',
             'result'=>'failed',
-            'message' => 'Invalid request'
+            'message'=>'Invalid request'
         );
         if ($this->request->isPost()) {
             $model = new Autossh();
@@ -169,11 +173,9 @@ class TunnelsController extends ApiControllerBase
                     $model->serializeToConfig();
                     Config::getInstance()->save();
                     $model->setConfigChangeOn();
-                    $response['result'] = 'deleted';
-                    $response['message'] = 'Okay, item deleted';
+                    return array('status'=>'success', 'result'=>'deleted', 'message'=>'Okay, item deleted');
                 } else {
-                    $response['result'] = 'not found';
-                    $response['message'] = 'Failed to delete item';
+                    return array('status'=>'fail', 'result'=>'not found', 'message'=>'Item not found, nothing deleted');
                 }
             }
         }
@@ -185,7 +187,7 @@ class TunnelsController extends ApiControllerBase
         $response = array(
             'status'=>'fail',
             'result'=>'failed',
-            'message' => 'Invalid request'
+            'message'=>'Invalid request'
         );
         if ($this->request->isPost()) {
             $model = new Autossh();
@@ -194,14 +196,14 @@ class TunnelsController extends ApiControllerBase
                 if (!empty($node)) {
                     $node_data = $node->getNodes();
                     $toggle_data = array(
-                        'enabled' => ((int)$node_data['enabled'] > 0 ? '0' : '1')
+                        'enabled'=>((int)$node_data['enabled'] > 0 ? '0' : '1')
                     );
                     $node->setNodes($toggle_data);
                     $response = $this->save($model, $node, 'tunnel');
-                    
                     if ($response['status'] == 'success' && $toggle_data['enabled'] == '0') {
                         $this->stopTunnel($uuid);
                     }
+                    return $response;
                 }
             }
         }
@@ -231,7 +233,7 @@ class TunnelsController extends ApiControllerBase
     
     private function validate($model, $node = null, $reference = null)
     {
-        $result = array('status'=>'fail','validations' => array());
+        $result = array('status'=>'fail','validations'=>array());
         $validation_messages = $model->performValidation();
         foreach ($validation_messages as $field => $message) {
             if ($node != null) {
