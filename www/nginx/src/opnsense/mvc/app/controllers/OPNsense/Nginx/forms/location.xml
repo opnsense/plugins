@@ -130,4 +130,11 @@
     <advanced>true</advanced>
     <help>If you enable the honeypot, all requests to this location will go to a special temporary log which will be used to block the IP. This is dangerous because you may accidentally block legitimate users or search engines. The result is available as a special alias in the firewall section. For example you can trigger on locations of Wordpress for phpMyAdmin if you are not using it.</help>
   </field>
+  <field>
+    <id>location.websocket</id>
+    <label>WebSocket</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the WebSocket option, nginx will pass the upgrade header to the backed server.</help>
+  </field>
 </form>
