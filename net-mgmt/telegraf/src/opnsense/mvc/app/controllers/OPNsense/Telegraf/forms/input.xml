@@ -99,4 +99,10 @@
         <allownew>true</allownew>
         <help>Set the Hosts to ping in a CSV list.</help>
     </field>
+    <field>
+        <id>input.haproxy</id>
+        <label>HAProxy</label>
+        <type>checkbox</type>
+        <help>Enable the collection of HAProxy statistics.</help>
+    </field>
 </form>
