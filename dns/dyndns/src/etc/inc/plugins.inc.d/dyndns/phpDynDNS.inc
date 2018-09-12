@@ -1125,7 +1125,7 @@ class updatedns
                 } elseif ($output->errors[0]->code === 9103) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with CloudFlare.";
                 } elseif (($output->success) && (!$output->result[0]->id)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone or Host ID was not found, check your hostname.";
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone or Host ID was not found, check that your hostname is correct and an A record already exists.";
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
