@@ -9804,14 +9804,16 @@ div.Tokenize ul {
 table-layout: fixed;
 }
 
-#ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
+#ipsec {
+#ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
 background-color: #393939;
 }
 .ipsec-tab {
 background-color: #3e3e3e;
 color: #928873;
-}
-.ipsec-tab.activetab {
+&.activetab {
 background-color: #2a2a2a;
 color: #ec6d12;
+}
+}
 }

@@ -9805,14 +9805,16 @@ h3 {
 table-layout: fixed;
 }
 
-#ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
+#ipsec {
+#ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
 background-color: #f0f0f0;
 }
 .ipsec-tab {
 background-color: #839caa;
 color: #FFF;
-}
-.ipsec-tab.activetab {
+&.activetab {
 background-color: #315a71;
 color: #FFF;
+}
+}
 }
