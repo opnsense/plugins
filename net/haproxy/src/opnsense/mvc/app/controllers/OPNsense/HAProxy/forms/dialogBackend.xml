@@ -276,6 +276,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.tuning_httpreuse</id>
+        <label>HTTP reuse</label>
+        <type>dropdown</type>
+        <help><![CDATA[Declare how idle HTTP connections may be shared between requests.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Rules</label>
         <type>header</type>
     </field>
