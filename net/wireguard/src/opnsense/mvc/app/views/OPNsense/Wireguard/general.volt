@@ -157,6 +157,10 @@ $( document ).ready(function() {
         }
     );
 
+    // Call function update_neighbor with a auto-refresh of 5 seconds
+    setInterval(update_showconf, 5000);
+    setInterval(update_showhandshake, 5000);
+
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/wireguard/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
