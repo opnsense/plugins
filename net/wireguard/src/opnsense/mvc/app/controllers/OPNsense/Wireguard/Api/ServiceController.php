@@ -44,4 +44,26 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/Wireguard';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'wireguard';
+
+    /**
+     * show wireguard config
+     * @return array
+     */
+    public function showconfAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("wireguard showconf");
+        return array("response" => $response);
+    }
+
+    /**
+     * show wireguard handshakes
+     * @return array
+     */
+    public function showhandshakeAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("wireguard showhandshake");
+        return array("response" => $response);
+    }
 }
