@@ -6,4 +6,4 @@ chmod 755 /var/run/vnstat
 
 mkdir -p /var/lib/vnstat
 chown -R vnstat:vnstat /var/lib/vnstat
-chmod 755 /var/lib/vnstat
+chmod -R 755 /var/lib/
