@@ -44,7 +44,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/Vnstat';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'vnstat';
-    
+
     /**
      * list hourly statistics
      * @return array

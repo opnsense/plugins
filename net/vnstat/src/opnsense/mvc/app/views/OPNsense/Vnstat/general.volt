@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
 
-// Put API call into a function, needed for auto-refresh    
+// Put API call into a function, needed for auto-refresh
 function update_hourly() {
     ajaxCall(url="/api/vnstat/service/hourly", sendData={}, callback=function(data,status) {
         $("#listhourly").text(data['response']);
@@ -100,7 +100,7 @@ $( document ).ready(function() {
     setInterval(update_daily, 3000);
     setInterval(update_weekly, 3000);
     setInterval(update_monthly, 3000);
-    
+
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/vnstat/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
