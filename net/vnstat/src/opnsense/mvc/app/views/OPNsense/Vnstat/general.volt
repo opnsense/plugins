@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
             <div class="col-md-12">
                 <hr />
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i></button>
+                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
             </div>
         </div>
     </div>
@@ -91,9 +91,7 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    ajaxCall(url="/api/vnstat/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['status']);
-    });
+    updateServiceControlUI('vnstat');
 
     // Call function update_neighbor with a auto-refresh of 3 seconds
     setInterval(update_hourly, 3000);
@@ -105,9 +103,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/vnstat/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/vnstat/service/reconfigure", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/vnstat/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
-                });
+                updateServiceControlUI('vnstat');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
