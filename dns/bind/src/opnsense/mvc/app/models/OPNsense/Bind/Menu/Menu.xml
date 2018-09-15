@@ -1,5 +1,8 @@
 <menu>
   <Services>
-    <BIND cssClass="fa fa-tags" url="/ui/bind/general/index" />
+    <BIND cssClass="fa fa-tags" order="10 url="/ui/bind/general/index" />
+    <Log VisibleName="Log File" order="20" url="/diag_logs_bind.php?type=named">
+       <More url="/diag_logs_bind.php*" visibility="hidden"/>
+    </Log>
   </Services>
 </menu>
