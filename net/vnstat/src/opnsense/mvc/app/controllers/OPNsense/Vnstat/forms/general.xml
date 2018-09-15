@@ -1,9 +1,9 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable vnstat daemon</label>
+        <label>Enable vnStat daemon</label>
         <type>checkbox</type>
-        <help>This will activate the vnstat daemon.</help>
+        <help>This will activate the vnStat daemon.</help>
     </field>
     <field>
         <id>general.interface</id>
