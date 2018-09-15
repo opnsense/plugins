@@ -88,10 +88,10 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th style="width:15%;word-break:break-word;"><?=gettext("Interface");?></th>
-      <th style="width:15%;word-break:break-word;"><?=gettext("Service");?></th>
-      <th style="width:25%;word-break:break-word;"><?=gettext("Hostname");?></th>
-      <th style="width:45%;word-break:break-word;"><?=gettext("Cached IP");?></th>
+      <th style="word-break:break-word;"><?=gettext("Interface");?></th>
+      <th style="word-break:break-word;"><?=gettext("Service");?></th>
+      <th style="word-break:break-word;"><?=gettext("Hostname");?></th>
+      <th style="word-break:break-word;"><?=gettext("Cached IP");?></th>
     </tr>
   </thead>
   <tbody>
