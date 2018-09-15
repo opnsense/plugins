@@ -275,6 +275,10 @@
         <Required>Y</Required>
         <default>0</default>
       </websocket>
+      <http2_push_preload type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </http2_push_preload>
     </location>
 
     <custom_policy type="ArrayField">

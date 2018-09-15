@@ -112,6 +112,12 @@
     <help>Force encrypted connections.</help>
   </field>
   <field>
+    <id>location.http2_push_preload</id>
+    <label>Enable HTTP/2 Preloading</label>
+    <type>checkbox</type>
+    <help>If you check this box, you can use the link header to send resources to the client before they are requested. You can boost your performance with this setting. This requires that your application sets the "Link" header correctly.</help>
+  </field>
+  <field>
     <id>location.php_enable</id>
     <label>Pass Request To Local PHP Interpreter / Threat Upstream As FastCGI</label>
     <type>checkbox</type>
