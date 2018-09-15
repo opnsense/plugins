@@ -1,32 +1,32 @@
 <?php
 
 /*
-    Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2008 Ermal Luçi
-    Copyright (C) 2013 Stanley P. Miller \ stan-qaz
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INClUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-*/
+ * Copyright (C) 2014-2016 Deciso B.V.
+ * Copyright (C) 2008 Ermal Luçi
+ * Copyright (C) 2013 Stanley P. Miller \ stan-qaz
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INClUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 require_once("guiconfig.inc");
 require_once("widgets/include/dyn_dns_status.inc");
@@ -88,10 +88,10 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th><?=gettext("Interface");?></th>
-      <th><?=gettext("Service");?></th>
-      <th><?=gettext("Hostname");?></th>
-      <th><?=gettext("Cached IP");?></th>
+      <th style="word-break:break-word;"><?=gettext("Interface");?></th>
+      <th style="word-break:break-word;"><?=gettext("Service");?></th>
+      <th style="word-break:break-word;"><?=gettext("Hostname");?></th>
+      <th style="word-break:break-word;"><?=gettext("Cached IP");?></th>
     </tr>
   </thead>
   <tbody>
@@ -101,7 +101,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
   $groupslist = return_gateway_groups_array();
   foreach ($a_dyndns as $i => $dyndns) :?>
     <tr ondblclick="document.location='services_dyndns_edit.php?id=<?=$i;?>'">
-      <td <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
+      <td style="word-break:break-word;" <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
 <?php
         foreach ($iflist as $if => $ifdesc) {
             if ($dyndns['interface'] == $if) {
@@ -116,7 +116,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
             }
         }?>
       </td>
-      <td <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
+      <td style="word-break:break-word;" <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
 <?php
         if (isset($types[$dyndns['type']])) {
             echo htmlspecialchars($types[$dyndns['type']]);
@@ -125,10 +125,10 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
         }
 ?>
       </td>
-      <td <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
+      <td style="word-break:break-word;" <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
         <?= htmlspecialchars($dyndns['host']) ?>
       </td>
-      <td <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
+      <td style="word-break:break-word;" <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
         <div id='dyndnsstatus<?=$i;?>'>
           <?= gettext('Checking...') ?>
         </div>
