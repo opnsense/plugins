@@ -934,5 +934,14 @@
         <Required>Y</Required>
       </description>
     </limit_request_connection>
+    <ban type="ArrayField">
+      <ip type="NetworkField">
+        <Required>Y</Required>
+      </ip>
+      <time type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </time>
+    </ban>
   </items>
 </model>

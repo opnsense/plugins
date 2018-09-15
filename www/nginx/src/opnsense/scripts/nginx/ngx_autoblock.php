@@ -33,6 +33,7 @@ require_once('IPv6.inc');
 use OPNsense\Firewall\Alias;
 use OPNsense\Nginx\AccessLogParser;
 use OPNsense\Core\Config;
+use OPNsense\Nginx\Nginx;
 
 function nginx_print_error($msg) {
     echo json_encode(
@@ -54,7 +55,6 @@ function exec_hidden($command): void
 }
 function add_to_blocklist($tablename, $ip) {
     $escaped = escapeshellarg($ip);
-    echo $ip . PHP_EOL;
     exec_hidden("/sbin/pfctl -t ${tablename} -T add ${escaped}");
 }
 
@@ -88,7 +88,7 @@ $model = new Alias();
 $blacklist_element = null;
 foreach ($model->aliases->alias->__items as $alias) {
     if ((string)$alias->name == $autoblock_alias_name) {
-        if ((string)$alias->type != 'network') {
+        if ((string)$alias->type != 'external') {
             nginx_print_error('alias is misconfigured - exiting');
             exit(0);
         } else {
@@ -102,21 +102,32 @@ foreach ($model->aliases->alias->__items as $alias) {
 if ($blacklist_element == null) {
     $blacklist_element = $model->aliases->alias->Add();
     $blacklist_element->name = $autoblock_alias_name;
-    $blacklist_element->type = "network";
+    $blacklist_element->type = "external";
+    $model->serializeToConfig();
 }
 
-$alias_ips = explode("\n", $blacklist_element->content);
-$new_ips = array_map( function ($row) {
-    if(stripos($row->remote_ip, '.') !== false) {
-        return $row->remote_ip;
-    }
-    // in case of IPv6, we have to use the network address instead
-    // danger of DoS because the attacker should have at least 2 ** 64 IPs
-    return Net_IPv6::getNetmask($row->remote_ip, 64) . '/64';
-}, $log_lines);
-$result = array_filter(array_unique(array_merge($alias_ips, $new_ips)));
+$model = new Nginx();
+$alias_ips = [];
+foreach ($model->ban->__items as $entry) {
+    $alias_ips[] = (string)$entry->ip;
+}
 
-$blacklist_element->content = implode("\n", $result);
+$new_ips = array_unique(
+    array_map( function ($row) {
+        if(stripos($row->remote_ip, '.') !== false) {
+            return $row->remote_ip;
+        }
+        // in case of IPv6, we have to use the network address instead
+        // danger of DoS because the attacker should have at least 2 ** 64 IPs
+        return Net_IPv6::getNetmask($row->remote_ip, 64) . '/64';
+    }, $log_lines)
+);
+
+foreach (array_diff($new_ips, $alias_ips) as $new_ip) {
+    $entry = $model->ban->Add();
+    $entry->ip = $new_ip;
+    $entry->time = time();
+}
 $val_result = $model->performValidation(false);
 if (count($val_result) !== 0) {
     print_r($val_result);
@@ -127,8 +138,8 @@ Config::getInstance()->save();
 echo '{"status":"saved"}';
 
 // all ips are used because the others may not be set for some reason
-foreach ($result as $ip) {
-    add_to_blocklist($autoblock_alias_name, $ip);
+foreach ($model->ban->__items as $entry) {
+    add_to_blocklist($autoblock_alias_name, (string)$entry->ip);
 }
 
 @unlink($permanent_ban_file_work);
