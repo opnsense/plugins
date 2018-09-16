@@ -77,7 +77,7 @@ function igmpproxy_configure_do($verbose = false)
         flush();
     }
 
-    $iflist = get_configured_interface_with_descr();
+    $iflist = get_configured_interface_list();
 
     $igmpconf = <<<EOD
 
@@ -106,7 +106,7 @@ EOD;
         }
         $igmpconf .= "\n";
     }
-    foreach ($iflist as $ifn => $unused) {
+    foreach ($iflist as $ifn) {
         $realif = get_real_interface($ifn);
         $igmpconf .= "phyint {$realif} disabled\n";
     }
