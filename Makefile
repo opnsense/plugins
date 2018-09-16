@@ -25,6 +25,8 @@
 
 PAGER?=		less
 
+PLUGIN_ABI=	18.7
+
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
@@ -50,6 +52,32 @@ ${TARGET}:
 	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
 .  endfor
 .endfor
+
+diff:
+	@git diff --stat -p stable/${PLUGIN_ABI}
+
+ARGS=	mfc
+
+# handle argument expansion for required targets
+.for TARGET in ${.TARGETS}
+_TARGET=		${TARGET:C/\-.*//}
+.if ${_TARGET} != ${TARGET}
+.for ARGUMENT in ${ARGS}
+.if ${_TARGET} == ${ARGUMENT}
+${_TARGET}_ARGS+=	${TARGET:C/^[^\-]*(\-|\$)//:S/,/ /g}
+${TARGET}: ${_TARGET}
+.endif
+.endfor
+${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
+.endif
+.endfor
+
+mfc:
+	@git checkout stable/${PLUGIN_ABI}
+.for MFC in ${mfc_ARGS}
+	@git cherry-pick -x ${MFC}
+.endfor
+	@git checkout master
 
 license:
 	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
