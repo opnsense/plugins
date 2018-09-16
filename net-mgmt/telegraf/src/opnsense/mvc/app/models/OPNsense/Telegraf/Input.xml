@@ -58,7 +58,7 @@
         <pf type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </network>
+        </pf>
         <ping type="BooleanField">
             <default>0</default>
             <Required>N</Required>
