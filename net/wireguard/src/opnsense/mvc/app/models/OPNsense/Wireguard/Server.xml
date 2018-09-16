@@ -31,6 +31,9 @@
                     <default>51820</default>
                     <Required>Y</Required>
                 </port>
+                <dns type="CSVListField">
+                    <Required>N</Required>
+                </dns>
                 <tunneladdress type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
