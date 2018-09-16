@@ -36,6 +36,12 @@
         <help>Set port for this instance to listen on.</help>
     </field>
     <field>
+        <id>server.dns</id>
+        <label>DNS Server</label>
+        <type>text</type>
+        <help>Set the interface specific DNS server.</help>
+    </field>
+    <field>
         <id>server.tunneladdress</id>
         <label>Tunnel Address</label>
         <style>tokenize</style>
