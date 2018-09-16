@@ -1,0 +1,5 @@
+<menu>
+  <Services>
+    <VnStat cssClass="fa fa-bar-chart" url="/ui/vnstat/general/index" />
+  </Services>
+</menu>

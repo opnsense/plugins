@@ -1,0 +1,9 @@
+<acl>
+   <page-services-vnstat>
+      <name>Services: Vnstat</name>
+      <patterns>
+         <pattern>ui/vnstat/*</pattern>
+         <pattern>api/vnstat/*</pattern>
+      </patterns>
+   </page-services-vnstat>
+</acl>
