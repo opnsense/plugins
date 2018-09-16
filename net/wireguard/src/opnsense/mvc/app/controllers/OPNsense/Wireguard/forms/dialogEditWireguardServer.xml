@@ -38,7 +38,9 @@
     <field>
         <id>server.dns</id>
         <label>DNS Server</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help>Set the interface specific DNS server.</help>
     </field>
     <field>
