@@ -27,6 +27,6 @@
 
 <div id="logapplication"></div>
 
-<script src="/ui/js/nginx/lib/lodash.min.js"></script>
-<script src="/ui/js/nginx/lib/backbone-min.js"></script>
-<script src="/ui/js/nginx/dist/bundle.js"></script>
+<script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/dist/bundle.js') }}"></script>

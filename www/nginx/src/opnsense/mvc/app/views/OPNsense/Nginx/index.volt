@@ -28,7 +28,7 @@
 <script>
 $( document ).ready(function() {
 
-    var data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
+    let data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
 
     // load initial data
     mapDataToFormUI(data_get_map).done(function(){
@@ -43,12 +43,6 @@ $( document ).ready(function() {
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         history.pushState(null, null, e.target.hash);
-    });
-    $('#nginx\\.general\\.enable_redis_plugin').change(function (evt) {
-        $('#missing_redis_plugin').hide();
-        if (!window.redis_installed && $(this).is(':checked')) {
-            $('#missing_redis_plugin').show();
-        }
     });
 
     $('.reload_btn').click(function() {
