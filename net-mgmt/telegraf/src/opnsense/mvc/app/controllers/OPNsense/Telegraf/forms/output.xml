@@ -101,28 +101,4 @@
         <type>text</type>
         <help>Set the index name.</help>
     </field>
-    <field>
-        <id>output.prometheus_enable</id>
-        <label>Enable Prometheus Output</label>
-        <type>checkbox</type>
-        <help>This will enable Prometheus as output.</help>
-    </field>
-    <field>
-        <id>output.prometheus_listen</id>
-        <label>Prometheus Listen Port</label>
-        <type>text</type>
-        <help>Port to listen on.</help>
-    </field>
-    <field>
-        <id>output.prometheus_exclude</id>
-        <label>Prometheus Collector Exclude</label>
-        <type>text</type>
-        <help>Collectors to enable, valid entries are "gocollector" and "process". If unset, both are enabled.</help>
-    </field>
-    <field>
-        <id>output.prometheus_stringaslabel</id>
-        <label>Prometheus String as Label</label>
-        <type>checkbox</type>
-        <help>Send string metrics as Prometheus labels.</help>
-    </field>
 </form>

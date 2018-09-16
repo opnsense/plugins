@@ -38,63 +38,63 @@ mkdir -p ${WORKDIR}
 easylist() {
 	# EasyList
 	${FETCH} https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt -o ${WORKDIR}/easylist-raw
-	sed "/\.$/d" ${WORKDIR}/easylist-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/easylist
+	sed "/\.$/d" ${WORKDIR}/easylist-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/easylist
 	rm ${WORKDIR}/easylist-raw
 }
 
 easyprivacy() {
 	# EasyPrivacy
 	${FETCH} https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt -o ${WORKDIR}/easyprivacy-raw
-	sed "/\.$/d" ${WORKDIR}/easyprivacy-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/easyprivacy
+	sed "/\.$/d" ${WORKDIR}/easyprivacy-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/easyprivacy
 	rm ${WORKDIR}/easyprivacy-raw
 }
 
 pornall() {
 	# PornAll
 	${FETCH} https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_all.list -o ${WORKDIR}/pornall-raw
-	sed "/\.$/d" ${WORKDIR}/pornall-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/pornall
+	sed "/\.$/d" ${WORKDIR}/pornall-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/pornall
 	rm ${WORKDIR}/pornall-raw
 }
 
 porntop() {
 	# PornTop1M
 	${FETCH} https://raw.githubusercontent.com/chadmayfield/pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list -o ${WORKDIR}/porntop-raw
-	sed "/\.$/d" ${WORKDIR}/porntop-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/porntop
+	sed "/\.$/d" ${WORKDIR}/porntop-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/porntop
 	rm ${WORKDIR}/porntop-raw
 }
 
 emdlist() {
 	# EMD
 	${FETCH} https://hosts-file.net/emd.txt -o ${WORKDIR}/emdlist-raw
-	sed "/\.$/d" ${WORKDIR}/emdlist-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/emdlist
+	sed "/\.$/d" ${WORKDIR}/emdlist-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/emdlist
 	rm ${WORKDIR}/emdlist-raw
 }
 
 adguard() {
 	# AdGuard
 	${FETCH} https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o ${WORKDIR}/adguard-raw
-	sed "/\.$/d" ${WORKDIR}/adguard-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/adguard
+	sed "/\.$/d" ${WORKDIR}/adguard-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/adguard
 	rm ${WORKDIR}/adguard-raw
 }
 
 nocoin() {
 	# NoCoin
 	${FETCH} https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o ${WORKDIR}/nocoin-raw
-	sed "/\.$/d" ${WORKDIR}/nocoin-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/nocoin
+	sed "/\.$/d" ${WORKDIR}/nocoin-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/nocoin
 	rm ${WORKDIR}/nocoin-raw
 }
 
 rwtracker() {
 	# RansomWare Tracker abuse.ch
 	${FETCH} https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt -o ${WORKDIR}/rwtracker-raw
-	sed "/\.$/d" ${WORKDIR}/rwtracker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/rwtracker
+	sed "/\.$/d" ${WORKDIR}/rwtracker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/rwtracker
 	rm ${WORKDIR}/rwtracker-raw
 }
 
 mwdomains() {
 	# MalwareDomains
 	${FETCH} http://malwaredomains.lehigh.edu/files/justdomains -o ${WORKDIR}/malwaredomains-raw
-	sed "/\.$/d" ${WORKDIR}/malwaredomains-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/malwaredomains
+	sed "/\.$/d" ${WORKDIR}/malwaredomains-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" > ${WORKDIR}/malwaredomains
 	rm ${WORKDIR}/malwaredomains-raw
 }
 
@@ -133,7 +133,7 @@ for CAT in $(echo ${1} | tr ',' ' '); do
 		mwdomains
 		;;
 	pa)
-		#pornall
+		pornall
 		;;
 	pt)
 		porntop

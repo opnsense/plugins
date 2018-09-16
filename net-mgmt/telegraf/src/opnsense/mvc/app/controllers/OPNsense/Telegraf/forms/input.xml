@@ -80,12 +80,6 @@
         <help>Read network interface metrics.</help>
     </field>
     <field>
-        <id>input.pf</id>
-        <label>PF</label>
-        <type>checkbox</type>
-        <help>Read PF values via pfctl.</help>
-    </field>
-    <field>
         <id>input.ping</id>
         <label>Ping</label>
         <type>checkbox</type>
@@ -98,11 +92,5 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help>Set the Hosts to ping in a CSV list.</help>
-    </field>
-    <field>
-        <id>input.haproxy</id>
-        <label>HAProxy</label>
-        <type>checkbox</type>
-        <help>Enable the collection of HAProxy statistics.</help>
     </field>
 </form>

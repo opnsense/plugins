@@ -1,10 +1,5 @@
 <menu>
   <Services>
-    <BIND cssClass="fa fa-tags">
-      <Configuration url="/ui/bind/general/index" order="10"/>
-      <Log VisibleName="Log File" url="/diag_logs_bind.php?type=named" order="20">
-        <More url="/diag_logs_bind.php*" visibility="hidden"/>
-      </Log>
-    </BIND>
+    <BIND cssClass="fa fa-tags" url="/ui/bind/general/index" />
   </Services>
 </menu>
