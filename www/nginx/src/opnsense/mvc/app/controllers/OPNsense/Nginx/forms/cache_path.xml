@@ -1,0 +1,27 @@
+<form>
+    <field>
+        <id>cache_path.path</id>
+        <label>Path</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>cache_path.size</id>
+        <label>Size (MB)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>cache_path.inactive</id>
+        <label>Inactive Time (Minutes)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>cache_path.use_temp_path</id>
+        <label>Use Temp Path</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>cache_path.max_size</id>
+        <label>Maximum Size (GB)</label>
+        <type>text</type>
+    </field>
+</form>

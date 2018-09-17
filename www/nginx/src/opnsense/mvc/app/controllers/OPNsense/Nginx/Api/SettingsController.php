@@ -361,4 +361,31 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('limit_request_connection', 'limit_request_connection', $uuid);
     }
+    // cache path
+    public function searchcache_pathAction()
+    {
+        return $this->searchBase('cache_path',
+            array('path', 'inactive', 'size', 'max_size'));
+    }
+
+    public function getcache_pathAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('cache_path', 'cache_path', $uuid);
+    }
+
+    public function addcache_pathAction()
+    {
+        return $this->addBase('cache_path', 'cache_path');
+    }
+
+    public function delcache_pathAction($uuid)
+    {
+        return $this->delBase('cache_path', $uuid);
+    }
+
+    public function setcache_pathAction($uuid)
+    {
+        return $this->setBase('cache_path', 'cache_path', $uuid);
+    }
 }

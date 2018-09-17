@@ -205,6 +205,18 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </upstream>
+      <cache_path type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>cache_path</items>
+            <display>path</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected cache directory not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </cache_path>
       <root type="TextField">
         <Required>N</Required>
       </root>
@@ -943,5 +955,27 @@
         <MinimumValue>0</MinimumValue>
       </time>
     </ban>
+    <cache_path type="ArrayField">
+      <path type="TextField">
+        <Required>Y</Required>
+        <mask>/\/(srv|var|tmp|mnt)[a-z0-9\-\._\:\,\/]+[a-z0-9\-\._\:\,]+/i</mask>
+      </path>
+      <size type="IntegerField">
+        <MinimumValue>10</MinimumValue>
+        <default>10</default>
+      </size>
+      <inactive type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </inactive>
+      <use_temp_path type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </use_temp_path>
+      <max_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </max_size>
+    </cache_path>
   </items>
 </model>
