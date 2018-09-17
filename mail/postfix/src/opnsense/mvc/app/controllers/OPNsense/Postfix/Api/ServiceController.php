@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017 Michael Muenz
+ * Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
  * Copyright (C) 2015-2017 Deciso B.V.
  * All rights reserved.
  *
