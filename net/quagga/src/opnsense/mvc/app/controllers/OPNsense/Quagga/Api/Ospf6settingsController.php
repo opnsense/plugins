@@ -4,7 +4,7 @@
  *    Copyright (C) 2015-2017 Deciso B.V.
  *    Copyright (C) 2015 Jos Schellevis
  *    Copyright (C) 2017 Fabian Franz
- *    Copyright (C) 2017 Michael Muenz
+ *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
