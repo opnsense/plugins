@@ -27,7 +27,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 <div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+    {{ partial("layout_partials/base_form",['fields':serverForm,'id':'frm_server_settings'])}}
     <div class="col-md-12">
         <hr />
         <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
-        var data_get_map = {'frm_general_settings':"/api/shadowsocks/general/get"};
+        var data_get_map = {'frm_server_settings':"/api/shadowsocks/server/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/shadowsocks/general/set", formid='frm_general_settings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/shadowsocks/server/set", formid='frm_server_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/shadowsocks/service/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/shadowsocks/service/status", sendData={}, callback=function(data,status) {

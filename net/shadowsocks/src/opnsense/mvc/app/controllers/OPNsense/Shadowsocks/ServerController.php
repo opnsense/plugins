@@ -28,8 +28,11 @@
 
 namespace OPNsense\Shadowsocks;
 
-use OPNsense\Base\BaseModel;
-
-class General extends BaseModel
+class ServerController extends \OPNsense\Base\IndexController
 {
+    public function indexAction()
+    {
+        $this->view->serverForm = $this->getForm("server");
+        $this->view->pick('OPNsense/Shadowsocks/server');
+    }
 }
