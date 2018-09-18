@@ -217,6 +217,53 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </cache_path>
+      <cache_use_stale type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <error>Error</error>
+          <timeout>Timeout</timeout>
+          <invalid_header>Invalid_header</invalid_header>
+          <updating>Updating</updating>
+          <http_403>HTTP Status Code 403</http_403>
+          <http_404>HTTP Status Code 404</http_404>
+          <http_429>HTTP Status Code 429</http_429>
+          <http_500>HTTP Status Code 500</http_500>
+          <http_502>HTTP Status Code 502</http_502>
+          <http_503>HTTP Status Code 503</http_503>
+          <http_504>HTTP Status Code 504</http_504>
+        </OptionValues>
+        <Required>N</Required>
+      </cache_use_stale>
+      <cache_methods type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <POST>Post</POST>
+          <!-- it seems like it does not like the others required for REST - syntax error
+          <PUT>Put</PUT>
+          <DELETE>Delete</DELETE>
+          <CONNECT>Connect</CONNECT>
+          <OPTIONS>Options</OPTIONS>
+          <TRACE>Trace</TRACE>
+          <PATCH>Patch</PATCH>-->
+        </OptionValues>
+        <Required>N</Required>
+      </cache_methods>
+      <cache_min_uses type="IntegerField">
+        <Required>Y</Required>
+        <default>1</default>
+      </cache_min_uses>
+      <cache_background_update type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </cache_background_update>
+      <cache_lock type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </cache_lock>
+      <cache_revalidate type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </cache_revalidate>
       <root type="TextField">
         <Required>N</Required>
       </root>

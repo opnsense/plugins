@@ -63,9 +63,53 @@
   </field>
   <field>
     <id>location.cache_path</id>
-    <label>Cache Directory</label>
+    <label>Cache: Directory</label>
     <type>dropdown</type>
     <help>Choose a cache directory if you want to cache responses.</help>
+  </field>
+  <field>
+    <id>location.cache_use_stale</id>
+    <label>Cache: Use Stale</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>If you enable this option, a stale response will be sent when in cases the original server is unable to (for example if it is down).</help>
+  </field>
+  <field>
+    <id>location.cache_min_uses</id>
+    <label>Cache: Minimum Uses</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Enter how often the resource must be hit before adding it to the cache.</help>
+  </field>
+  <field>
+    <id>location.cache_background_update</id>
+    <label>Cache: Background Update</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Return a stale response to the client and update the cache.</help>
+  </field>
+  <field>
+    <id>location.cache_lock</id>
+    <label>Cache: Lock Backend on Update</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Only allow a single request to call the backend on the same URL at a single time.</help>
+  </field>
+  <field>
+    <id>location.cache_revalidate</id>
+    <label>Cache: Revalidate</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Only request a new version, if the content has changed since the last cache update.</help>
+  </field>
+  <field>
+    <id>location.cache_methods</id>
+    <label>Cache: HTTP Verbs</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>Select the HTTP verbs to cache. GET and HEAD will be always cached.</help>
   </field>
   <field>
     <id>location.limit_request_connections</id>
