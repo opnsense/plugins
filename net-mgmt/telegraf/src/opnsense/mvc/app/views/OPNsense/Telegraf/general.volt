@@ -65,7 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
         <div class="col-md-12">
             <hr />
-            <button class="btn btn-primary"  id="saveAct_key" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_key_progress"></i></button>
+            <button class="btn btn-primary" id="saveAct_key" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_key_progress"></i></button>
             <br /><br />
         </div>
     </div>
@@ -81,9 +81,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $('.selectpicker').selectpicker('refresh');
         });
 
-        ajaxCall(url="/api/telegraf/service/status", sendData={}, callback=function(data,status) {
-            updateServiceStatusUI(data['status']);
-        });
+    updateServiceControlUI('telegraf');
 
     $("#grid-keys").UIBootgrid(
         {   'search':'/api/telegraf/key/searchKey',
@@ -100,9 +98,7 @@ POSSIBILITY OF SUCH DAMAGE.
             saveFormToEndpoint(url="/api/telegraf/general/set", formid='frm_general_settings',callback_ok=function(){
 		    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/telegraf/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/telegraf/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                            });
+                            updateServiceControlUI('telegraf');
 			    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
@@ -111,9 +107,7 @@ POSSIBILITY OF SUCH DAMAGE.
             saveFormToEndpoint(url="/api/telegraf/key/set", formid='frm_general_settings',callback_ok=function(){
 		    $("#saveAct_key_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/telegraf/service/reconfigure", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/telegraf/service/status", sendData={}, callback=function(data,status) {
-                                    updateServiceStatusUI(data['status']);
-                            });
+                            updateServiceControlUI('telegraf');
 			    $("#saveAct_key_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
