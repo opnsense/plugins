@@ -70,6 +70,12 @@
     <type>text</type>
   </field>
   <field>
+    <id>relay.dir_frontpage</id>
+    <label>Show Directory Frontpage</label>
+    <type>checkbox</type>
+    <help>Upload a HTML file to /usr/local/etc/tor/exit-notice.html before enabling this to serve a directory frontpage.</help>
+  </field>
+  <field>
     <id>relay.relay</id>
     <label>Bridge</label>
     <type>checkbox</type>
