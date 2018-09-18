@@ -5869,15 +5869,15 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 #navigation.col-sidebar-left > div.row {height:100% !important;}
 #navigation.col-sidebar-left > div.row > nav.page-side-nav {width:70px; background-color:#172c38 !important; height:100% !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {font-size:12px;text-align:center;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa {visibility: visible; font-size:28px;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {visibility: visible; font-size:28px;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa {visibility: visible; font-size:30px;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {visibility: visible; font-size:30px;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.__iconspacer {width:50px; height:30px; padding:0px;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
 	width: 70px;
 	height: 70px;
     padding-left: 0px;
 	padding-right: 0px;
-	padding-top:12px;
+	padding-top:13px;
 	border-bottom:2px solid #1b313e; }
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing > a.list-group-item {padding-left: 10px !important;font-size: 12px !important; display: block !important; position: absolute !important; left: 70px !important; margin-top:-70px !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapsing > a.list-group-item {padding-left: 10px !important;font-size: 12px !important; display: block !important; position: absolute !important; left: 148px !important; margin-top:-28px !important;}
