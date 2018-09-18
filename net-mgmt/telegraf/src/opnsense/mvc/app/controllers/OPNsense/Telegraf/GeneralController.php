@@ -33,6 +33,7 @@ class GeneralController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->generalForm = $this->getForm("general");
+        $this->view->formDialogEditTelegrafKey = $this->getForm("dialogEditTelegrafKey");
         $this->view->pick('OPNsense/Telegraf/general');
     }
 }
