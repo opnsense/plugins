@@ -114,7 +114,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             ajaxCall(url="/api/telegraf/service/status", sendData={}, callback=function(data,status) {
                                     updateServiceStatusUI(data['status']);
                             });
-			    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+			    $("#saveAct_key_progress").removeClass("fa fa-spinner fa-pulse");
                     });
             });
         });
