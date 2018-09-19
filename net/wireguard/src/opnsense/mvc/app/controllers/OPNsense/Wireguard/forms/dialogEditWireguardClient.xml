@@ -37,4 +37,10 @@
         <type>text</type>
         <help>Set port the endpoint listens to.</help>
     </field>
+    <field>
+        <id>client.disableroutes</id>
+        <label>Disable Routes</label>
+        <type>checkbox</type>
+        <help>This will prevent installing routes. Usually you only enable this to do own routing decisions via a local gateway and gateway rules.</help>
+    </field>
 </form>
