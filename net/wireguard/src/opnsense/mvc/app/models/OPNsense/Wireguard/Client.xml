@@ -30,6 +30,10 @@
                 <serverport type="PortField">
                     <Required>N</Required>
                 </serverport>
+                <disableroutes type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </disableroutes>
             </client>
         </clients>
     </items>
