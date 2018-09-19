@@ -1,11 +1,16 @@
 <model>
   <mount>//OPNsense/tor/relay</mount>
+  <version>1.0.0</version>
   <description>Tor Relay configuration</description>
   <items>
     <enabled type="BooleanField">
       <default>0</default>
       <Required>Y</Required>
     </enabled>
+    <dir_frontpage type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </dir_frontpage>
     <host type="TextField">
       <Required>N</Required>
       <mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</mask>

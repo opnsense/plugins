@@ -196,11 +196,15 @@ RelayBandwidthBurst {{ OPNsense.tor.relay.bandwithburst }} KBytes
 DirPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.directory_port }}
 {% endif %}
 
-## Uncomment to return an arbitrary blob of html on your DirPort. Now you
+## Return an arbitrary blob of html on your DirPort. Now you
 ## can explain what Tor is if anybody wonders why your IP address is
 ## contacting them. See contrib/tor-exit-notice.html in Tor's source
 ## distribution for a sample.
-#DirPortFrontPage /usr/local/etc/tor/tor-exit-notice.html
+
+{% if helpers.exists('OPNsense.tor.relay.dir_frontpage') and OPNsense.tor.relay.dir_frontpage == '1' %}
+DirPortFrontPage /usr/local/etc/tor/exit-notice.html
+{% endif %}
+
 
 {% if helpers.exists('OPNsense.tor.relay.exitenabled') %}
 ExitRelay {{ OPNsense.tor.relay.exitenabled }}
