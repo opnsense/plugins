@@ -838,6 +838,16 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </tuning_noport>
+                <tuning_httpreuse type="OptionField">
+                    <Required>N</Required>
+                    <default>never</default>
+                    <OptionValues>
+                        <never>Never [default]</never>
+                        <safe>Safe</safe>
+                        <aggressive>Aggressive</aggressive>
+                        <always>Always</always>
+                    </OptionValues>
+                </tuning_httpreuse>
                 <linkedActions type="ModelRelationField">
                     <Model>
                         <template>

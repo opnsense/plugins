@@ -2,7 +2,7 @@
 
 /*
     Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
+    Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -327,14 +327,11 @@ include("head.inc");
                       <td>
                         <select name="bindip" class="selectpicker">
                           <option value=""><?= gettext('All') ?></option>
-<?php
-                          foreach (get_possible_listen_ips() as $lip):?>
-
-                          <option value="<?=$lip['value'];?>" <?=$lip['value'] == $pconfig['bindip'] ? "selected=\"selected\"" : "";?>>
-                            <?=htmlspecialchars($lip['name']);?>
+<?php foreach (get_configured_interface_with_descr() as $ifname => $ifdescr): ?>
+                          <option value="<?= html_safe($ifname) ?>" <?= $ifname == $pconfig['bindip'] ? 'selected="selected"' : '' ?>>
+                            <?= htmlspecialchars($ifdescr) ?>
                           </option>
-<?php
-                          endforeach; ?>
+<?php endforeach ?>
                         </select>
                       </td>
                     </tr>

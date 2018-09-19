@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable vnStat daemon</label>
+        <type>checkbox</type>
+        <help>This will activate the vnStat daemon.</help>
+    </field>
+    <field>
+        <id>general.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help>Set the interface to listen on.</help>
+    </field>
+</form>

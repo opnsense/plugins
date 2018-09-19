@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2018 Michael Muenz
+ *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  *
  *    All rights reserved.
  *
@@ -44,7 +44,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceTemplate = 'OPNsense/Ntopng';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'ntopng';
-    
+
     /**
      * check if Redis plugin is installed
      * @return array

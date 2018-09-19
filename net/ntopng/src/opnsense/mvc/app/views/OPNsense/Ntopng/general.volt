@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2018 by Deciso B.V.
-This file is Copyright © 2018 by Michael Muenz
+This file is Copyright © 2018 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
             <div class="col-md-12">
                 <hr />
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
             </div>
         </div>
     </div>
@@ -56,11 +56,9 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    ajaxCall(url="/api/ntopng/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['status']);
-    });
+    updateServiceControlUI('ntopng');
 
-	// check if Redis plugin is installed
+    // check if Redis plugin is installed
     ajaxCall(url="/api/ntopng/service/checkredis", sendData={}, callback=function(data,status) {
 	    if (data == "0") {
             $('#missing_redis').show();
@@ -71,6 +69,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/ntopng/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/ntopng/service/reconfigure", sendData={}, callback=function(data,status) {
+		updateServiceControlUI('ntopng');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });

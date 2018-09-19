@@ -56,6 +56,7 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
 net/mdns-repeater -- Proxy multicast DNS between networks
+net/ntopng -- Traffic Analysis and Flow Collection
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
 net/quagga -- End of life, superseded by FRR plugin
@@ -63,6 +64,7 @@ net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/upnp -- Universal Plug and Play Service
+net/vnstat -- vnStat is a console-based network traffic monitor
 net/wireguard -- WireGuard VPN service
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work

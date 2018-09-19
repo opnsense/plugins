@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2018 by Deciso B.V.
-This file is Copyright © 2018 by Michael Muenz
+This file is Copyright © 2018 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
             <div class="col-md-12">
                 <hr />
-                <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':dnsblForm,'id':'frm_dnsbl_settings'])}}
             <div class="col-md-12">
                 <hr />
-                <button class="btn btn-primary"  id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_dnsbl_progress"></i></button>
+                <button class="btn btn-primary" id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_dnsbl_progress"></i></button>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
         <div class="col-md-12">
             <hr />
-            <button class="btn btn-primary"  id="saveAct_acl" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_acl_progress"></i></button>
+            <button class="btn btn-primary" id="saveAct_acl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_acl_progress"></i></button>
             <br /><br />
         </div>
     </div>
@@ -99,9 +99,7 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
-        updateServiceStatusUI(data['status']);
-    });
+    updateServiceControlUI('bind');
 
     $("#grid-acls").UIBootgrid(
         {   'search':'/api/bind/acl/searchAcl',
@@ -117,9 +115,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/bind/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
-                });
+                updateServiceControlUI('bind');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
@@ -130,9 +126,7 @@ $( document ).ready(function() {
         $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/bind/service/dnsbl", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
-                    ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
-                        updateServiceStatusUI(data['status']);
-                    });
+                    updateServiceControlUI('bind');
                     $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
@@ -143,9 +137,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/bind/acl/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/bind/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
-                });
+                updateServiceControlUI('bind');
                 $("#saveAct_acl_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });

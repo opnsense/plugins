@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2016 by Deciso B.V.
-Copyright (C) 2017 Michael Muenz
+Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
