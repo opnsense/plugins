@@ -58,4 +58,10 @@
         <allownew>true</allownew>
         <help>List of peers for this server.</help>
     </field>
+    <field>
+        <id>server.disableroutes</id>
+        <label>Disable Routes</label>
+        <type>checkbox</type>
+        <help>This will prevent installing routes. Usually you only enable this to do own routing decisions via a local gateway and gateway rules.</help>
+    </field>
 </form>
