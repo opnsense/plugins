@@ -43,6 +43,10 @@
                     <Required>Y</Required>
                     <asList>Y</asList>
                 </tunneladdress>
+                <disableroutes type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </disableroutes>
                 <peers type="ModelRelationField">
                     <Model>
                         <template>
