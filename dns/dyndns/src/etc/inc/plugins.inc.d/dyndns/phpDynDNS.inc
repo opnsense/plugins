@@ -724,8 +724,8 @@ class updatedns
 
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    "X-Auth-Email: $this->_dnsUser",
-                    "X-Auth-Key: $this->_dnsPass",
+                    "X-Auth-Email: {$this->_dnsUser}",
+                    "X-Auth-Key: {$this->_dnsPass}",
                     'Content-Type: application/json'
                 ));
 
