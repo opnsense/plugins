@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/server</mount>
     <description>Wireguard Server configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <items>
         <servers>
             <server type="ArrayField">
