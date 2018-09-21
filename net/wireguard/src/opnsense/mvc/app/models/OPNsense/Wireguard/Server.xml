@@ -35,7 +35,6 @@
                     <Required>N</Required>
                     <mask>/^([a-fA-F0-9\.:\[\]]*?,)*([a-fA-F0-9\.:\[\]]*)$/</mask>
                     <ValidationMessage>Please use valid IPv4 or IPv6 addresses.</ValidationMessage>
-
                 </dns>
                 <tunneladdress type="NetworkField">
                     <default></default>
