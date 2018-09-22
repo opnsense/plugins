@@ -96,11 +96,14 @@ trap := "{$config['snmpd']['trapstring']}"
 EOD;
     }
 
-    $version = trim(file_get_contents('/usr/local/opnsense/version/opnsense'));
-    $platform = $g['product_name'];
-    $sysDescr = "{$g['product_name']} " . php_uname("n") .
-                " {$version} {$platform} " . php_uname("s") .
-                " " . php_uname("r") . " " . trim(shell_exec('uname -p'));
+    $sysDescr = join(' ', array(
+        $g['product_name'],
+        $g['product_version'],
+        php_uname('n'),
+        php_uname('s'),
+        php_uname('r'),
+        $g['product_arch']
+    ));
 
     $snmpdconf .= <<<EOD
 system := 1
@@ -128,14 +131,9 @@ EOD;
 
     $bind_to_ip = '0.0.0.0';
     if (!empty($config['snmpd']['bindip'])) {
-        if (is_ipaddr($config['snmpd']['bindip'])) {
-            $bind_to_ip = $config['snmpd']['bindip'];
-        } else {
-            $if = get_real_interface($config['snmpd']['bindip']);
-            $bind_to_ip_maybe = find_interface_ip($if);
-            if (is_ipaddr($bind_to_ip_maybe)) {
-                $bind_to_ip = $bind_to_ip_maybe;
-            }
+        $bind_to_ip_maybe = find_interface_ip(get_real_interface($config['snmpd']['bindip']));
+        if (is_ipaddr($bind_to_ip_maybe)) {
+            $bind_to_ip = $bind_to_ip_maybe;
         }
     }
 
