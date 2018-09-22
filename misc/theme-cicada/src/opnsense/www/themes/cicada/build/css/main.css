@@ -5862,8 +5862,8 @@ main.page-content.col-lg-12 { padding-left: 90px; }
 #navigation.col-sidebar-left > div.row {height:100% !important;}
 #navigation.col-sidebar-left > div.row > nav.page-side-nav {width:70px; background-color:#202020 !important; height:100% !important;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {font-size:12px;text-align:center;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa {visibility: visible; font-size:30px;}
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {visibility: visible; font-size:30px;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa {visibility: visible; font-size:28px;}
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {visibility: visible; font-size:28px;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.__iconspacer {width:50px; height:30px; padding:0px;}
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
 	width: 70px;
