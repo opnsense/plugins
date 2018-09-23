@@ -924,7 +924,7 @@ html {
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   color: #FFFFFF;
   background-color: none; }
 
@@ -953,7 +953,7 @@ img {
 
 .img-thumbnail {
   padding: 4px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -1213,7 +1213,7 @@ dl {
 
 dt,
 dd {
-  line-height: 1.42857; }
+  line-height: 1.428571429; }
 
 dt {
   font-weight: bold; }
@@ -1261,7 +1261,7 @@ blockquote {
   blockquote .small {
     display: block;
     font-size: 80%;
-    line-height: 1.42857;
+    line-height: 1.428571429;
     color: #777777; }
     blockquote footer:before,
     blockquote small:before,
@@ -1297,7 +1297,7 @@ blockquote:after {
 address {
   margin-bottom: 20px;
   font-style: normal;
-  line-height: 1.42857; }
+  line-height: 1.428571429; }
 
 code,
 kbd,
@@ -1329,7 +1329,7 @@ pre {
   padding: 9.5px;
   margin: 0 0 10px;
   font-size: 13px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   word-break: break-all;
   word-wrap: break-word;
   color: #FFFFFF;
@@ -2033,7 +2033,7 @@ th {
   .table > tfoot > tr > th,
   .table > tfoot > tr > td {
     padding: 10px 0px 10px 20px;
-    line-height: 1.42857;
+    line-height: 1.428571429;
     vertical-align: top;
 	border-top:1px solid #303030; }
   .table > thead > tr > th {
@@ -2271,7 +2271,7 @@ output {
   display: block;
   padding-top: 7px;
   font-size: 14px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   color: #FFFFFF; }
 
 select,
@@ -2296,7 +2296,7 @@ input[type="color"]
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   color: #FFF;
   background-color: #2a2a2a;
   background-image: none;
@@ -2887,7 +2887,7 @@ select[multiple].input-lg,
   white-space: nowrap;
   padding: 6px 12px;
   font-size: 14px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -3184,7 +3184,7 @@ tbody.collapse.in {
     padding: 3px 20px;
     clear: both;
     font-weight: normal;
-    line-height: 1.42857;
+    line-height: 1.428571429;
     color: #FFFFFF;
     white-space: nowrap;
 	outline:0;}
@@ -3228,7 +3228,7 @@ tbody.collapse.in {
   display: block;
   padding: 3px 20px;
   font-size: 12px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   color: #777777;
   white-space: nowrap; }
 
@@ -3595,7 +3595,7 @@ tbody.collapse.in {
     margin-bottom: -1px; }
     .nav-tabs > li > a {
       margin-right: 2px;
-      line-height: 1.42857;
+      line-height: 1.428571429;
       border-radius: 3px 3px 0 0;
 	  cursor:pointer;}
       .nav-tabs > li > a:hover {
@@ -4061,7 +4061,7 @@ tbody.collapse.in {
       position: relative;
       float: left;
       padding: 6px 12px;
-      line-height: 1.42857;
+      line-height: 1.428571429;
       text-decoration: none;
       color: #FFFFFF;
       background-color: #505050;
@@ -4303,7 +4303,7 @@ a.badge:hover, a.badge:focus {
   display: block;
   padding: 4px;
   margin-bottom: 20px;
-  line-height: 1.42857;
+  line-height: 1.428571429;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -5051,7 +5051,7 @@ button.close {
 
 .modal-title {
   margin: 0;
-  line-height: 1.42857; }
+  line-height: 1.428571429; }
 
 .modal-body {
   position: relative;
@@ -6286,14 +6286,6 @@ ul.TokensContainer {
 	-o-transition: border-color ease-in-out 0.1s, box-shadow ease-in-out 0.1s;
 	transition: border-color ease-in-out 0.1s, box-shadow ease-in-out 0.1s; }
 
-::before, ::after {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-Element {
-    width: 17px;
-}
 div.Tokenize ul.TokensContainer:hover, div.Tokenize ul.TokensContainer:focus {
 	border-color:#ec6d12 !important;
 	background-color:#2a2a2a !important;
