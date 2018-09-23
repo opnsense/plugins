@@ -9164,7 +9164,7 @@ a.list-group-item:focus {
       display: block;
       z-index: 10;
       left: 148px;
-      margin-top: -28px;
+      margin-top: -29px;
       height: auto;
       -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
@@ -9546,6 +9546,24 @@ label > input {
   background-color: #ec6d12;
 }
 
+.dashboard_grid_column table {
+  table-layout: fixed;
+}
+
+#ipsec {
+  #ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
+    background-color: #393939;
+  }
+  .ipsec-tab {
+    background-color: #3e3e3e;
+    color: #928873;
+    &.activetab {
+      background-color: #2a2a2a;
+      color: #ec6d12;
+    }
+  }
+}
+
 /*additional extensions for theme-cicada*/
 
 #tab_1 #maintabs {
@@ -9621,129 +9639,8 @@ h3 {
   }
 }
 
-text {
-  &.nvd3, &.nv-axislabel, &.nv-legend-text {
-    fill: #FFFFFF;
-  }
-}
-
-.nvd3 .nv-axis {
-  fill: #FFFFFF;
-}
-
-.nv-series-0 {
-  stroke-opacity: 1;
-  stroke-width: 1.5;
-  fill-opacity: 0.5;
-  fill: rgb(0, 151, 255) !important;
-  stroke: rgb(0, 151, 255) !important;
-}
-
-.nv-controlsWrap.nvd3-svg circle.nv-legend-symbol {
-  stroke-width: 1 !important;
-  fill: rgb(143, 143, 143) !important;
-  stroke: rgb(143, 143, 143) !important;
-}
-
 .table-condensed.table-hover {
   border: 1px solid #515151;
-}
-
-ul.TokensContainer {
-  border-radius: 3px;
-  -webkit-transition: border-color ease-in-out 0.1s, box-shadow ease-in-out 0.1s;
-  -o-transition: border-color ease-in-out 0.1s, box-shadow ease-in-out 0.1s;
-  transition: border-color ease-in-out 0.1s, box-shadow ease-in-out 0.1s;
-}
-
-::before, ::after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-Element {
-  width: 17px;
-}
-
-div.Tokenize ul {
-  &.TokensContainer {
-    &:hover, &:focus {
-      border-color: #ec6d12 !important;
-      background-color: #2a2a2a !important;
-      -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
-      box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
-    }
-    border: 1px solid #5a5a5a !important;
-    background-color: #2a2a2a !important;
-    color: #FFFFFF !important;
-  }
-  &.Dropdown {
-    border: 1px solid #5a5a5a !important;
-    background-color: #2a2a2a !important;
-    color: #FFFFFF !important;
-  }
-}
-
-.tokenize {
-  > .tokens-container > {
-    .token {
-      background-color: #ce671c !important;
-      border: 1px solid #303030 !important;
-    }
-    .placeholder {
-      color: #505050 !important;
-    }
-    .token > .dismiss::after {
-      color: #FFFFFF !important;
-    }
-  }
-  &.focus > .tokens-container {
-    border-color: #ec6d12 !important;
-    background-color: #2a2a2a !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-  }
-  > .tokens-container {
-    border-radius: 3px;
-    border: 1px solid #5a5a5a !important;
-    background-color: #2a2a2a !important;
-    > {
-      .tokenize > .tokens-container > .token-search {
-        color: #FFFFFF !important;
-        border: none !important;
-      }
-      .token, .placeholder {
-        border: none !important;
-      }
-      .token-search {
-        border: none !important;
-        > input {
-          border: none !important;
-        }
-      }
-    }
-  }
-}
-
-.bootgrid-table th {
-  > .column-header-anchor {
-    color: #fff !important;
-    > {
-      .icon, .glyphicon {
-        color: #fff !important;
-      }
-    }
-  }
-  &:hover {
-    background-color: #4b4b4b !important;
-  }
-}
-
-.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu {
-  color: #fff;
-  background-color: #2a2a2a;
-  border-color: #1d1d1d;
 }
 
 .btn-group.bootstrap-select {
@@ -9751,12 +9648,6 @@ div.Tokenize ul {
     border-color: #323232 !important;
     color: #FFFFFF !important;
     background-color: #2d2d2d !important;
-  }
-}
-
-.bootgrid-table td {
-  &.loading, &.no-results {
-    background: none !important;
   }
 }
 
@@ -9770,12 +9661,6 @@ div.Tokenize ul {
   top: 0;
   background-color: #ec6d12 !important;
   border: 1px solid #ec6d12 !important;
-}
-
-.nvtooltip {
-  background-color: rgb(60, 60, 60) !important;
-  color: rgba(0, 0, 0, 1) !important;
-  border: 1px solid rgb(255, 127, 14) !important;
 }
 
 .glyphicon {
@@ -9795,25 +9680,4 @@ div.Tokenize ul {
 #chart, #chart_intf_in, #chart_intf_out, #chart_top_ports, #chart_top_sources, #traffic_graph_widget_chart_in, #traffic_graph_widget_chart_out {
   background-color: #292929;
   border: 1px solid #515151;
-}
-
-.bootstrap-dialog.type-success .modal-header {
-  background-color: #c35d12 !important;
-}
-.dashboard_grid_column table {
-table-layout: fixed;
-}
-
-#ipsec {
-#ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
-background-color: #393939;
-}
-.ipsec-tab {
-background-color: #3e3e3e;
-color: #928873;
-&.activetab {
-background-color: #2a2a2a;
-color: #ec6d12;
-}
-}
 }
