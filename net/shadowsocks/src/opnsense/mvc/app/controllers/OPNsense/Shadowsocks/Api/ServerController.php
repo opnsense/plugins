@@ -30,8 +30,8 @@ namespace OPNsense\Shadowsocks\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
-class GeneralController extends ApiMutableModelControllerBase
+class ServerController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Shadowsocks\General';
-    static protected $internalModelName = 'general';
+    static protected $internalModelClass = '\OPNsense\Shadowsocks\Server';
+    static protected $internalModelName = 'server';
 }

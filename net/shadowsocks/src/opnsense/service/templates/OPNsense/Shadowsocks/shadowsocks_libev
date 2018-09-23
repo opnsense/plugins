@@ -1,4 +1,4 @@
-{% if helpers.exists('OPNsense.shadowsocks.general.enabled') and OPNsense.shadowsocks.general.enabled == '1' %}
+{% if helpers.exists('OPNsense.shadowsocks.server.enabled') and OPNsense.shadowsocks.server.enabled == '1' %}
 shadowsocks_libev_enable="YES"
 shadowsocks_libev_flags=""
 {% else %}

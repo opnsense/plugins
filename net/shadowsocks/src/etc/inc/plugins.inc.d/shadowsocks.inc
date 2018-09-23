@@ -32,7 +32,7 @@ function shadowsocks_services()
 
     $services = array();
 
-    if (isset($config['OPNsense']['shadowsocks']['general']['enabled']) && $config['OPNsense']['shadowsocks']['general']['enabled'] == 1) {
+    if (isset($config['OPNsense']['shadowsocks']['server']['enabled']) && $config['OPNsense']['shadowsocks']['server']['enabled'] == 1) {
         $services[] = array(
             'description' => gettext('shadowsocks daemon'),
             'configd' => array(

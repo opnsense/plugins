@@ -32,7 +32,7 @@ use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Shadowsocks\General';
+    static protected $internalServiceClass = '\OPNsense\Shadowsocks\Server';
     static protected $internalServiceTemplate = 'OPNsense/Shadowsocks';
     static protected $internalServiceEnabled = 'enabled';
     static protected $internalServiceName = 'shadowsocks';
