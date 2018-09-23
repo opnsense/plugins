@@ -6240,66 +6240,91 @@ label > input[type="radio"] {
   /*additional extensions for theme-cicada*/
 
 #tab_1 #maintabs {
-    border-bottom: 1px solid #565656; }
+  border-bottom: 1px solid #565656;
+}
 
 textarea#update_status, textarea#update_status:hover {
-	color:inherit !important;
-	background-color:none !important;
-	-webkit-box-shadow:none !important;
-	box-shadow:none !important;
-	border:none !important; }
+  color:inherit !important;
+  background-color:none !important;
+  -webkit-box-shadow:none !important;
+  box-shadow:none !important;
+  border:none !important;
+}
 
 .fa-toggle-off::before {
   color:#ec6d12 !important;
-  outline:none !important; }
+  outline:none !important;
+}
 
 .fa-toggle-on::before {
-  outline:none !important; }
+  outline:none !important;
+}
 
 .fa-search::before, .glyphicon-search::before {
-    content: "\e003"; }
+  content: "\e003";
+}
+
 .fa-times-circle::before {
-    content: "\f057";
-    color: #B13116; }
+  content: "\f057";
+  color: #B13116;
+}
+
 .fa-refresh::before {
-    content: "\f021"; }
+  content: "\f021";
+}
+
 .fa-question-circle::before {
-    content: "\f059";
-    cursor: pointer;
-    color: #ec6d12;
+  content: "\f059";
+  cursor: pointer;
+  color: #ec6d12;
 }
+
 div.container-fluid > .fa-search::before, div.container-fluid  > .fa-refresh::before {
-    color: #FFFFFF !important; }
-.panel-heading h3:hover, h3:focus {color: #FFFFFF;
-	text-decoration: none;
+  color: #FFFFFF !important;
+}
+	
+.panel-heading h3:hover, h3:focus {
+  color: #FFFFFF;
+  text-decoration: none;
 }
 
-h3:link {color:#FFFFFF;text-decoration: underline;
+h3:link {
+  color:#FFFFFF;
+  text-decoration: underline;
 }
 
-h3:hover, h3:focus {color: #ec6d12;
-	text-decoration: underline; 
+h3:hover, h3:focus {
+  color: #ec6d12;
+  text-decoration: underline; 
 }
 
 .table-condensed.table-hover {
-	border: 1px solid #515151; }
+  border: 1px solid #515151;
+}
+
+.bootgrid-header .search .glyphicon,
+.bootgrid-footer .search .glyphicon,
+.input-group-addon {
+  top: 0;
+  background-color: #ec6d12;
+  border: 1px solid #ec6d12; 
+}
 
 .btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
-	border-color: #323232 !important;
-	color:#FFFFFF !important;
-	background-color: #2d2d2d !important; }
-
-.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-	color: #FFF !important;
-	text-decoration: none !important;
-	background-color: #ec6d12 !important; }
-
-.bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon,.input-group-addon {
-    top: 0;
-    background-color: #ec6d12 !important;
-	border: 1px solid #ec6d12 !important; 
+  border-color: #323232 !important;
+  color:#FFFFFF !important;
+  background-color: #2d2d2d !important;
 }
+
 .glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
-	color: #eac80a !important;}
-#system_log-widgets.content-box {border:none;}
-#chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #292929; border: 1px solid #515151; }
+  color: #eac80a !important;
+}
+	
+#system_log-widgets.content-box {
+  border:none;
+}
+
+#chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out {
+  background-color: #292929;
+  border: 1px solid #515151;
+}

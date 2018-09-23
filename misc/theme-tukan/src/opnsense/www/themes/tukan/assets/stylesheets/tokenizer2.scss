@@ -7,8 +7,8 @@
     min-height: 34px;
     cursor: text;
     border-radius: 3px;
-    border: 1px solid #5a5a5a;
-    background-color: #2a2a2a;
+    border: 1px solid #4d83a1;
+    background-color: #ffffff;
     &.disabled {
       background-color: #eee;
       cursor: not-allowed;
@@ -16,8 +16,8 @@
   }
   &.focus > .tokens-container {
     outline: 0;
-    border-color: #ec6d12;
-    background-color: #2a2a2a;
+    border-color: #00A7FF;
+    background-color: none;
     -webkit-box-shadow: none;
     box-shadow: none;
   }
@@ -33,10 +33,11 @@
     > {
       .token {
         padding: 0 1.2em 0 5px;
-        background-color: #ce671c;
+        background-color: #ffe83e;
         -webkit-border-radius: 2px;
         -moz-border-radius: 2px;
         border-radius: 2px;
+        border: 1px solid #303030;
         display: inline-block;
         margin: 5px 5px 0 0;
         position: relative;
@@ -67,19 +68,17 @@
   > .tokens-container {
     > {
       .placeholder {
-        color: #6b6b6b;
+        color: #c9c9c9;
         padding: 0;
       }
       .token-search {
-        color: #fff;
+        color: #000;
         padding: 0;
       }
     }
     &:hover {
-      border-color: #ec6d12;
-      background-color: #2a2a2a;
-      -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
-      box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
+      border-color: #00A7FF;
+      background-color: none;
     }
     > .token-search > input {
       padding: 0;
@@ -120,7 +119,7 @@
         cursor: pointer;
         &:after {
           content: "×";
-          color: #fff;
+          color: #000;
         }
       }
     }

@@ -316,6 +316,13 @@ svg.nvd3-svg {
     cursor: pointer;
 }
 
+.nv-legend-symbol {
+  stroke-width: 1 !important;
+  fill: rgb(255, 255, 255) !important;
+  fill-opacity: 1;
+  stroke: rgb(255, 255, 255) !important;
+}
+
 .nvd3 .nv-legend .nv-disabled circle {
     fill-opacity: 0;
 }
