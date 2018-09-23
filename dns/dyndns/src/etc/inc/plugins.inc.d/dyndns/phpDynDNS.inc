@@ -28,7 +28,6 @@
  *    - Custom dynamic DNS (any URL)
  *    - Custom dynamic DNS IPv6 (any URL)
  *    - CloudFlare (www.cloudflare.com)
- *    - CloudFlare IPv6 (www.cloudflare.com)
  *    - Eurodns (eurodns.com)
  *    - GratisDNS (gratisdns.dk)
  *    - City Network (citynetwork.se)
@@ -76,8 +75,7 @@
  *  SelfHost            - Last Tested: 26 December 2011
  *  Amazon Route53      - Last Tested: 01 April 2012
  *  DNS-O-Matic         - Last Tested: 9 September 2010
- *  CloudFlare          - Last Tested: 19 September 2018
- *  CloudFlare IPv6     - Last Tested: 19 September 2018
+ *  CloudFlare          - Last Tested: 30 May 2013
  *  Eurodns             - Last Tested: 25 July 2018
  *  GratisDNS           - Last Tested: 15 August 2012
  *  OVH DynHOST         - Last Tested: NEVER
@@ -238,7 +236,6 @@ class updatedns
         }
 
         switch ($dnsService) {
-            case 'cloudflare-v6':
             case 'custom-v6':
             case 'he-net-v6':
             case 'regfish-v6':
@@ -287,7 +284,6 @@ class updatedns
                 case '3322':
                 case 'citynetwork':
                 case 'cloudflare':
-                case 'cloudflare-v6':
                 case 'custom':
                 case 'custom-v6':
                 case 'dhs':
@@ -709,52 +705,41 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'cloudflare':
-            case 'cloudflare-v6':
-                $baseUrl = 'https://api.cloudflare.com/client/v4';
-                $fqdn = str_replace(' ', '', $this->_dnsHost);
-                $fqdnParts = explode('.', $fqdn);
-                $hostName = array_shift($fqdnParts);
-                $domainName = implode('.', $fqdnParts);
-                $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
-                $hostData = array(
-                    "content" => "{$this->_dnsIP}",
-                    "type" => $recordType,
-                    "name" => $fqdn
-                );
+                $dnsServer ='api.cloudflare.com';
+                $dnsHost = str_replace(' ', '', $this->_dnsHost);
+                $host_names = explode('.', $dnsHost);
+                $bottom_host_name = $host_names[count($host_names) - 2] . '.' . $host_names[count($host_names) - 1];
 
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    "X-Auth-Email: {$this->_dnsUser}",
-                    "X-Auth-Key: {$this->_dnsPass}",
+                    'X-Auth-Email: '.$this->_dnsUser.'',
+                    'X-Auth-Key: '.$this->_dnsPass.'',
                     'Content-Type: application/json'
                 ));
 
                 // Get zone ID
-                $zonesUrl = "$baseUrl/zones";
-                $getZoneId = "$zonesUrl/?name=$domainName";
+                $getZoneId = "https://{$dnsServer}/client/v4/zones/?name={$bottom_host_name}";
                 curl_setopt($ch, CURLOPT_URL, $getZoneId);
                 $output = json_decode(curl_exec($ch));
-                $zoneId = $output->result[0]->id;
-                if ($zoneId) { // If zone ID was found get host ID
-                    $dnsRecordsUrl = "$zonesUrl/$zoneId/dns_records";
-                    $getHostId = "$dnsRecordsUrl?name=$fqdn&type=$recordType";
+                $zone = $output->result[0]->id;
+                if ($zone) { // If zone ID was found get host ID
+                    $getHostId = "https://{$dnsServer}/client/v4/zones/{$zone}/dns_records?name={$this->_dnsHost}";
                     curl_setopt($ch, CURLOPT_URL, $getHostId);
                     $output = json_decode(curl_exec($ch));
-                    $recordCount = count($output->result);
-                    if ($recordCount === 0) {
-                        // create record
-                        curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
-                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-                    } elseif ($recordCount >= 1) {
-                        // update record
-                        $recordId = $output->result[0]->id;
-                        $hostData["proxied"] = $output->result[0]->proxied;
-                        curl_setopt($ch, CURLOPT_URL, "$dnsRecordsUrl/$recordId");
+                    $host = $output->result[0]->id;
+                    if ($host) { // If host ID was found update host
+                        $hostData = array(
+                            "content" => "{$this->_dnsIP}",
+                            "type" => "A",
+                            "name" => "{$this->_dnsHost}",
+                            "proxiable" => $output->result[0]->proxiable,
+                            "proxied" => $output->result[0]->proxied
+                        );
+                        $data_json = json_encode($hostData);
+                        $updateHostId = "https://{$dnsServer}/client/v4/zones/{$zone}/dns_records/{$host}";
+                        curl_setopt($ch, CURLOPT_URL, $updateHostId);
                         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                    }
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
-                    if ($recordCount > 1) {
-                        log_error("Dynamic DNS ($fqdn): Warning: multiple records for $hostName found");
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
                     }
                 }
                 break;
@@ -1133,7 +1118,6 @@ class updatedns
                 }
                 break;
             case 'cloudflare':
-            case 'cloudflare-v6':
                 $output = json_decode($data);
                 if ($output->result->content === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
@@ -1141,7 +1125,7 @@ class updatedns
                 } elseif ($output->errors[0]->code === 9103) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with CloudFlare.";
                 } elseif (($output->success) && (!$output->result[0]->id)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone or Host ID was not found, check that your hostname is correct and an A record already exists.";
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");

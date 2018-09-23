@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2018 Michael Muenz
  *
  *    All rights reserved.
  *

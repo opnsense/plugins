@@ -98,7 +98,7 @@ function miniupnpd_uuid()
 
 function miniupnpd_configure_do($verbose = false)
 {
-    global $config, $g;
+    global $config;
 
     miniupnpd_stop();
 
@@ -194,7 +194,7 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "serial=".strtoupper(substr(miniupnpd_uuid(), 0, 8))."\n";
 
             /* set model number */
-            $config_text .= "model_number={$g['product_version']}\n";
+            $config_text .= "model_number=".file_get_contents("/usr/local/opnsense/version/opnsense")."\n";
 
             /* upnp access restrictions */
             for ($i=1; $i<=4; $i++) {

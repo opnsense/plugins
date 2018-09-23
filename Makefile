@@ -53,7 +53,10 @@ ${TARGET}:
 .  endfor
 .endfor
 
-ARGS=	diff mfc
+diff:
+	@git diff --stat -p stable/${PLUGIN_ABI}
+
+ARGS=	mfc
 
 # handle argument expansion for required targets
 .for TARGET in ${.TARGETS}
@@ -68,9 +71,6 @@ ${TARGET}: ${_TARGET}
 ${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
 .endif
 .endfor
-
-diff:
-	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
 
 mfc:
 	@git checkout stable/${PLUGIN_ABI}

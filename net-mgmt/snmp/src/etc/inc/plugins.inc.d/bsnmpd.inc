@@ -96,14 +96,11 @@ trap := "{$config['snmpd']['trapstring']}"
 EOD;
     }
 
-    $sysDescr = join(' ', array(
-        $g['product_name'],
-        $g['product_version'],
-        php_uname('n'),
-        php_uname('s'),
-        php_uname('r'),
-        $g['product_arch']
-    ));
+    $version = trim(file_get_contents('/usr/local/opnsense/version/opnsense'));
+    $platform = $g['product_name'];
+    $sysDescr = "{$g['product_name']} " . php_uname("n") .
+                " {$version} {$platform} " . php_uname("s") .
+                " " . php_uname("r") . " " . trim(shell_exec('uname -p'));
 
     $snmpdconf .= <<<EOD
 system := 1

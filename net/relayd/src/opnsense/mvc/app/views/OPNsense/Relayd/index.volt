@@ -109,8 +109,6 @@ POSSIBILITY OF SUCH DAMAGE.
          var servertype = $('#relayd\\.virtualserver\\.type').val();
          var transport_type = $('#relayd\\.virtualserver\\.transport_type').val();
          var backuptransport_table = $('#relayd\\.virtualserver\\.backuptransport_table').val();
-         var transport_tablemode = $('#relayd\\.virtualserver\\.transport_tablemode').val();
-         var backuptransport_tablemode = $('#relayd\\.virtualserver\\.backuptransport_tablemode').val();
 
          $('tr[id="row_relayd.virtualserver.transport_type"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.routing_interface"]').addClass('hidden');
@@ -131,8 +129,8 @@ POSSIBILITY OF SUCH DAMAGE.
             $('tr[id="row_relayd.virtualserver.stickyaddress"]').removeClass('hidden');
             $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="least-states">Least States </option>');
             $('#relayd\\.virtualserver\\.backuptransport_tablemode').append('<option value="least-states">Least States </option>');
-            $('#relayd\\.virtualserver\\.transport_tablemode').val(transport_tablemode);
-            $('#relayd\\.virtualserver\\.backuptransport_tablemode').val(backuptransport_tablemode);
+            $('#relayd\\.virtualserver\\.transport_tablemode').val('roundrobin');
+            $('#relayd\\.virtualserver\\.backuptransport_tablemode').val('roundrobin');
          } else {
             $('tr[id="row_relayd.virtualserver.protocol"]').removeClass('hidden');
             $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="hash">Hash </option>');
@@ -143,8 +141,8 @@ POSSIBILITY OF SUCH DAMAGE.
             $('#relayd\\.virtualserver\\.backuptransport_tablemode').append('<option value="random">Random </option>');
             $('#relayd\\.virtualserver\\.transport_tablemode').append('<option value="source-hash">Source Hash </option>');
             $('#relayd\\.virtualserver\\.backuptransport_tablemode').append('<option value="source-hash">Source Hash </option>');
-            $('#relayd\\.virtualserver\\.transport_tablemode').val(transport_tablemode);
-            $('#relayd\\.virtualserver\\.backuptransport_tablemode').val(backuptransport_tablemode);
+            $('#relayd\\.virtualserver\\.transport_tablemode').val('roundrobin');
+            $('#relayd\\.virtualserver\\.backuptransport_tablemode').val('roundrobin');
          }
 
          $('#relayd\\.virtualserver\\.transport_tablemode').selectpicker('refresh');

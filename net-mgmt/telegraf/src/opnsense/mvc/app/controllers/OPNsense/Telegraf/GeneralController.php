@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2017 Michael Muenz
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@ class GeneralController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->generalForm = $this->getForm("general");
-        $this->view->formDialogEditTelegrafKey = $this->getForm("dialogEditTelegrafKey");
         $this->view->pick('OPNsense/Telegraf/general');
     }
 }
