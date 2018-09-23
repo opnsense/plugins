@@ -646,12 +646,10 @@ th {
   content: "\e112"; }
 
 .glyphicon-chevron-up:before {
-  content: "\e113";
-  color:#FFFFFF !important; }
+  content: "\e113"; }
 
 .glyphicon-chevron-down:before {
-  content: "\e114";
-  color:#FFFFFF !important; }
+  content: "\e114"; }
 
 .glyphicon-retweet:before {
   content: "\e115"; }
