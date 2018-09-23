@@ -9076,49 +9076,59 @@ main.page-content.col-lg-12 {
           margin-top: -28px !important;
         }
       }
-      a.list-group-item {
-        &.active-menu-title, &[aria-expanded="true"] {
+      a.list-group-item.active-menu-title {
+        color: #000 !important;
+        background-color: #FFF !important;
+      }
+    }
+  }
+}
+
+a.list-group-item.active-menu-title.collapsed {
+  color: #000 !important;
+  background-color: #FFF !important;
+}
+
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > {
+  a.list-group-item[aria-expanded="true"] {
+    color: #000 !important;
+    background-color: #FFF !important;
+  }
+  div {
+    &.collapse {
+      &.in {
+        > a.list-group-item[aria-expanded="true"] {
           color: #000 !important;
           background-color: #FFF !important;
         }
-      }
-      div {
-        &.collapse {
-          &.in {
-            > a.list-group-item[aria-expanded="true"] {
-              color: #000 !important;
-              background-color: #FFF !important;
-            }
-            > div.collapse.in > a.list-group-item {
-              padding-left: 10px !important;
-              font-size: 12px !important;
-              background-color: #294C5FE6 !important;
-              &.menu-level-3-item.active {
-                color: #000 !important;
-                background-color: #FFF !important;
-              }
-            }
-          }
-          > a.list-group-item {
-            padding-left: 10px !important;
-            font-size: 12px !important;
-            background-color: #294C5FE6 !important;
-          }
-          > div.collapse > a.list-group-item {
-            padding-left: 10px !important;
-            font-size: 12px !important;
-          }
-        }
-        &.collapsed > a.list-group-item {
+        > div.collapse.in > a.list-group-item {
           padding-left: 10px !important;
           font-size: 12px !important;
-          background-color: #FFF !important;
-        }
-        &.collapse.in > a.list-group-item:hover {
-          color: #000 !important;
-          background-color: #FFF !important;
+          background-color: #294C5FE6 !important;
+          &.menu-level-3-item.active {
+            color: #000 !important;
+            background-color: #FFF !important;
+          }
         }
       }
+      > a.list-group-item {
+        padding-left: 10px !important;
+        font-size: 12px !important;
+        background-color: #294C5FE6 !important;
+      }
+      > div.collapse > a.list-group-item {
+        padding-left: 10px !important;
+        font-size: 12px !important;
+      }
+    }
+    &.collapsed > a.list-group-item {
+      padding-left: 10px !important;
+      font-size: 12px !important;
+      background-color: #FFF !important;
+    }
+    &.collapse.in > a.list-group-item:hover {
+      color: #000 !important;
+      background-color: #FFF !important;
     }
   }
 }
@@ -9183,7 +9193,7 @@ a.list-group-item:focus {
       z-index: 10;
       position: absolute;
       left: 148px;
-      margin-top: -28px;
+      margin-top: -29px;
       height: auto;
       border: 1px solid #1f3a4a;
       -webkit-transition: width 0.1s;
@@ -9200,7 +9210,7 @@ a.list-group-item:focus {
       display: block;
       z-index: 10;
       left: 148px;
-      margin-top: -28px;
+      margin-top: -29px;
       height: auto;
       -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
@@ -9595,6 +9605,24 @@ label > input {
   background-color: #ffe83e;
 }
 
+.dashboard_grid_column table {
+  table-layout: fixed;
+}
+
+#ipsec {
+  #ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
+    background-color: #f0f0f0;
+  }
+  .ipsec-tab {
+    background-color: #839caa;
+    color: #FFF;
+    &.activetab {
+      background-color: #315a71;
+      color: #FFF;
+    }
+  }
+}
+
 /*additional extensions for theme-tukan*/
 
 #tab_1 #maintabs {
@@ -9671,110 +9699,20 @@ h3 {
   }
 }
 
-.nvd3 .nv-axis {
-  line {
-    stroke: #d8d8d8 !important;
-  }
-  fill: #000 !important;
-}
-
-.nv-series-0 {
-  stroke-opacity: 1;
-  stroke-width: 0.5;
-  fill-opacity: 0.5;
-  fill: rgb(31, 119, 180) !important;
-  stroke: rgb(31, 119, 180) !important;
-}
-
-.nv-controlsWrap.nvd3-svg circle.nv-legend-symbol {
-  stroke-width: 1 !important;
-  fill: rgb(143, 143, 143) !important;
-  stroke: rgb(143, 143, 143) !important;
-}
-
 .table-condensed.table-hover {
   border: 1px solid #bdbdbd;
 }
 
-.tokenize {
-  > .tokens-container > .token {
-    background-color: #ffe83e !important;
-    border: 1px solid #303030 !important;
-    > .dismiss::after {
-      color: #000 !important;
-    }
-  }
-  &.focus > .tokens-container {
-    border-color: #00A7FF !important;
-    background-color: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-  }
-  > .tokens-container {
-    border: 1px solid #4d83a1 !important;
-    background-color: #FFFFFF !important;
-    > {
-      .tokenize > .tokens-container > .token-search {
-        color: #FFFFFF !important;
-      }
-      .token-search > input {
-        border: none !important;
-      }
-    }
-  }
-}
-
-.bootgrid-table th {
-  > .column-header-anchor {
-    color: #000 !important;
-    > {
-      .icon, .glyphicon {
-        color: #000 !important;
-      }
-    }
-  }
-  &:hover {
-    background-color: #f2fafe !important;
-  }
-}
-
-.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu {
-  color: #FFF;
-  background-color: #30596f;
-  border-color: #1d1d1d;
+.bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon, .input-group-addon {
+  top: 0;
+  background-color: #FF7E25;
+  border: 1px solid #FF7E25;
 }
 
 .btn-group.bootstrap-select {
   &.open, &:hover {
     border-color: #323232 !important;
     color: #FFFFFF !important;
-  }
-}
-
-.bootgrid-table td {
-  &.loading, &.no-results {
-    background: none !important;
-  }
-}
-
-.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-  color: #FFF !important;
-  text-decoration: none !important;
-  background-color: #ff7e25 !important;
-}
-
-.bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon, .input-group-addon {
-  top: 0;
-  background-color: #FF7E25 !important;
-  border: 1px solid #FF7E25 !important;
-}
-
-.nvtooltip {
-  background-color: #fff !important;
-  color: rgba(0, 0, 0, 1) !important;
-  border: 1px solid rgb(0, 0, 0) !important;
-  table {
-    background-color: #FFF !important;
   }
 }
 
@@ -9800,21 +9738,4 @@ h3 {
 
 .bootstrap-dialog.type-success .modal-header {
   background-color: #427795 !important;
-}
-.dashboard_grid_column table {
-table-layout: fixed;
-}
-
-#ipsec {
-#ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
-background-color: #f0f0f0;
-}
-.ipsec-tab {
-background-color: #839caa;
-color: #FFF;
-&.activetab {
-background-color: #315a71;
-color: #FFF;
-}
-}
 }

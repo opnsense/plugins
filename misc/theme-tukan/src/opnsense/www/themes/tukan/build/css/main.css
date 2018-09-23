@@ -6226,145 +6226,106 @@ label > input[type="radio"] {
 
 /* fields in firewall schedule */
 [data-state="lightcoral"] {
-  background-color: #ffe83e; }
+  background-color: #ffe83e; 
+}
 
 [data-state="white"] {
-  background-color: inherit; }
+  background-color: inherit; 
+}
 
 [data-state="red"] {
-  background-color: #ffe83e; }
+  background-color: #ffe83e; 
+}
+
+.dashboard_grid_column table {
+	table-layout: fixed;
+}
+
+#ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
+	background-color: #f0f0f0;
+}
+
+#ipsec .ipsec-tab {
+	background-color: #839caa;
+	color: #FFF;
+}
+
+#ipsec .ipsec-tab.activetab {
+	background-color: #315a71;
+	color: #FFF;
+}
 
   /*additional extensions for theme-tukan*/
 
 #tab_1 #maintabs {
-    border-bottom: 1px solid #c2c2c2; }
+  border-bottom: 1px solid #c2c2c2;
+}
 
 textarea#update_status, textarea#update_status:hover {
-	color:inherit !important;
-	-webkit-box-shadow:none !important;
-	box-shadow:none !important;
-	border:none !important; }
+  color:inherit !important;
+  -webkit-box-shadow:none !important;
+  box-shadow:none !important;
+  border:none !important;
+}
 
 .fa-toggle-off::before {
   color:#FF8B00 !important;
   outline:none !important; }
 
 .fa-toggle-on::before {
-  outline:none !important; }
+  outline:none !important;
+}
 
 .fa-search::before, .glyphicon-search::before {
-    content: "\e003"; }
+  content: "\e003";}
 .glyphicon.glyphicon-search::before {
-	color:#000 !important; }
+  color:#000 !important;
+}
 .fa-times-circle::before {
-    content: "\f057";
-    color: #DA4829; }
+  content: "\f057";
+  color: #DA4829;
+}
 .fa-question-circle::before {
-    content: "\f059";
-    color: #ff7e25;
-    cursor: pointer; }
+  content: "\f059";
+  color: #ff7e25;
+  cursor: pointer;
+}
 .fa-refresh::before {
     content: "\f021"; }
 div.container-fluid >.fa-search::before, div.container-fluid >.fa-refresh::before {
-    color: #FFFFFF !important; }
+  color: #FFFFFF !important; }
 
-.panel-heading h3:hover, h3:focus {color: #FFFFFF;
-	text-decoration: none; }
+.panel-heading h3:hover, h3:focus {
+  color: #FFFFFF;
+  text-decoration: none;
+}
 
-h3:link {color:#FFFFFF;text-decoration: underline;}
+h3:link {
+  color:#FFFFFF;text-decoration: underline;
+}
 
-h3:hover, h3:focus {text-decoration: underline; }
-
-.nvd3 .nv-axis line {stroke: #d8d8d8 !important; }
-.nvd3 .nv-axis { fill: #000 !important;}
-.nv-series-0 {
-    stroke-opacity: 1;
-	stroke-width: 0.5;
-	fill-opacity: 0.5;
-	fill: rgb(31, 119, 180) !important;
-	stroke: rgb(31, 119, 180) !important; }
-
-.nv-controlsWrap.nvd3-svg circle.nv-legend-symbol {
-stroke-width: 1 !important;
-fill: rgb(143, 143, 143) !important;
-stroke: rgb(143, 143, 143) !important; }
+h3:hover, h3:focus {
+  text-decoration: underline;
+}
 
 .table-condensed.table-hover {
 	border: 1px solid #bdbdbd; }
-
-.tokenize > .tokens-container > .token {
-	background-color: #ffe83e !important;
-	border: 1px solid #303030 !important; }
-
-.tokenize > .tokens-container > .token > .dismiss::after {
-	color:#000 !important; }
-
-.tokenize.focus > .tokens-container {
-	border-color: #00A7FF !important;
-	background-color:none !important;
-	-webkit-box-shadow: none !important;
-	box-shadow: none !important;}
-
-.tokenize > .tokens-container {
-	border: 1px solid #4d83a1 !important;
-	background-color: #FFFFFF !important;}
-
-.tokenize > .tokens-container > .tokenize > .tokens-container > .token-search {
-	color:#FFFFFF !important; }
-
-.tokenize > .tokens-container > .token-search > input {
-	border:none !important;}
-
-.bootgrid-table th > .column-header-anchor, .bootgrid-table th > .column-header-anchor > .icon, .bootgrid-table th > .column-header-anchor > .glyphicon {
-	color: #000 !important; }
-.bootgrid-table th:hover {
-	background-color:#f2fafe !important; }
-
-.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu {
-	color: #FFF;
-	background-color: #30596f;
-	border-color: #1d1d1d; }
-
-.btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
-	border-color: #323232 !important;
-	color:#FFFFFF !important;  }
-
-.bootgrid-table td.loading, .bootgrid-table td.no-results {
-	background:none !important; }
-
-.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover, .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus, .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-    color:#FFF !important;
-    text-decoration:none !important;
-	background-color:#ff7e25 !important; }
-
-.bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon,.input-group-addon {
-    top: 0;
-	background-color: #FF7E25 !important;
-	border: 1px solid #FF7E25 !important;}
-.nvtooltip {
-	background-color: #fff !important;
-	color: rgba(0,0,0,1.0) !important;
-	border: 1px solid rgb(0, 0, 0) !important;
+.bootgrid-header .search .glyphicon,
+.bootgrid-footer .search .glyphicon,
+.input-group-addon {
+  top: 0;
+  background-color: #FF7E25;
+  border: 1px solid #FF7E25;
 }
-.nvtooltip table { background-color:#FFF !important; }
-
+.btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
+  border-color: #323232 !important;
+  color:#FFFFFF !important;
+}
 .glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
 	color: #000 !important;}
-#system_log-widgets.content-box {border:none; box-shadow: none;}
+#system_log-widgets.content-box {
+  border:none; box-shadow: none;
+}
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #FFF; border: 1px solid #c2c2c2; }
-.bootstrap-dialog.type-success .modal-header {background-color: #427795 !important;}
-
-.dashboard_grid_column table {
-	table-layout: fixed; }
-
-#ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
-	background-color: #f0f0f0; }
-
-#ipsec .ipsec-tab {
-	background-color: #839caa;
-	color: #FFF; }
-
-#ipsec .ipsec-tab.activetab {
-	background-color: #315a71;
-	color: #FFF; }
-	
+.bootstrap-dialog.type-success .modal-header {background-color: #427795 !important;
+}
