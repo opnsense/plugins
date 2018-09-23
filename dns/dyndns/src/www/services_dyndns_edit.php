@@ -102,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     do_input_validation($pconfig, $reqdfields, $reqdfieldsn, $input_errors);
 
     if (isset($pconfig['host']) && in_array('host', $reqdfields)) {
-        /* Namecheap can have a @. in hostname */
-        if ($pconfig['type'] == "namecheap" && substr($pconfig['host'], 0, 2) == '@.') {
+        /* Namecheap can have a @. or *. in hostname */
+        if ($pconfig['type'] == "namecheap" && (substr($pconfig['host'], 0, 2) == '@.' || substr($pconfig['host'], 0, 2) == '*.')) {
             $host_to_check = substr($pconfig['host'], 2);
         } else {
             $host_to_check = $pconfig['host'];
