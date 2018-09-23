@@ -5878,7 +5878,7 @@ main.page-content.col-lg-12 {
 
 #navigation.col-sidebar-left > div.row > nav.page-side-nav {
   width:70px;
-  background-color:#172c38 !important; 
+  background-color:#172c38 !important;
   height:100% !important;
 }
 
@@ -5915,7 +5915,7 @@ main.page-content.col-lg-12 {
   font-size: 12px !important;
   display: block !important;
   position: absolute !important;
-  left: 70px !important; 
+  left: 70px !important;
   margin-top:-70px !important;
 }
 
@@ -5924,7 +5924,7 @@ main.page-content.col-lg-12 {
   font-size: 12px !important;
   display: block !important;
   position: absolute !important;
-  left: 148px !important; 
+  left: 148px !important;
   margin-top:-28px !important;
 }
 
@@ -6073,7 +6073,7 @@ button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus, button.toggle-side
 }
 
 button.toggle-sidebar {
-  color:#FFF; 
+  color:#FFF;
   background-color:transparent;
   font-size:14px;
   border:none;
@@ -6348,15 +6348,15 @@ label > input[type="radio"] {
 
 /* fields in firewall schedule */
 [data-state="lightcoral"] {
-  background-color: #ffe83e; 
+  background-color: #ffe83e;
 }
 
 [data-state="white"] {
-  background-color: inherit; 
+  background-color: inherit;
 }
 
 [data-state="red"] {
-  background-color: #ffe83e; 
+  background-color: #ffe83e;
 }
 
 .dashboard_grid_column table {
@@ -6462,6 +6462,6 @@ h3:hover, h3:focus {
 }
 
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out {
-  background-color: #FFF; 
+  background-color: #FFF;
   border: 1px solid #c2c2c2;
 }

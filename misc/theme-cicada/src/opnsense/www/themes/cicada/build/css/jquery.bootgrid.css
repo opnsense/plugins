@@ -106,7 +106,7 @@
   right: 0;
   top: 2px;
 }
-.bootgrid-table th > .column-header-anchor > .glyphicon { 
+.bootgrid-table th > .column-header-anchor > .glyphicon {
   color: #fff;
 }
 .bootgrid-table th:hover,

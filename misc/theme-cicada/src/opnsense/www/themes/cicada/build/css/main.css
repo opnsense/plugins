@@ -5863,7 +5863,7 @@ main.page-content.col-lg-12 {
 
 #navigation.col-sidebar-left {
   width:70px;
-  background-color: transparent !important; 
+  background-color: transparent !important;
   overflow: hidden;
 }
 
@@ -6005,7 +6005,7 @@ main.page-content.col-lg-12 {
   position: absolute;
   left: 70px;
   margin-top:-70px;
-  padding-bottom: 1px;			  
+  padding-bottom: 1px;
   height:auto;border:1px solid #515151;
   -webkit-transition: width 0.1s;
   -o-transition: width 0.1s;
@@ -6334,31 +6334,31 @@ label > input[type="radio"] {
   background-color: #ec6d12; }
 
 [data-state="white"] {
-  background-color: inherit; 
+  background-color: inherit;
 }
 
 [data-state="red"] {
-  background-color: #ec6d12; 
+  background-color: #ec6d12;
 }
 
 .dashboard_grid_column table {
-	table-layout: fixed; 
+	table-layout: fixed;
 }
 
 #ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
-	background-color: #393939; 
+	background-color: #393939;
 }
 
 #ipsec .ipsec-tab {
 	background-color: #3e3e3e;
-	color: #928873; 
+	color: #928873;
 }
 
 #ipsec .ipsec-tab.activetab {
 	background-color: #2a2a2a;
-	color: #ec6d12; 
+	color: #ec6d12;
 }
-	
+
   /*additional extensions for theme-cicada*/
 
 #tab_1 #maintabs {
@@ -6404,7 +6404,7 @@ textarea#update_status, textarea#update_status:hover {
 div.container-fluid > .fa-search::before, div.container-fluid  > .fa-refresh::before {
   color: #FFFFFF !important;
 }
-	
+
 .panel-heading h3:hover, h3:focus {
   color: #FFFFFF;
   text-decoration: none;
@@ -6417,7 +6417,7 @@ h3:link {
 
 h3:hover, h3:focus {
   color: #ec6d12;
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
 .table-condensed.table-hover {
@@ -6429,7 +6429,7 @@ h3:hover, h3:focus {
 .input-group-addon {
   top: 0;
   background-color: #ec6d12;
-  border: 1px solid #ec6d12; 
+  border: 1px solid #ec6d12;
 }
 
 .btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
@@ -6441,7 +6441,7 @@ h3:hover, h3:focus {
 .glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
   color: #eac80a !important;
 }
-	
+
 #system_log-widgets.content-box {
   border:none;
 }
