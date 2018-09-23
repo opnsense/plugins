@@ -6277,21 +6277,27 @@ textarea#update_status, textarea#update_status:hover {
 }
 
 .fa-search::before, .glyphicon-search::before {
-  content: "\e003";}
+  content: "\e003";
+}
+
 .glyphicon.glyphicon-search::before {
   color:#000 !important;
 }
+
 .fa-times-circle::before {
   content: "\f057";
   color: #DA4829;
 }
+
 .fa-question-circle::before {
   content: "\f059";
   color: #ff7e25;
   cursor: pointer;
 }
 .fa-refresh::before {
-    content: "\f021"; }
+  content: "\f021";
+}
+
 div.container-fluid >.fa-search::before, div.container-fluid >.fa-refresh::before {
   color: #FFFFFF !important; }
 
@@ -6309,7 +6315,9 @@ h3:hover, h3:focus {
 }
 
 .table-condensed.table-hover {
-	border: 1px solid #bdbdbd; }
+	border: 1px solid #bdbdbd;
+}
+
 .bootgrid-header .search .glyphicon,
 .bootgrid-footer .search .glyphicon,
 .input-group-addon {
@@ -6317,15 +6325,19 @@ h3:hover, h3:focus {
   background-color: #FF7E25;
   border: 1px solid #FF7E25;
 }
+
 .btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
   border-color: #323232 !important;
   color:#FFFFFF !important;
 }
 .glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
-	color: #000 !important;}
+  color: #000 !important;
+}
+
 #system_log-widgets.content-box {
   border:none; box-shadow: none;
 }
-#chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out { background-color: #FFF; border: 1px solid #c2c2c2; }
-.bootstrap-dialog.type-success .modal-header {background-color: #427795 !important;
+
+#chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out {
+  background-color: #FFF; border: 1px solid #c2c2c2;
 }
