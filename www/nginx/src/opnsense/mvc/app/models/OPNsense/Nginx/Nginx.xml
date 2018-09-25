@@ -207,6 +207,7 @@
       </upstream>
       <path_prefix type="TextField">
         <Required>N</Required>
+        <mask>/^[^" \t]+$/i</mask>
       </path_prefix>
       <root type="TextField">
         <Required>N</Required>
