@@ -805,7 +805,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $key_length = substr($key_length, 4);
 
     if ($key_length == 'ec256' || $key_length == 'ec384') {
-
         if ($acme_action == "renew") {
             // if it's renew then pass --ecc to acme client to locate the correct cert directory
             $acme_args[] = "--ecc";
