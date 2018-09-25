@@ -8992,16 +8992,16 @@ main.page-content.col-lg-12 {
     }
     > nav > #mainmenu > div > {
       a.list-group-item {
-        font-size: 12px;
+        font-size: 13px;
         text-align: center;
         > span {
           &.fa, &.glyphicon {
             visibility: visible;
-            font-size: 28px;
+            font-size: 20px;
           }
           &.__iconspacer {
             width: 50px;
-            height: 30px;
+            height: 25px;
             padding: 0px;
           }
         }
@@ -9009,13 +9009,13 @@ main.page-content.col-lg-12 {
         height: 70px;
         padding-left: 0px;
         padding-right: 0px;
-        padding-top: 12px;
+        padding-top: 15px;
         border-bottom: 2px solid #2a2a2a;
       }
       div {
         &.collapsing > a.list-group-item {
           padding-left: 10px !important;
-          font-size: 12px !important;
+          font-size: 13px !important;
           display: block !important;
           position: absolute !important;
           left: 70px !important;
@@ -9023,7 +9023,7 @@ main.page-content.col-lg-12 {
         }
         &.collapse.in > div.collapsing > a.list-group-item {
           padding-left: 10px !important;
-          font-size: 12px !important;
+          font-size: 13px !important;
           display: block !important;
           position: absolute !important;
           left: 148px !important;
@@ -9057,7 +9057,7 @@ a.list-group-item.active-menu-title.collapsed {
         }
         > div.collapse.in > a.list-group-item {
           padding-left: 10px !important;
-          font-size: 12px !important;
+          font-size: 13px !important;
           background-color: #393939e6 !important;
           &.menu-level-3-item.active {
             color: #ec6d12 !important;
@@ -9067,17 +9067,17 @@ a.list-group-item.active-menu-title.collapsed {
       }
       > a.list-group-item {
         padding-left: 10px !important;
-        font-size: 12px !important;
+        font-size: 13px !important;
         background-color: #393939e6 !important;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
-        font-size: 12px !important;
+        font-size: 13px !important;
       }
     }
     &.collapsed > a.list-group-item {
       padding-left: 10px !important;
-      font-size: 12px !important;
+      font-size: 13px !important;
     }
     &.collapse.in > a.list-group-item:hover {
       color: #ec6d12 !important;
@@ -9110,7 +9110,7 @@ a.list-group-item:focus {
   }
   &.collapse.in {
     width: 150px;
-    font-size: 12px;
+    font-size: 13px;
     display: block;
     z-index: 10;
     position: absolute;
@@ -9128,7 +9128,7 @@ a.list-group-item:focus {
   }
   &.collapsing {
     width: 0px;
-    font-size: 12px;
+    font-size: 13px;
     position: absolute;
     display: block;
     z-index: 10;
@@ -9142,7 +9142,7 @@ a.list-group-item:focus {
   &.collapse.in > div {
     &.collapse.in {
       width: 150px;
-      font-size: 12px;
+      font-size: 13px;
       display: block;
       z-index: 10;
       position: absolute;
@@ -9159,7 +9159,7 @@ a.list-group-item:focus {
     }
     &.collapsing {
       width: 0px;
-      font-size: 12px;
+      font-size: 13px;
       position: absolute;
       display: block;
       z-index: 10;
