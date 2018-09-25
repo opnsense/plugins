@@ -205,6 +205,9 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </upstream>
+      <path_prefix type="TextField">
+        <Required>N</Required>
+      </path_prefix>
       <root type="TextField">
         <Required>N</Required>
       </root>
