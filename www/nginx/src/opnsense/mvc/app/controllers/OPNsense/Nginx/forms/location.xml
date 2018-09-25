@@ -62,6 +62,12 @@
     <help>Select an upstream to proxy to or connect via FastCGI if chosen.</help>
   </field>
   <field>
+    <id>location.path_prefix</id>
+    <label>Path prefix</label>
+    <type>text</type>
+    <help>Define an optional path prefix for this location.</help>
+  </field>
+  <field>
     <id>location.limit_request_connections</id>
     <label>Limit Requests</label>
     <type>select_multiple</type>
