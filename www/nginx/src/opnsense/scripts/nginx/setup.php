@@ -31,11 +31,11 @@ require_once('config.inc');
 require_once('certs.inc');
 use \OPNsense\Nginx\Nginx;
 
-function export_pem_file($filename, $data) {
+function export_pem_file($filename, $data, $post_append = null) {
   $pem_content = trim(str_replace("\n\n", "\n", str_replace(
     "\r",
     "",
-    base64_decode((string)$data))
+    base64_decode((string)$data)) . ($post_append == null ? '' : "\n" . $post_append)
   ));
   file_put_contents($filename, $pem_content);
   chmod($filename, 0600);
@@ -82,10 +82,15 @@ foreach ($http_servers as $http_server) {
     if (!isset($cert)) {
       next;
     }
+    $chain = [];
+    foreach (ca_chain_array($cert) as $entry) {
+        $chain[] = base64_decode($entry['crt']);
+    }
     $hostname = explode(',', $http_server['servername'])[0];
     export_pem_file(
       '/usr/local/etc/nginx/key/' . $hostname . '.pem',
-      $cert['crt']
+      $cert['crt'],
+      implode("\n", $chain)
     );
     export_pem_file(
       '/usr/local/etc/nginx/key/' . $hostname . '.key',
@@ -122,10 +127,15 @@ if (isset($nginx['upstream'])) {
             if (!empty($upstream['tls_client_certificate'])) {
                 $cert = find_cert($upstream['tls_client_certificate']);
                 if (isset($cert)) {
+                    $chain = [];
+                    foreach (ca_chain_array($cert) as $entry) {
+                        $chain[] = base64_decode($entry['crt']);
+                    }
                     $hostname = explode(',', $http_server['servername'])[0];
                     export_pem_file(
                         '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.pem',
-                        $cert['crt']
+                        $cert['crt'],
+                        implode("\n", $chain)
                     );
                     export_pem_file(
                         '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.key',
