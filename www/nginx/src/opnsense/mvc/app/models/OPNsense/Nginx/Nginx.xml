@@ -205,6 +205,9 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </upstream>
+      <new_urlpattern type="TextField">
+        <Required>N</Required>
+      </new_urlpattern>
       <root type="TextField">
         <Required>N</Required>
       </root>
