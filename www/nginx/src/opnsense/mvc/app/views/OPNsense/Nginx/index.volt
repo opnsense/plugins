@@ -190,6 +190,7 @@ $( document ).ready(function() {
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
+                <th data-column-id="path_prefix" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Path Prefix') }}</th>
                 <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
                 <th data-column-id="enable_secrules" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('WAF Enabled') }}</th>
                 <th data-column-id="force_https" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
