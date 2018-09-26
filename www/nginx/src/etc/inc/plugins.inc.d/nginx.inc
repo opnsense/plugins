@@ -40,7 +40,7 @@ function nginx_services()
 
     return array(
         array(
-            'description' => gettext('nginx Load Balancer, WAF, Reverse Proxy and Web Server'),
+            'description' => gettext('Reverse Proxy and Web Server'),
             'configd' => array(
                 'restart' => array('nginx restart'),
                 'start' => array('nginx start')
