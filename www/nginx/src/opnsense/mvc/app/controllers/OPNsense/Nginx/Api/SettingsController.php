@@ -309,8 +309,10 @@ class SettingsController extends ApiMutableModelControllerBase
     // access limit zone headers
     public function searchlimit_zoneAction()
     {
-        return $this->searchBase('limit_zone',
-            array('description', 'key', 'size', 'rate', 'rate_unit'));
+        return $this->searchBase(
+            'limit_zone',
+            array('description', 'key', 'size', 'rate', 'rate_unit')
+        );
     }
 
     public function getlimit_zoneAction($uuid = null)
@@ -337,8 +339,10 @@ class SettingsController extends ApiMutableModelControllerBase
     // limit_request_connection
     public function searchlimit_request_connectionAction()
     {
-        return $this->searchBase('limit_request_connection',
-            array('description', 'limit_zone', 'nodelay', 'burst', 'connection_count'));
+        return $this->searchBase(
+            'limit_request_connection',
+            array('description', 'limit_zone', 'nodelay', 'burst', 'connection_count')
+        );
     }
 
     public function getlimit_request_connectionAction($uuid = null)
@@ -364,8 +368,10 @@ class SettingsController extends ApiMutableModelControllerBase
     // cache path
     public function searchcache_pathAction()
     {
-        return $this->searchBase('cache_path',
-            array('path', 'inactive', 'size', 'max_size'));
+        return $this->searchBase(
+            'cache_path',
+            array('path', 'inactive', 'size', 'max_size')
+        );
     }
 
     public function getcache_pathAction($uuid = null)

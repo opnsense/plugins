@@ -35,7 +35,8 @@ use OPNsense\Nginx\AccessLogParser;
 use OPNsense\Core\Config;
 use OPNsense\Nginx\Nginx;
 
-function nginx_print_error($msg) {
+function nginx_print_error($msg)
+{
     echo json_encode(
         array('status' => 'error', 'message' => $msg)
     );
@@ -53,13 +54,15 @@ function exec_hidden($command): void
         proc_close($process);
     }
 }
-function add_to_blocklist($tablename, $ip) {
+function add_to_blocklist($tablename, $ip)
+{
     $escaped = escapeshellarg($ip);
     exec_hidden("/sbin/pfctl -t ${tablename} -T add ${escaped}");
 }
 
 
-function reopen_logs() {
+function reopen_logs()
+{
     exec_hidden('/usr/local/sbin/nginx -s reopen');
 }
 
@@ -113,8 +116,8 @@ foreach ($model->ban->__items as $entry) {
 }
 
 $new_ips = array_unique(
-    array_map( function ($row) {
-        if(stripos($row->remote_ip, '.') !== false) {
+    array_map(function ($row) {
+        if (stripos($row->remote_ip, '.') !== false) {
             return $row->remote_ip;
         }
         // in case of IPv6, we have to use the network address instead

@@ -63,14 +63,16 @@ class IndexController extends \OPNsense\Base\IndexController
     /**
      * show the nginx logs page /ui/nginx/index/logs
      */
-    public function logsAction() {
+    public function logsAction()
+    {
         $this->view->pick('OPNsense/Nginx/logs');
     }
 
     /**
      * display a viewer for banned IPs.
      */
-    public function banAction() {
+    public function banAction()
+    {
         $this->view->pick('OPNsense/Nginx/ban');
     }
 }

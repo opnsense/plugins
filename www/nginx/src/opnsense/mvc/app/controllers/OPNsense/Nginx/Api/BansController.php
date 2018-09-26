@@ -30,7 +30,6 @@ namespace OPNsense\Nginx\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 
-
 class BansController extends ApiMutableModelControllerBase
 {
     static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
@@ -47,8 +46,7 @@ class BansController extends ApiMutableModelControllerBase
             $backend = new Backend();
             $backend->configdRun('nginx unlock ' . (string)$node->ip);
             return $this->delBase('ban', $uuid);
-        }
-        else {
+        } else {
             return array('result' => 'most be called via POST');
         }
     }
