@@ -36,12 +36,12 @@ if (stristr($_SERVER['CONTENT_TYPE'], 'json') === false) {
 }
 
 if ($json_data = json_decode(file_get_contents('php://input'), true)) {
-  http_response_code(204);
+    http_response_code(204);
   // inject some data for a log viewer to get a relation with the server entry
-  $json_data['server_time'] = time();
-  $json_data['server_uuid'] = $_SERVER['SERVER-UUID'];
-  $json_data = json_encode($json_data);
-  file_put_contents($log_file, $json_data . PHP_EOL, FILE_APPEND | LOCK_EX);
+    $json_data['server_time'] = time();
+    $json_data['server_uuid'] = $_SERVER['SERVER-UUID'];
+    $json_data = json_encode($json_data);
+    file_put_contents($log_file, $json_data . PHP_EOL, FILE_APPEND | LOCK_EX);
 } else {
     http_response_code(400);
     echo "Your request data cannot be decoded. Please send compliant JSON data.";

@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -207,8 +207,67 @@
       </upstream>
       <path_prefix type="TextField">
         <Required>N</Required>
-        <mask>/^[^" \t]+$/i</mask>
+        <mask>/^[^" \t]+$/</mask>
       </path_prefix>
+      <cache_path type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>cache_path</items>
+            <display>path</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected cache directory not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </cache_path>
+      <cache_use_stale type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <error>Error</error>
+          <timeout>Timeout</timeout>
+          <invalid_header>Invalid_header</invalid_header>
+          <updating>Updating</updating>
+          <http_403>HTTP Status Code 403</http_403>
+          <http_404>HTTP Status Code 404</http_404>
+          <http_429>HTTP Status Code 429</http_429>
+          <http_500>HTTP Status Code 500</http_500>
+          <http_502>HTTP Status Code 502</http_502>
+          <http_503>HTTP Status Code 503</http_503>
+          <http_504>HTTP Status Code 504</http_504>
+        </OptionValues>
+        <Required>N</Required>
+      </cache_use_stale>
+      <cache_methods type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <POST>Post</POST>
+          <!-- it seems like it does not like the others required for REST - syntax error
+          <PUT>Put</PUT>
+          <DELETE>Delete</DELETE>
+          <CONNECT>Connect</CONNECT>
+          <OPTIONS>Options</OPTIONS>
+          <TRACE>Trace</TRACE>
+          <PATCH>Patch</PATCH>-->
+        </OptionValues>
+        <Required>N</Required>
+      </cache_methods>
+      <cache_min_uses type="IntegerField">
+        <Required>Y</Required>
+        <default>1</default>
+      </cache_min_uses>
+      <cache_background_update type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </cache_background_update>
+      <cache_lock type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </cache_lock>
+      <cache_revalidate type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </cache_revalidate>
       <root type="TextField">
         <Required>N</Required>
       </root>
@@ -271,6 +330,18 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </limit_request_connections>
+      <honeypot type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </honeypot>
+      <websocket type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </websocket>
+      <http2_push_preload type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </http2_push_preload>
     </location>
 
     <custom_policy type="ArrayField">
@@ -926,5 +997,36 @@
         <Required>Y</Required>
       </description>
     </limit_request_connection>
+    <ban type="ArrayField">
+      <ip type="NetworkField">
+        <Required>Y</Required>
+      </ip>
+      <time type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </time>
+    </ban>
+    <cache_path type="ArrayField">
+      <path type="TextField">
+        <Required>Y</Required>
+        <mask>/\/(srv|var|tmp|mnt)[a-z0-9\-\._\:\,\/]+[a-z0-9\-\._\:\,]+/i</mask>
+      </path>
+      <size type="IntegerField">
+        <MinimumValue>10</MinimumValue>
+        <default>10</default>
+      </size>
+      <inactive type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </inactive>
+      <use_temp_path type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </use_temp_path>
+      <max_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </max_size>
+    </cache_path>
   </items>
 </model>

@@ -68,10 +68,61 @@
     <help>Define an optional path prefix for this location.</help>
   </field>
   <field>
+    <id>location.cache_path</id>
+    <label>Cache: Directory</label>
+    <type>dropdown</type>
+    <help>Choose a cache directory if you want to cache responses.</help>
+  </field>
+  <field>
+    <id>location.cache_use_stale</id>
+    <label>Cache: Use Stale</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>If you enable this option, a stale response will be sent when in cases the original server is unable to (for example if it is down).</help>
+  </field>
+  <field>
+    <id>location.cache_min_uses</id>
+    <label>Cache: Minimum Uses</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Enter how often the resource must be hit before adding it to the cache.</help>
+  </field>
+  <field>
+    <id>location.cache_background_update</id>
+    <label>Cache: Background Update</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Return a stale response to the client and update the cache.</help>
+  </field>
+  <field>
+    <id>location.cache_lock</id>
+    <label>Cache: Lock Backend on Update</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Only allow a single request to call the backend on the same URL at a single time.</help>
+  </field>
+  <field>
+    <id>location.cache_revalidate</id>
+    <label>Cache: Revalidate</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Only request a new version, if the content has changed since the last cache update.</help>
+  </field>
+  <field>
+    <id>location.cache_methods</id>
+    <label>Cache: HTTP Verbs</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>Select the HTTP verbs to cache. GET and HEAD will be always cached.</help>
+  </field>
+  <field>
     <id>location.limit_request_connections</id>
     <label>Limit Requests</label>
     <type>select_multiple</type>
     <style>selectpicker</style>
+    <advanced>true</advanced>
     <help>If you choose multiple limits, the strictest will be used.</help>
   </field>
   <field>
@@ -117,6 +168,12 @@
     <help>Force encrypted connections.</help>
   </field>
   <field>
+    <id>location.http2_push_preload</id>
+    <label>Enable HTTP/2 Preloading</label>
+    <type>checkbox</type>
+    <help>If you check this box, you can use the link header to send resources to the client before they are requested. You can boost your performance with this setting. This requires that your application sets the "Link" header correctly.</help>
+  </field>
+  <field>
     <id>location.php_enable</id>
     <label>Pass Request To Local PHP Interpreter / Threat Upstream As FastCGI</label>
     <type>checkbox</type>
@@ -127,5 +184,19 @@
     <label>(PHP) Router Script</label>
     <type>text</type>
     <help>If you set this setting, all requests are sent to this script instead of the request path (URL). Not using this setting on a remote instance can be dangerous.</help>
+  </field>
+  <field>
+    <id>location.honeypot</id>
+    <label>Honeypot</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the honeypot, all requests to this location will go to a special temporary log which will be used to block the IP. This is dangerous because you may accidentally block legitimate users or search engines. The result is available as a special alias in the firewall section. For example you can trigger on locations of Wordpress for phpMyAdmin if you are not using it.</help>
+  </field>
+  <field>
+    <id>location.websocket</id>
+    <label>WebSocket</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the WebSocket option, nginx will pass the upgrade header to the backed server.</help>
   </field>
 </form>
