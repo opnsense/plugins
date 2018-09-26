@@ -205,6 +205,10 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </upstream>
+      <path_prefix type="TextField">
+        <Required>N</Required>
+        <mask>/^[^" \t]+$/</mask>
+      </path_prefix>
       <cache_path type="ModelRelationField">
         <Model>
           <template>
