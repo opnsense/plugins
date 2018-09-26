@@ -63,9 +63,9 @@
   </field>
   <field>
     <id>location.path_prefix</id>
-    <label>Path prefix</label>
+    <label>Path Prefix</label>
     <type>text</type>
-    <help>Define an optional path prefix for this location.</help>
+    <help>Define an optional path prefix for this location. It will be prepended to the path so http://www.example.com/index.php will be sent to http://www.example.com/app/index.php on your upstream if you choose "/app" as path prefix.</help>
   </field>
   <field>
     <id>location.cache_path</id>
