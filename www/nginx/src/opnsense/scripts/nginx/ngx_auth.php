@@ -36,14 +36,18 @@ $method = $_SERVER['Original-METHOD'];
 $is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
 $server_uuid = $_SERVER['SERVER-UUID'];
 
-function password_auth_test($username, $password, $auth_server) {
+function password_auth_test($username, $password, $auth_server)
+{
     $authFactory = new OPNsense\Auth\AuthenticationFactory;
     $authenticator = $authFactory->get($auth_server);
     return $authenticator->authenticate($username, $password);
 }
 
-function password_auth($auth_server = 'Local Database') {
-    if (!isset($_SERVER['PHP_AUTH_PW']) || !isset($_SERVER['PHP_AUTH_PW'])) return false;
+function password_auth($auth_server = 'Local Database')
+{
+    if (!isset($_SERVER['PHP_AUTH_PW']) || !isset($_SERVER['PHP_AUTH_PW'])) {
+        return false;
+    }
     return password_auth_test($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'], $auth_server);
 }
 
