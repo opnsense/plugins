@@ -120,7 +120,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Upstream Server
     public function searchupstreamserverAction()
     {
-        return $this->searchBase('upstream_server', array('description', 'server', 'priority'));
+        return $this->searchBase('upstream_server', array('description', 'server', 'port', 'priority'));
     }
 
     public function getupstreamserverAction($uuid = null)

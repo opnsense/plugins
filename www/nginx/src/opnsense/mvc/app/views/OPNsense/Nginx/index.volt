@@ -214,7 +214,8 @@ $( document ).ready(function() {
             <thead>
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="server" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="server" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="port" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Port') }}</th>
                 <th data-column-id="priority" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Priority') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
