@@ -4,7 +4,7 @@ vnstat_enable="YES"
 {%   if helpers.exists('OPNsense.vnstat.general.interface') and OPNsense.vnstat.general.interface != '' %}
 {%     set interfaces = [] %}
 {%     for interface in OPNsense.vnstat.general.interface.split(',') %}
-{%       interfaces.append(physical_interface(interface)) %}
+{%       do interfaces.append(physical_interface(interface)) %}
 {%     endfor %}
 vnstat_additional_ifaces="{{ interfaces|join(' ') }}"
 {%   endif %}
