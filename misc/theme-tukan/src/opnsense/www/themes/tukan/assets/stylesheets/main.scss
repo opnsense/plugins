@@ -9096,24 +9096,24 @@ a.list-group-item.active-menu-title.collapsed {
   div {
     &.collapse {
       &.in {
-        > a.list-group-item[aria-expanded="true"] {
-          color: #000 !important;
-          background-color: #FFF !important;
+        > {
+          a.list-group-item[aria-expanded="true"], div.collapse.in > a.list-group-item.menu-level-3-item.active {
+            color: #000 !important;
+            background-color: #FFF !important;
+          }
         }
         > div.collapse.in > a.list-group-item {
           padding-left: 10px !important;
           font-size: 13px !important;
-          background-color: #294C5FE6 !important;
-          &.menu-level-3-item.active {
-            color: #000 !important;
-            background-color: #FFF !important;
-          }
+          background-color: #294c5f !important;
+          opacity: 0.9;
         }
       }
       > a.list-group-item {
         padding-left: 10px !important;
         font-size: 13px !important;
-        background-color: #294C5FE6 !important;
+        background-color: #294c5f !important;
+        opacity: 0.9;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
@@ -9123,12 +9123,25 @@ a.list-group-item.active-menu-title.collapsed {
     &.collapsed > a.list-group-item {
       padding-left: 10px !important;
       font-size: 13px !important;
-      background-color: #FFF !important;
     }
-    &.collapse.in > a.list-group-item:hover {
+    &.collapse.in > div.collapse.in > a.list-group-item:hover {
+      text-decoration: none !important;
       color: #000 !important;
       background-color: #FFF !important;
     }
+  }
+}
+
+a.list-group-item:focus {
+  text-decoration: none !important;
+  color: #000 !important;
+  background-color: #FFF !important;
+}
+
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item {
+  &.active-menu-title, &:hover {
+    color: #000 !important;
+    background-color: #FFF !important;
   }
 }
 
@@ -9137,15 +9150,9 @@ a.list-group-item:focus {
   background-color: #FFF !important;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
-  text-decoration: none !important;
-  color: #000 !important;
-  background-color: #FFF !important;
-}
-
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div {
   &.collapse.in > a.list-group-item {
-    &.active-menu-title, &.collapsed:focus, &:focus {
+    &.collapsed:focus, &:focus {
       color: #000 !important;
       background-color: #FFF !important;
     }
@@ -9164,25 +9171,10 @@ a.list-group-item:focus {
     margin-top: -70px;
     height: auto;
     border: 1px solid #1f3a4a;
-	-webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-  }
-  &.collapsing {
-    width: 0px;
-    font-size: 13px;
-    position: absolute;
-    display: block;
-    z-index: 10;
-    left: 70px;
-    margin-top: -70px;
-    height: auto;
     -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-  }
-  &.collapse.in > div {
-    &.collapse.in {
+    > div.collapse.in {
       width: 150px;
       font-size: 13px;
       display: block;
@@ -9192,23 +9184,13 @@ a.list-group-item:focus {
       margin-top: -29px;
       height: auto;
       border: 1px solid #1f3a4a;
-	  -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
+      -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     }
-    &.collapsing {
-      width: 0px;
-      font-size: 13px;
-      position: absolute;
-      display: block;
-      z-index: 10;
-      left: 148px;
-      margin-top: -29px;
-      height: auto;
-      -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-      -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-      box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-    }
+  }
+  &.collapsing, &.collapse.in > div.collapsing {
+    display: none;
   }
 }
 

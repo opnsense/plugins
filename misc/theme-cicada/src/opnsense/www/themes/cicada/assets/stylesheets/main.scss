@@ -9080,10 +9080,24 @@ a.list-group-item.active-menu-title.collapsed {
       padding-left: 10px !important;
       font-size: 13px !important;
     }
-    &.collapse.in > a.list-group-item:hover {
+    &.collapse.in > div.collapse.in > a.list-group-item:hover {
+      text-decoration: none !important;
       color: #ec6d12 !important;
       background-color: #2a2a2a !important;
     }
+  }
+}
+
+a.list-group-item:focus {
+  text-decoration: none !important;
+  color: #ec6d12 !important;
+  background-color: #2a2a2a !important;
+}
+
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item {
+  &.active-menu-title, &:hover {
+    color: #ec6d12 !important;
+    background-color: #2a2a2a !important;
   }
 }
 
@@ -9092,15 +9106,9 @@ a.list-group-item:focus {
   background-color: #2a2a2a !important;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
-  text-decoration: none !important;
-  color: #ec6d12 !important;
-  background-color: #2a2a2a !important;
-}
-
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div {
   &.collapse.in > a.list-group-item {
-    &.active-menu-title, &.collapsed:focus, &:focus {
+    &.collapsed:focus, &:focus {
       color: #ec6d12 !important;
       background-color: #2a2a2a !important;
     }
@@ -9120,25 +9128,10 @@ a.list-group-item:focus {
     padding-bottom: 1px;
     height: auto;
     border: 1px solid #515151;
-	-webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-  }
-  &.collapsing {
-    width: 0px;
-    font-size: 13px;
-    position: absolute;
-    display: block;
-    z-index: 10;
-    left: 70px;
-    margin-top: -70px;
-    height: auto;
     -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
-  }
-  &.collapse.in > div {
-    &.collapse.in {
+    > div.collapse.in {
       width: 150px;
       font-size: 13px;
       display: block;
@@ -9148,23 +9141,13 @@ a.list-group-item:focus {
       margin-top: -29px;
       height: auto;
       border: 1px solid #515151;
-	  -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
+      -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     }
-    &.collapsing {
-      width: 0px;
-      font-size: 13px;
-      position: absolute;
-      display: block;
-      z-index: 10;
-      left: 148px;
-      margin-top: -29px;
-      height: auto;
-      -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-      -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-      box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-    }
+  }
+  &.collapsing, &.collapse.in > div.collapsing {
+    display: none;
   }
 }
 

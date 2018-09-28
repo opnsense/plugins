@@ -5927,22 +5927,13 @@ main.page-content.col-lg-12 {
   background-color: #2a2a2a !important;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item[aria-expanded="true"] {
-  color: #ec6d12 !important;
-  background-color: #2a2a2a !important;
-}
-
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item[aria-expanded="true"],
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item[aria-expanded="true"] {
   color: #ec6d12 !important;
   background-color: #2a2a2a !important;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item {
-  padding-left: 10px !important;
-  font-size: 13px !important;
-  background-color: #393939e6 !important;
-}
-
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item {
   padding-left: 10px !important;
   font-size: 13px !important;
@@ -5954,19 +5945,10 @@ main.page-content.col-lg-12 {
   background-color: #2a2a2a !important;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {
-  padding-left: 10px !important;
-  font-size: 13px !important;
-}
-
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsed > a.list-group-item {
   padding-left: 10px !important;
   font-size: 13px !important;
-}
-
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
-  color: #ec6d12 !important;
-  background-color: #2a2a2a !important;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
@@ -5975,22 +5957,11 @@ main.page-content.col-lg-12 {
   background-color: #2a2a2a !important;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.active-menu-title {
-  color: #ec6d12 !important;
-  background-color: #2a2a2a !important;
-}
-
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.collapsed:focus {
-  color: #ec6d12 !important;
-  background-color: #2a2a2a !important;
-}
-
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:focus {
-  color: #ec6d12 !important;
-  background-color: #2a2a2a !important;
-}
-
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.active-menu.collapse.in >a.list-group-item.active {
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.active-menu-title,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.collapsed:focus,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:focus,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.active-menu.collapse.in >a.list-group-item.active { 
   color: #ec6d12 !important;
   background-color: #2a2a2a !important;
 }
@@ -6012,20 +5983,6 @@ main.page-content.col-lg-12 {
   box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing {
-  width:0px;
-  font-size:13px;
-  position: absolute;
-  display: block;
-  z-index: 10;
-  left: 70px;
-  margin-top:-70px;
-  height:auto;
-  -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
-  -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
-  box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
-}
-
 /* Sub Level Two */
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
   width:150px;
@@ -6042,21 +5999,13 @@ main.page-content.col-lg-12 {
   box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
 }
 
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapsing {
-  width:0px;
-  font-size:13px;
-  position: absolute;
-  display: block;
-  z-index: 10;
-  left: 148px;
-  margin-top:-29px;
-  height:auto;
-  -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.75);
+  display:none;
 }
 
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus, button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus {
+button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus,
+button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus {
   outline:none;
 }
 
