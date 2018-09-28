@@ -6,13 +6,13 @@
 
 .nvd3 .nv-axis path {
     fill: none;
-    stroke: #000;
-    stroke-opacity: .75;
+    stroke: #FFF;
+    stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
 
 .nvd3 .nv-axis path.domain {
-    stroke-opacity: .75;
+    stroke-opacity: .10;
 }
 
 .nvd3 .nv-axis.nv-x path.domain {
@@ -22,12 +22,13 @@
 .nvd3 .nv-axis line {
     fill: none;
     stroke: #e5e5e5;
-    shape-rendering: crispEdges;
+	stroke-opacity: .20;
+	shape-rendering: crispEdges;
 }
 
 .nvd3 .nv-axis .zero line,
     /*this selector may not be necessary*/ .nvd3 .nv-axis line.zero {
-    stroke-opacity: .75;
+    stroke-opacity: .20;
 }
 
 .nvd3 .nv-axis .nv-axisMaxMin text {
@@ -45,7 +46,7 @@
 }
 
 .nvd3 .nv-bars rect {
-    fill-opacity: .75;
+    fill-opacity: .50;
 
     transition: fill-opacity 250ms linear;
 }
@@ -196,7 +197,7 @@
 
 /* line plus bar */
 .nvd3.nv-linePlusBar .nv-bar rect {
-    fill-opacity: .75;
+    fill-opacity: .50;
 }
 
 .nvd3.nv-linePlusBar .nv-bar rect:hover {
@@ -318,8 +319,8 @@ svg.nvd3-svg {
 
 .nv-controlsWrap.nvd3-svg circle.nv-legend-symbol {
   stroke-width: 1 !important;
-  fill: rgb(143, 143, 143) !important;
-  stroke: rgb(143, 143, 143) !important;
+  fill: rgb(255, 255, 255) !important;
+  stroke: rgb(231, 231, 231) !important;
 }
 
 .nvd3 .nv-legend .nv-disabled circle {
@@ -417,7 +418,7 @@ svg.nvd3-svg {
 .nvd3.nv-pie path {
     stroke: #fff;
     stroke-width: 1px;
-    stroke-opacity: 1;
+    stroke-opacity: 0.6;
 }
 
 .nvd3.nv-pie path {
@@ -565,7 +566,7 @@ svg.nvd3-svg {
     padding: 4px 14px;
     line-height: 18px;
     font-weight: normal;
-    background-color: rgba(247,247,247,0.75);
+    background-color: rgba(247,247,247,0.50);
     color: rgba(0,0,0,1.0);
     text-align: center;
 

@@ -8791,6 +8791,7 @@ body {
 }
 
 .page-content-head h1, .content-box-head h1, .page-content-head h2, .content-box-head h2, .page-content-head h3, .content-box-head h3 {
+  line-height: inherit;
   margin: 0;
 }
 
@@ -9119,10 +9120,7 @@ a.list-group-item:focus {
     padding-bottom: 1px;
     height: auto;
     border: 1px solid #515151;
-    -webkit-transition: width 0.1s;
-    -o-transition: width 0.1s;
-    transition: width 0.1s;
-    -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
   }
@@ -9150,10 +9148,7 @@ a.list-group-item:focus {
       margin-top: -29px;
       height: auto;
       border: 1px solid #515151;
-      -webkit-transition: width 0.1s;
-      -o-transition: width 0.1s;
-      transition: width 0.1s;
-      -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
+	  -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     }

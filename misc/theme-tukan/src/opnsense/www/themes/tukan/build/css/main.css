@@ -5726,6 +5726,7 @@ body {
   .page-content-head .navbar-nav, .content-box-head .navbar-nav {
     width: 100%; }
   .page-content-head h1, .content-box-head h1, .page-content-head h2, .content-box-head h2, .page-content-head h3, .content-box-head h3 {
+	line-height: inherit;
     margin: 0; }
 
 .page-content-main {
@@ -5887,11 +5888,7 @@ main.page-content.col-lg-12 {
   text-align:center;
 }
 
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa {
-  visibility: visible;
-  font-size:20px;
-}
-
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {
   visibility: visible;
   font-size:20px;
@@ -6015,9 +6012,6 @@ main.page-content.col-lg-12 {
   margin-top:-70px;
   height:auto;
   border:1px solid #1f3a4a;
-  -webkit-transition: width 0.1s;
-  -o-transition: width 0.1s;
-  transition: width 0.1s;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -6048,9 +6042,6 @@ main.page-content.col-lg-12 {
   margin-top:-29px;
   height:auto;
   border:1px solid #1f3a4a;
-  -webkit-transition: width 0.1s;
-  -o-transition: width 0.1s;
-  transition: width 0.1s;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);

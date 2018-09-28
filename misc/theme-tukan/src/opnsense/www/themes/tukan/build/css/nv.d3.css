@@ -8,12 +8,12 @@
 .nvd3 .nv-axis path {
     fill: none;
     stroke: #000;
-    stroke-opacity: .75;
+    stroke-opacity: .30;
     shape-rendering: crispEdges;
 }
 
 .nvd3 .nv-axis path.domain {
-    stroke-opacity: .75;
+    stroke-opacity: .20;
 }
 
 .nvd3 .nv-axis.nv-x path.domain {
@@ -22,13 +22,14 @@
 
 .nvd3 .nv-axis line {
     fill: none;
-    stroke: #d8d8d8;
+    stroke: #000;
+	stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
 
 .nvd3 .nv-axis .zero line,
     /*this selector may not be necessary*/ .nvd3 .nv-axis line.zero {
-    stroke-opacity: .75;
+    stroke-opacity: .30;
 }
 
 .nvd3 .nv-axis .nv-axisMaxMin text {
@@ -412,9 +413,9 @@ svg.nvd3-svg {
 }
 
 .nvd3.nv-pie path {
-    stroke: #fff;
+    stroke: #000;
     stroke-width: 1px;
-    stroke-opacity: 1;
+    stroke-opacity: 0.2;
 }
 
 .nvd3.nv-pie path {
