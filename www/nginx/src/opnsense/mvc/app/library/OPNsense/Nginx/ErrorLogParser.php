@@ -42,7 +42,8 @@ class ErrorLogParser
         $this->lines = file($this->file_name);
         $this->result = array_map([$this, 'parse_line'], $this->lines);
     }
-    private function parse_line($line) {
+    private function parse_line($line)
+    {
         $container = new ErrorLogLine();
         if (preg_match(self::LogLineRegex, $line, $data)) {
             $container->date = $data[1];
@@ -54,7 +55,8 @@ class ErrorLogParser
         return $container;
     }
 
-    public function get_result() {
+    public function get_result()
+    {
         return $this->result;
     }
 }
