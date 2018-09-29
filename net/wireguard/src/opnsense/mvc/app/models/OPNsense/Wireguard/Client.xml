@@ -18,6 +18,9 @@
                 <pubkey type="TextField">
                     <Required>N</Required>
                 </pubkey>
+                <psk type="TextField">
+                    <Required>N</Required>
+                </psk>
                 <tunneladdress type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
