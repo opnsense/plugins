@@ -17,11 +17,11 @@
                 </name>
                 <pubkey type="TextField">
                     <Required>N</Required>
-                    <mask>/^([0-9a-zA-Z/=]){43,44}$/u</mask>
-                    <ValidationMessage>Should be a string of 44 characters and ending with = like a public key. Allowed characters are 0-9a-zA-Z/=</ValidationMessage>
                 </pubkey>
                 <psk type="TextField">
                     <Required>N</Required>
+                    <mask>/^[a-z0-9\=\/]{44}$/i</mask>
+                    <ValidationMessage>Should be a string of 44 characters and ending with = like a public key. Allowed characters are 0-9a-zA-Z/=</ValidationMessage>
                 </psk>
                 <tunneladdress type="NetworkField">
                     <default></default>
