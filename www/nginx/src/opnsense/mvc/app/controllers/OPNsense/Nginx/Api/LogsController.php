@@ -31,11 +31,11 @@ use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Nginx\Nginx;
 
-
 class LogsController extends ApiControllerBase
 {
     private $nginx;
-    public function accessesAction($uuid = null) {
+    public function accessesAction($uuid = null)
+    {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /accesses delivers a list of servers with access logs
@@ -46,7 +46,8 @@ class LogsController extends ApiControllerBase
         }
     }
 
-    public function errorsAction($uuid = null) {
+    public function errorsAction($uuid = null)
+    {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /errors delivers a list of servers with error logs
@@ -57,7 +58,8 @@ class LogsController extends ApiControllerBase
         }
     }
 
-    private function call_configd($type, $uuid) {
+    private function call_configd($type, $uuid)
+    {
         if (!$this->vhost_exists($uuid)) {
             $this->response->setStatusCode(404, "Not Found");
         }
@@ -67,7 +69,8 @@ class LogsController extends ApiControllerBase
         return json_decode($data, true);
     }
 
-    private function list_vhosts() {
+    private function list_vhosts()
+    {
         $data = [];
         foreach ($this->nginx->http_server->__items as $item) {
             $data[] = array('id' => $item->getAttributes()['uuid'], 'server_name' => (string)$item->servername);
@@ -75,7 +78,8 @@ class LogsController extends ApiControllerBase
         return $data;
     }
 
-    private function vhost_exists($uuid) {
+    private function vhost_exists($uuid)
+    {
         $data = $this->nginx->getNodeByReference('http_server.'. $uuid);
         return isset($data);
     }

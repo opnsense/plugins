@@ -28,7 +28,6 @@
 
 namespace OPNsense\Nginx;
 
-
 class AccessLogLine
 {
     public $remote_ip;
