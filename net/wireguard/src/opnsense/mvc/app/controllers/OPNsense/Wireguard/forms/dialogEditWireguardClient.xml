@@ -18,6 +18,12 @@
         <help>Public key of this instance.</help>
     </field>
     <field>
+        <id>client.psk</id>
+        <label>Shared Secret</label>
+        <type>text</type>
+        <help>Shared secret (PSK) for this peer.</help>
+    </field>
+    <field>
         <id>client.tunneladdress</id>
         <label>Tunnel Address</label>
         <style>tokenize</style>
