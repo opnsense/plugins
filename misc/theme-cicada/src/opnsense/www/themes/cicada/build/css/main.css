@@ -5937,7 +5937,8 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item {
   padding-left: 10px !important;
   font-size: 13px !important;
-  background-color: #393939e6 !important;
+  background-color: #393939 !important;
+  opacity: 0.9;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item.menu-level-3-item.active {

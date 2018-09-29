@@ -9059,7 +9059,8 @@ a.list-group-item.active-menu-title.collapsed {
         > div.collapse.in > a.list-group-item {
           padding-left: 10px !important;
           font-size: 13px !important;
-          background-color: #393939e6 !important;
+          background-color: #393939 !important;
+		  opacity: 0.9;
           &.menu-level-3-item.active {
             color: #ec6d12 !important;
             background-color: #2a2a2a !important;
@@ -9069,7 +9070,8 @@ a.list-group-item.active-menu-title.collapsed {
       > a.list-group-item {
         padding-left: 10px !important;
         font-size: 13px !important;
-        background-color: #393939e6 !important;
+        background-color: #393939 !important;
+		opacity: 0.9;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
