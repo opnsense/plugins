@@ -5879,7 +5879,7 @@ main.page-content.col-lg-12 {
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
-  font-size:13px;
+  font-size:14px;
   text-align:center;
 }
 
@@ -5906,20 +5906,18 @@ main.page-content.col-lg-12 {
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsing > a.list-group-item {
   padding-left: 10px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   display: block !important;
   position: absolute !important;
   left: 70px !important;
-  margin-top:-70px !important;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapsing > a.list-group-item {
   padding-left: 10px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   display: block !important;
   position: absolute !important;
-  left: 148px !important;
-  margin-top:-28px !important;
+  left: 166px !important;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item.active-menu-title, a.list-group-item.active-menu-title.collapsed {
@@ -5936,7 +5934,7 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item {
   padding-left: 10px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   background-color: #393939 !important;
   opacity: 0.9;
 }
@@ -5949,7 +5947,7 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapsed > a.list-group-item {
   padding-left: 10px !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
@@ -5969,8 +5967,8 @@ main.page-content.col-lg-12 {
 
 /* Sub Level One */
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in {
-  width:150px;
-  font-size:13px;
+  width:168px;
+  font-size:14px;
   display: block;
   z-index: 10;
   position: absolute;
@@ -5986,13 +5984,13 @@ main.page-content.col-lg-12 {
 
 /* Sub Level Two */
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
-  width:150px;
-  font-size:13px;
+  width:168px;
+  font-size:14px;
   display: block;
   z-index: 10;
   position: absolute;
-  left: 148px;
-  margin-top:-29px;
+  left: 166px;
+  margin-top:-32px;
   height:auto;
   border:1px solid #515151;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
