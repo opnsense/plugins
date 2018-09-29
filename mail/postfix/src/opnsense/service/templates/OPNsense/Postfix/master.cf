@@ -10,7 +10,11 @@
 # service type  private unpriv  chroot  wakeup  maxproc command + args
 #               (yes)   (yes)   (no)    (never) (100)
 # ==========================================================================
+{%   if helpers.exists('OPNsense.postfix.general.inet_port') and OPNsense.postfix.general.inet_port == '25' %}
 smtp      inet  n       -       n       -       -       smtpd
+{%   else %}
+{{ OPNsense.postfix.general.inet_port }}      inet  n       -       n       -       -       smtpd
+{%   endif %}
 #smtp      inet  n       -       n       -       1       postscreen
 #smtpd     pass  -       -       n       -       -       smtpd
 #dnsblog   unix  -       -       n       -       0       dnsblog
