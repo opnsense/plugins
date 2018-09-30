@@ -19,13 +19,6 @@
   width: 180px;
 }
 
-.bootgrid-header .search .glyphicon,
-.bootgrid-footer .search .glyphicon,
-.input-group-addon {
-  top: 0;
-  background-color: #FF7E25;
-  border: 1px solid #FF7E25;
-}
 .bootgrid-header .search .fa,
 .bootgrid-footer .search .fa {
   display: table-cell;

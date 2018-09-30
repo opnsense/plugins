@@ -6352,6 +6352,12 @@ textarea#update_status, textarea#update_status:hover {
   content: "\f021";
 }
 
+.bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon,.input-group-addon {
+  top: 0;
+  background-color: #FF7E25 !important;
+  border: 1px solid #FF7E25 !important;
+}
+
 div.container-fluid >.fa-search::before, div.container-fluid >.fa-refresh::before {
   color: #FFFFFF !important; }
 
