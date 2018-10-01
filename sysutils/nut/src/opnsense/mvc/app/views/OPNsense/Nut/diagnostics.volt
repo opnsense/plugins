@@ -25,11 +25,11 @@
  #}
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
-     <li><a data-toggle="tab" href="#diagnostics">{{ lang._('UPS Status') }}</a></li>
+     <li class="active"><a data-toggle="tab" href="#diagnostics">{{ lang._('UPS Status') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">
-    <div id="diagnostics" class="tab-pane fade in">
+    <div id="diagnostics" class="tab-pane fade in active">
       <pre id="listdiagnostics"></pre>
     </div>
 </div>
