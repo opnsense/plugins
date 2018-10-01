@@ -32,13 +32,13 @@ namespace OPNsense\Nut;
 use \OPNsense\Nut;
 
 /**
-* Class IndexController
+* Class DiagnosticsController
 * @package OPNsense/Nut
 */
 class DiagnosticsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->pick('OPNsense/Nut/index');
+        $this->view->pick('OPNsense/Nut/diagnostics');
     }
 }
