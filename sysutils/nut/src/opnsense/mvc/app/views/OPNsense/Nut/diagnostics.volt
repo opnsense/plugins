@@ -24,8 +24,12 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
+<ul class="nav nav-tabs" role="tablist"  id="maintabs">
+     <li><a data-toggle="tab" href="#diagnostics">{{ lang._('UPS Status') }}</a></li>
+</ul>
+
 <div class="content-box tab-content">
-    <div id="diagnostics" class="tab-pane fade in active">
+    <div id="diagnostics" class="tab-pane fade in">
       <pre id="listdiagnostics"></pre>
     </div>
 </div>
@@ -41,20 +45,9 @@
 
     $( document ).ready(function() {
 
-        updateServiceControlUI('nut');
-
         // call function update_diagnostics with a auto-refresh of 2 seconds
         setInterval(update_diagnostics, 2000);
 
-        // update history on tab state and implement navigation
-        if(window.location.hash != "") {
-            $('a[href="' + window.location.hash + '"]').click()
-        }
-        $('.nav-tabs a').on('shown.bs.tab', function (e) {
-            history.pushState(null, null, e.target.hash);
-        });
-
     });
-
 
 </script>
