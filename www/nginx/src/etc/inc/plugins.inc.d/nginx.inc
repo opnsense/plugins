@@ -1,6 +1,6 @@
 <?php
-/*
 
+/*
     Copyright (C) 2018 Fabian Franz
     All rights reserved.
 
@@ -26,41 +26,27 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\Nginx;
-
-class AccessLogParser
+function nginx_cron()
 {
-    private $file_name;
-    private $lines;
-    private $result;
+    return array(
+        array(
+            'autocron' => array('/usr/local/opnsense/scripts/nginx/ngx_autoblock.php', '*')
+        )
+    );
+}
 
-    private const LogLineRegex = '/(\S+) - (\S+) \[([\d\sa-z\:\-\/\+]+)\] "([^"]+?)" (\d+) (\d+) "([^"]*?)" "([^"]*?)" "([^"]*?)"/i';
+function nginx_services()
+{
 
-    function __construct($file_name)
-    {
-        $this->file_name = $file_name;
-        $this->lines = file($this->file_name);
-        $this->result = array_map([$this, 'parse_line'], $this->lines);
-    }
-    private function parse_line($line)
-    {
-        $container = new AccessLogLine();
-        if (preg_match(self::LogLineRegex, $line, $data)) {
-            $container->remote_ip = $data[1];
-            $container->username = $data[2];
-            $container->time = $data[3];
-            $container->request_line = $data[4];
-            $container->status = $data[5];
-            $container->size = $data[6];
-            $container->user_agent = $data[8];
-            $container->http_referer = $data[7];
-            $container->forwarded_for = $data[9];
-        }
-        return $container;
-    }
-
-    public function get_result()
-    {
-        return $this->result;
-    }
+    return array(
+        array(
+            'description' => gettext('Reverse Proxy and Web Server'),
+            'configd' => array(
+                'restart' => array('nginx restart'),
+                'start' => array('nginx start')
+            ),
+            'name' => 'nginx',
+            'pidfile' => '/var/run/nginx.pid'
+        )
+    );
 }

@@ -28,7 +28,7 @@
 <script>
 $( document ).ready(function() {
 
-    var data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
+    let data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
 
     // load initial data
     mapDataToFormUI(data_get_map).done(function(){
@@ -43,12 +43,6 @@ $( document ).ready(function() {
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         history.pushState(null, null, e.target.hash);
-    });
-    $('#nginx\\.general\\.enable_redis_plugin').change(function (evt) {
-        $('#missing_redis_plugin').hide();
-        if (!window.redis_installed && $(this).is(':checked')) {
-            $('#missing_redis_plugin').show();
-        }
     });
 
     $('.reload_btn').click(function() {
@@ -98,6 +92,7 @@ $( document ).ready(function() {
     'custompolicy',
     'security_header',
     'limit_zone',
+    'cache_path',
     'limit_request_connection',
     'naxsirule'].forEach(function(element) {
         $("#grid-" + element).UIBootgrid(
@@ -159,6 +154,9 @@ $( document ).ready(function() {
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-security_header" href="#subtab_nginx-http-security_header">{{ lang._('Security Headers')}}</a>
             </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
+            </li>
         </ul>
     </li>
     <li role="presentation" class="dropdown">
@@ -190,6 +188,7 @@ $( document ).ready(function() {
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
+                <th data-column-id="path_prefix" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Path Prefix') }}</th>
                 <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
                 <th data-column-id="enable_secrules" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('WAF Enabled') }}</th>
                 <th data-column-id="force_https" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
@@ -215,7 +214,8 @@ $( document ).ready(function() {
             <thead>
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="server" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="server" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="port" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Port') }}</th>
                 <th data-column-id="priority" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Priority') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
@@ -417,6 +417,30 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-cache_path" class="tab-pane fade">
+        <table id="grid-cache_path" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="cache_pathdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="path" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Path') }}</th>
+                    <th data-column-id="size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="inactive" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="max_size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-access-request-limit" class="tab-pane fade">
         <table id="grid-limit_zone" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="limit_zonedlg">
             <thead>
@@ -483,3 +507,4 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': security_headers,'id':'security_headersdlg', 'label':lang._('Edit Security Headers')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
+{{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}

@@ -120,7 +120,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Upstream Server
     public function searchupstreamserverAction()
     {
-        return $this->searchBase('upstream_server', array('description', 'server', 'priority'));
+        return $this->searchBase('upstream_server', array('description', 'server', 'port', 'priority'));
     }
 
     public function getupstreamserverAction($uuid = null)
@@ -147,7 +147,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Location
     public function searchlocationAction()
     {
-        return $this->searchBase('location', array('description','urlpattern', 'matchtype', 'enable_secrules', 'force_https'));
+        return $this->searchBase('location', array('description','urlpattern', 'path_prefix', 'matchtype', 'enable_secrules', 'force_https'));
     }
 
     public function getlocationAction($uuid = null)
@@ -309,8 +309,10 @@ class SettingsController extends ApiMutableModelControllerBase
     // access limit zone headers
     public function searchlimit_zoneAction()
     {
-        return $this->searchBase('limit_zone',
-            array('description', 'key', 'size', 'rate', 'rate_unit'));
+        return $this->searchBase(
+            'limit_zone',
+            array('description', 'key', 'size', 'rate', 'rate_unit')
+        );
     }
 
     public function getlimit_zoneAction($uuid = null)
@@ -337,8 +339,10 @@ class SettingsController extends ApiMutableModelControllerBase
     // limit_request_connection
     public function searchlimit_request_connectionAction()
     {
-        return $this->searchBase('limit_request_connection',
-            array('description', 'limit_zone', 'nodelay', 'burst', 'connection_count'));
+        return $this->searchBase(
+            'limit_request_connection',
+            array('description', 'limit_zone', 'nodelay', 'burst', 'connection_count')
+        );
     }
 
     public function getlimit_request_connectionAction($uuid = null)
@@ -360,5 +364,34 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setlimit_request_connectionAction($uuid)
     {
         return $this->setBase('limit_request_connection', 'limit_request_connection', $uuid);
+    }
+    // cache path
+    public function searchcache_pathAction()
+    {
+        return $this->searchBase(
+            'cache_path',
+            array('path', 'inactive', 'size', 'max_size')
+        );
+    }
+
+    public function getcache_pathAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('cache_path', 'cache_path', $uuid);
+    }
+
+    public function addcache_pathAction()
+    {
+        return $this->addBase('cache_path', 'cache_path');
+    }
+
+    public function delcache_pathAction($uuid)
+    {
+        return $this->delBase('cache_path', $uuid);
+    }
+
+    public function setcache_pathAction($uuid)
+    {
+        return $this->setBase('cache_path', 'cache_path', $uuid);
     }
 }

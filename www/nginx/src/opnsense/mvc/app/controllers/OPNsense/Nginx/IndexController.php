@@ -56,13 +56,23 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->security_headers = $this->getForm("security_headers");
         $this->view->limit_request_connection = $this->getForm("limit_request_connection");
         $this->view->limit_zone = $this->getForm("limit_zone");
+        $this->view->cache_path = $this->getForm("cache_path");
         $this->view->pick('OPNsense/Nginx/index');
     }
 
     /**
      * show the nginx logs page /ui/nginx/index/logs
      */
-    public function logsAction() {
+    public function logsAction()
+    {
         $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * display a viewer for banned IPs.
+     */
+    public function banAction()
+    {
+        $this->view->pick('OPNsense/Nginx/ban');
     }
 }
