@@ -38,7 +38,7 @@
 
     // Put API call into a function, needed for auto-refresh
     function update_diagnostics() {
-        ajaxCall(url="/api/nut/service/upsstatus", sendData={}, callback=function(data,status) {
+        ajaxCall(url="/api/nut/diagnostics/upsstatus", sendData={}, callback=function(data,status) {
             $("#listdiagnostics").text(data['response']);
         });
     }
