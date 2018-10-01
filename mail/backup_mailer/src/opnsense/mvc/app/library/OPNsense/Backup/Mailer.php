@@ -53,6 +53,12 @@ class Mailer extends Base implements IBackupProvider
             "value" => null
         );
         $fields[] = array(
+            "name" => "SelfSigned",
+            "type" => "checkbox",
+            "label" => gettext("Allow self signed"),
+            "value" => null
+        );
+        $fields[] = array(
             "name" => "SmtpUsername",
             "type" => "text",
             "label" => gettext("SMTP Username (Optional)"),
@@ -147,7 +153,7 @@ class Mailer extends Base implements IBackupProvider
 
         PHPMailerAutoload(PHPMailer);
         $mail = new \PHPMailer(true);
-        $mail->IsHTML(true);
+        $mail->IsHTML(false);
         $mail->IsSMTP();
         $mail->SetFrom($email);
         $mail->AddAddress($email);
@@ -156,14 +162,20 @@ class Mailer extends Base implements IBackupProvider
         $mail->Subject = $hostname . ' OPNsense config backup ' . $date;
         $mail->Body    = $hostname . ' config backup file';
 
+        if ((string)$config->SelfSigned === "1") {
+            $selfSigned = true;
+        } else {
+            $selfSigned = false;
+        }
+
         if ((string)$config->SmtpTLS === "1") {
             $mail->SMTPSecure = 'tls';
         } else {
             $mail->SMTPOptions = array(
                 'ssl' => array(
-                    'verify_peer' => false,
+                    'verify_peer' => true,
                     'verify_peer_name' => false,
-                    'allow_self_signed' => true,
+                    'allow_self_signed' => $selfSigned,
                 ),
             );
         }
