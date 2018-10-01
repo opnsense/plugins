@@ -1,7 +1,7 @@
 <?php
-
-/*
- *    Copyright (C) 2017-2018 Michael Muenz <m.muenz@gmail.com>
+/**
+ *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -24,17 +24,21 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-namespace OPNsense\Nut\Api;
+namespace OPNsense\Nut;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Nut\Nut;
+use \OPNsense\Nut;
 
-class ServiceController extends ApiMutableServiceControllerBase
+/**
+* Class DiagnosticsController
+* @package OPNsense/Nut
+*/
+class DiagnosticsController extends \OPNsense\Base\IndexController
 {
-    static protected $internalServiceClass = '\OPNsense\Nut\Nut';
-    static protected $internalServiceTemplate = 'OPNsense/Nut';
-    static protected $internalServiceEnabled = 'general.enable';
-    static protected $internalServiceName = 'nut';
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Nut/diagnostics');
+    }
 }
