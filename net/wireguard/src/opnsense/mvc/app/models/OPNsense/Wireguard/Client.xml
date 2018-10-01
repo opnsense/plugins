@@ -20,8 +20,8 @@
                 </pubkey>
                 <psk type="TextField">
                     <Required>N</Required>
-                    <mask>/^[a-z0-9\+\=\/]{44}$/i</mask>
-                    <ValidationMessage>Optional base64 string of 44 characters and ending with = like a public key. Allowed characters are 0-9a-zA-Z+/=</ValidationMessage>
+                    <mask>/^[a-zA-Z0-9+\/]{43}=$/</mask>
+                    <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
                 </psk>
                 <tunneladdress type="NetworkField">
                     <default></default>
