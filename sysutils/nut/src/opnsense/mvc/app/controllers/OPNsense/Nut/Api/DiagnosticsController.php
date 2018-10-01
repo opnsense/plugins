@@ -32,7 +32,7 @@ use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Nut\Nut;
 
-class ServiceController extends ApiServiceControllerBase
+class DiagnosticsController extends ApiControllerBase
 {
     public function upsstatusAction()
     {
