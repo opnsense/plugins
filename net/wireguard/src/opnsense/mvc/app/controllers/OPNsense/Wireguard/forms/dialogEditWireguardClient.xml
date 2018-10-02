@@ -18,6 +18,12 @@
         <help>Public key of this instance.</help>
     </field>
     <field>
+        <id>client.psk</id>
+        <label>Shared Secret</label>
+        <type>text</type>
+        <help>Shared secret (PSK) for this peer.</help>
+    </field>
+    <field>
         <id>client.tunneladdress</id>
         <label>Tunnel Address</label>
         <style>tokenize</style>
@@ -36,11 +42,5 @@
         <label>Endpoint Port</label>
         <type>text</type>
         <help>Set port the endpoint listens to.</help>
-    </field>
-    <field>
-        <id>client.disableroutes</id>
-        <label>Disable Routes</label>
-        <type>checkbox</type>
-        <help>This will prevent installing routes. Usually you only enable this to do own routing decisions via a local gateway and gateway rules.</help>
     </field>
 </form>

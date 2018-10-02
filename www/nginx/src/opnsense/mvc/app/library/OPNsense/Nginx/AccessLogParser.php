@@ -42,7 +42,8 @@ class AccessLogParser
         $this->lines = file($this->file_name);
         $this->result = array_map([$this, 'parse_line'], $this->lines);
     }
-    private function parse_line($line) {
+    private function parse_line($line)
+    {
         $container = new AccessLogLine();
         if (preg_match(self::LogLineRegex, $line, $data)) {
             $container->remote_ip = $data[1];
@@ -58,8 +59,8 @@ class AccessLogParser
         return $container;
     }
 
-    public function get_result() {
+    public function get_result()
+    {
         return $this->result;
     }
-
 }

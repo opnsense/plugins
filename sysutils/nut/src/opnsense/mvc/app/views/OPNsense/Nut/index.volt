@@ -1,5 +1,5 @@
 {#
- # Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+ # Copyright (C) 2017-2018 Michael Muenz <m.muenz@gmail.com>
  # Copyright (C) 2014-2017 Deciso B.V.
  # All rights reserved.
  #
@@ -27,13 +27,6 @@
 
 <script>
 
-    // Put API call into a function, needed for auto-refresh
-    function update_diagnostics() {
-        ajaxCall(url="/api/nut/service/upsstatus", sendData={}, callback=function(data,status) {
-            $("#listdiagnostics").text(data['response']);
-        });
-    }
-
     $( document ).ready(function() {
 
         var data_get_map = {'frm_nut':'/api/nut/settings/get'};
@@ -45,9 +38,6 @@
         });
 
         updateServiceControlUI('nut');
-
-        // call function update_diagnostics with a auto-refresh of 2 seconds
-        setInterval(update_diagnostics, 2000);
 
         // update history on tab state and implement navigation
         if(window.location.hash != "") {
@@ -82,12 +72,8 @@
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
-     <li><a data-toggle="tab" href="#diagnostics">{{ lang._('Diagnostics') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
-    <div id="diagnostics" class="tab-pane fade in">
-      <pre id="listdiagnostics"></pre>
-    </div>
 </div>

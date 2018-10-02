@@ -99,6 +99,7 @@ function dyndns_list()
         '3322' => '3322',
         'citynetwork' => 'City Network',
         'cloudflare' => 'CloudFlare',
+        'cloudflare-v6' => 'CloudFlare (v6)',
         'custom' => 'Custom',
         'custom-v6' => 'Custom (v6)',
         'dhs' => 'DHS',

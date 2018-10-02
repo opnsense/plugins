@@ -48,6 +48,7 @@
     <id>httpserver.verify_client</id>
     <label>Verify Client Certificate</label>
     <type>dropdown</type>
+    <advanced>true</advanced>
     <help><![CDATA[<ul><li>On: the certificate is requested and validated. Use this option to protect a service with TLS authentication.</li><li>Off: The certificate is not requested. Choose this option for a normal website.</li><li>Optional: The certificate is requested and validated if existing. Choose this option for websites, with TLS login support or mixed TLS protected API and web content.</li><li>Optional, don't verify: Do accept the certificate and let the application choose what to do. Choose this option, for the same reasons as optional but in this case, the request is passed to the backend without rejecting untrusted certificates.</li></ul>]]></help>
   </field>
   <field>
@@ -75,18 +76,21 @@
     <id>httpserver.block_nonpublic_data</id>
     <label>Block Configuration Files</label>
     <type>checkbox</type>
+    <advanced>true</advanced>
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
   </field>
   <field>
     <id>httpserver.naxsi_extensive_log</id>
     <label>Extensive Naxsi Log</label>
     <type>checkbox</type>
+    <advanced>true</advanced>
     <help>Provide a more verbose WAF log for fixing false positives before going live.</help>
   </field>
   <field>
     <id>httpserver.sendfile</id>
     <label>Enable Sendfile</label>
     <type>checkbox</type>
+    <advanced>true</advanced>
     <help>Allow the daemon to use the sendfile function.</help>
   </field>
   <field>
