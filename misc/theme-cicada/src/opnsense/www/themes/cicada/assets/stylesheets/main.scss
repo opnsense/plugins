@@ -9151,22 +9151,14 @@ a.list-group-item:focus {
   }
 }
 
-/* Sub Level One */
-
-/* Sub Level Two */
-
 button.toggle-sidebar {
-  &.glyphicon {
-    &.glyphicon-chevron-left:focus, &.glyphicon-chevron-right:focus {
-      outline: none;
-    }
-  }
   color: #FFF;
   background-color: transparent;
   font-size: 14px;
   border: none;
   margin-top: 18px;
   float: left;
+  outline:none;
 }
 
 /* COLLAPSE SIDEBAR END*/
