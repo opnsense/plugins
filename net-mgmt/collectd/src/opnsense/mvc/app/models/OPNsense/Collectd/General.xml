@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/collectd/general</mount>
     <description>Collectd configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -9,7 +9,7 @@
         </enabled>
         <hostname type="TextField">
             <default></default>
-            <Required>Y</Required>
+            <Required>N</Required>
 	    <mask>/^.{1,64}$/u</mask>
         </hostname>
         <fqdnlookup type="BooleanField">
