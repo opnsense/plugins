@@ -25,7 +25,7 @@
     </field>
     <field>
         <id>user.readwrite</id>
-        <label>Enable Read-Write Access</label>
+        <label>Allow Write Access</label>
         <type>checkbox</type>
         <help>This will enable write access in addition to read-only.</help>
     </field>
