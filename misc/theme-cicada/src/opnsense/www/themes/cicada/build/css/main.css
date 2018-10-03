@@ -6003,11 +6003,6 @@ main.page-content.col-lg-12 {
   display:none;
 }
 
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus,
-button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus {
-  outline:none;
-}
-
 button.toggle-sidebar {
   color:#FFF;
   background-color:transparent;
@@ -6015,7 +6010,9 @@ button.toggle-sidebar {
   border:none;
   margin-top: 18px;
   float:left;
+  outline:none;
 }
+
 /* COLLAPSE SIDEBAR END*/
 
 #navigation.collapse.in {
