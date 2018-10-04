@@ -23,4 +23,10 @@
         <type>text</type>
         <help>Set the encryption key to secure the connection between client and this host. Minimum is 8 characters.</help>
     </field>
+    <field>
+        <id>user.readwrite</id>
+        <label>Allow Write Access</label>
+        <type>checkbox</type>
+        <help>This will enable write access in addition to read-only.</help>
+    </field>
 </form>
