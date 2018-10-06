@@ -57,6 +57,9 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->limit_request_connection = $this->getForm("limit_request_connection");
         $this->view->limit_zone = $this->getForm("limit_zone");
         $this->view->cache_path = $this->getForm("cache_path");
+        $nginx = new Nginx();
+        $this->view->show_naxsi_download_button =
+            $nginx->custom_policy->count() == 0 && $nginx->naxsi_rule->count() == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 

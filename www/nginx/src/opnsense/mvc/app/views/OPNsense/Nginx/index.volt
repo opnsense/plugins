@@ -105,6 +105,29 @@ $( document ).ready(function() {
             }
         );
     });
+    var naxsi_rule_download_button = $('#naxsiruledownloadbtn');
+    naxsi_rule_download_button.click(function () {
+        BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_INFO,
+            title: "{{ lang._('Download NAXSI Rules') }}",
+            message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI which is GPL licensed. You have to accept the GPL license to download.') }}",
+            buttons: [{
+                label: '{{ lang._('Accept And Download') }}',
+                cssClass: 'btn-primary',
+                icon: 'fa fa-download',
+                action: function(dlg){
+                    dlg.close();
+                    ajaxCall(url="/api/nginx/settings/downloadrules", sendData={}, callback=function(data,status) {
+                    });
+                }
+            }, {
+                label: '{{ lang._('Reject') }}',
+                action: function(dlg){
+                    dlg.close();
+                }
+            }]
+        });
+    });
 
 });
 
@@ -350,6 +373,14 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="subtab_nginx-http-custompolicy" class="tab-pane fade">
+        <div class="alert alert-info" role="alert" style="vertical-align: middle;display: table;width: 100%;">
+            <div style="display: table-cell;vertical-align: middle;">{{ lang._('It looks like you are not having any rules installed. You may want to download the NAXSI core rules.') }}</div>
+            <div class="pull-right" style="vertical-align: middle;display: table-cell;">
+                <button id="naxsiruledownloadbtn" class="btn btn-primary">
+                    <i class="fa fa-download" aria-hidden="true"></i> {{ lang._('Download') }}
+                </button>
+            </div>
+        </div>
         <table id="grid-custompolicy" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="custompolicydlg">
             <thead>
                 <tr>
