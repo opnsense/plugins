@@ -22,6 +22,10 @@
         <default>0</default>
         <Required>N</Required>
       </sendfile>
+      <naxsi_rules type="BooleanField">
+        <default>0</default>
+        <Required>N</Required>
+      </naxsi_rules>
       <keepalive_timeout type="IntegerField">
         <default>60</default>
         <Required>N</Required>
@@ -398,7 +402,7 @@
         <Required>Y</Required>
       </ruletype>
       <message type="TextField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
       </message>
       <identifier type="IntegerField">
@@ -414,7 +418,7 @@
         <pattern>/^[^"]+$/</pattern>
       </dollar_url>
       <match_value type="TextField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
       </match_value>
       <match_type type="OptionField">

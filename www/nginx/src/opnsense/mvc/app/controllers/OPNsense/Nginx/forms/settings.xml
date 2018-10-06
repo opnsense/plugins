@@ -16,6 +16,12 @@
                 <help>Enable sendfile support (faster).</help>
             </field>
             <field>
+                <id>nginx.http.naxsi_rules</id>
+                <label>Enable WAF Core Rules</label>
+                <type>checkbox</type>
+                <help>Enable the WAF core ruleset.</help>
+            </field>
+            <field>
                 <id>nginx.http.keepalive_timeout</id>
                 <label>Keepalive Timeout</label>
                 <type>text</type>
