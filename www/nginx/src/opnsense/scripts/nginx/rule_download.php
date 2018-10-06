@@ -55,36 +55,36 @@ function download_rules()
     return $response;
 }
 
-function prepare_values($row) {
-  $row['match_zone'] = explode('|', $row['match_zone']);
-  return $row;
+function prepare_values($row)
+{
+    $row['match_zone'] = explode('|', $row['match_zone']);
+    return $row;
 }
 
-function parse_rules($data) {
-  $parsed = [];
-  $tmp = null;
-  $description = array('rule', 'match_type', 'message', 'match', 'match_zone', 'variable', 'value', 'id');
+function parse_rules($data)
+{
+    $parsed = [];
+    $tmp = null;
+    $description = array('rule', 'match_type', 'message', 'match', 'match_zone', 'variable', 'value', 'id');
 
-  foreach($data as $line) {
-    $line = trim($line);
-    $matches = [];
-    if (preg_match('/## (.*) ##/', $line, $matches, PREG_UNMATCHED_AS_NULL)) {
-      if (isset($tmp)) {
-        if (empty($parsed[$tmp])) {
-          unset($parsed[$tmp]);
+    foreach ($data as $line) {
+        $line = trim($line);
+        $matches = [];
+        if (preg_match('/## (.*) ##/', $line, $matches, PREG_UNMATCHED_AS_NULL)) {
+            if (isset($tmp)) {
+                if (empty($parsed[$tmp])) {
+                    unset($parsed[$tmp]);
+                }
+            }
+            $tmp = trim($matches[1]);
+            $parsed[$tmp] = [];
+        } elseif (preg_match('/\S+ "(str|rx):([^\"]+)" "msg:([^\\"]*)" "mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches, PREG_UNMATCHED_AS_NULL)) {
+            $parsed[$tmp][] = prepare_values(array_combine($description, $matches));
         }
-      }
-      $tmp = trim($matches[1]);
-      $parsed[$tmp] = [];
-    } elseif (preg_match('/\S+ "(str|rx):([^\"]+)" "msg:([^\\"]*)" "mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches, PREG_UNMATCHED_AS_NULL)) {
-      $parsed[$tmp][] = prepare_values(array_combine($description, $matches));
     }
-
-  }
-  return $parsed;
+    return $parsed;
 }
 
 
 echo json_encode(parse_rules(file('naxsi_core.rules')));
 #echo json_encode(parse_rules(explode("\n",download_rules())));
-
