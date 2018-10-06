@@ -28,6 +28,11 @@
  *
  */
 
+
+require_once('config.inc');
+use OPNsense\Core\Config;
+use OPNsense\Nginx\Nginx;
+
 function download_rules()
 {
     $curl = curl_init();
@@ -37,7 +42,7 @@ function download_rules()
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_VERBOSE => 0,
         CURLOPT_MAXREDIRS => 1,
-        CURLOPT_TIMEOUT => 60,
+        CURLOPT_TIMEOUT => 10,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_HTTPHEADER => array(
             "User-Agent: OPNsense Firewall"
@@ -50,7 +55,7 @@ function download_rules()
     if ($info['http_code'] != 200 || $err) {
         syslog(LOG_ERR, 'Cannot download NAXSI core rules');
         syslog(LOG_ERR, json_encode($info));
-        throw new \Exception();
+        exit(1);
     }
     return $response;
 }
@@ -65,26 +70,101 @@ function parse_rules($data)
 {
     $parsed = [];
     $tmp = null;
-    $description = array('rule', 'match_type', 'message', 'match', 'match_zone', 'variable', 'value', 'id');
+    $description = array('rule', 'match_type', 'match', 'message', 'match_zone', 'variable', 'value', 'id');
 
     foreach ($data as $line) {
         $line = trim($line);
         $matches = [];
-        if (preg_match('/## (.*) ##/', $line, $matches, PREG_UNMATCHED_AS_NULL)) {
-            if (isset($tmp)) {
-                if (empty($parsed[$tmp])) {
-                    unset($parsed[$tmp]);
-                }
+        if (preg_match('/## (.*) ##/', $line, $matches)) {
+            if (isset($tmp) && empty($parsed[$tmp])) {
+                unset($parsed[$tmp]);
             }
             $tmp = trim($matches[1]);
             $parsed[$tmp] = [];
-        } elseif (preg_match('/\S+ "(str|rx):([^\"]+)" "msg:([^\\"]*)" "mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches, PREG_UNMATCHED_AS_NULL)) {
+        } elseif (preg_match('/\S+ "(str|rx):([^\"]+)" "msg:([^\\"]*)" "mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches)) {
             $parsed[$tmp][] = prepare_values(array_combine($description, $matches));
         }
     }
     return $parsed;
 }
 
+function save_to_model($data)
+{
+    $model = new Nginx();
+    foreach ($data as $group => $rules) {
+        // create a new policy
+        $policy = $model->custom_policy->Add();
+        $policy->name = $group;
+        $policy->value = '8';
+        $policy->operator = '>=';
+        $policy->action = 'BLOCK';
+        // create new values for policy
+        $rule_list = [];
+        foreach ($rules as $rule) {
+            $rule_mdl = $model->naxsi_rule->Add();
+            $rule_mdl->description = $rule['message'];
+            $rule_mdl->message = $rule['message'];
+            $rule_mdl->ruletype = 'main';
+            $rule_mdl->match_type = 'id';
+            $rule_mdl->identifier = $rule['id'];
+            $rule_mdl->match_value = $rule['match'];
+            $rule_mdl->regex = $rule['match_type'] == 'str' ? '1' : '0';
+            // default to 0
+            $rule_mdl->args = '0';
+            $rule_mdl->headers = '0';
+            $rule_mdl->name = '0';
+            $rule_mdl->raw_body = '0';
+            $rule_mdl->file_extension = '0';
+            $rule_mdl->negate = '0';
+            foreach ($rule['match_zone'] as $match_zone) {
+                if (stripos($match_zone, ':') === false) {
+                    switch ($match_zone) {
+                        case 'ARGS':
+                            $rule_mdl->args = '1';
+                            break;
+                        case 'HEADERS':
+                            $rule_mdl->headers = '1';
+                            break;
+                        case 'NAME':
+                            $rule_mdl->name = '1';
+                            break;
+                        case 'RAW_BODY':
+                            $rule_mdl->raw_body = '1';
+                            break;
+                        case 'FILE_EXT':
+                            $rule_mdl->file_extension = '1';
+                            break;
+                    }
+                } else {
+                    $kv = explode(':', $match_zone);
+                    switch ($kv[0]) {
+                        case '$BODY_VAR':
+                            $rule_mdl->dollar_body_var = $kv[1];
+                            break;
+                        case '$ARGS_VAR':
+                            $rule_mdl->dollar_args_var = $kv[1];
+                            break;
+                        case '$HEADERS_VAR':
+                            $rule_mdl->dollar_headers_var = $kv[1];
+                    }
+                }
+            }
+            $rule_list[] = $rule_mdl->getAttributes()["uuid"];
+        }
+        $policy->naxsi_rules = implode(',', $rule_list);
+    }
 
-echo json_encode(parse_rules(file('naxsi_core.rules')));
-#echo json_encode(parse_rules(explode("\n",download_rules())));
+    $val_result = $model->performValidation(false);
+    if (count($val_result) !== 0) {
+        print_r($val_result);
+        exit(1);
+    }
+
+    $model->serializeToConfig();
+    Config::getInstance()->save();
+}
+
+
+#$data =  parse_rules(file('./naxsi_core.rules'));
+$data = parse_rules(explode("\n", download_rules()));
+save_to_model($data);
