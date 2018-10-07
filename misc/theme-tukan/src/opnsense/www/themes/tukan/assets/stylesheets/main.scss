@@ -5202,7 +5202,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #777777;
+  color: #b0b0b0;
   white-space: nowrap;
 }
 
@@ -5743,13 +5743,14 @@ a:focus {
 
 .nav {
   > li.disabled > a {
-    color: #777777;
+    color: #fff;
     &:hover, &:focus {
-      color: #777777;
-      text-decoration: none;
-      background-color: transparent;
-      cursor: not-allowed;
-    }
+	color: #fff;
+	text-decoration: none;
+	background-color: #839caa;
+	opacity:0.9;
+	cursor: not-allowed;
+	}
   }
   .open > a {
     background-color: #336480;

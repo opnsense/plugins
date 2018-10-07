@@ -3229,7 +3229,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #777777;
+  color: #b0b0b0;
   white-space: nowrap; }
 
 .dropdown-backdrop {
@@ -3569,12 +3569,13 @@ tbody.collapse.in {
 		text-decoration: underline; }
 
     .nav > li.disabled > a {
-      color: #777777; }
+		color: #fff; }
       .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
-        color: #777777;
-        text-decoration: none;
-        background-color: transparent;
-        cursor: not-allowed; }
+		  color: #fff;
+		  text-decoration: none;
+		  background-color: #839caa;
+		  opacity:0.9;
+		  cursor: not-allowed; }
 
   .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
     background-color: #336480;
