@@ -5,7 +5,7 @@
               <GeneralSettings VisibleName="Service Settings" url="/ui/haproxy#subtab_haproxy-general-settings"/>
               <PeerSync VisibleName="Peers / Session Sync" url="/ui/haproxy#subtab_haproxy-general-peers"/>
               <GlobalParameters VisibleName="Global Parameters" url="/ui/haproxy#subtab_haproxy-general-global"/>
-              <DefaultParameters VisibleName="Detault Parameters" url="/ui/haproxy#subtab_haproxy-general-defaults"/>
+              <DefaultParameters VisibleName="Default Parameters" url="/ui/haproxy#subtab_haproxy-general-defaults"/>
               <LoggingConfiguration VisibleName="Logging Configuration" url="/ui/haproxy#subtab_haproxy-general-logging"/>
               <StatisticsConfiguration VisibleName="Statistics Configuration" url="/ui/haproxy#subtab_haproxy-general-statistics"/>
               <Frontends VisibleName="Frontends" url="/ui/haproxy#frontends"/>
