@@ -5743,13 +5743,14 @@ a:focus {
 
 .nav {
   > li.disabled > a {
-    color: #777777;
+    color: #fff;
     &:hover, &:focus {
-      color: #777777;
-      text-decoration: none;
-      background-color: transparent;
-      cursor: not-allowed;
-    }
+	color: #fff;
+	text-decoration: none;
+	background-color: #839caa;
+	opacity:0.9;
+	cursor: not-allowed;
+	}
   }
   .open > a {
     background-color: #336480;
