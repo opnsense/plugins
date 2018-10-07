@@ -59,7 +59,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->cache_path = $this->getForm("cache_path");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
-            $nginx->custom_policy->count() == 0 && $nginx->naxsi_rule->count() == 0;
+            count($nginx->custom_policy->__items) == 0 && count($nginx->naxsi_rule->__items) == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 

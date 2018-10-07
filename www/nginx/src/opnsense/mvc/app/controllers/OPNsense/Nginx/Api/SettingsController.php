@@ -37,13 +37,13 @@ class SettingsController extends ApiMutableModelControllerBase
     static protected $internalModelName = 'nginx';
 
     // download rules
-    public function downloadrulesAction() {
-        if (!$this->request->isPost())
-        {
+    public function downloadrulesAction()
+    {
+        if (!$this->request->isPost()) {
             return array('error' => 'Must be called via POST');
         }
         $backend = new Backend();
-        return array('result' => $backend->configdRun('nginx naxsidownloadrules'));
+        return array('result' => trim($backend->configdRun('nginx naxsidownloadrules')));
     }
 
     // User List

@@ -38,7 +38,7 @@ $( document ).ready(function() {
     });
 
     // update history on tab state and implement navigation
-    if(window.location.hash != "") {
+    if(window.location.hash !== "") {
         $('a[href="' + window.location.hash + '"]').click()
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
@@ -56,8 +56,8 @@ $( document ).ready(function() {
     // form save event handlers for all defined forms
     $('[id*="save_"]').each(function(){
         $(this).click(function() {
-            var frm_id = $(this).closest("form").attr("id");
-            var frm_title = $(this).closest("form").attr("data-title");
+            let frm_id = $(this).closest("form").attr("id");
+            let frm_title = $(this).closest("form").attr("data-title");
             // save data for General TAB
             saveFormToEndpoint(url="/api/nginx/settings/set", formid=frm_id, callback_ok=function(){
                 // on correct save, perform reconfigure. set progress animation when reloading
@@ -67,7 +67,7 @@ $( document ).ready(function() {
                     // when done, disable progress animation.
                     $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
 
-                    if (data != undefined && (status != "success" || data['status'] != 'ok')) {
+                    if (data !== undefined && (status !== "success" || data['status'] !== 'ok')) {
                         // fix error handling
                         BootstrapDialog.show({
                             type:BootstrapDialog.TYPE_WARNING,
@@ -105,19 +105,23 @@ $( document ).ready(function() {
             }
         );
     });
-    var naxsi_rule_download_button = $('#naxsiruledownloadbtn');
+    let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
     naxsi_rule_download_button.click(function () {
         BootstrapDialog.show({
             type: BootstrapDialog.TYPE_INFO,
             title: "{{ lang._('Download NAXSI Rules') }}",
-            message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI which is GPL licensed. You have to accept the GPL license to download.') }}",
+            message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI. You have to accept its %slicense%s to download the rules.')|format("<a href='https://github.com/nbs-system/naxsi/blob/master/LICENSE' target='_blank'>", "</a>") }}",
             buttons: [{
-                label: '{{ lang._('Accept And Download') }}',
+                label: "{{ lang._('Accept And Download') }}",
                 cssClass: 'btn-primary',
                 icon: 'fa fa-download',
                 action: function(dlg){
                     dlg.close();
                     ajaxCall(url="/api/nginx/settings/downloadrules", sendData={}, callback=function(data,status) {
+                        $('#naxsiruledownloadalert').hide();
+                        // reload view after installing rules
+                        $('#grid-naxsirule').bootgrid('reload');
+                        $('#grid-custompolicy').bootgrid('reload');
                     });
                 }
             }, {
@@ -145,7 +149,7 @@ $( document ).ready(function() {
         </a>
         <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').click();"
            class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
-           style="border-right:0px;"><b>{{ lang._('HTTP(S)')}}</b></a>
+           style="border-right:0;"><b>{{ lang._('HTTP(S)')}}</b></a>
         <ul class="dropdown-menu" role="menu">
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-location" href="#subtab_nginx-http-location">{{ lang._('Location')}}</a>
@@ -373,7 +377,8 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="subtab_nginx-http-custompolicy" class="tab-pane fade">
-        <div class="alert alert-info" role="alert" style="vertical-align: middle;display: table;width: 100%;">
+        {% if (show_naxsi_download_button) %}
+        <div class="alert alert-info" id="naxsiruledownloadalert" role="alert" style="vertical-align: middle;display: table;width: 100%;">
             <div style="display: table-cell;vertical-align: middle;">{{ lang._('It looks like you are not having any rules installed. You may want to download the NAXSI core rules.') }}</div>
             <div class="pull-right" style="vertical-align: middle;display: table-cell;">
                 <button id="naxsiruledownloadbtn" class="btn btn-primary">
@@ -381,6 +386,7 @@ $( document ).ready(function() {
                 </button>
             </div>
         </div>
+        {% endif %}
         <table id="grid-custompolicy" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="custompolicydlg">
             <thead>
                 <tr>
