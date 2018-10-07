@@ -108,7 +108,7 @@ function save_to_model($data)
             $rule_mdl->match_type = 'id';
             $rule_mdl->identifier = $rule['id'];
             $rule_mdl->match_value = $rule['match'];
-            $rule_mdl->regex = $rule['match_type'] == 'str' ? '1' : '0';
+            $rule_mdl->regex = $rule['match_type'] == 'str' ? '0' : '1';
             // default to 0
             $rule_mdl->args = '0';
             $rule_mdl->headers = '0';
