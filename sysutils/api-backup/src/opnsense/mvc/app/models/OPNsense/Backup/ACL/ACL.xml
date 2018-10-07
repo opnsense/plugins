@@ -2,7 +2,6 @@
   <page-Backup>
     <name>Backup API</name>
     <patterns>
-      <pattern>ui/backup/*</pattern>
       <pattern>api/backup/*</pattern>
     </patterns>
   </page-Backup>
