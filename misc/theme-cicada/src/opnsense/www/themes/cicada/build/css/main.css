@@ -5960,7 +5960,7 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.collapsed:focus,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:focus,
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.active-menu.collapse.in >a.list-group-item.active { 
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.active-menu.collapse.in >a.list-group-item.active {
   color: #ec6d12 !important;
   background-color: #2a2a2a !important;
 }
