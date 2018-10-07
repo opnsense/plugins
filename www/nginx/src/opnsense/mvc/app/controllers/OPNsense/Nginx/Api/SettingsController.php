@@ -29,11 +29,22 @@
 namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
     static protected $internalModelName = 'nginx';
+
+    // download rules
+    public function downloadrulesAction()
+    {
+        if (!$this->request->isPost()) {
+            return array('error' => 'Must be called via POST');
+        }
+        $backend = new Backend();
+        return array('result' => trim($backend->configdRun('nginx naxsidownloadrules')));
+    }
 
     // User List
 
