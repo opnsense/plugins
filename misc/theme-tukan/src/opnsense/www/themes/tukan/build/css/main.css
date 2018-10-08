@@ -5967,12 +5967,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 70px;
   margin-top:-70px;
-  height:auto;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -5983,12 +5981,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 166px;
   margin-top:-32px;
-  height:auto;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);

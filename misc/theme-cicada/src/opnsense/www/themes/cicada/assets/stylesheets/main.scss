@@ -9120,13 +9120,11 @@ a.list-group-item:focus {
   &.collapse.in {
     width: 168px;
     font-size: 14px;
-    display: block;
     z-index: 10;
     position: absolute;
     left: 70px;
     margin-top: -70px;
     padding-bottom: 1px;
-    height: auto;
     border: 1px solid #515151;
     -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
