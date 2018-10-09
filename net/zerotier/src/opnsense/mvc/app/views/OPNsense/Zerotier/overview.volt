@@ -262,7 +262,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                                         {% if path["linkQuality"] is defined %}
                                                                             {{ path["linkQuality"] | e }}
                                                                         {% endif %}
-                                                                        <td>
+                                                                        </td>
                                                                         <td>{{ path["preferred"] | e }}</td>
                                                                         <td>{{ path["trustedPathId"] | e }}</td>
                                                                     </tr>
