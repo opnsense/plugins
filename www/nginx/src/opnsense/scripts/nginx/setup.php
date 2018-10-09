@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 require_once('config.inc');
 require_once('certs.inc');
 use \OPNsense\Nginx\Nginx;
@@ -85,17 +86,20 @@ foreach ($http_servers as $http_server) {
             next;
         }
         $chain = [];
-        foreach (ca_chain_array($cert) as $entry) {
-            $chain[] = base64_decode($entry['crt']);
+        $ca_chain = ca_chain_array($cert);
+        if (is_array($ca_chain)) {
+            foreach ($ca_chain as $entry) {
+                $chain[] = base64_decode($entry['crt']);
+            }
         }
         $hostname = explode(',', $http_server['servername'])[0];
         export_pem_file(
-            '/usr/local/etc/nginx/key/' . $hostname . '.pem',
+            KEY_DIRECTORY . $hostname . '.pem',
             $cert['crt'],
             implode("\n", $chain)
         );
         export_pem_file(
-            '/usr/local/etc/nginx/key/' . $hostname . '.key',
+            KEY_DIRECTORY . $hostname . '.key',
             $cert['prv']
         );
         if (!empty($http_server['ca'])) {
@@ -103,7 +107,7 @@ foreach ($http_servers as $http_server) {
                 $ca = find_ca($caref);
                 if (isset($ca)) {
                     export_pem_file(
-                        '/usr/local/etc/nginx/key/' . $hostname . '_ca.pem',
+                        KEY_DIRECTORY . $hostname . '_ca.pem',
                         $ca['crt']
                     );
                 }
@@ -134,22 +138,24 @@ if (isset($nginx['upstream'])) {
                     }
                     $hostname = explode(',', $http_server['servername'])[0];
                     export_pem_file(
-                        '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.pem',
+                        KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.pem',
                         $cert['crt'],
                         implode("\n", $chain)
                     );
                     export_pem_file(
-                        '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.key',
+                        KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.key',
                         $cert['prv']
                     );
                 }
             }
             if (!empty($upstream['tls_trusted_certificate'])) {
                 $cas = array();
-                foreach ($http_server['ca'] as $caref) {
-                    $ca = find_ca($caref);
-                    if (isset($ca)) {
-                        $cas[] = $ca;
+                if (is_array($http_server['ca'])) {
+                    foreach ($http_server['ca'] as $caref) {
+                        $ca = find_ca($caref);
+                        if (isset($ca)) {
+                            $cas[] = $ca;
+                        }
                     }
                 }
                 export_pem_file(
