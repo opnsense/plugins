@@ -76,6 +76,7 @@ security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs r
 security/openconnect -- OpenConnect Client
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
+sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/node_exporter -- Prometheus exporter for machine metrics
