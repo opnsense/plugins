@@ -3229,7 +3229,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #777777;
+  color: #b0b0b0;
   white-space: nowrap; }
 
 .dropdown-backdrop {
@@ -3569,12 +3569,13 @@ tbody.collapse.in {
 		text-decoration: underline; }
 
     .nav > li.disabled > a {
-      color: #777777; }
+		color: #fff; }
       .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
-        color: #777777;
-        text-decoration: none;
-        background-color: transparent;
-        cursor: not-allowed; }
+		  color: #fff;
+		  text-decoration: none;
+		  background-color: #839caa;
+		  opacity:0.9;
+		  cursor: not-allowed; }
 
   .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
     background-color: #336480;
@@ -5966,12 +5967,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 70px;
   margin-top:-70px;
-  height:auto;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -5982,12 +5981,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 166px;
   margin-top:-32px;
-  height:auto;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -5999,11 +5996,6 @@ main.page-content.col-lg-12 {
   display:none;
 }
 
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus,
-button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus {
-  outline:none;
-}
-
 button.toggle-sidebar {
   color:#FFF;
   background-color:transparent;
@@ -6011,7 +6003,9 @@ button.toggle-sidebar {
   border:none;
   margin-top: 18px;
   float:left;
+  outline:none;
 }
+
 /* COLLAPSE SIDEBAR END*/
 
 #navigation.collapse.in {

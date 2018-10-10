@@ -9120,13 +9120,11 @@ a.list-group-item:focus {
   &.collapse.in {
     width: 168px;
     font-size: 14px;
-    display: block;
     z-index: 10;
     position: absolute;
     left: 70px;
     margin-top: -70px;
     padding-bottom: 1px;
-    height: auto;
     border: 1px solid #515151;
     -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9151,22 +9149,14 @@ a.list-group-item:focus {
   }
 }
 
-/* Sub Level One */
-
-/* Sub Level Two */
-
 button.toggle-sidebar {
-  &.glyphicon {
-    &.glyphicon-chevron-left:focus, &.glyphicon-chevron-right:focus {
-      outline: none;
-    }
-  }
   color: #FFF;
   background-color: transparent;
   font-size: 14px;
   border: none;
   margin-top: 18px;
   float: left;
+  outline:none;
 }
 
 /* COLLAPSE SIDEBAR END*/

@@ -5960,7 +5960,7 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item.collapsed:focus,
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > a.list-group-item:focus,
-#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.active-menu.collapse.in >a.list-group-item.active { 
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.active-menu.collapse.in >a.list-group-item.active {
   color: #ec6d12 !important;
   background-color: #2a2a2a !important;
 }
@@ -5969,13 +5969,11 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 70px;
   margin-top:-70px;
   padding-bottom: 1px;
-  height:auto;
   border:1px solid #515151;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -5986,12 +5984,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 166px;
   margin-top:-32px;
-  height:auto;
   border:1px solid #515151;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -6003,11 +5999,6 @@ main.page-content.col-lg-12 {
   display:none;
 }
 
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus,
-button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus {
-  outline:none;
-}
-
 button.toggle-sidebar {
   color:#FFF;
   background-color:transparent;
@@ -6015,7 +6006,9 @@ button.toggle-sidebar {
   border:none;
   margin-top: 18px;
   float:left;
+  outline:none;
 }
+
 /* COLLAPSE SIDEBAR END*/
 
 #navigation.collapse.in {
