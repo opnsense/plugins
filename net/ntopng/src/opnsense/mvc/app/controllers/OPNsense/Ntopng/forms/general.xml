@@ -9,7 +9,8 @@
         <id>general.interface</id>
         <label>Interfaces</label>
         <type>dropdown</type>
-        <help>Select the interface to listen to.</help>
+        <advanced>true</advanced>
+        <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
         <id>general.httpport</id>
