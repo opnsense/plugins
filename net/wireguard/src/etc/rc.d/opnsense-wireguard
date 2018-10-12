@@ -27,9 +27,8 @@ wireguard_stop()
     echo "stopping wireguard"
     for STARTER in ${wireguard_config}; do
         $command down $STARTER
-	ifconfig $STARTER destroy
-	pkill -f wg-quick
     done
+    sleep 5
 }
 
 # start wireguard
@@ -38,7 +37,7 @@ wireguard_start()
     echo "starting wireguard"
     for STARTER in ${wireguard_config}; do
         $command up $STARTER
-	ifconfig $STARTER group wg
+	ifconfig $STARTER group wireguard
     done
 }
 
