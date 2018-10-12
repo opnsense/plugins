@@ -35,7 +35,7 @@ opnsense_wireguard_stop()
 opnsense_wireguard_start()
 {
     echo "starting wireguard"
-    for STARTER in ${wiopnsense_reguard_config}; do
+    for STARTER in ${opnsense_wireguard_config}; do
         $command up $STARTER
 	ifconfig $STARTER group wireguard
     done
