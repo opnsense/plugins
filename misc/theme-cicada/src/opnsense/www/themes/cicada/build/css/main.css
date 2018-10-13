@@ -6293,7 +6293,15 @@ label > input[type="radio"] {
 	background-color: #2a2a2a;
 	color: #ec6d12;
 }
+.fw_pass {
+  background-color: #327A38 !important;
+  color: #FFF;
+}
 
+.fw_block {
+  background-color: #7A3232 !important;
+  color: #FFF;
+}
   /*additional extensions for theme-cicada*/
 
 #tab_1 #maintabs {
