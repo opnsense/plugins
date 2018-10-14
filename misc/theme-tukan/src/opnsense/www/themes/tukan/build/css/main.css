@@ -5696,9 +5696,10 @@ body {
   left: 0;
   position: fixed;
   width: 100%;
-  border:none;
   z-index: 2;
-  background-color:#172c38; }
+  background-color:#172c38;
+  border-bottom: 1px solid #171717;
+}
 
 .page-content {
   height: calc(100% - 52px);
@@ -5762,6 +5763,7 @@ body {
   height: 16px;
   background: #172c38;
   color:#FFF;
+  border-top: 1px solid #162b36;
 }
 
 .content-box {
@@ -5887,6 +5889,7 @@ main.page-content.col-lg-12 {
   width:70px;
   background-color:#172c38 !important;
   height:100% !important;
+  border-right: 1px solid #162b36;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {

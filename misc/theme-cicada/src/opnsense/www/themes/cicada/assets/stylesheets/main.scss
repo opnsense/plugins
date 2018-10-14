@@ -8827,6 +8827,7 @@ body {
   position: fixed;
   height: 16px;
   background: #202020;
+  border-top: 1px solid #171717;
 }
 
 .content-box {
@@ -8992,6 +8993,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #202020 !important;
         height: 100% !important;
+		border-right: 1px solid #171717;
       }
     }
     > nav > #mainmenu > div > {
