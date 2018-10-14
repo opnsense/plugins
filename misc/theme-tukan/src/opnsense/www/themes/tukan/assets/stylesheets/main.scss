@@ -8784,9 +8784,9 @@ body {
   left: 0;
   position: fixed;
   width: 100%;
-  border: none;
   z-index: 2;
   background-color: #172c38;
+  border-bottom: 1px solid #171717;
 }
 
 .page-content {
@@ -8865,6 +8865,11 @@ body {
   padding: 0;
   width: 100%;
   z-index: 2;
+  position: fixed;
+  height: 16px;
+  background: #172c38;
+  color:#FFF;
+  border-top: 1px solid #162b36;
 }
 
 .content-box {
@@ -9034,6 +9039,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #172c38 !important;
         height: 100% !important;
+		border-right: 1px solid #162b36;
       }
     }
     > nav > #mainmenu > div > {
@@ -9585,6 +9591,15 @@ label > input {
       color: #FFF;
     }
   }
+}
+.fw_pass {
+  background-color: #2d6929 !important;
+  color: #FFF;
+}
+
+.fw_block {
+  background-color: #692929 !important;
+  color: #FFF;
 }
 
 /*additional extensions for theme-tukan*/
