@@ -8824,6 +8824,10 @@ body {
   padding: 0;
   width: 100%;
   z-index: 2;
+  position: fixed;
+  height: 16px;
+  background: #202020;
+  border-top: 1px solid #171717;
 }
 
 .content-box {
@@ -8989,6 +8993,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #202020 !important;
         height: 100% !important;
+		border-right: 1px solid #171717;
       }
     }
     > nav > #mainmenu > div > {
@@ -9530,6 +9535,15 @@ label > input {
       color: #ec6d12;
     }
   }
+}
+.fw_pass {
+  background-color: #2d6929 !important;
+  color: #FFF;
+}
+
+.fw_block {
+  background-color: #692929 !important;
+  color: #FFF;
 }
 
 /*additional extensions for theme-cicada*/

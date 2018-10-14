@@ -5752,7 +5752,12 @@ body {
   font-size: 12px;
   padding: 0;
   width: 100%;
-  z-index: 2; }
+  z-index: 2; 
+  position: fixed;
+  height: 16px;
+  background: #202020;
+  border-top: 1px solid #171717;
+}
 
 .content-box {
   padding: 0px 0px;
@@ -5876,6 +5881,7 @@ main.page-content.col-lg-12 {
   width:70px;
   background-color:#202020 !important;
   height:100% !important;
+  border-right: 1px solid #171717;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
@@ -6293,7 +6299,15 @@ label > input[type="radio"] {
 	background-color: #2a2a2a;
 	color: #ec6d12;
 }
+.fw_pass {
+  background-color: #2d6929 !important;
+  color: #FFF;
+}
 
+.fw_block {
+  background-color: #692929 !important;
+  color: #FFF;
+}
   /*additional extensions for theme-cicada*/
 
 #tab_1 #maintabs {
