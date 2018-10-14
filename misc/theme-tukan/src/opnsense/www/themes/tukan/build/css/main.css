@@ -5757,7 +5757,12 @@ body {
   font-size: 12px;
   padding: 0;
   width: 100%;
-  z-index: 2; }
+  z-index: 2;
+  position: fixed;
+  height: 16px;
+  background: #172c38;
+  color:#FFF;
+}
 
 .content-box {
   padding: 0px 0px;

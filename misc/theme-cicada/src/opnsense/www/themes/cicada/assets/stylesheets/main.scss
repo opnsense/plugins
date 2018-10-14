@@ -8824,6 +8824,9 @@ body {
   padding: 0;
   width: 100%;
   z-index: 2;
+  position: fixed;
+  height: 16px;
+  background: #202020;
 }
 
 .content-box {
