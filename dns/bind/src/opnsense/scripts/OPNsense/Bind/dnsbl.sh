@@ -98,6 +98,34 @@ mwdomains() {
 	rm ${WORKDIR}/malwaredomains-raw
 }
 
+windowsspyblocker() {
+        # WindowsSpyBlocker
+        ${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblocker-raw
+        sed "/\.$/d" ${WORKDIR}/windowsspyblocker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblocker
+        rm ${WORKDIR}/windowsspyblocker-raw
+}
+
+cameleon() {
+        # Cameleon List
+        ${FETCH} http://sysctl.org/cameleon/hosts -o ${WORKDIR}/cameleon-raw
+        sed "/\.$/d" ${WORKDIR}/cameleon-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/cameleon
+        rm ${WORKDIR}/cameleon-raw
+}
+
+adaway() {
+        # AdAway List
+        ${FETCH} https://adaway.org/hosts.txt -o ${WORKDIR}/adaway-raw
+        sed "/\.$/d" ${WORKDIR}/adaway-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/adaway
+        rm ${WORKDIR}/adaway-raw
+}
+
+yoyo() {
+        # YoYo List
+        ${FETCH} "http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext" -o ${WORKDIR}/yoyo-raw
+        sed "/\.$/d" ${WORKDIR}/yoyo-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/yoyo
+        rm ${WORKDIR}/yoyo-raw
+}
+
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
@@ -110,35 +138,48 @@ install() {
 }
 
 for CAT in $(echo ${1} | tr ',' ' '); do
-	case "${CAT}" in
-	ag)
-		adguard
-		;;
-	el)
-		easylist
-		;;
-	ep)
-		easyprivacy
-		;;
-	emd)
-		emdlist
-		;;
-	nc)
-		nocoin
-		;;
-	rw)
-		rwtracker
-		;;
-	mw)
-		mwdomains
-		;;
-	pa)
-		#pornall
-		;;
-	pt)
-		porntop
-		;;
-	esac
+        case "${CAT}" in
+        aa)
+                adaway
+                ;;
+        ag)
+                adguard
+                ;;
+        ca)
+                cameleon
+                ;;
+        el)
+                easylist
+                ;;
+        ep)
+                easyprivacy
+                ;;
+        emd)
+                emdlist
+                ;;
+        nc)
+                nocoin
+                ;;
+        rw)
+                rwtracker
+                ;;
+        mw)
+                mwdomains
+                ;;
+        pa)
+                #pornall
+                ;;
+        pt)
+                porntop
+                ;;
+        ws)
+                windowsspyblocker
+                ;;
+        yy)
+                yoyo
+                ;;
+        esac
+
 done
 
 install
