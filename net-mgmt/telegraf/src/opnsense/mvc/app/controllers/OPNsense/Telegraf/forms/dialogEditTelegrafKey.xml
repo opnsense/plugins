@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>key.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the key mapping.</help>
+    </field>
+    <field>
+        <id>key.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name of this mapping.</help>
+    </field>
+    <field>
+        <id>key.value</id>
+        <label>Value</label>
+        <type>text</type>
+        <help>Set the value of the defined key.</help>
+    </field>
+</form>

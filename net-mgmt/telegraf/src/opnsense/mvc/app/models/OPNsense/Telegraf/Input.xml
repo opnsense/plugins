@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/input</mount>
     <description>Telegraf inputs configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <cpu type="BooleanField">
             <default>1</default>
@@ -55,6 +55,10 @@
             <default>0</default>
             <Required>N</Required>
         </network>
+        <pf type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </pf>
         <ping type="BooleanField">
             <default>0</default>
             <Required>N</Required>
@@ -62,5 +66,9 @@
         <ping_hosts type="CSVListField">
             <Required>N</Required>
         </ping_hosts>
+        <haproxy type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </haproxy>
     </items>
 </model>
