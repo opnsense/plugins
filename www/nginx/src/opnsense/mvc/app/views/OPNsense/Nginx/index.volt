@@ -28,7 +28,7 @@
 <script>
 $( document ).ready(function() {
 
-    var data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
+    let data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
 
     // load initial data
     mapDataToFormUI(data_get_map).done(function(){
@@ -38,17 +38,11 @@ $( document ).ready(function() {
     });
 
     // update history on tab state and implement navigation
-    if(window.location.hash != "") {
+    if(window.location.hash !== "") {
         $('a[href="' + window.location.hash + '"]').click()
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         history.pushState(null, null, e.target.hash);
-    });
-    $('#nginx\\.general\\.enable_redis_plugin').change(function (evt) {
-        $('#missing_redis_plugin').hide();
-        if (!window.redis_installed && $(this).is(':checked')) {
-            $('#missing_redis_plugin').show();
-        }
     });
 
     $('.reload_btn').click(function() {
@@ -62,8 +56,8 @@ $( document ).ready(function() {
     // form save event handlers for all defined forms
     $('[id*="save_"]').each(function(){
         $(this).click(function() {
-            var frm_id = $(this).closest("form").attr("id");
-            var frm_title = $(this).closest("form").attr("data-title");
+            let frm_id = $(this).closest("form").attr("id");
+            let frm_title = $(this).closest("form").attr("data-title");
             // save data for General TAB
             saveFormToEndpoint(url="/api/nginx/settings/set", formid=frm_id, callback_ok=function(){
                 // on correct save, perform reconfigure. set progress animation when reloading
@@ -73,7 +67,7 @@ $( document ).ready(function() {
                     // when done, disable progress animation.
                     $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
 
-                    if (data != undefined && (status != "success" || data['status'] != 'ok')) {
+                    if (data !== undefined && (status !== "success" || data['status'] !== 'ok')) {
                         // fix error handling
                         BootstrapDialog.show({
                             type:BootstrapDialog.TYPE_WARNING,
@@ -97,6 +91,9 @@ $( document ).ready(function() {
     'httprewrite',
     'custompolicy',
     'security_header',
+    'limit_zone',
+    'cache_path',
+    'limit_request_connection',
     'naxsirule'].forEach(function(element) {
         $("#grid-" + element).UIBootgrid(
             { 'search':'/api/nginx/settings/search' + element,
@@ -108,6 +105,33 @@ $( document ).ready(function() {
             }
         );
     });
+    let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
+    naxsi_rule_download_button.click(function () {
+        BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_INFO,
+            title: "{{ lang._('Download NAXSI Rules') }}",
+            message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI. You have to accept its %slicense%s to download the rules.')|format("<a href='https://github.com/nbs-system/naxsi/blob/master/LICENSE' target='_blank'>", "</a>") }}",
+            buttons: [{
+                label: "{{ lang._('Accept And Download') }}",
+                cssClass: 'btn-primary',
+                icon: 'fa fa-download',
+                action: function(dlg){
+                    dlg.close();
+                    ajaxCall(url="/api/nginx/settings/downloadrules", sendData={}, callback=function(data,status) {
+                        $('#naxsiruledownloadalert').hide();
+                        // reload view after installing rules
+                        $('#grid-naxsirule').bootgrid('reload');
+                        $('#grid-custompolicy').bootgrid('reload');
+                    });
+                }
+            }, {
+                label: '{{ lang._('Reject') }}',
+                action: function(dlg){
+                    dlg.close();
+                }
+            }]
+        });
+    });
 
 });
 
@@ -118,10 +142,14 @@ $( document ).ready(function() {
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
     <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
+        <a data-toggle="dropdown" href="#"
+           class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('HTTP(S)')}}</b></a>
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').click();"
+           class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           style="border-right:0;"><b>{{ lang._('HTTP(S)')}}</b></a>
         <ul class="dropdown-menu" role="menu">
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-location" href="#subtab_nginx-http-location">{{ lang._('Location')}}</a>
@@ -153,6 +181,28 @@ $( document ).ready(function() {
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-security_header" href="#subtab_nginx-http-security_header">{{ lang._('Security Headers')}}</a>
             </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
+            </li>
+        </ul>
+    </li>
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown"
+           href="#"
+           class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-access-request-limit').click();"
+           class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           style="border-right:0px;"><b>{{ lang._('Access')}}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-access-request-limit" href="#subtab_nginx-access-request-limit">{{ lang._('Limit Zone')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-access-request-limit-connection" href="#subtab_nginx-access-request-limit-connection">{{ lang._('Connection Limits')}}</a>
+            </li>
         </ul>
     </li>
 </ul>
@@ -165,6 +215,7 @@ $( document ).ready(function() {
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
+                <th data-column-id="path_prefix" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Path Prefix') }}</th>
                 <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
                 <th data-column-id="enable_secrules" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('WAF Enabled') }}</th>
                 <th data-column-id="force_https" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
@@ -190,7 +241,8 @@ $( document ).ready(function() {
             <thead>
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="server" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="server" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="port" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Port') }}</th>
                 <th data-column-id="priority" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Priority') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
@@ -325,6 +377,16 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="subtab_nginx-http-custompolicy" class="tab-pane fade">
+        {% if (show_naxsi_download_button) %}
+        <div class="alert alert-info" id="naxsiruledownloadalert" role="alert" style="vertical-align: middle;display: table;width: 100%;">
+            <div style="display: table-cell;vertical-align: middle;">{{ lang._('It looks like you are not having any rules installed. You may want to download the NAXSI core rules.') }}</div>
+            <div class="pull-right" style="vertical-align: middle;display: table-cell;">
+                <button id="naxsiruledownloadbtn" class="btn btn-primary">
+                    <i class="fa fa-download" aria-hidden="true"></i> {{ lang._('Download') }}
+                </button>
+            </div>
+        </div>
+        {% endif %}
         <table id="grid-custompolicy" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="custompolicydlg">
             <thead>
                 <tr>
@@ -392,6 +454,80 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-cache_path" class="tab-pane fade">
+        <table id="grid-cache_path" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="cache_pathdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="path" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Path') }}</th>
+                    <th data-column-id="size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="inactive" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="max_size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-access-request-limit" class="tab-pane fade">
+        <table id="grid-limit_zone" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="limit_zonedlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="key" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Key') }}</th>
+                    <th data-column-id="size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Size') }}</th>
+                    <th data-column-id="rate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Rate') }}</th>
+                    <th data-column-id="rate_unit" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Rate Unit') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-access-request-limit-connection" class="tab-pane fade">
+        <table id="grid-limit_request_connection" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="limit_request_connectiondlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="limit_zone" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Limit Zone') }}</th>
+                    <th data-column-id="connection_count" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Connection Count') }}</th>
+                    <th data-column-id="burst" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Burst') }}</th>
+                    <th data-column-id="nodelay" data-type="string" data-sortable="true" data-visible="true">{{ lang._('No Delay') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 
@@ -406,3 +542,6 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
 {{ partial("layout_partials/base_dialog",['fields': security_headers,'id':'security_headersdlg', 'label':lang._('Edit Security Headers')]) }}
+{{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
+{{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
+{{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}

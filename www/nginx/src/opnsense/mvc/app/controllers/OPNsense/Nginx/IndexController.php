@@ -54,13 +54,28 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->naxsi_rule = $this->getForm("naxsi_rule");
         $this->view->naxsi_custom_policy = $this->getForm("naxsi_custom_policy");
         $this->view->security_headers = $this->getForm("security_headers");
+        $this->view->limit_request_connection = $this->getForm("limit_request_connection");
+        $this->view->limit_zone = $this->getForm("limit_zone");
+        $this->view->cache_path = $this->getForm("cache_path");
+        $nginx = new Nginx();
+        $this->view->show_naxsi_download_button =
+            count($nginx->custom_policy->__items) == 0 && count($nginx->naxsi_rule->__items) == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 
     /**
      * show the nginx logs page /ui/nginx/index/logs
      */
-    public function logsAction() {
+    public function logsAction()
+    {
         $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * display a viewer for banned IPs.
+     */
+    public function banAction()
+    {
+        $this->view->pick('OPNsense/Nginx/ban');
     }
 }

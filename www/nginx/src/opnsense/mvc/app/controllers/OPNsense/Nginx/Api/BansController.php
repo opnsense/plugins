@@ -25,42 +25,29 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
+namespace OPNsense\Nginx\Api;
 
-namespace OPNsense\Nginx;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
-class AccessLogParser
+class BansController extends ApiMutableModelControllerBase
 {
-    private $file_name;
-    private $lines;
-    private $result;
-
-    private const LogLineRegex = '/(\S+) - (\S+) \[([\d\sa-z\:\-\/\+]+)\] "([^"]+?)" (\d+) (\d+) "([^"]*?)" "([^"]*?)" "([^"]*?)"/i';
-
-    function __construct($file_name)
+    static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
+    static protected $internalModelName = 'nginx';
+    public function searchbanAction()
     {
-        $this->file_name = $file_name;
-        $this->lines = file($this->file_name);
-        $this->result = array_map([$this, 'parse_line'], $this->lines);
+        return $this->searchBase('ban', array('ip', 'time'));
     }
-    private function parse_line($line)
+    public function delbanAction($uuid)
     {
-        $container = new AccessLogLine();
-        if (preg_match(self::LogLineRegex, $line, $data)) {
-            $container->remote_ip = $data[1];
-            $container->username = $data[2];
-            $container->time = $data[3];
-            $container->request_line = $data[4];
-            $container->status = $data[5];
-            $container->size = $data[6];
-            $container->user_agent = $data[8];
-            $container->http_referer = $data[7];
-            $container->forwarded_for = $data[9];
+        if ($this->request->isPost() || $this->request->isDelete()) {
+            $mdl = $this->getModel();
+            $node = $mdl->getNodeByReference('ban.' . $uuid);
+            $backend = new Backend();
+            $backend->configdRun('nginx unlock ' . (string)$node->ip);
+            return $this->delBase('ban', $uuid);
+        } else {
+            return array('result' => 'most be called via POST');
         }
-        return $container;
-    }
-
-    public function get_result()
-    {
-        return $this->result;
     }
 }

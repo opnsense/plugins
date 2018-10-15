@@ -27,82 +27,93 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 require_once('config.inc');
 require_once('certs.inc');
 use \OPNsense\Nginx\Nginx;
 
-function export_pem_file($filename, $data) {
-  $pem_content = trim(str_replace("\n\n", "\n", str_replace(
-    "\r",
-    "",
-    base64_decode((string)$data))
-  ));
-  file_put_contents($filename, $pem_content);
-  chmod($filename, 0600);
+function export_pem_file($filename, $data, $post_append = null)
+{
+    $pem_content = trim(str_replace("\n\n", "\n", str_replace(
+        "\r",
+        "",
+        base64_decode((string)$data)
+    ) . ($post_append == null ? '' : "\n" . $post_append)));
+    file_put_contents($filename, $pem_content);
+    chmod($filename, 0600);
 }
 
-function find_cert($refid) {
-  global $config;
-  foreach($config['cert'] as $cert_entry) {
-    if ($cert_entry['refid'] == $refid) {
-      return $cert_entry;
+function find_cert($refid)
+{
+    global $config;
+    foreach ($config['cert'] as $cert_entry) {
+        if ($cert_entry['refid'] == $refid) {
+            return $cert_entry;
+        }
     }
-  }
 }
 
-function find_ca($refid) {
-  global $config;
-  foreach($config['ca'] as $cert_entry) {
-    if ($cert_entry['refid'] == $refid) {
-      return $cert_entry;
+function find_ca($refid)
+{
+    global $config;
+    foreach ($config['ca'] as $cert_entry) {
+        if ($cert_entry['refid'] == $refid) {
+            return $cert_entry;
+        }
     }
-  }
 }
 
 // export server certificates
 if (!isset($config['OPNsense']['Nginx'])) {
-  die("nginx is not configured");
+    die("nginx is not configured");
 }
 $nginx = $config['OPNsense']['Nginx'];
 if (!isset($nginx['http_server'])) {
-  die("no http servers configured");
+    die("no http servers configured");
 }
 if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
-  $http_servers = $nginx['http_server'];
+    $http_servers = $nginx['http_server'];
 } else {
-  $http_servers = array($nginx['http_server']);
+    $http_servers = array($nginx['http_server']);
 }
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
 foreach ($http_servers as $http_server) {
-  if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate']))
-  {
-    // try to find the reference
-    $cert = find_cert($http_server['certificate']);
-    if (!isset($cert)) {
-      next;
-    }
-    $hostname = explode(',', $http_server['servername'])[0];
-    export_pem_file(
-      '/usr/local/etc/nginx/key/' . $hostname . '.pem',
-      $cert['crt']
-    );
-    export_pem_file(
-      '/usr/local/etc/nginx/key/' . $hostname . '.key',
-      $cert['prv']
-    );
-    if (!empty($http_server['ca'])) {
-      foreach ($http_server['ca'] as $caref) {
-        $ca = find_ca($caref);
-        if (isset($ca)) {
-          export_pem_file(
-            '/usr/local/etc/nginx/key/' . $hostname . '_ca.pem',
-            $ca['crt']
-          );
+    if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate'])) {
+      // try to find the reference
+        $cert = find_cert($http_server['certificate']);
+        if (!isset($cert)) {
+            next;
         }
-      }
+        $chain = [];
+        $ca_chain = ca_chain_array($cert);
+        if (is_array($ca_chain)) {
+            foreach ($ca_chain as $entry) {
+                $chain[] = base64_decode($entry['crt']);
+            }
+        }
+        $hostname = explode(',', $http_server['servername'])[0];
+        export_pem_file(
+            KEY_DIRECTORY . $hostname . '.pem',
+            $cert['crt'],
+            implode("\n", $chain)
+        );
+        export_pem_file(
+            KEY_DIRECTORY . $hostname . '.key',
+            $cert['prv']
+        );
+        if (!empty($http_server['ca'])) {
+            foreach ($http_server['ca'] as $caref) {
+                $ca = find_ca($caref);
+                if (isset($ca)) {
+                    export_pem_file(
+                        KEY_DIRECTORY . $hostname . '_ca.pem',
+                        $ca['crt']
+                    );
+                }
+            }
+        }
     }
-  }
 }
 // end export server certificates
 
@@ -116,29 +127,35 @@ if (isset($nginx['upstream'])) {
 
     foreach ($upstreams as $upstream) {
         $upstream_uuid = $upstream['@attributes']['uuid'];
-        if (!empty($upstream['tls_enable']) && $upstream['tls_enable'] == '1')
-        {
+        if (!empty($upstream['tls_enable']) && $upstream['tls_enable'] == '1') {
             // try to find the reference
             if (!empty($upstream['tls_client_certificate'])) {
                 $cert = find_cert($upstream['tls_client_certificate']);
                 if (isset($cert)) {
+                    $chain = [];
+                    foreach (ca_chain_array($cert) as $entry) {
+                        $chain[] = base64_decode($entry['crt']);
+                    }
                     $hostname = explode(',', $http_server['servername'])[0];
                     export_pem_file(
-                        '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.pem',
-                        $cert['crt']
+                        KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.pem',
+                        $cert['crt'],
+                        implode("\n", $chain)
                     );
                     export_pem_file(
-                        '/usr/local/etc/nginx/key/' . $upstream['tls_client_certificate'] . '.key',
+                        KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.key',
                         $cert['prv']
                     );
                 }
             }
             if (!empty($upstream['tls_trusted_certificate'])) {
                 $cas = array();
-                foreach ($http_server['ca'] as $caref) {
-                    $ca = find_ca($caref);
-                    if (isset($ca)) {
-                        $cas[] = $ca;
+                if (is_array($http_server['ca'])) {
+                    foreach ($http_server['ca'] as $caref) {
+                        $ca = find_ca($caref);
+                        if (isset($ca)) {
+                            $cas[] = $ca;
+                        }
                     }
                 }
                 export_pem_file(
@@ -159,18 +176,21 @@ foreach ($nginx->userlist->__items as $user_list) {
     $file = null;
     try {
         $file = fopen("/var/db/nginx/auth/" . $uuid, "wb");
-        $users = explode(',',(string)$user_list->users);
+        $users = explode(',', (string)$user_list->users);
         foreach ($users as $user) {
             $user_node = $nginx->getNodeByReference("credential." . $user);
             $username = (string)$user_node->username;
             $password = crypt((string)$user_node->password);
             fwrite($file, $username . ':' . $password . "\n");
         }
-    }
-    finally {
+    } finally {
         if (isset($file)) {
             fclose($file);
         }
         unset($file);
     }
+}
+// create directories for cache
+foreach ($nginx->cache_path->__items as $cache_path) {
+    @mkdir((string)$cache_path->path, 0755, true);
 }

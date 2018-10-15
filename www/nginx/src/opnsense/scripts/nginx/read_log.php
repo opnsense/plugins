@@ -30,11 +30,14 @@ require_once 'config.inc';
 use OPNsense\Nginx\Nginx;
 use OPNsense\Nginx\ErrorLogParser;
 use OPNsense\Nginx\AccessLogParser;
+
 $log_prefix = '/var/log/nginx/';
 $log_suffix = '.log';
 
 
-if ($_SERVER['argc'] != 3) die('{"error": "Incorrect amount of parameters given"}');
+if ($_SERVER['argc'] != 3) {
+    die('{"error": "Incorrect amount of parameters given"}');
+}
 
 // first parameter: error|access
 $mode = $_SERVER['argv'][1];
@@ -51,24 +54,26 @@ if ($data = $nginx->getNodeByReference('http_server.'. $server)) {
     foreach (explode(',', $server_names) as $server_name) {
         $log_file_name = $log_prefix . basename($server_name) . '.' . $mode . $log_suffix;
         // this entry has no log file, ignore it
-        if (!file_exists($log_file_name)) continue;
+        if (!file_exists($log_file_name)) {
+            continue;
+        }
         $logparser = null;
 
         if ($mode == 'error') {
             $logparser = new ErrorLogParser($log_file_name);
-        }
-        elseif ($mode == 'access') {
+        } elseif ($mode == 'access') {
             $logparser = new AccessLogParser($log_file_name);
         }
         // we cannot parse the file - something went wrong
-        if ($logparser == null) continue;
+        if ($logparser == null) {
+            continue;
+        }
         $lines = array_merge($lines, $logparser->get_result());
     }
     if (empty($lines)) {
         $lines['error'] = 'no lines found';
     }
     echo json_encode($lines);
-}
-else {
+} else {
     die('{"error": "UUID not found"}');
 }

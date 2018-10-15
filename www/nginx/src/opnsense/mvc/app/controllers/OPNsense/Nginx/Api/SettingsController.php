@@ -29,11 +29,22 @@
 namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
     static protected $internalModelName = 'nginx';
+
+    // download rules
+    public function downloadrulesAction()
+    {
+        if (!$this->request->isPost()) {
+            return array('error' => 'Must be called via POST');
+        }
+        $backend = new Backend();
+        return array('result' => trim($backend->configdRun('nginx naxsidownloadrules')));
+    }
 
     // User List
 
@@ -120,7 +131,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Upstream Server
     public function searchupstreamserverAction()
     {
-        return $this->searchBase('upstream_server', array('description', 'server', 'priority'));
+        return $this->searchBase('upstream_server', array('description', 'server', 'port', 'priority'));
     }
 
     public function getupstreamserverAction($uuid = null)
@@ -147,7 +158,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Location
     public function searchlocationAction()
     {
-        return $this->searchBase('location', array('description','urlpattern', 'matchtype', 'enable_secrules', 'force_https'));
+        return $this->searchBase('location', array('description','urlpattern', 'path_prefix', 'matchtype', 'enable_secrules', 'force_https'));
     }
 
     public function getlocationAction($uuid = null)
@@ -304,5 +315,94 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setsecurity_headerAction($uuid)
     {
         return $this->setBase('security_header', 'security_header', $uuid);
+    }
+
+    // access limit zone headers
+    public function searchlimit_zoneAction()
+    {
+        return $this->searchBase(
+            'limit_zone',
+            array('description', 'key', 'size', 'rate', 'rate_unit')
+        );
+    }
+
+    public function getlimit_zoneAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('limit_zone', 'limit_zone', $uuid);
+    }
+
+    public function addlimit_zoneAction()
+    {
+        return $this->addBase('limit_zone', 'limit_zone');
+    }
+
+    public function dellimit_zoneAction($uuid)
+    {
+        return $this->delBase('limit_zone', $uuid);
+    }
+
+    public function setlimit_zoneAction($uuid)
+    {
+        return $this->setBase('limit_zone', 'limit_zone', $uuid);
+    }
+
+    // limit_request_connection
+    public function searchlimit_request_connectionAction()
+    {
+        return $this->searchBase(
+            'limit_request_connection',
+            array('description', 'limit_zone', 'nodelay', 'burst', 'connection_count')
+        );
+    }
+
+    public function getlimit_request_connectionAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('limit_request_connection', 'limit_request_connection', $uuid);
+    }
+
+    public function addlimit_request_connectionAction()
+    {
+        return $this->addBase('limit_request_connection', 'limit_request_connection');
+    }
+
+    public function dellimit_request_connectionAction($uuid)
+    {
+        return $this->delBase('limit_request_connection', $uuid);
+    }
+
+    public function setlimit_request_connectionAction($uuid)
+    {
+        return $this->setBase('limit_request_connection', 'limit_request_connection', $uuid);
+    }
+    // cache path
+    public function searchcache_pathAction()
+    {
+        return $this->searchBase(
+            'cache_path',
+            array('path', 'inactive', 'size', 'max_size')
+        );
+    }
+
+    public function getcache_pathAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('cache_path', 'cache_path', $uuid);
+    }
+
+    public function addcache_pathAction()
+    {
+        return $this->addBase('cache_path', 'cache_path');
+    }
+
+    public function delcache_pathAction($uuid)
+    {
+        return $this->delBase('cache_path', $uuid);
+    }
+
+    public function setcache_pathAction($uuid)
+    {
+        return $this->setBase('cache_path', 'cache_path', $uuid);
     }
 }
