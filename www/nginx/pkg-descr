@@ -27,5 +27,14 @@ v1.1
 
 * add log viewer
 
+v1.0
+
+* add Reverse Proxy (Load Balancer)
+* add Location Configuration
+* add local HTTP Server
+* add local PHP support
+* add experimental support to handle the web interface (can only be enabled via CLI)
+* add WAF (NAXSI) support
+* add Authentication support
 
 WWW: https://nginx.org/
