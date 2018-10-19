@@ -7,6 +7,10 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <enablecarp type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enablecarp>
         <enablelogfile type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
