@@ -9645,8 +9645,25 @@ h3 {
   }
 }
 
-.fa.fa-play.text-muted::before {
-  color: #eac80a !important;
+.fa {
+  &.fa-long-arrow-left {
+    color: #eac80a !important;
+    &::before {
+      color: #eac80a !important;
+    }
+  }
+  &.fa-info-circle.text-muted {
+    color: #eac80a !important;
+  }
+  &.fa-times-circle.text-muted, &.fa-times.text-muted {
+    color: #eac80a !important;
+    &::before {
+      color: #eac80a !important;
+    }
+  }
+  &.fa-play.text-muted::before {
+    color: #eac80a !important;
+  }
 }
 
 #system_log-widgets.content-box {
