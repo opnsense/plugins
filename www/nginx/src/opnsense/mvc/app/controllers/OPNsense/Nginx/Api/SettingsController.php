@@ -236,6 +236,33 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('httpserver', 'http_server', $uuid);
     }
 
+    // stream server
+    public function searchstreamserverAction()
+    {
+        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_port'));
+    }
+
+    public function getstreamserverAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('streamserver', 'stream_server', $uuid);
+    }
+
+    public function addstreamserverAction()
+    {
+        return $this->addBase('streamserver', 'stream_server');
+    }
+
+    public function delstreamserverAction($uuid)
+    {
+        return $this->delBase('stream_server', $uuid);
+    }
+
+    public function setstreamserverAction($uuid)
+    {
+        return $this->setBase('streamserver', 'stream_server', $uuid);
+    }
+
     // naxsi rules
     public function searchnaxsiruleAction()
     {

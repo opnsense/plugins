@@ -580,6 +580,56 @@
       </limit_request_connections>
     </http_server>
 
+    <stream_server type="ArrayField">
+      <listen_port type="PortField">
+        <Required>N</Required>
+        <default>80</default>
+      </listen_port>
+      <udp type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </udp>
+      <certificate type="CertificateField">
+        <Type>cert</Type>
+        <Required>N</Required>
+      </certificate>
+      <ca type="CertificateField">
+        <Type>ca</Type>
+        <Required>N</Required>
+      </ca>
+      <verify_client type="OptionField">
+        <default>Off</default>
+        <OptionValues>
+          <off>Off</off>
+          <on>On</on>
+          <optional>Optional</optional>
+          <optional_no_ca>Optional, don't verify</optional_no_ca>
+        </OptionValues>
+        <Required>Y</Required>
+      </verify_client>
+      <access_log_format type="OptionField">
+        <default>main</default>
+        <OptionValues>
+          <main>Default</main>
+          <anonymized>Anonymized</anonymized>
+          <disabled>Disabled</disabled>
+        </OptionValues>
+        <Required>Y</Required>
+      </access_log_format>
+      <upstream type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected upstream not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </upstream>
+    </stream_server>
+
     <http_rewrite type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>
@@ -997,6 +1047,7 @@
         <Required>Y</Required>
       </description>
     </limit_request_connection>
+
     <ban type="ArrayField">
       <ip type="NetworkField">
         <Required>Y</Required>
@@ -1006,6 +1057,7 @@
         <MinimumValue>0</MinimumValue>
       </time>
     </ban>
+
     <cache_path type="ArrayField">
       <path type="TextField">
         <Required>Y</Required>

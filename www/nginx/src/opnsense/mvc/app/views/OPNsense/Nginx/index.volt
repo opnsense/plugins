@@ -88,6 +88,7 @@ $( document ).ready(function() {
     'credential',
     'userlist',
     'httpserver',
+    'streamserver',
     'httprewrite',
     'custompolicy',
     'security_header',
@@ -183,6 +184,22 @@ $( document ).ready(function() {
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
+            </li>
+        </ul>
+    </li>
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown"
+           href="#"
+           class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-streams-streamserver').click();"
+           class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           style="border-right:0px;"><b>{{ lang._('Data Streams')}}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-streams-streamserver" href="#subtab_nginx-streams-streamserver">{{ lang._('Stream Servers')}}</a>
             </li>
         </ul>
     </li>
@@ -336,6 +353,29 @@ $( document ).ready(function() {
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
                     <th data-column-id="listen_http_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
                     <th data-column-id="listen_https_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-streams-streamserver" class="tab-pane fade">
+        <table id="grid-streamserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="streamserverdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
+                    <th data-column-id="udp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('UDP') }}</th>
+                    <th data-column-id="listen_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Port') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -538,6 +578,7 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': credential,'id':'credentialdlg', 'label':lang._('Edit Credential')]) }}
 {{ partial("layout_partials/base_dialog",['fields': userlist,'id':'userlistdlg', 'label':lang._('Edit User List')]) }}
 {{ partial("layout_partials/base_dialog",['fields': httpserver,'id':'httpserverdlg', 'label':lang._('Edit HTTP Server')]) }}
+{{ partial("layout_partials/base_dialog",['fields': streamserver,'id':'streamserverdlg', 'label':lang._('Edit Stream Server')]) }}
 {{ partial("layout_partials/base_dialog",['fields': httprewrite,'id':'httprewritedlg', 'label':lang._('Edit URL Rewrite')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
