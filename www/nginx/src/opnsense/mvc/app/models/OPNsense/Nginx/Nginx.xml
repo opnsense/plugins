@@ -630,6 +630,16 @@
       </upstream>
     </stream_server>
 
+    <sni_hostname_upstream_map type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <data type="JsonKeyValueStoreField">
+          <multiple>Y</multiple>
+          <Required>Y</Required>
+      </data>
+    </sni_hostname_upstream_map>
+
     <http_rewrite type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>

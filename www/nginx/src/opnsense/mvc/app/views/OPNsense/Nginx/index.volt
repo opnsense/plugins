@@ -25,7 +25,86 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
+<script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
 <script>
+SNIHostnameUpstreamModel = Backbone.Model.extend({});
+SNIHostnameUpstreamCollection = Backbone.Collection.extend({});
+KeyValueMapFieldEntry = Backbone.View.extend({
+
+    tagName: 'div',
+    attributes: {'class': 'row'},
+    events: {
+        'keyup .key': function () {
+            this.model.set('key', this.key.value);
+        },
+        'keyup .value': function () {
+            this.model.set('value', this.value.value);
+        },
+        "click .delete" : "deleteEntry"
+    },
+    key: null,
+    value: null,
+    delBtn: null,
+    first: null,
+    second: null,
+    third: null,
+    initialize: function (params) {
+        console.log(params);
+        this.first = document.createElement('div');
+        this.first.classList.add('col-sm');
+        this.key = document.createElement('input');
+        this.first.append(this.key);
+        this.key.type = 'text';
+        this.key.classList.add('key');
+        this.key.value = this.model.get('key');
+
+        this.second = document.createElement('div');
+        this.second.classList.add('col-sm');
+        this.value = document.createElement('input');
+        this.second.append(this.value);
+        this.value.classList.add('value');
+        this.value.value = this.model.get('key');
+
+        this.third = document.createElement('div');
+        this.third.classList.add('col-sm');
+
+        this.$el.append(this.first).append(this.second).append(this.third);
+    },
+    render: function() {
+        $(this.key).val(this.model.get('key'));
+        $(this.value).val(this.model.get('value'));
+    }
+});
+KeyValueMapField = Backbone.View.extend({
+    tagName: 'div',
+    attributes: {'class': 'container-fluid'},
+    initialize: function (params) {
+        console.log(params);
+        this.dataField = $(params.dataField);
+        this.collection = new SNIHostnameUpstreamCollection();
+        this.listenTo(this.collection, "add remove reset", this.render);
+        this.listenTo(this.collection, "change", this.update);
+        // inject our table holder
+        this.dataField.after(this.$el);
+    },
+    events: {
+        "click .add": "addEntry"
+    },
+    render: function () {
+        // clear table
+        this.$el.html('');
+        this.update();
+        this.collection.each((model) => {
+            console.log(model);
+            const childView = new KeyValueMapFieldEntry({model: model});
+            this.$el.append(childView.$el);
+        });
+    },
+    update: function () {
+        this.dataField.val(JSON.stringify(this.collection.toJSON()));
+    }
+});
 $( document ).ready(function() {
 
     let data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
@@ -33,7 +112,7 @@ $( document ).ready(function() {
     // load initial data
     mapDataToFormUI(data_get_map).done(function(){
         formatTokenizersUI();
-        $('select[data-allownew="false"]').selectpicker('refresh')
+        $('select[data-allownew="false"]').selectpicker('refresh');
         updateServiceControlUI('nginx');
     });
 
@@ -95,6 +174,7 @@ $( document ).ready(function() {
     'limit_zone',
     'cache_path',
     'limit_request_connection',
+    'snifwd',
     'naxsirule'].forEach(function(element) {
         $("#grid-" + element).UIBootgrid(
             { 'search':'/api/nginx/settings/search' + element,
@@ -133,7 +213,10 @@ $( document ).ready(function() {
             }]
         });
     });
-
+    let snifield = new KeyValueMapField({ dataField: document.getElementById('snihostname.data') });
+    snifield.collection.add(new SNIHostnameUpstreamModel({key: 'asdf', value: 'asdf'}));
+    window.snifield = snifield;
+    snifield.render();
 });
 
 
@@ -200,6 +283,9 @@ $( document ).ready(function() {
         <ul class="dropdown-menu" role="menu">
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-streams-streamserver" href="#subtab_nginx-streams-streamserver">{{ lang._('Stream Servers')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-streams-snifwd" href="#subtab_nginx-streams-snifwd">{{ lang._('SNI Based Routing')}}</a>
             </li>
         </ul>
     </li>
@@ -568,6 +654,27 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-streams-snifwd" class="tab-pane fade">
+        <table id="grid-snifwd" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="sni_hostname_mapdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 
@@ -586,3 +693,4 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
+{{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
