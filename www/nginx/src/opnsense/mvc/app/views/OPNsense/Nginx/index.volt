@@ -52,7 +52,7 @@ KeyValueMapFieldEntry = Backbone.View.extend({
     initialize: function (params) {
         console.log(params);
         this.first = document.createElement('div');
-        this.first.classList.add('col-sm');
+        this.first.classList.add('col-sm-5');
         this.key = document.createElement('input');
         this.first.append(this.key);
         this.key.type = 'text';
@@ -60,20 +60,31 @@ KeyValueMapFieldEntry = Backbone.View.extend({
         this.key.value = this.model.get('key');
 
         this.second = document.createElement('div');
-        this.second.classList.add('col-sm');
+        this.second.classList.add('col-sm-5');
         this.value = document.createElement('input');
         this.second.append(this.value);
         this.value.classList.add('value');
         this.value.value = this.model.get('key');
 
         this.third = document.createElement('div');
-        this.third.classList.add('col-sm');
+        this.third.classList.add('col-sm-2');
+        this.third.style.textAlign = 'right';
+        this.delBtn = document.createElement("button");
+        this.delBtn.classList.add('delete');
+        this.delBtn.classList.add('btn');
+        this.delBtn.innerHTML = '<span class="fa fa-trash"></span>';
+        this.third.append(this.delBtn);
+
 
         this.$el.append(this.first).append(this.second).append(this.third);
     },
     render: function() {
         $(this.key).val(this.model.get('key'));
         $(this.value).val(this.model.get('value'));
+    },
+    deleteEntry: function (e) {
+        e.preventDefault();
+        this.collection.remove(this.model);
     }
 });
 KeyValueMapField = Backbone.View.extend({
@@ -97,12 +108,25 @@ KeyValueMapField = Backbone.View.extend({
         this.update();
         this.collection.each((model) => {
             console.log(model);
-            const childView = new KeyValueMapFieldEntry({model: model});
+            const childView = new KeyValueMapFieldEntry({model: model, collection: this.collection});
             this.$el.append(childView.$el);
         });
+        this.$el.append($(`
+                <div class="row">
+                    <button class="btn btn-primary pull-right add">
+                        <span class="fa fa-plus"></span>
+                    </button>
+                </div>`));
     },
     update: function () {
         this.dataField.val(JSON.stringify(this.collection.toJSON()));
+    },
+    addEntry: function (e) {
+        e.preventDefault();
+        this.collection.add(new SNIHostnameUpstreamModel({
+            key: 'localhost',
+            value: ''
+        }));
     }
 });
 $( document ).ready(function() {
@@ -219,8 +243,26 @@ $( document ).ready(function() {
     snifield.render();
 });
 
-
 </script>
+<style>
+    #frm_sni_hostname_mapdlg .col-md-4 {
+        width: 50%;
+    }
+    #frm_sni_hostname_mapdlg td > input {
+        width: 100%;
+        max-width: 100%;
+    }
+    #frm_sni_hostname_mapdlg .col-md-5 {
+        width: 25%;
+    }
+    #row_snihostname\.data .row div {
+        padding: 0;
+    }
+    #snihostname\.data {
+        display: none;
+    }
+
+</style>
 
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
@@ -676,7 +718,6 @@ $( document ).ready(function() {
         </table>
     </div>
 </div>
-
 
 
 {{ partial("layout_partials/base_dialog",['fields': upstream,'id':'upstreamdlg', 'label':lang._('Edit Upstream')]) }}
