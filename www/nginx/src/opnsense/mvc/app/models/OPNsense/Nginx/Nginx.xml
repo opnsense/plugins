@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -546,6 +546,10 @@
         <default>0</default>
         <Required>Y</Required>
       </block_nonpublic_data>
+      <disable_bot_protection type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </disable_bot_protection>
       <naxsi_extensive_log type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
