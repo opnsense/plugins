@@ -30,6 +30,14 @@
 <script>
 SNIHostnameUpstreamModel = Backbone.Model.extend({});
 SNIHostnameUpstreamCollection = Backbone.Collection.extend({});
+UpstreamCollection = Backbone.Collection.extend({
+    url: '/api/nginx/settings/searchupstream',
+    parse: function(response) {
+        return response.rows;
+    }
+});
+uc = new UpstreamCollection();
+
 KeyValueMapFieldEntry = Backbone.View.extend({
 
     tagName: 'div',
@@ -38,7 +46,7 @@ KeyValueMapFieldEntry = Backbone.View.extend({
         'keyup .key': function () {
             this.model.set('key', this.key.value);
         },
-        'keyup .value': function () {
+        'change .value': function () {
             this.model.set('value', this.value.value);
         },
         "click .delete" : "deleteEntry"
@@ -49,8 +57,10 @@ KeyValueMapFieldEntry = Backbone.View.extend({
     first: null,
     second: null,
     third: null,
+    upstreamCollection: null,
     initialize: function (params) {
-        console.log(params);
+        this.upstreamCollection = params.upstreamCollection;
+        this.listenTo(this.upstreamCollection, "update reset add remove", this.regenerate_list);
         this.first = document.createElement('div');
         this.first.classList.add('col-sm-5');
         this.key = document.createElement('input');
@@ -61,9 +71,10 @@ KeyValueMapFieldEntry = Backbone.View.extend({
 
         this.second = document.createElement('div');
         this.second.classList.add('col-sm-5');
-        this.value = document.createElement('input');
+        this.value = document.createElement('select');
         this.second.append(this.value);
         this.value.classList.add('value');
+        this.value.classList.add('form-control');
         this.value.value = this.model.get('key');
 
         this.third = document.createElement('div');
@@ -80,20 +91,35 @@ KeyValueMapFieldEntry = Backbone.View.extend({
     },
     render: function() {
         $(this.key).val(this.model.get('key'));
+        this.regenerate_list();
         $(this.value).val(this.model.get('value'));
     },
     deleteEntry: function (e) {
         e.preventDefault();
         this.collection.remove(this.model);
+    },
+    regenerate_list: function () {
+        // backup value
+        const v = $(this.value);
+        // clear the dropdown
+        v.html('');
+        this.upstreamCollection.each(
+            (mdl) => v.append(`<option value="${mdl.escape('uuid')}">${mdl.escape('description')}</option>`)
+        );
+        // restore
+        v.val(this.model.get('value'));
+        v.selectpicker('refresh');
     }
 });
 KeyValueMapField = Backbone.View.extend({
     tagName: 'div',
     attributes: {'class': 'container-fluid'},
+    child_views: [],
+    upstreamCollection: null,
     initialize: function (params) {
-        console.log(params);
         this.dataField = $(params.dataField);
         this.collection = new SNIHostnameUpstreamCollection();
+        this.upstreamCollection = params.upstreamCollection;
         this.listenTo(this.collection, "add remove reset", this.render);
         this.listenTo(this.collection, "change", this.update);
         // inject our table holder
@@ -104,12 +130,19 @@ KeyValueMapField = Backbone.View.extend({
     },
     render: function () {
         // clear table
+        this.child_views.forEach((model) => model.remove());
         this.$el.html('');
+        this.child_views = [];
         this.update();
         this.collection.each((model) => {
-            console.log(model);
-            const childView = new KeyValueMapFieldEntry({model: model, collection: this.collection});
+            const childView = new KeyValueMapFieldEntry({
+                model: model,
+                collection: this.collection,
+                upstreamCollection: this.upstreamCollection
+            });
+            this.child_views.push(childView);
             this.$el.append(childView.$el);
+            childView.render();
         });
         this.$el.append($(`
                 <div class="row">
@@ -237,10 +270,14 @@ $( document ).ready(function() {
             }]
         });
     });
-    let snifield = new KeyValueMapField({ dataField: document.getElementById('snihostname.data') });
+    let snifield = new KeyValueMapField({
+        dataField: document.getElementById('snihostname.data'),
+        upstreamCollection: uc
+    });
     snifield.collection.add(new SNIHostnameUpstreamModel({key: 'asdf', value: 'asdf'}));
     window.snifield = snifield;
     snifield.render();
+    uc.fetch();
 });
 
 </script>
