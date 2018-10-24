@@ -8,7 +8,6 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
-
 v1.2
 
 * add limiter support
