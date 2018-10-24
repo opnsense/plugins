@@ -8,7 +8,11 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
-v1.2
+1.3
+
+* bugfix: correctly set upstream header
+
+1.2
 
 * add limiter support
 * add permanent ban feature (use alias in firewall rules)
@@ -22,11 +26,11 @@ v1.2
 * bugfix: fix issues with multiple hostnames (IPv6 issues with TLS SNI by @ccesario )
 * bugfix: warning in certificate rendering
 
-v1.1
+1.1
 
 * add log viewer
 
-v1.0
+1.0
 
 * add Reverse Proxy (Load Balancer)
 * add Location Configuration
