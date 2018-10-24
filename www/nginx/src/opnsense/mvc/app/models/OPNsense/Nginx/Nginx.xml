@@ -634,11 +634,35 @@
       <description type="TextField">
         <Required>Y</Required>
       </description>
-      <data type="JsonKeyValueStoreField">
-          <multiple>Y</multiple>
+      <data type="ModelRelationField">
+          <Model>
+            <template>
+              <source>OPNsense.Nginx.Nginx</source>
+              <items>sni_hostname_upstream_map_items</items>
+              <display>hostname</display>
+            </template>
+          </Model>
           <Required>Y</Required>
+          <multiple>Y</multiple>
       </data>
     </sni_hostname_upstream_map>
+
+    <sni_hostname_upstream_map_items type="ArrayField">
+      <hostname type="HostnameField">
+        <Required>Y</Required>
+      </hostname>
+      <upstream type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+      </upstream>
+    </sni_hostname_upstream_map_items>
 
     <http_rewrite type="ArrayField">
       <description type="TextField">
