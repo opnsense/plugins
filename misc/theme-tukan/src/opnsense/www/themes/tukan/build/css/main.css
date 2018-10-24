@@ -6293,10 +6293,6 @@ label > input[type="radio"] {
   background-color: #ffe83e;
 }
 
-.dashboard_grid_column table {
-	table-layout: fixed;
-}
-
 #ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
 	background-color: #f0f0f0;
 }
@@ -6392,7 +6388,7 @@ h3:hover, h3:focus {
   color:#FFFFFF !important;
 }
 
-.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
+.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted,.fa.fa-long-arrow-left,.fa.fa-long-arrow-left::before,.fa.fa-info-circle.text-muted,.fa.fa-times-circle.text-muted,.fa.fa-times-circle.text-muted::before,.fa.fa-times.text-muted,.fa.fa-times.text-muted::before,.fa.fa-play.text-muted::before {
   color: #000 !important;
 }
 
