@@ -31,4 +31,21 @@ use OPNsense\Base\BaseModel;
 
 class Nginx extends BaseModel
 {
+    /**
+     * @param $uuid string UUID of sni_hostname_upstream_map
+     * @return array list of UUIDs
+     */
+    function find_sni_hostname_upstream_map_entry_uuids($uuid)
+    {
+        $tmp = $this->getNodeByReference('sni_hostname_upstream_map.' . $uuid);
+        if ($tmp == null) {
+            return [];
+        }
+        $tmp = (string)$tmp->data;
+        if (empty($tmp)) {
+            return [];
+        }
+
+        return explode(',', $tmp);
+    }
 }

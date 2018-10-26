@@ -457,7 +457,16 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function delsnifwdAction($uuid)
     {
-        return $this->delBase('sni_hostname_upstream_map', $uuid);
+        $nginx = $this->getModel();
+        $uuid_attached = $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid);
+
+        $ret = $this->delBase('sni_hostname_upstream_map', $uuid);
+        if ($ret['result'] == 'deleted') {
+            foreach ($uuid_attached as $old_uuid) {
+                $this->delBase('sni_hostname_upstream_map_item', $old_uuid);
+            }
+        }
+        return $ret;
     }
 
     public function setsnifwdAction($uuid)
@@ -499,12 +508,11 @@ class SettingsController extends ApiMutableModelControllerBase
         if ($this->request->hasPost('snihostname') && is_array($_POST['snihostname']['data'])) {
             if ($uuid != null) {
                 // for an update, we have to clear it.
-                $tmp = (string)$nginx->getNodeByReference('sni_hostname_upstream_map.' . $uuid)->data;
-                foreach (explode(',',$tmp) as $item_uuid) {
+                $tmp = $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid);
+                foreach ($tmp as $item_uuid) {
                     try {
                         $this->delBase('sni_hostname_upstream_map_item', $item_uuid);
-                    }
-                    catch (\Exception $e) {
+                    } catch (\Exception $e) {
                         // we don't care about then.
                     }
                 }
