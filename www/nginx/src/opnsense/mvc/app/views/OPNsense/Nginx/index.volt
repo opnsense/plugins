@@ -99,7 +99,8 @@ KeyValueMapFieldEntry = Backbone.View.extend({
         this.delBtn.classList.add('btn');
         this.delBtn.innerHTML = '<span class="fa fa-trash"></span>';
         this.third.append(this.delBtn);
-        if (!this.model.has('upstream')) {
+        if (!this.model.has('upstream') ||
+            this.upstreamCollection.where ({'uuid' : this.model.get('upstream')}).length === 0) {
             if (this.upstreamCollection.length > 0) {
                 this.model.set('upstream', this.upstreamCollection.at(0).get('uuid'));
             }
@@ -209,7 +210,7 @@ $( document ).ready(function() {
 
     // form save event handlers for all defined forms
     $('[id*="save_"]').each(function(){
-        $(this).click(function() {
+        $(this).click(function(event) {
             let frm_id = $(this).closest("form").attr("id");
             let frm_title = $(this).closest("form").attr("data-title");
             // save data for General TAB
@@ -294,6 +295,11 @@ $( document ).ready(function() {
     });
     window.snifield = snifield;
     snifield.render();
+    $("#grid-upstream").on("loaded.rs.jquery.bootgrid", function ()
+    {
+        /* we always have to reload too after bootgrid reloads */
+        uc.fetch();
+    });
     uc.fetch();
 });
 
