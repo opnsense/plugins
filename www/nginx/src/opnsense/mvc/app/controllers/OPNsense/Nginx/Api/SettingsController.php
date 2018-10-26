@@ -486,10 +486,6 @@ class SettingsController extends ApiMutableModelControllerBase
             }
         }
         return $response_data;
-
-        //array("snihostname" => array("description" => "", "data" =>[
-        //    array("hostname" => 'fabian-franz.org', "upstream" => "7d33fd32-1c76-41d9-8113-2702314dfef6")
-        //]));
     }
 
     /**
@@ -504,7 +500,14 @@ class SettingsController extends ApiMutableModelControllerBase
             if ($uuid != null) {
                 // for an update, we have to clear it.
                 $tmp = (string)$nginx->getNodeByReference('sni_hostname_upstream_map.' . $uuid)->data;
-                //$this->delBase('sni_hostname_upstream_map', $uuid);
+                foreach (explode(',',$tmp) as $item_uuid) {
+                    try {
+                        $this->delBase('sni_hostname_upstream_map_item', $item_uuid);
+                    }
+                    catch (\Exception $e) {
+                        // we don't care about then.
+                    }
+                }
             }
             $ids = [];
             $postdata = $_POST['snihostname']['data'];
