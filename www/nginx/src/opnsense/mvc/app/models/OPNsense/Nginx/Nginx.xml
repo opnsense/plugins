@@ -616,6 +616,14 @@
         </OptionValues>
         <Required>Y</Required>
       </access_log_format>
+      <route_field type="OptionField">
+        <default>upstream</default>
+        <OptionValues>
+          <upstream>Upstream</upstream>
+          <sni_upstream_map>SNI Upstream Mapping</sni_upstream_map>
+        </OptionValues>
+        <Required>Y</Required>
+      </route_field>
       <upstream type="ModelRelationField">
         <Model>
           <template>
@@ -628,6 +636,18 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </upstream>
+      <sni_upstream_map type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>sni_hostname_upstream_map</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected upstream not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </sni_upstream_map>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">

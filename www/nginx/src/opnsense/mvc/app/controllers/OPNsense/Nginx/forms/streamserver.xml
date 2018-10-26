@@ -32,10 +32,23 @@
     <type>dropdown</type>
   </field>
   <field>
-    <id>location.upstream</id>
+    <id>streamserver.route_field</id>
+    <label>Route With</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+  </field>
+  <field>
+    <id>streamserver.upstream</id>
     <label>Upstream Servers</label>
     <type>dropdown</type>
     <style>selectpicker</style>
-    <help>Select an upstream to proxy to or connect via FastCGI if chosen.</help>
+    <help>Select an upstream to proxy to.</help>
+  </field>
+  <field>
+    <id>streamserver.sni_upstream_map</id>
+    <label>SNI Upstream Mapping</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>Select an upstream map to choose the host based on the name given by the client.</help>
   </field>
 </form>
