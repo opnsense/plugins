@@ -634,7 +634,8 @@
       <description type="TextField">
         <Required>Y</Required>
       </description>
-      <data type="ModelRelationField">
+      <data type="TextField">
+        <!-- sorry, the model relation field is broken here
           <Model>
             <template>
               <source>OPNsense.Nginx.Nginx</source>
@@ -642,12 +643,13 @@
               <display>hostname</display>
             </template>
           </Model>
-          <Required>Y</Required>
           <multiple>Y</multiple>
+          -->
+          <Required>Y</Required>
       </data>
     </sni_hostname_upstream_map>
 
-    <sni_hostname_upstream_map_items type="ArrayField">
+    <sni_hostname_upstream_map_item type="ArrayField">
       <hostname type="HostnameField">
         <Required>Y</Required>
       </hostname>
@@ -660,9 +662,9 @@
           </template>
         </Model>
         <Required>Y</Required>
-        <multiple>Y</multiple>
+        <multiple>N</multiple>
       </upstream>
-    </sni_hostname_upstream_map_items>
+    </sni_hostname_upstream_map_item>
 
     <http_rewrite type="ArrayField">
       <description type="TextField">

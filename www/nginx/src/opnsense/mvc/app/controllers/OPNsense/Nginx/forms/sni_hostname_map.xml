@@ -7,7 +7,8 @@
   </field>
   <field>
     <id>snihostname.data</id>
+    <style>json-data</style>
     <label>Hostname Upstream Map</label>
-    <type>text</type>
+    <type>hidden</type>
   </field>
 </form>

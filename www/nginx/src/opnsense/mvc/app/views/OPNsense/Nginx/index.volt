@@ -29,7 +29,21 @@
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
 <script>
 SNIHostnameUpstreamModel = Backbone.Model.extend({});
-SNIHostnameUpstreamCollection = Backbone.Collection.extend({});
+SNIHostnameUpstreamCollection = Backbone.Collection.extend({
+    initialize: function() {
+        let that = this;
+        $('#snihostname\\.data').change(function () {
+            that.regenerateFromView()
+        })
+    },
+    regenerateFromView: function () {
+        let data = JSON.parse($('#snihostname\\.data').val());
+        if (!_.isArray(data)) {
+            data = [];
+        }
+        this.reset(data);
+    }
+});
 UpstreamCollection = Backbone.Collection.extend({
     url: '/api/nginx/settings/searchupstream',
     parse: function(response) {
@@ -44,10 +58,10 @@ KeyValueMapFieldEntry = Backbone.View.extend({
     attributes: {'class': 'row'},
     events: {
         'keyup .key': function () {
-            this.model.set('key', this.key.value);
+            this.model.set('hostname', this.key.value);
         },
         'change .value': function () {
-            this.model.set('value', this.value.value);
+            this.model.set('upstream', this.value.value);
         },
         "click .delete" : "deleteEntry"
     },
@@ -67,7 +81,7 @@ KeyValueMapFieldEntry = Backbone.View.extend({
         this.first.append(this.key);
         this.key.type = 'text';
         this.key.classList.add('key');
-        this.key.value = this.model.get('key');
+        this.key.value = this.model.get('hostname');
 
         this.second = document.createElement('div');
         this.second.classList.add('col-sm-5');
@@ -75,7 +89,7 @@ KeyValueMapFieldEntry = Backbone.View.extend({
         this.second.append(this.value);
         this.value.classList.add('value');
         this.value.classList.add('form-control');
-        this.value.value = this.model.get('key');
+        this.value.value = this.model.get('upstream');
 
         this.third = document.createElement('div');
         this.third.classList.add('col-sm-2');
@@ -85,14 +99,19 @@ KeyValueMapFieldEntry = Backbone.View.extend({
         this.delBtn.classList.add('btn');
         this.delBtn.innerHTML = '<span class="fa fa-trash"></span>';
         this.third.append(this.delBtn);
+        if (!this.model.has('upstream')) {
+            if (this.upstreamCollection.length > 0) {
+                this.model.set('upstream', this.upstreamCollection.at(0).get('uuid'));
+            }
+        }
 
 
         this.$el.append(this.first).append(this.second).append(this.third);
     },
     render: function() {
-        $(this.key).val(this.model.get('key'));
+        $(this.key).val(this.model.get('hostname'));
         this.regenerate_list();
-        $(this.value).val(this.model.get('value'));
+        $(this.value).val(this.model.get('upstream'));
     },
     deleteEntry: function (e) {
         e.preventDefault();
@@ -107,7 +126,7 @@ KeyValueMapFieldEntry = Backbone.View.extend({
             (mdl) => v.append(`<option value="${mdl.escape('uuid')}">${mdl.escape('description')}</option>`)
         );
         // restore
-        v.val(this.model.get('value'));
+        v.val(this.model.get('upstream'));
         v.selectpicker('refresh');
     }
 });
@@ -157,8 +176,7 @@ KeyValueMapField = Backbone.View.extend({
     addEntry: function (e) {
         e.preventDefault();
         this.collection.add(new SNIHostnameUpstreamModel({
-            key: 'localhost',
-            value: ''
+            hostname: 'localhost',
         }));
     }
 });
@@ -274,7 +292,6 @@ $( document ).ready(function() {
         dataField: document.getElementById('snihostname.data'),
         upstreamCollection: uc
     });
-    snifield.collection.add(new SNIHostnameUpstreamModel({key: 'asdf', value: 'asdf'}));
     window.snifield = snifield;
     snifield.render();
     uc.fetch();
@@ -294,9 +311,6 @@ $( document ).ready(function() {
     }
     #row_snihostname\.data .row div {
         padding: 0;
-    }
-    #snihostname\.data {
-        display: none;
     }
 
 </style>

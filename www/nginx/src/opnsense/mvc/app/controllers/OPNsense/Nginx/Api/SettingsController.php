@@ -432,4 +432,91 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('cache_path', 'cache_path', $uuid);
     }
+
+    // SNI Forward
+    public function searchsnifwdAction()
+    {
+        return $this->searchBase('sni_hostname_upstream_map', array('description'));
+    }
+
+    public function getsnifwdAction($uuid = null)
+    {
+        $this->sessionClose();
+        $base = $this->getBase('snihostname', 'sni_hostname_upstream_map', $uuid);
+        return $this->convert_sni_fwd_for_client($base);
+    }
+
+    public function addsnifwdAction()
+    {
+        if ($this->request->isPost()) {
+            $this->regenerate_hostname_map(null);
+            return $this->addBase('snihostname', 'sni_hostname_upstream_map');
+        }
+        //return [];
+    }
+
+    public function delsnifwdAction($uuid)
+    {
+        return $this->delBase('sni_hostname_upstream_map', $uuid);
+    }
+
+    public function setsnifwdAction($uuid)
+    {
+        if ($this->request->isPost()) {
+            $this->regenerate_hostname_map($uuid);
+            return $this->setBase('snihostname', 'sni_hostname_upstream_map', $uuid);
+        }
+        return [];
+    }
+
+    private function convert_sni_fwd_for_client($response_data)
+    {
+        if (!isset($response_data['snihostname']['data'])) {
+            return $response_data;
+        }
+        $nginx = $this->getModel();
+        $uuids_map = explode(',', $response_data['snihostname']['data']);
+        $response_data['snihostname']['data'] = [];
+        foreach ($uuids_map as $uuid_line) {
+            $rowdata = $nginx->getNodeByReference('sni_hostname_upstream_map_item.' . $uuid_line);
+            if ($rowdata != null) {
+                $response_data['snihostname']['data'][] =
+                    array('hostname' => (string)$rowdata->hostname,
+                        'upstream' => (string)$rowdata->upstream);
+            }
+        }
+        return $response_data;
+
+        //array("snihostname" => array("description" => "", "data" =>[
+        //    array("hostname" => 'fabian-franz.org', "upstream" => "7d33fd32-1c76-41d9-8113-2702314dfef6")
+        //]));
+    }
+
+    /**
+     * @param null $uuid the uuid which should get cleared before
+     * @throws \ReflectionException if the model was not found
+     * @throws \Phalcon\Validation\Exception on validation errors
+     */
+    private function regenerate_hostname_map($uuid = null)
+    {
+        $nginx = $this->getModel();
+        if ($this->request->hasPost('snihostname') && is_array($_POST['snihostname']['data'])) {
+            if ($uuid != null) {
+                // for an update, we have to clear it.
+                $tmp = (string)$nginx->getNodeByReference('sni_hostname_upstream_map.' . $uuid)->data;
+                //$this->delBase('sni_hostname_upstream_map', $uuid);
+            }
+            $ids = [];
+            $postdata = $_POST['snihostname']['data'];
+            foreach ($postdata as $post_item) {
+                $item = $nginx->sni_hostname_upstream_map_item->Add();
+                $ids[] = $item->getAttributes()['uuid'];
+                $item->hostname = $post_item['hostname'];
+                $item->upstream = $post_item['upstream'];
+            }
+            //$nginx->sni_hostname_upstream_map->eventPostLoading();
+            $nginx->serializeToConfig();
+            $_POST['snihostname']['data'] = implode(',', $ids);
+        }
+    }
 }
