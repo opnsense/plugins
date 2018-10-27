@@ -9575,10 +9575,6 @@ label > input {
   background-color: #ffe83e;
 }
 
-.dashboard_grid_column table {
-  table-layout: fixed;
-}
-
 #ipsec {
   #ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
     background-color: #f0f0f0;
@@ -9701,8 +9697,25 @@ h3 {
   }
 }
 
-.fa.fa-play.text-muted::before {
-  color: #000 !important;
+.fa {
+  &.fa-long-arrow-left {
+    color: #000 !important;
+    &::before {
+      color: #000 !important;
+    }
+  }
+  &.fa-info-circle.text-muted {
+    color: #000 !important;
+  }
+  &.fa-times-circle.text-muted, &.fa-times.text-muted {
+    color: #000 !important;
+    &::before {
+      color: #000 !important;
+    }
+  }
+  &.fa-play.text-muted::before {
+    color: #000 !important;
+  }
 }
 
 #system_log-widgets.content-box {
