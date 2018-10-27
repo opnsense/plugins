@@ -635,6 +635,14 @@
         <ValidationMessage>Selected upstream not found</ValidationMessage>
         <Required>N</Required>
         <multiple>N</multiple>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>NginxSetIfConstraint</type>
+            <field>route_field</field>
+            <check>upstream</check>
+          </check001>
+        </Constraints>
       </upstream>
       <sni_upstream_map type="ModelRelationField">
         <Model>
@@ -647,6 +655,14 @@
         <ValidationMessage>Selected upstream not found</ValidationMessage>
         <Required>N</Required>
         <multiple>N</multiple>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>NginxSetIfConstraint</type>
+            <field>route_field</field>
+            <check>sni_upstream_map</check>
+          </check001>
+        </Constraints>
       </sni_upstream_map>
     </stream_server>
 
