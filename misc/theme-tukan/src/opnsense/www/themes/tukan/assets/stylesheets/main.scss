@@ -1165,7 +1165,6 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #000;
-  background-color: none;
 }
 
 input, button, select, textarea {
@@ -2584,7 +2583,6 @@ th {
     }
     thead > tr > th {
       vertical-align: bottom;
-      border-bottom: 1px solid #bababa4d;
     }
     caption + thead > tr:first-child > {
       th, td {
@@ -8772,7 +8770,6 @@ body {
   font-family: 'SourceSansProRegular';
   touch-action: manipulation;
   min-width: 320px;
-  background-color: none;
 }
 
 .widget-sort-handle {
@@ -8812,7 +8809,6 @@ body {
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
-  background: #FFF;
   padding-bottom: 15px;
   padding-top: 20px;
   color: #000;
@@ -8835,7 +8831,6 @@ body {
 }
 
 .page-content-main {
-  background: #FFFFFF;
   min-height: calc(100% - 64px);
   padding: 15px 0 73px;
 }
@@ -8860,13 +8855,12 @@ body {
 
 .page-foot {
   bottom: 0;
-  border: none;
   font-size: 12px;
   padding: 0;
   width: 100%;
   z-index: 2;
   position: fixed;
-  height: 16px;
+  height: 20px;
   background: #172c38;
   color:#FFF;
   border-top: 1px solid #162b36;
