@@ -15,7 +15,7 @@ Plugin Changelog
 * change: allow to disable internal bot protection (contributed by @fzoske) [2]
 
 [1] https://github.com/opnsense/plugins/pull/930
-[1] https://github.com/opnsense/plugins/pull/934
+[2] https://github.com/opnsense/plugins/pull/934
 
 1.3
 
