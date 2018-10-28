@@ -264,7 +264,9 @@ include("head.inc");
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?= gettext("Enable") ?></td>
                     <td>
-                      <input name="enable" type="checkbox" id="enable" value="<?= gettext("yes") ?>" <?= empty($pconfig['enable']) ? '' : 'checked="checked"' ?> />
+                      <label for="enable">
+                        <input name="enable" type="checkbox" id="enable" value="<?= gettext("yes") ?>" <?= empty($pconfig['enable']) ? '' : 'checked="checked"' ?> />
+                      </label>
                     </td>
                   </tr>
                   <tr>
@@ -344,24 +346,33 @@ include("head.inc");
                   <tr class="opt_field type_default type_route53">
                     <td><i class="fa fa-info-circle text-muted"></i> <?= gettext("Wildcards") ?></td>
                     <td>
-                      <input name="wildcard" type="checkbox" id="wildcard" value="yes" <?= empty($pconfig['wildcard']) ? '' : 'checked="checked"' ?> />
-                      <strong><?= gettext("Enable Wildcard") ?></strong>
+                      <label for="wildcard">
+                        <input name="wildcard" type="checkbox" id="wildcard" value="yes" <?= empty($pconfig['wildcard']) ? '' : 'checked="checked"' ?> />
+                        <strong><?= gettext("Enable Wildcard") ?></strong>
+                      </label>
                     </td>
                   </tr>
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?= gettext("Verbose logging") ?></td>
                     <td>
-                      <input name="verboselog" type="checkbox" id="verboselog" value="yes" <?= empty($pconfig['verboselog']) ? '' : 'checked="checked"' ?> />
-                      <strong><?= gettext("Enable verbose logging") ?></strong>
+                      <label for="verboselog">
+                        <input name="verboselog" type="checkbox" id="verboselog" value="yes" <?= empty($pconfig['verboselog']) ? '' : 'checked="checked"' ?> />
+                        <strong><?= gettext("Enable verbose logging") ?></strong>
+                      </label>
                     </td>
                   </tr>
                   <tr class="opt_field type_custom">
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("CURL options"); ?></td>
                     <td>
-                      <input name="curl_ipresolve_v4" type="checkbox" id="curl_ipresolve_v4" value="yes" <?= empty($pconfig['curl_ipresolve_v4']) ? '' : 'checked="checked"' ?> />
-                      <?= gettext("Force IPv4 resolving") ?><br />
-                      <input name="curl_ssl_verifypeer" type="checkbox" id="curl_ssl_verifypeer" value="yes" <?= empty($pconfig['curl_ssl_verifypeer']) ? '' : 'checked="checked"'  ?> />
-                      <?= gettext("Verify SSL peer") ?>
+                      <label for="curl_ipresolve_v4">
+                        <input name="curl_ipresolve_v4" type="checkbox" id="curl_ipresolve_v4" value="yes" <?= empty($pconfig['curl_ipresolve_v4']) ? '' : 'checked="checked"' ?> />
+                        <?= gettext("Force IPv4 resolving") ?>
+                      </label>
+                      <br />
+                      <label for="curl_ssl_verifypeer">
+                        <input name="curl_ssl_verifypeer" type="checkbox" id="curl_ssl_verifypeer" value="yes" <?= empty($pconfig['curl_ssl_verifypeer']) ? '' : 'checked="checked"'  ?> />
+                        <?= gettext("Verify SSL peer") ?>
+                      </label>
                     </td>
                   </tr>
                   <tr class ="opt_field type_custom type_route53 type_azure type_default">

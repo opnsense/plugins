@@ -6305,6 +6305,21 @@ label > input[type="radio"] {
   margin-right: .4em;
   float: left; }
 
+label[for="http_proto"],
+label[for="https_proto"] {
+  margin-right: 1.5em;
+}
+ 
+label[for^="mode_"] > input[name="mode"][type="radio"] + strong {
+  float: left;
+}
+
+.acl_item  label > input[name^="sysprivs"] ~ span,
+label[for$="selectall"] > input[type="checkbox"] ~ span,
+label[for="gpssubsec"] + div {
+  margin-left: 1.5em;
+}
+
 #log-settings label[for^="act"] {
   margin-right: 1.5em; }
 

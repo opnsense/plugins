@@ -197,13 +197,17 @@ include("head.inc");
                     <tr>
                       <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
                       <td>
-                       <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
+                        <label for="enable">
+                          <input name="enable" type="checkbox" id="enable" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
+                        </label>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP Port Mapping");?></td>
                       <td>
-                       <input name="enable_upnp" type="checkbox" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
+                        <label for="enable_upnp">
+                          <input name="enable_upnp" type="checkbox" id="enable_upnp" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
+                        </label>
                        <div class="hidden" data-for="help_for_enable_upnp">
                          <?=gettext("This protocol is often used by Microsoft-compatible systems.");?>
                        </div>
@@ -212,7 +216,9 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow NAT-PMP Port Mapping");?></td>
                       <td>
-                       <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
+                        <label for="enable_natpmp">
+                          <input name="enable_natpmp" type="checkbox" id="enable_natpmp" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
+                        </label>
                        <div class="hidden" data-for="help_for_enable_natpmp">
                          <?=gettext("This protocol is often used by Apple-compatible systems.");?>
                        </div>
@@ -282,7 +288,9 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Log NAT-PMP");?></td>
                       <td>
-                       <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
+                        <label for="logpackets">
+                          <input name="logpackets" type="checkbox" id="logpackets" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
+                        </label>
                        <div class="hidden" data-for="help_for_logpackets">
                          <?=gettext("Log packets handled by UPnP and NAT-PMP rules?");?>
                        </div>
@@ -291,7 +299,9 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Use system time");?></td>
                       <td>
-                       <input name="sysuptime" type="checkbox" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
+                        <label for="sysuptime">
+                          <input name="sysuptime" type="checkbox" id="sysuptime" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
+                        </label>
                        <div class="hidden" data-for="help_for_sysuptime">
                          <?=gettext("Use system uptime instead of UPnP and NAT-PMP service uptime?");?>
                        </div>
@@ -300,7 +310,9 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_permdefault" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default deny");?></td>
                       <td>
-                       <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
+                        <label for="permdefault">
+                          <input name="permdefault" type="checkbox" id="permdefault" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
+                        </label>
                        <div class="hidden" data-for="help_for_permdefault">
                          <?=gettext("By default deny access to UPnP and NAT-PMP?");?>
                        </div>

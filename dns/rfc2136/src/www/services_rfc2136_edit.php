@@ -144,7 +144,9 @@ include("head.inc");
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
                     <td>
-                      <input name="enable" type="checkbox" id="enable" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
+                      <label for="enable">
+                        <input name="enable" type="checkbox" id="enable" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
+                      </label>
                     </td>
                   </tr>
                   <tr>
@@ -174,9 +176,15 @@ include("head.inc");
                   <tr>
                     <td><a id="help_for_recordtype" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Record Type");?></td>
                     <td>
-                      <input name="recordtype" type="radio" value="" <?= empty($pconfig['recordtype']) ? 'checked="checked"' : '' ?> /> <?=gettext('All');?> &nbsp;
-                      <input name="recordtype" type="radio" value="A" <?= $pconfig['recordtype'] == 'A' ? 'checked="checked"' : '' ?> /> <?=gettext('A (IPv4)');?> &nbsp;
-                      <input name="recordtype" type="radio" value="AAAA" <?= $pconfig['recordtype'] == 'AAAA' ? 'checked="checked"' : '' ?> /> <?=gettext('AAAA (IPv6)');?>
+                      <label for="recordtype_all">
+                        <input name="recordtype" type="radio" id="recordtype_all" value="" <?= empty($pconfig['recordtype']) ? 'checked="checked"' : '' ?> /> <?=gettext('All');?> &nbsp;
+                      </label>
+                      <label for="recordtype_A">
+                        <input name="recordtype" type="radio" id="recordtype_A" value="A" <?= $pconfig['recordtype'] == 'A' ? 'checked="checked"' : '' ?> /> <?=gettext('A (IPv4)');?> &nbsp;
+                      </label>
+                      <label for="recordtype_AAAA">
+                        <input name="recordtype" type="radio" id="recordtype_AAAA" value="AAAA" <?= $pconfig['recordtype'] == 'AAAA' ? 'checked="checked"' : '' ?> /> <?=gettext('AAAA (IPv6)');?>
+                      </label>
                       <div class="hidden" data-for="help_for_recordtype">
                         <?=gettext("'All' will update all available record types.");?>
                       </div>
@@ -200,9 +208,15 @@ include("head.inc");
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key type");?> </td>
                     <td>
-                      <input name="keytype" type="radio" value="zone" <?= $pconfig['keytype'] == "zone" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Zone");?> &nbsp;
-                      <input name="keytype" type="radio" value="host" <?= $pconfig['keytype'] == "host" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Host");?> &nbsp;
-                      <input name="keytype" type="radio" value="user" <?= $pconfig['keytype'] == "user" ? "checked=\"checked\"" :""; ?> /> <?=gettext("User");?>
+                      <label for="keytype_zone">
+                        <input name="keytype" type="radio" value="zone" id="keytype_zone" <?= $pconfig['keytype'] == "zone" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Zone");?> &nbsp;
+                      </label>
+                      <label for="keytype_host">
+                        <input name="keytype" type="radio" value="host" id="keytype_host" <?= $pconfig['keytype'] == "host" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Host");?> &nbsp;
+                      </label>
+                      <label for="keytype_user">
+                        <input name="keytype" type="radio" value="user" id="keytype_user" <?= $pconfig['keytype'] == "user" ? "checked=\"checked\"" :""; ?> /> <?=gettext("User");?>
+                      </label>
                     </td>
                   </tr>
                   <tr>
@@ -223,15 +237,19 @@ include("head.inc");
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Protocol");?></td>
                     <td>
-                      <input name="usetcp" type="checkbox" id="usetcp" value="<?=gettext("yes");?>" <?=!empty($pconfig['usetcp']) ? "checked=\"checked\"" : ""; ?> />
-                      <strong><?=gettext("Use TCP instead of UDP");?></strong>
+                      <label for="usetcp">
+                       <input name="usetcp" type="checkbox" id="usetcp" value="<?=gettext("yes");?>" <?=!empty($pconfig['usetcp']) ? "checked=\"checked\"" : ""; ?> />
+                       <strong><?=gettext("Use TCP instead of UDP");?></strong>
+                      </label>
                     </td>
                   </tr>
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Use Public IP");?></td>
                     <td>
-                      <input name="usepublicip" type="checkbox" id="usepublicip" value="<?=gettext("yes");?>" <?=!empty($pconfig['usepublicip']) ? "checked=\"checked\"" : ""; ?> />
-                      <strong><?=gettext("If the interface IP is private, attempt to fetch and use the public IP instead.");?></strong>
+                      <label for="usepublicip">
+                        <input name="usepublicip" type="checkbox" id="usepublicip" value="<?=gettext("yes");?>" <?=!empty($pconfig['usepublicip']) ? "checked=\"checked\"" : ""; ?> />
+                        <strong><?=gettext("If the interface IP is private, attempt to fetch and use the public IP instead.");?></strong>
+                      </label>
                     </td>
                   </tr>
                   <tr>
