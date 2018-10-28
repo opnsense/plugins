@@ -308,7 +308,7 @@ $( document ).ready(function() {
     #frm_sni_hostname_mapdlg .col-md-4 {
         width: 50%;
     }
-    #frm_sni_hostname_mapdlg td > input {
+    #frm_sni_hostname_mapdlg td > input[type="text"] {
         width: 100%;
         max-width: 100%;
     }
@@ -317,6 +317,9 @@ $( document ).ready(function() {
     }
     #row_snihostname\.data .row div {
         padding: 0;
+    }
+    #sni_hostname_mapdlg .bootstrap-select {
+        width: 100% !important;
     }
 
 </style>
