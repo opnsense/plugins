@@ -118,6 +118,13 @@
                                 <Required>N</Required>
                                 <mask>/^\S+$/</mask>
                         </authkey>
+                        <authkey_id type="IntegerField">
+                                <default>1</default>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>255</MaximumValue>
+                                <Required>Y</Required>
+                                <ValidationMessage>The authentication key ID must be between 1 and 255.</ValidationMessage>
+                        </authkey_id>
                         <cost type="IntegerField">
                                 <default></default>
                                 <MinimumValue>0</MinimumValue>

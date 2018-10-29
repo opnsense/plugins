@@ -21,6 +21,12 @@
     <type>text</type>
   </field>
   <field>
+    <id>interface.authkey_id</id>
+    <label>Authentication Key ID</label>
+    <advanced>true</advanced>
+    <type>text</type>
+  </field>
+  <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
