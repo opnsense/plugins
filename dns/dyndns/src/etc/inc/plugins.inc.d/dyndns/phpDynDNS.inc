@@ -210,6 +210,7 @@ class updatedns
                 }
                 break;
             case 'custom':
+            case 'custom-v6':
                 if (!$dnsUpdateURL) {
                     $this->_error(7);
                 }

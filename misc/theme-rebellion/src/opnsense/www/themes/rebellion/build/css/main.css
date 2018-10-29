@@ -7643,9 +7643,6 @@ div[data-for*=help_for] {
   margin-top: 0px;
   margin-bottom: 0px; }
 
-.dashboard_grid_column table {
-  table-layout: fixed; }
-
 #ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
   background-color: #333333; }
 #ipsec .ipsec-tab {
