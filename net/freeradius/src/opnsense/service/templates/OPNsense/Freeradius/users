@@ -26,9 +26,6 @@
        Tunnel-Private-Group-Id = {{ user_list.vlan }},
 {%         endif %}
 {%       endif %}
-{%       if user_list.logintime is defined %}
-       Login-Time := "{{ user_list.logintime }}",
-{%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.wispr') and OPNsense.freeradius.general.wispr == '1' %}
 {%         if user_list.wispr_bw_min_up is defined %}
        WISPr-Bandwidth-Min-Up = {{ user_list.wispr_bw_min_up }},
