@@ -13,6 +13,7 @@ Plugin Changelog
 * move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
 * add TCP load balancing [1]
 * change: allow to disable internal bot protection (contributed by @fzoske) [2]
+* change: do not save when no change in the list happened to prevent filling the log history
 
 [1] https://github.com/opnsense/plugins/pull/930
 [2] https://github.com/opnsense/plugins/pull/934
