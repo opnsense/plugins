@@ -5,4 +5,39 @@ NGINX functionality includes HTTP server, HTTP and mail reverse proxy, caching,
 load balancing, compression, request throttling, connection multiplexing and
 reuse, SSL offload and HTTP media streaming.
 
+Plugin Changelog
+================
+
+1.3
+
+* bugfix: correctly set upstream header
+
+1.2
+
+* add limiter support
+* add permanent ban feature (use alias in firewall rules)
+* add caching feature (local file system)
+* add path prefix support (contributed by @ccesario )
+* add port to upstream server table
+* add support to download waf rules
+* improvement: export full chain instead of only the server certificate (fixes some issues with some tools which need it)
+* web interface (allow HTTP/2 server push to increase performance)
+* support for (secure) web sockets in reverse proxy mode
+* bugfix: fix issues with multiple hostnames (IPv6 issues with TLS SNI by @ccesario )
+* bugfix: warning in certificate rendering
+
+1.1
+
+* add log viewer
+
+1.0
+
+* add Reverse Proxy (Load Balancer)
+* add Location Configuration
+* add local HTTP Server
+* add local PHP support
+* add experimental support to handle the web interface (can only be enabled via CLI)
+* add WAF (NAXSI) support
+* add Authentication support
+
 WWW: https://nginx.org/
