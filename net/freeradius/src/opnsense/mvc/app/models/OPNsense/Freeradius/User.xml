@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/user</mount>
     <description>FreeRADIUS user configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <users>
             <user type="ArrayField">
@@ -15,7 +15,7 @@
                 </username>
                 <password type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}]){1,128}$/u</mask>
                 </password>
                 <description type="TextField">
                     <Required>N</Required>
@@ -40,6 +40,15 @@
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>4096</MaximumValue>
                 </vlan>
+                <logintime type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([0-9a-zA-Z\-]){1,128}$/u</mask>
+                </logintime>
+                <simuse type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>1024</MaximumValue>
+                </simuse>
                 <wispr_bw_min_up type="IntegerField">
                     <Required>N</Required>
                 </wispr_bw_min_up>
