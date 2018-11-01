@@ -12,6 +12,13 @@
         <help>Your AS Number here</help>
     </field>
     <field>
+        <id>bgp.routerid</id>
+        <label>Router ID</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>In some cases it might be clearer to set a fixed router-id.</help>
+    </field>
+    <field>
         <id>bgp.networks</id>
         <label>Network</label>
         <style>tokenize</style>
