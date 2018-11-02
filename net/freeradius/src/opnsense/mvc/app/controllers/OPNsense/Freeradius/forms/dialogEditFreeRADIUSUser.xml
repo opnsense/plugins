@@ -56,6 +56,20 @@
         <help>VLAN ID the user receives, e.g. for 802.1X. Leave empty if you don't know what it is.</help>
     </field>
     <field>
+        <id>user.logintime</id>
+        <label>Login-Time</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>With this option you can set a time frame how long the user is allowed to be logged in.</help>
+    </field>
+    <field>
+        <id>user.simuse</id>
+        <label>Simultaneous-Use</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how many times one account is allowed to login at the same time.</help>
+    </field>
+    <field>
         <id>user.wispr_bw_min_up</id>
         <label>WISPr Bandwith Min UP</label>
         <type>text</type>

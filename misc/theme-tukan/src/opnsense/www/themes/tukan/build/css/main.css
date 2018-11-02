@@ -925,7 +925,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #000;
-  background-color: none; }
+}
 
 input,
 button,
@@ -2036,8 +2036,7 @@ th {
     vertical-align: top;
 	border-top: 1px solid #e3e3e3; }
   .table > thead > tr > th {
-    vertical-align: bottom;
-    border-bottom: 1px solid #bababa4d; }
+    vertical-align: bottom;  }
   .table > caption + thead > tr:first-child > th,
   .table > caption + thead > tr:first-child > td,
   .table > colgroup + thead > tr:first-child > th,
@@ -5686,7 +5685,7 @@ html, body {
 body {
   touch-action: manipulation;
   min-width: 320px;
-  background-color:none; }
+}
 
 .widget-sort-handle {
   touch-action: none; }
@@ -5721,7 +5720,6 @@ body {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30); }
 
 .page-content-head, .content-box-head {
-  background: #FFF;
   padding-bottom: 15px;
   padding-top: 20px;
   color:#000;}
@@ -5732,7 +5730,6 @@ body {
     margin: 0; }
 
 .page-content-main {
-  background: #FFFFFF;
   min-height: calc(100% - 64px);
   padding: 15px 0 73px; }
 
@@ -5754,13 +5751,12 @@ body {
 
 .page-foot {
   bottom: 0;
-  border:none;
   font-size: 12px;
   padding: 0;
   width: 100%;
   z-index: 2;
   position: fixed;
-  height: 16px;
+  height: 20px;
   background: #172c38;
   color:#FFF;
   border-top: 1px solid #162b36;
@@ -6293,10 +6289,6 @@ label > input[type="radio"] {
   background-color: #ffe83e;
 }
 
-.dashboard_grid_column table {
-	table-layout: fixed;
-}
-
 #ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
 	background-color: #f0f0f0;
 }
@@ -6392,7 +6384,7 @@ h3:hover, h3:focus {
   color:#FFFFFF !important;
 }
 
-.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
+.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted,.fa.fa-long-arrow-left,.fa.fa-long-arrow-left::before,.fa.fa-info-circle.text-muted,.fa.fa-times-circle.text-muted,.fa.fa-times-circle.text-muted::before,.fa.fa-times.text-muted,.fa.fa-times.text-muted::before,.fa.fa-play.text-muted::before {
   color: #000 !important;
 }
 

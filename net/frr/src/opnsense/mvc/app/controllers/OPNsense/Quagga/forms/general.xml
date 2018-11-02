@@ -6,6 +6,12 @@
         <help>This will activate the routing service.</help>
     </field>
     <field>
+        <id>general.enablecarp</id>
+        <label>Enable CARP Failover</label>
+        <type>checkbox</type>
+        <help>This will activate the routing service only on the master device.</help>
+    </field>
+    <field>
         <id>general.enablelogfile</id>
         <label>Create a logfile</label>
         <type>checkbox</type>
