@@ -452,7 +452,7 @@ class SettingsController extends ApiMutableModelControllerBase
             $this->regenerate_hostname_map(null);
             return $this->addBase('snihostname', 'sni_hostname_upstream_map');
         }
-        //return [];
+        return [];
     }
 
     public function delsnifwdAction($uuid)
@@ -525,7 +525,6 @@ class SettingsController extends ApiMutableModelControllerBase
                 $item->hostname = $post_item['hostname'];
                 $item->upstream = $post_item['upstream'];
             }
-            //$nginx->sni_hostname_upstream_map->eventPostLoading();
             $nginx->serializeToConfig();
             $_POST['snihostname']['data'] = implode(',', $ids);
         }
