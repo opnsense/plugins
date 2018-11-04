@@ -41,7 +41,7 @@ function softether_services()
     }
 
     $services[] = array(
-        'description' => gettext('softether'),
+        'description' => gettext('SoftEther VPN'),
         'configd' => array(
             'restart' => array('softether restart'),
             'start' => array('softether start'),
