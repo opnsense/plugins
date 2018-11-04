@@ -58,7 +58,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/softether/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/softether/service/reconfigure", sendData={}, callback=function(data,status) {
-		    updateServiceControlUI('softether');
+                updateServiceControlUI('softether');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
