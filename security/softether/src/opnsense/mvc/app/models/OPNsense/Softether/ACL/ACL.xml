@@ -1,6 +1,6 @@
 <acl>
    <page-softether-config>
-      <name>Services: softether</name>
+      <name>Services: SoftEther VPN</name>
       <patterns>
          <pattern>ui/softether/*</pattern>
          <pattern>api/softether/*</pattern>
