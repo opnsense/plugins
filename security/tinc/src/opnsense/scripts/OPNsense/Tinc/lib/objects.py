@@ -106,7 +106,6 @@ class Network(NetwConfObject):
                 result.append('ConnectTo = %s' % (host.get_hostname(),))
         result.append('Device=/dev/tinc%(id)s' % self._payload)
         result.append('Name=%(hostname)s' % self._payload)
-        result.append('Subnet=%s/32'%self.get_local_address().split('/')[0])
         return '\n'.join(result)
 
     def filename(self):
@@ -142,7 +141,7 @@ class Host(NetwConfObject):
         result.append('Address=%(address)s %(port)s'%self._payload)
         networks = self._payload['subnet'].split(',')
         for network in networks:
-            result.append('Subnet=%s' % network)		
+            result.append('Subnet=%s' % network)
         result.append('Cipher=%(cipher)s'%self._payload)
         result.append('Digest=sha256')
         result.append(self._payload['pubkey'])
