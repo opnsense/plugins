@@ -17,7 +17,7 @@
             <default>user</default>
             <Required>Y</Required>
             <mask>/^[a-zA-Z0-9.\@_-]{1,32}$/</mask>
-            <ValidationMessage>Please provide a valid username. Allowed characters are a-zA-Z0-9._-@ and it has to be 1-32 characters long.</ValidationMessage>
+            <ValidationMessage>Please provide a valid username. You may use letters (a-z, A-Z), digits (0-9), the dot (.), the ampersand (@), the dash (-), and the underscore (_), and it must be 1-32 characters long.</ValidationMessage>
         </user>
         <password type="TextField">
             <default>password</default>
@@ -25,8 +25,8 @@
         </password>
         <servercert type="TextField">
             <Required>N</Required>
-            <mask>/^[a-z0-9]{40,64}$/</mask>
-            <ValidationMessage>Please provide a valid hash.</ValidationMessage>
+            <mask>/^[a-fA-F0-9]{40,64}$/</mask>
+            <ValidationMessage>Please provide a valid hexadecimal hash.</ValidationMessage>
         </servercert>
         <hash type="OptionField">
             <default>sha256</default>
@@ -46,16 +46,11 @@
                     <all>Stateful</all>
                 </OptionValues>
         </compression>
-        <authgroup type="TextField">
+        <group type="TextField">
             <Required>N</Required>
             <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
-            <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
-        </authgroup>
-        <usergroup type="TextField">
-            <Required>N</Required>
-            <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
-            <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
-        </usergroup>
+            <ValidationMessage>Please only use up to 64 letters (a-z, A-Z) and/or digits (0-9).</ValidationMessage>
+        </group>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
@@ -71,7 +66,6 @@
         <reconnecttime type="AutoNumberField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>900</MaximumValue>
-            <default>300</default>
             <Required>N</Required>
             <ValidationMessage>Please enter a number between 1 and 900</ValidationMessage>
         </reconnecttime>

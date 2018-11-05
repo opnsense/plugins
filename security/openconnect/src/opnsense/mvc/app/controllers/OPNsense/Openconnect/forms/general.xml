@@ -36,16 +36,10 @@
         <help>Select the type of hash. Possible values are SHA256 or SHA1.</help>
     </field>
     <field>
-        <id>general.authgroup</id>
+        <id>general.group</id>
         <label>Authorization Group Name</label>
         <type>text</type>
         <help>When using profiles for group authorization please set here.</help>
-    </field>
-    <field>
-        <id>general.usergroup</id>
-        <label>User Group Name</label>
-        <type>text</type>
-        <help>When you need to specify the user group, please set it here.</help>
     </field>
     <field>
         <id>general.clientcertificate</id>
@@ -63,7 +57,7 @@
         <id>general.pfs</id>
         <label>Enable PFS</label>
         <type>checkbox</type>
-        <help>Enforces  Perfect  Forward Secrecy (PFS). That ensures that if the server's long-term key is compromised, any session keys established before the compromise will be unaffected. If this option is provided and the server does not support PFS in the TLS channel the connection will fail.</help>
+        <help>Enforces Perfect Forward Secrecy (PFS). That ensures that if the server's long-term key is compromised, any session keys established before the compromise will be unaffected. If this option is provided and the server does not support PFS in the TLS channel the connection will fail.</help>
     </field>
     <field>
         <id>general.compression</id>
