@@ -38,13 +38,12 @@
                 </OptionValues>
         </hash>
         <compression type="OptionField">
-            <default>stateless</default>
             <multiple>N</multiple>
             <Required>N</Required>
                 <OptionValues>
-                    <none>NONE</none>
-                    <stateless>STATELESS</stateless>
-                    <all>ALL</all>
+                    <none>No Compression</none>
+                    <stateless>Stateless</stateless>
+                    <all>Stateful</all>
                 </OptionValues>
         </compression>
         <authgroup type="TextField">
@@ -62,7 +61,7 @@
             <Required>N</Required>
         </clientcertificate>
         <passtos type="BooleanField">
-            <default>0</default>
+            <default>1</default>
             <Required>N</Required>
         </passtos>
         <pfs type="BooleanField">
@@ -70,8 +69,8 @@
             <Required>N</Required>
         </pfs>
         <reconnecttime type="AutoNumberField">
-			<MinimumValue>1</MinimumValue>
-			<MaximumValue>900</MaximumValue>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>900</MaximumValue>
             <default>300</default>
             <Required>N</Required>
             <ValidationMessage>Please enter a number between 1 and 900</ValidationMessage>
