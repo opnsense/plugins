@@ -69,9 +69,9 @@ if (count($devs) > 0) {
         }
 ?>
         <tr>
-            <td class="listlr"><?= $dev ?></td>
-            <td class="listr" style="text-align:center"><?= $dev_ident ?></td>
-            <td class="listr" style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= $dev_state_translated ?>&nbsp;</span></td>
+            <td><?= $dev ?></td>
+            <td style="text-align:center"><?= $dev_ident ?></td>
+            <td style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= $dev_state_translated ?>&nbsp;</span></td>
         </tr>
 <?php
     }
