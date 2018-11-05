@@ -36,15 +36,45 @@
         <help>Select the type of hash. Possible values are SHA256 or SHA1.</help>
     </field>
     <field>
-        <id>general.group</id>
-        <label>Group Name</label>
+        <id>general.authgroup</id>
+        <label>Authorization Group Name</label>
         <type>text</type>
-        <help>When using profiles for group separation please set here.</help>
+        <help>When using profiles for group authorization please set here.</help>
+    </field>
+    <field>
+        <id>general.usergroup</id>
+        <label>User Group Name</label>
+        <type>text</type>
+        <help>When you need to specify the user group, please set it here.</help>
     </field>
     <field>
         <id>general.clientcertificate</id>
         <label>Client Certificate</label>
         <type>dropdown</type>
         <help>Select the client certificate to use.</help>
+    </field>
+    <field>
+        <id>general.passtos</id>
+        <label>Pass TOS Flags</label>
+        <type>checkbox</type>
+        <help>Copy TOS / TCLASS of payload packet into DTLS packets.</help>
+    </field>
+    <field>
+        <id>general.pfs</id>
+        <label>Enable PFS</label>
+        <type>checkbox</type>
+        <help>Enforces  Perfect  Forward Secrecy (PFS). That ensures that if the server's long-term key is compromised, any session keys established before the compromise will be unaffected. If this option is provided and the server does not support PFS in the TLS channel the connection will fail.</help>
+    </field>
+    <field>
+        <id>general.compression</id>
+        <label>Compression Mode</label>
+        <type>dropdown</type>
+        <help>Set the link compression mode (leave the value empty to use the default)</help>
+    </field>
+    <field>
+        <id>general.reconnecttime</id>
+        <label>Reconnect Timeout</label>
+        <type>text</type>
+        <help>Keep reconnect attempts until so much seconds are elapsed. The default timeout is 300 seconds, which means that openconnect can recover VPN connection after a temporary network down time of up to 300 seconds.</help>
     </field>
 </form>

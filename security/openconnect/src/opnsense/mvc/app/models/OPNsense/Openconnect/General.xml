@@ -37,14 +37,44 @@
                     <sha1>SHA1</sha1>
                 </OptionValues>
         </hash>
-        <group type="TextField">
+        <compression type="OptionField">
+            <default>stateless</default>
+            <multiple>N</multiple>
+            <Required>N</Required>
+                <OptionValues>
+                    <none>NONE</none>
+                    <stateless>STATELESS</stateless>
+                    <all>ALL</all>
+                </OptionValues>
+        </compression>
+        <authgroup type="TextField">
             <Required>N</Required>
             <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
             <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
-        </group>
+        </authgroup>
+        <usergroup type="TextField">
+            <Required>N</Required>
+            <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
+            <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
+        </usergroup>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
         </clientcertificate>
+        <passtos type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </passtos>
+        <pfs type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </pfs>
+        <reconnecttime type="AutoNumberField">
+			<MinimumValue>1</MinimumValue>
+			<MaximumValue>900</MaximumValue>
+            <default>300</default>
+            <Required>N</Required>
+            <ValidationMessage>Please enter a number between 1 and 900</ValidationMessage>
+        </reconnecttime>
     </items>
 </model>
