@@ -61,7 +61,7 @@
     </field>
     <field>
         <id>general.compression</id>
-        <label>Compression Mode</label>
+        <label>Compression Flag</label>
         <type>dropdown</type>
         <help>Set the link compression mode (leave the value empty to use the default)</help>
     </field>
