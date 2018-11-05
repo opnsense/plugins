@@ -1,0 +1,2 @@
+dnscrypt-proxy:/etc/rc.conf.d/dnscrypt-proxy
+dnscrypt-proxy.toml:/usr/local/etc/dnscrypt-proxy/dnscrypt-proxy.toml

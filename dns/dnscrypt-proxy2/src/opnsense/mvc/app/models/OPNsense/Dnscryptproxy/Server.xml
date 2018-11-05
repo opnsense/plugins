@@ -1,0 +1,64 @@
+<model>
+    <mount>//OPNsense/dnscryptproxy/server</mount>
+    <description>dnscrypt-proxy Server configuration</description>
+    <version>0.0.2</version>
+    <items>
+        <servers>
+            <server type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
+                </name>
+                <instance type="AutoNumberField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>19</MaximumValue>
+                    <ValidationMessage>Maximum number of instances reached</ValidationMessage>
+                    <Required>Y</Required>
+                </instance>
+                <pubkey type="TextField">
+                    <Required>N</Required>
+                </pubkey>
+                <privkey type="TextField">
+                    <Required>N</Required>
+                </privkey>
+                <port type="PortField">
+                    <default>51820</default>
+                    <Required>Y</Required>
+                </port>
+                <dns type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([a-fA-F0-9\.:\[\]]*?,)*([a-fA-F0-9\.:\[\]]*)$/</mask>
+                    <ValidationMessage>Please use valid IPv4 or IPv6 addresses.</ValidationMessage>
+                </dns>
+                <tunneladdress type="NetworkField">
+                    <default></default>
+                    <FieldSeparator>,</FieldSeparator>
+                    <Required>Y</Required>
+                    <asList>Y</asList>
+                </tunneladdress>
+                <disableroutes type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </disableroutes>
+                <peers type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Dnscrypt-proxy.Client</source>
+                            <items>clients.client</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <ValidationMessage>Choose an Peer.</ValidationMessage>
+                </peers>
+            </server>
+        </servers>
+    </items>
+</model>
