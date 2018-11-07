@@ -26,6 +26,6 @@ namespace OPNsense\Dnscryptproxy;
 
 use OPNsense\Base\BaseModel;
 
-class Server extends BaseModel
+class Cloak extends BaseModel
 {
 }
