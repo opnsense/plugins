@@ -13,7 +13,7 @@
     </field>
     <field>
         <id>forward.dnsserver</id>
-        <label>Instance</label>
+        <label>DNS Server</label>
         <type>text</type>
         <help>Set the IP addresses to forward the domain.</help>
     </field>
