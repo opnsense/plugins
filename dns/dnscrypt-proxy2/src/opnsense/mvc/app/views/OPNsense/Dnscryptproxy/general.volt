@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="cloaks" class="tab-pane fade in">
-        <table id="grid-forwards" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyCloak">
+        <table id="grid-cloaks" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyCloak">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
