@@ -102,7 +102,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="whitelists" class="tab-pane fade in">
-        <table id="grid-whitelists" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyCloak">
+        <table id="grid-whitelists" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyWhitelist">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -143,7 +143,7 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    $("#grid-clients").UIBootgrid(
+    $("#grid-forwards").UIBootgrid(
         {   'search':'/api/dnscryptproxy/forward/searchForward',
             'get':'/api/dnscryptproxy/forward/getForward/',
             'set':'/api/dnscryptproxy/forward/setForward/',
@@ -153,7 +153,7 @@ $( document ).ready(function() {
         }
     );
 
-    $("#grid-servers").UIBootgrid(
+    $("#grid-cloaks").UIBootgrid(
         {   'search':'/api/dnscryptproxy/cloak/searchCloak',
             'get':'/api/dnscryptproxy/cloak/getCloak/',
             'set':'/api/dnscryptproxy/cloak/setCloak/',
@@ -163,7 +163,7 @@ $( document ).ready(function() {
         }
     );
 
-    $("#grid-servers").UIBootgrid(
+    $("#grid-whitelists").UIBootgrid(
         {   'search':'/api/dnscryptproxy/whitelist/searchWhitelist',
             'get':'/api/dnscryptproxy/whitelist/getWhitelist/',
             'set':'/api/dnscryptproxy/whitelist/setWhitelist/',
