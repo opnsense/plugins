@@ -39,7 +39,7 @@ class ForwardController extends ApiMutableModelControllerBase
 
     public function searchForwardAction()
     {
-        return $this->searchBase('forwards.forward', array("enabled", "name", "dnsserver"));
+        return $this->searchBase('forwards.forward', array("enabled", "domain", "dnsserver"));
     }
     public function getForwardAction($uuid = null)
     {
