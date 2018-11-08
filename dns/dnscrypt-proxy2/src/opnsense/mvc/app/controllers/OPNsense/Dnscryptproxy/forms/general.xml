@@ -1,9 +1,9 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable dnscrypt-proxy</label>
+        <label>Enable DNSCrypt-Proxy</label>
         <type>checkbox</type>
-        <help>This will activate dnscrypt-proxy service.</help>
+        <help>This will activate DNSCrypt-Proxy service.</help>
     </field>
     <field>
         <id>general.listenaddress</id>
