@@ -179,6 +179,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/dnscryptproxy/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('dnscryptproxy');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
@@ -188,6 +189,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/dnscryptproxy/forward/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_forward_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('dnscryptproxy');
                 $("#saveAct_forward_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
@@ -197,6 +199,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/dnscryptproxy/cloak/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_cloak_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('dnscryptproxy');
                 $("#saveAct_cloak_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
@@ -206,6 +209,7 @@ $( document ).ready(function() {
         saveFormToEndpoint(url="/api/dnscryptproxy/whitelist/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_whitelist_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('dnscryptproxy');
                 $("#saveAct_whitelist_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
