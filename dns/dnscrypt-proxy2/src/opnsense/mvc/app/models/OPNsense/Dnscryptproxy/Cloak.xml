@@ -10,11 +10,9 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <default></default>
                     <Required>Y</Required>
                 </name>
                 <destination type="HostnameField">
-                    <default></default>
                     <Required>Y</Required>
                 </destination>
             </cloak>
