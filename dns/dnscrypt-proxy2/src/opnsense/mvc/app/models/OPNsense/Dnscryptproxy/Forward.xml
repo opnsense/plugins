@@ -10,11 +10,9 @@
                     <Required>Y</Required>
                 </enabled>
                 <domain type="HostnameField">
-                    <default></default>
                     <Required>Y</Required>
                 </domain>
                 <dnsserver type="HostnameField">
-                    <default></default>
                     <Required>Y</Required>
                 </dnsserver>
             </forward>
