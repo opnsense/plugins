@@ -143,6 +143,8 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    updateServiceControlUI('dnscryptproxy');
+
     $("#grid-forwards").UIBootgrid(
         {   'search':'/api/dnscryptproxy/forward/searchForward',
             'get':'/api/dnscryptproxy/forward/getForward/',
