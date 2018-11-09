@@ -13,7 +13,7 @@
                     <default></default>
                     <Required>Y</Required>
                 </name>
-                <destination type="TextField">
+                <destination type="HostnameField">
                     <default></default>
                     <Required>Y</Required>
                 </destination>
