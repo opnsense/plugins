@@ -8,14 +8,10 @@
     <field>
         <id>general.listenaddress</id>
         <label>Listen Address</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Set the IP address this service listen on.</help>
-    </field>
-    <field>
-        <id>general.listenport</id>
-        <label>Listen Port</label>
-        <type>text</type>
-        <help>Set the port this service listen on.</help>
     </field>
     <field>
         <id>general.maxclients</id>
@@ -75,7 +71,7 @@
         <id>general.proxy</id>
         <label>Proxy</label>
         <type>text</type>
-        <help>Use this to route all TCP connections to a local Tor node.</help>
+        <help>Use this to route all TCP connections to a local Tor node, format has to be like 127.0.0.1:9050</help>
     </field>
     <field>
         <id>general.timeout</id>
