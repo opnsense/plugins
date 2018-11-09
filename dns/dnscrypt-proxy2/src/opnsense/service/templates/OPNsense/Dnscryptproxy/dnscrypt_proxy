@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
-dnscrypt-proxy_enable="YES"
+dnscrypt_proxy_enable="YES"
 {% else %}
-dnscrypt-proxy_enable="NO"
+dnscrypt_proxy_enable="NO"
 {% endif %}
