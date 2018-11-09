@@ -429,6 +429,34 @@
                     <Multiple>Y</Multiple>
                     <ValidationMessage>Please select a valid CA from the list.</ValidationMessage>
                 </ssl_clientAuthCRLs>
+                <basicAuthEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </basicAuthEnabled>
+                <basicAuthUsers type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>users.user</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related user not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </basicAuthUsers>
+                <basicAuthGroups type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>groups.group</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related group not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </basicAuthGroups>
                 <tuning_maxConnections type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>500000</MaximumValue>
@@ -830,6 +858,34 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
+                <basicAuthEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </basicAuthEnabled>
+                <basicAuthUsers type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>users.user</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related user not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </basicAuthUsers>
+                <basicAuthGroups type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>groups.group</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related group not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </basicAuthGroups>
                 <tuning_timeoutConnect type="TextField">
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
