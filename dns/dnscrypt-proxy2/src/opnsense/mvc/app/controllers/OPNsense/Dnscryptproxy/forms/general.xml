@@ -6,7 +6,7 @@
         <help>This will activate DNSCrypt-Proxy service.</help>
     </field>
     <field>
-        <id>general.listenaddress</id>
+        <id>general.listen_addresses</id>
         <label>Listen Address</label>
         <style>tokenize</style>
         <type>select_multiple</type>
@@ -14,7 +14,7 @@
         <help>Set the IP address this service listen on.</help>
     </field>
     <field>
-        <id>general.maxclients</id>
+        <id>general.max_clients</id>
         <label>Max Client Connections</label>
         <type>text</type>
         <help>Set the maximum number of simultaneous client connections to accept.</help>
