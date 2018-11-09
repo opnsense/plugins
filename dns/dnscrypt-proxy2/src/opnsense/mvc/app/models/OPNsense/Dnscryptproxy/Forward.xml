@@ -9,16 +9,14 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
-                <name type="TextField">
+                <domain type="HostnameField">
                     <default></default>
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
-                </name>
-                <destination type="HostnameField">
+                </domain>
+                <dnsserver type="HostnameField">
                     <default></default>
                     <Required>Y</Required>
-                </destination>
+                </dnsserver>
             </forward>
         </forwards>
     </items>
