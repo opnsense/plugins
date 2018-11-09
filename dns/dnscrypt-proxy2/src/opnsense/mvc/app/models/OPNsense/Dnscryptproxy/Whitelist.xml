@@ -10,7 +10,6 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <default></default>
                     <Required>Y</Required>
                 </name>
             </whitelist>
