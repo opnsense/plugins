@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # NOTE: Keep /var/haproxy on this list, see GH issue opnsense/plugins #39.
-HAPROXY_DIRS="/var/haproxy /var/haproxy/var/run /var/etc/haproxy/ssl /var/etc/haproxy/lua /var/etc/haproxy/errorfiles /var/etc/haproxy/mapfiles"
+HAPROXY_DIRS="/var/haproxy /var/haproxy/var/run /tmp/haproxy /tmp/haproxy/ssl /tmp/haproxy/lua /tmp/haproxy/errorfiles /tmp/haproxy/mapfiles"
 
 for directory in ${HAPROXY_DIRS}; do
     mkdir -p ${directory}

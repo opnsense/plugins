@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.4.0</version>
-    <description>
-        the HAProxy load balancer
-    </description>
+    <version>2.5.0</version>
+    <description>the HAProxy load balancer</description>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -406,6 +404,31 @@
                     <ValidationMessage>Please specify a value between 1 and 1000000000.</ValidationMessage>
                     <Required>Y</Required>
                 </ssl_hstsMaxAge>
+                <ssl_clientAuthEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </ssl_clientAuthEnabled>
+                <ssl_clientAuthVerify type="OptionField">
+                    <Required>N</Required>
+                    <default>required</default>
+                    <OptionValues>
+                        <none>none</none>
+                        <optional>optional</optional>
+                        <required>required</required>
+                    </OptionValues>
+                </ssl_clientAuthVerify>
+                <ssl_clientAuthCAs type="CertificateField">
+                    <Required>N</Required>
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Please select a valid CA from the list.</ValidationMessage>
+                </ssl_clientAuthCAs>
+                <ssl_clientAuthCRLs type="CertificateField">
+                    <Required>N</Required>
+                    <Type>crl</Type>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Please select a valid CA from the list.</ValidationMessage>
+                </ssl_clientAuthCRLs>
                 <tuning_maxConnections type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>500000</MaximumValue>
