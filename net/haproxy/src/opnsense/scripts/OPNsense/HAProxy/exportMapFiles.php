@@ -37,6 +37,7 @@ require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
 
 global $config;
+$export_path = '/tmp/haproxy/mapfiles/';
 
 // traverse HAProxy map files
 $configObj = Config::getInstance()->object();
@@ -46,7 +47,7 @@ if (isset($configObj->OPNsense->HAProxy->mapfiles)) {
         $mf_id = (string)$mapfile->id;
         if ($mf_id != "") {
             $mf_content = htmlspecialchars_decode(str_replace("\r", "", (string)$mapfile->content));
-            $mf_filename = "/var/etc/haproxy/mapfiles/" . $mf_id . ".txt";
+            $mf_filename = $export_path . $mf_id . ".txt";
             file_put_contents($mf_filename, $mf_content);
             chmod($mf_filename, 0600);
             echo "map file exported to " . $mf_filename . "\n";

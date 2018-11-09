@@ -37,6 +37,7 @@ require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
 
 global $config;
+$export_path = '/tmp/haproxy/lua/';
 
 // traverse HAProxy Lua scripts
 $configObj = Config::getInstance()->object();
@@ -49,7 +50,7 @@ if (isset($configObj->OPNsense->HAProxy->luas)) {
         $lua_id = (string)$lua->id;
         if ($lua_id != "") {
             $lua_content = htmlspecialchars_decode(str_replace("\r", "", (string)$lua->content));
-            $lua_filename = "/var/etc/haproxy/lua/" . $lua_id . ".lua";
+            $lua_filename = $export_path . $lua_id . ".lua";
             file_put_contents($lua_filename, $lua_content);
             chmod($lua_filename, 0600);
             echo "lua script exported to " . $lua_filename . "\n";

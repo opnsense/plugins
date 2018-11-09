@@ -37,6 +37,7 @@ require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
 
 global $config;
+$export_path = '/tmp/haproxy/ssl/';
 
 // configure ssl elements
 $configNodes = [
@@ -58,7 +59,7 @@ foreach ($configNodes as $key => $value) {
                     foreach ($certTypes as $type) {
                         // every child node needs its own set of lists
                         $crtlist = array();
-                        $crtlist_filename = "/var/etc/haproxy/ssl/" . (string)$child->id . "." . $type . "list";
+                        $crtlist_filename = $export_path . (string)$child->id . "." . $type . "list";
 
                         // multiple comma-separated values are possible
                         $certs = explode(',', $child->$sslchild);
@@ -87,7 +88,7 @@ foreach ($configNodes as $key => $value) {
                                         // generate pem file for individual certs
                                         // (only supported for type "cert")
                                         if ($type == cert) {
-                                            $output_pem_filename = "/var/etc/haproxy/ssl/" . $cert_refid . ".pem";
+                                            $output_pem_filename = $export_path . $cert_refid . ".pem";
                                             file_put_contents($output_pem_filename, $pem_content);
                                             chmod($output_pem_filename, 0600);
                                             echo "exported $type to " . $output_pem_filename . "\n";
@@ -112,7 +113,7 @@ foreach ($configNodes as $key => $value) {
                             // check if a default certificate is configured
                             if (($type == cert) and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
                                 $default_cert = (string)$child->ssl_default_certificate;
-                                $default_cert_filename = "/var/etc/haproxy/ssl/" . $default_cert . ".pem";
+                                $default_cert_filename = $export_path . $default_cert . ".pem";
                                 // ensure default certificate is the first entry on the list
                                 unset($crtlist[$default_cert]);
                                 array_unshift($crtlist, $default_cert_filename);
