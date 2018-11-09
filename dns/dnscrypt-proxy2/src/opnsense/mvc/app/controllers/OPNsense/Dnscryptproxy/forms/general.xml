@@ -133,6 +133,7 @@
         <type>text</type>
         <help>Minimum TTL for cached entries.</help>
     </field>
+    <field>
         <id>general.cache_max_ttl</id>
         <label>Cache Max TTL</label>
         <type>text</type>
