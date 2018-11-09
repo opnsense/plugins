@@ -121,6 +121,32 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#grid-users").UIBootgrid(
+            {   search:'/api/haproxy/settings/searchUsers',
+                get:'/api/haproxy/settings/getUser/',
+                set:'/api/haproxy/settings/setUser/',
+                add:'/api/haproxy/settings/addUser/',
+                del:'/api/haproxy/settings/delUser/',
+                toggle:'/api/haproxy/settings/toggleUser/',
+                options: {
+                    rowCount:[10,25,50,100,500,1000]
+                }
+            }
+        );
+
+        $("#grid-groups").UIBootgrid(
+            {   search:'/api/haproxy/settings/searchGroups',
+                get:'/api/haproxy/settings/getGroup/',
+                set:'/api/haproxy/settings/setGroup/',
+                add:'/api/haproxy/settings/addGroup/',
+                del:'/api/haproxy/settings/delGroup/',
+                toggle:'/api/haproxy/settings/toggleGroup/',
+                options: {
+                    rowCount:[10,25,50,100,500,1000]
+                }
+            }
+        );
+
         $("#grid-luas").UIBootgrid(
             {   search:'/api/haproxy/settings/searchLuas',
                 get:'/api/haproxy/settings/getLua/',
@@ -439,6 +465,20 @@ POSSIBILITY OF SUCH DAMAGE.
         </ul>
     </li>
 
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}user-management-introduction{% else %}users-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('User Management') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="user-management-introduction" href="#subtab_haproxy-user-management-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="users-tab" href="#users">{{ lang._('Users') }}</a></li>
+            <li><a data-toggle="tab" href="#groups">{{ lang._('Groups') }}</a></li>
+        </ul>
+    </li>
+
     {# add automatically generated tabs #}
     {% for tab in mainForm['tabs']|default([]) %}
         {% if tab['subtabs']|default(false) %}
@@ -537,6 +577,20 @@ POSSIBILITY OF SUCH DAMAGE.
             </ul>
             <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
+            <br/>
+        </div>
+    </div>
+
+    <div id="subtab_haproxy-user-management-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>{{ lang._('User Management') }}</h1>
+            <p>{{ lang._("Optionally HAProxy manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to HAProxy's internal statistic pages.") }}</p>
+            <ul>
+              <li>{{ lang._('%sUser:%s A username/password combination. Both secure (encrypted) and insecure (unencrypted) passwords can be used.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication.') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -780,6 +834,76 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
+    <div id="users" class="tab-pane fade">
+        <!-- tab page "users" -->
+        <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogUser">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="userid" data-type="number"  data-visible="false">{{ lang._('User ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Username') }}</th>
+                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <!-- apply button -->
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct-users" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="configtestAct-users" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
+    </div>
+
+    <div id="groups" class="tab-pane fade">
+        <!-- tab page "groups" -->
+        <table id="grid-groups" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogGroup">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="groupid" data-type="number"  data-visible="false">{{ lang._('Group ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Group') }}</th>
+                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <!-- apply button -->
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct-groups" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="configtestAct-groups" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
+    </div>
+
     <div id="luas" class="tab-pane fade">
         <!-- tab page "luas" -->
         <table id="grid-luas" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogLua">
@@ -891,6 +1015,8 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogHealthcheck,'id':'DialogHealthcheck','label':lang._('Edit Health Monitor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Rule')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAcl,'id':'DialogAcl','label':lang._('Edit Condition')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogUser,'id':'DialogUser','label':lang._('Edit User')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogGroup,'id':'DialogGroup','label':lang._('Edit Group')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':lang._('Edit Lua Script')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error Message')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogMapfile,'id':'DialogMapfile','label':lang._('Edit Map File')])}}

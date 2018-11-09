@@ -1,0 +1,27 @@
+<form>
+    <field>
+        <id>group.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this group.</help>
+    </field>
+    <field>
+        <id>group.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this group.</help>
+    </field>
+    <field>
+        <id>group.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this group.</help>
+    </field>
+    <field>
+        <id>group.members</id>
+        <label>Members</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <hint>Type username or choose from list.</hint>
+    </field>
+</form>
