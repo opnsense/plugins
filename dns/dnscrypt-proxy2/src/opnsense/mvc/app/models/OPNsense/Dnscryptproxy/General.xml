@@ -8,7 +8,7 @@
             <Required>Y</Required>
         </enabled>
         <listen_addresses type="CSVListField">
-            <FieldSeparator>,</FieldSeparator>
+            <default>127.0.0.1:5353, [::1]:5353</default>
             <Required>N</Required>
         </listen_addresses>
         <max_clients type="IntegerField">
