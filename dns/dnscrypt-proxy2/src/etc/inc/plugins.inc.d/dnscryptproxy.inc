@@ -41,7 +41,7 @@ function dnscryptproxy_services()
     }
 
     $services[] = array(
-        'description' => gettext('dnscryptproxy'),
+        'description' => gettext('DNSCrypt-Proxy'),
         'configd' => array(
             'restart' => array('dnscryptproxy restart'),
             'start' => array('dnscryptproxy start'),
