@@ -47,7 +47,8 @@ function dnscryptproxy_services()
             'start' => array('dnscryptproxy start'),
             'stop' => array('dnscryptproxy stop'),
         ),
-        'name' => 'dnscryptproxy'
+        'name' => 'dnscrypt-proxy',
+        'pid' => '/var/run/dnscrypt-proxy.pid'
     );
 
     return $services;
