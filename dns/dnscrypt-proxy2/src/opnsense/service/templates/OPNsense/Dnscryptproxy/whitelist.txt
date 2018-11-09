@@ -1,0 +1,11 @@
+{% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
+
+{% if helpers.exists('OPNsense.dnscryptproxy.whitelist.whitelists.whitelist') %}
+{%   for whitelist_list in helpers.toList('OPNsense.dnscryptproxy.whitelist.whitelists.whitelist') %}
+{%     if whitelist_list.enabled == '1' %}
+{{ whitelist_list.name }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+{% endif %}
