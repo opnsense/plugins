@@ -1,7 +1,7 @@
 {% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
-listen_addresses = ['{{ OPNsense.dnscryptproxy.general.listen_addresses }}']
+listen_addresses = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.listen_addresses.split(','))) + "'" }}]
 {%   else %}
 listen_addresses = []
 {%   endif %}
