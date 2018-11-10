@@ -16,7 +16,7 @@
           <netclient>netclient</netclient>
         </OptionValues>
       </mode>
-     <name type="TextField">
+      <name type="TextField">
         <default>UPSName</default>
         <Required>Y</Required>
       </name>
