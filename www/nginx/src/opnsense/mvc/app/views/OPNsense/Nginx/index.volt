@@ -74,7 +74,7 @@
         width: 25%;
     }
     #row_snihostname\.data .row div,
-    #row_ipacl\.data .row div, {
+    #row_ipacl\.data .row div {
         padding: 0;
     }
     #sni_hostname_mapdlg .bootstrap-select,

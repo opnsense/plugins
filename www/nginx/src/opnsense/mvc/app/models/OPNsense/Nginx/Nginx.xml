@@ -664,6 +664,18 @@
           </check001>
         </Constraints>
       </sni_upstream_map>
+      <ip_acl type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>ip_acl</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected ACL not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </ip_acl>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">
@@ -719,6 +731,13 @@
           -->
         <Required>Y</Required>
       </data>
+      <default_action type="OptionField">
+        <OptionValues>
+          <deny>Deny Access</deny>
+          <allow>Allow Access</allow>
+        </OptionValues>
+        <Required>N</Required>
+      </default_action>
     </ip_acl>
 
     <ip_acl_item type="ArrayField">

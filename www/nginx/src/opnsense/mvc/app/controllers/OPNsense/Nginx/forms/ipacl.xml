@@ -11,4 +11,9 @@
         <label>ACL Entries</label>
         <type>hidden</type>
     </field>
+    <field>
+        <id>ipacl.default_action</id>
+        <label>Default Action</label>
+        <type>dropdown</type>
+    </field>
 </form>

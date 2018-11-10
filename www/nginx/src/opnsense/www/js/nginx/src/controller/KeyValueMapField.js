@@ -34,11 +34,11 @@ export default Backbone.View.extend({
             childView.render();
         });
         this.$el.append($(`
-                <div class="row">
-                    <button class="btn btn-primary pull-right add">
-                        <span class="fa fa-plus"></span>
-                    </button>
-                </div>`));
+            <div class="row">
+                <button class="btn btn-primary pull-right add">
+                    <span class="fa fa-plus"></span>
+                </button>
+            </div>`));
     },
     update: function () {
         this.dataField.val(JSON.stringify(this.collection.toJSON()));
