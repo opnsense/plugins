@@ -575,7 +575,8 @@ class SettingsController extends ApiMutableModelControllerBase
                 // for an update, we have to clear it.
                 $this->delete_uuids(
                     $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid),
-                    'sni_hostname_upstream_map_item');
+                    'sni_hostname_upstream_map_item'
+                );
             }
             $ids = [];
             $postdata = $_POST['snihostname']['data'];
@@ -603,7 +604,8 @@ class SettingsController extends ApiMutableModelControllerBase
                 // for an update, we have to clear it.
                 $this->delete_uuids(
                     $nginx->find_ip_acl_uuids($uuid),
-                    'ip_acl_item');
+                    'ip_acl_item'
+                );
             }
             $ids = [];
             $postdata = $_POST['ipacl']['data'];

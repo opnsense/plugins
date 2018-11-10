@@ -49,7 +49,8 @@ class Nginx extends BaseModel
         return $this->find_x_uuids($uuid, 'ip_acl.');
     }
 
-    private function find_x_uuids($uuid, $prefix) {
+    private function find_x_uuids($uuid, $prefix)
+    {
         $tmp = $this->getNodeByReference($prefix . $uuid);
         if ($tmp == null) {
             return [];
