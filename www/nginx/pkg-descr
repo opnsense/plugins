@@ -12,6 +12,7 @@ Plugin Changelog
 
 * move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
 * add TCP load balancing [1]
+* add support for IP based ACLs
 * change: allow to disable internal bot protection (contributed by @fzoske) [2]
 * change: do not save when no change in the list happened to prevent filling the log history
 * fix: translate a german string in upstream server to english
