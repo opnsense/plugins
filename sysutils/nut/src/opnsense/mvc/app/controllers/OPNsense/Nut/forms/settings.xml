@@ -19,12 +19,6 @@
                 <type>text</type>
                 <help>Set a name for your UPS.</help>
             </field>
-            <field>
-                <id>nut.general.runasroot</id>
-                <label>Run as Root</label>
-                <type>checkbox</type>
-                <help>Some drivers need to be started by root.</help>
-            </field>
         </subtab>
         <subtab id="nut-general-account" description="Nut Account Settings">
             <field>

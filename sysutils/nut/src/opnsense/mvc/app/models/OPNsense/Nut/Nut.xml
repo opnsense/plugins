@@ -20,10 +20,6 @@
         <default>UPSName</default>
         <Required>Y</Required>
       </name>
-      <runasroot type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </runasroot>
     </general>
 
     <account>
