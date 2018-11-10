@@ -1,12 +1,15 @@
 const path = require('path'), webpack = require('webpack');
 
 module.exports = {
-    entry: './src/logviewer.js',
+    entry: {
+        'logviewer': './src/logviewer.js',
+        'configuration': './src/nginx_config.js'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
-    mode: 'production',
+    mode: 'development',
     module: {
         rules: [
             {

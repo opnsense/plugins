@@ -702,6 +702,39 @@
       </upstream>
     </sni_hostname_upstream_map_item>
 
+    <ip_acl type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <data type="TextField">
+        <!-- sorry, the model relation field is broken here
+          <Model>
+            <template>
+              <source>OPNsense.Nginx.Nginx</source>
+              <items>ip_acl_item</items>
+              <display>description</display>
+            </template>
+          </Model>
+          <multiple>Y</multiple>
+          -->
+        <Required>Y</Required>
+      </data>
+    </ip_acl>
+
+    <ip_acl_item type="ArrayField">
+      <network type="NetworkField">
+        <Required>Y</Required>
+      </network>
+      <action type="OptionField">
+        <default>deny</default>
+        <OptionValues>
+          <deny>Deny Access</deny>
+          <allow>Allow Access</allow>
+        </OptionValues>
+        <Required>Y</Required>
+      </action>
+    </ip_acl_item>
+
     <http_rewrite type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>

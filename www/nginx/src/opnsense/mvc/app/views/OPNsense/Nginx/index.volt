@@ -25,300 +25,60 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
+<script>
+    function bind_naxsi_rule_dl_button() {
+        let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
+        naxsi_rule_download_button.click(function () {
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_INFO,
+                title: "{{ lang._('Download NAXSI Rules') }}",
+                message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI. You have to accept its %slicense%s to download the rules.')|format("<a href='https://github.com/nbs-system/naxsi/blob/master/LICENSE' target='_blank'>", "</a>") }}",
+                buttons: [{
+                    label: "{{ lang._('Accept And Download') }}",
+                    cssClass: 'btn-primary',
+                    icon: 'fa fa-download',
+                    action: function (dlg) {
+                        dlg.close();
+                        ajaxCall(url = "/api/nginx/settings/downloadrules", sendData = {}, callback = function (data, status) {
+                            $('#naxsiruledownloadalert').hide();
+                            // reload view after installing rules
+                            $('#grid-naxsirule').bootgrid('reload');
+                            $('#grid-custompolicy').bootgrid('reload');
+                        });
+                    }
+                }, {
+                    label: '{{ lang._('Reject') }}',
+                    action: function (dlg) {
+                        dlg.close();
+                    }
+                }]
+            });
+        });
+    }
+</script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
-<script>
-SNIHostnameUpstreamModel = Backbone.Model.extend({});
-SNIHostnameUpstreamCollection = Backbone.Collection.extend({
-    initialize: function() {
-        let that = this;
-        $('#snihostname\\.data').change(function () {
-            that.regenerateFromView()
-        })
-    },
-    regenerateFromView: function () {
-        let data = JSON.parse($('#snihostname\\.data').val());
-        if (!_.isArray(data)) {
-            data = [];
-        }
-        this.reset(data);
-    }
-});
-UpstreamCollection = Backbone.Collection.extend({
-    url: '/api/nginx/settings/searchupstream',
-    parse: function(response) {
-        return response.rows;
-    }
-});
-uc = new UpstreamCollection();
-
-KeyValueMapFieldEntry = Backbone.View.extend({
-
-    tagName: 'div',
-    attributes: {'class': 'row'},
-    events: {
-        'keyup .key': function () {
-            this.model.set('hostname', this.key.value);
-        },
-        'change .value': function () {
-            this.model.set('upstream', this.value.value);
-        },
-        "click .delete" : "deleteEntry"
-    },
-    key: null,
-    value: null,
-    delBtn: null,
-    first: null,
-    second: null,
-    third: null,
-    upstreamCollection: null,
-    initialize: function (params) {
-        this.upstreamCollection = params.upstreamCollection;
-        this.listenTo(this.upstreamCollection, "update reset add remove", this.regenerate_list);
-        this.first = document.createElement('div');
-        this.first.classList.add('col-sm-5');
-        this.key = document.createElement('input');
-        this.first.append(this.key);
-        this.key.type = 'text';
-        this.key.classList.add('key');
-        this.key.value = this.model.get('hostname');
-
-        this.second = document.createElement('div');
-        this.second.classList.add('col-sm-5');
-        this.value = document.createElement('select');
-        this.second.append(this.value);
-        this.value.classList.add('value');
-        this.value.classList.add('form-control');
-        this.value.value = this.model.get('upstream');
-
-        this.third = document.createElement('div');
-        this.third.classList.add('col-sm-2');
-        this.third.style.textAlign = 'right';
-        this.delBtn = document.createElement("button");
-        this.delBtn.classList.add('delete');
-        this.delBtn.classList.add('btn');
-        this.delBtn.innerHTML = '<span class="fa fa-trash"></span>';
-        this.third.append(this.delBtn);
-        if (!this.model.has('upstream') ||
-            this.upstreamCollection.where ({'uuid' : this.model.get('upstream')}).length === 0) {
-            if (this.upstreamCollection.length > 0) {
-                this.model.set('upstream', this.upstreamCollection.at(0).get('uuid'));
-            }
-        }
-
-
-        this.$el.append(this.first).append(this.second).append(this.third);
-    },
-    render: function() {
-        $(this.key).val(this.model.get('hostname'));
-        this.regenerate_list();
-        $(this.value).val(this.model.get('upstream'));
-    },
-    deleteEntry: function (e) {
-        e.preventDefault();
-        this.collection.remove(this.model);
-    },
-    regenerate_list: function () {
-        // backup value
-        const v = $(this.value);
-        // clear the dropdown
-        v.html('');
-        this.upstreamCollection.each(
-            (mdl) => v.append(`<option value="${mdl.escape('uuid')}">${mdl.escape('description')}</option>`)
-        );
-        // restore
-        v.val(this.model.get('upstream'));
-        v.selectpicker('refresh');
-    }
-});
-KeyValueMapField = Backbone.View.extend({
-    tagName: 'div',
-    attributes: {'class': 'container-fluid'},
-    child_views: [],
-    upstreamCollection: null,
-    initialize: function (params) {
-        this.dataField = $(params.dataField);
-        this.collection = new SNIHostnameUpstreamCollection();
-        this.upstreamCollection = params.upstreamCollection;
-        this.listenTo(this.collection, "add remove reset", this.render);
-        this.listenTo(this.collection, "change", this.update);
-        // inject our table holder
-        this.dataField.after(this.$el);
-    },
-    events: {
-        "click .add": "addEntry"
-    },
-    render: function () {
-        // clear table
-        this.child_views.forEach((model) => model.remove());
-        this.$el.html('');
-        this.child_views = [];
-        this.update();
-        this.collection.each((model) => {
-            const childView = new KeyValueMapFieldEntry({
-                model: model,
-                collection: this.collection,
-                upstreamCollection: this.upstreamCollection
-            });
-            this.child_views.push(childView);
-            this.$el.append(childView.$el);
-            childView.render();
-        });
-        this.$el.append($(`
-                <div class="row">
-                    <button class="btn btn-primary pull-right add">
-                        <span class="fa fa-plus"></span>
-                    </button>
-                </div>`));
-    },
-    update: function () {
-        this.dataField.val(JSON.stringify(this.collection.toJSON()));
-    },
-    addEntry: function (e) {
-        e.preventDefault();
-        this.collection.add(new SNIHostnameUpstreamModel({
-            hostname: 'localhost',
-        }));
-    }
-});
-$( document ).ready(function() {
-
-    let data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
-
-    // load initial data
-    mapDataToFormUI(data_get_map).done(function(){
-        formatTokenizersUI();
-        $('select[data-allownew="false"]').selectpicker('refresh');
-        updateServiceControlUI('nginx');
-    });
-
-    // update history on tab state and implement navigation
-    if(window.location.hash !== "") {
-        $('a[href="' + window.location.hash + '"]').click()
-    }
-    $('.nav-tabs a').on('shown.bs.tab', function (e) {
-        history.pushState(null, null, e.target.hash);
-    });
-
-    $('.reload_btn').click(function() {
-      $(".reloadAct_progress").addClass("fa-spin");
-      ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status) {
-          $(".reloadAct_progress").removeClass("fa-spin");
-      });
-    });
-
-
-    // form save event handlers for all defined forms
-    $('[id*="save_"]').each(function(){
-        $(this).click(function(event) {
-            let frm_id = $(this).closest("form").attr("id");
-            let frm_title = $(this).closest("form").attr("data-title");
-            // save data for General TAB
-            saveFormToEndpoint(url="/api/nginx/settings/set", formid=frm_id, callback_ok=function(){
-                // on correct save, perform reconfigure. set progress animation when reloading
-                $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
-
-                ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status){
-                    // when done, disable progress animation.
-                    $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-
-                    if (data !== undefined && (status !== "success" || data['status'] !== 'ok')) {
-                        // fix error handling
-                        BootstrapDialog.show({
-                            type:BootstrapDialog.TYPE_WARNING,
-                            title: frm_title,
-                            message: JSON.stringify(data),
-                            draggable: true
-                        });
-                    } else {
-                        updateServiceControlUI('nginx');
-                    }
-                });
-            });
-        });
-    });
-    ['upstream',
-    'upstreamserver',
-    'location',
-    'credential',
-    'userlist',
-    'httpserver',
-    'streamserver',
-    'httprewrite',
-    'custompolicy',
-    'security_header',
-    'limit_zone',
-    'cache_path',
-    'limit_request_connection',
-    'snifwd',
-    'naxsirule'].forEach(function(element) {
-        $("#grid-" + element).UIBootgrid(
-            { 'search':'/api/nginx/settings/search' + element,
-              'get':'/api/nginx/settings/get' + element + '/',
-              'set':'/api/nginx/settings/set' + element + '/',
-              'add':'/api/nginx/settings/add' + element + '/',
-              'del':'/api/nginx/settings/del' + element + '/',
-              'options':{selection:false, multiSelect:false}
-            }
-        );
-    });
-    let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
-    naxsi_rule_download_button.click(function () {
-        BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_INFO,
-            title: "{{ lang._('Download NAXSI Rules') }}",
-            message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI. You have to accept its %slicense%s to download the rules.')|format("<a href='https://github.com/nbs-system/naxsi/blob/master/LICENSE' target='_blank'>", "</a>") }}",
-            buttons: [{
-                label: "{{ lang._('Accept And Download') }}",
-                cssClass: 'btn-primary',
-                icon: 'fa fa-download',
-                action: function(dlg){
-                    dlg.close();
-                    ajaxCall(url="/api/nginx/settings/downloadrules", sendData={}, callback=function(data,status) {
-                        $('#naxsiruledownloadalert').hide();
-                        // reload view after installing rules
-                        $('#grid-naxsirule').bootgrid('reload');
-                        $('#grid-custompolicy').bootgrid('reload');
-                    });
-                }
-            }, {
-                label: '{{ lang._('Reject') }}',
-                action: function(dlg){
-                    dlg.close();
-                }
-            }]
-        });
-    });
-    let snifield = new KeyValueMapField({
-        dataField: document.getElementById('snihostname.data'),
-        upstreamCollection: uc
-    });
-    window.snifield = snifield;
-    snifield.render();
-    $("#grid-upstream").on("loaded.rs.jquery.bootgrid", function ()
-    {
-        /* we always have to reload too after bootgrid reloads */
-        uc.fetch();
-    });
-    uc.fetch();
-});
-
-</script>
+<script src="{{ cache_safe('/ui/js/nginx/dist/configuration.js') }}"></script>
 <style>
-    #frm_sni_hostname_mapdlg .col-md-4 {
+    #frm_sni_hostname_mapdlg .col-md-4,
+    #frm_ipacl_dlg .col-md-4 {
         width: 50%;
     }
-    #frm_sni_hostname_mapdlg td > input[type="text"] {
+    #frm_sni_hostname_mapdlg td > input[type="text"],
+    #frm_ipacl_dlg td > input[type="text"] {
         width: 100%;
         max-width: 100%;
     }
-    #frm_sni_hostname_mapdlg .col-md-5 {
+    #frm_sni_hostname_mapdlg .col-md-5,
+    #frm_ipacl_dlg .col-md-5 {
         width: 25%;
     }
-    #row_snihostname\.data .row div {
+    #row_snihostname\.data .row div,
+    #row_ipacl\.data .row div, {
         padding: 0;
     }
-    #sni_hostname_mapdlg .bootstrap-select {
+    #sni_hostname_mapdlg .bootstrap-select,
+    #frm_ipacl_dlg .bootstrap-select {
         width: 100% !important;
     }
 
@@ -420,6 +180,9 @@ $( document ).ready(function() {
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-access-request-limit-connection" href="#subtab_nginx-access-request-limit-connection">{{ lang._('Connection Limits')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-acl-ip" href="#subtab_nginx-acl-ip">{{ lang._('IP ACLs')}}</a>
             </li>
         </ul>
     </li>
@@ -790,6 +553,27 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-acl-ip" class="tab-pane fade">
+        <table id="grid-ipacl" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="ipacl_dlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 
@@ -808,3 +592,4 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
 {{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
+{{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
