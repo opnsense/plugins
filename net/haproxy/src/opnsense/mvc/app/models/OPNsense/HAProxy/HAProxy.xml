@@ -1246,6 +1246,7 @@
                 <expression type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
+                        <http_auth>HTTP Basic Auth: username/password from client matches selected User/Group</http_auth>
                         <hdr_beg>Host starts with</hdr_beg>
                         <hdr_end>Host ends with</hdr_end>
                         <hdr>Host matches</hdr>
@@ -1631,6 +1632,30 @@
                     <Required>N</Required>
                     <Required>N</Required>
                 </queryBackend>
+                <allowedUsers type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>users.user</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related user not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </allowedUsers>
+                <allowedGroups type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>groups.group</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related group not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </allowedGroups>
             </acl>
         </acls>
         <actions>
