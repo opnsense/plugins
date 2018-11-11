@@ -5948,6 +5948,11 @@ main.page-content.col-lg-12 {
   font-size: 14px !important;
 }
 
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {
+  padding: 3px 8px !important;
+}
+
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
   text-decoration: none !important;
   color: #ec6d12 !important;
@@ -5985,7 +5990,7 @@ main.page-content.col-lg-12 {
   z-index: 10;
   position: absolute;
   left: 166px;
-  margin-top:-32px;
+  margin-top:-26px;
   border:1px solid #515151;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);

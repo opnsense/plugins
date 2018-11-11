@@ -8984,7 +8984,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #202020 !important;
         height: 100% !important;
-		border-right: 1px solid #171717;
+        border-right: 1px solid #171717;
       }
     }
     > nav > #mainmenu > div > {
@@ -9076,10 +9076,17 @@ a.list-group-item.active-menu-title.collapsed {
       padding-left: 10px !important;
       font-size: 14px !important;
     }
-    &.collapse.in > div.collapse.in > a.list-group-item:hover {
-      text-decoration: none !important;
-      color: #ec6d12 !important;
-      background-color: #2a2a2a !important;
+    &.collapse {
+      > {
+        a.list-group-item, div.collapse > a.list-group-item {
+          padding: 3px 8px !important;
+        }
+      }
+      &.in > div.collapse.in > a.list-group-item:hover {
+        text-decoration: none !important;
+        color: #ec6d12 !important;
+        background-color: #2a2a2a !important;
+      }
     }
   }
 }
@@ -9128,12 +9135,10 @@ a.list-group-item:focus {
     > div.collapse.in {
       width: 168px;
       font-size: 14px;
-      display: block;
       z-index: 10;
       position: absolute;
       left: 166px;
-      margin-top: -32px;
-      height: auto;
+      margin-top: -26px;
       border: 1px solid #515151;
       -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9145,6 +9150,10 @@ a.list-group-item:focus {
   }
 }
 
+/* Sub Level One */
+
+/* Sub Level Two */
+
 button.toggle-sidebar {
   color: #FFF;
   background-color: transparent;
@@ -9152,7 +9161,7 @@ button.toggle-sidebar {
   border: none;
   margin-top: 18px;
   float: left;
-  outline:none;
+  outline: none;
 }
 
 /* COLLAPSE SIDEBAR END*/
