@@ -289,6 +289,30 @@
                     <mask>/^((([0-9a-zA-Z._\-]+:[0-9a-zA-Z._\-]+)([,]){0,1}))*/u</mask>
                     <ValidationMessage>Please provide a valid user and password, i.e. user:secret123.</ValidationMessage>
                 </users>
+                <allowedUsers type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>users.user</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related user not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </allowedUsers>
+                <allowedGroups type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>groups.group</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related group not found</ValidationMessage>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </allowedGroups>
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
