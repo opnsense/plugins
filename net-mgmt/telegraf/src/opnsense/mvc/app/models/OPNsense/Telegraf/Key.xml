@@ -13,11 +13,13 @@
                     <default></default>
                     <Required>N</Required>
                     <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                    <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed.</ValidationMessage>
                 </name>
                 <value type="TextField">
                     <default></default>
                     <Required>N</Required>
                     <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                    <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed.</ValidationMessage>
                 </value>
             </key>
         </keys>
