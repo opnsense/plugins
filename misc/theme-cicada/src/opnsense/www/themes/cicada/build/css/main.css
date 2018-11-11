@@ -208,7 +208,8 @@ optgroup {
 table {
   border-spacing: 0;
   background-color: #3e3e3e;
-  color: #FFF; }
+  color: #FFF; 
+  width:100%; }
 
 td,
 th {

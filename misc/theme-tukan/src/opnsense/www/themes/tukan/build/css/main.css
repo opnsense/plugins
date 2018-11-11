@@ -209,7 +209,8 @@ table {
   border-collapse: none;
   border-spacing: 0;
   color: #000;
-  background-color: #F0F0F0; }
+  background-color: #F0F0F0;
+  width: 100%; }
 
 td,
 th {
