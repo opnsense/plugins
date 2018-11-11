@@ -1,0 +1,5 @@
+<menu>
+    <VPN>
+        <SoftEther cssClass="fa fa-lock fa-fw" url="/ui/softether/general/index" order="50" />
+    </VPN>
+</menu>
