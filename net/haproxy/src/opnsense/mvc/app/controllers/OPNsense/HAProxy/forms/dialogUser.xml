@@ -21,6 +21,6 @@
         <id>user.password</id>
         <label>Password</label>
         <type>password</type>
-        <help><![CDATA[Both secure (encrypted) and insecure (unencrypted) passwords can be used. Most systems support MD5, SHA-256, SHA-512, and, of course, the classic DES-based method of encrypting passwords.<br/><div class="text-info"><b>NOTE:</b> Avoid using unencrypted passwords that start with a $-sign, because this indicates an encrypted password and will make it impossible to authenticate.</div>]]></help>
+        <help><![CDATA[Both encrypted and unencrypted passwords can be used. Most systems support MD5, SHA-256, SHA-512, and, of course, the classic DES-based method of encrypting passwords.<br/><div class="text-info"><b>NOTE:</b> Avoid using unencrypted passwords that start with a $-sign, because this indicates an encrypted password and will make it impossible to authenticate.</div>]]></help>
     </field>
 </form>

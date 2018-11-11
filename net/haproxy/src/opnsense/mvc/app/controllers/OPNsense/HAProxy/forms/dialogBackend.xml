@@ -232,7 +232,7 @@
         <id>backend.basicAuthEnabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable HTTP Basic Authentication.]]></help>
+        <help>Enable HTTP Basic Authentication.</help>
     </field>
     <field>
         <id>backend.basicAuthUsers</id>
