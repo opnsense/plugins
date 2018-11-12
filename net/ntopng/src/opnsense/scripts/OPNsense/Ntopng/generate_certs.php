@@ -35,7 +35,7 @@ require_once("legacy_bindings.inc");
 
 use OPNsense\Core\Config;
 
-$cert_pem_filename = '/usr/local/share/ntopng/httpdocs/ssl/ntopng_cert.pem';
+$cert_pem_filename = '/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem';
 $cert_pem_content = '';
 
 // traverse Postfix plugin for certficiates
