@@ -7,7 +7,7 @@
     </field>
     <field>
         <id>recipient.address</id>
-        <label>Sender Address</label>
+        <label>Recipient Address</label>
         <type>text</type>
         <help>Set the recipient address to match.</help>
     </field>
