@@ -69,5 +69,5 @@ if (isset($configObj->OPNsense->ntopng)) {
 }
 
 file_put_contents($cert_pem_filename, $cert_pem_content);
-chmod($cert_pem_filename, 0600);
+chmod($cert_pem_filename, 0644);
 echo "Certificates generated $cert_pem_filename\n";
