@@ -662,7 +662,7 @@
         <Constraints>
           <check001>
             <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>NginxSetIfConstraint</type>
+            <type>SetIfConstraint</type>
             <field>route_field</field>
             <check>upstream</check>
           </check001>
@@ -682,7 +682,7 @@
         <Constraints>
           <check001>
             <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>NginxSetIfConstraint</type>
+            <type>SetIfConstraint</type>
             <field>route_field</field>
             <check>sni_upstream_map</check>
           </check001>
