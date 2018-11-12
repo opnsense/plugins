@@ -17,7 +17,7 @@
         </httpport>
         <httpsport type="PortField">
             <Required>N</Required>
-        </httpport>
+        </httpsport>
         <cert type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
