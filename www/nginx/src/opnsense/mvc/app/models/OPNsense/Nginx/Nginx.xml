@@ -302,7 +302,7 @@
         </Model>
         <ValidationMessage>Selected user file not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <multiple>N</multiple>
       </authbasicuserfile>
       <advanced_acl type="BooleanField">
         <default>0</default>
