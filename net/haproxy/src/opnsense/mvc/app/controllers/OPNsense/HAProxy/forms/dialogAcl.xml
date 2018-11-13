@@ -470,6 +470,23 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_http_auth</style>
+    </field>
+    <field>
+        <id>acl.allowedUsers</id>
+        <label>Allowed Users</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>acl.allowedGroups</id>
+        <label>Allowed Groups</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>expression_table table_custom_acl</style>
     </field>
     <field>

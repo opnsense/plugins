@@ -67,49 +67,92 @@ function find_ca($refid)
 if (!isset($config['OPNsense']['Nginx'])) {
     die("nginx is not configured");
 }
-$nginx = $config['OPNsense']['Nginx'];
-if (!isset($nginx['http_server'])) {
-    die("no http servers configured");
-}
-if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
-    $http_servers = $nginx['http_server'];
-} else {
-    $http_servers = array($nginx['http_server']);
-}
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
-foreach ($http_servers as $http_server) {
-    if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate'])) {
-      // try to find the reference
-        $cert = find_cert($http_server['certificate']);
-        if (!isset($cert)) {
-            next;
-        }
-        $chain = [];
-        $ca_chain = ca_chain_array($cert);
-        if (is_array($ca_chain)) {
-            foreach ($ca_chain as $entry) {
-                $chain[] = base64_decode($entry['crt']);
+$nginx = $config['OPNsense']['Nginx'];
+if (isset($nginx['http_server'])) {
+    if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
+        $http_servers = $nginx['http_server'];
+    } else {
+        $http_servers = array($nginx['http_server']);
+    }
+    foreach ($http_servers as $http_server) {
+        if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate'])) {
+          // try to find the reference
+            $cert = find_cert($http_server['certificate']);
+            if (!isset($cert)) {
+                next;
+            }
+            $chain = [];
+            $ca_chain = ca_chain_array($cert);
+            if (is_array($ca_chain)) {
+                foreach ($ca_chain as $entry) {
+                    $chain[] = base64_decode($entry['crt']);
+                }
+            }
+            $hostname = explode(',', $http_server['servername'])[0];
+            export_pem_file(
+                KEY_DIRECTORY . $hostname . '.pem',
+                $cert['crt'],
+                implode("\n", $chain)
+            );
+            export_pem_file(
+                KEY_DIRECTORY . $hostname . '.key',
+                $cert['prv']
+            );
+            if (!empty($http_server['ca'])) {
+                foreach ($http_server['ca'] as $caref) {
+                    $ca = find_ca($caref);
+                    if (isset($ca)) {
+                        export_pem_file(
+                            KEY_DIRECTORY . $hostname . '_ca.pem',
+                            $ca['crt']
+                        );
+                    }
+                }
             }
         }
-        $hostname = explode(',', $http_server['servername'])[0];
-        export_pem_file(
-            KEY_DIRECTORY . $hostname . '.pem',
-            $cert['crt'],
-            implode("\n", $chain)
-        );
-        export_pem_file(
-            KEY_DIRECTORY . $hostname . '.key',
-            $cert['prv']
-        );
-        if (!empty($http_server['ca'])) {
-            foreach ($http_server['ca'] as $caref) {
-                $ca = find_ca($caref);
-                if (isset($ca)) {
-                    export_pem_file(
-                        KEY_DIRECTORY . $hostname . '_ca.pem',
-                        $ca['crt']
-                    );
+    }
+}
+// end http, begin streams
+if (isset($nginx['stream_server'])) {
+    if (is_array($nginx['stream_server']) && !isset($nginx['stream_server']['servername'])) {
+        $stream_servers = $nginx['stream_server'];
+    } else {
+        $stream_servers = array($nginx['stream_server']);
+    }
+    foreach ($stream_servers as $stream_server) {
+        if (!empty($stream_server['listen_port']) && !empty($stream_server['certificate'])) {
+          // try to find the reference
+            $cert = find_cert($stream_server['certificate']);
+            if (!isset($cert)) {
+                next;
+            }
+            $chain = [];
+            $ca_chain = ca_chain_array($cert);
+            if (is_array($ca_chain)) {
+                foreach ($ca_chain as $entry) {
+                    $chain[] = base64_decode($entry['crt']);
+                }
+            }
+            export_pem_file(
+                KEY_DIRECTORY . $stream_server['@attributes']['uuid'] . '.pem',
+                $cert['crt'],
+                implode("\n", $chain)
+            );
+            export_pem_file(
+                KEY_DIRECTORY . $stream_server['@attributes']['uuid'] . '.key',
+                $cert['prv']
+            );
+            if (!empty($stream_server['ca'])) {
+                foreach ($stream_server['ca'] as $caref) {
+                    $ca = find_ca($caref);
+                    if (isset($ca)) {
+                        export_pem_file(
+                            KEY_DIRECTORY . $hostname . '_ca.pem',
+                            $ca['crt']
+                        );
+                    }
                 }
             }
         }

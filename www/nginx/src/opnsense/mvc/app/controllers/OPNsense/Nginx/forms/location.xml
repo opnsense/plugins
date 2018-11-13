@@ -162,6 +162,13 @@
     <help>Send an authentication request to the OPNsense backend for advanced access control.</help>
   </field>
   <field>
+    <id>location.ip_acl</id>
+    <label>IP ACL</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+  <field>
     <id>location.force_https</id>
     <label>Force HTTPS</label>
     <type>checkbox</type>

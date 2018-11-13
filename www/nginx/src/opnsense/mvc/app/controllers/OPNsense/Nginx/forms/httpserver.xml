@@ -87,6 +87,13 @@
     <help>Blocks the request when a possibly bad bot is detected and adds the originating IP to the managed firewall alias for permanent blocking.</help>
   </field>
   <field>
+    <id>httpserver.ip_acl</id>
+    <label>IP ACL</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+  <field>
     <id>httpserver.naxsi_extensive_log</id>
     <label>Extensive Naxsi Log</label>
     <type>checkbox</type>

@@ -209,7 +209,8 @@ table {
   border-collapse: none;
   border-spacing: 0;
   color: #000;
-  background-color: #F0F0F0; }
+  background-color: #F0F0F0;
+  width: 100%; }
 
 td,
 th {
@@ -925,7 +926,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #000;
-  background-color: none; }
+}
 
 input,
 button,
@@ -2036,8 +2037,7 @@ th {
     vertical-align: top;
 	border-top: 1px solid #e3e3e3; }
   .table > thead > tr > th {
-    vertical-align: bottom;
-    border-bottom: 1px solid #bababa4d; }
+    vertical-align: bottom;  }
   .table > caption + thead > tr:first-child > th,
   .table > caption + thead > tr:first-child > td,
   .table > colgroup + thead > tr:first-child > th,
@@ -5686,7 +5686,7 @@ html, body {
 body {
   touch-action: manipulation;
   min-width: 320px;
-  background-color:none; }
+}
 
 .widget-sort-handle {
   touch-action: none; }
@@ -5721,7 +5721,6 @@ body {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30); }
 
 .page-content-head, .content-box-head {
-  background: #FFF;
   padding-bottom: 15px;
   padding-top: 20px;
   color:#000;}
@@ -5732,7 +5731,6 @@ body {
     margin: 0; }
 
 .page-content-main {
-  background: #FFFFFF;
   min-height: calc(100% - 64px);
   padding: 15px 0 73px; }
 
@@ -5754,13 +5752,12 @@ body {
 
 .page-foot {
   bottom: 0;
-  border:none;
   font-size: 12px;
   padding: 0;
   width: 100%;
   z-index: 2;
   position: fixed;
-  height: 16px;
+  height: 20px;
   background: #172c38;
   color:#FFF;
   border-top: 1px solid #162b36;
@@ -5956,6 +5953,11 @@ main.page-content.col-lg-12 {
   font-size: 14px !important;
 }
 
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {
+  padding: 3px 8px !important;
+}
+
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
   text-decoration: none !important;
   color: #000 !important;
@@ -5992,7 +5994,7 @@ main.page-content.col-lg-12 {
   z-index: 10;
   position: absolute;
   left: 166px;
-  margin-top:-32px;
+  margin-top:-26px;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
