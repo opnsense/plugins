@@ -152,7 +152,7 @@
   <field>
     <id>location.authbasicuserfile</id>
     <label>Basic Credentials List</label>
-    <type>dropdown</type>
+    <type>select_multiple</type>
     <help>Select a credential list to use.</help>
   </field>
   <field>

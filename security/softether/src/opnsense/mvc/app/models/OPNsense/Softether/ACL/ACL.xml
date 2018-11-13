@@ -1,0 +1,9 @@
+<acl>
+   <page-softether-config>
+      <name>VPN: SoftEther</name>
+      <patterns>
+         <pattern>ui/softether/*</pattern>
+         <pattern>api/softether/*</pattern>
+      </patterns>
+   </page-softether-config>
+</acl>
