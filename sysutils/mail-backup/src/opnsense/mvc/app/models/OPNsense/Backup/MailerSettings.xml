@@ -8,21 +8,42 @@
           <Required>Y</Required>
         </Enabled>
         <Receiver type="EmailField">
-            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
         </Receiver>
         <SmtpHost type="HostnameField">
-            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
         </SmtpHost>
         <SmtpPort type="IntegerField">
-            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
         </SmtpPort>
         <SmtpTLS type="BooleanField">
           <default>1</default>
           <Required>Y</Required>
         </SmtpTLS>
-        <SmtpUsername type="TextField"  />
-        <SmtpPassword type="TextField"  />
-        <GpgEmail     type="EmailField" />
-        <GpgPublicKey type="TextField"  />
+        <SmtpUsername type="TextField"/>
+        <SmtpPassword type="TextField"/>
+        <GpgEmail type="EmailField"/>
+        <GpgPublicKey type="TextField"/>
     </items>
 </model>
