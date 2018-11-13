@@ -300,7 +300,7 @@
             <display>name</display>
           </template>
         </Model>
-        <ValidationMessage>Selected server not found</ValidationMessage>
+        <ValidationMessage>Selected user file not found</ValidationMessage>
         <Required>N</Required>
         <multiple>Y</multiple>
       </authbasicuserfile>
