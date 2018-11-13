@@ -80,6 +80,13 @@
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
   </field>
   <field>
+    <id>httpserver.ip_acl</id>
+    <label>IP ACL</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+  <field>
     <id>httpserver.naxsi_extensive_log</id>
     <label>Extensive Naxsi Log</label>
     <type>checkbox</type>

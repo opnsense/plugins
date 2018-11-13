@@ -126,18 +126,25 @@ $new_ips = array_unique(
     }, $log_lines)
 );
 
+$change_required = false;
+
 foreach (array_diff($new_ips, $alias_ips) as $new_ip) {
     $entry = $model->ban->Add();
     $entry->ip = $new_ip;
     $entry->time = time();
+    $change_required = true;
 }
-$val_result = $model->performValidation(false);
-if (count($val_result) !== 0) {
-    print_r($val_result);
-    exit(1);
+
+if ($change_required) {
+    $val_result = $model->performValidation(false);
+    if (count($val_result) !== 0) {
+        print_r($val_result);
+        exit(1);
+    }
+
+    $model->serializeToConfig();
+    Config::getInstance()->save();
 }
-$model->serializeToConfig();
-Config::getInstance()->save();
 echo '{"status":"saved"}';
 
 // all ips are used because the others may not be set for some reason

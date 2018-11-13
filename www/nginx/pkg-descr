@@ -8,6 +8,18 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.4
+
+* move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
+* add TCP load balancing [1]
+* add support for IP based ACLs
+* change: allow to disable internal bot protection (contributed by @fzoske) [2]
+* change: do not save when no change in the list happened to prevent filling the log history
+* fix: translate a german string in upstream server to english
+
+[1] https://github.com/opnsense/plugins/pull/930
+[2] https://github.com/opnsense/plugins/pull/934
+
 1.3
 
 * bugfix: correctly set upstream header

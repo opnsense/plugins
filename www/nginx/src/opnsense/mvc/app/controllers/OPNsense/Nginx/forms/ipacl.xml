@@ -1,0 +1,19 @@
+<form>
+    <field>
+        <id>ipacl.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Enter a short description like a name for this ACL. It will be shown in the drop downs.</help>
+    </field>
+    <field>
+        <id>ipacl.data</id>
+        <style>json-data</style>
+        <label>ACL Entries</label>
+        <type>hidden</type>
+    </field>
+    <field>
+        <id>ipacl.default_action</id>
+        <label>Default Action</label>
+        <type>dropdown</type>
+    </field>
+</form>

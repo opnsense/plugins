@@ -1,0 +1,14 @@
+<form>
+  <field>
+    <id>snihostname.description</id>
+    <label>Short description (to display)</label>
+    <type>text</type>
+    <help>Enter a short description like a name for this redirect.</help>
+  </field>
+  <field>
+    <id>snihostname.data</id>
+    <style>json-data</style>
+    <label>Hostname Upstream Map</label>
+    <type>hidden</type>
+  </field>
+</form>
