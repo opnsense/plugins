@@ -80,6 +80,13 @@
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
   </field>
   <field>
+    <id>httpserver.disable_bot_protection</id>
+    <label>Disable Bot Protection</label>
+    <type>checkbox</type>
+    <advanced>false</advanced>
+    <help>Blocks the request when a possibly bad bot is detected and adds the originating IP to the managed firewall alias for permanent blocking.</help>
+  </field>
+  <field>
     <id>httpserver.ip_acl</id>
     <label>IP ACL</label>
     <type>dropdown</type>
