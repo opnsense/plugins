@@ -10,10 +10,3 @@ $TTL    86400
 google.com                IN CNAME forcesafesearch.google.com.
 www.google.com            IN CNAME forcesafesearch.google.com.
 {% endif %}
-{% if helpers.exists('OPNsense.bind.general.forcesafeyoutube') and OPNsense.bind.general.forcesafeyoutube == '1' %}
-www.youtube.com           IN CNAME restrict.youtube.com.
-m.youtube.com             IN CNAME restrict.youtube.com.
-youtubei.googleapis.com   IN CNAME restrict.youtube.com.
-youtube.googleapis.com    IN CNAME restrict.youtube.com.
-www.youtube-nocookie.com  IN CNAME restrict.youtube.com.
-{% endif %}
