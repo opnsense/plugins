@@ -28,5 +28,13 @@
         <whitelists type="CSVListField">
             <Required>N</Required>
         </whitelists>
+        <forcesafegoogle type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </forcesafegoogle>
+        <forcesafeyoutube type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </forcesafeyoutube>
     </items>
 </model>
