@@ -5,3 +5,4 @@ mime.types:/usr/local/etc/nginx/mime.types
 php_fpm:/etc/rc.conf.d/php_fpm
 php-www.conf:/usr/local/etc/php-fpm.d/www.conf
 php-webgui.conf:/usr/local/etc/php-fpm.d/webgui.conf
+newsyslog.conf:/etc/newsyslog.conf.d/nginx
