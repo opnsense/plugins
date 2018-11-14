@@ -59,16 +59,4 @@
         <type>dropdown</type>
         <help>Default is "No". Set to "Auto" to use the static trust anchor configuration by the system.</help>
     </field>
-    <field>
-        <id>general.forcesafegoogle</id>
-        <label>Enable Google SafeSearch</label>
-        <type>checkbox</type>
-        <help>This will force SafeSearch.</help>
-    </field>
-    <field>
-        <id>general.forcesafeyoutube</id>
-        <label>Enable Youtube Adult Restrictions</label>
-        <type>checkbox</type>
-        <help>This will force safe Youtube browsing.</help>
-    </field>
 </form>
