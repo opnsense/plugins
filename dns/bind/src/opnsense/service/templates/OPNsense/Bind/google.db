@@ -6,7 +6,7 @@ $TTL    86400
                    864000
                      3600 )
 @               NS      localhost.
-{% if helpers.exists('OPNsense.bind.general.forcesafegoogle') and OPNsense.bind.general.forcesafegoogle == '1' %}
+{% if helpers.exists('OPNsense.bind.dnsbl.forcesafegoogle') and OPNsense.bind.dnsbl.forcesafegoogle == '1' %}
 google.com                IN CNAME forcesafesearch.google.com.
 www.google.com            IN CNAME forcesafesearch.google.com.
 {% endif %}
