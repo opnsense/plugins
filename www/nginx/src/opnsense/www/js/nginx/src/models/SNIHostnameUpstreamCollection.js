@@ -6,7 +6,7 @@ export default Backbone.Collection.extend({
         });
     },
     regenerateFromView: function () {
-        let data = JSON.parse($('#snihostname\\.data').val());
+        let data = $('#snihostname\\.data').data('data');
         if (!_.isArray(data)) {
             data = [];
         }
