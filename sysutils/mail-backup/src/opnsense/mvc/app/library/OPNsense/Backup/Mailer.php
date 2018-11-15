@@ -13,7 +13,6 @@ use OPNsense\Backup\MailerSettings;
  */
 class Mailer extends Base implements IBackupProvider
 {
-
     /**
      * get required (user interface) fields for backup connector
      * @return array configuration fields, types and description
@@ -204,7 +203,8 @@ class Mailer extends Base implements IBackupProvider
         return $attachmentName;
     }
 
-    function import_key($gpgPublicKey) {
+    function import_key($gpgPublicKey)
+    {
         $descriptorspec = array(
             0 => array("pipe", "r"),
             1 => array("pipe", "w"),
@@ -222,7 +222,8 @@ class Mailer extends Base implements IBackupProvider
         }
     }
 
-    function encrypt_data($confdata, $gpgEmail) {
+    function encrypt_data($confdata, $gpgEmail)
+    {
         $descriptorspec = array(
             0 => array("pipe", "r"),
             1 => array("pipe", "w"),
@@ -245,7 +246,7 @@ class Mailer extends Base implements IBackupProvider
                     break;
                 }
                 $config .= $string;
-            } while(true);
+            } while (true);
             fclose($pipes[1]);
             file_put_contents("backup", $config);
 

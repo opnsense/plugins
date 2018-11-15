@@ -1,18 +1,19 @@
 <model>
     <mount>//system/backup/mailer</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>OPNsense Mailer Backup Settings</description>
     <items>
         <Enabled type="BooleanField">
-          <default>0</default>
-          <Required>Y</Required>
+            <default>0</default>
+            <Required>Y</Required>
         </Enabled>
         <Receiver type="EmailField">
             <Constraints>
                 <check001>
+                    <ValidationMessage>Please provide an e-mail address.</ValidationMessage>
                     <type>DependConstraint</type>
                     <addFields>
-                        <field1>enabled</field1>
+                        <field1>Enabled</field1>
                     </addFields>
                 </check001>
             </Constraints>
@@ -20,27 +21,23 @@
         <SmtpHost type="HostnameField">
             <Constraints>
                 <check001>
+                    <ValidationMessage>Please provide an e-mail server.</ValidationMessage>
                     <type>DependConstraint</type>
                     <addFields>
-                        <field1>enabled</field1>
+                        <field1>Enabled</field1>
                     </addFields>
                 </check001>
             </Constraints>
         </SmtpHost>
-        <SmtpPort type="IntegerField">
-            <Constraints>
-                <check001>
-                    <type>DependConstraint</type>
-                    <addFields>
-                        <field1>enabled</field1>
-                    </addFields>
-                </check001>
-            </Constraints>
+        <SmtpPort type="PortField">
+            <default>25</default>
+            <Required>Y</Required>
         </SmtpPort>
         <SmtpTLS type="BooleanField">
-          <default>1</default>
-          <Required>Y</Required>
+            <default>1</default>
+            <Required>Y</Required>
         </SmtpTLS>
+        <SelfSigned type="BooleanField"/>
         <SmtpUsername type="TextField"/>
         <SmtpPassword type="TextField"/>
         <GpgEmail type="EmailField"/>
