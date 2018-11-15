@@ -13,14 +13,16 @@ Plugin Changelog
 * move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
 * add TCP load balancing [1]
 * add support for IP based ACLs
-* change: allow to disable internal bot protection (contributed by @fzoske) [2]
+* add log rotation (contributed by Julius Cesar Camargo [2]
+* change: allow to disable internal bot protection (contributed by @fzoske) [3]
 * change: do not save when no change in the list happened to prevent filling the log history
 * fix: translate a german string in upstream server to english
-* replace headers instead of just adding our own (duplication issue #971), suppress X-Powered-By from Upstream [3]
+* replace headers instead of just adding our own (duplication issue #971), suppress X-Powered-By from Upstream [4]
 
 [1] https://github.com/opnsense/plugins/pull/930
-[2] https://github.com/opnsense/plugins/pull/934
-[3] https://github.com/opnsense/plugins/issues/971
+[2] https://github.com/opnsense/plugins/pull/982
+[3] https://github.com/opnsense/plugins/pull/934
+[4] https://github.com/opnsense/plugins/issues/971
 
 1.3
 
