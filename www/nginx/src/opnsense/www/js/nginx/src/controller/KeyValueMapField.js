@@ -41,7 +41,7 @@ export default Backbone.View.extend({
             </div>`));
     },
     update: function () {
-        this.dataField.val(JSON.stringify(this.collection.toJSON()));
+        this.dataField.data('data', this.collection.toJSON());
     },
     addEntry: function (e) {
         e.preventDefault();
