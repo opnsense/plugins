@@ -3,7 +3,7 @@
         <id>cloak.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>This will enable or disable this Override.</help>
+        <help>This will enable or disable this override.</help>
     </field>
     <field>
         <id>cloak.name</id>
