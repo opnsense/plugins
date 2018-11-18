@@ -93,13 +93,13 @@ dataconverters = {
             return value
         }
     }
-}
+};
 
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/generalroutes", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())(data['response'])
+    content = _.template($('#routestpl').html())(data['response']);
     $('#routing').html(content)
     //$('#routing table').bootgrid({converters: dataconverters})
   });

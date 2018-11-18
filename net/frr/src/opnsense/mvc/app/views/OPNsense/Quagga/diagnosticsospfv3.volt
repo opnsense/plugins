@@ -328,32 +328,32 @@ dataconverters = {
         from: function (value) { return value },
         to: function (value) { return value }
     }
-}
+};
 
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/ospfv3overview", sendData={}, callback=function(data,status) {
-    content = _.template($('#overviewtpl').html())(data['response'])
-    $('#overview').html(content)
+    content = _.template($('#overviewtpl').html())(data['response']);
+    $('#overview').html(content);
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfv3database", sendData={}, callback=function(data,status) {
-    content = _.template($('#databasetpl').html())(data['response'])
-    $('#database').html(content)
-    $('#database table').bootgrid()
+    content = _.template($('#databasetpl').html())(data['response']);
+    $('#database').html(content);
+    $('#database table').bootgrid();
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfv3route", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())(data['response'])
-    $('#routing').html(content)
-    $('#routing table').bootgrid()
+    content = _.template($('#routestpl').html())(data['response']);
+    $('#routing').html(content);
+    $('#routing table').bootgrid();
   });
   /*ajaxCall(url="/api/quagga/diagnostics/ospfv3neighbor", sendData={}, callback=function(data,status) {
     content = _.template($('#neighbortpl').html())(data['response'])
     $('#neighbor').html(content)
   });*/
   ajaxCall(url="/api/quagga/diagnostics/ospfv3interface", sendData={}, callback=function(data,status) {
-    content = _.template($('#interfacetpl').html())(data['response'])
-    $('#interface').html(content)
+    content = _.template($('#interfacetpl').html())(data['response']);
+    $('#interface').html(content);
   });
 
 

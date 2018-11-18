@@ -418,7 +418,7 @@ function checkmark(bin)
 
 dataconverters = {
     boolean: {
-        from: function (value) { return (value == 'true') || (value == true); },
+        from: function (value) { return (value === 'true') || (value === true); },
         to: function (value) { return checkmark(value) }
     },
     raw: {
@@ -431,26 +431,26 @@ $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/ospfoverview", sendData={}, callback=function(data,status) {
-    content = _.template($('#overviewtpl').html())(data['response'])
+    content = _.template($('#overviewtpl').html())(data['response']);
     $('#overview').html(content)
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfdatabase", sendData={}, callback=function(data,status) {
-    content = _.template($('#databasetpl').html())(data['response'])
-    $('#database').html(content)
+    content = _.template($('#databasetpl').html())(data['response']);
+    $('#database').html(content);
     $('#database table').bootgrid()
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfroute", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())(data['response'])
-    $('#routing').html(content)
+    content = _.template($('#routestpl').html())(data['response']);
+    $('#routing').html(content);
     $('#routing table').bootgrid({converters: dataconverters})
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfneighbor", sendData={}, callback=function(data,status) {
-    content = _.template($('#neighbortpl').html())(data['response'])
-    $('#neighbor').html(content)
+    content = _.template($('#neighbortpl').html())(data['response']);
+    $('#neighbor').html(content);
     $('#neighbor table').bootgrid()
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfinterface", sendData={}, callback=function(data,status) {
-    content = _.template($('#interfacetpl').html())(data['response'])
+    content = _.template($('#interfacetpl').html())(data['response']);
     $('#interface').html(content)
   });
 

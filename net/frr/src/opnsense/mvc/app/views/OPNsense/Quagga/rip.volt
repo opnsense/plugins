@@ -46,7 +46,7 @@ $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   // link save button to API set action
-  $("#saveAct").click(function(){
+  $("#saveAct").on('click', function(){
       saveFormToEndpoint(url="/api/quagga/rip/set",formid='frm_rip_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {

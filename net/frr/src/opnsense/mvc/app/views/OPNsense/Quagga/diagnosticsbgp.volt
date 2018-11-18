@@ -87,7 +87,7 @@ $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/showipbgp", sendData={}, callback=function(data,status) {
-      content = _.template($('#overviewtpl').html())(data['response'])
+      content = _.template($('#overviewtpl').html())(data['response']);
       $('#overview').html(content)
   });
 

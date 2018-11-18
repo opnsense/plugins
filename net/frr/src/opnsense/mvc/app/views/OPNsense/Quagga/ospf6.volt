@@ -90,7 +90,7 @@ $( document ).ready(function() {
   quagga_update_status();
 
   // link save button to API set action
-  $("#saveAct").click(function(){
+  $("#saveAct").on('click', function(){
       saveFormToEndpoint(url="/api/quagga/ospf6settings/set",formid='frm_ospf6_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
@@ -101,7 +101,7 @@ $( document ).ready(function() {
   });
 
   /* allow a user to manually reload the service (for forms which do not do it automatically) */
-  $('.reload_btn').click(function reload_handler() {
+  $('.reload_btn').on('click', function reload_handler() {
     $(".reloadAct_progress").addClass("fa-spin");
     ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
       quagga_update_status();
