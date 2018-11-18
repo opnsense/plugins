@@ -53,6 +53,19 @@ $( document ).ready(function() {
         }
     );
 
+    $("#grid-aliases").UIBootgrid(
+        {   search:'/api/zabbixagent/settings/searchAliases',
+            get:'/api/zabbixagent/settings/getAlias/',
+            set:'/api/zabbixagent/settings/setAlias/',
+            add:'/api/zabbixagent/settings/addAlias/',
+            del:'/api/zabbixagent/settings/delAlias/',
+            toggle:'/api/zabbixagent/settings/toggleAlias/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
+            }
+        }
+    );
+
     /***********************************************************************
      * Commands
      **********************************************************************/
@@ -137,6 +150,7 @@ $( document ).ready(function() {
         <a data-toggle="tab" onclick="$('#userparameters-tab').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
         <ul class="dropdown-menu" role="menu">
             <li><a data-toggle="tab" id="userparameters-tab" href="#userparameters">{{ lang._('User Parameters') }}</a></li>
+            <li><a data-toggle="tab" id="aliases-tab" href="#aliases">{{ lang._('Item Key Aliases') }}</a></li>
         </ul>
     </li>
 </ul>
@@ -178,7 +192,40 @@ $( document ).ready(function() {
             <br/>
         </div>
     </div>
+    <div id="aliases" class="tab-pane fade">
+        <!-- tab page "aliases" -->
+        <table id="grid-aliases" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAlias">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="key" data-type="string">{{ lang._('Alias Key') }}</th>
+                <th data-column-id="sourceKey" data-type="string">{{ lang._('Alias Source Key') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <!-- apply button -->
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct-aliases" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
+    </div>
 </div>
 
 {# include dialogs #}
 {{ partial("layout_partials/base_dialog",['fields':formDialogUserparameter,'id':'DialogUserparameter','label':lang._('Edit User Parameter')]) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAlias,'id':'DialogAlias','label':lang._('Edit Alias')]) }}

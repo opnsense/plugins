@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>alias.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this alias.</help>
+    </field>
+    <field>
+        <id>alias.key</id>
+        <label>Alias Item Key</label>
+        <type>text</type>
+        <help>Enter a unique item key of your choice.</help>
+    </field>
+    <field>
+        <id>alias.sourceKey</id>
+        <label>Source Item Key</label>
+        <type>text</type>
+        <help>Enter the name of an existing item key.</help>
+    </field>
+    <field>
+        <id>alias.acceptParams</id>
+        <label>Accept Parameters</label>
+        <type>checkbox</type>
+        <help>Enable to accept parameters for this alias.</help>
+    </field>
+</form>
