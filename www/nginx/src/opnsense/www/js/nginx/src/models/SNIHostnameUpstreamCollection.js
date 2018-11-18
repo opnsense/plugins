@@ -1,7 +1,7 @@
 export default Backbone.Collection.extend({
     initialize: function() {
-        let that = this;
-        $('#snihostname\\.data').change(function () {
+        const that = this;
+        $('#snihostname\\.data').on('change', function () {
             that.regenerateFromView();
         });
     },

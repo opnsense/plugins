@@ -1,7 +1,7 @@
 export default Backbone.Collection.extend({
     initialize: function() {
-        let that = this;
-        $('#ipacl\\.data').change(function () {
+        const that = this;
+        $('#ipacl\\.data').on('change', function () {
             that.regenerateFromView();
         });
     },

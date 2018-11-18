@@ -28,7 +28,7 @@
 <script>
     function bind_naxsi_rule_dl_button() {
         let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
-        naxsi_rule_download_button.click(function () {
+        naxsi_rule_download_button.on('click', function () {
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_INFO,
                 title: "{{ lang._('Download NAXSI Rules') }}",
@@ -93,7 +93,7 @@
            role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').click();"
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').trigger('click');"
            class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
            style="border-right:0;"><b>{{ lang._('HTTP(S)')}}</b></a>
         <ul class="dropdown-menu" role="menu">
@@ -171,7 +171,7 @@
            role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#subtab_item_nginx-access-request-limit').click();"
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-access-request-limit').trigger('click');"
            class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
            style="border-right:0px;"><b>{{ lang._('Access')}}</b></a>
         <ul class="dropdown-menu" role="menu">

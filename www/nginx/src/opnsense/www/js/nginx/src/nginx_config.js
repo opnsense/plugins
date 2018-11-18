@@ -23,7 +23,7 @@ const actioncollection = new Backbone.Collection([
 function bind_save_buttons() {
 // form save event handlers for all defined forms
     $('[id*="save_"]').each(function () {
-        $(this).click(function (event) {
+        $(this).on('click', function (event) {
             let frm_id = $(this).closest("form").attr("id");
             let frm_title = $(this).closest("form").attr("data-title");
             // save data for General TAB
@@ -116,13 +116,13 @@ $( document ).ready(function() {
 
     // update history on tab state and implement navigation
     if(window.location.hash !== "") {
-        $('a[href="' + window.location.hash + '"]').click()
+        $('a[href="' + window.location.hash + '"]').trigger('click');
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         history.pushState(null, null, e.target.hash);
     });
 
-    $('.reload_btn').click(function() {
+    $('.reload_btn').on('click', function() {
         $(".reloadAct_progress").addClass("fa-spin");
         ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status) {
             $(".reloadAct_progress").removeClass("fa-spin");
