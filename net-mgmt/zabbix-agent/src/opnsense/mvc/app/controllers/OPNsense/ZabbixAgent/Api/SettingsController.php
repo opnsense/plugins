@@ -42,4 +42,35 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'zabbixagent';
     static protected $internalModelClass = '\OPNsense\ZabbixAgent\ZabbixAgent';
+
+    public function searchUserparametersAction()
+    {
+        return $this->searchBase('userparameters.userparameter', array("enabled", "key", "command"));
+    }
+
+    public function getUserparameterAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('userparameter', 'userparameters.userparameter', $uuid);
+    }
+
+    public function addUserparameterAction()
+    {
+        return $this->addBase('userparameter', 'userparameters.userparameter');
+    }
+
+    public function delUserparameterAction($uuid)
+    {
+        return $this->delBase('userparameters.userparameter', $uuid);
+    }
+
+    public function setUserparameterAction($uuid)
+    {
+        return $this->setBase('userparameter', 'userparameters.userparameter', $uuid);
+    }
+
+    public function toggleUserparameterAction($uuid)
+    {
+        return $this->toggleBase('userparameters.userparameter', $uuid);
+    }
 }

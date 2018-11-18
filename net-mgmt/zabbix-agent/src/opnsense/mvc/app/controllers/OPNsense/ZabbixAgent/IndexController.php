@@ -43,6 +43,8 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         // include form definitions
         $this->view->settingsForm = $this->getForm("settings");
+        // link userparameter dialog
+        $this->view->formDialogUserparameter = $this->getForm("dialogUserparameter");
         // pick the template to serve
         $this->view->pick('OPNsense/ZabbixAgent/index');
     }

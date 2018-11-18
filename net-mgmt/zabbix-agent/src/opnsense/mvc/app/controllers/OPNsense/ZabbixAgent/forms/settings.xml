@@ -1,4 +1,5 @@
 <form>
+    <activetab>zabbixagent-settings-main</activetab>
     <tab id="zabbixagent-settings-main" description="Main Settings">
         <field>
             <id>zabbixagent.settings.main.enabled</id>
@@ -125,5 +126,4 @@
             <help><![CDATA[Enable logging of executed shell commands as warnings. Make sure to set the Debug Level accordingly.]]></help>
         </field>
     </tab>
-    <activetab>zabbixagent-settings-main</activetab>
 </form>
