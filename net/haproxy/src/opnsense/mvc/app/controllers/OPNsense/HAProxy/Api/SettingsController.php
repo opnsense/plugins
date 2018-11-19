@@ -1105,6 +1105,136 @@ class SettingsController extends ApiControllerBase
     }
 
     /**
+     * retrieve cpu settings or return defaults
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function getCpuAction($uuid = null)
+    {
+        $mdlCP = new HAProxy();
+        if ($uuid != null) {
+            $node = $mdlCP->getNodeByReference('cpus.cpu.'.$uuid);
+            if ($node != null) {
+                // return node
+                return array("cpu" => $node->getNodes());
+            }
+        } else {
+            // generate new node, but don't save to disc
+            $node = $mdlCP->cpus->cpu->add();
+            return array("cpu" => $node->getNodes());
+        }
+        return array();
+    }
+
+    /**
+     * update cpu with given properties
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function setCpuAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("cpu")) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('cpus.cpu.'.$uuid);
+                if ($node != null) {
+                    $node->setNodes($this->request->getPost("cpu"));
+                    return $this->save($mdlCP, $node, "cpu");
+                }
+            }
+        }
+        return array("result"=>"failed");
+    }
+
+    /**
+     * add new cpu and set with attributes from post
+     * @return array
+     */
+    public function addCpuAction()
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost() && $this->request->hasPost("cpu")) {
+            $mdlCP = new HAProxy();
+            $node = $mdlCP->cpus->cpu->Add();
+            $node->setNodes($this->request->getPost("cpu"));
+            return $this->save($mdlCP, $node, "cpu");
+        }
+        return $result;
+    }
+
+    /**
+     * delete cpu by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function delCpuAction($uuid)
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                if ($mdlCP->cpus->cpu->del($uuid)) {
+                    // if item is removed, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * toggle cpu by uuid (enable/disable)
+     * @param $uuid item unique id
+     * @param $enabled desired state enabled(1)/disabled(0), leave empty for toggle
+     * @return array status
+     */
+    public function toggleCpuAction($uuid, $enabled = null)
+    {
+
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('cpus.cpu.' . $uuid);
+                if ($node != null) {
+                    if ($enabled == "0" || $enabled == "1") {
+                        $node->enabled = (string)$enabled;
+                    } elseif ((string)$node->enabled == "1") {
+                        $node->enabled = "0";
+                    } else {
+                        $node->enabled = "1";
+                    }
+                    $result['result'] = $node->enabled;
+                    // if item has toggled, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * search cpus
+     * @return array
+     */
+    public function searchCpusAction()
+    {
+        $this->sessionClose();
+        $mdlCP = new HAProxy();
+        $grid = new UIModelGrid($mdlCP->cpus->cpu);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "process_id", "thread_id", "cpu_id"),
+            "name"
+        );
+    }
+
+    /**
      * retrieve group settings or return defaults
      * @param $uuid item unique id
      * @return array
