@@ -26,90 +26,63 @@
  #}
 
 <script>
-$( document ).ready(function() {
-
-    let data_get_map = {'frm_nginx':'/api/nginx/settings/get'};
-
-    // load initial data
-    mapDataToFormUI(data_get_map).done(function(){
-        formatTokenizersUI();
-        $('select[data-allownew="false"]').selectpicker('refresh')
-        updateServiceControlUI('nginx');
-    });
-
-    // update history on tab state and implement navigation
-    if(window.location.hash != "") {
-        $('a[href="' + window.location.hash + '"]').click()
-    }
-    $('.nav-tabs a').on('shown.bs.tab', function (e) {
-        history.pushState(null, null, e.target.hash);
-    });
-
-    $('.reload_btn').click(function() {
-      $(".reloadAct_progress").addClass("fa-spin");
-      ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status) {
-          $(".reloadAct_progress").removeClass("fa-spin");
-      });
-    });
-
-
-    // form save event handlers for all defined forms
-    $('[id*="save_"]').each(function(){
-        $(this).click(function() {
-            var frm_id = $(this).closest("form").attr("id");
-            var frm_title = $(this).closest("form").attr("data-title");
-            // save data for General TAB
-            saveFormToEndpoint(url="/api/nginx/settings/set", formid=frm_id, callback_ok=function(){
-                // on correct save, perform reconfigure. set progress animation when reloading
-                $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
-
-                ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status){
-                    // when done, disable progress animation.
-                    $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
-
-                    if (data != undefined && (status != "success" || data['status'] != 'ok')) {
-                        // fix error handling
-                        BootstrapDialog.show({
-                            type:BootstrapDialog.TYPE_WARNING,
-                            title: frm_title,
-                            message: JSON.stringify(data),
-                            draggable: true
+    function bind_naxsi_rule_dl_button() {
+        let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
+        naxsi_rule_download_button.click(function () {
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_INFO,
+                title: "{{ lang._('Download NAXSI Rules') }}",
+                message: "{{ lang._('You are about to download the core rules from the Repository of NAXSI. You have to accept its %slicense%s to download the rules.')|format("<a href='https://github.com/nbs-system/naxsi/blob/master/LICENSE' target='_blank'>", "</a>") }}",
+                buttons: [{
+                    label: "{{ lang._('Accept And Download') }}",
+                    cssClass: 'btn-primary',
+                    icon: 'fa fa-download',
+                    action: function (dlg) {
+                        dlg.close();
+                        ajaxCall(url = "/api/nginx/settings/downloadrules", sendData = {}, callback = function (data, status) {
+                            $('#naxsiruledownloadalert').hide();
+                            // reload view after installing rules
+                            $('#grid-naxsirule').bootgrid('reload');
+                            $('#grid-custompolicy').bootgrid('reload');
                         });
-                    } else {
-                        updateServiceControlUI('nginx');
                     }
-                });
+                }, {
+                    label: '{{ lang._('Reject') }}',
+                    action: function (dlg) {
+                        dlg.close();
+                    }
+                }]
             });
         });
-    });
-    ['upstream',
-    'upstreamserver',
-    'location',
-    'credential',
-    'userlist',
-    'httpserver',
-    'httprewrite',
-    'custompolicy',
-    'security_header',
-    'limit_zone',
-    'cache_path',
-    'limit_request_connection',
-    'naxsirule'].forEach(function(element) {
-        $("#grid-" + element).UIBootgrid(
-            { 'search':'/api/nginx/settings/search' + element,
-              'get':'/api/nginx/settings/get' + element + '/',
-              'set':'/api/nginx/settings/set' + element + '/',
-              'add':'/api/nginx/settings/add' + element + '/',
-              'del':'/api/nginx/settings/del' + element + '/',
-              'options':{selection:false, multiSelect:false}
-            }
-        );
-    });
-
-});
-
-
+    }
 </script>
+<script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/dist/configuration.js') }}"></script>
+<style>
+    #frm_sni_hostname_mapdlg .col-md-4,
+    #frm_ipacl_dlg .col-md-4 {
+        width: 50%;
+    }
+    #frm_sni_hostname_mapdlg td > input[type="text"],
+    #frm_ipacl_dlg td > input[type="text"] {
+        width: 100%;
+        max-width: 100%;
+    }
+    #frm_sni_hostname_mapdlg .col-md-5,
+    #frm_ipacl_dlg .col-md-5 {
+        width: 25%;
+    }
+    #row_snihostname\.data .row div,
+    #row_ipacl\.data .row div {
+        padding: 0;
+    }
+    #sni_hostname_mapdlg .bootstrap-select,
+    #frm_ipacl_dlg .bootstrap-select {
+        width: 100% !important;
+    }
+
+</style>
 
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
@@ -122,7 +95,7 @@ $( document ).ready(function() {
         </a>
         <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-location').click();"
            class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
-           style="border-right:0px;"><b>{{ lang._('HTTP(S)')}}</b></a>
+           style="border-right:0;"><b>{{ lang._('HTTP(S)')}}</b></a>
         <ul class="dropdown-menu" role="menu">
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-location" href="#subtab_nginx-http-location">{{ lang._('Location')}}</a>
@@ -132,12 +105,6 @@ $( document ).ready(function() {
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-userlist" href="#subtab_nginx-http-userlist">{{ lang._('User List')}}</a>
-            </li>
-            <li>
-                <a data-toggle="tab" id="subtab_item_nginx-http-upstream-server" href="#subtab_nginx-http-upstream-server">{{ lang._('Upstream Server')}}</a>
-            </li>
-            <li>
-                <a data-toggle="tab" id="subtab_item_nginx-http-upstream" href="#subtab_nginx-http-upstream">{{ lang._('Upstream')}}</a>
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-server" href="#subtab_nginx-http-httpserver">{{ lang._('HTTP Server')}}</a>
@@ -166,6 +133,44 @@ $( document ).ready(function() {
            role="button">
             <b><span class="caret"></span></b>
         </a>
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-streams-streamserver').click();"
+           class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           style="border-right:0px;"><b>{{ lang._('Data Streams')}}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-streams-streamserver" href="#subtab_nginx-streams-streamserver">{{ lang._('Stream Servers')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-streams-snifwd" href="#subtab_nginx-streams-snifwd">{{ lang._('SNI Based Routing')}}</a>
+            </li>
+        </ul>
+    </li>
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown"
+           href="#"
+           class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#subtab_item_nginx-http-upstream-server').click();"
+           class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           style="border-right: 0;"><b>{{ lang._('Upstream')}}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-upstream-server" href="#subtab_nginx-http-upstream-server">{{ lang._('Upstream Server')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-upstream" href="#subtab_nginx-http-upstream">{{ lang._('Upstream')}}</a>
+            </li>
+        </ul>
+    </li>
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown"
+           href="#"
+           class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
+           role="button">
+            <b><span class="caret"></span></b>
+        </a>
         <a data-toggle="tab" onclick="$('#subtab_item_nginx-access-request-limit').click();"
            class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block"
            style="border-right:0px;"><b>{{ lang._('Access')}}</b></a>
@@ -175,6 +180,9 @@ $( document ).ready(function() {
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-access-request-limit-connection" href="#subtab_nginx-access-request-limit-connection">{{ lang._('Connection Limits')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-acl-ip" href="#subtab_nginx-acl-ip">{{ lang._('IP ACLs')}}</a>
             </li>
         </ul>
     </li>
@@ -325,6 +333,29 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-streams-streamserver" class="tab-pane fade">
+        <table id="grid-streamserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="streamserverdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
+                    <th data-column-id="udp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('UDP') }}</th>
+                    <th data-column-id="listen_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-http-rewrite" class="tab-pane fade">
         <table id="grid-httprewrite" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="httprewritedlg">
             <thead>
@@ -350,6 +381,16 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="subtab_nginx-http-custompolicy" class="tab-pane fade">
+        {% if (show_naxsi_download_button) %}
+        <div class="alert alert-info" id="naxsiruledownloadalert" role="alert" style="vertical-align: middle;display: table;width: 100%;">
+            <div style="display: table-cell;vertical-align: middle;">{{ lang._('It looks like you are not having any rules installed. You may want to download the NAXSI core rules.') }}</div>
+            <div class="pull-right" style="vertical-align: middle;display: table-cell;">
+                <button id="naxsiruledownloadbtn" class="btn btn-primary">
+                    <i class="fa fa-download" aria-hidden="true"></i> {{ lang._('Download') }}
+                </button>
+            </div>
+        </div>
+        {% endif %}
         <table id="grid-custompolicy" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="custompolicydlg">
             <thead>
                 <tr>
@@ -491,8 +532,49 @@ $( document ).ready(function() {
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-streams-snifwd" class="tab-pane fade">
+        <table id="grid-snifwd" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="sni_hostname_mapdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="subtab_nginx-acl-ip" class="tab-pane fade">
+        <table id="grid-ipacl" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="ipacl_dlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
-
 
 
 {{ partial("layout_partials/base_dialog",['fields': upstream,'id':'upstreamdlg', 'label':lang._('Edit Upstream')]) }}
@@ -501,6 +583,7 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': credential,'id':'credentialdlg', 'label':lang._('Edit Credential')]) }}
 {{ partial("layout_partials/base_dialog",['fields': userlist,'id':'userlistdlg', 'label':lang._('Edit User List')]) }}
 {{ partial("layout_partials/base_dialog",['fields': httpserver,'id':'httpserverdlg', 'label':lang._('Edit HTTP Server')]) }}
+{{ partial("layout_partials/base_dialog",['fields': streamserver,'id':'streamserverdlg', 'label':lang._('Edit Stream Server')]) }}
 {{ partial("layout_partials/base_dialog",['fields': httprewrite,'id':'httprewritedlg', 'label':lang._('Edit URL Rewrite')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
@@ -508,3 +591,5 @@ $( document ).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
+{{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
+{{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}

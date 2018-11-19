@@ -44,7 +44,6 @@ misc/theme-tukan -- The tukan theme - blue/white
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
-net-mgmt/snmp -- End of life, superseded by Net-SNMP plugin
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
 net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
@@ -59,7 +58,6 @@ net/mdns-repeater -- Proxy multicast DNS between networks
 net/ntopng -- Traffic Analysis and Flow Collection
 net/pppoe -- PPPoE server based on MPD5
 net/pptp -- PPTP server based on MPD5
-net/quagga -- End of life, superseded by FRR plugin
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
@@ -74,10 +72,13 @@ security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (ne
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/openconnect -- OpenConnect Client
+security/softether -- Cross-platform Multi-protocol VPN Program
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
+sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
+sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools

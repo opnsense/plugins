@@ -1,9 +1,9 @@
 {% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.user.users.user') %}
+{%     for user_list in helpers.toList('OPNsense.freeradius.user.users.user') %}
+{%       if user_list.enabled == '1' %}
 
-{% if helpers.exists('OPNsense.freeradius.user.users.user') %}
-{%   for user_list in helpers.toList('OPNsense.freeradius.user.users.user') %}
-{%     if user_list.enabled == '1' %}
-{{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}"{% if user_list.sessionlimit_max_session_limit is defined %}, Max-Daily-Session := {{ user_list.sessionlimit_max_session_limit }}{% endif %}
+{{ user_list.username }}  Cleartext-Password := "{{ user_list.password }}"{% if helpers.exists('OPNsense.freeradius.general.sessionlimit') and OPNsense.freeradius.general.sessionlimit == '1' %}{% if user_list.sessionlimit_max_session_limit is defined %}, Max-Daily-Session := {{ user_list.sessionlimit_max_session_limit }}{% endif %}{% endif %}{% if user_list.simuse is defined %}, Simultaneous-Use := "{{ user_list.simuse }}"{% endif %}{% if user_list.logintime is defined %}, Login-Time := "{{ user_list.logintime }}"{% endif %}
 
 {%       if user_list.ip is defined %}
        Framed-IP-Address = {{ user_list.ip }},
@@ -19,41 +19,48 @@
 {%       if user_list.ip6 is defined %}
        Framed-IPv6-Address = {{ user_list.ip6 }},
 {%       endif %}
-{%       if user_list.vlan is defined %}
+{%       if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
+{%         if user_list.vlan is defined %}
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
        Tunnel-Private-Group-Id = {{ user_list.vlan }},
+{%         endif %}
 {%       endif %}
-{%       if user_list.wispr_bw_min_up is defined %}
+{%       if helpers.exists('OPNsense.freeradius.general.wispr') and OPNsense.freeradius.general.wispr == '1' %}
+{%         if user_list.wispr_bw_min_up is defined %}
        WISPr-Bandwidth-Min-Up = {{ user_list.wispr_bw_min_up }},
-{%       endif %}
-{%       if user_list.wispr_bw_max_up is defined %}
+{%         endif %}
+{%         if user_list.wispr_bw_max_up is defined %}
        WISPr-Bandwidth-Max-Up = {{ user_list.wispr_bw_max_up }},
-{%       endif %}
-{%       if user_list.wispr_bw_min_down is defined %}
+{%         endif %}
+{%         if user_list.wispr_bw_min_down is defined %}
        WISPr-Bandwidth-Min-Down = {{ user_list.wispr_bw_min_down }},
-{%       endif %}
-{%       if user_list.wispr_bw_max_down is defined %}
+{%         endif %}
+{%         if user_list.wispr_bw_max_down is defined %}
        WISPr-Bandwidth-Max-Down = {{ user_list.wispr_bw_max_down }},
+{%         endif %}
 {%       endif %}
-{%       if user_list.chillispot_bw_max_up is defined %}
+{%       if helpers.exists('OPNsense.freeradius.general.chillispot') and OPNsense.freeradius.general.chillispot == '1' %}
+{%         if user_list.chillispot_bw_max_up is defined %}
        ChilliSpot-Bandwidth-Max-Up = {{ user_list.chillispot_bw_max_up }},
-{%       endif %}
-{%       if user_list.chillispot_bw_max_down is defined %}
+{%         endif %}
+{%         if user_list.chillispot_bw_max_down is defined %}
        ChilliSpot-Bandwidth-Max-Down = {{ user_list.chillispot_bw_max_down }},
+{%         endif %}
 {%       endif %}
-{%       if user_list.mikrotik_vlan_id_number is defined %}
+{%       if helpers.exists('OPNsense.freeradius.general.mikrotik') and OPNsense.freeradius.general.mikrotik == '1' %}
+{%         if user_list.mikrotik_vlan_id_number is defined %}
        Mikrotik-Wireless-VLANID = {{ user_list.mikrotik_vlan_id_number }},
-{%       endif %}
-{%       if user_list.mikrotik_vlan_id_type is defined %}
+{%         endif %}
+{%         if user_list.mikrotik_vlan_id_type is defined %}
        Mikrotik-Wireless-VLANID-Type = {{ user_list.mikrotik_vlan_id_type }},
+{%         endif %}
 {%       endif %}
        Framed-Protocol = PPP
 
-{%     endif %}
-
-{%   endfor %}
-{% endif %}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
 
 DEFAULT Framed-Protocol == PPP
         Framed-Protocol = PPP,
@@ -65,5 +72,4 @@ DEFAULT Hint == "CSLIP"
 
 DEFAULT Hint == "SLIP"
         Framed-Protocol = SLIP
-
 {% endif %}

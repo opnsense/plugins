@@ -18,6 +18,11 @@
                 <pubkey type="TextField">
                     <Required>N</Required>
                 </pubkey>
+                <psk type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[a-zA-Z0-9+\/]{43}=$/</mask>
+                    <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
+                </psk>
                 <tunneladdress type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>

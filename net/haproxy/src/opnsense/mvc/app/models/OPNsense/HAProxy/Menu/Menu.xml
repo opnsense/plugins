@@ -5,7 +5,7 @@
               <GeneralSettings VisibleName="Service Settings" url="/ui/haproxy#subtab_haproxy-general-settings"/>
               <PeerSync VisibleName="Peers / Session Sync" url="/ui/haproxy#subtab_haproxy-general-peers"/>
               <GlobalParameters VisibleName="Global Parameters" url="/ui/haproxy#subtab_haproxy-general-global"/>
-              <DefaultParameters VisibleName="Detault Parameters" url="/ui/haproxy#subtab_haproxy-general-defaults"/>
+              <DefaultParameters VisibleName="Default Parameters" url="/ui/haproxy#subtab_haproxy-general-defaults"/>
               <LoggingConfiguration VisibleName="Logging Configuration" url="/ui/haproxy#subtab_haproxy-general-logging"/>
               <StatisticsConfiguration VisibleName="Statistics Configuration" url="/ui/haproxy#subtab_haproxy-general-statistics"/>
               <Frontends VisibleName="Frontends" url="/ui/haproxy#frontends"/>
@@ -14,6 +14,8 @@
               <HealthChecks VisibleName="Health Checks" url="/ui/haproxy#healthchecks"/>
               <Actions VisibleName="Actions" url="/ui/haproxy#actions"/>
               <Acls VisibleName="ACLs" url="/ui/haproxy#acls"/>
+              <Users VisibleName="Users" url="/ui/haproxy#users"/>
+              <Groups VisibleName="Groups" url="/ui/haproxy#groups"/>
               <Luas VisibleName="Lua Scripts" url="/ui/haproxy#luas"/>
               <Errorfiles VisibleName="Error Files" url="/ui/haproxy#errorfiles"/>
               <Mapfiles VisibleName="Map Files" url="/ui/haproxy#mapfiles"/>

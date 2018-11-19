@@ -209,7 +209,8 @@ table {
   border-collapse: none;
   border-spacing: 0;
   color: #000;
-  background-color: #F0F0F0; }
+  background-color: #F0F0F0;
+  width: 100%; }
 
 td,
 th {
@@ -925,7 +926,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #000;
-  background-color: none; }
+}
 
 input,
 button,
@@ -2036,8 +2037,7 @@ th {
     vertical-align: top;
 	border-top: 1px solid #e3e3e3; }
   .table > thead > tr > th {
-    vertical-align: bottom;
-    border-bottom: 1px solid #bababa4d; }
+    vertical-align: bottom;  }
   .table > caption + thead > tr:first-child > th,
   .table > caption + thead > tr:first-child > td,
   .table > colgroup + thead > tr:first-child > th,
@@ -3229,7 +3229,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #777777;
+  color: #b0b0b0;
   white-space: nowrap; }
 
 .dropdown-backdrop {
@@ -3569,12 +3569,13 @@ tbody.collapse.in {
 		text-decoration: underline; }
 
     .nav > li.disabled > a {
-      color: #777777; }
+		color: #fff; }
       .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
-        color: #777777;
-        text-decoration: none;
-        background-color: transparent;
-        cursor: not-allowed; }
+		  color: #fff;
+		  text-decoration: none;
+		  background-color: #839caa;
+		  opacity:0.9;
+		  cursor: not-allowed; }
 
   .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
     background-color: #336480;
@@ -5685,7 +5686,7 @@ html, body {
 body {
   touch-action: manipulation;
   min-width: 320px;
-  background-color:none; }
+}
 
 .widget-sort-handle {
   touch-action: none; }
@@ -5695,9 +5696,10 @@ body {
   left: 0;
   position: fixed;
   width: 100%;
-  border:none;
   z-index: 2;
-  background-color:#172c38; }
+  background-color:#172c38;
+  border-bottom: 1px solid #171717;
+}
 
 .page-content {
   height: calc(100% - 52px);
@@ -5719,7 +5721,6 @@ body {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30); }
 
 .page-content-head, .content-box-head {
-  background: #FFF;
   padding-bottom: 15px;
   padding-top: 20px;
   color:#000;}
@@ -5730,7 +5731,6 @@ body {
     margin: 0; }
 
 .page-content-main {
-  background: #FFFFFF;
   min-height: calc(100% - 64px);
   padding: 15px 0 73px; }
 
@@ -5752,11 +5752,16 @@ body {
 
 .page-foot {
   bottom: 0;
-  border:none;
   font-size: 12px;
   padding: 0;
   width: 100%;
-  z-index: 2; }
+  z-index: 2;
+  position: fixed;
+  height: 20px;
+  background: #172c38;
+  color:#FFF;
+  border-top: 1px solid #162b36;
+}
 
 .content-box {
   padding: 0px 0px;
@@ -5881,6 +5886,7 @@ main.page-content.col-lg-12 {
   width:70px;
   background-color:#172c38 !important;
   height:100% !important;
+  border-right: 1px solid #162b36;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
@@ -5947,6 +5953,11 @@ main.page-content.col-lg-12 {
   font-size: 14px !important;
 }
 
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > a.list-group-item,
+#navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse > div.collapse > a.list-group-item {
+  padding: 3px 8px !important;
+}
+
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item:hover, a.list-group-item:focus {
   text-decoration: none !important;
   color: #000 !important;
@@ -5966,12 +5977,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 70px;
   margin-top:-70px;
-  height:auto;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -5982,12 +5991,10 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in {
   width:168px;
   font-size:14px;
-  display: block;
   z-index: 10;
   position: absolute;
   left: 166px;
-  margin-top:-32px;
-  height:auto;
+  margin-top:-26px;
   border:1px solid #1f3a4a;
   -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
   -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.50);
@@ -5999,11 +6006,6 @@ main.page-content.col-lg-12 {
   display:none;
 }
 
-button.toggle-sidebar.glyphicon.glyphicon-chevron-left:focus,
-button.toggle-sidebar.glyphicon.glyphicon-chevron-right:focus {
-  outline:none;
-}
-
 button.toggle-sidebar {
   color:#FFF;
   background-color:transparent;
@@ -6011,7 +6013,9 @@ button.toggle-sidebar {
   border:none;
   margin-top: 18px;
   float:left;
+  outline:none;
 }
+
 /* COLLAPSE SIDEBAR END*/
 
 #navigation.collapse.in {
@@ -6291,10 +6295,6 @@ label > input[type="radio"] {
   background-color: #ffe83e;
 }
 
-.dashboard_grid_column table {
-	table-layout: fixed;
-}
-
 #ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
 	background-color: #f0f0f0;
 }
@@ -6308,7 +6308,14 @@ label > input[type="radio"] {
 	background-color: #315a71;
 	color: #FFF;
 }
-
+.fw_pass {
+  background-color: #2d6929 !important;
+  color:#FFF;
+}
+.fw_block {
+  background-color: #692929 !important;
+  color:#FFF;
+}
   /*additional extensions for theme-tukan*/
 
 #tab_1 #maintabs {
@@ -6383,7 +6390,7 @@ h3:hover, h3:focus {
   color:#FFFFFF !important;
 }
 
-.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted, .fa.fa-play.text-muted::before {
+.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted,.fa.fa-long-arrow-left,.fa.fa-long-arrow-left::before,.fa.fa-info-circle.text-muted,.fa.fa-times-circle.text-muted,.fa.fa-times-circle.text-muted::before,.fa.fa-times.text-muted,.fa.fa-times.text-muted::before,.fa.fa-play.text-muted::before {
   color: #000 !important;
 }
 

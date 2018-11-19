@@ -29,11 +29,22 @@
 namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
     static protected $internalModelName = 'nginx';
+
+    // download rules
+    public function downloadrulesAction()
+    {
+        if (!$this->request->isPost()) {
+            return array('error' => 'Must be called via POST');
+        }
+        $backend = new Backend();
+        return array('result' => trim($backend->configdRun('nginx naxsidownloadrules')));
+    }
 
     // User List
 
@@ -225,6 +236,33 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('httpserver', 'http_server', $uuid);
     }
 
+    // stream server
+    public function searchstreamserverAction()
+    {
+        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_port'));
+    }
+
+    public function getstreamserverAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('streamserver', 'stream_server', $uuid);
+    }
+
+    public function addstreamserverAction()
+    {
+        return $this->addBase('streamserver', 'stream_server');
+    }
+
+    public function delstreamserverAction($uuid)
+    {
+        return $this->delBase('stream_server', $uuid);
+    }
+
+    public function setstreamserverAction($uuid)
+    {
+        return $this->setBase('streamserver', 'stream_server', $uuid);
+    }
+
     // naxsi rules
     public function searchnaxsiruleAction()
     {
@@ -393,5 +431,208 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setcache_pathAction($uuid)
     {
         return $this->setBase('cache_path', 'cache_path', $uuid);
+    }
+
+    // SNI Forward
+    public function searchsnifwdAction()
+    {
+        return $this->searchBase('sni_hostname_upstream_map', array('description'));
+    }
+
+    public function getsnifwdAction($uuid = null)
+    {
+        $this->sessionClose();
+        $base = $this->getBase('snihostname', 'sni_hostname_upstream_map', $uuid);
+        return $this->convert_sni_fwd_for_client($base);
+    }
+
+    public function addsnifwdAction()
+    {
+        if ($this->request->isPost()) {
+            $this->regenerate_hostname_map(null);
+            return $this->addBase('snihostname', 'sni_hostname_upstream_map');
+        }
+        return [];
+    }
+
+    public function delsnifwdAction($uuid)
+    {
+        $nginx = $this->getModel();
+        $uuid_attached = $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid);
+
+        $ret = $this->delBase('sni_hostname_upstream_map', $uuid);
+        if ($ret['result'] == 'deleted') {
+            foreach ($uuid_attached as $old_uuid) {
+                $this->delBase('sni_hostname_upstream_map_item', $old_uuid);
+            }
+        }
+        return $ret;
+    }
+
+    public function setsnifwdAction($uuid)
+    {
+        if ($this->request->isPost()) {
+            $this->regenerate_hostname_map($uuid);
+            return $this->setBase('snihostname', 'sni_hostname_upstream_map', $uuid);
+        }
+        return [];
+    }
+    // IP / Network based ACLs
+    public function searchipaclAction()
+    {
+        return $this->searchBase('ip_acl', array('description'));
+    }
+
+    public function getipaclAction($uuid = null)
+    {
+        $this->sessionClose();
+        $base = $this->getBase('ipacl', 'ip_acl', $uuid);
+        return $this->convert_ipacl_for_client($base);
+    }
+
+    public function addipaclAction()
+    {
+        if ($this->request->isPost()) {
+            $this->regenerate_ipacl(null);
+            return $this->addBase('ipacl', 'ip_acl');
+        }
+        return [];
+    }
+
+    public function delipaclAction($uuid)
+    {
+        $nginx = $this->getModel();
+        $uuid_attached = $nginx->find_ip_acl_entry_uuids($uuid);
+
+        $ret = $this->delBase('ip_acl', $uuid);
+        if ($ret['result'] == 'deleted') {
+            foreach ($uuid_attached as $old_uuid) {
+                $this->delBase('ip_acl_item', $old_uuid);
+            }
+        }
+        return $ret;
+    }
+
+    public function setipaclAction($uuid)
+    {
+        if ($this->request->isPost()) {
+            $this->regenerate_ipacl($uuid);
+            return $this->setBase('ipacl', 'ip_acl', $uuid);
+        }
+        return [];
+    }
+    /*
+     * worker code starts here
+     */
+
+    private function convert_sni_fwd_for_client($response_data)
+    {
+        if (!isset($response_data['snihostname']['data'])) {
+            return $response_data;
+        }
+        $nginx = $this->getModel();
+        $uuids_map = explode(',', $response_data['snihostname']['data']);
+        $response_data['snihostname']['data'] = [];
+        foreach ($uuids_map as $uuid_line) {
+            $rowdata = $nginx->getNodeByReference('sni_hostname_upstream_map_item.' . $uuid_line);
+            if ($rowdata != null) {
+                $response_data['snihostname']['data'][] =
+                    array('hostname' => (string)$rowdata->hostname,
+                        'upstream' => (string)$rowdata->upstream);
+            }
+        }
+        return $response_data;
+    }
+    private function convert_ipacl_for_client($response_data)
+    {
+        if (!isset($response_data['ipacl']['data'])) {
+            return $response_data;
+        }
+        $nginx = $this->getModel();
+        $uuids_map = explode(',', $response_data['ipacl']['data']);
+        $response_data['ipacl']['data'] = [];
+        foreach ($uuids_map as $uuid_line) {
+            $rowdata = $nginx->getNodeByReference('ip_acl_item.' . $uuid_line);
+            if ($rowdata != null) {
+                $response_data['ipacl']['data'][] =
+                    array('network' => (string)$rowdata->network,
+                        'action' => (string)$rowdata->action);
+            }
+        }
+        return $response_data;
+    }
+
+    /**
+     * @param null $uuid the uuid which should get cleared before
+     * @throws \ReflectionException if the model was not found
+     * @throws \Phalcon\Validation\Exception on validation errors
+     */
+    private function regenerate_hostname_map($uuid = null)
+    {
+        $nginx = $this->getModel();
+        if ($this->request->hasPost('snihostname') && is_array($_POST['snihostname']['data'])) {
+            if ($uuid != null) {
+                // for an update, we have to clear it.
+                $this->delete_uuids(
+                    $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid),
+                    'sni_hostname_upstream_map_item'
+                );
+            }
+            $ids = [];
+            $postdata = $_POST['snihostname']['data'];
+            foreach ($postdata as $post_item) {
+                $item = $nginx->sni_hostname_upstream_map_item->Add();
+                $ids[] = $item->getAttributes()['uuid'];
+                $item->hostname = $post_item['hostname'];
+                $item->upstream = $post_item['upstream'];
+            }
+            $nginx->serializeToConfig();
+            $_POST['snihostname']['data'] = implode(',', $ids);
+        }
+    }
+
+    /**
+     * @param null $uuid the uuid which should get cleared before
+     * @throws \ReflectionException if the model was not found
+     * @throws \Phalcon\Validation\Exception on validation errors
+     */
+    private function regenerate_ipacl($uuid = null)
+    {
+        $nginx = $this->getModel();
+        if ($this->request->hasPost('ipacl') && is_array($_POST['ipacl']['data'])) {
+            if ($uuid != null) {
+                // for an update, we have to clear it.
+                $this->delete_uuids(
+                    $nginx->find_ip_acl_uuids($uuid),
+                    'ip_acl_item'
+                );
+            }
+            $ids = [];
+            $postdata = $_POST['ipacl']['data'];
+            foreach ($postdata as $post_item) {
+                $item = $nginx->ip_acl_item->Add();
+                $ids[] = $item->getAttributes()['uuid'];
+                $item->network = $post_item['network'];
+                $item->action = $post_item['action'];
+            }
+            $nginx->serializeToConfig();
+            $_POST['ipacl']['data'] = implode(',', $ids);
+        }
+    }
+
+    /**
+     * @param $uuids array list of UUIDs
+     * @param $path string the model prefix from the element to delete
+     * @throws \Phalcon\Validation\Exception
+     */
+    private function delete_uuids($uuids, $path): void
+    {
+        foreach ($uuids as $item_uuid) {
+            try {
+                $this->delBase($path, $item_uuid);
+            } catch (\Exception $e) {
+                // we don't care about then.
+            }
+        }
     }
 }

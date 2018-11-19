@@ -241,6 +241,7 @@ table {
   border-spacing: 0;
   color: #000;
   background-color: #F0F0F0;
+  width: 100%;
 }
 
 td, th {
@@ -1165,7 +1166,6 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #000;
-  background-color: none;
 }
 
 input, button, select, textarea {
@@ -2584,7 +2584,6 @@ th {
     }
     thead > tr > th {
       vertical-align: bottom;
-      border-bottom: 1px solid #bababa4d;
     }
     caption + thead > tr:first-child > {
       th, td {
@@ -5202,7 +5201,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #777777;
+  color: #b0b0b0;
   white-space: nowrap;
 }
 
@@ -5743,13 +5742,14 @@ a:focus {
 
 .nav {
   > li.disabled > a {
-    color: #777777;
+    color: #fff;
     &:hover, &:focus {
-      color: #777777;
-      text-decoration: none;
-      background-color: transparent;
-      cursor: not-allowed;
-    }
+	color: #fff;
+	text-decoration: none;
+	background-color: #839caa;
+	opacity:0.9;
+	cursor: not-allowed;
+	}
   }
   .open > a {
     background-color: #336480;
@@ -8771,7 +8771,6 @@ body {
   font-family: 'SourceSansProRegular';
   touch-action: manipulation;
   min-width: 320px;
-  background-color: none;
 }
 
 .widget-sort-handle {
@@ -8783,9 +8782,9 @@ body {
   left: 0;
   position: fixed;
   width: 100%;
-  border: none;
   z-index: 2;
   background-color: #172c38;
+  border-bottom: 1px solid #171717;
 }
 
 .page-content {
@@ -8811,7 +8810,6 @@ body {
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
-  background: #FFF;
   padding-bottom: 15px;
   padding-top: 20px;
   color: #000;
@@ -8834,7 +8832,6 @@ body {
 }
 
 .page-content-main {
-  background: #FFFFFF;
   min-height: calc(100% - 64px);
   padding: 15px 0 73px;
 }
@@ -8859,11 +8856,15 @@ body {
 
 .page-foot {
   bottom: 0;
-  border: none;
   font-size: 12px;
   padding: 0;
   width: 100%;
   z-index: 2;
+  position: fixed;
+  height: 20px;
+  background: #172c38;
+  color:#FFF;
+  border-top: 1px solid #162b36;
 }
 
 .content-box {
@@ -9033,6 +9034,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #172c38 !important;
         height: 100% !important;
+        border-right: 1px solid #162b36;
       }
     }
     > nav > #mainmenu > div > {
@@ -9122,10 +9124,17 @@ a.list-group-item.active-menu-title.collapsed {
       padding-left: 10px !important;
       font-size: 14px !important;
     }
-    &.collapse.in > div.collapse.in > a.list-group-item:hover {
-      text-decoration: none !important;
-      color: #000 !important;
-      background-color: #FFF !important;
+    &.collapse {
+      > {
+        a.list-group-item, div.collapse > a.list-group-item {
+          padding: 3px 8px !important;
+        }
+      }
+      &.in > div.collapse.in > a.list-group-item:hover {
+        text-decoration: none !important;
+        color: #000 !important;
+        background-color: #FFF !important;
+      }
     }
   }
 }
@@ -9162,12 +9171,10 @@ a.list-group-item:focus {
   &.collapse.in {
     width: 168px;
     font-size: 14px;
-    display: block;
     z-index: 10;
     position: absolute;
     left: 70px;
     margin-top: -70px;
-    height: auto;
     border: 1px solid #1f3a4a;
     -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9175,12 +9182,10 @@ a.list-group-item:focus {
     > div.collapse.in {
       width: 168px;
       font-size: 14px;
-      display: block;
       z-index: 10;
       position: absolute;
       left: 166px;
-      margin-top: -32px;
-      height: auto;
+      margin-top: -26px;
       border: 1px solid #1f3a4a;
       -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9197,17 +9202,13 @@ a.list-group-item:focus {
 /* Sub Level Two */
 
 button.toggle-sidebar {
-  &.glyphicon {
-    &.glyphicon-chevron-left:focus, &.glyphicon-chevron-right:focus {
-      outline: none;
-    }
-  }
   color: #FFF;
   background-color: transparent;
   font-size: 14px;
   border: none;
   margin-top: 18px;
   float: left;
+  outline: none;
 }
 
 /* COLLAPSE SIDEBAR END*/
@@ -9578,10 +9579,6 @@ label > input {
   background-color: #ffe83e;
 }
 
-.dashboard_grid_column table {
-  table-layout: fixed;
-}
-
 #ipsec {
   #ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
     background-color: #f0f0f0;
@@ -9594,6 +9591,15 @@ label > input {
       color: #FFF;
     }
   }
+}
+.fw_pass {
+  background-color: #2d6929 !important;
+  color: #FFF;
+}
+
+.fw_block {
+  background-color: #692929 !important;
+  color: #FFF;
 }
 
 /*additional extensions for theme-tukan*/
@@ -9695,8 +9701,25 @@ h3 {
   }
 }
 
-.fa.fa-play.text-muted::before {
-  color: #000 !important;
+.fa {
+  &.fa-long-arrow-left {
+    color: #000 !important;
+    &::before {
+      color: #000 !important;
+    }
+  }
+  &.fa-info-circle.text-muted {
+    color: #000 !important;
+  }
+  &.fa-times-circle.text-muted, &.fa-times.text-muted {
+    color: #000 !important;
+    &::before {
+      color: #000 !important;
+    }
+  }
+  &.fa-play.text-muted::before {
+    color: #000 !important;
+  }
 }
 
 #system_log-widgets.content-box {

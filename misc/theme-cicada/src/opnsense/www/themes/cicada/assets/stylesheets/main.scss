@@ -237,10 +237,10 @@ optgroup {
 }
 
 table {
-  border-collapse: none;
   border-spacing: 0;
-  color: #FFFFFF;
   background-color: #3e3e3e;
+  color: #FFF;
+  width: 100%;
 }
 
 td, th {
@@ -2585,14 +2585,12 @@ th {
     }
     thead > tr > th {
       vertical-align: bottom;
-      border-bottom: 1px solid #bababa4d;
     }
     caption + thead > tr:first-child > {
       th, td {
         border-top: 0;
         font-family: 'SourceSansProSemibold';
         font-weight: normal;
-        border-bottom: 1px solid #515151;
       }
     }
     colgroup + thead > tr:first-child > {
@@ -5908,7 +5906,6 @@ a:focus {
   overflow-x: visible;
   padding-right: 20px;
   padding-left: 20px;
-  border-top: 1px solid transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   -webkit-overflow-scrolling: touch;
   &:before {
@@ -6207,9 +6204,6 @@ a:focus {
   }
 }
 
-.navbar-default {
-  background-color: transparent;
-  border-color: none;
   .navbar-brand {
     color: #F7F7F7;
     &:hover, &:focus {
@@ -6279,7 +6273,6 @@ a:focus {
       }
     }
   }
-}
 
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > {
@@ -8819,11 +8812,14 @@ body {
 
 .page-foot {
   bottom: 0;
-  border: none;
   font-size: 12px;
   padding: 0;
   width: 100%;
   z-index: 2;
+  position: fixed;
+  height: 20px;
+  background: #202020;
+  border-top: 1px solid #171717;
 }
 
 .content-box {
@@ -8989,6 +8985,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #202020 !important;
         height: 100% !important;
+        border-right: 1px solid #171717;
       }
     }
     > nav > #mainmenu > div > {
@@ -9080,10 +9077,17 @@ a.list-group-item.active-menu-title.collapsed {
       padding-left: 10px !important;
       font-size: 14px !important;
     }
-    &.collapse.in > div.collapse.in > a.list-group-item:hover {
-      text-decoration: none !important;
-      color: #ec6d12 !important;
-      background-color: #2a2a2a !important;
+    &.collapse {
+      > {
+        a.list-group-item, div.collapse > a.list-group-item {
+          padding: 3px 8px !important;
+        }
+      }
+      &.in > div.collapse.in > a.list-group-item:hover {
+        text-decoration: none !important;
+        color: #ec6d12 !important;
+        background-color: #2a2a2a !important;
+      }
     }
   }
 }
@@ -9120,13 +9124,11 @@ a.list-group-item:focus {
   &.collapse.in {
     width: 168px;
     font-size: 14px;
-    display: block;
     z-index: 10;
     position: absolute;
     left: 70px;
     margin-top: -70px;
     padding-bottom: 1px;
-    height: auto;
     border: 1px solid #515151;
     -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9134,12 +9136,10 @@ a.list-group-item:focus {
     > div.collapse.in {
       width: 168px;
       font-size: 14px;
-      display: block;
       z-index: 10;
       position: absolute;
       left: 166px;
-      margin-top: -32px;
-      height: auto;
+      margin-top: -26px;
       border: 1px solid #515151;
       -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9156,17 +9156,13 @@ a.list-group-item:focus {
 /* Sub Level Two */
 
 button.toggle-sidebar {
-  &.glyphicon {
-    &.glyphicon-chevron-left:focus, &.glyphicon-chevron-right:focus {
-      outline: none;
-    }
-  }
   color: #FFF;
   background-color: transparent;
   font-size: 14px;
   border: none;
   margin-top: 18px;
   float: left;
+  outline: none;
 }
 
 /* COLLAPSE SIDEBAR END*/
@@ -9524,10 +9520,6 @@ label > input {
   background-color: #ec6d12;
 }
 
-.dashboard_grid_column table {
-  table-layout: fixed;
-}
-
 #ipsec {
   #ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
     background-color: #393939;
@@ -9540,6 +9532,13 @@ label > input {
       color: #ec6d12;
     }
   }
+}
+.fw_pass {
+  background-color: #365a38 !important;
+}
+
+.fw_block {
+  background-color: #5a3636 !important;
 }
 
 /*additional extensions for theme-cicada*/
@@ -9641,8 +9640,25 @@ h3 {
   }
 }
 
-.fa.fa-play.text-muted::before {
-  color: #eac80a !important;
+.fa {
+  &.fa-long-arrow-left {
+    color: #eac80a !important;
+    &::before {
+      color: #eac80a !important;
+    }
+  }
+  &.fa-info-circle.text-muted {
+    color: #eac80a !important;
+  }
+  &.fa-times-circle.text-muted, &.fa-times.text-muted {
+    color: #eac80a !important;
+    &::before {
+      color: #eac80a !important;
+    }
+  }
+  &.fa-play.text-muted::before {
+    color: #eac80a !important;
+  }
 }
 
 #system_log-widgets.content-box {

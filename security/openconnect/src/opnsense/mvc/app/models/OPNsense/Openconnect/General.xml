@@ -16,8 +16,8 @@
         <user type="TextField">
             <default>user</default>
             <Required>Y</Required>
-            <mask>/^[a-z0-9.\@_-]{1,32}$/</mask>
-            <ValidationMessage>Please provide a valid username. Allowed characters are a-z0-9._-@ and it has to be 1-32 characters long.</ValidationMessage>
+            <mask>/^[a-zA-Z0-9.\@_-]{1,32}$/</mask>
+            <ValidationMessage>Please provide a valid username. Allowed characters are a-zA-Z0-9._-@ and it has to be 1-32 characters long.</ValidationMessage>
         </user>
         <password type="TextField">
             <default>password</default>
@@ -37,5 +37,14 @@
                     <sha1>SHA1</sha1>
                 </OptionValues>
         </hash>
+        <group type="TextField">
+            <Required>N</Required>
+            <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
+            <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
+        </group>
+        <clientcertificate type="CertificateField">
+            <Type>cert</Type>
+            <Required>N</Required>
+        </clientcertificate>
     </items>
 </model>

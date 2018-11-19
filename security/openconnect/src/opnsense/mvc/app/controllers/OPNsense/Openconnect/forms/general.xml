@@ -35,4 +35,16 @@
         <type>dropdown</type>
         <help>Select the type of hash. Possible values are SHA256 or SHA1.</help>
     </field>
+    <field>
+        <id>general.group</id>
+        <label>Group Name</label>
+        <type>text</type>
+        <help>When using profiles for group separation please set here.</help>
+    </field>
+    <field>
+        <id>general.clientcertificate</id>
+        <label>Client Certificate</label>
+        <type>dropdown</type>
+        <help>Select the client certificate to use.</help>
+    </field>
 </form>

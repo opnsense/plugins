@@ -129,6 +129,64 @@
         <help><![CDATA[Future requests to the domain should use only HTTPS for the specified time (in seconds): 15768000 = 6 months]]></help>
     </field>
     <field>
+        <label>Client Certificate Auth</label>
+        <type>header</type>
+        <style>mode_table table_http table_ssl table_ssl_true</style>
+    </field>
+    <field>
+        <id>frontend.ssl_clientAuthEnabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable Client Certificate Authentication.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_clientAuthVerify</id>
+        <label>Verification</label>
+        <type>dropdown</type>
+        <help><![CDATA[If set to 'optional' or 'required', client certificate is requested.]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_clientAuthCAs</id>
+        <label>Certificate Authorities</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help><![CDATA[Select CA certificates to use for client certificate authentication. <br/>To import additional CAs, go to <a href="/system_camanager.php">CA Manager</a>.]]></help>
+        <hint>Type CA name or choose from list.</hint>
+    </field>
+    <field>
+        <id>frontend.ssl_clientAuthCRLs</id>
+        <label>Certificate Revocation Lists</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help><![CDATA[Select CRLs to use for client certificate authentication. <br/>To import additional CRLs, go to <a href="/system_crlmanager.php">CRL Manager</a>.]]></help>
+        <hint>Type CRL name or choose from list.</hint>
+    </field>
+    <field>
+        <label>Basic Authentication</label>
+        <type>header</type>
+        <style>mode_table table_http</style>
+    </field>
+    <field>
+        <id>frontend.basicAuthEnabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HTTP Basic Authentication.]]></help>
+    </field>
+    <field>
+        <id>frontend.basicAuthUsers</id>
+        <label>Allowed Users</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <hint>Type username or choose from list.</hint>
+    </field>
+    <field>
+        <id>frontend.basicAuthGroups</id>
+        <label>Allowed Groups</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <hint>Type group or choose from list.</hint>
+    </field>
+    <field>
         <label>Tuning Options</label>
         <type>header</type>
     </field>
