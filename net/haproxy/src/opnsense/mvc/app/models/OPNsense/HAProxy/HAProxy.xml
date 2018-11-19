@@ -69,6 +69,13 @@
                     <ValidationMessage>Please specify a value between 1 and 128.</ValidationMessage>
                     <Required>Y</Required>
                 </nbproc>
+                <nbthread type="IntegerField">
+                    <default>1</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>1024</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 1024.</ValidationMessage>
+                    <Required>N</Required>
+                </nbthread>
                 <sslServerVerify type="OptionField">
                     <Required>Y</Required>
                     <default>ignore</default>
