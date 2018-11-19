@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>user.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this user.</help>
+    </field>
+    <field>
+        <id>user.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this user.</help>
+    </field>
+    <field>
+        <id>user.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this user.</help>
+    </field>
+    <field>
+        <id>user.password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help><![CDATA[Both encrypted and unencrypted passwords can be used. Most systems support MD5, SHA-256, SHA-512, and, of course, the classic DES-based method of encrypting passwords.<br/><div class="text-info"><b>NOTE:</b> Avoid using unencrypted passwords that start with a $-sign, because this indicates an encrypted password and will make it impossible to authenticate.</div>]]></help>
+    </field>
+</form>

@@ -241,6 +241,7 @@ table {
   border-spacing: 0;
   color: #000;
   background-color: #F0F0F0;
+  width: 100%;
 }
 
 td, th {
@@ -9033,7 +9034,7 @@ main.page-content.col-lg-12 {
         width: 70px;
         background-color: #172c38 !important;
         height: 100% !important;
-		border-right: 1px solid #162b36;
+        border-right: 1px solid #162b36;
       }
     }
     > nav > #mainmenu > div > {
@@ -9123,10 +9124,17 @@ a.list-group-item.active-menu-title.collapsed {
       padding-left: 10px !important;
       font-size: 14px !important;
     }
-    &.collapse.in > div.collapse.in > a.list-group-item:hover {
-      text-decoration: none !important;
-      color: #000 !important;
-      background-color: #FFF !important;
+    &.collapse {
+      > {
+        a.list-group-item, div.collapse > a.list-group-item {
+          padding: 3px 8px !important;
+        }
+      }
+      &.in > div.collapse.in > a.list-group-item:hover {
+        text-decoration: none !important;
+        color: #000 !important;
+        background-color: #FFF !important;
+      }
     }
   }
 }
@@ -9174,12 +9182,10 @@ a.list-group-item:focus {
     > div.collapse.in {
       width: 168px;
       font-size: 14px;
-      display: block;
       z-index: 10;
       position: absolute;
       left: 166px;
-      margin-top: -32px;
-      height: auto;
+      margin-top: -26px;
       border: 1px solid #1f3a4a;
       -webkit-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 5px 5px 6px 0px rgba(0, 0, 0, 0.5);
@@ -9190,6 +9196,10 @@ a.list-group-item:focus {
     display: none;
   }
 }
+
+/* Sub Level One */
+
+/* Sub Level Two */
 
 button.toggle-sidebar {
   color: #FFF;

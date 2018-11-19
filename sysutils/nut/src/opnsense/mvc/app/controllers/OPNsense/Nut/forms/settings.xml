@@ -78,6 +78,20 @@
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-blazerser" description="BlazerSerial-Driver">
+            <field>
+                <id>nut.blazerser.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the BlazerSerial driver.</help>
+            </field>
+            <field>
+                <id>nut.blazerser.args</id>
+                <label>Extra Arguments</label>
+                <type>text</type>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
         <subtab id="nut-ups-netclient" description="Netclient">
             <field>
                 <id>nut.netclient.enable</id>

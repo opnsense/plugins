@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -300,9 +300,9 @@
             <display>name</display>
           </template>
         </Model>
-        <ValidationMessage>Selected server not found</ValidationMessage>
+        <ValidationMessage>Selected user file not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <multiple>N</multiple>
       </authbasicuserfile>
       <advanced_acl type="BooleanField">
         <default>0</default>
@@ -342,6 +342,18 @@
         <Required>Y</Required>
         <default>0</default>
       </http2_push_preload>
+      <ip_acl type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>ip_acl</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected ACL not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </ip_acl>
     </location>
 
     <custom_policy type="ArrayField">
@@ -546,6 +558,10 @@
         <default>0</default>
         <Required>Y</Required>
       </block_nonpublic_data>
+      <disable_bot_protection type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </disable_bot_protection>
       <naxsi_extensive_log type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -578,7 +594,193 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </limit_request_connections>
+      <ip_acl type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>ip_acl</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected ACL not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </ip_acl>
     </http_server>
+
+    <stream_server type="ArrayField">
+      <listen_port type="PortField">
+        <Required>N</Required>
+        <default>80</default>
+      </listen_port>
+      <udp type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </udp>
+      <certificate type="CertificateField">
+        <Type>cert</Type>
+        <Required>N</Required>
+      </certificate>
+      <ca type="CertificateField">
+        <Type>ca</Type>
+        <Required>N</Required>
+      </ca>
+      <verify_client type="OptionField">
+        <default>Off</default>
+        <OptionValues>
+          <off>Off</off>
+          <on>On</on>
+          <optional>Optional</optional>
+          <optional_no_ca>Optional, don't verify</optional_no_ca>
+        </OptionValues>
+        <Required>Y</Required>
+      </verify_client>
+      <access_log_format type="OptionField">
+        <default>main</default>
+        <OptionValues>
+          <main>Default</main>
+          <anonymized>Anonymized</anonymized>
+          <disabled>Disabled</disabled>
+        </OptionValues>
+        <Required>Y</Required>
+      </access_log_format>
+      <route_field type="OptionField">
+        <default>upstream</default>
+        <OptionValues>
+          <upstream>Upstream</upstream>
+          <sni_upstream_map>SNI Upstream Mapping</sni_upstream_map>
+        </OptionValues>
+        <Required>Y</Required>
+      </route_field>
+      <upstream type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected upstream not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>SetIfConstraint</type>
+            <field>route_field</field>
+            <check>upstream</check>
+          </check001>
+        </Constraints>
+      </upstream>
+      <sni_upstream_map type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>sni_hostname_upstream_map</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected upstream not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>SetIfConstraint</type>
+            <field>route_field</field>
+            <check>sni_upstream_map</check>
+          </check001>
+        </Constraints>
+      </sni_upstream_map>
+      <ip_acl type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>ip_acl</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected ACL not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </ip_acl>
+    </stream_server>
+
+    <sni_hostname_upstream_map type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <data type="TextField">
+        <!-- sorry, the model relation field is broken here
+          <Model>
+            <template>
+              <source>OPNsense.Nginx.Nginx</source>
+              <items>sni_hostname_upstream_map_items</items>
+              <display>hostname</display>
+            </template>
+          </Model>
+          <multiple>Y</multiple>
+          -->
+          <Required>Y</Required>
+      </data>
+    </sni_hostname_upstream_map>
+
+    <sni_hostname_upstream_map_item type="ArrayField">
+      <hostname type="HostnameField">
+        <Required>Y</Required>
+      </hostname>
+      <upstream type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>upstream</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <Required>Y</Required>
+        <multiple>N</multiple>
+      </upstream>
+    </sni_hostname_upstream_map_item>
+
+    <ip_acl type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <data type="TextField">
+        <!-- sorry, the model relation field is broken here
+          <Model>
+            <template>
+              <source>OPNsense.Nginx.Nginx</source>
+              <items>ip_acl_item</items>
+              <display>description</display>
+            </template>
+          </Model>
+          <multiple>Y</multiple>
+          -->
+        <Required>Y</Required>
+      </data>
+      <default_action type="OptionField">
+        <OptionValues>
+          <deny>Deny Access</deny>
+          <allow>Allow Access</allow>
+        </OptionValues>
+        <Required>N</Required>
+      </default_action>
+    </ip_acl>
+
+    <ip_acl_item type="ArrayField">
+      <network type="NetworkField">
+        <Required>Y</Required>
+      </network>
+      <action type="OptionField">
+        <default>deny</default>
+        <OptionValues>
+          <deny>Deny Access</deny>
+          <allow>Allow Access</allow>
+        </OptionValues>
+        <Required>Y</Required>
+      </action>
+    </ip_acl_item>
 
     <http_rewrite type="ArrayField">
       <description type="TextField">
@@ -997,6 +1199,7 @@
         <Required>Y</Required>
       </description>
     </limit_request_connection>
+
     <ban type="ArrayField">
       <ip type="NetworkField">
         <Required>Y</Required>
@@ -1006,6 +1209,7 @@
         <MinimumValue>0</MinimumValue>
       </time>
     </ban>
+
     <cache_path type="ArrayField">
       <path type="TextField">
         <Required>Y</Required>

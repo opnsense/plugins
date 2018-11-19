@@ -1103,4 +1103,265 @@ class SettingsController extends ApiControllerBase
             "name"
         );
     }
+
+    /**
+     * retrieve group settings or return defaults
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function getGroupAction($uuid = null)
+    {
+        $mdlCP = new HAProxy();
+        if ($uuid != null) {
+            $node = $mdlCP->getNodeByReference('groups.group.'.$uuid);
+            if ($node != null) {
+                // return node
+                return array("group" => $node->getNodes());
+            }
+        } else {
+            // generate new node, but don't save to disc
+            $node = $mdlCP->groups->group->add();
+            return array("group" => $node->getNodes());
+        }
+        return array();
+    }
+
+    /**
+     * update group with given properties
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function setGroupAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("group")) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('groups.group.'.$uuid);
+                if ($node != null) {
+                    $node->setNodes($this->request->getPost("group"));
+                    return $this->save($mdlCP, $node, "group");
+                }
+            }
+        }
+        return array("result"=>"failed");
+    }
+
+    /**
+     * add new group and set with attributes from post
+     * @return array
+     */
+    public function addGroupAction()
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost() && $this->request->hasPost("group")) {
+            $mdlCP = new HAProxy();
+            $node = $mdlCP->groups->group->Add();
+            $node->setNodes($this->request->getPost("group"));
+            return $this->save($mdlCP, $node, "group");
+        }
+        return $result;
+    }
+
+    /**
+     * delete group by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function delGroupAction($uuid)
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                if ($mdlCP->groups->group->del($uuid)) {
+                    // if item is removed, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * toggle group by uuid (enable/disable)
+     * @param $uuid item unique id
+     * @param $enabled desired state enabled(1)/disabled(0), leave empty for toggle
+     * @return array status
+     */
+    public function toggleGroupAction($uuid, $enabled = null)
+    {
+
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('groups.group.' . $uuid);
+                if ($node != null) {
+                    if ($enabled == "0" || $enabled == "1") {
+                        $node->enabled = (string)$enabled;
+                    } elseif ((string)$node->enabled == "1") {
+                        $node->enabled = "0";
+                    } else {
+                        $node->enabled = "1";
+                    }
+                    $result['result'] = $node->enabled;
+                    // if item has toggled, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * search groups
+     * @return array
+     */
+    public function searchGroupsAction()
+    {
+        $this->sessionClose();
+        $mdlCP = new HAProxy();
+        $grid = new UIModelGrid($mdlCP->groups->group);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "description"),
+            "name"
+        );
+    }
+
+    /**
+     * retrieve user settings or return defaults
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function getUserAction($uuid = null)
+    {
+        $mdlCP = new HAProxy();
+        if ($uuid != null) {
+            $node = $mdlCP->getNodeByReference('users.user.'.$uuid);
+            if ($node != null) {
+                // return node
+                return array("user" => $node->getNodes());
+            }
+        } else {
+            // generate new node, but don't save to disc
+            $node = $mdlCP->users->user->add();
+            return array("user" => $node->getNodes());
+        }
+        return array();
+    }
+
+    /**
+     * update user with given properties
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function setUserAction($uuid)
+    {
+        if ($this->request->isPost() && $this->request->hasPost("user")) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('users.user.'.$uuid);
+                if ($node != null) {
+                    $node->setNodes($this->request->getPost("user"));
+                    return $this->save($mdlCP, $node, "user");
+                }
+            }
+        }
+        return array("result"=>"failed");
+    }
+
+    /**
+     * add new user and set with attributes from post
+     * @return array
+     */
+    public function addUserAction()
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost() && $this->request->hasPost("user")) {
+            $mdlCP = new HAProxy();
+            $node = $mdlCP->users->user->Add();
+            $node->setNodes($this->request->getPost("user"));
+            return $this->save($mdlCP, $node, "user");
+        }
+        return $result;
+    }
+
+    /**
+     * delete user by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function delUserAction($uuid)
+    {
+        $result = array("result"=>"failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                if ($mdlCP->users->user->del($uuid)) {
+                    // if item is removed, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                    $result['result'] = 'deleted';
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * toggle user by uuid (enable/disable)
+     * @param $uuid item unique id
+     * @param $enabled desired state enabled(1)/disabled(0), leave empty for toggle
+     * @return array status
+     */
+    public function toggleUserAction($uuid, $enabled = null)
+    {
+
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlCP = new HAProxy();
+            if ($uuid != null) {
+                $node = $mdlCP->getNodeByReference('users.user.' . $uuid);
+                if ($node != null) {
+                    if ($enabled == "0" || $enabled == "1") {
+                        $node->enabled = (string)$enabled;
+                    } elseif ((string)$node->enabled == "1") {
+                        $node->enabled = "0";
+                    } else {
+                        $node->enabled = "1";
+                    }
+                    $result['result'] = $node->enabled;
+                    // if item has toggled, serialize to config and save
+                    $mdlCP->serializeToConfig();
+                    Config::getInstance()->save();
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * search users
+     * @return array
+     */
+    public function searchUsersAction()
+    {
+        $this->sessionClose();
+        $mdlCP = new HAProxy();
+        $grid = new UIModelGrid($mdlCP->users->user);
+        return $grid->fetchBindRequest(
+            $this->request,
+            array("enabled", "name", "description"),
+            "name"
+        );
+    }
+
 }
