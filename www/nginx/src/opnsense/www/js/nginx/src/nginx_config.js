@@ -23,15 +23,15 @@ const actioncollection = new Backbone.Collection([
 function bind_save_buttons() {
 // form save event handlers for all defined forms
     $('[id*="save_"]').each(function () {
-        $(this).click(function (event) {
+        $(this).click(function () {
             let frm_id = $(this).closest("form").attr("id");
             let frm_title = $(this).closest("form").attr("data-title");
             // save data for General TAB
-            saveFormToEndpoint(url = "/api/nginx/settings/set", formid = frm_id, callback_ok = function () {
+            saveFormToEndpoint("/api/nginx/settings/set", frm_id, function () {
                 // on correct save, perform reconfigure. set progress animation when reloading
                 $("#" + frm_id + "_progress").addClass("fa fa-spinner fa-pulse");
 
-                ajaxCall(url = "/api/nginx/service/reconfigure", sendData = {}, callback = function (data, status) {
+                ajaxCall("/api/nginx/service/reconfigure", {}, function (data, status) {
                     // when done, disable progress animation.
                     $("#" + frm_id + "_progress").removeClass("fa fa-spinner fa-pulse");
 
@@ -116,7 +116,7 @@ $( document ).ready(function() {
 
     // update history on tab state and implement navigation
     if(window.location.hash !== "") {
-        $('a[href="' + window.location.hash + '"]').click()
+        $('a[href="' + window.location.hash + '"]').click();
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         history.pushState(null, null, e.target.hash);
@@ -124,7 +124,7 @@ $( document ).ready(function() {
 
     $('.reload_btn').click(function() {
         $(".reloadAct_progress").addClass("fa-spin");
-        ajaxCall(url="/api/nginx/service/reconfigure", sendData={}, callback=function(data,status) {
+        ajaxCall("/api/nginx/service/reconfigure", {}, function() {
             $(".reloadAct_progress").removeClass("fa-spin");
         });
     });
