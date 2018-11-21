@@ -25,7 +25,7 @@
                         <field1>cert</field1>
                     </addFields>
                 </check001>
-            </Constraints>            
+            </Constraints>
         </httpsport>
         <cert type="CertificateField">
             <Type>cert</Type>
@@ -34,7 +34,7 @@
                 <check001>
                     <reference>httpsport.check001</reference>
                 </check001>
-            </Constraints>             
+            </Constraints>
         </cert>
         <dnsmode type="OptionField">
             <Required>N</Required>

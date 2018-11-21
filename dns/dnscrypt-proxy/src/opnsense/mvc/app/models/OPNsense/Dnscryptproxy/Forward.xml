@@ -1,0 +1,21 @@
+<model>
+    <mount>//OPNsense/dnscryptproxy/forward</mount>
+    <description>dnscrypt-proxy Forwarder configuration</description>
+    <version>0.1.0</version>
+    <items>
+        <forwards>
+            <forward type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <domain type="HostnameField">
+                    <Required>Y</Required>
+                </domain>
+                <dnsserver type="HostnameField">
+                    <Required>Y</Required>
+                </dnsserver>
+            </forward>
+        </forwards>
+    </items>
+</model>

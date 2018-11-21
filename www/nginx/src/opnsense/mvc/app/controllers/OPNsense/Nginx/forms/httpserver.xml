@@ -35,6 +35,20 @@
     <type>text</type>
   </field>
   <field>
+    <id>httpserver.max_body_size</id>
+    <label>Maximum Body Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>If the request is larger, it will be rejectet with error 413 (Request Entity Too Large). For example, you can enter 200m.</help>
+  </field>
+  <field>
+    <id>httpserver.body_buffer_size</id>
+    <label>Body Buffer Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>If the request exceeds this size, it will be written to disk. Enter a number and a unit like 1m.</help>
+  </field>
+  <field>
     <id>httpserver.certificate</id>
     <label>TLS Certificate</label>
     <type>dropdown</type>
@@ -83,7 +97,7 @@
     <id>httpserver.disable_bot_protection</id>
     <label>Disable Bot Protection</label>
     <type>checkbox</type>
-    <advanced>false</advanced>
+    <advanced>true</advanced>
     <help>Blocks the request when a possibly bad bot is detected and adds the originating IP to the managed firewall alias for permanent blocking.</help>
   </field>
   <field>
@@ -92,6 +106,14 @@
     <type>dropdown</type>
     <style>selectpicker</style>
     <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+  <field>
+    <id>httpserver.satisfy</id>
+    <label>Satisfy</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <style>selectpicker</style>
+    <help>All: All access restrictions must be fulfilled; Any: Any of the access restrictions must be fulfilled.</help>
   </field>
   <field>
     <id>httpserver.naxsi_extensive_log</id>

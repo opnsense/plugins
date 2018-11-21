@@ -1,0 +1,18 @@
+<model>
+    <mount>//OPNsense/dnscryptproxy/whitelist</mount>
+    <description>dnscrypt-proxy Whitelist configuration</description>
+    <version>0.1.0</version>
+    <items>
+        <whitelists>
+            <whitelist type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+            </whitelist>
+        </whitelists>
+    </items>
+</model>

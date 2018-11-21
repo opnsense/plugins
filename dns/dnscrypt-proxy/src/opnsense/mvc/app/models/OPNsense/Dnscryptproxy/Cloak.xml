@@ -1,0 +1,21 @@
+<model>
+    <mount>//OPNsense/dnscryptproxy/cloak</mount>
+    <description>dnscrypt-proxy Override configuration</description>
+    <version>0.1.0</version>
+    <items>
+        <cloaks>
+            <cloak type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <destination type="HostnameField">
+                    <Required>Y</Required>
+                </destination>
+            </cloak>
+        </cloaks>
+    </items>
+</model>
