@@ -76,9 +76,9 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <div class="tab-content content-box tab-content">
-    <div id="addresss" class="tab-pane fade in active">
-        <!-- tab page "addresss" -->
-        <table id="grid-addresss" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixAddress">
+    <div id="addresses" class="tab-pane fade in active">
+        <!-- tab page "addresses" -->
+        <table id="grid-addresses" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixAddress">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
