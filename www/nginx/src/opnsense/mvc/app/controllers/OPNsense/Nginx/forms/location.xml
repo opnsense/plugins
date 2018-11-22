@@ -254,6 +254,6 @@
     <label>Ignore Client Abort</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help>If you enable this option, nginx will not terminate the connection to the backed server if the client connection is terminated.</help>
+    <help>If you enable this option, nginx will not terminate the connection to the backend server if the client connection is terminated.</help>
   </field>
 </form>
