@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>whitelist.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the whitelist entry.</help>
+    </field>
+    <field>
+        <id>whitelist.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the domain, IP or expression to whitelist, e.g. ads.* or *.example.com</help>
+    </field>
+</form>

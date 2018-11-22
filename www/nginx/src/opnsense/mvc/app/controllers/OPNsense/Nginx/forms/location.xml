@@ -132,9 +132,25 @@
     <help>Enter the file system root from which the files are served.</help>
   </field>
   <field>
+    <id>location.max_body_size</id>
+    <label>Maximum Body Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>If the request is larger, it will be rejectet with error 413 (Request Entity Too Large). For example, you can enter 200m.</help>
+  </field>
+  <field>
+    <id>location.body_buffer_size</id>
+    <label>Body Buffer Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>If the request exceeds this size, it will be written to disk. Enter a number and a unit like 1m.</help>
+  </field>
+  <field>
     <id>location.index</id>
     <label>Index File</label>
     <type>select_multiple</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
     <help>Enter a list of file extensions, which are served instead of a directory. It is common to use index.html or index.php here.</help>
   </field>
   <field>
@@ -167,6 +183,14 @@
     <type>dropdown</type>
     <style>selectpicker</style>
     <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+  <field>
+    <id>location.satisfy</id>
+    <label>Satisfy</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>All: All access restrictions must be fulfilled; Any: Any of the access restrictions must be fulfilled.</help>
   </field>
   <field>
     <id>location.force_https</id>

@@ -98,6 +98,12 @@
                 <advanced>true</advanced>
             </field>
             <field>
+                <id>haproxy.general.tuning.nbthread</id>
+                <label>HAProxy threads</label>
+                <type>text</type>
+                <help><![CDATA[Number of threads to create for each HAProxy process.]]></help>
+            </field>
+            <field>
                 <id>haproxy.general.tuning.maxConnections</id>
                 <label>Maximum connections</label>
                 <type>text</type>

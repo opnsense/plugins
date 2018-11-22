@@ -218,6 +218,15 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>frontend.linkedCpuAffinityRules</id>
+        <label>CPU Affinity Rules</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help><![CDATA[Choose CPU affinity rules that should be applied to this Public Service.]]></help>
+        <hint>Choose CPU affinity rules.</hint>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Logging Options</label>
         <type>header</type>
     </field>
