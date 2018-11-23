@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="2.0"?>
 <ruleset name="PSR2+">
-  <description>Slightly enhanced version of the PSR2 standard</description>
+  <description>Slightly enhanced version 2.0 of the PSR2 standard</description>
   <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
   <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
 <!--
