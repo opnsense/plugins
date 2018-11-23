@@ -14,7 +14,9 @@
     <field>
         <id>address.to</id>
         <label>Rewrite To</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Set here how to rewrite the Rewrite From pattern.</help>
     </field>
 </form>
