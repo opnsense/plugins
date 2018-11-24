@@ -577,8 +577,9 @@ svg.nvd3-svg {
 }
 
 .nvtooltip table {
-    margin: 6px;
+    margin: 0;
     border-spacing:0;
+    padding: 6px;
 }
 
 
