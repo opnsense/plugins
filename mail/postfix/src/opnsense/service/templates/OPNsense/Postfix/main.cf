@@ -31,6 +31,7 @@ meta_directory = /usr/local/libexec/postfix
 shlib_directory = /usr/local/lib/postfix
 relay_domains = hash:/usr/local/etc/postfix/transport
 transport_maps = hash:/usr/local/etc/postfix/transport
+virtual_alias_maps = hash:/usr/local/etc/postfix/virtual
 ##########################
 # END SYSTEM DEFAULTS
 ##########################

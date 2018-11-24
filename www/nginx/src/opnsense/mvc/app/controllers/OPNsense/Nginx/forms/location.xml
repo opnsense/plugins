@@ -224,10 +224,36 @@
     <help>If you enable the honeypot, all requests to this location will go to a special temporary log which will be used to block the IP. This is dangerous because you may accidentally block legitimate users or search engines. The result is available as a special alias in the firewall section. For example you can trigger on locations of Wordpress for phpMyAdmin if you are not using it.</help>
   </field>
   <field>
+    <type>header</type>
+    <label>Advanced Proxy Options</label>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>location.websocket</id>
-    <label>WebSocket</label>
+    <label>WebSocket Support</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the WebSocket Support option, nginx will pass the upgrade header to the backed server.</help>
+  </field>
+  <field>
+    <id>location.proxy_buffering</id>
+    <label>Response Buffering</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the Response Buffering option, nginx will buffer response from the backed server.</help>
+  </field>
+  <field>
+    <id>location.proxy_request_buffering</id>
+    <label>Request Buffering</label>
     <type>checkbox</type>
     <advanced>true</advanced>
     <help>If you enable the WebSocket option, nginx will pass the upgrade header to the backed server.</help>
+  </field>
+  <field>
+    <id>location.proxy_ignore_client_abort</id>
+    <label>Ignore Client Abort</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable this option, nginx will not terminate the connection to the backend server if the client connection is terminated.</help>
   </field>
 </form>
