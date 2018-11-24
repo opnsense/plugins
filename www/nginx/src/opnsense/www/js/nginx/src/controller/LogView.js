@@ -1,7 +1,9 @@
 import accessLogLine from '../templates/AccessLogLine.html';
+import streamAccessLogLine from '../templates/StreamAccessLogLine.html';
 import errorLogLine from '../templates/ErrorLogLine.html';
 import logViewer from '../templates/logviewer.html';
 import LogLinesCollection from "../models/LogLinesCollection";
+import noDataAvailable from '../templates/noDataAvailable.html';
 
 
 const LogViewLine = Backbone.View.extend({
@@ -17,6 +19,8 @@ const LogViewLine = Backbone.View.extend({
     get_template: function() {
         if (this.type === 'accesses') {
             return accessLogLine;
+        } else if (this.type === 'stream_accesses') {
+            return streamAccessLogLine;
         } else {
             return errorLogLine;
         }
@@ -43,15 +47,21 @@ const LogView = Backbone.View.extend({
     render: function() {
         let tbody = this.$el.find('tbody');
         if (tbody.length < 1) {
-            this.$el.html(logViewer({log_type: this.type, model: this.filter_model}));
-            tbody = this.$el.find('tbody');
+            if (this.collection.length !== 0) {
+                this.$el.html(logViewer({log_type: this.type, model: this.filter_model}));
+                tbody = this.$el.find('tbody');
+            } else {
+                this.$el.html(noDataAvailable);
+            }
         }
         else {
             tbody.html('');
         }
-        this.collection.filter_collection(this.filter_model).forEach(
-            (model) => this.render_one(tbody, model)
-        );
+        if (this.collection.length !== 0) {
+            this.collection.filter_collection(this.filter_model).forEach(
+                (model) => this.render_one(tbody, model)
+            );
+        }
     },
     render_one: function(parent_element, model) {
         const logline = new LogViewLine({type: this.type, model: model});

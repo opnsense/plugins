@@ -29,4 +29,4 @@
 
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
-<script src="{{ cache_safe('/ui/js/nginx/dist/logviewer.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/dist/logviewer.min.js') }}"></script>

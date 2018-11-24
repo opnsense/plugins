@@ -9,6 +9,12 @@ const LogLinesCollection = Backbone.Collection.extend({
         this.logType = 'none';
         this.uuid = 'none';
     },
+    parse: function(response) {
+        if ('error' in response) {
+            return [];
+        }
+        return response;
+    },
     filter_collection: function(filter_model) {
         const filter_model_keys = filter_model.keys();
         return this.filter(function (model) {
