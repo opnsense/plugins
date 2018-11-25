@@ -49,8 +49,8 @@
         </message_size_limit>
         <masquerade_domains type="CSVListField">
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z.\-\_]){1,128}$/u</mask>
-            <ValidationMessage>Only up to 128 of the following characters are allowed: 0-9a-zA-Z.-_</ValidationMessage>
+            <mask>/^([0-9a-zA-Z\.\,\-\_]){1,128}$/u</mask>
+            <ValidationMessage>Only up to 128 of the following characters are allowed: 0-9a-zA-Z.,-_</ValidationMessage>
         </masquerade_domains>
         <disable_ssl type="BooleanField">
             <default>1</default>
