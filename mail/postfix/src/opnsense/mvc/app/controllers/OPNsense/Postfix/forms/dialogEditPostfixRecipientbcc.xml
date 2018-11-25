@@ -7,7 +7,7 @@
     </field>
     <field>
         <id>recipientbcc.from</id>
-        <label>Sender Address</label>
+        <label>Recipient Address</label>
         <type>text</type>
         <help>Set a pattern to match like user@example.com</help>
     </field>

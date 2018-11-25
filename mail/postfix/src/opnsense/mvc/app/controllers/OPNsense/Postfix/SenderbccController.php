@@ -28,11 +28,11 @@
 
 namespace OPNsense\Postfix;
 
-class AddressController extends \OPNsense\Base\IndexController
+class SenderbccController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->formDialogEditPostfixAddress = $this->getForm("dialogEditPostfixAddress");
-        $this->view->pick('OPNsense/Postfix/address');
+        $this->view->formDialogEditPostfixSenderbcc = $this->getForm("dialogEditPostfixSenderbcc");
+        $this->view->pick('OPNsense/Postfix/senderbcc');
     }
 }
