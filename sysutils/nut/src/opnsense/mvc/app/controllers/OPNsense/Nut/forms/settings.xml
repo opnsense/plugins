@@ -19,6 +19,14 @@
                 <type>text</type>
                 <help>Set a name for your UPS.</help>
             </field>
+            <field>
+                <id>nut.general.listen</id>
+                <label>Listen Address</label>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <help>Set the addresses this service listen on.</help>
+            </field>
         </subtab>
         <subtab id="nut-general-account" description="Nut Account Settings">
             <field>
