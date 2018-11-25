@@ -104,14 +104,15 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="tab-content content-box tab-content">
     <div id="addresses" class="tab-pane fade in active">
         <!-- tab page "addresses" -->
-        <table id="grid-addresses" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixAddress">
+        <table id="grid-addresses" class="table table-responsive" data-editDialog="dialogEditPostfixAddress">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Rewrite From') }}</th>
                 <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('Rewrite To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
             </thead>
             <tbody>
             </tbody>
@@ -125,22 +126,23 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/><br/>
+        </div>
     </div>
     <div id="senderbccs" class="tab-pane fade in">
         <!-- tab page "senderbccs" -->
-        <table id="grid-senderbccs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixSenderbcc">
+        <table id="grid-senderbccs" class="table table-responsive" data-editDialog="dialogEditPostfixSenderbcc">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Sender Address') }}</th>
                 <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('BCC To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>
@@ -154,22 +156,23 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/><br/>
+        </div>
     </div>
     <div id="recipientbccs" class="tab-pane fade in">
         <!-- tab page "recipientbccs" -->
-        <table id="grid-recipientbccs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixRecipientbcc">
+        <table id="grid-recipientbccs" class="table table-responsive" data-editDialog="dialogEditPostfixRecipientbcc">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Recipient Address') }}</th>
                 <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('BCC To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
             </thead>
             <tbody>
             </tbody>
@@ -183,11 +186,11 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/><br/>
+        </div>
     </div>
 </div>
 

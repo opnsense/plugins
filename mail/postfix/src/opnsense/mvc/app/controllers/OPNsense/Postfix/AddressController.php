@@ -33,6 +33,8 @@ class AddressController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->formDialogEditPostfixAddress = $this->getForm("dialogEditPostfixAddress");
+        $this->view->formDialogEditPostfixSenderbcc = $this->getForm("dialogEditPostfixSenderbcc");
+        $this->view->formDialogEditPostfixRecipientbcc = $this->getForm("dialogEditPostfixRecipientbcc");
         $this->view->pick('OPNsense/Postfix/address');
     }
 }
