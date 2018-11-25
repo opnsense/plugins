@@ -9641,6 +9641,9 @@ h3 {
 }
 
 .fa {
+  &.fa-exclamation.fa-fw.text-muted, &.fa-arrows-h.fa-fw.text-muted {
+    color: #eac80a !important;
+  }
   &.fa-long-arrow-left {
     color: #eac80a !important;
     &::before {
