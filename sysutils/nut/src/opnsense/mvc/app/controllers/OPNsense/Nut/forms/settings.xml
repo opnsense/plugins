@@ -54,7 +54,9 @@
             <field>
                 <id>nut.usbhid.args</id>
                 <label>Extra Arguments</label>
-                <type>text</type>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
@@ -68,7 +70,9 @@
             <field>
                 <id>nut.apcsmart.args</id>
                 <label>Extra Arguments</label>
-                <type>text</type>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
@@ -82,7 +86,9 @@
             <field>
                 <id>nut.blazerusb.args</id>
                 <label>Extra Arguments</label>
-                <type>text</type>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
@@ -96,7 +102,9 @@
             <field>
                 <id>nut.blazerser.args</id>
                 <label>Extra Arguments</label>
-                <type>text</type>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
