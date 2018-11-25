@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>senderbcc.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the BCC sender rewriting setting.</help>
+    </field>
+    <field>
+        <id>senderbcc.from</id>
+        <label>Sender Address</label>
+        <type>text</type>
+        <help>Set a pattern to match like user@example.com</help>
+    </field>
+    <field>
+        <id>senderbcc.to</id>
+        <label>BCC To</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set here the recipient address to send the mail as BCC.</help>
+    </field>
+</form>

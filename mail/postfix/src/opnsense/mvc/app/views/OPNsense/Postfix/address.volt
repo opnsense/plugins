@@ -44,6 +44,25 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#grid-senderbccs").UIBootgrid(
+            {   'search':'/api/postfix/senderbcc/searchSenderbcc',
+                'get':'/api/postfix/senderbcc/getSenderbcc/',
+                'set':'/api/postfix/senderbcc/setSenderbcc/',
+                'add':'/api/postfix/senderbcc/addSenderbcc/',
+                'del':'/api/postfix/senderbcc/delSenderbcc/',
+                'toggle':'/api/postfix/senderbcc/toggleSenderbcc/'
+            }
+        );
+
+        $("#grid-recipientbccs").UIBootgrid(
+            {   'search':'/api/postfix/recipientbcc/searchRecipientbcc',
+                'get':'/api/postfix/recipientbcc/getRecipientbcc/',
+                'set':'/api/postfix/recipientbcc/setRecipientbcc/',
+                'add':'/api/postfix/recipientbcc/addRecipientbcc/',
+                'del':'/api/postfix/recipientbcc/delRecipientbcc/',
+                'toggle':'/api/postfix/recipientbcc/toggleRecipientbcc/'
+            }
+        );
         /*************************************************************************************************************
          * Commands
          *************************************************************************************************************/
@@ -75,6 +94,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
+<!-- Navigation bar -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#addresses">{{ lang._('Aliases') }}</a></li>
+    <li><a data-toggle="tab" href="#senderbccs">{{ lang._('Sender BCC') }}</a></li>
+    <li><a data-toggle="tab" href="#recipientbccs">{{ lang._('Recipient BCC') }}</a></li>
+</ul>
+
 <div class="tab-content content-box tab-content">
     <div id="addresses" class="tab-pane fade in active">
         <!-- tab page "addresses" -->
@@ -105,6 +131,66 @@ POSSIBILITY OF SUCH DAMAGE.
         <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
         <br/><br/>
     </div>
+    <div id="senderbccs" class="tab-pane fade in">
+        <!-- tab page "senderbccs" -->
+        <table id="grid-senderbccs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixSenderbcc">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Sender Address') }}</th>
+                <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('BCC To') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <hr/>
+        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+        <br/><br/>
+    </div>
+    <div id="recipientbccs" class="tab-pane fade in">
+        <!-- tab page "recipientbccs" -->
+        <table id="grid-recipientbccs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixRecipientbcc">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Recipient Address') }}</th>
+                <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('BCC To') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <hr/>
+        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+        <br/><br/>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixAddress,'id':'dialogEditPostfixAddress','label':lang._('Edit Address Rewriting')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixSenderbcc,'id':'dialogEditPostfixSenderbcc','label':lang._('Edit Sender BCC')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixRecipientbcc,'id':'dialogEditPostfixRecipientbcc','label':lang._('Edit Recipient BCC')])}}
