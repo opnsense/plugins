@@ -1,7 +1,7 @@
 <model>
   <mount>//OPNsense/Nut</mount>
   <description>Network UPS Tools</description>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <items>
     <general>
       <enable type="BooleanField">
@@ -20,6 +20,10 @@
         <default>UPSName</default>
         <Required>Y</Required>
       </name>
+      <listen type="CSVListField">
+        <default>127.0.0.1,::1</default>
+        <Required>Y</Required>
+      </listen>
     </general>
 
     <account>
