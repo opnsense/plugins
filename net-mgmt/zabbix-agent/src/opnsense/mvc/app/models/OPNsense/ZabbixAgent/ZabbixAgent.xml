@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.1.0</version>
-    <description>
-        Enterprise-class open source distributed monitoring agent
-    </description>
+    <version>1.2.0</version>
+    <description>Enterprise-class open source distributed monitoring agent</description>
     <items>
         <!-- local settings that should NOT be synced to another node -->
         <local>
@@ -132,5 +130,55 @@
                 </logRemoteCommands>
             </features>
         </settings>
+        <userparameters>
+            <userparameter type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <key type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </key>
+                <command type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,4096}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </command>
+                <acceptParams type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </acceptParams>
+            </userparameter>
+        </userparameters>
+        <aliases>
+            <alias type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <key type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </key>
+                <sourceKey type="TextField">
+                    <mask>/^[^\t]{1,4096}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </sourceKey>
+                <acceptParams type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </acceptParams>
+            </alias>
+        </aliases>
     </items>
 </model>

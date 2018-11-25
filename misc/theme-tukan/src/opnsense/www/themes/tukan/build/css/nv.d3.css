@@ -2,7 +2,7 @@
 .nvd3 .nv-axis {
     pointer-events:none;
     opacity: 1;
-	fill: #000;
+    fill: #000;
 }
 
 .nvd3 .nv-axis path {
@@ -23,7 +23,7 @@
 .nvd3 .nv-axis line {
     fill: none;
     stroke: #000;
-	stroke-opacity: .20;
+    stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
 
@@ -48,7 +48,6 @@
 
 .nvd3 .nv-bars rect {
     fill-opacity: .75;
-
     transition: fill-opacity 250ms linear;
 }
 
@@ -72,7 +71,6 @@
 .nvd3 .nv-multibarHorizontal .nv-groups rect,
 .nvd3 .nv-discretebar .nv-groups rect {
     stroke-opacity: 0;
-
     transition: fill-opacity 250ms linear;
 }
 
@@ -194,9 +192,9 @@
 
 .nvd3 .nv-controlsWrap .nv-legend .nv-check-box .nv-check {
     opacity: 0;
-	stroke-width: 1;
-	fill: rgb(143, 143, 143);
-	stroke: rgb(143, 143, 143);
+    stroke-width: 1;
+    fill: rgb(143, 143, 143);
+    stroke: rgb(143, 143, 143);
 }
 
 /* line plus bar */
@@ -271,7 +269,7 @@ svg.nvd3-svg {
   Box shadow and border radius styling
 */
 .nvtooltip.with-3d-shadow, .with-3d-shadow .nvtooltip {
-	background-color: rgb(60, 60, 60);
+  background-color: rgb(60, 60, 60);
 	color: rgba(0,0,0,1.0);
 	border: 1px solid rgb(255, 127, 14);
 }
@@ -293,7 +291,7 @@ svg.nvd3-svg {
 .nvd3.nv-noData {
     font-size: 18px;
     font-weight: bold;
-	fill:#000;
+    fill:#000;
 }
 
 
@@ -385,7 +383,7 @@ svg.nvd3-svg {
 
 .nvd3 .nv-parallelCoordinates .hover  {
     fill-opacity: 1;
-	stroke-width: 3px;
+    stroke-width: 3px;
 }
 
 
@@ -521,26 +519,21 @@ svg.nvd3-svg {
 
 .nvtooltip {
     position: absolute;
-	color: rgba(0,0,0,1.0);
-	background-color: #fff;
-	border: 1px solid rgb(0, 0, 0);
+    color: rgba(0,0,0,1.0);
+    background-color: #fff;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 4px;
     padding: 1px;
     z-index: 10000;
     display: block;
-
     font-family: Arial, sans-serif;
     font-size: 13px;
     text-align: left;
     pointer-events: none;
-
     white-space: nowrap;
-
     -webkit-user-select: none;
-
        -moz-user-select: none;
-
         -ms-user-select: none;
-
             user-select: none;
 }
 
@@ -549,7 +542,6 @@ svg.nvd3-svg {
 */
 .nvtooltip.with-transitions, .with-transitions .nvtooltip {
     transition: opacity 50ms linear;
-
     transition-delay: 200ms;
 }
 
@@ -566,9 +558,7 @@ svg.nvd3-svg {
     background-color: rgba(247,247,247,0.75);
     color: rgba(0,0,0,1.0);
     text-align: center;
-
     border-bottom: 1px solid #ebebeb;
-
     border-radius: 5px 5px 0 0;
 }
 
@@ -584,9 +574,10 @@ svg.nvd3-svg {
 }
 
 .nvtooltip table {
-    margin: 6px;
+    margin: 0px;
     border-spacing:0;
-	background-color:#FFF;
+    background-color:#FFF;
+    padding:6px;
 }
 
 

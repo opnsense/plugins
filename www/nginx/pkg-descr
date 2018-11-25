@@ -8,12 +8,17 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
-1.4
+1.5
+
+* Add proxy options for ignore client abort and disabling buffering
+
+1.4 (Development only)
 
 * move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
 * add TCP load balancing [1]
 * add support for IP based ACLs
 * add log rotation (contributed by Julius Cesar Camargo [2]
+* add support for satisfy, body size limitation
 * change: allow to disable internal bot protection (contributed by @fzoske) [3]
 * change: do not save when no change in the list happened to prevent filling the log history
 * fix: translate a german string in upstream server to english

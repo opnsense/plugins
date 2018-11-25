@@ -1,0 +1,33 @@
+<form>
+    <field>
+        <id>cpu.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this CPU affinity rule.</help>
+    </field>
+    <field>
+        <id>cpu.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Choose a name for this CPU affinity rule.</help>
+    </field>
+    <field>
+        <id>cpu.process_id</id>
+        <label>Process ID</label>
+        <type>dropdown</type>
+        <help>Process ID that should bind to a specific CPU set. Any process IDs above nbproc are ignored.</help>
+    </field>
+    <field>
+        <id>cpu.thread_id</id>
+        <label>Thread ID</label>
+        <type>dropdown</type>
+        <help>Thread ID that should bind to a specific CPU set. Any thread IDs above nbthread are ignored.</help>
+    </field>
+    <field>
+        <id>cpu.cpu_id</id>
+        <label>CPU ID</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Bind the process/thread ID to this CPU.</help>
+    </field>
+</form>
