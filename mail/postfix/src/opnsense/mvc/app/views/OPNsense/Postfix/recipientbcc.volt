@@ -75,7 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <div class="tab-content content-box tab-content">
-    <div id="recipientbccs" class="tab-pane fade in">
+    <div id="recipientbccs" class="tab-pane fade in active">
         <!-- tab page "recipientbccs" -->
         <table id="grid-recipientbccs" class="table table-responsive" data-editDialog="dialogEditPostfixRecipientbcc">
             <thead>
