@@ -32,6 +32,8 @@ shlib_directory = /usr/local/lib/postfix
 relay_domains = hash:/usr/local/etc/postfix/transport
 transport_maps = hash:/usr/local/etc/postfix/transport
 virtual_alias_maps = hash:/usr/local/etc/postfix/virtual
+sender_bcc_maps = hash:/usr/local/etc/postfix/senderbcc
+recipient_bcc_maps = hash:/usr/local/etc/postfix/recipientbcc
 ##########################
 # END SYSTEM DEFAULTS
 ##########################
