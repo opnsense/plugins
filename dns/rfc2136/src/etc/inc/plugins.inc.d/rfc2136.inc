@@ -173,7 +173,7 @@ EOD;
                 list($cachedipv4, $cacheTimev4) = array('', '');
             }
             if (isset($dnsupdate['usepublicip'])) {
-                $wanip = get_dyndns_ip($dnsupdate['interface'], 4);
+                $wanip = rfc2136_get_dyndns_ip($dnsupdate['interface'], 4);
             } else {
                 $wanip = get_interface_ip($dnsupdate['interface']);
             }
@@ -200,7 +200,7 @@ EOD;
                 list($cachedipv6, $cacheTimev6) = array('', '');
             }
             if (isset($dnsupdate['usepublicip'])) {
-                $wanipv6 = get_dyndns_ip($dnsupdate['interface'], 6);
+                $wanipv6 = rfc2136_get_dyndns_ip($dnsupdate['interface'], 6);
             } else {
                 $wanipv6 = get_interface_ipv6($dnsupdate['interface']);
             }
@@ -238,4 +238,14 @@ EOD;
     if ($verbose) {
         echo "done.\n";
     }
+}
+
+function rfc2136_get_dyndns_ip($int, $ipver = 4, $servicename = '')
+{
+    if (stream_resolve_include_path('plugins.inc.d/checkip.inc')) {
+        require_once('plugins.inc.d/checkip.inc');
+        return checkip_service_get_dyndns_ip($int, $ipver, $servicename);
+    }
+
+    return get_dyndns_ip($int, $ipver);
 }

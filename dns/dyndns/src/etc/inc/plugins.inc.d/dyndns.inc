@@ -234,3 +234,13 @@ function dyndns_failover_interface($interface, $family = 'all')
     /* fall through to get real interface the hard way */
     return get_real_interface($interface, $family);
 }
+
+function dyndns_get_dyndns_ip($int, $ipver = 4, $servicename = '')
+{
+    if (stream_resolve_include_path('plugins.inc.d/checkip.inc')) {
+        require_once('plugins.inc.d/checkip.inc');
+        return checkip_service_get_dyndns_ip($int, $ipver, $servicename);
+    }
+
+    return get_dyndns_ip($int, $ipver);
+}
