@@ -34,13 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
          * link grid actions
          *************************************************************************************************************/
 
-        $("#grid-addresses").UIBootgrid(
-            {   'search':'/api/postfix/address/searchAddress',
-                'get':'/api/postfix/address/getAddress/',
-                'set':'/api/postfix/address/setAddress/',
-                'add':'/api/postfix/address/addAddress/',
-                'del':'/api/postfix/address/delAddress/',
-                'toggle':'/api/postfix/address/toggleAddress/'
+        $("#grid-recipientbccs").UIBootgrid(
+            {   'search':'/api/postfix/recipientbcc/searchRecipientbcc',
+                'get':'/api/postfix/recipientbcc/getRecipientbcc/',
+                'set':'/api/postfix/recipientbcc/setRecipientbcc/',
+                'add':'/api/postfix/recipientbcc/addRecipientbcc/',
+                'del':'/api/postfix/recipientbcc/delRecipientbcc/',
+                'toggle':'/api/postfix/recipientbcc/toggleRecipientbcc/'
             }
         );
         /*************************************************************************************************************
@@ -75,14 +75,14 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <div class="tab-content content-box tab-content">
-    <div id="addresses" class="tab-pane fade in active">
-        <!-- tab page "addresses" -->
-        <table id="grid-addresses" class="table table-responsive" data-editDialog="dialogEditPostfixAddress">
+    <div id="recipientbccs" class="tab-pane fade in">
+        <!-- tab page "recipientbccs" -->
+        <table id="grid-recipientbccs" class="table table-responsive" data-editDialog="dialogEditPostfixRecipientbcc">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Rewrite From') }}</th>
-                <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('Rewrite To') }}</th>
+                <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Recipient Address') }}</th>
+                <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('BCC To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
@@ -107,4 +107,4 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixAddress,'id':'dialogEditPostfixAddress','label':lang._('Edit Address Rewriting')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixRecipientbcc,'id':'dialogEditPostfixRecipientbcc','label':lang._('Edit Recipient BCC')])}}
