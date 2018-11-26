@@ -137,7 +137,14 @@ install() {
 	rm -rf ${WORKDIR}
 }
 
-for CAT in $(echo ${1} | tr ',' ' '); do
+if [ $# -eq 0 ] && [ -s "$DESTDIR/dnsbl.list" ]; then
+    DNSBLLIST=$(cat ${DESTDIR}/dnsbl.list)
+else
+    DNSBLLIST=$1
+fi
+echo "$DNSBLLIST" > ${DESTDIR}/dnsbl.list
+
+for CAT in $(echo ${DNSBLLIST} | tr ',' ' '); do
 	case "${CAT}" in
 	aa)
 		adaway
