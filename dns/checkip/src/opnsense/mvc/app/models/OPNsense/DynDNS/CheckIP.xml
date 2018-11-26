@@ -1,0 +1,203 @@
+<model>
+   <mount>//OPNsense/DynDNS/CheckIP</mount>
+   <version>1.0.0</version>
+   <description>Check IP settings</description>
+   <items>
+      <factory_default_service>
+         <default type="BooleanField">
+            <Required>Y</Required>
+            <default>1</default>
+         </default>
+         <name type="TextField">
+            <Required>Y</Required>
+            <default>DynDNS</default>
+         </name>
+         <url type="TextField">
+            <Required>Y</Required>
+            <default>http://checkip.dyndns.org</default>
+         </url>
+         <verifysslpeer type="BooleanField">
+            <Required>Y</Required>
+            <default>0</default>
+         </verifysslpeer>
+         <capture_regex type="TextField">
+            <Required>Y</Required>
+            <default><![CDATA[<body>Current IP Address: (.*)</body>]]></default>
+         </capture_regex>
+         <interfaces type="InterfaceField">
+            <Required>N</Required>
+            <default></default>
+            <multiple>Y</multiple>
+            <filters>
+               <enable>/^(?!0).*$/</enable>
+            </filters>
+         </interfaces>
+         <ipver type="OptionField">
+            <Required>N</Required>
+            <default></default>
+            <multiple>Y</multiple>
+            <OptionValues>
+               <ipver4>4</ipver4>
+               <ipver6>6</ipver6>
+            </OptionValues>
+         </ipver>
+         <username type="TextField">
+            <Required>N</Required>
+            <default></default>
+         </username>
+         <password type="TextField">
+            <Required>N</Required>
+            <default></default>
+         </password>
+         <authtype type="OptionField">
+            <Required>N</Required>
+            <default></default>
+            <OptionValues>
+               <basic>Basic</basic>
+               <digest>Digest</digest>
+               <gssnegotiate>GSS Negotiate</gssnegotiate>
+               <ntlm>NTLM</ntlm>
+            </OptionValues>
+         </authtype>
+         <description type="TextField">
+            <Required>N</Required>
+            <default>Factory Default Service</default>
+         </description>
+      </factory_default_service>
+      <service type="ArrayField">
+         <default type="BooleanField">
+            <Required>Y</Required>
+            <default>0</default>
+         </default>
+         <name type="TextField">
+            <Required>Y</Required>
+            <default></default>
+            <mask>/(?!^DynDNS$)^([a-zA-Z0-9_]){0,255}$/u</mask>
+            <ValidationMessage>A valid service name is mandatory.</ValidationMessage>
+            <Constraints>
+               <check001>
+                  <ValidationMessage>Service name must be unique.</ValidationMessage>
+                  <type>UniqueConstraint</type>
+               </check001>
+            </Constraints>
+         </name>
+         <url type="TextField">
+            <Required>Y</Required>
+            <default></default>
+            <ValidationMessage>A correctly formated URL is mandatory.</ValidationMessage>
+         </url>
+         <verifysslpeer type="BooleanField">
+            <Required>Y</Required>
+            <default>1</default>
+            <Constraints>
+               <check001>
+                  <ValidationMessage>Username/Password requires verify SSL peer.</ValidationMessage>
+                  <type>DependConstraint</type>
+                  <addFields>
+                     <field1>username</field1>
+                     <field2>password</field2>
+                  </addFields>
+               </check001>
+            </Constraints>
+         </verifysslpeer>
+         <capture_regex type="TextField">
+            <Required>Y</Required>
+            <default><![CDATA[<body>Current IP Address: (.*)</body>]]></default>
+            <ValidationMessage>An address capture regular expression is mandatory.</ValidationMessage>
+         </capture_regex>
+         <interfaces type="InterfaceField">
+            <Required>N</Required>
+            <default>wan</default>
+            <multiple>Y</multiple>
+            <filters>
+               <enable>/^(?!0).*$/</enable>
+            </filters>
+         </interfaces>
+         <ipver type="OptionField">
+            <Required>N</Required>
+            <default></default>
+            <multiple>Y</multiple>
+            <OptionValues>
+               <ipver4>4</ipver4>
+               <ipver6>6</ipver6>
+            </OptionValues>
+         </ipver>
+         <username type="TextField">
+            <Required>N</Required>
+            <default></default>
+            <Constraints>
+               <check001>
+                  <reference>verifysslpeer.check001</reference>
+               </check001>
+               <check002>
+                  <reference>authtype.check001</reference>
+               </check002>
+            </Constraints>
+         </username>
+         <password type="TextField">
+            <Required>N</Required>
+            <default></default>
+            <Constraints>
+               <check001>
+                  <reference>verifysslpeer.check001</reference>
+               </check001>
+               <check002>
+                  <reference>authtype.check001</reference>
+               </check002>
+            </Constraints>
+         </password>
+         <authtype type="OptionField">
+            <Required>N</Required>
+            <default></default>
+            <OptionValues>
+               <basic>Basic</basic>
+               <digest>Digest</digest>
+               <gssnegotiate>GSS Negotiate</gssnegotiate>
+               <ntlm>NTLM</ntlm>
+            </OptionValues>
+            <Constraints>
+               <check001>
+                  <ValidationMessage>Username/Password requires authentication type.</ValidationMessage>
+                  <type>DependConstraint</type>
+                  <addFields>
+                     <field1>username</field1>
+                     <field2>password</field2>
+                  </addFields>
+               </check001>
+            </Constraints>
+         </authtype>
+         <description type="TextField">
+            <Required>N</Required>
+            <default></default>
+            <mask>/^.{1,255}$/u</mask>
+            <ValidationMessage>Description too long.  Upto 255 characters.</ValidationMessage>
+         </description>
+      </service>
+      <factory_default_test>
+         <service type="OptionField">
+            <Required>Y</Required>
+            <default>auto_select</default>
+            <OptionValues>
+               <auto_select>Auto Select Service</auto_select>
+            </OptionValues>
+         </service>
+         <interface type="InterfaceField">
+            <Required>Y</Required>
+            <default>wan</default>
+            <AddParentDevices>Y</AddParentDevices>
+            <filters>
+               <enable>/^(?!0).*$/</enable>
+               <type>/(?s)^((?!group).)*$/</type>
+            </filters>
+         </interface>
+         <ipver type="OptionField">
+            <Required>Y</Required>
+            <default>ipver4</default>
+            <OptionValues>
+               <ipver4>4</ipver4>
+               <ipver6>6</ipver6>
+            </OptionValues>
+         </ipver>
+      </factory_default_test>
+   </items>
+</model>

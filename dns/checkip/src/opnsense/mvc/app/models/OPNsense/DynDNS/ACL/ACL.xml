@@ -1,0 +1,10 @@
+<acl>
+   <page-services-checkip>
+      <name>WebCfg - Services: Check IP</name>
+      <description>Allow access to the 'Services: Check IP' page.</description>
+      <patterns>
+         <pattern>ui/DynDNS/CheckIP*</pattern>
+         <pattern>api/DynDNS/CheckIP*</pattern>
+      </patterns>
+   </page-services-checkip>
+</acl>
