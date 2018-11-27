@@ -138,7 +138,7 @@ install() {
 	rm -rf ${WORKDIR}
 }
 
-if [ $# -eq 0 ] && [ -s "$DESTDIR/dnsbl.list" ]; then
+if [ $# -eq 0 -a -s "$DESTDIR/dnsbl.list" ]; then
     DNSBLLIST=$(cat ${DESTDIR}/dnsbl.list)
 else
     DNSBLLIST=$1
