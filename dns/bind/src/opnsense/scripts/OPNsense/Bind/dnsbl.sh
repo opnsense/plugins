@@ -143,7 +143,7 @@ if [ $# -eq 0 -a -s "$DESTDIR/dnsbl.list" ]; then
 else
     DNSBLLIST=$1
 fi
-echo "$DNSBLLIST" > ${DESTDIR}/dnsbl.list
+printf "$DNSBLLIST" > ${DESTDIR}/dnsbl.list
 
 for CAT in $(echo ${DNSBLLIST} | tr ',' ' '); do
 	case "${CAT}" in
