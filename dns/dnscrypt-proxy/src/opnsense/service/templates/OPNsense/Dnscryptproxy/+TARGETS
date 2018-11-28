@@ -1,0 +1,5 @@
+dnscrypt_proxy:/etc/rc.conf.d/dnscrypt_proxy
+dnscrypt-proxy.toml:/usr/local/etc/dnscrypt-proxy/dnscrypt-proxy.toml
+cloaking-rules.txt:/usr/local/etc/dnscrypt-proxy/cloaking-rules.txt
+forwarding-rules.txt:/usr/local/etc/dnscrypt-proxy/forwarding-rules.txt
+whitelist.txt:/usr/local/etc/dnscrypt-proxy/whitelist.txt

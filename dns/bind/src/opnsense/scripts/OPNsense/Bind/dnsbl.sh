@@ -137,7 +137,14 @@ install() {
 	rm -rf ${WORKDIR}
 }
 
-for CAT in $(echo ${1} | tr ',' ' '); do
+DNSBL=${1}
+
+if [ -z "${DNSBL}" ]; then
+	. /etc/rc.conf.d/named
+	DNSBL=${named_dnsbl}
+fi
+
+for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	case "${CAT}" in
 	aa)
 		adaway

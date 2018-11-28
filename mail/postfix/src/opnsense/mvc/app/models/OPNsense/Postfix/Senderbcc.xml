@@ -1,0 +1,21 @@
+<model>
+    <mount>//OPNsense/postfix/senderbcc</mount>
+    <description>Postfix Sender BCC configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <senderbccs>
+            <senderbcc type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <from type="TextField">
+                    <Required>Y</Required>
+                </from>
+                <to type="CSVListField">
+                    <Required>Y</Required>
+                </to>
+            </senderbcc>
+        </senderbccs>
+    </items>
+</model>

@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>userparameter.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this userparameter.</help>
+    </field>
+    <field>
+        <id>userparameter.key</id>
+        <label>Key</label>
+        <type>text</type>
+        <help>Enter a unique item key of your choice.</help>
+    </field>
+    <field>
+        <id>userparameter.command</id>
+        <label>Command</label>
+        <type>text</type>
+        <help>Command to be executed to evaluate value of the key.</help>
+    </field>
+    <field>
+        <id>userparameter.acceptParams</id>
+        <label>Accept Parameters</label>
+        <type>checkbox</type>
+        <help>Flexible user parameters accept parameters with the key. This way a flexible user parameter can be the basis for creating several items.</help>
+    </field>
+</form>

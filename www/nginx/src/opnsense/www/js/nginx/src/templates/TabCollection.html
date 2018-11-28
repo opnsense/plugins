@@ -45,7 +45,7 @@
            data-model-cid="<%= row.cid %>"
            data-model-uuid="<%= row.escape('id') %>"
            id="subtab_item_<%= row.escape('id') %>"
-           href="#subtab_<%= row.escape('id') %>"><%= row.escape('server_name') %></a>
+           href="#subtab_<%= row.escape('id') %>"><%= row.has("server_name") ? row.escape("server_name") : row.escape("port") %></a>
     </li>
     <% }) %>
 </ul>

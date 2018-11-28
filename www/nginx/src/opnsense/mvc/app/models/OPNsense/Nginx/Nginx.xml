@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.1.3</version>
+  <version>1.5.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -330,6 +330,16 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </limit_request_connections>
+      <max_body_size type="TextField">
+        <Required>N</Required>
+        <mask>/^\d+[kmg]$/i</mask>
+        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+      </max_body_size>
+      <body_buffer_size type="TextField">
+        <Required>N</Required>
+        <mask>/^\d+[kmg]$/i</mask>
+        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+      </body_buffer_size>
       <honeypot type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -338,6 +348,18 @@
         <Required>Y</Required>
         <default>0</default>
       </websocket>
+      <proxy_ignore_client_abort type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </proxy_ignore_client_abort>
+      <proxy_request_buffering type="BooleanField">
+        <Required>Y</Required>
+        <default>1</default>
+      </proxy_request_buffering>
+      <proxy_buffering type="BooleanField">
+        <Required>Y</Required>
+        <default>1</default>
+      </proxy_buffering>
       <http2_push_preload type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -354,6 +376,13 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <satisfy type="OptionField">
+        <OptionValues>
+          <any>Any</any>
+          <all>All</all>
+        </OptionValues>
+        <Required>N</Required>
+      </satisfy>
     </location>
 
     <custom_policy type="ArrayField">
@@ -594,6 +623,16 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </limit_request_connections>
+      <max_body_size type="TextField">
+        <Required>N</Required>
+        <mask>/^\d+[kmg]$/i</mask>
+        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+      </max_body_size>
+      <body_buffer_size type="TextField">
+        <Required>N</Required>
+        <mask>/^\d+[kmg]$/i</mask>
+        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+      </body_buffer_size>
       <ip_acl type="ModelRelationField">
         <Model>
           <template>
@@ -606,6 +645,13 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <satisfy type="OptionField">
+        <OptionValues>
+          <any>Any</any>
+          <all>All</all>
+        </OptionValues>
+        <Required>N</Required>
+      </satisfy>
     </http_server>
 
     <stream_server type="ArrayField">
