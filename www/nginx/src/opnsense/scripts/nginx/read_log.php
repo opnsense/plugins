@@ -30,6 +30,7 @@ require_once 'config.inc';
 use OPNsense\Nginx\Nginx;
 use OPNsense\Nginx\ErrorLogParser;
 use OPNsense\Nginx\AccessLogParser;
+use OPNsense\Nginx\StreamAccessLogParser;
 
 $log_prefix = '/var/log/nginx/';
 $log_suffix = '.log';
@@ -45,35 +46,73 @@ $mode = $_SERVER['argv'][1];
 $server = $_SERVER['argv'][2];
 $nginx = new Nginx();
 
-if ($data = $nginx->getNodeByReference('http_server.'. $server)) {
-    $server_names = (string)$data->servername;
-    if (empty($server_names)) {
-        die('{"error": "The server entry has no server name"}');
-    }
-    $lines = [];
-    foreach (explode(',', $server_names) as $server_name) {
-        $log_file_name = $log_prefix . basename($server_name) . '.' . $mode . $log_suffix;
-        // this entry has no log file, ignore it
-        if (!file_exists($log_file_name)) {
-            continue;
-        }
-        $logparser = null;
+switch ($mode) {
+    case 'error':
+    case 'access':
+        if ($data = $nginx->getNodeByReference('http_server.'. $server)) {
+            $server_names = (string)$data->servername;
+            if (empty($server_names)) {
+                die('{"error": "The server entry has no server name"}');
+            }
+            $lines = [];
+            foreach (explode(',', $server_names) as $server_name) {
+                $log_file_name = $log_prefix . basename($server_name) . '.' . $mode . $log_suffix;
+                // this entry has no log file, ignore it
+                if (!file_exists($log_file_name)) {
+                    continue;
+                }
+                $logparser = null;
 
-        if ($mode == 'error') {
-            $logparser = new ErrorLogParser($log_file_name);
-        } elseif ($mode == 'access') {
-            $logparser = new AccessLogParser($log_file_name);
+                if ($mode == 'error') {
+                    $logparser = new ErrorLogParser($log_file_name);
+                } elseif ($mode == 'access') {
+                    $logparser = new AccessLogParser($log_file_name);
+                }
+                // we cannot parse the file - something went wrong
+                if ($logparser == null) {
+                    continue;
+                }
+                $lines = array_merge($lines, $logparser->get_result());
+            }
+            if (empty($lines)) {
+                $lines['error'] = 'no lines found';
+            }
+            echo json_encode($lines);
+        } else {
+            die('{"error": "UUID not found"}');
         }
-        // we cannot parse the file - something went wrong
-        if ($logparser == null) {
-            continue;
+        break;
+    case 'streamerror':
+    case 'streamaccess':
+        if ($data = $nginx->getNodeByReference('stream_server.'. $server)) {
+            $lines = [];
+            $mode = str_replace('stream', '', $mode);
+            $log_file_name = $log_prefix . 'stream_' . $server . '.' . $mode . $log_suffix;
+            // this entry has no log file, ignore it
+            if (!file_exists($log_file_name)) {
+                die('{"error": "file not found"}');
+            }
+            $logparser = null;
+
+            if ($mode == 'error') {
+                $logparser = new ErrorLogParser($log_file_name);
+            } elseif ($mode == 'access') {
+                $logparser = new StreamAccessLogParser($log_file_name);
+            }
+            // we cannot parse the file - something went wrong
+            if ($logparser == null) {
+                continue;
+            }
+            $lines = array_merge($lines, $logparser->get_result());
+            if (empty($lines)) {
+                $lines['error'] = 'no lines found';
+            }
+            echo json_encode($lines);
+        } else {
+            die('{"error": "UUID not found"}');
         }
-        $lines = array_merge($lines, $logparser->get_result());
-    }
-    if (empty($lines)) {
-        $lines['error'] = 'no lines found';
-    }
-    echo json_encode($lines);
-} else {
-    die('{"error": "UUID not found"}');
+        break;
+    default:
+        die('{"error": "action (' . $mode . ') not found"}');
 }
+

@@ -1,10 +1,18 @@
 export const defaultEndpoints = new Backbone.Collection([
     {
-        "name": 'Access Logs',
+        "name": 'HTTP Access Logs',
         "logType" : 'accesses'
     },
     {
-        "name": 'Error Logs',
+        "name": 'HTTP Error Logs',
         "logType" : 'errors'
+    },
+    {
+        "name": 'Stream Access Logs',
+        "logType" : 'stream_accesses'
+    },
+    {
+        "name": 'Stream Error Logs',
+        "logType" : 'stream_errors'
     }
 ]);

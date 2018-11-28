@@ -11,6 +11,7 @@ Plugin Changelog
 1.5
 
 * Add proxy options for ignore client abort and disabling buffering
+* Add logviewer support for streams
 
 1.4 (Development only)
 
