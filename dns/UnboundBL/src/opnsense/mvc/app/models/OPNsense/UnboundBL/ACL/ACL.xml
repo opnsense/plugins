@@ -1,9 +1,9 @@
 <acl>
-   <page-services-UnboundBL>
+   <page-services-unboundbl>
       <name>Services: UnboundBL</name>
       <patterns>
-         <pattern>ui/UnboundBL/*</pattern>
-         <pattern>api/UnboundBL/*</pattern>
+         <pattern>ui/unboundbl/*</pattern>
+         <pattern>api/unboundbl/*</pattern>
       </patterns>
-   </page-services-UnboundBL>
+   </page-services-unboundbl>
 </acl>
