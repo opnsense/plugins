@@ -175,7 +175,7 @@ EOD;
                 list($cachedipv4, $cacheTimev4) = array('', '');
             }
             if (isset($dnsupdate['usepublicip'])) {
-                $wanip = get_dyndns_ip($dnsupdate['interface'], 4);
+                $wanip = get_dyndns_ip($dnsupdate['interface'], 4)['PubIPAddress'];
             } else {
                 $wanip = get_interface_ip($dnsupdate['interface']);
             }
@@ -202,7 +202,7 @@ EOD;
                 list($cachedipv6, $cacheTimev6) = array('', '');
             }
             if (isset($dnsupdate['usepublicip'])) {
-                $wanipv6 = get_dyndns_ip($dnsupdate['interface'], 6);
+                $wanipv6 = get_dyndns_ip($dnsupdate['interface'], 6)['PubIPAddress'];
             } else {
                 $wanipv6 = get_interface_ipv6($dnsupdate['interface']);
             }

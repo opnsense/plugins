@@ -15,7 +15,9 @@ if (class_exists('OPNsense\DynDNS\CheckIP_Service') &&
         $a_checkipservices['FDS']['default'] = 0;
     }
 } else {
-    return 'Check IP services not available';
+    $status = gettext('Check IP services not available');
+    $pub_ip_address = '';
+    return array ('Service'=>($servicename ?: ''), 'Interface'=>$int, 'IPVersion'=>$ipver, 'IntIPAddress'=>$int_ip_address, 'PubIPAddress'=>$pub_ip_address, 'Status'=>$status);
 }
 
 // Use the service specified by name.

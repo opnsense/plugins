@@ -117,7 +117,9 @@ $( document ).ready(function() {
         "<b>{{ lang._('Service') }}: </b>" + data['result']['Service'] + '<br/>' +
         "<b>{{ lang._('Interface') }}: </b>" + data['result']['Interface'] + '<br/>' +
         "<b>{{ lang._('IP Version') }}: </b>" + data['result']['IPVersion'] + '<br/>' +
-        "<b>{{ lang._('IP Address') }}: </b>" + data['result']['IPAddress'] + '<br/>';
+        "<b>{{ lang._('Interface IP Address') }}: </b>" + data['result']['IntIPAddress'] + '<br/>' +
+        "<b>{{ lang._('Public IP Address') }}: </b>" + data['result']['PubIPAddress'] + '<br/>' +
+        "<b>{{ lang._('Status') }}: </b>" + data['result']['Status'] + '<br/>';
 
       $("#responseMsg").html(responseMsg);
       $("#responseMsg").css({'background-color': '', 'color': ''});

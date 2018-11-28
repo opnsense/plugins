@@ -36,11 +36,5 @@ $interface = (isset($argv[2])) ? trim($argv[2], " \n")    : 'wan';
 
 $service = ($service == 'auto_select') ? '' : $service;
 
-$result = array(
-      'Service' => ($service ? $service : gettext('selected by interface and IP version, or the enabled default service')), 
-    'Interface' => $interface, 
-    'IPVersion' => $ipv, 
-    'IPAddress' => get_dyndns_ip($interface, $ipv, $service)
-);
-echo json_encode($result);
+echo json_encode(get_dyndns_ip($interface, $ipv, $service));
 ?>

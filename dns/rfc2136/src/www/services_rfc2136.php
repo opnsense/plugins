@@ -147,7 +147,7 @@ $main_buttons = array(
                         if (file_exists($filename) && !empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'A')) {
                             echo "IPv4: ";
                             if (isset($rfc2136['usepublicip'])) {
-                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 4);
+                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 4)['PubIPAddress'];
                             } else {
                                 $ipaddr = get_interface_ip($rfc2136['interface']);
                             }
@@ -168,7 +168,7 @@ $main_buttons = array(
                         if (file_exists($filename6) && !empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'AAAA')) {
                             echo "IPv6: ";
                             if (isset($rfc2136['usepublicip'])) {
-                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 6);
+                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 6)['PubIPAddress'];
                             } else {
                                 $ipaddr = get_interface_ipv6($rfc2136['interface']);
                             }

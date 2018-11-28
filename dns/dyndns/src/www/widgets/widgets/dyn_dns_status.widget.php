@@ -49,14 +49,14 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
         $filename = dyndns_cache_file($dyndns, 4);
         $fdata = '';
         if (!empty($dyndns['enable']) && file_exists($filename)) {
-            $ipaddr = get_dyndns_ip($dyndns['interface'], 4);
+            $ipaddr = get_dyndns_ip($dyndns['interface'], 4)['PubIPAddress'];
             $fdata = @file_get_contents($filename);
         }
 
         $filename_v6 = dyndns_cache_file($dyndns, 6);
         $fdata6 = '';
         if (!empty($dyndns['enable']) && file_exists($filename_v6)) {
-            $ipv6addr = get_dyndns_ip($dyndns['interface'], 6);
+            $ipv6addr = get_dyndns_ip($dyndns['interface'], 6)['PubIPAddress'];
             $fdata6 = @file_get_contents($filename_v6);
         }
 
