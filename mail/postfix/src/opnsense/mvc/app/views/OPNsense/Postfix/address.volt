@@ -44,48 +44,24 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
-        /*************************************************************************************************************
-         * Commands
-         *************************************************************************************************************/
-
-        /**
-         * Reconfigure
-         */
-        $("#reconfigureAct").click(function(){
-            $("#reconfigureAct_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall("/api/postfix/service/reconfigure", {}, function(data,status) {
-                // when done, disable progress animation.
-                $("#reconfigureAct_progress").removeClass("fa fa-spinner fa-pulse");
-
-                if (status != "success" || data['status'] != 'ok') {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Error reconfiguring Postfix') }}",
-                        message: data['status'],
-                        draggable: true
-                    });
-                } else {
-                    ajaxCall("/api/postfix/service/reconfigure", {});
-                }
-            });
-        });
+    {% include 'OPNsense/Postfix/apply.volt' %}
 
     });
-
 
 </script>
 
 <div class="tab-content content-box tab-content">
     <div id="addresses" class="tab-pane fade in active">
         <!-- tab page "addresses" -->
-        <table id="grid-addresses" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixAddress">
+        <table id="grid-addresses" class="table table-responsive" data-editDialog="dialogEditPostfixAddress">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Rewrite From') }}</th>
                 <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('Rewrite To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
             </thead>
             <tbody>
             </tbody>
@@ -99,11 +75,11 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/><br/>
+        </div>
     </div>
 </div>
 

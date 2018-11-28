@@ -5,4 +5,6 @@ transport:/usr/local/etc/postfix/transport
 virtual:/usr/local/etc/postfix/virtual
 recipient_access:/usr/local/etc/postfix/recipient_access
 sender_access:/usr/local/etc/postfix/sender_access
+senderbcc:/usr/local/etc/postfix/senderbcc
+recipientbcc:/usr/local/etc/postfix/recipientbcc
 smtp_auth:/usr/local/etc/postfix/smtp_auth
