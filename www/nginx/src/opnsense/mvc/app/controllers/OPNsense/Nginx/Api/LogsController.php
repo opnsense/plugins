@@ -82,7 +82,7 @@ class LogsController extends ApiControllerBase
 
     private function call_configd($type, $uuid)
     {
-        if (!($this->vhost_exists($uuid))) {
+        if (!$this->vhost_exists($uuid)) {
             $this->response->setStatusCode(404, "Not Found");
         }
 
@@ -92,7 +92,7 @@ class LogsController extends ApiControllerBase
     }
     private function call_configd_stream($type, $uuid)
     {
-        if (!($this->stream_exists($uuid))) {
+        if (!$this->stream_exists($uuid)) {
             $this->response->setStatusCode(404, "Not Found");
         }
 
