@@ -31,6 +31,8 @@
 namespace OPNsense\Unboundbl\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Unboundbl\Index;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
