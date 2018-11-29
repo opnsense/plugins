@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i></button>
             </div>
         </div>
-        <p> <b>{{ lang._('You must include') }} <span style="font-family: Courier; font-size: 13px; border-radius: 5px 5px 5px 5px; background-color: #000; color: #fff; padding: 5px; margin: 5px;">include:/var/unbound/UnboundBL.conf</span> {{ lang._('in your') }} <a href="../services_unbound.php">Unbound DNS</a> {{ lang._('advanced settings configuration') }}! </p>
+        <p> <b>{{ lang._('Please add the following configuration to Services->Unbound DNS->General->Advanced') }} <span style="font-family: Courier; font-size: 13px; border-radius: 5px 5px 5px 5px; background-color: #000; color: #fff; padding: 5px; margin: 5px;">include:/var/unbound/UnboundBL.conf</span> </p>
     </div>
 </div>
 
