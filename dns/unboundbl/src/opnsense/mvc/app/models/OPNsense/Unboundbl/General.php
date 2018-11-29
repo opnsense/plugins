@@ -30,6 +30,6 @@ namespace OPNsense\Unboundbl;
 
 use OPNsense\Base\BaseModel;
 
-class Unboundbl extends BaseModel
+class General extends BaseModel
 {
 }
