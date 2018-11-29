@@ -89,7 +89,7 @@ $log_lines = $log_parser->get_result();
 $model = new Alias();
 
 $blacklist_element = null;
-foreach ($model->aliases->alias->__items as $alias) {
+foreach ($model->aliases->alias->iterateItems() as $alias) {
     if ((string)$alias->name == $autoblock_alias_name) {
         if ((string)$alias->type != 'external') {
             nginx_print_error('alias is misconfigured - exiting');
@@ -111,7 +111,7 @@ if ($blacklist_element == null) {
 
 $model = new Nginx();
 $alias_ips = [];
-foreach ($model->ban->__items as $entry) {
+foreach ($model->ban->iterateItems() as $entry) {
     $alias_ips[] = (string)$entry->ip;
 }
 
@@ -148,7 +148,7 @@ if ($change_required) {
 echo '{"status":"saved"}';
 
 // all ips are used because the others may not be set for some reason
-foreach ($model->ban->__items as $entry) {
+foreach ($model->ban->iterateItems() as $entry) {
     add_to_blocklist($autoblock_alias_name, (string)$entry->ip);
 }
 

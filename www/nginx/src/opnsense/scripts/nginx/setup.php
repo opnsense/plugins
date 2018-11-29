@@ -213,7 +213,7 @@ if (isset($nginx['upstream'])) {
 
 // export users
 $nginx = new Nginx();
-foreach ($nginx->userlist->__items as $user_list) {
+foreach ($nginx->userlist->iterateItems() as $user_list) {
     $attributes = $user_list->getAttributes();
     $uuid = $attributes['uuid'];
     $file = null;
@@ -234,6 +234,6 @@ foreach ($nginx->userlist->__items as $user_list) {
     }
 }
 // create directories for cache
-foreach ($nginx->cache_path->__items as $cache_path) {
+foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
 }

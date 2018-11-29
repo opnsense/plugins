@@ -104,7 +104,7 @@ class LogsController extends ApiControllerBase
     private function list_vhosts()
     {
         $data = [];
-        foreach ($this->nginx->http_server->__items as $item) {
+        foreach ($this->nginx->http_server->iterateItems() as $item) {
             $data[] = array('id' => $item->getAttributes()['uuid'], 'server_name' => (string)$item->servername);
         }
         return $data;
@@ -112,7 +112,7 @@ class LogsController extends ApiControllerBase
     private function list_streams()
     {
         $data = [];
-        foreach ($this->nginx->stream_server->__items as $item) {
+        foreach ($this->nginx->stream_server->iterateItems() as $item) {
             $data[] = array('id' => $item->getAttributes()['uuid'], 'port' => (string)$item->listen_port);
         }
         return $data;

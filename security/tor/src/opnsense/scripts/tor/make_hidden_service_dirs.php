@@ -35,7 +35,7 @@ require_once('tor_helper.php');
 use \OPNsense\Tor\HiddenService;
 
 $services = new HiddenService();
-foreach ($services->service->__items as $service) {
+foreach ($services->service->iterateItems() as $service) {
     $directory_name = ((string)$service->name);
     $hostdir = TOR_DATA_DIR . '/' . $directory_name;
     if (!file_exists($hostdir)) {
