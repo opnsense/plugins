@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
-            {{ partial("layout_partials/base_form",['fields':general,'id':'GeneralSettings'])}}
+            {{ partial("layout_partials/base_form",['fields':general,'id':'frm_general_settings'])}}
             <div class="col-md-12">
                 <hr />
                 <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i></button>
@@ -45,7 +45,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
     $(document).ready(function () {
         var data_get_map = {
-            'frm_GeneralSettings': "/api/unboundbl/general/get"
+            'frm_general_settings': "/api/unboundbl/general/get"
         };
         mapDataToFormUI(data_get_map).done(function (data) {
             formatTokenizersUI();
@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
         });
         mapDataToFormUI(data_get_map).done(function (data) {});
         $("#saveAct").click(function () {
-            saveFormToEndpoint(url = "/api/unboundbl/general/set", formid = 'frm_GeneralSettings', callback_ok = function () {
+            saveFormToEndpoint(url = "/api/unboundbl/general/set", formid = 'frm_general_settings', callback_ok = function () {
                 $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url = "/api/unboundbl/service/refresh", sendData = {}, callback = function (data, status) {
                     ajaxCall(url = "/api/unboundbl/service/reload", sendData = {}, callback = function (data, status) {
