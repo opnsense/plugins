@@ -30,11 +30,11 @@
  
 namespace OPNsense\Unboundbl;
 
-class IndexController extends \OPNsense\Base\IndexController
+class GeneralController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
         $this->view->general = $this->getForm("general");
-        $this->view->pick('OPNsense/Unboundbl/index');
+        $this->view->pick('OPNsense/Unboundbl/general');
     }
 }
