@@ -32,8 +32,8 @@ namespace OPNsense\Unboundbl\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
-class SettingsController extends ApiMutableModelControllerBase
+class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Unboundbl';
-    static protected $internalModelName = 'Unboundbl';
+    static protected $internalModelClass = '\OPNsense\Unboundbl\General';
+    static protected $internalModelName = 'general';
 }
