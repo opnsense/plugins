@@ -45,7 +45,7 @@ function frr_firewall($fw)
     $ospf = new \OPNsense\Quagga\OSPF();
 
     if ((string)$ospf->enabled == '1') {
-        foreach ($ospf->networks->network->__items as $network) {
+        foreach ($ospf->networks->network->iterateItems() as $network) {
             if ((string)$network->enabled == '1') {
                 $fw->registerFilterRule(
                     1, /* priority */

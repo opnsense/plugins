@@ -30,7 +30,7 @@ function ftpproxy_enabled()
 {
     $model = new \OPNsense\FtpProxy\FtpProxy();
 
-    foreach ($model->ftpproxy->__items as $server) {
+    foreach ($model->ftpproxy->iterateItems() as $server) {
         if ($server->enabled == '1') {
             return true;
         }
