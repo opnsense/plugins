@@ -39,12 +39,13 @@ class ServiceController extends ApiMutableServiceControllerBase
     static protected $internalServiceClass = '\OPNsense\Unboundbl\General';
     static protected $internalServiceTemplate = 'OPNsense/Unboundbl';
     static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'Unboundbl';
+    static protected $internalServiceName = 'unboundbl';
+    
     public function refreshAction()
     {
         $this->sessionClose();
         $backend = new Backend();
-        $response = $backend->configdpRun('Unboundbl refresh');
+        $response = $backend->configdpRun('unboundbl refresh');
         return array("message" => $response);
     }
     public function reloadAction()
