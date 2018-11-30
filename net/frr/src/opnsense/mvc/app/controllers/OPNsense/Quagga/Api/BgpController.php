@@ -137,7 +137,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'routemaps.routemap',
-            array("enabled", "name", "action", "id", "match", "set")
+            array("enabled", "name", "action", "id", "match", "match2", "set")
         );
     }
 
