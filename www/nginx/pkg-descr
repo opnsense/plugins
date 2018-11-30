@@ -12,13 +12,16 @@ Plugin Changelog
 
 * Add proxy options for ignore client abort and disabling buffering
 * Add logviewer support for streams
+* Fix charset is not defined bug (contributed by ccesario [1])
+
+[1] https://github.com/opnsense/plugins/pull/1035
 
 1.4 (Development only)
 
 * move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
 * add TCP load balancing [1]
 * add support for IP based ACLs
-* add log rotation (contributed by Julius Cesar Camargo [2]
+* add log rotation (contributed by Julius Cesar Camargo [2])
 * add support for satisfy, body size limitation
 * change: allow to disable internal bot protection (contributed by @fzoske) [3]
 * change: do not save when no change in the list happened to prevent filling the log history
