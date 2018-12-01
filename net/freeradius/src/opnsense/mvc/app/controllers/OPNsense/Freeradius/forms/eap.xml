@@ -7,9 +7,9 @@
     </field>
     <field>
         <id>eap.enable_client_cert</id>
-        <label>Validate Certificates</label>
+        <label>Use own certificates</label>
         <type>checkbox</type>
-        <help>This will activate certificate based authentication (EAP-TLS) and validation (EAP-TTLS). Please choose CA and Certificate below and do not forget to roll out certificates to the clients.</help>
+        <help>This will activate certificate based authentication (EAP-TLS) and validation (EAP-TTLS). Please choose CA and Certificate below and do not forget to roll out certificates to the clients. If you do not enable this, default installation certificate will be used.</help>
     </field>
     <field>
         <id>eap.ca</id>

@@ -35,7 +35,7 @@ class M2_3_0 extends BaseModelMigration
     public function run($model)
     {
         // Persistence is a separate option now.
-        foreach ($model->getNodeByReference('backends.backend')->__items as $backend) {
+        foreach ($model->getNodeByReference('backends.backend')->iterateItems() as $backend) {
             if (isset($backend->stickiness_pattern)) {
                   $backend->persistence = 'sticktable';
             }

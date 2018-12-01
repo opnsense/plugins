@@ -1,0 +1,11 @@
+{% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
+
+{% if helpers.exists('OPNsense.dnscryptproxy.cloak.cloaks.cloak') %}
+{%   for cloak_list in helpers.toList('OPNsense.dnscryptproxy.cloak.cloaks.cloak') %}
+{%     if cloak_list.enabled == '1' %}
+{{ cloak_list.name }} {{ cloak_list.destination }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+{% endif %}

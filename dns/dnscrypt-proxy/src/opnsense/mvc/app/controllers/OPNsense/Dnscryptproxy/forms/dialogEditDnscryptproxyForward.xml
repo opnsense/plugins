@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>forward.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this forward.</help>
+    </field>
+    <field>
+        <id>forward.domain</id>
+        <label>Domain</label>
+        <type>text</type>
+        <help>Set the domain, e.g. example.com</help>
+    </field>
+    <field>
+        <id>forward.dnsserver</id>
+        <label>DNS Server</label>
+        <type>text</type>
+        <help>Set the IP addresses to forward the domain.</help>
+    </field>
+</form>

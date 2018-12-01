@@ -140,7 +140,7 @@ function cert_action_validator($opt_cert_id)
                 $acctRef = (string)$certObj->account;
                 $acctObj = null;
                 $acctref_found = false;
-                foreach ($modelObj->getNodeByReference('accounts.account')->__items as $node) {
+                foreach ($modelObj->getNodeByReference('accounts.account')->iterateItems() as $node) {
                     if ((string)$node->getAttributes()["uuid"] == $acctRef) {
                         $acctref_found = true;
                         $acctObj = $node;
@@ -177,7 +177,7 @@ function cert_action_validator($opt_cert_id)
                 $valRef = (string)$certObj->validationMethod;
                 $valObj = null;
                 $ref_found = false;
-                foreach ($modelObj->getNodeByReference('validations.validation')->__items as $node) {
+                foreach ($modelObj->getNodeByReference('validations.validation')->iterateItems() as $node) {
                     if ((string)$node->getAttributes()["uuid"] == $valRef) {
                         $ref_found = true;
                         $valObj = $node;

@@ -309,7 +309,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 }
 
                 // Ensure HAProxy frontend additions have been applied.
-                foreach ($mdlAcme->getNodeByReference('validations.validation')->__items as $validation) {
+                foreach ($mdlAcme->getNodeByReference('validations.validation')->iterateItems() as $validation) {
                     // Find all (enabled) validation methods with HAProxy integration.
                     if ((string)$validation->enabled == "1" and
                         (string)$validation->method == "http01" and

@@ -1,0 +1,21 @@
+<model>
+    <mount>//OPNsense/postfix/address</mount>
+    <description>Postfix address rewrite configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <addresses>
+            <address type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <from type="TextField">
+                    <Required>Y</Required>
+                </from>
+                <to type="CSVListField">
+                    <Required>Y</Required>
+                </to>
+            </address>
+        </addresses>
+    </items>
+</model>

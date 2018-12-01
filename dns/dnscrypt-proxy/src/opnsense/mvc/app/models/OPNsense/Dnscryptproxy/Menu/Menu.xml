@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <DNSCrypt-Proxy cssClass="fa fa-lock fa-fw" url="/ui/dnscryptproxy/general/index" />
+    </Services>
+</menu>

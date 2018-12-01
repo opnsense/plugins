@@ -62,7 +62,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->ipacl = $this->getForm("ipacl");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
-            count($nginx->custom_policy->__items) == 0 && count($nginx->naxsi_rule->__items) == 0;
+            count($nginx->custom_policy->iterateItems()) == 0 && count($nginx->naxsi_rule->iterateItems()) == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 

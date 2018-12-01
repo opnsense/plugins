@@ -58,7 +58,7 @@
 </script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
-<script src="{{ cache_safe('/ui/js/nginx/dist/configuration.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/nginx/dist/configuration.min.js') }}"></script>
 <style>
     #frm_sni_hostname_mapdlg .col-md-4,
     #frm_ipacl_dlg .col-md-4 {

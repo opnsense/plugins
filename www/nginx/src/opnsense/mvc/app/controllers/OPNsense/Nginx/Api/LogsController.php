@@ -57,6 +57,28 @@ class LogsController extends ApiControllerBase
             return $this->call_configd('error', $uuid);
         }
     }
+    public function stream_accessesAction($uuid = null)
+    {
+        $this->nginx = new Nginx();
+        if (!isset($uuid)) {
+            // emulate REST API -> /stream_accesses delivers a list of servers with access logs
+            return $this->list_streams();
+        } else {
+            // emulate REST call for a specific log /stream_accesses/uuid
+            return $this->call_configd_stream('streamaccess', $uuid);
+        }
+    }
+    public function stream_errorsAction($uuid = null)
+    {
+        $this->nginx = new Nginx();
+        if (!isset($uuid)) {
+            // emulate REST API -> /stream_errors delivers a list of servers with error logs
+            return $this->list_streams();
+        } else {
+            // emulate REST call for a specific log /stream_errors/uuid
+            return $this->call_configd_stream('streamerror', $uuid);
+        }
+    }
 
     private function call_configd($type, $uuid)
     {
@@ -68,12 +90,30 @@ class LogsController extends ApiControllerBase
         $data = $backend->configdRun('nginx log ' . $type . ' ' . $uuid);
         return json_decode($data, true);
     }
+    private function call_configd_stream($type, $uuid)
+    {
+        if (!$this->stream_exists($uuid)) {
+            $this->response->setStatusCode(404, "Not Found");
+        }
+
+        $backend = new Backend();
+        $data = $backend->configdRun('nginx log ' . $type . ' ' . $uuid);
+        return json_decode($data, true);
+    }
 
     private function list_vhosts()
     {
         $data = [];
-        foreach ($this->nginx->http_server->__items as $item) {
+        foreach ($this->nginx->http_server->iterateItems() as $item) {
             $data[] = array('id' => $item->getAttributes()['uuid'], 'server_name' => (string)$item->servername);
+        }
+        return $data;
+    }
+    private function list_streams()
+    {
+        $data = [];
+        foreach ($this->nginx->stream_server->iterateItems() as $item) {
+            $data[] = array('id' => $item->getAttributes()['uuid'], 'port' => (string)$item->listen_port);
         }
         return $data;
     }
@@ -81,6 +121,11 @@ class LogsController extends ApiControllerBase
     private function vhost_exists($uuid)
     {
         $data = $this->nginx->getNodeByReference('http_server.'. $uuid);
+        return isset($data);
+    }
+    private function stream_exists($uuid)
+    {
+        $data = $this->nginx->getNodeByReference('stream_server.'. $uuid);
         return isset($data);
     }
 }

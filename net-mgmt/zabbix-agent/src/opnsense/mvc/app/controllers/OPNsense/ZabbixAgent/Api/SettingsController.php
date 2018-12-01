@@ -42,4 +42,66 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     static protected $internalModelName = 'zabbixagent';
     static protected $internalModelClass = '\OPNsense\ZabbixAgent\ZabbixAgent';
+
+    public function searchUserparametersAction()
+    {
+        return $this->searchBase('userparameters.userparameter', array("enabled", "key", "command"));
+    }
+
+    public function getUserparameterAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('userparameter', 'userparameters.userparameter', $uuid);
+    }
+
+    public function addUserparameterAction()
+    {
+        return $this->addBase('userparameter', 'userparameters.userparameter');
+    }
+
+    public function delUserparameterAction($uuid)
+    {
+        return $this->delBase('userparameters.userparameter', $uuid);
+    }
+
+    public function setUserparameterAction($uuid)
+    {
+        return $this->setBase('userparameter', 'userparameters.userparameter', $uuid);
+    }
+
+    public function toggleUserparameterAction($uuid)
+    {
+        return $this->toggleBase('userparameters.userparameter', $uuid);
+    }
+
+    public function searchAliasesAction()
+    {
+        return $this->searchBase('aliases.alias', array("enabled", "key", "sourceKey"));
+    }
+
+    public function getAliasAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('alias', 'aliases.alias', $uuid);
+    }
+
+    public function addAliasAction()
+    {
+        return $this->addBase('alias', 'aliases.alias');
+    }
+
+    public function delAliasAction($uuid)
+    {
+        return $this->delBase('aliases.alias', $uuid);
+    }
+
+    public function setAliasAction($uuid)
+    {
+        return $this->setBase('alias', 'aliases.alias', $uuid);
+    }
+
+    public function toggleAliasAction($uuid)
+    {
+        return $this->toggleBase('aliases.alias', $uuid);
+    }
 }

@@ -29,5 +29,5 @@
 */
 %>
 <a data-toggle="tab" href="#subtab_item_<%= model.escape('id') %>">
-    <b><%= model.escape("server_name") %></b>
+    <b><%= model.has("server_name") ? model.escape("server_name") : model.escape("port") %></b>
 </a>

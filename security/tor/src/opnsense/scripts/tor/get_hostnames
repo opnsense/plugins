@@ -37,7 +37,7 @@ use \OPNsense\Tor\HiddenService;
 
 $hostnames = array();
 $services = new HiddenService();
-foreach ($services->service->__items as $service) {
+foreach ($services->service->iterateItems() as $service) {
     $directory_name = ((string)$service->name);
     $hostnamefile = TOR_DATA_DIR . '/' . $directory_name . '/hostname';
     if (file_exists($hostnamefile)) {

@@ -44,7 +44,7 @@ $wol = new Wol();
   </thead>
   <tbody>
 <?php
-    foreach ($wol->wolentry->__items as $wolent):
+    foreach ($wol->wolentry->iterateItems() as $wolent):
       $is_active = exec("/usr/sbin/arp -an |/usr/bin/grep {$wolent->mac}| /usr/bin/wc -l|/usr/bin/awk '{print $1;}'");?>
     <tr>
         <td><?= !empty((string)$wolent->descr) ? $wolent->descr : gettext('Unnamed entry') ?><br/><?= $wolent->mac ?></td>
@@ -61,7 +61,7 @@ $wol = new Wol();
     </tr>
 <?php
     endforeach;
-    if (count($wol->wolentry->__items) == 0):?>
+    if (count($wol->wolentry->iterateItems()) == 0):?>
     <tr>
       <td colspan="4" ><?=gettext("No saved WoL addresses");?></td>
     </tr>
