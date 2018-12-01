@@ -777,6 +777,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_zonomi':
                 $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
                 break;
+            case 'dns_gdnsdk':
+                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
+                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
+                break;   
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);
                 return(1);
