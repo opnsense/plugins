@@ -19,6 +19,10 @@
             <default></default>
             <Required>N</Required>
         </syscontact>
+        <l3visibility type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </l3visibility>
         <listen type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
