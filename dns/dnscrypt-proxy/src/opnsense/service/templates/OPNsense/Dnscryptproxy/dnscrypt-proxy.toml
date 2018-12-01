@@ -115,16 +115,16 @@ cache = false
 {%   endif %}
 
 [query_log]
-  file = 'query.log'
+  file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
 [nx_log]
-  file = 'nx.log'
+  file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
 
 [whitelist]
   whitelist_file = 'whitelist.txt'
-  log_file = 'whitelisted.log'
+  log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
   log_format = 'tsv'
 
 [sources]
