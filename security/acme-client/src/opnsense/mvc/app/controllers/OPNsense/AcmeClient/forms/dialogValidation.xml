@@ -750,4 +750,20 @@
         <label>API Key</label>
         <type>text</type>
     </field>
+        <field>
+        <label>GratisDNS.dk</label>
+        <type>header</type>
+        <style>table_dns table_dns_gdnsdk</style>
+    </field>
+    <field>
+        <id>validation.dns_gdnsdk_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_gdnsdk_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    
 </form>
