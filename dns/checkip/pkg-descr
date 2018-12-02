@@ -1,0 +1,9 @@
+Manage and test the check IP services used by custom Dynamic DNS 
+and RFC2136 entries that have the "Use public IP" option enabled, 
+to obtain the current IP address.
+
+Features:
+  * Interface specific configurable check IP services.  The service with matching interface and IP version, or the one that is enabled as the default, will be used by Dynamic DNS and RFC2136 services to check IP addresses.
+  * Verify SSL peer option
+  * Service Authentication
+  * Service backend test facility

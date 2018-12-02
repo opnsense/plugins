@@ -1,0 +1,5 @@
+<menu>
+   <Services>
+      <CheckIP VisibleName="Check IP" url="/ui/dyndns/checkip" cssClass="fa fa-tags fa-fw"/>
+   </Services>
+</menu>

@@ -1,0 +1,58 @@
+<model>
+   <mount>//OPNsense/DynDNS/CheckIP</mount>
+   <version>1.0.0</version>
+   <description>CheckIP settings - Factory Default Service</description>
+   <items>
+      <factory_default_service>
+         <default type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+         </default>
+         <name type="TextField">
+            <default>DynDNS</default>
+            <Required>Y</Required>
+         </name>
+         <url type="TextField">
+            <default>http://checkip.dyndns.org/</default>
+            <Required>Y</Required>
+         </url>
+         <regex type="TextField">
+            <default><![CDATA[<body>Current IP Address: (.*)</body>]]></default>
+            <Required>Y</Required>
+         </regex>
+         <interfaces type="InterfaceField">
+            <Required>N</Required>
+            <default>wan</default>
+            <multiple>Y</multiple>
+            <filters>
+               <enable>/^(?!0).*$/</enable>
+            </filters>
+         </interfaces>
+         <ipv type="OptionField">
+            <Required>N</Required>
+            <default></default>
+            <multiple>Y</multiple>
+            <OptionValues>
+               <ipv4>4</ipv4>
+               <ipv6>6</ipv6>
+            </OptionValues>
+         </ipv>
+         <username type="TextField">
+            <default></default>
+            <Required>N</Required>
+         </username>
+         <password type="TextField">
+            <default></default>
+            <Required>N</Required>
+         </password>
+         <verifysslpeer type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+         </verifysslpeer>
+         <description type="TextField">
+            <default>Factory Default Service</default>
+            <Required>N</Required>
+         </description>
+      </factory_default_service>
+   </items>
+</model>

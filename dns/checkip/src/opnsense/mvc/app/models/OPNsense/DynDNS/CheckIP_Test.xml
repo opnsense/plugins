@@ -1,0 +1,33 @@
+<model>
+   <mount>//OPNsense/DynDNS/CheckIP</mount>
+   <version>1.0.0</version>
+   <description>CheckIP settings - Test</description>
+   <items>
+      <test>
+         <service type="OptionField">
+            <default>auto_select</default>
+            <Required>Y</Required>
+            <OptionValues>
+               <auto_select></auto_select>
+            </OptionValues>
+         </service>
+         <interface type="InterfaceField">
+            <default>wan</default>
+            <Required>Y</Required>
+            <AddParentDevices>Y</AddParentDevices>
+            <filters>
+               <enable>/^(?!0).*$/</enable>
+               <type>/(?s)^((?!group).)*$/</type>
+            </filters>
+         </interface>
+         <ipv type="OptionField">
+            <default>ipv4</default>
+            <Required>Y</Required>
+            <OptionValues>
+               <ipv4>4</ipv4>
+               <ipv6>6</ipv6>
+            </OptionValues>
+         </ipv>
+      </test>
+   </items>
+</model>
