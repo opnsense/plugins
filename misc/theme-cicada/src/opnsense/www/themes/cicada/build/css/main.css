@@ -2895,11 +2895,14 @@ select[multiple].input-lg,
   background-color: #2a2a2a;
   border: 1px solid #5a5a5a;
   outline:0; }
-  .btn:active, .btn.active, .open > .btn.dropdown-toggle {
+  .open > .btn.dropdown-toggle {
   color: #ffffff;
+  }
+  .btn:active, .btn.active {
+  color: #ec6d12;
   background-color: #2d2d2d;
 	outline:0;
-    border-color: #5a5a5a;
+  border-color: #5a5a5a;
 	text-decoration: none; }
   .btn:hover, .btn:focus {
 	background-color: #292929;
