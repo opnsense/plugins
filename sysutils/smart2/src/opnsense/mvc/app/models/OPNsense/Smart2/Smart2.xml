@@ -1,0 +1,8 @@
+<model>
+  <mount>//OPNsense/smart2</mount>
+  <description>
+    the OPNsense "Smart2" application
+  </description>
+  <items>
+  </items>
+</model>
