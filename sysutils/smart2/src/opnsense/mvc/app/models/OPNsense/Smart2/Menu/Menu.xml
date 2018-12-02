@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <SMART2 url="/diag_smart.php" cssClass="fa fa-stethoscope fa-fw"/>
+    </Services>
+</menu>
