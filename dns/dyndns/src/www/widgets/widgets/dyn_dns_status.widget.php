@@ -32,6 +32,7 @@ require_once("guiconfig.inc");
 require_once("widgets/include/dyn_dns_status.inc");
 require_once("interfaces.inc");
 require_once("plugins.inc.d/dyndns.inc");
+require_once('plugins.inc.d/dyndns/checkip.inc');
 
 $a_dyndns = &config_read_array('dyndnses', 'dyndns');
 

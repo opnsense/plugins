@@ -29,6 +29,8 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+require_once('plugins.inc.d/dyndns/checkip.inc');
+
 function rfc2136_configure()
 {
     return array(

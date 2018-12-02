@@ -33,6 +33,7 @@ require_once("guiconfig.inc");
 require_once("widgets/include/rfc2136.inc");
 require_once("interfaces.inc");
 require_once("plugins.inc.d/rfc2136.inc");
+require_once('plugins.inc.d/dyndns/checkip.inc');
 
 $a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
 

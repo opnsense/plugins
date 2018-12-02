@@ -105,6 +105,8 @@
  * Custom DNS support by Matt Corallo
  */
 
+require_once('plugins.inc.d/dyndns/checkip.inc');
+
 class updatedns
 {
     var $_cacheFile;
