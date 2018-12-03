@@ -14,6 +14,12 @@
         <help>Set the IP address and port combinations this service should listen on, e.g 127.0.0.1:5353 and/or [::1]:5353</help>
     </field>
     <field>
+        <id>general.allowprivileged</id>
+        <label>Allow Privileged Ports</label>
+        <type>checkbox</type>
+        <help>This will allow you to run the service on port 53.</help>
+    </field>
+    <field>
         <id>general.max_clients</id>
         <label>Max Client Connections</label>
         <type>text</type>

@@ -64,7 +64,7 @@ timeout = {{ OPNsense.dnscryptproxy.general.timeout }}
 keepalive = {{ OPNsense.dnscryptproxy.general.keepalive }}
 
 log_level = 2
-log_file = 'dnscrypt-proxy.log'
+log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
 use_syslog = false
 
 cert_refresh_delay = {{ OPNsense.dnscryptproxy.general.cert_refresh_delay }}
@@ -115,16 +115,16 @@ cache = false
 {%   endif %}
 
 [query_log]
-  file = 'query.log'
+  file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
 [nx_log]
-  file = 'nx.log'
+  file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
 
 [whitelist]
   whitelist_file = 'whitelist.txt'
-  log_file = 'whitelisted.log'
+  log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
   log_format = 'tsv'
 
 [sources]
