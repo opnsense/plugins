@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>dnsbl.enabled</id>
-        <label>Enable DNSBL</label>
+        <label>Enable DNSBL and RPZ</label>
         <type>checkbox</type>
         <help>This will enable the use of DNS Blocklists for ADs, Malware, or both.</help>
     </field>
@@ -18,5 +18,17 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help>List of domains to whitelist. It will add a entry for the domains itself and all sub domains.</help>
+    </field>
+    <field>
+        <id>dnsbl.forcesafegoogle</id>
+        <label>Enable Google SafeSearch</label>
+        <type>checkbox</type>
+        <help>This will force SafeSearch.</help>
+    </field>
+    <field>
+        <id>dnsbl.forcesafeyoutube</id>
+        <label>Enable Youtube Adult Restrictions</label>
+        <type>checkbox</type>
+        <help>This will force safe Youtube browsing.</help>
     </field>
 </form>
