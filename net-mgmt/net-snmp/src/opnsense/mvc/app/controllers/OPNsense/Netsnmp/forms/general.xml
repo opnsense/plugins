@@ -24,6 +24,12 @@
         <help>Set the contact address to use.</help>
     </field>
     <field>
+        <id>general.l3visibility</id>
+        <label>Layer 3 Visibility</label>
+        <type>checkbox</type>
+        <help>Make this device visible as Layer 3 enabled.</help>
+    </field>
+    <field>
         <id>general.listen</id>
         <label>Listen IPs</label>
         <style>tokenize</style>
