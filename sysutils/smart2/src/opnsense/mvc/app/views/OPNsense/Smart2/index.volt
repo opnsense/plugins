@@ -45,6 +45,19 @@
 		 });
 	     });
 
+	     $("#testAct").click (function () {
+		 var type = $("input[name='testType']:checked").val ();
+		 var device = $("#device2").val ();
+
+		 ajaxCall (url="/api/smart2/service/test", sendData={
+		     "type" : type,
+		     "device" : device
+		 }, callback=function (data, status) {
+		     $("#testMsg").html(add_colors(data['output']));
+		     $("#testMsg").removeClass("hidden");
+		 });
+	     });
+
 	     $("#viewLogsAct").click (function () {
 		 var type = $("input[name='logType']:checked").val ();
 		 var device = $("#device3").val ();
@@ -133,12 +146,13 @@
 		<tr>
                     <td style="width:22%; vertical-align:top">&nbsp;</td>
                     <td style="width:78%">
-			<input type="hidden" name="action" value="test" />
-			<input type="submit" name="submit" class="btn btn-primary" value="{{ lang._('Test') }}" />
+			<input type="button" name="submit" class="btn btn-primary" value="{{ lang._('Test') }}" id="testAct" />
                     </td>
 		</tr>
             </table>
         </div>
+	<pre class="hidden" id="testMsg">
+	</pre>
     </section>
 
     <section class="col-xs-12">
