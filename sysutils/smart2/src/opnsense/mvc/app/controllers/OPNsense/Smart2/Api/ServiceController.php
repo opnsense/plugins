@@ -41,4 +41,26 @@ class ServiceController extends ApiControllerBase
 
         return array("message" => "Unable to run info action");
     }
+
+    public function logsAction ()
+    {
+        if ($this->request->isPost()) {
+            $device = $this->request->getPost ('device');
+            $type   = $this->request->getPost ('type');
+
+            if (!in_array ($device, $this->getDevices ()))
+                return array("message" => "Invalid device name");
+
+            $valid_log_types = array("error", "selftest");
+
+            if (!in_array ($type, $valid_log_types))
+                return array("message" => "Invalid log type");
+
+            $output = shell_exec ("/usr/local/sbin/smartctl -l " . escapeshellarg($type) . " /dev/" . escapeshellarg($device));
+
+            return array("output" => $output);
+        }
+
+        return array("message" => "Unable to run logs action");
+    }
 }

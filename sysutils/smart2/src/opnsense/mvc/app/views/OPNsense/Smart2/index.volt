@@ -45,6 +45,19 @@
 		 });
 	     });
 
+	     $("#viewLogsAct").click (function () {
+		 var type = $("input[name='logType']:checked").val ();
+		 var device = $("#device3").val ();
+
+		 ajaxCall (url="/api/smart2/service/logs", sendData={
+		     "type" : type,
+		     "device" : device
+		 }, callback=function (data, status) {
+		     $("#logsMsg").html(add_colors(data['output']));
+		     $("#logsMsg").removeClass("hidden");
+		 });
+	     });
+
 	 } else {
 	     $("#noDevicesMsg").removeClass("hidden");
 	     $("#genericActions").addClass("hidden");
@@ -153,12 +166,13 @@
 		<tr>
                     <td style="width:22%; vertical-align:top">&nbsp;</td>
                     <td style="width:78%">
-			<input type="hidden" name="action" value="logs" />
-			<input type="submit" name="submit" class="btn btn-primary" value="{{ lang._('View') }}" />
+			<input type="button" name="submit" class="btn btn-primary" value="{{ lang._('View') }}" id="viewLogsAct" />
                     </td>
 		</tr>
             </table>
         </div>
+	<pre class="hidden" id="logsMsg">
+	</pre>
     </section>
 
     <section class="col-xs-12">
