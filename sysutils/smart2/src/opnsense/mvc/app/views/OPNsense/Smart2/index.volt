@@ -1,4 +1,13 @@
 <script type="text/javascript">
+
+ // Highlights the words "PASSED", "FAILED", and "WARNING".
+ var add_colors = function (text) {
+     return text
+	 .replace(/PASSED/g, '<span class="text-success">{{ lang._("PASSED") }}</span>')
+	 .replace(/FAILED/g, '<span class="text-danger">{{ lang._("FAILED") }}</span>')
+	 .replace(/WARNING/g, '<span class="text-warning">{{ lang._("WARNING") }}</span>');
+ };
+
  // Appends options to select device.
  var appendDeviceSelectOptions = function (deviceSelect, devices) {
      $.each (devices, function (index, value) {
@@ -22,6 +31,19 @@
 	     appendDeviceSelectOptions ($("#device2"), devices);
 	     appendDeviceSelectOptions ($("#device3"), devices);
 	     appendDeviceSelectOptions ($("#device4"), devices);
+
+	     $("#viewInfoAct").click (function () {
+		 var type = $("input[name='type']:checked").val ();
+		 var device = $("#device1").val ();
+
+		 ajaxCall (url="/api/smart2/service/info", sendData={
+		     "type" : type,
+		     "device" : device
+		 }, callback=function (data, status) {
+		     $("#infoMsg").html(add_colors(data['output']));
+		     $("#infoMsg").removeClass("hidden");
+		 });
+	     });
 
 	 } else {
 	     $("#noDevicesMsg").removeClass("hidden");
@@ -62,12 +84,13 @@
 		<tr>
 		    <td style="width:22%; vertical-align:top">&nbsp;</td>
 		    <td style="width:78%">
-			<input type="hidden" name="action" value="info" />
-			<input type="submit" name="submit" class="btn btn-primary" value="{{ lang._('View') }}" />
+			<input type="button" name="submit" class="btn btn-primary" value="{{ lang._('View') }}" id="viewInfoAct" />
 		    </td>
 		</tr>
 	    </table>
 	</div>
+	<pre class="hidden" id="infoMsg">
+	</pre>
     </section>
 
     <section class="col-xs-12">

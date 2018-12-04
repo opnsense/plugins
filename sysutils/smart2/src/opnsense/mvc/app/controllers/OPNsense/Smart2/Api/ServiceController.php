@@ -6,13 +6,39 @@ use \OPNsense\Core\Backend;
 
 class ServiceController extends ApiControllerBase
 {
+    private function getDevices ()
+    {
+        exec("/bin/ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devices);
+        return $devices;
+    }
+
     public function listAction ()
     {
+        if ($this->request->isPost())
+            return array("devices" => $this->getDevices ());
+
+        return array("message" => "Unable to run list action");
+    }
+
+    public function infoAction ()
+    {
         if ($this->request->isPost()) {
-            exec("/bin/ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devices);
-            return array("devices" => $devices);
+            $device = $this->request->getPost ('device');
+            $type   = $this->request->getPost ('type');
+
+            if (!in_array ($device, $this->getDevices ()))
+                return array("message" => "Invalid device name");
+
+            $valid_info_types = array("i", "H", "c", "A", "a");
+
+            if (!in_array ($type, $valid_info_types))
+                return array("message" => "Invalid info type");
+
+            $output = shell_exec ("/usr/local/sbin/smartctl -" . escapeshellarg($type) . " /dev/" . escapeshellarg($device));
+
+            return array("output" => $output);
         }
 
-        return array("message" => "unable to run list action");
+        return array("message" => "Unable to run info action");
     }
 }
