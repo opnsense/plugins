@@ -71,6 +71,19 @@
 		 });
 	     });
 
+	     $("#abortTestAct").click (function () {
+		 if (!confirm("{{ lang._('Do you really want to abort the test?') }}"))
+		     return;
+
+		 var device = $("#device4").val ();
+
+		 ajaxCall (url="/api/smart2/service/abort", sendData={
+		     "device" : device
+		 }, callback=function (data, status) {
+		     $("#abortTestMsg").html(data['output']);
+		     $("#abortTestMsg").removeClass("hidden");
+		 });
+	     });
 	 } else {
 	     $("#noDevicesMsg").removeClass("hidden");
 	     $("#genericActions").addClass("hidden");
@@ -185,7 +198,7 @@
 		</tr>
             </table>
         </div>
-	<pre class="hidden" id="logsMsg">
+ 	<pre class="hidden" id="logsMsg">
 	</pre>
     </section>
 
@@ -205,12 +218,12 @@
 		<tr>
                     <td style="width:22%; vertical-align:top">&nbsp;</td>
                     <td style="width:78%">
-			<input type="hidden" name="action" value="logs" />
-			<input type="submit" name="submit" value="{{ lang._('Abort') }}" class="btn btn-primary"
-                               onclick="return confirm(\"{{ lang._('Do you really want to abort the test?') }}\")" />
+			<input type="button" name="submit" value="{{ lang._('Abort') }}" class="btn btn-primary" id="abortTestAct" />
                     </td>
 		</tr>
             </table>
         </div>
+ 	<pre class="hidden" id="abortTestMsg">
+	</pre>
     </section>
 </div>

@@ -85,4 +85,20 @@ class ServiceController extends ApiControllerBase
 
         return array("message" => "Unable to run test action");
     }
+
+    public function abortAction ()
+    {
+        if ($this->request->isPost()) {
+            $device = $this->request->getPost ('device');
+
+            if (!in_array ($device, $this->getDevices ()))
+                return array("message" => "Invalid device name");
+
+            $output = shell_exec ("/usr/local/sbin/smartctl -X /dev/" . escapeshellarg($device));
+
+            return array("output" => $output);
+        }
+
+        return array("message" => "Unable to run abort action");
+    }
 }
