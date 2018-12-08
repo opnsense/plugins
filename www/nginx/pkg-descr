@@ -13,6 +13,9 @@ Plugin Changelog
 * Add proxy options for ignore client abort and disabling buffering
 * Add logviewer support for streams
 * Fix charset is not defined bug (contributed by ccesario [1])
+* Add an existence check for locations
+* Add PROXY protocol for HTTP and Streams frontend
+* Add PROXY backend support for Streams
 
 [1] https://github.com/opnsense/plugins/pull/1035
 
