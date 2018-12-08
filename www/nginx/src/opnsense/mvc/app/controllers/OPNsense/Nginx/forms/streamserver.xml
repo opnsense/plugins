@@ -10,6 +10,21 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>streamserver.proxy_protocol</id>
+    <label>PROXY Protocol</label>
+    <type>checkbox</type>
+    <help>If you enable the proxy protocol, a downstream proxy can send the client IP and port before the real traffic is set.</help>
+  </field>
+  <field>
+    <id>httpserver.trusted_proxies</id>
+    <label>Trusted Proxies</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
+  </field>
+  <field>
     <id>streamserver.certificate</id>
     <label>TLS Certificate</label>
     <type>dropdown</type>
