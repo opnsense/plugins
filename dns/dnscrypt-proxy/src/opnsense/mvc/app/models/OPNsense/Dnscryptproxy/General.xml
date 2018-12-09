@@ -11,6 +11,10 @@
             <default>127.0.0.1:5353,[::1]:5353</default>
             <Required>N</Required>
         </listen_addresses>
+        <allowprivileged type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </allowprivileged>
         <max_clients type="IntegerField">
             <default>250</default>
             <Required>Y</Required>

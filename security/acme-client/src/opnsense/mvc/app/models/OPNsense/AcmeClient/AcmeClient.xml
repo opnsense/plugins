@@ -339,6 +339,7 @@
                     <Required>Y</Required>
                     <default>dns_nsupdate</default>
                     <OptionValues>
+                        <dns_acmedns>ACME DNS API</dns_acmedns>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
                         <dns_autodns>autoDNS (InternetX) API</dns_autodns>
@@ -654,7 +655,19 @@
                 </dns_zilore_key>
                 <dns_zm_key type="TextField">
                     <Required>N</Required>
-                </dns_zm_key>
+                </dns_zm_key>	
+                <dns_acmedns_user type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_user>
+                <dns_acmedns_password type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_password>
+                <dns_acmedns_subdomain type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_subdomain>
+                <dns_acmedns_updateurl type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_updateurl>
             </validation>
         </validations>
         <actions>
