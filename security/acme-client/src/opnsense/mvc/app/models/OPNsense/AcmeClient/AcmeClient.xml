@@ -362,6 +362,7 @@
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
+                        <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
                         <dns_inwx>INWX XMLRPC API</dns_inwx>
@@ -384,7 +385,6 @@
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
-                        <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">
