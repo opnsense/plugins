@@ -656,16 +656,16 @@
                 <dns_zm_key type="TextField">
                     <Required>N</Required>
                 </dns_zm_key>	
-                    <dns_acmedns_user type="TextField">
+                <dns_acmedns_user type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_user>
                 <dns_acmedns_password type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_password>
-                   <dns_acmedns_subdomain type="TextField">
+                <dns_acmedns_subdomain type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_subdomain>
-                   <dns_acmedns_updateurl type="TextField">
+                <dns_acmedns_updateurl type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_updateurl>
             </validation>
