@@ -774,6 +774,6 @@
         <id>validation.dns_acmedns_updateurl</id>
         <label>Update URL</label>
         <type>text</type>
-		<help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
+        <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
     </field> 
 </form>
