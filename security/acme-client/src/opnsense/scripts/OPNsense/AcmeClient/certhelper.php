@@ -776,7 +776,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_zonomi':
                 $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
-                break;	
+                break;
+            case 'dns_gdnsdk':
+                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
+                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
+                break;   
             case 'dns_acmedns':
                 $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
                 $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
