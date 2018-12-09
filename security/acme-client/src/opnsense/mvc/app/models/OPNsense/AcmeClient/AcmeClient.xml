@@ -339,6 +339,7 @@
                     <Required>Y</Required>
                     <default>dns_nsupdate</default>
                     <OptionValues>
+                        <dns_acmedns>ACME DNS API</dns_acmedns>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
                         <dns_autodns>autoDNS (InternetX) API</dns_autodns>
@@ -383,7 +384,6 @@
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
-                        <dns_acmedns>ACME DNS API</dns_acmedns>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">
