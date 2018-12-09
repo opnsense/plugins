@@ -8,7 +8,10 @@ class ServiceController extends ApiControllerBase
 {
     private function getDevices ()
     {
-        exec("/bin/ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devices);
+        $backend = new Backend();
+
+        $devices = preg_split ("/[\s]+/", trim($backend->configdRun("smart2 list")));
+
         return $devices;
     }
 
@@ -34,7 +37,9 @@ class ServiceController extends ApiControllerBase
             if (!in_array ($type, $valid_info_types))
                 return array("message" => "Invalid info type");
 
-            $output = shell_exec ("/usr/local/sbin/smartctl -" . escapeshellarg($type) . " /dev/" . escapeshellarg($device));
+            $backend = new Backend();
+
+            $output = $backend->configdpRun("smart2", array("info", $type, "/dev/".$device));
 
             return array("output" => $output);
         }
@@ -56,7 +61,9 @@ class ServiceController extends ApiControllerBase
             if (!in_array ($type, $valid_log_types))
                 return array("message" => "Invalid log type");
 
-            $output = shell_exec ("/usr/local/sbin/smartctl -l " . escapeshellarg($type) . " /dev/" . escapeshellarg($device));
+            $backend = new Backend();
+
+            $output = $backend->configdpRun("smart2", array("log", $type, "/dev/".$device));
 
             return array("output" => $output);
         }
@@ -78,7 +85,9 @@ class ServiceController extends ApiControllerBase
             if (!in_array ($type, $valid_test_types))
                 return array("message" => "Invalid test type");
 
-            $output = shell_exec ("/usr/local/sbin/smartctl -t " . escapeshellarg($type) . " /dev/" . escapeshellarg($device));
+            $backend = new Backend();
+
+            $output = $backend->configdpRun("smart2", array("test", $type, "/dev/".$device));
 
             return array("output" => $output);
         }
@@ -94,7 +103,9 @@ class ServiceController extends ApiControllerBase
             if (!in_array ($device, $this->getDevices ()))
                 return array("message" => "Invalid device name");
 
-            $output = shell_exec ("/usr/local/sbin/smartctl -X /dev/" . escapeshellarg($device));
+            $backend = new Backend();
+
+            $output = $backend->configdpRun("smart2", array("abort", "/dev/".$device));
 
             return array("output" => $output);
         }
