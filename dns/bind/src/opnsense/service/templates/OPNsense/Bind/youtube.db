@@ -1,0 +1,15 @@
+$TTL    86400
+@       IN      SOA     opnsense.localdomain. hostmaster.opnsense.localdomain. (
+               2018111401
+                    28800
+                     7200
+                   864000
+                     3600 )
+@               NS      localhost.
+{% if helpers.exists('OPNsense.bind.dnsbl.forcesafeyoutube') and OPNsense.bind.dnsbl.forcesafeyoutube == '1' %}
+www.youtube.com           IN CNAME restrict.youtube.com.
+m.youtube.com             IN CNAME restrict.youtube.com.
+youtubei.googleapis.com   IN CNAME restrict.youtube.com.
+youtube.googleapis.com    IN CNAME restrict.youtube.com.
+www.youtube-nocookie.com  IN CNAME restrict.youtube.com.
+{% endif %}

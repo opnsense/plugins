@@ -781,6 +781,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
                 $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
                 break;   
+            case 'dns_acmedns':
+                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
+                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
+                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
+                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
+                break;			
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);
                 return(1);

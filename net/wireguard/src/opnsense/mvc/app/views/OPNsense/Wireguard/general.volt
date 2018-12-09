@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#servers">{{ lang._('Server') }}</a></li>
+    <li><a data-toggle="tab" href="#servers">{{ lang._('Local') }}</a></li>
     <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>
     <li><a data-toggle="tab" href="#showconf">{{ lang._('List Configuration') }}</a></li>
     <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
@@ -113,7 +113,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardClient,'id':'dialogEditWireguardClient','label':lang._('Edit Endpoint')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardServer,'id':'dialogEditWireguardServer','label':lang._('Edit Server')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardServer,'id':'dialogEditWireguardServer','label':lang._('Edit Local Configuration')])}}
 
 <script>
 
