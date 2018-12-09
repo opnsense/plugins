@@ -24,7 +24,6 @@ secret=/usr/local/etc/openconnect.secret
 
 [ -z "$openconnect_enable" ] && openconnect_enable="NO"
 
-# status of openconnect
 openconnect_status()
 {
 	 if [ -n "$rc_pid" ]; then
@@ -35,16 +34,17 @@ openconnect_status()
 	 fi
 }
 
-# stop openconnect
 openconnect_stop()
 {
-	echo "stopping openconnect"
-	killall openconnect
-	ifconfig ocvpn0 destroy
-	return 0
+        if [ -n "$rc_pid" ]; then
+            echo "stopping openconnect"
+            ifconfig ocvpn0 name tun30000
+            kill -2 ${rc_pid}
+        else
+            echo "${name} is not running."
+        fi
 }
 
-# start openconnect
 openconnect_start()
 {
         echo "starting openconnect"
