@@ -383,6 +383,7 @@
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
+						<dns_acmedns>ACME DNS API</dns_acmedns>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">
@@ -654,7 +655,19 @@
                 </dns_zilore_key>
                 <dns_zm_key type="TextField">
                     <Required>N</Required>
-                </dns_zm_key>
+                </dns_zm_key>	
+				<dns_acmedns_user type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_user>
+                <dns_acmedns_password type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_password>
+				<dns_acmedns_subdomain type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_subdomain>
+				<dns_acmedns_updateurl type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_updateurl>
             </validation>
         </validations>
         <actions>

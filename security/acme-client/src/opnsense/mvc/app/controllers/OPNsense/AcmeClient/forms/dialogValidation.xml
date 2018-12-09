@@ -750,4 +750,30 @@
         <label>API Key</label>
         <type>text</type>
     </field>
+	<field>
+        <label>ACME DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_acmedns</style>
+	</field>
+    <field>
+        <id>validation.dns_acmedns_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_acmedns_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_acmedns_subdomain</id>
+        <label>Subdomain</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_acmedns_updateurl</id>
+        <label>Update URL</label>
+        <type>text</type>
+		<help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
+    </field> 
 </form>
