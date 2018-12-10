@@ -115,4 +115,3 @@ switch ($mode) {
     default:
         die('{"error": "action (' . $mode . ') not found"}');
 }
-
