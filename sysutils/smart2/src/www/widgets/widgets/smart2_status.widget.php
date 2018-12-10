@@ -28,7 +28,7 @@
  */
 
 require_once("guiconfig.inc");
-require_once("widgets/include/smart_status.inc");
+require_once("widgets/include/smart2_status.inc");
 
 ?>
 
