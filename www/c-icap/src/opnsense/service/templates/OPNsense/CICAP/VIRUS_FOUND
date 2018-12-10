@@ -55,7 +55,7 @@
     </p>
 {% if helpers.exists('OPNsense.cicap.general.serveradmin') and OPNsense.cicap.general.serveradmin != '' %}
     <p>For more information contact {{ OPNsense.cicap.general.serveradmin }}</p>
-{% else %}    
+{% else %}
     <p>For more information contact your system administrator</p>
 {% endif %}
     <hr />
