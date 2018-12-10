@@ -94,8 +94,7 @@ class WolController extends ApiMutableModelControllerBase
             return array('error' => 'Must be called via POST');
         }
         $results = array('results' => array());
-        $wol = $this->getModel()->wolentry->__items;
-        foreach ($wol as $wolent) {
+        foreach ($this->getModel()->wolentry->iterateItems() as $wolent) {
             $result = array('mac' => (string)$wolent->mac);
             $this->wakeHostByNode($wolent, $result);
             $results['results'][] = $result;
