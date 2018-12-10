@@ -74,6 +74,10 @@
         <Required>Y</Required>
         <multiple>Y</multiple>
       </serverentries>
+      <proxy_protocol type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </proxy_protocol>
       <store type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -439,8 +443,16 @@
         <Required>Y</Required>
       </ruletype>
       <message type="TextField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>SetIfConstraint</type>
+            <field>match_type</field>
+            <check>id</check>
+          </check001>
+        </Constraints>
       </message>
       <identifier type="IntegerField">
         <Required>Y</Required>
@@ -455,8 +467,16 @@
         <pattern>/^[^"]+$/</pattern>
       </dollar_url>
       <match_value type="TextField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>SetIfConstraint</type>
+            <field>match_type</field>
+            <check>id</check>
+          </check001>
+        </Constraints>
       </match_value>
       <match_type type="OptionField">
         <Required>Y</Required>
@@ -470,8 +490,16 @@
         <Required>Y</Required>
       </negate>
       <score type="IntegerField">
-        <Required>Y</Required>
+        <Required>N</Required>
         <default>8</default>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be set.</ValidationMessage>
+            <type>SetIfConstraint</type>
+            <field>match_type</field>
+            <check>id</check>
+          </check001>
+        </Constraints>
       </score>
       <regex type="BooleanField">
         <Required>Y</Required>
@@ -514,6 +542,23 @@
         <Required>N</Required>
         <default>443</default>
       </listen_https_port>
+      <proxy_protocol type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </proxy_protocol>
+      <trusted_proxies type="CSVListField">
+        <Required>N</Required>
+        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
+        <multiple>Y</multiple>
+      </trusted_proxies>
+      <real_ip_source type="OptionField">
+        <OptionValues>
+          <X-Real-IP>X-Real-IP (default)</X-Real-IP>
+          <X-Forwarded-For>X-Forwarded-For</X-Forwarded-For>
+          <proxy_protocol>PROXY Protocol</proxy_protocol>
+        </OptionValues>
+        <Required>N</Required>
+      </real_ip_source>
       <locations type="ModelRelationField">
         <Model>
           <template>
@@ -658,11 +703,26 @@
       <listen_port type="PortField">
         <Required>N</Required>
         <default>80</default>
+        <Constraints>
+          <check001>
+            <ValidationMessage>You can only use one server at this port.</ValidationMessage>
+            <type>UniqueConstraint</type>
+          </check001>
+        </Constraints>
       </listen_port>
       <udp type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
       </udp>
+      <trusted_proxies type="CSVListField">
+        <Required>N</Required>
+        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
+        <multiple>Y</multiple>
+      </trusted_proxies>
+      <proxy_protocol type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </proxy_protocol>
       <certificate type="CertificateField">
         <Type>cert</Type>
         <Required>N</Required>

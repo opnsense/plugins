@@ -11,6 +11,13 @@
     <type>select_multiple</type>
   </field>
   <field>
+    <id>upstream.proxy_protocol</id>
+    <label>PROXY Protocol</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the proxy protocol, an upstream proxy or server will get the client IP and the server port before the real traffic is sent.</help>
+  </field>
+  <field>
     <id>upstream.tls_enable</id>
     <label>Enable TLS (HTTPS)</label>
     <help>Authenticate on the Server using a client certificate.</help>

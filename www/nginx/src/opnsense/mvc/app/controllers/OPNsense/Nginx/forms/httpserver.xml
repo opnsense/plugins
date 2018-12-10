@@ -10,6 +10,30 @@
     <type>text</type>
   </field>
   <field>
+    <id>httpserver.proxy_protocol</id>
+    <label>PROXY Protocol</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the proxy protocol, a downstream proxy can send the client IP and port before the real traffic is set.</help>
+  </field>
+  <field>
+    <id>httpserver.trusted_proxies</id>
+    <label>Trusted Proxies</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
+  </field>
+  <field>
+    <id>httpserver.real_ip_source</id>
+    <label>Real IP Source</label>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>X-Real-IP and X-Forwarded-For are HTTP headers, while PROXY protocol is a protocol which needs to be enabled.</help>
+    <type>dropdown</type>
+  </field>
+  <field>
     <id>httpserver.servername</id>
     <label>Server Name</label>
     <allownew>true</allownew>
