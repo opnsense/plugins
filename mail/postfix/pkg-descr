@@ -9,6 +9,8 @@ Plugin Changelog
 1.7
 
 * Add Address Rewriting, allows to rewrite e.g. @example.com to @example.net.
+* Add Sender BCC and Recipient BCC.
+* Allow Domain Masquerading when using internal domain names.
 
 
 WWW: http://www.postfix.org/
