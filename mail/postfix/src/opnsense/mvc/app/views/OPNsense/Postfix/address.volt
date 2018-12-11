@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-Copyright (C) 2017-2018 Michael Muenz <m.muenz@gmail.com>
+Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -34,13 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
          * link grid actions
          *************************************************************************************************************/
 
-        $("#grid-senders").UIBootgrid(
-            {   'search':'/api/postfix/sender/searchSender',
-                'get':'/api/postfix/sender/getSender/',
-                'set':'/api/postfix/sender/setSender/',
-                'add':'/api/postfix/sender/addSender/',
-                'del':'/api/postfix/sender/delSender/',
-                'toggle':'/api/postfix/sender/toggleSender/'
+        $("#grid-addresses").UIBootgrid(
+            {   'search':'/api/postfix/address/searchAddress',
+                'get':'/api/postfix/address/getAddress/',
+                'set':'/api/postfix/address/setAddress/',
+                'add':'/api/postfix/address/addAddress/',
+                'del':'/api/postfix/address/delAddress/',
+                'toggle':'/api/postfix/address/toggleAddress/'
             }
         );
 
@@ -51,16 +51,17 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <div class="tab-content content-box tab-content">
-    <div id="senders" class="tab-pane fade in active">
-        <!-- tab page "senders" -->
-        <table id="grid-senders" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixSender">
+    <div id="addresses" class="tab-pane fade in active">
+        <!-- tab page "addresses" -->
+        <table id="grid-addresses" class="table table-responsive" data-editDialog="dialogEditPostfixAddress">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="address" data-type="string" data-visible="true">{{ lang._('Address') }}</th>
-                <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Rewrite From') }}</th>
+                <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('Rewrite To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
             </thead>
             <tbody>
             </tbody>
@@ -74,12 +75,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/><br/>
+        </div>
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixSender,'id':'dialogEditPostfixSender','label':lang._('Edit Sender')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixAddress,'id':'dialogEditPostfixAddress','label':lang._('Edit Address Rewriting')])}}

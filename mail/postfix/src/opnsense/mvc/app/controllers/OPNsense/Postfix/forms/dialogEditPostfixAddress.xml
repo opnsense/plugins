@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>address.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the address rewriting setting.</help>
+    </field>
+    <field>
+        <id>address.from</id>
+        <label>Rewrite From</label>
+        <type>text</type>
+        <help>Set a pattern to match line user@example.com or @example.com</help>
+    </field>
+    <field>
+        <id>address.to</id>
+        <label>Rewrite To</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set here how to rewrite the Rewrite From pattern.</help>
+    </field>
+</form>

@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-Copyright (C) 2017-2018 Michael Muenz <m.muenz@gmail.com>
+Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -34,13 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
          * link grid actions
          *************************************************************************************************************/
 
-        $("#grid-senders").UIBootgrid(
-            {   'search':'/api/postfix/sender/searchSender',
-                'get':'/api/postfix/sender/getSender/',
-                'set':'/api/postfix/sender/setSender/',
-                'add':'/api/postfix/sender/addSender/',
-                'del':'/api/postfix/sender/delSender/',
-                'toggle':'/api/postfix/sender/toggleSender/'
+        $("#grid-senderbccs").UIBootgrid(
+            {   'search':'/api/postfix/senderbcc/searchSenderbcc',
+                'get':'/api/postfix/senderbcc/getSenderbcc/',
+                'set':'/api/postfix/senderbcc/setSenderbcc/',
+                'add':'/api/postfix/senderbcc/addSenderbcc/',
+                'del':'/api/postfix/senderbcc/delSenderbcc/',
+                'toggle':'/api/postfix/senderbcc/toggleSenderbcc/'
             }
         );
 
@@ -51,16 +51,17 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <div class="tab-content content-box tab-content">
-    <div id="senders" class="tab-pane fade in active">
-        <!-- tab page "senders" -->
-        <table id="grid-senders" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixSender">
+    <div id="senderbccs" class="tab-pane fade in active">
+        <!-- tab page "senderbccs" -->
+        <table id="grid-senderbccs" class="table table-responsive" data-editDialog="dialogEditPostfixSenderbcc">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="address" data-type="string" data-visible="true">{{ lang._('Address') }}</th>
-                <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                <th data-column-id="from" data-type="string" data-visible="true">{{ lang._('Sender Address') }}</th>
+                <th data-column-id="to" data-type="string" data-visible="true">{{ lang._('BCC To') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>
@@ -74,12 +75,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/><br/>
+        </div>
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixSender,'id':'dialogEditPostfixSender','label':lang._('Edit Sender')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixSenderbcc,'id':'dialogEditPostfixSenderbcc','label':lang._('Edit Sender BCC')])}}

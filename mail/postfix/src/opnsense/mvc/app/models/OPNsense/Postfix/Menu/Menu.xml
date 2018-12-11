@@ -4,7 +4,10 @@
       <General url="/ui/postfix/general/index" order="10"/>
       <Domains url="/ui/postfix/domain/index" order="20"/>
       <Recipients url="/ui/postfix/recipient/index" order="30"/>
+      <Recipientbcc VisibleName="Recipient BCC" url="/ui/postfix/recipientbcc/index" order="35"/>
       <Senders url="/ui/postfix/sender/index" order="40"/>
+      <Senderbcc VisibleName="Sender BCC" url="/ui/postfix/senderbcc/index" order="45"/>
+      <Address VisibleName="Address Rewriting" url="/ui/postfix/address/index" order="50"/>
       <LogFile VisibleName="Log File" order="50" url="/diag_logs_postfix.php"/>
     </Postfix>
   </Services>
