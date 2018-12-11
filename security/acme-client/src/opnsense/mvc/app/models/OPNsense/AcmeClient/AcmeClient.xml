@@ -339,6 +339,7 @@
                     <Required>Y</Required>
                     <default>dns_nsupdate</default>
                     <OptionValues>
+                        <dns_acmedns>ACME DNS API</dns_acmedns>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
                         <dns_autodns>autoDNS (InternetX) API</dns_autodns>
@@ -361,6 +362,7 @@
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
+                        <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
                         <dns_inwx>INWX XMLRPC API</dns_inwx>
@@ -655,6 +657,24 @@
                 <dns_zm_key type="TextField">
                     <Required>N</Required>
                 </dns_zm_key>
+                <dns_gdnsdk_user type="TextField">
+                   <Required>N</Required>
+                </dns_gdnsdk_user>
+                <dns_gdnsdk_password type="TextField">
+                   <Required>N</Required>
+                </dns_gdnsdk_password>
+                <dns_acmedns_user type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_user>
+                <dns_acmedns_password type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_password>
+                <dns_acmedns_subdomain type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_subdomain>
+                <dns_acmedns_updateurl type="TextField">
+                   <Required>N</Required>
+                </dns_acmedns_updateurl>
             </validation>
         </validations>
         <actions>
