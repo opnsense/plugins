@@ -10,6 +10,30 @@
     <type>text</type>
   </field>
   <field>
+    <id>httpserver.proxy_protocol</id>
+    <label>PROXY Protocol</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable the proxy protocol, a downstream proxy can send the client IP and port before the real traffic is set.</help>
+  </field>
+  <field>
+    <id>httpserver.trusted_proxies</id>
+    <label>Trusted Proxies</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
+  </field>
+  <field>
+    <id>httpserver.real_ip_source</id>
+    <label>Real IP Source</label>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+    <help>X-Real-IP and X-Forwarded-For are HTTP headers, while PROXY protocol is a protocol which needs to be enabled.</help>
+    <type>dropdown</type>
+  </field>
+  <field>
     <id>httpserver.servername</id>
     <label>Server Name</label>
     <allownew>true</allownew>
@@ -33,6 +57,20 @@
     <id>httpserver.root</id>
     <label>File System Root</label>
     <type>text</type>
+  </field>
+  <field>
+    <id>httpserver.max_body_size</id>
+    <label>Maximum Body Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>If the request is larger, it will be rejectet with error 413 (Request Entity Too Large). For example, you can enter 200m.</help>
+  </field>
+  <field>
+    <id>httpserver.body_buffer_size</id>
+    <label>Body Buffer Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>If the request exceeds this size, it will be written to disk. Enter a number and a unit like 1m.</help>
   </field>
   <field>
     <id>httpserver.certificate</id>
@@ -78,6 +116,28 @@
     <type>checkbox</type>
     <advanced>true</advanced>
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
+  </field>
+  <field>
+    <id>httpserver.disable_bot_protection</id>
+    <label>Disable Bot Protection</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Blocks the request when a possibly bad bot is detected and adds the originating IP to the managed firewall alias for permanent blocking.</help>
+  </field>
+  <field>
+    <id>httpserver.ip_acl</id>
+    <label>IP ACL</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+  <field>
+    <id>httpserver.satisfy</id>
+    <label>Satisfy</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <style>selectpicker</style>
+    <help>All: All access restrictions must be fulfilled; Any: Any of the access restrictions must be fulfilled.</help>
   </field>
   <field>
     <id>httpserver.naxsi_extensive_log</id>

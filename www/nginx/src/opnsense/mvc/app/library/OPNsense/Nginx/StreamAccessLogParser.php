@@ -1,6 +1,7 @@
 <?php
 /*
-    Copyright (C) 2017 Fabian Franz
+
+    Copyright (C) 2018 Fabian Franz
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -27,39 +28,36 @@
 
 namespace OPNsense\Nginx;
 
-use OPNsense\Base\BaseModel;
-
-class Nginx extends BaseModel
+class StreamAccessLogParser
 {
-    /**
-     * @param $uuid string UUID of sni_hostname_upstream_map
-     * @return array list of UUIDs
-     */
-    function find_sni_hostname_upstream_map_entry_uuids($uuid)
+    private $file_name;
+    private $lines;
+    private $result;
+
+    private const LogLineRegex = '/(\S+) \[([\d\sa-z\:\-\/\+]+)\] (\S+?) (\d+) (\d+) (\d+) (\d+(?:\.\d+)?)/i';
+
+    function __construct($file_name)
     {
-        return $this->find_x_uuids($uuid, 'sni_hostname_upstream_map.');
+        $this->file_name = $file_name;
+        $this->lines = file($this->file_name);
+        $this->result = array_map([$this, 'parse_line'], $this->lines);
+    }
+    private function parse_line($line)
+    {
+        $container = new StreamAccessLogLine();
+        if (preg_match(self::LogLineRegex, $line, $data)) {
+            $container->remote_ip = $data[1];
+            $container->time = $data[2];
+            $container->status = $data[3];
+            $container->bytes_sent = $data[4];
+            $container->bytes_received = $data[5];
+            $container->session_time = $data[6];
+        }
+        return $container;
     }
 
-    /**
-     * @param $uuid string UUID of sni_hostname_upstream_map
-     * @return array list of UUIDs
-     */
-    function find_ip_acl_uuids($uuid)
+    public function get_result()
     {
-        return $this->find_x_uuids($uuid, 'ip_acl.');
-    }
-
-    private function find_x_uuids($uuid, $prefix)
-    {
-        $tmp = $this->getNodeByReference($prefix . $uuid);
-        if ($tmp == null) {
-            return [];
-        }
-        $tmp = (string)$tmp->data;
-        if (empty($tmp)) {
-            return [];
-        }
-
-        return explode(',', $tmp);
+        return $this->result;
     }
 }

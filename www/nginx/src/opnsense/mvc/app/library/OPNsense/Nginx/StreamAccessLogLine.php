@@ -1,6 +1,7 @@
 <?php
 /*
-    Copyright (C) 2017 Fabian Franz
+
+    Copyright (C) 2018 Fabian Franz
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -27,39 +28,12 @@
 
 namespace OPNsense\Nginx;
 
-use OPNsense\Base\BaseModel;
-
-class Nginx extends BaseModel
+class StreamAccessLogLine
 {
-    /**
-     * @param $uuid string UUID of sni_hostname_upstream_map
-     * @return array list of UUIDs
-     */
-    function find_sni_hostname_upstream_map_entry_uuids($uuid)
-    {
-        return $this->find_x_uuids($uuid, 'sni_hostname_upstream_map.');
-    }
-
-    /**
-     * @param $uuid string UUID of sni_hostname_upstream_map
-     * @return array list of UUIDs
-     */
-    function find_ip_acl_uuids($uuid)
-    {
-        return $this->find_x_uuids($uuid, 'ip_acl.');
-    }
-
-    private function find_x_uuids($uuid, $prefix)
-    {
-        $tmp = $this->getNodeByReference($prefix . $uuid);
-        if ($tmp == null) {
-            return [];
-        }
-        $tmp = (string)$tmp->data;
-        if (empty($tmp)) {
-            return [];
-        }
-
-        return explode(',', $tmp);
-    }
+    public $remote_ip;
+    public $time;
+    public $status;
+    public $bytes_sent;
+    public $bytes_received;
+    public $session_time;
 }

@@ -1,0 +1,76 @@
+<form>
+  <field>
+    <id>streamserver.listen_port</id>
+    <label>Listen Port</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>streamserver.udp</id>
+    <label>UDP Port</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>streamserver.proxy_protocol</id>
+    <label>PROXY Protocol</label>
+    <type>checkbox</type>
+    <help>If you enable the proxy protocol, a downstream proxy can send the client IP and port before the real traffic is set.</help>
+  </field>
+  <field>
+    <id>httpserver.trusted_proxies</id>
+    <label>Trusted Proxies</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
+  </field>
+  <field>
+    <id>streamserver.certificate</id>
+    <label>TLS Certificate</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>streamserver.ca</id>
+    <label>CA Certificate</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>streamserver.verify_client</id>
+    <label>Verify Client Certificate</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[<ul><li>On: the certificate is requested and validated. Use this option to protect a service with TLS authentication.</li><li>Off: The certificate is not requested. Choose this option for a normal website.</li><li>Optional: The certificate is requested and validated if existing. Choose this option for websites, with TLS login support or mixed TLS protected API and web content.</li><li>Optional, don't verify: Do accept the certificate and let the application choose what to do. Choose this option, for the same reasons as optional but in this case, the request is passed to the backend without rejecting untrusted certificates.</li></ul>]]></help>
+  </field>
+  <field>
+    <id>streamserver.access_log_format</id>
+    <label>Access Log Format</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>streamserver.route_field</id>
+    <label>Route With</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+  </field>
+  <field>
+    <id>streamserver.upstream</id>
+    <label>Upstream Servers</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>Select an upstream to proxy to.</help>
+  </field>
+  <field>
+    <id>streamserver.sni_upstream_map</id>
+    <label>SNI Upstream Mapping</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>Select an upstream map to choose the host based on the name given by the client.</help>
+  </field>
+  <field>
+    <id>streamserver.ip_acl</id>
+    <label>IP ACL</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
+  </field>
+</form>

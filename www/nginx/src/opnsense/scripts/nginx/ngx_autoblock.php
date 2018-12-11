@@ -89,7 +89,7 @@ $log_lines = $log_parser->get_result();
 $model = new Alias();
 
 $blacklist_element = null;
-foreach ($model->aliases->alias->__items as $alias) {
+foreach ($model->aliases->alias->iterateItems() as $alias) {
     if ((string)$alias->name == $autoblock_alias_name) {
         if ((string)$alias->type != 'external') {
             nginx_print_error('alias is misconfigured - exiting');
@@ -111,7 +111,7 @@ if ($blacklist_element == null) {
 
 $model = new Nginx();
 $alias_ips = [];
-foreach ($model->ban->__items as $entry) {
+foreach ($model->ban->iterateItems() as $entry) {
     $alias_ips[] = (string)$entry->ip;
 }
 
@@ -126,22 +126,29 @@ $new_ips = array_unique(
     }, $log_lines)
 );
 
+$change_required = false;
+
 foreach (array_diff($new_ips, $alias_ips) as $new_ip) {
     $entry = $model->ban->Add();
     $entry->ip = $new_ip;
     $entry->time = time();
+    $change_required = true;
 }
-$val_result = $model->performValidation(false);
-if (count($val_result) !== 0) {
-    print_r($val_result);
-    exit(1);
+
+if ($change_required) {
+    $val_result = $model->performValidation(false);
+    if (count($val_result) !== 0) {
+        print_r($val_result);
+        exit(1);
+    }
+
+    $model->serializeToConfig();
+    Config::getInstance()->save();
 }
-$model->serializeToConfig();
-Config::getInstance()->save();
 echo '{"status":"saved"}';
 
 // all ips are used because the others may not be set for some reason
-foreach ($model->ban->__items as $entry) {
+foreach ($model->ban->iterateItems() as $entry) {
     add_to_blocklist($autoblock_alias_name, (string)$entry->ip);
 }
 
