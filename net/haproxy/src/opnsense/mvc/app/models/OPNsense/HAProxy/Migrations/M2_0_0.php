@@ -35,7 +35,7 @@ class M2_0_0 extends BaseModelMigration
     public function run($model)
     {
         // Migrate ACLs
-        foreach ($model->getNodeByReference('acls.acl')->__items as $acl) {
+        foreach ($model->getNodeByReference('acls.acl')->iterateItems() as $acl) {
             switch ((string)$acl->expression) {
                 case 'host_starts_with':
                     $acl->expression = 'hdr_beg';
@@ -145,7 +145,7 @@ class M2_0_0 extends BaseModelMigration
         }
 
         // Migrate Actions
-        foreach ($model->getNodeByReference('actions.action')->__items as $action) {
+        foreach ($model->getNodeByReference('actions.action')->iterateItems() as $action) {
             switch ((string)$action->type) {
                 case 'use_backend':
                     $action->use_backend = (string)$action->useBackend;
@@ -255,7 +255,7 @@ class M2_0_0 extends BaseModelMigration
         }
 
         // Migrate Healthchecks
-        foreach ($model->getNodeByReference('healthchecks.healthcheck')->__items as $hc) {
+        foreach ($model->getNodeByReference('healthchecks.healthcheck')->iterateItems() as $hc) {
             switch ((string)$hc->type) {
                 case 'agent':
                     $hc->agent_port = (string)$hc->agentPort;
