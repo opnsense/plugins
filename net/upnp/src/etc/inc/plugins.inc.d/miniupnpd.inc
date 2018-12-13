@@ -96,9 +96,21 @@ function miniupnpd_uuid()
     return substr($uuid, 0, 8).'-'.substr($uuid, 9, 4).'-'.substr($uuid, 13, 4).'-'.substr($uuid, 17, 4).'-'.substr($uuid, 21, 12);
 }
 
+function miniupnpd_permuser_list()
+{
+    $ret = array();
+    $count = 8;
+
+    for ($i = 1; $i <= $count; $i++) {
+        $ret[$i] = "permuser{$i}";
+    }
+
+    return $ret;
+}
+
 function miniupnpd_configure_do($verbose = false)
 {
-    global $config, $g;
+    global $config;
 
     miniupnpd_stop();
 
@@ -193,12 +205,12 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "serial=".strtoupper(substr(miniupnpd_uuid(), 0, 8))."\n";
 
             /* set model number */
-            $config_text .= "model_number={$g['product_version']}\n";
+            $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";
 
             /* upnp access restrictions */
-            for ($i=1; $i<=4; $i++) {
-                if ($upnp_config["permuser{$i}"]) {
-                    $config_text .= "{$upnp_config["permuser{$i}"]}\n";
+            foreach (miniupnpd_permuser_list() as $permuser) {
+                if (!empty($upnp_config[$permuser])) {
+                    $config_text .= "{$upnp_config[$permuser]}\n";
                 }
             }
 

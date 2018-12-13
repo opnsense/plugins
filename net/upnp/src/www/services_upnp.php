@@ -34,7 +34,8 @@ require_once("filter.inc");
 require_once("system.inc");
 require_once("plugins.inc.d/miniupnpd.inc");
 
-function upnp_validate_ip($ip) {
+function miniupnpd_validate_ip($ip)
+{
     /* validate cidr */
     $ip_array = array();
     $ip_array = explode('/', $ip);
@@ -50,15 +51,18 @@ function upnp_validate_ip($ip) {
     if (!is_ipaddr($ip_array[0])) {
         return false;
     }
+
     return true;
 }
 
-function upnp_validate_port($port) {
+function miniupnpd_validate_port($port)
+{
     foreach (explode('-', $port) as $sub) {
         if ($sub < 0 || $sub > 65535 || !is_numeric($sub)) {
             return false;
         }
     }
+
     return true;
 }
 
@@ -66,8 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig = array();
 
     $copy_fields = array('enable', 'enable_upnp', 'enable_natpmp', 'ext_iface', 'iface_array', 'download',
-                         'upload', 'overridewanip', 'logpackets', 'sysuptime', 'permdefault', 'permuser1',
-                         'permuser2', 'permuser3', 'permuser4');
+                         'upload', 'overridewanip', 'logpackets', 'sysuptime', 'permdefault');
+
+    foreach (miniupnpd_permuser_list() as $permuser) {
+        $copy_fields[] = $permuser;
+    }
 
     foreach ($copy_fields as $fieldname) {
         if (isset($config['installedpackages']['miniupnpd']['config'][0][$fieldname])) {
@@ -109,9 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     /* user permissions validation */
-    for($i=1; $i<=4; $i++) {
-        if (!empty($pconfig["permuser{$i}"])) {
-            $perm = explode(' ',$pconfig["permuser{$i}"]);
+    foreach (miniupnpd_permuser_list() as $i => $permuser) {
+        if (!empty($pconfig[$permuser])) {
+            $perm = explode(' ', $pconfig[$permuser]);
             /* should explode to 4 args */
             if (count($perm) != 4) {
                 $input_errors[] = sprintf(gettext("You must follow the specified format in the 'User specified permissions %s' field"), $i);
@@ -121,11 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $input_errors[] = sprintf(gettext("You must begin with allow or deny in the 'User specified permissions %s' field"), $i);
               }
               /* verify port or port range */
-              if (!upnp_validate_port($perm[1]) || !upnp_validate_port($perm[3])) {
+              if (!miniupnpd_validate_port($perm[1]) || !miniupnpd_validate_port($perm[3])) {
                   $input_errors[] = sprintf(gettext("You must specify a port or port range between 0 and 65535 in the 'User specified permissions %s' field"), $i);
               }
               /* verify ip address */
-              if (!upnp_validate_ip($perm[2])) {
+              if (!miniupnpd_validate_ip($perm[2])) {
                   $input_errors[] = sprintf(gettext("You must specify a valid ip address in the 'User specified permissions %s' field"), $i);
               }
             }
@@ -140,8 +147,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // text field types
-        foreach (array('ext_iface', 'download', 'upload', 'overridewanip', 'permuser1',
-                       'permuser2', 'permuser3', 'permuser4') as $fieldname) {
+        foreach (array('ext_iface', 'download', 'upload', 'overridewanip') as $fieldname) {
+            $upnp[$fieldname] = $pconfig[$fieldname];
+        }
+        foreach (miniupnpd_permuser_list() as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         // array types
@@ -313,43 +322,24 @@ include("head.inc");
                     </tr>
                   </thead>
                   <tbody>
+<?php foreach (miniupnpd_permuser_list() as $i => $permuser): ?>
                     <tr>
-                      <td style="width:22%"><a id="help_for_permuser1" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 1");?></td>
+<?php if ($i == 1): ?>
+                      <td style="width:22%"><a id="help_for_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext('Entry') . ' ' . $i ?></td>
+<?php else: ?>
+                      <td style="width:22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext('Entry') . ' ' . $i ?></td>
+<?php endif ?>
                       <td style="width:78%">
-                        <input name="permuser1" type="text" value="<?=$pconfig['permuser1'];?>" />
-                        <div class="hidden" data-for="help_for_permuser1">
+                        <input name="<?= html_safe($permuser) ?>" type="text" value="<?= $pconfig[$permuser] ?>" />
+<?php if ($i == 1): ?>
+                        <div class="hidden" data-for="help_for_permuser">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?><br/>
                           <?=gettext("Example: allow 1024-65535 192.168.0.0/24 1024-65535");?>
                         </div>
+<?php endif ?>
                       </td>
                     </tr>
-                    <tr>
-                      <td><a id="help_for_permuser2" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 2");?></td>
-                      <td>
-                        <input name="permuser2" type="text" value="<?=$pconfig['permuser2'];?>" />
-                        <div class="hidden" data-for="help_for_permuser2">
-                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_permuser3" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 3");?></td>
-                      <td>
-                        <input name="permuser3" type="text" value="<?=$pconfig['permuser3'];?>" />
-                        <div class="hidden" data-for="help_for_permuser3">
-                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_permuser4" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Set 4");?></td>
-                      <td>
-                        <input name="permuser4" type="text" value="<?=$pconfig['permuser4'];?>" />
-                        <div class="hidden" data-for="help_for_permuser4">
-                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?>
-                        </div>
-                      </td>
-                    </tr>
+<?php endforeach ?>
                   </tbody>
                 </table>
               </div>
