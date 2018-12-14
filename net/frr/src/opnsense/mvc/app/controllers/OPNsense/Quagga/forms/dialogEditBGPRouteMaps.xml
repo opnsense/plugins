@@ -29,12 +29,20 @@
     <type>select_multiple</type>
     <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the AS-Path list</help>
+    <help>Select the AS-Path List.</help>
+  </field>
+  <field>
+    <id>routemap.match2</id>
+    <label>Prefix List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Select the Prefix List.</help>
   </field>
     <field>
     <id>routemap.set</id>
     <label>Set</label>
     <type>text</type>
-    <help>Free text field for your set, please be careful! You can set e.g. "local-prefernce 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
+    <help>Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
   </field>
 </form>
