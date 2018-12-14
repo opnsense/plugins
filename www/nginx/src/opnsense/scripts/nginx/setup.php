@@ -28,6 +28,7 @@
  */
 
 const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
+const GROUP_OWNER = 'staff';
 require_once('config.inc');
 require_once('certs.inc');
 use \OPNsense\Nginx\Nginx;
@@ -69,6 +70,8 @@ if (!isset($config['OPNsense']['Nginx'])) {
 }
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
+@chgrp('/var/db/nginx', GROUP_OWNER);
+@chgrp('/var/db/nginx/auth', GROUP_OWNER);
 $nginx = $config['OPNsense']['Nginx'];
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
@@ -229,6 +232,7 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
     } finally {
         if (isset($file)) {
             fclose($file);
+            @chgrp('/var/db/nginx/auth/' . $uuid, GROUP_OWNER);
         }
         unset($file);
     }
