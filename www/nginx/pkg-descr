@@ -8,6 +8,10 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.6
+
+* fix bug due to permission downgrade (basic auth)
+
 1.5
 
 * Add proxy options for ignore client abort and disabling buffering
