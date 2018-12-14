@@ -1,0 +1,21 @@
+<model>
+    <mount>//OPNsense/unboundbl/general</mount>
+    <version>0.2</version>
+    <description>DNSBL for Unbound DNS</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <blacklist type="CSVListField">
+            <Required>N</Required>
+            <multiple>Y</multiple>
+            <ChangeCase>lower</ChangeCase>
+        </blacklist>
+        <whitelist type="CSVListField">
+            <Required>N</Required>
+            <multiple>Y</multiple>
+            <ChangeCase>lower</ChangeCase>
+        </whitelist>
+    </items>
+</model>

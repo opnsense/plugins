@@ -1,0 +1,9 @@
+<acl>
+   <page-services-unboundbl>
+      <name>Services: Unbound DNSBL</name>
+      <patterns>
+         <pattern>ui/unboundbl/*</pattern>
+         <pattern>api/unboundbl/*</pattern>
+      </patterns>
+   </page-services-unboundbl>
+</acl>
