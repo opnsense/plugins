@@ -36,5 +36,9 @@
             <default>0</default>
             <Required>Y</Required>
         </forcesafeyoutube>
+        <forcestrictbing type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </forcestrictbing>
     </items>
 </model>
