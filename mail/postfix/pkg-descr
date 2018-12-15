@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.8
+
+* Add TLS Wrapper to support SMTPS
+
 1.7
 
 * Add Address Rewriting, allows to rewrite e.g. @example.com to @example.net.
