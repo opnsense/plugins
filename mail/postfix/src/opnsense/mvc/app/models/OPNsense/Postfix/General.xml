@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/postfix/general</mount>
     <description>Postfix configuration</description>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -60,6 +60,10 @@
             <default>1</default>
             <Required>Y</Required>
         </disable_weak_ciphers>
+        <tlswrappermode type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </tlswrappermode>
         <certificate type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
