@@ -90,6 +90,12 @@
         <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
     </field>
     <field>
+        <id>general.tlswrappermode</id>
+        <label>TLS Wrapper Mode</label>
+        <type>checkbox</type>
+        <help>If enabled it allows you to use SMTPS.</help>
+    </field>
+    <field>
         <id>general.certificate</id>
         <label>Server Certificate</label>
         <type>dropdown</type>
