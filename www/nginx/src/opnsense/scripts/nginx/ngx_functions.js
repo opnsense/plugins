@@ -1,5 +1,5 @@
 var fs = require('fs');
-var tls_fingerprints = JSON.parse(fs.readFileSync('tls_fingerprints.json'));
+var tls_fingerprints = JSON.parse(fs.readFileSync('/usr/local/etc/nginx/tls_fingerprints.json'));
 
 function customArrayIndexOf(haystack, needle) {
   var element, element_id;
