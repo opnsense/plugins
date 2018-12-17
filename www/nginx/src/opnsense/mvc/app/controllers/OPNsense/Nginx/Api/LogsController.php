@@ -42,7 +42,7 @@ class LogsController extends ApiControllerBase
             return $this->list_vhosts();
         } else {
             // emulate REST call for a specific log /accesses/uuid
-            return $this->call_configd('access', $uuid);
+            $this->call_configd('access', $uuid);
         }
     }
 
@@ -54,9 +54,10 @@ class LogsController extends ApiControllerBase
             return $this->list_vhosts();
         } else {
             // emulate REST call for a specific log /errors/uuid
-            return $this->call_configd('error', $uuid);
+            $this->call_configd('error', $uuid);
         }
     }
+
     public function stream_accessesAction($uuid = null)
     {
         $this->nginx = new Nginx();
@@ -65,9 +66,10 @@ class LogsController extends ApiControllerBase
             return $this->list_streams();
         } else {
             // emulate REST call for a specific log /stream_accesses/uuid
-            return $this->call_configd_stream('streamaccess', $uuid);
+            $this->call_configd_stream('streamaccess', $uuid);
         }
     }
+
     public function stream_errorsAction($uuid = null)
     {
         $this->nginx = new Nginx();
@@ -76,9 +78,10 @@ class LogsController extends ApiControllerBase
             return $this->list_streams();
         } else {
             // emulate REST call for a specific log /stream_errors/uuid
-            return $this->call_configd_stream('streamerror', $uuid);
+            $this->call_configd_stream('streamerror', $uuid);
         }
     }
+
 
     private function call_configd($type, $uuid)
     {
@@ -86,9 +89,7 @@ class LogsController extends ApiControllerBase
             $this->response->setStatusCode(404, "Not Found");
         }
 
-        $backend = new Backend();
-        $data = $backend->configdRun('nginx log ' . $type . ' ' . $uuid);
-        return json_decode($data, true);
+        return $this->sendConfigdToClient('nginx log ' . $type . ' ' . $uuid);
     }
     private function call_configd_stream($type, $uuid)
     {
@@ -96,9 +97,7 @@ class LogsController extends ApiControllerBase
             $this->response->setStatusCode(404, "Not Found");
         }
 
-        $backend = new Backend();
-        $data = $backend->configdRun('nginx log ' . $type . ' ' . $uuid);
-        return json_decode($data, true);
+        return $this->sendConfigdToClient('nginx log ' . $type . ' ' . $uuid);
     }
 
     private function list_vhosts()
@@ -127,5 +126,20 @@ class LogsController extends ApiControllerBase
     {
         $data = $this->nginx->getNodeByReference('stream_server.'. $uuid);
         return isset($data);
+    }
+
+    /**
+     * @param $command String JSON generating configd command
+     * @return null
+     * @throws \Exception ?
+     */
+    private function sendConfigdToClient($command)
+    {
+        $backend = new Backend();
+        // must be passed directly -> OOM Problem
+        $this->response->setContent($backend->configdRun($command));
+        $this->response->setStatusCode(200, "OK");
+        $this->response->setContentType('application/json', 'UTF-8');
+        return $this->response->send();
     }
 }

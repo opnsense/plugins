@@ -31,7 +31,6 @@ namespace OPNsense\Nginx;
 class AccessLogParser
 {
     private $file_name;
-    private $lines;
     private $result;
 
     private const LogLineRegex = '/(\S+) - (\S+) \[([\d\sa-z\:\-\/\+]+)\] "([^"]+?)" (\d+) (\d+) "([^"]*?)" "([^"]*?)" "([^"]*?)"/i';
@@ -39,9 +38,20 @@ class AccessLogParser
     function __construct($file_name)
     {
         $this->file_name = $file_name;
-        $this->lines = file($this->file_name);
-        $this->result = array_map([$this, 'parse_line'], $this->lines);
+        $this->result = array();
+        $this->parse_file();
     }
+
+    private function parse_file() {
+        $handle = @fopen($this->file_name, 'r');
+        if ($handle) {
+            while (($buffer = fgets($handle)) !== false) {
+                $this->result[] = $this->parse_line($buffer);
+            }
+            fclose($handle);
+        }
+    }
+
     private function parse_line($line)
     {
         $container = new AccessLogLine();
