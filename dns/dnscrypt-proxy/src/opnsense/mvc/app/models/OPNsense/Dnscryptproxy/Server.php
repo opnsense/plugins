@@ -26,6 +26,6 @@ namespace OPNsense\Dnscryptproxy;
 
 use OPNsense\Base\BaseModel;
 
-class Whitelist extends BaseModel
+class Server extends BaseModel
 {
 }
