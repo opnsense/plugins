@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>server.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the server stamp.</help>
+    </field>
+    <field>
+        <id>server.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name of the stamp.</help>
+    </field>
+    <field>
+        <id>server.stamp</id>
+        <label>SDNS Stamp</label>
+        <type>text</type>
+        <help>Set the SDNS stamp without sdns:// prefix.</help>
+    </field>
+</form>

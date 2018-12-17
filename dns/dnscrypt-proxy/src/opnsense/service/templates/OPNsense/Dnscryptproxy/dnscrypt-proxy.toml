@@ -135,4 +135,14 @@ cache = false
   refresh_delay = 72
   prefix = ''
 
+[static]
+{% if helpers.exists('OPNsense.dnscryptproxy.server.servers.server') %}
+{%   for server_list in helpers.toList('OPNsense.dnscryptproxy.server.servers.server') %}
+{%     if server_list.enabled == '1' %}
+  [static.'{{server_list.name}}']
+  stamp = 'sdns://{{server_list.stamp}}'
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
 {% endif %}
