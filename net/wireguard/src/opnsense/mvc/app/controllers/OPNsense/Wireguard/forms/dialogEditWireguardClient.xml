@@ -43,4 +43,10 @@
         <type>text</type>
         <help>Set port the endpoint listens to.</help>
     </field>
+    <field>
+        <id>client.keepalive</id>
+        <label>Keepalive</label>
+        <type>text</type>
+        <help>Set persistent keepalive interval.</help>
+    </field>
 </form>
