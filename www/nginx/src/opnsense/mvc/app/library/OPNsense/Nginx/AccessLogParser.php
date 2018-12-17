@@ -42,7 +42,8 @@ class AccessLogParser
         $this->parse_file();
     }
 
-    private function parse_file() {
+    private function parse_file()
+    {
         $handle = @fopen($this->file_name, 'r');
         if ($handle) {
             while (($buffer = fgets($handle)) !== false) {
