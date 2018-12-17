@@ -57,4 +57,3 @@ function check_intercept(r) {
     }
     return tls_result.status;
 }
-
