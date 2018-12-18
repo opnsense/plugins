@@ -25,6 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 namespace OPNsense\Backup\Api;
+
 use OPNsense\Base\ApiControllerBase;
 
 class BackupController extends ApiControllerBase

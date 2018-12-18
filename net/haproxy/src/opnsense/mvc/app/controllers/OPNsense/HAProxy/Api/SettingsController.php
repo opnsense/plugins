@@ -1493,5 +1493,4 @@ class SettingsController extends ApiControllerBase
             "name"
         );
     }
-
 }
