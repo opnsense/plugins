@@ -163,6 +163,6 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Set a list of known servers if you want to stick with Cisco e.g. You can also put your manually added servers here.</help>
+        <help><![CDATA[Set a list of <a href="https://dnscrypt.info/public-servers">known servers</a> e.g. if you want to stick with Cisco only. You can also put your manually added servers here. Please use on your own risk.]]></help>
     </field>
 </form>
