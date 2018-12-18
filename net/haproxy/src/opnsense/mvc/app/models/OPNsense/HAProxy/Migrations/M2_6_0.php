@@ -36,11 +36,10 @@ class M2_6_0 extends BaseModelMigration
     {
         // Migrate old stats user:password entries to new user management feature
         if (!empty((string)$model->general->stats->users)) {
-
             // Add new user for each entry
             $UUIDlist = array();
             foreach (explode(',', (string)$model->general->stats->users) as $statsuser) {
-                $olddata = explode(':',$statsuser,2);
+                $olddata = explode(':', $statsuser, 2);
                 $userNode = $model->users->user->Add();
                 $userNode->name = (string)$olddata[0];
                 $userNode->description = 'stats user';

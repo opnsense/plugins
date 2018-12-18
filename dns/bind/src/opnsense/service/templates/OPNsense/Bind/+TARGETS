@@ -1,3 +1,4 @@
+bing.db:/usr/local/etc/namedb/master/bing.db
 blacklist.db:/usr/local/etc/namedb/master/blacklist.db
 google.db:/usr/local/etc/namedb/master/google.db
 named:/etc/rc.conf.d/named
