@@ -157,4 +157,12 @@
         <type>text</type>
         <help>Maximum TTL for negatively cached entries.</help>
     </field>
+    <field>
+        <id>general.serverlist</id>
+        <label>Server List</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Set a list of <a href="https://dnscrypt.info/public-servers">known servers</a> e.g. if you want to stick with Cisco only. You can also put your manually added servers here. Please use on your own risk.]]></help>
+    </field>
 </form>
