@@ -1,0 +1,11 @@
+{% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
+
+{% if helpers.exists('OPNsense.dnscryptproxy.forward.forwards.forward') %}
+{%   for forward_list in helpers.toList('OPNsense.dnscryptproxy.forward.forwards.forward') %}
+{%     if forward_list.enabled == '1' %}
+{{ forward_list.domain }} {{ forward_list.dnsserver }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+{% endif %}

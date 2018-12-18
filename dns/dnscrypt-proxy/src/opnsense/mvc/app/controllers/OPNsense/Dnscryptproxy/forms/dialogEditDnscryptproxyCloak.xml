@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>cloak.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this override.</help>
+    </field>
+    <field>
+        <id>cloak.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name to override, e.g. www.google.*</help>
+    </field>
+    <field>
+        <id>cloak.destination</id>
+        <label>Destination</label>
+        <type>text</type>
+        <help>Set target name to what to resolve.</help>
+    </field>
+</form>

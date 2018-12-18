@@ -240,6 +240,7 @@ table {
   border-spacing: 0;
   background-color: #3e3e3e;
   color: #FFF;
+  width: 100%;
 }
 
 td, th {
@@ -4459,7 +4460,7 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
 }
 
 .open > .btn.dropdown-toggle {
-  color: #FF7D1E;
+  color: #ffffff;
   background-color: #2d2d2d;
   outline: 0;
   border-color: #5a5a5a;
@@ -4476,6 +4477,7 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
   &:active, &.active {
     background-image: none;
     outline: 0;
+    color: #ec6d12;
   }
 }
 
@@ -9640,6 +9642,9 @@ h3 {
 }
 
 .fa {
+  &.fa-exclamation.fa-fw.text-muted, &.fa-arrows-h.fa-fw.text-muted {
+    color: #eac80a !important;
+  }
   &.fa-long-arrow-left {
     color: #eac80a !important;
     &::before {

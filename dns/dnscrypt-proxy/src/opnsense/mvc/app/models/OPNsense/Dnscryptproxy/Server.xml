@@ -1,0 +1,21 @@
+<model>
+    <mount>//OPNsense/dnscryptproxy/server</mount>
+    <description>dnscrypt-proxy Server configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <servers>
+            <server type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <stamp type="TextField">
+                    <Required>Y</Required>
+                </stamp>
+            </server>
+        </servers>
+    </items>
+</model>

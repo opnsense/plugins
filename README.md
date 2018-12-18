@@ -34,6 +34,7 @@ databases/redis -- Redis DB
 devel/debug -- Debugging Tools
 devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
+dns/dnscrypt-proxy -- Flexible DNS proxy supportung DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 mail/postfix -- SMTP mail relay
@@ -72,11 +73,13 @@ security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (ne
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/openconnect -- OpenConnect Client
+security/softether -- Cross-platform Multi-protocol VPN Program
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
+sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools

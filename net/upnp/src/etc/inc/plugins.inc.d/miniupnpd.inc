@@ -1,30 +1,30 @@
 <?php
 
 /*
-    Copyright (C) 2016 Deciso B.V.
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-*/
+ * Copyright (C) 2016 Deciso B.V.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 function miniupnpd_enabled()
 {
@@ -96,9 +96,21 @@ function miniupnpd_uuid()
     return substr($uuid, 0, 8).'-'.substr($uuid, 9, 4).'-'.substr($uuid, 13, 4).'-'.substr($uuid, 17, 4).'-'.substr($uuid, 21, 12);
 }
 
+function miniupnpd_permuser_list()
+{
+    $ret = array();
+    $count = 8;
+
+    for ($i = 1; $i <= $count; $i++) {
+        $ret[$i] = "permuser{$i}";
+    }
+
+    return $ret;
+}
+
 function miniupnpd_configure_do($verbose = false)
 {
-    global $config, $g;
+    global $config;
 
     miniupnpd_stop();
 
@@ -137,7 +149,6 @@ function miniupnpd_configure_do($verbose = false)
             /* above function returns iface if fail */
             if ($if!=$iface) {
                 $addr = find_interface_ip($if);
-                $bits = find_interface_subnet($if);
                 /* check that the interface has an ip address before adding parameters */
                 if (is_ipaddr($addr)) {
                     $config_text .= "listening_ip={$if}\n";
@@ -194,12 +205,12 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "serial=".strtoupper(substr(miniupnpd_uuid(), 0, 8))."\n";
 
             /* set model number */
-            $config_text .= "model_number={$g['product_version']}\n";
+            $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";
 
             /* upnp access restrictions */
-            for ($i=1; $i<=4; $i++) {
-                if ($upnp_config["permuser{$i}"]) {
-                    $config_text .= "{$upnp_config["permuser{$i}"]}\n";
+            foreach (miniupnpd_permuser_list() as $permuser) {
+                if (!empty($upnp_config[$permuser])) {
+                    $config_text .= "{$upnp_config[$permuser]}\n";
                 }
             }
 

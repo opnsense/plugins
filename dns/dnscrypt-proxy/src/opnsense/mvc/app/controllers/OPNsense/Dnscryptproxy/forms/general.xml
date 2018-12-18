@@ -1,0 +1,168 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable DNSCrypt-Proxy</label>
+        <type>checkbox</type>
+        <help>This will activate DNSCrypt-Proxy service.</help>
+    </field>
+    <field>
+        <id>general.listen_addresses</id>
+        <label>Listen Address</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IP address and port combinations this service should listen on, e.g 127.0.0.1:5353 and/or [::1]:5353</help>
+    </field>
+    <field>
+        <id>general.allowprivileged</id>
+        <label>Allow Privileged Ports</label>
+        <type>checkbox</type>
+        <help>This will allow you to run the service on port 53.</help>
+    </field>
+    <field>
+        <id>general.max_clients</id>
+        <label>Max Client Connections</label>
+        <type>text</type>
+        <help>Set the maximum number of simultaneous client connections to accept.</help>
+    </field>
+    <field>
+        <id>general.ipv4_servers</id>
+        <label>Use IPv4 Servers</label>
+        <type>checkbox</type>
+        <help>Let DNSCrypt-Proxy use IPv4 enabled servers.</help>
+    </field>
+    <field>
+        <id>general.ipv6_servers</id>
+        <label>Use IPv6 Servers</label>
+        <type>checkbox</type>
+        <help>Let DNSCrypt-Proxy use IPv6 enabled servers.</help>
+    </field>
+    <field>
+        <id>general.dnscrypt_servers</id>
+        <label>Use DNSCrypt Servers</label>
+        <type>checkbox</type>
+        <help>Let DNSCrypt-Proxy use servers with DNSCrypt protocol enabled.</help>
+    </field>
+    <field>
+        <id>general.doh_servers</id>
+        <label>Use DNS-over-HTTPS Servers</label>
+        <type>checkbox</type>
+        <help>Let DNSCrypt-Proxy use servers with DNS-over-HTTPS protocol enabled.</help>
+    </field>
+    <field>
+        <id>general.require_dnssec</id>
+        <label>Require DNSSEC</label>
+        <type>checkbox</type>
+        <help>Only use DNS server with DNSSEC enabled.</help>
+    </field>
+    <field>
+        <id>general.require_nolog</id>
+        <label>Require NoLog</label>
+        <type>checkbox</type>
+        <help>Only use DNS server without user request logging.</help>
+    </field>
+    <field>
+        <id>general.require_nofilter</id>
+        <label>Require NoFilter</label>
+        <type>checkbox</type>
+        <help>Only use DNS server without own blacklisting. There are many servers deleting ads or with parental control enabled.</help>
+    </field>
+    <field>
+        <id>general.force_tcp</id>
+        <label>Force TCP</label>
+        <type>checkbox</type>
+        <help>Always use TCP to connect to upstream servers. This can be can be useful if you need to route everything through Tor, otherwise keep it disabled.</help>
+    </field>
+    <field>
+        <id>general.proxy</id>
+        <label>Proxy</label>
+        <type>text</type>
+        <help>Use this to route all TCP connections to a local Tor node, format has to be like 127.0.0.1:9050</help>
+    </field>
+    <field>
+        <id>general.timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>How long a DNS query will wait for a response in milliseconds.</help>
+    </field>
+    <field>
+        <id>general.keepalive</id>
+        <label>Keepalive</label>
+        <type>text</type>
+        <help>Keepalive for HTTP (HTTPS, HTTP/2) queries in seconds.</help>
+    </field>
+    <field>
+        <id>general.cert_refresh_delay</id>
+        <label>Cert Refresh Delay</label>
+        <type>text</type>
+        <help>Delay in minutes after which certificates are reloaded.</help>
+    </field>
+    <field>
+        <id>general.dnscrypt_ephemeral_keys</id>
+        <label>Ephemeral Keys</label>
+        <type>checkbox</type>
+        <help>Create a new, unique key for every single DNS query. This may improve privacy but can also have a significant impact on CPU usage.</help>
+    </field>
+    <field>
+        <id>general.tls_disable_session_tickets</id>
+        <label>TLS Disable Session Tickets</label>
+        <type>checkbox</type>
+        <help>Disable TLS session tickets - increases privacy but also latency.</help>
+    </field>
+    <field>
+        <id>general.fallback_resolver</id>
+        <label>Fallback Resolver</label>
+        <type>text</type>
+        <help>This is a normal, non-encrypted DNS resolver, that will be only used for one-shot queries when retrieving the initial resolvers list, and only if the system DNS configuration does not work. Format is e.g. 9.9.9.9:53</help>
+    </field>
+    <field>
+        <id>general.block_ipv6</id>
+        <label>Block IPv6</label>
+        <type>checkbox</type>
+        <help>Immediately respond to IPv6-related queries with an empty response. This makes things faster when there is no IPv6 connectivity.</help>
+    </field>
+    <field>
+        <id>general.cache</id>
+        <label>Cache</label>
+        <type>checkbox</type>
+        <help>Enable a DNS cache to reduce latency and outgoing traffic.</help>
+    </field>
+    <field>
+        <id>general.cache_size</id>
+        <label>Cache Size</label>
+        <type>text</type>
+        <help>Set the cache size.</help>
+    </field>
+    <field>
+        <id>general.cache_min_ttl</id>
+        <label>Cache Min TTL</label>
+        <type>text</type>
+        <help>Minimum TTL for cached entries.</help>
+    </field>
+    <field>
+        <id>general.cache_max_ttl</id>
+        <label>Cache Max TTL</label>
+        <type>text</type>
+        <help>Maximum TTL for cached entries.</help>
+    </field>
+    <field>
+        <id>general.cache_neg_min_ttl</id>
+        <label>Cache Negative Min TTL</label>
+        <type>text</type>
+        <help>Minimum TTL for negatively cached entries.</help>
+    </field>
+    <field>
+        <id>general.cache_neg_max_ttl</id>
+        <label>Cache Negative Max TTL</label>
+        <type>text</type>
+        <help>Maximum TTL for negatively cached entries.</help>
+    </field>
+    <field>
+        <id>general.serverlist</id>
+        <label>Server List</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Set a list of <a href="https://dnscrypt.info/public-servers">known servers</a> e.g. if you want to stick with Cisco only. You can also put your manually added servers here. Please use on your own risk.]]></help>
+    </field>
+</form>

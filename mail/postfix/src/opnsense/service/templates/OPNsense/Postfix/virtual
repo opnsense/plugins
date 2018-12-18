@@ -1,0 +1,9 @@
+{% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.postfix.address.addresses.address') %}
+{%     for address in helpers.toList('OPNsense.postfix.address.addresses.address') %}
+{%       if address.enabled == '1' %}
+{{ address.from }} {{ address.to }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}

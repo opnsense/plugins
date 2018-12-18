@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2018 Fabian Franz
  * All rights reserved.
@@ -24,7 +25,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 namespace OPNsense\Backup\Api;
+
 use OPNsense\Base\ApiControllerBase;
 
 class BackupController extends ApiControllerBase

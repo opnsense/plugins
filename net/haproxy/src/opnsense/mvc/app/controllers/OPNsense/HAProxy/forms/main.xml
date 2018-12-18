@@ -98,6 +98,12 @@
                 <advanced>true</advanced>
             </field>
             <field>
+                <id>haproxy.general.tuning.nbthread</id>
+                <label>HAProxy threads</label>
+                <type>text</type>
+                <help><![CDATA[Number of threads to create for each HAProxy process.]]></help>
+            </field>
+            <field>
                 <id>haproxy.general.tuning.maxConnections</id>
                 <label>Maximum connections</label>
                 <type>text</type>
@@ -292,13 +298,18 @@
                 <type>checkbox</type>
             </field>
             <field>
-                <id>haproxy.general.stats.users</id>
-                <label>Stats users</label>
+                <id>haproxy.general.stats.allowedUsers</id>
+                <label>Allowed Users</label>
                 <type>select_multiple</type>
-                <style>tokenize</style>
                 <allownew>true</allownew>
-                <help><![CDATA[Grant access to HAProxy statistics page. Please provide both user and password in clear text separated by a ':', i.e. john:secret123 or jdoe:anonymous. Use TAB key to complete adding a user.]]></help>
-                <hint>Enter user:password here. Finish with TAB.</hint>
+                <hint>Type username or choose from list.</hint>
+            </field>
+            <field>
+                <id>haproxy.general.stats.allowedGroups</id>
+                <label>Allowed Groups</label>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <hint>Type group or choose from list.</hint>
             </field>
             <field>
                 <id>haproxy.general.stats.customOptions</id>

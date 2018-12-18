@@ -1,0 +1,9 @@
+<acl>
+   <page-dnscryptproxy-config>
+      <name>Services: dnscrypt-proxy</name>
+      <patterns>
+         <pattern>ui/dnscryptproxy/*</pattern>
+         <pattern>api/dnscryptproxy/*</pattern>
+      </patterns>
+   </page-dnscryptproxy-config>
+</acl>

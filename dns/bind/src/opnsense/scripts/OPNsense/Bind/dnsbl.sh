@@ -126,6 +126,34 @@ yoyo() {
 	rm ${WORKDIR}/yoyo-raw
 }
 
+hbbtv() {
+	# HBBTV List
+	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/hbbtv.txt -o ${WORKDIR}/hbbtv-raw
+	sed "/\.$/d" ${WORKDIR}/hbbtv-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/hbbtv
+	rm ${WORKDIR}/hbbtv-raw
+}
+
+simplead() {
+	# Simple Ad List
+	${FETCH} https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt -o ${WORKDIR}/simplead-raw
+	sed "/\.$/d" ${WORKDIR}/simplead-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/simplead
+	rm ${WORKDIR}/simplead-raw
+}
+
+simpletrack() {
+	# Simple Tracking List
+	${FETCH} https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt -o ${WORKDIR}/simpletrack-raw
+	sed "/\.$/d" ${WORKDIR}/simpletrack-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/simpletrack
+	rm ${WORKDIR}/simpletrack-raw
+}
+
+zeusabuse() {
+	# Zeus Tracker List from abuse.ch
+	${FETCH} https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist -o ${WORKDIR}/zeusabuse-raw
+	sed "/\.$/d" ${WORKDIR}/zeusabuse-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/zeusabuse
+	rm ${WORKDIR}/zeusabuse-raw
+}
+
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
@@ -137,7 +165,14 @@ install() {
 	rm -rf ${WORKDIR}
 }
 
-for CAT in $(echo ${1} | tr ',' ' '); do
+DNSBL=${1}
+
+if [ -z "${DNSBL}" ]; then
+	. /etc/rc.conf.d/named
+	DNSBL=${named_dnsbl}
+fi
+
+for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	case "${CAT}" in
 	aa)
 		adaway
@@ -157,6 +192,9 @@ for CAT in $(echo ${1} | tr ',' ' '); do
 	emd)
 		emdlist
 		;;
+	ht)
+		hbbtv
+		;;
 	nc)
 		nocoin
 		;;
@@ -172,11 +210,20 @@ for CAT in $(echo ${1} | tr ',' ' '); do
 	pt)
 		porntop
 		;;
+	sa)
+		simplead
+		;;
+	st)
+		simpletrack
+		;;
 	ws)
 		windowsspyblocker
 		;;
 	yy)
 		yoyo
+		;;
+	za)
+		zeusabuse
 		;;
 	esac
 done

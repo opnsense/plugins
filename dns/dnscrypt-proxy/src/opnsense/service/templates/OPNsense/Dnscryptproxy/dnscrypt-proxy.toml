@@ -1,0 +1,152 @@
+{% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.serverlist') and OPNsense.dnscryptproxy.general.serverlist != '' %}
+server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.serverlist.split(','))) + "'" }}]
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
+listen_addresses = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.listen_addresses.split(','))) + "'" }}]
+{%   else %}
+listen_addresses = []
+{%   endif %}
+
+max_clients = {{ OPNsense.dnscryptproxy.general.max_clients }}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.ipv4_servers') and OPNsense.dnscryptproxy.general.ipv4_servers == '1' %}
+ipv4_servers = true
+{%   else %}
+ipv4_servers = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.ipv6_servers') and OPNsense.dnscryptproxy.general.ipv6_servers == '1' %}
+ipv6_servers = true
+{%   else %}
+ipv6_servers = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.dnscrypt_servers') and OPNsense.dnscryptproxy.general.dnscrypt_servers == '1' %}
+dnscrypt_servers = true
+{%   else %}
+dnscrypt_servers = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.doh_servers') and OPNsense.dnscryptproxy.general.doh_servers == '1' %}
+doh_servers = true
+{%   else %}
+doh_servers = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.require_dnssec') and OPNsense.dnscryptproxy.general.require_dnssec == '1' %}
+require_dnssec = true
+{%   else %}
+require_dnssec = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.require_nolog') and OPNsense.dnscryptproxy.general.require_nolog == '1' %}
+require_nolog = true
+{%   else %}
+require_nolog = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.require_nofilter') and OPNsense.dnscryptproxy.general.require_nofilter == '1' %}
+require_nofilter = true
+{%   else %}
+require_nofilter = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.force_tcp') and OPNsense.dnscryptproxy.general.force_tcp == '1' %}
+force_tcp = true
+{%   else %}
+force_tcp = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.proxy') and OPNsense.dnscryptproxy.general.proxy != '' %}
+proxy = "socks5://{{ OPNsense.dnscryptproxy.general.proxy }}"
+{%   endif %}
+
+timeout = {{ OPNsense.dnscryptproxy.general.timeout }}
+keepalive = {{ OPNsense.dnscryptproxy.general.keepalive }}
+
+log_level = 2
+log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
+use_syslog = false
+
+cert_refresh_delay = {{ OPNsense.dnscryptproxy.general.cert_refresh_delay }}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.dnscrypt_ephemeral_keys') and OPNsense.dnscryptproxy.general.dnscrypt_ephemeral_keys == '1' %}
+dnscrypt_ephemeral_keys = true
+{%   else %}
+dnscrypt_ephemeral_keys = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.tls_disable_session_tickets') and OPNsense.dnscryptproxy.general.tls_disable_session_tickets == '1' %}
+tls_disable_session_tickets = true
+{%   else %}
+tls_disable_session_tickets = false
+{%   endif %}
+
+fallback_resolver = '{{ OPNsense.dnscryptproxy.general.fallback_resolver }}'
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.ignore_system_dns') and OPNsense.dnscryptproxy.general.ignore_system_dns == '1' %}
+ignore_system_dns = true
+{%   else %}
+ignore_system_dns = false
+{%   endif %}
+
+netprobe_timeout = 30
+log_files_max_size = 10
+log_files_max_age = 7
+log_files_max_backups = 1
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.block_ipv6') and OPNsense.dnscryptproxy.general.block_ipv6 == '1' %}
+block_ipv6 = true
+{%   else %}
+block_ipv6 = false
+{%   endif %}
+
+forwarding_rules = 'forwarding-rules.txt'
+cloaking_rules = 'cloaking-rules.txt'
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.cache') and OPNsense.dnscryptproxy.general.cache == '1' %}
+cache = true
+cache_size = {{ OPNsense.dnscryptproxy.general.cache_size }}
+cache_min_ttl = {{ OPNsense.dnscryptproxy.general.cache_min_ttl }}
+cache_max_ttl = {{ OPNsense.dnscryptproxy.general.cache_max_ttl }}
+cache_neg_min_ttl = {{ OPNsense.dnscryptproxy.general.cache_neg_min_ttl }}
+cache_neg_max_ttl = {{ OPNsense.dnscryptproxy.general.cache_neg_max_ttl }}
+{%   else %}
+cache = false
+{%   endif %}
+
+[query_log]
+  file = '/var/log/dnscrypt-proxy/query.log'
+  format = 'tsv'
+
+[nx_log]
+  file = '/var/log/dnscrypt-proxy/nx.log'
+  format = 'tsv'
+
+[whitelist]
+  whitelist_file = 'whitelist.txt'
+  log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
+  log_format = 'tsv'
+
+[sources]
+  [sources.'public-resolvers']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']
+  cache_file = 'public-resolvers.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
+
+[static]
+{% if helpers.exists('OPNsense.dnscryptproxy.server.servers.server') %}
+{%   for server_list in helpers.toList('OPNsense.dnscryptproxy.server.servers.server') %}
+{%     if server_list.enabled == '1' %}
+  [static.'{{server_list.name}}']
+  stamp = 'sdns://{{server_list.stamp}}'
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+{% endif %}

@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/postfix/general</mount>
     <description>Postfix configuration</description>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -47,6 +47,11 @@
             <default>51200000</default>
             <Required>Y</Required>
         </message_size_limit>
+        <masquerade_domains type="CSVListField">
+            <Required>N</Required>
+            <mask>/^([0-9a-z\.\-\_]{1,128})(,[0-9a-z\.\-\_]{1,128})*$/ui</mask>
+            <ValidationMessage>Only up to 128 of the following characters are allowed: 0-9a-zA-Z.-_</ValidationMessage>
+        </masquerade_domains>
         <disable_ssl type="BooleanField">
             <default>1</default>
             <Required>Y</Required>
@@ -55,6 +60,10 @@
             <default>1</default>
             <Required>Y</Required>
         </disable_weak_ciphers>
+        <tlswrappermode type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </tlswrappermode>
         <certificate type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>

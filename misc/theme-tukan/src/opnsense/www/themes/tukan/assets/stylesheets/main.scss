@@ -241,6 +241,7 @@ table {
   border-spacing: 0;
   color: #000;
   background-color: #F0F0F0;
+  width: 100%;
 }
 
 td, th {
@@ -9701,6 +9702,9 @@ h3 {
 }
 
 .fa {
+  &.fa-exclamation.fa-fw.text-muted, &.fa-arrows-h.fa-fw.text-muted {
+    color: #000 !important;
+  }
   &.fa-long-arrow-left {
     color: #000 !important;
     &::before {

@@ -31,6 +31,9 @@ meta_directory = /usr/local/libexec/postfix
 shlib_directory = /usr/local/lib/postfix
 relay_domains = hash:/usr/local/etc/postfix/transport
 transport_maps = hash:/usr/local/etc/postfix/transport
+virtual_alias_maps = hash:/usr/local/etc/postfix/virtual
+sender_bcc_maps = hash:/usr/local/etc/postfix/senderbcc
+recipient_bcc_maps = hash:/usr/local/etc/postfix/recipientbcc
 ##########################
 # END SYSTEM DEFAULTS
 ##########################
@@ -74,6 +77,9 @@ smtpd_banner = $myhostname ESMTP Postfix
 {% if helpers.exists('OPNsense.postfix.general.message_size_limit') and OPNsense.postfix.general.message_size_limit != '' %}
 message_size_limit = {{ OPNsense.postfix.general.message_size_limit }}
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.masquerade_domains') and OPNsense.postfix.general.masquerade_domains != '' %}
+masquerade_domains = {{ OPNsense.postfix.general.masquerade_domains }}
+{% endif %}
 {% if helpers.exists('OPNsense.postfix.general.disable_ssl') and OPNsense.postfix.general.disable_ssl == '1' %}
 smtpd_tls_mandatory_protocols=!SSLv2,!SSLv3
 smtp_tls_mandatory_protocols=!SSLv2,!SSLv3
@@ -82,6 +88,9 @@ smtp_tls_protocols=!SSLv2,!SSLv3
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.disable_weak_ciphers') and OPNsense.postfix.general.disable_weak_ciphers == '1' %}
 smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.tlswrappermode') and OPNsense.postfix.general.tlswrappermode == '1' %}
+smtpd_tls_wrappermode = yes
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}

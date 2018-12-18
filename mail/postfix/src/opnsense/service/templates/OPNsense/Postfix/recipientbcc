@@ -1,0 +1,9 @@
+{% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.postfix.recipientbcc.recipientbccs.recipientbcc') %}
+{%     for recipient_list in helpers.toList('OPNsense.postfix.recipientbcc.recipientbccs.recipientbcc') %}
+{%       if recipient_list.enabled == '1' %}
+{{ recipient_list.from }} {{ recipient_list.to }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}

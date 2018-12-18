@@ -28,8 +28,11 @@ chown -R root:postfix /var/spool/postfix/pid
 
 # Create Transporttable
 postmap /usr/local/etc/postfix/transport
+postmap /usr/local/etc/postfix/virtual
 postmap /usr/local/etc/postfix/recipient_access
 postmap /usr/local/etc/postfix/sender_access
+postmap /usr/local/etc/postfix/senderbcc
+postmap /usr/local/etc/postfix/recipientbcc
 postmap /usr/local/etc/postfix/smtp_auth
 
 # Check for aliases

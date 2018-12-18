@@ -713,9 +713,6 @@ class updatedns
             case 'cloudflare-v6':
                 $baseUrl = 'https://api.cloudflare.com/client/v4';
                 $fqdn = str_replace(' ', '', $this->_dnsHost);
-                $fqdnParts = explode('.', $fqdn);
-                $hostName = array_shift($fqdnParts);
-                $domainName = implode('.', $fqdnParts);
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
                 $hostData = array(
                     "content" => "{$this->_dnsIP}",
@@ -732,10 +729,24 @@ class updatedns
 
                 // Get zone ID
                 $zonesUrl = "$baseUrl/zones";
+                // First, try removing the first part of the FQDN,
+                // under the assumption that it is probably the hostname,
+                // and look up the zone from what's left
+                $fqdnParts = explode('.', $fqdn);
+                $hostName = array_shift($fqdnParts);
+                $domainName = implode('.', $fqdnParts);
                 $getZoneId = "$zonesUrl/?name=$domainName";
                 curl_setopt($ch, CURLOPT_URL, $getZoneId);
                 $output = json_decode(curl_exec($ch));
                 $zoneId = $output->result[0]->id;
+                if (empty($zoneId)) {
+                    // now try the full "hostname" as provided by the UI
+                    $getZoneId = "$zonesUrl/?name=$fqdn";
+                    curl_setopt($ch, CURLOPT_URL, $getZoneId);
+                    $output = json_decode(curl_exec($ch));
+                    $zoneId = $output->result[0]->id;
+                }
+
                 if ($zoneId) { // If zone ID was found get host ID
                     $dnsRecordsUrl = "$zonesUrl/$zoneId/dns_records";
                     $getHostId = "$dnsRecordsUrl?name=$fqdn&type=$recordType";

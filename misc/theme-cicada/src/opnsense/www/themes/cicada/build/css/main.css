@@ -208,7 +208,8 @@ optgroup {
 table {
   border-spacing: 0;
   background-color: #3e3e3e;
-  color: #FFF; }
+  color: #FFF;
+  width:100%; }
 
 td,
 th {
@@ -2894,11 +2895,14 @@ select[multiple].input-lg,
   background-color: #2a2a2a;
   border: 1px solid #5a5a5a;
   outline:0; }
-  .btn:active, .btn.active, .open > .btn.dropdown-toggle {
-   color: #FF7D1E;
-    background-color: #2d2d2d;
+  .open > .btn.dropdown-toggle {
+  color: #ffffff;
+  }
+  .btn:active, .btn.active {
+  color: #ec6d12;
+  background-color: #2d2d2d;
 	outline:0;
-    border-color: #5a5a5a;
+  border-color: #5a5a5a;
 	text-decoration: none; }
   .btn:hover, .btn:focus {
 	background-color: #292929;
@@ -6380,7 +6384,7 @@ h3:hover, h3:focus {
   background-color: #2d2d2d !important;
 }
 
-.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted,.fa.fa-long-arrow-left,.fa.fa-long-arrow-left::before,.fa.fa-info-circle.text-muted,.fa.fa-times-circle.text-muted,.fa.fa-times-circle.text-muted::before,.fa.fa-times.text-muted,.fa.fa-times.text-muted::before,.fa.fa-play.text-muted::before {
+.glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted,.fa.fa-exclamation.fa-fw.text-muted,.fa.fa-arrows-h.fa-fw.text-muted,.fa.fa-long-arrow-left,.fa.fa-long-arrow-left::before,.fa.fa-info-circle.text-muted,.fa.fa-times-circle.text-muted,.fa.fa-times-circle.text-muted::before,.fa.fa-times.text-muted,.fa.fa-times.text-muted::before,.fa.fa-play.text-muted::before {
   color: #eac80a !important;
 }
 

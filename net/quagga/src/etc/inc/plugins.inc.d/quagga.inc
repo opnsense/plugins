@@ -40,7 +40,7 @@ function quagga_firewall($fw)
 {
     if (ospfd_enabled()) {
         $ospf = new \OPNsense\Quagga\OSPF();
-        foreach ($ospf->networks->network->__items as $network) {
+        foreach ($ospf->networks->network->iterateItems() as $network) {
             if ((string)$network->enabled == '1') {
                 $fw->registerFilterRule(
                     1, /* priority */

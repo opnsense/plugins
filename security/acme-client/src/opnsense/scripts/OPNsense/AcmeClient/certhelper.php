@@ -1,37 +1,33 @@
 #!/usr/local/bin/php
 <?php
 
-/**
- *    Based in parts on certs.inc and system_camanager.php (thus the extended copyright notice).
+/*
+ * Copyright (C) 2017-2018 Frank Wall
+ * Copyright (C) 2015 Deciso B.V.
+ * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
+ * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
+ * All rights reserved.
  *
- *    Copyright (C) 2017-2018 Frank Wall
- *    Copyright (C) 2015 Deciso B.V.
- *    Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
- *    Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    All rights reserved.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 // Hello. I am the spaghetti monster. Yummy.
@@ -42,14 +38,13 @@ require_once("certs.inc");
 require_once("legacy_bindings.inc");
 require_once("interfaces.inc");
 require_once("util.inc");
+
 // Some stuff requires the almighty MVC framework.
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
 use OPNsense\Base;
 use OPNsense\AcmeClient\AcmeClient;
 
-global $config;
-global $postponed_updates;
 $postponed_updates = array();
 
 /* CLI arguments:
@@ -145,7 +140,7 @@ function cert_action_validator($opt_cert_id)
                 $acctRef = (string)$certObj->account;
                 $acctObj = null;
                 $acctref_found = false;
-                foreach ($modelObj->getNodeByReference('accounts.account')->__items as $node) {
+                foreach ($modelObj->getNodeByReference('accounts.account')->iterateItems() as $node) {
                     if ((string)$node->getAttributes()["uuid"] == $acctRef) {
                         $acctref_found = true;
                         $acctObj = $node;
@@ -182,7 +177,7 @@ function cert_action_validator($opt_cert_id)
                 $valRef = (string)$certObj->validationMethod;
                 $valObj = null;
                 $ref_found = false;
-                foreach ($modelObj->getNodeByReference('validations.validation')->__items as $node) {
+                foreach ($modelObj->getNodeByReference('validations.validation')->iterateItems() as $node) {
                     if ((string)$node->getAttributes()["uuid"] == $valRef) {
                         $ref_found = true;
                         $valObj = $node;
@@ -781,6 +776,16 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_zonomi':
                 $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
+                break;
+            case 'dns_gdnsdk':
+                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
+                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
+                break;
+            case 'dns_acmedns':
+                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
+                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
+                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
+                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
                 break;
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);

@@ -2,4 +2,49 @@ Postfix attempts to be fast, easy to administer, and secure.
 The outside has a definite Sendmail-ish flavor, but the inside
 is completely different.
 
+
+Plugin Changelog
+================
+
+1.8
+
+* Add TLS Wrapper to support SMTPS
+
+1.7
+
+* Add Address Rewriting, allows to rewrite e.g. @example.com to @example.net.
+* Add Sender BCC and Recipient BCC.
+* Allow Domain Masquerading when using internal domain names.
+
+1.6
+
+* Fixed typos
+* Adds Listen Port field
+
+1.5
+
+* Allow empty destination in transport
+
+1.4
+
+* Allow enforced receipient check
+
+1.3
+
+* Allow more options in Senders and Recipients setting
+
+1.2
+
+* Updated relay_host validation
+
+1.1
+
+* Add smart host field
+* Add SMTP authentication
+
+1.0
+
+* Initial release
+
+
 WWW: http://www.postfix.org/

@@ -50,6 +50,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->credential = $this->getForm("credential");
         $this->view->userlist = $this->getForm("userlist");
         $this->view->httpserver = $this->getForm("httpserver");
+        $this->view->streamserver = $this->getForm("streamserver");
         $this->view->httprewrite = $this->getForm("httprewrite");
         $this->view->naxsi_rule = $this->getForm("naxsi_rule");
         $this->view->naxsi_custom_policy = $this->getForm("naxsi_custom_policy");
@@ -57,9 +58,11 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->limit_request_connection = $this->getForm("limit_request_connection");
         $this->view->limit_zone = $this->getForm("limit_zone");
         $this->view->cache_path = $this->getForm("cache_path");
+        $this->view->sni_hostname_map = $this->getForm("sni_hostname_map");
+        $this->view->ipacl = $this->getForm("ipacl");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
-            count($nginx->custom_policy->__items) == 0 && count($nginx->naxsi_rule->__items) == 0;
+            count($nginx->custom_policy->iterateItems()) == 0 && count($nginx->naxsi_rule->iterateItems()) == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 
