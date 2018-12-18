@@ -157,4 +157,12 @@
         <type>text</type>
         <help>Maximum TTL for negatively cached entries.</help>
     </field>
+    <field>
+        <id>general.serverlist</id>
+        <label>Server List</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Set a list of known servers if you want to stick with Cisco e.g. You can also put your manually added servers here.</help>
+    </field>
 </form>
