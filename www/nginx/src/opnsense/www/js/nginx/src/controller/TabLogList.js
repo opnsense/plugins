@@ -35,8 +35,6 @@ let TabLogList = Backbone.View.extend({
         this.handleElementClick(event.target.dataset['modelUuid']);
     },
     handleElementClick: function (uuid) {
-        console.log(uuid);
-        console.log(this.logview);
         this.logview.get_log(this.model.get('logType'), uuid);
     }
 });
