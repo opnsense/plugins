@@ -12,6 +12,8 @@ Plugin Changelog
 
 * Add Bing Strict Search
 * Add 4 new blacklists to DNSBL
+* Ability to hide system hostname and version
+* Rate-Limiting support
 
 1.3
 
