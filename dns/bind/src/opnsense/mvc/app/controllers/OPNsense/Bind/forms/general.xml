@@ -70,6 +70,7 @@
         <id>general.hideversion</id>
         <label>Hide Version</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>This will hide the local BIND version in DNS queries.</help>
     </field>
     <field>
