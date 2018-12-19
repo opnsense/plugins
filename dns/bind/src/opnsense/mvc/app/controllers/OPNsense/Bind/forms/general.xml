@@ -63,6 +63,7 @@
         <id>general.hidehostname</id>
         <label>Hide Hostname</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>This will hide the system hostname for DNS queries.</help>
     </field>
     <field>
@@ -75,12 +76,14 @@
         <id>general.enableratelimiting</id>
         <label>Enable Rate Limiting</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>This will enable rate-limiting for DNS replies.</help>
     </field>
     <field>
         <id>general.ratelimitcount</id>
         <label>Rate Limit Replies</label>
         <type>text</type>
+        <advanced>true</advanced>
         <help>Set how many replies per second are allowed.</help>
     </field>
     <field>
@@ -89,6 +92,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
+        <advanced>true</advanced>
         <help>Except a list of IPs from rate-limiting like ::1</help>
     </field>
 </form>
