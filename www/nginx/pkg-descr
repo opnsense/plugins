@@ -11,6 +11,7 @@ Plugin Changelog
 1.6
 
 * fix bug due to permission downgrade (basic auth)
+* add paging support to log viewer, so it does not crash on really big log files
 
 1.5
 
