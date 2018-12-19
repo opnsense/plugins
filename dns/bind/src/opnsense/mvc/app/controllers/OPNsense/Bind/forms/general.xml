@@ -59,4 +59,36 @@
         <type>dropdown</type>
         <help>Default is "No". Set to "Auto" to use the static trust anchor configuration by the system.</help>
     </field>
+    <field>
+        <id>general.hidehostname</id>
+        <label>Hide Hostname</label>
+        <type>checkbox</type>
+        <help>This will hide the system hostname for DNS queries.</help>
+    </field>
+    <field>
+        <id>general.hideversion</id>
+        <label>Hide Version</label>
+        <type>checkbox</type>
+        <help>This will hide the local BIND version in DNS queries.</help>
+    </field>
+    <field>
+        <id>general.enableratelimiting</id>
+        <label>Enable Rate Limiting</label>
+        <type>checkbox</type>
+        <help>This will enable rate-limiting for DNS replies.</help>
+    </field>
+    <field>
+        <id>general.ratelimitcount</id>
+        <label>Rate Limit Replies</label>
+        <type>text</type>
+        <help>Set how many replies per second are allowed.</help>
+    </field>
+    <field>
+        <id>general.ratelimitexcept</id>
+        <label>Rate Limit Exceptions</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Except a list of IPs from rate-limiting like ::1</help>
+    </field>
 </form>
