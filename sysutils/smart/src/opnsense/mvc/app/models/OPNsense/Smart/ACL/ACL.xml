@@ -2,7 +2,8 @@
     <page-services-smart>
         <name>Services: SMART</name>
         <patterns>
-            <pattern>diag_smart.php*</pattern>
+            <pattern>ui/smart/*</pattern>
+            <pattern>api/smart/*</pattern>
         </patterns>
     </page-services-smart>
 </acl>

@@ -1,5 +1,5 @@
 <?php
-namespace OPNsense\Smart2\Api;
+namespace OPNsense\Smart\Api;
 
 use \OPNsense\Base\ApiControllerBase;
 use \OPNsense\Core\Backend;
@@ -10,7 +10,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
 
-        $devices = preg_split ("/[\s]+/", trim($backend->configdRun("smart2 list")));
+        $devices = preg_split ("/[\s]+/", trim($backend->configdRun("smart list")));
 
         return $devices;
     }
@@ -39,7 +39,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart2", array("info", $type, "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("info", $type, "/dev/".$device));
 
             return array("output" => $output);
         }
@@ -63,7 +63,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart2", array("log", $type, "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("log", $type, "/dev/".$device));
 
             return array("output" => $output);
         }
@@ -87,7 +87,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart2", array("test", $type, "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("test", $type, "/dev/".$device));
 
             return array("output" => $output);
         }
@@ -105,7 +105,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart2", array("abort", "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("abort", "/dev/".$device));
 
             return array("output" => $output);
         }

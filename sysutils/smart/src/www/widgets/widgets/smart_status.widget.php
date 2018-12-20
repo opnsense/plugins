@@ -40,16 +40,13 @@ require_once("widgets/include/smart_status.inc");
     </tr>
 
 <?php
-$devs = array();
-## Get all adX, daX, and adaX (IDE, SCSI, and AHCI) devices currently installed
-exec("ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devs); ## From SMART status page
+$devs = preg_split ("/[\s]+/", trim(configd_run ("smart list")));
 
 if (count($devs) > 0) {
     foreach ($devs as $dev) {
 ## for each found drive do
-        $dev_ident = exec("diskinfo -v /dev/$dev | grep ident   | awk '{print $1}'"); ## get identifier from drive
-        $dev_state = trim(exec("smartctl -H /dev/$dev | awk -F: '/^SMART overall-health self-assessment test result/ {print $2;exit}
-/^SMART Health Status/ {print $2;exit}'")); ## get SMART state from drive
+        $dev_ident = trim(configd_run ("smart ident /dev/$dev")); ## get identifier from drive
+        $dev_state = trim(configd_run ("smart state /dev/$dev")); ## get SMART state from drive
         $dev_state_translated = "";
         switch ($dev_state) {
             case "PASSED":

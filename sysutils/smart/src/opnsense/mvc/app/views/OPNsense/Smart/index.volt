@@ -19,7 +19,7 @@
  };
 
  $( document ).ready(function () {
-     ajaxCall (url="/api/smart2/service/list", sendData={}, callback=function(data, status) {
+     ajaxCall (url="/api/smart/service/list", sendData={}, callback=function(data, status) {
 	 // action to run after reload
 	 var devices = data['devices'];
 
@@ -36,7 +36,7 @@
 		 var type = $("input[name='type']:checked").val ();
 		 var device = $("#device1").val ();
 
-		 ajaxCall (url="/api/smart2/service/info", sendData={
+		 ajaxCall (url="/api/smart/service/info", sendData={
 		     "type" : type,
 		     "device" : device
 		 }, callback=function (data, status) {
@@ -49,7 +49,7 @@
 		 var type = $("input[name='testType']:checked").val ();
 		 var device = $("#device2").val ();
 
-		 ajaxCall (url="/api/smart2/service/test", sendData={
+		 ajaxCall (url="/api/smart/service/test", sendData={
 		     "type" : type,
 		     "device" : device
 		 }, callback=function (data, status) {
@@ -62,7 +62,7 @@
 		 var type = $("input[name='logType']:checked").val ();
 		 var device = $("#device3").val ();
 
-		 ajaxCall (url="/api/smart2/service/logs", sendData={
+		 ajaxCall (url="/api/smart/service/logs", sendData={
 		     "type" : type,
 		     "device" : device
 		 }, callback=function (data, status) {
@@ -77,7 +77,7 @@
 
 		 var device = $("#device4").val ();
 
-		 ajaxCall (url="/api/smart2/service/abort", sendData={
+		 ajaxCall (url="/api/smart/service/abort", sendData={
 		     "device" : device
 		 }, callback=function (data, status) {
 		     $("#abortTestMsg").html(data['output']);
