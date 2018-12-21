@@ -25,7 +25,7 @@
         <type>checkbox</type>
         <help>This will force SafeSearch.</help>
     </field>
-	<field>
+		<field>
         <id>dnsbl.forcesafeduckduckgo</id>
         <label>Enable DuckDuckGo SafeSearch</label>
         <type>checkbox</type>
