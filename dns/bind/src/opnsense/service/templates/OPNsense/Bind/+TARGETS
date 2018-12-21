@@ -1,5 +1,6 @@
 bing.db:/usr/local/etc/namedb/master/bing.db
 blacklist.db:/usr/local/etc/namedb/master/blacklist.db
+duckduckgo.db:/usr/local/etc/namedb/master/duckduckgo.db
 google.db:/usr/local/etc/namedb/master/google.db
 named:/etc/rc.conf.d/named
 named.conf:/usr/local/etc/namedb/named.conf
