@@ -374,6 +374,33 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('limit_zone', 'limit_zone', $uuid);
     }
 
+    // TLS fingerprints for MITM detection
+    public function searchtls_fingerprintAction()
+    {
+        return $this->searchBase('tls_fingerprint', array('description'));
+    }
+
+    public function gettls_fingerprintAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('tls_fingerprint', 'tls_fingerprint', $uuid);
+    }
+
+    public function addtls_fingerprintAction()
+    {
+        return $this->addBase('tls_fingerprint', 'tls_fingerprint');
+    }
+
+    public function deltls_fingerprintAction($uuid)
+    {
+        return $this->delBase('tls_fingerprint', $uuid);
+    }
+
+    public function settls_fingerprintAction($uuid)
+    {
+        return $this->setBase('tls_fingerprint', 'tls_fingerprint', $uuid);
+    }
+
     // limit_request_connection
     public function searchlimit_request_connectionAction()
     {
@@ -477,6 +504,7 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         return [];
     }
+
     // IP / Network based ACLs
     public function searchipaclAction()
     {

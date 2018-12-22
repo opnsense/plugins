@@ -68,6 +68,7 @@ function init_grids() {
         'cache_path',
         'limit_request_connection',
         'snifwd',
+        'tls_fingerprint',
         'naxsirule'].forEach(function (element) {
         $("#grid-" + element).UIBootgrid(
             {

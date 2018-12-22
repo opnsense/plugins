@@ -241,3 +241,24 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
 foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
 }
+
+// export TLS fingerprint database for MitM detection
+$tls_fingerprint_database = array();
+foreach ($nginx->tls_fingerprint->iterateItems() as $tls_fingerprint) {
+    if ((string)$tls_fingerprint->trusted == '1') {
+        $ciphers = explode(':', (string)$tls_fingerprint->ciphers);
+        if (!empty((string)$tls_fingerprint->curves)) {
+            $curves = explode(':', (string)$tls_fingerprint->ciphers);
+        } else {
+            $curves = array();
+        }
+        $tls_fingerprint_database[(string)$tls_fingerprint->user_agent] =
+            array('ciphers' => $ciphers, 'curves' => $curves);
+    }
+}
+
+file_put_contents(
+        '/usr/local/etc/nginx/tls_fingerprints.json',
+        empty($tls_fingerprint_database) ? '{}' :  json_encode($tls_fingerprint_database)
+);
+chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
