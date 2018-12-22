@@ -124,6 +124,9 @@
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
             </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-tls-fingerprint" href="#subtab_nginx-http-tls-fingerprint">{{ lang._('TLS Fingerprint (Advanced)')}}</a>
+            </li>
         </ul>
     </li>
     <li role="presentation" class="dropdown">
@@ -574,6 +577,27 @@
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-tls-fingerprint" class="tab-pane fade">
+        <table id="grid-tls_fingerprint" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="tls_fingerprint_dlg">
+            <thead>
+                <tr>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 
@@ -593,3 +617,4 @@
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
 {{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
 {{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
+{{ partial("layout_partials/base_dialog",['fields': tls_fingerprint,'id':'tls_fingerprint_dlg', 'label':lang._('Edit TLS Fingerprint')]) }}
