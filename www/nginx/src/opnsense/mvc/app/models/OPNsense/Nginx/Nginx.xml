@@ -690,6 +690,11 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <advanced_acl_server type="AuthenticationServerField">
+        <Required>N</Required>
+        <multiple>N</multiple>
+        <default>Local Database</default>
+      </advanced_acl_server>
       <satisfy type="OptionField">
         <OptionValues>
           <any>Any</any>

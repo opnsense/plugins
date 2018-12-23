@@ -45,13 +45,19 @@ function password_auth_test($username, $password, $auth_server)
 
 function password_auth($auth_server = 'Local Database')
 {
-    if (!isset($_SERVER['PHP_AUTH_PW']) || !isset($_SERVER['PHP_AUTH_PW'])) {
+    if (!isset($_SERVER['PHP_AUTH_PW']) || !isset($_SERVER['PHP_AUTH_USER'])) {
         return false;
     }
     return password_auth_test($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'], $auth_server);
 }
 
-if (password_auth()) {
+if (empty($_SERVER['AUTH_SERVER'])) {
+    $auth_server = 'Local Database';
+} else {
+    $auth_server = $_SERVER['AUTH_SERVER'];
+}
+
+if (password_auth($auth_server)) {
     header("HTTP/1.1 200 OK");
 } else {
     header("HTTP/1.1 401 Authorization Required");
