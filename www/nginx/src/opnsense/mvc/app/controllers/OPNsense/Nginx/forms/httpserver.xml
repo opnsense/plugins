@@ -132,6 +132,12 @@
     <help>If you select an IP ACL, the client can only access this service if it fulfills this requirement.</help>
   </field>
   <field>
+    <id>httpserver.advanced_acl_server</id>
+    <label>Advanced ACL Authentication Backend</label>
+    <type>dropdown</type>
+    <help>Choose a backend for advanced authentication. If you don't have one, configure it under System -> Access -> Servers. If nothing is configured, the local database is used.</help>
+  </field>
+  <field>
     <id>httpserver.satisfy</id>
     <label>Satisfy</label>
     <type>dropdown</type>
