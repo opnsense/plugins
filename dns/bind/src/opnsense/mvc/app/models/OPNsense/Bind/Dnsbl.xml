@@ -36,10 +36,6 @@
             <default>0</default>
             <Required>Y</Required>
         </forcesafegoogle>
-        <forcesafeduckduckgo type="BooleanField">
-            <default>0</default>
-            <Required>Y</Required>
-        </forcesafeduckduckgo>
         <forcesafeyoutube type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
