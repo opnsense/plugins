@@ -21,7 +21,7 @@
  $( document ).ready(function () {
      ajaxCall (url="/api/smart/service/list", sendData={}, callback=function(data, status) {
 	 // action to run after reload
-	 var devices = data['devices'];
+	 var devices = data.devices;
 
 	 if (Array.isArray(devices) && devices.length > 0) {
 	     $("#noDevicesMsg").addClass("hidden");
@@ -33,26 +33,26 @@
 	     appendDeviceSelectOptions ($("#device4"), devices);
 
 	     $("#viewInfoAct").click (function () {
-		 var type = $("input[name='type']:checked").val ();
-		 var device = $("#device1").val ();
+		 var type = $("input[name='type']:checked").val();
+		 var device = $("#device1").val();
 
-		 ajaxCall (url="/api/smart/service/info", sendData={
+		 ajaxCall (url="/api/smart/service/info", {
 		     "type" : type,
 		     "device" : device
-		 }, callback=function (data, status) {
+		 }, function (data, status) {
 		     $("#infoMsg").html(add_colors(data['output']));
 		     $("#infoMsg").removeClass("hidden");
 		 });
 	     });
 
-	     $("#testAct").click (function () {
+	     $("#testAct").click(function () {
 		 var type = $("input[name='testType']:checked").val ();
 		 var device = $("#device2").val ();
 
-		 ajaxCall (url="/api/smart/service/test", sendData={
+		 ajaxCall ("/api/smart/service/test", {
 		     "type" : type,
 		     "device" : device
-		 }, callback=function (data, status) {
+		 }, function (data, status) {
 		     $("#testMsg").html(add_colors(data['output']));
 		     $("#testMsg").removeClass("hidden");
 		 });
@@ -62,10 +62,10 @@
 		 var type = $("input[name='logType']:checked").val ();
 		 var device = $("#device3").val ();
 
-		 ajaxCall (url="/api/smart/service/logs", sendData={
+		 ajaxCall (url="/api/smart/service/logs", {
 		     "type" : type,
 		     "device" : device
-		 }, callback=function (data, status) {
+		 }, function (data, status) {
 		     $("#logsMsg").html(add_colors(data['output']));
 		     $("#logsMsg").removeClass("hidden");
 		 });
@@ -75,11 +75,11 @@
 		 if (!confirm("{{ lang._('Do you really want to abort the test?') }}"))
 		     return;
 
-		 var device = $("#device4").val ();
+		 var device = $("#device4").val();
 
-		 ajaxCall (url="/api/smart/service/abort", sendData={
+		 ajaxCall (url="/api/smart/service/abort", {
 		     "device" : device
-		 }, callback=function (data, status) {
+		 }, function (data, status) {
 		     $("#abortTestMsg").html(data['output']);
 		     $("#abortTestMsg").removeClass("hidden");
 		 });
