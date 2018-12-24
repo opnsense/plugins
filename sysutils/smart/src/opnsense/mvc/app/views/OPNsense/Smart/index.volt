@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
  // Highlights the words "PASSED", "FAILED", and "WARNING".
- var add_colors = function (text) {
+ function add_colors(text) {
      return text
 	 .replace(/PASSED/g, '<span class="text-success">{{ lang._("PASSED") }}</span>')
 	 .replace(/FAILED/g, '<span class="text-danger">{{ lang._("FAILED") }}</span>')
@@ -9,17 +9,17 @@
  };
 
  // Appends options to select device.
- var appendDeviceSelectOptions = function (deviceSelect, devices) {
-     $.each (devices, function (index, value) {
+ function appendDeviceSelectOptions(deviceSelect, devices) {
+     $.each(devices, function(index, value) {
 	 deviceSelect
-	     .append ($("<option></option>")
-		 .attr ("value", value)
-		 .text (value));
+	     .append($("<option></option>")
+		 .attr("value", value)
+		 .text(value));
      });
  };
 
- $( document ).ready(function () {
-     ajaxCall (url="/api/smart/service/list", sendData={}, callback=function(data, status) {
+ $( document ).ready(function() {
+     ajaxCall("/api/smart/service/list", {}, function(data, status) {
 	 // action to run after reload
 	 var devices = data.devices;
 
@@ -27,59 +27,59 @@
 	     $("#noDevicesMsg").addClass("hidden");
 	     $("#genericActions").removeClass("hidden");
 
-	     appendDeviceSelectOptions ($("#device1"), devices);
-	     appendDeviceSelectOptions ($("#device2"), devices);
-	     appendDeviceSelectOptions ($("#device3"), devices);
-	     appendDeviceSelectOptions ($("#device4"), devices);
+	     appendDeviceSelectOptions($("#device1"), devices);
+	     appendDeviceSelectOptions($("#device2"), devices);
+	     appendDeviceSelectOptions($("#device3"), devices);
+	     appendDeviceSelectOptions($("#device4"), devices);
 
-	     $("#viewInfoAct").click (function () {
+	     $("#viewInfoAct").click(function() {
 		 var type = $("input[name='type']:checked").val();
 		 var device = $("#device1").val();
 
-		 ajaxCall (url="/api/smart/service/info", {
+		 ajaxCall("/api/smart/service/info", {
 		     "type" : type,
 		     "device" : device
-		 }, function (data, status) {
+		 }, function(data, status) {
 		     $("#infoMsg").html(add_colors(data['output']));
 		     $("#infoMsg").removeClass("hidden");
 		 });
 	     });
 
-	     $("#testAct").click(function () {
-		 var type = $("input[name='testType']:checked").val ();
-		 var device = $("#device2").val ();
+	     $("#testAct").click(function() {
+		 var type = $("input[name='testType']:checked").val();
+		 var device = $("#device2").val();
 
-		 ajaxCall ("/api/smart/service/test", {
+		 ajaxCall("/api/smart/service/test", {
 		     "type" : type,
 		     "device" : device
-		 }, function (data, status) {
+		 }, function(data, status) {
 		     $("#testMsg").html(add_colors(data['output']));
 		     $("#testMsg").removeClass("hidden");
 		 });
 	     });
 
-	     $("#viewLogsAct").click (function () {
-		 var type = $("input[name='logType']:checked").val ();
-		 var device = $("#device3").val ();
+	     $("#viewLogsAct").click(function() {
+		 var type = $("input[name='logType']:checked").val();
+		 var device = $("#device3").val();
 
-		 ajaxCall (url="/api/smart/service/logs", {
+		 ajaxCall("/api/smart/service/logs", {
 		     "type" : type,
 		     "device" : device
-		 }, function (data, status) {
+		 }, function(data, status) {
 		     $("#logsMsg").html(add_colors(data['output']));
 		     $("#logsMsg").removeClass("hidden");
 		 });
 	     });
 
-	     $("#abortTestAct").click (function () {
+	     $("#abortTestAct").click(function() {
 		 if (!confirm("{{ lang._('Do you really want to abort the test?') }}"))
 		     return;
 
 		 var device = $("#device4").val();
 
-		 ajaxCall (url="/api/smart/service/abort", {
+		 ajaxCall("/api/smart/service/abort", {
 		     "device" : device
-		 }, function (data, status) {
+		 }, function(data, status) {
 		     $("#abortTestMsg").html(data['output']);
 		     $("#abortTestMsg").removeClass("hidden");
 		 });
