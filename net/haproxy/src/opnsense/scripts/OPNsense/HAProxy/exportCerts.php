@@ -84,17 +84,27 @@ foreach ($configNodes as $key => $value) {
                                             }
                                         }
                                         // generate pem file for individual certs
-                                        // (only supported for type "cert")
-                                        if ($type == cert) {
+                                        // (not supported for CRLs)
+                                        if (($type == 'cert') or ($type == 'ca')) {
                                             $output_pem_filename = $export_path . $cert_refid . ".pem";
                                             file_put_contents($output_pem_filename, $pem_content);
                                             chmod($output_pem_filename, 0600);
                                             echo "exported $type to " . $output_pem_filename . "\n";
-                                            // add pem file to crt-list
-                                            $crtlist[] = $output_pem_filename;
+
+                                            /* For future reference, CAs are used in two ways:
+                                             * 1. for server SSL verification:
+                                             *     *one* CA cert + private key in a .pem file
+                                             * 2. for SSL client authentication:
+                                             *     *multiple* CA certs + private keys in a .calist file
+                                             * The jinja template decides wether the .pem or .calist file will be used.
+                                             */
+                                            if ($type == 'ca') {
+                                                $crtlist[] = $pem_content;
+                                            } else {
+                                                $crtlist[] = $output_pem_filename;
+                                            }
                                         } else {
-                                            // All other types do not support list files.
-                                            // Add cert content directly to the list file.
+                                            // CRLs need to be put in a single file, lists are not supported.
                                             $crtlist[] = $pem_content;
                                         }
                                     }
