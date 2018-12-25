@@ -46,8 +46,9 @@
     <field>
         <id>server.sslCA</id>
         <label>SSL Verify CA</label>
-        <type>dropdown</type>
-        <help><![CDATA[This certificate authority will be used to verify server's certificate. <br/>To import additional CAs, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help><![CDATA[These CAs will be used to verify server's certificate. <br/>To import additional CAs, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
         <hint>Type CA name or choose from list.</hint>
     </field>
     <field>

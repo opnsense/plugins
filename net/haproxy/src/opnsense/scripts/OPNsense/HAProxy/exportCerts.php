@@ -85,26 +85,15 @@ foreach ($configNodes as $key => $value) {
                                         }
                                         // generate pem file for individual certs
                                         // (not supported for CRLs)
-                                        if (($type == 'cert') or ($type == 'ca')) {
+                                        if ($type == 'cert') {
                                             $output_pem_filename = $export_path . $cert_refid . ".pem";
                                             file_put_contents($output_pem_filename, $pem_content);
                                             chmod($output_pem_filename, 0600);
                                             echo "exported $type to " . $output_pem_filename . "\n";
-
-                                            /* For future reference, CAs are used in two ways:
-                                             * 1. for server SSL verification:
-                                             *     *one* CA cert + private key in a .pem file
-                                             * 2. for SSL client authentication:
-                                             *     *multiple* CA certs + private keys in a .calist file
-                                             * The jinja template decides wether the .pem or .calist file will be used.
-                                             */
-                                            if ($type == 'ca') {
-                                                $crtlist[] = $pem_content;
-                                            } else {
-                                                $crtlist[] = $output_pem_filename;
-                                            }
+                                             $crtlist[] = $output_pem_filename;
                                         } else {
-                                            // CRLs need to be put in a single file, lists are not supported.
+                                            // In contrast to certificates, CA/CRL content needs to be put in a single file.
+                                            // A list of individual files is not supported by HAproxy.
                                             $crtlist[] = $pem_content;
                                         }
                                     }
@@ -112,8 +101,8 @@ foreach ($configNodes as $key => $value) {
                             }
                         }
                         // generate list file
-                        // (only supported for frontends)
-                        if ($key == 'frontends') {
+                        // (only supported for frontends and servers)
+                        if (($key == 'frontends') or ($key == 'servers')) {
                             // ignore if list is empty
                             if (empty($crtlist)) {
                                 continue;

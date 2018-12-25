@@ -1053,7 +1053,8 @@
                 <sslCA type="CertificateField">
                     <Required>N</Required>
                     <Type>ca</Type>
-                    <ValidationMessage>Please select a valid CA from the list.</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Please select one or more CAs from the list.</ValidationMessage>
                 </sslCA>
                 <sslCRL type="CertificateField">
                     <Required>N</Required>
