@@ -14,6 +14,7 @@ Plugin Changelog
 * add paging support to log viewer, so it does not crash on really big log files
 * add basic TLS fingerprint check to make man in the middle attacks visible (may not fully work on LibreSSL crypto flavour as curves seem to return an empty string)
 * add dropdown to select authentication backend in HTTP server for advanced authentication
+* add global error log to log viewer
 * use stricter checks for internal locations (contributed by Northguy)
 
 1.5
