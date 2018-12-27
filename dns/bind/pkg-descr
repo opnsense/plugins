@@ -10,8 +10,8 @@ Plugin Changelog
 
 1.4
 
-* Add Bing Strict Search
-* Add 4 new blacklists to DNSBL
+* Add Bing and DuckDuckGo Strict Search
+* Add 5 new blacklists to DNSBL (incl. StevenBlack List)
 * Ability to hide system hostname and version
 * Rate-Limiting support
 
