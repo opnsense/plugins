@@ -1,5 +1,6 @@
-About the OPNsense plugins
-==========================
+# OPNsense plugins
+
+## About
 
 The plugins collection offers users and developers a way to quickly
 build additions for OPNsense that can be optionally installed.  As
@@ -18,82 +19,79 @@ Plugins can do the following:
 * Persistent /boot/loader.conf modifications
 * Additional themes for the web GUI
 
-Now we need your help to enrich the plugins.  Feel free to contact us
-at project AT opnsense DOT org or open GitHub issue to get in touch.
-
+Now we need your help to enrich the plugins. Feel free to contact us
+at `project AT opnsense DOT org` or open [GitHub issue](https://github.com/opnsense/plugins/issues) to get in touch.
 
 Stay safe,
 Your OPNsense team
 
-A list of currently available plugins
-=====================================
+## Currently available plugins
 
-```
-benchmarks/iperf -- Connection speed tester
-databases/redis -- Redis DB
-devel/debug -- Debugging Tools
-devel/helloworld -- A sample framework application
-dns/bind -- BIND domain name service
-dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
-dns/dyndns -- Dynamic DNS Support
-dns/rfc2136 -- RFC-2136 Support
-mail/postfix -- SMTP mail relay
-mail/rspamd -- Protect your network from spam
-misc/theme-cicada -- The cicada theme - grey/orange
-misc/theme-rebellion -- A suitably dark theme
-misc/theme-tukan -- The tukan theme - blue/white
-net-mgmt/collectd -- Collect system and application performance metrics periodically
-net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
-net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
-net-mgmt/telegraf -- Agent for collecting metrics and data
-net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
-net/arp-scan -- Get all peers connected to a local network
-net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
-net/frr -- The FRRouting Protocol Suite
-net/ftp-proxy -- Control ftp-proxy processes
-net/haproxy -- Reliable, high performance TCP/HTTP load balancer
-net/igmp-proxy -- IGMP-Proxy Service
-net/l2tp -- L2TP server based on MPD5
-net/mdns-repeater -- Proxy multicast DNS between networks
-net/ntopng -- Traffic Analysis and Flow Collection
-net/pppoe -- PPPoE server based on MPD5
-net/pptp -- PPTP server based on MPD5
-net/relayd -- Relayd Load Balancer
-net/shadowsocks -- Secure socks5 proxy
-net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
-net/upnp -- Universal Plug and Play Service
-net/vnstat -- vnStat is a console-based network traffic monitor
-net/wireguard -- WireGuard VPN service
-net/wol -- Wake on LAN Service
-net/zerotier -- Virtual Networks That Just Work
-security/acme-client -- Let's Encrypt client
-security/clamav -- Antivirus engine for detecting malicious threats
-security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
-security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
-security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
-security/openconnect -- OpenConnect Client
-security/softether -- Cross-platform Multi-protocol VPN Program
-security/tinc -- Tinc VPN
-security/tor -- The Onion Router
-sysutils/api-backup -- Provide the functionality to download the config.xml
-sysutils/boot-delay -- Apply a persistent 10 second boot delay
-sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
-sysutils/mail-backup -- Send configuration file backup by e-mail
-sysutils/node_exporter -- Prometheus exporter for machine metrics
-sysutils/nut -- Network UPS Tools
-sysutils/smart -- SMART tools
-sysutils/vmware -- VMware tools
-sysutils/xen -- Xen guest utilities
-www/c-icap -- c-icap connects the web proxy with a virus scanner
-www/cache -- Webserver cache
-www/nginx -- Nginx HTTP server and reverse proxy
-www/web-proxy-sso -- Kerberos authentication module
-www/web-proxy-useracl -- Group and user ACL for the web proxy
-```
+| Plugin                                         | Description                                                     |
+|------------------------------------------------|-----------------------------------------------------------------|
+| benchmarks/iperf                               | Connection speed tester                                         |
+| databases/redis                                | Redis DB                                                        |
+| devel/debug                                    | Debugging Tools                                                 |
+| devel/helloworld                               | A sample framework application                                  |
+| dns/bind                                       | BIND domain name service                                        |
+| dns/dnscrypt-proxy                             | Flexible DNS proxy supporting DNSCrypt and DoH                  |
+| dns/dyndns                                     | Dynamic DNS Support                                             |
+| dns/rfc2136                                    | RFC-2136 Support                                                |
+| mail/postfix                                   | SMTP mail relay                                                 |
+| mail/rspamd                                    | Protect your network from spam                                  |
+| misc/theme-cicada                              | The cicada theme - grey/orange                                  |
+| misc/theme-rebellion                           | A suitably dark theme                                           |
+| misc/theme-tukan                               | The tukan theme - blue/white                                    |
+| net-mgmt/collectd                              | Collect system and application performance metrics periodically |
+| net-mgmt/lldpd                                 | LLDP allows you to know exactly on which port is a server       |
+| net-mgmt/net-snmp                              | Net-SNMP is a daemon for the SNMP protocol                      |
+| net-mgmt/telegraf                              | Agent for collecting metrics and data                           |
+| net-mgmt/zabbix-agent                          | Enterprise-class open source distributed monitoring agent       |
+| net-mgmt/zabbix-proxy                          | Zabbix Proxy enables decentralized monitoring                   |
+| net/arp-scan                                   | Get all peers connected to a local network                      |
+| net/freeradius                                 | RADIUS Authentication, Authorization and Accounting Server      |
+| net/frr                                        | The FRRouting Protocol Suite                                    |
+| net/ftp-proxy                                  | Control ftp-proxy processes                                     |
+| net/haproxy                                    | Reliable, high performance TCP/HTTP load balancer               |
+| net/igmp-proxy                                 | IGMP-Proxy Service                                              |
+| net/l2tp                                       | L2TP server based on MPD5                                       |
+| net/mdns-repeater                              | Proxy multicast DNS between networks                            |
+| net/ntopng                                     | Traffic Analysis and Flow Collection                            |
+| net/pppoe                                      | PPPoE server based on MPD5                                      |
+| net/pptp                                       | PPTP server based on MPD5                                       |
+| net/relayd                                     | Relayd Load Balancer                                            |
+| net/shadowsocks                                | Secure socks5 proxy                                             |
+| net/siproxd                                    | Siproxd is a proxy daemon for the SIP protocol                  |
+| net/upnp                                       | Universal Plug and Play Service                                 |
+| net/vnstat                                     | vnStat is a console-based network traffic monitor               |
+| net/wireguard                                  | WireGuard VPN service                                           |
+| net/wol                                        | Wake on LAN Service                                             |
+| net/zerotier                                   | Virtual Networks That Just Work                                 |
+| security/acme-client                           | Let's Encrypt client                                            |
+| security/clamav                                | Antivirus engine for detecting malicious threats                |
+| security/intrusion-detection-content-et-pro    | IDS Proofpoint ET Pro ruleset (needs a valid subscription)      |
+| security/intrusion-detection-content-pt-open   | IDS PT Research ruleset (only for non-commercial use)           |
+| security/intrusion-detection-content-snort-vrt | IDS Snort VRT ruleset (needs registration or subscription)      |
+| security/openconnect                           | OpenConnect Client                                              |
+| security/softether                             | Cross-platform Multi-protocol VPN Program                       |
+| security/tinc                                  | Tinc VPN                                                        |
+| security/tor                                   | The Onion Router                                                |
+| sysutils/api-backup                            | Provide the functionality to download the config.xml            |
+| sysutils/boot-delay                            | Apply a persistent 10 second boot delay                         |
+| sysutils/lcdproc-sdeclcd                       | LCDProc for SDEC LCD devices                                    |
+| sysutils/mail-backup                           | Send configuration file backup by e-mail                        |
+| sysutils/node_exporter                         | Prometheus exporter for machine metrics                         |
+| sysutils/nut                                   | Network UPS Tools                                               |
+| sysutils/smart                                 | SMART tools                                                     |
+| sysutils/vmware                                | VMware tools                                                    |
+| sysutils/xen                                   | Xen guest utilities                                             |
+| www/c-icap                                     | c-icap connects the web proxy with a virus scanner              |
+| www/cache                                      | Webserver cache                                                 |
+| www/nginx                                      | Nginx HTTP server and reverse proxy                             |
+| www/web-proxy-sso                              | Kerberos authentication module                                  |
+| www/web-proxy-useracl                          | Group and user ACL for the web proxy                            |
 
-A brief description of how to use the plugins repository
-========================================================
+## How to use the plugins repository
 
 The workflow of the plugins repository is quite similar to the
 core repository, although the plugins have one source directory
@@ -111,22 +109,26 @@ below.
 
 The make targets for the root directory:
 
-* clean:	remove all changes and unknown files
-* lint:		run syntax checks
-* list:		print a list of all plugin directories with comments
-* style-fix:	apply style fixes
-* style:	run style checks
-* sweep:	apply whitespace fixes
+| Target    | Description                                          |
+|-----------|------------------------------------------------------|
+| clean     | Remove all changes and unknown files                 |
+| lint      | Run syntax checks                                    |
+| list      | Print a list of all plugin directories with comments |
+| style-fix | Apply style fixes                                    |
+| style     | Run style checks                                     |
+| sweep     | Apply whitespace fixes                               |
 
 The make targets for any plugin directory:
 
-* clean:	remove all changes and unknown files
-* collect:	gather updates from target directory
-* install:	install to target directory
-* lint:		run syntax checks
-* package:	creates a package
-* upgrade:	upgrades existing package
-* remove:	remove known files from target directory
-* style-fix:	apply style fixes
-* style:	run style checks
-* sweep:	apply whitespace fixes
+| Target    | Description                              |
+|-----------|------------------------------------------|
+| clean     | Remove all changes and unknown files     |
+| collect   | Gather updates from target directory     |
+| install   | Install to target directory              |
+| lint      | Run syntax checks                        |
+| package   | Creates a package                        |
+| upgrade   | Upgrades existing package                |
+| remove    | Remove known files from target directory |
+| style-fix | Apply style fixes                        |
+| style     | Run style checks                         |
+| sweep     | Apply whitespace fixes                   |
