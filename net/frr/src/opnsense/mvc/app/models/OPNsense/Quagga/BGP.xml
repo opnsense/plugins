@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -232,8 +232,7 @@
                                 <Required>N</Required>
                         </match2>
                         <set type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
+                                <Required>N</Required>
                         </set>
                 </routemap>
         </routemaps>
