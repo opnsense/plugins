@@ -40,37 +40,32 @@ require_once("widgets/include/smart_status.inc");
     </tr>
 
 <?php
-$devs = preg_split ("/[\s]+/", trim(configd_run ("smart list")));
+$devs = json_decode (configd_run ("smart detailed list"));
 
-if (count($devs) > 0) {
-    foreach ($devs as $dev) {
-## for each found drive do
-        $dev_ident = trim(configd_run ("smart ident /dev/$dev")); ## get identifier from drive
-        $dev_state = trim(configd_run ("smart state /dev/$dev")); ## get SMART state from drive
-        $dev_state_translated = "";
-        switch ($dev_state) {
-            case "PASSED":
-            case "OK":
-                $dev_state_translated = gettext('OK');
-                $color = "success";
-                break;
-            case "":
-              $dev_state = "Unknown";
-              $dev_state_translated = gettext('Unknown');
-                $color = "warning";
-                break;
-            default:
-                $color = "danger";
-                break;
-        }
+foreach ($devs as $dev) {
+    $dev_state_translated = "";
+
+    switch ($dev->state) {
+    case "PASSED":
+    case "OK":
+        $dev_state_translated = gettext('OK');
+        $color = "success";
+        break;
+    case "":
+        $dev_state_translated = gettext('Unknown');
+        $color = "warning";
+        break;
+    default:
+        $color = "danger";
+        break;
+    }
 ?>
         <tr>
-            <td><?= $dev ?></td>
-            <td style="text-align:center"><?= $dev_ident ?></td>
+            <td><?= $dev->device ?></td>
+            <td style="text-align:center"><?= $dev->ident ?></td>
             <td style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= $dev_state_translated ?>&nbsp;</span></td>
         </tr>
 <?php
-    }
 }
 ?>
 </table>
