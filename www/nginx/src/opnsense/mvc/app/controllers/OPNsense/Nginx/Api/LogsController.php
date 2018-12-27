@@ -85,7 +85,7 @@ class LogsController extends ApiControllerBase
 
     private function call_configd($type, $uuid)
     {
-        if (!$this->vhost_exists($uuid)) {
+        if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
             $this->response->setStatusCode(404, "Not Found");
         }
 

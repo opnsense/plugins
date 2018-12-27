@@ -46,6 +46,16 @@ $mode = $_SERVER['argv'][1];
 $server = $_SERVER['argv'][2];
 $nginx = new Nginx();
 
+// special case: the global error log
+if ($server == 'global') {
+    $logparser = new ErrorLogParser($log_prefix . 'error.log');
+    echo json_encode(empty($logparser->get_result()) ?
+        array('error' => 'no lines found') :
+        $logparser->get_result()
+    );
+    exit(0);
+}
+
 switch ($mode) {
     case 'error':
     case 'access':
