@@ -33,6 +33,6 @@ class DhcpController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->dhcpForm = $this->getForm("dhcp");
-        $this->view->pick('OPNsense/Freeradius/dhcp);
+        $this->view->pick('OPNsense/Freeradius/dhcp');
     }
 }
