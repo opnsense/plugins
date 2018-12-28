@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Smart-Soft
+ *    Copyright (C) 2017-2018 Smart-Soft
  *
  *    All rights reserved.
  *
@@ -34,8 +34,19 @@ class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
+        // set page title, used by the standard template in layouts/default.volt.
         // pick the template to serve to our users.
+        $this->view->mainForm = $this->getForm("main");
+        $this->view->formDialogAgents = $this->getForm("dialogAgents");
+        $this->view->formDialogArps = $this->getForm("dialogArps");
+        $this->view->formDialogDomains = $this->getForm("dialogDomains");
+        $this->view->formDialogDsts = $this->getForm("dialogDsts");
+        $this->view->formDialogHttpaccesses = $this->getForm("dialogHttpaccesses");
+        $this->view->formDialogMimes = $this->getForm("dialogMimes");
+        $this->view->formDialogSrcs = $this->getForm("dialogSrcs");
+        $this->view->formDialogTimes = $this->getForm("dialogTimes");
+        $this->view->formDialogUsers = $this->getForm("dialogUsers");
+        $this->view->locale = explode(".", $this->translator->getLocale())[0];
         $this->view->pick('OPNsense/ProxyUserACL/index');
-        $this->view->formDialogACL = $this->getForm("dialogACL");
     }
 }

@@ -1,0 +1,25 @@
+<form>
+    <field>
+        <id>Time.Description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>Time.Days</id>
+        <label>Weekdays</label>
+        <type>select_multiple</type>
+        <help>Select weekdays</help>
+    </field>
+    <field>
+        <id>Time.Start</id>
+        <label>Begin</label>
+        <type>text</type>
+        <help>The start of the interval</help>
+    </field>
+    <field>
+        <id>Time.End</id>
+        <label>End</label>
+        <type>text</type>
+        <help>The end of the interval</help>
+    </field>
+</form>

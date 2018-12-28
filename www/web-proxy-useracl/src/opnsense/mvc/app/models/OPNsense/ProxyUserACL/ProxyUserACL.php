@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Smart-Soft
+ *    Copyright (C) 2017-2019 Smart-Soft
  *
  *    All rights reserved.
  *
