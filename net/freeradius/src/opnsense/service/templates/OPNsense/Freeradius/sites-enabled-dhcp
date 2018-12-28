@@ -4,9 +4,9 @@ server dhcp {
 
 listen {
         type = dhcp
-        ipaddr = 81.24.66.162
-        src_ipaddr = 81.24.66.162
-        port = 6700
+        ipaddr = {{ OPNsense.freeradius.dhcp.listenip }}
+        src_ipaddr = {{ OPNsense.freeradius.dhcp.listenip }}
+        port = 67
         broadcast = no
 }
 
@@ -17,12 +17,12 @@ dhcp DHCP-Discover {
         }
 
         update reply {
-                &DHCP-Domain-Name-Server = 81.24.65.2
-                &DHCP-Domain-Name-Server = 81.24.64.2
-                &DHCP-Subnet-Mask = 255.255.255.0
-                &DHCP-Router-Address = 10.12.12.1
+                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns1 }}
+                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns2 }}
+                &DHCP-Subnet-Mask = {{ OPNsense.freeradius.dhcp.netmask }}
+                &DHCP-Router-Address = {{ OPNsense.freeradius.dhcp.gatewayip }}
                 &DHCP-IP-Address-Lease-Time = 86400
-                &DHCP-DHCP-Server-Identifier = 10.12.12.1
+                &DHCP-DHCP-Server-Identifier = {{ OPNsense.freeradius.dhcp.gatewayip }}
         }
 
         dhcp_sqlippool
@@ -36,12 +36,12 @@ dhcp DHCP-Request {
         }
 
         update reply {
-                &DHCP-Domain-Name-Server = 81.24.65.2
-                &DHCP-Domain-Name-Server = 81.24.64.2
-                &DHCP-Subnet-Mask = 255.255.255.0
-                &DHCP-Router-Address = 10.12.12.1
+                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns1 }}
+                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns2 }}
+                &DHCP-Subnet-Mask = {{ OPNsense.freeradius.dhcp.netmask }}
+                &DHCP-Router-Address = {{ OPNsense.freeradius.dhcp.gatewayip }}
                 &DHCP-IP-Address-Lease-Time = 86400
-                &DHCP-DHCP-Server-Identifier = 10.12.12.1
+                &DHCP-DHCP-Server-Identifier = {{ OPNsense.freeradius.dhcp.gatewayip }}
         }
 
         dhcp_sqlippool
