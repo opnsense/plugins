@@ -1131,7 +1131,7 @@ a.text-success:hover {
   color: #7fc54f; }
 
 .text-info {
-  color: #296586; }
+  color: #294c5f; }
 
 a.text-info:hover {
   color: #245269; }
@@ -1143,10 +1143,10 @@ a.text-warning:hover {
   color: #ec971f; }
 
 .text-danger {
-  color: #FF1302 !important; }
+  color: #DA4829; }
 
 a.text-danger:hover {
-  color: #ec2121; }
+  color: #DA4829; }
 
 .bg-primary {
   color: #fff; }
@@ -4064,10 +4064,9 @@ tbody.collapse.in {
       text-decoration: none;
       color: #FFFFFF;
       background-color: #427795;
-      border: 1px solid #355f77;
+      border: 1px solid rgba(23, 44, 56, 0.4);
       margin-left: -1px;
-	  cursor: pointer; }
-
+      cursor: pointer; }
     .pagination > li:first-child > a,
     .pagination > li:first-child > span {
       margin-left: 0;
@@ -4081,7 +4080,7 @@ tbody.collapse.in {
   .pagination > li > span:hover,
   .pagination > li > span:focus {
     color: #FFFFFF;
-	background-color: #FF7E25; }
+    background-color: #FF7E25; }
 
   .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus,
   .pagination > .active > span,
@@ -4089,7 +4088,7 @@ tbody.collapse.in {
   .pagination > .active > span:focus {
     z-index: 2;
     color: #FFFFFF;
-	background-color: #FF7E25;
+    background-color: #FF7E25;
     cursor: default; }
 
   .pagination > .disabled > span,
@@ -4099,8 +4098,7 @@ tbody.collapse.in {
   .pagination > .disabled > a:hover,
   .pagination > .disabled > a:focus {
     color: #000;
-    background-color: #eee;
-    border-color: #bdbdbd;
+    background-color: #e3e3e3;
     cursor: not-allowed; }
 
 
@@ -5482,7 +5480,7 @@ button.close {
 
 .show {
   display: block !important;
-  color:#000;}
+  color:#757575;}
 
 .invisible {
   visibility: hidden; }
@@ -6309,11 +6307,11 @@ label > input[type="radio"] {
 	color: #FFF;
 }
 .fw_pass {
-  background-color: #2d6929 !important;
+  background-color: #295f2b !important;
   color:#FFF;
 }
 .fw_block {
-  background-color: #692929 !important;
+  background-color: #5f2929 !important;
   color:#FFF;
 }
   /*additional extensions for theme-tukan*/
