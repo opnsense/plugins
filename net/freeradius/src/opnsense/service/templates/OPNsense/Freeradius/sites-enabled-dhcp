@@ -1,0 +1,111 @@
+{% if helpers.exists('OPNsense.freeradius.dhcp.enabled') and OPNsense.freeradius.dhcp.enabled == '1' %}
+
+server dhcp {
+
+listen {
+        type = dhcp
+        ipaddr = 81.24.66.162
+        src_ipaddr = 81.24.66.162
+        port = 6700
+        broadcast = no
+}
+
+dhcp DHCP-Discover {
+
+        update reply {
+               DHCP-Message-Type = DHCP-Offer
+        }
+
+        update reply {
+                &DHCP-Domain-Name-Server = 81.24.65.2
+                &DHCP-Domain-Name-Server = 81.24.64.2
+                &DHCP-Subnet-Mask = 255.255.255.0
+                &DHCP-Router-Address = 10.12.12.1
+                &DHCP-IP-Address-Lease-Time = 86400
+                &DHCP-DHCP-Server-Identifier = 10.12.12.1
+        }
+
+        dhcp_sqlippool
+        ok
+}
+
+dhcp DHCP-Request {
+
+        update reply {
+               &DHCP-Message-Type = DHCP-Ack
+        }
+
+        update reply {
+                &DHCP-Domain-Name-Server = 81.24.65.2
+                &DHCP-Domain-Name-Server = 81.24.64.2
+                &DHCP-Subnet-Mask = 255.255.255.0
+                &DHCP-Router-Address = 10.12.12.1
+                &DHCP-IP-Address-Lease-Time = 86400
+                &DHCP-DHCP-Server-Identifier = 10.12.12.1
+        }
+
+        dhcp_sqlippool
+        ok
+}
+
+dhcp DHCP-Decline {
+        update reply {
+               &DHCP-Message-Type = DHCP-Do-Not-Respond
+        }
+        reject
+}
+
+dhcp DHCP-Inform {
+        update reply {
+               &DHCP-Message-Type = DHCP-Do-Not-Respond
+        }
+        reject
+}
+
+
+dhcp DHCP-Release {
+        update reply {
+               &DHCP-Message-Type = DHCP-Do-Not-Respond
+        }
+        reject
+}
+
+
+dhcp DHCP-Lease-Query {
+        if (&DHCP-Client-Hardware-Address) {
+                # look up MAC in database
+        }
+        elsif (&DHCP-Your-IP-Address) {
+                # look up IP in database
+        }
+        elsif (&DHCP-Client-Identifier) {
+                # look up identifier in database
+        }
+        else {
+                update reply {
+                        &DHCP-Message-Type = DHCP-Lease-Unknown
+                }
+
+                ok
+
+                # stop processing
+                return
+        }
+
+        if (notfound) {
+                update reply {
+                        &DHCP-Message-Type = DHCP-Lease-Unknown
+                }
+                ok
+                return
+        }
+
+        update reply {
+                &DHCP-Message-Type = DHCP-Lease-Unassigned
+        }
+
+}
+
+}
+
+{% endif %}

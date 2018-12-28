@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>dhcp.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the DHCP FreeRADIUS service.</help>
+    </field>
+    <field>
+        <id>dhcp.listenip</id>
+        <label>Listen IP</label>
+        <type>text</type>
+        <help>Set the IP address to listen on.</help>
+    </field>
+    <field>
+        <id>dhcp.dns1</id>
+        <label>DNS 1</label>
+        <type>text</type>
+        <help>Set the first DNS server for this pool.</help>
+    </field>
+    <field>
+        <id>dhcp.dns2</id>
+        <label>DNS 2</label>
+        <type>text</type>
+        <help>Set the second DNS server for this pool.</help>
+    </field>
+    <field>
+        <id>dhcp.netmask</id>
+        <label>Netmask</label>
+        <type>text</type>
+        <help>Set the subnet mask for this pool.</help>
+    </field>
+    <field>
+        <id>dhcp.gatewayip</id>
+        <label>Gateway IP</label>
+        <type>text</type>
+        <help>Set the gateway IP for this pool. It will be the gateway for the clients and also used as the identifier.</help>
+    </field>
+</form>
