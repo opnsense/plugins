@@ -51,8 +51,7 @@ if ($server == 'global') {
     $logparser = new ErrorLogParser($log_prefix . 'error.log');
     echo json_encode(empty($logparser->get_result()) ?
         array('error' => 'no lines found') :
-        $logparser->get_result()
-    );
+        $logparser->get_result());
     exit(0);
 }
 
