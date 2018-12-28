@@ -24,6 +24,10 @@ dhcp DHCP-Discover {
                 &DHCP-IP-Address-Lease-Time = 86400
                 &DHCP-DHCP-Server-Identifier = {{ OPNsense.freeradius.dhcp.gatewayip }}
         }
+        
+        update control {
+                &Pool-Name := "local"
+        }
 
         dhcp_sqlippool
         ok
@@ -44,6 +48,10 @@ dhcp DHCP-Request {
                 &DHCP-DHCP-Server-Identifier = {{ OPNsense.freeradius.dhcp.gatewayip }}
         }
 
+        update control {
+                &Pool-Name := "local"
+        }
+        
         dhcp_sqlippool
         ok
 }
