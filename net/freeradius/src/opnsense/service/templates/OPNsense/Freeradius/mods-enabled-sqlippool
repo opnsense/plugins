@@ -1,4 +1,4 @@
-{% if helpers.exists('OPNsense.freeradius.general.sqlippoolenabled') and OPNsense.freeradius.general.sqlippoolenabled == '1' %}
+{% if helpers.exists('OPNsense.freeradius.general.sqlite') and OPNsense.freeradius.general.sqlite == '1' %}
 
 sqlippool {
         # SQL instance to use (from sql.conf)
