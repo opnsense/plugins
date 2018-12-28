@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf</mount>
     <description>OSPF Routing configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -20,6 +20,12 @@
             <default>0</default>
             <Required>Y</Required>
         </originatealways>
+        <originatemetric type="IntegerField">
+            <Required>N</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>16777214</MaximumValue>
+            <ValidationMessage>Must be a number between 0 and 16777214.</ValidationMessage>
+        </originatemetric>
         <passiveinterfaces type="InterfaceField">
                 <Required>N</Required>
                 <multiple>Y</multiple>
@@ -118,6 +124,13 @@
                                 <Required>N</Required>
                                 <mask>/^\S+$/</mask>
                         </authkey>
+                        <authkey_id type="IntegerField">
+                                <default>1</default>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>255</MaximumValue>
+                                <Required>Y</Required>
+                                <ValidationMessage>The authentication key ID must be between 1 and 255.</ValidationMessage>
+                        </authkey_id>
                         <cost type="IntegerField">
                                 <default></default>
                                 <MinimumValue>0</MinimumValue>
