@@ -59,11 +59,12 @@ unset($handle);
 // group by user agent
 $fingerprints2 = array();
 foreach ($fingerprints as $fingerprint) {
-    if (!in_array($fingerprint['ua'], $fingerprints2)) {
-        $fingerprints2[$fingerprint['ua']] = array();
+    $user_agent = $fingerprint['ua'];
+    if (!is_array($fingerprints2[$user_agent])) {
+        $fingerprints2[$user_agent] = array();
     }
     $hashkey = md5($fingerprint['ciphers'] . $fingerprint['curves']);
-    $fingerprints2[$fingerprint['ua']][$hashkey] = array_filter($fingerprint, 'filter_ua', ARRAY_FILTER_USE_KEY);
+    $fingerprints2[$user_agent][$hashkey] = array_filter($fingerprint, 'filter_ua', ARRAY_FILTER_USE_KEY);
 }
 
 // free some memory so we have more to use
