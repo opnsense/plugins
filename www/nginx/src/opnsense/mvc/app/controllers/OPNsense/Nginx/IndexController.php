@@ -76,6 +76,14 @@ class IndexController extends \OPNsense\Base\IndexController
     }
 
     /**
+     * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
+     */
+    public function tls_handshakesAction()
+    {
+        $this->view->pick('OPNsense/Nginx/tls_handshakes');
+    }
+
+    /**
      * display a viewer for banned IPs.
      */
     public function banAction()
