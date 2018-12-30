@@ -80,24 +80,6 @@ const FingerPrintList = Backbone.View.extend({
             content_holder.append(row.$el);
             row.render();
         });
-        /*nv.addGraph(function() {
-            const chart = nv.models.pieChart()
-                .x(function(d) {
-                    return d.label;
-                })
-                .y(function(d) {
-                    return +d.get('count');
-                })
-                .labelType("percent")
-                .showLabels(false);
-
-            d3.select(chart_holder[0])
-                .datum(chart_data)
-                .transition().duration(350)
-                .call(chart);
-
-            return chart;
-        });*/
         try {
             nv.addGraph(function () {
                 const chart = nv.models.pieChart();
