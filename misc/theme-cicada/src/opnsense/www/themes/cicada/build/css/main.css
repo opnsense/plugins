@@ -1131,7 +1131,7 @@ a.text-success:hover {
   color: #7fc54f; }
 
 .text-info {
-  color: #56dd03; }
+  color: #46A50C; }
 
 a.text-info:hover {
   color: #245269; }
@@ -5479,7 +5479,7 @@ button.close {
 
 .show {
   display: block !important;
-  color:#FFFFFF;}
+  color:#B3B3B3;}
 
 .invisible {
   visibility: hidden; }
@@ -6334,7 +6334,7 @@ textarea#update_status, textarea#update_status:hover {
 
 .fa-times-circle::before {
   content: "\f057";
-  color: #B13116;
+  color: #CA3625;
 }
 
 .fa-refresh::before {

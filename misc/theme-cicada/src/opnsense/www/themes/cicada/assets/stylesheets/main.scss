@@ -1534,7 +1534,7 @@ a.text-success:hover {
 }
 
 .text-info {
-  color: #56dd03;
+  color: #46A50C;
 }
 
 a.text-info:hover {
@@ -2598,7 +2598,6 @@ th {
         border-top: 0;
         font-family: 'SourceSansProSemibold';
         font-weight: normal;
-        border-bottom: 1px solid #515151;
       }
     }
     thead:first-child > tr:first-child > {
@@ -2606,7 +2605,6 @@ th {
         border-top: 0;
         font-family: 'SourceSansProSemibold';
         font-weight: normal;
-        border-bottom: 1px solid #515151;
       }
     }
     tbody + tbody {
@@ -4450,24 +4448,20 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
   background-color: #2a2a2a;
   border: 1px solid #5a5a5a;
   outline: 0;
+}
+
+.open > .btn.dropdown-toggle {
+  color: #ffffff;
+}
+
+.btn {
   &:active, &.active {
-    color: #FF7D1E;
+    color: #ec6d12;
     background-color: #2d2d2d;
     outline: 0;
     border-color: #5a5a5a;
     text-decoration: none;
   }
-}
-
-.open > .btn.dropdown-toggle {
-  color: #ffffff;
-  background-color: #2d2d2d;
-  outline: 0;
-  border-color: #5a5a5a;
-  text-decoration: none;
-}
-
-.btn {
   &:hover, &:focus {
     background-color: #292929;
     color: #FFF;
@@ -4477,7 +4471,6 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
   &:active, &.active {
     background-image: none;
     outline: 0;
-    color: #ec6d12;
   }
 }
 
@@ -6205,6 +6198,7 @@ a:focus {
   }
 }
 
+.navbar-default {
   .navbar-brand {
     color: #F7F7F7;
     &:hover, &:focus {
@@ -6274,6 +6268,7 @@ a:focus {
       }
     }
   }
+}
 
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > {
@@ -8479,7 +8474,7 @@ button.close {
 
 .show {
   display: block !important;
-  color: #FFFFFF;
+  color: #B3B3B3;
 }
 
 .invisible {
@@ -9534,12 +9529,15 @@ label > input {
     }
   }
 }
+
 .fw_pass {
   background-color: #365a38 !important;
+  color: #FFF;
 }
 
 .fw_block {
   background-color: #5a3636 !important;
+  color: #FFF;
 }
 
 /*additional extensions for theme-cicada*/
@@ -9578,7 +9576,7 @@ textarea#update_status {
 
 .fa-times-circle::before {
   content: "\f057";
-  color: #B13116;
+  color: #CA3625;
 }
 
 .fa-refresh::before {
