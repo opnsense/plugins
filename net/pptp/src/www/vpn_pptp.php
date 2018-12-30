@@ -1,31 +1,31 @@
 <?php
 
 /*
-    Copyright (C) 2014-2016 Deciso B.V.
-    Copyright (C) 2003-2005 Manuel Kasper <mk@neon1.net>
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-*/
+ * Copyright (C) 2014-2016 Deciso B.V.
+ * Copyright (C) 2003-2005 Manuel Kasper <mk@neon1.net>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 require_once('guiconfig.inc');
 require_once('interfaces.inc');
@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['wins'] = $pptpcfg['wins'];
     $pconfig['req128'] = isset($pptpcfg['req128']);
     $pconfig['n_pptp_units'] = $pptpcfg['n_pptp_units'];
+    $pconfig['interface'] = $pptpcfg['interface'];
     $pconfig['pptp_dns1'] = $pptpcfg['dns1'];
     $pconfig['pptp_dns2'] = $pptpcfg['dns2'];
     $pconfig['radiusenable'] = isset($pptpcfg['radius']['server']['enable']);
@@ -60,9 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['radius_acct_update'] = $pptpcfg['radius']['acct_update'];
     $pconfig['radius_nasip'] = $pptpcfg['radius']['nasip'];
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($input_errors) && count($input_errors) > 0) {
-        unset($input_errors);
-    }
     $pconfig = $_POST;
 
     /* input validation */
@@ -107,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $pptpcfg['remoteip'] = $_POST['remoteip'];
         $pptpcfg['localip'] = $_POST['localip'];
         $pptpcfg['mode'] = $_POST['mode'];
+        $pptpcfg['interface'] = $_POST['interface'];
         $pptpcfg['wins'] = $_POST['wins'];
         $pptpcfg['n_pptp_units'] = $_POST['n_pptp_units'];
         $pptpcfg['radius']['server']['ip'] = $_POST['radiusserver'];
@@ -213,24 +212,15 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_n_pptp_units" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("No. PPTP users"); ?></td>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Interface");?></td>
                       <td>
-                        <select id="n_pptp_units" name="n_pptp_units">
-<?php
-                          $toselect = ($pconfig['n_pptp_units'] > 0) ? $pconfig['n_pptp_units'] : 16;
-                          for ($x=1; $x<255; $x++) {
-                              if ($x == $toselect) {
-                                  $SELECTED = " selected=\"selected\"";
-                              } else {
-                                  $SELECTED = "";
-                              }
-                              echo "<option value=\"{$x}\"{$SELECTED}>{$x}</option>\n";
-                          }
-                          ?>
+                        <select name="interface" class="form-control" id="interface">
+<?php foreach (get_configured_interface_with_descr() as $iface => $ifacename): ?>
+                          <option value="<?=$iface;?>" <?=$iface == $pconfig['interface'] ? "selected=\"selected\"" : "";?>>
+                            <?=htmlspecialchars($ifacename);?>
+                          </option>
+<?php endforeach ?>
                         </select>
-                        <div class="hidden" data-for="help_for_n_pptp_units">
-                          <?=gettext("Hint: 10 is ten PPTP clients"); ?>
-                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -249,6 +239,24 @@ include("head.inc");
                         <div class="hidden" data-for="help_for_remoteip">
                           <?=gettext("Specify the starting address for the client IP address subnet."); ?>
                         </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Number of PPTP users') ?></td>
+                      <td>
+                        <select id="n_pptp_units" name="n_pptp_units">
+<?php
+                          $toselect = ($pconfig['n_pptp_units'] > 0) ? $pconfig['n_pptp_units'] : 16;
+                          for ($x=1; $x<255; $x++) {
+                              if ($x == $toselect) {
+                                  $SELECTED = " selected=\"selected\"";
+                              } else {
+                                  $SELECTED = "";
+                              }
+                              echo "<option value=\"{$x}\"{$SELECTED}>{$x}</option>\n";
+                          }
+                          ?>
+                        </select>
                       </td>
                     </tr>
                     <tr>

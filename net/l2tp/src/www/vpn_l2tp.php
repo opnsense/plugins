@@ -53,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['paporchap'] = $l2tpcfg['paporchap'];
     $pconfig['secret'] = $l2tpcfg['secret'];
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    unset($input_errors);
     $pconfig = $_POST;
 
     /* input validation */
@@ -225,7 +224,7 @@ include("head.inc");
                     </td>
                   </tr>
                   <tr>
-                    <td><a id="help_for_n_l2tp_units" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of L2TP users"); ?></td>
+                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Number of L2TP users"); ?></td>
                     <td>
                       <select id="n_l2tp_units" name="n_l2tp_units">
                       <?php
@@ -240,9 +239,6 @@ include("head.inc");
                                 }
                                 ?>
                       </select>
-                      <div class="hidden" data-for="help_for_n_l2tp_units">
-                        <?=gettext("Hint: 10 is ten L2TP clients"); ?>
-                      </div>
                     </td>
                   </tr>
                   <tr>
