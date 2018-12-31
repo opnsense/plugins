@@ -11,6 +11,24 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_redis_plugin>
+      <rejectscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+      </rejectscore>
+      <subjectscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+      </subjectscore>
+      <greylistscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+      </greylistscore>
+      <rewritesubject type="TextField">
+        <Required>N</Required>
+      </rewritesubject>
     </general>
 
     <milter_headers>
