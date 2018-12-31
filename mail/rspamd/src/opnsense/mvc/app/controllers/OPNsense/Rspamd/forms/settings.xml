@@ -13,6 +13,30 @@
                 <type>checkbox</type>
                 <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
             </field>
+            <field>
+                <id>rspamd.general.rejectscore</id>
+                <label>Reject Score</label>
+                <type>text</type>
+                <help>Set the value at which an e-mail is rejected.</help>
+            </field>
+            <field>
+                <id>rspamd.general.subjectscore</id>
+                <label>Subject Score</label>
+                <type>text</type>
+                <help>Set the value at which an e-mail is marked as spam in subject and header.</help>
+            </field>
+            <field>
+                <id>rspamd.general.greylistscore</id>
+                <label>Greylist Score</label>
+                <type>text</type>
+                <help>Set the value at which an e-mail is greylisted.</help>
+            </field>
+            <field>
+                <id>rspamd.general.rewritesubject</id>
+                <label>Rewrite Subject</label>
+                <type>text</type>
+                <help>Enter a prefix added to the subject when Subject Score is reached.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-general-multimap" description="Multimap Settings">
             <field>
