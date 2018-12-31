@@ -702,6 +702,9 @@
         </OptionValues>
         <Required>N</Required>
       </satisfy>
+      <zero_rtt type="BooleanField">
+        <Required>Y</Required>
+      </zero_rtt>
     </http_server>
 
     <stream_server type="ArrayField">
