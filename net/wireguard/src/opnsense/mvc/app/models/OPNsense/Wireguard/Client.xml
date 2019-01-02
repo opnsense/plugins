@@ -35,6 +35,12 @@
                 <serverport type="PortField">
                     <Required>N</Required>
                 </serverport>
+                <keepalive type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 86400.</ValidationMessage>
+                    <Required>N</Required>
+                </keepalive>
             </client>
         </clients>
     </items>
