@@ -16,6 +16,11 @@
         <MinimumValue>1</MinimumValue>
         <MaximumValue>999</MaximumValue>
       </rejectscore>
+      <headerscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+      </headerscore>
       <subjectscore type="IntegerField">
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
