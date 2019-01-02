@@ -4,4 +4,34 @@ one computer can find another computer on the basis of its name.
 The BIND software distribution contains all of the software
 necessary for asking and answering name service questions.
 
+
+Plugin Changelog
+================
+
+1.4
+
+* Add Bing and DuckDuckGo Strict Search
+* Add 5 new blacklists to DNSBL (Hbbtv, Simple Ad, Simple Tracker, StevenBlack, Zeus Tracker)
+* Ability to hide system hostname and version
+* Rate-Limiting support
+
+1.3
+
+* Add Google Safe Search
+* Add Youtube Adult Filter
+
+1.2
+
+* Add Log Viewer
+* Removed too big PornAll list
+
+1.1
+
+* Add 3 new blacklists to DNSBL (EMD, PornTop1M, PornAll)
+
+1.0
+
+* Initial release
+
+
 WWW: https://www.isc.org
