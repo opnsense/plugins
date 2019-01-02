@@ -274,9 +274,13 @@ lint-xml:
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
 
 lint-exec: check
-	@find ${.CURDIR}/src/opnsense/scripts -type f ! -name "*.xml" \
-	    -print0 | xargs -0 -t -n1 test -x || \
-	    (echo "Missing executable permission"; exit 1)
+.for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d
+.if exists(${DIR})
+	@find ${DIR} -type f ! -name "*.xml" -print0 | \
+	    xargs -0 -t -n1 test -x || \
+	    (echo "Missing executable permission in ${DIR}"; exit 1)
+.endif
+.endfor
 
 lint-php: check
 	@find ${.CURDIR}/src \
