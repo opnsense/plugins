@@ -20,10 +20,16 @@
                 <help>Set the value at which an e-mail is rejected.</help>
             </field>
             <field>
+                <id>rspamd.general.headerscore</id>
+                <label>Header Score</label>
+                <type>text</type>
+                <help>Set the value at which an e-mail is marked as spam in header.</help>
+            </field>
+            <field>
                 <id>rspamd.general.subjectscore</id>
                 <label>Subject Score</label>
                 <type>text</type>
-                <help>Set the value at which an e-mail is marked as spam in subject and header.</help>
+                <help>Set the value at which an e-mail is marked as spam in subject.</help>
             </field>
             <field>
                 <id>rspamd.general.greylistscore</id>
