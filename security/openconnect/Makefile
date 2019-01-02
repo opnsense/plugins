@@ -1,6 +1,5 @@
 PLUGIN_NAME=		openconnect
-PLUGIN_VERSION=		1.2
-PLUGIN_REVISION=     1
+PLUGIN_VERSION=		1.3.2
 PLUGIN_COMMENT=		OpenConnect Client
 PLUGIN_DEPENDS=		openconnect
 PLUGIN_MAINTAINER=	m.muenz@gmail.com

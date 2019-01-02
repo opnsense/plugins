@@ -37,5 +37,14 @@
                     <sha1>SHA1</sha1>
                 </OptionValues>
         </hash>
+        <group type="TextField">
+            <Required>N</Required>
+            <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
+            <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
+        </group>
+        <clientcertificate type="CertificateField">
+            <Type>cert</Type>
+            <Required>N</Required>
+        </clientcertificate>
     </items>
 </model>
