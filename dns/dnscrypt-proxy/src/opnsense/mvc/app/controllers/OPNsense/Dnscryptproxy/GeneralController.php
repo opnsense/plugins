@@ -36,6 +36,7 @@ class GeneralController extends \OPNsense\Base\IndexController
         $this->view->formDialogEditDnscryptproxyForward = $this->getForm("dialogEditDnscryptproxyForward");
         $this->view->formDialogEditDnscryptproxyCloak = $this->getForm("dialogEditDnscryptproxyCloak");
         $this->view->formDialogEditDnscryptproxyWhitelist = $this->getForm("dialogEditDnscryptproxyWhitelist");
+        $this->view->formDialogEditDnscryptproxyServer = $this->getForm("dialogEditDnscryptproxyServer");
         $this->view->pick('OPNsense/Dnscryptproxy/general');
     }
 }

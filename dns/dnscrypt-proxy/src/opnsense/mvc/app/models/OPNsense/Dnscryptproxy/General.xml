@@ -133,5 +133,8 @@
             <MaximumValue>86400</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 86400.</ValidationMessage>
         </cache_neg_max_ttl>
+        <serverlist type="CSVListField">
+            <Required>N</Required>
+        </serverlist>
     </items>
 </model>

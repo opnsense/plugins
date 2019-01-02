@@ -33,6 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#forwards">{{ lang._('Forwarders') }}</a></li>
     <li><a data-toggle="tab" href="#cloaks">{{ lang._('Overrides') }}</a></li>
     <li><a data-toggle="tab" href="#whitelists">{{ lang._('Whitelists') }}</a></li>
+    <li><a data-toggle="tab" href="#servers">{{ lang._('Servers') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -128,11 +129,40 @@ POSSIBILITY OF SUCH DAMAGE.
             <br /><br />
         </div>
     </div>
+    <div id="servers" class="tab-pane fade in">
+        <table id="grid-servers" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyServer">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="stamp" data-type="string" data-visible="true">{{ lang._('SDNS Stamp') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="col-md-12">
+            <hr />
+            <button class="btn btn-primary"  id="saveAct_server" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_server_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditDnscryptproxyForward,'id':'dialogEditDnscryptproxyForward','label':lang._('Edit Forwarders')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditDnscryptproxyCloak,'id':'dialogEditDnscryptproxyCloak','label':lang._('Edit Overrides')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditDnscryptproxyWhitelist,'id':'dialogEditDnscryptproxyWhitelist','label':lang._('Edit Whitelists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditDnscryptproxyServer,'id':'dialogEditDnscryptproxyServer','label':lang._('Edit Servers')])}}
 
 <script>
 
@@ -175,6 +205,16 @@ $( document ).ready(function() {
         }
     );
 
+    $("#grid-servers").UIBootgrid(
+        {   'search':'/api/dnscryptproxy/server/searchServer',
+            'get':'/api/dnscryptproxy/server/getServer/',
+            'set':'/api/dnscryptproxy/server/setServer/',
+            'add':'/api/dnscryptproxy/server/addServer/',
+            'del':'/api/dnscryptproxy/server/delServer/',
+            'toggle':'/api/dnscryptproxy/server/toggleServer/'
+        }
+    );
+
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/dnscryptproxy/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
@@ -211,6 +251,16 @@ $( document ).ready(function() {
             ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
                 updateServiceControlUI('dnscryptproxy');
                 $("#saveAct_whitelist_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_server").click(function(){
+        saveFormToEndpoint(url="/api/dnscryptproxy/server/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_server_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('dnscryptproxy');
+                $("#saveAct_server_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
