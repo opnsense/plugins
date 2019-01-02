@@ -17,25 +17,25 @@
                 <id>rspamd.general.rejectscore</id>
                 <label>Reject Score</label>
                 <type>text</type>
-                <help>Set the value at which an e-mail is rejected.</help>
+                <help>Set the value at which an e-mail is rejected. The value has to be higher than header, subject and greylist score.</help>
             </field>
             <field>
                 <id>rspamd.general.headerscore</id>
                 <label>Header Score</label>
                 <type>text</type>
-                <help>Set the value at which an e-mail is marked as spam in header.</help>
+                <help>Set the value at which an e-mail is marked as spam in header. The value has to be higher than greylist score.</help>
             </field>
             <field>
                 <id>rspamd.general.subjectscore</id>
                 <label>Subject Score</label>
                 <type>text</type>
-                <help>Set the value at which an e-mail is marked as spam in subject.</help>
+                <help>Set the value at which an e-mail is marked as spam in subject. The value has to be higher than header and greylist score.</help>
             </field>
             <field>
                 <id>rspamd.general.greylistscore</id>
                 <label>Greylist Score</label>
                 <type>text</type>
-                <help>Set the value at which an e-mail is greylisted.</help>
+                <help>Set the value at which an e-mail is greylisted. The value has to be lower than all other scores.</help>
             </field>
             <field>
                 <id>rspamd.general.rewritesubject</id>
