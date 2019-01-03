@@ -602,10 +602,10 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost . '&password=' . $this->_dnsPass . '&myip=' . $this->_dnsIP);
                 break;
             case 'he-net-tunnelbroker':
-                $server = "https://ipv4.tunnelbroker.net/ipv4_end.php?";
+                $server = "https://ipv4.tunnelbroker.net/nic/update?";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
-                curl_setopt($ch, CURLOPT_URL, $server . 'tid=' . $this->_dnsHost);
+                curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
                 break;
             case 'selfhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
