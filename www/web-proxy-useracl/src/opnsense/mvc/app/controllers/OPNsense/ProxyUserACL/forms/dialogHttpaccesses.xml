@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>Httpaccess.Black</id>
-        <label>Black/White</label>
+        <label>Type</label>
         <type>dropdown</type>
         <help>Select Black or White list</help>
     </field>
