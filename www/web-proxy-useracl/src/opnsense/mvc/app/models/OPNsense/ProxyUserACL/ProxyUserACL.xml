@@ -80,11 +80,11 @@
                         </OptionValues>
                     </Days>
                     <Start type="TextField">
-                        <default>0</default>
+                        <default>00:00</default>
                         <Required>Y</Required>
                     </Start>
                     <End type="TextField">
-                        <default>0</default>
+                        <default>00:00</default>
                         <Required>Y</Required>
                     </End>
                     <id type="AutoNumberField">
@@ -136,8 +136,8 @@
                     </Description>
                 </Dst>
             </Dsts>
-            <Arps>
-                <Arp type="ArrayField">
+            <MACs>
+                <MAC type="ArrayField">
                     <Names type="CSVListField">
                         <mask>/^([\/0-9a-fA-F:,\-])*/u</mask>
                         <Required>Y</Required>
@@ -148,8 +148,8 @@
                     <Description type="TextField">
                         <Required>Y</Required>
                     </Description>
-                </Arp>
-            </Arps>
+                </MAC>
+            </MACs>
             <HTTPAccesses>
                 <HTTPAccess type="ArrayField">
                     <Users type="CSVListField">
@@ -220,17 +220,17 @@
                         <ValidationMessage>Related dst not found</ValidationMessage>
                         <Required>N</Required>
                     </Dsts>
-                    <Arps type="ModelRelationField">
+                    <MACs type="ModelRelationField">
                         <Model>
-                            <Arps>
+                            <MACs>
                                 <source>OPNsense.ProxyUserACL.ProxyUserACL</source>
-                                <items>general.Arps.Arp</items>
+                                <items>general.MACs.MAC</items>
                                 <display>Description</display>
-                            </Arps>
+                            </MACs>
                         </Model>
-                        <ValidationMessage>Related arp not found</ValidationMessage>
+                        <ValidationMessage>Related MAC not found</ValidationMessage>
                         <Required>N</Required>
-                    </Arps>
+                    </MACs>
                     <Black type="OptionField">
                         <Required>Y</Required>
                         <default>deny</default>

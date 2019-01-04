@@ -1,26 +1,25 @@
 <form>
+    <tab id="rules" description="Rules">
+        <subtab id="http-access" description="HTTP access">
+        </subtab>
+    </tab>
     <tab id="lists" description="Lists">
         <subtab id="users" description="Users and gruops">
         </subtab>
-        <subtab id="mac" description="MAC addresses">
+        <subtab id="macs" description="MAC addresses">
         </subtab>
-        <subtab id="src" description="Sources nets">
+        <subtab id="srcs" description="Sources nets">
         </subtab>
-        <subtab id="dst" description="Destination nets">
+        <subtab id="dsts" description="Destination nets">
         </subtab>
         <subtab id="domains" description="Domains">
         </subtab>
         <subtab id="agents" description="Browser/user-agents">
         </subtab>
-        <subtab id="mime" description="Mime types">
+        <subtab id="mimes" description="Mime types">
         </subtab>
-        <subtab id="time" description="Schedules">
-        </subtab>
-    </tab>
-    <tab id="rules" description="Rules">
-        <subtab id="http-access" description="HTTP access">
+        <subtab id="times" description="Schedules">
         </subtab>
     </tab>
-
     <activetab>users</activetab>
 </form>

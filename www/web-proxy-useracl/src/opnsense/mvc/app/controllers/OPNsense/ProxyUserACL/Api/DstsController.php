@@ -98,11 +98,9 @@ class DstsController extends ApiMutableModelControllerBase
      */
     public function delDstAction($uuid)
     {
-        foreach (["HTTPAccesses" => "HTTPAccess"] as $group => $element) {
-            foreach ($this->getModel()->general->{$group}->{$element}->getChildren() as $acl) {
-                if (($dsts = $acl->Dsts) != null && isset($dsts->getNodeData()[$uuid]["selected"]) && $dsts->getNodeData()[$uuid]["selected"] == 1) {
-                    return ["result" => gettext("value is used")];
-                }
+        foreach ($this->getModel()->general->HTTPAccesses->HTTPAccess->getChildren() as $acl) {
+            if (($dsts = $acl->Dsts) != null && isset($dsts->getNodeData()[$uuid]["selected"]) && $dsts->getNodeData()[$uuid]["selected"] == 1) {
+                return ["result" => gettext("value is used")];
             }
         }
         return $this->delBase("general.Dsts.Dst", $uuid);

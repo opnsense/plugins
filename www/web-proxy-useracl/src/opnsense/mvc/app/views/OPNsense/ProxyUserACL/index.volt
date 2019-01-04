@@ -26,90 +26,29 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<link rel="stylesheet" href="/ui/css/OPNsense/ProxyUserACL/bootstrap-datetimepicker.css"/>
-<script type="text/javascript" src="/ui/js/OPNsense/ProxyUserACL/moment-with-locales.min.js"></script>
-<script type="text/javascript" src="/ui/js/OPNsense/ProxyUserACL/bootstrap-datetimepicker.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#grid-users").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/users/searchUser',
-                'get': '/api/proxyuseracl/users/getUser/',
-                'set': '/api/proxyuseracl/users/setUser/',
-                'add': '/api/proxyuseracl/users/addUser/',
-                'del': '/api/proxyuseracl/users/delUser/',
-            }
-        );
-
-        $("#grid-arps").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/arps/searchArp',
-                'get': '/api/proxyuseracl/arps/getArp/',
-                'set': '/api/proxyuseracl/arps/setArp/',
-                'add': '/api/proxyuseracl/arps/addArp/',
-                'del': '/api/proxyuseracl/arps/delArp/',
-            }
-        );
-
-        $("#grid-srcs").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/srcs/searchSrc',
-                'get': '/api/proxyuseracl/srcs/getSrc/',
-                'set': '/api/proxyuseracl/srcs/setSrc/',
-                'add': '/api/proxyuseracl/srcs/addSrc/',
-                'del': '/api/proxyuseracl/srcs/delSrc/',
-            }
-        );
-
-        $("#grid-dsts").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/dsts/searchDst',
-                'get': '/api/proxyuseracl/dsts/getDst/',
-                'set': '/api/proxyuseracl/dsts/setDst/',
-                'add': '/api/proxyuseracl/dsts/addDst/',
-                'del': '/api/proxyuseracl/dsts/delDst/',
-            }
-        );
-
-        $("#grid-domains").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/domains/searchDomain',
-                'get': '/api/proxyuseracl/domains/getDomain/',
-                'set': '/api/proxyuseracl/domains/setDomain/',
-                'add': '/api/proxyuseracl/domains/addDomain/',
-                'del': '/api/proxyuseracl/domains/delDomain/',
-            }
-        );
-
-        $("#grid-agents").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/agents/searchAgent',
-                'get': '/api/proxyuseracl/agents/getAgent/',
-                'set': '/api/proxyuseracl/agents/setAgent/',
-                'add': '/api/proxyuseracl/agents/addAgent/',
-                'del': '/api/proxyuseracl/agents/delAgent/',
-            }
-        );
-
-        $("#grid-mimes").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/mimes/searchMime',
-                'get': '/api/proxyuseracl/mimes/getMime/',
-                'set': '/api/proxyuseracl/mimes/setMime/',
-                'add': '/api/proxyuseracl/mimes/addMime/',
-                'del': '/api/proxyuseracl/mimes/delMime/',
-            }
-        );
-
-        $("#grid-times").UIBootgrid(
-            {
-                'search': '/api/proxyuseracl/times/searchTime',
-                'get': '/api/proxyuseracl/times/getTime/',
-                'set': '/api/proxyuseracl/times/setTime/',
-                'add': '/api/proxyuseracl/times/addTime/',
-                'del': '/api/proxyuseracl/times/delTime/',
-            }
-        );
+        [
+            {"group": "users", "single": "User"},
+            {"group": "macs", "single": "Mac"},
+            {"group": "srcs", "single": "Src"},
+            {"group": "dsts", "single": "Dst"},
+            {"group": "domains", "single": "Domain"},
+            {"group": "agents", "single": "Agent"},
+            {"group": "mimes", "single": "Mime"},
+            {"group": "times", "single": "Time"},
+            {"group": "times", "single": "Time"}
+        ].forEach(function (element) {
+            $("#grid-" + element.group).UIBootgrid(
+                {
+                    'search': '/api/proxyuseracl/' + element.group + '/search' + element.single,
+                    'get': '/api/proxyuseracl/' + element.group + '/get' + element.single + '/',
+                    'set': '/api/proxyuseracl/' + element.group + '/set' + element.single + '/',
+                    'add': '/api/proxyuseracl/' + element.group + '/add' + element.single + '/',
+                    'del': '/api/proxyuseracl/' + element.group + '/del' + element.single + '/'
+                }
+            )
+        });
 
         $("#grid-acl").UIBootgrid(
             {
@@ -143,7 +82,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         "updown": function (column, row) {
                             return "<button type=\"button\" class=\"btn btn-xs btn-default command-updown\" data-row-id=\"" + row.uuid + "\" data-command=\"up\"><span class=\"fa fa-arrow-up\"></span></button> " +
                                 "<button type=\"button\" class=\"btn btn-xs btn-default command-updown\" data-row-id=\"" + row.uuid + "\" data-command=\"down\"><span class=\"fa fa-arrow-down\"></span></button>";
-                        },
+                        }
                     }
                 }
             }
@@ -194,9 +133,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             history.pushState(null, null, e.target.hash);
         });
-
-        $("#Time\\.Start").datetimepicker({locale: '{{ locale }}', format: 'LT'});
-        $("#Time\\.End").datetimepicker({locale: '{{ locale }}', format: 'LT'});
     });
 </script>
 
@@ -205,22 +141,23 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="subtab_users" class="tab-pane fade in active">
-        <h1 class="text-center">{{ lang._('Users and groups') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="users-content">
+    {% for tab in tabs %}
+    <div id="subtab_{{tab['name']}}" class="tab-pane fade in">
+        <h1 class="text-center">{{ tab['title'] }}</h1>
+        <div class="alert alert-note">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
+        <table id="{{tab['name']}}-content">
             <tr>
                 <td colspan="2">
-                    <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogUsers">
+                    <table id="grid-{{tab['name']}}" class="table table-condensed table-hover table-striped table-responsive"
+                           data-editDialog="Dialog{{tab['name']}}">
                         <thead>
                         <tr>
                             <th data-column-id="Description" data-type="string"
                                 data-sortable="false">{{ lang._('Description') }}</th>
-                            <th data-column-id="Server" data-type="string"
-                                data-sortable="false">{{ lang._('Server') }}</th>
-                            <th data-column-id="Group" data-width="10em" data-type="string"
-                                data-sortable="false">{{ lang._('Group') }}</th>
+                            {% for field in tab['fields'] %}
+                            <th data-column-id="{{field}}" data-type="string"
+                                data-sortable="false">{{field}}</th>
+                            {% endfor %}
                             <th data-column-id="commands" data-width="7em" data-formatter="commands"
                                 data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
@@ -242,257 +179,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 </td>
             </tr>
         </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogUsers,'id':'DialogUsers','label':lang._('Edit users and groups for black and white lists')]) }}
+        {{ partial("layout_partials/base_dialog",['fields':tab['formDialog'],'id':'Dialog' ~ tab['name'],'label':lang._('Edit ' ~ tab['title'] ~ ' for black and white lists')]) }}
     </div>
-    <div id="subtab_mac" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('MAC-addresses') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="arps-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-arps" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogArps">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogArps,'id':'DialogArps','label':lang._('Edit MAC addresses for black and white lists')]) }}
-    </div>
-    <div id="subtab_src" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('Sources nets') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="srcs-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-srcs" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogSrcs">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogSrcs,'id':'DialogSrcs','label':lang._('Edit source IPs for black and white lists')]) }}
-    </div>
-    <div id="subtab_dst" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('Destination nets') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="dsts-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-dsts" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogDsts">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogDsts,'id':'DialogDsts','label':lang._('Edit destination IPs for black and white lists')]) }}
-    </div>
-    <div id="subtab_domains" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('Destination domains') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="domains-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-domains" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogDomains">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogDomains,'id':'DialogDomains','label':lang._('Edit domains for black and white lists')]) }}
-    </div>
-    <div id="subtab_agents" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('Browser user agents') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="agents-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-agents" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogAgents">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogAgents,'id':'DialogAgents','label':lang._('Edit Browser/user-agents for black and white lists')]) }}
-    </div>
-    <div id="subtab_mime" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('Mime types') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="mimes-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-mimes" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogMimes">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogMimes,'id':'DialogMimes','label':lang._('Edit mime types for black and white lists')]) }}
-    </div>
-    <div id="subtab_time" class="tab-pane fade in">
-        <h1 class="text-center">{{ lang._('Schedules') }}</h1>
-        <div class="alert alert-warning">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <div id="times">
-            <table id="times-content">
-                <tr>
-                    <td colspan="2">
-                        <table id="grid-times" class="table table-condensed table-hover table-striped table-responsive"
-                               data-editDialog="DialogTimes">
-                            <thead>
-                            <tr>
-                                <th data-column-id="Description" data-type="string" data-sortable="false"
-                                    data-visible="true">{{ lang._('Description') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                    data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                                class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button"
-                                            class="btn btn-xs btn-default"><span
-                                                class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogTimes,'id':'DialogTimes','label':lang._('Edit Schedules')]) }}
-    </div>
-    <div id="subtab_http-access" class="tab-pane fade in">
+    {% endfor %}
+    <div id="subtab_http-access" class="tab-pane fade in active">
         <h1 class="text-center">{{ lang._('HTTP access') }}</h1>
         <table id="acl-content">
             <tr>

@@ -37,16 +37,57 @@ class IndexController extends \OPNsense\Base\IndexController
         // set page title, used by the standard template in layouts/default.volt.
         // pick the template to serve to our users.
         $this->view->mainForm = $this->getForm("main");
-        $this->view->formDialogAgents = $this->getForm("dialogAgents");
-        $this->view->formDialogArps = $this->getForm("dialogArps");
-        $this->view->formDialogDomains = $this->getForm("dialogDomains");
-        $this->view->formDialogDsts = $this->getForm("dialogDsts");
+        $this->view->tabs = [
+            [
+                'name' => 'users',
+                'title' => gettext('Users and groups'),
+                'formDialog' => $this->getForm("dialogUsers"),
+                'fields' => [gettext('Server'), gettext('Group')]
+            ],
+            [
+                'name' => 'macs',
+                'title' => gettext('MAC-addresses'),
+                'formDialog' => $this->getForm("dialogMacs"),
+                'fields' => []
+            ],
+            [
+                'name' => 'srcs',
+                'title' => gettext('Sources nets'),
+                'formDialog' => $this->getForm("dialogSrcs"),
+                'fields' => []
+            ],
+            [
+                'name' => 'dsts',
+                'title' => gettext('Destination nets'),
+                'formDialog' => $this->getForm("dialogDsts"),
+                'fields' => []
+            ],
+            [
+                'name' => 'domains',
+                'title' => gettext('Destination domains'),
+                'formDialog' => $this->getForm("dialogDomains"),
+                'fields' => []
+            ],
+            [
+                'name' => 'agents',
+                'title' => gettext('Browser user agents'),
+                'formDialog' => $this->getForm("dialogAgents"),
+                'fields' => []
+            ],
+            [
+                'name' => 'mimes',
+                'title' => gettext('Mime types'),
+                'formDialog' => $this->getForm("dialogMimes"),
+                'fields' => []
+            ],
+            [
+                'name' => 'times',
+                'title' => gettext('Schedules'),
+                'formDialog' => $this->getForm("dialogTimes"),
+                'fields' => []
+            ],
+        ];
         $this->view->formDialogHttpaccesses = $this->getForm("dialogHttpaccesses");
-        $this->view->formDialogMimes = $this->getForm("dialogMimes");
-        $this->view->formDialogSrcs = $this->getForm("dialogSrcs");
-        $this->view->formDialogTimes = $this->getForm("dialogTimes");
-        $this->view->formDialogUsers = $this->getForm("dialogUsers");
-        $this->view->locale = explode(".", $this->translator->getLocale())[0];
         $this->view->pick('OPNsense/ProxyUserACL/index');
     }
 }

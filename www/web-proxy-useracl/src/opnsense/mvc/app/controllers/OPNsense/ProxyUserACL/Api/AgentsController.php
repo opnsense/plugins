@@ -99,11 +99,9 @@ class AgentsController extends ApiMutableModelControllerBase
      */
     public function delAgentAction($uuid)
     {
-        foreach (["HTTPAccesses" => "HTTPAccess"] as $group => $element) {
-            foreach ($this->getModel()->general->{$group}->{$element}->getChildren() as $acl) {
-                if (($agents = $acl->Agents) != null && isset($agents->getNodeData()[$uuid]["selected"]) && $agents->getNodeData()[$uuid]["selected"] == 1) {
-                    return ["result" => gettext("value is used")];
-                }
+        foreach ($this->getModel()->general->HTTPAccesses->HTTPAccess->getChildren() as $acl) {
+            if (($agents = $acl->Agents) != null && isset($agents->getNodeData()[$uuid]["selected"]) && $agents->getNodeData()[$uuid]["selected"] == 1) {
+                return ["result" => gettext("value is used")];
             }
         }
         return $this->delBase("general.Agents.Agent", $uuid);

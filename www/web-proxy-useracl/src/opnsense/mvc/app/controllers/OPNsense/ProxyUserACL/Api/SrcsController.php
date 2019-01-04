@@ -98,11 +98,9 @@ class SrcsController extends ApiMutableModelControllerBase
      */
     public function delSrcAction($uuid)
     {
-        foreach (["HTTPAccesses" => "HTTPAccess"] as $group => $element) {
-            foreach ($this->getModel()->general->{$group}->{$element}->getChildren() as $acl) {
-                if (($srcs = $acl->Srcs) != null && isset($srcs->getNodeData()[$uuid]["selected"]) && $srcs->getNodeData()[$uuid]["selected"] == 1) {
-                    return ["result" => gettext("value is used")];
-                }
+        foreach ($this->getModel()->general->HTTPAccesses->HTTPAccess->getChildren() as $acl) {
+            if (($srcs = $acl->Srcs) != null && isset($srcs->getNodeData()[$uuid]["selected"]) && $srcs->getNodeData()[$uuid]["selected"] == 1) {
+                return ["result" => gettext("value is used")];
             }
         }
         return $this->delBase("general.Srcs.Src", $uuid);

@@ -156,11 +156,9 @@ class UsersController extends ApiMutableModelControllerBase
      */
     public function delUserAction($uuid)
     {
-        foreach (["HTTPAccesses" => "HTTPAccess"] as $group => $element) {
-            foreach ($this->getModel()->general->{$group}->{$element}->getChildren() as $acl) {
-                if (($users = $acl->Users) != null && isset($users->getNodeData()[$uuid]["selected"]) && $users->getNodeData()[$uuid]["selected"] == 1) {
-                    return ["result" => gettext("value is used")];
-                }
+        foreach ($this->getModel()->general->HTTPAccesses->HTTPAccess->getChildren() as $acl) {
+            if (($users = $acl->Users) != null && isset($users->getNodeData()[$uuid]["selected"]) && $users->getNodeData()[$uuid]["selected"] == 1) {
+                return ["result" => gettext("value is used")];
             }
         }
         return $this->delBase("general.Users.User", $uuid);

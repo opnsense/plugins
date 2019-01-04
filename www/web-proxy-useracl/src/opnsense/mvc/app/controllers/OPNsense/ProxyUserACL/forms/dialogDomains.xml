@@ -25,7 +25,7 @@
             <b class="text-primary">\.gif$</b> -> matches on <b>\*.gif</b> but not on <b class="text-danger">\*.gif\test</b><br/>
             <b class="text-primary">\[0-9]+\.gif$</b> -> matches on <b>\123.gif</b> but not on <b class="text-danger">\test.gif</b><br/>
         </div>
-        <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+        <div class="text-info">You can also paste a comma separated list into this field.</div>]]></help>
         <hint>Regular expressions are allowed.</hint>
     </field>
 </form>

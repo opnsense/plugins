@@ -98,11 +98,9 @@ class DomainsController extends ApiMutableModelControllerBase
      */
     public function delDomainAction($uuid)
     {
-        foreach (["HTTPAccesses" => "HTTPAccess"] as $group => $element) {
-            foreach ($this->getModel()->general->{$group}->{$element}->getChildren() as $acl) {
-                if (($domains = $acl->Domains) != null && isset($domains->getNodeData()[$uuid]["selected"]) && $domains->getNodeData()[$uuid]["selected"] == 1) {
-                    return ["result" => gettext("value is used")];
-                }
+        foreach ($this->getModel()->general->HTTPAccesses->HTTPAccess->getChildren() as $acl) {
+            if (($domains = $acl->Domains) != null && isset($domains->getNodeData()[$uuid]["selected"]) && $domains->getNodeData()[$uuid]["selected"] == 1) {
+                return ["result" => gettext("value is used")];
             }
         }
         return $this->delBase("general.Domains.Domain", $uuid);

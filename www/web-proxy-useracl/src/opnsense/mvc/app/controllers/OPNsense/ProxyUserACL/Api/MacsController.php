@@ -34,60 +34,60 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 
 /**
- * Class ArpsController
+ * Class MacsController
  * @package OPNsense\ProxyUserACL\Api
  */
-class ArpsController extends ApiMutableModelControllerBase
+class MacsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'Arp';
+    static protected $internalModelName = 'MAC';
     static protected $internalModelClass = '\OPNsense\ProxyUserACL\ProxyUserACL';
 
     /**
-     * search arps list
+     * search MACs list
      * @return array result
      * @throws \ReflectionException
      */
-    public function searchArpAction()
+    public function searchMacAction()
     {
         return $this->searchBase(
-            "general.Arps.Arp",
+            "general.MACs.MAC",
             ['Description', 'uuid'],
             "Description"
         );
     }
 
     /**
-     * retrieve arp settings or return defaults
+     * retrieve MAC settings or return defaults
      * @param string $uuid item unique id
      * @return array result
      * @throws \ReflectionException
      */
-    public function getArpAction($uuid = null)
+    public function getMacAction($uuid = null)
     {
-        return $this->getBase("Arp", "general.Arps.Arp", $uuid);
+        return $this->getBase("MAC", "general.MACs.MAC", $uuid);
     }
 
     /**
-     * update arp item
+     * update MAC item
      * @param string $uuid item unique id
      * @return array result status
      * @throws \Phalcon\Validation\Exception
      * @throws \ReflectionException
      */
-    public function setArpAction($uuid)
+    public function setMacAction($uuid)
     {
-        return $this->setBase("Arp", "general.Arps.Arp", $uuid);
+        return $this->setBase("MAC", "general.MACs.MAC", $uuid);
     }
 
     /**
-     * add new arp and set with attributes from post
+     * add new MAC and set with attributes from post
      * @return array result status
      * @throws \Phalcon\Validation\Exception
      * @throws \ReflectionException
      */
-    public function addArpAction()
+    public function addMacAction()
     {
-        return $this->addBase("Arp", "general.Arps.Arp");
+        return $this->addBase("MAC", "general.MACs.MAC");
     }
 
     /**
@@ -97,16 +97,14 @@ class ArpsController extends ApiMutableModelControllerBase
      * @throws \Phalcon\Validation\Exception
      * @throws \ReflectionException
      */
-    public function delArpAction($uuid)
+    public function delMacAction($uuid)
     {
-        foreach (["HTTPAccesses" => "HTTPAccess"] as $group => $element) {
-            foreach ($this->getModel()->general->{$group}->{$element}->getChildren() as $acl) {
-                if (($arps = $acl->Arps) != null && isset($arps->getNodeData()[$uuid]["selected"]) && $arps->getNodeData()[$uuid]["selected"] == 1) {
-                    return ["result" => gettext("value is used")];
-                }
+        foreach ($this->getModel()->general->HTTPAccesses->HTTPAccess->getChildren() as $acl) {
+            if (($MACs = $acl->MACs) != null && isset($MACs->getNodeData()[$uuid]["selected"]) && $MACs->getNodeData()[$uuid]["selected"] == 1) {
+                return ["result" => gettext("value is used")];
             }
         }
-        return $this->delBase("general.Arps.Arp", $uuid);
+        return $this->delBase("general.MACs.MAC", $uuid);
     }
 
 }
