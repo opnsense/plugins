@@ -179,7 +179,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 </td>
             </tr>
         </table>
-        {{ partial("layout_partials/base_dialog",['fields':tab['formDialog'],'id':'Dialog' ~ tab['name'],'label':lang._('Edit ' ~ tab['title'] ~ ' for black and white lists')]) }}
+        {{ partial("layout_partials/base_dialog",['fields':tab['formDialog'],'id':'Dialog%s'|format(tab['name']),'label':lang._('Edit %s for black and white lists')|format(tab['title'])]) }}
     </div>
     {% endfor %}
     <div id="subtab_http-access" class="tab-pane fade in active">
