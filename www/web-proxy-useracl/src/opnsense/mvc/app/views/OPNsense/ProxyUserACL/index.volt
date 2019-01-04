@@ -144,7 +144,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {% for tab in tabs %}
     <div id="subtab_{{tab['name']}}" class="tab-pane fade in">
         <h1 class="text-center">{{ tab['title'] }}</h1>
-        <div class="alert alert-note">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
+        <div class="alert alert-info">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
         <table id="{{tab['name']}}-content">
             <tr>
                 <td colspan="2">
