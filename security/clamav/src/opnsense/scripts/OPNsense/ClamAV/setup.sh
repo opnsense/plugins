@@ -1,13 +1,22 @@
 #!/bin/sh
 
-mkdir -p /var/run/clamav
-chown -R clamav:clamav /var/run/clamav
-chmod 750 /var/run/clamav
+USER=clamav
+GROUP=clamav
+PERMS=0755
+DIRS="
+/var/db/clamav
+/var/run/clamav
+/var/log/clamav
+"
 
-mkdir -p /var/db/clamav
-chown -R clamav:clamav /var/db/clamav
-chmod 750 /var/db/clamav
+for DIR in ${DIRS}; do
+	if [ -L ${DIR} ]; then
+		DIRS="${DIRS} $(realpath ${DIR})"
+	fi
+done
 
-mkdir -p /var/log/clamav
-chown -R clamav:clamav /var/log/clamav
-chmod 750 /var/log/clamav
+for DIR in ${DIRS}; do
+	mkdir -p ${DIR}
+	chown -R ${USER}:${GROUP} ${DIR}
+	chmod ${PERMS} ${DIR}
+done
