@@ -104,7 +104,7 @@
             <operator>lt</operator>
           </check002>
           <check003>
-            <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
+            <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
             <type>ComparedToFieldConstraint</type>
             <field>greylistscore</field>
             <operator>gt</operator>
