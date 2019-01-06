@@ -1,3 +1,3 @@
 <?php
 
-$dmidecode_title = gettext('System hardware information');
+$dmidecode_title = gettext('Hardware information (dmidecode)');
