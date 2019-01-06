@@ -11,6 +11,7 @@ Plugin Changelog
 1.6
 
 * fix bug due to permission downgrade (basic auth)
+* fix bug when multiple hostnames are used, that the logs are not displayed in the log viewer
 * add paging support to log viewer, so it does not crash on really big log files
 * add basic TLS fingerprint check to make man in the middle attacks visible (may not fully work on LibreSSL crypto flavour as curves seem to return an empty string)
 * add dropdown to select authentication backend in HTTP server for advanced authentication

@@ -64,25 +64,23 @@ switch ($mode) {
                 die('{"error": "The server entry has no server name"}');
             }
             $lines = [];
-            foreach (explode(',', $server_names) as $server_name) {
-                $log_file_name = $log_prefix . basename($server_name) . '.' . $mode . $log_suffix;
-                // this entry has no log file, ignore it
-                if (!file_exists($log_file_name)) {
-                    continue;
-                }
-                $logparser = null;
-
-                if ($mode == 'error') {
-                    $logparser = new ErrorLogParser($log_file_name);
-                } elseif ($mode == 'access') {
-                    $logparser = new AccessLogParser($log_file_name);
-                }
-                // we cannot parse the file - something went wrong
-                if ($logparser == null) {
-                    continue;
-                }
-                $lines = array_merge($lines, $logparser->get_result());
+            $log_file_name = $log_prefix . basename($server_names) . '.' . $mode . $log_suffix;
+            // this entry has no log file, ignore it
+            if (!file_exists($log_file_name)) {
+                continue;
             }
+            $logparser = null;
+
+            if ($mode == 'error') {
+                $logparser = new ErrorLogParser($log_file_name);
+            } elseif ($mode == 'access') {
+                $logparser = new AccessLogParser($log_file_name);
+            }
+            // we cannot parse the file - something went wrong
+            if ($logparser == null) {
+                continue;
+            }
+            $lines = array_merge($lines, $logparser->get_result());
             if (empty($lines)) {
                 $lines['error'] = 'no lines found';
             }
