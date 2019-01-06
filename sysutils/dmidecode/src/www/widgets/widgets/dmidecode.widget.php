@@ -29,43 +29,26 @@
 
 require_once("widgets/include/dmidecode.inc");
 
-$dmiHW = [];
-$dmiBIOS = [];
-
 $hardwareData = parse_ini_string(configd_run("dmidecode system"));
 $biosData = parse_ini_string(configd_run("dmidecode bios"));
-
-$dmiHW[] = sprintf('%s %s %s',
-    isset($hardwareData['Manufacturer']) ? $hardwareData['Manufacturer'] : '',
-    isset($hardwareData['Product Name']) ? $hardwareData['Product Name'] : '',
-    isset($hardwareData['Version']) ? $hardwareData['Version'] : ''
-);
-
-if(isset($hardwareData['Serial Number'])) {
-    $dmiHW[] = 'SN: ' . $hardwareData['Serial Number'];
-}
-
-$dmiBios[] = sprintf('%s %s %s',
-    isset($biosData['Vendor'])  ? $biosData['Vendor']  : '',
-    isset($biosData['Version']) ? $biosData['Version'] : '',
-    isset($biosData['BIOS Revision']) ? $biosData['BIOS Revision'] : ''
-);
-
-if(isset($biosData['Release Date'])) {
-    $dmiBios[] = sprintf(gettext('Release date: %s'), $biosData['Release Date']);
-}
 
 ?>
 
 <table class="table table-striped table-condensed">
     <tbody>
+        <tr><th colspan="2"><?=gettext("Platform");?></th></tr>
+        <? foreach($hardwareData as $key => $val) { ?>
         <tr>
-            <td style="width: 30%;"><?=gettext("Hardware");?></td>
-            <td><?=implode('<br/>', $dmiHW);?></td>
+            <td style="width: 30%;"><?=gettext($key);?></td>
+            <td><?=$val;?></td>
         </tr>
+        <? } ?>
+        <tr><th colspan="2"><?=gettext("BIOS");?></th></tr>
+        <? foreach($biosData as $key => $val) { ?>
         <tr>
-            <td><?=gettext("BIOS");?></td>
-            <td><?=implode('<br/>', $dmiBios);?></td>
+            <td style="width: 30%;"><?=gettext($key);?></td>
+            <td><?=$val;?></td>
         </tr>
+        <? } ?>
     </tbody>
 </table>
