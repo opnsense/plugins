@@ -13,6 +13,41 @@
                 <type>checkbox</type>
                 <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
             </field>
+            <field>
+                <id>rspamd.general.rejectscore</id>
+                <label>Reject Score</label>
+                <type>text</type>
+                <advanced>true</advanced>
+                <help>Set the value at which an e-mail is rejected. The value has to be higher than header, subject and greylist score.</help>
+            </field>
+            <field>
+                <id>rspamd.general.headerscore</id>
+                <label>Header Score</label>
+                <type>text</type>
+                <advanced>true</advanced>
+                <help>Set the value at which an e-mail is marked as spam in header. The value has to be higher than greylist score.</help>
+            </field>
+            <field>
+                <id>rspamd.general.subjectscore</id>
+                <label>Subject Score</label>
+                <type>text</type>
+                <advanced>true</advanced>
+                <help>Set the value at which an e-mail is marked as spam in subject. The value has to be higher than header and greylist score.</help>
+            </field>
+            <field>
+                <id>rspamd.general.greylistscore</id>
+                <label>Greylist Score</label>
+                <type>text</type>
+                <advanced>true</advanced>
+                <help>Set the value at which an e-mail is greylisted. The value has to be lower than all other scores.</help>
+            </field>
+            <field>
+                <id>rspamd.general.rewritesubject</id>
+                <label>Rewrite Subject</label>
+                <type>text</type>
+                <advanced>true</advanced>
+                <help>Enter a prefix added to the subject when Subject Score is reached.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-general-multimap" description="Multimap Settings">
             <field>

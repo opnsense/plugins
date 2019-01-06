@@ -1,4 +1,5 @@
 rspamd:/etc/rc.conf.d/rspamd
+actions.conf:/usr/local/etc/rspamd/local.d/actions.conf
 antivirus.wl:/usr/local/etc/rspamd/local.d/antivirus.wl
 antivirus.conf:/usr/local/etc/rspamd/local.d/antivirus.conf
 bad_file_extensions-map:/usr/local/etc/rspamd/local.d/bad_file_extensions.map
