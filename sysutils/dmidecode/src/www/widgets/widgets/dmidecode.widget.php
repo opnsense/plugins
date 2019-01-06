@@ -32,17 +32,8 @@ require_once("widgets/include/dmidecode.inc");
 $dmiHW = [];
 $dmiBIOS = [];
 
-$hardwareData = [];
-$hardware = explode("\n", configd_run("dmidecode system"));
-foreach($hardware as $item) {
-    if(strpos($item, 'Manufacturer:')   !== false
-    || strpos($item, 'Product Name:')   !== false
-    || strpos($item, 'Version:')        !== false
-    || strpos($item, 'Serial Number:')  !== false) {
-        $parts = explode(":", $item);
-        $hardwareData[trim($parts[0])] = trim($parts[1]);
-    }
-}
+$hardwareData = parse_ini_string(configd_run("dmidecode system"));
+$biosData = parse_ini_string(configd_run("dmidecode bios"));
 
 $dmiHW[] = sprintf('%s %s %s',
     isset($hardwareData['Manufacturer']) ? $hardwareData['Manufacturer'] : '',
@@ -51,19 +42,7 @@ $dmiHW[] = sprintf('%s %s %s',
 );
 
 if(isset($hardwareData['Serial Number'])) {
-    $dmiHW[] = 'SN ' . $hardwareData['Serial Number'];
-}
-
-$biosData = [];
-$bios = explode("\n", configd_run("dmidecode bios"));
-foreach ($bios as $item) {
-    if(strpos($item, 'Vendor:')         !== false
-    || strpos($item, 'Version:')        !== false
-    || strpos($item, 'Release Date:')   !== false
-    || strpos($item, 'BIOS Revision:')  !== false) {
-        $parts = explode(":", $item);
-        $biosData[trim($parts[0])] = trim($parts[1]);
-    }
+    $dmiHW[] = 'SN: ' . $hardwareData['Serial Number'];
 }
 
 $dmiBios[] = sprintf('%s %s %s',
@@ -73,7 +52,7 @@ $dmiBios[] = sprintf('%s %s %s',
 );
 
 if(isset($biosData['Release Date'])) {
-    $dmiBios[] = 'Release date: ' . $biosData['Release Date'];
+    $dmiBios[] = sprintf(gettext('Release date: %s'), $biosData['Release Date']);
 }
 
 ?>
