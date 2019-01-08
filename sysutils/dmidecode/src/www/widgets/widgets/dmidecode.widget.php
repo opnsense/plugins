@@ -49,6 +49,6 @@ $biosData = parse_ini_string(configd_run("dmidecode bios"));
             <td style="width: 30%;"><?=gettext($key);?></td>
             <td><?=$val;?></td>
         </tr>
-        <? } ?>
+        <?php } ?>
     </tbody>
 </table>
