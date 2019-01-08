@@ -56,7 +56,7 @@ class HttpaccessesController extends ApiMutableModelControllerBase
 
         $mdlProxyUserACL = new ProxyUserACL();
         $grid = new UIModelGrid($mdlProxyUserACL->general->HTTPAccesses->HTTPAccess);
-        $columns = ["Domains", "Agents", "Times", "Mimes", "Srcs", "Dsts", "Arps"];
+        $columns = ["Domains", "Agents", "Times", "Mimes", "Srcs", "Dsts", "MACs"];
         $ret = $grid->fetchBindRequest($this->request,
             array_merge($columns, ["Users", "Black", "Priority", "uuid"]),
             "Priority");

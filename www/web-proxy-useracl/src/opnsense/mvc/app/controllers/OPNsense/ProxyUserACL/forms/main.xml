@@ -1,6 +1,6 @@
 <form>
     <tab id="rules" description="Rules">
-        <subtab id="http-access" description="HTTP access">
+        <subtab id="httpaccesses" description="HTTP access">
         </subtab>
     </tab>
     <tab id="lists" description="Lists">
@@ -21,5 +21,5 @@
         <subtab id="times" description="Schedules">
         </subtab>
     </tab>
-    <activetab>http-access</activetab>
+    <activetab>httpaccesses</activetab>
 </form>

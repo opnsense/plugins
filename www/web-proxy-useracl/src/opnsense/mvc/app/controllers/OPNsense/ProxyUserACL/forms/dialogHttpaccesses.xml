@@ -54,7 +54,7 @@
         <help>Select MIME type reply</help>
     </field>
     <field>
-        <id>Httpaccess.Arps</id>
+        <id>Httpaccess.MACs</id>
         <label>MAC addresses</label>
         <type>dropdown</type>
         <help>Select MAC-addresses</help>

@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
             )
         });
 
-        $("#grid-acl").UIBootgrid(
+        $("#grid-httpaccesses").UIBootgrid(
             {
                 'search': '/api/proxyuseracl/httpaccesses/searchACL',
                 'get': '/api/proxyuseracl/httpaccesses/getACL/',
@@ -88,14 +88,14 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
-        $("#grid-acl").on("loaded.rs.jquery.bootgrid", function () {
-            $("#grid-acl").find(".command-updown").on("click", function () {
+        $("#grid-httpaccesses").on("loaded.rs.jquery.bootgrid", function () {
+            $("#grid-httpaccesses").find(".command-updown").on("click", function () {
                 ajaxCall(url = "/api/proxyuseracl/httpaccesses/updownACL/" + $(this).data("row-id"), sendData = {"command": $(this).data("command")}, callback = function () {
-                    $("#grid-acl").bootgrid("reload");
+                    $("#grid-httpaccesses").bootgrid("reload");
                 });
             }).end();
 
-            $("#grid-acl").find("*[data-action=add]").click(function () {
+            $("#grid-httpaccesses").find("*[data-action=add]").click(function () {
                 $("#btn_DialogACL_save_progress").removeClass("fa fa-spinner fa-pulse");
                 $("#btn_DialogACL_save").click(function () {
                     $("#btn_DialogACL_save_progress").addClass("fa fa-spinner fa-pulse");
@@ -142,86 +142,63 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="tab-content content-box tab-content">
     {% for tab in tabs %}
-    <div id="subtab_{{tab['name']}}" class="tab-pane fade in">
-        <h1 class="text-center">{{ tab['title'] }}</h1>
-        <div class="alert alert-info">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
-        <table id="{{tab['name']}}-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-{{tab['name']}}" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="Dialog{{tab['name']}}">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Description" data-type="string"
-                                data-sortable="false">{{ lang._('Description') }}</th>
-                            {% for field in tab['fields'] %}
-                            <th data-column-id="{{field}}" data-type="string"
-                                data-sortable="false">{{field}}</th>
-                            {% endfor %}
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':tab['formDialog'],'id':'Dialog%s'|format(tab['name']),'label':lang._('Edit %s for black and white lists')|format(tab['title'])]) }}
-    </div>
+        <div id="subtab_{{ tab['name'] }}" class="tab-pane fade in {{ tab['active'] }}">
+            <h1 class="text-center">{{ tab['title'] }}</h1>
+            {% if tab['list'] == '1' %}
+                <div class="alert alert-info">{{ lang._('Note:') }} {{ lang._('Use this lists in ACL rules.') }}</div>
+            {% endif %}
+            <table id="{{ tab['name'] }}-content">
+                <tr>
+                    <td colspan="2">
+                        <table id="grid-{{ tab['name'] }}"
+                               class="table table-condensed table-hover table-striped table-responsive"
+                               data-editDialog="Dialog{{ tab['name'] }}">
+                            <thead>
+                            <tr>
+                                {% if tab['list'] == '1' %}
+                                    <th data-column-id="Description" data-type="string"
+                                        data-sortable="false">{{ lang._('Description') }}</th>
+                                {% else %}
+                                    <th data-column-id="Priority" data-width="10em" data-type="string"
+                                        data-sortable="false"
+                                        data-visible="true">{{ lang._('Number') }}</th>
+                                {% endif %}
+                                {% for field in tab['fields'] %}
+                                    <th data-column-id="{{ field['name'] }}" data-type="string"
+                                        data-sortable="false"
+                                        {% if field['width'] != '0' %}data-width="{{ field['width'] }}em"{% endif %}>{{ field['description'] }}</th>
+                                {% endfor %}
+                                {% if tab['list'] == '0' %}
+                                    <th data-column-id="Visible" data-type="string" data-sortable="false"
+                                        data-visible="true">{{ lang._('Name') }}</th>
+                                    <th data-column-id="updown" data-width="7em" data-formatter="updown"
+                                        data-sortable="false">{{ lang._('Priority') }}</th>
+                                {% endif %}
+                                <th data-column-id="commands" data-width="7em" data-formatter="commands"
+                                    data-sortable="false">{{ lang._('Commands') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span
+                                                class="fa fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button"
+                                            class="btn btn-xs btn-default"><span
+                                                class="fa fa-trash-o"></span></button>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            {{ partial("layout_partials/base_dialog",['fields':tab['formDialog'],'id':'Dialog%s'|format(tab['name']),'label':lang._('Edit %s for black and white lists')|format(tab['title'])]) }}
+        </div>
     {% endfor %}
-    <div id="subtab_http-access" class="tab-pane fade in active">
-        <h1 class="text-center">{{ lang._('HTTP access') }}</h1>
-        <table id="acl-content">
-            <tr>
-                <td colspan="2">
-                    <table id="grid-acl" class="table table-condensed table-hover table-striped table-responsive"
-                           data-editDialog="DialogHttpaccesses">
-                        <thead>
-                        <tr>
-                            <th data-column-id="Priority" data-width="10em" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Number') }}</th>
-                            <th data-column-id="Black" data-width="10em" data-type="string"
-                                data-sortable="false">{{ lang._('Black') }}</th>
-                            <th data-column-id="Visible" data-type="string" data-sortable="false"
-                                data-visible="true">{{ lang._('Name') }}</th>
-                            <th data-column-id="updown" data-width="7em" data-formatter="updown"
-                                data-sortable="false">{{ lang._('Priority') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands"
-                                data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button data-action="add" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span
-                                            class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        {{ partial("layout_partials/base_dialog",['fields':formDialogHttpaccesses,'id':'DialogHttpaccesses','label':lang._('Edit user/group white and black lists')]) }}
-    </div>
     <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i
                 id="reconfigureAct_progress" class=""></i></button>
 </div>

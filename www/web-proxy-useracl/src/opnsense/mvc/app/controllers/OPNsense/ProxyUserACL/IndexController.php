@@ -42,50 +42,79 @@ class IndexController extends \OPNsense\Base\IndexController
                 'name' => 'users',
                 'title' => gettext('Users and groups'),
                 'formDialog' => $this->getForm("dialogUsers"),
-                'fields' => [gettext('Server'), gettext('Group')]
+                'fields' => [
+                    ['name' => 'Server', 'description' => gettext('Server'), 'width' => 0],
+                    ['name' => 'Group', 'description' => gettext('Group'), 'width' => 10]
+                ],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'macs',
                 'title' => gettext('MAC-addresses'),
                 'formDialog' => $this->getForm("dialogMacs"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'srcs',
                 'title' => gettext('Sources nets'),
                 'formDialog' => $this->getForm("dialogSrcs"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'dsts',
                 'title' => gettext('Destination nets'),
                 'formDialog' => $this->getForm("dialogDsts"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'domains',
                 'title' => gettext('Destination domains'),
                 'formDialog' => $this->getForm("dialogDomains"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'agents',
                 'title' => gettext('Browser user agents'),
                 'formDialog' => $this->getForm("dialogAgents"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'mimes',
                 'title' => gettext('Mime types'),
                 'formDialog' => $this->getForm("dialogMimes"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
             [
                 'name' => 'times',
                 'title' => gettext('Schedules'),
                 'formDialog' => $this->getForm("dialogTimes"),
-                'fields' => []
+                'fields' => [],
+                'list' => true,
+                'active' => ''
             ],
+            [
+                'name' => 'httpaccesses',
+                'title' => gettext('HTTP access'),
+                'formDialog' => $this->getForm("dialogHttpaccesses"),
+                'fields' => [
+                    ['name' => 'Black', 'description' => gettext('Black'), 'width' => 10],
+                ],
+                'list' => false,
+                'active' => 'active'
+            ]
         ];
         $this->view->formDialogHttpaccesses = $this->getForm("dialogHttpaccesses");
         $this->view->pick('OPNsense/ProxyUserACL/index');
