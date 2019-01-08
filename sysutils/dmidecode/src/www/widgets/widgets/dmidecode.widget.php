@@ -37,7 +37,7 @@ $biosData = parse_ini_string(configd_run("dmidecode bios"));
 <table class="table table-striped table-condensed">
     <tbody>
         <tr><th colspan="2"><?=gettext("Platform");?></th></tr>
-        <? foreach($hardwareData as $key => $val) { ?>
+        <?php foreach($hardwareData as $key => $val) { ?>
         <tr>
             <td style="width: 30%;"><?=gettext($key);?></td>
             <td><?=$val;?></td>
