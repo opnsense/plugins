@@ -2,4 +2,39 @@ OpenConnect is an SSL VPN client initially created to support
 Cisco's AnyConnect SSL VPN. It has since been ported to support
 the Juniper SSL VPN which is now known as Pulse Connect Secure.
 
+
+Plugin Changelog
+================
+
+1.3.3
+
+* Enhance allowed characters in group name
+
+1.3.2
+
+* Reworked init script to better handle SIGINT
+
+1.3.1
+
+* Add non-inter option to config
+
+1.3
+
+* Add group separation
+* Allow client certificate based authentication
+
+1.2
+
+* Allow @ in user name
+* Allow upper case characters user name
+
+1.1
+
+* Add field to allow untrusted certificates via certificate hash string
+
+1.0
+
+* Initial release
+
+
 WWW: http://www.infradead.org/openconnect/
