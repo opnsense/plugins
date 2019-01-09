@@ -1,6 +1,0 @@
-bgpd.conf:/usr/local/etc/quagga/bgpd.conf
-ospfd.conf:/usr/local/etc/quagga/ospfd.conf
-ospf6d.conf:/usr/local/etc/quagga/ospf6d.conf
-ripd.conf:/usr/local/etc/quagga/ripd.conf
-quagga:/etc/rc.conf.d/quagga
-zebra.conf:/usr/local/etc/quagga/zebra.conf
