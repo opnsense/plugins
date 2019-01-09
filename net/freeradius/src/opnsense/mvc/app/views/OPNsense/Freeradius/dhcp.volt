@@ -85,10 +85,10 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="gatewayip" data-type="string" data-visible="true">{{ lang._('Gateway IP') }}</th>
                 <th data-column-id="dns1" data-type="string" data-visible="true">{{ lang._('DNS1') }}</th>
                 <th data-column-id="dns2" data-type="string" data-visible="true">{{ lang._('DNS2') }}</th>
                 <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Netmask') }}</th>
-                <th data-column-id="gatewayip" data-type="string" data-visible="false">{{ lang._('Gateway IP') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
             </thead>
