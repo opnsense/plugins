@@ -1,57 +1,65 @@
-{% if helpers.exists('OPNsense.freeradius.dhcp.enabled') and OPNsense.freeradius.dhcp.enabled == '1' %}
+{% if helpers.exists('OPNsense.freeradius.general.dhcpenabled') and OPNsense.freeradius.general.dhcpenabled == '1' %}
 
 server dhcp {
 
 listen {
         type = dhcp
-        ipaddr = {{ OPNsense.freeradius.dhcp.listenip }}
-        src_ipaddr = {{ OPNsense.freeradius.dhcp.listenip }}
+        ipaddr = {{ OPNsense.freeradius.general.dhcplistenip }}
+        src_ipaddr = {{ OPNsense.freeradius.general.dhcplistenip }}
         port = 67
         broadcast = no
 }
 
 dhcp DHCP-Discover {
 
+{% if helpers.exists('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%   for dhcp_list in helpers.toList('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%     if dhcp_list.enabled == '1' %}
+if(DHCP-Gateway-IP-Address == {{ dhcp_list.gatewayip }}) {
         update reply {
                DHCP-Message-Type = DHCP-Offer
         }
 
         update reply {
-                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns1 }}
-                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns2 }}
-                &DHCP-Subnet-Mask = {{ OPNsense.freeradius.dhcp.netmask }}
-                &DHCP-Router-Address = {{ OPNsense.freeradius.dhcp.gatewayip }}
+                &DHCP-Domain-Name-Server = {{ dhcp_list.dns1 }}
+                &DHCP-Domain-Name-Server = {{ dhcp_list.dns2 }}
+                &DHCP-Subnet-Mask = {{ dhcp_list.netmask }}
+                &DHCP-Router-Address = {{ dhcp_list.gatewayip }}
                 &DHCP-IP-Address-Lease-Time = 86400
-                &DHCP-DHCP-Server-Identifier = {{ OPNsense.freeradius.dhcp.gatewayip }}
+                &DHCP-DHCP-Server-Identifier = {{ dhcp_list.gatewayip }}
         }
-        
-        update control {
-                &Pool-Name := "local"
-        }
-
+}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+        mac2ip
         dhcp_sqlippool
         ok
 }
 
 dhcp DHCP-Request {
 
+{% if helpers.exists('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%   for dhcp_list in helpers.toList('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%     if dhcp_list.enabled == '1' %}
+if(DHCP-Gateway-IP-Address == {{ dhcp_list.gatewayip }}) {
         update reply {
                &DHCP-Message-Type = DHCP-Ack
         }
 
         update reply {
-                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns1 }}
-                &DHCP-Domain-Name-Server = {{ OPNsense.freeradius.dhcp.dns2 }}
-                &DHCP-Subnet-Mask = {{ OPNsense.freeradius.dhcp.netmask }}
-                &DHCP-Router-Address = {{ OPNsense.freeradius.dhcp.gatewayip }}
+                &DHCP-Domain-Name-Server = {{ dhcp_list.dns1 }}
+                &DHCP-Domain-Name-Server = {{ dhcp_list.dns2 }}
+                &DHCP-Subnet-Mask = {{ dhcp_list.netmask }}
+                &DHCP-Router-Address = {{ dhcp_list.gatewayip }}
                 &DHCP-IP-Address-Lease-Time = 86400
-                &DHCP-DHCP-Server-Identifier = {{ OPNsense.freeradius.dhcp.gatewayip }}
+                &DHCP-DHCP-Server-Identifier = {{ dhcp_list.gatewayip }}
         }
-
-        update control {
-                &Pool-Name := "local"
-        }
-        
+}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+        mac2ip
         dhcp_sqlippool
         ok
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
- *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  *
  *    All rights reserved.
  *
@@ -30,47 +30,36 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Freeradius\Dhcp;
-use \OPNsense\Core\Config;
+use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class DhcpController extends ApiControllerBase
+class DhcpController extends ApiMutableModelControllerBase
 {
-    public function getAction()
+    static protected $internalModelName = 'dhcp';
+    static protected $internalModelClass = '\OPNsense\Freeradius\Dhcp';
+
+    public function searchDhcpAction()
     {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlDhcp = new Dhcp();
-            $result['dhcp'] = $mdlDhcp->getNodes();
-        }
-        return $result;
+        return $this->searchBase('dhcps.dhcp', array("enabled", "dns1", "dns2", "netmask", "gatewayip"));
     }
-
-    public function setAction()
+    public function getDhcpAction($uuid = null)
     {
-        $result = array("result"=>"failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlDhcp = new Dhcp();
-            $mdlDhcp->setNodes($this->request->getPost("dhcp"));
-
-            // perform validation
-            $valMsgs = $mdlDhcp->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["dhcp.".$msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlDhcp->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
+        $this->sessionClose();
+        return $this->getBase('dhcp', 'dhcps.dhcp', $uuid);
+    }
+    public function addDhcpAction()
+    {
+        return $this->addBase('dhcp', 'dhcps.dhcp');
+    }
+    public function delDhcpAction($uuid)
+    {
+        return $this->delBase('dhcps.dhcp', $uuid);
+    }
+    public function setDhcpAction($uuid)
+    {
+        return $this->setBase('dhcp', 'dhcps.dhcp', $uuid);
+    }
+    public function toggleDhcpAction($uuid)
+    {
+        return $this->toggleBase('dhcps.dhcp', $uuid);
     }
 }

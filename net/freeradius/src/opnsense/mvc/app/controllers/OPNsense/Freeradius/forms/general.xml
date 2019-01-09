@@ -71,4 +71,16 @@
         <type>checkbox</type>
         <help>Logs password if it is correct.</help>
     </field>
+    <field>
+        <id>general.dhcpenabled</id>
+        <label>DHCP Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the DHCP FreeRADIUS service.</help>
+    </field>
+    <field>
+        <id>general.dhcplistenip</id>
+        <label>DHCP Listen IP</label>
+        <type>text</type>
+        <help>Set the IP address to listen on.</help>
+    </field>
 </form>

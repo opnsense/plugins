@@ -6,12 +6,6 @@
         <help>This will activate the DHCP FreeRADIUS service.</help>
     </field>
     <field>
-        <id>dhcp.listenip</id>
-        <label>Listen IP</label>
-        <type>text</type>
-        <help>Set the IP address to listen on.</help>
-    </field>
-    <field>
         <id>dhcp.dns1</id>
         <label>DNS 1</label>
         <type>text</type>

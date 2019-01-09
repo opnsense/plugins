@@ -1,4 +1,4 @@
-{% if helpers.exists('OPNsense.freeradius.dhcp.enabled') and OPNsense.freeradius.dhcp.enabled == '1' %}
+{% if helpers.exists('OPNsense.freeradius.general.dhcpenabled') and OPNsense.freeradius.general.dhcpenabled == '1' %}
 
 sqlippool dhcp_sqlippool {
         sql_module_instance = "sql"
