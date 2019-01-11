@@ -21,7 +21,6 @@ function check_cipher_array(r, browser_ciphers, fingerprint_ciphers, result) {
       // a cipher has been found, which is not supported by the browser
       // such a connection is definitly intercepted
       result.status = "Intercepted";
-      //result.status = JSON.stringify(fingerprint_ciphers[0].toBytes().toString('hex'));
       return;
     }
     last_index = current_index;
