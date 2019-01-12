@@ -78,6 +78,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
+sysutils/dmidecode -- Display dmidecode information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
