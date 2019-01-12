@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2019 Smart-Soft Ltd.
+ * Copyright (C) 2019 Smart-Soft
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 require_once("widgets/include/dmidecode.inc");
 
 $hardwareData = parse_ini_string(configd_run("dmidecode system"));
 $biosData = parse_ini_string(configd_run("dmidecode bios"));
 
 ?>
-
 <table class="table table-striped table-condensed">
     <tbody>
         <tr><th colspan="2"><?=gettext("Platform");?></th></tr>
@@ -42,7 +40,7 @@ $biosData = parse_ini_string(configd_run("dmidecode bios"));
             <td style="width: 30%;"><?=gettext($key);?></td>
             <td><?=html_safe($val);?></td>
         </tr>
-        <? } ?>
+        <?php } ?>
         <tr><th colspan="2"><?=gettext("BIOS");?></th></tr>
         <?php foreach($biosData as $key => $val) { ?>
         <tr>
