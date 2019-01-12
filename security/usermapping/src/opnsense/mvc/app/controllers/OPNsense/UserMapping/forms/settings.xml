@@ -1,0 +1,12 @@
+<form>
+    <tab id="ipmap_general" description="General Settings">
+        <subtab id="ipmap_general_general" description="General Settings">
+            <field>
+                <id>usermapping.configuration.authentication_backend</id>
+                <label>Authentication Backend</label>
+                <type>dropdown</type>
+            </field>
+        </subtab>
+    </tab>
+    <activetab>ipmap-general-general</activetab>
+</form>

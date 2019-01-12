@@ -1,0 +1,9 @@
+<acl>
+  <page-usermapping>
+    <name>User/IP Mapping</name>
+    <patterns>
+      <pattern>ui/usermapping*</pattern>
+      <pattern>api/usermapping/*</pattern>
+    </patterns>
+  </page-usermapping>
+</acl>

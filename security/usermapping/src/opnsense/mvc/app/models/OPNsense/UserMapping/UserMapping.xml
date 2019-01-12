@@ -1,0 +1,43 @@
+<model>
+    <mount>//OPNsense/UserMapping</mount>
+    <description>Mapping configuration for user to IP address</description>
+    <items>
+        <user_mapping type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <external_alias type="ModelRelationField">
+                <model>
+                    <template>
+                        <source>OPNsense.Firewall.Alias</source>
+                        <items>aliases.alias</items>
+                        <display>name</display>
+                    </template>
+                </model>
+                <filters>
+                    <type>/^external$/</type>
+                </filters>
+                <Required>Y</Required>
+            </external_alias>
+            <type type="OptionField">
+                <OptionValues>
+                    <User>User</User>
+                    <Group>Group</Group>
+                </OptionValues>
+                <Required>Y</Required>
+            </type>
+            <object_name type="TextField">
+                <!-- user name / group name -->
+                <Required>Y</Required>
+                <mask>/^[a-z0-9\-\_\\\.\/@]+$/i</mask>
+            </object_name>
+        </user_mapping>
+        <configuration>
+            <authentication_backend type="AuthenticationServerField">
+                <Required>Y</Required>
+                <multiple>N</multiple>
+                <default>Local Database</default>
+            </authentication_backend>
+        </configuration>
+    </items>
+</model>

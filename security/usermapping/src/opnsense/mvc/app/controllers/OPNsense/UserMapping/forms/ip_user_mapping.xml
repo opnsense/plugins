@@ -1,0 +1,24 @@
+<form>
+  <field>
+    <id>user_mapping.description</id>
+    <label>Description</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>user_mapping.external_alias</id>
+    <label>External Alias</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+  </field>
+  <field>
+    <id>user_mapping.type</id>
+    <label>Type</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+  </field>
+  <field>
+    <id>user_mapping.object_name</id>
+    <label>Object Name</label>
+    <type>text</type>
+  </field>
+</form>
