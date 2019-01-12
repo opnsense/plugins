@@ -1090,33 +1090,6 @@ class updatedns
                     $this->_debug($data);
                 }
                 break;
-            case 'he-net-tunnelbroker':
-                /*
-                -ERROR: Missing parameter(s).
-                -ERROR: Invalid API key or password
-                -ERROR: Tunnel not found
-                -ERROR: Another tunnel exists for this IP.
-                -ERROR: This tunnel is already associated with this IP address
-                +OK: Tunnel endpoint updated to: x.x.x.x
-                */
-                if (preg_match("/Missing parameter/i", $data)) {
-                    $status = "Dynamic DNS: (Error) Bad Request - Missing/Invalid Parameters.";
-                } elseif (preg_match('/Tunnel not found/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Bad Request - Invalid Tunnel ID.";
-                } elseif (preg_match('/Invalid API key or password/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Invalid username or password.";
-                } elseif (preg_match('/OK:/i', $data)) {
-                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                    $successful_update = true;
-                } elseif (preg_match('/This tunnel is already associated with this IP address/i', $data)) {
-                    $status = "Dynamic DNS: (Success) No Change In IP Address.";
-                    $successful_update = true;
-                } else {
-                    $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
-                }
-                break;
             case 'route53':
             case 'route53-v6':
                 $successful_update = true;
@@ -1195,6 +1168,7 @@ class updatedns
             case 'eurodns':
             case 'googledomains':
             case 'he-net':
+            case 'he-net-tunnelbroker':
             case 'he-net-v6':
             case 'loopia':
             case 'opendns':
