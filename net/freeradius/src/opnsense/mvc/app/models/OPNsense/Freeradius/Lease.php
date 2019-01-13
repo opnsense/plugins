@@ -29,6 +29,6 @@ use OPNsense\Base\BaseModel;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-class Dhcp extends BaseModel
+class Lease extends BaseModel
 {
 }
