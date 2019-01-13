@@ -1138,7 +1138,10 @@ function run_restart_actions($certlist, $modelObj)
                         continue;
                     }
                     // Store by UUID, automatically eliminates duplicates.
-                    $restart_actions[$_action] = $action;
+                    $_data = array();
+                    $_data['obj'] = $action;
+                    $_data['cert_id'] = $certObj->id;
+                    $restart_actions[$_action] = $_data;
                 }
             }
         }
@@ -1147,7 +1150,10 @@ function run_restart_actions($certlist, $modelObj)
     // Run the collected restart actions.
     if (!empty($restart_actions) and is_array($restart_actions)) {
         // Extract cert object
-        foreach ($restart_actions as $action) {
+        foreach ($restart_actions as $_action) {
+            $action = $_action['obj'];
+            $cert_id = $_action['cert_id'];
+            $action_id = $action->id;
             // Run pre-defined or custom command?
             log_error("AcmeClient: running restart action: " . $action->name);
             switch ((string)$action->type) {
@@ -1159,6 +1165,9 @@ function run_restart_actions($certlist, $modelObj)
                     break;
                 case 'restart_nginx':
                     $response = $backend->configdRun("nginx restart");
+                    break;
+                case 'upload_highwinds':
+                    $response = $backend->configdRun("acmeclient upload_highwinds ${cert_id} ${action_id}");
                     break;
                 case 'configd':
                     // Make sure a configd command was specified.
