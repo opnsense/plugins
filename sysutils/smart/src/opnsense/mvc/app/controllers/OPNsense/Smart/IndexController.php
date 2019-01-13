@@ -28,6 +28,7 @@
 */
 
 namespace OPNsense\Smart;
+
 class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
