@@ -257,6 +257,7 @@ clean: check
 	    git checkout -f ${.CURDIR}/src && \
 	    git clean -xdqf ${.CURDIR}/src; \
 	fi
+	@rm -rf ${.CURDIR}/work
 
 lint-desc: check
 	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
