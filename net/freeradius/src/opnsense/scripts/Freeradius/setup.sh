@@ -1,7 +1,7 @@
 #!/bin/sh
 
 RADIUS_FILES="/var/log/radius.log /var/log/radutmp /var/log/radwtmp"
-RADIUS_DIRS="/usr/local/etc/raddb /var/run/radiusd /var/log/radacct"
+RADIUS_DIRS="/usr/local/etc/raddb /var/run/radiusd /var/log/radacct /usr/local/etc/raddb/mods-config/passwd"
 RADIUS_USER=freeradius
 RADIUS_GROUP=freeradius
 
