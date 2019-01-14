@@ -75,7 +75,7 @@
         <id>general.dhcpenabled</id>
         <label>DHCP Enable</label>
         <type>checkbox</type>
-        <help>This will activate the DHCP FreeRADIUS service.</help>
+        <help>This will activate the FreeRADIUS DHCP service.</help>
     </field>
     <field>
         <id>general.dhcplistenip</id>
