@@ -8719,11 +8719,15 @@ button.close {
 html {
   height: 100%;
   font-family: 'SourceSansProRegular';
+  scrollbar-width: thin;
+  scrollbar-color: #424242 #323232;
 }
 
 body {
   height: 100%;
   font-family: 'SourceSansProRegular';
+  scrollbar-width: thin;
+  scrollbar-color: #424242 #323232;
   touch-action: manipulation;
   min-width: 320px;
   background-color: #2A2A2A;
@@ -9410,21 +9414,21 @@ button.toggle-sidebar {
 
 ::-webkit-scrollbar-button {
   width: 8px;
-  height: 5px;
+  height: 0px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f7f7f7;
+  background: #323232;
   box-shadow: 0px 0px 0px;
   border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
-  border: thin solid #e5e5e5;
+  background: #424242;
+  border: thin solid #393939;
   border-radius: 0px;
   &:hover {
-    background: #e5e5e5;
+    background: #ec6d12;
   }
 }
 
