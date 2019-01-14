@@ -5679,7 +5679,9 @@ button.close {
 
 html, body {
   height: 100%;
-  font-family: 'SourceSansProRegular'; }
+  font-family: 'SourceSansProRegular';
+  scrollbar-width: thin;
+  scrollbar-color: #315a71 #e3e3e3; }
 
 body {
   touch-action: manipulation;
@@ -6194,20 +6196,20 @@ padding-right: 15px; }
 
 ::-webkit-scrollbar-button {
   width: 8px;
-  height: 5px; }
+  height: 0px; }
 
 ::-webkit-scrollbar-track {
-  background: #f7f7f7;
+  background: #e3e3e3;
   box-shadow: 0px 0px 0px;
   border-radius: 0; }
 
 ::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
+  background: #315a71;
   border: thin solid #e5e5e5;
   border-radius: 0px; }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #e5e5e5; }
+  background: #ec6d12; }
 
 .widgetdiv {
   padding-top: 0px !important;
