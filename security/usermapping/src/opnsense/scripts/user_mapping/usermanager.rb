@@ -29,38 +29,141 @@ require 'pp'
 require 'socket'
 require 'rexml/document'
 require 'pry'
+require 'ostruct'
 
 # global for showing debug output if needed
 $USERMAPPING_DEBUG = false
 
-def read_config_xml
-    REXML::Document.new(File.new("/conf/config.xml"))
-end
+$LOGIN_STATES = {}
+$SHARED_DATA = OpenStruct.new
+module OSConfig
+    class << self
+        def read_config_xml
+            #
+            REXML::Document.new(File.new("/conf/config.xml"))
+        end
 
-def read_config_user_mappings(um_root)
-    um_nodes = um_root.each_child.select { |child| child.class == REXML::Element && child.name == 'user_mapping'}
-    nodes = []
-    um_nodes.each do |node|
-      nodes << node.children.reject {|x| x.class == REXML::Text}.map {|x| [x.name, x.text]}.to_h
+        def read_config_user_mappings(um_root)
+            um_nodes = um_root.each_child.select { |child| child.class == REXML::Element && child.name == 'user_mapping'}
+            nodes = []
+            um_nodes.each do |node|
+              nodes << node.children.reject {|x| x.class == REXML::Text}.map {|x| [x.name, x.text]}.to_h
+            end
+            nodes
+        end
+
+        def get_aliases(config)
+            aliases = config.elements['opnsense/OPNsense/Firewall/Alias/aliases'].children
+            tmp = aliases.select {|s| s.class == REXML::Element}
+            tmp.map do |x|
+                uuid = x.attributes['uuid']
+                data = x.children.reject {|x| x.class == REXML::Text}.map {|x| [x.name, x.text]}.to_h
+                [uuid, data]
+            end.to_h
+        end
     end
-    nodes
 end
 
-def get_aliases(config)
-    aliases = config.elements['opnsense/OPNsense/Firewall/Alias/aliases'].children
-    tmp = aliases.select {|s| s.class == REXML::Element}
-    tmp.map do |x|
-        uuid = x.attributes['uuid']
-        data = x.children.reject {|x| x.class == REXML::Text}.map {|x| [x.name, x.text]}.to_h
-        [uuid, data]
-    end.to_h
+module Authorization
+    class User
+        attr_accessor :username
+        attr_accessor :groups
+        attr_accessor :valid_until
+        attr_accessor :ip_address
+
+        def initialize(data)
+            update_data(data)
+        end
+
+        def update(data)
+            update_data data
+        end
+
+        def update_data(data)
+            if data['groups']&.is_a? Array
+                @groups = data['groups'] # use the provided groups
+            else
+                @groups = []
+            end
+            @username = data['username'] if data['username']
+            if data['valid_until']
+                @valid_until = data['valid_until']
+            else
+                @valid_until = Time.now + 60 # default: 60 sec
+            end
+        end
+    end
+    class << self
+        def login(data)
+            if $LOGIN_STATES[data['ip']]
+                user = $LOGIN_STATES[data['ip']]
+                user.update(data)
+            else
+                user = $LOGIN_STATES[data['ip']] = User.new data
+            end
+            user.authorize
+        end
+        def logout(session)
+            #
+        end
+    end
 end
 
-config = read_config_xml
-um_root = config.elements['opnsense/OPNsense/UserMapping']
-alias_root = config.elements['opnsense/OPNsense/Firewall/Alias/aliases']
-user_mappings = read_config_user_mappings(um_root)
-aliases = get_aliases(config)
+Thread.new do
+  loop do
+      config = OSConfig::read_config_xml
+      um_root = config.elements['opnsense/OPNsense/UserMapping']
+      alias_root = config.elements['opnsense/OPNsense/Firewall/Alias/aliases']
+      $SHARED_DATA.user_mappings = OSConfig::read_config_user_mappings(um_root)
+      $SHARED_DATA.aliases = OSConfig::get_aliases(config)
+      sleep 120
+  end
+end
 
-binding.pry
+
+module Communication
+    class << self
+        SOCKET = 'sock'
+        def run_server
+            File.delete SOCKET if File.exist? SOCKET
+            server = UNIXServer.new(SOCKET)
+            loop do
+                socket = server.accept
+                Thread.new do
+                    handle_connection(socket)
+                end
+            end
+        end
+        def handle_connection(socket)
+            data = socket.gets
+            begin
+                data = JSON.parse data
+                response =
+                case data['method']
+                when 'list'
+                    $LOGIN_STATES
+                when 'login'
+                    ::Authorization.login(data)
+                when 'logout'
+                    ::Authorization.logout(data)
+                when 'exit'
+                    socket.puts '{"error": "exiting"}'
+                    socket.close
+                    File.delete SOCKET if File.exist? SOCKET
+                    Kernel.exit! 0
+                else
+                    {error: 'unknown command'}
+                end
+                socket.puts(response)
+            rescue JSON::ParserError
+                socket.puts '{"error": "invalid JSON data"}'
+            end
+            #binding.pry
+            socket.close
+        end
+    end
+end
+
+Communication.run_server
+
 #&.text&.to_i
