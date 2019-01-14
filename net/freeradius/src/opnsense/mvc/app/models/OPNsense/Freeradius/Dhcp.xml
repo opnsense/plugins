@@ -10,19 +10,15 @@
                     <Required>Y</Required>
                 </enabled>
                 <dns1 type="NetworkField">
-                    <default>8.8.8.8</default>
                     <Required>Y</Required>
                 </dns1>
                 <dns2 type="NetworkField">
-                    <default>8.8.4.4</default>
                     <Required>Y</Required>
                 </dns2>
                 <netmask type="NetworkField">
-                    <default>255.255.255.0</default>
                     <Required>Y</Required>
                 </netmask>
                 <gatewayip type="NetworkField">
-                    <default>192.168.0.1</default>
                     <Required>Y</Required>
                 </gatewayip>
             </dhcp>
