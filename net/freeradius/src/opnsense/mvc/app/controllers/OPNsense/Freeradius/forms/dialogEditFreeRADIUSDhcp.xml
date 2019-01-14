@@ -21,7 +21,7 @@
         <id>dhcp.netmask</id>
         <label>Netmask</label>
         <type>text</type>
-        <help>Set the subnet mask for this pool.</help>
+        <help>Set the subnet mask for this pool e.g. 255.255.255.0</help>
     </field>
     <field>
         <id>dhcp.gatewayip</id>
