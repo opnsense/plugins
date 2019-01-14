@@ -38,8 +38,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Tor\General';
-    static protected $internalModelName = 'general';
+    protected static $internalModelClass = '\OPNsense\Tor\General';
+    protected static $internalModelName = 'general';
 
     /* override default set action */
     public function setAction()

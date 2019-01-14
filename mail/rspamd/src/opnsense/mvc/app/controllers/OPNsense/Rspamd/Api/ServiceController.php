@@ -32,8 +32,8 @@ use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Rspamd\RSpamd';
-    static protected $internalServiceTemplate = 'OPNsense/Rspamd';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'rspamd';
+    protected static $internalServiceClass = '\OPNsense\Rspamd\RSpamd';
+    protected static $internalServiceTemplate = 'OPNsense/Rspamd';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'rspamd';
 }

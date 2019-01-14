@@ -35,8 +35,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class BgpController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'bgp';
-    static protected $internalModelClass = '\OPNsense\Quagga\BGP';
+    protected static $internalModelName = 'bgp';
+    protected static $internalModelClass = '\OPNsense\Quagga\BGP';
 
     public function searchNeighborAction()
     {

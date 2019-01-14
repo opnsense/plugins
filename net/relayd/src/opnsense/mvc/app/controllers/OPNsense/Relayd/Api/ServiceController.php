@@ -38,10 +38,10 @@ use \OPNsense\Relayd\Relayd;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Relayd\Relayd';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceTemplate = 'OPNsense/Relayd';
-    static protected $internalServiceName = 'relayd';
+    protected static $internalServiceClass = '\OPNsense\Relayd\Relayd';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceTemplate = 'OPNsense/Relayd';
+    protected static $internalServiceName = 'relayd';
     private $internalLockHandle = null;
 
     /**

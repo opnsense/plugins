@@ -33,8 +33,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class AclController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'acl';
-    static protected $internalModelClass = '\OPNsense\Bind\Acl';
+    protected static $internalModelName = 'acl';
+    protected static $internalModelClass = '\OPNsense\Bind\Acl';
 
     public function searchAclAction()
     {

@@ -32,6 +32,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Redis\Redis';
-    static protected $internalModelName = 'redis';
+    protected static $internalModelClass = '\OPNsense\Redis\Redis';
+    protected static $internalModelName = 'redis';
 }

@@ -40,8 +40,8 @@ use \OPNsense\ZabbixAgent\ZabbixAgent;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'zabbixagent';
-    static protected $internalModelClass = '\OPNsense\ZabbixAgent\ZabbixAgent';
+    protected static $internalModelName = 'zabbixagent';
+    protected static $internalModelClass = '\OPNsense\ZabbixAgent\ZabbixAgent';
 
     public function searchUserparametersAction()
     {

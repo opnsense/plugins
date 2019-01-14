@@ -36,8 +36,8 @@ use OPNsense\Core\Backend;
 
 class WolController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'wol';
-    static protected $internalModelClass = '\OPNsense\Wol\Wol';
+    protected static $internalModelName = 'wol';
+    protected static $internalModelClass = '\OPNsense\Wol\Wol';
 
     public function setAction()
     {

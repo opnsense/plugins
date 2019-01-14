@@ -32,6 +32,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Shadowsocks\General';
-    static protected $internalModelName = 'general';
+    protected static $internalModelClass = '\OPNsense\Shadowsocks\General';
+    protected static $internalModelName = 'general';
 }

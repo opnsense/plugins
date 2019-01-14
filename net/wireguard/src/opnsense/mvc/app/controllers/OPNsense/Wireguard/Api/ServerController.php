@@ -34,8 +34,8 @@ use \OPNsense\Core\Backend;
 
 class ServerController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'server';
-    static protected $internalModelClass = '\OPNsense\Wireguard\Server';
+    protected static $internalModelName = 'server';
+    protected static $internalModelClass = '\OPNsense\Wireguard\Server';
 
     public function searchServerAction()
     {

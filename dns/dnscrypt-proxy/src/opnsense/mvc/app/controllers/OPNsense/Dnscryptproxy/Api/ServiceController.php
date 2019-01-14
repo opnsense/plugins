@@ -40,8 +40,8 @@ use OPNsense\Dnscryptproxy\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Dnscryptproxy\General';
-    static protected $internalServiceTemplate = 'OPNsense/Dnscryptproxy';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'dnscryptproxy';
+    protected static $internalServiceClass = '\OPNsense\Dnscryptproxy\General';
+    protected static $internalServiceTemplate = 'OPNsense/Dnscryptproxy';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'dnscryptproxy';
 }

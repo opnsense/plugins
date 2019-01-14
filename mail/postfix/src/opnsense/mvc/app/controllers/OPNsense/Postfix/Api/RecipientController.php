@@ -33,8 +33,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class RecipientController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'recipient';
-    static protected $internalModelClass = '\OPNsense\Postfix\Recipient';
+    protected static $internalModelName = 'recipient';
+    protected static $internalModelClass = '\OPNsense\Postfix\Recipient';
 
     public function searchRecipientAction()
     {

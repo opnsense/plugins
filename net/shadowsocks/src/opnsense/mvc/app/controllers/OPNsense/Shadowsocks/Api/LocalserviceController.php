@@ -32,8 +32,8 @@ use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class LocalserviceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Shadowsocks\Local';
-    static protected $internalServiceTemplate = 'OPNsense/Shadowsocks';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'shadowsockslocal';
+    protected static $internalServiceClass = '\OPNsense\Shadowsocks\Local';
+    protected static $internalServiceTemplate = 'OPNsense/Shadowsocks';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'shadowsockslocal';
 }

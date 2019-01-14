@@ -41,10 +41,10 @@ use OPNsense\Bind\Dnsbl;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Bind\General';
-    static protected $internalServiceTemplate = 'OPNsense/Bind';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'bind';
+    protected static $internalServiceClass = '\OPNsense\Bind\General';
+    protected static $internalServiceTemplate = 'OPNsense/Bind';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'bind';
 
     public function dnsblAction()
     {

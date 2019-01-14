@@ -37,8 +37,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class UserController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'User';
-    static protected $internalModelClass = '\OPNsense\Freeradius\User';
+    protected static $internalModelName = 'User';
+    protected static $internalModelClass = '\OPNsense\Freeradius\User';
 
     public function getAction()
     {

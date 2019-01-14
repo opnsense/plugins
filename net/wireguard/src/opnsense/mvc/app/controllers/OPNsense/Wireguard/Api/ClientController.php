@@ -33,8 +33,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class ClientController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'client';
-    static protected $internalModelClass = '\OPNsense\Wireguard\Client';
+    protected static $internalModelName = 'client';
+    protected static $internalModelClass = '\OPNsense\Wireguard\Client';
 
     public function searchClientAction()
     {
