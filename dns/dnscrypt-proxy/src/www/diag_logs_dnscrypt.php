@@ -11,7 +11,7 @@ $logsplit = 2;
 
 $logpills = array();
 $logpills[] = array(gettext('General'), true, '/diag_logs_dnscrypt.php?type=dnscrypt-proxy');
-$logpills[] = array(gettext('Queries'), false, '/diag_logs_dnscryptd.php?type=query');
+$logpills[] = array(gettext('Queries'), false, '/diag_logs_dnscrypt.php?type=query');
 $logpills[] = array(gettext('NX'), false, '/diag_logs_dnscrypt.php?type=nx');
 
 $service_hook = 'dnscrypt-proxy';
