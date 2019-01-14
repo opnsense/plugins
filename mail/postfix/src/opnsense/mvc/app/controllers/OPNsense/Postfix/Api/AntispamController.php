@@ -33,6 +33,6 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class AntispamController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'antispam';
-    static protected $internalModelClass = '\OPNsense\Postfix\Antispam';
+    protected static $internalModelName = 'antispam';
+    protected static $internalModelClass = '\OPNsense\Postfix\Antispam';
 }

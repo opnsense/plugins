@@ -42,8 +42,8 @@ use \OPNsense\Proxy\Proxy;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'proxyuseracl';
-    static protected $internalModelClass = '\OPNsense\ProxyUserACL\ProxyUserACL';
+    protected static $internalModelName = 'proxyuseracl';
+    protected static $internalModelClass = '\OPNsense\ProxyUserACL\ProxyUserACL';
 
     /**
      *

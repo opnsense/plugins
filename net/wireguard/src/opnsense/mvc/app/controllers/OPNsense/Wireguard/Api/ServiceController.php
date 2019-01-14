@@ -40,10 +40,10 @@ use OPNsense\Wireguard\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Wireguard\General';
-    static protected $internalServiceTemplate = 'OPNsense/Wireguard';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'wireguard';
+    protected static $internalServiceClass = '\OPNsense\Wireguard\General';
+    protected static $internalServiceTemplate = 'OPNsense/Wireguard';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'wireguard';
 
     /**
      * show wireguard config

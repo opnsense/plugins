@@ -35,8 +35,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class ExitaclController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'exitpolicy';
-    static protected $internalModelClass = '\OPNsense\Tor\ACLExitPolicy';
+    protected static $internalModelName = 'exitpolicy';
+    protected static $internalModelClass = '\OPNsense\Tor\ACLExitPolicy';
     public function searchaclAction()
     {
         return $this->searchBase('policy', array('enabled', 'type', 'network', 'action', 'startport', 'endport'));

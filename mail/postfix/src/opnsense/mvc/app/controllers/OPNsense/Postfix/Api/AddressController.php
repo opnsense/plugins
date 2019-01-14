@@ -32,8 +32,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class AddressController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'address';
-    static protected $internalModelClass = '\OPNsense\Postfix\Address';
+    protected static $internalModelName = 'address';
+    protected static $internalModelClass = '\OPNsense\Postfix\Address';
 
     public function searchAddressAction()
     {

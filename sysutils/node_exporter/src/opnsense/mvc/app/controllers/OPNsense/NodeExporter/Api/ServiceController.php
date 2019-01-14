@@ -32,8 +32,8 @@ use \OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\NodeExporter\General';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceTemplate = 'OPNsense/NodeExporter';
-    static protected $internalServiceName = 'node_exporter';
+    protected static $internalServiceClass = '\OPNsense\NodeExporter\General';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceTemplate = 'OPNsense/NodeExporter';
+    protected static $internalServiceName = 'node_exporter';
 }

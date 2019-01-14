@@ -40,8 +40,8 @@ use \OPNsense\Zerotier\Zerotier;
 class SettingsController extends ApiMutableModelControllerBase
 {
 
-    static protected $internalModelName = 'Zerotier';
-    static protected $internalModelClass = '\OPNsense\Zerotier\Zerotier';
+    protected static $internalModelName = 'Zerotier';
+    protected static $internalModelClass = '\OPNsense\Zerotier\Zerotier';
 
     public function getAction()
     {

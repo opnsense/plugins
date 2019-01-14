@@ -36,10 +36,10 @@ use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Lldpd\General';
-    static protected $internalServiceTemplate = 'OPNsense/Lldpd';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'lldpd';
+    protected static $internalServiceClass = '\OPNsense\Lldpd\General';
+    protected static $internalServiceTemplate = 'OPNsense/Lldpd';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'lldpd';
 
     /**
      * show lldpd neighbors

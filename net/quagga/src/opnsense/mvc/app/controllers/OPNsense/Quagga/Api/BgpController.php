@@ -38,8 +38,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class BgpController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'BGP';
-    static protected $internalModelClass = '\OPNsense\Quagga\BGP';
+    protected static $internalModelName = 'BGP';
+    protected static $internalModelClass = '\OPNsense\Quagga\BGP';
     public function getAction()
     {
         // define list of configurable settings

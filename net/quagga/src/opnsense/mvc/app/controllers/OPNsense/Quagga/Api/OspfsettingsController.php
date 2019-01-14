@@ -37,8 +37,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class OspfsettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'OSPF';
-    static protected $internalModelClass = '\OPNsense\Quagga\OSPF';
+    protected static $internalModelName = 'OSPF';
+    protected static $internalModelClass = '\OPNsense\Quagga\OSPF';
     public function getAction()
     {
         $result = array();

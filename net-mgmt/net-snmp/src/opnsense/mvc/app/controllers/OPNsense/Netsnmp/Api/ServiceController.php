@@ -40,8 +40,8 @@ use OPNsense\Netsnmp\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Netsnmp\General';
-    static protected $internalServiceTemplate = 'OPNsense/Netsnmp';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'netsnmp';
+    protected static $internalServiceClass = '\OPNsense\Netsnmp\General';
+    protected static $internalServiceTemplate = 'OPNsense/Netsnmp';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'netsnmp';
 }

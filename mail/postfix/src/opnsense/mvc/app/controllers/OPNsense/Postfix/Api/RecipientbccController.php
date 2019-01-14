@@ -32,8 +32,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class RecipientbccController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'recipientbcc';
-    static protected $internalModelClass = '\OPNsense\Postfix\Recipientbcc';
+    protected static $internalModelName = 'recipientbcc';
+    protected static $internalModelClass = '\OPNsense\Postfix\Recipientbcc';
 
     public function searchRecipientbccAction()
     {

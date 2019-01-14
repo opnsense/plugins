@@ -32,8 +32,8 @@ use OPNsense\Core\Backend;
 
 class BansController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
-    static protected $internalModelName = 'nginx';
+    protected static $internalModelClass = '\OPNsense\Nginx\Nginx';
+    protected static $internalModelName = 'nginx';
     public function searchbanAction()
     {
         return $this->searchBase('ban', array('ip', 'time'));

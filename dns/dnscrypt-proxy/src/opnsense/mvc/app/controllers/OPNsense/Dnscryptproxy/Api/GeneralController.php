@@ -34,6 +34,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Dnscryptproxy\General';
-    static protected $internalModelName = 'general';
+    protected static $internalModelClass = '\OPNsense\Dnscryptproxy\General';
+    protected static $internalModelName = 'general';
 }

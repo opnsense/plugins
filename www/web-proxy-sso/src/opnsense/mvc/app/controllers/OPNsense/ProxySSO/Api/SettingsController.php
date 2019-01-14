@@ -37,6 +37,6 @@ use \OPNsense\Core\Config;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = "ProxySSO";
-    static protected $internalModelClass = "\OPNsense\ProxySSO\ProxySSO";
+    protected static $internalModelName = "ProxySSO";
+    protected static $internalModelClass = "\OPNsense\ProxySSO\ProxySSO";
 }
