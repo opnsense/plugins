@@ -6,7 +6,7 @@
         <leases>
             <lease type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>Y</Required>
                 </enabled>
                 <mac type="TextField">
