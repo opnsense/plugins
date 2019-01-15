@@ -11,7 +11,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Set a list of  DNS servers for this pool.</help>
+        <help>Set a list of DNS servers for this pool.</help>
     </field>
     <field>
         <id>dhcp.dns2</id>
