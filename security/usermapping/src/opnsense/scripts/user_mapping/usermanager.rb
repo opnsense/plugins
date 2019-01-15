@@ -85,12 +85,21 @@ module Authorization
             else
                 @groups = []
             end
+            @ip_address = data['ip']
             @username = data['username'] if data['username']
             if data['valid_until']
                 @valid_until = data['valid_until']
             else
                 @valid_until = Time.now + 60 # default: 60 sec
             end
+        end
+
+        def logout(ip)
+          $LOGIN_STATES.delete ip
+          # remove also from tables
+        end
+        def to_json
+          {username: @username, groups: groups, valid_until: @valid_until, ip_address: @ip_address}.to_json
         end
     end
     class << self
@@ -101,11 +110,16 @@ module Authorization
             else
                 user = $LOGIN_STATES[data['ip']] = User.new data
             end
-            user.authorize
+          user
         end
         def logout(session)
-            #
+            $LOGIN_STATES[session['ip']].logout
+            {status: 'logged out'}
         end
+    end
+
+    def self.whois(data)
+      $LOGIN_STATES[data['ip']]
     end
 end
 
@@ -130,7 +144,12 @@ module Communication
             loop do
                 socket = server.accept
                 Thread.new do
-                    handle_connection(socket)
+                    begin
+                      handle_connection(socket)
+                    rescue
+                      socket.close
+                      puts $!
+                    end
                 end
             end
         end
@@ -143,9 +162,13 @@ module Communication
                 when 'list'
                     $LOGIN_STATES
                 when 'login'
-                    ::Authorization.login(data)
+                    ::Authorization.login(data).to_json
                 when 'logout'
                     ::Authorization.logout(data)
+                when 'whois'
+                    ::Authorization.whois(data).to_json
+                when 'pry'
+                    binding.pry # start debugger
                 when 'exit'
                     socket.puts '{"error": "exiting"}'
                     socket.close
