@@ -30,6 +30,8 @@ require 'socket'
 require 'rexml/document'
 require 'pry'
 require 'ostruct'
+require 'open3'
+require 'shellwords'
 
 # global for showing debug output if needed
 $USERMAPPING_DEBUG = false
@@ -65,6 +67,25 @@ module OSConfig
 end
 
 module Authorization
+    class PFCTL
+        class << self
+            def call_pfctl(command)
+                Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+                    stdin.close
+                    stdout.close
+                    stderr.close
+                    exit_status = wait_thr.value
+                    Logger.debug "exit status of pfctl: " + exit_status
+                end
+            end
+            def add_ip_to_alias(alias_name, ip)
+                call_pfctl "pfctl -t #{alias_name.shellescape} -T add #{ip.shellescape}"
+            end
+            def del_ip_from_alias(alias_name, ip)
+                call_pfctl "pfctl -t #{alias_name.shellescape} -T del #{ip.shellescape}"
+            end
+        end
+    end
     class User
         attr_accessor :username
         attr_accessor :groups
@@ -181,7 +202,6 @@ module Communication
             rescue JSON::ParserError
                 socket.puts '{"error": "invalid JSON data"}'
             end
-            #binding.pry
             socket.close
         end
     end
