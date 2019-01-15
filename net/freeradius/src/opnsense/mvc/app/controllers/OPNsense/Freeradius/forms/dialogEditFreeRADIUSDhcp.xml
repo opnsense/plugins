@@ -14,12 +14,6 @@
         <help>Set a list of DNS servers for this pool.</help>
     </field>
     <field>
-        <id>dhcp.dns2</id>
-        <label>DNS 2</label>
-        <type>text</type>
-        <help>Set the second DNS server for this pool.</help>
-    </field>
-    <field>
         <id>dhcp.netmask</id>
         <label>Netmask</label>
         <type>text</type>
