@@ -75,7 +75,7 @@ class AcmeClient extends BaseModel
     }
 
     /**
-     * retrieve restart action by number
+     * retrieve automation by number
      * @param $uuid action number
      * @return null|BaseField action details
      */

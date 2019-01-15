@@ -229,7 +229,7 @@
                             </filters>
                         </actions>
                     </Model>
-                    <ValidationMessage>Related restart action not found</ValidationMessage>
+                    <ValidationMessage>Related automation not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </restartActions>
