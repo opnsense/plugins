@@ -63,6 +63,20 @@ module OSConfig
                 [uuid, data]
             end.to_h
         end
+
+        def find_alias(object_type, object_name)
+            objects_found = $SHARED_DATA.user_mappings.select do |um|
+                um['object_name'] == object_name && um['type'] == object_type
+            end
+            aliases = []
+            objects_found.each do |obj|
+                if !(obj['external_alias'].nil?) && (obj['external_alias'] != '')
+                    tmp = obj['external_alias'] # UUID of the Alias
+                    aliases << $SHARED_DATA.aliases[tmp] if $SHARED_DATA.aliases[tmp]
+                end
+            end
+            aliases
+        end
     end
 end
 
@@ -148,7 +162,6 @@ Thread.new do
   loop do
       config = OSConfig::read_config_xml
       um_root = config.elements['opnsense/OPNsense/UserMapping']
-      alias_root = config.elements['opnsense/OPNsense/Firewall/Alias/aliases']
       $SHARED_DATA.user_mappings = OSConfig::read_config_user_mappings(um_root)
       $SHARED_DATA.aliases = OSConfig::get_aliases(config)
       sleep 120
