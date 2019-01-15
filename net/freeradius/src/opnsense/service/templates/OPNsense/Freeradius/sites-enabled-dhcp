@@ -21,8 +21,9 @@ if(DHCP-Gateway-IP-Address == {{ dhcp_list.gatewayip }}) {
         }
 
         update reply {
-                &DHCP-Domain-Name-Server = {{ dhcp_list.dns1 }}
-                &DHCP-Domain-Name-Server = {{ dhcp_list.dns2 }}
+{%       for dns_list in dhcp_list.dns.split(",") %}
+                &DHCP-Domain-Name-Server = {{ dns_list }}
+{%       endfor %}
                 &DHCP-Subnet-Mask = {{ dhcp_list.netmask }}
                 &DHCP-Router-Address = {{ dhcp_list.gatewayip }}
                 &DHCP-IP-Address-Lease-Time = 86400
@@ -48,8 +49,9 @@ if(DHCP-Gateway-IP-Address == {{ dhcp_list.gatewayip }}) {
         }
 
         update reply {
-                &DHCP-Domain-Name-Server = {{ dhcp_list.dns1 }}
-                &DHCP-Domain-Name-Server = {{ dhcp_list.dns2 }}
+{%       for dns_list in dhcp_list.dns.split(",") %}
+                &DHCP-Domain-Name-Server = {{ dns_list }}
+{%       endfor %}
                 &DHCP-Subnet-Mask = {{ dhcp_list.netmask }}
                 &DHCP-Router-Address = {{ dhcp_list.gatewayip }}
                 &DHCP-IP-Address-Lease-Time = 86400

@@ -39,7 +39,7 @@ class DhcpController extends ApiMutableModelControllerBase
 
     public function searchDhcpAction()
     {
-        return $this->searchBase('dhcps.dhcp', array("enabled", "dns1", "dns2", "netmask", "gatewayip"));
+        return $this->searchBase('dhcps.dhcp', array("enabled", "dns", "netmask", "gatewayip"));
     }
     public function getDhcpAction($uuid = null)
     {

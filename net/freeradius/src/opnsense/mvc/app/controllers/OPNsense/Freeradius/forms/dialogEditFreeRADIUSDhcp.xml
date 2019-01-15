@@ -6,10 +6,12 @@
         <help>This will activate the DHCP FreeRADIUS service.</help>
     </field>
     <field>
-        <id>dhcp.dns1</id>
-        <label>DNS 1</label>
-        <type>text</type>
-        <help>Set the first DNS server for this pool.</help>
+        <id>dhcp.dns</id>
+        <label>DNS Server</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Set a list of  DNS servers for this pool.</help>
     </field>
     <field>
         <id>dhcp.dns2</id>
@@ -21,7 +23,7 @@
         <id>dhcp.netmask</id>
         <label>Netmask</label>
         <type>text</type>
-        <help>Set the subnet mask for this pool e.g. 255.255.255.0</help>
+        <help>Set the subnet mask for this pool.</help>
     </field>
     <field>
         <id>dhcp.gatewayip</id>

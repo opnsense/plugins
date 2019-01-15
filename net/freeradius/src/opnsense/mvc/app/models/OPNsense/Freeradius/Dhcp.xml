@@ -6,15 +6,12 @@
         <dhcps>
             <dhcp type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>Y</Required>
                 </enabled>
-                <dns1 type="NetworkField">
+                <dns type="CSVListField">
                     <Required>Y</Required>
-                </dns1>
-                <dns2 type="NetworkField">
-                    <Required>Y</Required>
-                </dns2>
+                </dns>
                 <netmask type="NetworkField">
                     <Required>Y</Required>
                 </netmask>
