@@ -32,12 +32,13 @@ require 'pry'
 require 'ostruct'
 require 'open3'
 require 'shellwords'
+require 'logger'
 
 # global for showing debug output if needed
-$USERMAPPING_DEBUG = false
+#$USERMAPPING_DEBUG = false
 
-$LOGIN_STATES = {}
-$SHARED_DATA = OpenStruct.new
+$login_states = {}
+$shared_data = OpenStruct.new
 module OSConfig
     class << self
         def read_config_xml
@@ -64,15 +65,15 @@ module OSConfig
             end.to_h
         end
 
-        def find_alias(object_type, object_name)
-            objects_found = $SHARED_DATA.user_mappings.select do |um|
+        def find_aliases(object_type, object_name)
+            objects_found = $shared_data.user_mappings.select do |um|
                 um['object_name'] == object_name && um['type'] == object_type
             end
             aliases = []
             objects_found.each do |obj|
                 if !(obj['external_alias'].nil?) && (obj['external_alias'] != '')
                     tmp = obj['external_alias'] # UUID of the Alias
-                    aliases << $SHARED_DATA.aliases[tmp] if $SHARED_DATA.aliases[tmp]
+                    aliases << $shared_data.aliases[tmp] if $shared_data.aliases[tmp]
                 end
             end
             aliases
@@ -116,12 +117,21 @@ module Authorization
 
         def update_data(data)
             if data['groups']&.is_a? Array
+                remove_from_pf_groups(data) if @groups && !@groups.empty?
                 @groups = data['groups'] # use the provided groups
             else
+                # remove unused groups
                 @groups = []
             end
+            # username may not be set (after first login)
+            if data['username']
+                if @username != data['username']
+                  remove_user_from_pf(data['username'])
+                end
+                @username = data['username']
+            end
+            raise "username missing" if @username.nil?
             @ip_address = data['ip']
-            @username = data['username'] if data['username']
             if data['valid_until']
                 @valid_until = data['valid_until']
             else
@@ -130,31 +140,51 @@ module Authorization
         end
 
         def logout(ip)
-          $LOGIN_STATES.delete ip
-          # remove also from tables
+          $login_states.delete ip
+          remove_from_pf_groups({'groups': []})
+          remove_user_from_pf(@username)
+          #
         end
         def to_json
           {username: @username, groups: groups, valid_until: @valid_until, ip_address: @ip_address}.to_json
         end
+
+        private
+
+        def remove_user_from_pf(un)
+          OSConfig.find_aliases('User', un).each do |user_aliases|
+            PFCTL.del_ip_from_alias(user_aliases['name'], @ip_address)
+          end
+        end
+
+        def remove_from_pf_groups(data)
+          if (@groups.is_a? Array) and !@groups.empty?
+            (@groups - data['groups']).each do |group|
+              ::OSConfig.find_aliases('Group', group).each do |alias_obj|
+                PFCTL::del_ip_from_alias(alias_obj['name'], @ip_address)
+              end
+            end
+          end
+        end
     end
     class << self
         def login(data)
-            if $LOGIN_STATES[data['ip']]
-                user = $LOGIN_STATES[data['ip']]
+            if $login_states[data['ip']]
+                user = $login_states[data['ip']]
                 user.update(data)
             else
-                user = $LOGIN_STATES[data['ip']] = User.new data
+                user = $login_states[data['ip']] = User.new data
             end
           user
         end
         def logout(session)
-            $LOGIN_STATES[session['ip']].logout
+            $login_states[session['ip']].logout
             {status: 'logged out'}
         end
     end
 
     def self.whois(data)
-      $LOGIN_STATES[data['ip']]
+      $login_states[data['ip']] || {error: "not found"}
     end
 end
 
@@ -162,8 +192,8 @@ Thread.new do
   loop do
       config = OSConfig::read_config_xml
       um_root = config.elements['opnsense/OPNsense/UserMapping']
-      $SHARED_DATA.user_mappings = OSConfig::read_config_user_mappings(um_root)
-      $SHARED_DATA.aliases = OSConfig::get_aliases(config)
+      $shared_data.user_mappings = OSConfig::read_config_user_mappings(um_root)
+      $shared_data.aliases = OSConfig::get_aliases(config)
       sleep 120
   end
 end
@@ -194,7 +224,7 @@ module Communication
                 response =
                 case data['method']
                 when 'list'
-                    $LOGIN_STATES
+                    $login_states
                 when 'login'
                     ::Authorization.login(data).to_json
                 when 'logout'
