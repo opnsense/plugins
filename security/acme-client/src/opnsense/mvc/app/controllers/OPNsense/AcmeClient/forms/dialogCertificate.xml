@@ -52,11 +52,11 @@
     </field>
     <field>
         <id>certificate.restartActions</id>
-        <label>Restart Actions</label>
+        <label>Automations</label>
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Choose the actions that should be run after certificate renewal. Basically every application requires a quick restart to reload the updated certificate. If you don't configure a restart action, the in-memory certificate may expire and cause security warnings and other issues.</help>
+        <help>Choose the automations that should be run after certificate creation and renewal. Basically every application requires a quick restart to reload the updated certificate. If you don't configure an automation, the in-memory certificate may expire and cause security warnings and other issues.</help>
     </field>
     <field>
         <id>certificate.autoRenewal</id>
