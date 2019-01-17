@@ -42,7 +42,6 @@ $shared_data = OpenStruct.new
 module OSConfig
   class << self
     def read_config_xml
-      #
       REXML::Document.new(File.new("/conf/config.xml"))
     end
 
@@ -85,12 +84,10 @@ module Authorization
   class PFCTL
     class << self
       def call_pfctl(command)
-        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+        Open3.popen3(command) do |stdin, stdout, stderr, thread|
           stdin.close
           stdout.close
           stderr.close
-          exit_status = wait_thr.value
-          Logger.debug "exit status of pfctl: " + exit_status
         end
       end
 
@@ -118,6 +115,7 @@ module Authorization
     end
 
     def update_data(data)
+      raise "ip missing" if data['ip'].nil?
       if data['groups']&.is_a? Array
         remove_from_pf_groups(data) if @groups && !@groups.empty?
         @groups = data['groups'] # use the provided groups
@@ -139,13 +137,16 @@ module Authorization
       else
         @valid_until = Time.now + 60 # default: 60 sec
       end
+
+      # add the new aliases
+      add_groups_to_pf
+      add_user_to_pf
     end
 
     def logout(ip = nil)
       $login_states.delete(ip || @ip_address)
       remove_from_pf_groups({'groups' => []})
       remove_user_from_pf(@username)
-      #
     end
 
     def to_json
@@ -153,6 +154,20 @@ module Authorization
     end
 
     private
+
+    def add_user_to_pf
+      OSConfig.find_aliases('User', @username).each do |group_aliase|
+        PFCTL.add_ip_to_alias(group_aliase['name'], @ip_address)
+      end
+    end
+    
+    def add_groups_to_pf
+      @groups.each do |group|
+        OSConfig.find_aliases('Group', group).each do |group_aliase|
+          PFCTL.add_ip_to_alias(group_aliase['name'], @ip_address)
+        end
+      end
+    end
 
     def remove_user_from_pf(un)
       OSConfig.find_aliases('User', un).each do |user_aliases|
@@ -205,14 +220,14 @@ Thread.new do
     $login_states.values.each do |session|
       session.logout if now > session.valid_until
     end
-    sleep 1
+    sleep 20.0
   end
 end
 
 
 module Communication
   class << self
-    SOCKET = 'sock'
+    SOCKET = '/tmp/umsock'
 
     def run_server
       File.delete SOCKET if File.exist? SOCKET
@@ -264,5 +279,3 @@ module Communication
 end
 
 Communication.run_server
-
-#&.text&.to_i
