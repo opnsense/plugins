@@ -10,18 +10,52 @@ use OPNsense\UserMapping\UserMapping;
 
 class SessionController extends ApiControllerBase
 {
-    private $whitelisted_actions = array('log_in', 'log_out');
+    private $whitelisted_actions = array('log_in', 'log_out', 'who_am_i');
     private $is_authenticated = false;
     private $user_mapping = null;
     private $user = null;
     private $auth_props = null;
     private $client_ip = null;
+
+    /**
+     * log in on the network and tell the backend about the sesson state.
+     * @return array information about the authentication state
+     */
     public function log_inAction() {
         return ['user' => $this->user, 'groups' => $this->get_user_groups()];
         $backend = new BackendAPI();
-        $backend->log_in($this->client_ip, $this->user, $this->get_user_groups());
+        return $backend->log_in($this->client_ip, $this->user, $this->get_user_groups());
     }
 
+    /**
+     * log out (kill the sesson in the deamon)
+     * @return array containing the status text
+     */
+    public function log_outAction() {
+        if (!empty($this->user)) {
+            $backend = new BackendAPI();
+            return $backend->log_out($this->client_ip);
+        }
+        return ['error' => 'not authenticated'];
+    }
+
+    public function listAction() {
+        $backend = new BackendAPI();
+        return $backend->list();
+    }
+
+    public function who_isAction($ip) {
+        $backend = new BackendAPI();
+        return $backend->who_is($ip);
+    }
+
+    public function who_am_iAction() {
+        $this->who_isAction($this->client_ip);
+    }
+
+    /**
+     * @return array returns a list of group names (type: string)
+     */
     private function get_user_groups() {
         $ret = array();
         if (isset($this->auth_props['groups'])) {
@@ -32,12 +66,6 @@ class SessionController extends ApiControllerBase
         return $ret;
     }
 
-    public function log_outAction() {
-
-        $backend = new BackendAPI();
-        return $backend->log_out($this->client_ip);
-        return [];
-    }
     public function beforeExecuteRoute($dispatcher) {
         $this->client_ip = $this->request->getClientAddress();
         $this->user_mapping = new UserMapping();

@@ -44,7 +44,7 @@
             history.pushState(null, null, e.target.hash);
         });
 
-        $('.reload_btn').click(function() {
+        $('.reload_btn').on('click', function() {
             $(".reloadAct_progress").addClass("fa-spin");
             ajaxCall("/api/usermapping/service/reconfigure", {}, function() {
                 $(".reloadAct_progress").removeClass("fa-spin");
