@@ -227,7 +227,7 @@ end
 
 module Communication
   class << self
-    SOCKET = '/tmp/umsock'
+    SOCKET = '/var/run/usermapping'
 
     def run_server
       File.delete SOCKET if File.exist? SOCKET

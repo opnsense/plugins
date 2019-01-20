@@ -33,7 +33,7 @@ namespace OPNsense\UserMapping;
 class BackendAPI
 {
 
-    static private $SOCKET_PATH = 'unix:///tmp/umsock';
+    static private $SOCKET_PATH = 'unix:///var/run/usermapping';
 
     public function log_in($ip, $user, $groups = null, $valid_time = null) {
         $login_data = array(
