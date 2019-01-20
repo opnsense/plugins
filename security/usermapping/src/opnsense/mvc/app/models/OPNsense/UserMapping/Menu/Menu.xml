@@ -2,7 +2,8 @@
   <Firewall>
     <UserMapping visibleName="User / IP Mapping" cssClass="fa fa-user fa-fw">
       <Configuration url="/ui/usermapping" />
-      <Diagnostics url="/ui/usermapping/index/diagnostics" />
+      <Login url="/ui/usermapping/session/login" />
+      <!--<Status url="/ui/usermapping/index/status" />-->
     </UserMapping>
   </Firewall>
 </menu>

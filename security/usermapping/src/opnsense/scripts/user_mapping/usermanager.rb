@@ -149,8 +149,8 @@ module Authorization
       remove_user_from_pf(@username)
     end
 
-    def to_json
-      {username: @username, groups: groups, valid_until: @valid_until, ip_address: @ip_address}.to_json
+    def to_json(state = nil)
+      {username: @username, groups: groups, valid_until: @valid_until, ip_address: @ip_address}.to_json(state)
     end
 
     private
@@ -252,7 +252,7 @@ module Communication
         response =
             case data['method']
             when 'list'
-              $login_states
+              $login_states.values.to_json
             when 'login'
               ::Authorization.login(data).to_json
             when 'logout'

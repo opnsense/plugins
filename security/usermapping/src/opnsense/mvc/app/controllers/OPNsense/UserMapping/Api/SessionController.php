@@ -10,7 +10,7 @@ use OPNsense\UserMapping\UserMapping;
 
 class SessionController extends ApiControllerBase
 {
-    private $whitelisted_actions = array('log_in', 'log_out', 'who_am_i');
+    private $whitelisted_actions = array('login', 'logout', 'who_am_i');
     private $is_authenticated = false;
     private $user_mapping = null;
     private $user = null;
@@ -21,8 +21,10 @@ class SessionController extends ApiControllerBase
      * log in on the network and tell the backend about the sesson state.
      * @return array information about the authentication state
      */
-    public function log_inAction() {
-        return ['user' => $this->user, 'groups' => $this->get_user_groups()];
+    public function loginAction() {
+        if (empty($this->user)) {
+            return array('error' => 'not authenticated');
+        }
         $backend = new BackendAPI();
         return $backend->log_in($this->client_ip, $this->user, $this->get_user_groups());
     }
@@ -31,7 +33,7 @@ class SessionController extends ApiControllerBase
      * log out (kill the sesson in the deamon)
      * @return array containing the status text
      */
-    public function log_outAction() {
+    public function logoutAction() {
         if (!empty($this->user)) {
             $backend = new BackendAPI();
             return $backend->log_out($this->client_ip);
@@ -50,7 +52,7 @@ class SessionController extends ApiControllerBase
     }
 
     public function who_am_iAction() {
-        $this->who_isAction($this->client_ip);
+        return $this->who_isAction($this->client_ip);
     }
 
     /**
@@ -67,6 +69,7 @@ class SessionController extends ApiControllerBase
     }
 
     public function beforeExecuteRoute($dispatcher) {
+        $this->response->setHeader('Cache-Control', 'no-cache');
         $this->client_ip = $this->request->getClientAddress();
         $this->user_mapping = new UserMapping();
         // we do not offer standard authentication before we are called
