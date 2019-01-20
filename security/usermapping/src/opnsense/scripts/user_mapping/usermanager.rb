@@ -197,7 +197,7 @@ module Authorization
     end
 
     def logout(session)
-      $login_states[session['ip']].logout
+      $login_states[session['ip']]&.logout
       {status: 'logged out'}
     end
   end
