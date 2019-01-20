@@ -1,0 +1,15 @@
+#!/bin/sh
+# REQUIRE: LOGIN DAEMON
+. /etc/rc.subr
+
+name=usermapping
+rcvar=usermapping_enable
+command_interpreter=/usr/local/bin/ruby
+command=/usr/local/opnsense/scripts/user_mapping/usermanager.rb
+usermapping_user=root
+usermapping_pidfile=/var/run/usermapping.pid
+start_cmd="/usr/sbin/daemon -u $usermapping_user -p $usermapping_pidfile -f $command"
+
+load_rc_config $name
+: ${usermapping_enable="YES"}
+run_rc_command "$1"
