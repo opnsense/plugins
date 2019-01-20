@@ -1,5 +1,5 @@
 <menu>
-  <!-- for backwards compat sets order and cssClass! -->
+  <!-- XXX for backwards compat sets order and cssClass! -->
   <Routing order="35" cssClass="fa fa-wrench">
     <FRRouting cssClass="fa fa-map fa-fw" order="10">
       <General url="/ui/quagga/general/index" order="10"/>
@@ -7,15 +7,13 @@
       <OSPF url="/ui/quagga/ospf/index" order="30"/>
       <OSPFv3 url="/ui/quagga/ospf6/index" order="40"/>
       <RIP url="/ui/quagga/rip/index" order="50"/>
+      <LogFile visibleName="Log File" url="/ui/quagga/diagnostics/log" order="100"/>
     </FRRouting>
-    <Diagnostics>
+    <Diagnostics order="900" cssClass="fa fa-medkit fa-fw">
       <FRRouting url="/ui/quagga/diagnostics/general"/>
       <OSPF url="/ui/quagga/diagnostics/ospf"/>
       <OSPFv3 url="/ui/quagga/diagnostics/ospfv3"/>
       <BGPv4 url="/ui/quagga/diagnostics/bgp"/>
     </Diagnostics>
-    <LogFiles>
-      <FRRouting url="/ui/quagga/diagnostics/log"/>
-    </LogFiles>
   </Routing>
 </menu>
