@@ -133,7 +133,7 @@ module Authorization
       raise "username missing" if @username.nil?
       @ip_address = data['ip']
       if data['valid_until']
-        @valid_until = data['valid_until']
+        @valid_until = Time.at(data['valid_until'].to_i)
       else
         @valid_until = Time.now + 60 # default: 60 sec
       end
