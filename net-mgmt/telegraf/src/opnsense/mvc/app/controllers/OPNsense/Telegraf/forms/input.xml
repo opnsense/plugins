@@ -18,7 +18,7 @@
         <help>Whether to report total system CPU stats or not.</help>
     </field>
     <field>
-        <id>input.cpu_collect_cpu_time</id>
+        <id>input.collect_cpu_time</id>
         <label>Collect CPU Time</label>
         <type>checkbox</type>
         <help>If true, collect raw CPU time metrics.</help>
