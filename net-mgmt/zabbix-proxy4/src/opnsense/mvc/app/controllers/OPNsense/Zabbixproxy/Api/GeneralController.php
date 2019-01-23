@@ -34,6 +34,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Wireguard\General';
+    static protected $internalModelClass = '\OPNsense\Zabbixproxy\General';
     static protected $internalModelName = 'general';
 }
