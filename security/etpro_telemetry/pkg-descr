@@ -1,0 +1,20 @@
+Todays cybersecurity engineers need timely and accurate data about eminent threats and how they spread around the globe.
+With this data cybersecurity researchers and analysts can improve the detection of malicious network traffic.
+The times when we could rely on just firewall rules for our protection are long gone.
+Additional layers of security are desperately needed to guard against these attacks.
+
+With growing risks the need to fortify our security is growing for both big enterprises as for SMEs alike, but often
+out of reach for the latter.
+An important extra security addition is an Intrusion Detection and Prevention System (IDS/IPS).
+
+The IDS/IPS available in OPNsense is based on Suricata.
+This open source IDS/IPS engine has proven its value in OPNsense, especially in combination with the free Proofpoint ETOpen ruleset.
+
+The need for valuable threat detection data and the increasing importance of additional network security
+has brought Proofpoint and OPNsense together.
+Our joined efforts resulted in the ETPro Telemetry edition.
+
+The ETPro Telemetry edition embraces our vision that sharing knowledge leads to better products.
+
+When you allow your OPNsense system to share anonymized information about detected threats - the alerts -
+you are able to use the ETPro ruleset free of charge.
