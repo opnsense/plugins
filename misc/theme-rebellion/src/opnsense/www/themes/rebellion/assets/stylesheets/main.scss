@@ -1013,3 +1013,7 @@ border: 1px solid #5a5a5a !important; background-color: #2a2a2a !important; colo
 #system_log-widgets.content-box {
 	border: none;
 }
+
+.image_invertible {
+	filter: invert(1) ;
+}
