@@ -43,6 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <div class="col-md-12">
                 <hr />
                 <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+                <button class="btn btn-primary pull-right" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
             </div>
         </div>
     </div>
@@ -109,5 +110,16 @@ $( document ).ready(function() {
         });
     });
 
+    $("#resetdbAct").click(function(){
+        saveFormToEndpoint(url="/api/vnstat/general/set", formid='frm_general_settings',callback_ok=function(){
+        $("#resetdbAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/vnstat/service/resetdb", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/vnstat/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('vnstat');
+                    $("#resetdbAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
+            });
+        });
+    });
 });
 </script>
