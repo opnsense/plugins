@@ -88,4 +88,15 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdRun("vnstat monthly");
         return array("response" => $response);
     }
+
+    /**
+     * remove database folder
+     * @return array
+     */
+    public function resetdbAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("vnstat resetdb");
+        return array("response" => $response);
+    }
 }
