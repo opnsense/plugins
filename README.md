@@ -69,7 +69,7 @@ net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
 security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
-security/etpro_telemetry -- ETPRO telemetry edition
+security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
