@@ -68,4 +68,3 @@ class Telemetry(object):
         """
         if self._file_handle:
             self._file_handle.close()
-
