@@ -1548,8 +1548,12 @@ a.text-warning:hover {
   color: #ec971f;
 }
 
-.text-danger, a.text-danger:hover {
-  color: #DA4829;
+.text-danger {
+  color: #CB4326;
+}
+
+a.text-danger:hover {
+  color: #D8482A;
 }
 
 .bg-primary {
@@ -4844,19 +4848,19 @@ fieldset[disabled] .btn-info {
 
 .btn-warning {
   color: #fff;
-  background-color: #DE7313;
-  border-color: #1d1d1d;
+  background-color: #FF7E25;
+  border-color: #1b4257;
   &:hover, &:focus, &:active, &.active {
     color: #fff;
-    background-color: #b85904;
-    border-color: #1d1d1d;
+    background-color: #EC7726;
+    border-color: #1b4257;
   }
 }
 
 .open > .btn-warning.dropdown-toggle {
   color: #fff;
-  background-color: #b85904;
-  border-color: #1d1d1d;
+  background-color: #EC7726;
+  border-color: #1b4257;
 }
 
 .btn-warning {
@@ -4904,19 +4908,19 @@ fieldset[disabled] .btn-warning {
 
 .btn-danger {
   color: #fff;
-  background-color: #F05050;
-  border-color: #ee3939;
+  background-color: #CB4326;
+  border-color: #1B4257;
   &:hover, &:focus, &:active, &.active {
     color: #fff;
-    background-color: #ec2121;
-    border-color: #d71212;
+    background-color: #B63B21;
+    border-color: #1B4257;
   }
 }
 
 .open > .btn-danger.dropdown-toggle {
   color: #fff;
-  background-color: #ec2121;
-  border-color: #d71212;
+  background-color: #B63B21;
+  border-color: #1B4257;
 }
 
 .btn-danger {
@@ -9594,7 +9598,7 @@ label > input {
 }
 
 .fw_block {
-  background-color: #5f2929 !important;
+  background-color: #CB4326 !important;
   color: #FFF;
 }
 
@@ -9636,7 +9640,7 @@ textarea#update_status {
 
 .fa-times-circle::before {
   content: "\f057";
-  color: #DA4829;
+  color: #CB4326;
 }
 
 .fa-question-circle::before {
