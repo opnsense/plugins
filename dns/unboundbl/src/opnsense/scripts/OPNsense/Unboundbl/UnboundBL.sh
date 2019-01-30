@@ -2,9 +2,10 @@
 # UnboundBL, UnboundBL.sh
 
 # include config-generated blacklist/whitelist, commas replaced with spaces
-source /usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
+. /usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
 
 # prep temp storage and conf file
+rm /var/unbound/UnboundBL.conf
 touch /tmp/hosts.working
 
 # curl all the lists!
