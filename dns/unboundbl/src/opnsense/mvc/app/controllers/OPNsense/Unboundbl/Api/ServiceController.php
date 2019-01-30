@@ -45,7 +45,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $this->sessionClose();
         $backend = new Backend();
-        $response = $backend->configdpRun('UnboundBL refresh');
+        $response = $backend->configdpRun('unboundbl refresh');
         return array("message" => $response);
     }
     public function reloadAction()
