@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>general.enabled</id>
-        <label>Enable UnboundBL</label>
+        <label>Enable</label>
         <type>checkbox</type>
         <help>Turn off and on. This will basically clear your UnboundBL.conf file, so it can remain in your Unbound configuration but not affect connectivity.</help>
     </field>
@@ -11,7 +11,8 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-	 <help>Enter the domains that you would like to whitelist (eg. remove from blacklist files).</help>
+	<help>Enter the domains that you would like to whitelist (eg. remove from blacklist files).</help>
+	<hint>ads.opnsense.org</hint>
     </field>
     <field>
         <id>general.blacklist</id>
@@ -20,6 +21,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help>Enter the blacklist URL's you would like to parse and use.</help>
+	<hint>https://hosts-file.net/grm.txt</hint>
     </field>
 </form>
 
