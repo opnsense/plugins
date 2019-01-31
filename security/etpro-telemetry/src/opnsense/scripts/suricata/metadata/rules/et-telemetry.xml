@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset documentation_url="http://docs.opnsense.org/">
-    <location url="https://opnsense.emergingthreats.net/api/v1/ruleset" prefix="ET telemtry"/>
+    <location url="https://opnsense.emergingthreats.net/api/v1/ruleset" prefix="ET telemetry"/>
     <headers>
        <Authorization>Bearer %%et_telemetry.token%%</Authorization>
     </headers>
