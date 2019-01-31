@@ -72,7 +72,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
             $cached_ipv6_s = explode('|', $fdata6);
             $cached_ipv6 = $cached_ipv6_s[0];
             echo sprintf(
-                '<font class="%s">%s</font>',
+                '<span class="%s">%s</span>',
                 $ipv6addr != $cached_ipv6 ? 'text-warning' : 'text-success',
                 htmlspecialchars($cached_ipv6)
             );
