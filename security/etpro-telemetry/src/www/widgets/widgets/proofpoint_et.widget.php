@@ -89,7 +89,7 @@
       <tr>
           <td colspan="2">
             <?=gettext("For more information, please visit");?>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.deciso.com/">Deciso B.V.</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://docs.opnsense.org/manual/etpro_telemetry.html">docs.opnsense.org</a>
           </td>
       </tr>
   </tfoot>
