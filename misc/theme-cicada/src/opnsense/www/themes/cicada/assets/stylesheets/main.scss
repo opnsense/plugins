@@ -1550,11 +1550,11 @@ a.text-warning:hover {
 }
 
 .text-danger {
-  color: #EF3B25 !important;
+  color: #DB4829 !important;
 }
 
 a.text-danger:hover {
-  color: #ec2121;
+  color: #E44C2C;
 }
 
 .bg-primary {
@@ -4909,19 +4909,19 @@ fieldset[disabled] .btn-warning {
 
 .btn-danger {
   color: #fff;
-  background-color: #F05050;
-  border-color: #ee3939;
+  background-color: #DB4829;
+  border-color: #1d1d1d;
   &:hover, &:focus, &:active, &.active {
     color: #fff;
-    background-color: #ec2121;
-    border-color: #d71212;
+    background-color: none;
+    border-color: #DB4829;
   }
 }
 
 .open > .btn-danger.dropdown-toggle {
   color: #fff;
-  background-color: #ec2121;
-  border-color: #d71212;
+  background-color: none;
+  border-color: #DB4829;
 }
 
 .btn-danger {
@@ -9583,7 +9583,7 @@ label > input {
 }
 
 .fw_block {
-  background-color: #5a3636 !important;
+  background-color: #DB4829 !important;
   color: #FFF;
 }
 

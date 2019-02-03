@@ -1143,10 +1143,10 @@ a.text-warning:hover {
   color: #ec971f; }
 
 .text-danger {
-  color: #EF3B25 !important; }
+  color: #DB4829 !important; }
 
 a.text-danger:hover {
-  color: #ec2121; }
+  color: #E44C2C; }
 
 .bg-primary {
   color: #fff; }
@@ -3048,12 +3048,12 @@ select[multiple].input-lg,
 
 .btn-danger {
   color: #fff;
-  background-color: #F05050;
-  border-color: #ee3939; }
+  background-color: #DB4829;
+  border-color: #1d1d1d; }
   .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     color: #fff;
-    background-color: #ec2121;
-    border-color: #d71212; }
+    background-color: none;
+    border-color: #DB4829; }
   .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     background-image: none; }
   .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
@@ -6315,7 +6315,7 @@ label > input[type="radio"] {
 }
 
 .fw_block {
-  background-color: #5a3636 !important;
+  background-color: #DB4829 !important;
   color: #FFF;
 }
   /*additional extensions for theme-cicada*/
