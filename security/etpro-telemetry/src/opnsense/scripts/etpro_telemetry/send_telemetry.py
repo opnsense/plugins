@@ -31,6 +31,7 @@ import os
 import argparse
 import requests
 import time
+import random
 import syslog
 import urllib3
 import ujson
@@ -51,6 +52,10 @@ parser.add_argument('-l', '--log', help='log directory containing eve.json files
 parser.add_argument('-s', '--state', help='persistent state (and lock) filename',
                     default="/usr/local/var/run/et_telemetry.state")
 parser.add_argument('-d', '--days', help='Maximum number of days to look back on initial run', type=int, default=2)
+parser.add_argument('-D', '--direct',
+                    help='do not sleep before send (disable traffic spread)',
+                    action="store_true",
+                    default=False)
 args = parser.parse_args()
 
 
@@ -79,6 +84,9 @@ if not telemetry_state.is_running():
                         row_count, time.time() - send_start_time, max_timestamp
                     )
                 )
+                # spread traffic to remote host, usual cron interval is 1 minute
+                if not args.direct:
+                    time.sleep(random.randint(0, 60))
                 for push_data in event_collector:
                     params = {
                         'timeout': 5,
