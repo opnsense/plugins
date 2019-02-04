@@ -1,4 +1,21 @@
 A flexible DNS proxy, with support for modern encrypted DNS protocols
 such as DNSCrypt v2 and DNS-over-HTTPS.
 
+
+Plugin Changelog
+================
+
+1.2
+
+* Add logging to menu
+
+1.1
+
+* Allow manual server addition and selection
+
+1.0
+
+* Initial release
+
+
 WWW: https://github.com/jedisct1/dnscrypt-proxy
