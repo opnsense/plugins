@@ -72,7 +72,7 @@ class CertificatesController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('certificates.certificate', array('enabled', 'name', 'altNames', 'description', 'lastUpdate', 'statusCode', 'statusLastUpdate'));
+        return $this->searchBase('certificates.certificate', array('enabled', 'name', 'altNames', 'description', 'lastUpdate', 'statusCode', 'statusLastUpdate'), 'name');
     }
 
     /**

@@ -71,6 +71,6 @@ class ValidationsController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('validations.validation', array('enabled', 'name', 'description'));
+        return $this->searchBase('validations.validation', array('enabled', 'name', 'description'), 'name');
     }
 }
