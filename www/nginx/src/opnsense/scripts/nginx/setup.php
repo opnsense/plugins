@@ -70,8 +70,10 @@ if (!isset($config['OPNsense']['Nginx'])) {
 }
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
+@mkdir("/var/log/nginx", 0750, true);
 @chgrp('/var/db/nginx', GROUP_OWNER);
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
+@chgrp('/var/log/nginx', GROUP_OWNER);
 $nginx = $config['OPNsense']['Nginx'];
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
