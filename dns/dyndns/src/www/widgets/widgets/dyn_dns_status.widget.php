@@ -65,7 +65,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
             $cached_ip = $cached_ip_s[0];
             echo sprintf(
                 '<span class="%s">%s</span>',
-                $ipaddr != $cached_ip ? 'text-warning' : 'text-success',
+                $ipaddr != $cached_ip ? 'text-danger' : '',
                 htmlspecialchars($cached_ip)
             );
         } elseif (!empty($fdata6)) {
