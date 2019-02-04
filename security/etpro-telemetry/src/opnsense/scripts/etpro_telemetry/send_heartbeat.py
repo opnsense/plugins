@@ -30,6 +30,8 @@ import sys
 import argparse
 import requests
 import syslog
+import time
+import random
 import urllib3
 import telemetry
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -46,6 +48,10 @@ parser.add_argument('-c', '--config',
                     help='rule downloader configuration',
                     default="/usr/local/etc/suricata/rule-updater.config"
                     )
+parser.add_argument('-D', '--direct',
+                    help='do not sleep before send (disable traffic spread)',
+                    action="store_true",
+                    default=False)
 args = parser.parse_args()
 
 exit_code = -1
@@ -55,6 +61,9 @@ if cnf.token is not None:
     if args.insecure:
         params['verify'] = False
     try:
+        # spread traffic to remote host, usual cron interval is 30 minutes
+        if not args.direct:
+            time.sleep(random.randint(0, 1800))
         r = requests.head(args.endpoint, **params)
         if r.status_code == 200:
             # expected result, set exit code
