@@ -13,6 +13,15 @@ Plugin Changelog
 * bugfix: create log directory if it is missing
 * reorder menu
 
+1.8
+
+* update lodash to v4.17.11
+
+1.7
+
+* bugfix: create log directory if it is missing
+* reorder menu
+
 1.6
 
 * fix bug due to permission downgrade (basic auth)
