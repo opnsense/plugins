@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.5.0</version>
+  <version>1.8.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -416,7 +416,6 @@
           <option2 value="&gt;">Bigger</option2>
           <option3 value="&lt;">Lesser</option3>
           <option4 value="&lt;=">Lesser or Equal</option4>
-          <option5 value="=">Equal</option5>
         </OptionValues>
       </operator>
       <action type="OptionField">
