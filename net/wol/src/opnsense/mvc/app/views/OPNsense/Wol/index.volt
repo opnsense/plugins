@@ -27,7 +27,7 @@ $( document ).ready(function() {
               type: BootstrapDialog.TYPE_INFO,
               title: "{{ lang._("Result") }}",
               message: '<ul>' + (data['results'].map(function(element) {
-                  return `<li>${element.mac}: ${element.status}</li>`
+                  return '<li>'+element.mac+': '+element.status+'</li>'
               }).join('')) + '</ul>',
               buttons: [{
                     label: '{{ lang._('Close') }}',
