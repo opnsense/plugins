@@ -4,4 +4,21 @@ is based on libpcap and it has been written in a portable
 way in order to virtually run on every Unix platform, MacOSX
 and on Windows as well.
 
+
+Plugin Changelog
+================
+
+1.2
+
+* Changed data directory to avoid warning
+
+1.1
+
+* Add https support
+
+1.0
+
+* Initial release
+
+
 WWW: https://www.ntop.org/products/traffic-analysis/ntop/
