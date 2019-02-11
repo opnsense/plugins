@@ -78,7 +78,7 @@
         <id>action.http_request_auth</id>
         <label>Auth Realm</label>
         <type>text</type>
-        <help><![CDATA[When HAProxy requests user name and password from the user, this optiomal authentication realm is returned with the response (typically the application's name).]]></help>
+        <help><![CDATA[When HAProxy requests user name and password from the user, this optional authentication realm is returned with the response (typically the application's name).]]></help>
     </field>
     <field>
         <label>Parameters</label>
