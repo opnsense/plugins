@@ -1,5 +1,10 @@
 <menu>
     <Services>
-        <DNSCrypt-Proxy cssClass="fa fa-lock fa-fw" url="/ui/dnscryptproxy/general/index" />
+        <DNSCrypt-Proxy cssClass="fa fa-lock fa-fw">
+            <Configuration url="/ui/dnscryptproxy/general/index" order="10"/>
+            <Log VisibleName="Log File" url="/diag_logs_dnscrypt.php?type=dnscrypt-proxy" order="20">
+                <More url="/diag_logs_dnscrypt.php*" visibility="hidden"/>
+            </Log>
+        </DNSCrypt-Proxy>
     </Services>
 </menu>
