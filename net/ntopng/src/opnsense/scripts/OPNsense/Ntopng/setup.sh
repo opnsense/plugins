@@ -10,7 +10,7 @@ chown ntopng:wheel /var/db/ntopng
 
 if [ -d "/var/tmp/ntopng/" ]; then
   mv /var/tmp/ntopng/* /var/db/ntopng/
-  rm -rf /var/tmp/ntopng/
+  rm -rf /var/tmp/ntopng
 fi
 
 /usr/local/opnsense/scripts/OPNsense/Ntopng/generate_certs.php
