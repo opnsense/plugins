@@ -90,7 +90,7 @@ smtp_tls_protocols=!SSLv2,!SSLv3
 smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.tlswrappermode') and OPNsense.postfix.general.tlswrappermode == '1' %}
-smtpd_tls_wrappermode = yes
+smtp_tls_wrappermode = yes
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
