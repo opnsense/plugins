@@ -8,7 +8,7 @@ mkdir -p /var/db/ntopng/
 chmod 755 /var/db/ntopng
 chown ntopng:wheel /var/db/ntopng
 
-if [ -d "/var/tmp/ntopng/" ]; then
+if [ -d /var/tmp/ntopng ]; then
   mv /var/tmp/ntopng/* /var/db/ntopng/
   rm -rf /var/tmp/ntopng
 fi
