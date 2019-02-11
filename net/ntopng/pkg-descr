@@ -11,6 +11,7 @@ Plugin Changelog
 1.2
 
 * Changed data directory to avoid warning
+* Make data directory persistant in MFS environments
 
 1.1
 
@@ -19,6 +20,8 @@ Plugin Changelog
 1.0
 
 * Initial release
+* Allow to set a http port
+* Allow user how to handle reverse lookups in ntopng
 
 
 WWW: https://www.ntop.org/products/traffic-analysis/ntop/
