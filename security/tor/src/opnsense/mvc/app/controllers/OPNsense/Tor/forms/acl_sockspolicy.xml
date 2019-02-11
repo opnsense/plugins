@@ -14,7 +14,7 @@
     <id>policy.network</id>
     <label>Network</label>
     <type>text</type>
-    <help>Network on which this ACL is appied.</help>
+    <help>Network on which this ACL is applied.</help>
   </field>
   <field>
     <id>policy.action</id>
