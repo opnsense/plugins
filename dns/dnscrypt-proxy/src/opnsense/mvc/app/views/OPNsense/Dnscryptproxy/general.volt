@@ -282,9 +282,11 @@ $( document ).ready(function() {
     $("#saveAct_dnsbl").click(function(){
         saveFormToEndpoint(url="/api/dnscryptproxy/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
         $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
-                updateServiceControlUI('dnscryptproxy');
-                $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/dnscryptproxy/service/dnsbl", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('bind');
+                    $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
     });
