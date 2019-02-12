@@ -284,7 +284,7 @@ $( document ).ready(function() {
         $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/dnscryptproxy/service/dnsbl", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
-                    updateServiceControlUI('bind');
+                    updateServiceControlUI('dnscryptproxy');
                     $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
