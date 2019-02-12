@@ -134,7 +134,7 @@ cache = false
 {% if helpers.exists('OPNsense.dnscryptproxy.dnsbl.enabled') and OPNsense.dnscryptproxy.dnsbl.enabled == '1' %}
 [blacklist]
   blacklist_file = 'blacklist.txt'
-  log_file = 'blocked.log'
+  log_file = '/var/log/dnscrypt-proxy/blocked.log'
   log_format = 'tsv'
 {% endif %}
 
