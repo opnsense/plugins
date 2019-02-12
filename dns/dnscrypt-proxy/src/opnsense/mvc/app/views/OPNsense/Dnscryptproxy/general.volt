@@ -183,7 +183,11 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    updateServiceControlUI('dnscryptproxy');
+    var data_get_map2 = {'frm_dnsbl_settings':"/api/dnscryptproxy/dnsbl/get"};
+    mapDataToFormUI(data_get_map2).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
 
     $("#grid-forwards").UIBootgrid(
         {   'search':'/api/dnscryptproxy/forward/searchForward',
