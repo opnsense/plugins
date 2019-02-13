@@ -20,7 +20,7 @@
   <field>
     <id>upstream.tls_enable</id>
     <label>Enable TLS (HTTPS)</label>
-    <help>Authenticate on the Server using a client certificate.</help>
+    <help>Use TLS (HTTPS) to connect to the server.</help>
     <type>checkbox</type>
   </field>
   <field>
