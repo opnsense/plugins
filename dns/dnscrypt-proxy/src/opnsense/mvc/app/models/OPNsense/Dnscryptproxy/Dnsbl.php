@@ -28,16 +28,8 @@
 
 namespace OPNsense\Dnscryptproxy;
 
-class GeneralController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class Dnsbl extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->formDialogEditDnscryptproxyForward = $this->getForm("dialogEditDnscryptproxyForward");
-        $this->view->formDialogEditDnscryptproxyCloak = $this->getForm("dialogEditDnscryptproxyCloak");
-        $this->view->formDialogEditDnscryptproxyWhitelist = $this->getForm("dialogEditDnscryptproxyWhitelist");
-        $this->view->formDialogEditDnscryptproxyServer = $this->getForm("dialogEditDnscryptproxyServer");
-        $this->view->dnsblForm = $this->getForm("dnsbl");
-        $this->view->pick('OPNsense/Dnscryptproxy/general');
-    }
 }

@@ -30,28 +30,10 @@
 
 namespace OPNsense\Dnscryptproxy\Api;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\Dnscryptproxy\General;
-use OPNsense\Dnscryptproxy\Dnsbl;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
-/**
- * Class ServiceController
- * @package OPNsense\Dnscrypt-proxy
- */
-class ServiceController extends ApiMutableServiceControllerBase
+class DnsblController extends ApiMutableModelControllerBase
 {
-    protected static $internalServiceClass = '\OPNsense\Dnscryptproxy\General';
-    protected static $internalServiceTemplate = 'OPNsense/Dnscryptproxy';
-    protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'dnscryptproxy';
-
-    public function dnsblAction()
-    {
-        $this->sessionClose();
-        $mdl = new Dnsbl();
-        $backend = new Backend();
-        $response = $backend->configdpRun('dnscryptproxy dnsbl', array((string)$mdl->type));
-        return array("response" => $response);
-    }
+    protected static $internalModelClass = '\OPNsense\Dnscryptproxy\Dnsbl';
+    protected static $internalModelName = 'dnsbl';
 }

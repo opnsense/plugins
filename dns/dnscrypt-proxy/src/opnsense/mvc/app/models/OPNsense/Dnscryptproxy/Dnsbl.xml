@@ -1,0 +1,34 @@
+<model>
+    <mount>//OPNsense/dnscryptproxy/dnsbl</mount>
+    <description>DNSBL configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <type type="OptionField">
+            <Required>N</Required>
+            <Multiple>Y</Multiple>
+            <OptionValues>
+                <aa>AdAway List</aa>
+                <ag>AdGuard List</ag>
+                <ca>Cameleon List</ca>
+                <el>Easy List</el>
+                <emd>EMD Malicious Domains List</emd>
+                <ep>Easyprivacy List</ep>
+                <ht>Hbbtv List</ht>
+                <mw>Malwaredomain List</mw>
+                <nc>NoCoin List</nc>
+                <pt>PornTop1M List</pt>
+                <rw>Ransomware Tracker List</rw>
+                <sa>Simple Ad List</sa>
+                <st>Simple Tracker List</st>
+                <sb>Steven Black List</sb>
+                <ws>Windows Spyware Blocker</ws>
+                <yy>YoYo List</yy>
+                <za>ZeusTracker Abuse.ch List</za>
+            </OptionValues>
+        </type>
+    </items>
+</model>
