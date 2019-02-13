@@ -36,7 +36,6 @@ Plugin Changelog
 
 1.0
 
-* Initial release
 * Clamd and Freshclam services, allowing most known options to be configured
 
 
