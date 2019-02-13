@@ -5,4 +5,38 @@ including a flexible and scalable multi-threaded daemon,
 a command line scanner and an advanced tool for automatic
 database updates.
 
+
+Plugin Changelog
+================
+
+1.6
+
+* Add optional signature sources
+
+1.5
+
+* Fix symlink permission
+* Fixed some bugs in log viewer
+
+1.4
+
+* Add MutableController code
+
+1.3
+
+* Add Log viewer
+
+1.2
+
+* New tab to show current ClamAV version
+
+1.1
+
+* Make signatures persistent in MFS installations
+
+1.0
+
+* Clamd and Freshclam services, allowing most known options to be configured
+
+
 WWW: https://www.clamav.net/

@@ -123,5 +123,21 @@
             <default>60</default>
             <Required>Y</Required>
         </fc_timeout>
-	</items>
+        <fc_malwareexpert type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </fc_malwareexpert>
+        <fc_blurl type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </fc_blurl>
+        <fc_jurlbla type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </fc_jurlbla>
+        <fc_bofhland type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </fc_bofhland>
+    </items>
 </model>
