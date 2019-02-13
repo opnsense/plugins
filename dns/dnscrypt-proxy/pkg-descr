@@ -19,7 +19,6 @@ Plugin Changelog
 
 1.0
 
-* Initial release
 * Automatic selection of fastest DNS servers
 * Allow to set cloaks/overrides
 * Allow to set forwarders
