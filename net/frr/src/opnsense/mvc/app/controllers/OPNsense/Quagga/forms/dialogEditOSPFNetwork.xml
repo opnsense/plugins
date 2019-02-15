@@ -21,6 +21,12 @@
     <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
   </field>
   <field>
+    <id>network.arearange</id>
+    <label>Area Range</label>
+    <type>text</type>
+    <help>To a network to summarize for this area (e.g. 192.168.0.0/23).</help>
+  </field>
+  <field>
     <id>network.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
