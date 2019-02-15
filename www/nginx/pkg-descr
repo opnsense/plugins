@@ -8,6 +8,11 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.8
+
+* update lodash to v4.17.11
+* Breaking: remove the WAF policy match type "=" as it is not supported (if you have them in use, unlink and delete them before installing this update)
+
 1.7
 
 * bugfix: create log directory if it is missing
