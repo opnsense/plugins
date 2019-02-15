@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf</mount>
     <description>OSPF Routing configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -69,6 +69,9 @@
                                 <MaximumValue>32</MaximumValue>
                                 <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
                         </netmask>
+                        <arearange type="NetworkField">
+                                <Required>N</Required>
+                        </arearange>
                         <linkedPrefixlistIn type="ModelRelationField">
                                 <Model>
                                         <template>
