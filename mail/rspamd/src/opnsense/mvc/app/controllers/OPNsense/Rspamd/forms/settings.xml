@@ -424,7 +424,7 @@
                 <id>rspamd.av.max-size</id>
                 <label>Maximum Size</label>
                 <type>text</type>
-                <help>If set, a message large than this size will not be scanned.</help>
+                <help>If set, a message larger than this size will not be scanned.</help>
             </field>
             <field>
                 <id>rspamd.av.whitelist</id>
