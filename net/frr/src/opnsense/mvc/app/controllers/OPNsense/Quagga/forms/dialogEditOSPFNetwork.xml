@@ -24,7 +24,7 @@
     <id>network.arearange</id>
     <label>Area Range</label>
     <type>text</type>
-    <help>To a network to summarize for this area (e.g. 192.168.0.0/23).</help>
+    <help>Here you can summarize a network for this area like 192.168.0.0/23</help>
   </field>
   <field>
     <id>network.linkedPrefixlistIn</id>
