@@ -7,4 +7,13 @@ makes it applicable to a wide variety of use cases including connecting
 hosts/VMs/containers to the network, advertising network services, LAN
 switching and routing, Internet access routers, and Internet peering.
 
+
+Plugin Changelog
+================
+
+1.8
+
+* Add area range in OSPF config
+
+
 WWW: https://frrouting.org/
