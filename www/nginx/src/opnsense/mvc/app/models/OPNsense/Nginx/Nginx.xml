@@ -550,6 +550,21 @@
         <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
         <multiple>Y</multiple>
       </trusted_proxies>
+      <trusted_proxies_alias type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Firewall.Alias</source>
+            <items>aliases.alias</items>
+            <display>name</display>
+            <filters>
+              <type>/^(host|network)$/</type>
+            </filters>
+          </template>
+        </Model>
+        <ValidationMessage>Selected alias not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </trusted_proxies_alias>
       <real_ip_source type="OptionField">
         <OptionValues>
           <X-Real-IP>X-Real-IP (default)</X-Real-IP>

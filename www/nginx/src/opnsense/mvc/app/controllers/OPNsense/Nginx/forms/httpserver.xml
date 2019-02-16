@@ -26,6 +26,14 @@
     <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
   </field>
   <field>
+    <id>httpserver.trusted_proxies_alias</id>
+    <label>Trusted Proxies (Firewall Alias)</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Choose a Firewall Alias for trusted proxies.</help>
+  </field>
+  <field>
     <id>httpserver.real_ip_source</id>
     <label>Real IP Source</label>
     <style>selectpicker</style>
