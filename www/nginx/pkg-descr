@@ -14,7 +14,7 @@ Plugin Changelog
 * Breaking: remove the WAF policy match type "=" as it is not supported (if you have them in use, unlink and delete them before installing this update)
 * allow plugins via include hooks
 * Breaking: the enabled flag in the general setting now works (en- or disables all vhosts in the plugin itself, but always serves plugins). Default was false so make sure you have it enabled before upgrade.
-* Alias support for downstream proxies
+* Alias support for downstream proxies (trust setting)
 
 1.7
 
