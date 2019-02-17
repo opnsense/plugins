@@ -2,7 +2,7 @@
 
 ## Frontend Development
 
-The nginx plugin is special in it's implementation because it needs
+The nginx plugin is special in its implementation because it needs
 some advanced functions (frontend and backend) to work.
 
 Since the scripts are bigger and contain some templating,
@@ -32,7 +32,7 @@ to `development` in the `webpack.conf.js`.
 Most are standard but some endpoints support maps, which are not
 supported by OPNsense core.
 
-You can detect them simply as they are doing more then just a mapping
+You can detect them simply as they are doing more than just a mapping
 to the *base methods.
 
 Such mappings work in the way that they catch up the request,
