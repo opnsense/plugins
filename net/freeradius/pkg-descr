@@ -18,7 +18,7 @@ Plugin Changelog
 1.9.0
 
 * Add DHCP support, serving only for DHCP relays
-
+* Allow usage of remote MySQL server
 
 
 WWW: https://www.freeradius.org
