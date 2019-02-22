@@ -530,7 +530,7 @@ class SettingsController extends ApiMutableModelControllerBase
     public function delipaclAction($uuid)
     {
         $nginx = $this->getModel();
-        $uuid_attached = $nginx->find_ip_acl_entry_uuids($uuid);
+        $uuid_attached = $nginx->find_ip_acl_uuids($uuid);
 
         $ret = $this->delBase('ip_acl', $uuid);
         if ($ret['result'] == 'deleted') {
