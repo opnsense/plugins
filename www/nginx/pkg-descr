@@ -16,6 +16,7 @@ Plugin Changelog
 * Breaking: the enabled flag in the general setting now works (en- or disables all vhosts in the plugin itself, but always serves plugins). Default was false so make sure you have it enabled before upgrade.
 * Alias support for downstream proxies (trust setting)
 * bugfix: deleting IP ACL
+* HSTS not sent automatically anymore if HTTP over TLS is configured (still available via security header)
 
 1.7
 
