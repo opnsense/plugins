@@ -143,7 +143,7 @@ class EventCollector(object):
 
             # unfiltered output fields
             for attr in ["timestamp", "flow_id", "in_iface", "event_type",
-                         "vlan", "src_port", "dest_port", "proto", "alert"]:
+                         "vlan", "src_port", "dest_port", "proto", "alert", "tls", "http", "app_proto"]:
                 if attr in record:
                     to_push[attr] = record[attr]
 
