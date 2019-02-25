@@ -1008,6 +1008,10 @@
                 <id type="UniqueIdField">
                     <Required>Y</Required>
                 </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
                 <name type="TextField">
                     <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>

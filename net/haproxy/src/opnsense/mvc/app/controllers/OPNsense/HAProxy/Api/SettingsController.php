@@ -123,9 +123,14 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->delBase('servers.server', $uuid);
     }
 
+    public function toggleServerAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('servers.server', $uuid);
+    }
+
     public function searchServersAction()
     {
-        return $this->searchBase('servers.server', array('name', 'address', 'port', 'description'), 'name');
+        return $this->searchBase('servers.server', array('enabled', 'name', 'address', 'port', 'description'), 'name');
     }
 
     public function getHealthcheckAction($uuid = null)

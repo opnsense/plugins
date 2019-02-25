@@ -1,5 +1,11 @@
 <form>
     <field>
+        <id>server.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this server.</help>
+    </field>
+    <field>
         <id>server.name</id>
         <label>Name</label>
         <type>text</type>
