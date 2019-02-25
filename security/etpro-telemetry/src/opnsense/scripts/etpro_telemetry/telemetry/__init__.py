@@ -37,7 +37,15 @@ import ujson
 
 BASE_URL = 'https://opnsense.emergingthreats.net'
 RELATED_SIDS_FILE = '/usr/local/etc/suricata/rules/telemetry_sids.txt'
-
+UNFILTERED_OUTPUT_FIELDS = [
+        'timestamp', 'flow_id', 'in_iface', 'event_type', 'vlan',
+        'src_port', 'dest_port', 'proto', 'alert', 'tls', 'http', 'app_proto'
+]
+# remove from output, either sensitive or irrelevant
+CLEANUP_OUTPUT_FIELDS = [
+        'alert.category', 'alert.severity', 'alert.gid', 'alert.signature', 'alert.metadata',
+        'http.http_user_agent', 'http.url', 'http.redirect'
+]
 
 def get_config(rule_update_config):
     """
@@ -142,10 +150,22 @@ class EventCollector(object):
                         to_push[address] = record[address]
 
             # unfiltered output fields
-            for attr in ["timestamp", "flow_id", "in_iface", "event_type",
-                         "vlan", "src_port", "dest_port", "proto", "alert", "tls", "http", "app_proto"]:
+            for attr in UNFILTERED_OUTPUT_FIELDS:
                 if attr in record:
                     to_push[attr] = record[attr]
+
+            # exclude partial fields
+            for attr in CLEANUP_OUTPUT_FIELDS:
+                to_push_ref = to_push
+                attr_parts = attr.split('.')
+                for item in attr_parts[:-1]:
+                    if item in to_push_ref:
+                        to_push_ref = to_push_ref[item]
+                    else:
+                        to_push_ref = None
+                        continue
+                if to_push_ref and attr_parts[-1] in to_push_ref:
+                    del to_push_ref[attr_parts[-1]]
 
             self._tmp_handle.write(("%s\n" % ujson.dumps(to_push)).encode())
 
