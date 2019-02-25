@@ -35,7 +35,6 @@
         <label>Mode</label>
         <type>dropdown</type>
         <help><![CDATA[Sets the operation mode to use for this server.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>server.ssl</id>
