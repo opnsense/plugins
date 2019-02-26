@@ -36,7 +36,16 @@ import ujson
 
 
 BASE_URL = 'https://opnsense.emergingthreats.net'
-
+RELATED_SIDS_FILE = '/usr/local/etc/suricata/rules/telemetry_sids.txt'
+UNFILTERED_OUTPUT_FIELDS = [
+        'timestamp', 'flow_id', 'in_iface', 'event_type', 'vlan',
+        'src_port', 'dest_port', 'proto', 'alert', 'tls', 'http', 'app_proto'
+]
+# remove from output, either sensitive or irrelevant
+CLEANUP_OUTPUT_FIELDS = [
+        'alert.category', 'alert.severity', 'alert.gid', 'alert.signature', 'alert.metadata',
+        'http.http_user_agent', 'http.url', 'http.redirect'
+]
 
 def get_config(rule_update_config):
     """
@@ -62,7 +71,30 @@ class EventCollector(object):
     def __init__(self):
         self._tmp_handle = tempfile.NamedTemporaryFile()
         self._local_networks = list()
+        self._our_sids = set()
         self._get_local_networks()
+        self._get_our_sids()
+
+    def _get_our_sids(self):
+        """ collect sids of interest, which are part of the ET-Telemetry delivery
+        :return: None
+        """
+        if os.path.isfile(RELATED_SIDS_FILE):
+            for line in open(RELATED_SIDS_FILE, 'r'):
+                if line.strip().isdigit():
+                    self._our_sids.add(int(line.strip()))
+
+    def _is_rule_of_interest(self, record):
+        """ check if rule is of interest for delivery
+        :param record: parsed eve log record
+        :return: boolean
+        """
+        if not self._our_sids:
+            return True
+        elif 'alert' in record and 'signature_id' in record['alert']:
+            if record['alert']['signature_id'] in self._our_sids:
+                return True
+        return False
 
     def _get_local_networks(self):
         """ collect local attached networks for anonymization purposes
@@ -103,26 +135,39 @@ class EventCollector(object):
         :param record: parsed eve log record
         :return: None
         """
-        to_push = dict()
-        for address in ['src_ip', 'dest_ip']:
-            if address in record:
-                if self.is_local_address(record[address]):
-                    if record[address].find(':') > -1:
-                        # replace local IPv6 address
-                        to_push[address] = 'xxxx:xxxx:%s' % ':'.join(record[address].split(':')[-2:])
+        if self._is_rule_of_interest(record):
+            to_push = dict()
+            for address in ['src_ip', 'dest_ip']:
+                if address in record:
+                    if self.is_local_address(record[address]):
+                        if record[address].find(':') > -1:
+                            # replace local IPv6 address
+                            to_push[address] = 'xxxx:xxxx:%s' % ':'.join(record[address].split(':')[-2:])
+                        else:
+                            to_push[address] = 'xxx.xxx.xxx.%s' % record[address].split('.')[-1]
                     else:
-                        to_push[address] = 'xxx.xxx.xxx.%s' % record[address].split('.')[-1]
-                else:
-                    # non local address
-                    to_push[address] = record[address]
+                        # non local address
+                        to_push[address] = record[address]
 
-        # unfiltered output fields
-        for attr in ["timestamp", "flow_id", "in_iface", "event_type",
-                     "vlan", "src_port", "dest_port", "proto", "alert"]:
-            if attr in record:
-                to_push[attr] = record[attr]
+            # unfiltered output fields
+            for attr in UNFILTERED_OUTPUT_FIELDS:
+                if attr in record:
+                    to_push[attr] = record[attr]
 
-        self._tmp_handle.write(("%s\n" % ujson.dumps(to_push)).encode())
+            # exclude partial fields
+            for attr in CLEANUP_OUTPUT_FIELDS:
+                to_push_ref = to_push
+                attr_parts = attr.split('.')
+                for item in attr_parts[:-1]:
+                    if item in to_push_ref:
+                        to_push_ref = to_push_ref[item]
+                    else:
+                        to_push_ref = None
+                        continue
+                if to_push_ref and attr_parts[-1] in to_push_ref:
+                    del to_push_ref[attr_parts[-1]]
+
+            self._tmp_handle.write(("%s\n" % ujson.dumps(to_push)).encode())
 
     def get(self):
         """ fetch all data from temp

@@ -6,6 +6,7 @@
     </headers>
     <version url="https://opnsense.emergingthreats.net/api/v1/ruleset/version"/>
     <files>
+        <file url="inline::rules/telemetry_sids.txt" required="true">telemetry_sids.txt</file>
         <file description="botcc.portgrouped" url="inline::rules/botcc.portgrouped.rules">botcc.portgrouped.rules</file>
         <file description="botcc" url="inline::rules/botcc.rules">botcc.rules</file>
         <file description="ciarmy" url="inline::rules/ciarmy.rules">ciarmy.rules</file>

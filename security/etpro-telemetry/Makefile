@@ -1,5 +1,5 @@
 PLUGIN_NAME=		etpro-telemetry
-PLUGIN_VERSION=		1.1
+PLUGIN_VERSION=		1.2
 #PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		ET Pro Telemetry Edition
 PLUGIN_MAINTAINER=	ad@opnsense.org
