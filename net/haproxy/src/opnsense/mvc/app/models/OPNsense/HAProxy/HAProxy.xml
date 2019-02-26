@@ -1763,10 +1763,12 @@
                         <tcp-request_content_reject>tcp-request content reject</tcp-request_content_reject>
                         <tcp-request_content_lua>tcp-request content lua script</tcp-request_content_lua>
                         <tcp-request_content_use-service>tcp-request content use-service</tcp-request_content_use-service>
+                        <tcp-request_inspect-delay>tcp-request inspect-delay</tcp-request_inspect-delay>
                         <tcp-response_content_accept>tcp-response content accept</tcp-response_content_accept>
                         <tcp-response_content_close>tcp-response content close</tcp-response_content_close>
                         <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
                         <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
+                        <tcp-response_inspect-delay>tcp-response inspect-delay</tcp-response_inspect-delay>
                         <custom>Custom rule (option pass-through)</custom>
                     </OptionValues>
                 </type>
@@ -1909,10 +1911,18 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </tcp_request_content_use_service>
+                <tcp_request_inspect_delay type="TextField">
+                    <mask>/^.{1,32}$/u</mask>
+                    <Required>N</Required>
+                </tcp_request_inspect_delay>
                 <tcp_response_content_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </tcp_response_content_lua>
+                <tcp_response_inspect_delay type="TextField">
+                    <mask>/^.{1,32}$/u</mask>
+                    <Required>N</Required>
+                </tcp_response_inspect_delay>
                 <custom type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
