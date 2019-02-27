@@ -5,7 +5,7 @@
                 <id>nginx.general.enabled</id>
                 <label>Enable nginx</label>
                 <type>checkbox</type>
-                <help>Enable or disable the nginx service.</help>
+                <help>Enable configured services.</help>
             </field>
         </subtab>
         <subtab id="nginx-http-global" description="Global HTTP Settings">
