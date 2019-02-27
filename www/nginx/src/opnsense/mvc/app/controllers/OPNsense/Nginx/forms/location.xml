@@ -236,6 +236,20 @@
     <help>If you enable the WebSocket Support option, nginx will pass the upgrade header to the backed server.</help>
   </field>
   <field>
+    <id>location.proxy_read_timeout</id>
+    <label>Proxy Read Timeout</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Enter a custom timout between data received from the client after which the connection is closed.</help>
+  </field>
+  <field>
+    <id>location.proxy_send_timeout</id>
+    <label>Proxy Send Timeout</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Enter a custom timout between data it sent to the client after which the connection is closed. </help>
+  </field>
+  <field>
     <id>location.proxy_buffering</id>
     <label>Response Buffering</label>
     <type>checkbox</type>

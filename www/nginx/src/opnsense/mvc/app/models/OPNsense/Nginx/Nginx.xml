@@ -364,6 +364,14 @@
         <Required>Y</Required>
         <default>1</default>
       </proxy_buffering>
+      <proxy_read_timeout type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+      </proxy_read_timeout>
+      <proxy_send_timeout type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+      </proxy_send_timeout>
       <http2_push_preload type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
