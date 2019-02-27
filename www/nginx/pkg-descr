@@ -17,6 +17,7 @@ Plugin Changelog
 * Alias support for downstream proxies (trust setting)
 * bugfix: deleting IP ACL
 * HSTS not sent automatically anymore if HTTP over TLS is configured (still available via security header)
+* add configuration directives for timeouts to location
 
 1.7
 
