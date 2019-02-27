@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.6.0</version>
+    <version>2.7.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -398,6 +398,7 @@
                 <ssl_bindOptions type="OptionField">
                     <Required>N</Required>
                     <default>no-sslv3,no-tlsv10,no-tls-tickets</default>
+                    <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <OptionValues>
                         <no-sslv3>no-sslv3</no-sslv3>
@@ -667,6 +668,7 @@
                         </template>
                     </Model>
                     <ValidationMessage>Related action item not found</ValidationMessage>
+                    <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedActions>
@@ -983,6 +985,7 @@
                         </template>
                     </Model>
                     <ValidationMessage>Related action item not found</ValidationMessage>
+                    <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </linkedActions>
@@ -1005,6 +1008,10 @@
                 <id type="UniqueIdField">
                     <Required>Y</Required>
                 </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
                 <name type="TextField">
                     <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
@@ -1756,10 +1763,12 @@
                         <tcp-request_content_reject>tcp-request content reject</tcp-request_content_reject>
                         <tcp-request_content_lua>tcp-request content lua script</tcp-request_content_lua>
                         <tcp-request_content_use-service>tcp-request content use-service</tcp-request_content_use-service>
+                        <tcp-request_inspect-delay>tcp-request inspect-delay</tcp-request_inspect-delay>
                         <tcp-response_content_accept>tcp-response content accept</tcp-response_content_accept>
                         <tcp-response_content_close>tcp-response content close</tcp-response_content_close>
                         <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
                         <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
+                        <tcp-response_inspect-delay>tcp-response inspect-delay</tcp-response_inspect-delay>
                         <custom>Custom rule (option pass-through)</custom>
                     </OptionValues>
                 </type>
@@ -1902,10 +1911,18 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </tcp_request_content_use_service>
+                <tcp_request_inspect_delay type="TextField">
+                    <mask>/^.{1,32}$/u</mask>
+                    <Required>N</Required>
+                </tcp_request_inspect_delay>
                 <tcp_response_content_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </tcp_response_content_lua>
+                <tcp_response_inspect_delay type="TextField">
+                    <mask>/^.{1,32}$/u</mask>
+                    <Required>N</Required>
+                </tcp_response_inspect_delay>
                 <custom type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>

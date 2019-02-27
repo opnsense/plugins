@@ -316,6 +316,7 @@
         <label>Select Rules</label>
         <type>select_multiple</type>
         <style>tokenize</style>
+        <sortable>true</sortable>
         <help><![CDATA[Choose rules to be included in this Backend Pool.]]></help>
         <hint>Choose rules.</hint>
     </field>

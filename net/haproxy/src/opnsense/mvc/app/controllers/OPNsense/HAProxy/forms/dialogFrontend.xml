@@ -95,6 +95,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
+        <sortable>true</sortable>
         <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
@@ -401,6 +402,7 @@
         <label>Select Rules</label>
         <type>select_multiple</type>
         <style>tokenize</style>
+        <sortable>true</sortable>
         <help><![CDATA[Choose rules to be included in this Public Service.]]></help>
         <hint>Choose rules.</hint>
     </field>

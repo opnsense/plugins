@@ -79,6 +79,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 set:'/api/haproxy/settings/setServer/',
                 add:'/api/haproxy/settings/addServer/',
                 del:'/api/haproxy/settings/delServer/',
+                toggle:'/api/haproxy/settings/toggleServer/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -716,6 +717,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer">
             <thead>
             <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Server Name') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Server Address') }}</th>
