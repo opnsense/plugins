@@ -34,7 +34,7 @@ class M2_7_0 extends BaseModelMigration
 {
     public function run($model)
     {
-        // Servers have an 'enabled' field now 
+        // Servers have an 'enabled' field now
         foreach ($model->getNodeByReference('servers.server')->iterateItems() as $server) {
             $server->enabled = '1';
         }
