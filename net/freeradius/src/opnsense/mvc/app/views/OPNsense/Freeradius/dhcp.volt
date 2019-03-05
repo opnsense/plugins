@@ -75,6 +75,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
+<div class="alert alert-warning" role="alert" style="min-height:65px;">
+  <div style="margin-top: 8px;">{{ lang._('This feature is still in experimental state, use with caution.') }}</div>
+</div>
+
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#dhcps">{{ lang._('DHCP') }}</a></li>
 </ul>
