@@ -15,12 +15,11 @@ Plugin Changelog
 
 1.1
 
-* Add https support
+* Add HTTPS support
 
 1.0
 
-* Initial release
-* Allow to set a http port
+* Allow to set a HTTP port
 * Allow user how to handle reverse lookups in ntopng
 
 
