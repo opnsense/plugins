@@ -12,6 +12,7 @@ Plugin Changelog
 1.1
 
 * Add button to remove database
+* Make database persistent in MFS installations
 
 1.0
 
