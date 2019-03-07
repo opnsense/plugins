@@ -28,8 +28,8 @@
 
 require_once("widgets/include/dmidecode.inc");
 
-$hardwareData = parse_ini_string(configd_run("dmidecode system"));
-$biosData = parse_ini_string(configd_run("dmidecode bios"));
+$hardwareData = parse_ini_string(configd_run("dmidecode system"), FALSE, INI_SCANNER_RAW);
+$biosData = parse_ini_string(configd_run("dmidecode bios"), FALSE, INI_SCANNER_RAW);
 
 ?>
 <table class="table table-striped table-condensed">
