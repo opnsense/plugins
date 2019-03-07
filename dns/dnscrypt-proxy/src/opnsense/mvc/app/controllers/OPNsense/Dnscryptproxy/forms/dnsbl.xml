@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>dnsbl.enabled</id>
+        <label>Enable DNSBL and RPZ</label>
+        <type>checkbox</type>
+        <help>This will enable the use of DNS Blocklists for ADs, Malware, or both.</help>
+    </field>
+    <field>
+        <id>dnsbl.type</id>
+        <label>Type of DNSBL</label>
+        <type>select_multiple</type>
+        <help>Select which kind of DNSBL you want to use.</help>
+    </field>
+</form>
