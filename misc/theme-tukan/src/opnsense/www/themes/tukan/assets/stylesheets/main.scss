@@ -9580,14 +9580,14 @@ label > input {
 
 #ipsec {
   #ipsec-mobile, #ipsec-tunnel, #ipsec-overview {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0 !important;
   }
   .ipsec-tab {
-    background-color: #839caa;
-    color: #FFF;
+    background-color: #839caa !important;
+    color: #FFF !important;
     &.activetab {
-      background-color: #315a71;
-      color: #FFF;
+      background-color: #315a71 !important;
+      color: #FFF !important;
     }
   }
 }

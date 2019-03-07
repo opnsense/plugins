@@ -6296,17 +6296,17 @@ label > input[type="radio"] {
 }
 
 #ipsec #ipsec-mobile, #ipsec #ipsec-tunnel, #ipsec #ipsec-overview {
-	background-color: #f0f0f0;
+	background-color: #f0f0f0 !important;
 }
 
 #ipsec .ipsec-tab {
-	background-color: #839caa;
-	color: #FFF;
+	background-color: #839caa !important;
+	color: #FFF !important;
 }
 
 #ipsec .ipsec-tab.activetab {
-	background-color: #315a71;
-	color: #FFF;
+	background-color: #315a71 !important;
+	color: #FFF !important;
 }
 .fw_pass {
   background-color: #295f2b !important;
