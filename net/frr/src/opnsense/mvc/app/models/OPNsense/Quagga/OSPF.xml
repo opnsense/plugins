@@ -198,6 +198,8 @@
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
+                                <mask>/^([0-9a-zA-Z\._\-]){1,64}$/u</mask>
+                                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
                         </name>
                         <seqnumber type="IntegerField">
                                 <default></default>
