@@ -36,7 +36,7 @@ maltrailsensor_status()
 maltrailsensor_stop()
 {
         if [ -n "$rc_pid" ]; then
-            echo "stopping mailtrail sensor"
+            echo "stopping maltrail sensor"
             kill ${rc_pid}
         else
             echo "${name} is not running."
@@ -45,7 +45,7 @@ maltrailsensor_stop()
 
 maltrailsensor_start()
 {
-        echo "starting mailtrail sensor"
+        echo "starting maltrail sensor"
         ${command} ${command_args}
 }
 
