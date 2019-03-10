@@ -27,7 +27,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 <div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':serverForm,'id':'frm_sever_settings'])}}
+    {{ partial("layout_partials/base_form",['fields':serverForm,'id':'frm_server_settings'])}}
     <div class="col-md-12">
         <hr />
         <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
-        var data_get_map = {'frm_local_settings':"/api/maltrail/server/get"};
+        var data_get_map = {'frm_server_settings':"/api/maltrail/server/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
