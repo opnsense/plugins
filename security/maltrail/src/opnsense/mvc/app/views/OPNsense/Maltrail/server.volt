@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/maltrail/server/set", formid='frm_local_settings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/maltrail/server/set", formid='frm_server_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/maltrail/serverservice/reconfigure", sendData={}, callback=function(data,status) {
                             ajaxCall(url="/api/maltrail/serverservice/status", sendData={}, callback=function(data,status) {
