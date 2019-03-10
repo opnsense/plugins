@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-maltrailserver
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=maltrailserver
+
+stop_cmd=maltrailserver_stop
+start_cmd=maltrailserver_start
+status_cmd=maltrailserver_status
+rcvar=maltrailserver_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-P /var/run/maltrailserver.pid python2.7 /usr/local/maltrail/server.py"
+
+load_rc_config opnsense-maltrailserver
+
+[ -z "$maltrailserver_enable" ] && maltrailserver_enable="NO"
+
+maltrailserver_status()
+{
+         if [ -n "$rc_pid" ]; then
+             echo "${name} is running as pid $rc_pid."
+             return 0
+         else
+             echo "${name} is not running."
+         fi
+}
+
+maltrailserver_stop()
+{
+        if [ -n "$rc_pid" ]; then
+            echo "stopping mailtrail server"
+            kill ${rc_pid}
+        else
+            echo "${name} is not running."
+        fi
+}
+
+maltrailserver_start()
+{
+        echo "starting mailtrail server"
+        ${command} ${command_args}
+}
+
+run_rc_command $1

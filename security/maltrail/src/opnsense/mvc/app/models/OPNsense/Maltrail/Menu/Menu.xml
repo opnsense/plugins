@@ -1,0 +1,8 @@
+<menu>
+  <Services>
+    <Maltrail cssClass="fa fa-eye-slash">
+      <Sensor url="/ui/maltrail/general/index" order="10"/>
+      <Server url="/ui/maltrail/server/index" order="20"/>
+    </Maltrail>
+  </Services>
+</menu>

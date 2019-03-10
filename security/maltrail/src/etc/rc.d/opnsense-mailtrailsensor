@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-maltrailsensor
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=maltrailsensor
+
+stop_cmd=maltrailsensor_stop
+start_cmd=maltrailsensor_start
+status_cmd=maltrailsensor_status
+rcvar=maltrailsensor_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-P /var/run/maltrailsensor.pid python2.7 /usr/local/maltrail/sensor.py"
+
+load_rc_config opnsense-maltrailsensor
+
+[ -z "$maltrailsensor_enable" ] && maltrailsensor_enable="NO"
+
+maltrailsensor_status()
+{
+         if [ -n "$rc_pid" ]; then
+             echo "${name} is running as pid $rc_pid."
+             return 0
+         else
+             echo "${name} is not running."
+         fi
+}
+
+maltrailsensor_stop()
+{
+        if [ -n "$rc_pid" ]; then
+            echo "stopping mailtrail sensor"
+            kill ${rc_pid}
+        else
+            echo "${name} is not running."
+        fi
+}
+
+maltrailsensor_start()
+{
+        echo "starting mailtrail sensor"
+        ${command} ${command_args}
+}
+
+run_rc_command $1
