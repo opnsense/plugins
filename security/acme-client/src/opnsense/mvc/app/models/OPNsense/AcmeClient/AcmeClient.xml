@@ -363,6 +363,7 @@
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
+                        <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
                         <dns_inwx>INWX XMLRPC API</dns_inwx>
@@ -518,6 +519,12 @@
                 <dns_gd_secret type="TextField">
                     <Required>N</Required>
                 </dns_gd_secret>
+                <dns_hostingde_server type="TextField">
+                    <Required>N</Required>
+                </dns_hostingde_server>
+                <dns_hostingde_apiKey type="TextField">
+                    <Required>N</Required>
+                </dns_hostingde_apiKey>
                 <dns_he_user type="TextField">
                     <Required>N</Required>
                 </dns_he_user>
