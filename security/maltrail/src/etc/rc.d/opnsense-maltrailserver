@@ -36,7 +36,7 @@ maltrailserver_status()
 maltrailserver_stop()
 {
         if [ -n "$rc_pid" ]; then
-            echo "stopping mailtrail server"
+            echo "stopping maltrail server"
             kill ${rc_pid}
         else
             echo "${name} is not running."
@@ -45,7 +45,7 @@ maltrailserver_stop()
 
 maltrailserver_start()
 {
-        echo "starting mailtrail server"
+        echo "starting maltrail server"
         ${command} ${command_args}
 }
 
