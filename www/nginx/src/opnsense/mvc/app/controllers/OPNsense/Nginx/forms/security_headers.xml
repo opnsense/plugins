@@ -83,6 +83,12 @@
     <help>If checked, the CSP is enabled.</help>
   </field>
   <field>
+    <id>security_header.csp_report_only</id>
+    <label>Content Security Policy: Report Only</label>
+    <type>checkbox</type>
+    <help>If checked, the CSP is not enforced (learning mode).</help>
+  </field>
+  <field>
     <type>header</type>
     <label>Content Security Policy: Default Source</label>
   </field>
