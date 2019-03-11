@@ -8,10 +8,13 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
-1.9
+1.10
+
+* fix content security settings (missing checkbox, correct templating)
+
+1.9 (Development only)
 
 * add advanced options to configure hostname hash sizes for long hostnames
-* fix content security settings (missing checkbox, correct templating)
 
 1.8
 
