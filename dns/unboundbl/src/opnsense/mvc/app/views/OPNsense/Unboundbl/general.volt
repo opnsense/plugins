@@ -1,6 +1,6 @@
 {#
-OPNsenseÂ® is Copyright Â© 2014 â€“ 2018 by Deciso B.V.
-This file is Copyright Â© 2019 by Alec Samuel Armbruster <alectrocute@gmail.com>
+OPNsense is Copyright © 2014 / 2018 by Deciso B.V.
+This file is Copyright © 2019 by Alec Samuel Armbruster <alectrocute@gmail.com>
 All rights reserved.
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
