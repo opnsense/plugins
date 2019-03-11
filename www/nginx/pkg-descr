@@ -8,6 +8,10 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.9
+
+* add advanced options to configure hostname hash sizes for long hostnames
+
 1.8
 
 * update lodash to v4.17.11

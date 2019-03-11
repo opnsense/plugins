@@ -29,6 +29,14 @@
       <default_type type="TextField">
         <Required>N</Required>
       </default_type>
+      <server_names_hash_bucket_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </server_names_hash_bucket_size>
+      <server_names_hash_max_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </server_names_hash_max_size>
     </http>
 
     <userlist type="ArrayField">
