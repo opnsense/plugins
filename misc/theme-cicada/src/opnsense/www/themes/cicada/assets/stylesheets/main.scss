@@ -8893,7 +8893,7 @@ body {
   }
 }
 
-.page-content-main section[class^="col-"] + section[class^="col-"] {
+.page-content-main [class^="col-"] + [class^="col-"] {
   padding-top: 20px;
 }
 
