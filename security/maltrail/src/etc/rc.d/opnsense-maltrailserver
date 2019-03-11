@@ -17,7 +17,7 @@ status_cmd=maltrailserver_status
 rcvar=maltrailserver_enable
 pidfile=/var/run/${name}.pid
 command=/usr/sbin/daemon
-command_args="-P /var/run/maltrailserver.pid python2.7 /usr/local/maltrail/server.py"
+command_args="-P /var/run/maltrailserver.pid python2.7 /usr/local/share/maltrail/server.py"
 
 load_rc_config opnsense-maltrailserver
 

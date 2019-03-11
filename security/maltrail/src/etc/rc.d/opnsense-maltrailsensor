@@ -17,7 +17,7 @@ status_cmd=maltrailsensor_status
 rcvar=maltrailsensor_enable
 pidfile=/var/run/${name}.pid
 command=/usr/sbin/daemon
-command_args="-P /var/run/maltrailsensor.pid python2.7 /usr/local/maltrail/sensor.py"
+command_args="-P /var/run/maltrailsensor.pid python2.7 /usr/local/share/maltrail/sensor.py"
 
 load_rc_config opnsense-maltrailsensor
 
