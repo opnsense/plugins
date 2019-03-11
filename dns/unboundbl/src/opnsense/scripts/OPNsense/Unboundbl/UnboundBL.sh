@@ -10,7 +10,7 @@ touch /tmp/hosts.working
 
 # curl all the lists!
 for url in $blacklist; do
-    curl --silent $url >> "/tmp/hosts.working"
+    fetch -qo - $url >> "/tmp/hosts.working"
 done
 
 # sort all the lists and remove any whitelist items!
