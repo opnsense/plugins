@@ -5789,7 +5789,7 @@ body {
   .tab-content .tab-content:last-child {
     margin-bottom: 0; }
 
-.page-content-main [class^="col-"] + [class^="col-"] {
+.page-content-main section[class^="col-"] + section[class^="col-"] {
   padding-top: 20px; }
 
 .brand-logo {
