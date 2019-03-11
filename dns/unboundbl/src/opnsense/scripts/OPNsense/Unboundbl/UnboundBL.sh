@@ -2,7 +2,7 @@
 # The main worker script for UnboundBL.
 
 # include config-generated blacklist/whitelist, commas replaced with spaces
-. ./data.sh
+. /usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
 
 # prep temp storage and conf file
 touch /tmp/hosts.working
