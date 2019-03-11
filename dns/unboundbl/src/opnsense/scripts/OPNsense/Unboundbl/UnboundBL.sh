@@ -1,18 +1,17 @@
-# !/bin/sh
-# UnboundBL, UnboundBL.sh
-
-# include config-generated blacklist/whitelist, commas replaced with spaces
-./usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
+#!/bin/sh
+# The main worker script for UnboundBL.
 
 # prep temp storage and conf file
-rm /var/unbound/UnboundBL.conf
 touch /tmp/hosts.working
 
-# curl all the lists!
+# include config-generated blacklist/whitelist, commas replaced with spaces
+. ./data.sh
+
 for url in $blacklist; do
     fetch -qo - $url >> "/tmp/hosts.working"
 done
 
+rm /var/unbound/UnboundBL.conf
 # sort all the lists and remove any whitelist items!
 awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
 awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /var/unbound/UnboundBL.conf
