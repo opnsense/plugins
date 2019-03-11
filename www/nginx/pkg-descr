@@ -12,7 +12,7 @@ Plugin Changelog
 
 * fix content security settings (missing checkbox, correct templating)
 
-1.9 (Development only)
+1.9
 
 * add advanced options to configure hostname hash sizes for long hostnames
 
