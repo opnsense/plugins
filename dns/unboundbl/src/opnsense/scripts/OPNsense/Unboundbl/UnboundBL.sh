@@ -19,7 +19,7 @@ update() {
 	. /usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
 	printf "\n ------- Overview -------\n"
 	echo " Whitelist entries:"
-	echo " regex: ${whitelist}"
+	echo " ${whitelist}"
 	echo " Blocklist URLs to fetch:"
 	echo " ${blacklist}"
 	printf " ------------------------\n\n"
@@ -32,8 +32,14 @@ update() {
 	echo "Generated temporary file for list generation."
 	echo "Downloading external blocklists..."
 	for url in $blacklist; do
-	    fetch -qo - $url >> "/tmp/hosts.working"
-	    cnt=$((cnt+1))
+	    echo "Attempting to download ${url} (via curl)..."
+	    if curl --output /dev/null --silent --head --fail "${url}"; then
+	        curl -s $url >> "/tmp/hosts.working"
+	        cnt=$((cnt+1))
+	        echo "  Downloaded successfully!"
+	    else
+ 	        echo "  Error while trying to download..."
+            fi
 	done
 	echo "Done downloading external blocklist URLs!"
 	# sort all the lists and remove any whitelist items!
@@ -46,11 +52,11 @@ update() {
 		whitelist="(null.tld)"
 	fi
 	# catch any lines that aren't in the hosts-file format (eg. domain lists)
-	awk -v whitelist="$whitelist" '$1 !~ /^127\.|^0\./ && $1 !~ /\;1/ && $1 !~ /\#/ && $2 !~ /[a-z]+\(\)/ && $1 !~ whitelist {gsub("\r",""); print tolower($1)}' /tmp/hosts.working | sort | uniq | \
+	awk -v whitelist="$whitelist" '$1 !~ /^127\.|^0\.|^::/ && $1 !~ /\;1/ && $1 !~ /\#/ && $2 !~ /[a-z]+\(\)/ && $1 !~ whitelist {gsub("\r",""); print tolower($1)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.domainlist.working
 	grep -F -v '$empty_line' /tmp/hosts.domainlist.working > /tmp/hosts.domainlist.working2
 	# catch all lines in hosts-file format (eg. 127.0.0.1 domain.com)
-	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $1 !~ /\#/ && $1 !~ /\;1/ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
+	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\.|^::/ && $1 !~ /\#/ && $1 !~ /\;1/ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.working2
 	# double check for whitelist removal
 	grep -F -v "$whitelist" /tmp/hosts.working2 > /var/unbound/dnsbl.conf
@@ -87,7 +93,7 @@ display_usage() {
 	echo "Usage: UnboundBL.sh"
 	echo
 	echo " -h, --help   Display usage instructions"
-	echo " -r, --reload   Download and rebuild blocklist(s)."
+	echo " -up, --update   Download and rebuild blocklist(s)."
 	echo " -s, --stats   Display basic statistics of blocklist(s)."
 	echo
 }
