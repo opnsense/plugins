@@ -1,7 +1,7 @@
 {#
 
-OPNsense is Copyright 2018 by Deciso B.V.
-This file is Copyright 2019 by Alec Samuel Armbruster <alectrocute@gmail.com>
+OPNsenseÂ® is Copyright Â© 2014 â€“ 2018 by Deciso B.V.
+This file is Copyright Â© 2019 by Alec Samuel Armbruster <alectrocute@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -14,7 +14,7 @@ are permitted provided that the following conditions are met:
     this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES,
+THIS SOFTWARE IS PROVIDED â€œAS ISâ€ AND ANY EXPRESS OR IMPLIED WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -28,34 +28,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <style>
-.fa-pulse {
-	margin-left: 8px
-}
-#responseMsgInner {
-	white-space: pre
-}
-#console-dnsbl {
-	margin-top: 1em
-}
-.btn-dnsbl {
-	margin-bottom: 15px;
-	margin-left: 15px
-}
-
-.tokenize > .tokens-container {	
-	min-width:530px !important;
-	min-height: 100px !important
-}
-
-.dnsbl-code {
-	font-family: Courier;
-	font-size: 12px;
-	border-radius: 5px 5px 5px 5px;
-	background-color: #f3f3f3;
-	color: #000;
-	padding: 5px
-}
-
+.fa-pulse{margin-left:8px}#console-dnsbl{margin-top:1em}.btn-dnsbl{margin-bottom:15px;margin-left:15px}.tokenize>.tokens-container{min-width:530px!important;min-height:100px!important}.dnsbl-code{font-family:Courier;font-size:12px;border-radius:5px;background-color:#f3f3f3;color:#000;padding:5px}#responseMsgInner{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}
 </style>
 
 <div id="responseMsg" class="alert alert-info" role="alert">{{ lang._('Loading') }}...</div>
@@ -92,5 +65,5 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <script>
-function getStats(){ajaxCall(url="/api/unboundbl/service/stats",sendData={},callback=function(e,n){$("#statsInner").text(e.message)})}$(document).ready(function(){var e={frm_general_settings:"/api/unboundbl/general/get"};mapDataToFormUI(e).done(function(e){formatTokenizersUI(),$(".selectpicker").selectpicker("refresh")}),getStats(),$("#responseMsg").addClass("hidden"),$("#console-dnsbl").addClass("hidden"),mapDataToFormUI(e).done(function(e){}),$("#saveAct").click(function(){saveFormToEndpoint(url="/api/unboundbl/general/set",formid="frm_general_settings",callback_ok=function(){$("#saveAct_progress").addClass("fa fa-spinner fa-pulse"),$("#console-dnsbl").removeClass("hidden"),$("#responseMsgInner").text("Working..."),ajaxCall(url="/api/unboundbl/service/refresh",sendData={},callback=function(e,n){ajaxCall(url="/api/unboundbl/service/reload",sendData={},callback=function(n,t){$("#responseMsg").removeClass("hidden"),$("#responseMsg").text("Settings changed! Please restart your DNS resolver."),$("#responseMsgInner").text(e.message),getStats()}),$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse")})})})});const copyToClipboard=e=>{const n=document.createElement("textarea");n.value="include:/var/unbound/dnsbl.conf",n.setAttribute("readonly",""),n.style.position="absolute",n.style.left="-9999px",document.body.appendChild(n);const t=document.getSelection().rangeCount>0&&document.getSelection().getRangeAt(0);n.select(),document.execCommand("copy"),document.body.removeChild(n),t&&(document.getSelection().removeAllRanges(),document.getSelection().addRange(t))};
+function numberWithCommas(e){return e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")}function getStats(){ajaxCall(url="/api/unboundbl/service/stats",sendData={},callback=function(e,n){$("#statsInner").text(numberWithCommas(e.message))})}$(document).ready(function(){var e={frm_general_settings:"/api/unboundbl/general/get"};mapDataToFormUI(e).done(function(e){formatTokenizersUI(),$(".selectpicker").selectpicker("refresh")}),getStats(),$("#responseMsg").addClass("hidden"),$("#console-dnsbl").addClass("hidden"),mapDataToFormUI(e).done(function(e){}),$("#saveAct").click(function(){saveFormToEndpoint(url="/api/unboundbl/general/set",formid="frm_general_settings",callback_ok=function(){$("#saveAct_progress").addClass("fa fa-spinner fa-pulse"),$("#console-dnsbl").removeClass("hidden"),$("#responseMsgInner").text("Working..."),ajaxCall(url="/api/unboundbl/service/reload",sendData={},callback_ok=function(){ajaxCall(url="/api/unboundbl/service/refresh",sendData={},callback=function(e,n){$("#responseMsg").removeClass("hidden"),$("#responseMsg").text("Settings changed! Please restart your DNS resolver."),$("#responseMsgInner").text(e.message),getStats(),$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse")})})})})});const copyToClipboard=e=>{const n=document.createElement("textarea");n.value="include:/var/unbound/dnsbl.conf",n.setAttribute("readonly",""),n.style.position="absolute",n.style.left="-9999px",document.body.appendChild(n);const t=document.getSelection().rangeCount>0&&document.getSelection().getRangeAt(0);n.select(),document.execCommand("copy"),document.body.removeChild(n),t&&(document.getSelection().removeAllRanges(),document.getSelection().addRange(t))};
 </script>
