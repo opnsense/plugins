@@ -63,34 +63,34 @@ stats() {
 
 # displays usage settings for manual usage, if desired
 display_usage() {
-  echo
-  echo "Usage: UnboundBL.sh"
-  echo
-  echo " -h, --help   Display usage instructions"
-  echo " -r, --reload   Download and rebuild blocklist(s)."
-  echo " -s, --stats   Display basic statistics of blocklist(s)."
-  echo
+	echo
+	echo "Usage: UnboundBL.sh"
+	echo
+	echo " -h, --help   Display usage instructions"
+	echo " -r, --reload   Download and rebuild blocklist(s)."
+	echo " -s, --stats   Display basic statistics of blocklist(s)."
+	echo
 }
 
 # shell script functionality
 argument="$1"
 if [[ -z $argument ]] ; then
-  raise_error "Can't run without an option. Here's some help:"
-  display_usage
+	raise_error "Can't run without an option. Here's some help:"
+	display_usage
 else
-  case $argument in
-    -h|--help)
-      display_usage
-      ;;
-    -up|--update)
-      update
-      ;;
-    -s|--stats)
-      stats
-      ;;
-    *)
-      raise_error "Unknown argument: ${argument}"
-      display_usage
-      ;;
-  esac
+	case $argument in
+		-h|--help)
+		display_usage
+		;;
+	-up|--update)
+		update
+		;;
+	-s|--stats)
+		stats
+		;;
+	*)
+		raise_error "Unknown argument: ${argument}"
+		display_usage
+		;;
+	esac
 fi
