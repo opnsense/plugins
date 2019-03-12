@@ -1,7 +1,7 @@
 {#
 
-OPNsenseÂ® is Copyright 2014 - 2018 by Deciso B.V.
-This file is Copyright 2019 by Alec Samuel Armbruster <alectrocute@gmail.com>
+OPNsense is copyright 2018 by Deciso B.V.
+This file is copyright 2019 by Alec Samuel Armbruster <alectrocute@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <div class="content-box">
          {{ partial("layout_partials/base_form",['fields':general,'id':'frm_general_settings'])}}
          <hr />
-         <button class="btn btn-primary btn-dnsbl" id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i>
+         <button class="btn btn-primary btn-dnsbl" id="saveAct" type="button"><b>{{ lang._('Save & Rebuild') }}</b><i id="saveAct_progress"></i>
          </button>
       </div>
       <div id="console-dnsbl" class="col-12">
