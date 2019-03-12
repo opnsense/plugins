@@ -7,10 +7,13 @@
 update() {
 	# init counter for debugging purposes
 	cnt=0
+	failed_cnt=0
 	empty_lines='(local-zone: "" redirect|local-data: " A 0.0.0.0")'
 	echo "Starting DNSBL update!"
 	echo "Cleaning up old files..."
 	[ -f /var/unbound/dnsbl.conf ] && rm -f /var/unbound/dnsbl.conf
+	[ -f /var/unbound/dnsbl.conf.tmp ] && rm -f /var/unbound/dnsbl.conf.tmp
+	[ -f /var/unbound/dnsbl.conf.tmp2 ] && rm -f /var/unbound/dnsbl.conf.tmp2
 	[ -f /tmp/hosts.working ] && rm -f /tmp/hosts.working
 	[ -f /tmp/hosts.working2 ] && rm -f /tmp/hosts.working2
 	[ -f /tmp/hosts.domainlist.working ] && rm -f /tmp/hosts.domainlist.working
@@ -29,6 +32,7 @@ update() {
 	touch /tmp/hosts.domainlist.working
 	touch /tmp/hosts.domainlist.working2
 	touch /var/unbound/dnsbl.conf.tmp
+	touch /var/unbound/dnsbl.conf.tmp2
 	echo "Generated temporary file for list generation."
 	echo "Downloading external blocklists..."
 	for url in $blacklist; do
@@ -39,11 +43,13 @@ update() {
 	        echo "  Downloaded successfully!"
 	    else
  	        echo "  Error while trying to download..."
+	        failed_cnt=$((failed_cnt+1))
             fi
 	done
 	echo "Done downloading external blocklist URLs!"
 	# sort all the lists and remove any whitelist items!
-	echo "Parsing ${cnt} blocklist URLs..."
+	echo "${failed_cnt} blocklist URLs failed to load."
+	echo "Parsing remaining ${cnt} blocklist URLs..."
 	# parse them out
 	if [ -z "$whitelist" ]
 	then
@@ -58,9 +64,14 @@ update() {
 	# catch all lines in hosts-file format (eg. 127.0.0.1 domain.com)
 	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\.|^::/ && $1 !~ /\#/ && $1 !~ /\;1/ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.working2
-	# double check for whitelist removal
-	grep -F -v "$whitelist" /tmp/hosts.working2 > /var/unbound/dnsbl.conf
-	grep -F -v "$whitelist" /tmp/hosts.domainlist.working2 >> /var/unbound/dnsbl.conf
+	# ensure whitelist lines are gone
+	grep -F -v "$whitelist" /tmp/hosts.working2 > /var/unbound/dnsbl.conf.tmp2
+	grep -F -v "$whitelist" /tmp/hosts.domainlist.working2 >> /var/unbound/dnsbl.conf.tmp2
+	# remove possible bug lines (which cause unbound to crash)
+	sed -in-place '/local-zone: "" redirect/d' /var/unbound/dnsbl.conf.tmp2
+        sed -in-place '/local-data: " A 0.0.0.0"/d' /var/unbound/dnsbl.conf.tmp2
+	# remove duplicates
+        sort /var/unbound/dnsbl.conf.tmp2 | uniq -u > /var/unbound/dnsbl.conf
 	# add "server:" line to top of file.
 	echo "server:" | cat - /var/unbound/dnsbl.conf > /var/unbound/dnsbl.conf.tmp && mv /var/unbound/dnsbl.conf.tmp /var/unbound/dnsbl.conf
 	echo "Done parsing blocklist URLs!"
@@ -69,9 +80,13 @@ update() {
 	domains_total=$(echo $((domains / 2)))
 	printf "\n --------- Stats --------\n"
 	printf " Domains currently being blocked: $domains_total \n"
+	printf " Sources: $cnt\n"
+	printf " Failed sources: $failed_cnt\n"
 	printf " ------------------------\n\n"
 	# clear the temp storage!
 	echo "Cleaning up old temporary files..."
+	[ -f /var/unbound/dnsbl.conf.tmp ] && rm -f /var/unbound/dnsbl.conf.tmp
+	[ -f /var/unbound/dnsbl.conf.tmp2 ] && rm -f /var/unbound/dnsbl.conf.tmp2
 	[ -f /tmp/hosts.working ] && rm -f /tmp/hosts.working
 	[ -f /tmp/hosts.working2 ] && rm -f /tmp/hosts.working2
 	[ -f /tmp/hosts.domainlist.working ] && rm -f /tmp/hosts.domainlist.working
@@ -100,7 +115,7 @@ display_usage() {
 
 # shell script functionality
 argument="$1"
-if [[ -z $argument ]] ; then
+if [[-z $argument]]; then
 	raise_error "Can't run without an option. Here's some help:"
 	display_usage
 else
