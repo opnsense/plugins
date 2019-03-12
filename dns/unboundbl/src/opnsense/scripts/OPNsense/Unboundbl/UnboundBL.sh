@@ -7,11 +7,14 @@
 update() {
 	# init counter for debugging purposes
 	cnt=0
+	empty_lines='(local-zone: "" redirect|local-data: " A 0.0.0.0")'
 	echo "Starting DNSBL update!"
 	echo "Cleaning up old files..."
 	[ -f /var/unbound/dnsbl.conf ] && rm -f /var/unbound/dnsbl.conf
 	[ -f /tmp/hosts.working ] && rm -f /tmp/hosts.working
 	[ -f /tmp/hosts.working2 ] && rm -f /tmp/hosts.working2
+	[ -f /tmp/hosts.domainlist.working ] && rm -f /tmp/hosts.domainlist.working
+	[ -f /tmp/hosts.domainlist.working2 ] && rm -f /tmp/hosts.domainlist.working2
 	# include config-generated blacklist/whitelist, commas replaced with spaces
 	. /usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
 	printf "\n ------- Overview -------\n"
@@ -23,6 +26,8 @@ update() {
 	# prep temp storage and conf file
 	touch /tmp/hosts.working
 	touch /tmp/hosts.working2
+	touch /tmp/hosts.domainlist.working
+	touch /tmp/hosts.domainlist.working2
 	touch /var/unbound/dnsbl.conf.tmp
 	echo "Generated temporary file for list generation."
 	echo "Downloading external blocklists..."
@@ -40,9 +45,16 @@ update() {
 		# to stop forecoming process from erroring out.
 		whitelist="(null.tld)"
 	fi
+	# catch any lines that aren't in the hosts-file format (eg. domain lists)
+	awk -v whitelist="$whitelist" '$1 !~ /^127\.|^0\./ && $1 !~ /^#/ && $2 !~ /[a-z]+\(\)/ && $1 !~ whitelist {gsub("\r",""); print tolower($1)}' /tmp/hosts.working | sort | uniq | \
+	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.domainlist.working
+	grep -F -v '$empty_line' /tmp/hosts.domainlist.working > /tmp/hosts.domainlist.working2
+	# catch all lines in hosts-file format (eg. 127.0.0.1 domain.com)
 	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.working2
+	# double check for whitelist removal
 	grep -F -v "$whitelist" /tmp/hosts.working2 > /var/unbound/dnsbl.conf
+	grep -F -v "$whitelist" /tmp/hosts.domainlist.working2 >> /var/unbound/dnsbl.conf
 	# add "server:" line to top of file.
 	echo "server:" | cat - /var/unbound/dnsbl.conf > /var/unbound/dnsbl.conf.tmp && mv /var/unbound/dnsbl.conf.tmp /var/unbound/dnsbl.conf
 	echo "Done parsing blocklist URLs!"
@@ -56,6 +68,8 @@ update() {
 	echo "Cleaning up old temporary files..."
 	[ -f /tmp/hosts.working ] && rm -f /tmp/hosts.working
 	[ -f /tmp/hosts.working2 ] && rm -f /tmp/hosts.working2
+	[ -f /tmp/hosts.domainlist.working ] && rm -f /tmp/hosts.domainlist.working
+	[ -f /tmp/hosts.domainlist.working2 ] && rm -f /tmp/hosts.domainlist.working2
 	echo "DNSBL update complete! Please restart your DNS resolver."
 }
 
