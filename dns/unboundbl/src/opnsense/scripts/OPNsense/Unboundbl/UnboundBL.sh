@@ -34,6 +34,12 @@ update() {
 	# sort all the lists and remove any whitelist items!
 	echo "Parsing ${cnt} blocklist URLs..."
 	# parse them out
+	if [ -z "$whitelist" ]
+	then
+		# placeholder, impossible domain in case of empty whitelist
+		# to stop forecoming process from erroring out.
+		whitelist="(null.tld)"
+	fi
 	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.working2
 	grep -F -v "$whitelist" /tmp/hosts.working2 > /var/unbound/dnsbl.conf
