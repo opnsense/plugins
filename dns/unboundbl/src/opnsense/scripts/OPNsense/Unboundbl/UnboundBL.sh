@@ -46,11 +46,11 @@ update() {
 		whitelist="(null.tld)"
 	fi
 	# catch any lines that aren't in the hosts-file format (eg. domain lists)
-	awk -v whitelist="$whitelist" '$1 !~ /^127\.|^0\./ && $1 !~ /^#/ && $2 !~ /[a-z]+\(\)/ && $1 !~ whitelist {gsub("\r",""); print tolower($1)}' /tmp/hosts.working | sort | uniq | \
+	awk -v whitelist="$whitelist" '$1 !~ /^127\.|^0\./ && $1 !~ /\;1/ && $1 !~ /\#/ && $2 !~ /[a-z]+\(\)/ && $1 !~ whitelist {gsub("\r",""); print tolower($1)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.domainlist.working
 	grep -F -v '$empty_line' /tmp/hosts.domainlist.working > /tmp/hosts.domainlist.working2
 	# catch all lines in hosts-file format (eg. 127.0.0.1 domain.com)
-	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
+	awk -v whitelist="$whitelist" '$1 ~ /^127\.|^0\./ && $1 !~ /\#/ && $1 !~ /\;1/ && $2 !~ whitelist {gsub("\r",""); print tolower($2)}' /tmp/hosts.working | sort | uniq | \
 	awk '{printf "local-zone: \"%s\" redirect\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > /tmp/hosts.working2
 	# double check for whitelist removal
 	grep -F -v "$whitelist" /tmp/hosts.working2 > /var/unbound/dnsbl.conf
