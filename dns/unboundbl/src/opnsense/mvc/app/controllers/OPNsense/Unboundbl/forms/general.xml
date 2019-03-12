@@ -11,16 +11,16 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-	<help>Enter the domains that you would like to whitelist (eg. remove from blacklist files).</help>
+	<help>Enter the domains that you would like to whitelist (ignore from external blocklist files).</help>
 	<hint>ads.opnsense.org</hint>
     </field>
     <field>
         <id>general.blacklist</id>
-        <label>Blacklist</label>
+        <label>Blocklist URL(s)</label>
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Enter the blacklist URL's you would like to parse and use.</help>
+        <help>Enter the blocklist URL's you would like to parse and use.</help>
 	<hint>https://hosts-file.net/grm.txt</hint>
     </field>
 </form>
