@@ -55,4 +55,11 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend->configdRun("template reload OPNsense/Unboundbl");
         return;
     }
+        public function statsAction()
+    {
+        $this->sessionClose();
+        $backend = new Backend();
+        $response = $backend->configdpRun('unboundbl stats');
+        return array("message" => $response);
+    }
 }
