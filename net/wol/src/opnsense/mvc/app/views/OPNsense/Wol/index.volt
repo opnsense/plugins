@@ -3,7 +3,7 @@
 function show_wake_result(data) {
   BootstrapDialog.show({
     type: data.status == 'OK' ? BootstrapDialog.TYPE_SUCCESS : BootstrapDialog.TYPE_DANGER,
-    title: "{{ lang._("Result") }}",
+    title: "{{ lang._('Result') }}",
     message: (data.status == 'OK' ?
               '{{ lang._('Magic packet was sent successfully.') }}' :
               '{{ lang._('The packet was not sent due to an error. Please consult the logs.') }}<br />' +
@@ -25,7 +25,7 @@ $( document ).ready(function() {
       $.post('/api/wol/wol/wakeall', {}, function(data) {
           BootstrapDialog.show({
               type: BootstrapDialog.TYPE_INFO,
-              title: "{{ lang._("Result") }}",
+              title: "{{ lang._('Result') }}",
               message: '<ul>' + (data['results'].map(function(element) {
                   return `<li>${element.mac}: ${element.status}</li>`
               }).join('')) + '</ul>',
