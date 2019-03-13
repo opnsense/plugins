@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <div class="content-box">
          {{ partial("layout_partials/base_form",['fields':general,'id':'frm_general_settings'])}}
          <hr />
-         <button class="btn btn-primary btn-dnsbl" id="saveAct" type="button"><b>{{ lang._('Save & Rebuild') }}</b><i id="saveAct_progress"></i>
+         <button class="btn btn-primary btn-dnsbl" id="saveAct" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_progress"></i>
          </button>
       </div>
       <div id="console-dnsbl" class="col-12">
