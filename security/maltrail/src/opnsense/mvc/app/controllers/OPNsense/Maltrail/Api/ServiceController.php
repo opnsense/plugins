@@ -32,7 +32,7 @@ use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    protected static $internalServiceClass = '\OPNsense\Maltrail\General';
+    protected static $internalServiceClass = '\OPNsense\Maltrail\Sensor';
     protected static $internalServiceTemplate = 'OPNsense/Maltrail';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'maltrailsensor';
