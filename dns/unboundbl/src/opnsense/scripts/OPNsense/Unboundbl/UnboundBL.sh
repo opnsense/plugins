@@ -115,10 +115,6 @@ display_usage() {
 
 # shell script functionality
 argument="$1"
-if [[-z $argument]]; then
-	raise_error "Can't run without an option. Here's some help:"
-	display_usage
-else
 	case $argument in
 		-h|--help)
 		display_usage
