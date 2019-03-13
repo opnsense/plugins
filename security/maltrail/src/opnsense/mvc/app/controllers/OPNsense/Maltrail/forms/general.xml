@@ -1,20 +1,20 @@
 <form>
     <field>
-        <id>general.enabled</id>
-        <label>Enable Maltrail Sensor</label>
+        <id>general.heuristics</id>
+        <label>Use Heuristics</label>
         <type>checkbox</type>
-        <help>This will activate the Sensor. Do not forget to enable the local server mode or send the logs to a remote server.</help>
+        <help>Whether to enable or disable the usage or heuristic detection.</help>
     </field>
     <field>
-        <id>general.remoteserver</id>
-        <label>Remote Server</label>
+        <id>general.updateperiod</id>
+        <label>Update Period</label>
         <type>text</type>
-        <help>IP address of the remote logging server.</help>
+        <help>Time in seconds how ofter to refresh trails.</help>
     </field>
     <field>
-        <id>general.remoteport</id>
-        <label>Remote Port</label>
-        <type>text</type>
-        <help>Port of the logging server. Leave empty when sensor and server run on the same system.</help>
+        <id>general.monitorinterface</id>
+        <label>Monitor Interface</label>
+        <type>select_multiple</type>
+        <help>List of interface to listen to, none means listen to any interface.</help>
     </field>
 </form>

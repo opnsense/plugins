@@ -1,18 +1,19 @@
 <model>
     <mount>//OPNsense/maltrail/general</mount>
-    <description>Maltrail sensor configuration</description>
+    <description>Maltrail general configuration</description>
     <version>0.0.1</version>
     <items>
-        <enabled type="BooleanField">
-            <default>0</default>
+        <heuristics type="BooleanField">
+            <default>1</default>
             <Required>Y</Required>
-        </enabled>
-        <remoteaddress type="HostnameField">
+        </heuristics>
+        <updateperiod type="IntegerField">
+            <default>86400</default>
+            <Required>Y</Required>
+        </updateperiod>
+        <monitorinterface type="InterfaceField">
+            <multiple>Y</multiple>
             <Required>N</Required>
-        </remoteaddress>
-        <remoteport type="PortField">
-            <default>8337</default>
-            <Required>Y</Required>
-        </remoteport>
+        </monitorinterface>
     </items>
 </model>
