@@ -130,4 +130,3 @@ argument="$1"
 		display_usage
 		;;
 	esac
-fi
