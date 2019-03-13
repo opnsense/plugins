@@ -9,8 +9,8 @@ update() {
 	cnt=0
 	failed_cnt=0
 	empty_lines='(local-zone: "" redirect|local-data: " A 0.0.0.0")'
-	echo "Starting DNSBL update!"
-	echo "Cleaning up old files..."
+	echo "[Starting DNSBL update]"
+	echo "[Cleaning up old files]"
 	[ -f /var/unbound/dnsbl.conf ] && rm -f /var/unbound/dnsbl.conf
 	[ -f /var/unbound/dnsbl.conf.tmp ] && rm -f /var/unbound/dnsbl.conf.tmp
 	[ -f /var/unbound/dnsbl.conf.tmp2 ] && rm -f /var/unbound/dnsbl.conf.tmp2
@@ -20,12 +20,12 @@ update() {
 	[ -f /tmp/hosts.domainlist.working2 ] && rm -f /tmp/hosts.domainlist.working2
 	# include config-generated blacklist/whitelist, commas replaced with spaces
 	. /usr/local/opnsense/scripts/OPNsense/Unboundbl/data.sh
-	printf "\n ------- Overview -------\n"
-	echo " Whitelist entries:"
+	printf "\n# Overview\n"
+	echo " ^ Whitelist entries:"
 	echo " ${whitelist}"
-	echo " Blocklist URLs to fetch:"
+	echo " ^ Blocklist URLs to fetch:"
 	echo " ${blacklist}"
-	printf " ------------------------\n\n"
+	printf "\n"
 	# prep temp storage and conf file
 	touch /tmp/hosts.working
 	touch /tmp/hosts.working2
@@ -33,23 +33,33 @@ update() {
 	touch /tmp/hosts.domainlist.working2
 	touch /var/unbound/dnsbl.conf.tmp
 	touch /var/unbound/dnsbl.conf.tmp2
-	echo "Generated temporary file for list generation."
-	echo "Downloading external blocklists..."
+	echo "[Done creating new temporary files]"
+	echo
+	echo "# Downloading external blocklists..."
 	for url in $blacklist; do
-	    echo "Attempting to download ${url} (via curl)..."
+	    printf "   Attempting to download "
+	    printf "%.185s" $url
+	    printf " (via curl).\n"
 	    if curl --output /dev/null --silent --head --fail "${url}"; then
 	        curl -s $url >> "/tmp/hosts.working"
 	        cnt=$((cnt+1))
-	        echo "  Downloaded successfully!"
+	    	printf " ^ Downloaded "
+	    	printf "%.35s" $url
+	    	printf "... successfully.\n"
+
 	    else
- 	        echo "  Error while trying to download..."
+	    	printf " * Error trying to download "
+	    	printf "%.35s" $url
+	    	printf "...\n"
 	        failed_cnt=$((failed_cnt+1))
             fi
 	done
-	echo "Done downloading external blocklist URLs!"
+	echo
+	echo "[Done downloading external blocklist URLs]"
 	# sort all the lists and remove any whitelist items!
-	echo "${failed_cnt} blocklist URLs failed to load."
-	echo "Parsing remaining ${cnt} blocklist URLs..."
+	echo " ^ ${failed_cnt} blocklist fetches failed."
+	echo " ^ ${cnt} blocklist(s) will be parsed..."
+	echo
 	# parse them out
 	if [ -z "$whitelist" ]
 	then
@@ -74,7 +84,7 @@ update() {
         sort /var/unbound/dnsbl.conf.tmp2 | uniq -u > /var/unbound/dnsbl.conf
 	# add "server:" line to top of file.
 	echo "server:" | cat - /var/unbound/dnsbl.conf > /var/unbound/dnsbl.conf.tmp && mv /var/unbound/dnsbl.conf.tmp /var/unbound/dnsbl.conf
-	echo "Done parsing blocklist URLs!"
+	echo "[Done parsing master blocklist]"
 	# math for stats
 	domains=$(wc -l /var/unbound/dnsbl.conf | awk '{print $1;}')
 	domains_total=$(echo $((domains / 2)))
@@ -84,14 +94,14 @@ update() {
 	printf " Failed sources: $failed_cnt\n"
 	printf " ------------------------\n\n"
 	# clear the temp storage!
-	echo "Cleaning up old temporary files..."
+	echo "[Cleaning up]"
 	[ -f /var/unbound/dnsbl.conf.tmp ] && rm -f /var/unbound/dnsbl.conf.tmp
 	[ -f /var/unbound/dnsbl.conf.tmp2 ] && rm -f /var/unbound/dnsbl.conf.tmp2
 	[ -f /tmp/hosts.working ] && rm -f /tmp/hosts.working
 	[ -f /tmp/hosts.working2 ] && rm -f /tmp/hosts.working2
 	[ -f /tmp/hosts.domainlist.working ] && rm -f /tmp/hosts.domainlist.working
 	[ -f /tmp/hosts.domainlist.working2 ] && rm -f /tmp/hosts.domainlist.working2
-	echo "DNSBL update complete! Please restart your DNS resolver."
+	echo "+ DNSBL update complete! Please restart your DNS resolver."
 }
 
 # to be expanded in the future, stats() or -stats displays
