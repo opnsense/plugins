@@ -100,6 +100,17 @@ class EventCollector(object):
         """ collect local attached networks for anonymization purposes
         :return: None
         """
+        if os.path.isfile('/usr/local/etc/suricata/suricata.yaml'):
+            # home nets are considered local
+            with open('/usr/local/etc/suricata/suricata.yaml') as f_in:
+                parts = f_in.read().split('HOME_NET:')
+                if len(parts) > 1:
+                    for net in parts[1].split("\n")[0].strip('" [ ]').split(','):
+                        try:
+                            self._local_networks.append(netaddr.IPNetwork(net))
+                        except netaddr.core.AddrFormatError:
+                            pass
+
         with tempfile.NamedTemporaryFile() as output_stream:
             subprocess.call(['ifconfig', '-a'], stdout=output_stream, stderr=open(os.devnull, 'wb'))
             output_stream.seek(0)
