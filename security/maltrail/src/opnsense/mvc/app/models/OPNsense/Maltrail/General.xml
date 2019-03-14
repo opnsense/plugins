@@ -14,7 +14,7 @@
         <adminpassword type="TextField">
             <default>9ab3cd9d67bf49d01f6a2e33d0bd9bc804ddbe6ce1ff5d219c42624851db5dbc</default>
             <Required>Y</Required>
-        </adminpassowrd>
+        </adminpassword>
         <monitorinterface type="InterfaceField">
             <multiple>Y</multiple>
             <Required>N</Required>
