@@ -12,6 +12,12 @@
         <help>Time in seconds how ofter to refresh trails.</help>
     </field>
     <field>
+        <id>general.adminpassword</id>
+        <label>SHA256 Admin Password</label>
+        <type>text</type>
+        <help><![CDATA[Set the SHA256 password for user admin here. There are many ways to create a password, e.g. from <a href="https://hashgenerator.de/">here</a>]]>. Default password is changeme!</help>
+    </field>
+    <field>
         <id>general.monitorinterface</id>
         <label>Monitor Interface</label>
         <type>select_multiple</type>
