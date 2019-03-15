@@ -65,11 +65,6 @@ select.bs-select-hidden, .bootstrap-select > select.bs-select-hidden, select.sel
   &:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
     width: 348px;
   }
-  > select.mobile-device:focus + .dropdown-toggle, .dropdown-toggle:focus {
-    outline: thin dotted #333333 !important;
-    outline: 5px auto -webkit-focus-ring-color !important;
-    outline-offset: -2px;
-  }
   &.form-control {
     margin-bottom: 0;
     padding: 0;
