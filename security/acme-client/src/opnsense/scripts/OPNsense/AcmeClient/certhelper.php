@@ -813,6 +813,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $acmecmd = "/usr/local/sbin/acme.sh "
       . implode(" ", $acme_args) . " "
       . "--${acme_action} "
+      . "--days " . (string)$certObj->renewInterval . " "
       . "--domain " . (string)$certObj->name . " "
       . $altnames
       . $acme_validation . " "
