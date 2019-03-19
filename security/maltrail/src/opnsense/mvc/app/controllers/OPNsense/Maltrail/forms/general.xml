@@ -25,6 +25,6 @@
         <id>general.monitorinterface</id>
         <label>Monitor Interface</label>
         <type>select_multiple</type>
-        <help>List of interface to listen to, none means listen to any interface.</help>
+        <help>List of interface to listen on, none means listen on all interfaces.</help>
     </field>
 </form>
