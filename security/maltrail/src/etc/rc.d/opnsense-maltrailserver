@@ -21,7 +21,7 @@ command_args="-P /var/run/maltrailserver.pid python2.7 /usr/local/share/maltrail
 
 load_rc_config opnsense-maltrailserver
 
-[ -z "$maltrailserver_enable" ] && maltrailserver_enable="NO"
+: ${maltrailserver_enable ="NO"}
 
 maltrailserver_status()
 {
