@@ -1,0 +1,23 @@
+<model>
+    <mount>//OPNsense/maltrail/general</mount>
+    <description>Maltrail general configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <heuristics type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </heuristics>
+        <updateperiod type="IntegerField">
+            <default>86400</default>
+            <Required>Y</Required>
+        </updateperiod>
+        <adminpassword type="TextField">
+            <default>9ab3cd9d67bf49d01f6a2e33d0bd9bc804ddbe6ce1ff5d219c42624851db5dbc</default>
+            <Required>Y</Required>
+        </adminpassword>
+        <monitorinterface type="InterfaceField">
+            <multiple>Y</multiple>
+            <Required>N</Required>
+        </monitorinterface>
+    </items>
+</model>

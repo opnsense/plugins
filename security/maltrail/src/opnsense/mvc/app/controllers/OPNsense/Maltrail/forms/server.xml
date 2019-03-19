@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>server.enabled</id>
+        <label>Enable Maltrail Server</label>
+        <type>checkbox</type>
+        <help>This will activate the Maltrail server. You can use this service to also collect data from remote Maltrail sensors.</help>
+    </field>
+    <field>
+        <id>server.listenaddress</id>
+        <label>UI Listen Address</label>
+        <type>text</type>
+        <help>IP address the server UI listens on.</help>
+    </field>
+    <field>
+        <id>server.listenport</id>
+        <label>UI Listen Port</label>
+        <type>text</type>
+        <help>TCP port of the server UI.</help>
+    </field>
+    <field>
+        <id>server.loglistenaddress</id>
+        <label>Log Listen Address</label>
+        <type>text</type>
+        <help>IP address to listen to where sensors should send log. Leave blank if you run server and sensor on the same machine.</help>
+    </field>
+    <field>
+        <id>server.loglistenport</id>
+        <label>Log Listen Port</label>
+        <type>text</type>
+        <help>The UDP port of the log server. Leave blank if you run server and sensor on the same machine. The default when in use should be set to 8337.</help>
+    </field>
+</form>
