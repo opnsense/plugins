@@ -9,7 +9,7 @@
         <id>general.updateperiod</id>
         <label>Update Period</label>
         <type>text</type>
-        <help>Time in seconds how ofter to refresh trails.</help>
+        <help>Time in seconds how often to refresh trails.</help>
     </field>
     <field>
         <id>general.adminpassword</id>
