@@ -21,7 +21,7 @@ command_args="-P /var/run/maltrailsensor.pid python2.7 /usr/local/share/maltrail
 
 load_rc_config opnsense-maltrailsensor
 
-[ -z "$maltrailsensor_enable" ] && maltrailsensor_enable="NO"
+: ${maltrailsensor_enable="NO"}
 
 maltrailsensor_status()
 {
