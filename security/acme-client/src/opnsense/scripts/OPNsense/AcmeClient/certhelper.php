@@ -656,6 +656,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
                 $proc_env['GD_Secret'] = (string)$valObj->dns_gd_secret;
                 break;
+            case 'dns_hostingde':
+                $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
+                $proc_env['HOSTINGDE_APIKEY'] = (string)$valObj->dns_hostingde_apiKey;
+                break;
             case 'dns_he':
                 $proc_env['HE_Username'] = (string)$valObj->dns_he_user;
                 $proc_env['HE_Password'] = (string)$valObj->dns_he_password;
@@ -809,6 +813,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $acmecmd = "/usr/local/sbin/acme.sh "
       . implode(" ", $acme_args) . " "
       . "--${acme_action} "
+      . "--days " . (string)$certObj->renewInterval . " "
       . "--domain " . (string)$certObj->name . " "
       . $altnames
       . $acme_validation . " "

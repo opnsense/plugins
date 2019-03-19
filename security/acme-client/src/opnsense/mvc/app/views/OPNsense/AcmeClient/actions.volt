@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#grid-actions").UIBootgrid(
             {   search:'/api/acmeclient/actions/search',
                 get:'/api/acmeclient/actions/get/',
-                set:'/api/acmeclient/actions/set/',
+                set:'/api/acmeclient/actions/update/',
                 add:'/api/acmeclient/actions/add/',
                 del:'/api/acmeclient/actions/del/',
                 toggle:'/api/acmeclient/actions/toggle/',
