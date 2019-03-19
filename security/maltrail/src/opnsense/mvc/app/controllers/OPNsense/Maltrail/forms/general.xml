@@ -15,7 +15,11 @@
         <id>general.adminpassword</id>
         <label>SHA256 Admin Password</label>
         <type>text</type>
-        <help><![CDATA[Set the SHA256 password for user admin here. There are many ways to create a password, e.g. from <a href="https://hashgenerator.de/">here</a>]]>. Default password is changeme!</help>
+        <help><![CDATA[Set the SHA256 password for user admin here.<br/>
+        There are many ways to create a password:<br/>
+        - Create online from <a href="https://hashgenerator.de/">here</a><br/>
+        - Via Console: echo -n changeme! | sha256<br/>]]>
+        </help>
     </field>
     <field>
         <id>general.monitorinterface</id>
