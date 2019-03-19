@@ -75,6 +75,8 @@
 	color:#fff;
     padding: 0;
 }
+
+.tokenize > .tokens-container:focus,
 .tokenize > .tokens-container:hover {
 	border-color:#ec6d12;
 	background-color:#2a2a2a;

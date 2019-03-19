@@ -76,7 +76,7 @@
         padding: 0;
       }
     }
-    &:hover {
+    &:focus, &:hover {
       border-color: #00A7FF;
       background-color: none;
     }
