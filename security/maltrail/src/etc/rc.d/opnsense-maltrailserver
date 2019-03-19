@@ -11,9 +11,6 @@
 
 name=maltrailserver
 
-stop_cmd=maltrailserver_stop
-start_cmd=maltrailserver_start
-status_cmd=maltrailserver_status
 rcvar=maltrailserver_enable
 pidfile=/var/run/${name}.pid
 command=/usr/sbin/daemon
@@ -22,31 +19,5 @@ command_args="-f -P /var/run/maltrailserver.pid python2.7 /usr/local/share/maltr
 load_rc_config opnsense-maltrailserver
 
 : ${maltrailserver_enable="NO"}
-
-maltrailserver_status()
-{
-         if [ -n "$rc_pid" ]; then
-             echo "${name} is running as pid $rc_pid."
-             return 0
-         else
-             echo "${name} is not running."
-         fi
-}
-
-maltrailserver_stop()
-{
-        if [ -n "$rc_pid" ]; then
-            echo "stopping maltrail server"
-            kill ${rc_pid}
-        else
-            echo "${name} is not running."
-        fi
-}
-
-maltrailserver_start()
-{
-        echo "starting maltrail server"
-        ${command} ${command_args}
-}
 
 run_rc_command $1
