@@ -1,0 +1,22 @@
+<model>
+    <mount>//OPNsense/maltrail/sensor</mount>
+    <description>Maltrail sensor configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <captureall type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </captureall>
+        <remoteaddress type="HostnameField">
+            <Required>N</Required>
+        </remoteaddress>
+        <remoteport type="PortField">
+            <default>8337</default>
+            <Required>Y</Required>
+        </remoteport>
+    </items>
+</model>

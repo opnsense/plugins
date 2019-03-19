@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>sensor.enabled</id>
+        <label>Enable Maltrail Sensor</label>
+        <type>checkbox</type>
+        <help>This will activate the Sensor. Do not forget to enable the local server mode or send the logs to a remote server.</help>
+    </field>
+    <field>
+        <id>sensor.captureall</id>
+        <label>Capture All</label>
+        <type>checkbox</type>
+        <help>This will look into all IPv4 and IPv6 traffic. If disabled it will only look for traffic for icmp, udp, tcp syn packets and on known HTTP ports.</help>
+    </field>
+    <field>
+        <id>sensor.remoteserver</id>
+        <label>Remote Server</label>
+        <type>text</type>
+        <help>IP address of the remote logging server.</help>
+    </field>
+    <field>
+        <id>sensor.remoteport</id>
+        <label>Remote Port</label>
+        <type>text</type>
+        <help>Port of the logging server. Leave empty when sensor and server run on the same system.</help>
+    </field>
+</form>

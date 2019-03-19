@@ -1,0 +1,9 @@
+<acl>
+   <page-services-maltrail>
+      <name>Services: Maltrail</name>
+      <patterns>
+         <pattern>ui/maltrail/*</pattern>
+         <pattern>api/maltrail/*</pattern>
+      </patterns>
+   </page-services-maltrail>
+</acl>
