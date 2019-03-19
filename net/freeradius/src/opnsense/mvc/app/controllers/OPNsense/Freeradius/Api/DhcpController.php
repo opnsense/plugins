@@ -34,8 +34,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class DhcpController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'dhcp';
-    static protected $internalModelClass = '\OPNsense\Freeradius\Dhcp';
+    protected static $internalModelName = 'dhcp';
+    protected static $internalModelClass = '\OPNsense\Freeradius\Dhcp';
 
     public function searchDhcpAction()
     {

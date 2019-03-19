@@ -34,8 +34,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class LeaseController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'lease';
-    static protected $internalModelClass = '\OPNsense\Freeradius\Lease';
+    protected static $internalModelName = 'lease';
+    protected static $internalModelClass = '\OPNsense\Freeradius\Lease';
 
     public function searchLeaseAction()
     {

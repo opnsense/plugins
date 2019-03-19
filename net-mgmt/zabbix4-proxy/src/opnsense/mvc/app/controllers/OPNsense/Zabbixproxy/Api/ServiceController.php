@@ -40,8 +40,8 @@ use OPNsense\Zabbixproxy\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Zabbixproxy\General';
-    static protected $internalServiceTemplate = 'OPNsense/Zabbixproxy';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'zabbixproxy';
+    protected static $internalServiceClass = '\OPNsense\Zabbixproxy\General';
+    protected static $internalServiceTemplate = 'OPNsense/Zabbixproxy';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'zabbixproxy';
 }

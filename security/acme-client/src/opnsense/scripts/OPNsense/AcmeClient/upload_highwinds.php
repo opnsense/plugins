@@ -39,7 +39,8 @@ use OPNsense\AcmeClient\AcmeClient;
 
 $HIGHWINDS_API_URL = 'https://striketracker.highwinds.com/api/v1/accounts';
 
-function find_certificate($acme_cert_id) {
+function find_certificate($acme_cert_id)
+{
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
     $configObj = Config::getInstance()->object();
     if (isset($configObj->OPNsense->AcmeClient->certificates) && $configObj->OPNsense->AcmeClient->certificates->count() > 0) {
@@ -66,7 +67,8 @@ function find_certificate($acme_cert_id) {
     }
 }
 
-function export_certificate($cert_refid) {
+function export_certificate($cert_refid)
+{
     $configObj = Config::getInstance()->object();
     foreach ($configObj->cert as $cert) {
         if ($cert_refid == (string)$cert->refid) {
@@ -74,9 +76,9 @@ function export_certificate($cert_refid) {
             $key_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
             // check if a CA is linked
             if (!empty((string)$cert->caref)) {
-               $cert = (array)$cert;
-               $ca = ca_chain($cert);
-               $ca_content = $ca;
+                $cert = (array)$cert;
+                $ca = ca_chain($cert);
+                $ca_content = $ca;
             }
             $result = array();
             $result['cert'] = $cert_content;
@@ -89,7 +91,8 @@ function export_certificate($cert_refid) {
     return None;
 }
 
-function upload_certificate($cert_name,$cert_refid,$acme_cert_id,$acme_automation_id) {
+function upload_certificate($cert_name, $cert_refid, $acme_cert_id, $acme_automation_id)
+{
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
     $configObj = Config::getInstance()->object();
     if (isset($configObj->OPNsense->AcmeClient->actions) && $configObj->OPNsense->AcmeClient->actions->count() > 0) {
@@ -105,7 +108,7 @@ function upload_certificate($cert_name,$cert_refid,$acme_cert_id,$acme_automatio
                     $hw_access_token = (string)$automObj->highwinds_access_token;
                     $cert_data = export_certificate($cert_refid);
                     if ($cert_data !== None) {
-                        $hw_result = hw_upload_certificate($hw_account_hash,$hw_access_token,$cert_name,$cert_data);
+                        $hw_result = hw_upload_certificate($hw_account_hash, $hw_access_token, $cert_name, $cert_data);
                         if ($hw_result !== None) {
                             return true;
                         }
@@ -120,7 +123,7 @@ function upload_certificate($cert_name,$cert_refid,$acme_cert_id,$acme_automatio
     }
 }
 
-function hw_list_certificates($account_hash,$access_token)
+function hw_list_certificates($account_hash, $access_token)
 {
     global $HIGHWINDS_API_URL;
     $curl = curl_init();
@@ -150,9 +153,9 @@ function hw_list_certificates($account_hash,$access_token)
     return json_decode($response);
 }
 
-function hw_get_certificate($account_hash,$access_token,$cert_name)
+function hw_get_certificate($account_hash, $access_token, $cert_name)
 {
-    $certificates = hw_list_certificates($account_hash,$access_token);
+    $certificates = hw_list_certificates($account_hash, $access_token);
     if ($certificates !== None) {
         foreach ($certificates->list as $cert) {
             if ($cert->commonName == $cert_name) {
@@ -163,11 +166,11 @@ function hw_get_certificate($account_hash,$access_token,$cert_name)
     return None;
 }
 
-function hw_upload_certificate($account_hash,$access_token,$cert_name,$cert_data)
+function hw_upload_certificate($account_hash, $access_token, $cert_name, $cert_data)
 {
     global $HIGHWINDS_API_URL;
     // Check current status of certificate at Highwinds
-    $hw_cert = hw_get_certificate($account_hash,$access_token,$cert_name);
+    $hw_cert = hw_get_certificate($account_hash, $access_token, $cert_name);
     $hw_url = 'certificates';
     if ($hw_cert == None) {
         log_error("AcmeClient: cert for ${cert_name} not found in Highwinds API, starting upload...");
