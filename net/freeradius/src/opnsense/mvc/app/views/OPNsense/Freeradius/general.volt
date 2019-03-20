@@ -42,9 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
-        ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data, status) {
-            updateServiceStatusUI(data['status']);
-        });
+        updateServiceControlUI('freeradius');
 
         // link save button to API set action
         $("#saveAct").click(function () {
@@ -52,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function (data,status) {
                     ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data,status) {
-                        updateServiceStatusUI(data['status']);
+                        updateServiceControlUI('freeradius');
                     });
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
