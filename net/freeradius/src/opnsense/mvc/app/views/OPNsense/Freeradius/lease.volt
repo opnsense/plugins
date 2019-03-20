@@ -30,6 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
+        updateServiceControlUI('freeradius');
+
         /*************************************************************************************************************
          * link grid actions
          *************************************************************************************************************/
@@ -43,7 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 'toggle':'/api/freeradius/lease/toggleLease/'
             }
         );
-        updateServiceControlUI('freeradius');
     
         /*************************************************************************************************************
          * Commands
