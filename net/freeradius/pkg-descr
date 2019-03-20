@@ -19,6 +19,7 @@ Plugin Changelog
 
 * Add DHCP support, serving only for DHCP relays
 * Allow usage of remote MySQL server
+* Rework service status UI
 
 
 WWW: https://www.freeradius.org
