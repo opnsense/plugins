@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.9
+
+* Allow HA config sync via XMLRPC
+
 1.8
 
 * Add TLS Wrapper to support SMTPS
