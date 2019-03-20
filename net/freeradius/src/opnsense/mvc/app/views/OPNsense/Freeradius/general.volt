@@ -49,9 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
             saveFormToEndpoint(url="/api/freeradius/general/set", formid='frm_general_settings',callback_ok=function () {
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function (data,status) {
-                    ajaxCall(url="/api/freeradius/service/status", sendData={}, callback=function (data,status) {
-                        updateServiceControlUI('freeradius');
-                    });
+                    updateServiceControlUI('freeradius');
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
