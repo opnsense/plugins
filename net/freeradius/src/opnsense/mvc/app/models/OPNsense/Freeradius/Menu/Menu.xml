@@ -4,6 +4,8 @@
       <General url="/ui/freeradius/general/index" order="10"/>
       <Users url="/ui/freeradius/user/index" order="20"/>
       <Clients url="/ui/freeradius/client/index" order="30"/>
+      <DHCP url="/ui/freeradius/dhcp/index" order="35"/>
+      <Lease VisibleName="DHCP Leases" url="/ui/freeradius/lease/index" order="36"/>
       <EAP url="/ui/freeradius/eap/index" order="40"/>
       <LDAP url="/ui/freeradius/ldap/index" order="50"/>
       <LogFile VisibleName="Log File" order="80" url="/diag_logs_freeradius.php"/>

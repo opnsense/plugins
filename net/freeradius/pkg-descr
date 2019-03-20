@@ -11,4 +11,15 @@ security, particularly in the academic community, including eduroam.
 
 The server is fast, feature-rich, modular, and scalable.
 
+
+Plugin Changelog
+================
+
+1.9.0
+
+* Add DHCP support, serving only for DHCP relays
+* Allow usage of remote MySQL server
+* Rework service status UI
+
+
 WWW: https://www.freeradius.org

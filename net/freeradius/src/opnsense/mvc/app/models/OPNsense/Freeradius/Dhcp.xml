@@ -1,0 +1,24 @@
+<model>
+    <mount>//OPNsense/freeradius/dhcp</mount>
+    <description>FreeRADIUS DHCP configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <dhcps>
+            <dhcp type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <dns type="CSVListField">
+                    <Required>Y</Required>
+                </dns>
+                <netmask type="NetworkField">
+                    <Required>Y</Required>
+                </netmask>
+                <gatewayip type="NetworkField">
+                    <Required>Y</Required>
+                </gatewayip>
+            </dhcp>
+        </dhcps>
+    </items>
+</model>

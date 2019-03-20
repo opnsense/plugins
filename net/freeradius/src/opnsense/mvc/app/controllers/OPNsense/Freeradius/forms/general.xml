@@ -71,4 +71,58 @@
         <type>checkbox</type>
         <help>Logs password if it is correct.</help>
     </field>
+    <field>
+        <id>general.dhcpenabled</id>
+        <label>DHCP Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the FreeRADIUS DHCP service.</help>
+    </field>
+    <field>
+        <id>general.dhcplistenip</id>
+        <label>DHCP Listen IP</label>
+        <type>text</type>
+        <help>Set the IP address to listen on.</help>
+    </field>
+    <field>
+        <id>general.mysql</id>
+        <label>Enable Remote MySQL</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>This enables remote MySQL support.</help>
+    </field>
+    <field>
+        <id>general.mysqlserver</id>
+        <label>MySQL Server</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the IP address of remote MySQL server.</help>
+    </field>
+    <field>
+        <id>general.mysqlport</id>
+        <label>MySQL Port</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the port of remote MySQL server.</help>
+    </field>
+    <field>
+        <id>general.mysqluser</id>
+        <label>MySQL User</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the user of remote MySQL server.</help>
+    </field>
+    <field>
+        <id>general.mysqlpassword</id>
+        <label>MySQL Password</label>
+        <type>password</type>
+        <advanced>true</advanced>
+        <help>Set the password of remote MySQL server.</help>
+    </field>
+    <field>
+        <id>general.mysqldb</id>
+        <label>MySQL Database</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set database name of remote MySQL server.</help>
+    </field>
 </form>

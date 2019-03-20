@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -36,13 +36,13 @@ POSSIBILITY OF SUCH DAMAGE.
          * link grid actions
          *************************************************************************************************************/
 
-        $("#grid-users").UIBootgrid(
-            {   'search':'/api/freeradius/user/searchUser',
-                'get':'/api/freeradius/user/getUser/',
-                'set':'/api/freeradius/user/setUser/',
-                'add':'/api/freeradius/user/addUser/',
-                'del':'/api/freeradius/user/delUser/',
-                'toggle':'/api/freeradius/user/toggleUser/'
+        $("#grid-dhcps").UIBootgrid(
+            {   'search':'/api/freeradius/dhcp/searchDhcp',
+                'get':'/api/freeradius/dhcp/getDhcp/',
+                'set':'/api/freeradius/dhcp/setDhcp/',
+                'add':'/api/freeradius/dhcp/addDhcp/',
+                'del':'/api/freeradius/dhcp/delDhcp/',
+                'toggle':'/api/freeradius/dhcp/toggleDhcp/'
             }
         );
 
@@ -72,51 +72,28 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
-      /*************************************************************************************************************
-       * context driven input dialogs
-       *************************************************************************************************************/
-      ajaxGet(url='/api/freeradius/general/get', sendData={}, callback=function(data,status){
-          // since our general data doesn't change during input of new users, we can control the dialog inputs
-          // at once after load. No need for an "onShow" type of event here,
-          // since our changes aren't driven by the dialog form itself.
-          if (data.general != undefined) {
-              $("#frm_dialogEditFreeRADIUSUser tr").each(function () {
-                  var this_item_name = $(this).attr('id');
-                  var this_item = $(this);
-                  if (this_item_name != undefined) {
-                      $.each(data.general, function(setting_key, setting_value){
-                          var search_item = 'row_user.' + setting_key +'_';
-                          if (this_item_name.startsWith(search_item) && setting_value == '0') {
-                              // since our form tr rows are visible by default, we only have to hide what isn't needed
-                              this_item.hide();
-                          }
-                      });
-                  }
-              });
-          }
-      });
-
     });
 
 
 </script>
 
+<div class="alert alert-warning" role="alert" style="min-height:65px;">
+  <div style="margin-top: 8px;">{{ lang._('This feature is still in experimental state, use with caution.') }}</div>
+</div>
+
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#dhcps">{{ lang._('DHCP') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
-    <div id="users" class="tab-pane fade in active">
-        <!-- tab page "users" -->
-        <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSUser">
+    <div id="dhcps" class="tab-pane fade in active">
+        <!-- tab page "dhcps" -->
+        <table id="grid-dhcps" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSDhcp">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="username" data-type="string" data-visible="true">{{ lang._('Username') }}</th>
-                <th data-column-id="password" data-type="string" data-visible="false">{{ lang._('Password') }}</th>
-                <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="ip" data-type="string" data-visible="true">{{ lang._('IP Address') }}</th>
-                <th data-column-id="subnet" data-type="string" data-visible="false">{{ lang._('Subnet') }}</th>
-                <th data-column-id="vlan" data-type="string" data-visible="false">{{ lang._('VLAN ID') }}</th>
+                <th data-column-id="gatewayip" data-type="string" data-visible="true">{{ lang._('Gateway IP') }}</th>
+                <th data-column-id="dns" data-type="string" data-visible="true">{{ lang._('DNS') }}</th>
+                <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Netmask') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>            </tr>
             </thead>
@@ -140,4 +117,4 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSUser,'id':'dialogEditFreeRADIUSUser','label':lang._('Edit User')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSDhcp,'id':'dialogEditFreeRADIUSDhcp','label':lang._('Edit DHCP')])}}
