@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $('.selectpicker').selectpicker('refresh');
         });
         updateServiceControlUI('freeradius');
-        
+
         // link save button to API set action
         $("#saveAct").click(function () {
             saveFormToEndpoint(url="/api/freeradius/eap/set", formid='frm_eap_settings',callback_ok=function () {
