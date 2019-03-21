@@ -1,0 +1,42 @@
+#!/bin/sh
+set -x
+# APU LED plugin - Cloudfence 2019 JCC
+
+
+# LEDs
+LED1="/dev/led/led1"
+LED2="/dev/led/led2"
+LED3="/dev/led/led3"
+LEDKO="/boot/kernel/apuled.ko"
+
+
+messages()
+{
+MSG=$1
+echo "$MSG"
+logger -t "APU Plugin" "$MSG"
+}
+
+# check if the module file exists
+if [ -e /boot/kernel/apuled.ko ];then
+# Load module
+    kldload $LEDKO 2>&1
+else
+    messages "Error: APU LED module is missing"
+    exit 1
+fi
+
+# starting boot LED message
+# make the initial test
+echo "m-" > $LED1
+echo "m -" > $LED2
+echo "m  -" > $LED3
+sleep 2
+echo 1 > $LED1
+echo 1 > $LED2
+echo 1 > $LED3
+sleep 2
+# PWR bliking to show booting state
+echo "f6" > $LED1
+echo 0 > $LED2
+echo 0 > $LED3
