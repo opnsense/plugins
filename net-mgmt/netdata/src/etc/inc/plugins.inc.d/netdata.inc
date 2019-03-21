@@ -41,7 +41,7 @@ function netdata_services()
                 'stop' => array('netdata stop'),
             ),
             'name' => 'netdata',
-            'pidfile' => '/var/run/netdata.pid'
+            'pidfile' => '/var/db/netdata/netdata.pid'
         );
     }
 
