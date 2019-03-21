@@ -1,0 +1,32 @@
+chmod +x /usr/local/etc/rc.syshook.d/early/30-apuled
+chmod +x /usr/local/etc/rc.syshook.d/start/60-apuled
+chmod +x /usr/local/opnsense/scripts/apuled/apuledctl
+
+# reload
+/usr/local/etc/rc.configure_plugins
+service configd restart
+
+#LEDs
+LED1="/dev/led/led1"
+LED2="/dev/led/led2"
+LED3="/dev/led/led3"
+LEDKO="/boot/kernel/apuled.ko"
+
+# check if the module file exists
+if [ -e /boot/kernel/apuled.ko ];then
+# Load module
+    kldload $LEDKO 2>&1
+else
+    echo "Error: APU LED module is missing"
+    exit 1
+fi
+
+# starting boot LED message
+# make the initial test
+echo "m-" > $LED1
+echo "m -" > $LED2
+echo "m  -" > $LED3
+sleep 2
+echo 1 > $LED1
+echo 1 > $LED2
+echo 1 > $LED3

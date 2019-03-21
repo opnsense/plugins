@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# LEDs
+LED1="/dev/led/led1"
+LED2="/dev/led/led2"
+LED3="/dev/led/led3"
+
+#stop blinking PWR LED
+echo 1 > $LED1
+echo 1 > $LED2
+echo 1 > $LED3
