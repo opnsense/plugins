@@ -1,0 +1,9 @@
+<acl>
+   <page-services-netdata>
+      <name>Services: Netdata</name>
+      <patterns>
+         <pattern>ui/netdata/*</pattern>
+         <pattern>api/netdata/*</pattern>
+      </patterns>
+   </page-services-netdata>
+</acl>
