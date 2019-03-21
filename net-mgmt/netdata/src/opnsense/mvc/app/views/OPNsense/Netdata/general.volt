@@ -47,7 +47,7 @@
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/netdata/general/set", formid='frm_general_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                        ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
+                        ajaxCall(url="/api/netdata/service/reconfigure", sendData={}, callback=function(data,status) {
                             updateServiceControlUI('netdata');
                             $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                         });
