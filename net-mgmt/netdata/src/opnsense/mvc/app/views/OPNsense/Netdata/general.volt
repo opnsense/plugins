@@ -41,10 +41,13 @@
             $('.selectpicker').selectpicker('refresh');
         });
 
+     updateServiceControlUI('netdata');
+
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/netdata/general/set", formid='frm_general_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                            updateServiceControlUI('netdata');
                             $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
