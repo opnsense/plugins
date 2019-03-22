@@ -36,28 +36,28 @@ class DomainController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'domain';
     protected static $internalModelClass = '\OPNsense\Bind\Domain';
 
-    public function searchAclAction()
+    public function searchDomainAction()
     {
         return $this->searchBase('domains.domain', array("enabled", "type", "domainname", "refresh", "retry", "expire", "negative"));
     }
-    public function getAclAction($uuid = null)
+    public function getDomainAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
-    public function addAclAction()
+    public function addDomainAction()
     {
         return $this->addBase('domain', 'domains.domain');
     }
-    public function delAclAction($uuid)
+    public function delDomainAction($uuid)
     {
         return $this->delBase('domains.domain', $uuid);
     }
-    public function setAclAction($uuid)
+    public function setDomainAction($uuid)
     {
         return $this->setBase('domain', 'domains.domain', $uuid);
     }
-    public function toggleAclAction($uuid)
+    public function toggleDomainAction($uuid)
     {
         return $this->toggleBase('domains.domain', $uuid);
     }

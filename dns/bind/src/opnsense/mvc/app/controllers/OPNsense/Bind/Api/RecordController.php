@@ -36,28 +36,28 @@ class RecordController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'record';
     protected static $internalModelClass = '\OPNsense\Bind\Record';
 
-    public function searchAclAction()
+    public function searchRecordAction()
     {
         return $this->searchBase('records.record', array("enabled", "domain", "name", "type", "value"));
     }
-    public function getAclAction($uuid = null)
+    public function getRecordAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('record', 'records.record', $uuid);
     }
-    public function addAclAction()
+    public function addRecordAction()
     {
         return $this->addBase('record', 'records.record');
     }
-    public function delAclAction($uuid)
+    public function delRecordAction($uuid)
     {
         return $this->delBase('records.record', $uuid);
     }
-    public function setAclAction($uuid)
+    public function setRecordAction($uuid)
     {
         return $this->setBase('record', 'records.record', $uuid);
     }
-    public function toggleAclAction($uuid)
+    public function toggleRecordAction($uuid)
     {
         return $this->toggleBase('records.record', $uuid);
     }
