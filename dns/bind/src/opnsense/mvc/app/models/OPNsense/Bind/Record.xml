@@ -13,10 +13,9 @@
                     <Required>Y</Required>
                     <Model>
                         <template>
-                            <source>OPNsense.bind.domain</source>
+                            <source>OPNsense.Bind.Domain</source>
                             <items>domains.domain</items>
                             <display>domainname</display>
-                            <group>domainname</group>
                         </template>
                     </Model>   
                 </domain>
