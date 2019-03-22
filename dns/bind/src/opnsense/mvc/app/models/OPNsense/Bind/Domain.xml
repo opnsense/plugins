@@ -1,0 +1,43 @@
+<model>
+    <mount>//OPNsense/bind/domain</mount>
+    <description>BIND domain configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <domains>
+            <domain type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <type type="OptionField">
+                    <default>master</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <master>master</master>
+                        <slave>slave</slave>
+                    </OptionValues>   
+                </type>
+                <domainname type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                </domainname>
+                <refresh type="IntegerField">
+                    <default></default>
+                    <Required>Y</Required>
+                </refresh>
+                <retry type="IntegerField">
+                    <default></default>
+                    <Required>Y</Required>
+                </retry>
+                <expire type="IntegerField">
+                    <default></default>
+                    <Required>Y</Required>
+                </expire>
+                <negative type="IntegerField">
+                    <default></default>
+                    <Required>Y</Required>
+                </negative>
+            </domain>
+        </domains>
+    </items>
+</model>

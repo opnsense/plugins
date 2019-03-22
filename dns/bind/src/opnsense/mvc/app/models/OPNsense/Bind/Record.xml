@@ -1,0 +1,42 @@
+<model>
+    <mount>//OPNsense/bind/record</mount>
+    <description>BIND record configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <records>
+            <record type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <domain type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <template>
+                            <source>OPNsense.bind</source>
+                            <items>domains.domain</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>   
+                </domain>
+                <name type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </name>
+                <type type="OptionField">
+                    <default>A</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <A>A</A>
+                        <CNAME>CNAME</CNAME>
+                        <MX>MX</MX>
+                    </OptionValues>                     
+                </type>
+                <value type="TextField">
+                    <Required>Y</Required>
+                </value>
+            </record>
+        </records>
+    </items>
+</model>
