@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.5
+
+* Add basic zone management
+
 1.4
 
 * Add Bing and DuckDuckGo Strict Search
