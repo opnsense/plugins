@@ -8,7 +8,7 @@
     <field>
         <id>record.domain</id>
         <label>Domain</label>
-        <type>text</type>
+        <type>dropdown</type>
         <help>Set the type for this record.</help>
     </field>
     <field>
