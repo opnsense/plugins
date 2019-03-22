@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2018 by Deciso B.V.
-This file is Copyright © 2018 by Michael Muenz <m.muenz@gmail.com>
+This file is Copyright © 2018 - 2019 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -84,7 +84,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="domains" class="tab-pane fade in">
-        <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditBindAcl">
+        <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -116,7 +116,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="records" class="tab-pane fade in">
-        <table id="grid-records" class="table table-responsive" data-editDialog="dialogEditBindAcl">
+        <table id="grid-records" class="table table-responsive" data-editDialog="dialogEditBindRecord">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
