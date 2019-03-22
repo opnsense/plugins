@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
     <li><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
-    <li><a data-toggle="tab" href="#recordss">{{ lang._('Records') }}</a></li>
+    <li><a data-toggle="tab" href="#records">{{ lang._('Records') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
