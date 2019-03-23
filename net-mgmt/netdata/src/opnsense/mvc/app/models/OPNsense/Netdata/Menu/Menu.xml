@@ -1,0 +1,7 @@
+<menu>
+  <Services>
+    <Netdata cssClass="fa fa-pie-chart">
+      <General url="/ui/netdata/general/index"/>
+    </Netdata>
+  </Services>
+</menu>
