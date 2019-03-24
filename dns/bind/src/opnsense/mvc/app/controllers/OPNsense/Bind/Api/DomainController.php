@@ -38,7 +38,7 @@ class DomainController extends ApiMutableModelControllerBase
 
     public function searchDomainAction()
     {
-        return $this->searchBase('domains.domain', array("enabled", "type", "domainname", "refresh", "retry", "expire", "negative"));
+        return $this->searchBase('domains.domain', array("enabled", "type", "masterip", "domainname", "refresh", "retry", "expire", "negative"));
     }
     public function getDomainAction($uuid = null)
     {

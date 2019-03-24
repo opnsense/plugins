@@ -17,10 +17,17 @@
                         <slave>slave</slave>
                     </OptionValues>   
                 </type>
+                <masterip type="HostnameField">
+                    <Required>N</Required>
+                </masterip>
                 <domainname type="TextField">
                     <default></default>
                     <Required>Y</Required>
                 </domainname>
+                <ttl type="IntegerField">
+                    <default>86400</default>
+                    <Required>Y</Required>
+                </ttl>
                 <refresh type="IntegerField">
                     <default></default>
                     <Required>Y</Required>
@@ -34,7 +41,7 @@
                     <Required>Y</Required>
                 </expire>
                 <negative type="IntegerField">
-                    <default></default>
+                    <default>3600</default>
                     <Required>Y</Required>
                 </negative>
             </domain>
