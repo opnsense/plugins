@@ -27,22 +27,37 @@
                 <ttl type="IntegerField">
                     <default>86400</default>
                     <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </ttl>
                 <refresh type="IntegerField">
-                    <default></default>
+                    <default>21600</default>
                     <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </refresh>
                 <retry type="IntegerField">
-                    <default></default>
+                    <default>3600</default>
                     <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </retry>
                 <expire type="IntegerField">
-                    <default></default>
+                    <default>3542400</default>
                     <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 10000000.</ValidationMessage>
                 </expire>
                 <negative type="IntegerField">
                     <default>3600</default>
                     <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </negative>
             </domain>
         </domains>
