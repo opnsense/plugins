@@ -28,8 +28,13 @@
                     <Required>Y</Required>
                     <OptionValues>
                         <A>A</A>
+                        <AAAA>AAAA</AAAA>
                         <CNAME>CNAME</CNAME>
                         <MX>MX</MX>
+                        <NS>NS</NS>
+                        <PTR>PTR</PTR>
+                        <SRV>SRV</SRV>
+                        <TXT>TXT</TXT>
                     </OptionValues>                     
                 </type>
                 <value type="TextField">
