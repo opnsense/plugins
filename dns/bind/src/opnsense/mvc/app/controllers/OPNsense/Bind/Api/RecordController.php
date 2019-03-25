@@ -38,12 +38,32 @@ class RecordController extends ApiMutableModelControllerBase
 
     public function searchRecordAction()
     {
-        return $this->searchBase('records.record', array("enabled", "domain", "name", "type", "value"));
+        $domain = $this->request->get('domain');
+        $filter_funct = null;
+        if (!empty($domain)) {
+            $filter_funct = function($record) use ($domain) {
+                return $record->domain == $domain;
+            };
+        }
+
+        return $this->searchBase('records.record', array("enabled", "domain", "name", "type", "value"), null, $filter_funct);
     }
     public function getRecordAction($uuid = null)
     {
         $this->sessionClose();
-        return $this->getBase('record', 'records.record', $uuid);
+        $domain = $this->request->get('domain');
+        $result = $this->getBase('record', 'records.record', $uuid);
+        if ($uuid == null && !empty($result['record']['domain'])) {
+            // set domain selection
+            foreach ($result['record']['domain'] as $key => &$value) {
+                if ($key == $domain) {
+                    $value['selected'] = 1;
+                } else {
+                    $value['selected'] = 0;
+                }
+            }
+        }
+        return $result;
     }
     public function addRecordAction()
     {
