@@ -45,17 +45,47 @@ class DomainController extends ApiMutableModelControllerBase
         $this->sessionClose();
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
-    public function addDomainAction()
+    public function addDomainAction($uuid = null)
     {
-        return $this->addBase('domain', 'domains.domain');
+        if ($this->request->isPost() && $this->request->hasPost("domain")) {
+            if ($uuid != null) {
+                $node = $this->getModel()->getNodeByReference('domains.domain.'.$uuid);
+            } else {
+                $node = $this->getModel()->domains->domain->Add();
+            }
+            $node->setNodes($this->request->getPost("domain"));
+            if (empty((string)$node->serial)) {
+                // set timestamp
+                $backend = new Backend();
+                $serial = $backend->configdpRun("bind genserial");
+                $node->serial = $serial;
+            }
+            return $this->validateAndSave($node, 'domain');
+        }
+        return array("result"=>"failed");
     }
     public function delDomainAction($uuid)
     {
         return $this->delBase('domains.domain', $uuid);
     }
-    public function setDomainAction($uuid)
+    public function setDomainAction($uuid = null)
     {
-        return $this->setBase('domain', 'domains.domain', $uuid);
+        if ($this->request->isPost() && $this->request->hasPost("domain")) {
+            if ($uuid != null) {
+                $node = $this->getModel()->getNodeByReference('domains.domain.'.$uuid);
+            } else {
+                $node = $this->getModel()->domains->domain->Add();
+            }
+            $node->setNodes($this->request->getPost("domain"));
+            if (empty((string)$node->serial)) {
+                // set timestamp
+                $backend = new Backend();
+                $serial = $backend->configdpRun("bind genserial");
+                $node->serial = $serial;
+            }
+            return $this->validateAndSave($node, 'domain');
+        }
+        return array("result"=>"failed");
     }
     public function toggleDomainAction($uuid)
     {
