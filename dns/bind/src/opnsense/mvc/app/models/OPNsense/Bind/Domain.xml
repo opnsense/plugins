@@ -34,7 +34,7 @@
                     </Model>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
-                    <ValidationMessage>Choose a valid ACL.</ValidationMessage>
+                    <default></default>
                 </allowtransfer>
                 <allowquery type="ModelRelationField">
                     <Model>
@@ -46,7 +46,7 @@
                     </Model>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
-                    <ValidationMessage>Choose a valid ACL.</ValidationMessage>
+                    <default></default>
                 </allowquery>
                 <ttl type="IntegerField">
                     <default>86400</default>
