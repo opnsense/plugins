@@ -65,17 +65,47 @@ class RecordController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    public function addRecordAction()
+    public function addRecordAction($uuid = null)
     {
-        return $this->addBase('record', 'records.record');
+        if ($this->request->isPost() && $this->request->hasPost("record")) {
+            if ($uuid != null) {
+                $node = $this->getModel()->getNodeByReference('records.record.'.$uuid);
+            } else {
+                $node = $this->getModel()->records->record->Add();
+            }
+            $node->setNodes($this->request->getPost("record"));
+            if (empty((string)$node->serial)) {
+                // set timestamp
+                $backend = new Backend();
+                $serial = $backend->configdpRun("bind genserial");
+                $node->serial = $serial;
+            }
+            return $this->validateAndSave($node, 'record');
+        }
+        return array("result"=>"failed");
     }
     public function delRecordAction($uuid)
     {
         return $this->delBase('records.record', $uuid);
     }
-    public function setRecordAction($uuid)
+    public function setRecordAction($uuid = null)
     {
-        return $this->setBase('record', 'records.record', $uuid);
+        if ($this->request->isPost() && $this->request->hasPost("record")) {
+            if ($uuid != null) {
+                $node = $this->getModel()->getNodeByReference('records.record.'.$uuid);
+            } else {
+                $node = $this->getModel()->records->record->Add();
+            }
+            $node->setNodes($this->request->getPost("record"));
+            if (empty((string)$node->serial)) {
+                // set timestamp
+                $backend = new Backend();
+                $serial = $backend->configdpRun("bind genserial");
+                $node->serial = $serial;
+            }
+            return $this->validateAndSave($node, 'record');
+        }
+        return array("result"=>"failed");
     }
     public function toggleRecordAction($uuid)
     {
