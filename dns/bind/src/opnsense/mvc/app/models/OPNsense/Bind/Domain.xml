@@ -46,6 +46,9 @@
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </allowquery>
+                <serial type="IntegerField">
+                    <Required>N</Required>
+                </serial>
                 <ttl type="IntegerField">
                     <default>86400</default>
                     <Required>Y</Required>
