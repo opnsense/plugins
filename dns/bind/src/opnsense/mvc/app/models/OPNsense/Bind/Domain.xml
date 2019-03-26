@@ -24,7 +24,7 @@
                     <default></default>
                     <Required>Y</Required>
                 </domainname>
-                <allow-transfer type="ModelRelationField">
+                <allowtransfer type="ModelRelationField">
                     <Model>
                         <template>
                             <source>OPNsense.Bind.Acl</source>
@@ -35,8 +35,8 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                     <ValidationMessage>Choose a valid ACL.</ValidationMessage>
-                </allow-transfer>
-                <allow-query type="ModelRelationField">
+                </allowtransfer>
+                <allowquery type="ModelRelationField">
                     <Model>
                         <template>
                             <source>OPNsense.Bind.Acl</source>
@@ -47,7 +47,7 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                     <ValidationMessage>Choose a valid ACL.</ValidationMessage>
-                </allow-query>
+                </allowquery>
                 <ttl type="IntegerField">
                     <default>86400</default>
                     <Required>Y</Required>
