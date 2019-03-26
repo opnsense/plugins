@@ -24,6 +24,30 @@
                     <default></default>
                     <Required>Y</Required>
                 </domainname>
+                <allow-transfer type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Acl</source>
+                            <items>acls.acl</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <ValidationMessage>Choose a valid ACL.</ValidationMessage>
+                </allow-transfer>
+                <allow-query type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Acl</source>
+                            <items>acls.acl</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <ValidationMessage>Choose a valid ACL.</ValidationMessage>
+                </allow-query>
                 <ttl type="IntegerField">
                     <default>86400</default>
                     <Required>Y</Required>
@@ -59,6 +83,14 @@
                     <MaximumValue>86400</MaximumValue>
                     <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </negative>
+                <mailadmin type="TextField">
+                    <default>mail.opnsense.localdomain</default>
+                    <Required>Y</Required>
+                </mailadmin>
+                <dnsserver type="HostnameField">
+                    <default>opnsense.localdomain</default>
+                    <Required>Y</Required>
+                </dnsserver>
             </domain>
         </domains>
     </items>
