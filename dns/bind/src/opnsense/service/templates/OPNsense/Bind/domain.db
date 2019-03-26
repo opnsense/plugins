@@ -8,12 +8,12 @@ $TTL {{ domaindb.ttl }}
  {{ domaindb.expire }} {{ domaindb.negative }} )
 {%           for record in helpers.toList('OPNsense.bind.record.records.record') %}
 {%             if record.domain == domaindb['@uuid'] and record.name is not defined %}
- {{ record.type }} {{ record.value }}
+  {{ record.type }} {{ record.value }}
 {%             endif %}
 {%           endfor %}
 {%           for record in helpers.toList('OPNsense.bind.record.records.record') %}
 {%             if record.domain == domaindb['@uuid'] and record.name is defined %}
-{{ record.name }} {{ record.type }} {{ record.value }}
+{{ record.name }}  {{ record.type }} {{ record.value }}
 {%             endif %}
 {%           endfor %}
 {%         endif %}
