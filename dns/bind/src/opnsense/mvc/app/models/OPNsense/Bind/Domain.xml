@@ -32,9 +32,8 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <Multiple>Y</Multiple>
+                    <Multiple>N</Multiple>
                     <Required>N</Required>
-                    <default></default>
                 </allowtransfer>
                 <allowquery type="ModelRelationField">
                     <Model>
@@ -44,9 +43,8 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <Multiple>Y</Multiple>
+                    <Multiple>N</Multiple>
                     <Required>N</Required>
-                    <default></default>
                 </allowquery>
                 <ttl type="IntegerField">
                     <default>86400</default>
