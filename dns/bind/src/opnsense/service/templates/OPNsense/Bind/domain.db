@@ -5,14 +5,9 @@
 {%         if domaindb.enabled == '1' and domaindb.type == 'master' %}
 $TTL {{ domaindb.ttl }}
 @       IN      SOA    opnsense.localdomain. hostmaster.opnsense.localdomain. ( 2019932401 {{ domaindb.refresh }} {{ domaindb.retry }} {{ domaindb.expire }} {{ domaindb.negative }} )
-{%           for record in helpers.toList('OPNsense.bind.record.records.record') %}
-{%             if record.domain == domaindb['@uuid'] and record.name is not defined %}
-                {{ record.type }} {{ record.value }}
-{%             endif %}
-{%           endfor %}
-{%           for record in helpers.toList('OPNsense.bind.record.records.record') %}
-{%             if record.domain == domaindb['@uuid'] and record.name is defined %}
-{{ record.name }}                {{ record.type }} {{ record.value }}
+{%           for record in helpers.sortDictList(OPNsense.bind.record.records.record, 'name', 'type' ) %}
+{%             if record.domain == domaindb['@uuid'] %}
+{{ record.name }} {{ record.type }} {{ record.value }}
 {%             endif %}
 {%           endfor %}
 {%         endif %}
