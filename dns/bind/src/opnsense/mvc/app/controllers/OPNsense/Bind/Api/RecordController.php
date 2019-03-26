@@ -30,6 +30,7 @@
 namespace OPNsense\Bind\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
+use \OPNsense\Core\Backend;
 
 class RecordController extends ApiMutableModelControllerBase
 {
