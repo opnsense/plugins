@@ -10,7 +10,7 @@ ldap {
 {%     endif %}
 
 {%     if helpers.exists('OPNsense.freeradius.ldap.password') and OPNsense.freeradius.ldap.password != '' %}
-        password = {{ OPNsense.freeradius.ldap.password }}
+        password = '{{ OPNsense.freeradius.ldap.password }}'
 {%     endif %}
 
 {%     if helpers.exists('OPNsense.freeradius.ldap.base_dn') and OPNsense.freeradius.ldap.base_dn != '' %}
@@ -70,7 +70,7 @@ ldap {
         user {
                 base_dn = "${..base_dn}"
 {%     if helpers.exists('OPNsense.freeradius.ldap.user_filter') and OPNsense.freeradius.ldap.user_filter != '' %}
-                filter = "{{ OPNsense.freeradius.ldap.user_filter }}"
+                filter = '{{ OPNsense.freeradius.ldap.user_filter }}'
 {%     endif %}
                 sasl {
                 }
@@ -78,7 +78,7 @@ ldap {
         group {
                 base_dn = "${..base_dn}"
 {%     if helpers.exists('OPNsense.freeradius.ldap.group_filter') and OPNsense.freeradius.ldap.group_filter != '' %}
-                filter = '(objectClass=posixGroup)'
+                filter = '{{ OPNsense.freeradius.ldap.group_filter }}'
 {%     endif %}
                 membership_attribute = 'memberOf'
         }
