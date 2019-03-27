@@ -55,12 +55,9 @@ class DomainController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->domains->domain->Add();
             }
             $node->setNodes($this->request->getPost("domain"));
-            if (empty((string)$node->serial)) {
-                // set timestamp
-                $backend = new Backend();
-                $serial = $backend->configdpRun("bind genserial");
-                $node->serial = $serial;
-            }
+            $backend = new Backend();
+            $serial = $backend->configdpRun("bind genserial");
+            $node->serial = $serial;
             return $this->validateAndSave($node, 'domain');
         }
         return array("result"=>"failed");
@@ -78,12 +75,9 @@ class DomainController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->domains->domain->Add();
             }
             $node->setNodes($this->request->getPost("domain"));
-            if (empty((string)$node->serial)) {
-                // set timestamp
-                $backend = new Backend();
-                $serial = $backend->configdpRun("bind genserial");
-                $node->serial = $serial;
-            }
+            $backend = new Backend();
+            $serial = $backend->configdpRun("bind genserial");
+            $node->serial = $serial;
             return $this->validateAndSave($node, 'domain');
         }
         return array("result"=>"failed");
