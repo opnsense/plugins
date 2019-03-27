@@ -1,19 +1,15 @@
 <?php
 
 /*
-    Copyright (C) 2018-2019 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
        this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -28,15 +24,44 @@
 
 namespace OPNsense\Bind;
 
-class GeneralController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class Domain extends BaseModel
 {
-    public function indexAction()
+    /**
+     * {@inheritdoc}
+     */
+    public function serializeToConfig($validateFullModel = false, $disable_validation = false)
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->dnsblForm = $this->getForm("dnsbl");
-        $this->view->formDialogEditBindAcl = $this->getForm("dialogEditBindAcl");
-        $this->view->formDialogEditBindDomain = $this->getForm("dialogEditBindDomain");
-        $this->view->formDialogEditBindRecord = $this->getForm("dialogEditBindRecord");
-        $this->view->pick('OPNsense/Bind/general');
+        $serialsToSet = array();
+        // collected changed records
+        foreach ($this->getFlatNodes() as $key => $node) {
+            if ($node->isFieldChanged() && (string)$node !== "") {
+                $domain = $node->getParentNode();
+                if (empty($serialsToSet[$domain->getAttribute('uuid')])) {
+                    $serialsToSet[$domain->getAttribute('uuid')] = $domain;
+                }
+            }
+        }
+        // new serials on changed records
+        foreach ($serialsToSet as $domain) {
+            $domain->serial = (string)date("YmdHis");
+        }
+        return parent::serializeToConfig($validateFullModel, $disable_validation);
+    }
+
+    /**
+     * @param $uuid string domain uuid to update
+     * @return Domain
+     */
+    public function updateSerial($uuid)
+    {
+        foreach ($this->domains->domain->iterateItems() as $domain) {
+            if ($domain->getAttribute('uuid') == $uuid) {
+                $domain->serial = (string)date("YmdHis");
+                return $this;
+            }
+        }
+        return $this;
     }
 }

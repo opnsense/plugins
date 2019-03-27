@@ -1,0 +1,17 @@
+{% if helpers.exists('OPNsense.bind.general.enabled') and OPNsense.bind.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.bind.domain.domains.domain') %}
+{%     for domaindb in helpers.toList('OPNsense.bind.domain.domains.domain') %}
+{%       if TARGET_FILTERS['OPNsense.bind.domain.domains.domain.' ~ loop.index0] %}
+{%         if domaindb.enabled == '1' and domaindb.type == 'master' %}
+$TTL {{ domaindb.ttl }}
+@       IN      SOA    {{ domaindb.dnsserver }}. {{ domaindb.mailadmin }}. ( {{ domaindb.serial|trim }} {{ domaindb.refresh }} {{ domaindb.retry }} {{ domaindb.expire }} {{ domaindb.negative }} )
+{%           for record in helpers.sortDictList(OPNsense.bind.record.records.record, 'name', 'type' ) %}
+{%             if record.domain == domaindb['@uuid'] %}
+{{ record.name }}                {{ record.type }} {{ record.value }}
+{%             endif %}
+{%           endfor %}
+{%         endif %}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}

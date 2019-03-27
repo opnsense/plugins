@@ -1,7 +1,7 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2018 by Deciso B.V.
-This file is Copyright © 2018 by Michael Muenz <m.muenz@gmail.com>
+OPNsense® is Copyright © 2014 – 2019 by Deciso B.V.
+This file is Copyright © 2018 - 2019 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
+    <li><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -81,19 +82,80 @@ POSSIBILITY OF SUCH DAMAGE.
             <br /><br />
         </div>
     </div>
+    <div id="domains" class="tab-pane fade in">
+        <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditBindDomain">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
+                    <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                    <th data-column-id="ttl" data-type="string" data-visible="true">{{ lang._('TTL') }}</th>
+                    <th data-column-id="refresh" data-type="string" data-visible="true">{{ lang._('Refresh') }}</th>
+                    <th data-column-id="retry" data-type="string" data-visible="true">{{ lang._('Retry') }}</th>
+                    <th data-column-id="expire" data-type="string" data-visible="true">{{ lang._('Expire') }}</th>
+                    <th data-column-id="negative" data-type="string" data-visible="true">{{ lang._('Negative TTL') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <hr/>
+        <div id="record-area">
+            <table id="grid-records" class="table table-responsive" data-editDialog="dialogEditBindRecord">
+                <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
+                    <th data-column-id="value" data-type="string" data-visible="true">{{ lang._('Value') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button id="recordAddBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <hr />
+            <button class="btn btn-primary" id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_domain_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindDomain,'id':'dialogEditBindDomain','label':lang._('Edit Domains')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Records')])}}
 
 <script>
 $( document ).ready(function() {
-    var data_get_map = {'frm_general_settings':"/api/bind/general/get"};
+    let data_get_map = {'frm_general_settings':"/api/bind/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
 
-    var data_get_map2 = {'frm_dnsbl_settings':"/api/bind/dnsbl/get"};
+    let data_get_map2 = {'frm_dnsbl_settings':"/api/bind/dnsbl/get"};
     mapDataToFormUI(data_get_map2).done(function(data){
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
@@ -110,6 +172,53 @@ $( document ).ready(function() {
             'toggle':'/api/bind/acl/toggleAcl/'
         }
     );
+    $("#grid-domains").UIBootgrid({
+        'search':'/api/bind/domain/searchDomain',
+        'get':'/api/bind/domain/getDomain/',
+        'set':'/api/bind/domain/setDomain/',
+        'add':'/api/bind/domain/addDomain/',
+        'del':'/api/bind/domain/delDomain/',
+        'toggle':'/api/bind/domain/toggleDomain/',
+        options:{
+            selection: true,
+            multiSelect: false,
+            rowSelect: true,
+        }
+    }).on("selected.rs.jquery.bootgrid", function(e, rows) {
+        $("#grid-records").bootgrid('reload');
+    }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
+        $("#grid-records").bootgrid('reload');
+    }).on("loaded.rs.jquery.bootgrid", function (e) {
+        let ids = $("#grid-domains").bootgrid("getCurrentRows");
+        if (ids.length > 0) {
+            $("#grid-domains").bootgrid('select', [ids[0].uuid]);
+        }
+    });
+
+    $("#grid-records").UIBootgrid({
+        'search':'/api/bind/record/searchRecord',
+        'get':'/api/bind/record/getRecord/',
+        'set':'/api/bind/record/setRecord/',
+        'add':'/api/bind/record/addRecord/',
+        'del':'/api/bind/record/delRecord/',
+        'toggle':'/api/bind/record/toggleRecord/',
+        options:{
+            useRequestHandlerOnGet: true,
+            requestHandler: function() {
+                let request = {'domain': 'not_found'};
+                let ids = $("#grid-domains").bootgrid("getSelectedRows");
+                if (ids.length > 0) {
+                    request['domain'] = ids[0];
+                    $("#recordAddBtn").show();
+                    $("#record-area").show();
+                } else {
+                    $("#recordAddBtn").hide();
+                    $("#record-area").hide();
+                }
+                return request;
+            }
+        }
+    });
 
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/bind/general/set", formid='frm_general_settings',callback_ok=function(){
@@ -143,5 +252,12 @@ $( document ).ready(function() {
         });
     });
 
+    $("#saveAct_domain").click(function(){
+        $("#saveAct_domain_progress").addClass("fa fa-spinner fa-pulse");
+        ajaxCall("/api/bind/service/reconfigure", {}, function(data,status) {
+            updateServiceControlUI('bind');
+            $("#saveAct_domain_progress").removeClass("fa fa-spinner fa-pulse");
+        });
+    });
 });
 </script>
