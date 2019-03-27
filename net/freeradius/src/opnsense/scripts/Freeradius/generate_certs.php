@@ -87,7 +87,7 @@ if (isset($configObj->OPNsense->freeradius)) {
                     )));
 
                     $pem_content .= "\n";
-                    $cert_pem_content .= $pem_content;
+                    $ca_pem_content .= $pem_content;
                 }
             }
         }
