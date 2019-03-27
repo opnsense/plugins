@@ -100,4 +100,21 @@ class ServiceController extends ApiMutableServiceControllerBase
 
         return array('status' => $status);
     }
+
+    /**
+     * retrieve extended status of service
+     * @return array response message
+     * @throws \Exception when configd action fails
+     */
+    public function vtsAction()
+    {
+        $backend = new Backend();
+        $vts = json_decode($backend->configdRun('nginx vts'), true);
+        if ($vts != null) {
+            return $vts;
+        }
+
+        $this->response->setStatusCode(404, "Not Found");
+        return array();
+    }
 }
