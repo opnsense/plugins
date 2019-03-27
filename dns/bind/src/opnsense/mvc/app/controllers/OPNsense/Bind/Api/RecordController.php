@@ -75,12 +75,9 @@ class RecordController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->records->record->Add();
             }
             $node->setNodes($this->request->getPost("record"));
-            if (empty((string)$node->serial)) {
-                // set timestamp
-                $backend = new Backend();
-                $serial = $backend->configdpRun("bind genserial");
-                $node->serial = $serial;
-            }
+            $backend = new Backend();
+            $serial = $backend->configdpRun("bind genserial");
+            $node->serial = $serial;
             return $this->validateAndSave($node, 'record');
         }
         return array("result"=>"failed");
@@ -98,12 +95,9 @@ class RecordController extends ApiMutableModelControllerBase
                 $node = $this->getModel()->records->record->Add();
             }
             $node->setNodes($this->request->getPost("record"));
-            if (empty((string)$node->serial)) {
-                // set timestamp
-                $backend = new Backend();
-                $serial = $backend->configdpRun("bind genserial");
-                $node->serial = $serial;
-            }
+            $backend = new Backend();
+            $serial = $backend->configdpRun("bind genserial");
+            $node->serial = $serial;
             return $this->validateAndSave($node, 'record');
         }
         return array("result"=>"failed");
