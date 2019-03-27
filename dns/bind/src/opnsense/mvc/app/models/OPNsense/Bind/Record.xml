@@ -17,7 +17,7 @@
                             <items>domains.domain</items>
                             <display>domainname</display>
                         </template>
-                    </Model>   
+                    </Model>
                 </domain>
                 <name type="TextField">
                     <default></default>
@@ -35,7 +35,7 @@
                         <PTR>PTR</PTR>
                         <SRV>SRV</SRV>
                         <TXT>TXT</TXT>
-                    </OptionValues>                     
+                    </OptionValues>
                 </type>
                 <value type="TextField">
                     <Required>Y</Required>

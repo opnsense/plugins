@@ -15,7 +15,7 @@
                     <OptionValues>
                         <master>master</master>
                         <slave>slave</slave>
-                    </OptionValues>   
+                    </OptionValues>
                 </type>
                 <masterip type="HostnameField">
                     <Required>N</Required>
