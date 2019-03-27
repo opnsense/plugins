@@ -1,6 +1,7 @@
 <?php
 /**
  *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2019 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -30,12 +31,30 @@
 namespace OPNsense\Bind\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Backend;
+use \OPNsense\Bind\Domain;
+use \OPNsense\Core\Config;
 
 class RecordController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'record';
     protected static $internalModelClass = '\OPNsense\Bind\Record';
+
+    /**
+     * update parent domain serial
+     * @param $uuid string
+     * @throws \OPNsense\Base\ModelException
+     * @throws \ReflectionException
+     */
+    private function setDomainSerial($uuid)
+    {
+        if ($this->request->isPost()) {
+            $record  = $this->getModel()->getRecord($uuid);
+            if ($record !== null) {
+                (new Domain)->updateSerial((string)$record->domain)->serializeToConfig();
+                Config::getInstance()->save();
+            }
+        }
+    }
 
     public function searchRecordAction()
     {
@@ -47,8 +66,11 @@ class RecordController extends ApiMutableModelControllerBase
             };
         }
 
-        return $this->searchBase('records.record', array("enabled", "domain", "name", "type", "value"), null, $filter_funct);
+        return $this->searchBase('records.record',
+            array("enabled", "domain", "name", "type", "value"), null, $filter_funct
+        );
     }
+
     public function getRecordAction($uuid = null)
     {
         $this->sessionClose();
@@ -66,44 +88,40 @@ class RecordController extends ApiMutableModelControllerBase
         }
         return $result;
     }
-    public function addRecordAction($uuid = null)
+
+    public function addRecordAction()
     {
-        if ($this->request->isPost() && $this->request->hasPost("record")) {
-            if ($uuid != null) {
-                $node = $this->getModel()->getNodeByReference('records.record.'.$uuid);
-            } else {
-                $node = $this->getModel()->records->record->Add();
-            }
-            $node->setNodes($this->request->getPost("record"));
-            $backend = new Backend();
-            $serial = $backend->configdpRun("bind genserial");
-            $node->serial = $serial;
-            return $this->validateAndSave($node, 'record');
+        $result = $this->addBase('record', 'records.record');
+        if (!empty($result['uuid'])) {
+            $this->setDomainSerial($result['uuid']);
         }
-        return array("result"=>"failed");
+        return $result;
     }
+
     public function delRecordAction($uuid)
     {
-        return $this->delBase('records.record', $uuid);
+        $result =  $this->delBase('records.record', $uuid);
+        if ($result['result'] == 'deleted') {
+            $this->setDomainSerial($uuid);
+        }
+        return $result;
     }
+
     public function setRecordAction($uuid = null)
     {
-        if ($this->request->isPost() && $this->request->hasPost("record")) {
-            if ($uuid != null) {
-                $node = $this->getModel()->getNodeByReference('records.record.'.$uuid);
-            } else {
-                $node = $this->getModel()->records->record->Add();
-            }
-            $node->setNodes($this->request->getPost("record"));
-            $backend = new Backend();
-            $serial = $backend->configdpRun("bind genserial");
-            $node->serial = $serial;
-            return $this->validateAndSave($node, 'record');
+        $result =  $this->setBase('record', 'records.record', $uuid);
+        if ($result['result'] == 'saved') {
+            $this->setDomainSerial($uuid);
         }
-        return array("result"=>"failed");
+        return $result;
     }
+
     public function toggleRecordAction($uuid)
     {
-        return $this->toggleBase('records.record', $uuid);
+        $result =  $this->toggleBase('records.record', $uuid);
+        if (!empty($result['changed'])) {
+            $this->setDomainSerial($uuid);
+        }
+        return $result;
     }
 }

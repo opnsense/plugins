@@ -28,4 +28,40 @@ use OPNsense\Base\BaseModel;
 
 class Domain extends BaseModel
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function serializeToConfig($validateFullModel = false, $disable_validation = false)
+    {
+        $serialsToSet = array();
+        // collected changed records
+        foreach ($this->getFlatNodes() as $key => $node) {
+            if ($node->isFieldChanged() && (string)$node !== "") {
+                $domain = $node->getParentNode();
+                if (empty($serialsToSet[$domain->getAttribute('uuid')])) {
+                    $serialsToSet[$domain->getAttribute('uuid')] = $domain;
+                }
+            }
+        }
+        // new serials on changed records
+        foreach ($serialsToSet as $domain) {
+            $domain->serial = (string)date("YmdHis");
+        }
+        return parent::serializeToConfig($validateFullModel, $disable_validation);
+    }
+
+    /**
+     * @param $uuid string domain uuid to update
+     * @return Domain
+     */
+    public function updateSerial($uuid)
+    {
+        foreach ($this->domains->domain->iterateItems() as $domain) {
+            if ($domain->getAttribute('uuid') == $uuid) {
+                $domain->serial = (string)date("YmdHis");
+                return $this;
+            }
+        }
+        return $this;
+    }
 }

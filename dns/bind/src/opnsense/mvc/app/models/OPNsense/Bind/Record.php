@@ -2,6 +2,8 @@
 
 /*
     Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2019 Deciso B.V.
+
     All rights reserved.
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
@@ -28,4 +30,17 @@ use OPNsense\Base\BaseModel;
 
 class Record extends BaseModel
 {
+    /**
+     * @param $uuid string record uuid
+     * @return mixed record
+     */
+    public function getRecord($uuid)
+    {
+        foreach ($this->records->record->iterateItems() as $record) {
+            if ($record->getAttribute('uuid') == $uuid) {
+                return $record;
+            }
+        }
+        return null;
+    }
 }
