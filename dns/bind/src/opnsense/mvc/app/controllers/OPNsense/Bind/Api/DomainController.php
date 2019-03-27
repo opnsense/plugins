@@ -1,6 +1,7 @@
 <?php
 /**
  *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2019 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -39,49 +40,33 @@ class DomainController extends ApiMutableModelControllerBase
 
     public function searchDomainAction()
     {
-        return $this->searchBase('domains.domain', array("enabled", "type", "masterip", "domainname", "allowtransfer", "allowquery", "ttl", "refresh", "retry", "expire", "negative", "mailadmin", "dnsserver"));
+        return $this->searchBase('domains.domain', array(
+            "enabled", "type", "masterip", "domainname", "allowtransfer", "allowquery", "ttl",
+            "refresh", "retry", "expire", "negative", "mailadmin", "dnsserver"
+        ));
     }
+
     public function getDomainAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
+
     public function addDomainAction($uuid = null)
     {
-        if ($this->request->isPost() && $this->request->hasPost("domain")) {
-            if ($uuid != null) {
-                $node = $this->getModel()->getNodeByReference('domains.domain.'.$uuid);
-            } else {
-                $node = $this->getModel()->domains->domain->Add();
-            }
-            $node->setNodes($this->request->getPost("domain"));
-            $backend = new Backend();
-            $serial = $backend->configdpRun("bind genserial");
-            $node->serial = $serial;
-            return $this->validateAndSave($node, 'domain');
-        }
-        return array("result"=>"failed");
+        return $this->addBase('domain', 'domains.domain');
     }
+
     public function delDomainAction($uuid)
     {
         return $this->delBase('domains.domain', $uuid);
     }
+
     public function setDomainAction($uuid = null)
     {
-        if ($this->request->isPost() && $this->request->hasPost("domain")) {
-            if ($uuid != null) {
-                $node = $this->getModel()->getNodeByReference('domains.domain.'.$uuid);
-            } else {
-                $node = $this->getModel()->domains->domain->Add();
-            }
-            $node->setNodes($this->request->getPost("domain"));
-            $backend = new Backend();
-            $serial = $backend->configdpRun("bind genserial");
-            $node->serial = $serial;
-            return $this->validateAndSave($node, 'domain');
-        }
-        return array("result"=>"failed");
+        return $this->setBase('domain', 'domains.domain', $uuid);
     }
+
     public function toggleDomainAction($uuid)
     {
         return $this->toggleBase('domains.domain', $uuid);
