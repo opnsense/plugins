@@ -23,6 +23,7 @@
                 <Required>N</Required>
                 <multiple>Y</multiple>
                 <default></default>
+                <AllowDynamic>Y</AllowDynamic>
                 <filters>
                     <enable>/^(?!0).*$/</enable>
                 </filters>

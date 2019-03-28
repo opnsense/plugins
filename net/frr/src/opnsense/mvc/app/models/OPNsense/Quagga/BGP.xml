@@ -53,6 +53,7 @@
                                 <default></default>
                                 <Required>N</Required>
                                 <multiple>N</multiple>
+                                <AllowDynamic>Y</AllowDynamic>
                                 <filters>
                                         <enable>/^(?!0).*$/</enable>
                                 </filters>
