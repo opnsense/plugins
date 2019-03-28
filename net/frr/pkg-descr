@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.9
+
+* Allow usage of VTI IPSec interfaces
+
 1.8
 
 * Add area range in OSPF config
