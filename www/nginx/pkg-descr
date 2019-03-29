@@ -11,6 +11,7 @@ Plugin Changelog
 1.11
 
 * add VTS(1) module for traffic status reports
+* fix HSTS bug
 
 (1) https://github.com/vozlt/nginx-module-vts
 
