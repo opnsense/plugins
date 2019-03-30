@@ -90,4 +90,12 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $this->view->pick('OPNsense/Nginx/ban');
     }
+
+    /**
+     * display a viewer for traffic statistics.
+     */
+    public function vtsAction()
+    {
+        $this->view->pick('OPNsense/Nginx/vts');
+    }
 }
