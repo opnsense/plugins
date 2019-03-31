@@ -173,6 +173,9 @@
         <default>64</default>
         <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
       </ipv6mask>
+      <whitelist_ip type="CSVListField">
+        <Required>N</Required>
+      </whitelist_ip>
     </graylist>
 
     <dkim>
