@@ -138,6 +138,14 @@
                 <type>text</type>
                 <help>Mask bits are used to limit the network range from which the message may be resent. This is used to avoid a rejection if another server sends the second mail.</help>
             </field>
+            <field>
+                <id>rspamd.graylist.whitelist_ip</id>
+                <label>Whitelisted IPs</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Mails from IPs entered here will be whitelisted from greylisting.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-anti-spam-dkim" description="DKIM">
           <!-- dkim -->
