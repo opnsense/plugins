@@ -1,5 +1,5 @@
 PLUGIN_NAME=		zabbix-agent
-PLUGIN_VERSION=		1.4
+PLUGIN_VERSION=		1.5
 PLUGIN_COMMENT=		Enterprise-class open source distributed monitoring agent
 PLUGIN_DEPENDS=		zabbix4-agent
 PLUGIN_MAINTAINER=	opnsense@moov.de
