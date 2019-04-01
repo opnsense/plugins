@@ -175,6 +175,7 @@
       </ipv6mask>
       <whitelist_ip type="CSVListField">
         <Required>N</Required>
+        <mask>/^([a-fA-F0-9\.:\[\]\/]*?,)*([a-fA-F0-9\.:\[\]\/]*)$/</mask>
       </whitelist_ip>
     </graylist>
 
