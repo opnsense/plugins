@@ -144,7 +144,7 @@
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
-                <help>Mails from IPs or networks in CIDR format entered here will be whitelisted from greylisting.</help>
+                <help>Mails from IPs or networks in CIDR format entered here will be whitelisted from graylisting.</help>
             </field>
         </subtab>
         <subtab id="rspamd-anti-spam-dkim" description="DKIM">
