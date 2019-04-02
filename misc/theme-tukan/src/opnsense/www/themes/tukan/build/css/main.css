@@ -6316,6 +6316,10 @@ label > input[type="radio"] {
   background-color: #CB4326 !important;
   color:#FFF;
 }
+.fw_nat {
+  background-color: #CBA026 !important;
+  color:#FFF;
+}
   /*additional extensions for theme-tukan*/
 
 #tab_1 #maintabs {
