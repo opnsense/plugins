@@ -1,6 +1,6 @@
 {#
 # Copyright (C) 2017-2018 Fabian Franz
-# Copyright (C) 2015, YoungJoo.Kim <vozltx@gmail.com>
+# Copyright (C) 2015 YoungJoo.Kim <vozltx@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
