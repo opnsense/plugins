@@ -113,7 +113,7 @@ foreach ($configNodes as $key => $value) {
                                 continue;
                             }
                             // check if a default certificate is configured
-                            if (($type == cert) and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
+                            if (($type == 'cert') and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
                                 $default_cert = (string)$child->ssl_default_certificate;
                                 $default_cert_filename = $export_path . $default_cert . ".pem";
                                 // ensure that the default certificate is the first entry on the list
