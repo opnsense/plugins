@@ -68,14 +68,32 @@ if (isset($configObj->OPNsense->freeradius)) {
                     // generate ca pem file
                     if (!empty($cert->caref)) {
                         $cert = (array)$cert;
-                        $ca_pem_content .= ca_chain($cert);
+                        $cert_pem_content .= ca_chain($cert);
                     }
                 }
             }
         }
 
+        $cert_refid = (string)$find_cert->ca;
+        // if eap has a ca-certificate attached, search for its contents
+        if ($cert_refid != "") {
+            foreach ($configObj->ca as $ca) {
+                if ($cert_refid == (string)$ca->refid) {
+                    // generate cert pem file
+                    $pem_content = trim(str_replace("\n\n", "\n", str_replace(
+                        "\r",
+                        "",
+                        base64_decode((string)$ca->crt)
+                    )));
+
+                    $pem_content .= "\n";
+                    $ca_pem_content .= $pem_content;
+                }
+            }
+        }
+
         $cert_refid = (string)$find_cert->crl;
-        // if eap has a certificate attached, search for its contents
+        // if eap has a crl attached, search for its contents
         if ($cert_refid != "") {
             foreach ($configObj->crl as $crl) {
                 if ($cert_refid == (string)$crl->refid && !empty((string)$crl->text)) {
