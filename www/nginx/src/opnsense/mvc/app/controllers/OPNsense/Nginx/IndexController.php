@@ -63,7 +63,8 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->tls_fingerprint = $this->getForm("tls_fingerprint");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
-            count($nginx->custom_policy->iterateItems()) == 0 && count($nginx->naxsi_rule->iterateItems()) == 0;
+            count(iterator_to_array($nginx->custom_policy->iterateItems())) == 0 &&
+            count(iterator_to_array($nginx->naxsi_rule->iterateItems())) == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 
@@ -89,5 +90,13 @@ class IndexController extends \OPNsense\Base\IndexController
     public function banAction()
     {
         $this->view->pick('OPNsense/Nginx/ban');
+    }
+
+    /**
+     * display a viewer for traffic statistics.
+     */
+    public function vtsAction()
+    {
+        $this->view->pick('OPNsense/Nginx/vts');
     }
 }

@@ -638,6 +638,7 @@
         <default>main</default>
         <OptionValues>
           <main>Default</main>
+          <main_ext>Extended</main_ext>
           <anonymized>Anonymized</anonymized>
           <disabled>Disabled</disabled>
         </OptionValues>
@@ -780,6 +781,7 @@
         <default>main</default>
         <OptionValues>
           <main>Default</main>
+          <main_ext>Extended</main_ext>
           <anonymized>Anonymized</anonymized>
           <disabled>Disabled</disabled>
         </OptionValues>

@@ -8,6 +8,14 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.11
+
+* add VTS(1) module for traffic status reports
+* fix HSTS bug
+* add extended log format (contributed by Josh Wiles)
+
+(1) https://github.com/vozlt/nginx-module-vts
+
 1.10
 
 * fix content security settings (missing checkbox, correct templating)
