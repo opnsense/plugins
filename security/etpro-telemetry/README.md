@@ -1,6 +1,6 @@
 # ETPRO telemetry edition
 
-Telemetry tools, depends on `rule-updater.config`, which contains the device registartion number provided by OPNsense. 
+Telemetry tools, depends on `rule-updater.config`, which contains the device registartion number provided by OPNsense.
 
 for example.
 ```
@@ -24,12 +24,12 @@ Install requirements (default available on OPNsense)
 ```
 pip install -r requires.txt
 ```
- 
+
 
 send_telemetry.py
 -----------------
 
-Send anonymized telemetry data from Suricata eve log file, for details how the anonimisation works see `EventCollector._get_local_networks()` and 
+Send anonymized telemetry data from Suricata eve log file, for details how the anonimisation works see `EventCollector._get_local_networks()` and
 `EventCollector.push()' where all local attached networks are used to strip off the first segments of the address before sending.
 
 
