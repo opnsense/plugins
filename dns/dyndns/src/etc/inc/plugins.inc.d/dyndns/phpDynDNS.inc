@@ -665,7 +665,7 @@ class updatedns
                     $oldIPResult = null;
                     foreach ($a_result as $resultItem) {
                         if ($RecordType === $resultItem['Type']) {
-                            $oldTTLResult = $resultItem[TTL];
+                            $oldTTLResult = $resultItem["TTL"];
                             $oldIPResult = $resultItem["ResourceRecords"][0];
                         }
                     }
