@@ -61,6 +61,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->sni_hostname_map = $this->getForm("sni_hostname_map");
         $this->view->ipacl = $this->getForm("ipacl");
         $this->view->tls_fingerprint = $this->getForm("tls_fingerprint");
+        $this->view->syslog_target = $this->getForm("syslog_target");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
             count(iterator_to_array($nginx->custom_policy->iterateItems())) == 0 &&
