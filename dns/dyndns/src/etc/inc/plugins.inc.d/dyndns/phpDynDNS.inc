@@ -751,7 +751,7 @@ class updatedns
                     $getHostId = "$dnsRecordsUrl?name=$fqdn&type=$recordType";
                     curl_setopt($ch, CURLOPT_URL, $getHostId);
                     $output = json_decode(curl_exec($ch));
-                    $recordCount = count($output->result);
+                    $recordCount = !empty($output->result) ? count($output->result) : 0;
                     if ($recordCount === 0) {
                         // create record
                         curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
