@@ -665,8 +665,8 @@ class updatedns
                     $oldIPResult = null;
                     foreach ($a_result as $resultItem) {
                         if ($RecordType === $resultItem['Type']) {
-                            $oldTTLResult = $resultItem[TTL];
-                            $oldIPResult = $resultItem[ResourceRecords][0];
+                            $oldTTLResult = $resultItem["TTL"];
+                            $oldIPResult = $resultItem["ResourceRecords"][0];
                         }
                     }
 
@@ -681,12 +681,12 @@ class updatedns
                     if (!empty($OldIP)) {
                         /* Your Hostname already exists, deleting and creating it again */
                         $changes = array();
-                        $changes[] = $r53->prepareChange(DELETE, $hostname, $RecordType, $OldTTL, $OldIP);
-                        $changes[] = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
+                        $changes[] = $r53->prepareChange("DELETE", $hostname, $RecordType, $OldTTL, $OldIP);
+                        $changes[] = $r53->prepareChange("CREATE", $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     } else {
                         /* Your Hostname does not exist yet, creating it */
-                        $changes = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
+                        $changes = $r53->prepareChange("CREATE", $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     }
                 }
