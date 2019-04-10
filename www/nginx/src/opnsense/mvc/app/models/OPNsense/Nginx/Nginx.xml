@@ -1399,7 +1399,7 @@
       </max_size>
     </cache_path>
 
-    <syslogtarget type="ArrayField">
+    <syslog_target type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>
       </description>
@@ -1458,6 +1458,6 @@
         <Required>Y</Required>
         <default>N</default>
       </nohostname>
-    </syslogtarget>
+    </syslog_target>
   </items>
 </model>
