@@ -177,4 +177,28 @@
         <type>text</type>
         <help>Timeout in seconds when connecting to database server.</help>
     </field>
+    <field>
+        <id>general.fc_malwareexpert</id>
+        <label>Add Malware Expert Signatures</label>
+        <type>checkbox</type>
+        <help>Activate third party signatures from Malware Expert. Use at your own risk.</help>
+    </field>
+    <field>
+        <id>general.fc_blurl</id>
+        <label>Add BLURL Signatures</label>
+        <type>checkbox</type>
+        <help>Activate third party signatures from BLURL. Use at your own risk.</help>
+    </field>
+    <field>
+        <id>general.fc_jurlbla</id>
+        <label>Add BLURL Signatures</label>
+        <type>checkbox</type>
+        <help>Activate third party signatures from Sanesecurtiy JURLBLA. Use at your own risk.</help>
+    </field>
+    <field>
+        <id>general.fc_bofhland</id>
+        <label>Add BOFHLand Signatures</label>
+        <type>checkbox</type>
+        <help>Activate third party signatures from Sanesecurtiy BOFHLand. Use at your own risk.</help>
+    </field>
 </form>
