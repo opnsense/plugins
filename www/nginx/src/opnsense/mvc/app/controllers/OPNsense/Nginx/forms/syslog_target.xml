@@ -10,6 +10,11 @@
     <type>text</type>
   </field>
   <field>
+    <id>syslog_target.port</id>
+    <label>Port</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>syslog_target.facility</id>
     <label>Facility</label>
     <type>dropdown</type>

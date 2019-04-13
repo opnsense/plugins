@@ -549,6 +549,18 @@
       <servername type="CSVListField">
         <Required>Y</Required>
       </servername>
+      <syslog_targets type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>syslog_target</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </syslog_targets>
       <listen_http_port type="PortField">
         <Required>N</Required>
         <default>80</default>
@@ -746,6 +758,18 @@
           </check001>
         </Constraints>
       </listen_port>
+      <syslog_targets type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>syslog_target</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </syslog_targets>
       <udp type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -1406,6 +1430,9 @@
       <host type="HostnameField">
         <Required>Y</Required>
       </host>
+      <port type="PortField">
+        <Required>N</Required>
+      </port>
       <facility type="OptionField">
         <OptionValues>
           <kern>kern</kern>
