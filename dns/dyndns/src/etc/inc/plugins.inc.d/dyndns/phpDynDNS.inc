@@ -76,8 +76,8 @@
  *  SelfHost            - Last Tested: 26 December 2011
  *  Amazon Route53      - Last Tested: 01 April 2012
  *  DNS-O-Matic         - Last Tested: 9 September 2010
- *  CloudFlare          - Last Tested: 19 September 2018
- *  CloudFlare IPv6     - Last Tested: 19 September 2018
+ *  CloudFlare          - Last Tested: 16 April 2019
+ *  CloudFlare IPv6     - Last Tested: 16 April 2019
  *  Eurodns             - Last Tested: 25 July 2018
  *  GratisDNS           - Last Tested: 15 August 2012
  *  OVH DynHOST         - Last Tested: NEVER
@@ -726,24 +726,23 @@ class updatedns
                     'Content-Type: application/json'
                 ));
 
-                // Get zone ID
+                // Get all zone info
                 $zonesUrl = "$baseUrl/zones";
-                // First, try removing the first part of the FQDN,
-                // under the assumption that it is probably the hostname,
-                // and look up the zone from what's left
-                $fqdnParts = explode('.', $fqdn);
-                $hostName = array_shift($fqdnParts);
-                $domainName = implode('.', $fqdnParts);
-                $getZoneId = "$zonesUrl/?name=$domainName";
-                curl_setopt($ch, CURLOPT_URL, $getZoneId);
+                curl_setopt($ch, CURLOPT_URL, $zonesUrl);
                 $output = json_decode(curl_exec($ch));
-                $zoneId = $output->result[0]->id;
-                if (empty($zoneId)) {
-                    // now try the full "hostname" as provided by the UI
-                    $getZoneId = "$zonesUrl/?name=$fqdn";
-                    curl_setopt($ch, CURLOPT_URL, $getZoneId);
-                    $output = json_decode(curl_exec($ch));
-                    $zoneId = $output->result[0]->id;
+                $zoneId = null; // Set default value
+                
+                // Iterate zone objects, check if $fqdn is equal to or ends with zone name
+                foreach ($output->result as $key => $zoneObj) {
+                    if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
+                        // Found matching zone
+                        $zoneId = $zoneObj->id;
+                        // Get $hostName from $fqdn, set $domainName
+                        // These are only really used for log messages.
+                        $hostName = preg_replace ("/\.?{$zoneObj->name}$/", '', $fqdn);
+                        $domainName = $zoneObj->name;
+                        break;
+                    }
                 }
 
                 if ($zoneId) { // If zone ID was found get host ID
