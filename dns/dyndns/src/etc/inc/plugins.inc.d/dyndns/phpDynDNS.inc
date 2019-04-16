@@ -76,8 +76,8 @@
  *  SelfHost            - Last Tested: 26 December 2011
  *  Amazon Route53      - Last Tested: 01 April 2012
  *  DNS-O-Matic         - Last Tested: 9 September 2010
- *  CloudFlare          - Last Tested: 19 September 2018
- *  CloudFlare IPv6     - Last Tested: 19 September 2018
+ *  CloudFlare          - Last Tested: 16 April 2019
+ *  CloudFlare IPv6     - Last Tested: 16 April 2019
  *  Eurodns             - Last Tested: 25 July 2018
  *  GratisDNS           - Last Tested: 15 August 2012
  *  OVH DynHOST         - Last Tested: NEVER
@@ -730,7 +730,8 @@ class updatedns
                 $zonesUrl = "$baseUrl/zones";
                 curl_setopt($ch, CURLOPT_URL, $zonesUrl);
                 $output = json_decode(curl_exec($ch));
-
+                $zoneId = null; // Set default value
+                
                 // Iterate zone objects, check if $fqdn is equal to or ends with zone name
                 foreach ($output->result as $key => $zoneObj) {
                     if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
