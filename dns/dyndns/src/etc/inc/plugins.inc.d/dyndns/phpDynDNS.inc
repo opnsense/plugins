@@ -731,7 +731,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $zonesUrl);
                 $output = json_decode(curl_exec($ch));
                 $zoneId = null; // Set default value
-                
+
                 // Iterate zone objects, check if $fqdn is equal to or ends with zone name
                 foreach ($output->result as $key => $zoneObj) {
                     if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
