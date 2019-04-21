@@ -1,0 +1,7 @@
+This plugin runs apuledctld on early startup before mounting root 
+filesystem R/W. Also there are actions for manage apuledctld when
+system startup done or reboot initiated.
+apuledctld - a simple daemon for monitor of the button on front
+panel of PCEngines APU<x> devices. By default, long press this
+button performs reset opnsense configuration to default state.
+Also it can control illumination of three LEDs on front panel.
