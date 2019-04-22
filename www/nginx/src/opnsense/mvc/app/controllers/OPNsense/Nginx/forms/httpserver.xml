@@ -154,6 +154,15 @@
     <help>All: All access restrictions must be fulfilled; Any: Any of the access restrictions must be fulfilled.</help>
   </field>
   <field>
+    <id>httpserver.naxsi_whitelist_srcip</id>
+    <label>Naxsi Whitelist Source IPs</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enter a list of IP addresses or CIDR networks which will be whitelisted for the Naxsi rules.</help>
+  </field>
+  <field>
     <id>httpserver.naxsi_extensive_log</id>
     <label>Extensive Naxsi Log</label>
     <type>checkbox</type>

@@ -667,6 +667,11 @@
         <default>0</default>
         <Required>Y</Required>
       </disable_bot_protection>
+      <naxsi_whitelist_srcip type="CSVListField">
+        <Required>N</Required>
+        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
+        <multiple>Y</multiple>
+      </naxsi_whitelist_srcip>
       <naxsi_extensive_log type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
