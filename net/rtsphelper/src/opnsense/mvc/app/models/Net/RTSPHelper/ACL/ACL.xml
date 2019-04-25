@@ -1,0 +1,14 @@
+<acl>
+    <page-service-rtsphelper>
+        <name>Service: RTSP Helper</name>
+        <patterns>
+            <pattern>services_rtsphelper.php*</pattern>
+        </patterns>
+    </page-service-rtsphelper>
+    <page-status-rtsphelperstatus>
+        <name>Status: RTSP Helper</name>
+        <patterns>
+            <pattern>status_rtsphelper.php*</pattern>
+        </patterns>
+    </page-status-rtsphelperstatus>
+</acl>

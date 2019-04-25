@@ -1,0 +1,10 @@
+<menu>
+    <Services>
+        <RTSPHelper VisibleName="RTSP Helper" cssClass="fa fa-plug fa-fw">
+            <Settings url="/services_rtsphelper.php">
+                <Edit url="/services_rtsphelper.php?*" visibility="hidden"/>
+            </Settings>
+            <Status url="/status_rtsphelper.php"/>
+        </RTSPHelper>
+    </Services>
+</menu>
