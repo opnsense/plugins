@@ -155,7 +155,7 @@
   </field>
   <field>
     <id>httpserver.naxsi_whitelist_srcip</id>
-    <label>Naxsi Whitelist Source IPs</label>
+    <label>Naxsi Trusted Source IPs</label>
     <allownew>true</allownew>
     <style>tokenize</style>
     <type>select_multiple</type>
