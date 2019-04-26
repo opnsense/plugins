@@ -14,7 +14,7 @@ Plugin Changelog
 1.10
 
 * XMLRPC sync support
-* CARP support
+* CARP failover support
 
 1.9
 
