@@ -135,3 +135,12 @@ function frr_services()
 
     return $services;
 }
+
+function frr_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'quagga';
+    $result['section'] = 'OPNsense.quagga';
+    $result['description'] = gettext('FRR');
+    return array($result);
+}
