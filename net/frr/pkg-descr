@@ -11,6 +11,11 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.10
+
+* XMLRPC sync support
+* CARP support
+
 1.9
 
 * Allow usage of VTI IPSec interfaces
