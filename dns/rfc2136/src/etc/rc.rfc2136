@@ -34,4 +34,10 @@ require_once("filter.inc");
 require_once("services.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
-rfc2136_configure_do(true);
+$interface = '';
+
+if (isset($argv[1])) {
+    $interface = trim($argv[1], " \n");
+}
+
+rfc2136_configure_do(true, $interface);
