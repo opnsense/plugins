@@ -3,6 +3,6 @@ PLUGIN_VERSION=		1.5
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		RFC-2136 Support
 PLUGIN_MAINTAINER=	franco@opnsense.org
-PLUGIN_DEPENDS=		bind912
+PLUGIN_DEPENDS=		bind-tools
 
 .include "../../Mk/plugins.mk"
