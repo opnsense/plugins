@@ -203,3 +203,27 @@ function dyndns_configure_do($verbose = false, $int = '')
         echo "done.\n";
     }
 }
+
+function dyndns_failover_interface($interface, $family = 'all')
+{
+    global $config;
+
+    /* shortcut for known interfaces */
+    if (isset($config['interfaces'][$interface])) {
+        return get_real_interface($interface, $family);
+    }
+
+    /* compare against gateway groups */
+    $a_groups = return_gateway_groups_array();
+    if (isset($a_groups[$interface])) {
+        /* we found a gateway group, fetch the interface or vip */
+        if ($a_groups[$interface][0]['vip'] != '') {
+            return $a_groups[$interface][0]['vip'];
+        } else {
+            return $a_groups[$interface][0]['int'];
+        }
+    }
+
+    /* fall through to get real interface the hard way */
+    return get_real_interface($interface, $family);
+}
