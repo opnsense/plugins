@@ -247,6 +247,7 @@ include("head.inc");
                        <select name="interface" class="selectpicker" id="interface">
 <?php
                         $iflist = get_configured_interface_with_descr();
+                        $iflist = array_merge($iflist, return_gateway_groups_array());
                         foreach ($iflist as $if => $ifdesc):?>
                           <option value="<?= $if ?>" <?=$pconfig['interface'] == $if ? 'selected="selected"' : '';?>>
                             <?= is_array($ifdesc) ? $if : htmlspecialchars($ifdesc) ?>
@@ -263,6 +264,7 @@ include("head.inc");
                       <select name="requestif" class="selectpicker" id="requestif">
 <?php
                        $iflist = get_configured_interface_with_descr();
+                       $iflist = array_merge($iflist, return_gateway_groups_array());
                        foreach ($iflist as $if => $ifdesc):?>
                          <option value="<?= $if ?>" <?= $pconfig['requestif'] == $if ? 'selected="selected"' : '' ?>>
                            <?= is_array($ifdesc) ? $if : htmlspecialchars($ifdesc) ?>
