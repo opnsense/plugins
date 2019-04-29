@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2018 Frank Wall
+ * Copyright (C) 2017-2019 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -1203,16 +1203,30 @@ function log_cert_acme_status($certObj, $modelObj, $statusCode)
 function dump_postponed_updates()
 {
     global $postponed_updates;
+
+    $status_descr = [
+        100 => 'unknown',
+        200 => 'OK',
+        250 => 'cert revoked',
+        300 => 'configuration error',
+        400 => 'validation failed',
+        500 => 'internal error',
+    ];
+
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
     foreach ($postponed_updates as $pupdate) {
         $node = $modelObj->getNodeByReference('certificates.certificate.' . $pupdate['uuid']);
         if ($node != null) {
-            $node->statusCode = $pupdate['statusCode'];
+            $_statusCode = $pupdate['statusCode'];
+            log_error("AcmeClient: storing status '" . $status_descr[$_statusCode] . "' for cert " . (string)$node->name);
+            $node->statusCode = $_statusCode;
             $node->statusLastUpdate = $pupdate['statusLastUpdate'];
             // serialize to config and save
             $modelObj->serializeToConfig();
             Config::getInstance()->save();
+        } else {
+            log_error("AcmeClient: failed to set status '" . $status_descr[$_statusCode] . "' for cert " . $pupdate['uuid']);
         }
     }
 }
