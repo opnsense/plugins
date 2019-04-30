@@ -61,13 +61,16 @@ class RecordController extends ApiMutableModelControllerBase
         $domain = $this->request->get('domain');
         $filter_funct = null;
         if (!empty($domain)) {
-            $filter_funct = function($record) use ($domain) {
+            $filter_funct = function ($record) use ($domain) {
                 return $record->domain == $domain;
             };
         }
 
-        return $this->searchBase('records.record',
-            array("enabled", "domain", "name", "type", "value"), null, $filter_funct
+        return $this->searchBase(
+            'records.record',
+            array("enabled", "domain", "name", "type", "value"),
+            null,
+            $filter_funct
         );
     }
 
