@@ -282,7 +282,17 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
-        <label>Domain-Offensive</label>
+        <label>Domain-Offensive LetsEncrypt</label>
+        <type>header</type>
+        <style>table_dns table_dns_doapi</style>
+    </field>
+    <field>
+        <id>validation.dns_doapi_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Domain-Offensive Resellerinterface</label>
         <type>header</type>
         <style>table_dns table_dns_do</style>
     </field>

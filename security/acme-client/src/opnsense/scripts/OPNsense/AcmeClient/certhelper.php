@@ -626,6 +626,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['DO_PID'] = (string)$valObj->dns_do_pid;
                 $proc_env['DO_PW'] = (string)$valObj->dns_do_password;
                 break;
+            case 'dns_doapi':
+                $proc_env['DO_LETOKEN'] = (string)$valObj->dns_doapi_token;
+                break;
             case 'dns_dp':
                 $proc_env['DP_Id'] = (string)$valObj->dns_dp_id;
                 $proc_env['DP_Key'] = (string)$valObj->dns_dp_key;

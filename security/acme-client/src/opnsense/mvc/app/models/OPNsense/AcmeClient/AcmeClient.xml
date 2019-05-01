@@ -342,7 +342,7 @@
                         <dns_acmedns>ACME DNS API</dns_acmedns>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
-                        <dns_autodns>autoDNS (InternetX) API</dns_autodns>
+                        <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS API</dns_azure>
                         <dns_cf>CloudFlare.com API</dns_cf>
@@ -354,7 +354,8 @@
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
                         <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_dp>DNSPod.cn API</dns_dp>
-                        <dns_do>Domain-Offensive/Resellerinterface/Domainrobot API</dns_do>
+                        <dns_doapi>Domain-Offensive LetsEncrypt API</dns_doapi>
+                        <dns_do>Domain-Offensive Resellerinterface/Domainrobot API</dns_do>
                         <dns_dreamhost>DreamHost DNS API</dns_dreamhost>
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
@@ -471,6 +472,9 @@
                 <dns_dnsimple_token type="TextField">
                   <Required>N</Required>
                 </dns_dnsimple_token>
+                <dns_doapi_token type="TextField">
+                  <Required>N</Required>
+                </dns_doapi_token>
                 <dns_do_pid type="TextField">
                   <Required>N</Required>
                 </dns_do_pid>
