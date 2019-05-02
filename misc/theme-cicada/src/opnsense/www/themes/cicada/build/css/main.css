@@ -5691,7 +5691,9 @@ html, body {
   height: 100%;
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
-  scrollbar-color: #424242 #323232; }
+  scrollbar-color: #424242 #323232; 
+  background-color: #2a2a2a;
+}
 
 body {
   touch-action: manipulation;
