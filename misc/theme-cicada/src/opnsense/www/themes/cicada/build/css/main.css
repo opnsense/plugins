@@ -6334,7 +6334,7 @@ label > input[type="radio"] {
 
 textarea#update_status, textarea#update_status:hover {
   color:inherit !important;
-  background-color:none !important;
+  background-color: #3E3E3E;
   -webkit-box-shadow:none !important;
   box-shadow:none !important;
   border:none !important;
