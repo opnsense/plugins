@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 
 <div class="alert alert-warning" role="alert" style="min-height:65px;">
-  <div style="margin-top: 8px;">{{ lang._('This software is still in experimental state, use with caution.') }}</div>
+  <div style="margin-top: 8px;">{{ lang._('The WireGuard VPN software is still in experimental state, use with caution.') }}</div>
 </div>
 
 <div class="tab-content content-box tab-content">
