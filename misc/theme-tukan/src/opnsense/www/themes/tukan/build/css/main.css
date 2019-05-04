@@ -1131,7 +1131,7 @@ a.text-success:hover {
   color: #7fc54f; }
 
 .text-info {
-  color: #294c5f; }
+  color: #47809f; }
 
 a.text-info:hover {
   color: #245269; }
@@ -5681,7 +5681,7 @@ html, body {
   height: 100%;
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
-  scrollbar-color: #315a71 #e3e3e3;
+  scrollbar-color: #315a71 #e3e3e3; 
   background-color: #fff;
 }
 
