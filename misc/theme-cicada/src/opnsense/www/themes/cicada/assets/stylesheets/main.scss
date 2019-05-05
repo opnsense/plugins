@@ -9507,6 +9507,14 @@ select {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
+.table-condensed.table-hover {
+    border: 1px solid #515151;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
+}
+
 @media screen and (max-width: 767px) {
   .table-responsive {
     margin-bottom: 0;

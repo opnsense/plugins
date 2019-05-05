@@ -6391,6 +6391,14 @@ h3:hover, h3:focus {
   border: 1px solid #515151;
 }
 
+.table-condensed.table-hover {
+    border: 1px solid #515151;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
+}
+
 .bootgrid-header .search .glyphicon,
 .bootgrid-footer .search .glyphicon,
 .input-group-addon {

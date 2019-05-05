@@ -6391,6 +6391,14 @@ h3:hover, h3:focus {
   border: 1px solid #c2c2c2;
 }
 
+.table-condensed.table-hover {
+    border: 1px solid #bdbdbd;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
+}
+
 .btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
   border-color: #323232 !important;
   color:#FFFFFF !important;
