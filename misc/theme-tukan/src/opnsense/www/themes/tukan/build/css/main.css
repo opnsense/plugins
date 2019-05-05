@@ -6387,10 +6387,6 @@ h3:hover, h3:focus {
   text-decoration: underline;
 }
 
-.table-condensed.table-hover {
-  border: 1px solid #bdbdbd;
-}
-
 .btn-group.bootstrap-select.open, .btn-group.bootstrap-select:hover {
   border-color: #323232 !important;
   color:#FFFFFF !important;
