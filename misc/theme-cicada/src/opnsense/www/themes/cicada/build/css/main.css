@@ -6387,6 +6387,10 @@ h3:hover, h3:focus {
   text-decoration: underline;
 }
 
+#grid-log {
+  border: 1px solid #515151;
+}
+
 .bootgrid-header .search .glyphicon,
 .bootgrid-footer .search .glyphicon,
 .input-group-addon {
