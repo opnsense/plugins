@@ -23,8 +23,8 @@ class Forward:
         try:
             self.forward.connect((host, port))
             return self.forward
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
             return False
 
 class ProxyServer:
@@ -62,7 +62,7 @@ class ProxyServer:
                     break
                 else:
                     self.on_recv()
-            except socket.error, e:
+            except socket.error as e:
                 self.on_close()
 
     def on_accept(self):
@@ -78,11 +78,11 @@ class ProxyServer:
                 self.channel[clientsock] = forward
                 self.channel[forward] = clientsock
             else:
-                print "Can't establish connection with remote server.",
-                print "Closing connection with client side", clientaddr
+                print("Can't establish connection with remote server.")
+                print("Closing connection with client side", clientaddr)
                 clientsock.close()
         else:
-            print "Forbidden client IP"
+            print("Forbidden client IP")
             clientsock.close()
 
     def on_close(self):
@@ -115,7 +115,7 @@ class ProxyServer:
 
     def parseData(self, data, client):
         for line in data.splitlines():
-            lineSplit = line.split(':', 1)
+            lineSplit = line.decode().split(':', 1)
             if lineSplit[0] == "Transport":
                 for transportOpt in lineSplit[1].split(';'):
                     if transportOpt.split('=')[0] == "client_port":
@@ -142,13 +142,13 @@ class PortManager:
         self.forwardedPorts[client] = []
 
     def updatePorts(self, client, ports):
-        print "Forwarding ports for client " + client[0] + ". New list of ports is: {0}".format(ports)
+        print("Forwarding ports for client " + client[0] + ". New list of ports is: {0}".format(ports))
         self.forwardedPorts[client] = ports
         self.applyRules()
 
 
     def removeClient(self, client):
-        print "Remove client: " + client[0]
+        print("Remove client: " + client[0])
         self.forwardedPorts.pop(client)
         self.applyRules()
 
@@ -176,7 +176,7 @@ class PortManager:
         for localBinding in self.localBindings:
             f.write(config_rule_1.format(localBinding[0], localBinding[1], '127.0.0.1', localBinding[2]))
 
-        for client,ports in self.forwardedPorts.iteritems():
+        for client,ports in self.forwardedPorts.items():
             ip = client[0]
             for port in ports:
                 f.write(rdr_rule.format(config['ext_if'], port, ip))
@@ -187,7 +187,7 @@ class PortManager:
             for network in self.allowedNets:
                 f.write(config_rule_3.format(network, '127.0.0.1', localBinding[2]))
 
-        for client,ports in self.forwardedPorts.iteritems():
+        for client,ports in self.forwardedPorts.items():
             ip = client[0]
             for port in ports:
                 f.write(pass_rule.format(config['ext_if'], ip, port, 'RTSP'))
@@ -272,7 +272,7 @@ if __name__ == '__main__':
         handle_exit()
 
     def handle_exit():
-        print "Exiting..."
+        print("Exiting...")
         pm.removeAll()
         sys.exit(0)
 
@@ -283,6 +283,6 @@ if __name__ == '__main__':
             for server in servers:
                 server.main_loop()
     except KeyboardInterrupt:
-        print "Ctrl C - Stopping server"
+        print("Ctrl C - Stopping server")
         handle_exit()
 sys.exit(1)
