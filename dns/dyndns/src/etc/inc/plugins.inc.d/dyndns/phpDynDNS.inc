@@ -739,7 +739,7 @@ class updatedns
                         $zoneId = $zoneObj->id;
                         // Get $hostName from $fqdn, set $domainName
                         // These are only really used for log messages.
-                        $hostName = preg_replace ("/\.?{$zoneObj->name}$/", '', $fqdn);
+                        $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
                         $domainName = $zoneObj->name;
                         break;
                     }
