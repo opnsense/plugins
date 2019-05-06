@@ -1533,7 +1533,7 @@ a.text-success:hover {
 }
 
 .text-info {
-  color: #294c5f;
+  color: #47809f;
 }
 
 a.text-info:hover {
@@ -9513,9 +9513,21 @@ option {
   min-width: 3.5em;
 }
 
+#grid-log {
+  border: 1px solid #c2c2c2;
+}
+
 #grid-top {
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.table-condensed.table-hover {
+    border: 1px solid #bdbdbd;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
 }
 
 @media screen and (max-width: 767px) {
@@ -9689,10 +9701,6 @@ h3 {
   &:hover, &:focus {
     text-decoration: underline;
   }
-}
-
-.table-condensed.table-hover {
-  border: 1px solid #bdbdbd;
 }
 
 .btn-group.bootstrap-select {

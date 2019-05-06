@@ -9498,9 +9498,21 @@ select {
   min-width: 3.5em;
 }
 
+#grid-log {
+  border: 1px solid #515151;
+}
+
 #grid-top {
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.table-condensed.table-hover {
+    border: 1px solid #515151;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
 }
 
 @media screen and (max-width: 767px) {
@@ -9667,10 +9679,6 @@ h3 {
     color: #ec6d12;
     text-decoration: underline;
   }
-}
-
-.table-condensed.table-hover {
-  border: 1px solid #515151;
 }
 
 .bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon, .input-group-addon {
