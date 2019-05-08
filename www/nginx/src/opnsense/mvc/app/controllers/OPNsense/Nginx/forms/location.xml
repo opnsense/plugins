@@ -236,6 +236,12 @@
     <help>If you enable the WebSocket Support option, nginx will pass the upgrade header to the backed server.</help>
   </field>
   <field>
+    <id>location.proxy_max_temp_file_size</id>
+    <label>Proxy Max Temp File Size</label>
+    <type>text</type>
+    <help>Enter the max temp file size in MB.</help>
+  </field>
+  <field>
     <id>location.proxy_read_timeout</id>
     <label>Proxy Read Timeout</label>
     <type>text</type>

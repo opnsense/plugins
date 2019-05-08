@@ -372,6 +372,10 @@
         <Required>Y</Required>
         <default>1</default>
       </proxy_buffering>
+      <proxy_max_temp_file_size type="IntegerField">
+        <Required>Y</Required>
+        <default>1024</default>
+      </proxy_max_temp_file_size>
       <proxy_read_timeout type="IntegerField">
         <Required>N</Required>
         <minValue>1</minValue>
