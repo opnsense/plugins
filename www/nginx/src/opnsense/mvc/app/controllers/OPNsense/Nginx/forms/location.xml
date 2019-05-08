@@ -239,7 +239,7 @@
     <id>location.proxy_max_temp_file_size</id>
     <label>Proxy Max Temp File Size</label>
     <type>text</type>
-    <help>Enter the max temp file size in MB.</help>
+    <help>Enter the max temp file size in MB. Entering 0 will disable buffering to file.</help>
   </field>
   <field>
     <id>location.proxy_read_timeout</id>
