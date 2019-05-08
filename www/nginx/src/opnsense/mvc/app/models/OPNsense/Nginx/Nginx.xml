@@ -403,6 +403,10 @@
         </OptionValues>
         <Required>N</Required>
       </satisfy>
+      <proxy_max_temp_file_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_max_temp_file_size>
     </location>
 
     <custom_policy type="ArrayField">

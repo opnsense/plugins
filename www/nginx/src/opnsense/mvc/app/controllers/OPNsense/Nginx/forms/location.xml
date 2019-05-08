@@ -264,6 +264,13 @@
     <help>If you enable the WebSocket option, nginx will pass the upgrade header to the backed server.</help>
   </field>
   <field>
+    <id>location.proxy_max_temp_file_size</id>
+    <label>Maximum Temporary File Size</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>The maximum temporary file size limit. This does not apply to cached requests and responses.</help>
+  </field>
+  <field>
     <id>location.proxy_ignore_client_abort</id>
     <label>Ignore Client Abort</label>
     <type>checkbox</type>
