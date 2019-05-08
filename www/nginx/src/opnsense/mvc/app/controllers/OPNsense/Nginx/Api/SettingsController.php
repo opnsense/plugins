@@ -663,4 +663,30 @@ class SettingsController extends ApiMutableModelControllerBase
             }
         }
     }
+    // SYSLOG targets
+    public function searchsyslog_targetAction()
+    {
+        return $this->searchBase('syslog_target', array('description', 'host', 'facility', 'severity'));
+    }
+
+    public function getsyslog_targetAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('syslog_target', 'syslog_target', $uuid);
+    }
+
+    public function addsyslog_targetAction()
+    {
+        return $this->addBase('syslog_target', 'syslog_target');
+    }
+
+    public function delsyslog_targetAction($uuid)
+    {
+        return $this->delBase('syslog_target', $uuid);
+    }
+
+    public function setsyslog_targetAction($uuid)
+    {
+        return $this->setBase('syslog_target', 'syslog_target', $uuid);
+    }
 }

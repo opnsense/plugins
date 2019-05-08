@@ -10,6 +10,13 @@
     <type>text</type>
   </field>
   <field>
+    <id>httpserver.syslog_targets</id>
+    <label>SYSLOG targets</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>httpserver.proxy_protocol</id>
     <label>PROXY Protocol</label>
     <type>checkbox</type>
