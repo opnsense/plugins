@@ -5691,7 +5691,9 @@ html, body {
   height: 100%;
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
-  scrollbar-color: #424242 #323232; }
+  scrollbar-color: #424242 #323232; 
+  background-color: #2a2a2a;
+}
 
 body {
   touch-action: manipulation;
@@ -6332,7 +6334,7 @@ label > input[type="radio"] {
 
 textarea#update_status, textarea#update_status:hover {
   color:inherit !important;
-  background-color:none !important;
+  background-color: #3E3E3E;
   -webkit-box-shadow:none !important;
   box-shadow:none !important;
   border:none !important;
@@ -6385,8 +6387,16 @@ h3:hover, h3:focus {
   text-decoration: underline;
 }
 
-.table-condensed.table-hover {
+#grid-log {
   border: 1px solid #515151;
+}
+
+.table-condensed.table-hover {
+    border: 1px solid #515151;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
 }
 
 .bootgrid-header .search .glyphicon,
