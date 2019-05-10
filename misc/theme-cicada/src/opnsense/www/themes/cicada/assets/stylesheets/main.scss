@@ -8764,6 +8764,7 @@ html {
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
   scrollbar-color: #424242 #323232;
+  background-color: #2a2a2a;
 }
 
 body {
@@ -8771,6 +8772,7 @@ body {
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
   scrollbar-color: #424242 #323232;
+  background-color: #2a2a2a;
   touch-action: manipulation;
   min-width: 320px;
   background-color: #2A2A2A;
@@ -9496,9 +9498,21 @@ select {
   min-width: 3.5em;
 }
 
+#grid-log {
+  border: 1px solid #515151;
+}
+
 #grid-top {
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.table-condensed.table-hover {
+    border: 1px solid #515151;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
 }
 
 @media screen and (max-width: 767px) {
@@ -9583,7 +9597,12 @@ label > input {
 }
 
 .fw_block {
-  background-color: #DB4829 !important;
+  background-color: #683232 !important;
+  color: #FFF;
+}
+
+.fw_nat {
+  background-color: #575757 !important;
   color: #FFF;
 }
 
@@ -9595,13 +9614,13 @@ label > input {
 
 textarea#update_status {
   color: inherit !important;
-  background-color: none !important;
+  background-color: #3E3E3E;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   border: none !important;
   &:hover {
     color: inherit !important;
-    background-color: none !important;
+    background-color: #3E3E3E;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border: none !important;
@@ -9660,10 +9679,6 @@ h3 {
     color: #ec6d12;
     text-decoration: underline;
   }
-}
-
-.table-condensed.table-hover {
-  border: 1px solid #515151;
 }
 
 .bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon, .input-group-addon {

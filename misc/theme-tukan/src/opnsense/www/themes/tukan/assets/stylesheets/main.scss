@@ -1533,7 +1533,7 @@ a.text-success:hover {
 }
 
 .text-info {
-  color: #294c5f;
+  color: #47809f;
 }
 
 a.text-info:hover {
@@ -8762,6 +8762,7 @@ html {
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
   scrollbar-color: #315a71 #e3e3e3;
+  background-color: #fff;
 }
 
 body {
@@ -8769,6 +8770,7 @@ body {
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
   scrollbar-color: #315a71 #e3e3e3;
+  background-color: #fff;
   touch-action: manipulation;
   min-width: 320px;
 }
@@ -9511,9 +9513,21 @@ option {
   min-width: 3.5em;
 }
 
+#grid-log {
+  border: 1px solid #c2c2c2;
+}
+
 #grid-top {
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.table-condensed.table-hover {
+    border: 1px solid #bdbdbd;
+}
+
+#rules.table-condensed.table-hover {
+    border: none;
 }
 
 @media screen and (max-width: 767px) {
@@ -9602,6 +9616,11 @@ label > input {
   color: #FFF;
 }
 
+.fw_nat {
+  background-color: #CBA026 !important;
+  color: #FFF;
+}
+
 /*additional extensions for theme-tukan*/
 
 #tab_1 #maintabs {
@@ -9682,10 +9701,6 @@ h3 {
   &:hover, &:focus {
     text-decoration: underline;
   }
-}
-
-.table-condensed.table-hover {
-  border: 1px solid #bdbdbd;
 }
 
 .btn-group.bootstrap-select {

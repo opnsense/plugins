@@ -77,7 +77,7 @@ def parse_log_line(line):
     if 'timestamp' in record:
         # convert timestamp
         try:
-            tmp = list(map(lambda x: int(x), re.split('T|-|\:|\.|\+', record['timestamp'])))
+            tmp = [int(x) for x in re.split('T|-|\\:|\\.|\\+', record['timestamp'])]
             tz = record['timestamp'][-5:]
             ts = datetime.datetime(*tmp[:7])
             ts -= datetime.timedelta(hours=int(tz[2:3]), minutes=int(tz[-2:])) * int(tz[0:1] + '1')

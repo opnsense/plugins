@@ -104,7 +104,6 @@ if (!empty($_REQUEST['getrfc2136status'])) {
   <tbody>
 <?php
   $iflist = get_configured_interface_with_descr();
-  $groupslist = return_gateway_groups_array();
   foreach ($a_rfc2136 as $i => $rfc2136) :?>
     <tr ondblclick="document.location='services_rfc2136_edit.php?id=<?=$i;?>'">
       <td style="word-break:break-word;" <?= isset($rfc2136['enable']) ? '' : 'class="text-muted"' ?>>
@@ -112,12 +111,6 @@ if (!empty($_REQUEST['getrfc2136status'])) {
         foreach ($iflist as $if => $ifdesc) {
             if ($rfc2136['interface'] == $if) {
                 echo "{$ifdesc}";
-                break;
-            }
-        }
-        foreach ($groupslist as $if => $group) {
-            if ($rfc2136['interface'] == $if) {
-                echo "{$if}";
                 break;
             }
         }?>
