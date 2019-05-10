@@ -36,6 +36,13 @@
         <help>Set port for this instance to listen on.</help>
     </field>
     <field>
+        <id>server.mtu</id>
+        <label>MTU</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the interface MTU for this interface. Leaving empty uses the MTU from main interface which is fine for most setups.</help>
+    </field>
+    <field>
         <id>server.dns</id>
         <label>DNS Server</label>
         <type>select_multiple</type>
