@@ -12,6 +12,7 @@ Plugin Changelog
 
 * add log to SYSLOG server support
 * add support for maximum temporary file size for request bodies
+* fix log "format" disable
 
 1.11
 
