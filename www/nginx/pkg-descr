@@ -8,6 +8,12 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.12
+
+* add log to SYSLOG server support
+* add support for maximum temporary file size for request bodies
+* fix log "format" disable
+
 1.11
 
 * add VTS(1) module for traffic status reports
