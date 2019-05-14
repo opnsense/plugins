@@ -363,6 +363,7 @@
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
+                        <dns_gcloud>Google Cloud DNS API</dns_gcloud>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
@@ -518,6 +519,9 @@
                 <dns_gandi_livedns_key type="TextField">
                     <Required>N</Required>
                 </dns_gandi_livedns_key>
+                <dns_gcloud_key type="TextField">
+                    <Required>N</Required>
+                </dns_gcloud_key>
                 <dns_gd_key type="TextField">
                     <Required>N</Required>
                 </dns_gd_key>

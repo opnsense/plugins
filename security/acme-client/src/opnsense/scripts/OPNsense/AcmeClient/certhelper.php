@@ -417,6 +417,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Required to run pre-defined commands.
     $backend = new Backend();
+    $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
     // Collect account information
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
@@ -567,6 +568,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Prepare DNS-01 hooks
     if ($val_method == 'dns01') {
         // Some common stuff
+        $val_id = preg_replace("/[^a-zA-Z0-9]/", "", (string)$valObj->id);
         $secret_key_filename = "${configdir}/secret.key";
         $acme_args[] = '--dnssleep ' . $valObj->dns_sleep;
 
@@ -654,6 +656,42 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_gandi_livedns':
                 $proc_env['GANDI_LIVEDNS_KEY'] = (string)$valObj->dns_gandi_livedns_key;
+                break;
+            case 'dns_gcloud':
+                # Google Cloud SDK must be installed.
+                if ((string)$modelObj->isPluginInstalled('google-cloud-sdk') != "1") {
+                    log_error("AcmeClient: Google Cloud SDK plugin is NOT installed. Please install os-google-cloud-sdk.");
+                    return(1);
+                }
+                # We need a valid Google Cloud JSON key.
+                if (!empty((string)$valObj->dns_gcloud_key)) {
+                    # Extract the gcloud project from the key data.
+                    $_gcloud_data = json_decode((string)$valObj->dns_gcloud_key);
+                    $gcloud_project = $_gcloud_data->project_id;
+                    $gcloud_account = $_gcloud_data->client_email;
+                    if (empty($gcloud_project)) {
+                        log_error("AcmeClient: unable to extract project name from Google Cloud DNS JSON key");
+                        return(1);
+                    } else {
+                        log_error("AcmeClient: Google Cloud DNS project name: ${gcloud_project}");
+                    }
+                } else {
+                    log_error("AcmeClient: no key for Google Cloud DNS was specified");
+                    return(1);
+                }
+                # Preparations for gcloud CLI.
+                $gcloud_config = "acme-${val_id}";
+                $gcloud_key_file = "/tmp/acme_" . (string)$valObj->dns_service . "_${val_id}.json";
+                file_put_contents($gcloud_key_file, (string)$valObj->dns_gcloud_key);
+                chmod($gcloud_key_file, 0600);
+                $proc_env['CLOUDSDK_ACTIVE_CONFIG_NAME'] = $gcloud_config;
+                $proc_env['CLOUDSDK_CORE_PROJECT'] = $gcloud_project;
+                # Ensure that a working gcloud config exists.
+                run_shell_command("/usr/local/bin/gcloud config configurations create ${gcloud_config}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config configurations activate ${gcloud_config}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud auth activate-service-account --key-file=${gcloud_key_file}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config set account ${gcloud_account}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config set project ${gcloud_project}",$proc_env);
                 break;
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
@@ -1241,6 +1279,32 @@ function dump_postponed_updates()
         } else {
             log_error("AcmeClient: failed to set status '" . $status_descr[$_statusCode] . "' for cert " . $pupdate['uuid']);
         }
+    }
+}
+
+function run_shell_command($proc_cmd, $proc_env = array())
+{
+    $proc_desc = array(  // descriptor array for proc_open()
+        0 => array("pipe", "r"), // stdin
+        1 => array("pipe", "w"), // stdout
+        2 => array("pipe", "w")  // stderr
+    );
+    $proc_pipes = array();
+    $proc = proc_open($proc_cmd, $proc_desc, $proc_pipes, null, $proc_env);
+
+    // Make sure the resource could be setup properly
+    if (is_resource($proc)) {
+        // Close all pipes
+        fclose($proc_pipes[0]);
+        fclose($proc_pipes[1]);
+        fclose($proc_pipes[2]);
+        // Get exit code
+        $result = proc_close($proc);
+        log_error(sprintf("AcmeClient: The shell command '%s' returned exit code '%d'", $proc_cmd, $result));
+        return($result);
+    } else {
+        log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'",$proc_cmd));
+        return(1);
     }
 }
 
