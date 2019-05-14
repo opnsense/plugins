@@ -712,6 +712,16 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ME_Key'] = (string)$valObj->dns_me_key;
                 $proc_env['ME_Secret'] = (string)$valObj->dns_me_secret;
                 break;
+            case 'dns_namecheap':
+                $proc_env['NAMECHEAP_USERNAME'] = (string)$valObj->dns_namecheap_user;
+                $proc_env['NAMECHEAP_API_KEY'] = (string)$valObj->dns_namecheap_api;
+                if (!empty((string)$valObj->dns_namecheap_sourceip)) {
+                    $proc_env['NAMECHEAP_SOURCEIP'] = (string)$valObj->dns_namecheap_sourceip;
+                } else {
+                    // Use a public service to get our source IP for Namecheap API
+                    $proc_env['NAMECHEAP_SOURCEIP'] = 'https://ifconfig.co/ip';
+                }
+                break;
             case 'dns_namecom':
                 $proc_env['Namecom_Username'] = (string)$valObj->dns_namecom_user;
                 $proc_env['Namecom_Token'] = (string)$valObj->dns_namecom_token;

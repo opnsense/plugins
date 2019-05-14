@@ -375,6 +375,7 @@
                         <dns_linode>Linode API</dns_linode>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_namecom>Name.com API</dns_namecom>
+                        <dns_namecheap>Namecheap API</dns_namecheap>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
@@ -601,6 +602,15 @@
                 <dns_me_secret type="TextField">
                     <Required>N</Required>
                 </dns_me_secret>
+                <dns_namecheap_user type="TextField">
+                    <Required>N</Required>
+                </dns_namecheap_user>
+                <dns_namecheap_api type="TextField">
+                    <Required>N</Required>
+                </dns_namecheap_api>
+                <dns_namecheap_sourceip type="TextField">
+                    <Required>N</Required>
+                </dns_namecheap_sourceip>
                 <dns_namecom_user type="TextField">
                     <Required>N</Required>
                 </dns_namecom_user>

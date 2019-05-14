@@ -597,6 +597,27 @@
         <type>text</type>
     </field>
     <field>
+        <label>Namecheap</label>
+        <type>header</type>
+        <style>table_dns table_dns_namecheap</style>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_api</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_sourceip</id>
+        <label>Source IP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Name.com</label>
         <type>header</type>
         <style>table_dns table_dns_namecom</style>
