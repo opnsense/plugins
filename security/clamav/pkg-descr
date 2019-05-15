@@ -9,6 +9,10 @@ database updates.
 Plugin Changelog
 ================
 
+1.7
+
+* Allow addition of external signatures
+
 1.6
 
 * Add optional signature sources
