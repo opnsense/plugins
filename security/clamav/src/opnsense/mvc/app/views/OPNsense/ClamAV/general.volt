@@ -148,7 +148,7 @@ $( document ).ready(function() {
         });
     });
 
-    $("#saveAct_list").click(function(){
+    $("#saveAct_url").click(function(){
         saveFormToEndpoint(url="/api/clamav/url/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_url_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
