@@ -77,7 +77,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
         <div class="col-md-12">
             <hr />
-            <button class="btn btn-primary"  id="saveAct_list" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_list_progress"></i></button>
+            <button class="btn btn-primary"  id="saveAct_url" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_url_progress"></i></button>
             <br /><br />
         </div>
     </div>
@@ -112,12 +112,12 @@ $( document ).ready(function() {
     });
 
     $("#grid-lists").UIBootgrid(
-        {   'search':'/api/clamav/list/searchList',
-            'get':'/api/clamav/list/getList/',
-            'set':'/api/clamav/list/setList/',
-            'add':'/api/clamav/list/addList/',
-            'del':'/api/clamav/list/delList/',
-            'toggle':'/api/clamav/list/toggleList/'
+        {   'search':'/api/clamav/url/searchUrl',
+            'get':'/api/clamav/url/getUrl/',
+            'set':'/api/clamav/url/setUrl/',
+            'add':'/api/clamav/url/addUrl/',
+            'del':'/api/clamav/url/delUrl/',
+            'toggle':'/api/clamav/url/toggleUrl/'
         }
     );
 
@@ -149,10 +149,10 @@ $( document ).ready(function() {
     });
 
     $("#saveAct_list").click(function(){
-        saveFormToEndpoint(url="/api/clamav/list/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_list_progress").addClass("fa fa-spinner fa-pulse");
+        saveFormToEndpoint(url="/api/clamav/url/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_url_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
-                $("#saveAct_list_progress").removeClass("fa fa-spinner fa-pulse");
+                $("#saveAct_url_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
