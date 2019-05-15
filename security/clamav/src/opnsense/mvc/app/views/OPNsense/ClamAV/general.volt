@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-This file is Copyright © 2017 by Michael Muenz <m.muenz@gmail.com>
+This file is Copyright © 2017-2019 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -34,6 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#lists">{{ lang._('Lists') }}</a></li>
     <li><a data-toggle="tab" href="#versions">{{ lang._('Versions') }}</a></li>
 </ul>
 
@@ -52,7 +53,37 @@ POSSIBILITY OF SUCH DAMAGE.
             {{ partial("layout_partials/base_form",['fields':versionForm,'id':'frm_version'])}}
         </div>
     </div>
+    <div id="lists" class="tab-pane fade in">
+        <table id="grid-lists" class="table table-responsive" data-editDialog="dialogEditClamavList">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="link" data-type="string" data-visible="true">{{ lang._('URL') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="col-md-12">
+            <hr />
+            <button class="btn btn-primary"  id="saveAct_list" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_list_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
 </div>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditClamavList,'id':'dialogEditClamavList','label':lang._('Edit Signature URLs')])}}
 
 <script>
 function timeoutCheck() {
@@ -80,6 +111,16 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    $("#grid-lists").UIBootgrid(
+        {   'search':'/api/clamav/list/searchList',
+            'get':'/api/clamav/list/getList/',
+            'set':'/api/clamav/list/setList/',
+            'add':'/api/clamav/list/addList/',
+            'del':'/api/clamav/list/delList/',
+            'toggle':'/api/clamav/list/toggleList/'
+        }
+    );
+
     ajaxCall(url="/api/clamav/service/status", sendData={}, callback=function(data,status) {
         updateServiceStatusUI(data['status']);
     });
@@ -103,6 +144,15 @@ $( document ).ready(function() {
                     updateServiceStatusUI(data['status']);
                 });
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_list").click(function(){
+        saveFormToEndpoint(url="/api/clamav/list/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_list_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/clamav/service/reconfigure", sendData={}, callback=function(data,status) {
+                $("#saveAct_list_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
