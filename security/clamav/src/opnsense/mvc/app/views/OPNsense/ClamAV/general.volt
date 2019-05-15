@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="lists" class="tab-pane fade in">
-        <table id="grid-lists" class="table table-responsive" data-editDialog="dialogEditClamavList">
+        <table id="grid-lists" class="table table-responsive" data-editDialog="dialogEditClamavUrl">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
