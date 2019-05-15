@@ -83,7 +83,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditClamavList,'id':'dialogEditClamavList','label':lang._('Edit Signature URLs')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditClamavUrl,'id':'dialogEditClamavUrl','label':lang._('Edit Signature URLs')])}}
 
 <script>
 function timeoutCheck() {

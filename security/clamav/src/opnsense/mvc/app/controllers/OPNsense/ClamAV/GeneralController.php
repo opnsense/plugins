@@ -33,7 +33,7 @@ class GeneralController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->generalForm = $this->getForm("general");
-        $this->view->formDialogEditClamavList = $this->getForm("dialogEditClamavList");
+        $this->view->formDialogEditClamavUrl = $this->getForm("dialogEditClamavUrl");
         $this->view->versionForm = $this->getForm("version");
         $this->view->pick('OPNsense/ClamAV/general');
     }

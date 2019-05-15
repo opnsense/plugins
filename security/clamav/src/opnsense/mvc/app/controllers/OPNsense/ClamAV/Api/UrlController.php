@@ -31,33 +31,33 @@ namespace OPNsense\ClamAV\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class ListController extends ApiMutableModelControllerBase
+class UrlController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'list';
-    protected static $internalModelClass = '\OPNsense\ClamAV\List';
+    protected static $internalModelClass = '\OPNsense\ClamAV\Url';
 
-    public function searchListAction()
+    public function searchUrlAction()
     {
         return $this->searchBase('lists.list', array("enabled", "name", "link"));
     }
-    public function getListAction($uuid = null)
+    public function getUrlAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('list', 'lists.list', $uuid);
     }
-    public function addListAction()
+    public function addUrlAction()
     {
         return $this->addBase('list', 'lists.list');
     }
-    public function delListAction($uuid)
+    public function delUrlAction($uuid)
     {
         return $this->delBase('lists.list', $uuid);
     }
-    public function setListAction($uuid)
+    public function setUrlAction($uuid)
     {
         return $this->setBase('list', 'lists.list', $uuid);
     }
-    public function toggleListAction($uuid)
+    public function toggleUrlAction($uuid)
     {
         return $this->toggleBase('lists.list', $uuid);
     }

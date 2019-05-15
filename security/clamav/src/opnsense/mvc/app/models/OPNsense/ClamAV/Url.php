@@ -26,6 +26,6 @@ namespace OPNsense\ClamAV;
 
 use OPNsense\Base\BaseModel;
 
-class List extends BaseModel
+class Url extends BaseModel
 {
 }

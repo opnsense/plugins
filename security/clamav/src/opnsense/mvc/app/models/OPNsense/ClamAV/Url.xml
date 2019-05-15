@@ -1,5 +1,5 @@
 <model>
-    <mount>//OPNsense/clamav/list</mount>
+    <mount>//OPNsense/clamav/url</mount>
     <description>ClamAV List configuration</description>
     <version>0.0.1</version>
     <items>
