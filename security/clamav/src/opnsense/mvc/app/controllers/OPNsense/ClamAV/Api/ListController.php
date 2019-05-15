@@ -34,7 +34,7 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 class ListController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'list';
-    protected static $internalModelClass = '\OPNsense\Clamav\List';
+    protected static $internalModelClass = '\OPNsense\ClamAV\List';
 
     public function searchListAction()
     {
