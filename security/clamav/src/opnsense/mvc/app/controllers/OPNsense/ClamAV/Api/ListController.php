@@ -27,7 +27,7 @@
  *
  */
 
-namespace OPNsense\Clamav\Api;
+namespace OPNsense\ClamAV\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 

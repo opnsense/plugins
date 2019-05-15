@@ -22,7 +22,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace OPNsense\Clamav;
+namespace OPNsense\ClamAV;
 
 use OPNsense\Base\BaseModel;
 
