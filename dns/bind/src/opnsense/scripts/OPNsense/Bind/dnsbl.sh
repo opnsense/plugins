@@ -257,6 +257,18 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	emd)
 		emdlist
 		;;
+	hpa)
+		hphosts-ads
+		;;
+	hpf)
+		hphosts-fsa
+		;;
+	hpp)
+		hphosts-psh
+		;;
+	hup)
+		hphosts-pup
+		;;
 	ht)
 		hbbtv
 		;;
