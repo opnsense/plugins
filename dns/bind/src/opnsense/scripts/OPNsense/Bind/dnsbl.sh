@@ -156,7 +156,7 @@ blocklistphishing() {
 
 hphosts-ads() {
         # hphosts-ads
-        ${FETCH} https://hosts-file.net/ad_servers.txt-o ${WORKDIR}/hphosts-ads-raw
+        ${FETCH} https://hosts-file.net/ad_servers.txt -o ${WORKDIR}/hphosts-ads-raw
         sed "/\.$/d" ${WORKDIR}/hphosts-ads-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-ads
         rm ${WORKDIR}/hphosts-ads-raw
 }
