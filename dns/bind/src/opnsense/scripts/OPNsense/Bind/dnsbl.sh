@@ -133,6 +133,27 @@ stevenblack() {
         rm ${WORKDIR}/stevenblack-raw
 }
 
+blocklistads() {
+        # Blocklist.site Ads
+        ${FETCH} https://blocklist.site/app/dl/ads -o ${WORKDIR}/blocklistads-raw
+        sed "/\.$/d" ${WORKDIR}/blocklistads-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/blocklistads
+        rm ${WORKDIR}/blocklistads-raw
+}
+
+blocklistfraud() {
+        # Blocklist.site Fraud
+        ${FETCH} https://blocklist.site/app/dl/fraud -o ${WORKDIR}/blocklistfraud-raw
+        sed "/\.$/d" ${WORKDIR}/blocklistfraud-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/blocklistfraud
+        rm ${WORKDIR}/blocklistfraud-raw
+}
+
+blocklistphishing() {
+        # Blocklist.site Phishing
+        ${FETCH} https://blocklist.site/app/dl/phishing -o ${WORKDIR}/blocklistphishing-raw
+        sed "/\.$/d" ${WORKDIR}/blocklistphishing-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/blocklistphishing
+        rm ${WORKDIR}/blocklistphishing-raw
+}
+
 hbbtv() {
 	# HBBTV List
 	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/hbbtv.txt -o ${WORKDIR}/hbbtv-raw
@@ -186,6 +207,15 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	ag)
 		adguard
+		;;
+	bla)
+		blocklistads
+		;;
+	blf)
+		blocklistfraud
+		;;
+	blp)
+		blocklistphishing
 		;;
 	ca)
 		cameleon
