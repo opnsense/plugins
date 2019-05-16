@@ -11,6 +11,7 @@ Plugin Changelog
 1.5
 
 * Add basic zone management
+* Add 6 new blacklists to DNSBL (hpHosts Ads, FSA, PSA, PUP; Blocklist.site Ads, Fraud, Phishing)
 
 1.4
 
