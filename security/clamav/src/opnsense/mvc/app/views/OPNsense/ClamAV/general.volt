@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-This file is Copyright © 2017-2019 by Michael Muenz <m.muenz@gmail.com>
+This file is Copyright © 2017 – 2019 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#lists">{{ lang._('Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#lists">{{ lang._('Signatures') }}</a></li>
     <li><a data-toggle="tab" href="#versions">{{ lang._('Versions') }}</a></li>
 </ul>
 
