@@ -15,6 +15,7 @@
                 <link type="TextField">
                     <Required>Y</Required>
                     <mask>/^https?:\/\/.*$/i</mask>
+                    <ValidationMessage>URL has to start with http:// or https://</ValidationMessage>
                 </link>
             </list>
         </lists>
