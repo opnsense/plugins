@@ -39,6 +39,7 @@
  *    - Oray (oray.com)
  *    - regfish (regfish.de)
  *    - regfish IPv6 (regfish.de)
+ *    - DigitalOcean (digitalocean.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -293,6 +294,7 @@ class updatedns
                 case 'custom-v6':
                 case 'dhs':
                 case 'dnsexit':
+                case 'digitalocean':
                 case 'dnsomatic':
                 case 'duckdns':
                 case 'dyndns':
@@ -605,6 +607,25 @@ class updatedns
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
+                break;
+            case 'digitalocean':
+                /*
+                * dnsHost should be the root domain
+                * dnsUser should be the record ID
+                * dnsPass should be the API key
+                */
+                $server = "https://api.digitalocean.com/v2/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser;
+                $hostData = array("data" => "{$this->_dnsIP}");
+
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    "Authorization: Bearer {$this->_dnsPass}",
+                    'Content-Type: application/json'
+                ));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
+                curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'selfhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
@@ -1128,6 +1149,16 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                }
+                break;
+            case 'digitalocean':
+                $output = json_decode($data);
+                if ($output->domain_record->data === $this->_dnsIP) {
+                    $status = "Dynamic DNS: (Success) Record ID {$this->_dnsUser} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } else {
+                    $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
+                    log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
                 }
                 break;
             case 'gratisdns':
