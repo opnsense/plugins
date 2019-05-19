@@ -27,7 +27,7 @@
         <id>server.privkey</id>
         <label>Private Key</label>
         <type>text</type>
-        <help>Private key of this instance. After saving you will see here your public key, please keep it safe.</help>
+        <help>Private key of this instance. After saving you will see here your private key, please keep it safe.</help>
     </field>
     <field>
         <id>server.port</id>
