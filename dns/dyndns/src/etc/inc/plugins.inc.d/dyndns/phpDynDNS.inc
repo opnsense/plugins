@@ -76,8 +76,8 @@
  *  SelfHost            - Last Tested: 26 December 2011
  *  Amazon Route53      - Last Tested: 01 April 2012
  *  DNS-O-Matic         - Last Tested: 9 September 2010
- *  CloudFlare          - Last Tested: 19 September 2018
- *  CloudFlare IPv6     - Last Tested: 19 September 2018
+ *  CloudFlare          - Last Tested: 16 April 2019
+ *  CloudFlare IPv6     - Last Tested: 16 April 2019
  *  Eurodns             - Last Tested: 25 July 2018
  *  GratisDNS           - Last Tested: 15 August 2012
  *  OVH DynHOST         - Last Tested: NEVER
@@ -259,13 +259,13 @@ class updatedns
         $this->_dnsMX = $dnsMX;
         $this->_dnsZoneID = $dnsZoneID;
         $this->_dnsTTL = $dnsTTL;
-        $this->_if = get_failover_interface($dnsIf);
+        $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
         $this->_checkIP();
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
-        $this->_dnsRequestIf = get_failover_interface($dnsRequestIf);
+        $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, $this->_useIPv6 ? 'inet6' : 'all');
         if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): running get_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
+            log_error("Dynamic DNS ({$this->_dnsHost}): running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
         }
         $this->_dnsRequestIfIP = get_interface_ip($dnsRequestIf);
         $this->_dnsMaxCacheAgeDays = 25;
@@ -597,15 +597,14 @@ class updatedns
             case 'he-net':
             case 'he-net-v6':
                 $server = "https://dyn.dns.he.net/nic/update?";
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost . '&password=' . $this->_dnsPass . '&myip=' . $this->_dnsIP);
                 break;
             case 'he-net-tunnelbroker':
-                $server = "https://ipv4.tunnelbroker.net/ipv4_end.php?";
+                $server = "https://ipv4.tunnelbroker.net/nic/update?";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
-                curl_setopt($ch, CURLOPT_URL, $server . 'tid=' . $this->_dnsHost);
+                curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
                 break;
             case 'selfhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
@@ -666,8 +665,8 @@ class updatedns
                     $oldIPResult = null;
                     foreach ($a_result as $resultItem) {
                         if ($RecordType === $resultItem['Type']) {
-                            $oldTTLResult = $resultItem[TTL];
-                            $oldIPResult = $resultItem[ResourceRecords][0];
+                            $oldTTLResult = $resultItem["TTL"];
+                            $oldIPResult = $resultItem["ResourceRecords"][0];
                         }
                     }
 
@@ -682,12 +681,12 @@ class updatedns
                     if (!empty($OldIP)) {
                         /* Your Hostname already exists, deleting and creating it again */
                         $changes = array();
-                        $changes[] = $r53->prepareChange(DELETE, $hostname, $RecordType, $OldTTL, $OldIP);
-                        $changes[] = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
+                        $changes[] = $r53->prepareChange("DELETE", $hostname, $RecordType, $OldTTL, $OldIP);
+                        $changes[] = $r53->prepareChange("CREATE", $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     } else {
                         /* Your Hostname does not exist yet, creating it */
-                        $changes = $r53->prepareChange(CREATE, $hostname, $RecordType, $NewTTL, $NewIP);
+                        $changes = $r53->prepareChange("CREATE", $hostname, $RecordType, $NewTTL, $NewIP);
                         $result = $r53->changeResourceRecordSets("/hostedzone/$ZoneID", $changes);
                     }
                 }
@@ -727,24 +726,23 @@ class updatedns
                     'Content-Type: application/json'
                 ));
 
-                // Get zone ID
+                // Get all zone info
                 $zonesUrl = "$baseUrl/zones";
-                // First, try removing the first part of the FQDN,
-                // under the assumption that it is probably the hostname,
-                // and look up the zone from what's left
-                $fqdnParts = explode('.', $fqdn);
-                $hostName = array_shift($fqdnParts);
-                $domainName = implode('.', $fqdnParts);
-                $getZoneId = "$zonesUrl/?name=$domainName";
-                curl_setopt($ch, CURLOPT_URL, $getZoneId);
+                curl_setopt($ch, CURLOPT_URL, $zonesUrl);
                 $output = json_decode(curl_exec($ch));
-                $zoneId = $output->result[0]->id;
-                if (empty($zoneId)) {
-                    // now try the full "hostname" as provided by the UI
-                    $getZoneId = "$zonesUrl/?name=$fqdn";
-                    curl_setopt($ch, CURLOPT_URL, $getZoneId);
-                    $output = json_decode(curl_exec($ch));
-                    $zoneId = $output->result[0]->id;
+                $zoneId = null; // Set default value
+
+                // Iterate zone objects, check if $fqdn is equal to or ends with zone name
+                foreach ($output->result as $key => $zoneObj) {
+                    if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
+                        // Found matching zone
+                        $zoneId = $zoneObj->id;
+                        // Get $hostName from $fqdn, set $domainName
+                        // These are only really used for log messages.
+                        $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
+                        $domainName = $zoneObj->name;
+                        break;
+                    }
                 }
 
                 if ($zoneId) { // If zone ID was found get host ID
@@ -752,7 +750,7 @@ class updatedns
                     $getHostId = "$dnsRecordsUrl?name=$fqdn&type=$recordType";
                     curl_setopt($ch, CURLOPT_URL, $getHostId);
                     $output = json_decode(curl_exec($ch));
-                    $recordCount = count($output->result);
+                    $recordCount = !empty($output->result) ? count($output->result) : 0;
                     if ($recordCount === 0) {
                         // create record
                         curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
@@ -1091,33 +1089,6 @@ class updatedns
                     $this->_debug($data);
                 }
                 break;
-            case 'he-net-tunnelbroker':
-                /*
-                -ERROR: Missing parameter(s).
-                -ERROR: Invalid API key or password
-                -ERROR: Tunnel not found
-                -ERROR: Another tunnel exists for this IP.
-                -ERROR: This tunnel is already associated with this IP address
-                +OK: Tunnel endpoint updated to: x.x.x.x
-                */
-                if (preg_match("/Missing parameter/i", $data)) {
-                    $status = "Dynamic DNS: (Error) Bad Request - Missing/Invalid Parameters.";
-                } elseif (preg_match('/Tunnel not found/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Bad Request - Invalid Tunnel ID.";
-                } elseif (preg_match('/Invalid API key or password/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Invalid username or password.";
-                } elseif (preg_match('/OK:/i', $data)) {
-                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                    $successful_update = true;
-                } elseif (preg_match('/This tunnel is already associated with this IP address/i', $data)) {
-                    $status = "Dynamic DNS: (Success) No Change In IP Address.";
-                    $successful_update = true;
-                } else {
-                    $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
-                }
-                break;
             case 'route53':
             case 'route53-v6':
                 $successful_update = true;
@@ -1196,6 +1167,7 @@ class updatedns
             case 'eurodns':
             case 'googledomains':
             case 'he-net':
+            case 'he-net-tunnelbroker':
             case 'he-net-v6':
             case 'loopia':
             case 'opendns':

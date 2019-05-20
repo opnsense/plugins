@@ -10,6 +10,13 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>streamserver.syslog_targets</id>
+    <label>SYSLOG targets</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>streamserver.proxy_protocol</id>
     <label>PROXY Protocol</label>
     <type>checkbox</type>

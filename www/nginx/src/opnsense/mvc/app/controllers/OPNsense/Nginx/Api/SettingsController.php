@@ -33,8 +33,8 @@ use OPNsense\Core\Backend;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Nginx\Nginx';
-    static protected $internalModelName = 'nginx';
+    protected static $internalModelClass = '\OPNsense\Nginx\Nginx';
+    protected static $internalModelName = 'nginx';
 
     // download rules
     public function downloadrulesAction()
@@ -530,7 +530,7 @@ class SettingsController extends ApiMutableModelControllerBase
     public function delipaclAction($uuid)
     {
         $nginx = $this->getModel();
-        $uuid_attached = $nginx->find_ip_acl_entry_uuids($uuid);
+        $uuid_attached = $nginx->find_ip_acl_uuids($uuid);
 
         $ret = $this->delBase('ip_acl', $uuid);
         if ($ret['result'] == 'deleted') {
@@ -662,5 +662,31 @@ class SettingsController extends ApiMutableModelControllerBase
                 // we don't care about then.
             }
         }
+    }
+    // SYSLOG targets
+    public function searchsyslog_targetAction()
+    {
+        return $this->searchBase('syslog_target', array('description', 'host', 'facility', 'severity'));
+    }
+
+    public function getsyslog_targetAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('syslog_target', 'syslog_target', $uuid);
+    }
+
+    public function addsyslog_targetAction()
+    {
+        return $this->addBase('syslog_target', 'syslog_target');
+    }
+
+    public function delsyslog_targetAction($uuid)
+    {
+        return $this->delBase('syslog_target', $uuid);
+    }
+
+    public function setsyslog_targetAction($uuid)
+    {
+        return $this->setBase('syslog_target', 'syslog_target', $uuid);
     }
 }

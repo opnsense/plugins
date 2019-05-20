@@ -35,10 +35,10 @@
   opacity: 1;
 }
 .bootstrap-dialog.type-default .modal-header {
-  background-color: #fff;
+  background-color: #427795;
 }
 .bootstrap-dialog.type-default .bootstrap-dialog-title {
-  color: #333;
+  color: #FFF;
 }
 .bootstrap-dialog.type-info .modal-header {
   background-color: #c35d12;
@@ -47,7 +47,7 @@
   background-color: #EA7105;
 }
 .bootstrap-dialog.type-success .modal-header {
-  background-color: #9BD275;
+  background-color: #c35d12;
 }
 .bootstrap-dialog.type-warning .modal-header {
   background-color: #CF361C;

@@ -33,8 +33,8 @@ use \OPNsense\Core\Backend;
 
 class ServerController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'server';
-    static protected $internalModelClass = '\OPNsense\Dnscryptproxy\Server';
+    protected static $internalModelName = 'server';
+    protected static $internalModelClass = '\OPNsense\Dnscryptproxy\Server';
 
     public function searchServerAction()
     {

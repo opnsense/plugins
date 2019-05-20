@@ -37,8 +37,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class DomainController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'Domain';
-    static protected $internalModelClass = '\OPNsense\Siproxd\Domain';
+    protected static $internalModelName = 'Domain';
+    protected static $internalModelClass = '\OPNsense\Siproxd\Domain';
 
     public function getAction()
     {

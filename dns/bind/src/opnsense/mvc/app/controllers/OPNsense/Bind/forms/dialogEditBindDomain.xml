@@ -1,0 +1,80 @@
+<form>
+    <field>
+        <id>domain.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the ACL.</help>
+    </field>
+    <field>
+        <id>domain.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Set the type for this domain.</help>
+    </field>
+    <field>
+        <id>domain.masterip</id>
+        <label>Master IP</label>
+        <type>text</type>
+        <help>Set the IP address of master server when using slave mode.</help>
+    </field>
+    <field>
+        <id>domain.domainname</id>
+        <label>Domain Name</label>
+        <type>text</type>
+        <help>Set the name for this ACL.</help>
+    </field>
+    <field>
+        <id>domain.allowtransfer</id>
+        <label>Allow Transfer</label>
+        <type>dropdown</type>
+        <help>Define an ACL where you allow which server can retrieve your zone.</help>
+    </field>
+    <field>
+        <id>domain.allowquery</id>
+        <label>Allow Query</label>
+        <type>dropdown</type>
+        <help>Define an ACL where you allow which client are allowed to query this domain.</help>
+    </field>
+    <field>
+        <id>domain.ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <help>Set the general TTL for this domain.</help>
+    </field>
+    <field>
+        <id>domain.refresh</id>
+        <label>Refresh Time</label>
+        <type>text</type>
+        <help>Set the time in seconds.</help>
+    </field>
+    <field>
+        <id>domain.retry</id>
+        <label>Retry Time</label>
+        <type>text</type>
+        <help>Set the time in seconds.</help>
+    </field>
+    <field>
+        <id>domain.expire</id>
+        <label>Expire Time</label>
+        <type>text</type>
+        <help>Set the time in seconds.</help>
+    </field>
+    <field>
+        <id>domain.negative</id>
+        <label>Negative TTL</label>
+        <type>text</type>
+        <help>Set the time in seconds.</help>
+    </field>
+    <field>
+        <id>domain.mailadmin</id>
+        <label>Mail Admin</label>
+        <type>text</type>
+        <help>Set the mail address of domain admin. Please replace @ with a dot.</help>
+    </field>
+    <field>
+        <id>domain.dnsserver</id>
+        <label>DNS Server</label>
+        <type>text</type>
+        <help>Set the DNS Server hosting this file. This should be the FQDN of your Firewall.</help>
+    </field>
+</form>

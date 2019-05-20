@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>general.heuristics</id>
+        <label>Use Heuristics</label>
+        <type>checkbox</type>
+        <help>Whether to enable or disable the usage or heuristic detection.</help>
+    </field>
+    <field>
+        <id>general.updateperiod</id>
+        <label>Update Period</label>
+        <type>text</type>
+        <help>Time in seconds how often to refresh trails.</help>
+    </field>
+    <field>
+        <id>general.adminpassword</id>
+        <label>SHA256 Admin Password</label>
+        <type>text</type>
+        <help>Set the SHA256 password for user admin here. For ways to generate it, please consult the plugin documentation.</help>
+    </field>
+    <field>
+        <id>general.monitorinterface</id>
+        <label>Monitor Interface</label>
+        <type>select_multiple</type>
+        <help>List of interface to listen on, none means listen on all interfaces.</help>
+    </field>
+</form>

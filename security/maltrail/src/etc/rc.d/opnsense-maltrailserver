@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-maltrailserver
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=maltrailserver
+
+rcvar=maltrailserver_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-f -P /var/run/maltrailserver.pid python2.7 /usr/local/share/maltrail/server.py"
+
+load_rc_config opnsense-maltrailserver
+
+: ${maltrailserver_enable="NO"}
+
+run_rc_command $1

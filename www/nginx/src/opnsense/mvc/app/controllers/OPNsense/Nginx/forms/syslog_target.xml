@@ -1,0 +1,37 @@
+<form>
+  <field>
+    <id>syslog_target.description</id>
+    <label>Description</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>syslog_target.host</id>
+    <label>Host</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>syslog_target.port</id>
+    <label>Port</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>syslog_target.facility</id>
+    <label>Facility</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>syslog_target.severity</id>
+    <label>Severity</label>
+    <type>dropdown</type>
+  </field>
+  <field>
+    <id>syslog_target.tag</id>
+    <label>Tag</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>syslog_target.nohostname</id>
+    <label>No Hostname</label>
+    <type>checkbox</type>
+  </field>
+</form>

@@ -19,7 +19,7 @@
     </field>
     <field>
         <id>antivirus.startsendpercentdataafter</id>
-        <label>Start send pecerantage data</label>
+        <label>Start send percentage data</label>
         <type>text</type>
         <help>Only if the object is bigger than size then the percentage of data which defined by SendPercentData sent by the c-icap server before receiving the complete body of request.</help>
     </field>

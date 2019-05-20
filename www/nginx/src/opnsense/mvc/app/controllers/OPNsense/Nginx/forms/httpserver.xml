@@ -10,6 +10,13 @@
     <type>text</type>
   </field>
   <field>
+    <id>httpserver.syslog_targets</id>
+    <label>SYSLOG targets</label>
+    <type>select_multiple</type>
+    <style>selectpicker</style>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>httpserver.proxy_protocol</id>
     <label>PROXY Protocol</label>
     <type>checkbox</type>
@@ -24,6 +31,14 @@
     <type>select_multiple</type>
     <advanced>true</advanced>
     <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
+  </field>
+  <field>
+    <id>httpserver.trusted_proxies_alias</id>
+    <label>Trusted Proxies (Firewall Alias)</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Choose a Firewall Alias for trusted proxies.</help>
   </field>
   <field>
     <id>httpserver.real_ip_source</id>

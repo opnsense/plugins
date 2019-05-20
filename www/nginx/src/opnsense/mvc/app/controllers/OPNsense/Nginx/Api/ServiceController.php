@@ -36,10 +36,10 @@ use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Nginx\Nginx';
-    static protected $internalServiceTemplate = 'OPNsense/Nginx';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'nginx';
+    protected static $internalServiceClass = '\OPNsense\Nginx\Nginx';
+    protected static $internalServiceTemplate = 'OPNsense/Nginx';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'nginx';
 
     /**
     *  override parent method - stopping nginx is not allowed because otherwise you would loose
@@ -99,5 +99,22 @@ class ServiceController extends ApiMutableServiceControllerBase
         }
 
         return array('status' => $status);
+    }
+
+    /**
+     * retrieve extended status of service
+     * @return array response message
+     * @throws \Exception when configd action fails
+     */
+    public function vtsAction()
+    {
+        $backend = new Backend();
+        $vts = json_decode($backend->configdRun('nginx vts'), true);
+        if ($vts != null) {
+            return $vts;
+        }
+
+        $this->response->setStatusCode(404, "Not Found");
+        return array();
     }
 }

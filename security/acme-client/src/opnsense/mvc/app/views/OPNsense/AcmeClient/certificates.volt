@@ -41,7 +41,7 @@ POSSIBILITY OF SUCH DAMAGE.
         var gridParams = {
             search:'/api/acmeclient/certificates/search',
             get:'/api/acmeclient/certificates/get/',
-            set:'/api/acmeclient/certificates/set/',
+            set:'/api/acmeclient/certificates/update/',
             add:'/api/acmeclient/certificates/add/',
             del:'/api/acmeclient/certificates/del/',
             toggle:'/api/acmeclient/certificates/toggle/',

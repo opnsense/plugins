@@ -32,6 +32,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class LocalController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Shadowsocks\Local';
-    static protected $internalModelName = 'local';
+    protected static $internalModelClass = '\OPNsense\Shadowsocks\Local';
+    protected static $internalModelName = 'local';
 }

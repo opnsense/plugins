@@ -40,10 +40,10 @@ use OPNsense\Ntopng\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Ntopng\General';
-    static protected $internalServiceTemplate = 'OPNsense/Ntopng';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'ntopng';
+    protected static $internalServiceClass = '\OPNsense\Ntopng\General';
+    protected static $internalServiceTemplate = 'OPNsense/Ntopng';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'ntopng';
 
     /**
      * check if Redis plugin is installed

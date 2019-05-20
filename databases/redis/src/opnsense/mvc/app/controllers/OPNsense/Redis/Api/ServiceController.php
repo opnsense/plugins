@@ -32,8 +32,8 @@ use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Redis\Redis';
-    static protected $internalServiceTemplate = 'OPNsense/Redis';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'redis';
+    protected static $internalServiceClass = '\OPNsense\Redis\Redis';
+    protected static $internalServiceTemplate = 'OPNsense/Redis';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'redis';
 }

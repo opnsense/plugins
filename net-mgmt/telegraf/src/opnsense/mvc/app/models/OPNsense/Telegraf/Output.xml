@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/output</mount>
     <description>Telegraf outputs configuration</description>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
     <items>
         <influx_enable type="BooleanField">
             <default>0</default>
@@ -44,6 +44,10 @@
             <default>0</default>
             <Required>N</Required>
         </graphite_verify>
+        <graphite_tagsupport type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </graphite_tagsupport>
         <graylog_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>

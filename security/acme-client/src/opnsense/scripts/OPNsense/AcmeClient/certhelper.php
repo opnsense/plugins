@@ -91,10 +91,6 @@ switch ($options["a"]) {
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
         exit(1);
-    case 'cleanup':
-        // TODO: remove certs from filesystem if they cannot be found in config.xml
-        echo "XXX: not yet implemented\n";
-        exit(1);
     default:
         echo "ERROR: invalid argument specified\n";
         log_error("invalid argument specified");
@@ -113,7 +109,7 @@ function cert_action_validator($opt_cert_id)
 
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
-    // Store certs here after successful issue/renewal. Required for restart actions.
+    // Store certs here after successful issue/renewal. Required for automations.
     $restart_certs = array();
 
     // Search for cert ID in configuration
@@ -153,9 +149,8 @@ function cert_action_validator($opt_cert_id)
                     // Ensure that this account was properly setup and registered.
                     $acct_result = run_acme_account_registration($acctObj, $certObj, $modelObj);
                     if (!$acct_result) {
-                        //echo "DEBUG: account registration OK\n";
+                        // account registration OK
                     } else {
-                        //echo "DEBUG: account registration failed\n";
                         log_error("AcmeClient: account registration failed");
                         log_cert_acme_status($certObj, $modelObj, '400');
                         if (isset($options["A"])) {
@@ -164,7 +159,6 @@ function cert_action_validator($opt_cert_id)
                         return(1);
                     }
                 } else {
-                    //echo "DEBUG: account not found\n";
                     log_error("AcmeClient: account not found");
                     log_cert_acme_status($certObj, $modelObj, '300');
                     if (isset($options["A"])) {
@@ -215,8 +209,7 @@ function cert_action_validator($opt_cert_id)
                             log_error("AcmeClient: issued/renewed certificate: " . (string)$certObj->name);
                             // Import certificate to Cert Manager
                             if (!import_certificate($certObj, $modelObj)) {
-                                //echo "DEBUG: cert import done\n";
-                                // Prepare certificate for restart action
+                                // Prepare certificate for automation
                                 $restart_certs[] = $certObj;
                                 log_cert_acme_status($certObj, $modelObj, '200');
                             } else {
@@ -266,13 +259,13 @@ function cert_action_validator($opt_cert_id)
         return(1);
     }
 
-    // Run restart actions if an operation was successful.
+    // Run automations if an operation was successful.
     if (!empty($restart_certs)) {
-        // Execute restart actions.
+        // Execute automations.
         if (!run_restart_actions($restart_certs, $modelObj)) {
             # Success.
         } else {
-            log_error("AcmeClient: failed to execute some restart actions");
+            log_error("AcmeClient: failed to execute some automations");
         }
     }
 
@@ -332,18 +325,16 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
     }
     file_put_contents($account_conf_file, (string)implode("\n", $acme_conf) . "\n");
     chmod($account_conf_file, 0600);
-    //echo "DEBUG: ${account_conf_file} | ${account_key_file}\n";
 
     // Check if account key already exists
     if (is_file($account_key_file)) {
-        //echo "DEBUG: account key found\n";
+        // account key found
     } else {
         // Check if we have an account key in our configuration
         if (!empty((string)$acctObj->key)) {
             // Write key to disk
             file_put_contents($account_key_file, (string)base64_decode((string)$acctObj->key));
             chmod($account_key_file, 0600);
-            //echo "DEBUG: exported existing account key to filesystem\n";
         } else {
             // Do not generate new key if a revocation was requested.
             if ($options["a"] == "revoke") {
@@ -358,14 +349,12 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
               . "--accountkeylength 4096 "
               . "--home /var/etc/acme-client/home "
               . "--accountconf " . $account_conf_file;
-            //echo "DEBUG: executing command: " . $acmecmd . "\n";
             $result = mwexec($acmecmd);
 
             // Check exit code
             if (!($result)) {
-                //echo "DEBUG: created a new account key\n";
+                // created a new account key
             } else {
-                //echo "DEBUG: AcmeClient: failed to create a new account key\n";
                 log_error("AcmeClient: failed to create a new account key");
                 return(1);
             }
@@ -373,7 +362,6 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
             // Read account key
             $account_key_content = @file_get_contents($account_key_file);
             if ($account_key_content == false) {
-                //echo "DEBUG: AcmeClient: unable to read account key from file\n";
                 log_error("AcmeClient: unable to read account key from file");
                 return(1);
             }
@@ -388,7 +376,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
 
     // Check if account was already registered
     if (!empty((string)$acctObj->lastUpdate)) {
-        //echo "DEBUG: account key already registered\n";
+        // account key already registered
     } else {
         // Do not register new account if a revocation was requested.
         if ($options["a"] == "revoke") {
@@ -402,14 +390,12 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
           . "--registeraccount "
           . "--home /var/etc/acme-client/home "
           . "--accountconf " . $account_conf_file;
-        //echo "DEBUG: executing command: " . $acmecmd . "\n";
         $result = mwexec($acmecmd);
 
         // Check exit code
         if (!($result)) {
-            //echo "DEBUG: registered a new account key\n";
+            // registered a new account key
         } else {
-            //echo "DEBUG: AcmeClient: failed to register a new account key\n";
             log_error("AcmeClient: failed to register a new account key");
             return(1);
         }
@@ -513,7 +499,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Get configured HTTP port for local lighttpd server
         $configObj = Config::getInstance()->object();
         $local_http_port = $configObj->OPNsense->AcmeClient->settings->challengePort;
-        //echo "DEBUG: local http challenge port: ${local_http_port}\n";
 
         // Collect all IP addresses here, automatic port forward will be applied for each IP
         $iplist = array();
@@ -524,10 +509,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             $dnslist[] = $certObj->name;
             foreach ($dnslist as $fqdn) {
                 // NOTE: This may take some time.
-                //echo "DEBUG: resolving ${fqdn}\n";
                 $ip_found = gethostbyname("${fqdn}.");
                 if (!empty($ip_found)) {
-                    //echo "DEBUG: got ip ${ip_found}\n";
                     $iplist[] = (string)$ip_found;
                 }
             }
@@ -537,7 +520,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         $additional_ip = (string)$valObj->http_opn_ipaddresses;
         if (!empty($additional_ip)) {
             foreach (explode(',', $additional_ip) as $ip) {
-              //echo "DEBUG: additional IP ${ip}\n";
                 $iplist[] = $ip;
             }
         }
@@ -546,7 +528,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         if (!empty((string)$valObj->http_opn_interface)) {
             $interface_ip = get_interface_ip((string)$valObj->http_opn_interface);
             if (!empty($interface_ip)) {
-                //echo "DEBUG: interface " . (string)$valObj->http_opn_interface . ", IP ${interface_ip}\n";
                 $iplist[] = $interface_ip;
             }
         }
@@ -674,6 +655,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
                 $proc_env['GD_Secret'] = (string)$valObj->dns_gd_secret;
+                break;
+            case 'dns_hostingde':
+                $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
+                $proc_env['HOSTINGDE_APIKEY'] = (string)$valObj->dns_hostingde_apiKey;
                 break;
             case 'dns_he':
                 $proc_env['HE_Username'] = (string)$valObj->dns_he_user;
@@ -828,6 +813,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $acmecmd = "/usr/local/sbin/acme.sh "
       . implode(" ", $acme_args) . " "
       . "--${acme_action} "
+      . "--days " . (string)$certObj->renewInterval . " "
       . "--domain " . (string)$certObj->name . " "
       . $altnames
       . $acme_validation . " "
@@ -839,7 +825,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
       . "--capath ${cert_chain_filename} "
       . "--fullchainpath ${cert_fullchain_filename} "
       . implode(" ", $acme_hook_options);
-    //echo "DEBUG: executing command: " . $acmecmd . "\n";
     $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
     // Make sure the resource could be setup properly
@@ -858,7 +843,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // HTTP-01: flush OPNsense port forward rules
     if (($val_method == 'http01') and ((string)$valObj->http_service == 'opnsense')) {
         mwexec('/sbin/pfctl -a acme-client -F all');
-        # XXX: workaround to solve disconnection issues reported by some users
+        // XXX: workaround to solve disconnection issues reported by some users
         $response = $backend->configdRun('filter reload');
     }
 
@@ -905,7 +890,6 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . "--home /var/etc/acme-client/home "
       . "--accountconf " . $account_conf_file . " "
       . $ecc_param;
-    //echo "DEBUG: executing command: " . $acmecmd . "\n";
     $result = mwexec($acmecmd);
 
     // TODO: maybe clear lastUpdate value?
@@ -1000,7 +984,6 @@ function import_certificate($certObj, $modelObj)
         $cert_cn      = local_cert_get_cn($cert_content, false);
         $cert_issuer  = cert_get_issuer($cert_content, false);
         $cert_purpose = cert_get_purpose($cert_content, false);
-      //echo "DEBUG: importing cert: subject: ${cert_subject}, serial: ${cert_serial}, issuer: ${cert_issuer} \n";
     } else {
         log_error("AcmeClient: unable to read certificate content from file");
         return(1);
@@ -1030,11 +1013,9 @@ function import_certificate($certObj, $modelObj)
             // Use old refid instead of generating a new one
             $cert_refid = (string)$certObj->certRefId;
             $import_log_message = 'Updated';
-            //echo "DEBUG: updating EXISTING certificate\n";
         }
     } else {
         // Not found. Just import as new cert.
-        //echo "DEBUG: importing NEW certificate\n";
     }
 
     // Read private key
@@ -1058,7 +1039,6 @@ function import_certificate($certObj, $modelObj)
         $cnt = 0;
         foreach ($config['cert'] as $crt) {
             if ($crt['refid'] == $cert_refid) {
-                //echo "DEBUG: found legacy cert object\n";
                 $config['cert'][$cnt] = $cert;
                 break;
             }
@@ -1106,7 +1086,7 @@ function run_restart_actions($certlist, $modelObj)
     // Required to run pre-defined commands.
     $backend = new Backend();
 
-    // NOTE: Do NOT run any restart action twice, collect duplicates first.
+    // NOTE: Do NOT run any automation twice, collect duplicates first.
     $restart_actions = array();
 
     // Check if there's something to do.
@@ -1115,41 +1095,47 @@ function run_restart_actions($certlist, $modelObj)
         foreach ($certlist as $certObj) {
             // Make sure the object is functional.
             if (empty($certObj->id)) {
-                log_error("AcmeClient: failed to query certificate for restart action");
+                log_error("AcmeClient: failed to query certificate for automation");
                 continue;
             }
-            // Extract restart actions
+            // Extract automations
             if (empty((string)$certObj->restartActions)) {
-                // No restart actions configured.
+                // No automations configured.
                 continue;
             }
             $_actions = explode(',', $certObj->restartActions);
-            // Walk through all linked restart actions.
+            // Walk through all linked automations.
             foreach ($_actions as $_action) {
-                // Extract restart action
+                // Extract automations
                 $action = $modelObj->getByActionID($_action);
                 // Make sure the object is functional.
                 if ($action === null) {
-                    log_error("AcmeClient: failed to retrieve restart action from certificate");
+                    log_error("AcmeClient: failed to retrieve automations from certificate");
                 } else {
-                    // Ignore disabled restart actions (even if they are still
+                    // Ignore disabled automations (even if they are still
                     // linked to a certificated).
                     if ((string)$action->enabled === "0") {
                         continue;
                     }
                     // Store by UUID, automatically eliminates duplicates.
-                    $restart_actions[$_action] = $action;
+                    $_data = array();
+                    $_data['obj'] = $action;
+                    $_data['cert_id'] = $certObj->id;
+                    $restart_actions[$_action] = $_data;
                 }
             }
         }
     }
 
-    // Run the collected restart actions.
+    // Run the collected automations.
     if (!empty($restart_actions) and is_array($restart_actions)) {
         // Extract cert object
-        foreach ($restart_actions as $action) {
+        foreach ($restart_actions as $_action) {
+            $action = $_action['obj'];
+            $cert_id = $_action['cert_id'];
+            $action_id = $action->id;
             // Run pre-defined or custom command?
-            log_error("AcmeClient: running restart action: " . $action->name);
+            log_error("AcmeClient: running automation: " . $action->name);
             switch ((string)$action->type) {
                 case 'restart_gui':
                     $response = $backend->configdRun('webgui restart 2', true);
@@ -1160,17 +1146,20 @@ function run_restart_actions($certlist, $modelObj)
                 case 'restart_nginx':
                     $response = $backend->configdRun("nginx restart");
                     break;
+                case 'upload_highwinds':
+                    $response = $backend->configdRun("acmeclient upload_highwinds ${cert_id} ${action_id}");
+                    break;
                 case 'configd':
                     // Make sure a configd command was specified.
                     if (empty((string)$action->configd)) {
-                        log_error("AcmeClient: no configd command specified for restart action: " . $action->name);
+                        log_error("AcmeClient: no configd command specified for automation: " . $action->name);
                         $result = '1';
                         continue; // Continue with next action.
                     }
                     $response = $backend->configdRun((string)$action->configd);
                     break;
                 default:
-                    log_error("AcmeClient: an invalid restart action was specified: " . (string)$action->type);
+                    log_error("AcmeClient: an invalid automation was specified: " . (string)$action->type);
                     $return = 1;
                     continue; // Continue with next action.
             }

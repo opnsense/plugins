@@ -1,4 +1,5 @@
 {% if helpers.exists('OPNsense.telegraf.general.enabled') and OPNsense.telegraf.general.enabled == '1' %}
+telegraf_var_script="/usr/local/opnsense/scripts/OPNsense/Telegraf/setup.sh"
 telegraf_enable="YES"
 {% else %}
 telegraf_enable="NO"

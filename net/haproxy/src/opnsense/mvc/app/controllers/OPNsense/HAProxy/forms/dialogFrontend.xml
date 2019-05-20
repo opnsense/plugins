@@ -69,8 +69,7 @@
         <id>frontend.ssl_default_certificate</id>
         <label>Default certificate</label>
         <type>dropdown</type>
-        <help><![CDATA[This certificate will be presented if no SNI is provided by the client or if the client provides an SNI hostname which does not match any certificate.<div class="text-info"><b>NOTE:</b> This parameter is optional to enforce a certain sort order for certificates. The certificate itself must still be listed under "Certificates".</div>]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[This certificate will be presented if no SNI is provided by the client or if the client provides an SNI hostname which does not match any certificate. This parameter is optional to enforce a certain sort order for certificates.]]></help>
     </field>
     <field>
         <id>frontend.ssl_customOptions</id>
@@ -96,6 +95,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
+        <sortable>true</sortable>
         <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
@@ -402,6 +402,7 @@
         <label>Select Rules</label>
         <type>select_multiple</type>
         <style>tokenize</style>
+        <sortable>true</sortable>
         <help><![CDATA[Choose rules to be included in this Public Service.]]></help>
         <hint>Choose rules.</hint>
     </field>

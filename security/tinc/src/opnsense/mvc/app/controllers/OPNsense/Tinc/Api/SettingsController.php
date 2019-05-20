@@ -38,8 +38,8 @@ use \OPNsense\Core\Backend;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'tinc';
-    static protected $internalModelClass = '\OPNsense\Tinc\Tinc';
+    protected static $internalModelName = 'tinc';
+    protected static $internalModelClass = '\OPNsense\Tinc\Tinc';
 
     /**
      * get network action

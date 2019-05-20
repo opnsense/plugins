@@ -7,4 +7,13 @@ metrics to a variety of other datastores, services, and message
 queues, including InfluxDB, Graphite, OpenTSDB, Datadog, Librato,
 Kafka, MQTT, NSQ, and many others.
 
+
+Plugin Changelog
+================
+
+1.7.5
+
+* Add Graphite tag support
+
+
 WWW: https://www.influxdata.com/time-series-platform/telegraf/

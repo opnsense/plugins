@@ -29,6 +29,14 @@
       <default_type type="TextField">
         <Required>N</Required>
       </default_type>
+      <server_names_hash_bucket_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </server_names_hash_bucket_size>
+      <server_names_hash_max_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </server_names_hash_max_size>
     </http>
 
     <userlist type="ArrayField">
@@ -364,6 +372,14 @@
         <Required>Y</Required>
         <default>1</default>
       </proxy_buffering>
+      <proxy_read_timeout type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+      </proxy_read_timeout>
+      <proxy_send_timeout type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+      </proxy_send_timeout>
       <http2_push_preload type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -387,6 +403,10 @@
         </OptionValues>
         <Required>N</Required>
       </satisfy>
+      <proxy_max_temp_file_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_max_temp_file_size>
     </location>
 
     <custom_policy type="ArrayField">
@@ -416,7 +436,6 @@
           <option2 value="&gt;">Bigger</option2>
           <option3 value="&lt;">Lesser</option3>
           <option4 value="&lt;=">Lesser or Equal</option4>
-          <option5 value="=">Equal</option5>
         </OptionValues>
       </operator>
       <action type="OptionField">
@@ -534,6 +553,18 @@
       <servername type="CSVListField">
         <Required>Y</Required>
       </servername>
+      <syslog_targets type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>syslog_target</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </syslog_targets>
       <listen_http_port type="PortField">
         <Required>N</Required>
         <default>80</default>
@@ -551,6 +582,21 @@
         <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
         <multiple>Y</multiple>
       </trusted_proxies>
+      <trusted_proxies_alias type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Firewall.Alias</source>
+            <items>aliases.alias</items>
+            <display>name</display>
+            <filters>
+              <type>/^(host|network)$/</type>
+            </filters>
+          </template>
+        </Model>
+        <ValidationMessage>Selected alias not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </trusted_proxies_alias>
       <real_ip_source type="OptionField">
         <OptionValues>
           <X-Real-IP>X-Real-IP (default)</X-Real-IP>
@@ -608,6 +654,7 @@
         <default>main</default>
         <OptionValues>
           <main>Default</main>
+          <main_ext>Extended</main_ext>
           <anonymized>Anonymized</anonymized>
           <disabled>Disabled</disabled>
         </OptionValues>
@@ -719,6 +766,18 @@
           </check001>
         </Constraints>
       </listen_port>
+      <syslog_targets type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>syslog_target</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </syslog_targets>
       <udp type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -754,6 +813,7 @@
         <default>main</default>
         <OptionValues>
           <main>Default</main>
+          <main_ext>Extended</main_ext>
           <anonymized>Anonymized</anonymized>
           <disabled>Disabled</disabled>
         </OptionValues>
@@ -1370,5 +1430,69 @@
         <MinimumValue>1</MinimumValue>
       </max_size>
     </cache_path>
+
+    <syslog_target type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <host type="HostnameField">
+        <Required>Y</Required>
+      </host>
+      <port type="PortField">
+        <Required>N</Required>
+      </port>
+      <facility type="OptionField">
+        <OptionValues>
+          <kern>kern</kern>
+          <user>user</user>
+          <mail>mail</mail>
+          <daemon>daemon</daemon>
+          <auth>auth</auth>
+          <intern>intern</intern>
+          <lpr>lpr</lpr>
+          <news>news</news>
+          <uucp>uucp</uucp>
+          <clock>clock</clock>
+          <authpriv>authpriv</authpriv>
+          <ftp>ftp</ftp>
+          <ntp>ntp</ntp>
+          <audit>audit</audit>
+          <alert>alert</alert>
+          <cron>cron</cron>
+          <local0>local0</local0>
+          <local1>local1</local1>
+          <local2>local2</local2>
+          <local3>local3</local3>
+          <local4>local4</local4>
+          <local5>local5</local5>
+          <local6>local6</local6>
+          <local7>local7</local7>
+        </OptionValues>
+        <Required>Y</Required>
+        <default>local7</default>
+      </facility>
+      <severity type="OptionField">
+        <OptionValues>
+          <debug>debug</debug>
+          <info>info</info>
+          <notice>notice</notice>
+          <warn>warn</warn>
+          <error>error</error>
+          <crit>crit</crit>
+          <alert>alert</alert>
+          <emerg>emerg</emerg>
+        </OptionValues>
+        <Required>Y</Required>
+        <default>error</default>
+      </severity>
+      <tag type="TextField">
+        <Required>N</Required>
+        <mask>/[a-z][a-z0-9]*/i</mask>
+      </tag>
+      <nohostname type="BooleanField">
+        <Required>Y</Required>
+        <default>N</default>
+      </nohostname>
+    </syslog_target>
   </items>
 </model>

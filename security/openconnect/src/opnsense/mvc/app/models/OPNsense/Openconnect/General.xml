@@ -39,8 +39,8 @@
         </hash>
         <group type="TextField">
             <Required>N</Required>
-            <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
-            <ValidationMessage>Only a-zA-Z0-9 are allowed.</ValidationMessage>
+            <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
+            <ValidationMessage>Please provide a valid group name. Allowed characters are a-zA-Z0-9._- and it has to be 1-64 characters long.</ValidationMessage>
         </group>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>

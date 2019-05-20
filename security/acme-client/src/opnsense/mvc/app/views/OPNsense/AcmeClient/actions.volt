@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2017 Frank Wall
+Copyright (C) 2017-2019 Frank Wall
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
 
@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#grid-actions").UIBootgrid(
             {   search:'/api/acmeclient/actions/search',
                 get:'/api/acmeclient/actions/get/',
-                set:'/api/acmeclient/actions/set/',
+                set:'/api/acmeclient/actions/update/',
                 add:'/api/acmeclient/actions/add/',
                 del:'/api/acmeclient/actions/del/',
                 toggle:'/api/acmeclient/actions/toggle/',
@@ -66,7 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#actions">{{ lang._('Restart Actions') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#actions">{{ lang._('Automation') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -97,4 +97,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Restart Action')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Automation')])}}

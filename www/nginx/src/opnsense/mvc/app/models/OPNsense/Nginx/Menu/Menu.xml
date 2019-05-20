@@ -1,10 +1,11 @@
 <menu>
   <Services>
     <Nginx cssClass="fa fa-shield fa-fw">
-      <Configuration url="/ui/nginx" />
-      <Logs url="/ui/nginx/index/logs" />
-      <Banned url="/ui/nginx/index/ban" />
-      <TLSFingerprints VisibleName="TLS Fingerprints" url="/ui/nginx/index/tls_handshakes" />
+      <Configuration url="/ui/nginx" order="10"/>
+      <Banned url="/ui/nginx/index/ban" order="20"/>
+      <TLSFingerprints VisibleName="TLS Fingerprints" url="/ui/nginx/index/tls_handshakes" order="30"/>
+      <VTS VisibleName="Traffic Statistic" url="/ui/nginx/index/vts" order="90"/>
+      <Logs url="/ui/nginx/index/logs" order="100"/>
     </Nginx>
   </Services>
 </menu>

@@ -34,8 +34,8 @@ use \OPNsense\Core\Backend;
 
 class ForwardController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'forward';
-    static protected $internalModelClass = '\OPNsense\Dnscryptproxy\Forward';
+    protected static $internalModelName = 'forward';
+    protected static $internalModelClass = '\OPNsense\Dnscryptproxy\Forward';
 
     public function searchForwardAction()
     {

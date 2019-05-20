@@ -1,4 +1,5 @@
 rspamd:/etc/rc.conf.d/rspamd
+actions.conf:/usr/local/etc/rspamd/local.d/actions.conf
 antivirus.wl:/usr/local/etc/rspamd/local.d/antivirus.wl
 antivirus.conf:/usr/local/etc/rspamd/local.d/antivirus.conf
 bad_file_extensions-map:/usr/local/etc/rspamd/local.d/bad_file_extensions.map
@@ -9,6 +10,7 @@ spamtrap.conf:/usr/local/etc/rspamd/local.d/spamtrap.conf
 surbl-whitelist.inc.local:/var/db/rspamd/surbl-whitelist.inc.local
 2tld.inc.local:/var/db/rspamd/2tld.inc.local
 greylist.conf:/usr/local/etc/rspamd/local.d/greylist.conf
+greylist_ip.wl:/usr/local/etc/rspamd/local.d/greylist_ip.wl
 phishing.conf:/usr/local/etc/rspamd/local.d/phishing.conf
 milter_headers.conf:/usr/local/etc/rspamd/local.d/milter_headers.conf
 multimap.conf:/usr/local/etc/rspamd/local.d/multimap.conf

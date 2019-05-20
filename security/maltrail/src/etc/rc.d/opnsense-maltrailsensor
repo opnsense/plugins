@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-maltrailsensor
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=maltrailsensor
+
+rcvar=maltrailsensor_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-f -P /var/run/maltrailsensor.pid python2.7 /usr/local/share/maltrail/sensor.py"
+
+load_rc_config opnsense-maltrailsensor
+
+: ${maltrailsensor_enable="NO"}
+
+run_rc_command $1

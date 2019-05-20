@@ -5,3 +5,4 @@ ntopng_flags="/usr/local/etc/ntopng.conf"
 {% else %}
 ntopng_enable="NO"
 {% endif %}
+ntopng_var_mfs="/var/db/ntopng"

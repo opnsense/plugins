@@ -66,6 +66,12 @@
         <help>This will enable verification of a secure connection to Graphite. Default is disabled for compatibility reasons.</help>
     </field>
     <field>
+        <id>output.graphite_tagsupport</id>
+        <label>Graphite Tag Support</label>
+        <type>checkbox</type>
+        <help>This will enable support for tags.</help>
+    </field>
+    <field>
         <id>output.graylog_enable</id>
         <label>Enable Graylog Output</label>
         <type>checkbox</type>

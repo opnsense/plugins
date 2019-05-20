@@ -131,6 +131,13 @@ cache = false
   log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
   log_format = 'tsv'
 
+{% if helpers.exists('OPNsense.dnscryptproxy.dnsbl.enabled') and OPNsense.dnscryptproxy.dnsbl.enabled == '1' %}
+[blacklist]
+  blacklist_file = 'blacklist.txt'
+  log_file = '/var/log/dnscrypt-proxy/blocked.log'
+  log_format = 'tsv'
+{% endif %}
+
 [sources]
   [sources.'public-resolvers']
   urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']

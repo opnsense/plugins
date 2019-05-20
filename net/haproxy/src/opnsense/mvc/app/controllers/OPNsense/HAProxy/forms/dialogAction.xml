@@ -78,7 +78,7 @@
         <id>action.http_request_auth</id>
         <label>Auth Realm</label>
         <type>text</type>
-        <help><![CDATA[When HAProxy requests user name and password from the user, this optiomal authentication realm is returned with the response (typically the application's name).]]></help>
+        <help><![CDATA[When HAProxy requests user name and password from the user, this optional authentication realm is returned with the response (typically the application's name).]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -335,6 +335,17 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_tcp-request_inspect-delay</style>
+    </field>
+    <field>
+        <id>action.tcp_request_inspect_delay</id>
+        <label>TCP inspection delay</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum allowed time to wait for data during content inspection. Defaults to milliseconds. You may also enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_tcp-response_content_lua</style>
     </field>
     <field>
@@ -342,6 +353,17 @@
         <label>Lua function</label>
         <type>text</type>
         <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_tcp-response_inspect-delay</style>
+    </field>
+    <field>
+        <id>action.tcp_response_inspect_delay</id>
+        <label>TCP inspection delay</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum allowed time to wait for a response during content inspection. Defaults to milliseconds. You may also enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
     </field>
     <field>
         <label>Parameters</label>

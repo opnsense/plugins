@@ -39,7 +39,7 @@ $export_path = '/tmp/haproxy/ssl/';
 
 // configure ssl elements
 $configNodes = [
-    'frontends' => ['ssl_certificates', 'ssl_clientAuthCAs', 'ssl_clientAuthCRLs'],
+    'frontends' => ['ssl_certificates', 'ssl_clientAuthCAs', 'ssl_clientAuthCRLs', 'ssl_default_certificate'],
     'servers'   => ['sslCA', 'sslCRL', 'sslClientCertificate'],
 ];
 $certTypes = ['cert', 'ca', 'crl'];
@@ -84,17 +84,16 @@ foreach ($configNodes as $key => $value) {
                                             }
                                         }
                                         // generate pem file for individual certs
-                                        // (only supported for type "cert")
-                                        if ($type == cert) {
+                                        // (not supported for CRLs)
+                                        if ($type == 'cert') {
                                             $output_pem_filename = $export_path . $cert_refid . ".pem";
                                             file_put_contents($output_pem_filename, $pem_content);
                                             chmod($output_pem_filename, 0600);
                                             echo "exported $type to " . $output_pem_filename . "\n";
-                                            // add pem file to crt-list
                                             $crtlist[] = $output_pem_filename;
                                         } else {
-                                            // All other types do not support list files.
-                                            // Add cert content directly to the list file.
+                                            // In contrast to certificates, CA/CRL content needs to be put in a single file.
+                                            // A list of individual files is not supported by HAproxy.
                                             $crtlist[] = $pem_content;
                                         }
                                     }
@@ -102,18 +101,23 @@ foreach ($configNodes as $key => $value) {
                             }
                         }
                         // generate list file
-                        // (only supported for frontends)
-                        if ($key == 'frontends') {
+                        // (only supported for frontends and servers)
+                        if (($key == 'frontends') or ($key == 'servers')) {
                             // ignore if list is empty
                             if (empty($crtlist)) {
                                 continue;
                             }
+                            // skip for ssl_default_certificate, it's only used to ensure
+                            // that the default certificate is exported to a file
+                            if ($sslchild == 'ssl_default_certificate') {
+                                continue;
+                            }
                             // check if a default certificate is configured
-                            if (($type == cert) and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
+                            if (($type == 'cert') and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
                                 $default_cert = (string)$child->ssl_default_certificate;
                                 $default_cert_filename = $export_path . $default_cert . ".pem";
-                                // ensure default certificate is the first entry on the list
-                                unset($crtlist[$default_cert]);
+                                // ensure that the default certificate is the first entry on the list
+                                $crtlist = array_diff($crtlist, [$default_cert_filename]);
                                 array_unshift($crtlist, $default_cert_filename);
                             }
                             $crtlist_content = implode("\n", $crtlist) . "\n";

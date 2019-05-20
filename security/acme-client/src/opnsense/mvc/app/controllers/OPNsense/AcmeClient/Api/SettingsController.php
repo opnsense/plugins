@@ -42,8 +42,8 @@ use \OPNsense\AcmeClient\AcmeClient;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'acmeclient';
-    static protected $internalModelClass = '\OPNsense\AcmeClient\AcmeClient';
+    protected static $internalModelName = 'acmeclient';
+    protected static $internalModelClass = '\OPNsense\AcmeClient\AcmeClient';
 
     /**
      * create new cron job or return already available one
@@ -126,7 +126,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
             // Check if the required plugin is installed
             if ((string)$mdlAcme->isPluginInstalled('haproxy') != "1") {
-                $this->getLogger()->error("LE check: HAProxy plugin is NOT installed, skipping integration");
+                $this->getLogger()->error("AcmeClient: HAProxy plugin is NOT installed, skipping integration");
                 return($result);
             }
 
@@ -149,7 +149,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     $integration_found = true; // We found something.
                     // Make sure the item was not deleted.
                     if ($mdlHAProxy->getByAclID($acl_ref) === null) {
-                        $this->getLogger()->error("LE check: HAProxy integration is incomplete: ACL item not found");
+                        $this->getLogger()->error("AcmeClient: HAProxy integration is incomplete: ACL item not found");
                         $integration_complete = false; // Item is broken.
                     }
                 } else {
@@ -162,7 +162,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     $integration_found = true; // We found something.
                     // Make sure the item was not deleted.
                     if ($mdlHAProxy->getByActionID($action_ref) === null) {
-                        $this->getLogger()->error("LE check: HAProxy integration is incomplete: action item not found");
+                        $this->getLogger()->error("AcmeClient: HAProxy integration is incomplete: action item not found");
                         $integration_complete = false; // Item is broken.
                     }
                 } else {
@@ -175,7 +175,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     $integration_found = true; // We found something.
                     // Make sure the item was not deleted.
                     if ($mdlHAProxy->getByServerID($server_ref) === null) {
-                        $this->getLogger()->error("LE check: HAProxy integration is incomplete: server item not found");
+                        $this->getLogger()->error("AcmeClient: HAProxy integration is incomplete: server item not found");
                         $integration_complete = false; // Item is broken.
                     }
                 } else {
@@ -188,7 +188,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     $integration_found = true; // We found something.
                     // Make sure the item was not deleted.
                     if ($mdlHAProxy->getByBackendID($backend_ref) === null) {
-                        $this->getLogger()->error("LE check: HAProxy integration is incomplete: backend item not found");
+                        $this->getLogger()->error("AcmeClient: HAProxy integration is incomplete: backend item not found");
                         $integration_complete = false; // Item is broken.
                     }
                 } else {
@@ -197,7 +197,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
                 // Check if HAProxy integration is already complete.
                 if ($integration_found and $integration_complete) {
-                    $this->getLogger()->error("LE check: HAProxy integration is complete");
+                    $this->getLogger()->error("AcmeClient: HAProxy integration is complete");
                 } else {
                     $integration_changes = true;
                     /**
@@ -210,29 +210,29 @@ class SettingsController extends ApiMutableModelControllerBase
                     if ($integration_found and !$integration_complete) {
                         // NOTE: We ignore the return value of the del() calls
                         //       too keep this as simple as possible.
-                        $this->getLogger()->error("LE check: HAProxy integration is incomplete, removing relics");
+                        $this->getLogger()->error("AcmeClient: HAProxy integration is incomplete, removing relics");
                         // Remove obsolete backend item
                         if (!empty($backend_ref)) {
                             if ($mdlHAProxy->backends->backend->del($backend_ref)) {
-                                $this->getLogger()->error("LE HAProxy integration: deleted obsolete backend item");
+                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete backend item");
                             }
                         }
                         // Remove obsolete server item
                         if (!empty($server_ref)) {
                             if ($mdlHAProxy->servers->server->del($server_ref)) {
-                                $this->getLogger()->error("LE HAProxy integration: deleted obsolete server item");
+                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete server item");
                             }
                         }
                         // Remove obsolete action item
                         if (!empty($action_ref)) {
                             if ($mdlHAProxy->actions->action->del($action_ref)) {
-                                $this->getLogger()->error("LE HAProxy integration: deleted obsolete action item");
+                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete action item");
                             }
                         }
                         // Remove obsolete ACL item
                         if (!empty($acl_ref)) {
                             if ($mdlHAProxy->acls->acl->del($acl_ref)) {
-                                $this->getLogger()->error("LE HAProxy integration: deleted obsolete ACL item");
+                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete ACL item");
                             }
                         }
                         // TODO: Remove obsolete ACL link from frontends
@@ -241,7 +241,7 @@ class SettingsController extends ApiMutableModelControllerBase
                         //       will be overwritten later anyway.
                         $result['result'] = "repaired";
                     } else {
-                        $this->getLogger()->error("LE check: HAProxy integration initializing");
+                        $this->getLogger()->error("AcmeClient: HAProxy integration initializing");
                         $result['result'] = "new";
                     }
 
@@ -340,7 +340,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                     }
                                     // Add modified list of linked Actions to frontend.
                                     $frontend->linkedActions = $_actions;
-                                    $this->getLogger()->error("LE HAProxy integration: updating frontend ${_frontend}");
+                                    $this->getLogger()->error("AcmeClient: HAProxy integration: updating frontend ${_frontend}");
                                     // We need to write changes to config.
                                     $integration_changes = true;
                                 }
@@ -351,7 +351,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
                 // Changes made to configuration?
                 if ($integration_changes === true) {
-                    $this->getLogger()->error("LE HAProxy integration: saving updated configuration");
+                    $this->getLogger()->error("AcmeClient: HAProxy integration: saving updated configuration");
                     // Save updated configuration.
                     // Do NOT validate because the current in-memory model doesn't know about the
                     // HAProxy items just created.

@@ -37,8 +37,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class ClientController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'Client';
-    static protected $internalModelClass = '\OPNsense\Freeradius\Client';
+    protected static $internalModelName = 'Client';
+    protected static $internalModelClass = '\OPNsense\Freeradius\Client';
     public function getAction()
     {
         // define list of configurable settings

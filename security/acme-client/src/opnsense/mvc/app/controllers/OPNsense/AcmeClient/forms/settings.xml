@@ -32,9 +32,9 @@
     </field>
     <field>
         <id>acmeclient.settings.restartTimeout</id>
-        <label>Restart Timeout</label>
+        <label>Automation Timeout</label>
         <type>text</type>
-        <help><![CDATA[The maximum time in seconds to wait for a restart action to complete. When the timeout is reached the command is forcefully aborted. Defaults to 600 seconds.]]></help>
+        <help><![CDATA[The maximum time in seconds to wait for an automation to complete. When the timeout is reached the command is forcefully aborted. Defaults to 600 seconds.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
