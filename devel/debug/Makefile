@@ -4,8 +4,8 @@ PLUGIN_COMMENT=		Debugging Tools
 PLUGIN_DEPENDS=		php${PLUGIN_PHP}-pear-PHP_CodeSniffer \
 			php${PLUGIN_PHP}-pecl-xdebug \
 			phpunit7-php${PLUGIN_PHP} \
-			p5-File-Slurp py27-pycodestyle \
-			vim-console git
+			py${PLUGIN_PYTHON}-pycodestyle \
+			p5-File-Slurp vim-console git
 PLUGIN_MAINTAINER=	franco@opnsense.org
 
 .include "../../Mk/plugins.mk"
