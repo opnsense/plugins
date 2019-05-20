@@ -1,0 +1,23 @@
+<model>
+    <mount>//OPNsense/clamav/url</mount>
+    <description>ClamAV List configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <lists>
+            <list type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <link type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^https?:\/\/.*$/i</mask>
+                    <ValidationMessage>URL has to start with http:// or https://</ValidationMessage>
+                </link>
+            </list>
+        </lists>
+    </items>
+</model>
