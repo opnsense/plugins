@@ -612,6 +612,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>netcup DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_netcup</style>
+    </field>
+    <field>
+        <id>validation.dns_netcup_cid</id>
+        <label>Customer number</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_netcup_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_netcup_pw</id>
+        <label>API Password</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>NS1.com</label>
         <type>header</type>
         <style>table_dns table_dns_nsone</style>
