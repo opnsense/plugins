@@ -102,5 +102,5 @@ $( document ).ready(function() {
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
-    <button class="btn pull-right" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
+    <button class="btn btn-default" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
 </div>
