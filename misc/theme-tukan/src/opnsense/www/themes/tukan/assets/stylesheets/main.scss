@@ -5123,6 +5123,9 @@ tbody.collapse.in {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
+  -webkit-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
   &.pull-right {
     right: 0;
     left: auto;
