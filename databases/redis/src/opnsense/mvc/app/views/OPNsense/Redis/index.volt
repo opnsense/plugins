@@ -102,8 +102,5 @@ $( document ).ready(function() {
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
-    <div class="col-md-12">
-        <hr />
-        <button class="btn pull-right" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
-    </div>
+    <button class="btn pull-right" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
 </div>
