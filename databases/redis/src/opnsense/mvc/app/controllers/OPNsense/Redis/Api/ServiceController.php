@@ -29,6 +29,7 @@
 namespace OPNsense\Redis\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -36,4 +37,15 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Redis';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'redis';
+
+    /**
+     * remove database folder
+     * @return array
+     */
+    public function resetdbAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("redis resetdb");
+        return array("response" => $response);
+    }
 }
