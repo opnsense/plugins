@@ -6,7 +6,7 @@
  #
  # Redistribution and use in source and binary forms, with or without
  # modification, are permitted provided that the following conditions are met:
-
+ #
  # 1. Redistributions of source code must retain the above copyright notice,
  #    this list of conditions and the following disclaimer.
  #
@@ -47,6 +47,8 @@ $( document ).ready(function() {
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         history.pushState(null, null, e.target.hash);
     });
+
+    $('#save_redis-general-settings').after('<button class="btn btn-default" style="margin-left:5px" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>');
 
     // form save event handlers for all defined forms
     $('[id*="save_"]').each(function(){
@@ -102,5 +104,4 @@ $( document ).ready(function() {
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
-    <button class="btn btn-default" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
 </div>
