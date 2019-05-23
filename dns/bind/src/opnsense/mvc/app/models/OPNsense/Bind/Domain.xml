@@ -1,0 +1,98 @@
+<model>
+    <mount>//OPNsense/bind/domain</mount>
+    <description>BIND domain configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <domains>
+            <domain type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <type type="OptionField">
+                    <default>master</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <master>master</master>
+                        <slave>slave</slave>
+                    </OptionValues>
+                </type>
+                <masterip type="HostnameField">
+                    <Required>N</Required>
+                </masterip>
+                <domainname type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                </domainname>
+                <allowtransfer type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Acl</source>
+                            <items>acls.acl</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </allowtransfer>
+                <allowquery type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Acl</source>
+                            <items>acls.acl</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </allowquery>
+                <serial type="TextField">
+                    <Required>N</Required>
+                </serial>
+                <ttl type="IntegerField">
+                    <default>86400</default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
+                </ttl>
+                <refresh type="IntegerField">
+                    <default>21600</default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
+                </refresh>
+                <retry type="IntegerField">
+                    <default>3600</default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
+                </retry>
+                <expire type="IntegerField">
+                    <default>3542400</default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 10000000.</ValidationMessage>
+                </expire>
+                <negative type="IntegerField">
+                    <default>3600</default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
+                </negative>
+                <mailadmin type="TextField">
+                    <default>mail.opnsense.localdomain</default>
+                    <Required>Y</Required>
+                </mailadmin>
+                <dnsserver type="HostnameField">
+                    <default>opnsense.localdomain</default>
+                    <Required>Y</Required>
+                </dnsserver>
+            </domain>
+        </domains>
+    </items>
+</model>
