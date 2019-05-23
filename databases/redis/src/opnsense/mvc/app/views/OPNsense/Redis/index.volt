@@ -1,6 +1,7 @@
 {#
  # Copyright (C) 2017 Fabian Franz
  # Copyright (C) 2014-2015 Deciso B.V.
+ # Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
@@ -78,6 +79,20 @@ $( document ).ready(function() {
             });
         });
     });
+    $("#resetdbAct").click(function () {
+        stdDialogConfirm(
+            '{{ lang._('Confirm database reset') }}',
+            '{{ lang._('Do you want to reset the database?') }}',
+            '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
+                $("#resetdbAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/redis/service/resetdb", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/redis/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('redis');
+                    $("#resetdbAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
+            });
+        });
+    });
 });
 </script>
 
@@ -87,4 +102,5 @@ $( document ).ready(function() {
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
+    <button class="btn btn-default" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>
 </div>
