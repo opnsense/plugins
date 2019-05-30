@@ -5124,6 +5124,10 @@ tbody.collapse.in {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
+  -webkit-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  opacity: 0.97;
   &.pull-right {
     right: 0;
     left: auto;
@@ -8852,7 +8856,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 15px 0 73px;
+  padding: 15px 0 21px;
 }
 
 .page-side {
@@ -9117,7 +9121,7 @@ a.list-group-item.active-menu-title.collapsed {
           padding-left: 10px !important;
           font-size: 14px !important;
           background-color: #393939 !important;
-          opacity: 0.9;
+          opacity: 0.95;
           &.menu-level-3-item.active {
             color: #ec6d12 !important;
             background-color: #2a2a2a !important;
@@ -9128,7 +9132,7 @@ a.list-group-item.active-menu-title.collapsed {
         padding-left: 10px !important;
         font-size: 14px !important;
         background-color: #393939 !important;
-        opacity: 0.9;
+        opacity: 0.95;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
