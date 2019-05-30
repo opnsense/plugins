@@ -3180,7 +3180,12 @@ tbody.collapse.in {
   border-radius: 3px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  background-clip: padding-box; }
+  background-clip: padding-box;
+  -webkit-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
+  -moz-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
+  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
+  opacity: 0.97; }
+
   .dropdown-menu.pull-right {
     right: 0;
     left: auto;
@@ -5757,7 +5762,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 15px 0 73px; }
+  padding: 15px 0 21px; }
 
 .page-side {
   background: #202020;
@@ -5969,7 +5974,7 @@ main.page-content.col-lg-12 {
   padding-left: 10px !important;
   font-size: 14px !important;
   background-color: #393939 !important;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > div.collapse.in > div.collapse.in > a.list-group-item.menu-level-3-item.active {
