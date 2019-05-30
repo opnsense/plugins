@@ -35,6 +35,7 @@
                 <OptionValues>
                     <sha256>SHA256</sha256>
                     <sha1>SHA1</sha1>
+                    <pin-sha256>PIN-SHA256</pin-sha256>
                 </OptionValues>
         </hash>
         <group type="TextField">
