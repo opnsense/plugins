@@ -50,3 +50,16 @@ function nginx_services()
         )
     );
 }
+
+/**
+ *  sync configuration via xmlrpc
+ * @return array
+ */
+function nginx_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'nginx';
+    $result['section'] = 'OPNsense.Nginx';
+    $result['description'] = gettext('Nginx Load Balancer');
+    return array($result);
+}
