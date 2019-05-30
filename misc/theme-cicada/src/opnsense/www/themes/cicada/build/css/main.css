@@ -3183,7 +3183,8 @@ tbody.collapse.in {
   background-clip: padding-box;
   -webkit-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
   -moz-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
-  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);  }
+  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
+  opacity: 0.97; }
   
   .dropdown-menu.pull-right {
     right: 0;
