@@ -25,7 +25,7 @@
         </password>
         <servercert type="TextField">
             <Required>N</Required>
-            <mask>/^[a-z0-9]{40,64}$/</mask>
+            <mask>/^([a-zA-Z0-9\/\+\=]){40,64}$/u</mask>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
         </servercert>
         <hash type="OptionField">
