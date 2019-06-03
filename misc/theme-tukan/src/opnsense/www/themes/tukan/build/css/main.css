@@ -6,7 +6,7 @@
   padding-top: 1px !important;
   padding-right: 1px !important;
   padding-left: 5px !important;
-  min-height: 25px !important; 
+  min-height: 25px !important;
   border: 1px solid #fff; }
 
   .widgetdiv .content-box-head .btn-group .btn {
@@ -3172,14 +3172,14 @@ tbody.collapse.in {
   background-clip: padding-box;
   -webkit-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
   -moz-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
-  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60); 
+  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.60);
   opacity: 0.97; }
-  
+
   .dropdown-menu.pull-right {
     right: 0;
     left: auto;
     background-color: #e5e5e5; }
-    
+
   .dropdown-menu .divider {
     height: 1px;
     margin: 9px 0;
@@ -6052,7 +6052,7 @@ button.toggle-sidebar {
   -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.60);
   -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.60);
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.60); }
-  
+
 .nav-tabs > .dropdown > a.pull-right {
   -webkit-box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.60);
   -moz-box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.60);
