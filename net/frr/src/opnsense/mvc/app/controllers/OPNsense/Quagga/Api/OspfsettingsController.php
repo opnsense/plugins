@@ -47,6 +47,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('prefixlists.prefixlist', array("enabled", "name", "seqnumber", "action", "network" ));
     }
+    public function searchRoutemapAction()
+    {
+        return $this->searchBase('routemaps.routemap', array("enabled", "name", "action", "id", "match2", "set"));
+    }
     public function getNetworkAction($uuid = null)
     {
         $this->sessionClose();
@@ -62,6 +66,11 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         $this->sessionClose();
         return $this->getBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
+    public function getRoutemapAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('routemap', 'routemaps.routemap', $uuid);
+    }
     public function addNetworkAction()
     {
         return $this->addBase('network', 'networks.network');
@@ -73,6 +82,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function addPrefixlistAction()
     {
         return $this->addBase('prefixlist', 'prefixlists.prefixlist');
+    }
+    public function addRoutemapAction()
+    {
+        return $this->addBase('routemap', 'routemaps.routemap');
     }
     public function delNetworkAction($uuid)
     {
@@ -86,6 +99,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->delBase('prefixlists.prefixlist', $uuid);
     }
+    public function delRoutemapAction($uuid)
+    {
+        return $this->delBase('routemaps.routemap', $uuid);
+    }
     public function setNetworkAction($uuid)
     {
         return $this->setBase('network', 'networks.network', $uuid);
@@ -98,6 +115,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
+    public function setRoutemapAction($uuid)
+    {
+        return $this->setBase('routemap', 'routemaps.routemap', $uuid);
+    }
     public function toggleNetworkAction($uuid)
     {
         return $this->toggleBase('networks.network', $uuid);
@@ -109,5 +130,9 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function togglePrefixlistAction($uuid)
     {
         return $this->toggleBase('prefixlists.prefixlist', $uuid);
+    }
+    public function toggleRoutemapAction($uuid)
+    {
+        return $this->toggleBase('routemaps.routemap', $uuid);
     }
 }
