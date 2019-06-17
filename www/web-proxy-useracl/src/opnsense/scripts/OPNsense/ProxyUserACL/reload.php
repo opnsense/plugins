@@ -39,7 +39,6 @@ $domain = strtoupper((string) Config::getInstance()->object()->system->domain);
 
 array_map('unlink', glob("/usr/local/etc/squid/ACL_useracl_*.txt"));
 foreach ($mdlProxyUserACL->getNodeByReference('general.ACLs.ACL')->getNodes() as $acl) {
-    file_put_contents("/test.txt", $acl["Group"]);
     if ($acl["Group"]["ip"]["selected"] == "1") {
         $sources = "";
         foreach ($acl["Source"] as $source) {
