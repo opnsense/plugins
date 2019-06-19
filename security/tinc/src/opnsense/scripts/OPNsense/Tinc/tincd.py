@@ -1,7 +1,7 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3
 
 """
-    Copyright (c) 2016 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2016-2019 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ def read_config(config_filename):
     return result
 
 def deploy(config_filename):
-    interfaces = (subprocess.check_output(['/sbin/ifconfig','-l'])).split()
+    interfaces = (subprocess.check_output(['/sbin/ifconfig','-l'])).decode().split()
     networks = read_config(config_filename)
     # remove previous configuration
     os.system('rm -rf /usr/local/etc/tinc')
@@ -89,7 +89,7 @@ def deploy(config_filename):
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
-            tundev = subprocess.check_output(['/sbin/ifconfig',interface_type,'create']).split()[0]
+            tundev = subprocess.check_output(['/sbin/ifconfig',interface_type,'create']).decode().split()[0]
             subprocess.call(['/sbin/ifconfig',tundev,'name',interface_name])
             subprocess.call(['/sbin/ifconfig',interface_name,'group','tinc'])
             if os.path.islink('/dev/%s' % interface_name):
