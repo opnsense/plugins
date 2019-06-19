@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3
 
 """
     Copyright (c) 2018-2019 Ad Schellevis <ad@opnsense.org>
@@ -75,7 +75,6 @@ if not telemetry_state.is_running():
                     max_timestamp = record['__timestamp__']
                 event_collector.push(record)
                 row_count += 1
-
             # data collected, log and push
             if row_count > 0 and max_timestamp is not None:
                 syslog.syslog(
