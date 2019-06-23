@@ -247,7 +247,6 @@
                                 <Required>Y</Required>
                         </name>
                         <action type="OptionField">
-                                <default></default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                         <permit>Permit</permit>
