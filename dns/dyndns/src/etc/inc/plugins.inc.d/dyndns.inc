@@ -110,6 +110,8 @@ function dyndns_list()
         'dyndns-custom' => 'DynDNS (custom)',
         'dyndns-static' => 'DynDNS (static)',
         'dyns' => 'DyNS',
+        'dynv6' => 'dynv6',
+        'dynv6-v6' => 'dynv6 (v6)',
         'easydns' => 'easyDNS',
         'eurodns' => 'EuroDNS',
         'freedns' => 'freeDNS',

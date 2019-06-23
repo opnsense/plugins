@@ -39,6 +39,7 @@
  *    - Oray (oray.com)
  *    - regfish (regfish.de)
  *    - regfish IPv6 (regfish.de)
+ *    - dynv6 IPv6 (dynv6.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -90,6 +91,8 @@
  *  regfish             - Last Tested: 15 August 2017
  *  regfish v6          - Last Tested: 15 August 2017
  *  Amazon Route53 v6   - Last Tested: 19 November 2017
+ *  dynv6               - Last Tested: 23 June 2019
+ *  dynv6 v6            - Last Tested: 23 June 2019
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -216,8 +219,8 @@ class updatedns
                 }
                 break;
             case 'duckdns':
-            case 'dynv6':
-            case 'dynv6-v6':
+	    case 'dynv6':
+	    case 'dynv6-v6':
             case 'regfish':
             case 'regfish-v6':
                 if (!$dnsUser) {
@@ -246,6 +249,7 @@ class updatedns
             case 'he-net-v6':
             case 'regfish-v6':
             case 'route53-v6':
+            case 'dynv6-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -322,6 +326,8 @@ class updatedns
                 case 'regfish-v6':
                 case 'route53':
                 case 'route53-v6':
+                case 'dynv6':
+                case 'dynv6-v6':
                 case 'selfhost':
                 case 'strato':
                 case 'staticcling':
@@ -821,6 +827,18 @@ class updatedns
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_URL, $server . '?domains=' . str_replace('.duckdns.org', '', $this->_dnsHost) . '&token=' . urlencode($this->_dnsUser));
                 break;
+            case 'dynv6':
+                $server = "https://ipv4.dynv6.com/api/update";
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv4=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
+                break;
+            case 'dynv6-v6':
+                $server = "https://ipv6.dynv6.com/api/update";
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+		curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv6=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
+                break;
             case 'googledomains':
                 $server = "https://domains.google.com/nic/update";
                 $post_data['hostname'] = $this->_dnsHost;
@@ -1181,6 +1199,21 @@ class updatedns
                         $this->_debug($data);
                 }
                 break;
+            case 'dynv6':
+            case 'dynv6-v6':
+                /* API-Documentation: https://dynv6.com/docs/apis */
+                if (preg_match('/addresses updated/i', $data)) {
+                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                        $successful_update = true;
+                } elseif (preg_match('/addresses unchanged/i', $data)) {
+                        $status = "Dynamic DNS: (Success) IP Address Unchanged!";
+                        $successful_update = true;
+                } else {
+                        $status = "Dynamic DNS: (Unknown Response)";
+                        log_error("Dynamic DNS: PAYLOAD: {$data}");
+                        $this->_debug($data);
+                }
+		break;
             case '3322':
             case 'citynetwork':
             case 'dnsomatic':
@@ -1324,6 +1357,9 @@ class updatedns
                 break;
             case 10:
                 $error = "Dynamic DNS ({$this->_dnsHost}): No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
+                break;
+            case 11:
+                $status = 'Dynamic DNS: (ERROR!) No Token Provided.';
                 break;
             default:
                 $error = "Dynamic DNS: (ERROR!) Unknown Response.";
