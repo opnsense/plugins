@@ -27,6 +27,12 @@
         <hint>Type or select a route source.</hint>
     </field>
     <field>
+        <id>ospf.redistributemap</id>
+        <label>Redistribution Map</label>
+        <type>dropdown</type>
+        <help>Route Map to set for Redistribution.</help>
+    </field>
+    <field>
         <id>ospf.originate</id>
         <label>Advertise Default Gateway</label>
         <type>checkbox</type>

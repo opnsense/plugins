@@ -33,6 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
         <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
         <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
+        <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
     </ul>
     <div class="tab-content content-box tab-content">
         <div id="general" class="tab-pane fade in active">
@@ -118,10 +119,36 @@ POSSIBILITY OF SUCH DAMAGE.
             <tfoot>
                 <tr>
                     <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="routemaps" class="tab-pane fade in">
+        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditRouteMaps">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Secquence Number') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
+                    <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                     </td>
                 </tr>
             </tfoot>
@@ -195,9 +222,20 @@ $( document ).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
+  $("#grid-routemaps").UIBootgrid(
+    { 'search':'/api/quagga/ospfsettings/searchRoutemap',
+      'get':'/api/quagga/ospfsettings/getRoutemap/',
+      'set':'/api/quagga/ospfsettings/setRoutemap/',
+      'add':'/api/quagga/ospfsettings/addRoutemap/',
+      'del':'/api/quagga/ospfsettings/delRoutemap/',
+      'toggle':'/api/quagga/ospfsettings/toggleRoutemap/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
 });
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':'DialogEditPrefixLists','label':lang._('Edit Prefix Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':'DialogEditRouteMaps','label':lang._('Edit Route Maps')])}}

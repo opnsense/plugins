@@ -47,6 +47,19 @@
                         <static>Statically configured routes</static>
                 </OptionValues>
         </redistribute>
+        <redistributemap type="ModelRelationField">
+                <Model>
+                        <template>
+                                <source>OPNsense.quagga.ospf</source>
+                                <items>routemaps.routemap</items>
+                                <display>name</display>
+                                <group>name</group>
+                        </template>
+                </Model>
+                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                <Multiple>N</Multiple>
+                <Required>N</Required>
+        </redistributemap>
         <networks>
                 <network type="ArrayField">
                         <enabled type="BooleanField">
@@ -223,5 +236,45 @@
                         </network>
                 </prefixlist>
         </prefixlists>
+        <routemaps>
+                <routemap type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <name type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </name>
+                        <action type="OptionField">
+                                <Required>Y</Required>
+                                <OptionValues>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
+                        <id type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
+                        </id>
+                        <match2 type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.ospf</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </match2>
+                        <set type="TextField">
+                                <Required>N</Required>
+                        </set>
+                </routemap>
+        </routemaps>
     </items>
 </model>
