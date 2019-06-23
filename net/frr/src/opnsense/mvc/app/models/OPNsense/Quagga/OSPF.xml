@@ -51,9 +51,9 @@
                 <Model>
                         <template>
                                 <source>OPNsense.quagga.ospf</source>
-                                        <items>routemaps.routemap</items>
-                                        <display>name</display>
-                                        <group>name</group>
+                                <items>routemaps.routemap</items>
+                                <display>name</display>
+                                <group>name</group>
                         </template>
                 </Model>
                 <ValidationMessage>Related Route-Map item not found</ValidationMessage>
