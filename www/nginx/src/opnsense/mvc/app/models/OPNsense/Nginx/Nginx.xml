@@ -82,6 +82,13 @@
         <Required>Y</Required>
         <multiple>Y</multiple>
       </serverentries>
+      <load_balancing_algorithm type="OptionField">
+        <OptionValues>
+          <ip_hash>IP Hash</ip_hash>
+        </OptionValues>
+        <BlankDesc>Weighted Round Robin</BlankDesc>
+        <Required>N</Required>
+      </load_balancing_algorithm>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
