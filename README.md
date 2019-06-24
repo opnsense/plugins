@@ -81,6 +81,7 @@ security/softether -- Cross-platform Multi-protocol VPN Program
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
+sysutils/apuled -- PC Engine APU LED control
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices

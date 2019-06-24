@@ -276,7 +276,7 @@ lint-xml:
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
 
 lint-exec: check
-.for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d
+.for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
 .if exists(${DIR})
 	@find ${DIR} -type f ! -name "*.xml" -print0 | \
 	    xargs -0 -t -n1 test -x || \
