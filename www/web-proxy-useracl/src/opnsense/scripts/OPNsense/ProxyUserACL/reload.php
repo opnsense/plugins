@@ -41,12 +41,21 @@ array_map('unlink', glob("/usr/local/etc/squid/ACL_useracl_*.txt"));
 foreach ($mdlProxyUserACL->getNodeByReference('general.ACLs.ACL')->getNodes() as $acl) {
     if ($acl["Group"]["ip"]["selected"] == "1") {
         $sources = "";
+        $dstdomains = "";
         foreach ($acl["Source"] as $source) {
             $sources = $sources . $source["value"] . "\n";
+        }
+        foreach ($acl["Domains"] as $dstdomain) {
+            $domainvar = $dstdomain["value"];
+            if (preg_match("/^\w+\.\w+$/", $domainvar)) { $domainvar = "." . $domainvar; }
+            $dstdomains = $dstdomains . $domainvar . "\n";
         }
 
         file_put_contents("/usr/local/etc/squid/ACL_useracl_" .
             $acl["Priority"] . ".txt", $sources . "\n");
+
+        file_put_contents("/usr/local/etc/squid/ACL_useracl_" .
+            $acl["Priority"] . "_domains.txt", $dstdomains . "\n");
     } else {
         file_put_contents("/usr/local/etc/squid/ACL_useracl_" .
             $acl["Priority"] . ".txt", $acl["Name"] . "\n" .

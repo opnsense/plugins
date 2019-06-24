@@ -94,7 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
             $('.command-edit').click(function(event) {
                 var checkExist = setInterval(function() {
-                    var text = $('span.filter-option.pull-left')[0].innerText
+                    var text = $('.filter-option-inner-inner').first().text();
                     if (text == "IP" || text == "Group" || text == "User") {
                         clearInterval(checkExist);
                         if(text == "IP") {
@@ -111,8 +111,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             $(document).click(function(event) {
-                var text = $('span.filter-option.pull-left')[0].innerText;
-
+                var text = $('.filter-option-inner-inner').first().text();
                 if(text == "IP") {
                     $('#row_ACL\\.Name').hide();
                     $('#row_ACL\\.Source').show();
