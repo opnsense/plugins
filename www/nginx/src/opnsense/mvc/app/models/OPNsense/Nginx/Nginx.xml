@@ -533,6 +533,9 @@
       <args type="BooleanField">
         <Required>Y</Required>
       </args>
+      <url type="BooleanField">
+        <Required>Y</Required>
+      </url>
       <headers type="BooleanField">
         <Required>Y</Required>
       </headers>
