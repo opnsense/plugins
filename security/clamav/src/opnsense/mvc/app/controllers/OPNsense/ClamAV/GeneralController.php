@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2017-2019 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@ class GeneralController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->generalForm = $this->getForm("general");
+        $this->view->formDialogEditClamavUrl = $this->getForm("dialogEditClamavUrl");
         $this->view->versionForm = $this->getForm("version");
         $this->view->pick('OPNsense/ClamAV/general');
     }

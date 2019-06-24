@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>list.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the list.</help>
+    </field>
+    <field>
+        <id>list.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this signatures.</help>
+    </field>
+    <field>
+        <id>list.link</id>
+        <label>URL</label>
+        <type>text</type>
+        <help>URL of the signature database.</help>
+    </field>
+</form>

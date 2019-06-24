@@ -31,6 +31,11 @@
                     <default>51820</default>
                     <Required>Y</Required>
                 </port>
+                <mtu type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>9300</MaximumValue>
+                    <Required>N</Required>
+                </mtu>
                 <dns type="CSVListField">
                     <Required>N</Required>
                     <mask>/^([a-fA-F0-9\.:\[\]]*?,)*([a-fA-F0-9\.:\[\]]*)$/</mask>

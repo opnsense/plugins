@@ -3,6 +3,7 @@ actions.conf:/usr/local/etc/rspamd/local.d/actions.conf
 antivirus.wl:/usr/local/etc/rspamd/local.d/antivirus.wl
 antivirus.conf:/usr/local/etc/rspamd/local.d/antivirus.conf
 bad_file_extensions-map:/usr/local/etc/rspamd/local.d/bad_file_extensions.map
+whitelist_sender_domains-map:/usr/local/etc/rspamd/local.d/whitelist_sender_domains.map
 dkim_signing.conf:/usr/local/etc/rspamd/local.d/dkim_signing.conf
 dkim.conf:/usr/local/etc/rspamd/local.d/dkim.conf
 spf.conf:/usr/local/etc/rspamd/local.d/spf.conf

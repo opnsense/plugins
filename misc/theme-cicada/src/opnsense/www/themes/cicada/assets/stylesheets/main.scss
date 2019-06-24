@@ -5124,6 +5124,10 @@ tbody.collapse.in {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
+  -webkit-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 3px 8px 10px 0px rgba(0, 0, 0, 0.6);
+  opacity: 0.97;
   &.pull-right {
     right: 0;
     left: auto;
@@ -5775,30 +5779,47 @@ a:focus {
 
 .nav-tabs {
   margin-right: 1px;
-  > li {
-    float: left;
-    margin-bottom: -1px;
-    > a {
-      margin-right: 2px;
-      line-height: 1.428571429;
-      border-radius: 3px 3px 0 0;
-      cursor: pointer;
-      &:hover {
-        border-color: #4e4e4e #4e4e4e #4e4e4e;
+  > {
+    li {
+      float: left;
+      margin-bottom: -1px;
+      > a {
+        margin-right: 2px;
+        line-height: 1.428571429;
+        border-radius: 3px 3px 0 0;
+        cursor: pointer;
+        -webkit-box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        -moz-box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.6);
       }
     }
-    &.active > a {
-      color: #ec6d12;
-      background-color: #2a2a2a;
-      border: 1px solid #6b6a6a;
-      border-bottom-color: transparent;
-      cursor: pointer;
-      &:hover, &:focus {
+    .dropdown > a {
+      -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.6);
+      -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.6);
+      box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.6);
+      &.pull-right {
+        -webkit-box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        -moz-box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.6);
+      }
+    }
+    li {
+      > a:hover {
+        border-color: #4e4e4e #4e4e4e #4e4e4e;
+      }
+      &.active > a {
         color: #ec6d12;
         background-color: #2a2a2a;
         border: 1px solid #6b6a6a;
         border-bottom-color: transparent;
         cursor: pointer;
+        &:hover, &:focus {
+          color: #ec6d12;
+          background-color: #2a2a2a;
+          border: 1px solid #6b6a6a;
+          border-bottom-color: transparent;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -6948,9 +6969,9 @@ a.thumbnail {
 }
 
 .alert-success {
-  background-color: #9BD275;
-  border-color: #9BD275;
-  color: #66aa37;
+  background-color: #424242;
+  border-color: #515151;
+  color: #ffffff;
   hr {
     border-top-color: #8dcc62;
   }
@@ -8764,6 +8785,7 @@ html {
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
   scrollbar-color: #424242 #323232;
+  background-color: #2a2a2a;
 }
 
 body {
@@ -8771,6 +8793,7 @@ body {
   font-family: 'SourceSansProRegular';
   scrollbar-width: thin;
   scrollbar-color: #424242 #323232;
+  background-color: #2a2a2a;
   touch-action: manipulation;
   min-width: 320px;
   background-color: #2A2A2A;
@@ -8833,7 +8856,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 15px 0 73px;
+  padding: 15px 0 21px;
 }
 
 .page-side {
@@ -9098,7 +9121,7 @@ a.list-group-item.active-menu-title.collapsed {
           padding-left: 10px !important;
           font-size: 14px !important;
           background-color: #393939 !important;
-          opacity: 0.9;
+          opacity: 0.95;
           &.menu-level-3-item.active {
             color: #ec6d12 !important;
             background-color: #2a2a2a !important;
@@ -9109,7 +9132,7 @@ a.list-group-item.active-menu-title.collapsed {
         padding-left: 10px !important;
         font-size: 14px !important;
         background-color: #393939 !important;
-        opacity: 0.9;
+        opacity: 0.95;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
@@ -9600,13 +9623,13 @@ label > input {
 
 textarea#update_status {
   color: inherit !important;
-  background-color: none !important;
+  background-color: #3E3E3E;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   border: none !important;
   &:hover {
     color: inherit !important;
-    background-color: none !important;
+    background-color: #3E3E3E;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border: none !important;
@@ -9667,8 +9690,12 @@ h3 {
   }
 }
 
-.table-condensed.table-hover {
+#grid-log, .table-condensed.table-hover {
   border: 1px solid #515151;
+}
+
+#rules.table-condensed.table-hover {
+  border: none;
 }
 
 .bootgrid-header .search .glyphicon, .bootgrid-footer .search .glyphicon, .input-group-addon {

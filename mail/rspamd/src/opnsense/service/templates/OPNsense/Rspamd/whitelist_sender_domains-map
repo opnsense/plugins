@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.Rspamd.general.enabled') and OPNsense.Rspamd.general.enabled == '1' and helpers.exists('OPNsense.Rspamd.multimap.whitelistsender') and OPNsense.Rspamd.multimap.whitelistsender != '' %}
+{%   for sender in OPNsense.Rspamd.multimap.whitelistsender.split(',') %}
+{{ sender }}
+{%   endfor %}
+{% endif %}

@@ -8,11 +8,31 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.14
+
+* add load balancer algorithm option (ip_hash)
+* fix URL flag not stored (contributed by jkellerer) [1]
+
+
+[1] https://github.com/opnsense/plugins/pull/1375
+
+1.13
+
+* add support for 0-RTT (Early Data in TLS 1.3)
+* add XMLRPC sync support
+
+1.12
+
+* add log to SYSLOG server support
+* add support for maximum temporary file size for request bodies
+* fix log "format" disable
+
 1.11
 
 * add VTS(1) module for traffic status reports
 * fix HSTS bug
 * add extended log format (contributed by Josh Wiles)
+* fix ACME support (contributed by Frank Wall)
 
 (1) https://github.com/vozlt/nginx-module-vts
 

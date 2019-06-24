@@ -58,6 +58,14 @@
                 <allownew>true</allownew>
                 <help>If an attached file has a suffix in this list, the mail will be rejected via a hard reject, which means that the server will be immeadiately informed about the policy violation.</help>
             </field>
+            <field>
+                <id>rspamd.multimap.whitelistsender</id>
+                <label>Sender Whitelist</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>All sender domains listed here are getting whitelisted, no matter if they have wrong SPF records or are on multiple blacklists.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-general-milter-headers" description="Milter Headers">
             <field>

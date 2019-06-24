@@ -27,13 +27,20 @@
         <id>server.privkey</id>
         <label>Private Key</label>
         <type>text</type>
-        <help>Private key of this instance. After saving you will see here your public key, please keep it safe.</help>
+        <help>Private key of this instance. After saving you will see here your private key, please keep it safe.</help>
     </field>
     <field>
         <id>server.port</id>
         <label>Listen Port</label>
         <type>text</type>
         <help>Set port for this instance to listen on.</help>
+    </field>
+    <field>
+        <id>server.mtu</id>
+        <label>MTU</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the interface MTU for this interface. Leaving empty uses the MTU from main interface which is fine for most setups.</help>
     </field>
     <field>
         <id>server.dns</id>
