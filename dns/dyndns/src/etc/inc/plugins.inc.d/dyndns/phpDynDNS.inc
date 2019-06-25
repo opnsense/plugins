@@ -216,6 +216,8 @@ class updatedns
                 }
                 break;
             case 'duckdns':
+            case 'dynv6':
+            case 'dynv6-v6':
             case 'regfish':
             case 'regfish-v6':
                 if (!$dnsUser) {
@@ -353,7 +355,8 @@ class updatedns
             log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
         }
 
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
+        if ($this->_dnsService != 'ods' &&
+            $this->_dnsService != 'route53' && $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
@@ -875,7 +878,27 @@ class updatedns
             log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
         }
         $successful_update = false;
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' && @curl_error($ch)) {
+
+        $curl_version =  curl_version();
+        extract(curl_getinfo($ch));
+        $curl_metrics = array(
+            1 => "Dynamic DNS ({$this->_dnsHost}): Curl-Metrics",
+            2 => "Dynamic DNS ({$this->_dnsHost}): Interface: $this->_dnsRequestIf",
+            3 => "Dynamic DNS ({$this->_dnsHost}): DNS-IP...: $this->_dnsIP",
+            4 => "Dynamic DNS ({$this->_dnsHost}): Url......: $url",
+            5 => "Dynamic DNS ({$this->_dnsHost}): Code.....: $http_code ($redirect_count redirect(s) in $redirect_time secs)",
+            6 => "Dynamic DNS ({$this->_dnsHost}): Content..: $content_type Size: $download_content_length (Own: $size_download) Filetime: $filetime ",
+            7 => "Dynamic DNS ({$this->_dnsHost}): Time.....: $total_time Start @ $starttransfer_time (DNS: $namelookup_time Connect: $connect_time Request: $pretransfer_time",
+            8 => "Dynamic DNS ({$this->_dnsHost}): Speed....: Down: $speed_download (avg.) Up: $speed_upload (avg.)",
+            9 => "Dynamic DNS ({$this->_dnsHost}): Curl.....: v{$curl_version['version']}"
+        );
+        for ($i=1; $i<=9; $i++) {
+            log_error($curl_metrics[$i]);
+        }
+
+        if ($this->_dnsService != 'ods' &&
+            $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' &&
+            @curl_error($ch)) {
             $status = "Curl error occurred: " . curl_error($ch);
             log_error($status);
             $this->status = $status;
