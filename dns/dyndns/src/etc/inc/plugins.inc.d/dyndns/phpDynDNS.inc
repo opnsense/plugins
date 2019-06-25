@@ -91,6 +91,7 @@
  *  regfish             - Last Tested: 15 August 2017
  *  regfish v6          - Last Tested: 15 August 2017
  *  Amazon Route53 v6   - Last Tested: 19 November 2017
+ *  DigitalOcean        - Last Tested: 25 June 2019
  * +====================================================+
  *
  * @author    E.Kristensen
