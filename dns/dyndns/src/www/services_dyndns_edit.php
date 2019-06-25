@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $reqdfieldsn[] = gettext('Hostname');
         $reqdfields[] = 'username';
         $reqdfieldsn[] = gettext('Username');
-        if (!in_array($pconfig['type'], array('duckdns', 'regfish', 'regfish-v6'))) {
+        if (!in_array($pconfig['type'], array('dynv6', 'dynv6-v6', 'duckdns', 'regfish', 'regfish-v6'))) {
             $reqdfields[] = 'password';
             $reqdfieldsn[] = gettext('Password');
         }
@@ -331,9 +331,10 @@ include("head.inc");
                     <td>
                       <input name="username" type="text" id="username" value="<?= $pconfig['username'] ?>" />
                       <div class="hidden" data-for="help_for_username">
-                        <?= gettext("Username is required for all types except Namecheap, FreeDNS, Linode and Custom Entries.");?>
+                        <?= gettext('Username is required except when stated otherwise.') ?>
                         <br /><?= gettext('Route 53: Enter your Access Key ID.') ?>
                         <br /><?= gettext('Duck DNS: Enter your Token.') ?>
+                        <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                       </div>
                     </td>
@@ -346,6 +347,7 @@ include("head.inc");
                         <?=gettext('FreeDNS (freedns.afraid.org): Enter your "Authentication Token" provided by FreeDNS.') ?>
                         <br /><?= gettext('Route 53: Enter your Secret Access Key.') ?>
                         <br /><?= gettext('Duck DNS: Leave blank.') ?>
+                        <br /><?= gettext('dynv6: Leave blank.') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
                       </div>
                     </td>

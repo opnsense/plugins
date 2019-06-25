@@ -38,6 +38,7 @@
  *    - Oray (oray.com)
  *    - regfish (regfish.de)
  *    - regfish IPv6 (regfish.de)
+ *    - dynv6 IPv6 (dynv6.com)
  *    - DigitalOcean (digitalocean.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
@@ -91,6 +92,8 @@
  *  regfish             - Last Tested: 15 August 2017
  *  regfish v6          - Last Tested: 15 August 2017
  *  Amazon Route53 v6   - Last Tested: 19 November 2017
+ *  dynv6               - Last Tested: 25 June 2019
+ *  dynv6 v6            - Last Tested: 25 June 2019
  *  DigitalOcean        - Last Tested: 25 June 2019
  *  Linode              - Last Tested: 12 November 2019
  *  Linode v6           - Last Tested: 12 November 2019
@@ -222,6 +225,8 @@ class updatedns
                 }
                 break;
             case 'duckdns':
+            case 'dynv6':
+            case 'dynv6-v6':
             case 'regfish':
             case 'regfish-v6':
                 if (!$dnsUser) {
@@ -247,6 +252,7 @@ class updatedns
         switch ($dnsService) {
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'dynv6-v6':
             case 'he-net-v6':
             case 'linode-v6':
             case 'regfish-v6':
@@ -299,14 +305,16 @@ class updatedns
                 case 'custom':
                 case 'custom-v6':
                 case 'dhs':
-                case 'dnsexit':
                 case 'digitalocean':
+                case 'dnsexit':
                 case 'dnsomatic':
                 case 'duckdns':
                 case 'dyndns':
                 case 'dyndns-custom':
                 case 'dyndns-static':
                 case 'dyns':
+                case 'dynv6':
+                case 'dynv6-v6':
                 case 'easydns':
                 case 'eurodns':
                 case 'freedns':
@@ -323,15 +331,15 @@ class updatedns
                 case 'noip':
                 case 'noip-free':
                 case 'ods':
-                case 'ovh-dynhost':
                 case 'oray':
+                case 'ovh-dynhost':
                 case 'regfish':
                 case 'regfish-v6':
                 case 'route53':
                 case 'route53-v6':
                 case 'selfhost':
-                case 'strato':
                 case 'staticcling':
+                case 'strato':
                 case 'zoneedit':
                     $this->_update();
                     if ($this->_dnsDummyUpdateDone == true) {
@@ -832,6 +840,22 @@ class updatedns
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_URL, $server . '?domains=' . str_replace('.duckdns.org', '', $this->_dnsHost) . '&token=' . urlencode($this->_dnsUser));
                 break;
+            case 'dynv6':
+                $server = "https://ipv4.dynv6.com/api/update";
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_DNS_LOCAL_IP4, $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv4=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
+                break;
+            case 'dynv6-v6':
+                $server = "https://ipv6.dynv6.com/api/update";
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_DNS_LOCAL_IP6, $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+                curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv6=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
+                break;
             case 'googledomains':
                 $server = "https://domains.google.com/nic/update";
                 $post_data['hostname'] = $this->_dnsHost;
@@ -1257,6 +1281,21 @@ class updatedns
             case 'duckdns':
                 if (preg_match('/OK/i', $data)) {
                         $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                        $successful_update = true;
+                } else {
+                        $status = "Dynamic DNS: (Unknown Response)";
+                        log_error("Dynamic DNS: PAYLOAD: {$data}");
+                        $this->_debug($data);
+                }
+                break;
+            case 'dynv6':
+            case 'dynv6-v6':
+                /* API-Documentation: https://dynv6.com/docs/apis */
+                if (preg_match('/addresses updated/i', $data)) {
+                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                        $successful_update = true;
+                } elseif (preg_match('/addresses unchanged/i', $data)) {
+                        $status = "Dynamic DNS: (Success) IP Address Unchanged!";
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
