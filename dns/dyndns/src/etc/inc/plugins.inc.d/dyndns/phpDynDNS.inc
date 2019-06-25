@@ -91,8 +91,8 @@
  *  regfish             - Last Tested: 15 August 2017
  *  regfish v6          - Last Tested: 15 August 2017
  *  Amazon Route53 v6   - Last Tested: 19 November 2017
- *  dynv6               - Last Tested: 23 June 2019
- *  dynv6 v6            - Last Tested: 23 June 2019
+ *  dynv6               - Last Tested: 25 June 2019
+ *  dynv6 v6            - Last Tested: 25 June 2019
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -824,20 +824,26 @@ class updatedns
                 break;
             case 'duckdns':
                 $server = "https://www.duckdns.org/update";
+                curl_setopt($ch, CURLOPT_VERBOSE, true);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_URL, $server . '?domains=' . str_replace('.duckdns.org', '', $this->_dnsHost) . '&token=' . urlencode($this->_dnsUser));
                 break;
             case 'dynv6':
                 $server = "https://ipv4.dynv6.com/api/update";
+                curl_setopt($ch, CURLOPT_VERBOSE, true);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_DNS_LOCAL_IP4, $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv4=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
                 break;
             case 'dynv6-v6':
                 $server = "https://ipv6.dynv6.com/api/update";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
-		curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv6=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_DNS_LOCAL_IP6, $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+                curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv6=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
                 break;
             case 'googledomains':
                 $server = "https://domains.google.com/nic/update";
@@ -1213,7 +1219,7 @@ class updatedns
                         log_error("Dynamic DNS: PAYLOAD: {$data}");
                         $this->_debug($data);
                 }
-		break;
+                break;
             case '3322':
             case 'citynetwork':
             case 'dnsomatic':
