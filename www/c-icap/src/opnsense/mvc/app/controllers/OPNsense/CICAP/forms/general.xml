@@ -21,7 +21,7 @@
         <id>general.keepalivetimeout</id>
         <label>Max keepalive timeout</label>
         <type>text</type>
-        <help>The maximum time in seconds waiting for a new requests before a connection will be closed.</help>
+        <help>The maximum time in seconds waiting for a new request before a connection will be closed.</help>
     </field>
     <field>
         <id>general.startservers</id>
