@@ -191,7 +191,7 @@
     </field>
     <field>
         <id>general.fc_jurlbla</id>
-        <label>Add BLURL Signatures</label>
+        <label>Add JURLBLA Signatures</label>
         <type>checkbox</type>
         <help>Activate third party signatures from Sanesecurtiy JURLBLA. Use at your own risk.</help>
     </field>

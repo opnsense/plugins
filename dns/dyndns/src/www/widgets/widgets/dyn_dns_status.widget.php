@@ -98,6 +98,7 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
 <?php
   $iflist = get_configured_interface_with_descr();
   $types = dyndns_list();
+  $groupslist = return_gateway_groups_array();
   foreach ($a_dyndns as $i => $dyndns) :?>
     <tr ondblclick="document.location='services_dyndns_edit.php?id=<?=$i;?>'">
       <td style="word-break:break-word;" <?= isset($dyndns['enable']) ? '' : 'class="text-muted"' ?>>
@@ -105,6 +106,12 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
         foreach ($iflist as $if => $ifdesc) {
             if ($dyndns['interface'] == $if) {
                 echo "{$ifdesc}";
+                break;
+            }
+        }
+        foreach ($groupslist as $if => $group) {
+            if ($dyndns['interface'] == $if) {
+                echo "{$if}";
                 break;
             }
         }?>

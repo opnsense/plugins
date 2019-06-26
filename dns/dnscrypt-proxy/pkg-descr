@@ -5,6 +5,10 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.4
+
+* Added 7 new DNSBL blacklists
+
 1.3
 
 * Add DNS blacklisting

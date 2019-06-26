@@ -259,13 +259,13 @@ class updatedns
         $this->_dnsMX = $dnsMX;
         $this->_dnsZoneID = $dnsZoneID;
         $this->_dnsTTL = $dnsTTL;
-        $this->_if = get_real_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
+        $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
         $this->_checkIP();
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
-        $this->_dnsRequestIf = get_real_interface($dnsRequestIf, $this->_useIPv6 ? 'inet6' : 'all');
+        $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, $this->_useIPv6 ? 'inet6' : 'all');
         if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): running get_real_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
+            log_error("Dynamic DNS ({$this->_dnsHost}): running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
         }
         $this->_dnsRequestIfIP = get_interface_ip($dnsRequestIf);
         $this->_dnsMaxCacheAgeDays = 25;
@@ -739,7 +739,7 @@ class updatedns
                         $zoneId = $zoneObj->id;
                         // Get $hostName from $fqdn, set $domainName
                         // These are only really used for log messages.
-                        $hostName = preg_replace ("/\.?{$zoneObj->name}$/", '', $fqdn);
+                        $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
                         $domainName = $zoneObj->name;
                         break;
                     }

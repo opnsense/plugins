@@ -182,6 +182,7 @@ function dyndns_configure_do($verbose = false, $int = '')
     }
 
     $dyndnscfg = $config['dyndnses']['dyndns'];
+    $gwgroups = return_gateway_groups_array();
 
     if ($verbose) {
         echo 'Configuring dynamic DNS clients...';
@@ -189,7 +190,7 @@ function dyndns_configure_do($verbose = false, $int = '')
     }
 
     foreach ($dyndnscfg as $dyndns) {
-        if (empty($int) || $int == $dyndns['interface']) {
+        if ((empty($int)) || ($int == $dyndns['interface']) || (is_array($gwgroups[$dyndns['interface']]))) {
             $dyndns['verboselog'] = isset($dyndns['verboselog']);
             $dyndns['curl_ipresolve_v4'] = isset($dyndns['curl_ipresolve_v4']);
             $dyndns['curl_ssl_verifypeer'] = isset($dyndns['curl_ssl_verifypeer']);
@@ -201,4 +202,28 @@ function dyndns_configure_do($verbose = false, $int = '')
     if ($verbose) {
         echo "done.\n";
     }
+}
+
+function dyndns_failover_interface($interface, $family = 'all')
+{
+    global $config;
+
+    /* shortcut for known interfaces */
+    if (isset($config['interfaces'][$interface])) {
+        return get_real_interface($interface, $family);
+    }
+
+    /* compare against gateway groups */
+    $a_groups = return_gateway_groups_array();
+    if (isset($a_groups[$interface])) {
+        /* we found a gateway group, fetch the interface or vip */
+        if ($a_groups[$interface][0]['vip'] != '') {
+            return $a_groups[$interface][0]['vip'];
+        } else {
+            return $a_groups[$interface][0]['int'];
+        }
+    }
+
+    /* fall through to get real interface the hard way */
+    return get_real_interface($interface, $family);
 }
