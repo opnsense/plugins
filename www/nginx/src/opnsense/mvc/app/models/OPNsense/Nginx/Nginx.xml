@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.13.0</version>
+  <version>1.14.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -82,6 +82,13 @@
         <Required>Y</Required>
         <multiple>Y</multiple>
       </serverentries>
+      <load_balancing_algorithm type="OptionField">
+        <OptionValues>
+          <ip_hash>IP Hash</ip_hash>
+        </OptionValues>
+        <BlankDesc>Weighted Round Robin</BlankDesc>
+        <Required>N</Required>
+      </load_balancing_algorithm>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -526,6 +533,10 @@
       <args type="BooleanField">
         <Required>Y</Required>
       </args>
+      <url type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </url>
       <headers type="BooleanField">
         <Required>Y</Required>
       </headers>
@@ -683,6 +694,11 @@
         <default>0</default>
         <Required>Y</Required>
       </disable_bot_protection>
+      <naxsi_whitelist_srcip type="CSVListField">
+        <Required>N</Required>
+        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
+        <multiple>Y</multiple>
+      </naxsi_whitelist_srcip>
       <naxsi_extensive_log type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
