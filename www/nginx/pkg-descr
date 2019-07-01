@@ -12,9 +12,10 @@ Plugin Changelog
 
 * add load balancer algorithm option (ip_hash)
 * fix URL flag not stored (contributed by jkellerer) [1]
-
+* allow to whitelist specific source IPs in the web application firewall (contributed by Julio Cesar Camargo) [2]
 
 [1] https://github.com/opnsense/plugins/pull/1375
+[2] https://github.com/opnsense/plugins/pull/1310
 
 1.13
 
