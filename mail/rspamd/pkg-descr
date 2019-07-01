@@ -5,6 +5,10 @@ lua.
 Plugin Changelog
 ----------------
 
+1.7
+
+* Fix permissions due to upstream changes
+
 1.6
 
 * Fix permissions on maps.d folder
