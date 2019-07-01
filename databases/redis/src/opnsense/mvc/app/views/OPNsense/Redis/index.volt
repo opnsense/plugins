@@ -1,11 +1,12 @@
 {#
  # Copyright (C) 2017 Fabian Franz
  # Copyright (C) 2014-2015 Deciso B.V.
+ # Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
  # modification, are permitted provided that the following conditions are met:
-
+ #
  # 1. Redistributions of source code must retain the above copyright notice,
  #    this list of conditions and the following disclaimer.
  #
@@ -47,6 +48,8 @@ $( document ).ready(function() {
         history.pushState(null, null, e.target.hash);
     });
 
+    $('#save_redis-general-settings').after('<button class="btn btn-default" style="margin-left:5px" id="resetdbAct" type="button"><b>{{ lang._('Reset') }}</b> <i id="resetdbAct_progress" class=""></i></button>');
+
     // form save event handlers for all defined forms
     $('[id*="save_"]').each(function(){
         $(this).click(function() {
@@ -74,6 +77,20 @@ $( document ).ready(function() {
                             updateServiceStatusUI(data['status']);
                         });
                     }
+                });
+            });
+        });
+    });
+    $("#resetdbAct").click(function () {
+        stdDialogConfirm(
+            '{{ lang._('Confirm database reset') }}',
+            '{{ lang._('Do you want to reset the database?') }}',
+            '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
+                $("#resetdbAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/redis/service/resetdb", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/redis/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('redis');
+                    $("#resetdbAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
         });

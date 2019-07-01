@@ -6,6 +6,10 @@ the Juniper SSL VPN which is now known as Pulse Connect Secure.
 Plugin Changelog
 ================
 
+1.4.0
+
+* Add "pin-sha256" certificate hash
+
 1.3.3
 
 * Enhance allowed characters in group name

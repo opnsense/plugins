@@ -83,6 +83,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="domains" class="tab-pane fade in">
+        <div class="alert alert-warning" role="alert" style="min-height:65px;">
+            <div style="margin-top: 8px;">{{ lang._('Zone management is still in experimental state, use with caution.') }}</div>
+        </div>
         <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
