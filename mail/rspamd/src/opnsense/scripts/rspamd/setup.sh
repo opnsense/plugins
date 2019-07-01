@@ -7,8 +7,8 @@ mkdir -p /var/run/rspamd
 chmod +r /usr/local/etc/rspamd/local.d/*
 chmod +r /usr/local/etc/rspamd/maps.d/*
 chmod o+rx /usr/local/etc/rspamd/local.d
-chown -R nobody /var/log/rspamd
+chown -R rspamd /var/log/rspamd
 
-chown nobody:nobody /var/db/rspamd
-chown nobody:nobody /var/log/rspamd
-chown nobody:nobody /var/run/rspamd
+chown -R rspamd:rspamd /var/db/rspamd
+chown -R rspamd:rspamd /var/log/rspamd
+chown -R rspamd:rspamd /var/run/rspamd
