@@ -30,7 +30,7 @@ PKG!=			which pkg || echo true
 ARCH!=			uname -p
 
 PLUGIN_ARCH?=		${ARCH}
-PLUGIN_PHP?=		71
+PLUGIN_PHP?=		72
 PLUGIN_PYTHON?=		37
 
 PLUGIN_DESC=		pkg-descr
