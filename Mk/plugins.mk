@@ -30,7 +30,7 @@ PKG!=			which pkg || echo true
 ARCH!=			uname -p
 
 PLUGIN_ARCH?=		${ARCH}
-PLUGIN_PHP?=		71
+PLUGIN_PHP?=		72
 PLUGIN_PYTHON?=		37
 
 PLUGIN_DESC=		pkg-descr
@@ -52,8 +52,6 @@ check:
 .    error "${PLUGIN_REQUIRE} not set"
 .  endif
 .endfor
-
-PLUGIN_DEVEL?=		yes
 
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
