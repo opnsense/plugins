@@ -132,11 +132,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditRouteMaps">
             <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Secquence Number') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
-                    <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
+                    <th data-column-id="match2" data-type="string" data-visible="true">{{ lang._('Prefix List') }}</th>
+                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
