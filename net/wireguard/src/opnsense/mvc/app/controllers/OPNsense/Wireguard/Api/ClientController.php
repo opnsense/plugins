@@ -38,7 +38,7 @@ class ClientController extends ApiMutableModelControllerBase
 
     public function searchClientAction()
     {
-        return $this->searchBase('clients.client', array("enabled", "name", "pubkey", "tunneladdress", "serveraddress", "serverport"));
+        return $this->searchBase('clients.client', array("enabled", "name", "pubkey", "allowedips", "serveraddress", "serverport"));
     }
     public function getClientAction($uuid = null)
     {

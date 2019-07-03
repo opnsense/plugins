@@ -23,12 +23,12 @@
                     <mask>/^[a-zA-Z0-9+\/]{43}=$/</mask>
                     <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
                 </psk>
-                <tunneladdress type="NetworkField">
+                <allowedips type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
                     <Required>Y</Required>
                     <asList>Y</asList>
-                </tunneladdress>
+                </allowedips>
                 <serveraddress type="HostnameField">
                     <Required>N</Required>
                 </serveraddress>
