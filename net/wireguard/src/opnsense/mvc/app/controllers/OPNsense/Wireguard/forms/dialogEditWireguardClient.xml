@@ -24,7 +24,7 @@
         <help>Shared secret (PSK) for this peer.</help>
     </field>
     <field>
-        <id>client.allowedips</id>
+        <id>client.tunneladdress</id>
         <label>Allowed IPs</label>
         <style>tokenize</style>
         <type>select_multiple</type>
