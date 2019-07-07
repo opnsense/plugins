@@ -87,6 +87,10 @@ def deploy(config_filename):
         if_up.append("ifconfig %s %s " % (interface_name, pipes.quote(network.get_local_address())))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
+        # copy resolv.conf to chroot
+        os.mkdir("%s/etc" % network.get_basepath())
+        os.system("cp /etc/resolv.conf %s/etc/resolv.conf" % network.get_basepath())
+
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
             tundev = subprocess.check_output(['/sbin/ifconfig',interface_type,'create']).decode().split()[0]
