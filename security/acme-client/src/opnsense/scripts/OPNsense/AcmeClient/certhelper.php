@@ -206,7 +206,7 @@ function cert_action_validator($opt_cert_id)
                         // Start acme client to issue or renew certificate
                         $val_result = run_acme_validation($certObj, $valObj, $acctObj);
                         if (!$val_result) {
-                            log_error("AcmeClient: issued/renewed certificate: " . (string)$certObj->name);
+                            log_error("AcmeClient: successfully issued/renewed certificate: " . (string)$certObj->name);
                             // Import certificate to Cert Manager
                             if (!import_certificate($certObj, $modelObj)) {
                                 // Prepare certificate for automation
@@ -371,6 +371,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
             // serialize to config and save
             $modelObj->serializeToConfig();
             Config::getInstance()->save();
+            Config::getInstance()->forceReload();
         }
     }
 
@@ -405,6 +406,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
         // serialize to config and save
         $modelObj->serializeToConfig();
         Config::getInstance()->save();
+        Config::getInstance()->forceReload();
     }
 
     return;
@@ -1120,6 +1122,7 @@ function import_certificate($certObj, $modelObj)
         // if node was found, serialize to config and save
         $modelObj->serializeToConfig();
         Config::getInstance()->save();
+        Config::getInstance()->forceReload();
     } else {
         log_error("AcmeClient: unable to update LE certificate object");
         return(1);
@@ -1267,17 +1270,19 @@ function dump_postponed_updates()
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
     foreach ($postponed_updates as $pupdate) {
-        $node = $modelObj->getNodeByReference('certificates.certificate.' . $pupdate['uuid']);
+        $_statusCode = $pupdate['statusCode'];
+        $_uuid = $pupdate['uuid'];
+        $node = $modelObj->getNodeByReference('certificates.certificate.'.$_uuid);
         if ($node != null) {
-            $_statusCode = $pupdate['statusCode'];
             log_error("AcmeClient: storing status '" . $status_descr[$_statusCode] . "' for cert " . (string)$node->name);
             $node->statusCode = $_statusCode;
             $node->statusLastUpdate = $pupdate['statusLastUpdate'];
             // serialize to config and save
             $modelObj->serializeToConfig();
             Config::getInstance()->save();
+            Config::getInstance()->forceReload();
         } else {
-            log_error("AcmeClient: failed to set status '" . $status_descr[$_statusCode] . "' for cert " . $pupdate['uuid']);
+            log_error(sprintf("AcmeClient: failed to store status '%s' for cert %s: node not found",$status_descr[$_statusCode],$_uuid));
         }
     }
 }
