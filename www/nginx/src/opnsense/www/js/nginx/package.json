@@ -2,10 +2,10 @@
   "name": "nginx",
   "version": "0.0.1",
   "dependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^5.13.0",
     "raw-loader": "^0.5.1",
-    "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
   },
   "devDependencies": {
     "lodash-template-webpack-loader": "^1.0.2"
