@@ -1,20 +1,13 @@
-Sensei is a plugin for networking software complementing them with
-state of the art next generation network security features, such as
+This plugin adds a propriatery repository to install 
+Sensei, a plugin for OPNsense complementing the firewall 
+with state of the art next generation firewall features 
+like:
 
 * Application Control
-* Cloud Application Control
 * Advanced Network Analytics
 * All-ports Full TLS Inspection
 * Cloud Threat Intelligence
 * Web Security & Web Filtering
 * Active Directory Integration
-
-Note: Sensei is a propriatery commercial project. 
-
-Source code:
-  * Core engine product is closed source
-  * UI is open source & BSD2CLAUSE licensed
-
-EULA: https://www.sunnyvalley.io/eula
 
 WWW: https://www.sunnyvalley.io/sensei
