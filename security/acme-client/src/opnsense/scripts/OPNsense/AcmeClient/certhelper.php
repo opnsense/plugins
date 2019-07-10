@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2018 Frank Wall
+ * Copyright (C) 2017-2019 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -206,7 +206,7 @@ function cert_action_validator($opt_cert_id)
                         // Start acme client to issue or renew certificate
                         $val_result = run_acme_validation($certObj, $valObj, $acctObj);
                         if (!$val_result) {
-                            log_error("AcmeClient: issued/renewed certificate: " . (string)$certObj->name);
+                            log_error("AcmeClient: successfully issued/renewed certificate: " . (string)$certObj->name);
                             // Import certificate to Cert Manager
                             if (!import_certificate($certObj, $modelObj)) {
                                 // Prepare certificate for automation
@@ -371,6 +371,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
             // serialize to config and save
             $modelObj->serializeToConfig();
             Config::getInstance()->save();
+            Config::getInstance()->forceReload();
         }
     }
 
@@ -405,6 +406,7 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
         // serialize to config and save
         $modelObj->serializeToConfig();
         Config::getInstance()->save();
+        Config::getInstance()->forceReload();
     }
 
     return;
@@ -417,6 +419,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Required to run pre-defined commands.
     $backend = new Backend();
+    $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
     // Collect account information
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
@@ -567,6 +570,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Prepare DNS-01 hooks
     if ($val_method == 'dns01') {
         // Some common stuff
+        $val_id = preg_replace("/[^a-zA-Z0-9]/", "", (string)$valObj->id);
         $secret_key_filename = "${configdir}/secret.key";
         $acme_args[] = '--dnssleep ' . $valObj->dns_sleep;
 
@@ -626,6 +630,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['DO_PID'] = (string)$valObj->dns_do_pid;
                 $proc_env['DO_PW'] = (string)$valObj->dns_do_password;
                 break;
+            case 'dns_doapi':
+                $proc_env['DO_LETOKEN'] = (string)$valObj->dns_doapi_token;
+                break;
             case 'dns_dp':
                 $proc_env['DP_Id'] = (string)$valObj->dns_dp_id;
                 $proc_env['DP_Key'] = (string)$valObj->dns_dp_key;
@@ -651,6 +658,42 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_gandi_livedns':
                 $proc_env['GANDI_LIVEDNS_KEY'] = (string)$valObj->dns_gandi_livedns_key;
+                break;
+            case 'dns_gcloud':
+                # Google Cloud SDK must be installed.
+                if ((string)$modelObj->isPluginInstalled('google-cloud-sdk') != "1") {
+                    log_error("AcmeClient: Google Cloud SDK plugin is NOT installed. Please install os-google-cloud-sdk.");
+                    return(1);
+                }
+                # We need a valid Google Cloud JSON key.
+                if (!empty((string)$valObj->dns_gcloud_key)) {
+                    # Extract the gcloud project from the key data.
+                    $_gcloud_data = json_decode((string)$valObj->dns_gcloud_key);
+                    $gcloud_project = $_gcloud_data->project_id;
+                    $gcloud_account = $_gcloud_data->client_email;
+                    if (empty($gcloud_project)) {
+                        log_error("AcmeClient: unable to extract project name from Google Cloud DNS JSON key");
+                        return(1);
+                    } else {
+                        log_error("AcmeClient: Google Cloud DNS project name: ${gcloud_project}");
+                    }
+                } else {
+                    log_error("AcmeClient: no key for Google Cloud DNS was specified");
+                    return(1);
+                }
+                # Preparations for gcloud CLI.
+                $gcloud_config = "acme-${val_id}";
+                $gcloud_key_file = "/tmp/acme_" . (string)$valObj->dns_service . "_${val_id}.json";
+                file_put_contents($gcloud_key_file, (string)$valObj->dns_gcloud_key);
+                chmod($gcloud_key_file, 0600);
+                $proc_env['CLOUDSDK_ACTIVE_CONFIG_NAME'] = $gcloud_config;
+                $proc_env['CLOUDSDK_CORE_PROJECT'] = $gcloud_project;
+                # Ensure that a working gcloud config exists.
+                run_shell_command("/usr/local/bin/gcloud config configurations create ${gcloud_config}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config configurations activate ${gcloud_config}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud auth activate-service-account --key-file=${gcloud_key_file}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config set account ${gcloud_account}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config set project ${gcloud_project}",$proc_env);
                 break;
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
@@ -708,6 +751,16 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_me':
                 $proc_env['ME_Key'] = (string)$valObj->dns_me_key;
                 $proc_env['ME_Secret'] = (string)$valObj->dns_me_secret;
+                break;
+            case 'dns_namecheap':
+                $proc_env['NAMECHEAP_USERNAME'] = (string)$valObj->dns_namecheap_user;
+                $proc_env['NAMECHEAP_API_KEY'] = (string)$valObj->dns_namecheap_api;
+                if (!empty((string)$valObj->dns_namecheap_sourceip)) {
+                    $proc_env['NAMECHEAP_SOURCEIP'] = (string)$valObj->dns_namecheap_sourceip;
+                } else {
+                    // Use a public service to get our source IP for Namecheap API
+                    $proc_env['NAMECHEAP_SOURCEIP'] = 'https://ifconfig.co/ip';
+                }
                 break;
             case 'dns_namecom':
                 $proc_env['Namecom_Username'] = (string)$valObj->dns_namecom_user;
@@ -1069,6 +1122,7 @@ function import_certificate($certObj, $modelObj)
         // if node was found, serialize to config and save
         $modelObj->serializeToConfig();
         Config::getInstance()->save();
+        Config::getInstance()->forceReload();
     } else {
         log_error("AcmeClient: unable to update LE certificate object");
         return(1);
@@ -1203,17 +1257,59 @@ function log_cert_acme_status($certObj, $modelObj, $statusCode)
 function dump_postponed_updates()
 {
     global $postponed_updates;
+
+    $status_descr = [
+        100 => 'unknown',
+        200 => 'OK',
+        250 => 'cert revoked',
+        300 => 'configuration error',
+        400 => 'validation failed',
+        500 => 'internal error',
+    ];
+
     $modelObj = new OPNsense\AcmeClient\AcmeClient;
 
     foreach ($postponed_updates as $pupdate) {
-        $node = $modelObj->getNodeByReference('certificates.certificate.' . $pupdate['uuid']);
+        $_statusCode = $pupdate['statusCode'];
+        $_uuid = $pupdate['uuid'];
+        $node = $modelObj->getNodeByReference('certificates.certificate.'.$_uuid);
         if ($node != null) {
-            $node->statusCode = $pupdate['statusCode'];
+            log_error("AcmeClient: storing status '" . $status_descr[$_statusCode] . "' for cert " . (string)$node->name);
+            $node->statusCode = $_statusCode;
             $node->statusLastUpdate = $pupdate['statusLastUpdate'];
             // serialize to config and save
             $modelObj->serializeToConfig();
             Config::getInstance()->save();
+            Config::getInstance()->forceReload();
+        } else {
+            log_error(sprintf("AcmeClient: failed to store status '%s' for cert %s: node not found",$status_descr[$_statusCode],$_uuid));
         }
+    }
+}
+
+function run_shell_command($proc_cmd, $proc_env = array())
+{
+    $proc_desc = array(  // descriptor array for proc_open()
+        0 => array("pipe", "r"), // stdin
+        1 => array("pipe", "w"), // stdout
+        2 => array("pipe", "w")  // stderr
+    );
+    $proc_pipes = array();
+    $proc = proc_open($proc_cmd, $proc_desc, $proc_pipes, null, $proc_env);
+
+    // Make sure the resource could be setup properly
+    if (is_resource($proc)) {
+        // Close all pipes
+        fclose($proc_pipes[0]);
+        fclose($proc_pipes[1]);
+        fclose($proc_pipes[2]);
+        // Get exit code
+        $result = proc_close($proc);
+        log_error(sprintf("AcmeClient: The shell command '%s' returned exit code '%d'", $proc_cmd, $result));
+        return($result);
+    } else {
+        log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'",$proc_cmd));
+        return(1);
     }
 }
 
