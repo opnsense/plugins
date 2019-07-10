@@ -80,6 +80,8 @@ def deploy(config_filename):
         # dump private key
         tmp = network.privkey()
         write_file(tmp['filename'], tmp['content'])
+        with open('/etc/resolv.conf') as fin:
+            write_file("%s/etc/resolv.conf" % network.get_basepath(), fin.read())
 
         # write tinc-up file
         if_up = list()
