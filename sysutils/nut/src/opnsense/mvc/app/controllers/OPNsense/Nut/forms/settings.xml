@@ -134,6 +134,22 @@
                 <help>Set the password of the remote NUT server.</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-riello" description="Riello-Driver">
+            <field>
+                <id>nut.riello.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the Riello driver.</help>
+            </field>
+            <field>
+                <id>nut.riello.args</id>
+                <label>Extra Arguments</label>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
     </tab>
 
     <activetab>nut-general-settings</activetab>
