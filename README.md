@@ -48,12 +48,12 @@ net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
 net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
 net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
 net/arp-scan -- Get all peers connected to a local network
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
+net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
@@ -91,6 +91,7 @@ sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
+vendor/sunnyvalley -- Sunny Valley Networks Vendor Repository
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
