@@ -86,6 +86,11 @@ switch ($options["a"]) {
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
         break;
+    case 'remove':
+        //$result = revoke_cert($options["c"]);
+        $result = cert_action_validator($options["c"]);
+        echo json_encode(array('status'=>$result));
+        exit(1);
     case 'revoke':
         //$result = revoke_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
@@ -176,6 +181,19 @@ function cert_action_validator($opt_cert_id)
                         $ref_found = true;
                         $valObj = $node;
                         break; // Match! Go ahead.
+                    }
+                }
+
+                // Cert is being removed from the GUI, delete all traces.
+                if ($options["a"] == "remove") {
+                    // Start acme client to remove the certificate
+                    $rev_result = remove_cert($certObj);
+                    if (!$rev_result) {
+                        log_error("AcmeClient: successfully removed acme.sh certificate configuration for " . (string)$certObj->name);
+                        return(0); // Success!
+                    } else {
+                        log_error("AcmeClient: failed to remove acme.sh certificate configuration for " . (string)$certObj->name);
+                        return(1);
                     }
                 }
 
@@ -946,6 +964,37 @@ function revoke_cert($certObj, $valObj, $acctObj)
     $result = mwexec($acmecmd);
 
     // TODO: maybe clear lastUpdate value?
+
+    // Simply return acme clients exit code
+    return($result);
+}
+
+// Remove a cert from list of certs known to acme.sh.
+function remove_cert($certObj)
+{
+    // Prepare optional parameters for acme-client
+    $acme_args = eval_optional_acme_args();
+
+    // Generate certificate filenames
+    $cert_id = (string)$certObj->id;
+
+    // Check if EC certificate is used, if yes add the --ecc parameter to acme client
+    $key_length = (string) $certObj->keyLength;
+    $ecc_param =  " ";
+    if ($key_length == 'key_ec256' || $key_length == 'key_ec384') {
+        $ecc_param =  "--ecc";
+    }
+
+    // Run acme client
+    // NOTE: We "export" certificates to our own directory, so we don't have to deal
+    // with domain names in filesystem, but instead can use the ID of our certObj.
+    $acmecmd = "/usr/local/sbin/acme.sh "
+      . implode(" ", $acme_args) . " "
+      . "--remove "
+      . "--domain " . (string)$certObj->name . " "
+      . "--home /var/etc/acme-client/home "
+      . $ecc_param;
+    $result = mwexec($acmecmd);
 
     // Simply return acme clients exit code
     return($result);

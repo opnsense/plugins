@@ -62,6 +62,16 @@ class CertificatesController extends ApiMutableModelControllerBase
 
     public function delAction($uuid)
     {
+        # Remove the cert from list of certs known to acme.sh.
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $cert_id = $node->id;
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient remove-cert {$cert_id}");
+            }
+        }
         return $this->delBase('certificates.certificate', $uuid);
     }
 
