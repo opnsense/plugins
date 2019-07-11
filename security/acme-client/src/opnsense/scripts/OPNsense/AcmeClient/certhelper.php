@@ -77,22 +77,18 @@ if (isset($options["C"])) {
 // Run the specified action
 switch ($options["a"]) {
     case 'sign':
-        //$result = sign_or_renew_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
         break;
     case 'renew':
-        //$result = sign_or_renew_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
         break;
     case 'remove':
-        //$result = revoke_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
         exit(1);
     case 'revoke':
-        //$result = revoke_cert($options["c"]);
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
         exit(1);
@@ -962,8 +958,6 @@ function revoke_cert($certObj, $valObj, $acctObj)
       . "--accountconf " . $account_conf_file . " "
       . $ecc_param;
     $result = mwexec($acmecmd);
-
-    // TODO: maybe clear lastUpdate value?
 
     // Simply return acme clients exit code
     return($result);
