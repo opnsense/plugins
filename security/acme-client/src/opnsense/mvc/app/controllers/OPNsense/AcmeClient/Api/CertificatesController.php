@@ -110,6 +110,26 @@ class CertificatesController extends ApiMutableModelControllerBase
     }
 
     /**
+     * remove private key from certificate by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function removekeyAction($uuid)
+    {
+        $result = array("result"=>"failed");
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $cert_id = $node->id;
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient remove-key {$cert_id}");
+            }
+        }
+        return $result;
+    }
+
+    /**
      * revoke certificate by uuid
      * @param $uuid item unique id
      * @return array status

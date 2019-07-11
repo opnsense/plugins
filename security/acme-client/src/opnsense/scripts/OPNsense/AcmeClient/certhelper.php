@@ -87,11 +87,15 @@ switch ($options["a"]) {
     case 'remove':
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
-        exit(1);
+        break;
+    case 'removekey':
+        $result = cert_action_validator($options["c"]);
+        echo json_encode(array('status'=>$result));
+        break;
     case 'revoke':
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status'=>$result));
-        exit(1);
+        break;
     default:
         echo "ERROR: invalid argument specified\n";
         log_error("invalid argument specified");
@@ -127,10 +131,14 @@ function cert_action_validator($opt_cert_id)
             if (isset($options["A"]) or ((string)$cert_id == (string)$opt_cert_id)) {
                 // Ignore disabled certificates
                 if ($certObj->enabled == 0) {
+                    // Always ignore disabled certs when working on ALL certs.
                     if (isset($options["A"])) {
                         continue; // skip to next item
                     }
-                    return(1); // Cert is disabled, skip it.
+                    // Allow only "revoke", "remove" and "removekey" for disabled certs.
+                    if (!in_array($options["a"], ['remove','removekey','revoke'])) {
+                       return(1); // Cert is disabled, skip it.
+                    }
                 }
 
                 // Extract Account from referenced obj
@@ -189,6 +197,24 @@ function cert_action_validator($opt_cert_id)
                         return(0); // Success!
                     } else {
                         log_error("AcmeClient: failed to remove acme.sh certificate configuration for " . (string)$certObj->name);
+                        return(1);
+                    }
+                }
+
+                // Remove private key
+                // NOTE: Although the user requested to remove the private key,
+                // we simply perform a full cert removal because without the
+                // matching private key the cert is useless.
+                if ($options["a"] == "removekey") {
+                    // Start acme client to remove the certificate
+                    $rev_result = remove_cert($certObj);
+                    if (!$rev_result) {
+                        log_error("AcmeClient: successfully removed the private key and reset certificate " . (string)$certObj->name);
+                        // Reset certificate state, treat it like a new certificate.
+                        log_cert_acme_status($certObj, $modelObj, '100');
+                        return(0); // Success!
+                    } else {
+                        log_error("AcmeClient: failed to remove the private key and reset certificate " . (string)$certObj->name);
                         return(1);
                     }
                 }
@@ -980,8 +1006,6 @@ function remove_cert($certObj)
     }
 
     // Run acme client
-    // NOTE: We "export" certificates to our own directory, so we don't have to deal
-    // with domain names in filesystem, but instead can use the ID of our certObj.
     $acmecmd = "/usr/local/sbin/acme.sh "
       . implode(" ", $acme_args) . " "
       . "--remove "
@@ -989,6 +1013,19 @@ function remove_cert($certObj)
       . "--home /var/etc/acme-client/home "
       . $ecc_param;
     $result = mwexec($acmecmd);
+
+    $cert_files = [
+        "/var/etc/acme-client/keys/${cert_id}/private.key",
+        "/var/etc/acme-client/certs/${cert_id}/cert.pem",
+        "/var/etc/acme-client/certs/${cert_id}/chain.pem",
+        "/var/etc/acme-client/certs/${cert_id}/fullchain.pem",
+    ];
+
+    foreach ($cert_files as $_file) {
+        if (file_exists($_file)) {
+            unlink($_file);
+        }
+    }
 
     // Simply return acme clients exit code
     return($result);
