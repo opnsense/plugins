@@ -310,7 +310,7 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	st)
 		simpletrack
 		;;
-	wss)
+	ws)
 		windowsspyblockerspy
 		;;
 	wsu)
