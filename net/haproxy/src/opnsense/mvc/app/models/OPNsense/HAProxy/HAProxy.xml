@@ -1134,6 +1134,10 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </interval>
+                <force_ssl type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </force_ssl>
                 <checkport type="IntegerField">
                     <default></default>
                     <MinimumValue>1</MinimumValue>
