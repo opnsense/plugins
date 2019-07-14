@@ -114,7 +114,6 @@
                 <label>Verify SSL Server Certificates</label>
                 <type>dropdown</type>
                 <help><![CDATA[This enforces a certain behavior for SSL verify on servers, ignoring per-server settings. If set to 'enforce verify', server certificates are verified. If set to 'disable verify', server certificates are not verified. The default is 'no preference' to only use per-server configurations and not enforce a global default for all servers.]]></help>
-                <advanced>true</advanced>
             </field>
             <field>
                 <id>haproxy.general.tuning.maxDHSize</id>
