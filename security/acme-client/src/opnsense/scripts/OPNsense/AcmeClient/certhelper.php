@@ -137,7 +137,7 @@ function cert_action_validator($opt_cert_id)
                     }
                     // Allow only "revoke", "remove" and "removekey" for disabled certs.
                     if (!in_array($options["a"], ['remove','removekey','revoke'])) {
-                       return(1); // Cert is disabled, skip it.
+                        return(1); // Cert is disabled, skip it.
                     }
                 }
 
@@ -729,11 +729,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['CLOUDSDK_ACTIVE_CONFIG_NAME'] = $gcloud_config;
                 $proc_env['CLOUDSDK_CORE_PROJECT'] = $gcloud_project;
                 # Ensure that a working gcloud config exists.
-                run_shell_command("/usr/local/bin/gcloud config configurations create ${gcloud_config}",$proc_env);
-                run_shell_command("/usr/local/bin/gcloud config configurations activate ${gcloud_config}",$proc_env);
-                run_shell_command("/usr/local/bin/gcloud auth activate-service-account --key-file=${gcloud_key_file}",$proc_env);
-                run_shell_command("/usr/local/bin/gcloud config set account ${gcloud_account}",$proc_env);
-                run_shell_command("/usr/local/bin/gcloud config set project ${gcloud_project}",$proc_env);
+                run_shell_command("/usr/local/bin/gcloud config configurations create ${gcloud_config}", $proc_env);
+                run_shell_command("/usr/local/bin/gcloud config configurations activate ${gcloud_config}", $proc_env);
+                run_shell_command("/usr/local/bin/gcloud auth activate-service-account --key-file=${gcloud_key_file}", $proc_env);
+                run_shell_command("/usr/local/bin/gcloud config set account ${gcloud_account}", $proc_env);
+                run_shell_command("/usr/local/bin/gcloud config set project ${gcloud_project}", $proc_env);
                 break;
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
@@ -1362,7 +1362,7 @@ function dump_postponed_updates()
             Config::getInstance()->save();
             Config::getInstance()->forceReload();
         } else {
-            log_error(sprintf("AcmeClient: failed to store status '%s' for cert %s: node not found",$status_descr[$_statusCode],$_uuid));
+            log_error(sprintf("AcmeClient: failed to store status '%s' for cert %s: node not found", $status_descr[$_statusCode], $_uuid));
         }
     }
 }
@@ -1388,7 +1388,7 @@ function run_shell_command($proc_cmd, $proc_env = array())
         log_error(sprintf("AcmeClient: The shell command '%s' returned exit code '%d'", $proc_cmd, $result));
         return($result);
     } else {
-        log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'",$proc_cmd));
+        log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'", $proc_cmd));
         return(1);
     }
 }
