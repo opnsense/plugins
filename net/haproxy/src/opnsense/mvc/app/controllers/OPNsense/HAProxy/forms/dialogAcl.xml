@@ -426,6 +426,17 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_ssl_fc_sni</style>
+    </field>
+    <field>
+        <id>acl.ssl_fc_sni</id>
+        <label>SNI Matches</label>
+        <type>text</type>
+        <help><![CDATA[The value of the Server Name TLS extension sent by a client matches the exact string.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>expression_table table_ssl_sni</style>
     </field>
     <field>
