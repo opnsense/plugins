@@ -1,0 +1,18 @@
+LED1="/dev/led/led1"
+LED2="/dev/led/led2"
+LED3="/dev/led/led3"
+LEDKO="/boot/kernel/apuled.ko"
+
+if [ ! -e /boot/kernel/apuled.ko ]; then
+    exit 0
+fi
+
+kldload $LEDKO 2>&1
+
+echo "m-" > $LED1
+echo "m -" > $LED2
+echo "m  -" > $LED3
+sleep 2
+echo 1 > $LED1
+echo 1 > $LED2
+echo 1 > $LED3

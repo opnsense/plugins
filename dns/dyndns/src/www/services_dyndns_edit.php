@@ -107,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         switch ($pconfig['type']) {
             case 'cloudflare':
             case 'cloudflare-v6':
+            case 'eurodns':
             case 'googledomains':
             case 'namecheap':
                 $host_to_check = preg_replace('/^[@*]\./', '', $host_to_check);

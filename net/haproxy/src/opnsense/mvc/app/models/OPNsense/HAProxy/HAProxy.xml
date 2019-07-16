@@ -336,7 +336,7 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
@@ -697,7 +697,7 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
@@ -1013,7 +1013,7 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>
@@ -1134,6 +1134,10 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </interval>
+                <force_ssl type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </force_ssl>
                 <checkport type="IntegerField">
                     <default></default>
                     <MinimumValue>1</MinimumValue>
@@ -1290,7 +1294,6 @@
                         <path_dir>Path contains subdir</path_dir>
                         <path_sub>Path contains string</path_sub>
                         <url_param>URL parameter contains</url_param>
-                        <ssl_fc>SSL/TLS connection established</ssl_fc>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
@@ -1317,12 +1320,14 @@
                         <src_sess_rate>Source IP: session rate</src_sess_rate>
                         <nbsrv>Minimum number of usable servers in backend</nbsrv>
                         <traffic_is_http>Traffic is HTTP</traffic_is_http>
-                        <traffic_is_ssl>Traffic is SSL</traffic_is_ssl>
-                        <ssl_sni>SNI TLS extension matches</ssl_sni>
-                        <ssl_sni_sub>SNI TLS extension contains</ssl_sni_sub>
-                        <ssl_sni_beg>SNI TLS extension starts with</ssl_sni_beg>
-                        <ssl_sni_end>SNI TLS extension ends with</ssl_sni_end>
-                        <ssl_sni_reg>SNI TLS extension regex</ssl_sni_reg>
+                        <traffic_is_ssl>Traffic is SSL (TCP request content inspection)</traffic_is_ssl>
+                        <ssl_fc>Traffic is SSL (locally deciphered)</ssl_fc>
+                        <ssl_fc_sni>SNI TLS extension matches (locally deciphered)</ssl_fc_sni>
+                        <ssl_sni>SNI TLS extension matches (TCP request content inspection)</ssl_sni>
+                        <ssl_sni_sub>SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
+                        <ssl_sni_beg>SNI TLS extension starts with (TCP request content inspection)</ssl_sni_beg>
+                        <ssl_sni_end>SNI TLS extension ends with (TCP request content inspection)</ssl_sni_end>
+                        <ssl_sni_reg>SNI TLS extension regex (TCP request content inspection)</ssl_sni_reg>
                         <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
                 </expression>
@@ -1620,6 +1625,10 @@
                     <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </nbsrv_backend>
+                <ssl_fc_sni type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_fc_sni>
                 <ssl_sni type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>

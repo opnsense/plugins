@@ -1,7 +1,7 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3
 
 """
-    Copyright (c) 2016 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2016-2019 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ response = dict()
 p = Popen(['/usr/bin/openssl','enc', '-help'],stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1)
 output, error = p.communicate()
 cipher_section = False
-for line in error.split('\n'):
+for line in error.decode().split('\n'):
     if line.find('Cipher Types') == 0:
         cipher_section = True
         continue

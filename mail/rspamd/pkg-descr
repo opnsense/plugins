@@ -5,6 +5,15 @@ lua.
 Plugin Changelog
 ----------------
 
+1.7
+
+* Fix permissions due to upstream changes
+
+1.6
+
+* Fix permissions on maps.d folder
+* Add global sender whitelisting
+
 1.5
 
 * Add whitelisting to Graylist section

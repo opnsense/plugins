@@ -24,6 +24,12 @@
         <help><![CDATA[Select interval (in milliseconds) between two consecutive health checks. This value can be overriden in backend pool and real server configuration.]]></help>
     </field>
     <field>
+        <id>healthcheck.force_ssl</id>
+        <label>Force SSL</label>
+        <type>checkbox</type>
+        <help><![CDATA[This option forces encryption of all health checks over SSL, regardless of whether the server uses SSL or not for the normal traffic.]]></help>
+    </field>
+    <field>
         <id>healthcheck.checkport</id>
         <label>Port to check</label>
         <type>text</type>
