@@ -155,6 +155,7 @@
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
+                                <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
                         </name>
                         <version type="OptionField">
                                 <default>IPv4</default>
@@ -193,6 +194,7 @@
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
+                                <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
                         </name>
                         <action type="OptionField">
                                 <default></default>
