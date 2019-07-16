@@ -14,6 +14,7 @@ Plugin Changelog
 1.11
 
 * Add route-map support to redistribution in OSPF
+* Only allow custom set of characters in prefix-lists
 
 1.10
 
