@@ -1,7 +1,7 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3.7
 
 """
-    Copyright (c) 2015 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2015-2019 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ import os
 import socket
 import smtplib
 import json
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 # set default timeout to 2 seconds
 socket.setdefaulttimeout(2)
