@@ -32,7 +32,9 @@
                 <sa>Simple Ad List</sa>
                 <st>Simple Tracker List</st>
                 <sb>Steven Black List</sb>
-                <ws>Windows Spyware Blocker</ws>
+                <ws>WindowsSpyBlocker (spy)</ws>
+                <wsu>WindowsSpyBlocker (update)</wsu>
+                <wse>WindowsSpyBlocker (extra)</wse>
                 <yy>YoYo List</yy>
                 <za>ZeusTracker Abuse.ch List</za>
             </OptionValues>
