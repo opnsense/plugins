@@ -156,6 +156,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                                 <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
+                                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
                         </name>
                         <version type="OptionField">
                                 <default>IPv4</default>
@@ -195,6 +196,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                                 <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
+                                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
                         </name>
                         <action type="OptionField">
                                 <default></default>
