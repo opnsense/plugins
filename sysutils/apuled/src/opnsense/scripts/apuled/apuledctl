@@ -1,32 +1,34 @@
 #!/bin/sh
+#    Copyright (c) 2019 Cloudfence - Julio Camargo (JCC)
+#    All rights reserved.
 #
-# Copyright (c) 2019 Cloudfence - Julio Camargo (JCC)
-# All rights reserved.
+#    Redistribution and use in source and binary forms, with or without
+#    modification, are permitted provided that the following conditions are met:
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#
-#  1. Redistributions of source code must retain the above copyright notice,
+#    1. Redistributions of source code must retain the above copyright notice,
 #     this list of conditions and the following disclaimer.
 #
-#  2. Redistributions in binary form must reproduce the above copyright
+#    2. Redistributions in binary form must reproduce the above copyright
 #     notice, this list of conditions and the following disclaimer in the
 #     documentation and/or other materials provided with the distribution.
 #
-# THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-# AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-# AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-# OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
+#    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+#    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+#    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+#    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+#    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+#    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+#    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+#    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+#    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+#    POSSIBILITY OF SUCH DAMAGE.
 
 # LEDs
+# LED1 - system notifications
 LED1="/dev/led/led1"
+# LED2 - network notifications
 LED2="/dev/led/led2"
+# LED3 - system notifications
 LED3="/dev/led/led3"
 
 # check if LEDs exists
@@ -35,20 +37,29 @@ if [ ! -e "$LED1" ];then
 fi
 
 check_wan(){
-# check internet connection
-# ping f.root-servers.net
 # LED2 - network notifications
-# XXX fix this IP?
-PING_CHECK=$(ping -t 3 -c 3 192.5.5.241 | grep "packet loss" | awk '{print $7}' | cut -d. -f1)
-# ok
-if [ "$PING_CHECK" -eq 0 ];then
-    echo "1" > $LED2
-# latency
-elif [ "$PING_CHECK" -gt 30 ] && [ "$PING_CHECK" -lt 100 ];then
-    echo "f3" > $LED2
-# link down
-elif [ "$PING_CHECK" -eq 100 ];then
-    echo "f1" > $LED2
+# Fetch from dpinger the list of gateways and the status of each one
+GWLIST=$(ls /var/run/dpinger* | grep sock)
+for GW in $GWLIST;
+ do
+        GWSTATUS=$(nc -U $GW | awk '{print $4}')
+# We're ONLINE
+    if [ "$GWSTATUS" -eq 0 ];then
+        echo "1" > $LED2
+# Some losses - LATENCY
+    elif [ "$GWSTATUS" -gt 30 ] && [ "$GWSTATUS" -lt 100 ];then
+        LATENCY=1
+# One of our Gateways is DOWN - ALARM
+# Test if the GWs are OK. If just one of the GWs failed the test, the LED will show DOWN status
+    elif [ "$GWSTATUS" -eq 100 ];then
+        echo "f1" > $LED2
+        exit 0
+    fi
+ done
+
+# In case of packets loss, I'll warn!
+if [ ! -z "$lATENCY" ];then
+           echo "f3" > $LED2
 fi
 }
 
@@ -77,6 +88,6 @@ fi
 }
 
 # Main routine
-check_wan
 check_load
 check_disk
+check_wan
