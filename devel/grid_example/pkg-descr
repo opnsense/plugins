@@ -1,0 +1,4 @@
+The goal of the "grid_example" plugin is to showcase the capabilities
+of the OPNsense plugin framework in relation to the grid/table system.
+
+WWW: https://docs.opnsense.org/development/examples/using_grids.html

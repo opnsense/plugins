@@ -1,0 +1,19 @@
+<model>
+    <mount>//OPNsense/GridExample</mount>
+    <description>
+        the OPNsense "GridExample" application
+    </description>
+    <items>
+        <addresses>
+            <address type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <email type="EmailField">
+                    <Required>Y</Required>
+                </email>
+            </address>
+        </addresses>
+    </items>
+</model>
