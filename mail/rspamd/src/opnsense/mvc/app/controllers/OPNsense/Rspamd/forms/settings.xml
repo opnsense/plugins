@@ -15,7 +15,7 @@
             </field>
             <field>
                 <id>rspamd.general.enable_bayes_autolearn</id>
-                <label>Enable Bayes Autolean</label>
+                <label>Enable Bayes Autolearn</label>
                 <type>checkbox</type>
                 <advanced>true</advanced>
                 <help>If you check this box, autolearning will be enabled. Autolearning is performing as spam if a message has reject action and as ham if a message has negative score.</help>
