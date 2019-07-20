@@ -11,6 +11,10 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_redis_plugin>
+      <enable_bayes_autolearn type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_bayes_autolearn>
       <rejectscore type="IntegerField">
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
