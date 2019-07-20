@@ -14,6 +14,13 @@
                 <help>If you check this box, the local Redis server will be available to the modules (some do not work without it).</help>
             </field>
             <field>
+                <id>rspamd.general.enable_bayes_autolearn</id>
+                <label>Enable Bayes Autolean</label>
+                <type>checkbox</type>
+                <advanced>true</advanced>
+                <help>If you check this box, autolearning will be enabled. Autolearning is performing as spam if a message has reject action and as ham if a message has negative score.</help>
+            </field>
+            <field>
                 <id>rspamd.general.rejectscore</id>
                 <label>Reject Score</label>
                 <type>text</type>
