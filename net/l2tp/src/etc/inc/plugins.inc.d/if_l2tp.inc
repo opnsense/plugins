@@ -74,11 +74,20 @@ function if_l2tp_syslog()
 
 function if_l2tp_link_scripts($rootdir, $logtype = 'l2tp')
 {
+    global $config;
+    $syscfg = $config['system'];
+    if (isset($config['l2tp'])) {
+        $l2tpcfg = $config['l2tp'];
+    } else {
+        return 0;
+    }
+    
     $up = <<<'EOD'
 #!/bin/sh
 
 /usr/bin/logger -p local3.info "login,%s,$4,$5"
 /sbin/ifconfig $1 group l2tp
+
 
 EOD;
     $down = <<<'EOD'
@@ -89,10 +98,18 @@ EOD;
 /sbin/pfctl -i $1 -Fs
 /sbin/pfctl -K $4/32
 
+
 EOD;
 
     file_put_contents($rootdir . '/linkup', sprintf($up, $logtype));
+    if (!empty($l2tpcfg['linkup'])) {
+        file_put_contents($rootdir . '/linkup', $l2tpcfg['linkup'], FILE_APPEND);
+    }
     file_put_contents($rootdir . '/linkdown', sprintf($down, $logtype));
+    if (!empty($l2tpcfg['linkdown'])) {
+        file_put_contents($rootdir . '/linkdown', $l2tpcfg['linkdown'], FILE_APPEND);
+    }
+    
 
     chmod($rootdir . '/linkup', 0755);
     chmod($rootdir . '/linkdown', 0755);
