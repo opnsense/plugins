@@ -52,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['n_l2tp_units'] = $l2tpcfg['n_l2tp_units'];
     $pconfig['paporchap'] = $l2tpcfg['paporchap'];
     $pconfig['secret'] = $l2tpcfg['secret'];
+    $pconfig['linkup'] = str_replace("\r\n", "\n", $l2tpcfg['linkup']);
+    $pconfig['linkdown'] = str_replace("\r\n", "\n", $l2tpcfg['linkdown']);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pconfig = $_POST;
 
@@ -143,6 +145,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $l2tpcfg['radius']['radiusissueips'] = true;
         } else {
             unset($l2tpcfg['radius']['radiusissueips']);
+        }
+        if ($_POST['linkup'] == "") {
+            if (isset($l2tpcfg['linkup'])) {
+                unset($l2tpcfg['linkup']);
+            }
+        } else {
+            $l2tpcfg['linkup'] = str_replace("\r\n", "\n", $_POST['linkup']);
+        }
+        
+        if ($_POST['linkdown'] == "") {
+            if (isset($l2tpcfg['linkdown'])) {
+                unset($l2tpcfg['linkdown']);
+            }
+        } else {
+            $l2tpcfg['linkdown'] = str_replace("\r\n", "\n", $_POST['linkdown']);
         }
 
         write_config();
@@ -321,6 +338,24 @@ include("head.inc");
                       <input name="radiusissueips" value="yes" type="checkbox" class="form-control" id="radiusissueips"<?=$pconfig['radiusissueips'] ? " checked=\"checked\"" : "";?>>
                       <div class="hidden" data-for="help_for_radiusissueips">
                         <?=gettext("Issue IP Addresses via RADIUS server.");?>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a id="help_for_linkup" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Link UP script");?></td>
+                    <td>
+                      <textarea rows="6" cols="78" name="linkup" id="linkup"><?=$pconfig['linkup'];?></textarea>
+                      <div class="hidden" data-for="help_for_linkup">
+                        <?=gettext("Link UP script for L2TP service");?>
+                       </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a id="help_for_linkdown" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Link DOWN script");?></td>
+                    <td>
+                      <textarea rows="6" cols="78" name="linkdown" id="linkdown"><?=$pconfig['linkdown'];?></textarea>
+                      <div class="hidden" data-for="help_for_linkdown">
+                        <?=gettext("Link DOWN script for L2TP service");?>
                       </div>
                     </td>
                   </tr>
