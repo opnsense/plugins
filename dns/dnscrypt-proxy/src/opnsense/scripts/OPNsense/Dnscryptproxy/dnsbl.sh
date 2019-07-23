@@ -98,11 +98,25 @@ mwdomains() {
 	rm ${WORKDIR}/malwaredomains-raw
 }
 
-windowsspyblocker() {
-	# WindowsSpyBlocker
-	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblocker-raw
-	sed "/\.$/d" ${WORKDIR}/windowsspyblocker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblocker
-	rm ${WORKDIR}/windowsspyblocker-raw
+windowsspyblockerspy() {
+	# WindowsSpyBlocker (spy)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblockerspy-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerspy-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerspy
+	rm ${WORKDIR}/windowsspyblockerspy-raw
+}
+
+windowsspyblockerupdate() {
+	# WindowsSpyBlocker (update)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt -o ${WORKDIR}/windowsspyblockerupdate-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerupdate-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerupdate
+	rm ${WORKDIR}/windowsspyblockerupdate-raw
+}
+
+windowsspyblockerextra() {
+	# WindowsSpyBlocker (extra)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt -o ${WORKDIR}/windowsspyblockerextra-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerextra-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerextra
+	rm ${WORKDIR}/windowsspyblockerextra-raw
 }
 
 cameleon() {
@@ -297,7 +311,13 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		simpletrack
 		;;
 	ws)
-		windowsspyblocker
+		windowsspyblockerspy
+		;;
+	wsu)
+		windowsspyblockerupdate
+		;;
+	wse)
+		windowsspyblockerextra
 		;;
 	yy)
 		yoyo
