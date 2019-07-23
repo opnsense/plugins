@@ -25,32 +25,5 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-result=""
-
-for dev in `ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'`; do
-    ident=`/usr/sbin/diskinfo -v $dev | grep ident | awk '{print $1}'`;
-    state=`/usr/local/sbin/smartctl -H $dev | awk -F: '
-/^SMART overall-health self-assessment test result/ {print $2;exit}
-/^SMART Health Status/ {print $2;exit}'`;
-
-    if [ -n "$result" ]; then
-	result="$result,";
-    fi
-
-    result="$result{\"device\":\"$dev\",\"ident\":\"$ident\",\"state\":\"$state\"}";
-done
-
-for dev in `ls /dev | grep '^nvme[0-9]\+$'`; do
-    ident=`/usr/local/sbin/smartctl -a /dev/$dev | grep 'Serial Number' | awk -F ': *' '{print $2}'`;
-    state=`/usr/local/sbin/smartctl -H $dev | awk -F: '
-/^SMART overall-health self-assessment test result/ {print $2;exit}
-/^SMART Health Status/ {print $2;exit}'`;
-
-    if [ -n "$result" ]; then
-	result="$result,";
-    fi
-
-    result="$result{\"device\":\"$dev\",\"ident\":\"$ident\",\"state\":\"$state\"}";
-done
-
-echo "[$result]"
+/bin/ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'
+/bin/ls /dev | grep '^nvme[0-9]\+$'
