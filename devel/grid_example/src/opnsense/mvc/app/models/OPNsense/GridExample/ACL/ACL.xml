@@ -1,0 +1,9 @@
+<acl>
+    <page-user-gridexample>
+        <name>Lobby: GridExample</name>
+        <patterns>
+            <pattern>ui/gridexample/*</pattern>
+            <pattern>api/gridexample/*</pattern>
+        </patterns>
+    </page-user-gridexample>
+</acl>
