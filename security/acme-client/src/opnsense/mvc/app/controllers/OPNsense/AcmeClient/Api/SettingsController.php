@@ -372,4 +372,22 @@ class SettingsController extends ApiMutableModelControllerBase
 
         return $result;
     }
+
+    /**
+     * Check wether the Google Cloud plugin is installed.
+     * @return array status action
+     */
+    public function getGcloudPluginStatusAction()
+    {
+        $result = array("result" => "0");
+
+        $mdlAcme = $this->getModel();
+
+        // Check if the required plugin is installed
+        if ((string)$mdlAcme->isPluginInstalled('google-cloud-sdk') == "1") {
+            $result['result'] = "1";
+        }
+
+        return $result;
+    }
 }
