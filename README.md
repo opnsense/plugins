@@ -32,6 +32,7 @@ A list of currently available plugins
 benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
+devel/grid_example -- A sample framework application
 devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
