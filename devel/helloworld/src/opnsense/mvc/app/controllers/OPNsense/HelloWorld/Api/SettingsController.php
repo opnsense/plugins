@@ -1,6 +1,6 @@
 <?php
 /**
- *    Copyright (C) 2015 Deciso B.V.
+ *    Copyright (C) 2015-2019 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -34,13 +34,15 @@ use \OPNsense\Core\Config;
 
 /**
  * Class SettingsController Handles settings related API actions for the HelloWorld module
- * @package OPNsense\Cron
+ * @package OPNsense\Helloworld
  */
 class SettingsController extends ApiControllerBase
 {
     /**
      * retrieve HelloWorld general settings
      * @return array general settings
+     * @throws \OPNsense\Base\ModelException
+     * @throws \ReflectionException
      */
     public function getAction()
     {
@@ -56,6 +58,8 @@ class SettingsController extends ApiControllerBase
     /**
      * update HelloWorld settings
      * @return array status
+     * @throws \OPNsense\Base\ModelException
+     * @throws \ReflectionException
      */
     public function setAction()
     {
