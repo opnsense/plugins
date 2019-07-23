@@ -17,7 +17,7 @@
       </protected_mode>
       <port type="IntegerField">
         <MinimumValue>1</MinimumValue>
-        <MaximumValue>65536</MaximumValue>
+        <MaximumValue>65535</MaximumValue>
         <Required>N</Required>
         <default>6379</default>
         <ValidationMessage>This must be a valid port number.</ValidationMessage>
