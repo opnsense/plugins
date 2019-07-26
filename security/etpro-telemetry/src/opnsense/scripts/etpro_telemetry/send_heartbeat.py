@@ -34,12 +34,13 @@ import time
 import random
 import urllib3
 import telemetry
+import telemetry.system
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-e', '--endpoint',
                     help='Endpoint url to reach',
-                    default="%s/api/v1/sensor" % telemetry.BASE_URL)
+                    default="%s/api/v1/telemetry" % telemetry.BASE_URL)
 parser.add_argument('-i', '--insecure',
                     help='Insecure, skip certificate validation',
                     action="store_true",
@@ -53,6 +54,9 @@ parser.add_argument('-D', '--direct',
                     action="store_true",
                     default=False)
 args = parser.parse_args()
+
+print (telemetry.system.Stats().get())
+sys.exit(0)
 
 exit_code = -1
 cnf = telemetry.get_config(args.config)
