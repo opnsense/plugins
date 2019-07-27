@@ -32,7 +32,7 @@ function parse_line($line)
 {
     $tmp = explode('"', trim($line));
     return array(
-            'ua' => $tmp[1],
+        'ua' => $tmp[1],
         'ciphers' => $tmp[3],
         'curves' => $tmp[5] == '-' ? '' : $tmp[5],
         'count' => 1
