@@ -25,11 +25,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+$tls_logfile = '/var/log/nginx/tls_handshake.log.work';
+$database_name = '/var/log/nginx/handshakes.json';
 
 function parse_line($line)
 {
     $tmp = explode('"', trim($line));
-    return array('ua' => $tmp[1], 'ciphers' => $tmp[3], 'curves' => $tmp[5] == '-' ? '' : $tmp[5], 'count' => 1);
+    return array(
+            'ua' => $tmp[1],
+        'ciphers' => $tmp[3],
+        'curves' => $tmp[5] == '-' ? '' : $tmp[5],
+        'count' => 1
+    );
 }
 function filter_ua($key)
 {
@@ -37,9 +44,20 @@ function filter_ua($key)
 }
 
 
+if (!file_exists($tls_logfile)) {
+    echo "logfile $tls_logfile does not exist\n";
+    exit(0);
+}
+
+$fingerprints_old = @json_decode(@file_get_contents($database_name), true);
+if (!is_array($fingerprints_old)) {
+    $fingerprints_old = array();
+}
+
+
 // parse all finger prints and count them
 $fingerprints = array();
-$handle = @fopen('/var/log/nginx/tls_handshake.log', 'r');
+$handle = @fopen($tls_logfile, 'r');
 if ($handle) {
     while (($buffer = fgets($handle)) !== false) {
         $md5line = md5($buffer);
@@ -60,7 +78,7 @@ unset($handle);
 $fingerprints2 = array();
 foreach ($fingerprints as $fingerprint) {
     $user_agent = $fingerprint['ua'];
-    if (!is_array($fingerprints2[$user_agent])) {
+    if (isset($fingerprints2[$user_agent]) && !is_array($fingerprints2[$user_agent])) {
         $fingerprints2[$user_agent] = array();
     }
     $hashkey = md5($fingerprint['ciphers'] . $fingerprint['curves']);
@@ -80,4 +98,26 @@ foreach ($fingerprints2 as $ua => $fingerprint_data) {
 unset($fingerprints2);
 
 
-echo json_encode($fingerprints);
+foreach ($fingerprints_old as $ua_old => $fingerprint_data_old) {
+    if (isset($fingerprints[$ua_old])) {
+        foreach ($fingerprint_data_old as &$fpdo) {
+            $changed = false;
+            foreach ($fingerprints[$ua_old] as &$fingerprint_new) {
+                if ($fpdo['ciphers'] == $fingerprint_new['ciphers'] && $fpdo['curves'] == $fingerprint_new['curves']) {
+                    $changed = true;
+                    $fingerprint_new['count'] = $fingerprint_new['count'] + $fpdo['count'];
+                    break;
+                }
+            }
+            if (!$changed) {
+                $fingerprints[$ua_old][] = $fpdo;
+            }
+        }
+    } else {
+        // the new log does not have it, apply the old one
+        $fingerprints[$ua_old] = $fingerprint_data_old;
+    }
+}
+
+file_put_contents($database_name, json_encode($fingerprints));
+unlink($tls_logfile);

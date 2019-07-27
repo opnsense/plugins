@@ -29,6 +29,7 @@
 
 require_once('config.inc');
 require_once('IPv6.inc');
+require_once('util.inc');
 
 use OPNsense\Firewall\Alias;
 use OPNsense\Nginx\AccessLogParser;
@@ -69,6 +70,8 @@ function reopen_logs()
 $permanent_ban_file = '/var/log/nginx/permanentban.access.log';
 $permanent_ban_file_work = $permanent_ban_file . '.work';
 $autoblock_alias_name = 'nginx_autoblock';
+define('CRON_RUN_TEN_MINUTES', 10);
+$is_ten_minutes = intval(date('i')) % CRON_RUN_TEN_MINUTES != 0;
 
 
 if (!file_exists($permanent_ban_file)) {
@@ -80,7 +83,13 @@ if (!file_exists($permanent_ban_file)) {
 
 // move the file, and inform nginx that we deleted the file
 rename($permanent_ban_file, $permanent_ban_file_work);
+if ($is_ten_minutes) {
+    rename('/var/log/nginx/tls_handshake.log', '/var/log/nginx/tls_handshake.log.work');
+}
 reopen_logs();
+if ($is_ten_minutes) {
+    mwexec_bg('/usr/local/opnsense/scripts/nginx/tls_ua_fingerprint.php');
+}
 
 $log_parser = new AccessLogParser($permanent_ban_file_work);
 
