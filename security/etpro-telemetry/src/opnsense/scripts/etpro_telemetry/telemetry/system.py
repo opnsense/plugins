@@ -28,37 +28,67 @@ import time
 import subprocess
 import ujson
 from . import telemetry_sids
+from .log import reverse_log_reader
 
 class Stats:
     def __init__(self):
+        self._suricata_default_rule_path = '/usr/local/etc/suricata/opnsense.rules'
+        self._suricata_installed_rules = '/usr/local/etc/suricata/installed_rules.yaml'
         self._our_sids = telemetry_sids()
+        self._installed_sids = self._fetch_installed_sids()
 
-    def software_version(self):
+    def _fetch_installed_sids(self):
+        installed_sids = set()
+        if os.path.isfile(self._suricata_installed_rules):
+            with open(self._suricata_installed_rules) as fin:
+                for line in fin:
+                    line = line.strip()
+                    if line.endswith('.rules') and line.startswith('- '):
+                        rule_path = '%s/%s' % (self._suricata_default_rule_path, line[2:].strip())
+                        if os.path.isfile(rule_path):
+                            with open(rule_path) as rf:
+                                for rline in rf:
+                                    rline = rline.strip()
+                                    if not rline.startswith('#'):
+                                        sid_ref = rline.rfind('sid:')
+                                        if sid_ref > 0:
+                                            sid = rline[sid_ref+4:].split(';')[0]
+                                            if sid.isdigit():
+                                                installed_sids.add(int(sid))
+        return installed_sids
+
+    @staticmethod
+    def software_version():
         return subprocess.run(['/usr/local/sbin/opnsense-version', '-v'], capture_output=True, text=True).stdout.strip()
 
-    def suricata_version(self):
+    @staticmethod
+    def suricata_version():
         tmp = subprocess.run(['/usr/local/bin/suricata', '-V'], capture_output=True, text=True).stdout.strip()
         if tmp.find(' version '):
             tmp = tmp[tmp.find(' version ')+9:]
         return tmp
 
-    def system_uptime(self):
+    @staticmethod
+    def system_uptime():
         tmp = subprocess.run('/usr/bin/uptime', capture_output=True, text=True).stdout.strip()
         tmp = tmp.split(' up ')[-1].split(',')
         if len(tmp) == 6:
-            return "%s %s" % (tmp[0].strip(), tmp[1].strip())
+            return '%s %s' % (tmp[0].strip(), tmp[1].strip())
         return None
 
-    def suricata_status(self):
-        sp = subprocess.run(['/usr/local/etc/rc.d/suricata', 'status'], text=True)
+    @staticmethod
+    def suricata_status():
+        sp = subprocess.run(['/usr/local/etc/rc.d/suricata', 'status'], capture_output=True, text=True)
         return 'Running' if sp.returncode == 0 else 'Stopped'
 
-    def system_time(self):
+    @staticmethod
+    def system_time():
         return int(time.time())
 
-    def ruleset_version(self):
+    @staticmethod
+    def ruleset_version():
         if os.path.isfile('/usr/local/etc/suricata/rules/telemetry_version.json'):
-            with open("/usr/local/etc/suricata/rules/telemetry_version.json") as f_in:
+            with open('/usr/local/etc/suricata/rules/telemetry_version.json') as f_in:
                 data = f_in.read()
                 if data.startswith('#@opnsense_downlo'):
                     # strip download hash line
@@ -68,15 +98,37 @@ class Stats:
                     return data['version']
         return None
 
+    def total_enabled_rules(self):
+        return len(self._installed_sids)
+
+    def total_enabled_telemetry_rules(self):
+        return len(self._installed_sids & self._our_sids)
+
+    @staticmethod
+    def log_stats():
+        # tail stats.log, return statistcs of interest
+        result = dict()
+        stats_of_interest = ['capture.kernel_packets', 'decoder.pkts', 'decoder.bytes', 'decoder.ipv4', 'decoder.ipv6',
+                             'flow.tcp', 'flow.udp', 'detect.alert']
+        if os.path.isfile('/var/log/suricata/stats.log'):
+            for line in reverse_log_reader('/var/log/suricata/stats.log'):
+                if line.strip().startswith('------'):
+                    break
+                elif line.count('|') == 2:
+                    parts = [x.strip() for x in line.split('|')]
+                    if parts[0] in stats_of_interest:
+                        result[parts[0]] = int(parts[2]) if parts[2].isdigit() else parts[2]
+        return result
+
     def get(self):
         result = dict()
         for item in ['software_version', 'suricata_version', 'suricata_status', 'system_uptime', 'system_time',
-                     'ruleset_version']:
+                     'ruleset_version', 'total_enabled_rules', 'total_enabled_telemetry_rules', 'log_stats']:
             try:
                 value = getattr(self, item)()
             except FileNotFoundError:
-                value = "NOTFOUND"
+                value = 'NOTFOUND'
             except Exception as e:
-                value = "ERROR"
+                value = 'ERROR'
             result[item] = value
         return result

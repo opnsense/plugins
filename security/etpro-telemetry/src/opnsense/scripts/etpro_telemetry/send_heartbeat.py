@@ -55,9 +55,6 @@ parser.add_argument('-D', '--direct',
                     default=False)
 args = parser.parse_args()
 
-print (telemetry.system.Stats().get())
-sys.exit(0)
-
 exit_code = -1
 cnf = telemetry.get_config(args.config)
 if cnf.token is not None:
@@ -68,14 +65,15 @@ if cnf.token is not None:
         # spread traffic to remote host, usual cron interval is 30 minutes
         if not args.direct:
             time.sleep(random.randint(0, 1800))
-        r = requests.head(args.endpoint, **params)
+        params['json'] = telemetry.system.Stats().get()
+        r = requests.post(args.endpoint, **params)
         if r.status_code == 200:
             # expected result, set exit code
             exit_code = 0
         else:
             syslog.syslog(syslog.LOG_ERR, 'unexpected result from %s (http_code %s)' % (args.endpoint, r.status_code))
     except requests.exceptions.ConnectionError:
-        syslog.syslog(syslog.LOG_ERR, 'connection error sending heardbeat to %s' % args.endpoint)
+        syslog.syslog(syslog.LOG_ERR, 'connection error sending heartbeat to %s' % args.endpoint)
 else:
     syslog.syslog(syslog.LOG_ERR, 'telemetry token missing in %s' % args.config)
 
