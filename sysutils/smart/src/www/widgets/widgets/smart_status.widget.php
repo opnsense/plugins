@@ -57,6 +57,7 @@ foreach ($devs as $dev) {
         $color = "warning";
         break;
     default:
+        $dev_state_translated = $dev->state;
         $color = "danger";
         break;
     }
@@ -64,7 +65,7 @@ foreach ($devs as $dev) {
         <tr>
             <td><?= $dev->device ?></td>
             <td style="text-align:center"><?= $dev->ident ?></td>
-            <td style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= $dev_state_translated ?>&nbsp;</span></td>
+            <td style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= html_safe($dev_state_translated) ?>&nbsp;</span></td>
         </tr>
 <?php
 }
