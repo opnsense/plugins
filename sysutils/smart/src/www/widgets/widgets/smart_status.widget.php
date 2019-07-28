@@ -46,20 +46,12 @@ $devs = json_decode (configd_run ("smart detailed list"));
 foreach ($devs as $dev) {
     $dev_state_translated = "";
 
-    switch ($dev->state) {
-    case "PASSED":
-    case "OK":
+    if ($dev->state->smart_status->passed) {
         $dev_state_translated = gettext('OK');
         $color = "success";
-        break;
-    case "":
+    } else {
         $dev_state_translated = gettext('Unknown');
         $color = "warning";
-        break;
-    default:
-        $dev_state_translated = $dev->state;
-        $color = "danger";
-        break;
     }
 ?>
         <tr>
