@@ -105,6 +105,19 @@ class Stats:
         return len(self._installed_sids & self._our_sids)
 
     @staticmethod
+    def mode():
+        # quick scan config for inline (ips) mode
+        conf = '/usr/local/etc/suricata/suricata.yaml'
+        if os.path.isfile(conf):
+            with open(conf) as fin:
+                for line in fin:
+                    if line.startswith('  inline: true'):
+                        return "IPS"
+        return "IDS"
+
+
+
+    @staticmethod
     def log_stats():
         # tail stats.log, return statistcs of interest
         result = dict()
@@ -123,7 +136,7 @@ class Stats:
     def get(self):
         result = dict()
         for item in ['software_version', 'suricata_version', 'suricata_status', 'system_uptime', 'system_time',
-                     'ruleset_version', 'total_enabled_rules', 'total_enabled_telemetry_rules', 'log_stats']:
+                     'ruleset_version', 'total_enabled_rules', 'total_enabled_telemetry_rules' ,'mode', 'log_stats']:
             try:
                 value = getattr(self, item)()
             except FileNotFoundError:
