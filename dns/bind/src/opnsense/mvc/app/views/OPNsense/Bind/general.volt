@@ -262,5 +262,15 @@ $( document ).ready(function() {
             $("#saveAct_domain_progress").removeClass("fa fa-spinner fa-pulse");
         });
     });
+
+    // Hide options that are irrelevant in this context.
+    $('#dialogEditBindDomain').on('shown.bs.modal', function (e) {
+        $("#domain\\.type").change(function(){
+            $(".zone_type").hide();
+            $(".zone_type_"+$(this).val()).show();
+        });
+        $("#domain\\.type").change();
+    })
+
 });
 </script>

@@ -6,10 +6,21 @@
         <help>This will enable or disable the ACL.</help>
     </field>
     <field>
+        <id>domain.domainname</id>
+        <label>Domain Name</label>
+        <type>text</type>
+        <help>Set the name for this ACL.</help>
+    </field>
+    <field>
         <id>domain.type</id>
         <label>Type</label>
         <type>dropdown</type>
         <help>Set the type for this domain.</help>
+    </field>
+    <field>
+        <label>Slave Zone</label>
+        <type>header</type>
+        <style>zone_type zone_type_slave</style>
     </field>
     <field>
         <id>domain.masterip</id>
@@ -18,10 +29,9 @@
         <help>Set the IP address of master server when using slave mode.</help>
     </field>
     <field>
-        <id>domain.domainname</id>
-        <label>Domain Name</label>
-        <type>text</type>
-        <help>Set the name for this ACL.</help>
+        <label>Master Zone</label>
+        <type>header</type>
+        <style>zone_type zone_type_master</style>
     </field>
     <field>
         <id>domain.allowtransfer</id>
