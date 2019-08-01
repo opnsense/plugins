@@ -91,7 +91,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
-                    <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                    <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="ttl" data-type="string" data-visible="true">{{ lang._('TTL') }}</th>
                     <th data-column-id="refresh" data-type="string" data-visible="true">{{ lang._('Refresh') }}</th>
                     <th data-column-id="retry" data-type="string" data-visible="true">{{ lang._('Retry') }}</th>
@@ -118,7 +118,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                    <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="value" data-type="string" data-visible="true">{{ lang._('Value') }}</th>
@@ -148,7 +148,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindDomain,'id':'dialogEditBindDomain','label':lang._('Edit Zone')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Records')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Record')])}}
 
 <script>
 $( document ).ready(function() {
