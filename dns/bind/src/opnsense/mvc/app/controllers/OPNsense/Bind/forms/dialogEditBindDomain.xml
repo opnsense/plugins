@@ -79,7 +79,7 @@
         <id>domain.mailadmin</id>
         <label>Mail Admin</label>
         <type>text</type>
-        <help>Set the mail address of zone admin. Please replace @ with a dot.</help>
+        <help>Set the mail address of zone admin. A @-sign will automatically be replaced with a dot in the zone data.</help>
     </field>
     <field>
         <id>domain.dnsserver</id>
