@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
-    <li><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+    <li><a data-toggle="tab" href="#domains">{{ lang._('Zones') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -147,7 +147,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindDomain,'id':'dialogEditBindDomain','label':lang._('Edit Domains')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindDomain,'id':'dialogEditBindDomain','label':lang._('Edit Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Records')])}}
 
 <script>

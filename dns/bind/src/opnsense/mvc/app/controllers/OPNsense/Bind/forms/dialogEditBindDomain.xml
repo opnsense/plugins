@@ -7,7 +7,7 @@
     </field>
     <field>
         <id>domain.domainname</id>
-        <label>Domain Name</label>
+        <label>Zone Name</label>
         <type>text</type>
         <help>Set the name for this ACL.</help>
     </field>
