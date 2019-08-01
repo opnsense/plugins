@@ -113,6 +113,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <hr/>
+        <div class="col-md-12">
+            <h2>{{ lang._('Records') }}</h2>
+        </div>
         <div id="record-area">
             <table id="grid-records" class="table table-responsive" data-editDialog="dialogEditBindRecord">
                 <thead>
