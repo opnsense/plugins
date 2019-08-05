@@ -11,6 +11,10 @@ Kafka, MQTT, NSQ, and many others.
 Plugin Changelog
 ================
 
+1.7.6
+
+* Fix 'Round Interval' setting not working
+
 1.7.5
 
 * Add Graphite tag support
