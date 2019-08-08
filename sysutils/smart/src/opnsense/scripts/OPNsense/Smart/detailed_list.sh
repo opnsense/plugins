@@ -29,7 +29,7 @@ result=""
 
 for dev in `ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'`; do
     ident=`/usr/sbin/diskinfo -v $dev | grep ident | awk '{print $1}'`;
-    state=`/usr/local/sbin/smartctl -H $dev | awk -F: '
+    state=`/usr/local/sbin/smartctl -H /dev/$dev | awk -F ': *' '
 /^SMART overall-health self-assessment test result/ {print $2;exit}
 /^SMART Health Status/ {print $2;exit}'`;
 
@@ -42,7 +42,7 @@ done
 
 for dev in `ls /dev | grep '^nvme[0-9]\+$'`; do
     ident=`/usr/local/sbin/smartctl -a /dev/$dev | grep 'Serial Number' | awk -F ': *' '{print $2}'`;
-    state=`/usr/local/sbin/smartctl -H $dev | awk -F: '
+    state=`/usr/local/sbin/smartctl -H /dev/$dev | awk -F ': *' '
 /^SMART overall-health self-assessment test result/ {print $2;exit}
 /^SMART Health Status/ {print $2;exit}'`;
 
