@@ -8,3 +8,4 @@ sender_access:/usr/local/etc/postfix/sender_access
 senderbcc:/usr/local/etc/postfix/senderbcc
 recipientbcc:/usr/local/etc/postfix/recipientbcc
 smtp_auth:/usr/local/etc/postfix/smtp_auth
+sendercanonical:/usr/local/etc/postfix/sendercanonical
