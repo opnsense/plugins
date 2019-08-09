@@ -53,6 +53,15 @@
                 </disableroutes>
                 <gateway type="NetworkField">
                     <Required>N</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>You have to enable Disable Routes option.</ValidationMessage>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>disableroutes</field1>
+                            </addFields>
+                        </check001>
+                    </Constraints>
                 </gateway>
                 <peers type="ModelRelationField">
                     <Model>
