@@ -51,6 +51,9 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </disableroutes>
+                <gateway type="NetworkField">
+                    <Required>N</Required>
+                </gateway>
                 <peers type="ModelRelationField">
                     <Model>
                         <template>
