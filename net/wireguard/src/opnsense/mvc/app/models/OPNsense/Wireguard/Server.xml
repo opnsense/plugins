@@ -50,18 +50,18 @@
                 <disableroutes type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
-                </disableroutes>
-                <gateway type="NetworkField">
-                    <Required>N</Required>
                     <Constraints>
                         <check001>
                             <ValidationMessage>You have to enable Disable Routes option.</ValidationMessage>
                             <type>DependConstraint</type>
                             <addFields>
-                                <field1>disableroutes</field1>
+                                <field1>gateway</field1>
                             </addFields>
                         </check001>
                     </Constraints>
+                </disableroutes>
+                <gateway type="NetworkField">
+                    <Required>N</Required>
                 </gateway>
                 <peers type="ModelRelationField">
                     <Model>
