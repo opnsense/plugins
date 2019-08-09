@@ -1,0 +1,13 @@
+<form>
+    <field>
+        <id>address.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this address</help>
+    </field>
+    <field>
+        <id>address.email</id>
+        <label>Email</label>
+        <type>text</type>
+    </field>
+</form>
