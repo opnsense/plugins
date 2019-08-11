@@ -71,4 +71,11 @@
         <type>checkbox</type>
         <help>This will prevent installing routes. Usually you only enable this to do own routing decisions via a local gateway and gateway rules.</help>
     </field>
+    <field>
+        <id>server.gateway</id>
+        <label>Gateway</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the gateway IP here when using Disable Routes feature. You also have to add this as a gateway in OPNsense.</help>
+    </field>
 </form>
