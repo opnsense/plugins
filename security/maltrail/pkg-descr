@@ -6,3 +6,18 @@ URL, IP address or HTTP User-Agent header value. Also, it uses advanced
 heuristic mechanisms that can help in discovery of unknown threats.
 
 WWW: https://github.com/stamparm/maltrail
+
+
+Changelog
+---------
+
+1.1
+
+* Add a note in General tab
+
+1.0
+
+* Server support
+* Sensor support
+* Allow to set listen interface
+* Allow to set admin password
