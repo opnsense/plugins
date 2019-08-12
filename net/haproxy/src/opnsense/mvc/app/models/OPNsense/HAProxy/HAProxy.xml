@@ -988,10 +988,10 @@
                 </tuning_noport>
                 <tuning_httpreuse type="OptionField">
                     <Required>N</Required>
-                    <default>never</default>
+                    <default>safe</default>
                     <OptionValues>
-                        <never>Never [default]</never>
-                        <safe>Safe</safe>
+                        <never>Never</never>
+                        <safe>Safe [default]</safe>
                         <aggressive>Aggressive</aggressive>
                         <always>Always</always>
                     </OptionValues>
