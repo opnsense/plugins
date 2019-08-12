@@ -308,6 +308,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.tuning_caching</id>
+        <label>Enable Caching</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable caching of responses from this backend. The HAProxy cache must be enabled under Settings before this will have any effect.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Rules</label>
         <type>header</type>
     </field>

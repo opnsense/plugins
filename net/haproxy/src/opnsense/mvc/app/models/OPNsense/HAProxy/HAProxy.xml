@@ -324,6 +324,26 @@
                     <Required>N</Required>
                 </customOptions>
             </stats>
+            <cache>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </enabled>
+                <totalMaxSize type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4095</MaximumValue>
+                    <default>4</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please specify a value between 1 and 4095.</ValidationMessage>
+                </totalMaxSize>
+                <maxAge type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>3600</MaximumValue>
+                    <default>60</default>
+                    <Required>N</Required>
+                    <ValidationMessage>Please specify a value between 1 and 3600.</ValidationMessage>
+                </maxAge>
+            </cache>
         </general>
         <frontends>
             <frontend type="ArrayField">
@@ -976,6 +996,10 @@
                         <always>Always</always>
                     </OptionValues>
                 </tuning_httpreuse>
+                <tuning_caching type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </tuning_caching>
                 <linkedActions type="ModelRelationField">
                     <Model>
                         <template>
