@@ -76,6 +76,9 @@
                 <sessionlimit_max_session_limit type="IntegerField">
                     <Required>N</Required>
                 </sessionlimit_max_session_limit>
+                <servicetype type="TextField">
+                    <Required>N</Required>
+                </servicetype>
             </user>
         </users>
     </items>
