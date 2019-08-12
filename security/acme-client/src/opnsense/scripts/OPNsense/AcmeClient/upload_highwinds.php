@@ -172,15 +172,17 @@ function hw_upload_certificate($account_hash, $access_token, $cert_name, $cert_d
     // Check current status of certificate at Highwinds
     $hw_cert = hw_get_certificate($account_hash, $access_token, $cert_name);
     $hw_url = 'certificates';
+    $hw_method = 'POST';
     if ($hw_cert == 'None') {
         log_error("AcmeClient: cert for ${cert_name} not found in Highwinds API, starting upload...");
     } else {
         log_error("AcmeClient: cert for ${cert_name} found in Highwinds API");
+        $hw_method = 'PUT';
 
         // Extract certificate details
         $cert = openssl_x509_parse($cert_data['cert']);
-        $cert_sn = (int)$cert['serialNumber'];
-        $hw_cert_sn = (int)$hw_cert->certificateInformation->serialNumber;
+        $cert_sn = (string)$cert['serialNumber'];
+        $hw_cert_sn = (string)$hw_cert->certificateInformation->serialNumber;
         $hw_cert_id = $hw_cert->id;
 
         // Compare local and remote certificates
@@ -188,6 +190,7 @@ function hw_upload_certificate($account_hash, $access_token, $cert_name, $cert_d
             log_error("AcmeClient: cert ${cert_name} has same serial in Highwinds API, not updating (${cert_sn})");
             return 'None';
         }
+        log_error("AcmeClient: cert serial is different in Highwinds API, updating...");
         $hw_url = "${hw_url}/${hw_cert_id}";
     }
 
@@ -197,7 +200,7 @@ function hw_upload_certificate($account_hash, $access_token, $cert_name, $cert_d
     $curl = curl_init();
     curl_setopt_array($curl, array(
         CURLOPT_URL => "${HIGHWINDS_API_URL}/${account_hash}/${hw_url}",
-        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_CUSTOMREQUEST => $hw_method,
         CURLOPT_POSTFIELDS => (string)$cert_post,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_MAXREDIRS => 1,
