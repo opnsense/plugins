@@ -55,19 +55,19 @@
         <id>domain.refresh</id>
         <label>Refresh Time</label>
         <type>text</type>
-        <help>Set the time in seconds after which secondary name servers should refresh the zone information.</help>
+        <help>Set the time in seconds after which name servers should refresh the zone information.</help>
     </field>
     <field>
         <id>domain.retry</id>
         <label>Retry Time</label>
         <type>text</type>
-        <help>Set the time in seconds after which secondary name servers should retry requests if the master does not respond.</help>
+        <help>Set the time in seconds after which name servers should retry requests if the master does not respond.</help>
     </field>
     <field>
         <id>domain.expire</id>
         <label>Expire Time</label>
         <type>text</type>
-        <help>Set the time in seconds after which secondary name servers should stop answering requests if the master does not respond.</help>
+        <help>Set the time in seconds after which name servers should stop answering requests if the master does not respond.</help>
     </field>
     <field>
         <id>domain.negative</id>
