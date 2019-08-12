@@ -127,6 +127,7 @@
         <id>user.servicetype</id>
         <label>Service Type</label>
         <type>text</type>
+        <advanced>true</advanced>
         <help>Set the service-type attribute for this user.</help>
     </field>
 </form>
