@@ -43,6 +43,68 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_upload_sftp</style>
+    </field>
+    <field>
+        <id>action.sftp_host</id>
+        <label>SFTP Host</label>
+        <type>text</type>
+        <help>IP address or hostname of the SFTP server.</help>
+    </field>
+    <field>
+        <id>action.sftp_port</id>
+        <label>SFTP Port</label>
+        <type>text</type>
+        <help>SFTP server port. Leave blank to use default "22".</help>
+    </field>
+    <field>
+        <id>action.sftp_host_key</id>
+        <label>Host Key</label>
+        <type>text</type>
+        <help>SFTP server host key, formatted as in 'known_hosts'.
+              Leave blank to auto accept host key on first connect (not as secure as specifying it).</help>
+    </field>
+    <field>
+        <id>action.sftp_user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>The username to login to the SFTP server.</help>
+    </field>
+    <field>
+        <id>action.sftp_identity_type</id>
+        <label>Identity Type</label>
+        <type>dropdown</type>
+        <help>The type of identify to present to the SFTP server for authorization. Select 'none' to use default "ECDSA".</help>
+    </field>
+    <field>
+        <id>action.sftp_remote_path</id>
+        <label>Remote Path</label>
+        <type>text</type>
+        <help>Path on the SFTP server to change to after login.
+              The path can be absolute or relative to home and must exist.
+              Leave blank to not change path after login.</help>
+    </field>
+    <field>
+        <id>action.sftp_chmod</id>
+        <label>Permission (Public Keys)</label>
+        <type>text</type>
+        <help>Unix permission to apply to uploaded public keys. Leave blank to use default "0440".</help>
+    </field>
+    <field>
+        <id>action.sftp_chmod_key</id>
+        <label>Permission (Private Keys)</label>
+        <type>text</type>
+        <help>Unix permission to apply to uploaded private keys. Leave blank to use default "0400".</help>
+    </field>
+    <field>
+        <id>action.sftp_chgrp</id>
+        <label>Group</label>
+        <type>text</type>
+        <help>Unix group id to apply to all uploaded files. Leave blank to not change the group.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_configd</style>
     </field>
     <field>
