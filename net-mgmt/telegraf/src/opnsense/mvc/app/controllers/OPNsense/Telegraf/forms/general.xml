@@ -61,13 +61,13 @@
     </field>
     <field>
         <id>general.quiet</id>
-        <label>Quiet</label>
+        <label>Quiet Log</label>
         <type>checkbox</type>
         <help>Log only error level messages.</help>
     </field>
     <field>
         <id>general.debug</id>
-        <label>Debug</label>
+        <label>Debug Log</label>
         <type>checkbox</type>
         <help>Log at debug level.</help>
     </field>
