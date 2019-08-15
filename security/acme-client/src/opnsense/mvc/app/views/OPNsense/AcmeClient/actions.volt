@@ -105,10 +105,11 @@ POSSIBILITY OF SUCH DAMAGE.
                     ajaxCall("/api/acmeclient/actions/sftpGetIdentity", getFormData("DialogAction").action, function (data, status) {
                         button.prop('disabled', false).find(".fa-spinner").hide();
 
-                        if (status === "success" && data.status === "ok")
+                        if (status === "success" && data.status === "ok") {
                             identityDiv.text(data.identity).show();
-                        else
+                        } else {
                             identityDiv.text("{{ lang._('Failed loading identity') }}").show();
+                        }
                     });
                 });
 
@@ -153,7 +154,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     ajaxCall("/api/acmeclient/actions/sftpTestConnection", getFormData("DialogAction").action, function (data, status) {
                         button.prop('disabled', false).find(".fa-spinner").hide();
 
-                        var message = "", detail = "", statusClass = "alert-warning";
+                        var message = "",
+                            detail = "",
+                            statusClass = "alert-warning";
 
                         if (status === "success") {
                             if (data.success === true) {
