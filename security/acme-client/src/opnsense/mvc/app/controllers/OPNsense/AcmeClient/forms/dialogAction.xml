@@ -56,6 +56,7 @@
         <label>SFTP Port</label>
         <type>text</type>
         <help>SFTP server port. Leave blank to use default "22".</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>action.sftp_host_key</id>
@@ -89,18 +90,48 @@
         <label>Permission (Public Keys)</label>
         <type>text</type>
         <help>Unix permission to apply to uploaded public keys. Leave blank to use default "0440".</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>action.sftp_chmod_key</id>
         <label>Permission (Private Keys)</label>
         <type>text</type>
         <help>Unix permission to apply to uploaded private keys. Leave blank to use default "0400".</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>action.sftp_chgrp</id>
         <label>Group</label>
         <type>text</type>
         <help>Unix group id to apply to all uploaded files. Leave blank to not change the group.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.sftp_filename_cert</id>
+        <label>Naming "cert.pem"</label>
+        <type>text</type>
+        <help>Name template for the public certificate.
+              Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded.
+              Leave blank to use default "{{name}}/cert.pem".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.sftp_filename_key</id>
+        <label>Naming "key.pem"</label>
+        <type>text</type>
+        <help>Name template for the certificate's private key.
+            Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded.
+            Leave blank to use default "{{name}}/key.pem".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.sftp_filename_ca</id>
+        <label>Naming "ca.pem"</label>
+        <type>text</type>
+        <help>Name template for the public certificate chain file.
+            Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded.
+            Leave blank to use default "{{name}}/ca.pem".</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <label>Required Parameters</label>

@@ -804,6 +804,24 @@
                     <mask>/^0[0-9]{3}$/u</mask>
                     <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
                 </sftp_chmod_key>
+                <sftp_filename_cert type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_cert>
+                <sftp_filename_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_key>
+                <sftp_filename_ca type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_ca>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>

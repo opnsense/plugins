@@ -64,7 +64,8 @@ const COMMANDS = [
         "description" => "transfers certificates to the specified target host",
         "options" => [
             "host::", "port::", "host-key::", "user::", "identity-type::", "remote-path::",
-            "certificates::", "files::", "chgrp::", "chmod::", "chmod-key::"],
+            "certificates::", "files::", "chgrp::", "chmod::", "chmod-key::",
+            "cert-name::", "key-name::", "ca-name::"],
         "implementation" => "commandUpload",
         "default" => true,
     ],
@@ -116,6 +117,13 @@ const CONFIG_PATH_CREATE_MODE = 0750;
 const KNOWN_HOSTS_FILE_CREATE_MODE = 0640;
 const DEFAULT_CERT_MODE = 0440;
 const DEFAULT_KEY_MODE = 0400;
+
+// Names
+const UPLOAD_NAME_TEMPLATES = [
+    "cert" => ["default" => "{{name}}/cert.pem", "option" => "cert-name"],
+    "key" => ["default" => "{{name}}/key.pem", "option" => "key-name"],
+    "ca" => ["default" => "{{name}}/ca.pem", "option" => "ca-name"],
+];
 
 // Keys & bits
 const DEFAULT_KEY_TYPE = "ecdsa";
@@ -249,7 +257,7 @@ function uploadCertificatesToHost(array $options): int
 
     $username = $options["user"];
 
-    $remote_home = $sftp->pwd();
+    $remote_base_path = $sftp->pwd();
     $remote_files = [];
     $remote_path = ".";
 
@@ -272,22 +280,37 @@ function uploadCertificatesToHost(array $options): int
         }
 
         // Changing remote directory if required.
-        if (($dir = dirname($file["target"])) !== $remote_path) {
-            $target_dir = $sftp->resolve($dir, $remote_home);
+        if (($target_dir = dirname($file["target"])) !== $remote_path) {
 
-            $error = $sftp->cd($target_dir)->lastError();
-            if ($error["file_not_found"]) {
-                logger()->info("Creating remote directory: $target_dir");
-                $sftp->clearError()
-                    ->mkdir($target_dir)
-                    ->cd($target_dir);
+            $absolute_target_dir = $sftp->resolve($target_dir, $remote_base_path);
+            requireThat(
+                $absolute_target_dir && strpos($absolute_target_dir, $remote_base_path) === 0,
+                "Illegal target directory '$absolute_target_dir' is not below '$remote_base_path'");
+
+            $dir_names = preg_split('-/+-', substr($absolute_target_dir, strlen($remote_base_path)), 0, PREG_SPLIT_NO_EMPTY);
+            if (count($dir_names) == 1)
+                $dir_names[0] = $absolute_target_dir; // Single dir: Use absolute path
+            else
+                $sftp->cd($remote_base_path); // None or multiple directories: Start from base path and create one by one as needed
+
+            foreach ($dir_names as $dir) {
+                if ($error = $sftp->cd($dir)->lastError()) {
+                    if ($error["file_not_found"]) {
+                        logger()->info("Creating remote directory: $dir");
+                        $sftp->clearError()
+                            ->mkdir($dir)
+                            ->cd($dir);
+                    } else {
+                        break;
+                    }
+                }
             }
 
             if ($error = $sftp->lastError()) {
-                logger()->error("Failed to cd into '$dir'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
+                logger()->error("Failed to cd into '$target_dir'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
                 return EXITCODE_ERROR;
             } else {
-                $remote_path = $dir;
+                $remote_path = $target_dir;
                 $remote_files = $sftp->ls();
                 if ($error = $sftp->lastError()) {
                     logger()->error("Failed listing remote files. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
@@ -316,7 +339,8 @@ function uploadCertificatesToHost(array $options): int
 
         // Initial upload when permissions are properly set.
         if (!$remote_is_readonly) {
-            if ($error = $sftp->put($file["source"], $remote_filename)->lastError()) {
+            $preserve_times_and_mod = $file_chmod !== false;
+            if ($error = $sftp->put($file["source"], $remote_filename, $preserve_times_and_mod)->lastError()) {
                 logger()->error("Failed uploading file '{$file["source"]}' to '{$file["target"]}'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
 
                 if ($error["permission_denied"] !== true)
@@ -451,6 +475,9 @@ function getOptionsById($automation_id, $silent = false)
                 "chgrp" => trim((string)$action->sftp_chgrp),
                 "chmod" => trim((string)$action->sftp_chmod),
                 "chmod-key" => trim((string)$action->sftp_chmod_key),
+                "cert-name" => trim((string)$action->sftp_filename_cert),
+                "key-name" => trim((string)$action->sftp_filename_key),
+                "ca-name" => trim((string)$action->sftp_filename_ca),
             ];
         } else if (!$silent) {
             logger()->error("Ignoring disabled or invalid automation '$automation_id'");
@@ -482,12 +509,40 @@ function getFilesToUpload(array $options)
                     if (($time = intval($cert["updated"])) && $time > 0)
                         touch($source, $time);
 
-                    // Sanitize user input (allow unicode chars, numbers and some special characters)
-                    $context_path = preg_replace('/[^\w\d_\-@.]+/uim', "-", $cert["name"]);
+                    // Build the upload name
+                    $target_path = requireThat(UPLOAD_NAME_TEMPLATES[$name], "No upload template defined for '{$name}'");
+                    $target_path = stripcslashes($options[$target_path["option"]] ?: $target_path["default"]);
 
-                    $file = ["source" => $source, "target" => "{$context_path}/{$name}.pem"];
-                    $file["is_key"] = ($name === "key");
-                    $files[] = $file;
+                    $target_path = join("/", array_map(
+                        function ($path_part) use (&$cert) {
+                            // Replace template params "{{.+}}" & "%s"
+                            $path_part = preg_replace_callback(
+                                ['/%s/', '/{{([^}]+?)}}/'],
+                                function ($m) use (&$cert) {
+                                    $index = $m[0] == '%s' ? "name" : trim($m[1]);
+
+                                    return in_array($index, ["name", "id", "updated"])
+                                        ? stripcslashes($cert[$index])
+                                        : "__unknown-template-param__{$index}__";
+                                },
+                                $path_part);
+
+                            // Sanitize user input. Allow unicode chars, numbers and some special characters [_-@.].
+                            // Also replace all ".." with "." to avoid upwards tree traversal.
+                            return preg_replace(['/\.+/', '/[^\w\d_\-@.]+/uim'], ['.', '-'], trim($path_part));
+                        },
+                        preg_split('-[/\\\\]+-', $target_path, 0, PREG_SPLIT_NO_EMPTY)));
+
+                    // Add the file to upload (if valid)
+                    if (!empty($target_path)
+                        && preg_match('-^(?!/).+?(?<!/)$-', $target_path) /* must neither begin nor end with '/' */
+                        && !preg_match('-^[/.]+$-', $target_path)  /* must not only consist of '/' and '.' */) {
+                        $file = ["source" => $source, "target" => $target_path];
+                        $file["is_key"] = ($name === "key");
+                        $files[] = $file;
+                    } else {
+                        logger()->error("Cannot add '{$name}.pem' since the upload path '$target_path' is invalid.");
+                    }
                 }
             } else {
                 logger()->error("Ignoring upload for cert '{$cert["name"]}', since it is not available in trust storage.");
@@ -534,9 +589,10 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
                 continue;
             }
 
+            $item["id"] = $id;
             $item["name"] = $name;
             $item["updated"] = intval($cert->lastUpdate);
-            $item["automations"] = preg_split('/[\s*,]+/', $cert->restartActions);
+            $item["automations"] = preg_split('/[\s,]+/', $cert->restartActions);
             if (isset($cert->certRefId)) {
                 $refids[] = $item['content_id'] = (string)$cert->certRefId;
             }
@@ -684,6 +740,7 @@ function requireThat($expression, $message)
         logger()->error("FATAL: $message");
         exit(EXITCODE_ERROR);
     }
+    return $expression;
 }
 
 function resolvePath($file, $base = ".")
@@ -744,6 +801,8 @@ class SftpClient
     private $ssh_keys;
     /* @var null|Process */
     private $process = null;
+    /* @var null|string */
+    private $pwd = null;
 
     public function __construct($config_path, $identity_type = DEFAULT_IDENTITY_TYPE)
     {
@@ -808,7 +867,7 @@ class SftpClient
         return false;
     }
 
-    private function processAvailableInput(float $timeout = 0, $expected_lines = 0, Callable $lines_consumer = null)
+    private function processAvailableInput(float $timeout = 0, $expected_lines = 0, Callable $lines_consumer = null, $remaining_timeout = 0)
     {
         requireThat($this->process !== null, "SFTP: process not connected");
 
@@ -825,9 +884,6 @@ class SftpClient
         ];
 
         while (($line = $this->process->get($timeout)) !== false) {
-            if (--$expected_lines <= 0)
-                $timeout = 0;
-
             foreach ($expected_errors as $ee) {
                 if (preg_match($ee[1], $line)) {
                     $this->failed_status = [$ee[0] => true, "error" => trim($line)];
@@ -835,9 +891,13 @@ class SftpClient
                 }
             }
 
-            $hide = ($lines_consumer && $lines_consumer($line) === true);
-            if (!$hide)
+            $consumed = ($lines_consumer && $lines_consumer($line) === true);
+            if (!$consumed)
                 logger()->info("SFTP: " . rtrim($line));
+
+            if (!$lines_consumer || $consumed) {
+                if (--$expected_lines <= 0) $timeout = $remaining_timeout;
+            }
         }
     }
 
@@ -879,7 +939,8 @@ class SftpClient
         $regex = '/^([bcdlsp\-][rwx\-]{9}[+@]?)\s+[0-9]+\s+([^\s]+)\s+([^\s]+)\s+([0-9]+)\s+(\w+\s+[0-9]+\s+[0-9:]+)\s+(.+)$/';
         $this->processAvailableInput(30, 2, function ($line) use (&$files, $regex) {
             if (preg_match($regex, $line, $matches)) {
-                $files[trim($matches[6])] = [
+                $filename = trim(stripcslashes($matches[6])); // decodes octal UTF-8 sequences
+                $files[$filename] = [
                     "type" => $matches[1][0],
                     "permissions" => $matches[1],
                     "owner" => $matches[2],
@@ -890,21 +951,30 @@ class SftpClient
                 return true;
             }
             return false;
-        });
+        }, 1);
 
         return $files;
     }
 
     public function pwd()
     {
-        $remote_path = false;
-        $this->processAvailableInput();
-        $this->process->put("pwd");
-        $this->processAvailableInput(30, 2, function ($line) use (&$remote_path) {
-            if (preg_match('/^.+directory:\s(.+)$/i', $line, $matches))
-                $remote_path = trim($matches[1]);
-        });
-        return $remote_path;
+        if ($this->pwd === null) {
+            $remote_path = false;
+
+            $this->processAvailableInput();
+            $this->process->put("pwd");
+            $this->processAvailableInput(30, 1, function ($line) use (&$remote_path) {
+                if (preg_match('/^.+directory:\s(.+)$/i', $line, $matches)) {
+                    $remote_path = trim(stripcslashes($matches[1]));
+                    return true;
+                }
+                return false;
+            });
+
+            $this->pwd = $remote_path;
+        }
+
+        return $this->pwd;
     }
 
     public function resolve($remote_path, $remote_pwd = null)
@@ -920,16 +990,20 @@ class SftpClient
     public function get($remote_file, $local_file = "")
     {
         $this->processAvailableInput();
-        $this->process->put("get " . escapeshellarg($remote_file) . " " . (empty($local_file) ? "" : escapeshellarg($local_file)));
+        $this->process->put("get "
+            . escapeshellarg($remote_file)
+            . (empty($local_file) ? "" : " " . escapeshellarg($local_file)));
         $this->processAvailableInput(30, 2);
         return $this;
     }
 
-    public function put($local_file, $remote_file = "")
+    public function put($local_file, $remote_file = "", $preserve = true)
     {
         if (is_file($local_file)) {
             $this->processAvailableInput();
-            $this->process->put("put -p " . escapeshellarg($local_file) . " " . (empty($remote_file) ? "" : escapeshellarg($remote_file)));
+            $this->process->put("put " . ($preserve ? "-p " : "")
+                . escapeshellarg($local_file)
+                . (empty($remote_file) ? "" : " " . escapeshellarg($remote_file)));
             $this->processAvailableInput(30, 2);
         } else {
             logger()->info("put: File $local_file doesn't exist.");
@@ -957,6 +1031,7 @@ class SftpClient
             $this->processAvailableInput(30, 1);
             $error = $this->lastError();
             $pwd = false;
+            $this->pwd = null;
 
             if ($error || $remote_path !== ($pwd = $this->pwd())) {
                 $this->failed_status = array_merge(($error ?: []), [
@@ -970,25 +1045,31 @@ class SftpClient
 
     public function chmod($remote_file, $mode)
     {
-        $this->processAvailableInput();
-        $this->process->put("chmod " . escapeshellarg($mode) . " " . escapeshellarg($remote_file));
-        $this->processAvailableInput(30, 2);
+        if (($remote_file = $this->resolve($remote_file)) !== false) {
+            $this->processAvailableInput();
+            $this->process->put("chmod " . escapeshellarg($mode) . " " . escapeshellarg($remote_file));
+            $this->processAvailableInput(30, 2);
+        }
         return $this;
     }
 
     public function chgrp($remote_file, $group_id)
     {
-        $this->processAvailableInput();
-        $this->process->put("chgrp " . escapeshellarg($group_id) . " " . escapeshellarg($remote_file));
-        $this->processAvailableInput(30, 2);
+        if (($remote_file = $this->resolve($remote_file)) !== false) {
+            $this->processAvailableInput();
+            $this->process->put("chgrp " . escapeshellarg($group_id) . " " . escapeshellarg($remote_file));
+            $this->processAvailableInput(30, 2);
+        }
         return $this;
     }
 
     public function rm($remote_file)
     {
-        $this->processAvailableInput();
-        $this->process->put("rm " . escapeshellarg($remote_file));
-        $this->processAvailableInput(30, 2);
+        if (($remote_file = $this->resolve($remote_file)) !== false) {
+            $this->processAvailableInput();
+            $this->process->put("rm " . escapeshellarg($remote_file));
+            $this->processAvailableInput(30, 2);
+        }
         return $this;
     }
 }
@@ -1335,7 +1416,7 @@ class Process
     public $exitCode = null;
 
     // Starts the specified process and returns an object to manage it.
-    public static function open(array $cmd, $cwd = null, $env = null): Process
+    public static function open(array $cmd, $cwd = null, $env = null): ?Process
     {
         global $__process_terminate_hook, $__open_processes;
         if (!is_array($__open_processes))
