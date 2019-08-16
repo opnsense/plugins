@@ -23,4 +23,12 @@
         <type>select_multiple</type>
         <help>List of interface to listen on, none means listen on all interfaces.</help>
     </field>
+    <field>
+        <id>general.whitelist</id>
+        <label>Whitelist</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Here you can whitelist IP addresses or domains.</help>
+    </field>
 </form>
