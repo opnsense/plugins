@@ -73,7 +73,8 @@ const COMMANDS = [
     "test-connection" => [
         "description" => "connects to the host and returns results as JSON",
         "options" => [
-            "host:", "port::", "host-key::", "user:", "remote-path::", "identity-type::"],
+            "host:", "port::", "host-key::", "user:", "remote-path::", "identity-type::",
+            "chgrp::", "chmod::"],
         "implementation" => "commandTestConnection",
     ],
 
@@ -108,13 +109,7 @@ const EXAMPLES = <<<TXT
   ./upload_sftp.php --log --host=sftpserver --user=name
 TXT;
 
-// Syslog level used for verbose info log.
-// Change to "LOG_NOTICE" to make log output visible in the UI.
-const SYSLOG_INFO_LEVEL = LOG_INFO;
-
 // Permissions
-const CONFIG_PATH_CREATE_MODE = 0750;
-const KNOWN_HOSTS_FILE_CREATE_MODE = 0640;
 const DEFAULT_CERT_MODE = 0440;
 const DEFAULT_KEY_MODE = 0400;
 
@@ -125,13 +120,7 @@ const UPLOAD_NAME_TEMPLATES = [
     "ca" => ["default" => "{{name}}/ca.pem", "option" => "ca-name"],
 ];
 
-// Keys & bits
-const DEFAULT_KEY_TYPE = "ecdsa";
-
-const DEFAULT_IDENTITY_KEY_BITS = ["rsa" => 4096, "ecdsa" => 521];
-const IDENTITY_TYPES = ["rsa", "rsa_2048", "rsa_4096", "rsa_8192", "ecdsa", "ecdsa_256", "ecdsa_384", "ecdsa_521", "ed25519"];
-const DEFAULT_IDENTITY_TYPE = "ecdsa";
-
+// Exit codes
 const EXITCODE_SUCCESS = 0;
 const EXITCODE_ERROR = 1;
 const EXITCODE_ERROR_NO_PERMISSION = 2;
@@ -143,12 +132,23 @@ const EXITCODE_ERROR_UNKNOWN_COMMAND = 255;
 @include_once("certs.inc");
 @include_once("util.inc");
 
-// --------------------------------------------------------------------------------------------------------------------
-// Main script logic
+// Optional autoloader (for local dev environment)
+if (!function_exists("log_error")) {
+    spl_autoload_register(function ($class_name) {
+        require_once(__DIR__ . "/../../../mvc/app/library/" . str_replace("\\", "/", $class_name) . ".php");
+    });
+}
 
+// Importing classes
+use OPNsense\AcmeClient\SftpUploader;
+use OPNsense\AcmeClient\SftpClient;
+use OPNsense\AcmeClient\SSHKeys;
+use OPNsense\AcmeClient\Utils;
+
+// Implementing logic
 function commandShowIdentity(array &$options): int
 {
-    $identity_type = trim(($options["identity-type"] ?: DEFAULT_IDENTITY_TYPE));
+    $identity_type = trim(($options["identity-type"] ?: SSHKeys::DEFAULT_IDENTITY_TYPE));
     $source_ip = trim(($options["source-ip"] ?: ""));
     $host = trim(($options["host"] ?: ""));
 
@@ -164,7 +164,7 @@ function commandShowIdentity(array &$options): int
         return EXITCODE_SUCCESS;
 
     } else {
-        logger()->error("Failed getting identity. See log output for details.");
+        Utils::log()->error("Failed getting identity. See log output for details.");
     }
     return EXITCODE_ERROR;
 }
@@ -175,12 +175,9 @@ function commandTestConnection(array &$options): int
 
     // Testing connection
     $sftp = connectWithServer($options, $error);
-    if ($result["success"] = ($sftp !== null)) {
+    if ($result["success"] = ($sftp !== null && $sftp->connected())) {
         $result["actions"][] = "connected";
-        $result["remote"] = [
-            "address" => $sftp->remote_address,
-            "path" => $sftp->pwd(),
-        ];
+        $result["remote"] = array_merge($sftp->connected(), ["path" => $sftp->pwd()]);
     } else {
         $result = array_merge($result, $error);
     }
@@ -188,17 +185,41 @@ function commandTestConnection(array &$options): int
     // Testing file upload
     if ($result["success"]) {
         $result["actions"][] = "upload-testing";
-        $file = temporaryFile();
-        $filename = "." . basename($file);
 
-        if ($error = $sftp->put($file, $filename)->lastError(3)) {
-            $result["success"] = false;
-            $result = array_merge($result, $error);
-        } else if ($error = $sftp->rm($filename)->lastError(3)) {
-            logger()->error("Failed removing upload test file '$filename'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
+        $uploader = new SftpUploader($sftp);
+
+        $chgrp = $options["chgrp"] ?: false;
+        $chmod = isset($options["chmod"]) ? ($options["chmod"] ?: DEFAULT_CERT_MODE) : false;
+        $filename = $uploader->addContent("upload-test", "", 0, $chmod, $chgrp);
+
+        $upload_result = $uploader->upload();
+        $result["success"] = $upload_result === SftpUploader::UPLOAD_SUCCESS;
+
+        if ($result["success"]) {
+            $result["actions"][] = "upload-tested";
+
+        } else {
+            if ($error = $sftp->lastError(3))
+                $result = array_merge($result, $error);
+
+            if ($upload_result === SftpUploader::UPLOAD_ERROR_CHGRP_FAILED) {
+                $result["chgrp_failed"] = true;
+            } else if ($upload_result === SftpUploader::UPLOAD_ERROR_CHMOD_FAILED) {
+                $result["chmod_failed"] = true;
+            }
         }
 
-        if ($result["success"]) $result["actions"][] = "upload-tested";
+        $remove_file = in_array($upload_result, [
+            SftpUploader::UPLOAD_SUCCESS,
+            SftpUploader::UPLOAD_ERROR_CHGRP_FAILED,
+            SftpUploader::UPLOAD_ERROR_CHMOD_FAILED]);
+
+        if ($remove_file) {
+            if ($error = $sftp->clearError()->rm($filename)->lastError(3))
+                Utils::log()->error("Failed removing upload test file '$filename'", $error);
+        }
+
+        $sftp->close();
     }
 
     echo json_encode($result, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL;
@@ -242,7 +263,7 @@ function commandUpload(array &$options): int
         return uploadCertificatesToHost($options);
 
     } else {
-        logger()->error("No work to do, neither --host nor --certificates is present.");
+        Utils::log()->error("No work to do, neither --host nor --certificates is present.");
         return EXITCODE_ERROR_NOTHING_TO_UPLOAD;
     }
 }
@@ -251,132 +272,45 @@ function uploadCertificatesToHost(array $options): int
 {
     $sftp = connectWithServer($options, $error);
     if ($sftp === null) {
-        logger()->error("Aborting after connect failure.");
-        return $error["connect_failed"] ? EXITCODE_ERROR : EXITCODE_ERROR_NO_PERMISSION;
+        Utils::log()->error("Aborting after connect failure.");
+        return $error["connect_failed"]
+            ? EXITCODE_ERROR
+            : EXITCODE_ERROR_NO_PERMISSION;
     }
 
-    $username = $options["user"];
+    try {
+        $uploader = new SftpUploader($sftp);
 
-    $remote_base_path = $sftp->pwd();
-    $remote_files = [];
-    $remote_path = ".";
+        addFilesToUpload($options, $uploader);
 
-    $chmod = isset($options["chmod"]) ? ($options["chmod"] ?: DEFAULT_CERT_MODE) : false;
-    $chmod_key = isset($options["chmod-key"]) ? ($options["chmod-key"] ?: DEFAULT_KEY_MODE) : false;
-    $chgrp = $options["chgrp"] ?: false;
+        if (empty($uploader->pending()))
+            return EXITCODE_ERROR_NOTHING_TO_UPLOAD;
 
-    // Collecting files to upload (sorted by target to reduce remote directory changes)
-    $files_to_upload = getFilesToUpload($options);
-    usort($files_to_upload, function (&$a, &$b) {
-        return $a["target"] <=> $b["target"];
-    });
+        for ($max_restarts = 5; !empty($uploader->pending()) && $max_restarts > 0; $max_restarts--) {
 
-    // Uploading the files
-    foreach ($files_to_upload as $file) {
-        // Checking if source is valid.
-        if (!is_file($file["source"]) && is_readable($file["source"])) {
-            logger()->error("Skipping {$file["source"]}, it is not a file or not readable.");
-            continue;
-        }
+            $result = $uploader->upload();
 
-        // Changing remote directory if required.
-        if (($target_dir = dirname($file["target"])) !== $remote_path) {
+            if ($result != SftpUploader::UPLOAD_SUCCESS) {
+                Utils::log()->error("Failed on " . json_encode($uploader->current(), JSON_UNESCAPED_SLASHES));
 
-            $absolute_target_dir = $sftp->resolve($target_dir, $remote_base_path);
-            requireThat(
-                $absolute_target_dir && strpos($absolute_target_dir, $remote_base_path) === 0,
-                "Illegal target directory '$absolute_target_dir' is not below '$remote_base_path'");
+                switch ($result) {
+                    case SftpUploader::UPLOAD_ERROR_CHGRP_FAILED:
+                    case SftpUploader::UPLOAD_ERROR_CHMOD_FAILED:
+                    case SftpUploader::UPLOAD_ERROR_NO_OVERWRITE:
+                        continue;
 
-            $dir_names = preg_split('-/+-', substr($absolute_target_dir, strlen($remote_base_path)), 0, PREG_SPLIT_NO_EMPTY);
-            if (count($dir_names) == 1)
-                $dir_names[0] = $absolute_target_dir; // Single dir: Use absolute path
-            else
-                $sftp->cd($remote_base_path); // None or multiple directories: Start from base path and create one by one as needed
+                    case SftpUploader::UPLOAD_ERROR_NO_PERMISSION:
+                        return EXITCODE_ERROR_NO_PERMISSION;
 
-            foreach ($dir_names as $dir) {
-                if ($error = $sftp->cd($dir)->lastError()) {
-                    if ($error["file_not_found"]) {
-                        logger()->info("Creating remote directory: $dir");
-                        $sftp->clearError()
-                            ->mkdir($dir)
-                            ->cd($dir);
-                    } else {
-                        break;
-                    }
+                    case SftpUploader::UPLOAD_ERROR:
+                        return EXITCODE_ERROR;
                 }
-            }
-
-            if ($error = $sftp->lastError()) {
-                logger()->error("Failed to cd into '$target_dir'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
-                return EXITCODE_ERROR;
             } else {
-                $remote_path = $target_dir;
-                $remote_files = $sftp->ls();
-                if ($error = $sftp->lastError()) {
-                    logger()->error("Failed listing remote files. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
-                    return EXITCODE_ERROR;
-                }
+                break;
             }
         }
-
-        // Preparing copy
-        $remote_filename = basename($file["target"]);
-        $remote_file = $remote_files[$remote_filename] ?: ["type" => "-", "owner" => $username];
-        $remote_is_file = $remote_file["type"] === "-";
-        $remote_is_readonly = preg_match('/^-r-.r-.+$/', $remote_file["permissions"] ?: "");
-
-        // Check if a folder/socket/symlink, etc is in the way
-        if (!$remote_is_file) {
-            logger()->error("Skipping file '{$file["source"]}' as there is a non-file in the way at '{$file["target"]}'.");
-            continue;
-        }
-
-        $file_chmod = $file["is_key"] ? $chmod_key : $chmod;
-        $file_chmod = preg_match('/^0[0-9]{3}$/', $file_chmod) ? (string)$file_chmod : false;
-        $permission_change_retry_allowed = $file_chmod
-            && $remote_file["owner"] === $username
-            && isset($remote_files[$remote_filename]);
-
-        // Initial upload when permissions are properly set.
-        if (!$remote_is_readonly) {
-            $preserve_times_and_mod = $file_chmod !== false;
-            if ($error = $sftp->put($file["source"], $remote_filename, $preserve_times_and_mod)->lastError()) {
-                logger()->error("Failed uploading file '{$file["source"]}' to '{$file["target"]}'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
-
-                if ($error["permission_denied"] !== true)
-                    $permission_change_retry_allowed = false;
-
-                if ($permission_change_retry_allowed)
-                    logger()->info("Retrying file '{$file["source"]}' to '{$file["target"]}' with adjusted permissions.");
-            } else {
-                $permission_change_retry_allowed = false;
-            }
-        }
-
-        // Second upload when initial failed or was skipped due to write protection (only possible if we have chmod defined to reset permissions later).
-        if ($permission_change_retry_allowed) {
-            $sftp->chmod($remote_filename, '0600');
-            if ($error = $sftp->put($file["source"], $remote_filename)->lastError()) {
-                logger()->error("Failed uploading file '{$file["source"]}' to '{$file["target"]}'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
-                return EXITCODE_ERROR_NO_PERMISSION;
-            }
-        } else if ($remote_is_readonly) {
-            logger()->error("Failed uploading file '{$file["source"]}' to '{$file["target"]}'. Existing file is write protected and --chmod[-key] options are missing.");
-            return EXITCODE_ERROR_NO_PERMISSION;
-        }
-
-        // Applying Chmod / chgrp if requested.
-        if ($file_chmod) {
-            if ($error = $sftp->chmod($remote_filename, $file_chmod)->lastError())
-                logger()->error("Failed chmod ($file_chmod) for '{$file["target"]}'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
-        }
-
-        if (!empty($chgrp)) {
-            if ($error = $sftp->chgrp($remote_filename, $chgrp)->lastError())
-                logger()->error("Failed chgrp ($chgrp) for '{$file["target"]}'. Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES));
-        }
-
-        $sftp->clearError();
+    } finally {
+        $sftp->close();
     }
 
     return EXITCODE_SUCCESS;
@@ -384,7 +318,7 @@ function uploadCertificatesToHost(array $options): int
 
 function connectWithServer(array $options, &$error): ?SftpClient
 {
-    $identity_type = trim(($options["identity-type"] ?: DEFAULT_IDENTITY_TYPE));
+    $identity_type = trim(($options["identity-type"] ?: SSHKeys::DEFAULT_IDENTITY_TYPE));
     $host = trim(($options["host"] ?: ""));
     $host_key = ($options["host-key"] ?: "");
     $port = $options["port"] ?: 22;
@@ -403,7 +337,7 @@ function connectWithServer(array $options, &$error): ?SftpClient
         if ($err = $sftp->cd($remote_path)->lastError()) {
             $error = $err;
             $error["change_home_dir_failed"] = true;
-            logger()->error("Failed cd into '{$remote_path}'. Cause: " . json_encode($err, JSON_UNESCAPED_SLASHES));
+            Utils::log()->error("Failed cd into '{$remote_path}'", $err);
             return null;
         }
     }
@@ -461,7 +395,7 @@ function getActionById($automation_id)
 
 function getOptionsById($automation_id, $silent = false)
 {
-    if (!$silent) logger()->info("Reading options from automation: $automation_id");
+    if (!$silent) Utils::log()->info("Reading options from automation: $automation_id");
 
     if (is_object($action = getActionById($automation_id))) {
         if ($action->enabled && "upload_sftp" === (string)$action->type) {
@@ -478,89 +412,98 @@ function getOptionsById($automation_id, $silent = false)
                 "cert-name" => trim((string)$action->sftp_filename_cert),
                 "key-name" => trim((string)$action->sftp_filename_key),
                 "ca-name" => trim((string)$action->sftp_filename_ca),
+                "certificates" => "", // defaults to all (= empty), may be overridden via CLI
             ];
         } else if (!$silent) {
-            logger()->error("Ignoring disabled or invalid automation '$automation_id'");
+            Utils::log()->error("Ignoring disabled or invalid automation '$automation_id'");
         }
     } else {
-        logger()->error("No upload automation found with uuid = '$automation_id'");
+        Utils::log()->error("No upload automation found with uuid = '$automation_id'");
     }
 
     return false;
 }
 
-function getFilesToUpload(array $options)
+function addFilesToUpload(array $options, SftpUploader &$uploader)
 {
-    $files = [];
-    $cert_ids = preg_split('/[,;\s]+/', $options["certificates"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
+    $chmod = isset($options["chmod"]) ? ($options["chmod"] ?: DEFAULT_CERT_MODE) : false;
+    $chmod_key = isset($options["chmod-key"]) ? ($options["chmod-key"] ?: DEFAULT_KEY_MODE) : false;
+    $chgrp = $options["chgrp"] ?: false;
 
-    if (class_exists("OPNsense\\Core\\Config")) {
+    if (isset($options["certificates"])) {
+        $cert_ids = preg_split('/[,;\s]+/', $options["certificates"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
+
         foreach (findCertificates($cert_ids) as $cert) {
-            if (isset($cert["content"])) {
-                foreach ($cert["content"] as $name => $content) {
-                    $source = temporaryFile();
-                    $ok = file_put_contents($source, $content);
 
-                    if (!$ok) {
-                        logger()->error("Ignoring upload for cert '{$cert["name"]}', since the content cannot be prepared or is empty.");
-                        continue;
-                    }
+            if (!isset($cert["content"])) {
+                Utils::log()->error("Ignoring upload for cert '{$cert["name"]}', since it is not available in trust storage.");
+                continue;
+            }
 
-                    if (($time = intval($cert["updated"])) && $time > 0)
-                        touch($source, $time);
+            foreach ($cert["content"] as $name => $content) {
 
-                    // Build the upload name
-                    $target_path = requireThat(UPLOAD_NAME_TEMPLATES[$name], "No upload template defined for '{$name}'");
-                    $target_path = stripcslashes($options[$target_path["option"]] ?: $target_path["default"]);
-
-                    $target_path = join("/", array_map(
-                        function ($path_part) use (&$cert) {
-                            // Replace template params "{{.+}}" & "%s"
-                            $path_part = preg_replace_callback(
-                                ['/%s/', '/{{([^}]+?)}}/'],
-                                function ($m) use (&$cert) {
-                                    $index = $m[0] == '%s' ? "name" : trim($m[1]);
-
-                                    return in_array($index, ["name", "id", "updated"])
-                                        ? stripcslashes($cert[$index])
-                                        : "__unknown-template-param__{$index}__";
-                                },
-                                $path_part);
-
-                            // Sanitize user input. Allow unicode chars, numbers and some special characters [_-@.].
-                            // Also replace all ".." with "." to avoid upwards tree traversal.
-                            return preg_replace(['/\.+/', '/[^\w\d_\-@.]+/uim'], ['.', '-'], trim($path_part));
-                        },
-                        preg_split('-[/\\\\]+-', $target_path, 0, PREG_SPLIT_NO_EMPTY)));
-
-                    // Add the file to upload (if valid)
-                    if (!empty($target_path)
-                        && preg_match('-^(?!/).+?(?<!/)$-', $target_path) /* must neither begin nor end with '/' */
-                        && !preg_match('-^[/.]+$-', $target_path)  /* must not only consist of '/' and '.' */) {
-                        $file = ["source" => $source, "target" => $target_path];
-                        $file["is_key"] = ($name === "key");
-                        $files[] = $file;
-                    } else {
-                        logger()->error("Cannot add '{$name}.pem' since the upload path '$target_path' is invalid.");
-                    }
+                if (empty($content)) {
+                    Utils::log()->error("Content for '{$name}.pem' in cert '{$cert["name"]}' is empty, skipping it.");
+                    continue;
                 }
-            } else {
-                logger()->error("Ignoring upload for cert '{$cert["name"]}', since it is not available in trust storage.");
+
+                // Build the upload name
+                $target_path = requireThat(UPLOAD_NAME_TEMPLATES[$name], "No upload template defined for '{$name}'");
+                $target_path = stripcslashes($options[$target_path["option"]] ?: $target_path["default"]);
+
+                $target_path = join("/", array_map(
+                    function ($path_part) use (&$cert) {
+                        // Replace template params "{{.+}}" & "%s"
+                        $path_part = preg_replace_callback(
+                            ['/%s/', '/{{([^}]+?)}}/'],
+                            function ($m) use (&$cert) {
+                                $index = $m[0] == '%s' ? "name" : trim($m[1]);
+
+                                return in_array($index, ["name", "id", "updated"])
+                                    ? stripcslashes($cert[$index])
+                                    : "__unknown-template-param__{$index}__";
+                            },
+                            $path_part);
+
+                        // Sanitize user input. Allow unicode chars, numbers and some special characters [_-@.].
+                        // Also replace all ".." with "." to avoid upwards tree traversal.
+                        return preg_replace(['/\.+/', '/[^\w\d_\-@.]+/uim'], ['.', '-'], trim($path_part));
+                    },
+                    preg_split('-[/\\\\]+-', $target_path, 0, PREG_SPLIT_NO_EMPTY)));
+
+
+                // Add the file to upload (if valid)
+                if (!empty($target_path)
+                    && preg_match('-^(?!/).+?(?<!/)$-', $target_path) /* must neither begin nor end with '/' */
+                    && !preg_match('-^[/.]+$-', $target_path)  /* must not only consist of '/' and '.' */) {
+
+                    $mod = $name === "key"
+                        ? $chmod_key
+                        : $chmod;
+
+                    $uploader->addContent($content, $target_path, $cert["updated"], $mod, $chgrp);
+
+                } else {
+                    Utils::log()->error("Cannot add '{$name}.pem' since the upload path '$target_path' is invalid.");
+                }
             }
         }
+
+        if (empty($uploader->pending()))
+            Utils::log()->error("Didn't find any certificates to upload (cert-ids: " . (empty($cert_ids) ? "*all*" : join(", ", $cert_ids)) . ").");
+
+    } else if (isset($options["files"])) {
+        $files = preg_split('/[,;\s]+/', $options["files"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
+        foreach ($files as $file) {
+            $uploader->addFile($file, "", $chmod, $chgrp);
+        };
+
+        if (empty($uploader->pending()))
+            Utils::log()->error("Didn't files to upload (files: " . join(", ", $files) . ").");
+
     } else {
-        // Allow to specify "--files" only if we're not running in opnsense environment (for development only).
-        if (isset($options["files"])) {
-            foreach (preg_split('/[,;\s]+/', $options["files"] ?: "", 0, PREG_SPLIT_NO_EMPTY) as $file) {
-                $files[] = ["source" => $file, "target" => "upload-test/" . basename($file)];
-            };
-        }
+        Utils::log()->error("Neither '--certificates' nor '--files' was specified. Have nothing to upload.");
     }
-
-    if (empty($files))
-        logger()->error("Didn't find any certificates to upload (cert-ids: " . (empty($cert_ids) ? "all" : join(", ", $cert_ids)) . ").");
-
-    return $files;
 }
 
 function findCertificates(array $certificate_ids_or_names, $load_content = true): array
@@ -584,7 +527,7 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
 
             if ($cert->enabled == 0) {
                 if (!empty($certificate_ids_or_names))
-                    logger()->error("Certificate '{$name}' (id: $id) is disabled, skipping it.");
+                    Utils::log()->error("Certificate '{$name}' (id: $id) is disabled, skipping it.");
 
                 continue;
             }
@@ -665,11 +608,7 @@ function main()
             help();
         } else {
             if (isset($options["log"]))
-                logger(true)->info("Logging to stdout enabled");
-
-            register_shutdown_function(function () {
-                temporaryFile(true);
-            });
+                Utils::log(true)->info("Logging to stdout enabled");
 
             $options = array_filter($options, function ($value) {
                 return !is_string($value)
@@ -677,13 +616,15 @@ function main()
             });
 
             if (isset($options["automation-id"]))
-                $options = array_merge($options, getOptionsById($options["automation-id"]));
+                $options = array_merge(getOptionsById($options["automation-id"]), $options);
 
             if (is_callable($runner = $command["implementation"])) {
                 $code = $runner($options);
+
                 if ($code != EXITCODE_SUCCESS) {
-                    logger()->error("Command execution failed, exit code $code. Last input was: " . json_encode($options, JSON_UNESCAPED_SLASHES));
+                    Utils::log()->error("Command execution failed, exit code $code. Last input was: " . json_encode($options, JSON_UNESCAPED_SLASHES));
                 }
+
                 exit(isset($options["no-error"]) ? EXITCODE_SUCCESS : $code);
             } else {
                 exit(EXITCODE_ERROR_UNKNOWN_COMMAND);
@@ -694,842 +635,21 @@ function main()
             help();
         } else {
             $cmd = join(" ", $argv);
-            logger()->error("Parsing of '$cmd' failed at argument '{$argv[$index]}'");
+            Utils::log()->error("Parsing of '$cmd' failed at argument '{$argv[$index]}'");
         }
         exit(1);
     }
 }
 
-
-// --------------------------------------------------------------------------------------------------------------------
-// Utility functions
-
-interface ILogger
-{
-    function info($message);
-
-    function error($message);
-}
-
-function &logger($reconfigure_to_stdout = false): ILogger
-{
-    static $logger;
-    if (!$logger || $reconfigure_to_stdout) {
-        if (!$reconfigure_to_stdout && function_exists("log_error")) {
-            $logger = new class implements ILogger
-            {
-                function info($message) { syslog(SYSLOG_INFO_LEVEL, basename(__FILE__) . ": INFO: $message"); }
-
-                function error($message) { log_error($message); }
-            };
-        } else {
-            $logger = new class implements ILogger
-            {
-                function info($message) { echo "INFO: {$message}" . PHP_EOL; }
-
-                function error($message) { echo "ERROR: {$message}" . PHP_EOL; }
-            };
-        }
-    }
-    return $logger;
-}
-
 function requireThat($expression, $message)
 {
-    if (!$expression) {
-        logger()->error("FATAL: $message");
+    try {
+        Utils::requireThat($message, $message);
+    } catch (\AssertionError $e) {
         exit(EXITCODE_ERROR);
     }
     return $expression;
 }
 
-function resolvePath($file, $base = ".")
-{
-    if (!$base || $base[0] != DIRECTORY_SEPARATOR)
-        $base = realpath(($base ?: "."));
-
-    $path = [];
-    $combined_path = ((!empty($file) && $file[0] == DIRECTORY_SEPARATOR) ? $file : $base . DIRECTORY_SEPARATOR . $file);
-    foreach (explode(DIRECTORY_SEPARATOR, $combined_path) as $part) {
-        if (empty($part) || $part === '.')
-            continue;
-        if ($part !== '..')
-            array_push($path, $part);
-        else if (!empty($path))
-            array_pop($path);
-        else
-            return false;
-    }
-
-    return DIRECTORY_SEPARATOR . join(DIRECTORY_SEPARATOR, $path);
-}
-
-function temporaryFile($delete_all = false)
-{
-    static $__temporary_files = [];
-    if ($delete_all) {
-        foreach ($__temporary_files as $file)
-            unlink($file);
-        $__temporary_files = [];
-    } else {
-        if ($file = tempnam(sys_get_temp_dir(), "sftp-upload-")) {
-            $file = realpath($file);
-            $__temporary_files[] = $file;
-            requireThat(chmod($file, 0600), "failed setting user-only permissions on '$file'.");
-            return $file;
-        };
-    }
-    return false;
-}
-
-
-// --------------------------------------------------------------------------------------------------------------------
-// Classes
-
-
-/**
- * Wrapper around the 'sftp' commandline client.
- */
-class SftpClient
-{
-    public $remote_address;
-    private $identity_type;
-
-    /* @var false|array */
-    private $failed_status;
-    /* @var SSHKeys */
-    private $ssh_keys;
-    /* @var null|Process */
-    private $process = null;
-    /* @var null|string */
-    private $pwd = null;
-
-    public function __construct($config_path, $identity_type = DEFAULT_IDENTITY_TYPE)
-    {
-        $this->ssh_keys = new SSHKeys($config_path);
-        $this->identity_type = $identity_type;
-    }
-
-    public function __destruct()
-    {
-        $this->close();
-    }
-
-    public function connect($host, $username, $host_key = "", $port = 22)
-    {
-        if (empty(trim($host)) || empty(trim($username))) {
-            $this->failed_status = ["invalid_parameters" => true];
-            logger()->error("Failed connecting to '$host'. Hostname or username is missing.");
-            return false;
-        }
-
-        $trust = $this->ssh_keys->trustHost($host, $host_key, $port);
-        if ($trust["ok"] !== true) {
-            logger()->error("Failed establishing trust in '$host'; Cause: {$trust["error"]}");
-            unset($trust["ok"]);
-            $this->failed_status = array_merge($trust, ["host_not_trusted" => true]);
-            return false;
-        } else {
-            $host = $trust["host"];
-        }
-
-        // Building sftp command.
-        $cmd = [
-            "sftp",
-            "-P", $port,
-            "-oUser=$username",
-            "-oUserKnownHostsFile={$this->ssh_keys->knownHostsFile()}",
-        ];
-
-        // Handle client side identity
-        $identity = $this->ssh_keys->getIdentity($this->identity_type, true);
-        if (is_file($identity) && is_readable($identity)) {
-            array_push($cmd,
-                "-i", $identity,
-                "-oPreferredAuthentications=publickey");
-        } else {
-            logger()->error("Failed adding client identity ($identity). Connect will likely fail.");
-        }
-
-        // Adding the host
-        array_push($cmd, "$host");
-
-        // Creating the sftp process
-        if ($this->process = Process::open($cmd)) {
-            $this->processAvailableInput(120, 1);
-            if ($error = $this->lastError()) {
-                logger()->error("Failed connecting to '$host' (user: '$username'). Cause: " . json_encode($error));
-                return false;
-            }
-            $this->remote_address = strpos($host, ':') ? "[$host]:$port" : "$host:$port";
-            return true;
-        }
-        return false;
-    }
-
-    private function processAvailableInput(float $timeout = 0, $expected_lines = 0, Callable $lines_consumer = null, $remaining_timeout = 0)
-    {
-        requireThat($this->process !== null, "SFTP: process not connected");
-
-        static $expected_errors = [
-            ["host_not_resolved", /*   => */ '/.*not resolve.*/i'],
-            ["host_not_trusted", /*    => */ '/.*IDENTIFICATION HAS CHANGED.*/i'],
-            ["connection_refused", /*  => */ '/.*connection refused.*/i'],
-            ["connection_closed", /*   => */ '/.*connection closed.*/i'],
-            ["network_timeout", /*     => */ '/.*timed out.*/i'],
-            ["network_unreachable", /* => */ '/.*network.+unreachable.*/i'],
-            ["permission_denied", /*   => */ '/.*permission denied.*/i'],
-            ["file_not_found", /*      => */ '/.*(no such|not found).*/i'],
-            ["failure", /*             => */ '/.*(error|failure|you must supply).*/i'],
-        ];
-
-        while (($line = $this->process->get($timeout)) !== false) {
-            foreach ($expected_errors as $ee) {
-                if (preg_match($ee[1], $line)) {
-                    $this->failed_status = [$ee[0] => true, "error" => trim($line)];
-                    break;
-                }
-            }
-
-            $consumed = ($lines_consumer && $lines_consumer($line) === true);
-            if (!$consumed)
-                logger()->info("SFTP: " . rtrim($line));
-
-            if (!$lines_consumer || $consumed) {
-                if (--$expected_lines <= 0) $timeout = $remaining_timeout;
-            }
-        }
-    }
-
-    public function close()
-    {
-        if (($p = $this->process) !== null) {
-            $p->put("exit");
-            $p->closeInput();
-
-            $this->processAvailableInput(1.5);
-            $p->close();
-
-            $this->process = null;
-
-            if ($this->failed_status && $this->failed_status["connection_closed"])
-                $this->clearError();
-        }
-    }
-
-    public function lastError($timeout = 0.5)
-    {
-        if ($this->failed_status === false)
-            $this->processAvailableInput($timeout);
-        return $this->failed_status;
-    }
-
-    public function clearError()
-    {
-        $this->failed_status = false;
-        return $this;
-    }
-
-    public function ls()
-    {
-        $files = [];
-        $this->processAvailableInput();
-        $this->process->put("ls -la");
-
-        $regex = '/^([bcdlsp\-][rwx\-]{9}[+@]?)\s+[0-9]+\s+([^\s]+)\s+([^\s]+)\s+([0-9]+)\s+(\w+\s+[0-9]+\s+[0-9:]+)\s+(.+)$/';
-        $this->processAvailableInput(30, 2, function ($line) use (&$files, $regex) {
-            if (preg_match($regex, $line, $matches)) {
-                $filename = trim(stripcslashes($matches[6])); // decodes octal UTF-8 sequences
-                $files[$filename] = [
-                    "type" => $matches[1][0],
-                    "permissions" => $matches[1],
-                    "owner" => $matches[2],
-                    "group" => $matches[3],
-                    "size" => intval($matches[4]),
-                    "mtime" => strtotime($matches[5])
-                ];
-                return true;
-            }
-            return false;
-        }, 1);
-
-        return $files;
-    }
-
-    public function pwd()
-    {
-        if ($this->pwd === null) {
-            $remote_path = false;
-
-            $this->processAvailableInput();
-            $this->process->put("pwd");
-            $this->processAvailableInput(30, 1, function ($line) use (&$remote_path) {
-                if (preg_match('/^.+directory:\s(.+)$/i', $line, $matches)) {
-                    $remote_path = trim(stripcslashes($matches[1]));
-                    return true;
-                }
-                return false;
-            });
-
-            $this->pwd = $remote_path;
-        }
-
-        return $this->pwd;
-    }
-
-    public function resolve($remote_path, $remote_pwd = null)
-    {
-        if (($pwd = ($remote_pwd ?: $this->pwd())) !== false) {
-            $remote_path = resolvePath($remote_path, str_replace("/", DIRECTORY_SEPARATOR, $pwd));
-            $remote_path = str_replace("\\", "/", $remote_path);
-            return $remote_path;
-        }
-        return false;
-    }
-
-    public function get($remote_file, $local_file = "")
-    {
-        $this->processAvailableInput();
-        $this->process->put("get "
-            . escapeshellarg($remote_file)
-            . (empty($local_file) ? "" : " " . escapeshellarg($local_file)));
-        $this->processAvailableInput(30, 2);
-        return $this;
-    }
-
-    public function put($local_file, $remote_file = "", $preserve = true)
-    {
-        if (is_file($local_file)) {
-            $this->processAvailableInput();
-            $this->process->put("put " . ($preserve ? "-p " : "")
-                . escapeshellarg($local_file)
-                . (empty($remote_file) ? "" : " " . escapeshellarg($remote_file)));
-            $this->processAvailableInput(30, 2);
-        } else {
-            logger()->info("put: File $local_file doesn't exist.");
-            $this->failed_status = ["file_not_found" => true, "error" => $local_file];
-        }
-
-        return $this;
-    }
-
-    public function mkdir($remote_path)
-    {
-        if (($remote_path = $this->resolve($remote_path)) !== false) {
-            $this->process->put("mkdir " . escapeshellarg($remote_path));
-            $this->processAvailableInput(30, 1);
-        }
-        return $this;
-    }
-
-    public function cd($remote_path)
-    {
-        if (($remote_path = $this->resolve($remote_path)) !== false) {
-            $this->clearError();
-            $this->process->put("cd " . escapeshellarg($remote_path));
-
-            $this->processAvailableInput(30, 1);
-            $error = $this->lastError();
-            $pwd = false;
-            $this->pwd = null;
-
-            if ($error || $remote_path !== ($pwd = $this->pwd())) {
-                $this->failed_status = array_merge(($error ?: []), [
-                    "failure" => true,
-                    "error" => "Failed changing path to '$remote_path' (pwd: '$pwd'); Cause: {$error["error"]}"
-                ]);
-            }
-        }
-        return $this;
-    }
-
-    public function chmod($remote_file, $mode)
-    {
-        if (($remote_file = $this->resolve($remote_file)) !== false) {
-            $this->processAvailableInput();
-            $this->process->put("chmod " . escapeshellarg($mode) . " " . escapeshellarg($remote_file));
-            $this->processAvailableInput(30, 2);
-        }
-        return $this;
-    }
-
-    public function chgrp($remote_file, $group_id)
-    {
-        if (($remote_file = $this->resolve($remote_file)) !== false) {
-            $this->processAvailableInput();
-            $this->process->put("chgrp " . escapeshellarg($group_id) . " " . escapeshellarg($remote_file));
-            $this->processAvailableInput(30, 2);
-        }
-        return $this;
-    }
-
-    public function rm($remote_file)
-    {
-        if (($remote_file = $this->resolve($remote_file)) !== false) {
-            $this->processAvailableInput();
-            $this->process->put("rm " . escapeshellarg($remote_file));
-            $this->processAvailableInput(30, 2);
-        }
-        return $this;
-    }
-}
-
-/**
- * Utility class for managing SSH host (known_hosts) and identity keys to be used in {@see SftpClient}.
- */
-class SSHKeys
-{
-    private $config_path;
-    private $known_hosts_file;
-
-    public function __construct($config_path)
-    {
-        if (!is_dir($config_path)) {
-            $dir_created = mkdir($config_path, CONFIG_PATH_CREATE_MODE, true);
-            requireThat($dir_created, "Failed creating directory '$config_path' with permission " . CONFIG_PATH_CREATE_MODE);
-        }
-
-        $this->config_path = realpath($config_path);
-        $this->known_hosts_file = resolvePath("known_hosts", $this->config_path);
-    }
-
-    public function knownHostsFile()
-    {
-        if (!is_file($this->known_hosts_file)) {
-            $file_created =
-                touch($this->known_hosts_file)
-                && chmod($this->known_hosts_file, KNOWN_HOSTS_FILE_CREATE_MODE);
-
-            requireThat($file_created, "Failed creating file '{$this->known_hosts_file}' with permission " . KNOWN_HOSTS_FILE_CREATE_MODE);
-        }
-
-        return $this->known_hosts_file;
-    }
-
-    public function trustHost($host, $host_key = "", $port = 22, $no_modification_allowed = false): array
-    {
-        requireThat(!empty(trim($host)), "Hostname must not be empty.");
-
-        // Convert the specified host_key to a data structure that can be compared
-        if (empty($host_key = trim($host_key))) {
-            $host_key = false;
-        } else {
-            $host_key = self::getHostKeyInfo($host_key);
-            if ($host_key === false)
-                return ["ok" => false, "error" => "Invalid host_key specified."];
-        }
-
-
-        // Check our current known_host file
-        $addKeyInfo = function (array &$key_list) {
-            foreach ($key_list as &$item) {
-                $item["key_info"] = self::getHostKeyInfo($item["host_key"]);
-            }
-            return array_filter($key_list, function (&$item) {
-                return $item["key_info"] !== false;
-            });
-        };
-
-        $known_keys = $addKeyInfo($this->getKnownHostKey($host));
-
-        // Find known_hosts item with same hostname
-        $known_by_host = array_reduce($known_keys, function ($found, $key) use ($host) {
-            return (!$found && !empty(trim($key["host"])) && strcasecmp(trim($host), trim($key["host"])) == 0)
-                ? $key
-                : $found;
-        }, false);
-
-        // Find known_hosts item with same public host-key
-        $known_by_key = array_reduce($known_keys, function ($found, $key) use ($host_key) {
-            return (!$found && $host_key && $host_key === $key["key_info"])
-                ? $key
-                : $found;
-        }, false);
-
-
-        // Updating $host and $host_key from known_hosts and check if we need to update known_hosts.
-        if ($host_key === false && $known_by_host) {
-            logger()->info("No host key specified, using existing known_hosts entry for '$host'");
-            $host_key = $known_by_host["key_info"];
-        }
-
-        $is_key_known = false;
-        if ($known_by_host && $host_key && $host_key === $known_by_host["key_info"]) {
-            $is_key_known = true;
-        } else if ($known_by_key) {
-            if (strcasecmp(trim($host), trim($known_by_key["host"])) != 0) {
-                logger()->info("Host key is in known_hosts but hostname differs. Changing '$host' to '{$known_by_key["host"]}'.");
-                $host = $known_by_key["host"];
-            }
-            $is_key_known = true;
-        }
-
-
-        // Check if we don't have a matching known_hosts entry and add or update it as required.
-        if (!$is_key_known && !$no_modification_allowed) {
-            $key_type = $host_key ? $host_key["key_type"] : DEFAULT_KEY_TYPE;
-
-            $remote_host_keys = $addKeyInfo($this->queryHostKey($host, $key_type, $port));
-            $matching_remote_host_keys = array_filter($remote_host_keys, function ($key) use ($host_key) {
-                return $key["key_info"] !== false && (!$host_key || $host_key === $key["key_info"]);
-            });
-
-            if (!empty($matching_remote_host_keys)) {
-                if ($known_by_host) {
-                    logger()->info("Removing known_hosts entry with differing key for '{$known_by_host["host"]}' as it is in the way.");
-                    $this->removeKnownHost($known_by_host["host"]);
-                }
-
-                foreach ($matching_remote_host_keys as $key) {
-                    logger()->info("Adding known_hosts entry: " . json_encode($key["key_info"], JSON_UNESCAPED_SLASHES));
-                    $ok = file_put_contents($this->knownHostsFile(), $key["host_key"] . PHP_EOL, FILE_APPEND);
-                    if (!$ok)
-                        logger()->error("Failed adding known_hosts entry {$key["host_key"]}");
-                }
-
-                // Verify that known_hosts contains the correct keys after adding them (using recursion).
-                return $this->trustHost($host, $matching_remote_host_keys[0]["host_key"], $port, true);
-
-            } else {
-                if (empty($remote_host_keys)) {
-                    $msg = "No connection to '$host'; Failed querying host key from server.";
-                } else {
-                    $msg = "Key mismatch for '$host'; "
-                        . "The expected key (" . json_encode($host_key) . ") was not found in (" . json_encode($remote_host_keys) . ")";
-                }
-                return ["ok" => false, "error" => $msg];
-            }
-        }
-
-
-        if ($is_key_known) {
-            return ["ok" => true, "host" => $host, "key_info" => $host_key];
-        } else {
-            return ["ok" => false, "error" => "Host unknown and remote key cannot be queried."];
-        }
-    }
-
-    public static function getHostSearchList($host)
-    {
-        $search_list = [($host = strtolower($host))];
-
-        // Add IP-address to search list (IPv4 only)
-        $has_ip = ($ip = gethostbyname($host))
-            && ($ip !== $host || preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/', $ip));
-
-        if ($has_ip)
-            $search_list[] = strtolower($ip);
-
-        // Add FQDN to search list if reverse lookup provides a valid one.
-        $has_fqdn = $has_ip
-            && ($reverse_fqdn = gethostbyaddr($ip))
-            && $reverse_fqdn !== $ip
-            && gethostbyname($reverse_fqdn) === $ip;
-
-        if ($has_fqdn && isset($reverse_fqdn))
-            $search_list[] = strtolower($reverse_fqdn);
-
-        // Build unique search list (dedup list)
-        $search_list = array_filter($search_list, function ($value, $index) use (&$search_list) {
-            return !empty(trim($value)) && array_search($value, $search_list) == $index;
-        }, ARRAY_FILTER_USE_BOTH);
-
-        return $search_list;
-    }
-
-    public static function queryHostKey($host, $key_type = DEFAULT_KEY_TYPE, $port = 22)
-    {
-        $keys = [];
-        $failed = false;
-        $names = join(",", self::getHostSearchList($host));
-
-        if (!empty($names) && ($p = Process::open(["ssh-keyscan", "-p", $port, "-t", $key_type, $names]))) {
-            $lines = [];
-            while (($line = $p->get(60)) !== false) {
-                $line = trim($line);
-                if (empty($line) || $line[0] == "#")
-                    continue;
-
-                if (preg_match('/.*(connect|write|broken|no route|not known).*/i', $line))
-                    $failed = true;
-
-                $lines[] = $line;
-            }
-
-            if ($p->close() == 0 && !$failed) {
-                foreach ($lines as $line) {
-                    $keys[] = ["host_key" => $line];
-                }
-            } else {
-                logger()->error("Failed querying public keys for [$names] ($host / $key_type). "
-                    . "Exit code: {$p->exitCode} (failed flag: $failed) ; " . PHP_EOL
-                    . "ssh-keyscan: " . join(PHP_EOL . "ssh-keyscan: ", $lines));
-            }
-        }
-
-        if (empty($keys))
-            logger()->info("Couldn't fetch public host key ($key_type) from $host");
-
-        return $keys;
-    }
-
-
-    public function getKnownHostKey($host)
-    {
-        $keys = [];
-        foreach (self::getHostSearchList($host) as $name_or_ip) {
-            if ($p = Process::open(["ssh-keygen", "-F", $name_or_ip, "-f", $this->knownHostsFile()])) {
-                $lines = [];
-                while (($line = $p->get()) !== false) {
-                    $line = trim($line);
-                    if (empty($line) || $line[0] == "#")
-                        continue;
-
-                    $lines[] = $line;
-                }
-
-                if ($p->close() == 0) {
-                    $keys[] = ["host" => $name_or_ip, "host_key" => $lines[0]];
-                } else if ($p->exitCode != 1 /* 1 == NOT_FOUND */) {
-                    logger()->error("Failed querying known hosts for $name_or_ip ($host). Return code was: {$p->exitCode}"
-                        . " ; " . PHP_EOL . join(PHP_EOL, $lines));
-                }
-            }
-        }
-
-        if (empty($keys))
-            logger()->info("Didn't find $host in known_hosts");
-
-        return $keys;
-    }
-
-    public function removeKnownHost($host)
-    {
-        $ok = false;
-        if ($p = Process::open(["ssh-keygen", "-R", $host, "-f", $this->knownHostsFile()])) {
-            $ok = $p->close() === 0;
-            if (!$ok)
-                logger()->error("Failed removing known hosts for $host. Return code was: {$p->exitCode}");
-        }
-        return $ok;
-    }
-
-    public static function getHostKeyInfo($host_key)
-    {
-        if ($p = Process::open(["ssh-keygen", "-l", "-f", "-"])) {
-            $p->put($host_key);
-            $p->closeInput();
-
-            if (($hash = $p->get()) && preg_match('/^([0-9]+) (.+?) .+? \(([^()]+)\)$/', $hash, $matches)) {
-                return ["hash" => $matches[2], "key_type" => $matches[3], "key_length" => $matches[1]];
-            } else {
-                logger()->error("Unsupported hash type: $hash");
-            }
-        }
-
-        logger()->error("Failed getting hash for host_key");
-        return false;
-    }
-
-    // Returns the path to the public identity key file, generating it if missing (optionally returns the private key path)
-    public function getIdentity($identity_type = DEFAULT_IDENTITY_TYPE, $private = false)
-    {
-        requireThat(in_array($identity_type, IDENTITY_TYPES), "Identity type $identity_type unknown.");
-
-        list($key_type, $key_size) = explode('_', $identity_type, 2);
-        if (!$key_size && DEFAULT_IDENTITY_KEY_BITS[$key_type] > 0)
-            $key_size = DEFAULT_IDENTITY_KEY_BITS[$key_type];
-
-        $identity_path = "{$this->config_path}/id.{$identity_type}";
-
-        if (!file_exists($identity_path)) {
-            $generate_key = [
-                "ssh-keygen", "-v",
-                "-f", $identity_path,
-                "-t", $key_type,
-                "-N", "",
-            ];
-
-            if (intval($key_size) > 0)
-                array_push($generate_key, "-b", $key_size);
-
-            if ($p = Process::open($generate_key)) {
-                while (($line = $p->get(10)) !== false) {
-                    logger()->info("SSH keygen: $line");
-                }
-
-                requireThat($p->close() == 0,
-                    "Failed generating identity $identity_path: Error code: {$p->exitCode}" . PHP_EOL
-                    . "Command: " . join(" ", $generate_key));
-            }
-        }
-
-        return $private ? $identity_path : "{$identity_path}.pub";
-    }
-
-    public static function getIdentityRestrictions($host = "", $source_ip = "")
-    {
-        $restrictions = ['restrict', 'command="internal-sftp"'];
-
-        $restrict_ip = empty(trim($source_ip))
-            ? (empty(trim($host)) ? false : self::getOutgoingIpFor($host))
-            : $source_ip;
-
-        if ($restrict_ip)
-            $restrictions[] = 'from="' . $restrict_ip . '"';
-
-        return join(",", $restrictions);
-    }
-
-    public static function getOutgoingIpFor($host)
-    {
-        $ip = gethostbyname($host);
-        $interface = null;
-
-        if ($p = Process::open(["route", "-n", "get", $ip])) {
-            while (($line = $p->get(10)) !== false)
-                if (preg_match('/\s*interface:\s*([^\s]+).*$/', $line, $matches)) {
-                    $interface = $matches[1];
-                }
-        }
-
-        if ($interface && $p = Process::open(["ifconfig", $interface, "inet"])) {
-            while (($line = $p->get(10)) !== false)
-                if (preg_match('/\s*inet\s+([^\s]+)\s+netmask.*/', $line, $matches)) {
-                    return $matches[1];
-                }
-        }
-
-        return false;
-    }
-}
-
-/**
- * Utility class to execute shell processes and handle their IO.
- */
-class Process
-{
-    private $handle;
-    private $inputs;
-    private $outputs;
-
-    public $exitCode = null;
-
-    // Starts the specified process and returns an object to manage it.
-    public static function open(array $cmd, $cwd = null, $env = null): ?Process
-    {
-        global $__process_terminate_hook, $__open_processes;
-        if (!is_array($__open_processes))
-            $__open_processes = [];
-
-        // Ensure we never leave zombies around: Hooking into script shutdown and kill processes that are still running.
-        if (!$__process_terminate_hook) {
-            register_shutdown_function($__process_terminate_hook = function () {
-                global $__open_processes;
-                foreach ($__open_processes as $handle) {
-                    if (is_resource($handle)) {
-                        logger()->error("Terminating process: " . json_encode(proc_get_status($handle)));
-                        @proc_terminate($handle);
-                    }
-                }
-            });
-        }
-
-        $p = new Process($cmd, $cwd, $env);
-        return $p->isRunning() ? $p : null;
-    }
-
-    public function __construct($cmd, $cwd = null, $env = null)
-    {
-        $cmd = join(" ", array_map(function ($v) {
-            return escapeshellarg($v);
-        }, $cmd));
-
-        $spec = [0 => ["pipe", "r"], 1 => ["pipe", "w"], 2 => ["pipe", "w"]];
-        $this->handle = proc_open($cmd, $spec, $pipes, $cwd, $env);
-
-        if (is_resource($this->handle)) {
-            $this->outputs = $pipes;
-            $this->inputs = [array_shift($this->outputs)];
-
-            foreach ($this->outputs as $stream)
-                stream_set_blocking($stream, false);
-
-            global $__open_processes;
-            $__open_processes[] = $this->handle;
-        } else {
-            logger()->error("Failed opening '$cmd' in '$cwd'");
-        }
-    }
-
-    public function __destruct()
-    {
-        $this->close();
-        if ($this->isRunning())
-            $this->close(true);
-    }
-
-    public function get($timeout = 5, $max_length = 8192, $ending = PHP_EOL)
-    {
-        $readables = array_filter($this->outputs, function ($stream) {
-            return is_resource($stream) && !feof($stream);
-        });
-
-        $micros = intval(($timeout - floor($timeout)) * 1000000);
-        $can_read = !empty($readables) && stream_select($readables, $w = [], $e = [], $timeout, $micros);
-        $stream = array_reduce(($can_read ? $readables : []), function ($a, $b) {
-            return is_resource($a) && !feof($a) ? $a : $b;
-        }, null);
-
-        return is_resource($stream)
-            ? stream_get_line($stream, $max_length, $ending)
-            : false;
-    }
-
-    public function put($data, $append = PHP_EOL)
-    {
-        if ($this->isRunning() && is_resource($stdin = $this->inputs[0]) && !feof($stdin)) {
-            fwrite($stdin, $data);
-            if ($append)
-                fwrite($stdin, $append);
-        }
-    }
-
-    public function closeInput()
-    {
-        if (!feof($stdin = $this->inputs[0])) fclose($stdin);
-    }
-
-    public function close($force = false)
-    {
-        global $__open_processes;
-
-        // Read up-to 10k remaining lines from STDOUT/ERR to release locks before closing.
-        for ($i = 0; ($line = $this->get(0)) && $i < 10000; $i++) {
-            logger()->error("WARN: process: $line");
-        };
-
-        if ($this->isRunning())
-            $this->exitCode = ($force ? proc_terminate($this->handle) : proc_close($this->handle));
-
-        if (!$this->isRunning() && in_array($this->handle, $__open_processes))
-            $__open_processes = array_diff($__open_processes, [$this->handle]);
-
-        return $this->exitCode;
-    }
-
-    public function isRunning()
-    {
-        $status = is_resource($this->handle) ? proc_get_status($this->handle) : false;
-        if (is_array($status)) {
-            if (!$this->exitCode && $this->exitCode !== 0 && !$status["running"])
-                $this->exitCode = $status["exitcode"];
-            return $status["running"];
-        }
-        return false;
-    }
-}
-
-
-// Calling main if we have been called via CLI
-if (isset($GLOBALS["argc"])) main();
+// Running the main script
+main();
