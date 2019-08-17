@@ -179,7 +179,7 @@ function commandTestConnection(array &$options): int
         $result["actions"][] = "connected";
         $result["remote"] = array_merge($sftp->connected(), ["path" => $sftp->pwd()]);
     } else {
-        $result = array_merge($result, $error);
+        $result = array_merge($result, ($error ?: []));
     }
 
     // Testing file upload

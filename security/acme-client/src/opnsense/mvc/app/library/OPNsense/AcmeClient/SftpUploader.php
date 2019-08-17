@@ -140,9 +140,6 @@ class SftpUploader
      */
     public function upload(): int
     {
-        $connection = Utils::requireThat($this->sftp->connected(), "The sftp client must be connected");
-        $username = $connection["user"];
-
         // Correct state when we are restarted after an error
         if ($this->current_file) {
             // Restore the remote path to where we originally have been.
@@ -182,6 +179,12 @@ class SftpUploader
             $this->sftp->clearError();
 
             try {
+                $connection = $this->sftp->connected();
+                if (!$connection) {
+                    Utils::log()->error("The sftp client is not connected, upload stopped.");
+                    return self::UPLOAD_ERROR;
+                }
+
                 // Changing remote directory if required.
                 if (($target_dir = dirname($file["target"])) !== $remote_path) {
 
@@ -229,6 +232,7 @@ class SftpUploader
                 }
 
                 // Preparing upload
+                $username = $connection["user"];
                 $remote_filename = basename((empty($file["target"]) ? $local_file : $file["target"]));
                 $remote_file = $remote_files[$remote_filename] ?: ["type" => "-", "owner" => $username];
                 $remote_is_file = $remote_file["type"] === "-";

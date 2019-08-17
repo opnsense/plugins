@@ -62,7 +62,7 @@ class SftpClient
 
     public function connected(): ?array
     {
-        return $this->process
+        return $this->process && $this->process->isRunning()
             ? $this->connection_info
             : null;
     }
@@ -109,7 +109,7 @@ class SftpClient
         // Creating the sftp process
         if ($this->process = Process::open($cmd)) {
             $this->processAvailableInput(self::CONNECT_REPLY_TIMEOUT, 1, null, 0.75);
-            if ($error = $this->lastError()) {
+            if (($error = $this->lastError()) || !$this->process->isRunning()) {
                 Utils::log()->error("Failed connecting to '$host' (user: '$username')", $error);
                 return false;
             }
