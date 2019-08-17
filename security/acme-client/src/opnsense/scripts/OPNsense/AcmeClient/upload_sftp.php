@@ -110,8 +110,8 @@ const EXAMPLES = <<<TXT
 TXT;
 
 // Permissions
-const DEFAULT_CERT_MODE = 0440;
-const DEFAULT_KEY_MODE = 0400;
+const DEFAULT_CERT_MODE = '0440';
+const DEFAULT_KEY_MODE = '0400';
 
 // Names
 const UPLOAD_NAME_TEMPLATES = [
