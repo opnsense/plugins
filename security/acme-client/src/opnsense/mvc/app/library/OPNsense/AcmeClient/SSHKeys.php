@@ -60,7 +60,7 @@ class SSHKeys
         "ecdsa" => 521,
     ];
 
-    const DEFAULT_PORT = 22;
+    public const DEFAULT_PORT = 22;
 
     private $config_path;
     private $known_hosts_file;
@@ -134,6 +134,8 @@ class SSHKeys
                 : $found;
         }, false);
 
+        $known_by_host_matches_port = $known_by_host && ($port == self::DEFAULT_PORT || $known_by_host["host"] !== $known_by_host["host_query"]);
+
         // Find known_hosts item with same public host-key
         $known_by_key = array_reduce($known_keys, function ($found, $key) use ($host_key) {
             return (!$found && $host_key && $host_key === $key["key_info"])
@@ -144,13 +146,18 @@ class SSHKeys
 
         // Updating $host and $host_key from known_hosts and check if we need to update known_hosts.
         if ($host_key === false && $known_by_host) {
-            Utils::log()->info("No host key specified, using existing known_hosts entry for '$host'");
-            $host_key = $known_by_host["key_info"];
+            if ($known_by_host_matches_port) {
+                Utils::log()->info("No host key specified, using existing known_hosts entry for '$host'");
+                $host_key = $known_by_host["key_info"];
+            } else {
+                Utils::log()->info("No host key specified and existing entry for '$host' cannot be used as isn't matching port $port.");
+            }
         }
 
         $is_key_known = false;
         if ($known_by_host && $host_key && $host_key === $known_by_host["key_info"]) {
             $is_key_known = true;
+
         } else if ($known_by_key) {
             if (strcasecmp(trim($host), trim($known_by_key["host"])) != 0) {
                 Utils::log()->info("Host key is in known_hosts but hostname differs. Changing '$host' to '{$known_by_key["host"]}'.");
@@ -183,9 +190,9 @@ class SSHKeys
             });
 
             if (!empty($matching_remote_host_keys)) {
-                if ($known_by_host) {
-                    Utils::log()->info("Removing known_hosts entry with differing key for '{$known_by_host["host"]}' as it is in the way.");
-                    $this->removeKnownHost($known_by_host["host"]);
+                if ($known_by_host && $known_by_host_matches_port) {
+                    Utils::log()->info("Removing known_hosts entry with differing key for '{$known_by_host["host_query"]}' as it is in the way.");
+                    $this->removeKnownHost($known_by_host["host_query"]);
                 }
 
                 foreach ($matching_remote_host_keys as $key) {
@@ -251,10 +258,12 @@ class SSHKeys
             return !empty(trim($value)) && array_search($value, $search_list) == $index;
         }, ARRAY_FILTER_USE_BOTH);
 
-        // Add port specific items when a port is specified (reason: ssh-keyscan may create such entries).
+        // Insert port specific items at the beginning when a port was specified.
+        // Reason: Multiple SSH servers may be used on the same host but different ports.
+        //         This ensures specific keys (with port) are selected first.
         if ($port > 0) {
-            foreach (array_values($search_list) as $item) {
-                $search_list[] = "[{$item}]:{$port}";
+            foreach (array_reverse($search_list) as $item) {
+                array_unshift($search_list, "[{$item}]:{$port}");
             }
         }
 
@@ -311,12 +320,12 @@ class SSHKeys
                     ? ""
                     : PHP_EOL . "ssh-keyscan: " . join(PHP_EOL . "ssh-keyscan: ", $lines);
 
-                Utils::log()->error("Failed querying public keys ($key_type) for [$names]. Exit code: {$p->exitCode} (error-marker: $marker) $output");
+                Utils::log()->error("Failed querying host keys ($key_type) for [$names] port $port. Exit code: {$p->exitCode} (error-marker: $marker) $output");
             }
         }
 
         if (empty($keys)) {
-            Utils::log()->info("Couldn't fetch public host key ($key_type) from $host");
+            Utils::log()->info("Couldn't fetch public host key ($key_type) from {$host}:{$port}");
 
             if (!is_array($error) || empty($error))
                 $error = ["connection_refused" => true];
@@ -348,11 +357,15 @@ class SSHKeys
 
                 if ($p->close() == 0) {
                     // Removing port from name or ip before returning it.
-                    $applied_host = preg_match('/^\[([^\]]+?)\]:\d+/', $name_or_ip, $matches)
+                    $hostname = preg_match('/^\[([^\]]+?)\]:\d+/', $name_or_ip, $matches)
                         ? $matches[1]
                         : $name_or_ip;
 
-                    $keys[] = ["host" => $applied_host, "host_key" => $lines[0]];
+                    $keys[] = [
+                        "host" => $hostname,
+                        "host_key" => $lines[0],
+                        "host_query" => $name_or_ip,
+                    ];
 
                 } else if ($p->exitCode != 1 /* 1 == NOT_FOUND */) {
                     $output = empty($lines)
