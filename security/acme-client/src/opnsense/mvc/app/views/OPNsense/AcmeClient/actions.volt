@@ -133,11 +133,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
             var errors = [
                 {cond: ["connect_failed", "invalid_parameters"], msg: "{{ lang._('Host or username not specified.') }}"},
-                {cond: ["connect_failed", "host_not_trusted"], msg: "{{ lang._('Host cannot be trusted.') }}"},
                 {cond: ["connect_failed", "host_not_resolved"], msg: "{{ lang._('Failed to resolve hostname.') }}"},
                 {cond: ["connect_failed", "connection_refused"], msg: "{{ lang._('Connection to host refused.') }}"},
                 {cond: ["connect_failed", "network_timeout"], msg: "{{ lang._('Connection timed out.') }}"},
                 {cond: ["connect_failed", "network_unreachable"], msg: "{{ lang._('Host not reachable.') }}"},
+                {cond: ["connect_failed", "host_not_trusted"], msg: "{{ lang._('Host cannot be trusted.') }}"},
                 {cond: ["connect_failed", "permission_denied"], msg: "{{ lang._('Host does not permit a connection for the specified user & identity.') }}"},
                 {cond: ["connect_failed"], msg: "{{ lang._('Failed to connect to host.') }}"},
                 {cond: ["change_home_dir_failed"], msg: "{{ lang._('Failed to change the remote path.') }}"},
@@ -163,7 +163,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 statusClass = "alert-success";
                                 message = "{{ lang._('Connection and upload test succeeded.') }}"
                             } else {
-                                detail = JSON.stringify(data, null, '  ');
+                                detail = JSON.stringify(data, null, '  ').replace(/\\"/g, "'");
 
                                 for (var i = 0; i < errors.length; i++) {
                                     var error = errors[i],

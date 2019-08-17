@@ -91,7 +91,7 @@ class ActionsController extends ApiMutableModelControllerBase
     {
         if ($response = $this->callBackend(
             ["test-sftp-connection"],
-            ["sftp_host", "sftp_host_key", "sftp_port", "sftp_user", "sftp_identity_type", "sftp_remote_path"])) {
+            ["sftp_host", "sftp_host_key", "sftp_port", "sftp_user", "sftp_identity_type", "sftp_remote_path", "sftp_chmod", "sftp_chgrp"])) {
 
             return $response;
         }
