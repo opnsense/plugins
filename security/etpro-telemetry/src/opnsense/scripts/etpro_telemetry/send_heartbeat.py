@@ -67,7 +67,7 @@ if cnf.token is not None:
             time.sleep(random.randint(0, 1800))
         params['json'] = telemetry.system.Stats().get()
         r = requests.post(args.endpoint, **params)
-        if r.status_code == 200:
+        if r.status_code == 201:
             # expected result, set exit code
             exit_code = 0
         else:
