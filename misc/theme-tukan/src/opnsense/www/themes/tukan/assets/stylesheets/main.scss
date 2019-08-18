@@ -9807,3 +9807,17 @@ input[type="checkbox"].checkbox-switch {
   }
   background-color: #FF7E25 !important;
 }
+
+.modal-side {
+  > .p-15 {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #4a4a4a;
+    min-height: 16.42857px;
+    background-color: #427795;
+    color: #FFF;
+  }
+  margin: 62px 10px 10px 10px;
+}
