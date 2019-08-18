@@ -2641,21 +2641,21 @@ th {
 }
 
 .table-bordered {
-  border: 1px solid #eee;
+  border: 1px solid #dbdbdb;
   > {
     thead > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #dbdbdb;
       }
     }
     tbody > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #dbdbdb;
       }
     }
     tfoot > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #dbdbdb;
       }
     }
     thead > tr > {
@@ -9795,4 +9795,15 @@ input[type="checkbox"].checkbox-switch {
   &:checked + i::before {
     color: #4FB654 !important;
   }
+}
+
+.modal-header > span {
+  color: #000;
+}
+
+.bootstrap-datetimepicker-widget {
+  table td span:hover {
+    background: none !important;
+  }
+  background-color: #FF7E25 !important;
 }

@@ -2064,14 +2064,14 @@ th {
   padding: 5px; }
 
 .table-bordered {
-  border: 1px solid #eee; }
+  border: 1px solid #dbdbdb; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td,
   .table-bordered > tbody > tr > th,
   .table-bordered > tbody > tr > td,
   .table-bordered > tfoot > tr > th,
   .table-bordered > tfoot > tr > td {
-    border: 1px solid #eee; }
+    border: 1px solid #dbdbdb; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td {
     border-bottom-width: 2px; }
@@ -6453,4 +6453,13 @@ input[type="checkbox"].checkbox-switch + i::before {
 }
 input[type="checkbox"].checkbox-switch:checked + i::before {
   color: #4FB654 !important;
+}
+.modal-header > span {
+  color: #000;
+}
+.bootstrap-datetimepicker-widget table td span:hover {
+    background: none !important;
+}
+.bootstrap-datetimepicker-widget {
+  background-color:#FF7E25 !important;
 }
