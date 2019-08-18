@@ -6491,8 +6491,8 @@ input[type="checkbox"].checkbox-switch:checked + i::before {
     background: #000 !important;
 }
 .bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
-    background-color: #000 !important;
-    color: #c35d12 !important;
+    background-color: #c35d12 !important;
+    color: #ffffff !important;
 }
 .bootstrap-datetimepicker-widget table td span:hover {
     background: none !important;
