@@ -2046,7 +2046,10 @@ th {
   .table > thead:first-child > tr:first-child > td {
     border-top: 0;
     font-family: 'SourceSansProSemibold';
-    font-weight: normal;}
+    font-weight: normal;
+    color: #FFF;
+    background-color: #2a2a2a;
+  }
   .table > tbody + tbody {
     border-top: 2px solid #eee; }
   .table .table {
@@ -2061,14 +2064,14 @@ th {
   padding: 5px; }
 
 .table-bordered {
-  border: 1px solid #eee; }
+  border: 1px solid #5a5a5a; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td,
   .table-bordered > tbody > tr > th,
   .table-bordered > tbody > tr > td,
   .table-bordered > tfoot > tr > th,
   .table-bordered > tfoot > tr > td {
-    border: 1px solid #eee; }
+    border: 1px solid #5a5a5a; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td {
     border-bottom-width: 2px; }
@@ -4071,7 +4074,7 @@ tbody.collapse.in {
   .breadcrumb > li {
     display: inline-block; }
     .breadcrumb > li + li:before {
-      content: "/ ";
+      content: "/ ";
       padding: 0 5px;
       color: #ccc; }
   .breadcrumb > .active {
@@ -6466,4 +6469,31 @@ input[type="checkbox"].checkbox-switch + i::before {
 }
 input[type="checkbox"].checkbox-switch:checked + i::before {
   color: #46A50C !important;
+}
+.modal-header > span {
+  color: #000;
+}
+.m-r-5 {
+  color: #000;
+}
+.sessions-body table > thead > tr > th, .sessions-body table > tbody > tr > td {
+  border-color: #5A5A5A !important;
+}
+.bootstrap-datetimepicker-widget table th.disabled, .bootstrap-datetimepicker-widget table th.disabled:hover {
+    background: none;
+    color: #000 !important;
+    cursor: not-allowed;
+}
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+    background: #000 !important;
+}
+.bootstrap-datetimepicker-widget table td.day:hover, .bootstrap-datetimepicker-widget table td.hour:hover, .bootstrap-datetimepicker-widget table td.minute:hover, .bootstrap-datetimepicker-widget table td.second:hover {
+    background: #000 !important;
+}
+.bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
+    background-color: #000 !important;
+    color: #c35d12 !important;
+}
+.bootstrap-datetimepicker-widget table td span:hover {
+    background: none !important;
 }

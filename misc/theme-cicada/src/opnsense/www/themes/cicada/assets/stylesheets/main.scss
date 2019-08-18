@@ -2591,6 +2591,8 @@ th {
         border-top: 0;
         font-family: 'SourceSansProSemibold';
         font-weight: normal;
+        color: #FFF;
+        background-color: #2a2a2a;
       }
     }
     colgroup + thead > tr:first-child > {
@@ -2598,6 +2600,8 @@ th {
         border-top: 0;
         font-family: 'SourceSansProSemibold';
         font-weight: normal;
+        color: #FFF;
+        background-color: #2a2a2a;
       }
     }
     thead:first-child > tr:first-child > {
@@ -2605,6 +2609,8 @@ th {
         border-top: 0;
         font-family: 'SourceSansProSemibold';
         font-weight: normal;
+        color: #FFF;
+        background-color: #2a2a2a;
       }
     }
     tbody + tbody {
@@ -2635,21 +2641,21 @@ th {
 }
 
 .table-bordered {
-  border: 1px solid #eee;
+  border: 1px solid #5a5a5a;
   > {
     thead > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #5a5a5a;
       }
     }
     tbody > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #5a5a5a;
       }
     }
     tfoot > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #5a5a5a;
       }
     }
     thead > tr > {
@@ -9774,5 +9780,47 @@ input[type="checkbox"].checkbox-switch {
   }
   &:checked + i::before {
     color: #46A50C !important;
+  }
+}
+
+.modal-header > span, .m-r-5 {
+  color: #000;
+}
+
+.sessions-body table > {
+  thead > tr > th, tbody > tr > td {
+    border-color: #5A5A5A !important;
+  }
+}
+
+.bootstrap-datetimepicker-widget table {
+  th.disabled {
+    background: none;
+    color: #000 !important;
+    cursor: not-allowed;
+    &:hover {
+      background: none;
+      color: #000 !important;
+      cursor: not-allowed;
+    }
+  }
+  thead tr:first-child th:hover {
+    background: #000 !important;
+  }
+  td {
+    &.day:hover, &.hour:hover, &.minute:hover, &.second:hover {
+      background: #000 !important;
+    }
+    &.active {
+      background-color: #000 !important;
+      color: #c35d12 !important;
+      &:hover {
+        background-color: #000 !important;
+        color: #c35d12 !important;
+      }
+    }
+    span:hover {
+      background: none !important;
+    }
   }
 }
