@@ -5044,7 +5044,7 @@ button.close {
 .modal-content {
   position: relative;
   background-color: #383838;
-  border: 1px solid #565656cc;
+  border: 1px solid #515151;
   border-radius: 3px;
   -webkit-box-shadow: 0 5px 15px rgb(30, 30, 30);
   box-shadow: 0 5px 15px rgb(5, 5, 5);
@@ -6445,4 +6445,25 @@ h3:hover, h3:focus {
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out {
   background-color: #292929;
   border: 1px solid #515151;
+}
+
+  /*additional extensions for sensei*/
+
+.preloader-wrapper {
+  background-color: #202020 !important;
+  opacity: 0.98 !important;
+}
+.no-data {
+  color: #FFF !important;
+  background-color: #202020 !important;
+}
+.has-success .form-control:focus, .has-error .form-control:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+input[type="checkbox"].checkbox-switch + i::before {
+  color: #DB4829 !important;
+}
+input[type="checkbox"].checkbox-switch:checked + i::before {
+  color: #46A50C !important;
 }
