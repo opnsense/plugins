@@ -6386,7 +6386,14 @@ textarea#update_status, textarea#update_status:hover {
   content: "\f021";
 }
 
-.fa-question-circle::before {
+::before, ::after {
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+}
+.fa-info-circle::before,.fa-question-circle::before {
   content: "\f059";
   cursor: pointer;
   color: #ec6d12;
@@ -6496,4 +6503,17 @@ input[type="checkbox"].checkbox-switch:checked + i::before {
 }
 .bootstrap-datetimepicker-widget table td span:hover {
     background: none !important;
+}
+.modal-side > .p-15 {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid #4a4a4a;
+  min-height: 16.42857px;
+  background-color: #c35d12;
+}
+.modal-side {
+  margin: 62px 10px 10px 10px;
+  background-color: #3e3e3e !important;
 }
