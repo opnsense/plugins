@@ -6486,7 +6486,7 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
   color: #000;
 }
 
-.m-r-5 {
+.m-r-5, .m-r-10 {
   color: #000;
 }
 
