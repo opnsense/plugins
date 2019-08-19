@@ -343,6 +343,12 @@
                     <Required>N</Required>
                     <ValidationMessage>Please specify a value between 1 and 3600.</ValidationMessage>
                 </maxAge>
+                <maxObjectSize type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>2146435072</MaximumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>Please specify a value between 1 and 2146435072.</ValidationMessage>
+                </maxObjectSize>
             </cache>
         </general>
         <frontends>
