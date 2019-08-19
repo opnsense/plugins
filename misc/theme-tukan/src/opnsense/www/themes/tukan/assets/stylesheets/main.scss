@@ -5116,6 +5116,7 @@ tbody.collapse.in {
   font-size: 14px;
   text-align: left;
   background-color: #315a71;
+  color: #fff;
   border-left: 1px solid #1b4257;
   border-right: 1px solid #1b4257;
   border-bottom: 1px solid #1b4257;
@@ -5145,7 +5146,7 @@ tbody.collapse.in {
       clear: both;
       font-weight: normal;
       line-height: 1.428571429;
-      color: #FFFFFF;
+      color: #fff;
       white-space: nowrap;
       outline: 0;
       &:hover, &:focus {
@@ -9788,11 +9789,19 @@ h3 {
   box-shadow: none !important;
 }
 
-input[type="checkbox"].checkbox-switch {
-  + i::before {
+input[type="checkbox"] {
+  &.checkbox-switch + i::before, &.checkbox-icon + i::before {
     color: #CB4326 !important;
   }
-  &:checked + i::before {
+  &.checkbox-switch {
+    + i::before {
+      color: #CB4326 !important;
+    }
+    &:checked + i::before {
+      color: #4FB654 !important;
+    }
+  }
+  &.checkbox-icon:checked + i::before, &.checkbox-icon-2:checked + i::before {
     color: #4FB654 !important;
   }
 }
@@ -9821,4 +9830,8 @@ input[type="checkbox"].checkbox-switch {
   }
   margin: 62px 10px 10px 10px;
   background-color: #f0f0f0 !important;
+}
+
+.panel-report-tools:hover {
+  color: #fff !important;
 }

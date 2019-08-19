@@ -3163,6 +3163,7 @@ tbody.collapse.in {
   font-size: 14px;
   text-align: left;
   background-color: #315a71;
+  color: #fff;
   border-left: 1px solid #1b4257;
   border-right: 1px solid #1b4257;
   border-bottom: 1px solid #1b4257;
@@ -3191,7 +3192,7 @@ tbody.collapse.in {
     clear: both;
     font-weight: normal;
     line-height: 1.428571429;
-    color: #FFFFFF;
+    color: #fff;
     white-space: nowrap;
 	outline:0;}
 
@@ -6441,28 +6442,36 @@ h3:hover, h3:focus {
   background-color: #e3e3e3 !important;
   opacity: 0.98 !important;
 }
+
 .no-data {
   color: #000 !important;
 }
+
 .has-success .form-control:focus, .has-error .form-control:focus {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
-input[type="checkbox"].checkbox-switch + i::before {
+
+input[type="checkbox"].checkbox-switch + i::before, input[type="checkbox"].checkbox-icon + i::before, input[type="checkbox"].checkbox-switch + i::before {
   color: #CB4326 !important;
 }
-input[type="checkbox"].checkbox-switch:checked + i::before {
+
+input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox"].checkbox-icon:checked + i::before, input[type="checkbox"].checkbox-icon-2:checked + i::before {
   color: #4FB654 !important;
 }
+
 .modal-header > span {
   color: #000;
 }
+
 .bootstrap-datetimepicker-widget table td span:hover {
     background: none !important;
 }
+
 .bootstrap-datetimepicker-widget {
   background-color:#FF7E25 !important;
 }
+
 .modal-side > .p-15 {
   padding-left: 10px;
   padding-right: 10px;
@@ -6473,7 +6482,12 @@ input[type="checkbox"].checkbox-switch:checked + i::before {
   background-color: #427795;
   color: #FFF;
 }
+
 .modal-side {
   margin: 62px 10px 10px 10px;
   background-color: #f0f0f0 !important;
+}
+
+.panel-report-tools:hover {
+  color: #fff !important;
 }
