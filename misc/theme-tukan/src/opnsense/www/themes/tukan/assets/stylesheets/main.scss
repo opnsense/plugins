@@ -4721,12 +4721,12 @@ fieldset[disabled] .btn-primary {
 
 .btn-success {
   color: #fff;
-  background-color: #9BD275;
+  background-color: #85ce53;
   border-color: #323232;
   &:hover, &:focus, &:active, &.active {
     color: #fff;
     background-color: #7fc54f;
-    border-color: #6db53b;
+    border-color: #323232;
     outline: 0;
   }
 }
@@ -4734,7 +4734,7 @@ fieldset[disabled] .btn-primary {
 .open > .btn-success.dropdown-toggle {
   color: #fff;
   background-color: #7fc54f;
-  border-color: #6db53b;
+  border-color: #323232;
   outline: 0;
 }
 

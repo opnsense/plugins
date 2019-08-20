@@ -4731,16 +4731,16 @@ fieldset[disabled] .btn-primary {
   border-color: #323232;
   &:hover, &:focus, &:active, &.active {
     color: #fff;
-    background-color: #7fc54f;
-    border-color: #6db53b;
+    background-color: #3D910A;
+    border-color: #323232;
     outline: 0;
   }
 }
 
 .open > .btn-success.dropdown-toggle {
   color: #fff;
-  background-color: #7fc54f;
-  border-color: #6db53b;
+  background-color: #3D910A;
+  border-color: #323232;
   outline: 0;
 }
 
@@ -9853,4 +9853,9 @@ input[type="checkbox"] {
 
 .panel-report-tools:hover {
   color: #fff !important;
+}
+
+.alert-output.alert-primary.query-output.m-0 {
+  background-color: #2a2a2a !important;
+  color: #FFF !important;
 }
