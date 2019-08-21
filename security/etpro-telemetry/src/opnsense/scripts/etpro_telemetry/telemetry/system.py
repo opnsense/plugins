@@ -107,8 +107,6 @@ class Stats:
                         return "IPS"
         return "IDS"
 
-
-
     @staticmethod
     def log_stats():
         # tail stats.log, return statistcs of interest
