@@ -33,6 +33,7 @@ import syslog
 import time
 import random
 import urllib3
+import json
 import telemetry
 import telemetry.system
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -53,6 +54,10 @@ parser.add_argument('-D', '--direct',
                     help='do not sleep before send (disable traffic spread)',
                     action="store_true",
                     default=False)
+parser.add_argument('-t', '--test',
+                    help='test mode, output request/response to stdout',
+                    action="store_true",
+                    default=False)
 args = parser.parse_args()
 
 exit_code = -1
@@ -63,10 +68,15 @@ if cnf.token is not None:
         params['verify'] = False
     try:
         # spread traffic to remote host, usual cron interval is 30 minutes
-        if not args.direct:
+        if not args.direct and not args.test:
             time.sleep(random.randint(0, 1800))
         params['json'] = telemetry.system.Stats().get()
+        if args.test:
+            print("push to \t%s " % args.endpoint)
+            print("payload : \t%s" % json.dumps(params['json']))
         r = requests.post(args.endpoint, **params)
+        if args.test:
+            print("response %d : \t%s " % (r.status_code, r.text))
         if r.status_code == 201:
             # expected result, set exit code
             exit_code = 0

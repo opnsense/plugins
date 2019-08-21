@@ -69,14 +69,6 @@ class Stats:
         return tmp
 
     @staticmethod
-    def system_uptime():
-        tmp = subprocess.run('/usr/bin/uptime', capture_output=True, text=True).stdout.strip()
-        tmp = tmp.split(' up ')[-1].split(',')
-        if len(tmp) == 6:
-            return '%s %s' % (tmp[0].strip(), tmp[1].strip())
-        return None
-
-    @staticmethod
     def suricata_status():
         sp = subprocess.run(['/usr/local/etc/rc.d/suricata', 'status'], capture_output=True, text=True)
         return 'Running' if sp.returncode == 0 else 'Stopped'
@@ -131,11 +123,16 @@ class Stats:
                     parts = [x.strip() for x in line.split('|')]
                     if parts[0] in stats_of_interest:
                         result[parts[0]] = int(parts[2]) if parts[2].isdigit() else parts[2]
+            # add empty values for stats_of_interest not found
+            for item in stats_of_interest:
+                if item not in result:
+                    result[item] = None
+
         return result
 
     def get(self):
         result = dict()
-        for item in ['software_version', 'suricata_version', 'suricata_status', 'system_uptime', 'system_time',
+        for item in ['software_version', 'suricata_version', 'suricata_status', 'system_time',
                      'ruleset_version', 'total_enabled_rules', 'total_enabled_telemetry_rules' ,'mode', 'log_stats']:
             try:
                 value = getattr(self, item)()
