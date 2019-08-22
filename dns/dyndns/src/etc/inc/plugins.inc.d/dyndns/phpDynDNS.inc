@@ -473,8 +473,9 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, "{$server}{$port}?host=" .$this->_dnsHost);
                 break;
             case 'dyns':
-                $server = "https://www.dyns.cx/postscript011.php";
-                $port = "";
+                /* XXX HTTPS is currently broken for them */
+                $server = 'http://www.dyns.cx/postscript011.php';
+                $port = '';
                 if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
                 }
