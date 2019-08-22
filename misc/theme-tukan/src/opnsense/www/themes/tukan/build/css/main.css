@@ -2064,14 +2064,14 @@ th {
   padding: 5px; }
 
 .table-bordered {
-  border: 1px solid #eee; }
+  border: 1px solid #dbdbdb; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td,
   .table-bordered > tbody > tr > th,
   .table-bordered > tbody > tr > td,
   .table-bordered > tfoot > tr > th,
   .table-bordered > tfoot > tr > td {
-    border: 1px solid #eee; }
+    border: 1px solid #dbdbdb; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td {
     border-bottom-width: 2px; }
@@ -2980,12 +2980,12 @@ select[multiple].input-lg,
 
 .btn-success {
   color: #fff;
-  background-color: #9BD275;
+  background-color: #85ce53;
   border-color: #323232; }
   .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
     color: #fff;
     background-color: #7fc54f;
-    border-color: #6db53b;
+    border-color: #323232;
 	outline:0; }
   .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
     background-image: none; }
@@ -3163,6 +3163,7 @@ tbody.collapse.in {
   font-size: 14px;
   text-align: left;
   background-color: #315a71;
+  color: #fff;
   border-left: 1px solid #1b4257;
   border-right: 1px solid #1b4257;
   border-bottom: 1px solid #1b4257;
@@ -3191,7 +3192,7 @@ tbody.collapse.in {
     clear: both;
     font-weight: normal;
     line-height: 1.428571429;
-    color: #FFFFFF;
+    color: #fff;
     white-space: nowrap;
 	outline:0;}
 
@@ -5014,7 +5015,7 @@ button.close {
 .modal-content {
   position: relative;
   background-color: #383838;
-  border: 1px solid #565656;
+  border: none;
   border-radius: 3px;
   -webkit-box-shadow: 0 5px 15px rgb(30, 30, 30);
   box-shadow: 0 5px 15px rgb(5, 5, 5);
@@ -6433,4 +6434,60 @@ h3:hover, h3:focus {
 #chart,#chart_intf_in,#chart_intf_out,#chart_top_ports,#chart_top_sources,#traffic_graph_widget_chart_in,#traffic_graph_widget_chart_out {
   background-color: #FFF;
   border: 1px solid #b0b0b0;
+}
+
+  /*additional extensions for sensei*/
+
+.preloader-wrapper {
+  background-color: #e3e3e3 !important;
+  opacity: 0.98 !important;
+}
+
+.no-data {
+  color: #000 !important;
+}
+
+.has-success .form-control:focus, .has-error .form-control:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+input[type="checkbox"].checkbox-switch + i::before, input[type="checkbox"].checkbox-icon + i::before, input[type="checkbox"].checkbox-switch + i::before {
+  color: #CB4326 !important;
+}
+
+input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox"].checkbox-icon:checked + i::before, input[type="checkbox"].checkbox-icon-2:checked + i::before {
+  color: #4FB654 !important;
+}
+
+.modal-header > span {
+  color: #000;
+}
+
+.bootstrap-datetimepicker-widget table td span:hover {
+    background: none !important;
+}
+
+.bootstrap-datetimepicker-widget {
+  background-color:#FF7E25 !important;
+}
+
+.modal-side > .p-15 {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid #4a4a4a;
+  min-height: 16.42857px;
+  background-color: #427795;
+  color: #FFF;
+}
+
+.modal-side {
+  margin: 62px 10px 10px 10px;
+  background-color: #f0f0f0 !important;
+}
+
+.panel-report-tools:hover {
+  color: #fff !important;
 }
