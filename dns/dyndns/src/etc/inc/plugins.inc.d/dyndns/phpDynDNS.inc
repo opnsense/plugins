@@ -68,7 +68,6 @@
  *  Loopia              - Last Tested: NEVER
  *  StaticCling         - Last Tested: 27 April 2006
  *  DNSexit             - Last Tested: 20 July 2008
- *  OpenDNS             - Last Tested: 4 August 2008
  *  Namecheap           - Last Tested: 31 August 2010
  *  HE.net              - Last Tested: 7 July 2013
  *  HE.net IPv6         - Last Tested: 7 July 2013
@@ -98,7 +97,7 @@
  * @version    0.8
  * @updated    13 October 05 at 21:02:42 GMT
  *
- * DNSexit/OpenDNS support and multiwan extension for pfSense by Ermal Luçi
+ * DNSexit support and multiwan extension for pfSense by Ermal Luçi
  * Custom DNS support by Matt Corallo
  */
 
@@ -1183,7 +1182,6 @@ class updatedns
             case 'he-net-tunnelbroker':
             case 'he-net-v6':
             case 'loopia':
-            case 'opendns':
             case 'oray':
             case 'ovh-dynhost':
             case 'selfhost':
