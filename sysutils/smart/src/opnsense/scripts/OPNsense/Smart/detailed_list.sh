@@ -28,10 +28,6 @@
 RESULT=
 
 for DEV in $(sysctl -n kern.disks); do
-    if ! /usr/sbin/diskinfo ${DEV} >/dev/null 2>&1; then
-        continue;
-    fi
-
     STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
     IDENT=$(/usr/sbin/diskinfo -s ${DEV})
 
