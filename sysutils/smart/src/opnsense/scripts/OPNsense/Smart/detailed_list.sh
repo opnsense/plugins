@@ -27,9 +27,15 @@
 
 RESULT=
 
-for DEV in $(sysctl -n kern.disks | sed s:nvd:nvme:g); do
-    STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
+for DEV in $(sysctl -n kern.disks); do
     IDENT=$(/usr/sbin/diskinfo -s ${DEV})
+
+    if [ "${DEV#nvd}" != "${DEV}" ]; then
+        # the disk formerly know as nvdX
+        DEV="nvme${DEV#nvd}"
+    fi
+
+    STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
 
     if [ -n "${RESULT}" ]; then
         RESULT="${RESULT},";
