@@ -27,7 +27,7 @@
 
 RESULT=
 
-for DEV in $(sysctl -n kern.disks); do
+for DEV in $(sysctl -n kern.disks | sed s:nvd:nvme:g); do
     STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
     IDENT=$(/usr/sbin/diskinfo -s ${DEV})
 
