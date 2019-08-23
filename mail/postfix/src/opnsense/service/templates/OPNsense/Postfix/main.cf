@@ -34,6 +34,7 @@ transport_maps = hash:/usr/local/etc/postfix/transport
 virtual_alias_maps = hash:/usr/local/etc/postfix/virtual
 sender_bcc_maps = hash:/usr/local/etc/postfix/senderbcc
 recipient_bcc_maps = hash:/usr/local/etc/postfix/recipientbcc
+sender_canonical_maps = regexp:/usr/local/etc/postfix/sendercanonical
 ##########################
 # END SYSTEM DEFAULTS
 ##########################

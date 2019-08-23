@@ -17,7 +17,6 @@
  *    - Loopia (loopia.se)
  *    - StaticCling (staticcling.org)
  *    - DNSexit (dnsexit.com)
- *    - OpenDNS (opendns.com)
  *    - Namecheap (namecheap.com)
  *    - HE.net (dns.he.net)
  *    - HE.net IPv6 (dns.he.net)
@@ -69,7 +68,6 @@
  *  Loopia              - Last Tested: NEVER
  *  StaticCling         - Last Tested: 27 April 2006
  *  DNSexit             - Last Tested: 20 July 2008
- *  OpenDNS             - Last Tested: 4 August 2008
  *  Namecheap           - Last Tested: 31 August 2010
  *  HE.net              - Last Tested: 7 July 2013
  *  HE.net IPv6         - Last Tested: 7 July 2013
@@ -99,7 +97,7 @@
  * @version    0.8
  * @updated    13 October 05 at 21:02:42 GMT
  *
- * DNSexit/OpenDNS support and multiwan extension for pfSense by Ermal Luçi
+ * DNSexit support and multiwan extension for pfSense by Ermal Luçi
  * Custom DNS support by Matt Corallo
  */
 
@@ -316,7 +314,6 @@ class updatedns
                 case 'noip':
                 case 'noip-free':
                 case 'ods':
-                case 'opendns':
                 case 'ovh-dynhost':
                 case 'oray':
                 case 'regfish':
@@ -476,8 +473,9 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, "{$server}{$port}?host=" .$this->_dnsHost);
                 break;
             case 'dyns':
-                $server = "https://www.dyns.cx/postscript011.php";
-                $port = "";
+                /* XXX HTTPS is currently broken for them */
+                $server = 'http://www.dyns.cx/postscript011.php';
+                $port = '';
                 if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
                 }
@@ -537,23 +535,6 @@ class updatedns
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, 'https://dns.loopia.se/XDynDNSServer/XDynDNS.php?hostname='.$this->_dnsHost.'&myip='.$this->_dnsIP.'&wildcard='.$this->_dnsWildcard);
                 break;
-            case 'opendns':
-                if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
-                    $this->_dnsWildcard = "ON";
-                }
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
-                $server = "https://updates.opendns.com/nic/update?hostname=". $this->_dnsHost;
-                $port = "";
-                if ($this->_dnsServer) {
-                    $server = $this->_dnsServer;
-                }
-                if ($this->_dnsPort) {
-                    $port = ":" . $this->_dnsPort;
-                }
-                curl_setopt($ch, CURLOPT_URL, $server .$port);
-                break;
-
             case 'staticcling':
                 curl_setopt($ch, CURLOPT_URL, 'https://www.staticcling.org/update.html?login='.urlencode($this->_dnsUser).'&pass='.$this->_dnsPass);
                 break;
@@ -1202,7 +1183,6 @@ class updatedns
             case 'he-net-tunnelbroker':
             case 'he-net-v6':
             case 'loopia':
-            case 'opendns':
             case 'oray':
             case 'ovh-dynhost':
             case 'selfhost':

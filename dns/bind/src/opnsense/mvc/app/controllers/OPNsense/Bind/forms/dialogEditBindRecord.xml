@@ -3,30 +3,30 @@
         <id>record.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>This will enable or disable the ACL.</help>
+        <help>This will enable or disable this record.</help>
     </field>
     <field>
         <id>record.domain</id>
-        <label>Domain</label>
+        <label>Zone</label>
         <type>dropdown</type>
-        <help>Set the type for this record.</help>
+        <help>Select the zone for this record.</help>
     </field>
     <field>
         <id>record.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Set the name for this ACL.</help>
+        <help>Set the name for this record.</help>
     </field>
     <field>
         <id>record.type</id>
         <label>Type</label>
         <type>dropdown</type>
-        <help>Set the time in seconds.</help>
+        <help>Set the type for this record.</help>
     </field>
     <field>
         <id>record.value</id>
         <label>Value</label>
         <type>text</type>
-        <help>Set the time in seconds.</help>
+        <help>Set the value for this record.</help>
     </field>
 </form>

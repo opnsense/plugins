@@ -124,7 +124,6 @@ function dyndns_list()
         'noip' => 'No-IP',
         'noip-free' => 'No-IP (free)',
         'ods' => 'ODS.org',
-        'opendns' => 'OpenDNS',
         'oray' => 'Oray',
         'ovh-dynhost' => 'OVH DynHOST',
         'regfish' => 'regfish',

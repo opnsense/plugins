@@ -811,6 +811,13 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Namesilo applies changes to DNS records only every 15 minutes.
                 $acme_hook_options[] = "--dnssleep 960";
                 break;
+            case 'dns_netcup':
+                $proc_env['NC_CID'] = (string)$valObj->dns_netcup_cid;
+                $proc_env['NC_Apikey'] = (string)$valObj->dns_netcup_key;
+                $proc_env['NC_Apipw'] = (string)$valObj->dns_netcup_pw;
+                // netcup applies changes to DNS records only every 10 minutes.
+                $acme_hook_options[] = "--dnssleep 600";
+                break;
             case 'dns_nsone':
                 $proc_env['NS1_Key'] = (string)$valObj->dns_nsone_key;
                 break;

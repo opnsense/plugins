@@ -12,3 +12,16 @@ most secure, easiest to use, and simplest VPN solution in
 the industry.
 
 WWW: https://www.wireguard.com/
+
+Changelog
+---------
+
+1.1
+
+* Allow adding interface route for PBR
+
+1.0
+
+* Support for most features like S2S, Roadwarror
+* DNS, MTU, PSK
+* Allow to disable setting routes for PBR

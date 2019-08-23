@@ -8,6 +8,7 @@
               <DefaultParameters VisibleName="Default Parameters" url="/ui/haproxy#subtab_haproxy-general-defaults"/>
               <LoggingConfiguration VisibleName="Logging Configuration" url="/ui/haproxy#subtab_haproxy-general-logging"/>
               <StatisticsConfiguration VisibleName="Statistics Configuration" url="/ui/haproxy#subtab_haproxy-general-statistics"/>
+              <CacheConfiguration VisibleName="Cache Configuration" url="/ui/haproxy#subtab_haproxy-general-cache"/>
               <Frontends VisibleName="Frontends" url="/ui/haproxy#frontends"/>
               <Backends VisibleName="Backends" url="/ui/haproxy#backends"/>
               <Servers VisibleName="Servers" url="/ui/haproxy#servers"/>

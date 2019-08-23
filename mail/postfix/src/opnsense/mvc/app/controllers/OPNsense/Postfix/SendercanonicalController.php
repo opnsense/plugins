@@ -1,9 +1,8 @@
 <?php
 
 /*
- * Copyright (C) 2018 Smart-Soft
- * Copyright (C) 2014 Deciso B.V.
- * Copyright 2012 mkirbst @ pfSense Forum
+ * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2019 Felix Matouschek <felix@matouschek.org>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,47 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once('guiconfig.inc');
-require_once('widgets/include/smart_status.inc');
+namespace OPNsense\Postfix;
 
-$devs = json_decode(configd_run('smart detailed list'));
-
-?>
-
-<table class="table table-striped table-condensed">
-  <thead>
-    <tr>
-        <th><?= gettext('Drive') ?></td>
-        <th><?= gettext('Ident') ?></td>
-        <th><?= gettext('Status') ?></td>
-    </tr>
-  </thead>
-  <tbody>
-
-<?php foreach ($devs as $dev):
-
-    $dev_state_translated = gettext('Unknown');
-    $color = 'default';
-
-    if (isset($dev->state->smart_status->passed)) {
-        if ($dev->state->smart_status->passed) {
-            $dev_state_translated = gettext('OK');
-            $color = 'success';
-        } else {
-            $dev_state_translated = gettext('FAILED');
-            $color = 'danger';
-	}
+class SendercanonicalController extends \OPNsense\Base\IndexController
+{
+    public function indexAction()
+    {
+        $this->view->formDialogEditPostfixSendercanonical = $this->getForm("dialogEditPostfixSendercanonical");
+        $this->view->pick('OPNsense/Postfix/sendercanonical');
     }
-
-?>
-
-    <tr>
-      <td><?= html_safe($dev->device) ?></td>
-      <td><?= html_safe($dev->ident) ?></td>
-      <td><span class="label label-<?= $color ?>"><?= html_safe($dev_state_translated) ?></span></td>
-    </tr>
-
-<?php endforeach ?>
-
-  </tbody>
-</table>
+}
