@@ -27,12 +27,13 @@
 
 result=""
 
-for dev in `ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'`; do
+for dev in `sysctl -a | grep -i kern.disks | awk -F: '{print $2}'`; do
+    /usr/sbin/diskinfo $dev >/dev/null 2>&1 || continue
     ident=`/usr/sbin/diskinfo -v $dev | grep ident | awk '{print $1}'`;
     state=`/usr/local/sbin/smartctl -jH /dev/$dev`
 
     if [ -n "$result" ]; then
-	result="$result,";
+        result="$result,";
     fi
 
     result="$result{\"device\":\"$dev\",\"ident\":\"$ident\",\"state\":$state}";
