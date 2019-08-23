@@ -25,18 +25,21 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-result=""
+RESULT=
 
-for dev in `sysctl -a | grep -i kern.disks | awk -F: '{print $2}'`; do
-    /usr/sbin/diskinfo $dev >/dev/null 2>&1 || continue
-    ident=`/usr/sbin/diskinfo -v $dev | grep ident | awk '{print $1}'`;
-    state=`/usr/local/sbin/smartctl -jH /dev/$dev`
-
-    if [ -n "$result" ]; then
-        result="$result,";
+for DEV in $(sysctl -n kern.disks); do
+    if ! /usr/sbin/diskinfo ${DEV} >/dev/null 2>&1; then
+        continue;
     fi
 
-    result="$result{\"device\":\"$dev\",\"ident\":\"$ident\",\"state\":$state}";
+    STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
+    IDENT=$(/usr/sbin/diskinfo -s ${DEV})
+
+    if [ -n "${RESULT}" ]; then
+        RESULT="${RESULT},";
+    fi
+
+    RESULT="${RESULT}{\"device\":\"${DEV}\",\"ident\":\"${IDENT}\",\"state\":${STATE}}";
 done
 
-echo "[$result]"
+echo "[${RESULT}]"
