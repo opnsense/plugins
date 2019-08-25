@@ -20,7 +20,9 @@
        Framed-IPv6-Address = {{ user_list.ip6 }},
 {%       endif %}
 {%       if user_list.servicetype is defined %}
-       Service-Type = {{ user_list.servicetype }},
+{%         for servicelist in helpers.toList('user_list.servicetype') %}
+       Service-Type = {{ servicelist }},
+{%         endfor %}
 {%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
 {%         if user_list.vlan is defined %}

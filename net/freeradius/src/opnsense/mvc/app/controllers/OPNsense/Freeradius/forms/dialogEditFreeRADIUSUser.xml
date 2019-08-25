@@ -126,8 +126,8 @@
     <field>
         <id>user.servicetype</id>
         <label>Service Type</label>
-        <type>text</type>
+        <type>select_multiple</type>
         <advanced>true</advanced>
-        <help>Set the service-type attribute for this user.</help>
+        <help>Set the Service-Type attributes for this user.</help>
     </field>
 </form>
