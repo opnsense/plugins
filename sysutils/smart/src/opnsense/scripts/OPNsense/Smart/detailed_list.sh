@@ -25,19 +25,23 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-result=""
+RESULT=
 
-for dev in `ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'`; do
-    ident=`/usr/sbin/diskinfo -v $dev | grep ident | awk '{print $1}'`;
-    state=`/usr/local/sbin/smartctl -H $dev | awk -F: '
-/^SMART overall-health self-assessment test result/ {print $2;exit}
-/^SMART Health Status/ {print $2;exit}'`;
+for DEV in $(sysctl -n kern.disks); do
+    IDENT=$(/usr/sbin/diskinfo -s ${DEV})
 
-    if [ -n "$result" ]; then
-	result="$result,";
+    if [ "${DEV#nvd}" != "${DEV}" ]; then
+        # the disk formerly know as nvdX
+        DEV="nvme${DEV#nvd}"
     fi
 
-    result="$result{\"device\":\"$dev\",\"ident\":\"$ident\",\"state\":\"$state\"}";
+    STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
+
+    if [ -n "${RESULT}" ]; then
+        RESULT="${RESULT},";
+    fi
+
+    RESULT="${RESULT}{\"device\":\"${DEV}\",\"ident\":\"${IDENT}\",\"state\":${STATE}}";
 done
 
-echo "[$result]"
+echo "[${RESULT}]"
