@@ -26,6 +26,9 @@
  #}
 
 <div class="content-box" style="padding-bottom: 1.5em;">
+    <div class="alert alert-warning" role="alert" style="min-height:65px;">
+        <div style="margin-top: 8px;">{{ lang._('Updates in this section need also a restart via Sensor or Server menu.') }}</div>
+    </div>
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
     <div class="col-md-12">
         <hr />
