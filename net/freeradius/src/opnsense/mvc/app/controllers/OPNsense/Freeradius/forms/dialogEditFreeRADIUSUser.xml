@@ -123,4 +123,11 @@
         <type>text</type>
         <help>Set the maximum session limit in seconds. This can be used by the Captive Portal.</help>
     </field>
+    <field>
+        <id>user.servicetype</id>
+        <label>Service Type</label>
+        <type>select_multiple</type>
+        <advanced>true</advanced>
+        <help>Set the Service-Type attributes for this user.</help>
+    </field>
 </form>
