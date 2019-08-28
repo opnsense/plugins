@@ -34,6 +34,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Netsnmp\General';
-    static protected $internalModelName = 'general';
+    protected static $internalModelClass = '\OPNsense\Netsnmp\General';
+    protected static $internalModelName = 'general';
 }

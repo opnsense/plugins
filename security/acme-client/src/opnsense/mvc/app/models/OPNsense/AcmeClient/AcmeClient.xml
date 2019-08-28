@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -229,7 +229,7 @@
                             </filters>
                         </actions>
                     </Model>
-                    <ValidationMessage>Related restart action not found</ValidationMessage>
+                    <ValidationMessage>Related automation not found</ValidationMessage>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </restartActions>
@@ -702,9 +702,20 @@
                         <restart_gui>Restart OPNsense Web UI</restart_gui>
                         <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
+                        <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
                         <configd>System or Plugin Command (select below)</configd>
                     </OptionValues>
                 </type>
+                <highwinds_account_hash type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </highwinds_account_hash>
+                <highwinds_access_token type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </highwinds_access_token>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>

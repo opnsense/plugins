@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2018 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
@@ -131,6 +131,8 @@ function if_l2tp_configure_do()
                 return 1;
             }
 
+            $selfip = get_interface_ip($l2tpcfg['interface']);
+
             $iprange = $l2tpcfg['remoteip'] . ' ';
             $iprange .= long2ip32(ip2long($l2tpcfg['remoteip']) + $l2tpcfg['n_l2tp_units'] - 1);
 
@@ -165,7 +167,7 @@ EOD;
                 }
                 $mpdconf .= "\n";
             } elseif (isset($config['dnsmasq']['enable']) || isset($config['unbound']['enable'])) {
-                $mpdconf .= "  set ipcp dns " . get_interface_ip("lan");
+                $mpdconf .= "  set ipcp dns ${selfip}";
                 if (isset($syscfg['dnsserver'][0])) {
                     $mpdconf .= " " . $syscfg['dnsserver'][0];
                 }
@@ -194,7 +196,7 @@ EOD;
   {$paporchap}
   set link keep-alive 10 60
   set link mtu 1460
-  set l2tp self ${l2tpcfg['localip']}
+  set l2tp self ${selfip}
   set link enable incoming
 
 EOD;

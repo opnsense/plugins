@@ -33,8 +33,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class UserController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'user';
-    static protected $internalModelClass = '\OPNsense\Netsnmp\User';
+    protected static $internalModelName = 'user';
+    protected static $internalModelClass = '\OPNsense\Netsnmp\User';
 
     public function searchUserAction()
     {

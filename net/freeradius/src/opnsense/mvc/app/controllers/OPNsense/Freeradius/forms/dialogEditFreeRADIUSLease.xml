@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>lease.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the static DHCP lease.</help>
+    </field>
+    <field>
+        <id>lease.mac</id>
+        <label>MAC Address</label>
+        <type>text</type>
+        <help>Set the MAC address for this static lease.</help>
+    </field>
+    <field>
+        <id>lease.ip</id>
+        <label>IP Address</label>
+        <type>text</type>
+        <help>Set the IP address for this static lease.</help>
+    </field>
+</form>

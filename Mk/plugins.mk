@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2019 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -259,24 +259,40 @@ clean: check
 	    git checkout -f ${.CURDIR}/src && \
 	    git clean -xdqf ${.CURDIR}/src; \
 	fi
+	@rm -rf ${.CURDIR}/work
 
 lint-desc: check
 	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
 		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
 	fi
 
-lint: lint-desc
-	find ${.CURDIR}/src \
+lint-shell:
+	@find ${.CURDIR}/src \
 	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
-	find ${.CURDIR}/src \
+
+lint-xml:
+	@find ${.CURDIR}/src \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
-	find ${.CURDIR}/src \
+
+lint-exec: check
+.for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d
+.if exists(${DIR})
+	@find ${DIR} -type f ! -name "*.xml" -print0 | \
+	    xargs -0 -t -n1 test -x || \
+	    (echo "Missing executable permission in ${DIR}"; exit 1)
+.endif
+.endfor
+
+lint-php: check
+	@find ${.CURDIR}/src \
 	    ! -name "*.xml" ! -name "*.xml.sample" ! -name "*.eot" \
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" \
 	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" \
 	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" \
 	    -type f -print0 | xargs -0 -n1 php -l
+
+lint: lint-desc lint-shell lint-xml lint-exec lint-php
 
 sweep: check
 	find ${.CURDIR}/src -type f -name "*.map" -print0 | \

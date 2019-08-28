@@ -34,6 +34,14 @@ use OPNsense\Nginx\Nginx;
 class LogsController extends ApiControllerBase
 {
     private $nginx;
+
+    /**
+     * "/" -> list of access logs
+     * "/uuid" -> conent of access log
+     * @param null|string $uuid log uuid of the HTTP server from which the error log should be returned
+     * @return array if feasible, otherwise null and the data is sent directly back
+     * @throws \OPNsense\Base\ModelException ?
+     */
     public function accessesAction($uuid = null)
     {
         $this->nginx = new Nginx();
@@ -46,6 +54,22 @@ class LogsController extends ApiControllerBase
         }
     }
 
+    /**
+     * action to query the TLS handshake information - useful for building fingerprint databases
+     * @throws \Exception
+     */
+    public function tls_handshakesAction()
+    {
+        $this->sendConfigdToClient('nginx tls_handshakes');
+    }
+
+    /**
+     * "/" -> list of error logs
+     * "/uuid" -> conent of error log
+     * @param null|string $uuid uuid of the HTTP server from which the error log should be returned
+     * @return array if feasible, otherwise null and the data is sent directly back
+     * @throws \OPNsense\Base\ModelException ?
+     */
     public function errorsAction($uuid = null)
     {
         $this->nginx = new Nginx();
@@ -58,6 +82,13 @@ class LogsController extends ApiControllerBase
         }
     }
 
+    /**
+     * "/" -> list of access logs
+     * "/uuid" -> conent of access log
+     * @param null|string $uuid log uuid of the stream server from which the error log should be returned
+     * @return array if feasible, otherwise null and the data is sent directly back
+     * @throws \OPNsense\Base\ModelException ?
+     */
     public function stream_accessesAction($uuid = null)
     {
         $this->nginx = new Nginx();
@@ -70,6 +101,13 @@ class LogsController extends ApiControllerBase
         }
     }
 
+    /**
+     * "/" -> list of access logs
+     * "/uuid" -> conent of error log
+     * @param null $uuid uuid of the stream server from which the error log should be returned
+     * @return array if feasible, otherwise null and the data is sent directly back
+     * @throws \OPNsense\Base\ModelException ?
+     */
     public function stream_errorsAction($uuid = null)
     {
         $this->nginx = new Nginx();
@@ -83,14 +121,26 @@ class LogsController extends ApiControllerBase
     }
 
 
+    /**
+     * @param $type string access or error for the used log type
+     * @param $uuid string uuid of the server
+     * @return |null
+     * @throws \Exception ?
+     */
     private function call_configd($type, $uuid)
     {
-        if (!$this->vhost_exists($uuid)) {
+        if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
             $this->response->setStatusCode(404, "Not Found");
         }
 
         return $this->sendConfigdToClient('nginx log ' . $type . ' ' . $uuid);
     }
+    /**
+     * @param $type string access or error for the used log type
+     * @param $uuid string uuid of the server
+     * @return |null
+     * @throws \Exception ?
+     */
     private function call_configd_stream($type, $uuid)
     {
         if (!$this->stream_exists($uuid)) {
@@ -100,6 +150,9 @@ class LogsController extends ApiControllerBase
         return $this->sendConfigdToClient('nginx log ' . $type . ' ' . $uuid);
     }
 
+    /**
+     * @return array list of HTTP servers
+     */
     private function list_vhosts()
     {
         $data = [];
@@ -108,6 +161,10 @@ class LogsController extends ApiControllerBase
         }
         return $data;
     }
+
+    /**
+     * @return array list of stream servers
+     */
     private function list_streams()
     {
         $data = [];
@@ -117,11 +174,20 @@ class LogsController extends ApiControllerBase
         return $data;
     }
 
+    /**
+     * @param $uuid string uuid of the HTTP server to check
+     * @return bool true if the HTTP server configuration exists
+     */
     private function vhost_exists($uuid)
     {
         $data = $this->nginx->getNodeByReference('http_server.'. $uuid);
         return isset($data);
     }
+
+    /**
+     * @param $uuid string uuid of the stream server to check
+     * @return bool true if the stream configuration exists
+     */
     private function stream_exists($uuid)
     {
         $data = $this->nginx->getNodeByReference('stream_server.'. $uuid);

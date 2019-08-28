@@ -33,8 +33,8 @@ use OPNsense\Nut\Nut;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Nut\Nut';
-    static protected $internalServiceTemplate = 'OPNsense/Nut';
-    static protected $internalServiceEnabled = 'general.enable';
-    static protected $internalServiceName = 'nut';
+    protected static $internalServiceClass = '\OPNsense\Nut\Nut';
+    protected static $internalServiceTemplate = 'OPNsense/Nut';
+    protected static $internalServiceEnabled = 'general.enable';
+    protected static $internalServiceName = 'nut';
 }

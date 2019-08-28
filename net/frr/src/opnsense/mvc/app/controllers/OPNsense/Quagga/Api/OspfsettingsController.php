@@ -32,8 +32,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class OspfsettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'ospf';
-    static protected $internalModelClass = '\OPNsense\Quagga\OSPF';
+    protected static $internalModelName = 'ospf';
+    protected static $internalModelClass = '\OPNsense\Quagga\OSPF';
 
     public function searchNetworkAction()
     {

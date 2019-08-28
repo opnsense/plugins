@@ -690,6 +690,11 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <advanced_acl_server type="AuthenticationServerField">
+        <Required>N</Required>
+        <multiple>N</multiple>
+        <default>Local Database</default>
+      </advanced_acl_server>
       <satisfy type="OptionField">
         <OptionValues>
           <any>Any</any>
@@ -1273,6 +1278,29 @@
         <MinimumValue>1</MinimumValue>
       </rate>
     </limit_zone>
+
+    <tls_fingerprint type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+      </description>
+      <user_agent type="TextField">
+        <Required>Y</Required>
+      </user_agent>
+      <trusted type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </trusted>
+      <curves type="TextField">
+        <!-- OpenSSL curve list like the one used for configuring the supported ciphers by the web server -->
+        <Required>N</Required>
+        <mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</mask>
+      </curves>
+      <ciphers type="TextField">
+        <!-- OpenSSL cipher list like the one used for configuring the supported ciphers by the web server -->
+        <Required>Y</Required>
+        <mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</mask>
+      </ciphers>
+    </tls_fingerprint>
 
     <limit_request_connection type="ArrayField">
       <limit_zone type="ModelRelationField">

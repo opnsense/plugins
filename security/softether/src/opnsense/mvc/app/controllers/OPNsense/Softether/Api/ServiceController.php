@@ -40,8 +40,8 @@ use OPNsense\Softether\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Softether\General';
-    static protected $internalServiceTemplate = 'OPNsense/Softether';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'softether';
+    protected static $internalServiceClass = '\OPNsense\Softether\General';
+    protected static $internalServiceTemplate = 'OPNsense/Softether';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'softether';
 }

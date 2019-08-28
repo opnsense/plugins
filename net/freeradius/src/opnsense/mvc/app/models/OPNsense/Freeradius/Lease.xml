@@ -1,0 +1,22 @@
+<model>
+    <mount>//OPNsense/freeradius/lease</mount>
+    <description>FreeRADIUS DHCP Lease configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <leases>
+            <lease type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <mac type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-fA-F:]){17}$/u</mask>
+                </mac>
+                <ip type="NetworkField">
+                    <Required>Y</Required>
+                </ip>
+            </lease>
+        </leases>
+    </items>
+</model>

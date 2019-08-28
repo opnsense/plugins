@@ -1,0 +1,31 @@
+<form>
+    <field>
+        <id>tls_fingerprint.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Enter a useful description for your entry.</help>
+    </field>
+    <field>
+        <id>tls_fingerprint.trusted</id>
+        <label>Trusted</label>
+        <type>checkbox</type>
+        <help>If you check this box, this entry will be added to the configuration of trusted fingerprints.</help>
+    </field>
+    <field>
+        <id>tls_fingerprint.user_agent</id>
+        <label>User Agent</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>tls_fingerprint.ciphers</id>
+        <label>Cipher Suits</label>
+        <type>text</type>
+        <help>Enter a list of elliptic curves supported by the client in a standard configuration in OpenSSL syntax (cipher1:cipher2:0x0001).</help>
+    </field>
+    <field>
+        <id>tls_fingerprint.curves</id>
+        <label>Elliptic Curves</label>
+        <type>text</type>
+        <help>Enter a list of elliptic curves supported by the client in a standard configuration in OpenSSL syntax (curve1:curve2:0x0001).</help>
+    </field>
+</form>

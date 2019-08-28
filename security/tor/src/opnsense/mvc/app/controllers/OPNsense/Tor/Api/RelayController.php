@@ -33,6 +33,6 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class RelayController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Tor\Relay';
-    static protected $internalModelName = 'relay';
+    protected static $internalModelClass = '\OPNsense\Tor\Relay';
+    protected static $internalModelName = 'relay';
 }

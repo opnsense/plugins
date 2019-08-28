@@ -597,15 +597,14 @@ class updatedns
             case 'he-net':
             case 'he-net-v6':
                 $server = "https://dyn.dns.he.net/nic/update?";
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost . '&password=' . $this->_dnsPass . '&myip=' . $this->_dnsIP);
                 break;
             case 'he-net-tunnelbroker':
-                $server = "https://ipv4.tunnelbroker.net/ipv4_end.php?";
+                $server = "https://ipv4.tunnelbroker.net/nic/update?";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
-                curl_setopt($ch, CURLOPT_URL, $server . 'tid=' . $this->_dnsHost);
+                curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
                 break;
             case 'selfhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
@@ -1091,33 +1090,6 @@ class updatedns
                     $this->_debug($data);
                 }
                 break;
-            case 'he-net-tunnelbroker':
-                /*
-                -ERROR: Missing parameter(s).
-                -ERROR: Invalid API key or password
-                -ERROR: Tunnel not found
-                -ERROR: Another tunnel exists for this IP.
-                -ERROR: This tunnel is already associated with this IP address
-                +OK: Tunnel endpoint updated to: x.x.x.x
-                */
-                if (preg_match("/Missing parameter/i", $data)) {
-                    $status = "Dynamic DNS: (Error) Bad Request - Missing/Invalid Parameters.";
-                } elseif (preg_match('/Tunnel not found/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Bad Request - Invalid Tunnel ID.";
-                } elseif (preg_match('/Invalid API key or password/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Invalid username or password.";
-                } elseif (preg_match('/OK:/i', $data)) {
-                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                    $successful_update = true;
-                } elseif (preg_match('/This tunnel is already associated with this IP address/i', $data)) {
-                    $status = "Dynamic DNS: (Success) No Change In IP Address.";
-                    $successful_update = true;
-                } else {
-                    $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
-                }
-                break;
             case 'route53':
             case 'route53-v6':
                 $successful_update = true;
@@ -1196,6 +1168,7 @@ class updatedns
             case 'eurodns':
             case 'googledomains':
             case 'he-net':
+            case 'he-net-tunnelbroker':
             case 'he-net-v6':
             case 'loopia':
             case 'opendns':

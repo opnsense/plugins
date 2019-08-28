@@ -42,8 +42,8 @@ use \OPNsense\Base\UIModelGrid;
 class SettingsController extends ApiControllerBase
 {
 
-    static protected $internalModelName = 'relayd';
-    static protected $internalModelClass = '\OPNsense\Relayd\Relayd';
+    protected static $internalModelName = 'relayd';
+    protected static $internalModelClass = '\OPNsense\Relayd\Relayd';
     public $mdlRelayd = null;
 
     /**

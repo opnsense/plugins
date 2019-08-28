@@ -48,8 +48,8 @@
         </compression>
         <group type="TextField">
             <Required>N</Required>
-            <mask>/^[a-zA-Z0-9]{1,64}$/</mask>
-            <ValidationMessage>Please only use up to 64 letters (a-z, A-Z) and/or digits (0-9).</ValidationMessage>
+            <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
+            <ValidationMessage>Please provide a valid group name. Allowed characters are a-zA-Z0-9._- and it has to be 1-64 characters long.</ValidationMessage>
         </group>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>

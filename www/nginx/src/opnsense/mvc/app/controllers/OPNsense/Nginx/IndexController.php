@@ -60,6 +60,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->cache_path = $this->getForm("cache_path");
         $this->view->sni_hostname_map = $this->getForm("sni_hostname_map");
         $this->view->ipacl = $this->getForm("ipacl");
+        $this->view->tls_fingerprint = $this->getForm("tls_fingerprint");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
             count($nginx->custom_policy->iterateItems()) == 0 && count($nginx->naxsi_rule->iterateItems()) == 0;
@@ -72,6 +73,14 @@ class IndexController extends \OPNsense\Base\IndexController
     public function logsAction()
     {
         $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
+     */
+    public function tls_handshakesAction()
+    {
+        $this->view->pick('OPNsense/Nginx/tls_handshakes');
     }
 
     /**

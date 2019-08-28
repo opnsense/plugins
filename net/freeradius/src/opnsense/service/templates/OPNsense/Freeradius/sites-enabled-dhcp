@@ -1,0 +1,129 @@
+{% if helpers.exists('OPNsense.freeradius.general.dhcpenabled') and OPNsense.freeradius.general.dhcpenabled == '1' %}
+
+server dhcp {
+
+listen {
+        type = dhcp
+        ipaddr = {{ OPNsense.freeradius.general.dhcplistenip }}
+        src_ipaddr = {{ OPNsense.freeradius.general.dhcplistenip }}
+        port = 67
+        broadcast = no
+}
+
+dhcp DHCP-Discover {
+
+{% if helpers.exists('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%   for dhcp_list in helpers.toList('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%     if dhcp_list.enabled == '1' %}
+if(DHCP-Gateway-IP-Address == {{ dhcp_list.gatewayip }}) {
+        update reply {
+               DHCP-Message-Type = DHCP-Offer
+        }
+
+        update reply {
+{%       for dns_list in dhcp_list.dns.split(",") %}
+                &DHCP-Domain-Name-Server = {{ dns_list }}
+{%       endfor %}
+                &DHCP-Subnet-Mask = {{ dhcp_list.netmask }}
+                &DHCP-Router-Address = {{ dhcp_list.gatewayip }}
+                &DHCP-IP-Address-Lease-Time = 86400
+                &DHCP-DHCP-Server-Identifier = {{ dhcp_list.gatewayip }}
+        }
+}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+        mac2ip
+        dhcp_sqlippool
+        ok
+}
+
+dhcp DHCP-Request {
+
+{% if helpers.exists('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%   for dhcp_list in helpers.toList('OPNsense.freeradius.dhcp.dhcps.dhcp') %}
+{%     if dhcp_list.enabled == '1' %}
+if(DHCP-Gateway-IP-Address == {{ dhcp_list.gatewayip }}) {
+        update reply {
+               &DHCP-Message-Type = DHCP-Ack
+        }
+
+        update reply {
+{%       for dns_list in dhcp_list.dns.split(",") %}
+                &DHCP-Domain-Name-Server = {{ dns_list }}
+{%       endfor %}
+                &DHCP-Subnet-Mask = {{ dhcp_list.netmask }}
+                &DHCP-Router-Address = {{ dhcp_list.gatewayip }}
+                &DHCP-IP-Address-Lease-Time = 86400
+                &DHCP-DHCP-Server-Identifier = {{ dhcp_list.gatewayip }}
+        }
+}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+        mac2ip
+        dhcp_sqlippool
+        ok
+}
+
+dhcp DHCP-Decline {
+        update reply {
+               &DHCP-Message-Type = DHCP-Do-Not-Respond
+        }
+        reject
+}
+
+dhcp DHCP-Inform {
+        update reply {
+               &DHCP-Message-Type = DHCP-Do-Not-Respond
+        }
+        reject
+}
+
+
+dhcp DHCP-Release {
+        update reply {
+               &DHCP-Message-Type = DHCP-Do-Not-Respond
+        }
+        reject
+}
+
+
+dhcp DHCP-Lease-Query {
+        if (&DHCP-Client-Hardware-Address) {
+                # look up MAC in database
+        }
+        elsif (&DHCP-Your-IP-Address) {
+                # look up IP in database
+        }
+        elsif (&DHCP-Client-Identifier) {
+                # look up identifier in database
+        }
+        else {
+                update reply {
+                        &DHCP-Message-Type = DHCP-Lease-Unknown
+                }
+
+                ok
+
+                # stop processing
+                return
+        }
+
+        if (notfound) {
+                update reply {
+                        &DHCP-Message-Type = DHCP-Lease-Unknown
+                }
+                ok
+                return
+        }
+
+        update reply {
+                &DHCP-Message-Type = DHCP-Lease-Unassigned
+        }
+
+}
+
+}
+
+{% endif %}

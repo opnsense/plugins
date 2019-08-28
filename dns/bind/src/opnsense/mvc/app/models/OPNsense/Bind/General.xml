@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -67,5 +67,29 @@
             <Multiple>N</Multiple>
             <Required>Y</Required>
         </dnssecvalidation>
+        <hidehostname type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </hidehostname>
+        <hideversion type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </hideversion>
+        <enableratelimiting type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enableratelimiting>
+        <ratelimitcount type="IntegerField">
+            <Required>N</Required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitcount>
+        <ratelimitexcept type="NetworkField">
+            <default>127.0.0.1,::1</default>
+            <FieldSeparator>,</FieldSeparator>
+            <Required>Y</Required>
+            <asList>Y</asList>
+        </ratelimitexcept>
     </items>
 </model>

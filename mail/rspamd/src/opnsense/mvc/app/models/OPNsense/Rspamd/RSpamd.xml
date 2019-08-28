@@ -11,6 +11,109 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_redis_plugin>
+      <rejectscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>subjectscore</field>
+            <operator>gt</operator>
+          </check001>
+          <check002>
+            <ValidationMessage>This field must be bigger than the reject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>headerscore</field>
+            <operator>gt</operator>
+          </check002>
+          <check003>
+            <ValidationMessage>This field must be bigger than the greylist score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>greylistscore</field>
+            <operator>gt</operator>
+          </check003>
+        </Constraints>
+      </rejectscore>
+      <headerscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>subjectscore</field>
+            <operator>lt</operator>
+          </check001>
+          <check002>
+            <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>rejectscore</field>
+            <operator>lt</operator>
+          </check002>
+          <check003>
+            <ValidationMessage>This field must be bigger than the greylist score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>greylistscore</field>
+            <operator>gt</operator>
+          </check003>
+        </Constraints>
+      </headerscore>
+      <greylistscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be lower than the header score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>headerscore</field>
+            <operator>lt</operator>
+          </check001>
+          <check002>
+            <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>rejectscore</field>
+            <operator>lt</operator>
+          </check002>
+          <check003>
+            <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>subjectscore</field>
+            <operator>lt</operator>
+          </check003>
+        </Constraints>
+      </greylistscore>
+      <subjectscore type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>999</MaximumValue>
+        <Constraints>
+          <check001>
+            <ValidationMessage>This field must be bigger than the header score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>headerscore</field>
+            <operator>gt</operator>
+          </check001>
+          <check002>
+            <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>rejectscore</field>
+            <operator>lt</operator>
+          </check002>
+          <check003>
+            <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
+            <type>ComparedToFieldConstraint</type>
+            <field>greylistscore</field>
+            <operator>gt</operator>
+          </check003>
+        </Constraints>
+      </subjectscore>
+      <rewritesubject type="TextField">
+        <Required>N</Required>
+      </rewritesubject>
     </general>
 
     <milter_headers>

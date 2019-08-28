@@ -24,6 +24,7 @@
                 <rw>Ransomware Tracker List</rw>
                 <sa>Simple Ad List</sa>
                 <st>Simple Tracker List</st>
+                <sb>Steven Black List</sb>
                 <ws>Windows Spyware Blocker</ws>
                 <yy>YoYo List</yy>
                 <za>ZeusTracker Abuse.ch List</za>
@@ -36,6 +37,10 @@
             <default>0</default>
             <Required>Y</Required>
         </forcesafegoogle>
+        <forcesafeduckduckgo type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </forcesafeduckduckgo>
         <forcesafeyoutube type="BooleanField">
             <default>0</default>
             <Required>Y</Required>

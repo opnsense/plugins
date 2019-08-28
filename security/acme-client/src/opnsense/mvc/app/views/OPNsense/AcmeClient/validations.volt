@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#grid-validations").UIBootgrid(
             {   search:'/api/acmeclient/validations/search',
                 get:'/api/acmeclient/validations/get/',
-                set:'/api/acmeclient/validations/set/',
+                set:'/api/acmeclient/validations/update/',
                 add:'/api/acmeclient/validations/add/',
                 del:'/api/acmeclient/validations/del/',
                 toggle:'/api/acmeclient/validations/toggle/',

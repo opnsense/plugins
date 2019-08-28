@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Coypright (C) 2016-2017 Franco Fichtner <franco@opnsense.org>
+ * Coypright (C) 2016-2018 Franco Fichtner <franco@opnsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
  * Copyright (C) 2008 Ermal Luçi
  * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
@@ -127,6 +127,8 @@ function if_pptp_configure_do()
                 return 1;
             }
 
+            $selfip = get_interface_ip($pptpdcfg['interface']);
+
             $iprange = $pptpdcfg['remoteip'] . ' ';
             $iprange .= long2ip32(ip2long($pptpdcfg['remoteip']) + $pptpdcfg['n_pptp_units'] - 1);
 
@@ -158,7 +160,7 @@ EOD;
                 }
                 $mpdconf .= "\n";
             } elseif (isset($config['dnsmasq']['enable']) || isset($config['unbound']['enable'])) {
-                $mpdconf .= "  set ipcp dns " . get_interface_ip("lan");
+                $mpdconf .= "  set ipcp dns {$selfip}";
                 if (isset($syscfg['dnsserver'][0])) {
                     $mpdconf .= " " . $syscfg['dnsserver'][0];
                 }
@@ -195,7 +197,7 @@ EOD;
   set link enable chap-msv2
   set link mtu 1460
   set link keep-alive 10 60
-  set pptp self {$pptpdcfg['localip']}
+  set pptp self {$selfip}
   set link enable incoming
 
 EOD;

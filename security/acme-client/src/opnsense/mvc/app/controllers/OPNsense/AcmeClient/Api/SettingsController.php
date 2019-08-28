@@ -42,8 +42,8 @@ use \OPNsense\AcmeClient\AcmeClient;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'acmeclient';
-    static protected $internalModelClass = '\OPNsense\AcmeClient\AcmeClient';
+    protected static $internalModelName = 'acmeclient';
+    protected static $internalModelClass = '\OPNsense\AcmeClient\AcmeClient';
 
     /**
      * create new cron job or return already available one

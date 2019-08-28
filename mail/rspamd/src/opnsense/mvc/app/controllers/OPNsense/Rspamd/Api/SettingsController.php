@@ -32,6 +32,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Rspamd\RSpamd';
-    static protected $internalModelName = 'rspamd';
+    protected static $internalModelClass = '\OPNsense\Rspamd\RSpamd';
+    protected static $internalModelName = 'rspamd';
 }

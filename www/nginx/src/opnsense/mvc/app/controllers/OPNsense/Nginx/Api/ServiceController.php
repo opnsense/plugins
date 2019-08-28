@@ -36,10 +36,10 @@ use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Nginx\Nginx';
-    static protected $internalServiceTemplate = 'OPNsense/Nginx';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'nginx';
+    protected static $internalServiceClass = '\OPNsense\Nginx\Nginx';
+    protected static $internalServiceTemplate = 'OPNsense/Nginx';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'nginx';
 
     /**
     *  override parent method - stopping nginx is not allowed because otherwise you would loose

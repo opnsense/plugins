@@ -27,6 +27,9 @@ const LogLinesCollection = Backbone.Collection.extend({
                     || filter_model.get(property).length === 0) {
                     continue;
                 }
+                if (!model.has(property)) {
+                    return false;
+                }
                 if (!model.get(property).includes(filter_model.get(property))) {
                     return false;
                 }

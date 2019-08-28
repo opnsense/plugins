@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2018 Smart-Soft
  * Copyright (C) 2014 Deciso B.V.
  * Copyright 2012 mkirbst @ pfSense Forum
  * All rights reserved.
@@ -40,40 +41,32 @@ require_once("widgets/include/smart_status.inc");
     </tr>
 
 <?php
-$devs = array();
-## Get all adX, daX, and adaX (IDE, SCSI, and AHCI) devices currently installed
-exec("ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devs); ## From SMART status page
+$devs = json_decode (configd_run ("smart detailed list"));
 
-if (count($devs) > 0) {
-    foreach ($devs as $dev) {
-## for each found drive do
-        $dev_ident = exec("diskinfo -v /dev/$dev | grep ident   | awk '{print $1}'"); ## get identifier from drive
-        $dev_state = trim(exec("smartctl -H /dev/$dev | awk -F: '/^SMART overall-health self-assessment test result/ {print $2;exit}
-/^SMART Health Status/ {print $2;exit}'")); ## get SMART state from drive
-        $dev_state_translated = "";
-        switch ($dev_state) {
-            case "PASSED":
-            case "OK":
-                $dev_state_translated = gettext('OK');
-                $color = "success";
-                break;
-            case "":
-              $dev_state = "Unknown";
-              $dev_state_translated = gettext('Unknown');
-                $color = "warning";
-                break;
-            default:
-                $color = "danger";
-                break;
-        }
+foreach ($devs as $dev) {
+    $dev_state_translated = "";
+
+    switch ($dev->state) {
+    case "PASSED":
+    case "OK":
+        $dev_state_translated = gettext('OK');
+        $color = "success";
+        break;
+    case "":
+        $dev_state_translated = gettext('Unknown');
+        $color = "warning";
+        break;
+    default:
+        $color = "danger";
+        break;
+    }
 ?>
         <tr>
-            <td><?= $dev ?></td>
-            <td style="text-align:center"><?= $dev_ident ?></td>
+            <td><?= $dev->device ?></td>
+            <td style="text-align:center"><?= $dev->ident ?></td>
             <td style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= $dev_state_translated ?>&nbsp;</span></td>
         </tr>
 <?php
-    }
 }
 ?>
 </table>
