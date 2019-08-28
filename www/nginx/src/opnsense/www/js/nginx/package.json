@@ -1,14 +1,13 @@
 {
   "name": "nginx",
   "version": "0.0.1",
-  "dependencies": {
-    "eslint": "^5.13.0",
-    "raw-loader": "^0.5.1",
-    "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "lodash-template-webpack-loader": "^1.0.2"
+    "lodash-template-webpack-loader": "^1.0.2",
+    "eslint": "^6.2.2",
+    "webpack-cli": "^3.3.6",
+    "raw-loader": "^0.5.1",
+    "webpack": "^4.35.3"
   },
   "scripts": {
     "webpack-cli": "webpack-cli",
