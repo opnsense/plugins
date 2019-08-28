@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.8
+
+* Fix template generation when there is only one zone configured
+
 1.7
 
 * Rename "domain" to "zone", because both forward and reverse zones can be used[1]
