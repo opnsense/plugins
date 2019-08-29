@@ -54,4 +54,11 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdpRun('bind dnsbl', array((string)$mdl->type));
         return array("response" => $response);
     }
+
+    public function reloadAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun("template reload OPNsense/Bind");
+        $backend->configdRun("bind reload");
+    }
 }

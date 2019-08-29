@@ -33,7 +33,6 @@ namespace OPNsense\Bind\Api;
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Bind\Domain;
 use \OPNsense\Core\Config;
-use \OPNsense\Core\Backend;
 
 class RecordController extends ApiMutableModelControllerBase
 {
@@ -53,9 +52,6 @@ class RecordController extends ApiMutableModelControllerBase
             if ($record !== null) {
                 (new Domain)->updateSerial((string)$record->domain)->serializeToConfig();
                 Config::getInstance()->save();
-                $backend = new Backend();
-                $backend->configdRun("template reload OPNsense/Bind");
-                $backend->configdRun("bind reload");
             }
         }
     }
