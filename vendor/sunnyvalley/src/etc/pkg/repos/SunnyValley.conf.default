@@ -2,6 +2,6 @@ SunnyValley: {
   fingerprints: "/usr/local/etc/pkg/fingerprints/SunnyValley",
   url: "https://updates.sunnyvalley.io/opnsense/repo/",
   signature_type: "fingerprints",
-  priority: 101,
+  priority: 7,
   enabled: yes
 }
