@@ -36,7 +36,6 @@
                 <wsu>WindowsSpyBlocker (update)</wsu>
                 <wse>WindowsSpyBlocker (extra)</wse>
                 <yy>YoYo List</yy>
-                <za>ZeusTracker Abuse.ch List</za>
             </OptionValues>
         </type>
         <whitelists type="CSVListField">

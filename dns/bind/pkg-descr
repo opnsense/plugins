@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.9
+
+* Removed discontinued DNSBL Zeus Tracker list
+
 1.8
 
 * Fix template generation when there is only one zone configured
