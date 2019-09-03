@@ -27,7 +27,7 @@ import fcntl
 import datetime
 
 
-class Telemetry(object):
+class Telemetry:
     def __init__(self, filename, init_last_days=2):
         self._filename = filename
         self._init_last_days = init_last_days
