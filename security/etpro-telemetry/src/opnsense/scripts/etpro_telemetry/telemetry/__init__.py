@@ -35,8 +35,7 @@ import netaddr
 import ujson
 
 
-#BASE_URL = 'https://opnsense.emergingthreats.net'
-BASE_URL = 'https://opnsense-staging.emergingthreats.net'
+BASE_URL = 'https://opnsense.emergingthreats.net'
 RELATED_SIDS_FILE = '/usr/local/etc/suricata/rules/telemetry_sids.txt'
 UNFILTERED_OUTPUT_FIELDS = [
         'timestamp', 'flow_id', 'in_iface', 'event_type', 'vlan',
