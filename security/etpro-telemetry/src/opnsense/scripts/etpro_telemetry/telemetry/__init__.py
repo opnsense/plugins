@@ -65,24 +65,26 @@ def get_config(rule_update_config):
     return response
 
 
-class EventCollector(object):
+def telemetry_sids():
+    """ collect sids of interest, which are part of the ET-Telemetry delivery
+    :return: set
+    """
+    our_sids = set()
+    if os.path.isfile(RELATED_SIDS_FILE):
+        for line in open(RELATED_SIDS_FILE, 'r'):
+            if line.strip().isdigit():
+                our_sids.add(int(line.strip()))
+    return our_sids
+
+
+class EventCollector:
     """ Event collector, responsible for extracting and anonymising from an eve.json stream
     """
     def __init__(self):
         self._tmp_handle = tempfile.NamedTemporaryFile()
         self._local_networks = list()
-        self._our_sids = set()
+        self._our_sids = telemetry_sids()
         self._get_local_networks()
-        self._get_our_sids()
-
-    def _get_our_sids(self):
-        """ collect sids of interest, which are part of the ET-Telemetry delivery
-        :return: None
-        """
-        if os.path.isfile(RELATED_SIDS_FILE):
-            for line in open(RELATED_SIDS_FILE, 'r'):
-                if line.strip().isdigit():
-                    self._our_sids.add(int(line.strip()))
 
     def _is_rule_of_interest(self, record):
         """ check if rule is of interest for delivery
