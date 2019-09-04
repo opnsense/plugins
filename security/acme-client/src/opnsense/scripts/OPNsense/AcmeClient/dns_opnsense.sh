@@ -77,7 +77,7 @@ set_record() {
   fi
   if echo "$_return_str" | _egrep_o  "\"result\":\"saved\"" >/dev/null
   then
-    _opns_rest "POST" "/service/reload" "{}"
+    _opns_rest "POST" "/service/reconfigure" "{}"
     _debug "Record created"
   else
     _err "Error createing record $_record_string"
@@ -107,7 +107,7 @@ rm_record() {
     # Delete
     if _opns_rest "POST" "/record/delRecord/${_uuid}"  "\{\}"; then
       if echo "$_return_str" | _egrep_o "result":"deleted" >/dev/null; then
-        _opns_rest "POST" "/service/reload" "{}"
+        _opns_rest "POST" "/service/reconfigure" "{}"
         _debug "Record deleted"
       else
         _err "Error delteting record $fulldomain"
