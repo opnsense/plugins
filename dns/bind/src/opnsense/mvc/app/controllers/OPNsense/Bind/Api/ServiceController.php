@@ -55,10 +55,4 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array("response" => $response);
     }
 
-    public function reloadAction()
-    {
-        $backend = new Backend();
-        $backend->configdRun("template reload OPNsense/Bind");
-        $backend->configdRun("bind reload");
-    }
 }
