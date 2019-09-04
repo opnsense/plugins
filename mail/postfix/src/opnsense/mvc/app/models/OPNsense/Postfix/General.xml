@@ -27,6 +27,15 @@
             <default>25</default>
             <Required>Y</Required>
         </inet_port>
+        <inet_protocol type="OptionField">
+            <default>all</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <all>All</all>
+                <ipv4>IPv4</ipv4>
+                <ipv6>IPv6</ipv6>
+            </OptionValues>            
+        </inet_protocol>
         <bind_address type="NetworkField">
             <Required>N</Required>
             <AddressFamily>ipv4</AddressFamily>
