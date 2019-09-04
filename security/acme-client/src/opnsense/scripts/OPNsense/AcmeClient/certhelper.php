@@ -828,6 +828,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
                 break;
+            case 'dns_opnsense':
+                $proc_env['OPNs_Host'] = (string)$valObj->dns_opnsense_host;
+                $proc_env['OPNs_Key'] = (string)$valObj->dns_opnsense_key;
+                $proc_env['OPNs_Token'] = (string)$valObj->dns_opnsense_token;
+                $proc_env['OPNs_Api_Insecure'] = (string)$valObj->dns_opnsense_insecure;
+                break;
             case 'dns_ovh':
                 $proc_env['OVH_AK'] = (string)$valObj->dns_ovh_app_key;
                 $proc_env['OVH_AS'] = (string)$valObj->dns_ovh_app_secret;

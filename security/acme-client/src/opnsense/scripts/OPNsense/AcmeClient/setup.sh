@@ -8,4 +8,8 @@ for directory in ${ACME_DIRS}; do
     chmod -R 750 ${directory}
 done
 
+if [ ! -L /var/etc/acme-client/home/dns_opnsense.sh ]; then
+    ln -s /usr/local/opnsense/scripts/OPNsense/AcmeClient/dns_opnsense.sh /var/etc/acme-client/home/dns_opnsense.sh
+fi
+
 exit 0
