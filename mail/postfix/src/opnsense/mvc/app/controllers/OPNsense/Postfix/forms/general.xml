@@ -36,6 +36,12 @@
         <help>Port to listen on.</help>
     </field>
     <field>
+        <id>general.inet_protocol</id>
+        <label>IP Protocol</label>
+        <type>dropdown</type>
+        <help>Choose which IP protocols are allowed, defaults to all.</help>
+    </field>
+    <field>
         <id>general.bind_address</id>
         <label>Bind SMTP Client Address</label>
         <type>text</type>
