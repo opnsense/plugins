@@ -892,10 +892,25 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Prepare altNames
     $altnames = "";
+
+    //Find Alias for main domain
+    // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+    $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
+    if ($dst = dns_get_record($name, DNS_CNAME )) {
+        $altnames .= "--domain-alias " .$dst[0]['target'] . " ";
+    }
+
     if (!empty((string)$certObj->altNames)) {
         $_altnames = explode(",", (string)$certObj->altNames);
         foreach (explode(",", (string)$certObj->altNames) as $altname) {
             $altnames .= "--domain ${altname} ";
+            //Find Alias
+            // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+            $name="_acme-challenge." . ltrim($altname, '*.');
+
+            if ($dst = dns_get_record($name, DNS_CNAME )) {
+                $altnames .= "--domain-alias " .$dst[0]['target'] . " ";
+            }
         }
     }
 
