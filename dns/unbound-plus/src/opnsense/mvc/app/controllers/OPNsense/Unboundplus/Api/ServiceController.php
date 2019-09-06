@@ -29,6 +29,8 @@
 namespace OPNsense\Unboundplus\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Unboundplus\General;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -40,7 +42,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function dnsblAction()
     {
         $this->sessionClose();
-        $mdl = new Dnsbl();
+        $mdl = new General();
         $backend = new Backend();
         $response = $backend->configdpRun('unboundplus dnsbl', array((string)$mdl->type));
         return array("response" => $response);
