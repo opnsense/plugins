@@ -45,7 +45,7 @@
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/unboundplus/general/set", formid='frm_general_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                        ajaxCall(url="/api/unboundplus/service/reconfigure", sendData={}, callback=function(data,status) {
+                        ajaxCall(url="/api/unboundplus/service/dnsbl", sendData={}, callback=function(data,status) {
                             $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                         });
             });
