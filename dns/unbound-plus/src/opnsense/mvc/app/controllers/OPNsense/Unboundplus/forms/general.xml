@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable the usage of DNS blocklists.</help>
+    </field>
+    <field>
+        <id>general.type</id>
+        <label>Type of DNSBL</label>
+        <type>select_multiple</type>
+        <help>Select which kind of DNSBL you want to use.</help>
+    </field>
+</form>
