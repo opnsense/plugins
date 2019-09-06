@@ -738,7 +738,7 @@
     </field>
     <field>
         <id>validation.dns_opnsense_insecure</id>
-        <label>Disable SSL Verification</label>
+        <label>Disable TLS Verification</label>
         <type>checkbox</type>
         <help>Uncheck this box if you have a valid SSL certificate for your OPNsense Interface.</help>
     </field>
