@@ -233,7 +233,7 @@ install() {
 DNSBL=${1}
 
 if [ -z "${DNSBL}" ]; then
-	. /var/unound/etc/dnsbl.inc
+	. /var/unbound/etc/dnsbl.inc
 	DNSBL=${unbound_dnsbl}
 fi
 
