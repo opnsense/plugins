@@ -196,13 +196,6 @@ hphosts-pup() {
         rm ${WORKDIR}/hphosts-pup-raw
 }
 
-hbbtv() {
-	# HBBTV List
-	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/hbbtv.txt -o ${WORKDIR}/hbbtv-raw
-	sed "/\.$/d" ${WORKDIR}/hbbtv-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/hbbtv
-	rm ${WORKDIR}/hbbtv-raw
-}
-
 simplead() {
 	# Simple Ad List
 	${FETCH} https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt -o ${WORKDIR}/simplead-raw
@@ -277,9 +270,6 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	hup)
 		hphosts-pup
-		;;
-	ht)
-		hbbtv
 		;;
 	nc)
 		nocoin

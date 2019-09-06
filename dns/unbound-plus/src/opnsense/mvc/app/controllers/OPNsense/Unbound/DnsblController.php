@@ -26,12 +26,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Unboundplus\Api;
+namespace OPNsense\Unbound;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-
-class GeneralController extends ApiMutableModelControllerBase
+class DnsblController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelClass = '\OPNsense\Unboundplus\General';
-    protected static $internalModelName = 'general';
+    public function indexAction()
+    {
+        $this->view->dnsblForm = $this->getForm('dnsbl');
+        $this->view->pick('OPNsense/Unbound/dnsbl');
+    }
 }
