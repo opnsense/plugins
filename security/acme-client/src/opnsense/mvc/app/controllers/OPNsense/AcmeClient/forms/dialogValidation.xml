@@ -723,9 +723,14 @@
     </field>
     <field>
         <id>validation.dns_opnsense_host</id>
-        <label>Server (FQDN) with port</label>
+        <label>OPNSense Server (FQDN)</label>
         <type>text</type>
     </field>
+    <field>
+        <id>validation.dns_opnsense_port</id>
+        <label>OPNSense Server Port</label>
+        <type>text</type>
+    </field>    
     <field>
         <id>validation.dns_opnsense_key</id>
         <label>User API key </label>

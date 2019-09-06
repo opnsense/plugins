@@ -647,13 +647,17 @@
                 </dns_nsupdate_key>
                 <dns_opnsense_host type="TextField">
                     <Required>N</Required>
-                    <default>localhost:443</default>
+                    <default>localhost</default>
                 </dns_opnsense_host>
-                <dns_opnsense_key type="TextField">
+                <dns_opnsense_port type="TextField">
                     <Required>N</Required>
+                    <default>443</default>
+                </dns_opnsense_port>
+                <dns_opnsense_key type="TextField">
+                    <Required>Y</Required>
                 </dns_opnsense_key>
                 <dns_opnsense_token type="TextField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                 </dns_opnsense_token>
                 <dns_opnsense_insecure type="BooleanField">
                     <Required>N</Required>

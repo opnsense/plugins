@@ -830,6 +830,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_opnsense':
                 $proc_env['OPNs_Host'] = (string)$valObj->dns_opnsense_host;
+                $proc_env['OPNs_Port'] = (string)$valObj->dns_opnsense_port;
                 $proc_env['OPNs_Key'] = (string)$valObj->dns_opnsense_key;
                 $proc_env['OPNs_Token'] = (string)$valObj->dns_opnsense_token;
                 $proc_env['OPNs_Api_Insecure'] = (string)$valObj->dns_opnsense_insecure;
