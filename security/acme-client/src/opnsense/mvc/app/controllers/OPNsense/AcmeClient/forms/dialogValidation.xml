@@ -718,7 +718,7 @@
         <style>table_dns table_dns_opnsense</style>
     </field>
     <field>
-        <label><![CDATA[Please manually install and configure the plugin "bind".]]></label>
+        <label>Please manually install and configure the bind plugin.</label>
         <type>info</type>
     </field>
     <field>
