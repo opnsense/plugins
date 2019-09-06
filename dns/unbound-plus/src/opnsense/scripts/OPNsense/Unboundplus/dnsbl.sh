@@ -220,8 +220,8 @@ simpletrack() {
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
-		#awk '{ if (length($1) < 220) print ""$1" CNAME .\n*."$1" CNAME ."}' ${FILE} | sort -u > ${FILE}.inc
-		awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' ${FILE} | sort -u > ${FILE}.inc
+		cat ${FILE} | sort -u > ${FILE}.inc
+		awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' ${FILE} > ${FILE}.inc
 	done
 	# Merge resulting files (/dev/null in case there are none)
 	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.conf
