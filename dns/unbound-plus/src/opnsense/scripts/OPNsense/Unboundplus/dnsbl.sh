@@ -226,7 +226,7 @@ install() {
         cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
         chown unbound:unbound ${DESTDIR}/dnsbl.conf
         rm -rf ${WORKDIR}
-        service unbound onerestart
+        pluginctl -s unbound restart
 
 }
 
