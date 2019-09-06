@@ -657,7 +657,7 @@
                 </dns_opnsense_token>
                 <dns_opnsense_insecure type="BooleanField">
                     <Required>N</Required>
-                    <default>1</default>
+                    <default>0</default>
                 </dns_opnsense_insecure>
                 <dns_ovh_app_key type="TextField">
                     <Required>N</Required>
