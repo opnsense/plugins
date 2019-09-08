@@ -37,9 +37,9 @@
     </field>
     <field>
         <id>general.inet_protocol</id>
-        <label>IP Protocol</label>
+        <label>IP Version</label>
         <type>dropdown</type>
-        <help>Choose which IP protocols are allowed, defaults to all.</help>
+        <help>Choose which IP versions are allowed, defaults to all.</help>
     </field>
     <field>
         <id>general.bind_address</id>
