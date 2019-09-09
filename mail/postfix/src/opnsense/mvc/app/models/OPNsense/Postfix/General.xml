@@ -27,7 +27,7 @@
             <default>25</default>
             <Required>Y</Required>
         </inet_port>
-        <inet_protocol type="OptionField">
+        <ip_version type="OptionField">
             <default>all</default>
             <Required>Y</Required>
             <OptionValues>
