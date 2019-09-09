@@ -36,7 +36,7 @@
         <help>Port to listen on.</help>
     </field>
     <field>
-        <id>general.inet_protocol</id>
+        <id>general.ip_version</id>
         <label>IP Version</label>
         <type>dropdown</type>
         <help>Choose which IP versions are allowed, defaults to all.</help>
