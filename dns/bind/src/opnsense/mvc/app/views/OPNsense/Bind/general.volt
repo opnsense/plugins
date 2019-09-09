@@ -86,7 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <div class="alert alert-warning" role="alert" style="min-height:65px;">
             <div style="margin-top: 8px;">{{ lang._('Zone management is still in experimental state, use with caution.') }}</div>
         </div>
-        <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditBindDomain">
+        <table id="grid-domains" class="table table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -117,7 +117,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <h2>{{ lang._('Records') }}</h2>
         </div>
         <div id="record-area">
-            <table id="grid-records" class="table table-responsive" data-editDialog="dialogEditBindRecord">
+            <table id="grid-records" class="table table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRecord">
                 <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -142,6 +142,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </table>
         </div>
         <div class="col-md-12">
+            <div id="ChangeMessage" class="alert alert-info" style="display: none" role="alert">
+                {{ lang._('After changing settings, please remember to apply them with the button below') }}
+            </div>
             <hr />
             <button class="btn btn-primary" id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_domain_progress"></i></button>
             <br /><br />
