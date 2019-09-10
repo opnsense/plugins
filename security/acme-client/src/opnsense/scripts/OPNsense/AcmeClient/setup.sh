@@ -10,6 +10,10 @@ for directory in ${ACME_DIRS}; do
     chmod -R 750 ${directory}
 done
 
+if [ ! -L /var/etc/acme-client/home/dns_opnsense.sh ]; then
+    ln -s /usr/local/opnsense/scripts/OPNsense/AcmeClient/dns_opnsense.sh /var/etc/acme-client/home/dns_opnsense.sh
+fi
+
 # Setting owner and mode for base and immediate children (non recursive)
 chown root:wheel ${ACME_BASE} ${ACME_BASE}/*
 chmod 750 ${ACME_BASE} ${ACME_BASE}/*

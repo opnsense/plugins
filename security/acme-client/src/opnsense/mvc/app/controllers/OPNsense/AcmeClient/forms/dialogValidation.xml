@@ -713,6 +713,41 @@
         <help>Requires the whole key file in a format that is compatible with nsupdate.</help>
     </field>
     <field>
+        <label>opnsense</label>
+        <type>header</type>
+        <style>table_dns table_dns_opnsense</style>
+    </field>
+    <field>
+        <label>Please manually install and configure the bind plugin.</label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_host</id>
+        <label>OPNSense Server (FQDN)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_port</id>
+        <label>OPNSense Server Port</label>
+        <type>text</type>
+    </field>    
+    <field>
+        <id>validation.dns_opnsense_key</id>
+        <label>User API key </label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_token</id>
+        <label>User API token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_insecure</id>
+        <label>Disable TLS Verification</label>
+        <type>checkbox</type>
+        <help>Uncheck this box if you have a valid certificate for your OPNsense interface.</help>
+    </field>
+    <field>
         <label>OVH</label>
         <type>header</type>
         <style>table_dns table_dns_ovh</style>

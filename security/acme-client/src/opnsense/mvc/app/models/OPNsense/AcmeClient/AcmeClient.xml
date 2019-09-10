@@ -381,6 +381,7 @@
                         <dns_netcup>netcup DNS API</dns_netcup>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
+                        <dns_opnsense>OPNsense Bind Plugin</dns_opnsense>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
@@ -644,6 +645,24 @@
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_key>
+                <dns_opnsense_host type="TextField">
+                    <Required>N</Required>
+                    <default>localhost</default>
+                </dns_opnsense_host>
+                <dns_opnsense_port type="TextField">
+                    <Required>N</Required>
+                    <default>443</default>
+                </dns_opnsense_port>
+                <dns_opnsense_key type="TextField">
+                    <Required>N</Required>
+                </dns_opnsense_key>
+                <dns_opnsense_token type="TextField">
+                    <Required>N</Required>
+                </dns_opnsense_token>
+                <dns_opnsense_insecure type="BooleanField">
+                    <Required>N</Required>
+                    <default>0</default>
+                </dns_opnsense_insecure>
                 <dns_ovh_app_key type="TextField">
                     <Required>N</Required>
                 </dns_ovh_app_key>
