@@ -718,10 +718,6 @@
         <style>table_dns table_dns_opnsense</style>
     </field>
     <field>
-        <label>Please manually install and configure the bind plugin.</label>
-        <type>info</type>
-    </field>
-    <field>
         <id>validation.dns_opnsense_host</id>
         <label>OPNSense Server (FQDN)</label>
         <type>text</type>
@@ -730,7 +726,7 @@
         <id>validation.dns_opnsense_port</id>
         <label>OPNSense Server Port</label>
         <type>text</type>
-    </field>    
+    </field>
     <field>
         <id>validation.dns_opnsense_key</id>
         <label>User API key </label>
@@ -746,6 +742,15 @@
         <label>Disable TLS Verification</label>
         <type>checkbox</type>
         <help>Uncheck this box if you have a valid certificate for your OPNsense interface.</help>
+    </field>
+    <field>
+        <label>Action required</label>
+        <type>header</type>
+        <style>table_dns table_dns_opnsense bind_plugin_warning</style>
+    </field>
+    <field>
+        <label><![CDATA[Please manually install the plugin "os-bind" to enable support for it.]]></label>
+        <type>info</type>
     </field>
     <field>
         <label>OVH</label>

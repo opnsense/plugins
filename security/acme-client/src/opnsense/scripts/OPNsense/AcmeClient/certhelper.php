@@ -829,6 +829,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
                 break;
             case 'dns_opnsense':
+                # BIND plugin must be installed.
+                if ((string)$modelObj->isPluginInstalled('bind') != "1") {
+                    log_error("AcmeClient: BIND plugin is NOT installed. Please install os-bind.");
+                    return(1);
+                }
                 $proc_env['OPNs_Host'] = (string)$valObj->dns_opnsense_host;
                 $proc_env['OPNs_Port'] = (string)$valObj->dns_opnsense_port;
                 $proc_env['OPNs_Key'] = (string)$valObj->dns_opnsense_key;
