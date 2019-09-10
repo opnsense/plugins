@@ -243,6 +243,22 @@
                     <MaximumValue>60</MaximumValue>
                     <default>60</default>
                 </renewInterval>
+                <aliasmode type="OptionField">
+                    <Required>Y</Required>
+                    <default>none</default>
+                    <OptionValues>
+                        <none>Not using DNS alias mode</none>
+                        <automatic>Automatic Mode (uses DNS lookups)</automatic>
+                        <domain>Domain alias mode</domain>
+                        <challenge>Challenge alias mode</challenge>
+                    </OptionValues>
+                </aliasmode>
+                <domainalias type="TextField">
+                    <Required>N</Required>
+                </domainalias>
+                <challengealias type="TextField">
+                    <Required>N</Required>
+                </challengealias>
                 <!-- hidden field; ID of the certificate in Cert Manager -->
                 <certRefId type="TextField">
                     <Required>N</Required>
@@ -381,7 +397,7 @@
                         <dns_netcup>netcup DNS API</dns_netcup>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
-                        <dns_opnsense>OPNsense Bind Plugin</dns_opnsense>
+                        <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>

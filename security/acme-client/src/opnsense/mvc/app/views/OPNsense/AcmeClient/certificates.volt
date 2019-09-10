@@ -379,6 +379,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
         });
 
+        // Hide options that are irrelevant in this context.
+        $('#DialogCertificate').on('shown.bs.modal', function (e) {
+            $("#certificate\\.aliasmode").change(function(){
+                $(".aliasmode").hide();
+                $(".aliasmode_"+$(this).val()).show();
+            });
+            $("#certificate\\.aliasmode").change();
+        })
+
+
         /***********************************************************************
          * Commands
          **********************************************************************/

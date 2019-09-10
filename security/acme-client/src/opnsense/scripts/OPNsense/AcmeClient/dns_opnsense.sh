@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-#OPNsense Bind API 
+#OPNsense Bind API
 #https://docs.opnsense.org/development/api.html
 #
 #OPNs_Host="opnsense.example.com"
@@ -61,21 +61,19 @@ set_record() {
     # Update
     if _opns_rest "POST" "/record/setRecord/${_uuid}" "$_record_string"; then
       _return_str="$response"
-
     else
       return 1
     fi
-      
+
   else
     #create
     if _opns_rest "POST" "/record/addRecord" "$_record_string"; then
       _return_str="$response"
-
     else
       return 1
     fi
-
   fi
+
   if echo "$_return_str" | _egrep_o  "\"result\":\"saved\"" >/dev/null
   then
     _opns_rest "POST" "/service/reconfigure" "{}"
@@ -85,7 +83,6 @@ set_record() {
     return 1
   fi
 
-   
   return 0
 }
 
@@ -117,14 +114,12 @@ rm_record() {
     else
         _err "Error delteting record $fulldomain"
         return 1
-    fi      
+    fi
   else
     _info "Record not found, nothing to remove"
-
   fi
 
   return 0
-
 }
 
 ####################  Private functions below ##################################
@@ -199,7 +194,6 @@ _build_record_string() {
 }
 
 _existingchallenge() {
-
   if _opns_rest "GET" "/record/searchRecord"; then
     _record_response="$response"
   else
@@ -218,8 +212,6 @@ _existingchallenge() {
 }
 
 _opns_check_auth() {
-
-
   OPNs_Host="${OPNs_Host:-$(_readaccountconf_mutable OPNs_Host)}"
   OPNs_Port="${OPNs_Port:-$(_readaccountconf_mutable OPNs_Port)}"
   OPNs_Key="${OPNs_Key:-$(_readaccountconf_mutable OPNs_Key)}" 
@@ -267,5 +259,4 @@ _opns_check_auth() {
     return 1
   fi
   return 0
-
 }
