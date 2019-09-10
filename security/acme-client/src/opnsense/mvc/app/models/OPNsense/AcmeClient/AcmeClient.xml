@@ -243,6 +243,22 @@
                     <MaximumValue>60</MaximumValue>
                     <default>60</default>
                 </renewInterval>
+                <aliasmode type="OptionField">
+                    <Required>Y</Required>
+                    <default>none</default>
+                    <OptionValues>
+                        <none>Not using DNS alias mode</none>
+                        <automatic>Automatic Mode (uses DNS lookups)</automatic>
+                        <domain>Domain alias mode</domain>
+                        <challenge>Challenge alias mode</challenge>
+                    </OptionValues>
+                </aliasmode>
+                <domainalias type="TextField">
+                    <Required>N</Required>
+                </domainalias>
+                <challengealias type="TextField">
+                    <Required>N</Required>
+                </challengealias>
                 <!-- hidden field; ID of the certificate in Cert Manager -->
                 <certRefId type="TextField">
                     <Required>N</Required>

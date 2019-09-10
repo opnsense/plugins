@@ -70,4 +70,32 @@
         <type>text</type>
         <help><![CDATA[Specifies the days to renew the cert. The max value is 60 days.]]></help>
     </field>
+    <field>
+        <id>certificate.aliasmode</id>
+        <label>DNS Alias Mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[Configure DNS alias mode to validate the certificate.]]></help>
+    </field>
+    <field>
+        <label>DNS Alias Mode</label>
+        <type>header</type>
+        <style>aliasmode aliasmode_domain</style>
+    </field>
+    <field>
+        <id>certificate.domainalias</id>
+        <label>Domain Alias</label>
+        <type>text</type>
+        <help><![CDATA[When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+    </field>
+    <field>
+        <label>DNS Alias Mode</label>
+        <type>header</type>
+        <style>aliasmode aliasmode_challenge</style>
+    </field>
+    <field>
+        <id>certificate.challengealias</id>
+        <label>Challenge Alias</label>
+        <type>text</type>
+        <help><![CDATA[When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+    </field>
 </form>

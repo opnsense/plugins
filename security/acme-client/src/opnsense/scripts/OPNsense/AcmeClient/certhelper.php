@@ -893,24 +893,49 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Prepare altNames
     $altnames = "";
 
-    //Find Alias for main domain
+    // Main domain: Use DNS alias mode for domain validation?
     // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
-    $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
-    if ($dst = dns_get_record($name, DNS_CNAME )) {
-        $altnames .= "--domain-alias " .$dst[0]['target'] . " ";
+    if ($val_method == 'dns01') {
+        switch ((string)$valObj->aliasmode) {
+            case 'automatic':
+                $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
+                if ($dst = dns_get_record($name, DNS_CNAME )) {
+                    $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                }
+                break;
+            case 'domain':
+                $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                break;
+            case 'challenge':
+                $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                break;
+        }
     }
 
     if (!empty((string)$certObj->altNames)) {
         $_altnames = explode(",", (string)$certObj->altNames);
         foreach (explode(",", (string)$certObj->altNames) as $altname) {
             $altnames .= "--domain ${altname} ";
-            //Find Alias
-            // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
-            $name="_acme-challenge." . ltrim($altname, '*.');
 
-            if ($dst = dns_get_record($name, DNS_CNAME )) {
-                $altnames .= "--domain-alias " .$dst[0]['target'] . " ";
+            // altNames: Use DNS alias mode for domain validation?
+            // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+            if ($val_method == 'dns01') {
+                switch ((string)$valObj->aliasmode) {
+                    case 'automatic':
+                        $name = "_acme-challenge." . ltrim($altname, '*.');
+                        if ($dst = dns_get_record($name, DNS_CNAME )) {
+                            $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                        }
+                        break;
+                    case 'domain':
+                        $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                        break;
+                    case 'challenge':
+                        $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                        break;
+                }
             }
+
         }
     }
 
