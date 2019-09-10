@@ -654,10 +654,10 @@
                     <default>443</default>
                 </dns_opnsense_port>
                 <dns_opnsense_key type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </dns_opnsense_key>
                 <dns_opnsense_token type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </dns_opnsense_token>
                 <dns_opnsense_insecure type="BooleanField">
                     <Required>N</Required>
