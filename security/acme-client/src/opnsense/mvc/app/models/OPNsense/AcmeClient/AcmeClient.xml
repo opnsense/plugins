@@ -757,6 +757,7 @@
                         <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
+                        <upload_sftp>Upload certificate via SFTP</upload_sftp>
                         <configd>System or Plugin Command (select below)</configd>
                     </OptionValues>
                 </type>
@@ -770,6 +771,76 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </highwinds_access_token>
+                <sftp_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </sftp_host>
+                <sftp_host_key type="TextField">
+                    <Required>N</Required>
+                    <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
+                         Reference: https://stackoverflow.com/a/475217 -->
+                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
+                </sftp_host_key>
+                <sftp_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>49151</MaximumValue>
+                    <default>22</default>
+                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                </sftp_port>
+                <sftp_user type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </sftp_user>
+                <sftp_identity_type type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ecdsa>ECDSA</ecdsa>
+                        <rsa>RSA</rsa>
+                        <ed25519>ed25519</ed25519>
+                    </OptionValues>
+                </sftp_identity_type>
+                <sftp_remote_path type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,512}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 512 characters.</ValidationMessage>
+                </sftp_remote_path>
+                <sftp_chgrp type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[0-9]+$/u</mask>
+                    <ValidationMessage>Should be a numeric value.</ValidationMessage>
+                </sftp_chgrp>
+                <sftp_chmod type="TextField">
+                    <Required>N</Required>
+                    <mask>/^0[0-9]{3}$/u</mask>
+                    <ValidationMessage>A unix permission, 4 digits (e.g. 0440).</ValidationMessage>
+                </sftp_chmod>
+                <sftp_chmod_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^0[0-9]{3}$/u</mask>
+                    <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
+                </sftp_chmod_key>
+                <sftp_filename_cert type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_cert>
+                <sftp_filename_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_key>
+                <sftp_filename_ca type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_ca>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>

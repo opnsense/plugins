@@ -1297,6 +1297,9 @@ function run_restart_actions($certlist, $modelObj)
                 case 'upload_highwinds':
                     $response = $backend->configdRun("acmeclient upload_highwinds ${cert_id} ${action_id}");
                     break;
+                case 'upload_sftp':
+                    $response = $backend->configdRun("acmeclient upload-sftp ${cert_id} ${action_id}");
+                    break;
                 case 'configd':
                     // Make sure a configd command was specified.
                     if (empty((string)$action->configd)) {

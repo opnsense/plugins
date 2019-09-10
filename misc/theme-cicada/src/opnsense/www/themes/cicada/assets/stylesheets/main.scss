@@ -8836,19 +8836,19 @@ body {
     margin-right: 20px;
     border: 1px solid #515151;
     border-radius: 3px;
-    min-height: 38px;
+    min-height: 51px;
     height: auto;
-    padding: 10px 20px 10px 20px;
+    padding: 8px 20px 7px 20px;
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
-  padding-bottom: 15px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 17px;
 }
 
 .content-box-head {
-  padding-bottom: 15px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 17px;
 }
 
 .page-content-head .navbar-nav, .content-box-head .navbar-nav {
@@ -9673,7 +9673,6 @@ textarea#update_status {
 .fa-info-circle::before, .fa-question-circle::before {
   content: "\f059";
   cursor: pointer;
-  color: #ec6d12;
 }
 
 div.container-fluid > {
@@ -9797,7 +9796,7 @@ input[type="checkbox"] {
   }
 }
 
-.modal-header > span, .m-r-5, .m-r-10 {
+.modal-header > span {
   color: #000;
 }
 

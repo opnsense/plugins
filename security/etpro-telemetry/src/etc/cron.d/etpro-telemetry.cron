@@ -6,5 +6,5 @@
 SHELL=/bin/sh
 PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 #minute	hour	mday	month	wday	who	command
-0,30	*	*	*	*	root    /usr/local/opnsense/scripts/etpro_telemetry/send_heartbeat.py
+0	*	*	*	*	root    /usr/local/opnsense/scripts/etpro_telemetry/send_heartbeat.py
 *	*	*	*	*	root    /usr/local/opnsense/scripts/etpro_telemetry/send_telemetry.py

@@ -8810,20 +8810,20 @@ body {
     margin-right: 20px;
     border: 1px solid #b0b0b0;
     border-radius: 3px;
-    min-height: 38px;
+    min-height: 51px;
     height: auto;
-    padding: 10px 20px 10px 20px;
+    padding: 8px 20px 7px 20px;
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
-  padding-bottom: 15px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 17px;
   color: #000;
 }
 
 .content-box-head {
-  padding-bottom: 15px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 17px;
   color: #000;
 }
 
@@ -9675,7 +9675,6 @@ textarea#update_status {
 
 .fa-question-circle::before {
   content: "\f059";
-  color: #ff7e25;
   cursor: pointer;
 }
 

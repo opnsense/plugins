@@ -5,6 +5,10 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.6
+
+* Removed discontinued DNSBL Zeus Tracker list
+
 1.5
 
 * Add update and extra WindowsSpyBlocker list

@@ -217,13 +217,6 @@ simpletrack() {
 	rm ${WORKDIR}/simpletrack-raw
 }
 
-zeusabuse() {
-	# Zeus Tracker List from abuse.ch
-	${FETCH} https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist -o ${WORKDIR}/zeusabuse-raw
-	sed "/\.$/d" ${WORKDIR}/zeusabuse-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/zeusabuse
-	rm ${WORKDIR}/zeusabuse-raw
-}
-
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
@@ -321,9 +314,6 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	yy)
 		yoyo
-		;;
-	za)
-		zeusabuse
 		;;
 	esac
 done
