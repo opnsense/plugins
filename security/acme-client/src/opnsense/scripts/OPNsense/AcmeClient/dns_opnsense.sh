@@ -214,9 +214,9 @@ _existingchallenge() {
 _opns_check_auth() {
   OPNs_Host="${OPNs_Host:-$(_readaccountconf_mutable OPNs_Host)}"
   OPNs_Port="${OPNs_Port:-$(_readaccountconf_mutable OPNs_Port)}"
-  OPNs_Key="${OPNs_Key:-$(_readaccountconf_mutable OPNs_Key)}" 
-  OPNs_Token="${OPNs_Token:-$(_readaccountconf_mutable OPNs_Token)}" 
-  OPNs_Api_Insecure="${OPNs_Api_Insecure:-$(_readaccountconf_mutable OPNs_Api_Insecure)}" 
+  OPNs_Key="${OPNs_Key:-$(_readaccountconf_mutable OPNs_Key)}"
+  OPNs_Token="${OPNs_Token:-$(_readaccountconf_mutable OPNs_Token)}"
+  OPNs_Api_Insecure="${OPNs_Api_Insecure:-$(_readaccountconf_mutable OPNs_Api_Insecure)}"
 
   if [ -z "$OPNs_Host" ]; then
     OPNs_Host="localhost"

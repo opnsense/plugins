@@ -27,35 +27,35 @@
  */
 
 const ABOUT = <<<TXT
-  
-   This script implements a SFTP based certificate uploader that fully manages 
+
+   This script implements a SFTP based certificate uploader that fully manages
    identities and "known_hosts" inside a local configuration folder.
 
-   Primary purpose is to support the creation of automation tasks that deploy 
-   certificates to other hosts via SFTP after their creation or renewal. 
-   In addition to automations, all operations can also be triggered manually 
+   Primary purpose is to support the creation of automation tasks that deploy
+   certificates to other hosts via SFTP after their creation or renewal.
+   In addition to automations, all operations can also be triggered manually
    using simple CLI commands.
 
    Care has been taken to implement this in a secure way. Authorization is only
    possible via trusted public keys (identities) and restrictions are added to
    the key output created for inclusion in the remote side's "authorized_keys".
    This limits attack vectors that might arise form information leakage.
-   
+
    Identities & "known_hosts" are kept in "/var/etc/acme-client/sftp-config"
-   by default (see "config_path()"). Private info is owner accessible only. 
-  
+   by default (see "config_path()"). Private info is owner accessible only.
+
    Implementation-wise, ssh/sftp tools are used via their CLI api. No attempts
    are made to understand key and file formats more than necessary to reduce
    maintenance efforts and not to break on system wide SSH setups like enabling
    hashing of hostnames.
-  
-   Since there is some complexity involved, the script has a rich commandline 
-   api for testing and integration purposes. It also runs perfectly fine in a 
+
+   Since there is some complexity involved, the script has a rich commandline
+   api for testing and integration purposes. It also runs perfectly fine in a
    local development environment without the opnsense api in place (using
    "--files=file,..." to specify files to upload directly).
-  
+
    See: EXAMPLES & actions_acmeclient.conf
-  
+
 TXT;
 
 // Commands & help
@@ -93,7 +93,7 @@ const STATIC_OPTIONS = <<<TXT
 TXT;
 
 const EXAMPLES = <<<TXT
-- Show the public key used to communicate with the SFTP server 
+- Show the public key used to communicate with the SFTP server
   ./upload_sftp.php --log --identity-type=ecdsa show-identity
 
 - Test connectivity with host
@@ -104,7 +104,7 @@ const EXAMPLES = <<<TXT
 
 - Upload cert to specific server
   ./upload_sftp.php --log --certificates=my.domain.com --host=sftpserver --user=name
-  
+
 - Upload all enabled certs to specific server
   ./upload_sftp.php --log --host=sftpserver --user=name
 TXT;
