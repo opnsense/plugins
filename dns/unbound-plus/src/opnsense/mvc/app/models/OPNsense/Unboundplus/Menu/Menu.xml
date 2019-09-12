@@ -1,7 +1,7 @@
 <menu>
   <Services>
     <Unbound>
-      <DNSBL order="50" url="/ui/unbound/dnsblplus/index"/>
+      <DNSBL order="50" url="/ui/unboundplus/dnsbl/index"/>
     </Unbound>
   </Services>
 </menu>

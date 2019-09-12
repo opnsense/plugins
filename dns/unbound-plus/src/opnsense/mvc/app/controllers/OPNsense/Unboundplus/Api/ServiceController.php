@@ -30,7 +30,7 @@ namespace OPNsense\Unboundplus\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
-use OPNsense\Unbound\Dnsbl;
+use OPNsense\Unboundplus\Dnsbl;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
