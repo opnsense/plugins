@@ -2,8 +2,8 @@
    <page-services-unbound>
       <name>Services: Unbound DNSBL</name>
       <patterns>
-         <pattern>ui/unbound/*</pattern>
-         <pattern>api/unbound/*</pattern>
+         <pattern>ui/unboundplus/*</pattern>
+         <pattern>api/unboundplus/*</pattern>
       </patterns>
    </page-services-unbound>
 </acl>

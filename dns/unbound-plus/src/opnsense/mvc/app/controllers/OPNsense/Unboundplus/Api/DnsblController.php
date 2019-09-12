@@ -26,10 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Unbound;
+namespace OPNsense\Unboundplus\Api;
 
-use OPNsense\Base\BaseModel;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
-class Dnsbl extends BaseModel
+class DnsblController extends ApiMutableModelControllerBase
 {
+    protected static $internalModelClass = '\OPNsense\Unboundplus\Dnsbl';
+    protected static $internalModelName = 'dnsbl';
 }

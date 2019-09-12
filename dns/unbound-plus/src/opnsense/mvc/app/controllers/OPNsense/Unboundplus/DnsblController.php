@@ -26,25 +26,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Unboundplus\Api;
+namespace OPNsense\Unboundplus;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\Unbound\Dnsbl;
-
-class ServiceController extends ApiMutableServiceControllerBase
+class DnsblController extends \OPNsense\Base\IndexController
 {
-    protected static $internalServiceClass = '\OPNsense\Unbound\Dnsbl';
-    protected static $internalServiceTemplate = 'OPNsense/Unbound';
-    protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'unboundplus';
-
-    public function dnsblAction()
+    public function indexAction()
     {
-        $this->sessionClose();
-        $mdl = new Dnsbl();
-        $backend = new Backend();
-        $response = $backend->configdpRun('unboundplus dnsbl', array((string)$mdl->type));
-        return array("response" => $response);
+        $this->view->dnsblForm = $this->getForm('dnsbl');
+        $this->view->pick('OPNsense/Unboundplus/dnsbl');
     }
 }

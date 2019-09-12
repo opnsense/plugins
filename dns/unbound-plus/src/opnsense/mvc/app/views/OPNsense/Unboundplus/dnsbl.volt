@@ -35,7 +35,7 @@
 
 <script>
     $(function() {
-        var data_get_map = {'frm_dnsbl_settings':"/api/unbound/dnsbl/get"};
+        var data_get_map = {'frm_dnsbl_settings':"/api/unboundplus/dnsbl/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
@@ -43,9 +43,9 @@
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/unbound/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/unboundplus/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
                     $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                        ajaxCall(url="/api/unbound/service/dnsbl", sendData={}, callback=function(data,status) {
+                        ajaxCall(url="/api/unboundplus/service/dnsbl", sendData={}, callback=function(data,status) {
                             $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                         });
             });

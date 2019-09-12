@@ -1,5 +1,5 @@
 <model>
-    <mount>//OPNsense/unbound/dnsbl</mount>
+    <mount>//OPNsense/unboundplus/dnsbl</mount>
     <description>Unbound DNSBL configuration</description>
     <version>0.0.1</version>
     <items>
