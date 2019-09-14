@@ -37,5 +37,8 @@
                 <yy>YoYo List</yy>
             </OptionValues>
         </type>
+        <whitelists type="CSVListField">
+            <Required>N</Required>
+        </whitelists>
     </items>
 </model>
