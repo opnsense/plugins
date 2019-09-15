@@ -32,6 +32,13 @@
         <hint>Choose a load balancing algorithm.</hint>
     </field>
     <field>
+        <id>backend.random_draws</id>
+        <label>Random Draws</label>
+        <type>text</type>
+        <help><![CDATA[When using the Random Balancing Algorithm, this value indicates the number of draws before selecting the least loaded of these servers.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>backend.proxyProtocol</id>
         <label>Proxy Protocol</label>
         <type>dropdown</type>

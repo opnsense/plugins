@@ -763,8 +763,16 @@
                         <static-rr>Static Round Robin</static-rr>
                         <leastconn>Least Connections</leastconn>
                         <uri>URI Hash (only HTTP mode)</uri>
+                        <random>Random Algorithm</random>
                     </OptionValues>
                 </algorithm>
+                <random_draws type="IntegerField">
+                    <Required>Y</Required>
+                    <default>2</default>
+                    <MinimumValue>2</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 2 and 1000.</ValidationMessage>
+                </random_draws>
                 <proxyProtocol type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
