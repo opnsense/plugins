@@ -270,10 +270,25 @@
         <style>mode_table table_http</style>
     </field>
     <field>
-        <id>frontend.ssl_http2Enabled</id>
+        <id>frontend.http2Enabled</id>
         <label>Enable HTTP/2</label>
         <type>checkbox</type>
         <help><![CDATA[Enable support for HTTP/2.]]></help>
+    </field>
+    <field>
+        <id>frontend.http2Enabled_nontls</id>
+        <label>HTTP/2 without TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable support for HTTP/2 even if TLS (SSL offloading) is not enabled.]]></help>
+    </field>
+    <field>
+        <id>frontend.advertised_protocols</id>
+        <label>Advertise Protocols (ALPN)</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[When using the TLS ALPN extension, HAProxy advertises the specified protocol list as supported on top of ALPN. SSL offloading must be enabled.]]></help>
     </field>
     <field>
         <id>frontend.forwardFor</id>
