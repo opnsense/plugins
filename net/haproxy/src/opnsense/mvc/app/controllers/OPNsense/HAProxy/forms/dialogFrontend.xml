@@ -105,12 +105,6 @@
         <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake.]]></help>
     </field>
     <field>
-        <id>frontend.ssl_http2Enabled</id>
-        <label>Enable HTTP/2</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable support for HTTP/2.]]></help>
-    </field>
-    <field>
         <id>frontend.ssl_hstsEnabled</id>
         <label>Enable HSTS</label>
         <type>checkbox</type>
@@ -274,6 +268,12 @@
         <label>HTTP(S) settings</label>
         <type>header</type>
         <style>mode_table table_http</style>
+    </field>
+    <field>
+        <id>frontend.ssl_http2Enabled</id>
+        <label>Enable HTTP/2</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable support for HTTP/2.]]></help>
     </field>
     <field>
         <id>frontend.forwardFor</id>
