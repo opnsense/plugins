@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export vboxguest_enable="YES"
+
+/usr/local/etc/rc.d/vboxguest start
