@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.7.0</version>
+    <version>2.8.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -443,10 +443,6 @@
                     <default>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256</default>
                     <Required>N</Required>
                 </ssl_cipherList>
-                <ssl_http2Enabled type="BooleanField">
-                    <default>0</default>
-                    <Required>N</Required>
-                </ssl_http2Enabled>
                 <ssl_hstsEnabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -667,6 +663,25 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
+                <http2Enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled>
+                <http2Enabled_nontls type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled_nontls>
+                <advertised_protocols type="OptionField">
+                    <Required>N</Required>
+                    <default>http2,http11</default>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <http2>HTTP/2</http2>
+                        <http11>HTTP/1.1</http11>
+                        <http10>HTTP/1.0</http10>
+                    </OptionValues>
+                </advertised_protocols>
                 <forwardFor type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -748,8 +763,16 @@
                         <static-rr>Static Round Robin</static-rr>
                         <leastconn>Least Connections</leastconn>
                         <uri>URI Hash (only HTTP mode)</uri>
+                        <random>Random Algorithm</random>
                     </OptionValues>
                 </algorithm>
+                <random_draws type="IntegerField">
+                    <Required>Y</Required>
+                    <default>2</default>
+                    <MinimumValue>2</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 2 and 1000.</ValidationMessage>
+                </random_draws>
                 <proxyProtocol type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
@@ -817,6 +840,25 @@
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
                     <Required>N</Required>
                 </healthCheckRise>
+                <http2Enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled>
+                <http2Enabled_nontls type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled_nontls>
+                <ba_advertised_protocols type="OptionField">
+                    <Required>N</Required>
+                    <default>http2,http11</default>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <http2>HTTP/2</http2>
+                        <http11>HTTP/1.1</http11>
+                        <http10>HTTP/1.0</http10>
+                    </OptionValues>
+                </ba_advertised_protocols>
                 <persistence type="OptionField">
                     <Required>N</Required>
                     <default>sticktable</default>
