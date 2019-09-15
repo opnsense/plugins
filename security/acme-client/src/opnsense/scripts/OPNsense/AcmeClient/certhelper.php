@@ -896,7 +896,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     // Main domain: Use DNS alias mode for domain validation?
     // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
     if ($val_method == 'dns01') {
-        switch ((string)$valObj->aliasmode) {
+        switch ((string)$certObj->aliasmode) {
             case 'automatic':
                 $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
                 if ($dst = dns_get_record($name, DNS_CNAME )) {
@@ -920,7 +920,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             // altNames: Use DNS alias mode for domain validation?
             // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
             if ($val_method == 'dns01') {
-                switch ((string)$valObj->aliasmode) {
+                switch ((string)$certObj->aliasmode) {
                     case 'automatic':
                         $name = "_acme-challenge." . ltrim($altname, '*.');
                         if ($dst = dns_get_record($name, DNS_CNAME )) {
