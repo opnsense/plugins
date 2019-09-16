@@ -44,6 +44,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $this->sessionClose();
         $mdl = new Dnsbl();
         $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/Unboundplus');
         $response = $backend->configdpRun('unboundplus dnsbl', array((string)$mdl->type));
         return array("response" => $response);
     }
