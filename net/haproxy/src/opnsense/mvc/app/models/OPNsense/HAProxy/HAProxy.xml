@@ -673,7 +673,7 @@
                 </http2Enabled_nontls>
                 <advertised_protocols type="OptionField">
                     <Required>N</Required>
-                    <default>http2,http11</default>
+                    <default>h2,http11</default>
                     <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <OptionValues>
@@ -850,7 +850,7 @@
                 </http2Enabled_nontls>
                 <ba_advertised_protocols type="OptionField">
                     <Required>N</Required>
-                    <default>http2,http11</default>
+                    <default>h2,http11</default>
                     <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <OptionValues>
