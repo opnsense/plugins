@@ -10,7 +10,7 @@ else
         exit 1
 fi
 
-cat /usr/local/etc/pkg/repos/SunnyValley.conf.default | sed "s/%%FLAVOR%%/${OPNSENSE_FLAVOR}/g" > /usr/local/etc/pkg/repos/SunnyValley.conf
+cat /usr/local/etc/pkg/repos/SunnyValley.conf.shadow.in | sed "s/%%FLAVOR%%/${OPNSENSE_FLAVOR}/g" > /usr/local/etc/pkg/repos/SunnyValley.conf
 
 
 
