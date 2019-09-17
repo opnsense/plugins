@@ -1,7 +1,0 @@
-SunnyValley: {
-  fingerprints: "/usr/local/etc/pkg/fingerprints/SunnyValley",
-  url: "https://updates.sunnyvalley.io/opnsense/LibreSSL/repo/",
-  signature_type: "fingerprints",
-  priority: 7,
-  enabled: yes
-}
