@@ -94,8 +94,6 @@
                                 <default></default>
                                 <OptionValues>
                                         <broadcast>Broadcast multi-access network</broadcast>
-                                        <non-broadcast>NBMA network</non-broadcast>
-                                        <point-to-multipoint>Point-to-multipoint network</point-to-multipoint>
                                         <point-to-point>Point-to-point network</point-to-point>
                                 </OptionValues>
                         </networktype>
