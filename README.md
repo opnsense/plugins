@@ -91,6 +91,7 @@ sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
+sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 vendor/sunnyvalley -- Sunny Valley Networks Vendor Repository
