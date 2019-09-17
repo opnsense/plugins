@@ -31,6 +31,7 @@ namespace OPNsense\AcmeClient\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 use \OPNsense\Base\UIModelGrid;
+use \OPNsense\Core\Backend;
 use \OPNsense\Core\Config;
 use \OPNsense\AcmeClient\AcmeClient;
 
@@ -72,5 +73,55 @@ class ActionsController extends ApiMutableModelControllerBase
     public function searchAction()
     {
         return $this->searchBase('actions.action', array('enabled', 'name', 'description'), 'name');
+    }
+
+    public function sftpGetIdentityAction()
+    {
+        $result = ["status" => "unavailable"];
+
+        if ($response = $this->callBackend(["show-sftp-identity"], ["sftp_identity_type", "sftp_host"])) {
+            $result["status"] = "ok";
+            $result["identity"] = $response;
+        }
+
+        return $result;
+    }
+
+    public function sftpTestConnectionAction()
+    {
+        if ($response = $this->callBackend(
+            ["test-sftp-connection"],
+            ["sftp_host", "sftp_host_key", "sftp_port", "sftp_user", "sftp_identity_type", "sftp_remote_path", "sftp_chmod", "sftp_chgrp"])) {
+
+            return $response;
+        }
+
+        return ["status" => "unavailable"];
+    }
+
+    private function callBackend(array $command, array $arguments = [])
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+
+            foreach ($arguments as $name) {
+                $command[] = $this->request->getPost($name);
+            }
+
+            $command = array_map(function ($value) {
+                return escapeshellarg(empty($value = trim($value)) ? "__default_value" : $value);
+            }, $command);
+
+            if ($result = trim($backend->configdRun("acmeclient " . join(" ", $command)))) {
+                if (preg_match('/^\[.+\]$/ms', $result) || preg_match('/^\{.+\}$/ms', $result)) {
+                    try {
+                        $result = json_decode($result, true, 64, JSON_THROW_ON_ERROR);
+                    } catch (\Exception $ignored) {/*pass as is when json parsing fails*/}
+                }
+                return $result;
+            }
+        }
+
+        return false;
     }
 }

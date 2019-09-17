@@ -2641,21 +2641,21 @@ th {
 }
 
 .table-bordered {
-  border: 1px solid #eee;
+  border: 1px solid #dbdbdb;
   > {
     thead > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #dbdbdb;
       }
     }
     tbody > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #dbdbdb;
       }
     }
     tfoot > tr > {
       th, td {
-        border: 1px solid #eee;
+        border: 1px solid #dbdbdb;
       }
     }
     thead > tr > {
@@ -4721,12 +4721,12 @@ fieldset[disabled] .btn-primary {
 
 .btn-success {
   color: #fff;
-  background-color: #9BD275;
+  background-color: #85ce53;
   border-color: #323232;
   &:hover, &:focus, &:active, &.active {
     color: #fff;
     background-color: #7fc54f;
-    border-color: #6db53b;
+    border-color: #323232;
     outline: 0;
   }
 }
@@ -4734,7 +4734,7 @@ fieldset[disabled] .btn-primary {
 .open > .btn-success.dropdown-toggle {
   color: #fff;
   background-color: #7fc54f;
-  border-color: #6db53b;
+  border-color: #323232;
   outline: 0;
 }
 
@@ -5116,6 +5116,7 @@ tbody.collapse.in {
   font-size: 14px;
   text-align: left;
   background-color: #315a71;
+  color: #fff;
   border-left: 1px solid #1b4257;
   border-right: 1px solid #1b4257;
   border-bottom: 1px solid #1b4257;
@@ -5145,7 +5146,7 @@ tbody.collapse.in {
       clear: both;
       font-weight: normal;
       line-height: 1.428571429;
-      color: #FFFFFF;
+      color: #fff;
       white-space: nowrap;
       outline: 0;
       &:hover, &:focus {
@@ -7954,7 +7955,7 @@ button.close {
 .modal-content {
   position: relative;
   background-color: #383838;
-  border: 1px solid #565656;
+  border: none;
   border-radius: 3px;
   -webkit-box-shadow: 0 5px 15px rgb(30, 30, 30);
   box-shadow: 0 5px 15px rgb(5, 5, 5);
@@ -8809,20 +8810,20 @@ body {
     margin-right: 20px;
     border: 1px solid #b0b0b0;
     border-radius: 3px;
-    min-height: 38px;
+    min-height: 51px;
     height: auto;
-    padding: 10px 20px 10px 20px;
+    padding: 8px 20px 7px 20px;
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
-  padding-bottom: 15px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 17px;
   color: #000;
 }
 
 .content-box-head {
-  padding-bottom: 15px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 17px;
   color: #000;
 }
 
@@ -9674,7 +9675,6 @@ textarea#update_status {
 
 .fa-question-circle::before {
   content: "\f059";
-  color: #ff7e25;
   cursor: pointer;
 }
 
@@ -9770,4 +9770,67 @@ h3 {
 #chart, #chart_intf_in, #chart_intf_out, #chart_top_ports, #chart_top_sources, #traffic_graph_widget_chart_in, #traffic_graph_widget_chart_out {
   background-color: #FFF;
   border: 1px solid #b0b0b0;
+}
+
+/*additional extensions for sensei*/
+
+.preloader-wrapper {
+  background-color: #e3e3e3 !important;
+  opacity: 0.98 !important;
+}
+
+.no-data {
+  color: #000 !important;
+}
+
+.has-success .form-control:focus, .has-error .form-control:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+input[type="checkbox"] {
+  &.checkbox-switch + i::before, &.checkbox-icon + i::before {
+    color: #CB4326 !important;
+  }
+  &.checkbox-switch {
+    + i::before {
+      color: #CB4326 !important;
+    }
+    &:checked + i::before {
+      color: #4FB654 !important;
+    }
+  }
+  &.checkbox-icon:checked + i::before, &.checkbox-icon-2:checked + i::before {
+    color: #4FB654 !important;
+  }
+}
+
+.modal-header > span {
+  color: #000;
+}
+
+.bootstrap-datetimepicker-widget {
+  table td span:hover {
+    background: none !important;
+  }
+  background-color: #FF7E25 !important;
+}
+
+.modal-side {
+  > .p-15 {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #4a4a4a;
+    min-height: 16.42857px;
+    background-color: #427795;
+    color: #FFF;
+  }
+  margin: 62px 10px 10px 10px;
+  background-color: #f0f0f0 !important;
+}
+
+.panel-report-tools:hover {
+  color: #fff !important;
 }

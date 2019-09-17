@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export vboxservice_enable="YES"
+export vboxservice_flags="--disable-timesync"
+
+/usr/local/etc/rc.d/vboxservice start

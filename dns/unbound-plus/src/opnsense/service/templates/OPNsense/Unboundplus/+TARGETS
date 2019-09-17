@@ -1,0 +1,2 @@
+dnsbl.inc:/var/unbound/etc/dnsbl.inc
+whitelist.inc:/var/unbound/etc/whitelist.inc

@@ -36,6 +36,12 @@
         <help>Port to listen on.</help>
     </field>
     <field>
+        <id>general.ip_version</id>
+        <label>IP Version</label>
+        <type>dropdown</type>
+        <help>Choose which IP versions are allowed, defaults to all.</help>
+    </field>
+    <field>
         <id>general.bind_address</id>
         <label>Bind SMTP Client Address</label>
         <type>text</type>

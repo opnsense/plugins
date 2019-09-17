@@ -811,6 +811,13 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Namesilo applies changes to DNS records only every 15 minutes.
                 $acme_hook_options[] = "--dnssleep 960";
                 break;
+            case 'dns_netcup':
+                $proc_env['NC_CID'] = (string)$valObj->dns_netcup_cid;
+                $proc_env['NC_Apikey'] = (string)$valObj->dns_netcup_key;
+                $proc_env['NC_Apipw'] = (string)$valObj->dns_netcup_pw;
+                // netcup applies changes to DNS records only every 10 minutes.
+                $acme_hook_options[] = "--dnssleep 600";
+                break;
             case 'dns_nsone':
                 $proc_env['NS1_Key'] = (string)$valObj->dns_nsone_key;
                 break;
@@ -820,6 +827,18 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 file_put_contents($secret_key_filename, $secret_key_data);
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
+                break;
+            case 'dns_opnsense':
+                # BIND plugin must be installed.
+                if ((string)$modelObj->isPluginInstalled('bind') != "1") {
+                    log_error("AcmeClient: BIND plugin is NOT installed. Please install os-bind.");
+                    return(1);
+                }
+                $proc_env['OPNs_Host'] = (string)$valObj->dns_opnsense_host;
+                $proc_env['OPNs_Port'] = (string)$valObj->dns_opnsense_port;
+                $proc_env['OPNs_Key'] = (string)$valObj->dns_opnsense_key;
+                $proc_env['OPNs_Token'] = (string)$valObj->dns_opnsense_token;
+                $proc_env['OPNs_Api_Insecure'] = (string)$valObj->dns_opnsense_insecure;
                 break;
             case 'dns_ovh':
                 $proc_env['OVH_AK'] = (string)$valObj->dns_ovh_app_key;
@@ -873,10 +892,50 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Prepare altNames
     $altnames = "";
+
+    // Main domain: Use DNS alias mode for domain validation?
+    // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+    if ($val_method == 'dns01') {
+        switch ((string)$certObj->aliasmode) {
+            case 'automatic':
+                $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
+                if ($dst = dns_get_record($name, DNS_CNAME )) {
+                    $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                }
+                break;
+            case 'domain':
+                $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                break;
+            case 'challenge':
+                $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                break;
+        }
+    }
+
     if (!empty((string)$certObj->altNames)) {
         $_altnames = explode(",", (string)$certObj->altNames);
         foreach (explode(",", (string)$certObj->altNames) as $altname) {
             $altnames .= "--domain ${altname} ";
+
+            // altNames: Use DNS alias mode for domain validation?
+            // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+            if ($val_method == 'dns01') {
+                switch ((string)$certObj->aliasmode) {
+                    case 'automatic':
+                        $name = "_acme-challenge." . ltrim($altname, '*.');
+                        if ($dst = dns_get_record($name, DNS_CNAME )) {
+                            $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                        }
+                        break;
+                    case 'domain':
+                        $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                        break;
+                    case 'challenge':
+                        $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                        break;
+                }
+            }
+
         }
     }
 
@@ -1282,6 +1341,9 @@ function run_restart_actions($certlist, $modelObj)
                     break;
                 case 'upload_highwinds':
                     $response = $backend->configdRun("acmeclient upload_highwinds ${cert_id} ${action_id}");
+                    break;
+                case 'upload_sftp':
+                    $response = $backend->configdRun("acmeclient upload-sftp ${cert_id} ${action_id}");
                     break;
                 case 'configd':
                     // Make sure a configd command was specified.

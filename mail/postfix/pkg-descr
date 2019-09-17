@@ -6,9 +6,13 @@ is completely different.
 Plugin Changelog
 ================
 
+1.11
+
+* Allow suport for v4 or v6 only or both
+
 1.10
 
-* Add support for configuring sender_canonical_maps 
+* Add support for configuring sender_canonical_maps
 
 1.9
 

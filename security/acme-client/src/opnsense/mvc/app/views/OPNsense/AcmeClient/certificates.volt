@@ -60,10 +60,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 "commands": function (column, row) {
                     return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>";
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {
@@ -378,6 +378,16 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
         });
+
+        // Hide options that are irrelevant in this context.
+        $('#DialogCertificate').on('shown.bs.modal', function (e) {
+            $("#certificate\\.aliasmode").change(function(){
+                $(".aliasmode").hide();
+                $(".aliasmode_"+$(this).val()).show();
+            });
+            $("#certificate\\.aliasmode").change();
+        })
+
 
         /***********************************************************************
          * Commands

@@ -390,4 +390,22 @@ class SettingsController extends ApiMutableModelControllerBase
 
         return $result;
     }
+
+    /**
+     * Check wether the BIND plugin is installed.
+     * @return array status action
+     */
+    public function getBindPluginStatusAction()
+    {
+        $result = array("result" => "0");
+
+        $mdlAcme = $this->getModel();
+
+        // Check if the required plugin is installed
+        if ((string)$mdlAcme->isPluginInstalled('bind') == "1") {
+            $result['result'] = "1";
+        }
+
+        return $result;
+    }
 }
