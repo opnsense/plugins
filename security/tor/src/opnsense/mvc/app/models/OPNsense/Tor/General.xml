@@ -1,6 +1,7 @@
 <model>
   <mount>//OPNsense/tor/general</mount>
   <description>General Tor configuration</description>
+  <version>1.0.0</version>
   <items>
     <enabled type="BooleanField">
       <default>0</default>
@@ -36,6 +37,10 @@
       <default>0</default>
       <Required>Y</Required>
     </enablelogfile>
+    <dormant_canceled_by_startup type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </dormant_canceled_by_startup>
     <logfilelevel type="OptionField">
       <Required>Y</Required>
       <multiple>N</multiple>
