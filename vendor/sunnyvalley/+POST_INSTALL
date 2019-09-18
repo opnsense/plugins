@@ -1,16 +1,12 @@
-
 OPNSENSE_FLAVOR=$(/usr/local/sbin/opnsense-version -f)
+REPO_FILE=/usr/local/etc/pkg/repos/SunnyValley.conf
 
-if [ "${OPNSENSE_FLAVOR}" == "OpenSSL" ]; then
-        echo "Configuring repository for OpenSSL flavor"
-elif [ "${OPNSENSE_FLAVOR}" == "LibreSSL" ]; then
-        echo "Configuring repository for LibreSSL flavor"
-else
-        echo "Unsupported OPNsense flavor, aborting"
-        exit 1
-fi
-
-cat /usr/local/etc/pkg/repos/SunnyValley.conf.shadow.in | sed "s/%%FLAVOR%%/${OPNSENSE_FLAVOR}/g" > /usr/local/etc/pkg/repos/SunnyValley.conf
-
-
-
+case "${OPNSENSE_FLAVOR}" in
+OpenSSL|LibreSSL)
+	echo "Configuring repository for ${OPNSENSE_FLAVOR} flavor"
+	sed "s/%%FLAVOR%%/${OPNSENSE_FLAVOR}/g" "${REPO_FILE}".template > "${REPO_FILE}"
+	;;
+*)
+	echo "Unsupported OPNsense flavor (${OPNSENSE_FLAVOR}), aborting"
+	;;
+esac
