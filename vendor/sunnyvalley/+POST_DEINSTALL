@@ -1,0 +1,3 @@
+
+rm -f /usr/local/etc/pkg/repos/SunnyValley.conf
+
