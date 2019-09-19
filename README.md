@@ -38,6 +38,7 @@ dns/bind -- BIND domain name service
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
+dns/unbound-plus -- Unbound additions
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - grey/orange
@@ -90,6 +91,7 @@ sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
+sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 vendor/sunnyvalley -- Sunny Valley Networks Vendor Repository
