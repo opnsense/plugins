@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .widgetdiv .content-box-head {
-  background: #30596f !important;
+  background: #294c5f !important;
   color: #FFF !important;
   padding-bottom: 1px !important;
   padding-top: 1px !important;
@@ -7777,14 +7777,14 @@ a.list-group-item-danger {
 }
 
 .panel-info {
-  border-color: #bce8f1;
+  border-color: #b0b0b0;
   > {
     .panel-heading {
       color: #31708f;
       background-color: #d9edf7;
-      border-color: #bce8f1;
+      border-color: #b0b0b0;
       + .panel-collapse > .panel-body {
-        border-top-color: #bce8f1;
+        border-top-color: #b0b0b0;
       }
       .badge {
         color: #d9edf7;
@@ -7792,7 +7792,7 @@ a.list-group-item-danger {
       }
     }
     .panel-footer + .panel-collapse > .panel-body {
-      border-bottom-color: #bce8f1;
+      border-bottom-color: #b0b0b0;
     }
   }
 }
@@ -8805,7 +8805,7 @@ body {
 
 .page-content-head {
   .container-fluid {
-    background-color: #F0F0F0;
+    background-color: #FBFBFB;
     margin-left: 20px;
     margin-right: 20px;
     border: 1px solid #b0b0b0;
@@ -9111,14 +9111,14 @@ a.list-group-item.active-menu-title.collapsed {
           padding-left: 10px !important;
           font-size: 14px !important;
           background-color: #294c5f !important;
-          opacity: 0.95;
+          opacity: 0.98;
         }
       }
       > a.list-group-item {
         padding-left: 10px !important;
         font-size: 14px !important;
         background-color: #294c5f !important;
-        opacity: 0.95;
+        opacity: 0.98;
       }
       > div.collapse > a.list-group-item {
         padding-left: 10px !important;
