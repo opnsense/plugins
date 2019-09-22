@@ -34,7 +34,7 @@
                 <all>All</all>
                 <ipv4>IPv4</ipv4>
                 <ipv6>IPv6</ipv6>
-            </OptionValues>            
+            </OptionValues>
         </ip_version>
         <bind_address type="NetworkField">
             <Required>N</Required>
