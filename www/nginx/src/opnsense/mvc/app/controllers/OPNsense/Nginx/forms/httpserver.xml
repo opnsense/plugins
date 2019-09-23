@@ -133,6 +133,12 @@
     <help>If you check this box, a TLS encrypted connection is enforced.</help>
   </field>
   <field>
+    <id>httpserver.ocsp_stapling</id>
+    <label>OCSP Stapling</label>
+    <type>checkbox</type>
+    <help>If you check this box, OCSP stapling (ssl_stapling) is enabled.</help>
+  </field>  
+  <field>
     <id>httpserver.block_nonpublic_data</id>
     <label>Block Configuration Files</label>
     <type>checkbox</type>
