@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable NRPE</label>
+        <type>checkbox</type>
+        <help>This will activate the NRPE service.</help>
+    </field>
+</form>
