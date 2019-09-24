@@ -5,4 +5,28 @@
         <type>checkbox</type>
         <help>This will activate the NRPE service.</help>
     </field>
+    <field>
+        <id>general.server_port</id>
+        <label>Server Port</label>
+        <type>text</type>
+        <help>Set the port the daemon is listening to.</help>
+    </field>
+    <field>
+        <id>general.server_address</id>
+        <label>Server Address</label>
+        <type>text</type>
+        <help>Set the address the daemon is listening to. Empty means listen to all addresses.</help>
+    </field>
+    <field>
+        <id>general.allowed_hosts</id>
+        <label>Allowed Hosts</label>
+        <type>text</type>
+        <help>Set the list of allowed hosts which can query this system.</help>
+    </field>
+    <field>
+        <id>general.dont_blame_nrpe</id>
+        <label>Allow Arguments</label>
+        <type>checkbox</type>
+        <help>Enable to allow arguments sent to NRPE.</help>
+    </field>
 </form>
