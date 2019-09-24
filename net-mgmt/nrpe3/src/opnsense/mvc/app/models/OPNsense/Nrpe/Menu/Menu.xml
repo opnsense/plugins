@@ -1,6 +1,6 @@
 <menu>
     <Services>
-        <NRPE cssClass="fa fa-lock fa-fw">
+        <NRPE cssClass="fa fa-notes-medical fa-fw">
             <Configuration url="/ui/nrpe/general/index" order="10"/>
         </NRPE>
     </Services>
