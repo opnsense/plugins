@@ -52,9 +52,11 @@ if (!strstr($subsystem, '@')) {
 
 switch ($type) {
     case 'MASTER':
+        log_error(sprintf('FRR started since subsystem %s changed to type %s', $subsystem, $type));
         shell_exec('/usr/local/etc/rc.d/frr start');
         break;
     case 'BACKUP':
+        log_error(sprintf('FRR stopped since subsystem %s changed to type %s', $subsystem, $type));
         shell_exec('/usr/local/etc/rc.d/frr stop');
         break;
 }
