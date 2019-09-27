@@ -53,13 +53,13 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    updateServiceControlUI('nrpe');
+    updateServiceControlUI('nrpe3');
 
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/nrpe/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/nrpe/service/reconfigure", sendData={}, callback=function(data,status) {
-                updateServiceControlUI('nrpe');
+                updateServiceControlUI('nrpe3');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
