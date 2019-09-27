@@ -54,20 +54,20 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $backend = new Backend();
         $response_org = $backend->configdRun("wireguard showconf");      
-		$response = '';
-		
-		$pubnames = $this->getPubkeyNames();
-		$rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
-		foreach($rp_lines as $line){
-			if(substr($line, 0, 6) == 'peer: '){
-				$key = trim(substr($line, 6));
-				if(isset($pubnames[$key])){
-					$line.= ' * '. $pubnames[$key];
-				}
-			}
-			$response.= $line.PHP_EOL;
-		}
-		return array("response" => $response);
+        $response = '';
+
+        $pubnames = $this->getPubkeyNames();
+        $rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
+        foreach($rp_lines as $line)
+        {
+            if(substr($line, 0, 6) == 'peer: ')
+            {
+                $key = trim(substr($line, 6));
+                if(isset($pubnames[$key])) $line.= ' * '. $pubnames[$key];
+            }
+            $response.= $line.PHP_EOL;
+        }
+        return array("response" => $response);
     }
 
     /**
@@ -76,47 +76,48 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function showhandshakeAction()
     {
+        $curtime = time();
         $backend = new Backend();
-        $response_org = $backend->configdRun("wireguard showhandshake");		
-		$response = '';
-		$curtime = time();
-		
-		$pubnames = $this->getPubkeyNames();
-		$rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
-		foreach($rp_lines as $line){
-			$cols = preg_split('/[\s\t]{1,}/', $line);
-			if(count($cols) > 2)
-			{
-				$name = isset($pubnames[$cols[1]]) ? $pubnames[$cols[1]] : '<UNKNOWN>';
-				$date = !empty($cols[2]) ? ($curtime - intval($cols[2])).' sec. ago' : "NOT CONNECTED  ";
-				$extratab = empty($cols[2]) ? "\t\t" : "\t";
-				$response.= $line. $extratab.$date."\t".$name.PHP_EOL;
-			} else {
-				$response.= $line.PHP_EOL;
-			}
-		}
-		
+        $response_org = $backend->configdRun("wireguard showhandshake");        
+        $response = '';
+        
+        $pubnames = $this->getPubkeyNames();
+        $rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
+        foreach($rp_lines as $line)
+        {
+            $cols = preg_split('/[\s\t]{1,}/', $line);
+            if(count($cols) > 2)
+            {
+                $name = isset($pubnames[$cols[1]]) ? $pubnames[$cols[1]] : '<UNKNOWN>';
+                $date = !empty($cols[2]) ? ($curtime - intval($cols[2])).' sec. ago' : 'NOT CONNECTED';
+                $extratab = empty($cols[2]) ? "\t\t" : "\t";
+                $response.= $line. $extratab.$date."\t".$name.PHP_EOL;
+            } else {
+                $response.= $line.PHP_EOL;
+            }
+        }
+        
         return array("response" => $response);
     }
-	
-	/**
+    
+    /**
      * build Dictionary pubkey => name
      * @return array
      */
-	private function getPubkeyNames()
-	{
+    private function getPubkeyNames()
+    {
         $mdlclients = new Client();
         $search = $mdlclients->getNodes();
-    	
-		$ret = array();
-		if(is_array($search['clients']['client']))
-		{
-			foreach($search['clients']['client'] as $client)
-			{
-				$ret[$client['pubkey']] = $client['name'];
-			}	
-		}		
-		return $ret;
-	}
-	
+        
+        $ret = array();
+        if(is_array($search['clients']['client']))
+        {
+            foreach($search['clients']['client'] as $client)
+            {
+                $ret[$client['pubkey']] = $client['name'];
+            }    
+        }        
+        return $ret;
+    }
+    
 }
