@@ -14,13 +14,17 @@
     <field>
         <id>general.server_address</id>
         <label>Server Address</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Set the address the daemon is listening to. Empty means listen to all addresses.</help>
     </field>
     <field>
         <id>general.allowed_hosts</id>
         <label>Allowed Hosts</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Set the list of allowed hosts which can query this system.</help>
     </field>
     <field>
