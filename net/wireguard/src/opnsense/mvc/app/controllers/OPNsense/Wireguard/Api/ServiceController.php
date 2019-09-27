@@ -78,9 +78,9 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $curtime = time();
         $backend = new Backend();
-        $response_org = $backend->configdRun("wireguard showhandshake");        
+        $response_org = $backend->configdRun("wireguard showhandshake");
         $response = '';
-        
+
         $pubnames = $this->getPubkeyNames();
         $rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
         foreach($rp_lines as $line)
@@ -96,10 +96,10 @@ class ServiceController extends ApiMutableServiceControllerBase
                 $response.= $line.PHP_EOL;
             }
         }
-        
+
         return array("response" => $response);
     }
-    
+
     /**
      * build Dictionary pubkey => name
      * @return array
@@ -108,16 +108,16 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $mdlclients = new Client();
         $search = $mdlclients->getNodes();
-        
+
         $ret = array();
         if(is_array($search['clients']['client']))
         {
             foreach($search['clients']['client'] as $client)
             {
                 $ret[$client['pubkey']] = $client['name'];
-            }    
-        }        
+            }
+        }
         return $ret;
     }
-    
+
 }
