@@ -53,6 +53,8 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    updateServiceControlUI('nrpe');
+
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/nrpe/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
