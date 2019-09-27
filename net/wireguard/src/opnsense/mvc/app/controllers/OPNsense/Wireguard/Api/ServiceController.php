@@ -79,12 +79,14 @@ class ServiceController extends ApiMutableServiceControllerBase
         $curtime = time();
         $backend = new Backend();
         $response_org = $backend->configdRun("wireguard showhandshake");
-        $response = '';
+        $resp_arr = array();
 
         $pubnames = $this->getPubkeyNames();
         $rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
         foreach($rp_lines as $line)
         {
+            $line = trim($line);
+            if(empty($line)) continue;
             $cols = preg_split('/[\s\t]{1,}/', $line);
             if(count($cols) > 2)
             {
@@ -92,13 +94,14 @@ class ServiceController extends ApiMutableServiceControllerBase
                 $timediff = $curtime - intval($cols[2]);
                 $date = !empty($cols[2]) ? ($timediff < 600 ? $timediff." sec. ago\t" : date('Y-m-d H:i:s', intval($cols[2]))) : "NEVER CONNECTED\t";
                 $extratab = empty($cols[2]) ? "\t\t" : "\t";
-                $response.= $line. $extratab.$date."\t".$name.PHP_EOL;
+                $resp_arr[] = $line. $extratab.$date."\t".$name;
             } else {
-                $response.= $line.PHP_EOL;
+                $resp_arr[] = $line;
             }
         }
+        sort($resp_arr);
 
-        return array("response" => $response);
+        return array("response" => implode(PHP_EOL, $resp_arr));
     }
 
     /**
