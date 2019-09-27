@@ -89,7 +89,8 @@ class ServiceController extends ApiMutableServiceControllerBase
             if(count($cols) > 2)
             {
                 $name = isset($pubnames[$cols[1]]) ? $pubnames[$cols[1]] : '<UNKNOWN>';
-                $date = !empty($cols[2]) ? ($curtime - intval($cols[2])).' sec. ago' : 'NOT CONNECTED';
+                $timediff = $curtime - intval($cols[2]);
+                $date = !empty($cols[2]) ? ($timediff < 600 ? $timediff." sec. ago\t" : date('Y-m-d H:i:s', intval($cols[2]))) : "NEVER CONNECTED\t";
                 $extratab = empty($cols[2]) ? "\t\t" : "\t";
                 $response.= $line. $extratab.$date."\t".$name.PHP_EOL;
             } else {
