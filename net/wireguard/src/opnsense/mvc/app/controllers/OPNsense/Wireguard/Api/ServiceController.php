@@ -63,7 +63,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             if(substr($line, 0, 6) == 'peer: ')
             {
                 $key = trim(substr($line, 6));
-                if(isset($pubnames[$key])) $line.= ' * '. $pubnames[$key];
+                if(isset($pubnames[$key])) $line.= ' * '.$pubnames[$key];
             }
             $response.= $line.PHP_EOL;
         }
@@ -87,14 +87,14 @@ class ServiceController extends ApiMutableServiceControllerBase
         {
             $line = trim($line);
             if(empty($line)) continue;
-            $cols = preg_split('/[\s\t]{1,}/', $line);
+            $cols = preg_split('/[\s]+/', $line);
             if(count($cols) > 2)
             {
                 $name = isset($pubnames[$cols[1]]) ? $pubnames[$cols[1]] : '<UNKNOWN>';
                 $timediff = $curtime - intval($cols[2]);
                 $date = !empty($cols[2]) ? ($timediff < 600 ? $timediff." sec. ago\t" : date('Y-m-d H:i:s', intval($cols[2]))) : "NEVER CONNECTED\t";
                 $extratab = empty($cols[2]) ? "\t\t" : "\t";
-                $resp_arr[] = $line. $extratab.$date."\t".$name;
+                $resp_arr[] = $line.$extratab.$date."\t".$name;
             } else {
                 $resp_arr[] = $line;
             }
@@ -114,7 +114,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $search = $mdlclients->getNodes();
 
         $ret = array();
-        if(is_array($search['clients']['client']))
+        if(isset($search['clients']['client']) && is_array($search['clients']['client']))
         {
             foreach($search['clients']['client'] as $client)
             {
