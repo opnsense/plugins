@@ -136,8 +136,16 @@
     <id>httpserver.ocsp_stapling</id>
     <label>OCSP Stapling</label>
     <type>checkbox</type>
-    <help>If you check this box, OCSP stapling (ssl_stapling) is enabled.</help>
-  </field>  
+    <advanced>true</advanced>
+    <help><![CDATA[If you check this box, OCSP stapling is enabled. If your Certificat has "TLS Feature: status_request"  (<a href="https://tools.ietf.org/html/rfc7633target="_blank">RFC 7633</a>) enabled, i.E. lets encrypt  "OCSP Must Staple", and don't enable OCSP Stapling you could get an error like "MOZILLA_PKIX_ERROR_REQUIRED_TLS_FEATURE_MISSING"]]></help>
+  </field>
+  <field>
+    <id>httpserver.ocsp_verify</id>
+    <label>OCSP Verify</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Enables or disables verification of OCSP responses by the server.</help>
+  </field>
   <field>
     <id>httpserver.block_nonpublic_data</id>
     <label>Block Configuration Files</label>
