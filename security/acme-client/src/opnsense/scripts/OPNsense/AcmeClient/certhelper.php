@@ -771,8 +771,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
-                $proc_env['LEXICON_CLOUDFLARE_USERNAME'] = (string)$valObj->dns_lexicon_user;
-                $proc_env['LEXICON_CLOUDFLARE_TOKEN'] = (string)$valObj->dns_lexicon_token;
+                $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_USERNAME'] = (string)$valObj->dns_lexicon_user;
+                $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_TOKEN'] = (string)$valObj->dns_lexicon_token;
                 $proc_env['LEXICON_NAMESILO_TOKEN'] = (string)$valObj->dns_lexicon_token;
                 if ((string)$valObj->dns_lexicon_provider == 'namesilo') {
                     // Namesilo applies changes to DNS records only every 15 minutes.
