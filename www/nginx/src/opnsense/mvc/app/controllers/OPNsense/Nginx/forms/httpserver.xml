@@ -137,7 +137,7 @@
     <label>OCSP Stapling</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help><![CDATA[If you check this box, OCSP stapling is enabled. If your certificate has the TLS feature "status_request"  enabled and don't enable OCSP Stapling, you could get an TLS error like "MOZILLA_PKIX_ERROR_REQUIRED_TLS_FEATURE_MISSING". This can be the case if you use Let's Encrypt with "OCSP Must Staple". More information about OCSP stapling can be found <a href="https://tools.ietf.org/html/rfc7633" target="_blank">in RFC 7633</a>.]]></help>
+    <help><![CDATA[If you check this box, OCSP stapling is enabled. If your certificate has the TLS feature "status_request" enabled and don't enable OCSP Stapling, you could get an TLS error like "MOZILLA_PKIX_ERROR_REQUIRED_TLS_FEATURE_MISSING". This can be the case if you use Let's Encrypt with "OCSP Must Staple". More information about OCSP stapling can be found <a href="https://tools.ietf.org/html/rfc7633" target="_blank">in RFC 7633</a>.]]></help>
   </field>
   <field>
     <id>httpserver.ocsp_verify</id>
