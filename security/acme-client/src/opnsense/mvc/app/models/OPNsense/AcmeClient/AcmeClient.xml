@@ -105,6 +105,7 @@
                     <normal>normal</normal>
                     <extended>extended</extended>
                     <debug>debug</debug>
+                    <dnsapi>debug dnsapi</dnsapi>
                 </OptionValues>
             </logLevel>
         </settings>
@@ -391,6 +392,7 @@
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_lua>LuaDNS.com API</dns_lua>
+                        <dns_miab>MailinaBox API</dns_miab>
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namecheap>Namecheap API</dns_namecheap>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
@@ -624,6 +626,15 @@
                 <dns_me_secret type="TextField">
                     <Required>N</Required>
                 </dns_me_secret>
+                <dns_miab_user type="TextField">
+                    <Required>N</Required>
+                 </dns_miab_user>
+                 <dns_miab_password type="TextField">
+                    <Required>N</Required>
+                 </dns_miab_password>
+                 <dns_miab_server type="TextField">
+                    <Required>N</Required>
+                 </dns_miab_server>
                 <dns_namecheap_user type="TextField">
                     <Required>N</Required>
                 </dns_namecheap_user>
