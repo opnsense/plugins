@@ -327,9 +327,17 @@ function eval_optional_acme_args()
     $acme_args[] = $configObj->OPNsense->AcmeClient->settings->environment == "stg" ? "--staging" : null;
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
 
-    // Set log level
-    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";
-    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "debug" ? "--debug" : null;
+    // Set log level - only one level chosen from dropdown
+    switch($configObj->OPNsense->AcmeClient->settings->logLevel) {
+        case "extended":
+            $acme_args[] = "--log-level 2";
+        case "debug":
+            $acme_args[] = "--debug";
+        case "dnsapi":
+            $acme_args[] = "--debug 2";
+        default:
+            $acme_args[] = "--log-level 1";
+     }
 
     // Remove empty and duplicate elements from array
     return(array_unique(array_filter($acme_args)));
@@ -791,6 +799,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_me':
                 $proc_env['ME_Key'] = (string)$valObj->dns_me_key;
                 $proc_env['ME_Secret'] = (string)$valObj->dns_me_secret;
+                break;
+            case 'dns_miab':
+                $proc_env['MIAB_Username'] = (string)$valObj->dns_miab_user;
+                $proc_env['MIAB_Password'] = (string)$valObj->dns_miab_password;
+                $proc_env['MIAB_Server'] = (string)$valObj->dns_miab_server;
                 break;
             case 'dns_namecheap':
                 $proc_env['NAMECHEAP_USERNAME'] = (string)$valObj->dns_namecheap_user;
