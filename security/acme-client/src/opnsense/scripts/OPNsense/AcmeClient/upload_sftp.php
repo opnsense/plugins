@@ -154,15 +154,15 @@ function commandShowIdentity(array &$options): int
 
     $keys = new SSHKeys(configPath());
     if (($id_file = $keys->getIdentity($identity_type)) && is_readable($id_file)) {
-
-        if (!isset($options["unrestricted"])
-            && ($restrictions = SSHKeys::getIdentityRestrictions($host, $source_ip))) {
+        if (
+            !isset($options["unrestricted"])
+            && ($restrictions = SSHKeys::getIdentityRestrictions($host, $source_ip))
+        ) {
             echo "$restrictions ";
         }
 
         echo file_get_contents($id_file);
         return EXITCODE_SUCCESS;
-
     } else {
         Utils::log()->error("Failed getting identity. See log output for details.");
     }
@@ -197,14 +197,14 @@ function commandTestConnection(array &$options): int
 
         if ($result["success"]) {
             $result["actions"][] = "upload-tested";
-
         } else {
-            if ($error = $sftp->lastError(3))
+            if ($error = $sftp->lastError(3)) {
                 $result = array_merge($result, $error);
+            }
 
             if ($upload_result === SftpUploader::UPLOAD_ERROR_CHGRP_FAILED) {
                 $result["chgrp_failed"] = true;
-            } else if ($upload_result === SftpUploader::UPLOAD_ERROR_CHMOD_FAILED) {
+            } elseif ($upload_result === SftpUploader::UPLOAD_ERROR_CHMOD_FAILED) {
                 $result["chmod_failed"] = true;
             }
         }
@@ -215,8 +215,9 @@ function commandTestConnection(array &$options): int
             SftpUploader::UPLOAD_ERROR_CHMOD_FAILED]);
 
         if ($remove_file) {
-            if ($error = $sftp->clearError()->rm($filename)->lastError(3))
+            if ($error = $sftp->clearError()->rm($filename)->lastError(3)) {
                 Utils::log()->error("Failed removing upload test file '$filename'", $error);
+            }
         }
 
         $sftp->close();
@@ -233,15 +234,15 @@ function commandUpload(array &$options): int
         // Includes host, upload all certs to the same host.
         if (isset($options["host"])) {
             return uploadCertificatesToHost($options);
-
         } else {
             // Find the actions associated with the given certs.
             $tasks = [];
             $cert_ids = preg_split('/[,;\s]+/', $options["certificates"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
             foreach (findCertificates($cert_ids, false) as $id => $cert) {
                 foreach ($cert["automations"] as $action_id) {
-                    if (!isset($tasks[$action_id]))
+                    if (!isset($tasks[$action_id])) {
                         $tasks[$action_id] = [];
+                    }
                     $tasks[$action_id][] = $id;
                 }
             }
@@ -251,17 +252,16 @@ function commandUpload(array &$options): int
                 if (!empty($cert_list) && ($task_options = getOptionsById($action_id, true))) {
                     $task_options = array_merge($options, $task_options, ["certificates" => join(",", $cert_list)]);
                     $result = uploadCertificatesToHost($task_options);
-                    if ($result != EXITCODE_SUCCESS)
+                    if ($result != EXITCODE_SUCCESS) {
                         break;
+                    }
                 }
             }
 
             return $result;
         }
-
-    } else if (isset($options["host"])) {
+    } elseif (isset($options["host"])) {
         return uploadCertificatesToHost($options);
-
     } else {
         Utils::log()->error("No work to do, neither --host nor --certificates is present.");
         return EXITCODE_ERROR_NOTHING_TO_UPLOAD;
@@ -283,11 +283,11 @@ function uploadCertificatesToHost(array $options): int
 
         addFilesToUpload($options, $uploader);
 
-        if (empty($uploader->pending()))
+        if (empty($uploader->pending())) {
             return EXITCODE_ERROR_NOTHING_TO_UPLOAD;
+        }
 
         for ($max_restarts = 5; !empty($uploader->pending()) && $max_restarts > 0; $max_restarts--) {
-
             $result = $uploader->upload();
 
             if ($result != SftpUploader::UPLOAD_SUCCESS) {
@@ -370,10 +370,12 @@ function getCommand()
     $command = null;
     $parsed_args = getopt("", ["command::"]);
     foreach (COMMANDS as $name => $cmd) {
-        if (in_array($name, $GLOBALS["argv"]) || $parsed_args["command"] === $name)
+        if (in_array($name, $GLOBALS["argv"]) || $parsed_args["command"] === $name) {
             $command = $cmd;
-        if ($cmd["default"] === true)
+        }
+        if ($cmd["default"] === true) {
             $default = $cmd;
+        }
     }
 
     return $command ?: $default;
@@ -385,9 +387,12 @@ function getActionById($automation_id)
     $client = $config->OPNsense->AcmeClient;
 
     foreach ($client->actions->children() as $action) {
-        if ($automation_id === (string)$action->attributes()["uuid"]
-            || $automation_id === (string)$action->id)
+        if (
+            $automation_id === (string)$action->attributes()["uuid"]
+            || $automation_id === (string)$action->id
+        ) {
             return $action;
+        }
     }
 
     return null;
@@ -395,7 +400,9 @@ function getActionById($automation_id)
 
 function getOptionsById($automation_id, $silent = false)
 {
-    if (!$silent) Utils::log()->info("Reading options from automation: $automation_id");
+    if (!$silent) {
+        Utils::log()->info("Reading options from automation: $automation_id");
+    }
 
     if (is_object($action = getActionById($automation_id))) {
         if ($action->enabled && "upload_sftp" === (string)$action->type) {
@@ -414,7 +421,7 @@ function getOptionsById($automation_id, $silent = false)
                 "ca-name" => trim((string)$action->sftp_filename_ca),
                 "certificates" => "", // defaults to all (= empty), may be overridden via CLI
             ];
-        } else if (!$silent) {
+        } elseif (!$silent) {
             Utils::log()->error("Ignoring disabled or invalid automation '$automation_id'");
         }
     } else {
@@ -434,14 +441,12 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
         $cert_ids = preg_split('/[,;\s]+/', $options["certificates"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
 
         foreach (findCertificates($cert_ids) as $cert) {
-
             if (!isset($cert["content"])) {
                 Utils::log()->error("Ignoring upload for cert '{$cert["name"]}', since it is not available in trust storage.");
                 continue;
             }
 
             foreach ($cert["content"] as $name => $content) {
-
                 if (empty($content)) {
                     Utils::log()->error("Content for '{$name}.pem' in cert '{$cert["name"]}' is empty, skipping it.");
                     continue;
@@ -463,44 +468,46 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
                                     ? stripcslashes($cert[$index])
                                     : "__unknown-template-param__{$index}__";
                             },
-                            $path_part);
+                            $path_part
+                        );
 
                         // Sanitize user input. Allow unicode chars, numbers and some special characters [_-@.].
                         // Also replace all ".." with "." to avoid upwards tree traversal.
                         return preg_replace(['/\.+/', '/[^\w\d_\-@.]+/uim'], ['.', '-'], trim($path_part));
                     },
-                    preg_split('-[/\\\\]+-', $target_path, 0, PREG_SPLIT_NO_EMPTY)));
+                    preg_split('-[/\\\\]+-', $target_path, 0, PREG_SPLIT_NO_EMPTY)
+                ));
 
 
                 // Add the file to upload (if valid)
-                if (!empty($target_path)
+                if (
+                    !empty($target_path)
                     && preg_match('-^(?!/).+?(?<!/)$-', $target_path) /* must neither begin nor end with '/' */
-                    && !preg_match('-^[/.]+$-', $target_path)  /* must not only consist of '/' and '.' */) {
-
+                    && !preg_match('-^[/.]+$-', $target_path)  /* must not only consist of '/' and '.' */
+                ) {
                     $mod = $name === "key"
                         ? $chmod_key
                         : $chmod;
 
                     $uploader->addContent($content, $target_path, $cert["updated"], $mod, $chgrp);
-
                 } else {
                     Utils::log()->error("Cannot add '{$name}.pem' since the upload path '$target_path' is invalid.");
                 }
             }
         }
 
-        if (empty($uploader->pending()))
+        if (empty($uploader->pending())) {
             Utils::log()->error("Didn't find any certificates to upload (cert-ids: " . (empty($cert_ids) ? "*all*" : join(", ", $cert_ids)) . ").");
-
-    } else if (isset($options["files"])) {
+        }
+    } elseif (isset($options["files"])) {
         $files = preg_split('/[,;\s]+/', $options["files"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
         foreach ($files as $file) {
             $uploader->addFile($file, "", $chmod, $chgrp);
         };
 
-        if (empty($uploader->pending()))
+        if (empty($uploader->pending())) {
             Utils::log()->error("Didn't files to upload (files: " . join(", ", $files) . ").");
-
+        }
     } else {
         Utils::log()->error("Neither '--certificates' nor '--files' was specified. Have nothing to upload.");
     }
@@ -508,7 +515,9 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
 
 function findCertificates(array $certificate_ids_or_names, $load_content = true): array
 {
-    if (!class_exists("OPNsense\\Core\\Config")) return [];
+    if (!class_exists("OPNsense\\Core\\Config")) {
+        return [];
+    }
 
     $config = OPNsense\Core\Config::getInstance()->object();
     $client = $config->OPNsense->AcmeClient;
@@ -521,13 +530,15 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
         $id = (string)$cert->id;
         $name = (string)$cert->name;
 
-        if (empty($certificate_ids_or_names)
+        if (
+            empty($certificate_ids_or_names)
             || in_array($id, $certificate_ids_or_names)
-            || in_array($name, $certificate_ids_or_names)) {
-
+            || in_array($name, $certificate_ids_or_names)
+        ) {
             if ($cert->enabled == 0) {
-                if (!empty($certificate_ids_or_names))
+                if (!empty($certificate_ids_or_names)) {
                     Utils::log()->error("Certificate '{$name}' (id: $id) is disabled, skipping it.");
+                }
 
                 continue;
             }
@@ -547,8 +558,9 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
     if ($load_content && ($certificates = exportCertificates($refids))) {
         foreach ($result as &$cert_info) {
             $id = $cert_info["content_id"];
-            if (isset($certificates[$id]))
+            if (isset($certificates[$id])) {
                 $cert_info["content"] = $certificates[$id];
+            }
         }
     }
 
@@ -584,7 +596,9 @@ function configPath(): string
         __DIR__
     ];
     foreach ($paths as $path) {
-        if (is_dir($path)) return $path . DIRECTORY_SEPARATOR . 'sftp-config';
+        if (is_dir($path)) {
+            return $path . DIRECTORY_SEPARATOR . 'sftp-config';
+        }
     }
     die("Failed detecting config path");
 }
@@ -607,16 +621,18 @@ function main()
         if (isset($options["h"]) || isset($options["help"])) {
             help();
         } else {
-            if (isset($options["log"]))
+            if (isset($options["log"])) {
                 Utils::log(true)->info("Logging to stdout enabled");
+            }
 
             $options = array_filter($options, function ($value) {
                 return !is_string($value)
                     || (!empty($value = trim($value)) && $value !== "__default_value");
             });
 
-            if (isset($options["automation-id"]))
+            if (isset($options["automation-id"])) {
                 $options = array_merge(getOptionsById($options["automation-id"]), $options);
+            }
 
             if (is_callable($runner = $command["implementation"])) {
                 $code = $runner($options);

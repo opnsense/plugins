@@ -78,23 +78,23 @@ if (isset($options["C"])) {
 switch ($options["a"]) {
     case 'sign':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'renew':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'remove':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'removekey':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'revoke':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     default:
         echo "ERROR: invalid argument specified\n";
@@ -112,7 +112,7 @@ function cert_action_validator($opt_cert_id)
 {
     global $options;
 
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Store certs here after successful issue/renewal. Required for automations.
     $restart_certs = array();
@@ -459,7 +459,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Required to run pre-defined commands.
     $backend = new Backend();
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Collect account information
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
@@ -511,7 +511,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $last_update_time = new \DateTime();
     $last_update_time->setTimestamp($last_update);
     $renew_interval = (string)$certObj->renewInterval;
-    $next_update = $last_update_time->add(new \DateInterval('P'.$renew_interval.'D'));
+    $next_update = $last_update_time->add(new \DateInterval('P' . $renew_interval . 'D'));
 
     // Check if it's time to renew the cert.
     if (isset($options["F"]) or ($current_time >= $next_update)) {
@@ -899,7 +899,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         switch ((string)$certObj->aliasmode) {
             case 'automatic':
                 $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
-                if ($dst = dns_get_record($name, DNS_CNAME )) {
+                if ($dst = dns_get_record($name, DNS_CNAME)) {
                     $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
                 }
                 break;
@@ -923,7 +923,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 switch ((string)$certObj->aliasmode) {
                     case 'automatic':
                         $name = "_acme-challenge." . ltrim($altname, '*.');
-                        if ($dst = dns_get_record($name, DNS_CNAME )) {
+                        if ($dst = dns_get_record($name, DNS_CNAME)) {
                             $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
                         }
                         break;
@@ -935,7 +935,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                         break;
                 }
             }
-
         }
     }
 
@@ -1409,12 +1408,12 @@ function dump_postponed_updates()
         500 => 'internal error',
     ];
 
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     foreach ($postponed_updates as $pupdate) {
         $_statusCode = $pupdate['statusCode'];
         $_uuid = $pupdate['uuid'];
-        $node = $modelObj->getNodeByReference('certificates.certificate.'.$_uuid);
+        $node = $modelObj->getNodeByReference('certificates.certificate.' . $_uuid);
         if ($node != null) {
             log_error("AcmeClient: storing status '" . $status_descr[$_statusCode] . "' for cert " . (string)$node->name);
             $node->statusCode = $_statusCode;
@@ -1492,7 +1491,7 @@ function local_cert_get_cn($crt, $decode = true)
 }
 
 // taken from system_camanager.php
-function local_ca_import(& $ca, $str, $key = "", $serial = 0)
+function local_ca_import(&$ca, $str, $key = "", $serial = 0)
 {
     global $config;
 
@@ -1518,7 +1517,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     if (is_array($config['ca'])) {
         foreach ($config['ca'] as & $oca) {
             $issuer = cert_get_issuer($oca['crt']);
-            if ($ca['refid']<>$oca['refid'] && $issuer==$subject) {
+            if ($ca['refid'] <> $oca['refid'] && $issuer == $subject) {
                 $oca['caref'] = $ca['refid'];
             }
         }
@@ -1526,7 +1525,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     if (is_array($config['cert'])) {
         foreach ($config['cert'] as & $cert) {
             $issuer = cert_get_issuer($cert['crt']);
-            if ($issuer==$subject) {
+            if ($issuer == $subject) {
                 $cert['caref'] = $ca['refid'];
             }
         }

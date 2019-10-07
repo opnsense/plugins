@@ -38,7 +38,7 @@ $server_uuid = $_SERVER['SERVER-UUID'];
 
 function password_auth_test($username, $password, $auth_server)
 {
-    $authFactory = new OPNsense\Auth\AuthenticationFactory;
+    $authFactory = new OPNsense\Auth\AuthenticationFactory();
     $authenticator = $authFactory->get($auth_server);
     return $authenticator->authenticate($username, $password);
 }

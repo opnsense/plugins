@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
@@ -26,7 +27,6 @@
  */
 
 namespace OPNsense\AcmeClient;
-
 
 /**
  * Handles file uploads via SFTP.
@@ -103,12 +103,14 @@ class SftpUploader
         $content_written = file_put_contents($local_file, $content);
         Utils::requireThat($content_written > 0, "Failed writing content of '$remote_file' to '$local_file', disk full?");
 
-        if (($time = intval($content_last_modified)) && $time > 0)
+        if (($time = intval($content_last_modified)) && $time > 0) {
             touch($local_file, $time);
+        }
 
         $remote_file = trim($remote_file);
-        if (empty($remote_file))
+        if (empty($remote_file)) {
             $remote_file = basename($local_file);
+        }
 
         $local_file = $this->addFile($local_file, $remote_file, $chmod, $chgrp);
         $this->pending_files[$local_file]["delete_source"] = true;
@@ -171,7 +173,6 @@ class SftpUploader
 
         // Uploading the files
         foreach ($files_to_upload as $file) {
-
             // Managing pending files.
             $local_file = $this->current_file = $file["source"];
 
@@ -187,11 +188,11 @@ class SftpUploader
 
                 // Changing remote directory if required.
                 if (($target_dir = dirname($file["target"])) !== $remote_path) {
-
                     $absolute_target_dir = $this->sftp->resolve($target_dir, $remote_base_path);
                     Utils::requireThat(
                         $absolute_target_dir && strpos($absolute_target_dir, $remote_base_path) === 0,
-                        "Illegal target directory '$absolute_target_dir' is not below '$remote_base_path'");
+                        "Illegal target directory '$absolute_target_dir' is not below '$remote_base_path'"
+                    );
 
                     $dir_names = preg_split('-/+-', substr($absolute_target_dir, strlen($remote_base_path)), 0, PREG_SPLIT_NO_EMPTY);
                     if (count($dir_names) == 1) {
@@ -263,8 +264,9 @@ class SftpUploader
                     if ($error = $this->sftp->put($local_file, $remote_filename, $preserve_times_and_mod)->lastError()) {
                         Utils::log()->error("Failed uploading file '{$local_file}' to '{$file["target"]}'", $error);
 
-                        if ($error["permission_denied"] !== true)
+                        if ($error["permission_denied"] !== true) {
                             $retry_with_permission_change = false;
+                        }
 
                         if ($retry_with_permission_change) {
                             Utils::log()->info("Retrying file '{$local_file}' to '{$file["target"]}' with adjusted permissions");
@@ -279,15 +281,13 @@ class SftpUploader
 
                 // Second attempt when initial failed or was skipped due to write protection (only possible if we have chmod defined to reset permissions later)
                 if ($retry_with_permission_change) {
-
                     $this->sftp->chmod($remote_filename, '0600');
 
                     if ($error = $this->sftp->put($local_file, $remote_filename)->lastError()) {
                         Utils::log()->error("Failed uploading file '{$local_file}' to '{$file["target"]}'", $error);
                         return self::UPLOAD_ERROR_NO_PERMISSION;
                     }
-
-                } else if ($remote_is_readonly) {
+                } elseif ($remote_is_readonly) {
                     Utils::log()->error("Failed uploading file '{$local_file}' to '{$file["target"]}'. Existing file is write protected.");
                     return self::UPLOAD_ERROR_NO_PERMISSION;
                 }
@@ -316,18 +316,20 @@ class SftpUploader
 
         $this->current_file = null;
 
-        if (empty($this->pending_files))
+        if (empty($this->pending_files)) {
             $this->temporaryFile(true);
+        }
 
         return self::UPLOAD_SUCCESS;
     }
 
     private function deleteSourceIfRequested($file)
     {
-        if (isset($this->pending_files[$file])
+        if (
+            isset($this->pending_files[$file])
             && is_array($existing = $this->pending_files[$file])
-            && $existing["delete_source"] === true) {
-
+            && $existing["delete_source"] === true
+        ) {
             unlink($existing["source"]);
         }
     }
@@ -344,8 +346,9 @@ class SftpUploader
             register_shutdown_function(function () use (&$shared_temporary_files) {
                 $count = 0;
                 foreach ($shared_temporary_files as $temporary_files) {
-                    if (!is_iterable($temporary_files))
+                    if (!is_iterable($temporary_files)) {
                         continue;
+                    }
                     foreach ($temporary_files as $file) {
                         if (is_file($file)) {
                             unlink($file);
@@ -354,8 +357,9 @@ class SftpUploader
                     }
                 }
 
-                if ($count > 0)
+                if ($count > 0) {
                     Utils::log()->info("Removed $count files in shutdown hook instead of object destruction.");
+                }
 
                 $shared_temporary_files = [];
             });
@@ -373,11 +377,12 @@ class SftpUploader
         // Dealing with temp file creation or cleanup
         if ($delete_all) {
             foreach ($temporary_files as $file) {
-                if (is_file($file)) unlink($file);
+                if (is_file($file)) {
+                    unlink($file);
+                }
             }
 
             unset($shared_temporary_files[$index]);
-
         } else {
             if ($file = tempnam(sys_get_temp_dir(), "sftp-upload-")) {
                 $file = realpath($file);

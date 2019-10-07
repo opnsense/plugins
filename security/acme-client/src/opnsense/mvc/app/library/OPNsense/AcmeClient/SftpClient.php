@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
@@ -26,7 +27,6 @@
  */
 
 namespace OPNsense\AcmeClient;
-
 
 /**
  * Wrapper around the 'sftp' commandline client.
@@ -96,9 +96,12 @@ class SftpClient
         // Handle client side identity
         $identity = $this->ssh_keys->getIdentity($this->identity_type, true);
         if (is_file($identity) && is_readable($identity)) {
-            array_push($cmd,
-                "-i", $identity,
-                "-oPreferredAuthentications=publickey");
+            array_push(
+                $cmd,
+                "-i",
+                $identity,
+                "-oPreferredAuthentications=publickey"
+            );
         } else {
             Utils::log()->error("Failed adding client identity ($identity). Connect will likely fail.");
         }
@@ -119,7 +122,7 @@ class SftpClient
         return false;
     }
 
-    private function processAvailableInput(float $timeout = 0, $expected_lines = 0, Callable $lines_consumer = null, $remaining_timeout = 0)
+    private function processAvailableInput(float $timeout = 0, $expected_lines = 0, callable $lines_consumer = null, $remaining_timeout = 0)
     {
         Utils::requireThat($this->process !== null, "SFTP: process not connected");
 
@@ -139,18 +142,22 @@ class SftpClient
         while (($line = $this->process->get($timeout)) !== false) {
             foreach ($expected_errors as $ee) {
                 if (preg_match($ee[1], $line)) {
-                    if (!$this->failed_status || $ee[0] !== "connection_closed")
+                    if (!$this->failed_status || $ee[0] !== "connection_closed") {
                         $this->failed_status = [$ee[0] => true, "error" => trim($line)];
+                    }
                     break;
                 }
             }
 
             $consumed = ($lines_consumer && $lines_consumer($line) === true);
-            if (!$consumed)
+            if (!$consumed) {
                 Utils::log()->info("SFTP: " . rtrim($line));
+            }
 
             if (!$lines_consumer || $consumed) {
-                if (--$expected_lines <= 0) $timeout = $remaining_timeout;
+                if (--$expected_lines <= 0) {
+                    $timeout = $remaining_timeout;
+                }
             }
         }
     }
@@ -166,15 +173,17 @@ class SftpClient
 
             $this->process = null;
 
-            if ($this->failed_status && $this->failed_status["connection_closed"])
+            if ($this->failed_status && $this->failed_status["connection_closed"]) {
                 $this->clearError();
+            }
         }
     }
 
     public function lastError($timeout = 0.5)
     {
-        if ($this->failed_status === false)
+        if ($this->failed_status === false) {
             $this->processAvailableInput($timeout);
+        }
         return $this->failed_status;
     }
 

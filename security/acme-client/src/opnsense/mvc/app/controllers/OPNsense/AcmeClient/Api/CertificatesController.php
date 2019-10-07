@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017-2019 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -92,7 +93,7 @@ class CertificatesController extends ApiMutableModelControllerBase
      */
     public function signAction($uuid)
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             $mdlAcme = new AcmeClient();
 
@@ -116,7 +117,7 @@ class CertificatesController extends ApiMutableModelControllerBase
      */
     public function removekeyAction($uuid)
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         $mdlAcme = new AcmeClient();
         if ($uuid != null) {
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
@@ -136,7 +137,7 @@ class CertificatesController extends ApiMutableModelControllerBase
      */
     public function revokeAction($uuid)
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             $mdlAcme = new AcmeClient();
 

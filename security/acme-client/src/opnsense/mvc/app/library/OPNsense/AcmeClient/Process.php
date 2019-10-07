@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
@@ -26,7 +27,6 @@
  */
 
 namespace OPNsense\AcmeClient;
-
 
 /**
  * Utility class to execute shell processes and handle their IO.
@@ -74,8 +74,9 @@ class Process
 
         if ($process_handle) {
             if ($release) {
-                if (in_array($process_handle, $open_processes))
+                if (in_array($process_handle, $open_processes)) {
                     $open_processes = array_diff($open_processes, [$process_handle]);
+                }
             } else {
                 $open_processes[] = $process_handle;
             }
@@ -95,8 +96,9 @@ class Process
             $this->outputs = $pipes;
             $this->inputs = [array_shift($this->outputs)];
 
-            foreach ($this->outputs as $stream)
+            foreach ($this->outputs as $stream) {
                 stream_set_blocking($stream, false);
+            }
 
             self::manageOpenedProcess($this->handle);
         } else {
@@ -108,8 +110,9 @@ class Process
     {
         $this->close();
 
-        if ($this->isRunning())
+        if ($this->isRunning()) {
             $this->close(true);
+        }
     }
 
     public function get($timeout = 5, $max_length = 8192, $ending = PHP_EOL)
@@ -133,14 +136,17 @@ class Process
     {
         if ($this->isRunning() && is_resource($stdin = $this->inputs[0]) && !feof($stdin)) {
             fwrite($stdin, $data);
-            if ($append)
+            if ($append) {
                 fwrite($stdin, $append);
+            }
         }
     }
 
     public function closeInput()
     {
-        if (!feof($stdin = $this->inputs[0])) fclose($stdin);
+        if (!feof($stdin = $this->inputs[0])) {
+            fclose($stdin);
+        }
     }
 
     public function close($force = false)
@@ -170,8 +176,9 @@ class Process
             : false;
 
         if (is_array($status)) {
-            if (!$this->exitCode && $this->exitCode !== 0 && !$status["running"])
+            if (!$this->exitCode && $this->exitCode !== 0 && !$status["running"]) {
                 $this->exitCode = $status["exitcode"];
+            }
             return $status["running"];
         }
 

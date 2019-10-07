@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017-2019 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -89,10 +90,12 @@ class ActionsController extends ApiMutableModelControllerBase
 
     public function sftpTestConnectionAction()
     {
-        if ($response = $this->callBackend(
-            ["test-sftp-connection"],
-            ["sftp_host", "sftp_host_key", "sftp_port", "sftp_user", "sftp_identity_type", "sftp_remote_path", "sftp_chmod", "sftp_chgrp"])) {
-
+        if (
+            $response = $this->callBackend(
+                ["test-sftp-connection"],
+                ["sftp_host", "sftp_host_key", "sftp_port", "sftp_user", "sftp_identity_type", "sftp_remote_path", "sftp_chmod", "sftp_chgrp"]
+            )
+        ) {
             return $response;
         }
 
@@ -116,7 +119,9 @@ class ActionsController extends ApiMutableModelControllerBase
                 if (preg_match('/^\[.+\]$/ms', $result) || preg_match('/^\{.+\}$/ms', $result)) {
                     try {
                         $result = json_decode($result, true, 64, JSON_THROW_ON_ERROR);
-                    } catch (\Exception $ignored) {/*pass as is when json parsing fails*/}
+                    } catch (\Exception $ignored) {
+/*pass as is when json parsing fails*/
+                    }
                 }
                 return $result;
             }

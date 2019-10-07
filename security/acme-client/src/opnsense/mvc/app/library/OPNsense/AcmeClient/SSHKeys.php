@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
@@ -70,8 +71,10 @@ class SSHKeys
         if (!is_dir($config_path)) {
             $dir_created = mkdir($config_path, self::CONFIG_PATH_CREATE_MODE, true);
 
-            Utils::requireThat($dir_created,
-                "Failed creating directory '$config_path' with permission " . self::CONFIG_PATH_CREATE_MODE);
+            Utils::requireThat(
+                $dir_created,
+                "Failed creating directory '$config_path' with permission " . self::CONFIG_PATH_CREATE_MODE
+            );
         }
 
         $this->config_path = realpath($config_path);
@@ -85,8 +88,10 @@ class SSHKeys
                 touch($this->known_hosts_file)
                 && chmod($this->known_hosts_file, self::KNOWN_HOSTS_FILE_CREATE_MODE);
 
-            Utils::requireThat($file_created,
-                "Failed creating file '{$this->known_hosts_file}' with permission " . self::KNOWN_HOSTS_FILE_CREATE_MODE);
+            Utils::requireThat(
+                $file_created,
+                "Failed creating file '{$this->known_hosts_file}' with permission " . self::KNOWN_HOSTS_FILE_CREATE_MODE
+            );
         }
 
         return $this->known_hosts_file;
@@ -110,8 +115,9 @@ class SSHKeys
             $host_key = false;
         } else {
             $host_key = self::getHostKeyInfo($host_key);
-            if ($host_key === false)
+            if ($host_key === false) {
                 return ["ok" => false, "error" => "Invalid host_key specified."];
+            }
         }
 
 
@@ -157,8 +163,7 @@ class SSHKeys
         $is_key_known = false;
         if ($known_by_host && $host_key && $host_key === $known_by_host["key_info"]) {
             $is_key_known = true;
-
-        } else if ($known_by_key) {
+        } elseif ($known_by_key) {
             if (strcasecmp(trim($host), trim($known_by_key["host"])) != 0) {
                 Utils::log()->info("Host key is in known_hosts but hostname differs. Changing '$host' to '{$known_by_key["host"]}'.");
                 $host = $known_by_key["host"];
@@ -169,18 +174,18 @@ class SSHKeys
 
         // Check if we don't have a matching known_hosts entry and add or update it as required.
         if (!$is_key_known && !$no_modification_allowed) {
-
             // Query the key.
             $key_type = $host_key ? $host_key["key_type"] : self::DEFAULT_KEY_TYPE;
             $remote_host_keys = $addKeyInfo($this->queryHostKey($host, $key_type, $port, $query_error));
 
             // Retry with ALTERNATE_DEFAULT_KEY_TYPE when DEFAULT_KEY_TYPE was applied in the first place.
-            if (empty($remote_host_keys)
+            if (
+                empty($remote_host_keys)
                 && $query_error
                 && $query_error["connection_refused"]
                 && !$host_key
-                && self::ALTERNATE_DEFAULT_KEY_TYPE != self::DEFAULT_KEY_TYPE) {
-
+                && self::ALTERNATE_DEFAULT_KEY_TYPE != self::DEFAULT_KEY_TYPE
+            ) {
                 $key_type = self::ALTERNATE_DEFAULT_KEY_TYPE;
                 $remote_host_keys = $addKeyInfo($this->queryHostKey($host, $key_type, $port, $query_error));
             }
@@ -198,18 +203,20 @@ class SSHKeys
                 foreach ($matching_remote_host_keys as $key) {
                     Utils::log()->info("Adding known_hosts entry: " . json_encode($key["key_info"], JSON_UNESCAPED_SLASHES));
                     $ok = file_put_contents($this->knownHostsFile(), $key["host_key"] . PHP_EOL, FILE_APPEND);
-                    if (!$ok)
+                    if (!$ok) {
                         Utils::log()->error("Failed adding known_hosts entry {$key["host_key"]}");
+                    }
                 }
 
                 // Verify that known_hosts contains the correct keys after adding them (using recursion).
                 return $this->trustHost($host, $matching_remote_host_keys[0]["host_key"], $port, true);
-
             } else {
                 if (empty($remote_host_keys)) {
                     $msg = "No connection to '$host'; Failed querying host key from server.";
                 } else {
-                    $remote_infos = array_map(function ($key) { return $key["key_info"]; }, $remote_host_keys);
+                    $remote_infos = array_map(function ($key) {
+                        return $key["key_info"];
+                    }, $remote_host_keys);
                     $msg = "Key mismatch for '$host'; "
                         . "The expected key (" . json_encode($host_key) . ") was not found in (" . json_encode($remote_infos) . ")";
                 }
@@ -241,8 +248,9 @@ class SSHKeys
         $has_ip = ($ip = gethostbyname($host))
             && ($ip !== $host || preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/', $ip));
 
-        if ($has_ip)
+        if ($has_ip) {
             $search_list[] = strtolower($ip);
+        }
 
         // Add FQDN to search list if reverse lookup provides a valid one.
         $has_fqdn = $has_ip
@@ -250,8 +258,9 @@ class SSHKeys
             && $reverse_fqdn !== $ip
             && gethostbyname($reverse_fqdn) === $ip;
 
-        if ($has_fqdn && isset($reverse_fqdn))
+        if ($has_fqdn && isset($reverse_fqdn)) {
             $search_list[] = strtolower($reverse_fqdn);
+        }
 
         // Build unique search list (dedup list)
         $search_list = array_filter($search_list, function ($value, $index) use (&$search_list) {
@@ -295,16 +304,18 @@ class SSHKeys
             $lines = [];
             while (($line = $p->get(60)) !== false) {
                 $line = trim($line);
-                if (empty($line) || $line[0] == "#")
+                if (empty($line) || $line[0] == "#") {
                     continue;
+                }
 
                 if (!$failed) {
-                    foreach ($expected_errors as $err)
+                    foreach ($expected_errors as $err) {
                         if (preg_match($err[1], $line)) {
                             $error = [$err[0] => true];
                             $failed = true;
                             break;
                         }
+                    }
                 }
 
                 $lines[] = $line;
@@ -327,8 +338,9 @@ class SSHKeys
         if (empty($keys)) {
             Utils::log()->info("Couldn't fetch public host key ($key_type) from {$host}:{$port}");
 
-            if (!is_array($error) || empty($error))
+            if (!is_array($error) || empty($error)) {
                 $error = ["connection_refused" => true];
+            }
         }
 
         return $keys;
@@ -349,8 +361,9 @@ class SSHKeys
                 $lines = [];
                 while (($line = $p->get()) !== false) {
                     $line = trim($line);
-                    if (empty($line) || $line[0] == "#")
+                    if (empty($line) || $line[0] == "#") {
                         continue;
+                    }
 
                     $lines[] = $line;
                 }
@@ -366,8 +379,7 @@ class SSHKeys
                         "host_key" => $lines[0],
                         "host_query" => $name_or_ip,
                     ];
-
-                } else if ($p->exitCode != 1 /* 1 == NOT_FOUND */) {
+                } elseif ($p->exitCode != 1 /* 1 == NOT_FOUND */) {
                     $output = empty($lines)
                         ? ""
                         : PHP_EOL . join(PHP_EOL, $lines);
@@ -377,8 +389,9 @@ class SSHKeys
             }
         }
 
-        if (empty($keys))
+        if (empty($keys)) {
             Utils::log()->info("Didn't find $host in known_hosts");
+        }
 
         return $keys;
     }
@@ -394,8 +407,9 @@ class SSHKeys
 
         if ($p = Process::open(["ssh-keygen", "-R", $host, "-f", $this->knownHostsFile()])) {
             $ok = $p->close() === 0;
-            if (!$ok)
+            if (!$ok) {
                 Utils::log()->error("Failed removing known hosts for $host. Return code was: {$p->exitCode}");
+            }
         }
 
         return $ok;
@@ -438,8 +452,9 @@ class SSHKeys
         Utils::requireThat(in_array($identity_type, self::IDENTITY_TYPES), "Identity type '$identity_type' unknown.");
 
         list($key_type, $key_size) = explode('_', $identity_type, 2);
-        if (!$key_size && self::DEFAULT_IDENTITY_KEY_BITS[$key_type] > 0)
+        if (!$key_size && self::DEFAULT_IDENTITY_KEY_BITS[$key_type] > 0) {
             $key_size = self::DEFAULT_IDENTITY_KEY_BITS[$key_type];
+        }
 
         $identity_path = "{$this->config_path}/id.{$identity_type}";
 
@@ -451,17 +466,20 @@ class SSHKeys
                 "-N", "",
             ];
 
-            if (intval($key_size) > 0)
+            if (intval($key_size) > 0) {
                 array_push($generate_key, "-b", $key_size);
+            }
 
             if ($p = Process::open($generate_key)) {
                 while (($line = $p->get(10)) !== false) {
                     Utils::log()->info("SSH keygen: $line");
                 }
 
-                Utils::requireThat($p->close() == 0,
+                Utils::requireThat(
+                    $p->close() == 0,
                     "Failed generating identity $identity_path: Error code: {$p->exitCode}" . PHP_EOL
-                    . "Command: " . join(" ", $generate_key));
+                    . "Command: " . join(" ", $generate_key)
+                );
             }
         }
 
@@ -479,15 +497,17 @@ class SSHKeys
     {
         $restrictions = ['restrict'];
 
-        if ($command)
+        if ($command) {
             $restrictions[] = 'command="' . $command . '"';
+        }
 
         $restrict_ip = empty(trim($outgoing_ip))
             ? (empty(trim($host)) ? false : self::getOutgoingIpFor($host))
             : $outgoing_ip;
 
-        if ($restrict_ip)
+        if ($restrict_ip) {
             $restrictions[] = 'from="' . $restrict_ip . '"';
+        }
 
 
         return count($restrictions) > 1
@@ -506,17 +526,19 @@ class SSHKeys
         $interface = null;
 
         if ($p = Process::open(["route", "-n", "get", $ip])) {
-            while (($line = $p->get(10)) !== false)
+            while (($line = $p->get(10)) !== false) {
                 if (preg_match('/\s*interface:\s*([^\s]+).*$/', $line, $matches)) {
                     $interface = $matches[1];
                 }
+            }
         }
 
         if ($interface && $p = Process::open(["ifconfig", $interface, "inet"])) {
-            while (($line = $p->get(10)) !== false)
+            while (($line = $p->get(10)) !== false) {
                 if (preg_match('/\s*inet\s+([^\s]+)\s+netmask.*/', $line, $matches)) {
                     return $matches[1];
                 }
+            }
         }
 
         return false;

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
@@ -73,7 +74,6 @@ class Utils
                         );
                     }
                 };
-
             } else {
                 $logger = new class implements ILogger
                 {
@@ -117,9 +117,9 @@ class Utils
         $combined_path = $file;
 
         if (empty($file) || $file[0] != DIRECTORY_SEPARATOR) {
-
-            if (empty($base) || $base[0] != DIRECTORY_SEPARATOR)
+            if (empty($base) || $base[0] != DIRECTORY_SEPARATOR) {
                 $base = realpath(($base ?: "."));
+            }
 
             $combined_path = $base . DIRECTORY_SEPARATOR . $file;
         }
@@ -127,15 +127,17 @@ class Utils
         $path = [];
 
         foreach (explode(DIRECTORY_SEPARATOR, $combined_path) as $part) {
-            if (empty($part) || $part === '.')
+            if (empty($part) || $part === '.') {
                 continue;
+            }
 
-            if ($part !== '..')
+            if ($part !== '..') {
                 array_push($path, $part);
-            else if (!empty($path))
+            } elseif (!empty($path)) {
                 array_pop($path);
-            else
+            } else {
                 return false;
+            }
         }
 
         return DIRECTORY_SEPARATOR . join(DIRECTORY_SEPARATOR, $path);
