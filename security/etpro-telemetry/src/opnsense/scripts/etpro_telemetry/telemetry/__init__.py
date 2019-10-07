@@ -113,24 +113,22 @@ class EventCollector:
                         except netaddr.core.AddrFormatError:
                             pass
 
-        with tempfile.NamedTemporaryFile() as output_stream:
-            subprocess.call(['ifconfig', '-a'], stdout=output_stream, stderr=open(os.devnull, 'wb'))
-            output_stream.seek(0)
-            for line in output_stream:
-                if line.startswith(b'\tinet'):
-                    parts = line.split()
-                    if len(parts) > 3:
-                        if parts[0] == 'inet6' and parts[2] == 'prefixlen':
-                            # IPv6 addresses
-                            self._local_networks.append(
-                                netaddr.IPNetwork("%s/%s" % (parts[1].split('%')[0], parts[3]))
-                            )
-                        elif parts[0] == 'inet' and len(parts) > 3 and parts[2] == 'netmask':
-                            # IPv4 addresses
-                            mask = int(parts[3], 16)
-                            self._local_networks.append(
-                                netaddr.IPNetwork("%s/%s" % (netaddr.IPAddress(parts[1]), netaddr.IPAddress(mask)))
-                            )
+        sp = subprocess.run(['ifconfig', '-a'], capture_output=True, text=True)
+        for line in sp.stdout.split('\n'):
+            if line.startswith('\tinet'):
+                parts = line.split()
+                if len(parts) > 3:
+                    if parts[0] == 'inet6' and parts[2] == 'prefixlen':
+                        # IPv6 addresses
+                        self._local_networks.append(
+                            netaddr.IPNetwork("%s/%s" % (parts[1].split('%')[0], parts[3]))
+                        )
+                    elif parts[0] == 'inet' and len(parts) > 3 and parts[2] == 'netmask':
+                        # IPv4 addresses
+                        mask = int(parts[3], 16)
+                        self._local_networks.append(
+                            netaddr.IPNetwork("%s/%s" % (netaddr.IPAddress(parts[1]), netaddr.IPAddress(mask)))
+                        )
 
     def is_local_address(self, address):
         """ check if provided address is local for this device
