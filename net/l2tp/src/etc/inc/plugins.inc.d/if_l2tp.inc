@@ -206,7 +206,7 @@ EOD;
             }
 
             if (isset($l2tpcfg['radius']['enable'])) {
-                $mpdconf .=<<<EOD
+                $mpdconf .= <<<EOD
   set radius server {$l2tpcfg['radius']['server']} "{$l2tpcfg['radius']['secret']}"
   set radius retries 3
   set radius timeout 10
@@ -215,7 +215,7 @@ EOD;
 EOD;
 
                 if (isset($l2tpcfg['radius']['accounting'])) {
-                    $mpdconf .=<<<EOD
+                    $mpdconf .= <<<EOD
   set auth enable radius-acct
 
 EOD;

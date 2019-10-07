@@ -36,7 +36,7 @@ class ARPscanner extends BaseModel
 {
     public function test()
     {
-        $command="/sbin/ifconfig -l -u";
+        $command = "/sbin/ifconfig -l -u";
         exec($command, $output);
         return $output;
     }
