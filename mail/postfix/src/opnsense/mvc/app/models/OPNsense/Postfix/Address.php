@@ -1,4 +1,5 @@
 <?php
+
 namespace OPNsense\Postfix;
 
 use OPNsense\Base\BaseModel;
