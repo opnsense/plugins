@@ -50,7 +50,7 @@ class InputController extends ApiControllerBase
 
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlInput = new Input();
@@ -62,7 +62,7 @@ class InputController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["input.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["input." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save
