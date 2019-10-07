@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015-2019 Deciso B.V.
  *
@@ -63,7 +64,7 @@ class SettingsController extends ApiControllerBase
      */
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlHelloWorld = new HelloWorld();
@@ -75,7 +76,7 @@ class SettingsController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["helloworld.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["helloworld." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save
