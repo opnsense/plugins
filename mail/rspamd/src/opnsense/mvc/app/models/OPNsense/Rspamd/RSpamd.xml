@@ -1,6 +1,7 @@
 <model>
   <mount>//OPNsense/Rspamd</mount>
   <description>rspamd anti spam filter</description>
+  <version>1.0.0</version>
   <items>
     <general>
       <enabled type="BooleanField">
@@ -11,6 +12,10 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_redis_plugin>
+      <enable_bayes_autolearn type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </enable_bayes_autolearn>
       <rejectscore type="IntegerField">
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
