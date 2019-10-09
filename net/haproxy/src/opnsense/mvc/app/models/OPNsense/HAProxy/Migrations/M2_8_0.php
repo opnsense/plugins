@@ -31,13 +31,16 @@ namespace OPNsense\HAProxy\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 
-class M2_7_0 extends BaseModelMigration
+class M2_8_0 extends BaseModelMigration
 {
     public function run($model)
     {
-        // Servers have an 'enabled' field now
-        foreach ($model->getNodeByReference('servers.server')->iterateItems() as $server) {
-            $server->enabled = '1';
+        // Rename HTTP/2 option
+        foreach ($model->getNodeByReference('frontends.frontend')->iterateItems() as $frontend) {
+            if (isset($frontend->ssl_http2Enabled)) {
+                  $frontend->http2Enabled = '1';
+                  $frontend->ssl_http2Enabled = null;
+            }
         }
     }
 }

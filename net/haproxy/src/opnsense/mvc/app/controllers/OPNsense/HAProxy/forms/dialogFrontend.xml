@@ -105,12 +105,6 @@
         <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake.]]></help>
     </field>
     <field>
-        <id>frontend.ssl_http2Enabled</id>
-        <label>Enable HTTP/2</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable support for HTTP/2.]]></help>
-    </field>
-    <field>
         <id>frontend.ssl_hstsEnabled</id>
         <label>Enable HSTS</label>
         <type>checkbox</type>
@@ -166,6 +160,38 @@
         <allownew>true</allownew>
         <help><![CDATA[Select CRLs to use for client certificate authentication. <br/>To import additional CRLs, go to <a href="/system_crlmanager.php">CRL Manager</a>.]]></help>
         <hint>Type CRL name or choose from list.</hint>
+    </field>
+    <field>
+        <label>HTTP(S) settings</label>
+        <type>header</type>
+        <style>mode_table table_http</style>
+    </field>
+    <field>
+        <id>frontend.http2Enabled</id>
+        <label>Enable HTTP/2</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable support for HTTP/2.]]></help>
+    </field>
+    <field>
+        <id>frontend.http2Enabled_nontls</id>
+        <label>HTTP/2 without TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable support for HTTP/2 even if TLS (SSL offloading) is not enabled.]]></help>
+    </field>
+    <field>
+        <id>frontend.advertised_protocols</id>
+        <label>Advertise Protocols (ALPN)</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[When using the TLS ALPN extension, HAProxy advertises the specified protocol list as supported on top of ALPN. SSL offloading must be enabled.]]></help>
+    </field>
+    <field>
+        <id>frontend.forwardFor</id>
+        <label>X-Forwarded-For header</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
     </field>
     <field>
         <label>Basic Authentication</label>
@@ -271,17 +297,6 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>HTTP(S) settings</label>
-        <type>header</type>
-        <style>mode_table table_http</style>
-    </field>
-    <field>
-        <id>frontend.forwardFor</id>
-        <label>X-Forwarded-For header</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
-    </field>
-    <field>
         <label>Stickiness table</label>
         <type>header</type>
     </field>
@@ -289,14 +304,14 @@
         <id>frontend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
         <hint>Choose a stick-table type.</hint>
     </field>
     <field>
         <id>frontend.stickiness_dataTypes</id>
         <label>Stored data types</label>
         <type>select_multiple</type>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>frontend.stickiness_expire</id>
@@ -323,7 +338,7 @@
         <id>frontend.stickiness_counter_key</id>
         <label>Sticky counter key</label>
         <type>text</type>
-        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
