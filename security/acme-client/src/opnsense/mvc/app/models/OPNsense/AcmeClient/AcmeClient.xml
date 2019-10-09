@@ -243,6 +243,22 @@
                     <MaximumValue>60</MaximumValue>
                     <default>60</default>
                 </renewInterval>
+                <aliasmode type="OptionField">
+                    <Required>Y</Required>
+                    <default>none</default>
+                    <OptionValues>
+                        <none>Not using DNS alias mode</none>
+                        <automatic>Automatic Mode (uses DNS lookups)</automatic>
+                        <domain>Domain alias mode</domain>
+                        <challenge>Challenge alias mode</challenge>
+                    </OptionValues>
+                </aliasmode>
+                <domainalias type="TextField">
+                    <Required>N</Required>
+                </domainalias>
+                <challengealias type="TextField">
+                    <Required>N</Required>
+                </challengealias>
                 <!-- hidden field; ID of the certificate in Cert Manager -->
                 <certRefId type="TextField">
                     <Required>N</Required>
@@ -381,6 +397,7 @@
                         <dns_netcup>netcup DNS API</dns_netcup>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
+                        <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
@@ -644,6 +661,24 @@
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_key>
+                <dns_opnsense_host type="TextField">
+                    <Required>N</Required>
+                    <default>localhost</default>
+                </dns_opnsense_host>
+                <dns_opnsense_port type="TextField">
+                    <Required>N</Required>
+                    <default>443</default>
+                </dns_opnsense_port>
+                <dns_opnsense_key type="TextField">
+                    <Required>N</Required>
+                </dns_opnsense_key>
+                <dns_opnsense_token type="TextField">
+                    <Required>N</Required>
+                </dns_opnsense_token>
+                <dns_opnsense_insecure type="BooleanField">
+                    <Required>N</Required>
+                    <default>0</default>
+                </dns_opnsense_insecure>
                 <dns_ovh_app_key type="TextField">
                     <Required>N</Required>
                 </dns_ovh_app_key>
@@ -738,6 +773,7 @@
                         <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
+                        <upload_sftp>Upload certificate via SFTP</upload_sftp>
                         <configd>System or Plugin Command (select below)</configd>
                     </OptionValues>
                 </type>
@@ -751,6 +787,76 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </highwinds_access_token>
+                <sftp_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </sftp_host>
+                <sftp_host_key type="TextField">
+                    <Required>N</Required>
+                    <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
+                         Reference: https://stackoverflow.com/a/475217 -->
+                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
+                </sftp_host_key>
+                <sftp_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>49151</MaximumValue>
+                    <default>22</default>
+                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                </sftp_port>
+                <sftp_user type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </sftp_user>
+                <sftp_identity_type type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ecdsa>ECDSA</ecdsa>
+                        <rsa>RSA</rsa>
+                        <ed25519>ed25519</ed25519>
+                    </OptionValues>
+                </sftp_identity_type>
+                <sftp_remote_path type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,512}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 512 characters.</ValidationMessage>
+                </sftp_remote_path>
+                <sftp_chgrp type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[0-9]+$/u</mask>
+                    <ValidationMessage>Should be a numeric value.</ValidationMessage>
+                </sftp_chgrp>
+                <sftp_chmod type="TextField">
+                    <Required>N</Required>
+                    <mask>/^0[0-9]{3}$/u</mask>
+                    <ValidationMessage>A unix permission, 4 digits (e.g. 0440).</ValidationMessage>
+                </sftp_chmod>
+                <sftp_chmod_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^0[0-9]{3}$/u</mask>
+                    <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
+                </sftp_chmod_key>
+                <sftp_filename_cert type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_cert>
+                <sftp_filename_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_key>
+                <sftp_filename_ca type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_ca>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>

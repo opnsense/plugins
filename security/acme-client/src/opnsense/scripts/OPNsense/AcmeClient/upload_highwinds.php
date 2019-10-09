@@ -41,7 +41,7 @@ $HIGHWINDS_API_URL = 'https://striketracker.highwinds.com/api/v1/accounts';
 
 function find_certificate($acme_cert_id)
 {
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
     $configObj = Config::getInstance()->object();
     if (isset($configObj->OPNsense->AcmeClient->certificates) && $configObj->OPNsense->AcmeClient->certificates->count() > 0) {
         foreach ($configObj->OPNsense->AcmeClient->certificates->children() as $certObj) {
@@ -93,7 +93,7 @@ function export_certificate($cert_refid)
 
 function upload_certificate($cert_name, $cert_refid, $acme_cert_id, $acme_automation_id)
 {
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
     $configObj = Config::getInstance()->object();
     if (isset($configObj->OPNsense->AcmeClient->actions) && $configObj->OPNsense->AcmeClient->actions->count() > 0) {
         foreach ($configObj->OPNsense->AcmeClient->actions->children() as $automObj) {

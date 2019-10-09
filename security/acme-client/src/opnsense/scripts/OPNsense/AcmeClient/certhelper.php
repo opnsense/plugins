@@ -78,23 +78,23 @@ if (isset($options["C"])) {
 switch ($options["a"]) {
     case 'sign':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'renew':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'remove':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'removekey':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'revoke':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     default:
         echo "ERROR: invalid argument specified\n";
@@ -112,7 +112,7 @@ function cert_action_validator($opt_cert_id)
 {
     global $options;
 
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Store certs here after successful issue/renewal. Required for automations.
     $restart_certs = array();
@@ -459,7 +459,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Required to run pre-defined commands.
     $backend = new Backend();
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Collect account information
     $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
@@ -511,7 +511,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $last_update_time = new \DateTime();
     $last_update_time->setTimestamp($last_update);
     $renew_interval = (string)$certObj->renewInterval;
-    $next_update = $last_update_time->add(new \DateInterval('P'.$renew_interval.'D'));
+    $next_update = $last_update_time->add(new \DateInterval('P' . $renew_interval . 'D'));
 
     // Check if it's time to renew the cert.
     if (isset($options["F"]) or ($current_time >= $next_update)) {
@@ -828,6 +828,18 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
                 break;
+            case 'dns_opnsense':
+                # BIND plugin must be installed.
+                if ((string)$modelObj->isPluginInstalled('bind') != "1") {
+                    log_error("AcmeClient: BIND plugin is NOT installed. Please install os-bind.");
+                    return(1);
+                }
+                $proc_env['OPNs_Host'] = (string)$valObj->dns_opnsense_host;
+                $proc_env['OPNs_Port'] = (string)$valObj->dns_opnsense_port;
+                $proc_env['OPNs_Key'] = (string)$valObj->dns_opnsense_key;
+                $proc_env['OPNs_Token'] = (string)$valObj->dns_opnsense_token;
+                $proc_env['OPNs_Api_Insecure'] = (string)$valObj->dns_opnsense_insecure;
+                break;
             case 'dns_ovh':
                 $proc_env['OVH_AK'] = (string)$valObj->dns_ovh_app_key;
                 $proc_env['OVH_AS'] = (string)$valObj->dns_ovh_app_secret;
@@ -880,10 +892,49 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Prepare altNames
     $altnames = "";
+
+    // Main domain: Use DNS alias mode for domain validation?
+    // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+    if ($val_method == 'dns01') {
+        switch ((string)$certObj->aliasmode) {
+            case 'automatic':
+                $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
+                if ($dst = dns_get_record($name, DNS_CNAME)) {
+                    $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                }
+                break;
+            case 'domain':
+                $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                break;
+            case 'challenge':
+                $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                break;
+        }
+    }
+
     if (!empty((string)$certObj->altNames)) {
         $_altnames = explode(",", (string)$certObj->altNames);
         foreach (explode(",", (string)$certObj->altNames) as $altname) {
             $altnames .= "--domain ${altname} ";
+
+            // altNames: Use DNS alias mode for domain validation?
+            // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+            if ($val_method == 'dns01') {
+                switch ((string)$certObj->aliasmode) {
+                    case 'automatic':
+                        $name = "_acme-challenge." . ltrim($altname, '*.');
+                        if ($dst = dns_get_record($name, DNS_CNAME)) {
+                            $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                        }
+                        break;
+                    case 'domain':
+                        $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                        break;
+                    case 'challenge':
+                        $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                        break;
+                }
+            }
         }
     }
 
@@ -1290,6 +1341,9 @@ function run_restart_actions($certlist, $modelObj)
                 case 'upload_highwinds':
                     $response = $backend->configdRun("acmeclient upload_highwinds ${cert_id} ${action_id}");
                     break;
+                case 'upload_sftp':
+                    $response = $backend->configdRun("acmeclient upload-sftp ${cert_id} ${action_id}");
+                    break;
                 case 'configd':
                     // Make sure a configd command was specified.
                     if (empty((string)$action->configd)) {
@@ -1354,12 +1408,12 @@ function dump_postponed_updates()
         500 => 'internal error',
     ];
 
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     foreach ($postponed_updates as $pupdate) {
         $_statusCode = $pupdate['statusCode'];
         $_uuid = $pupdate['uuid'];
-        $node = $modelObj->getNodeByReference('certificates.certificate.'.$_uuid);
+        $node = $modelObj->getNodeByReference('certificates.certificate.' . $_uuid);
         if ($node != null) {
             log_error("AcmeClient: storing status '" . $status_descr[$_statusCode] . "' for cert " . (string)$node->name);
             $node->statusCode = $_statusCode;
@@ -1437,7 +1491,7 @@ function local_cert_get_cn($crt, $decode = true)
 }
 
 // taken from system_camanager.php
-function local_ca_import(& $ca, $str, $key = "", $serial = 0)
+function local_ca_import(&$ca, $str, $key = "", $serial = 0)
 {
     global $config;
 
@@ -1452,7 +1506,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     $issuer = cert_get_issuer($str, false);
 
     // Find my issuer unless self-signed
-    if ($issuer <> $subject) {
+    if ($issuer != $subject) {
         $issuer_crt =& lookup_ca_by_subject($issuer);
         if ($issuer_crt) {
             $ca['caref'] = $issuer_crt['refid'];
@@ -1463,7 +1517,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     if (is_array($config['ca'])) {
         foreach ($config['ca'] as & $oca) {
             $issuer = cert_get_issuer($oca['crt']);
-            if ($ca['refid']<>$oca['refid'] && $issuer==$subject) {
+            if ($ca['refid'] != $oca['refid'] && $issuer == $subject) {
                 $oca['caref'] = $ca['refid'];
             }
         }
@@ -1471,7 +1525,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     if (is_array($config['cert'])) {
         foreach ($config['cert'] as & $cert) {
             $issuer = cert_get_issuer($cert['crt']);
-            if ($issuer==$subject) {
+            if ($issuer == $subject) {
                 $cert['caref'] = $ca['refid'];
             }
         }

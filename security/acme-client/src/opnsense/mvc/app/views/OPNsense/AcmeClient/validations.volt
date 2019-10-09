@@ -62,6 +62,12 @@ POSSIBILITY OF SUCH DAMAGE.
                         $(".gcloud_plugin_warning").hide();
                     }
                 });
+                // Show a warning if the BIND plugin is missing.
+                ajaxCall(url="/api/acmeclient/settings/getBindPluginStatus", sendData={}, callback=function(data,status) {
+                    if (data['result'] != 0) {
+                        $(".bind_plugin_warning").hide();
+                    }
+                });
             });
             $("#validation\\.http_service").change(function(){
                 var service_id = 'table_http_' + $(this).val();
