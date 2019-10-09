@@ -5,3 +5,4 @@ ripd.conf:/usr/local/etc/frr/ripd.conf
 frr:/etc/rc.conf.d/frr
 zebra.conf:/usr/local/etc/frr/zebra.conf
 vtysh.conf:/usr/local/etc/frr/vtysh.conf
+syslog-ng-frr-events.conf:/usr/local/etc/syslog-ng.conf.d/frr-events.conf
