@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  *    Copyright (C) 2019 Deciso B.V.
@@ -50,7 +51,7 @@ class RecordController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $record  = $this->getModel()->getRecord($uuid);
             if ($record !== null) {
-                (new Domain)->updateSerial((string)$record->domain)->serializeToConfig();
+                (new Domain())->updateSerial((string)$record->domain)->serializeToConfig();
                 Config::getInstance()->save();
             }
         }
