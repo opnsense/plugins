@@ -10,7 +10,7 @@ Plugin Changelog
 
 1.15
 
-* add ocsp stapling and ocsp verify
+* add OCSP stapling and verify
 
 1.14
 
