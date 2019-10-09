@@ -1,4 +1,5 @@
 <?php
+
 namespace OPNsense\Tor;
 
 use OPNsense\Base\BaseModel;
