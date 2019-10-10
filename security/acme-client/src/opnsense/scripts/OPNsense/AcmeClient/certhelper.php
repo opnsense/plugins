@@ -328,7 +328,7 @@ function eval_optional_acme_args()
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
 
      // Set log level
-     $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";		     switch($configObj->OPNsense->AcmeClient->settings->logLevel) {
+     $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";
      $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "debug" ? "--debug" : null;
 
     // Remove empty and duplicate elements from array
