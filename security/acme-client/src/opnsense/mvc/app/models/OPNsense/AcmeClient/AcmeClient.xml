@@ -105,7 +105,6 @@
                     <normal>normal</normal>
                     <extended>extended</extended>
                     <debug>debug</debug>
-                    <dnsapi>debug dnsapi</dnsapi>
                 </OptionValues>
             </logLevel>
         </settings>
