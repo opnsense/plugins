@@ -344,7 +344,8 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
     $account_key_file = $account_conf_dir . "/account.key";
     $account_json_file = $account_conf_dir . "/account.json";
@@ -462,7 +463,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames
@@ -1023,7 +1025,8 @@ function revoke_cert($certObj, $valObj, $acctObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames

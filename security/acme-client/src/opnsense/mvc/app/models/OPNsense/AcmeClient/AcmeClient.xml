@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
