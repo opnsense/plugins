@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.9
+
+* Allow IPv4-only mode
+
 1.8
 
 * Fix template generation when there is only one zone configured
