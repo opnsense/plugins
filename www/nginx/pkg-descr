@@ -8,6 +8,10 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.15
+
+* add OCSP stapling and verify
+
 1.14
 
 * add load balancer algorithm option (ip_hash)

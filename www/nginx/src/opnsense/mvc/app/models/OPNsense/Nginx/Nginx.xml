@@ -686,6 +686,14 @@
         <default>0</default>
         <Required>Y</Required>
       </https_only>
+      <ocsp_stapling type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </ocsp_stapling>
+      <ocsp_verify type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </ocsp_verify>
       <block_nonpublic_data type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
