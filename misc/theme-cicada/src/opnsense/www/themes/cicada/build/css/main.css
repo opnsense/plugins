@@ -5090,8 +5090,8 @@ button.close {
   background-color: inherit; }
 .modal-body .table-hover > tbody > tr:hover > td,
 .modal-body .table-hover > tbody > tr:hover > th {
-  background-color: #262626;
-  color:#515151; }
+  background-color: #c35d12;
+  color: #fff; }
 
 .modal-footer {
   padding: 5px;
