@@ -6259,12 +6259,12 @@ a:focus {
   }
 
   &.active > a {
-    color: #fff;
-    background-color: #515151;
+    background-color: #2d2d2d;
+    color: #ec6d12;
 
     &:hover, &:focus {
-      color: #fff;
-      background-color: #515151;
+      background-color: #2d2d2d;
+      color: #ec6d12;
     }
   }
 }
@@ -7038,7 +7038,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
           text-decoration: none;
           color: #FFFFFF;
           background-color: #505050;
-          border: 1px solid #303030;
+          border: 1px solid #6d6c6c;
           margin-left: -1px;
           cursor: pointer;
         }
@@ -7063,7 +7063,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
         a {
           &:hover, &:focus {
             color: #FFFFFF;
-            background-color: #515151;
+            background-color: #ec6d12;
             border-color: #303030;
           }
         }
@@ -7071,7 +7071,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
         span {
           &:hover, &:focus {
             color: #FFFFFF;
-            background-color: #515151;
+            background-color: #ec6d12;
             border-color: #303030;
           }
         }
@@ -7082,14 +7082,14 @@ fieldset[disabled] .navbar-inverse .btn-link {
       a {
         z-index: 2;
         color: #FFFFFF;
-        background-color: #515151;
+        background-color: #ec6d12;
         border-color: #1d1d1d;
         cursor: default;
 
         &:hover, &:focus {
           z-index: 2;
           color: #FFFFFF;
-          background-color: #515151;
+          background-color: #ec6d12;
           border-color: #1d1d1d;
           cursor: default;
         }
@@ -7098,14 +7098,14 @@ fieldset[disabled] .navbar-inverse .btn-link {
       span {
         z-index: 2;
         color: #FFFFFF;
-        background-color: #515151;
+        background-color: #ec6d12;
         border-color: #1d1d1d;
         cursor: default;
 
         &:hover, &:focus {
           z-index: 2;
           color: #FFFFFF;
-          background-color: #515151;
+          background-color: #ec6d12;
           border-color: #1d1d1d;
           cursor: default;
         }
@@ -7677,7 +7677,7 @@ a.thumbnail {
 }
 
 .progress-bar-info {
-  background-color: #CF5203;
+  background-color: #ec6d12;
 }
 
 .progress-striped .progress-bar-info {
@@ -8723,8 +8723,8 @@ button.close {
 
   .table-hover > tbody > tr:hover > {
     td, th {
-      background-color: #262626;
-      color: #515151;
+      background-color: #c35d12;
+      color: #fff;
     }
   }
 }
@@ -10428,12 +10428,12 @@ label > input {
 }
 
 .fw_block {
-  background-color: #683232 !important;
+  background-color: #712017 !important;
   color: #FFF;
 }
 
 .fw_nat {
-  background-color: #575757 !important;
+  background-color: #174471 !important;
   color: #FFF;
 }
 
@@ -10702,8 +10702,4 @@ h2 {
   &.text-center, &.text-primary {
     color: #fff !important;
   }
-}
-
-label:hover {
-  background-color: #ec6d12;
 }
