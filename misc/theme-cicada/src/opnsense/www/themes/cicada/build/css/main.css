@@ -3646,8 +3646,8 @@ tbody.collapse.in {
   .nav-pills > li > a {
     border-radius: 0; }
   .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-    color: #fff;
-    background-color: #515151; }
+    background-color: #2d2d2d;
+    color: #ec6d12; }
 
 .nav-stacked > li {
   float: none; }
@@ -4095,7 +4095,7 @@ tbody.collapse.in {
       text-decoration: none;
       color: #FFFFFF;
       background-color: #505050;
-      border: 1px solid #303030;
+      border: 1px solid #6d6c6c;
       margin-left: -1px;
 	  cursor: pointer; }
 
@@ -4489,7 +4489,7 @@ a.thumbnail.active {
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
 .progress-bar-info {
-  background-color: #CF5203; }
+  background-color: #ec6d12; }
   .progress-striped .progress-bar-info {
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -6539,4 +6539,3 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 h2.text-center ,h2.text-primary {
   color:#fff !important;
 }
-

@@ -6259,12 +6259,12 @@ a:focus {
   }
 
   &.active > a {
-    color: #fff;
-    background-color: #515151;
+    background-color: #2d2d2d;
+    color: #ec6d12;
 
     &:hover, &:focus {
-      color: #fff;
-      background-color: #515151;
+      background-color: #2d2d2d;
+      color: #ec6d12;
     }
   }
 }
@@ -7038,7 +7038,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
           text-decoration: none;
           color: #FFFFFF;
           background-color: #505050;
-          border: 1px solid #303030;
+          border: 1px solid #6d6c6c;
           margin-left: -1px;
           cursor: pointer;
         }
@@ -7677,7 +7677,7 @@ a.thumbnail {
 }
 
 .progress-bar-info {
-  background-color: #CF5203;
+  background-color: #ec6d12;
 }
 
 .progress-striped .progress-bar-info {
