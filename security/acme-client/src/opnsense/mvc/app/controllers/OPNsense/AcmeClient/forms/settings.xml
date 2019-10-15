@@ -41,7 +41,7 @@
         <id>acmeclient.settings.logLevel</id>
         <label>Log Level</label>
         <type>dropdown</type>
-        <help><![CDATA[Specifies the log level for acme.sh, default is "normal". All other log levels add information for debug purposes, but be aware that this will break the log formatting in the GUI.]]></help>
+        <help><![CDATA[Specifies the log level for acme.sh, default is "normal". All other log levels add information for debug purposes, but be aware that this will break the log formatting in the GUI.  Levels "debug 2" and "debug 3" log successively deeper log messages from the acme.sh including messages from DNS-01 DNSAPI scripts.]]></help>
         <advanced>true</advanced>
     </field>
 </form>
