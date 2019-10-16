@@ -40,6 +40,7 @@
  *    - regfish IPv6 (regfish.de)
  *    - dynv6 IPv6 (dynv6.com)
  *    - DigitalOcean (digitalocean.com)
+ *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
  * +----------------------------------------------------+
@@ -95,6 +96,7 @@
  *  dynv6               - Last Tested: 25 June 2019
  *  dynv6 v6            - Last Tested: 25 June 2019
  *  DigitalOcean        - Last Tested: 25 June 2019
+ *  Azure DNS           - Last Tested: 16 October 2019
  *  Linode              - Last Tested: 12 November 2019
  *  Linode v6           - Last Tested: 12 November 2019
  * +====================================================+
@@ -127,6 +129,7 @@ class updatedns
     var $_dnsPort;
     var $_dnsUpdateURL;
     var $_dnsZoneID;
+    var $_dnsResourceID;
     var $_dnsTTL;
     var $status;
     var $_debugID;
@@ -165,6 +168,7 @@ class updatedns
         $dnsUpdateURL = '',
         $forceUpdate = false,
         $dnsZoneID = '',
+        $dnsResourceID = '',
         $dnsTTL = '',
         $dnsResultMatch = '',
         $dnsRequestIf = '',
@@ -204,8 +208,7 @@ class updatedns
             case 'namecheap':
                 if (!$dnsPass) {
                     $this->_error(4);
-                }
-                if (!$dnsHost) {
+                } elseif (!$dnsHost) {
                     $this->_error(5);
                 }
                 break;
@@ -213,8 +216,7 @@ class updatedns
             case 'route53-v6':
                 if (!$dnsZoneID) {
                     $this->_error(8);
-                }
-                if (!$dnsTTL) {
+                } elseif (!$dnsTTL) {
                     $this->_error(9);
                 }
                 break;
@@ -231,25 +233,37 @@ class updatedns
             case 'regfish-v6':
                 if (!$dnsUser) {
                     $this->_error(3);
-                }
-                if (!$dnsHost) {
+                } elseif (!$dnsHost) {
                     $this->_error(5);
+                }
+                break;
+            case 'azure':
+            case 'azurev6':
+                if (!$dnsUser) {
+                    $this->_error(3);
+                } elseif (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsHost) {
+                    $this->_error(5);
+                } elseif (!$dnsResourceID) {
+                    $this->_error(8);
+                } elseif (!$dnsTTL) {
+                    $this->_error(9);
                 }
                 break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
-                }
-                if (!$dnsPass) {
+                } elseif (!$dnsPass) {
                     $this->_error(4);
-                }
-                if (!$dnsHost) {
+                } elseif (!$dnsHost) {
                     $this->_error(5);
                 }
                 break;
         }
 
         switch ($dnsService) {
+            case 'azurev6':
             case 'cloudflare-v6':
             case 'custom-v6':
             case 'dynv6-v6':
@@ -271,6 +285,7 @@ class updatedns
         $this->_dnsWildcard = $dnsWildcard;
         $this->_dnsMX = $dnsMX;
         $this->_dnsZoneID = $dnsZoneID;
+        $this->_dnsResourceID = $dnsResourceID;
         $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
         $this->_checkIP();
@@ -299,6 +314,8 @@ class updatedns
         } else {
             switch ($this->_dnsService) {
                 case '3322':
+                case 'azure':
+                case 'azurev6':
                 case 'citynetwork':
                 case 'cloudflare':
                 case 'cloudflare-v6':
@@ -973,6 +990,73 @@ class updatedns
                 } else {
                     log_error("Dynamic DNS($fqdn): No zone found for domain");
                 }
+            case 'azurev6':
+            case 'azure':
+                $hostname = "{$this->_dnsHost}";
+                $resourceid = trim($this->_dnsResourceID);
+                $app_id = $this->_dnsUser;
+                $client_secret = $this->_dnsPass;
+                $newip = $this->_dnsIP;
+                $newttl = $this->_dnsTTL;
+                // ensure resourceid starts with / and has no trailing /
+                $resourceid = '/' . trim($resourceid, '/');
+                // extract subscription id from resource id
+                preg_match('/\\/subscriptions\\/(?<sid>[^\\/]*)/', $resourceid, $result);
+                $subscriptionid = isset($result['sid']) ? $result['sid'] : '';
+                if (isset($result['sid'])) {
+                    $subscriptionid = $result['sid'];
+                } else {
+                    log_error("Azure subscription id not found in resource id ({$resourceid})");
+                    return false;
+                }
+                // find tenant id from subscription id
+                curl_setopt($ch, CURLOPT_URL, "https://management.azure.com/subscriptions/" . $subscriptionid . "?api-version=2016-09-01");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_HEADER, 1);
+                curl_setopt($ch, CURLOPT_NOBODY, 1);
+                $output = curl_exec($ch);
+                $pattern = '/Bearer authorization_uri="https:\\/\\/login.windows.net\\/(?<tid>[^"]*)/i';
+                preg_match($pattern, $output, $result);
+                if (isset($result['tid'])) {
+                    $tenantid = $result['tid'];
+                } else {
+                    log_error("Tenant ID not found");
+                    return false;
+                }
+                 // get an bearer token
+                curl_setopt($ch, CURLOPT_URL, "https://login.microsoftonline.com/" . $tenantid . "/oauth2/token");
+                curl_setopt($ch, CURLOPT_POST, 1);
+                $body = "resource=" . urlencode("https://management.core.windows.net/") . "&grant_type=client_credentials&client_id=" . $app_id . "&client_secret=" . urlencode($client_secret);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $server_output = curl_exec($ch);
+                $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                preg_match("/\"access_token\":\"(?<tok>[^\"]*)\"/", $server_output, $result);
+                if (isset($result['tok'])) {
+                    $bearertoken = $result['tok'];
+                } else {
+                    log_error("no valid bearer token");
+                    return false;
+                }
+                // Update the DNS record
+                if ($this->_useIPv6) {
+                    $url = "https://management.azure.com" . $resourceid . "/AAAA/" . $hostname . "?api-version=2017-09-01";
+                    $body = '{"properties":{"TTL":"' . $newttl . '", "AAAARecords":[{"ipv6Address":"' . $newip . '"}]}}';
+                } else {
+                    $url = "https://management.azure.com" . $resourceid . "/A/" . $hostname . "?api-version=2017-09-01";
+                    $body = '{"properties":{"TTL":"' . $newttl . '", "ARecords":[{"ipv4Address":"' . $newip . '"}]}}';
+                }
+                $request_headers = array();
+                $request_headers[] = 'Accept: application/json';
+                $request_headers[] = 'Authorization: Bearer ' . $bearertoken;
+                $request_headers[] = 'Content-Type: application/json';
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HEADER, 1);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
             default:
                 break;
@@ -1400,6 +1484,23 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ($fqdn): UNKNOWN ERROR";
                     log_error("Dynamic DNS ($fqdn): PAYLOAD: {$data}");
+                }
+                break;
+            case 'azure':
+            case 'azurev6':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($http_code == 401) {
+                    $status = $status_intro . '(Error) User Authorization Failed';
+                } else if ($http_code == 201) {
+                    $status = $status_intro . '(Success) IP Address Changed Successfully!';
+                    $successful_update = true;
+                } else if ($http_code == 200) {
+                    $status = $status_intro . '(Success) IP Address Changed Successfully!';
+                    $successful_update = true;
+                } else {
+                    $status = $status_intro . '(Error)" Unknown Response"';
+                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             default:
