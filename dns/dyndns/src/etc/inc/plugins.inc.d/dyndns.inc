@@ -97,6 +97,8 @@ function dyndns_list()
 
     return array(
         '3322' => '3322',
+        'azure' => 'Azure DNS',
+        'azurev6' => 'Azure DNS (v6)',
         'citynetwork' => 'City Network',
         'cloudflare' => 'CloudFlare',
         'cloudflare-v6' => 'CloudFlare (v6)',
@@ -163,6 +165,7 @@ function dyndns_configure_client($conf)
         $dnsUpdateURL = "{$conf['updateurl']}",
         $forceUpdate = $conf['force'],
         $dnsZoneID = $conf['zoneid'],
+        $dnsResourceID = $conf['resourceid'],
         $dnsTTL = $conf['ttl'],
         $dnsResultMatch = "{$conf['resultmatch']}",
         $dnsRequestIf = "{$conf['requestif']}",

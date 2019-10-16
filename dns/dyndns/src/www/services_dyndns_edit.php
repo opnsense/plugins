@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_dyndns[$_GET['id']])) {
         $id = $_GET['id'];
     }
-    $config_copy_fieldnames = array('username', 'password', 'host', 'mx', 'type', 'zoneid', 'ttl', 'updateurl',
+    $config_copy_fieldnames = array('username', 'password', 'host', 'mx', 'type', 'zoneid','resourceid', 'ttl', 'updateurl',
                                     'resultmatch', 'requestif', 'descr', 'interface');
     foreach ($config_copy_fieldnames as $fieldname) {
         if (isset($id) && isset($a_dyndns[$id][$fieldname])) {
@@ -59,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $pconfig[$fieldname] = null;
         }
     }
-
     if (isset($id)) {
         $pconfig['enable'] = isset($a_dyndns[$id]['enable']);
     } else {
@@ -92,10 +91,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (!in_array($pconfig['type'], array('duckdns', 'regfish', 'regfish-v6'))) {
             $reqdfields[] = 'password';
             $reqdfieldsn[] = gettext('Password');
+        } else {
+            $reqdfields[] = 'updateurl';
+            $reqdfieldsn[] = gettext('Update URL');
         }
-    } else {
-        $reqdfields[] = 'updateurl';
-        $reqdfieldsn[] = gettext('Update URL');
+    }
+    if (in_array($pconfig['type'], array( 'azure','azurev6'))) {
+        $reqdfields[] = 'password';
+        $reqdfieldsn[] = gettext('Password');
+        $reqdfields[] = 'resourceid';
+        $reqdfieldsn[] = gettext('Resource Id');
+        $reqdfields[] = 'ttl';
+        $reqdfieldsn[] = gettext('TTL');
     }
 
     do_input_validation($pconfig, $reqdfields, $reqdfieldsn, $input_errors);
@@ -141,7 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['curl_ssl_verifypeer'] = !empty($pconfig['curl_ssl_verifypeer']);
         $dyndns['enable'] = !empty($pconfig['enable']);
         $dyndns['interface'] = $pconfig['interface'];
-        $dyndns['zoneid'] = $pconfig['zoneid'];
+        $dyndns['resourceid'] = $pconfig['resourceid'];
+        $dyndns['zoneid'] = $pconfig['zoneid'] ;
         $dyndns['ttl'] = $pconfig['ttl'];
         $dyndns['updateurl'] = $pconfig['updateurl'];
         // Trim hard-to-type but sometimes returned characters
@@ -196,6 +204,10 @@ include("head.inc");
               case "route53":
               case "route53-v6":
                 $(".type_route53").show();
+                break;
+              case "azure":
+              case "azurev6":
+                $(".type_azure").show();
                 break;
               default:
                 $(".type_default").show();
@@ -332,6 +344,7 @@ include("head.inc");
                         <?= gettext("Username is required for all types except Namecheap, FreeDNS and Custom Entries.");?>
                         <br /><?= gettext('Route 53: Enter your Access Key ID.') ?>
                         <br /><?= gettext('Duck DNS: Enter your Token.') ?>
+                        <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                       </div>
                     </td>
@@ -344,6 +357,7 @@ include("head.inc");
                         <?=gettext('FreeDNS (freedns.afraid.org): Enter your "Authentication Token" provided by FreeDNS.') ?>
                         <br /><?= gettext('Route 53: Enter your Secret Access Key.') ?>
                         <br /><?= gettext('Duck DNS: Leave blank.') ?>
+                        <br /><?= gettext('Azure: client secret of the AD application') ?>
                       </div>
                     </td>
                   </tr>
@@ -353,6 +367,15 @@ include("head.inc");
                       <input name="zoneid" type="text" id="zoneid" value="<?= $pconfig['zoneid'] ?>" />
                       <div class="hidden" data-for="help_for_zoneid">
                         <?= gettext("Enter Zone ID that you received when you created your domain in Route 53.") ?>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="opt_field type_azure">
+                    <td><a id="help_for_resourceid" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('Resource Id') ?></td>
+                    <td>
+                      <input name="resourceid" type="text" id="resourceid" value="<?= $pconfig['resourceid'] ?>" />
+                      <div class="hidden" data-for="help_for_resourceid">
+                        <?= gettext("Enter the resource id of the DNS Zone in Azure.") ?>
                       </div>
                     </td>
                   </tr>
@@ -384,7 +407,7 @@ include("head.inc");
                       </div>
                     </td>
                   </tr>
-                  <tr class="opt_field type_route53">
+                  <tr class="opt_field type_route53  type_azure">
                     <td><a id="help_for_ttl" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("TTL");?></td>
                     <td>
                       <input name="ttl" type="text" id="ttl" value="<?= $pconfig['ttl'] ?>" />
@@ -393,6 +416,7 @@ include("head.inc");
                       </div>
                     </td>
                   </tr>
+                  <tr>
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?= gettext("Description") ?></td>
                     <td>
