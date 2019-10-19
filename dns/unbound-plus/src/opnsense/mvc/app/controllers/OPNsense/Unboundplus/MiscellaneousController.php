@@ -26,37 +26,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Unboundplus\Api;
+namespace OPNsense\Unboundplus;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\Unboundplus\Dnsbl;
-use OPNsense\Unboundplus\Miscellaneous;
-
-class ServiceController extends ApiMutableServiceControllerBase
+class MiscellaneousController extends \OPNsense\Base\IndexController
 {
-    protected static $internalServiceClass = '\OPNsense\Unboundplus\Dnsbl';
-    protected static $internalServiceTemplate = 'OPNsense/Unboundplus';
-    protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'unboundplus';
-
-    public function dnsblAction()
+    public function indexAction()
     {
-        $this->sessionClose();
-        $mdl = new Dnsbl();
-        $backend = new Backend();
-        $backend->configdRun('template reload OPNsense/Unboundplus');
-        $response = $backend->configdpRun('unboundplus dnsbl', array((string)$mdl->type));
-        return array("response" => $response);
-    }
-
-    public function reloadunboundAction()
-    {
-        $this->sessionClose();
-        $mdl = new Miscellaneous();
-        $backend = new Backend();
-        $backend->configdRun('template reload OPNsense/Unboundplus');
-        $response = $backend->configdpRun('unboundplus unboundreload', array((string)$mdl->type));
-        return array("response" => $response);
+        $this->view->miscellaneousForm = $this->getForm('miscellaneous');
+        $this->view->pick('OPNsense/Unboundplus/miscellaneous');
     }
 }
