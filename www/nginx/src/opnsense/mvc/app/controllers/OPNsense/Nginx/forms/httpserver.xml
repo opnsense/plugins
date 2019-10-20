@@ -206,7 +206,7 @@
   </field>
   <field>
     <id>httpserver.client_header_buffer_size</id>
-    <label>Header Buffer Size</label>
+    <label>Header Buffer Size (kB)</label>
     <type>text</type>
     <advanced>true</advanced>
     <help>Contains the size of a header Buffer. If a header or the request line does not fit into it, a large header buffer will be used.</help>
@@ -220,7 +220,7 @@
   </field>
   <field>
     <id>httpserver.large_client_header_buffers_size</id>
-    <label>Size Of Large Header Buffers</label>
+    <label>Size Of Large Header Buffers (kB)</label>
     <type>text</type>
     <advanced>true</advanced>
     <help>This field contains the size of large header buffers. If a header or the request line does not fit into it, the server will respond with an HTTP error.</help>
