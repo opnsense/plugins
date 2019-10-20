@@ -42,7 +42,7 @@ class M1_6_0 extends BaseModelMigration
         // Search accounts
         foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
             $account_id = (string)$account->id;
-            $account_dir = "${dir}${account_id}";
+            $account_dir = $dir . $account_id;
             $new_account_dir = "${dir}${account_id}_${env}";
 
             // Check if account directory exists
