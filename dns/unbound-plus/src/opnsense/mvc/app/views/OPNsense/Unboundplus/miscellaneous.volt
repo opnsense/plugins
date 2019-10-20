@@ -35,7 +35,7 @@
 
 <script>
     $(function() {
-        var data_get_map = {'frm_dnsbl_settings':"/api/unboundplus/miscellaneous/get"};
+        var data_get_map = {'frm_miscellaneous_settings':"/api/unboundplus/miscellaneous/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
