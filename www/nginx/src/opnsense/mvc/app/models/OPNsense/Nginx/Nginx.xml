@@ -715,6 +715,21 @@
         <default>1</default>
         <Required>Y</Required>
       </sendfile>
+      <client_header_buffer_size type="IntegerField">
+        <Required>Y</Required>
+        <default>1</default>
+        <MinimumValue>1</MinimumValue>
+      </client_header_buffer_size>
+      <large_client_header_buffers_number type="IntegerField">
+        <Required>Y</Required>
+        <default>4</default>
+        <MinimumValue>1</MinimumValue>
+      </large_client_header_buffers_number>
+      <large_client_header_buffers_size type="IntegerField">
+        <Required>Y</Required>
+        <default>8</default>
+        <MinimumValue>1</MinimumValue>
+      </large_client_header_buffers_size>
       <security_header type="ModelRelationField">
         <Model>
           <template>
