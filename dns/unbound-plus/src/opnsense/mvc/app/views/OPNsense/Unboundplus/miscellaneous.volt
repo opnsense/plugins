@@ -44,10 +44,10 @@
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/unboundplus/miscellaneous/set", formid='frm_miscellaneous_settings',callback_ok=function(){
-                    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                        ajaxCall(url="/api/unboundplus/service/reloadunbound", sendData={}, callback=function(data,status) {
-                            $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                        });
+                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/unboundplus/service/reloadunbound", sendData={}, callback=function(data,status) {
+                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
     });
