@@ -4222,7 +4222,7 @@ tbody.collapse.in {
 a.label:hover, a.label:focus {
   color: #fff;
   text-decoration: none;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .label-default {
