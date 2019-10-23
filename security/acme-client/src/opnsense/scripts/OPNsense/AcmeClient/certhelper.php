@@ -354,7 +354,8 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
     $account_key_file = $account_conf_dir . "/account.key";
     $account_json_file = $account_conf_dir . "/account.json";
@@ -472,7 +473,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames
@@ -793,6 +795,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Linode can take up to 15 to update DNS records
                 $acme_hook_options[] = "--dnssleep 960";
                 break;
+            case 'dns_loopia':
+                $proc_env['LOOPIA_Api'] = (string)$valObj->dns_loopia_api;
+                $proc_env['LOOPIA_User'] = (string)$valObj->dns_loopia_user;
+                $proc_env['LOOPIA_Password'] = (string)$valObj->dns_loopia_password;
+                break;
             case 'dns_lua':
                 $proc_env['LUA_Key'] = (string)$valObj->dns_lua_key;
                 $proc_env['LUA_Email'] = (string)$valObj->dns_lua_email;
@@ -1027,7 +1034,8 @@ function revoke_cert($certObj, $valObj, $acctObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames
