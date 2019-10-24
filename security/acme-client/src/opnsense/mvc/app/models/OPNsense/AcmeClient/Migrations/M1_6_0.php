@@ -48,11 +48,9 @@ class M1_6_0 extends BaseModelMigration
             // Check if account directory exists
             // Accounts that haven't been used yet don't need to be migrated.
             if (is_dir($account_dir)) {
-
                 // Check if account configuration can be found.
                 $account_file = "${account_dir}/account.conf";
                 if (is_file($account_file)) {
-
                     // Parse config file and modify path information
                     $account_conf = parse_ini_file($account_file);
                     foreach ($account_conf as $key => $value) {
@@ -71,8 +69,7 @@ class M1_6_0 extends BaseModelMigration
 
                     // Convert array back to ini file format
                     $new_account_conf = array();
-                    foreach($account_conf as $key => $value)
-                    {
+                    foreach ($account_conf as $key => $value) {
                         $new_account_conf[] = "${key}='${value}'";
                     }
 

@@ -328,7 +328,7 @@ function eval_optional_acme_args()
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
 
     // Set log level
-    switch($configObj->OPNsense->AcmeClient->settings->logLevel) {
+    switch ($configObj->OPNsense->AcmeClient->settings->logLevel) {
         case "extended":
             $acme_args[] = "--log-level 2";
         case "debug":
