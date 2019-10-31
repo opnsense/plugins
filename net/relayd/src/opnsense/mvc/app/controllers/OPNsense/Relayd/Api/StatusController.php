@@ -64,8 +64,12 @@ class StatusController extends ApiControllerBase
             $type = trim($words[1]);
             if ($type == 'redirect' || $type == 'relay') {
                 // new virtual server id/type means new record
-                if (($id != $virtualServerId && $virtualServerId > 0) ||
-                    ($type != $virtualServerType && strlen($virtualServerType) > 5)) {
+                if (
+                    ($id != $virtualServerId
+                    && $virtualServerId > 0)
+                    || ($type != $virtualServerType
+                    && strlen($virtualServerType) > 5)
+                ) {
                     $rows[] = $virtualserver;
                     $virtualserver = array();
                 }
@@ -102,13 +106,17 @@ class StatusController extends ApiControllerBase
             $this->sessionClose();
         }
         $result = array("result" => "failed", "function" => "toggle");
-        if ($nodeType != null &&
+        if (
+            $nodeType != null &&
                 ($nodeType == 'redirect' ||
                  $nodeType == 'table' ||
-                 $nodeType == 'host')) {
-            if ($action != null &&
+                 $nodeType == 'host')
+        ) {
+            if (
+                $action != null &&
                     ($action == 'enable' ||
-                     $action == 'disable')) {
+                     $action == 'disable')
+            ) {
                 if ($id != null && $id > 0) {
                     $backend = new Backend();
                     $result["output"] = $backend->configdRun("relayd toggle $nodeType $action $id");

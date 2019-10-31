@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.1</version>
+   <version>1.0.2</version>
    <description>Relayd settings</description>
    <items>
       <general>
