@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.14.0</version>
+  <version>1.15.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -686,6 +686,14 @@
         <default>0</default>
         <Required>Y</Required>
       </https_only>
+      <ocsp_stapling type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </ocsp_stapling>
+      <ocsp_verify type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </ocsp_verify>
       <block_nonpublic_data type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -707,6 +715,21 @@
         <default>1</default>
         <Required>Y</Required>
       </sendfile>
+      <client_header_buffer_size type="IntegerField">
+        <Required>Y</Required>
+        <default>1</default>
+        <MinimumValue>1</MinimumValue>
+      </client_header_buffer_size>
+      <large_client_header_buffers_number type="IntegerField">
+        <Required>Y</Required>
+        <default>4</default>
+        <MinimumValue>1</MinimumValue>
+      </large_client_header_buffers_number>
+      <large_client_header_buffers_size type="IntegerField">
+        <Required>Y</Required>
+        <default>8</default>
+        <MinimumValue>1</MinimumValue>
+      </large_client_header_buffers_size>
       <security_header type="ModelRelationField">
         <Model>
           <template>

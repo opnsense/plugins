@@ -58,7 +58,7 @@ if ($server == 'global') {
 switch ($mode) {
     case 'error':
     case 'access':
-        if ($data = $nginx->getNodeByReference('http_server.'. $server)) {
+        if ($data = $nginx->getNodeByReference('http_server.' . $server)) {
             $server_names = (string)$data->servername;
             if (empty($server_names)) {
                 die('{"error": "The server entry has no server name"}');
@@ -91,7 +91,7 @@ switch ($mode) {
         break;
     case 'streamerror':
     case 'streamaccess':
-        if ($data = $nginx->getNodeByReference('stream_server.'. $server)) {
+        if ($data = $nginx->getNodeByReference('stream_server.' . $server)) {
             $lines = [];
             $mode = str_replace('stream', '', $mode);
             $log_file_name = $log_prefix . 'stream_' . $server . '.' . $mode . $log_suffix;
