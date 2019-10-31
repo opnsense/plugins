@@ -328,8 +328,18 @@ function eval_optional_acme_args()
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
 
     // Set log level
-    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";
-    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "debug" ? "--debug" : null;
+    switch ($configObj->OPNsense->AcmeClient->settings->logLevel) {
+        case "extended":
+            $acme_args[] = "--log-level 2";
+        case "debug":
+            $acme_args[] = "--debug";
+        case "debug2":
+            $acme_args[] = "--debug 2";
+        case "debug3":
+            $acme_args[] = "--debug 3";
+        default:
+            $acme_args[] = "--log-level 1";
+    }
 
     // Remove empty and duplicate elements from array
     return(array_unique(array_filter($acme_args)));
@@ -344,7 +354,8 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
     $account_key_file = $account_conf_dir . "/account.key";
     $account_json_file = $account_conf_dir . "/account.json";
@@ -462,7 +473,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames
@@ -771,9 +783,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
-                $proc_env['LEXICON_CLOUDFLARE_USERNAME'] = (string)$valObj->dns_lexicon_user;
-                $proc_env['LEXICON_CLOUDFLARE_TOKEN'] = (string)$valObj->dns_lexicon_token;
-                $proc_env['LEXICON_NAMESILO_TOKEN'] = (string)$valObj->dns_lexicon_token;
+                $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_USERNAME'] = (string)$valObj->dns_lexicon_user;
+                $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_TOKEN'] = (string)$valObj->dns_lexicon_token;
                 if ((string)$valObj->dns_lexicon_provider == 'namesilo') {
                     // Namesilo applies changes to DNS records only every 15 minutes.
                     $acme_hook_options[] = "--dnssleep 960";
@@ -783,6 +794,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['LINODE_API_KEY'] = (string)$valObj->dns_linode_key;
                 // Linode can take up to 15 to update DNS records
                 $acme_hook_options[] = "--dnssleep 960";
+                break;
+            case 'dns_loopia':
+                $proc_env['LOOPIA_Api'] = (string)$valObj->dns_loopia_api;
+                $proc_env['LOOPIA_User'] = (string)$valObj->dns_loopia_user;
+                $proc_env['LOOPIA_Password'] = (string)$valObj->dns_loopia_password;
                 break;
             case 'dns_lua':
                 $proc_env['LUA_Key'] = (string)$valObj->dns_lua_key;
@@ -1018,7 +1034,8 @@ function revoke_cert($certObj, $valObj, $acctObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames

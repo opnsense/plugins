@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -105,6 +105,8 @@
                     <normal>normal</normal>
                     <extended>extended</extended>
                     <debug>debug</debug>
+                    <debug2>debug 2</debug2>
+                    <debug3>debug 3</debug3>
                 </OptionValues>
             </logLevel>
         </settings>
@@ -390,6 +392,7 @@
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
+                        <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namecheap>Namecheap API</dns_namecheap>
@@ -599,8 +602,67 @@
                     <Required>N</Required>
                     <default>cloudflare</default>
                     <OptionValues>
-                        <cloudflare>Cloudflare API</cloudflare>
+                        <aliyun>Aliyun.com API</aliyun>
+                        <aurora>AuroraDNS API</aurora>
+                        <auto>Auto API</auto>
+                        <azure>Azure DNS API</azure>
+                        <cloudflare>CloudFlare API</cloudflare>
+                        <cloudns>ClouDNS API</cloudns>
+                        <cloudxns>CloudXNS API</cloudxns>
+                        <conoha>ConoHa API</conoha>
+                        <constellix>Constellix API</constellix>
+                        <digitalocean>DigitalOcean API</digitalocean>
+                        <dinahosting>Dinahosting API</dinahosting>
+                        <directadmin>DirectAdmin API</directadmin>
+                        <dnsimple>DNSimple API</dnsimple>
+                        <dnsmadeeasy>DnsMadeEasy API</dnsmadeeasy>
+                        <dnspark>DNSPark API</dnspark>
+                        <dnspod>DNSPod API</dnspod>
+                        <dreamhost>Dreamhost API</dreamhost>
+                        <easydns>EasyDNS API</easydns>
+                        <easyname>Easyname API</easyname>
+                        <exoscale>ExoScale API</exoscale>
+                        <gandi>Gandi API</gandi>
+                        <gehirn>Gehirn API</gehirn>
+                        <glesys>Glesys API</glesys>
+                        <godaddy>GoDaddy API</godaddy>
+                        <googleclouddns>Google Cloud DNS API</googleclouddns>
+                        <gratisdns>GratisDNS API</gratisdns>
+                        <henet>Hurricane Electric DNS API</henet>
+                        <hetzner>Hetzner API</hetzner>
+                        <hover>Hover API</hover>
+                        <infoblox>Infoblox API</infoblox>
+                        <internetbs>Internet.bs API</internetbs>
+                        <inwx>INWX API</inwx>
+                        <linode>Linode API</linode>
+                        <linode4>Linode v4 API</linode4>
+                        <localzone>Localzone API</localzone>
+                        <luadns>LuaDNS API</luadns>
+                        <memset>Memset API</memset>
+                        <namecheap>Namecheap API</namecheap>
                         <namesilo>Namesilo API</namesilo>
+                        <netcup>Netcup API</netcup>
+                        <nfsn>NFSN API</nfsn>
+                        <nsone>NS1 API</nsone>
+                        <onapp>OnApp API</onapp>
+                        <online>Online API</online>
+                        <ovh>OVH API</ovh>
+                        <plesk>Plesk API</plesk>
+                        <pointhq>PointHQ API</pointhq>
+                        <powerdns>PowerDNS API</powerdns>
+                        <rackspace>Rackspace API</rackspace>
+                        <rage4>Rage4 API</rage4>
+                        <route53>Route 53 API</route53>
+                        <safedns>SafeDNS API</safedns>
+                        <sakuracloud>SakuraCloud API</sakuracloud>
+                        <softlayer>Softlayer API</softlayer>
+                        <subreg>Subreg API</subreg>
+                        <transip>Transip API</transip>
+                        <vultr>Vultr API</vultr>
+                        <yandex>Yandex API</yandex>
+                        <zeit>Zeit API</zeit>
+                        <zilore>Zilore API</zilore>
+                        <zonomi>Zonomi API</zonomi>
                     </OptionValues>
                 </dns_lexicon_provider>
                 <dns_lexicon_user type="TextField">
@@ -612,6 +674,16 @@
                 <dns_linode_key type="TextField">
                   <Required>N</Required>
                 </dns_linode_key>
+                <dns_loopia_api type="TextField">
+                  <Required>N</Required>
+                  <default>https://api.loopia.se/RPCSERV</default>
+                </dns_loopia_api>
+                <dns_loopia_user type="TextField">
+                  <Required>N</Required>
+                </dns_loopia_user>
+                <dns_loopia_password type="TextField">
+                  <Required>N</Required>
+                </dns_loopia_password>
                 <dns_lua_email type="TextField">
                     <Required>N</Required>
                 </dns_lua_email>
