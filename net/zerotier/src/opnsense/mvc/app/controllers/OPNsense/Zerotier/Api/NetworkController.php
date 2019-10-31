@@ -100,7 +100,7 @@ class NetworkController extends ApiMutableModelControllerBase
                         if (!array_key_exists("validation", $result)) {
                             $result["validations"] = array();
                         }
-                        $result["validation"]["network.".$msg->getField()] = $msg->getMessage();
+                        $result["validation"]["network." . $msg->getField()] = $msg->getMessage();
                     }
                     if ($validationMessages->count() == 0) {
                         unset($result["validations"]);
