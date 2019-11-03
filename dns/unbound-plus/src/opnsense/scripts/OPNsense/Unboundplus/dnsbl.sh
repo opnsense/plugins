@@ -221,11 +221,14 @@ install() {
 		fi
         done
         # Merge resulting files (/dev/null in case there are none)
-        cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
-        chown unbound:unbound ${DESTDIR}/dnsbl.conf
+        if [ -s "/var/unbound/etc/dnsbl.inc" ]; then
+                cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
+                chown unbound:unbound ${DESTDIR}/dnsbl.conf
+        else
+                rm -rf ${DESTDIR}/dnsbl.conf
+        fi
         rm -rf ${WORKDIR}
         pluginctl -s unbound restart
-
 }
 
 DNSBL=${1}
