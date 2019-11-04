@@ -56,7 +56,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $mdl = new Miscellaneous();
         $backend = new Backend();
         $backend->configdRun('template reload OPNsense/Unboundplus');
-        $response = $backend->configdpRun('unboundplus unboundreload', array((string)$mdl->type));
+        $response = $backend->configdpRun('unbound reload', array((string)$mdl->type));
         return array("response" => $response);
     }
 }
