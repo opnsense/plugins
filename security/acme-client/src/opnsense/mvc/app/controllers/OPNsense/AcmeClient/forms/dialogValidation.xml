@@ -881,6 +881,27 @@
         <type>text</type>
     </field>
     <field>
+        <label>Plesk XML API</label>
+        <type>header</type>
+        <style>table_dns table_dns_pleskxml</style>
+    </field>
+    <field>
+        <id>validation.dns_pleskxml_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_pleskxml_pass</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_pleskxml_uri</id>
+        <label>Plesk API URI</label>
+        <type>text</type>
+        <help>Plesk XML URIs often look similar to: https://my-plesk-site.com:8443/enterprise/control/agent.php</help>
+    </field>
+    <field>
         <label>Zilore</label>
         <type>header</type>
         <style>table_dns table_dns_zilore</style>
