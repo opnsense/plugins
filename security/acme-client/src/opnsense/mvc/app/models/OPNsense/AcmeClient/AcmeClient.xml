@@ -403,6 +403,7 @@
                         <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
+                        <dns_pleskxml>Plesk XML API</dns_pleskxml>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
@@ -763,6 +764,15 @@
                 <dns_ovh_endpoint type="TextField">
                     <Required>N</Required>
                 </dns_ovh_endpoint>
+                <dns_pleskxml_user type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_user>
+                <dns_pleskxml_pass type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_pass>
+                <dns_pleskxml_uri type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_uri>
                 <dns_pdns_url type="TextField">
                     <Required>N</Required>
                 </dns_pdns_url>
