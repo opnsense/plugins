@@ -213,16 +213,19 @@ simpletrack() {
 
 install() {
         # Put all files in correct format
+        WHITE=$(cat ${DESTDIR}/whitelist.inc | tr ',' '|')
+        
         for FILE in $(find ${WORKDIR} -type f); do
-		WHITE=$(cat ${DESTDIR}/whitelist.inc | tr ',' '|')
 		if [ -z "${WHITE}" ]; then
-			cat ${FILE} | sort -u | awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > ${FILE}.inc
+			awk '{printf "server:\n", $1}' > ${FILE}.inc
+            cat ${FILE} | sort -u | awk '{printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > ${FILE}.inc
 		else
-			cat ${FILE} | sort -u | egrep -v "$WHITE" | awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > ${FILE}.inc
+			cat ${FILE} | sort -u | egrep -v "$WHITE" | awk '{printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > ${FILE}.inc
 		fi
         done
         # Merge resulting files (/dev/null in case there are none)
         if [ -s "/var/unbound/etc/dnsbl.inc" ]; then
+                awk '{printf "server:\n", $1}' > ${DESTDIR}/dnsbl.conf
                 cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
                 chown unbound:unbound ${DESTDIR}/dnsbl.conf
         else
