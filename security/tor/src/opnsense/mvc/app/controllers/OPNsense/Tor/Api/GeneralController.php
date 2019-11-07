@@ -38,13 +38,13 @@ use \OPNsense\Base\UIModelGrid;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelClass = '\OPNsense\Tor\General';
-    static protected $internalModelName = 'general';
+    protected static $internalModelClass = '\OPNsense\Tor\General';
+    protected static $internalModelName = 'general';
 
     /* override default set action */
     public function setAction()
     {
-        $result = array('result'=>'failed');
+        $result = array('result' => 'failed');
         if ($this->request->isPost()) {
             $mdl = new General();
             $mdl->setNodes($this->request->getPost('general'));
@@ -55,7 +55,7 @@ class GeneralController extends ApiMutableModelControllerBase
                 if (!array_key_exists('validations', $result)) {
                     $result['validations'] = array();
                 }
-                $result['validations']['general.'.$msg->getField()] = $msg->getMessage();
+                $result['validations']['general.' . $msg->getField()] = $msg->getMessage();
             }
 
             if ($valMsgs->count() == 0) {

@@ -1,3 +1,23 @@
 Rspamd is fast, modular and lightweight spam filter. It is designed to work
 with big amount of mail and can be easily extended with own filters written in
 lua.
+
+Plugin Changelog
+----------------
+
+1.8
+
+* Add Bayes autolearn option
+
+1.7
+
+* Fix permissions due to upstream changes
+
+1.6
+
+* Fix permissions on maps.d folder
+* Add global sender whitelisting
+
+1.5
+
+* Add whitelisting to Graylist section

@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <description>Enterprise-class open source distributed monitoring agent</description>
     <items>
         <!-- local settings that should NOT be synced to another node -->
@@ -140,12 +140,12 @@
                     <Required>Y</Required>
                 </enabled>
                 <key type="TextField">
-                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <mask>/^[^\t^,^;^\[^\]^\{^\}]{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </key>
                 <command type="TextField">
-                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,4096}$/u</mask>
+                    <mask>/^[^\t]{1,4096}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </command>

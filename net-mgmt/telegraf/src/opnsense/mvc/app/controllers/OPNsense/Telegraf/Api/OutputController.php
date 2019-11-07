@@ -50,7 +50,7 @@ class OutputController extends ApiControllerBase
 
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlOutput = new Output();
@@ -62,7 +62,7 @@ class OutputController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["output.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["output." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save

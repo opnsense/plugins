@@ -79,6 +79,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 set:'/api/haproxy/settings/setServer/',
                 add:'/api/haproxy/settings/addServer/',
                 del:'/api/haproxy/settings/delServer/',
+                toggle:'/api/haproxy/settings/toggleServer/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -221,6 +222,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
         // hook into on-show event for dialog to extend layout.
         $('#DialogBackend').on('shown.bs.modal', function (e) {
+            $("#backend\\.mode").change(function(){
+                var service_id = 'table_' + $(this).val();
+                $(".mode_table").hide();
+                $("."+service_id).show();
+            });
+            $("#backend\\.mode").change();
+
             $("#backend\\.healthCheckEnabled").change(function(){
                 var service_id = 'table_healthcheck_' + $(this).is(':checked');
                 $(".healthcheck_table").hide();
@@ -547,7 +555,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService Settings%s.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -589,7 +597,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -604,7 +612,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -619,7 +627,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sMap Files:%s A map allows to map a data in input to an other one on output. For example, this makes it possible to map a large number of domains to backend pools without using the GUI. Map files need to be used in %sRules%s, otherwise they are ignored.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sCPU Affinity Rules:%s This feature makes it possible to bind HAProxy's processes/threads to a specific CPU (or a CPU set). Furthermore it is possible to select CPU Affinity Rules in %sPublic Services%s to restrict them to a certain set of processes/threads/CPUs.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#process" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#process" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -716,6 +724,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer">
             <thead>
             <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Server Name') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Server Address') }}</th>

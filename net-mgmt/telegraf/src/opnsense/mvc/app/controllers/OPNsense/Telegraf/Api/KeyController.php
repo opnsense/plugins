@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  *
@@ -33,8 +34,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class KeyController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'key';
-    static protected $internalModelClass = '\OPNsense\Telegraf\Key';
+    protected static $internalModelName = 'key';
+    protected static $internalModelClass = '\OPNsense\Telegraf\Key';
 
     public function searchKeyAction()
     {

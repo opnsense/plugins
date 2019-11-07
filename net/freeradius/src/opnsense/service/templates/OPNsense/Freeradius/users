@@ -19,6 +19,11 @@
 {%       if user_list.ip6 is defined %}
        Framed-IPv6-Address = {{ user_list.ip6 }},
 {%       endif %}
+{%       if user_list.servicetype is defined %}
+{%         for servicelist in user_list.servicetype.split(',') %}
+       Service-Type = {{ servicelist }},
+{%         endfor %}
+{%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
 {%         if user_list.vlan is defined %}
        Tunnel-Type = VLAN,

@@ -4,4 +4,23 @@ is based on libpcap and it has been written in a portable
 way in order to virtually run on every Unix platform, MacOSX
 and on Windows as well.
 
+
+Plugin Changelog
+================
+
+1.2
+
+* Changed data directory to avoid warning
+* Make data directory persistant in MFS environments
+
+1.1
+
+* Add HTTPS support
+
+1.0
+
+* Allow to set a HTTP port
+* Allow user how to handle reverse lookups in ntopng
+
+
 WWW: https://www.ntop.org/products/traffic-analysis/ntop/

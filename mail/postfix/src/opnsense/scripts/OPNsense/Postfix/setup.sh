@@ -34,6 +34,7 @@ postmap /usr/local/etc/postfix/sender_access
 postmap /usr/local/etc/postfix/senderbcc
 postmap /usr/local/etc/postfix/recipientbcc
 postmap /usr/local/etc/postfix/smtp_auth
+postmap /usr/local/etc/postfix/sendercanonical
 
 # Check for aliases
 if [ -f /usr/local/etc/postfix/aliases ]; then

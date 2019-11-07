@@ -43,4 +43,41 @@ sql {
 }
 
 {%   endif %}
+{%   if helpers.exists('OPNsense.freeradius.general.mysql') and OPNsense.freeradius.general.mysql == '1' %}
+sql sql1 {
+	database = "mysql"
+	driver = "rlm_sql_${database}"
+	dialect = "${database}"
+	server = "{{ OPNsense.freeradius.general.mysqlserver }}"
+	port = {{ OPNsense.freeradius.general.mysqlport }}
+	login = "{{ OPNsense.freeradius.general.mysqluser }}"
+	password = "{{ OPNsense.freeradius.general.mysqlpassword }}"
+	radius_db = "{{ OPNsense.freeradius.general.mysqldb }}"
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	authreply_table = "radreply"
+	groupcheck_table = "radgroupcheck"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+	read_groups = yes
+	delete_stale_sessions = yes
+	logfile = ${logdir}/sqltrace.sql
+	read_clients = yes
+	client_table = "nas"
+	pool {
+		start = ${thread[pool].start_servers}
+		min = ${thread[pool].min_spare_servers}
+		max = 5
+		spare = ${thread[pool].max_spare_servers}
+		uses = 0
+		retry_delay = 60
+		lifetime = 0
+		idle_timeout = 60
+	}
+	group_attribute = "${.:instance}-SQL-Group"
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+{%   endif %}
 {% endif %}

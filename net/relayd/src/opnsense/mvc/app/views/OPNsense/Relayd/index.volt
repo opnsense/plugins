@@ -229,7 +229,7 @@ POSSIBILITY OF SUCH DAMAGE.
          <table class="table table-striped table-condensed table-responsive">
             <tr>
                <td>
-                  <button class="btn btn-primary" id="btnSaveGeneral" type="button"><b>{{ lang._('Save changes') }}</b> <i id="btnSaveGeneralProgress"></i></button>
+                  <button class="btn btn-primary" id="btnSaveGeneral" type="button"><b>{{ lang._('Save') }}</b> <i id="btnSaveGeneralProgress"></i></button>
                </td>
             </tr>
          </table>

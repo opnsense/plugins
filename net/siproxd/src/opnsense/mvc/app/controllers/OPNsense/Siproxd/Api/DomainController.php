@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
@@ -37,8 +38,8 @@ use \OPNsense\Base\UIModelGrid;
 
 class DomainController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'Domain';
-    static protected $internalModelClass = '\OPNsense\Siproxd\Domain';
+    protected static $internalModelName = 'Domain';
+    protected static $internalModelClass = '\OPNsense\Siproxd\Domain';
 
     public function getAction()
     {
@@ -53,7 +54,7 @@ class DomainController extends ApiMutableModelControllerBase
 
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlDomain = new Domain();
@@ -64,7 +65,7 @@ class DomainController extends ApiMutableModelControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["domain.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["domain." . $msg->getField()] = $msg->getMessage();
             }
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
@@ -180,7 +181,7 @@ class DomainController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlSetting = $this->getModel();
             if ($uuid != null) {
-                $node = $mdlSetting->getNodeByReference($elements . '.'. $element .'.' . $uuid);
+                $node = $mdlSetting->getNodeByReference($elements . '.' . $element . '.' . $uuid);
                 if ($node != null) {
                     if ($node->enabled->__toString() == "1") {
                         $result['result'] = "Disabled";

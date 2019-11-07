@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -136,8 +137,11 @@ class ServiceController extends ApiControllerBase
             $runStatus = $this->statusAction();
 
             // stop acmeclient when disabled
-            if ($runStatus['status'] == "running" &&
-               ($mdlAcme->settings->enabled->__toString() == 0 || $force_restart)) {
+            if (
+                $runStatus['status'] == "running" &&
+                ($mdlAcme->settings->enabled->__toString() == 0 ||
+                $force_restart)
+            ) {
                 $this->stopAction();
             }
 
@@ -192,6 +196,33 @@ class ServiceController extends ApiControllerBase
         $backend->configdRun("acmeclient setup");
         // run the command
         $response = $backend->configdRun("acmeclient sign-all-certs");
+        return array("result" => $response);
+    }
+
+    /**
+     * Remove ALL certificate data and configuration and reset ALL states
+     * @return array
+     * @throws \Exception
+     */
+    public function resetAction()
+    {
+        $model = new AcmeClient();
+        // reset certificate states
+        foreach ($model->getNodeByReference('certificates.certificate')->iterateItems() as $cert) {
+            $cert->lastUpdate = null;
+            $cert->statusCode = null;
+            $cert->statusLastUpdate = null;
+        }
+        // reset account states
+        foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
+            $account->lastUpdate = null;
+        }
+        // reset acme.sh data
+        $backend = new Backend();
+        $response = $backend->configdRun("acmeclient reset-acme-client");
+        // serialize to config and save
+        $model->serializeToConfig();
+        Config::getInstance()->save();
         return array("result" => $response);
     }
 }

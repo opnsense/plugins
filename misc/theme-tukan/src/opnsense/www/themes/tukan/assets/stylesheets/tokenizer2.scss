@@ -16,8 +16,8 @@
   }
   &.focus > .tokens-container {
     outline: 0;
-    border-color: #00A7FF;
-    background-color: none;
+    border-color: #4d83a1;
+    background-color: #FFFFFF;
     -webkit-box-shadow: none;
     box-shadow: none;
   }
@@ -76,9 +76,9 @@
         padding: 0;
       }
     }
-    &:hover {
+    &:focus, &:hover {
       border-color: #00A7FF;
-      background-color: none;
+      background-color: #FFFFFF;
     }
     > .token-search > input {
       padding: 0;

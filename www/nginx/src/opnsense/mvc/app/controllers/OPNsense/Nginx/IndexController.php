@@ -1,4 +1,5 @@
 <?php
+
 /*
 
     Copyright (C) 2018 Fabian Franz
@@ -60,9 +61,12 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->cache_path = $this->getForm("cache_path");
         $this->view->sni_hostname_map = $this->getForm("sni_hostname_map");
         $this->view->ipacl = $this->getForm("ipacl");
+        $this->view->tls_fingerprint = $this->getForm("tls_fingerprint");
+        $this->view->syslog_target = $this->getForm("syslog_target");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
-            count($nginx->custom_policy->iterateItems()) == 0 && count($nginx->naxsi_rule->iterateItems()) == 0;
+            count(iterator_to_array($nginx->custom_policy->iterateItems())) == 0 &&
+            count(iterator_to_array($nginx->naxsi_rule->iterateItems())) == 0;
         $this->view->pick('OPNsense/Nginx/index');
     }
 
@@ -75,10 +79,26 @@ class IndexController extends \OPNsense\Base\IndexController
     }
 
     /**
+     * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
+     */
+    public function tls_handshakesAction()
+    {
+        $this->view->pick('OPNsense/Nginx/tls_handshakes');
+    }
+
+    /**
      * display a viewer for banned IPs.
      */
     public function banAction()
     {
         $this->view->pick('OPNsense/Nginx/ban');
+    }
+
+    /**
+     * display a viewer for traffic statistics.
+     */
+    public function vtsAction()
+    {
+        $this->view->pick('OPNsense/Nginx/vts');
     }
 }

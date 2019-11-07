@@ -1,30 +1,29 @@
 <?php
-/**
- *    Copyright (C) 2017 Fabian Franz
+
+/*
+ * Copyright (C) 2017 Fabian Franz
+ * All rights reserved.
  *
- *    All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Wol\Api;
@@ -36,8 +35,8 @@ use OPNsense\Core\Backend;
 
 class WolController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'wol';
-    static protected $internalModelClass = '\OPNsense\Wol\Wol';
+    protected static $internalModelName = 'wol';
+    protected static $internalModelClass = '\OPNsense\Wol\Wol';
 
     public function setAction()
     {
@@ -113,7 +112,7 @@ class WolController extends ApiMutableModelControllerBase
             return $result;
         }
         $broadcast_ip = escapeshellarg($this->calculateSubnetBroadcast($ipaddr, $cidr));
-        $result['status'] = trim($backend->configdRun("wol wake {$broadcast_ip} ". escapeshellarg((string)$wolent->mac)));
+        $result['status'] = trim($backend->configdRun("wol wake {$broadcast_ip} " . escapeshellarg((string)$wolent->mac)));
     }
     private function getInterfaceIP($if)
     {
@@ -146,7 +145,7 @@ class WolController extends ApiMutableModelControllerBase
         $hostmask = (2 << (31 - $cidr)) - 1;
         $int_bcast = $int_ip | $hostmask;
         return implode('.', array(
-          $int_bcast >> 24,
+          ($int_bcast >> 24) & 255,
           ($int_bcast >> 16) & 255,
           ($int_bcast >> 8) & 255,
           $int_bcast & 255,

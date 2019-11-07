@@ -3,6 +3,11 @@ dnscrypt_proxy_enable="YES"
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.allowprivileged') and OPNsense.dnscryptproxy.general.allowprivileged == '1' %}
 dnscrypt_proxy_suexec="YES"
 {%   endif %}
+{%   if helpers.exists('OPNsense.dnscryptproxy.dnsbl.enabled') and OPNsense.dnscryptproxy.dnsbl.enabled == '1' %}
+{%     if helpers.exists('OPNsense.dnscryptproxy.dnsbl.type') and OPNsense.dnscryptproxy.dnsbl.type != '' %}
+dnscrypt_proxy_dnsbl="{{ OPNsense.dnscryptproxy.dnsbl.type }}"
+{%     endif %}
+{%   endif %}
 {% else %}
 dnscrypt_proxy_enable="NO"
 {% endif %}

@@ -1,0 +1,3 @@
+maltrailsensor:/etc/rc.conf.d/opnsense-maltrailsensor
+maltrailserver:/etc/rc.conf.d/opnsense-maltrailserver
+maltrail.conf:/usr/local/share/maltrail/maltrail.conf

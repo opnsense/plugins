@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2017 Fabian Franz
+ * Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,11 +30,23 @@
 namespace OPNsense\Redis\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Redis\Redis';
-    static protected $internalServiceTemplate = 'OPNsense/Redis';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'redis';
+    protected static $internalServiceClass = '\OPNsense\Redis\Redis';
+    protected static $internalServiceTemplate = 'OPNsense/Redis';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'redis';
+
+    /**
+     * remove database folder
+     * @return array
+     */
+    public function resetdbAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("redis resetdb");
+        return array("response" => $response);
+    }
 }

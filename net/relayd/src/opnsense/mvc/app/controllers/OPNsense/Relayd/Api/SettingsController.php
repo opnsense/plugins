@@ -42,8 +42,8 @@ use \OPNsense\Base\UIModelGrid;
 class SettingsController extends ApiControllerBase
 {
 
-    static protected $internalModelName = 'relayd';
-    static protected $internalModelClass = '\OPNsense\Relayd\Relayd';
+    protected static $internalModelName = 'relayd';
+    protected static $internalModelClass = '\OPNsense\Relayd\Relayd';
     public $mdlRelayd = null;
 
     /**
@@ -137,22 +137,28 @@ class SettingsController extends ApiControllerBase
                     }
 
                     if ($relaydInfo[$nodeType]['type'] == 'redirect') {
-                        if ($relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
-                            $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin') {
+                        if (
+                            $relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
+                            $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin'
+                        ) {
                                 $result['validations']['relayd.virtualserver.transport_tablemode'] = sprintf(
                                     gettext('Scheduler "%s" not supported for redirects.'),
                                     $relaydInfo[$nodeType]['transport_tablemode']
                                 );
                         }
-                        if ($relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
-                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin') {
+                        if (
+                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
+                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin'
+                        ) {
                                 $result['validations']['relayd.virtualserver.backuptransport_tablemode'] = sprintf(
                                     gettext('Scheduler "%s" not supported for redirects.'),
                                     $relaydInfo[$nodeType]['backuptransport_tablemode']
                                 );
                         }
-                        if ($relaydInfo[$nodeType]['transport_type'] == 'route' &&
-                            empty($relaydInfo[$nodeType]['routing_interface'])) {
+                        if (
+                            $relaydInfo[$nodeType]['transport_type'] == 'route' &&
+                            empty($relaydInfo[$nodeType]['routing_interface'])
+                        ) {
                                 $result['validations']['relayd.virtualserver.routing_interface'] =
                                     gettext('Routing interface cannot be empty');
                         }

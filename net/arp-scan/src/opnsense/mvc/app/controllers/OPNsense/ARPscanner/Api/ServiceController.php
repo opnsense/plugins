@@ -41,7 +41,7 @@ class ServiceController extends ApiControllerBase
             $networks =  escapeshellarg($_POST['networks']);
             //~ return 'arpscanner start '.$ifname.' '.$networks;
             $backend = new Backend();
-            $result = json_decode(trim($backend->configdRun('arpscanner start '.$ifname.' '.$networks)), true);
+            $result = json_decode(trim($backend->configdRun('arpscanner start ' . $ifname . ' ' . $networks)), true);
             return $result;
         }
         return array("message" => "unable to run config action");
@@ -53,7 +53,7 @@ class ServiceController extends ApiControllerBase
             $ifname =  escapeshellarg($_POST['interface']);
             //~ return 'arpscanner start '.$ifname.' '.$networks;
             $backend = new Backend();
-            $result = json_decode(trim($backend->configdRun('arpscanner status '.$ifname)), true);
+            $result = json_decode(trim($backend->configdRun('arpscanner status ' . $ifname)), true);
             return $result;
         }
         return array("message" => "this action must be called using the POST method");
@@ -64,7 +64,7 @@ class ServiceController extends ApiControllerBase
         if ($this->request->isPost()) {
             $ifname =  escapeshellarg($_POST['interface']);
             $backend = new Backend();
-            $bckresult = trim($backend->configdRun("arpscanner stop ".$ifname));
+            $bckresult = trim($backend->configdRun("arpscanner stop " . $ifname));
             if ($bckresult !== null) {
                 // only return valid json type responses
                 return $bckresult;
@@ -79,7 +79,7 @@ class ServiceController extends ApiControllerBase
             $ifname =  escapeshellarg($_POST['interface']);
             // test: "configctl arpscanner check em0"
             $backend = new Backend();
-            $bckresult = json_decode(trim($backend->configdRun("arpscanner check ".$ifname)), true);
+            $bckresult = json_decode(trim($backend->configdRun("arpscanner check " . $ifname)), true);
             if ($bckresult !== null) {
                 // only return valid json type responses
                 return $bckresult;

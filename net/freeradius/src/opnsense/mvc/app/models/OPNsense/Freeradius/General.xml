@@ -30,6 +30,15 @@
         <sqlite type="BooleanField">
             <default>0</default>
             <Required>N</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>MySQL and SQLite can not be combined.</ValidationMessage>
+                    <type>SingleSelectConstraint</type>
+                    <addFields>
+                        <mysql>mysql</mysql>
+                    </addFields>
+                </check001>
+            </Constraints>
         </sqlite>
         <sessionlimit type="BooleanField">
             <default>0</default>
@@ -55,5 +64,63 @@
             <default>0</default>
             <Required>N</Required>
         </log_authgoodpass>
+        <dhcpenabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>You have to enable FreeRADIUS DHCP service.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>dhcplistenip</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </dhcpenabled>
+        <dhcplistenip type="NetworkField">
+            <Required>N</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>You need to set a proper listening IP.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>dhcpenabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </dhcplistenip>
+        <mysql type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>MySQL and SQLite can not be combined.</ValidationMessage>
+                    <type>SingleSelectConstraint</type>
+                    <addFields>
+                        <sqlite>sqlite</sqlite>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </mysql>
+        <mysqlserver type="HostnameField">
+            <default>127.0.0.1</default>
+            <Required>Y</Required>
+        </mysqlserver>
+        <mysqlport type="PortField">
+            <default>3306</default>
+            <Required>Y</Required>
+        </mysqlport>
+        <mysqluser type="TextField">
+            <default>radius</default>
+            <Required>Y</Required>
+        </mysqluser>
+        <mysqlpassword type="TextField">
+            <default>radpass</default>
+            <Required>Y</Required>
+        </mysqlpassword>
+        <mysqldb type="TextField">
+            <default>radius</default>
+            <Required>Y</Required>
+        </mysqldb>
     </items>
 </model>

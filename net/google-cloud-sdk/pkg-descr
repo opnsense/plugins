@@ -1,0 +1,2 @@
+This plugin installs the Google Cloud SDK. The SDK may be used on the CLI or in
+conjunction with the Let's Encrypt plugin.

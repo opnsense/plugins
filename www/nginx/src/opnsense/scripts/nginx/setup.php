@@ -70,8 +70,10 @@ if (!isset($config['OPNsense']['Nginx'])) {
 }
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
+@mkdir("/var/log/nginx", 0750, true);
 @chgrp('/var/db/nginx', GROUP_OWNER);
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
+@chgrp('/var/log/nginx', GROUP_OWNER);
 $nginx = $config['OPNsense']['Nginx'];
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
@@ -241,3 +243,24 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
 foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
 }
+
+// export TLS fingerprint database for MitM detection
+$tls_fingerprint_database = array();
+foreach ($nginx->tls_fingerprint->iterateItems() as $tls_fingerprint) {
+    if ((string)$tls_fingerprint->trusted == '1') {
+        $ciphers = explode(':', (string)$tls_fingerprint->ciphers);
+        if (!empty((string)$tls_fingerprint->curves)) {
+            $curves = explode(':', (string)$tls_fingerprint->ciphers);
+        } else {
+            $curves = array();
+        }
+        $tls_fingerprint_database[(string)$tls_fingerprint->user_agent] =
+            array('ciphers' => $ciphers, 'curves' => $curves);
+    }
+}
+
+file_put_contents(
+    '/usr/local/etc/nginx/tls_fingerprints.json',
+    empty($tls_fingerprint_database) ? '{}' :  json_encode($tls_fingerprint_database)
+);
+chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);

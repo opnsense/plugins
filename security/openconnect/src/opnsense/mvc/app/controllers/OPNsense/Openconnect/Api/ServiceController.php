@@ -32,8 +32,8 @@ use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Openconnect\General';
-    static protected $internalServiceTemplate = 'OPNsense/Openconnect';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'openconnect';
+    protected static $internalServiceClass = '\OPNsense\Openconnect\General';
+    protected static $internalServiceTemplate = 'OPNsense/Openconnect';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'openconnect';
 }

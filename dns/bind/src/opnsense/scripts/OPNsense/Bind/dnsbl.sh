@@ -98,11 +98,25 @@ mwdomains() {
 	rm ${WORKDIR}/malwaredomains-raw
 }
 
-windowsspyblocker() {
-	# WindowsSpyBlocker
-	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblocker-raw
-	sed "/\.$/d" ${WORKDIR}/windowsspyblocker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblocker
-	rm ${WORKDIR}/windowsspyblocker-raw
+windowsspyblockerspy() {
+	# WindowsSpyBlocker (spy)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblockerspy-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerspy-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerspy
+	rm ${WORKDIR}/windowsspyblockerspy-raw
+}
+
+windowsspyblockerupdate() {
+	# WindowsSpyBlocker (update)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt -o ${WORKDIR}/windowsspyblockerupdate-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerupdate-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerupdate
+	rm ${WORKDIR}/windowsspyblockerupdate-raw
+}
+
+windowsspyblockerextra() {
+	# WindowsSpyBlocker (extra)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt -o ${WORKDIR}/windowsspyblockerextra-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerextra-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerextra
+	rm ${WORKDIR}/windowsspyblockerextra-raw
 }
 
 cameleon() {
@@ -126,6 +140,62 @@ yoyo() {
 	rm ${WORKDIR}/yoyo-raw
 }
 
+stevenblack() {
+        # StevenBlack
+        ${FETCH} https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -o ${WORKDIR}/stevenblack-raw
+        sed "/\.$/d" ${WORKDIR}/stevenblack-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/stevenblack
+        rm ${WORKDIR}/stevenblack-raw
+}
+
+blocklistads() {
+        # Blocklist.site Ads
+        ${FETCH} https://blocklist.site/app/dl/ads -o ${WORKDIR}/blocklistads-raw
+        sed "/\.$/d" ${WORKDIR}/blocklistads-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" > ${WORKDIR}/blocklistads
+        rm ${WORKDIR}/blocklistads-raw
+}
+
+blocklistfraud() {
+        # Blocklist.site Fraud
+        ${FETCH} https://blocklist.site/app/dl/fraud -o ${WORKDIR}/blocklistfraud-raw
+        sed "/\.$/d" ${WORKDIR}/blocklistfraud-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" > ${WORKDIR}/blocklistfraud
+        rm ${WORKDIR}/blocklistfraud-raw
+}
+
+blocklistphishing() {
+        # Blocklist.site Phishing
+        ${FETCH} https://blocklist.site/app/dl/phishing -o ${WORKDIR}/blocklistphishing-raw
+        sed "/\.$/d" ${WORKDIR}/blocklistphishing-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" > ${WORKDIR}/blocklistphishing
+        rm ${WORKDIR}/blocklistphishing-raw
+}
+
+hphosts-ads() {
+        # hphosts-ads
+        ${FETCH} https://hosts-file.net/ad_servers.txt -o ${WORKDIR}/hphosts-ads-raw
+        sed "/\.$/d" ${WORKDIR}/hphosts-ads-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-ads
+        rm ${WORKDIR}/hphosts-ads-raw
+}
+
+hphosts-fsa() {
+        # hphosts-fsa
+        ${FETCH} https://hosts-file.net/fsa.txt -o ${WORKDIR}/hphosts-fsa-raw
+        sed "/\.$/d" ${WORKDIR}/hphosts-fsa-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-fsa
+        rm ${WORKDIR}/hphosts-fsa-raw
+}
+
+hphosts-psh() {
+        # hphosts-psh
+        ${FETCH} https://hosts-file.net/psh.txt -o ${WORKDIR}/hphosts-psh-raw
+        sed "/\.$/d" ${WORKDIR}/hphosts-psh-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-psh
+        rm ${WORKDIR}/hphosts-psh-raw
+}
+
+hphosts-pup() {
+        # hphosts-pup
+        ${FETCH} https://hosts-file.net/pup.txt -o ${WORKDIR}/hphosts-pup-raw
+        sed "/\.$/d" ${WORKDIR}/hphosts-pup-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-pup
+        rm ${WORKDIR}/hphosts-pup-raw
+}
+
 hbbtv() {
 	# HBBTV List
 	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/hbbtv.txt -o ${WORKDIR}/hbbtv-raw
@@ -147,17 +217,10 @@ simpletrack() {
 	rm ${WORKDIR}/simpletrack-raw
 }
 
-zeusabuse() {
-	# Zeus Tracker List from abuse.ch
-	${FETCH} https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist -o ${WORKDIR}/zeusabuse-raw
-	sed "/\.$/d" ${WORKDIR}/zeusabuse-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/zeusabuse
-	rm ${WORKDIR}/zeusabuse-raw
-}
-
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
-		awk '{ if (length($1) < 245) print ""$1" CNAME .\n*."$1" CNAME ."}' ${FILE} | sort -u > ${FILE}.inc
+		awk '{ if (length($1) < 220) print ""$1" CNAME .\n*."$1" CNAME ."}' ${FILE} | sort -u > ${FILE}.inc
 	done
 	# Merge resulting files (/dev/null in case there are none)
 	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/dnsbl.inc
@@ -180,6 +243,15 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	ag)
 		adguard
 		;;
+	bla)
+		blocklistads
+		;;
+	blf)
+		blocklistfraud
+		;;
+	blp)
+		blocklistphishing
+		;;
 	ca)
 		cameleon
 		;;
@@ -191,6 +263,18 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	emd)
 		emdlist
+		;;
+	hpa)
+		hphosts-ads
+		;;
+	hpf)
+		hphosts-fsa
+		;;
+	hpp)
+		hphosts-psh
+		;;
+	hup)
+		hphosts-pup
 		;;
 	ht)
 		hbbtv
@@ -213,17 +297,23 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	sa)
 		simplead
 		;;
+	sb)
+		stevenblack
+		;;
 	st)
 		simpletrack
 		;;
 	ws)
-		windowsspyblocker
+		windowsspyblockerspy
+		;;
+	wsu)
+		windowsspyblockerupdate
+		;;
+	wse)
+		windowsspyblockerextra
 		;;
 	yy)
 		yoyo
-		;;
-	za)
-		zeusabuse
 		;;
 	esac
 done

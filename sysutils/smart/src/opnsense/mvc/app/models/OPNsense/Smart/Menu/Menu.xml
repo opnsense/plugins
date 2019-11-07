@@ -1,5 +1,5 @@
 <menu>
     <Services>
-        <SMART url="/diag_smart.php" cssClass="fa fa-stethoscope fa-fw"/>
+        <SMART url="/ui/smart" cssClass="fa fa-stethoscope fa-fw"/>
     </Services>
 </menu>

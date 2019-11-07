@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
@@ -35,8 +36,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class BgpController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'bgp';
-    static protected $internalModelClass = '\OPNsense\Quagga\BGP';
+    protected static $internalModelName = 'bgp';
+    protected static $internalModelClass = '\OPNsense\Quagga\BGP';
 
     public function searchNeighborAction()
     {
@@ -47,6 +48,7 @@ class BgpController extends ApiMutableModelControllerBase
                   "remoteas",
                   "updatesource",
                   "nexthopself",
+                  "multihop",
                   "defaultoriginate",
                   "linkedPrefixlistIn",
                   "linkedPrefixlistOut",

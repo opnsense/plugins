@@ -1,4 +1,5 @@
 <?php
+
 /*
     Copyright (C) 2017 Fabian Franz
     All rights reserved.
@@ -35,6 +36,7 @@ class OspfController extends \OPNsense\Base\IndexController
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
         $this->view->formDialogEditPrefixLists = $this->getForm("dialogEditOSPFPrefixLists");
+        $this->view->formDialogEditRouteMaps = $this->getForm("dialogEditOSPFRouteMaps");
         $this->view->pick('OPNsense/Quagga/ospf');
     }
 }

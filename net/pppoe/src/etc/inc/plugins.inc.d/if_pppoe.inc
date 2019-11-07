@@ -245,7 +245,7 @@ EOD;
                 if (isset($pppoecfg['radius']['server']['acctport'])) {
                     $radiusacctport = $pppoecfg['radius']['server']['acctport'];
                 }
-                $mpdconf .=<<<EOD
+                $mpdconf .= <<<EOD
   set radius server {$pppoecfg['radius']['server']['ip']} "{$pppoecfg['radius']['server']['secret']}" {$radiusport} {$radiusacctport}
   set radius retries 3
   set radius timeout 10
@@ -254,7 +254,7 @@ EOD;
 EOD;
 
                 if (isset($pppoecfg['radius']['accounting'])) {
-                    $mpdconf .=<<<EOD
+                    $mpdconf .= <<<EOD
   set auth enable radius-acct
 
 EOD;

@@ -27,6 +27,13 @@
     <advanced>true</advanced>
   </field>
   <field>
+    <id>general.dormant_canceled_by_startup</id>
+    <label>Dormant Canceled By Startup</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you check this box may help if tor is stuck at startup.</help>
+  </field>
+  <field>
     <id>general.enablelogfile</id>
     <label>Create a logfile</label>
     <type>checkbox</type>

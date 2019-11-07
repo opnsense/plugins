@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>record.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this record.</help>
+    </field>
+    <field>
+        <id>record.domain</id>
+        <label>Zone</label>
+        <type>dropdown</type>
+        <help>Select the zone for this record.</help>
+    </field>
+    <field>
+        <id>record.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this record.</help>
+    </field>
+    <field>
+        <id>record.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Set the type for this record.</help>
+    </field>
+    <field>
+        <id>record.value</id>
+        <label>Value</label>
+        <type>text</type>
+        <help>Set the value for this record.</help>
+    </field>
+</form>

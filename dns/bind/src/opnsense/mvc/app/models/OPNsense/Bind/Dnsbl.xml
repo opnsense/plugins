@@ -13,10 +13,17 @@
             <OptionValues>
                 <aa>AdAway List</aa>
                 <ag>AdGuard List</ag>
+                <bla>Blocklist.site Ads</bla>
+                <blf>Blocklist.site Fraud</blf>
+                <blp>Blocklist.site Phishing</blp>
                 <ca>Cameleon List</ca>
                 <el>Easy List</el>
                 <emd>EMD Malicious Domains List</emd>
                 <ep>Easyprivacy List</ep>
+                <hpa>hpHosts Ads</hpa>
+                <hpf>hpHosts FSA</hpf>
+                <hpp>hpHosts PSH</hpp>
+                <hup>hpHosts PUP</hup>
                 <ht>Hbbtv List</ht>
                 <mw>Malwaredomain List</mw>
                 <nc>NoCoin List</nc>
@@ -24,9 +31,11 @@
                 <rw>Ransomware Tracker List</rw>
                 <sa>Simple Ad List</sa>
                 <st>Simple Tracker List</st>
-                <ws>Windows Spyware Blocker</ws>
+                <sb>Steven Black List</sb>
+                <ws>WindowsSpyBlocker (spy)</ws>
+                <wsu>WindowsSpyBlocker (update)</wsu>
+                <wse>WindowsSpyBlocker (extra)</wse>
                 <yy>YoYo List</yy>
-                <za>ZeusTracker Abuse.ch List</za>
             </OptionValues>
         </type>
         <whitelists type="CSVListField">
@@ -36,6 +45,10 @@
             <default>0</default>
             <Required>Y</Required>
         </forcesafegoogle>
+        <forcesafeduckduckgo type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </forcesafeduckduckgo>
         <forcesafeyoutube type="BooleanField">
             <default>0</default>
             <Required>Y</Required>

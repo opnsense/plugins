@@ -30,6 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
+    updateServiceControlUI('freeradius');
+
         /*************************************************************************************************************
          * link grid actions
          *************************************************************************************************************/
@@ -56,7 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
             ajaxCall(url="/api/freeradius/service/reconfigure", sendData={}, callback=function(data,status) {
                 // when done, disable progress animation.
                 $("#reconfigureAct_progress").removeClass("fa fa-spinner fa-pulse");
-
+                updateServiceControlUI('freeradius');
                 if (status != "success" || data['status'] != 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,

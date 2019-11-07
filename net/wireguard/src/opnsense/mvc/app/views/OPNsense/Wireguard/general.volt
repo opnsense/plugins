@@ -36,6 +36,10 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
 
+<div class="alert alert-warning" role="alert" style="min-height:65px;">
+  <div style="margin-top: 8px;">{{ lang._('The WireGuard VPN software is still in experimental state, use with caution.') }}</div>
+</div>
+
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -53,7 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="serveraddress" data-type="string" data-visible="true">{{ lang._('Endpoint Address') }}</th>
-                    <th data-column-id="tunneladdress" data-type="string" data-visible="true">{{ lang._('Tunnel Address') }}</th>
+                    <th data-column-id="tunneladdress" data-type="string" data-visible="true">{{ lang._('Allowed IPs') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>

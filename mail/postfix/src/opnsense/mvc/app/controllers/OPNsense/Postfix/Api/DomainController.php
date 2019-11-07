@@ -33,8 +33,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class DomainController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'domain';
-    static protected $internalModelClass = '\OPNsense\Postfix\Domain';
+    protected static $internalModelName = 'domain';
+    protected static $internalModelClass = '\OPNsense\Postfix\Domain';
 
     public function searchDomainAction()
     {

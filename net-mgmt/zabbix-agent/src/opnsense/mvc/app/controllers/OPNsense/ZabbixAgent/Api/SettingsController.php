@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -40,8 +41,8 @@ use \OPNsense\ZabbixAgent\ZabbixAgent;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'zabbixagent';
-    static protected $internalModelClass = '\OPNsense\ZabbixAgent\ZabbixAgent';
+    protected static $internalModelName = 'zabbixagent';
+    protected static $internalModelClass = '\OPNsense\ZabbixAgent\ZabbixAgent';
 
     public function searchUserparametersAction()
     {

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2019 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -25,13 +25,13 @@
 
 PAGER?=		less
 
-PLUGIN_ABI=	18.7
+PLUGIN_ABI=	19.7
 
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
 CATEGORIES=	benchmarks databases devel dns mail misc net-mgmt \
-		net security sysutils www
+		net security sysutils vendor www
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
@@ -73,11 +73,21 @@ diff:
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
 
 mfc:
-	@git checkout stable/${PLUGIN_ABI}
 .for MFC in ${mfc_ARGS}
+.if exists(${MFC})
+	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
+	@git checkout stable/${PLUGIN_ABI}
+	@git apply /tmp/mfc.diff
+	@git add ${.CURDIR}
+	@if ! git diff --quiet HEAD; then \
+		git commit -m "${MFC}: sync with master"; \
+	fi
+.else
+	@git checkout stable/${PLUGIN_ABI}
 	@git cherry-pick -x ${MFC}
-.endfor
+.endif
 	@git checkout master
+.endfor
 
 license:
 	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE

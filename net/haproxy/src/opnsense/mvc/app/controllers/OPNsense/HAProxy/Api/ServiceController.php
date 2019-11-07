@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2016 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -39,10 +40,10 @@ use \OPNsense\HAProxy\HAProxy;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\HAProxy\HAProxy';
-    static protected $internalServiceTemplate = 'OPNsense/HAProxy';
-    static protected $internalServiceEnabled = 'general.enabled';
-    static protected $internalServiceName = 'haproxy';
+    protected static $internalServiceClass = '\OPNsense\HAProxy\HAProxy';
+    protected static $internalServiceTemplate = 'OPNsense/HAProxy';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'haproxy';
 
     /**
      * run syntax check for haproxy configuration

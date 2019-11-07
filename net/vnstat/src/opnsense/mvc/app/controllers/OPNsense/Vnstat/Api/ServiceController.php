@@ -40,10 +40,10 @@ use OPNsense\Vnstat\General;
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    static protected $internalServiceClass = '\OPNsense\Vnstat\General';
-    static protected $internalServiceTemplate = 'OPNsense/Vnstat';
-    static protected $internalServiceEnabled = 'enabled';
-    static protected $internalServiceName = 'vnstat';
+    protected static $internalServiceClass = '\OPNsense\Vnstat\General';
+    protected static $internalServiceTemplate = 'OPNsense/Vnstat';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'vnstat';
 
     /**
      * list hourly statistics
@@ -86,6 +86,17 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $backend = new Backend();
         $response = $backend->configdRun("vnstat monthly");
+        return array("response" => $response);
+    }
+
+    /**
+     * remove database folder
+     * @return array
+     */
+    public function resetdbAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("vnstat resetdb");
         return array("response" => $response);
     }
 }

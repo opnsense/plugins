@@ -34,6 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#cloaks">{{ lang._('Overrides') }}</a></li>
     <li><a data-toggle="tab" href="#whitelists">{{ lang._('Whitelists') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Servers') }}</a></li>
+    <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -157,6 +158,15 @@ POSSIBILITY OF SUCH DAMAGE.
             <br /><br />
         </div>
     </div>
+    <div id="dnsbl" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':dnsblForm,'id':'frm_dnsbl_settings'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_dnsbl_progress"></i></button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditDnscryptproxyForward,'id':'dialogEditDnscryptproxyForward','label':lang._('Edit Forwarders')])}}
@@ -173,7 +183,11 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    updateServiceControlUI('dnscryptproxy');
+    var data_get_map2 = {'frm_dnsbl_settings':"/api/dnscryptproxy/dnsbl/get"};
+    mapDataToFormUI(data_get_map2).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
 
     $("#grid-forwards").UIBootgrid(
         {   'search':'/api/dnscryptproxy/forward/searchForward',
@@ -261,6 +275,18 @@ $( document ).ready(function() {
             ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
                 updateServiceControlUI('dnscryptproxy');
                 $("#saveAct_server_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_dnsbl").click(function(){
+        saveFormToEndpoint(url="/api/dnscryptproxy/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
+        $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/dnscryptproxy/service/dnsbl", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/dnscryptproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('dnscryptproxy');
+                    $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
     });

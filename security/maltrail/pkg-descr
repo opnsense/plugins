@@ -1,0 +1,28 @@
+Maltrail is a malicious traffic detection system, utilizing publicly
+available (black)lists containing malicious and/or generally suspicious
+trails, along with static trails compiled from various AV reports and
+custom user defined lists, where trail can be anything from domain name,
+URL, IP address or HTTP User-Agent header value. Also, it uses advanced
+heuristic mechanisms that can help in discovery of unknown threats.
+
+WWW: https://github.com/stamparm/maltrail
+
+
+Changelog
+---------
+
+1.2
+
+* Fix a typo in template generation
+
+1.1
+
+* Add a note in General tab
+* Add whitelisting support
+
+1.0
+
+* Server support
+* Sensor support
+* Allow to set listen interface
+* Allow to set admin password

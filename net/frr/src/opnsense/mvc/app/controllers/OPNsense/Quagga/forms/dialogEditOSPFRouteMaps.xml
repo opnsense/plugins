@@ -1,0 +1,38 @@
+<form>
+  <field>
+    <id>routemap.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>routemap.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>Route-map name to match and set your patterns, it will be enabled via redistribution.</help>
+  </field>
+  <field>
+    <id>routemap.action</id>
+    <label>Action</label>
+    <type>select_multiple</type>
+    <help>Set permit for match or deny to negate the rule.</help>
+  </field>
+  <field>
+    <id>routemap.id</id>
+    <label>ID</label>
+    <type>text</type>
+    <help>Route-map ID between 10 and 99. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
+  </field>
+  <field>
+    <id>routemap.match2</id>
+    <label>Prefix List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+  </field>
+    <field>
+    <id>routemap.set</id>
+    <label>Set</label>
+    <type>text</type>
+    <help>Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://docs.frrouting.org/en/latest/routemap.html#route-map-set-command)</help>
+  </field>
+</form>

@@ -8,10 +8,74 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.15
+
+* add OCSP stapling and verify
+* fix bug sendfile directive is only applied if TLS is enabled
+* allow to configure the maximum header and request line buffer size HTTP Server advanced option (Issue: 1544)
+
+1.14
+
+* add load balancer algorithm option (ip_hash)
+* fix URL flag not stored (contributed by jkellerer) [1]
+* allow to whitelist specific source IPs in the web application firewall (contributed by Julio Cesar Camargo) [2]
+
+[1] https://github.com/opnsense/plugins/pull/1375
+[2] https://github.com/opnsense/plugins/pull/1310
+
+1.13
+
+* add support for 0-RTT (Early Data in TLS 1.3)
+* add XMLRPC sync support
+
+1.12
+
+* add log to SYSLOG server support
+* add support for maximum temporary file size for request bodies
+* fix log "format" disable
+
+1.11
+
+* add VTS(1) module for traffic status reports
+* fix HSTS bug
+* add extended log format (contributed by Josh Wiles)
+* fix ACME support (contributed by Frank Wall)
+
+(1) https://github.com/vozlt/nginx-module-vts
+
+1.10
+
+* fix content security settings (missing checkbox, correct templating)
+
+1.9
+
+* add advanced options to configure hostname hash sizes for long hostnames
+
+1.8
+
+* update lodash to v4.17.11
+* Breaking: remove the WAF policy match type "=" as it is not supported (if you have them in use, unlink and delete them before installing this update)
+* allow plugins via include hooks
+* Breaking: the enabled flag in the general setting now works (en- or disables all vhosts in the plugin itself, but always serves plugins). Default was false so make sure you have it enabled before upgrade.
+* Alias support for downstream proxies (trust setting)
+* bugfix: deleting IP ACL
+* HSTS not sent automatically anymore if HTTP over TLS is configured (still available via security header)
+* add configuration directives for timeouts to location
+
+1.7
+
+* bugfix: create log directory if it is missing
+* reorder menu
+
 1.6
 
 * fix bug due to permission downgrade (basic auth)
+* fix bug when multiple hostnames are used, that the logs are not displayed in the log viewer
 * add paging support to log viewer, so it does not crash on really big log files
+* add basic TLS fingerprint check to make man in the middle attacks visible (may not fully work on LibreSSL crypto flavour as curves seem to return an empty string)
+* add dropdown to select authentication backend in HTTP server for advanced authentication
+* add global error log to log viewer
+* use stricter checks for internal locations (contributed by Northguy)
 
 1.5
 

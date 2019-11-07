@@ -59,3 +59,12 @@ function postfix_syslog()
 
     return $syslogconf;
 }
+
+function postfix_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'postfix';
+    $result['section'] = 'OPNsense.postfix';
+    $result['description'] = gettext('Postfix');
+    return array($result);
+}

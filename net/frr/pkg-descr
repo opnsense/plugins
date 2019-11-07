@@ -7,4 +7,33 @@ makes it applicable to a wide variety of use cases including connecting
 hosts/VMs/containers to the network, advertising network services, LAN
 switching and routing, Internet access routers, and Internet peering.
 
+
+Plugin Changelog
+================
+
+1.12
+
+* Add passive-interface to OSPFv3 (by Michael Muenz)
+* Allow to set area per interface for OSPFv2 (by @twoequaldots)
+* Allow to set ebgp-multihop in BGP (by @bpeavy and Greg Goodrich)
+
+1.11
+
+* Add route-map support to redistribution in OSPF
+* Only allow custom set of characters in BGP prefix-lists and route-maps
+
+1.10
+
+* XMLRPC sync support
+* CARP failover support
+
+1.9
+
+* Allow usage of VTI IPSec interfaces
+
+1.8
+
+* Add area range in OSPF config
+
+
 WWW: https://frrouting.org/

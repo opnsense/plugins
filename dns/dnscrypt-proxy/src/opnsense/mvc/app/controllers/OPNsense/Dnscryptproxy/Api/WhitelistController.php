@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  *
@@ -34,8 +35,8 @@ use \OPNsense\Core\Backend;
 
 class WhitelistController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'whitelist';
-    static protected $internalModelClass = '\OPNsense\Dnscryptproxy\Whitelist';
+    protected static $internalModelName = 'whitelist';
+    protected static $internalModelClass = '\OPNsense\Dnscryptproxy\Whitelist';
 
     public function searchWhitelistAction()
     {

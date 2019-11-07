@@ -5,4 +5,18 @@ provided by the kernel as information source. This means
 that vnStat won't actually be sniffing any traffic and also
 ensures light use of system resources.
 
+
+Plugin Changelog
+================
+
+1.1
+
+* Add button to remove database
+* Make database persistent in MFS installations
+
+1.0
+
+* Initial release
+
+
 WWW: https://humdi.net/vnstat/

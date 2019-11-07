@@ -1,0 +1,11 @@
+{% if helpers.exists('OPNsense.freeradius.general.dhcpenabled') and OPNsense.freeradius.general.dhcpenabled == '1' %}
+
+{% if helpers.exists('OPNsense.freeradius.lease.leases.lease') %}
+{%   for lease_list in helpers.toList('OPNsense.freeradius.lease.leases.lease') %}
+{%     if lease_list.enabled == '1' %}
+{{ lease_list.mac }},{{ lease_list.ip }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+{% endif %}

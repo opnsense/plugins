@@ -1,5 +1,8 @@
 {% if helpers.exists('OPNsense.bind.general.enabled') and OPNsense.bind.general.enabled == '1' %}
 named_var_script="/usr/local/opnsense/scripts/OPNsense/Bind/setup.sh"
+{% if helpers.exists('OPNsense.bind.general.disablev6') and OPNsense.bind.general.disablev6 == '1' %}
+named_flags="-4"
+{% endif %}
 {% if helpers.exists('OPNsense.bind.dnsbl.enabled') and OPNsense.bind.dnsbl.enabled == '1' %}
 {% if helpers.exists('OPNsense.bind.dnsbl.type') and OPNsense.bind.dnsbl.type != '' %}
 named_dnsbl="{{ OPNsense.bind.dnsbl.type }}"

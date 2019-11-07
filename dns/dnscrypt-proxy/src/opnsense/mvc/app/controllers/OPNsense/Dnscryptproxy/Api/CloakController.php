@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  *
@@ -34,8 +35,8 @@ use \OPNsense\Core\Backend;
 
 class CloakController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'cloak';
-    static protected $internalModelClass = '\OPNsense\Dnscryptproxy\Cloak';
+    protected static $internalModelName = 'cloak';
+    protected static $internalModelClass = '\OPNsense\Dnscryptproxy\Cloak';
 
     public function searchCloakAction()
     {

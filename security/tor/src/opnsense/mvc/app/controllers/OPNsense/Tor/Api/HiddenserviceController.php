@@ -32,8 +32,8 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class HiddenserviceController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'hiddenservice';
-    static protected $internalModelClass = '\OPNsense\Tor\HiddenService';
+    protected static $internalModelName = 'hiddenservice';
+    protected static $internalModelClass = '\OPNsense\Tor\HiddenService';
     public function searchserviceAction()
     {
         return $this->searchBase('service', array('enabled', 'name'));

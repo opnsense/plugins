@@ -46,34 +46,41 @@ $mode = $_SERVER['argv'][1];
 $server = $_SERVER['argv'][2];
 $nginx = new Nginx();
 
+// special case: the global error log
+if ($server == 'global') {
+    $logparser = new ErrorLogParser($log_prefix . 'error.log');
+    echo json_encode(empty($logparser->get_result()) ?
+        array('error' => 'no lines found') :
+        $logparser->get_result());
+    exit(0);
+}
+
 switch ($mode) {
     case 'error':
     case 'access':
-        if ($data = $nginx->getNodeByReference('http_server.'. $server)) {
+        if ($data = $nginx->getNodeByReference('http_server.' . $server)) {
             $server_names = (string)$data->servername;
             if (empty($server_names)) {
                 die('{"error": "The server entry has no server name"}');
             }
             $lines = [];
-            foreach (explode(',', $server_names) as $server_name) {
-                $log_file_name = $log_prefix . basename($server_name) . '.' . $mode . $log_suffix;
-                // this entry has no log file, ignore it
-                if (!file_exists($log_file_name)) {
-                    continue;
-                }
-                $logparser = null;
-
-                if ($mode == 'error') {
-                    $logparser = new ErrorLogParser($log_file_name);
-                } elseif ($mode == 'access') {
-                    $logparser = new AccessLogParser($log_file_name);
-                }
-                // we cannot parse the file - something went wrong
-                if ($logparser == null) {
-                    continue;
-                }
-                $lines = array_merge($lines, $logparser->get_result());
+            $log_file_name = $log_prefix . basename($server_names) . '.' . $mode . $log_suffix;
+            // this entry has no log file, ignore it
+            if (!file_exists($log_file_name)) {
+                continue;
             }
+            $logparser = null;
+
+            if ($mode == 'error') {
+                $logparser = new ErrorLogParser($log_file_name);
+            } elseif ($mode == 'access') {
+                $logparser = new AccessLogParser($log_file_name);
+            }
+            // we cannot parse the file - something went wrong
+            if ($logparser == null) {
+                continue;
+            }
+            $lines = array_merge($lines, $logparser->get_result());
             if (empty($lines)) {
                 $lines['error'] = 'no lines found';
             }
@@ -84,7 +91,7 @@ switch ($mode) {
         break;
     case 'streamerror':
     case 'streamaccess':
-        if ($data = $nginx->getNodeByReference('stream_server.'. $server)) {
+        if ($data = $nginx->getNodeByReference('stream_server.' . $server)) {
             $lines = [];
             $mode = str_replace('stream', '', $mode);
             $log_file_name = $log_prefix . 'stream_' . $server . '.' . $mode . $log_suffix;

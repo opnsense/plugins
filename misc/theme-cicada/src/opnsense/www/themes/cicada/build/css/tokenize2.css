@@ -17,7 +17,7 @@
 
 .tokenize.focus > .tokens-container {
     outline: 0;
-	border-color:#ec6d12;
+	border-color:#5a5a5a;
 	background-color:#2a2a2a;
 	-webkit-box-shadow: none;
 	box-shadow: none;
@@ -75,6 +75,8 @@
 	color:#fff;
     padding: 0;
 }
+
+.tokenize > .tokens-container:focus,
 .tokenize > .tokens-container:hover {
 	border-color:#ec6d12;
 	background-color:#2a2a2a;

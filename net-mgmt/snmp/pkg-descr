@@ -1,4 +1,0 @@
-The SNMP plugin allows to query information about your appliance. It
-includes memory, load, CPU utilization and system statistics by using
-the bsnmp-ucd module as well as to create counters from log files,
-program output and other text data via the bsnmp-regex module.

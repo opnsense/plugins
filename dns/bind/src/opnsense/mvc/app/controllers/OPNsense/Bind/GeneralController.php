@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2018-2019 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,8 @@ class GeneralController extends \OPNsense\Base\IndexController
         $this->view->generalForm = $this->getForm("general");
         $this->view->dnsblForm = $this->getForm("dnsbl");
         $this->view->formDialogEditBindAcl = $this->getForm("dialogEditBindAcl");
+        $this->view->formDialogEditBindDomain = $this->getForm("dialogEditBindDomain");
+        $this->view->formDialogEditBindRecord = $this->getForm("dialogEditBindRecord");
         $this->view->pick('OPNsense/Bind/general');
     }
 }

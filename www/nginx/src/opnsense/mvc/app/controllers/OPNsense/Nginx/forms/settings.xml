@@ -5,7 +5,7 @@
                 <id>nginx.general.enabled</id>
                 <label>Enable nginx</label>
                 <type>checkbox</type>
-                <help>Enable or disable the nginx service.</help>
+                <help>Enable configured services.</help>
             </field>
         </subtab>
         <subtab id="nginx-http-global" description="Global HTTP Settings">
@@ -26,6 +26,18 @@
                 <label>Default MIME-Type</label>
                 <type>text</type>
                 <help>This content type is sent if the file extension is unknown.</help>
+            </field>
+            <field>
+                <id>nginx.http.server_names_hash_bucket_size</id>
+                <label>Hash Bucket Size</label>
+                <type>text</type>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.server_names_hash_max_size</id>
+                <label>Server Names Hash Max Size</label>
+                <type>text</type>
+                <advanced>true</advanced>
             </field>
         </subtab>
         <subtab id="nginx-general-webgui" description="GUI Settings">

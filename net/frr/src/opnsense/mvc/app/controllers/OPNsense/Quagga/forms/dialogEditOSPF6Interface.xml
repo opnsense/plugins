@@ -17,6 +17,11 @@
     <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
   </field>
   <field>
+    <id>interface.passive</id>
+    <label>Passive Interface</label>
+    <type>checkbox</type>
+  </field>
+  <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>

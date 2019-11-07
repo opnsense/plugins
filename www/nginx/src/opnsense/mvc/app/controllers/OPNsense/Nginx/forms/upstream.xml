@@ -11,6 +11,12 @@
     <type>select_multiple</type>
   </field>
   <field>
+    <id>upstream.load_balancing_algorithm</id>
+    <label>Load Balancing Algorithm</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+  </field>
+  <field>
     <id>upstream.proxy_protocol</id>
     <label>PROXY Protocol</label>
     <type>checkbox</type>
@@ -20,7 +26,7 @@
   <field>
     <id>upstream.tls_enable</id>
     <label>Enable TLS (HTTPS)</label>
-    <help>Authenticate on the Server using a client certificate.</help>
+    <help>Use TLS (HTTPS) to connect to the server.</help>
     <type>checkbox</type>
   </field>
   <field>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -75,7 +76,7 @@ class AcmeClient extends BaseModel
     }
 
     /**
-     * retrieve restart action by number
+     * retrieve automation by number
      * @param $uuid action number
      * @return null|BaseField action details
      */

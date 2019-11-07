@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>

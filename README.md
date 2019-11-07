@@ -32,11 +32,13 @@ A list of currently available plugins
 benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
+devel/grid_example -- A sample framework application
 devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
-dns/dnscrypt-proxy -- Flexible DNS proxy supportung DNSCrypt and DoH
+dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
+dns/unbound-plus -- Unbound additions
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - grey/orange
@@ -45,13 +47,15 @@ misc/theme-tukan -- The tukan theme - blue/white
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
+net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
+net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
 net/arp-scan -- Get all peers connected to a local network
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
+net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/l2tp -- L2TP server based on MPD5
@@ -69,22 +73,28 @@ net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
 security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
+security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
+security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/softether -- Cross-platform Multi-protocol VPN Program
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
+sysutils/apuled -- PC Engine APU LED control
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
+sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
+sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
+vendor/sunnyvalley -- Sunny Valley Networks Vendor Repository
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy

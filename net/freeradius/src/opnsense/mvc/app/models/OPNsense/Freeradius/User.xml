@@ -76,6 +76,31 @@
                 <sessionlimit_max_session_limit type="IntegerField">
                     <Required>N</Required>
                 </sessionlimit_max_session_limit>
+                <servicetype type="OptionField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <OptionValues>
+                        <Option1 value="1">1</Option1>
+                        <Option2 value="2">2</Option2>
+                        <Option3 value="3">3</Option3>
+                        <Option4 value="4">4</Option4>
+                        <Option5 value="5">5</Option5>
+                        <Option6 value="6">6</Option6>
+                        <Option7 value="7">7</Option7>
+                        <Option8 value="8">8</Option8>
+                        <Option9 value="9">9</Option9>
+                        <Option10 value="10">10</Option10>
+                        <Option11 value="11">11</Option11>
+                        <Option12 value="12">12</Option12>
+                        <Option13 value="13">13</Option13>
+                        <Option14 value="14">14</Option14>
+                        <Option15 value="15">15</Option15>
+                        <Option16 value="16">16</Option16>
+                        <Option17 value="17">17</Option17>
+                        <Option18 value="18">18</Option18>
+                        <Option19 value="19">19</Option19>
+                    </OptionValues>
+                </servicetype>
             </user>
         </users>
     </items>

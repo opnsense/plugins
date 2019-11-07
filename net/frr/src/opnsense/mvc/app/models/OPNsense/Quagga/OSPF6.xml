@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf6</mount>
     <description>OSPFv3 Routing configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -32,6 +32,7 @@
                                  <Required>N</Required>
                                  <multiple>N</multiple>
                                  <default></default>
+                                 <AllowDynamic>Y</AllowDynamic>
                                  <filters>
                                          <enable>/^(?!0).*$/</enable>
                                  </filters>
@@ -41,6 +42,10 @@
                                 <Required>Y</Required>
                                 <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
                         </area>
+                        <passive type="BooleanField">
+                                <default>0</default>
+                                <Required>Y</Required>
+                        </passive>
                         <cost type="IntegerField">
                                 <default></default>
                                 <MinimumValue>0</MinimumValue>
@@ -89,8 +94,6 @@
                                 <default></default>
                                 <OptionValues>
                                         <broadcast>Broadcast multi-access network</broadcast>
-                                        <non-broadcast>NBMA network</non-broadcast>
-                                        <point-to-multipoint>Point-to-multipoint network</point-to-multipoint>
                                         <point-to-point>Point-to-point network</point-to-point>
                                 </OptionValues>
                         </networktype>

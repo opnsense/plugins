@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2018 Smart-Soft
  * Copyright (C) 2014 Deciso B.V.
  * Copyright 2012 mkirbst @ pfSense Forum
  * All rights reserved.
@@ -27,53 +28,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once("guiconfig.inc");
-require_once("widgets/include/smart_status.inc");
+require_once('guiconfig.inc');
+require_once('widgets/include/smart_status.inc');
+
+$devs = json_decode(configd_run('smart detailed list'));
 
 ?>
 
-<table class="table table-striped" style="width:100%; border:0; cellpadding:0; cellspacing:0">
+<table class="table table-striped table-condensed">
+  <thead>
     <tr>
-        <td class="widgetsubheader" style="text-align:center"><b><?php echo gettext("Drive") ?></b></td>
-        <td class="widgetsubheader" style="text-align:center"><b><?php echo gettext("Ident") ?></b></td>
-        <td class="widgetsubheader" style="text-align:center"><b><?php echo gettext("SMART Status") ?></b></td>
+        <th><?= gettext('Drive') ?></td>
+        <th><?= gettext('Ident') ?></td>
+        <th><?= gettext('Status') ?></td>
+    </tr>
+  </thead>
+  <tbody>
+
+<?php foreach ($devs as $dev):
+
+    $dev_state_translated = gettext('Unknown');
+    $color = 'default';
+
+    if (isset($dev->state->smart_status->passed)) {
+        if ($dev->state->smart_status->passed) {
+            $dev_state_translated = gettext('OK');
+            $color = 'success';
+        } else {
+            $dev_state_translated = gettext('FAILED');
+            $color = 'danger';
+	}
+    }
+
+?>
+
+    <tr>
+      <td><?= html_safe($dev->device) ?></td>
+      <td><?= html_safe($dev->ident) ?></td>
+      <td><span class="label label-<?= $color ?>"><?= html_safe($dev_state_translated) ?></span></td>
     </tr>
 
-<?php
-$devs = array();
-## Get all adX, daX, and adaX (IDE, SCSI, and AHCI) devices currently installed
-exec("ls /dev | grep '^\(ad\|da\|ada\)[0-9]\{1,2\}$'", $devs); ## From SMART status page
+<?php endforeach ?>
 
-if (count($devs) > 0) {
-    foreach ($devs as $dev) {
-## for each found drive do
-        $dev_ident = exec("diskinfo -v /dev/$dev | grep ident   | awk '{print $1}'"); ## get identifier from drive
-        $dev_state = trim(exec("smartctl -H /dev/$dev | awk -F: '/^SMART overall-health self-assessment test result/ {print $2;exit}
-/^SMART Health Status/ {print $2;exit}'")); ## get SMART state from drive
-        $dev_state_translated = "";
-        switch ($dev_state) {
-            case "PASSED":
-            case "OK":
-                $dev_state_translated = gettext('OK');
-                $color = "success";
-                break;
-            case "":
-              $dev_state = "Unknown";
-              $dev_state_translated = gettext('Unknown');
-                $color = "warning";
-                break;
-            default:
-                $color = "danger";
-                break;
-        }
-?>
-        <tr>
-            <td><?= $dev ?></td>
-            <td style="text-align:center"><?= $dev_ident ?></td>
-            <td style="text-align:center"><span class="label label-<?= $color ?>">&nbsp;<?= $dev_state_translated ?>&nbsp;</span></td>
-        </tr>
-<?php
-    }
-}
-?>
+  </tbody>
 </table>

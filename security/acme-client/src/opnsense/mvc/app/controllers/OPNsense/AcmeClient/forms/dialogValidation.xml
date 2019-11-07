@@ -282,7 +282,17 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
-        <label>Domain-Offensive</label>
+        <label>Domain-Offensive LetsEncrypt</label>
+        <type>header</type>
+        <style>table_dns table_dns_doapi</style>
+    </field>
+    <field>
+        <id>validation.dns_doapi_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Domain-Offensive Resellerinterface</label>
         <type>header</type>
         <style>table_dns table_dns_do</style>
     </field>
@@ -392,6 +402,30 @@
         <type>text</type>
     </field>
     <field>
+        <label>Google Cloud DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_gcloud</style>
+    </field>
+    <field>
+        <label><![CDATA[NOTE: First you must create a <a target="_blank" href="https://cloud.google.com/iam/docs/creating-managing-service-account-keys">service account key</a> using the GCP Console and enable the <a target="_blank" href="https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview">Cloud Resource Manager API</a>. Afterwards paste the full JSON key in the textbox below.]]></label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>validation.dns_gcloud_key</id>
+        <label>JSON Key</label>
+        <type>textbox</type>
+        <help>Provide a service account key in JSON format for your Google Cloud account.</help>
+    </field>
+    <field>
+        <label>Action required</label>
+        <type>header</type>
+        <style>table_dns table_dns_gcloud gcloud_plugin_warning</style>
+    </field>
+    <field>
+        <label><![CDATA[Please manually install the plugin "os-google-cloud-sdk" to enable support for Google Cloud DNS.]]></label>
+        <type>info</type>
+    </field>
+    <field>
         <label>GoDaddy</label>
         <type>header</type>
         <style>table_dns table_dns_gd</style>
@@ -404,6 +438,21 @@
     <field>
         <id>validation.dns_gd_secret</id>
         <label>Secret</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>hosting.de</label>
+        <type>header</type>
+        <style>table_dns table_dns_hostingde</style>
+    </field>
+    <field>
+        <id>validation.dns_hostingde_server</id>
+        <label>Server URL</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_hostingde_apiKey</id>
+        <label>API key</label>
         <type>text</type>
     </field>
     <field>
@@ -542,6 +591,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>Loopia</label>
+        <type>header</type>
+        <style>table_dns table_dns_loopia</style>
+    </field>
+    <field>
+        <id>validation.dns_loopia_api</id>
+        <label>API Endpoint</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_loopia_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_loopia_password</id>
+        <label>Password</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>LuaDNS</label>
         <type>header</type>
         <style>table_dns table_dns_lua</style>
@@ -572,6 +641,27 @@
         <type>text</type>
     </field>
     <field>
+        <label>Namecheap</label>
+        <type>header</type>
+        <style>table_dns table_dns_namecheap</style>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_api</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_sourceip</id>
+        <label>Source IP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Name.com</label>
         <type>header</type>
         <style>table_dns table_dns_namecom</style>
@@ -594,6 +684,26 @@
     <field>
         <id>validation.dns_namesilo_key</id>
         <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>netcup DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_netcup</style>
+    </field>
+    <field>
+        <id>validation.dns_netcup_cid</id>
+        <label>Customer number</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_netcup_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_netcup_pw</id>
+        <label>API Password</label>
         <type>text</type>
     </field>
     <field>
@@ -621,6 +731,46 @@
         <label>Secret Key</label>
         <type>textbox</type>
         <help>Requires the whole key file in a format that is compatible with nsupdate.</help>
+    </field>
+    <field>
+        <label>opnsense</label>
+        <type>header</type>
+        <style>table_dns table_dns_opnsense</style>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_host</id>
+        <label>OPNSense Server (FQDN)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_port</id>
+        <label>OPNSense Server Port</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_key</id>
+        <label>User API key </label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_token</id>
+        <label>User API token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_insecure</id>
+        <label>Disable TLS Verification</label>
+        <type>checkbox</type>
+        <help>Uncheck this box if you have a valid certificate for your OPNsense interface.</help>
+    </field>
+    <field>
+        <label>Action required</label>
+        <type>header</type>
+        <style>table_dns table_dns_opnsense bind_plugin_warning</style>
+    </field>
+    <field>
+        <label><![CDATA[Please manually install the plugin "os-bind" to enable support for it.]]></label>
+        <type>info</type>
     </field>
     <field>
         <label>OVH</label>

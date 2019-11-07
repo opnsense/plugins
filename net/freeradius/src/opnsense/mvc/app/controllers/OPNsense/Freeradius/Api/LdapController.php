@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
@@ -34,6 +35,6 @@ use \OPNsense\Base\ApiMutableModelControllerBase;
 
 class LdapController extends ApiMutableModelControllerBase
 {
-    static protected $internalModelName = 'ldap';
-    static protected $internalModelClass = '\OPNsense\Freeradius\Ldap';
+    protected static $internalModelName = 'ldap';
+    protected static $internalModelClass = '\OPNsense\Freeradius\Ldap';
 }
