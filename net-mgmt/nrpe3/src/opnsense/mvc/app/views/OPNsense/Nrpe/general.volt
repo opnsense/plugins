@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#commands">{{ lang._('Commands') }}</a></li>
+    <li><a data-toggle="tab" href="#command">{{ lang._('Commands') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -43,8 +43,8 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
-    <div id="commands" class="tab-pane fade in">
-        <table id="grid-commands" class="table table-responsive" data-editDialog="dialogEditNrpeCommand">
+    <div id="command" class="tab-pane fade in">
+        <table id="grid-command" class="table table-responsive" data-editDialog="dialogEditNrpeCommand">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -85,7 +85,7 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    $("#grid-commands").UIBootgrid(
+    $("#grid-command").UIBootgrid(
         {   'search':'/api/nrpe/command/searchCommand',
             'get':'/api/nrpe/command/getCommand/',
             'set':'/api/nrpe/command/setCommand/',
