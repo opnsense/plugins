@@ -1,0 +1,27 @@
+<model>
+    <mount>//OPNsense/nrpe/command</mount>
+    <description>NRPE command configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <commands>
+            <command type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z\-\_]){1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z_-</ValidationMessage>
+                </name>
+                <command type="TextField">
+                    <Required>Y</Required>
+                </command>
+                <arguments type="TextField">
+                    <Required>Y</Required>
+                </arguments>
+            </command>
+        </commands>
+    </items>
+</model>
