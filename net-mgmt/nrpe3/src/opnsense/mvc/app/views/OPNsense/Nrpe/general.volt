@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="command" data-type="string" data-visible="true">{{ lang._('Command') }}</th>
+                    <th data-column-id="nrpecommand" data-type="string" data-visible="true">{{ lang._('Command') }}</th>
                     <th data-column-id="arguments" data-type="string" data-visible="true">{{ lang._('Arguments') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
