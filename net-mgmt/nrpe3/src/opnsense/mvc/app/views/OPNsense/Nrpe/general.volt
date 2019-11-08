@@ -85,7 +85,7 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    $("#grid-clients").UIBootgrid(
+    $("#grid-commands").UIBootgrid(
         {   'search':'/api/nrpe/command/searchCommand',
             'get':'/api/nrpe/command/getCommand/',
             'set':'/api/nrpe/command/setCommand/',
