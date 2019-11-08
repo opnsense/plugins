@@ -38,7 +38,7 @@ class CommandController extends ApiMutableModelControllerBase
 
     public function searchCommandAction()
     {
-        return $this->searchBase('commands.command', array("enabled", "name", "command", "arguments"));
+        return $this->searchBase('commands.command', array("enabled", "name", "nrpecommand", "arguments"));
     }
     public function getCommandAction($uuid = null)
     {

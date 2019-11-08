@@ -12,7 +12,7 @@
         <help>Set the name for this check.</help>
     </field>
     <field>
-        <id>command.commmand</id>
+        <id>command.nrpecommmand</id>
         <label>Command</label>
         <type>text</type>
         <help>Full patch to check command.</help>
