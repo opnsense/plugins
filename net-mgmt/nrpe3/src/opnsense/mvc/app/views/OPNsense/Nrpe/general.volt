@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#commands">{{ lang._('Commands') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -42,7 +43,38 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
+    <div id="commands" class="tab-pane fade in">
+        <table id="grid-commands" class="table table-responsive" data-editDialog="dialogEditNrpeCommand">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="command" data-type="string" data-visible="true">{{ lang._('Command') }}</th>
+                    <th data-column-id="arguments" data-type="string" data-visible="true">{{ lang._('Arguments') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="col-md-12">
+            <hr />
+            <button class="btn btn-primary"  id="saveAct_command" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_command_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
 </div>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditNrpeCommand,'id':'dialogEditNrpeCommand','label':lang._('Edit Commands')])}}
 
 <script>
 
@@ -53,6 +85,16 @@ $( document ).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    $("#grid-clients").UIBootgrid(
+        {   'search':'/api/nrpe/command/searchCommand',
+            'get':'/api/nrpe/command/getCommand/',
+            'set':'/api/nrpe/command/setCommand/',
+            'add':'/api/nrpe/command/addCommand/',
+            'del':'/api/nrpe/command/delCommand/',
+            'toggle':'/api/nrpe/command/toggleCommand/'
+        }
+    );
+
     updateServiceControlUI('nrpe');
 
     $("#saveAct").click(function(){
@@ -61,6 +103,15 @@ $( document ).ready(function() {
             ajaxCall(url="/api/nrpe/service/reconfigure", sendData={}, callback=function(data,status) {
                 updateServiceControlUI('nrpe');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_command").click(function(){
+        saveFormToEndpoint(url="/api/nrpe/command/set", formid='frm_general_settings',callback_ok=function(){
+        $("#saveAct_command_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/nrpe/service/reconfigure", sendData={}, callback=function(data,status) {
+                $("#saveAct_command_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
