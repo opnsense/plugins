@@ -15,7 +15,7 @@
         <id>command.nrpecommmand</id>
         <label>Command</label>
         <type>text</type>
-        <help>Full patch to check command.</help>
+        <help>Full path to the check command.</help>
     </field>
     <field>
         <id>command.arguments</id>
