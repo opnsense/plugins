@@ -12,6 +12,8 @@
                 <name type="TextField">
                     <default></default>
                     <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){0,32}$/u</mask>
+                    <ValidationMessage>Only alphanumeric characters, dashes and underscores allowed.</ValidationMessage>
                 </name>
                 <nrpecommand type="TextField">
                     <Required>Y</Required>
