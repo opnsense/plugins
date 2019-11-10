@@ -243,6 +243,34 @@
     <help>Enter a custom timout between data received from the client after which the connection is closed.</help>
   </field>
   <field>
+    <id>location.proxy_buffer_size</id>
+    <label>Proxy Buffer Size (kB)</label>
+    <type>text</type>
+    <help>By default this is the size of one page (4 or 8 Kilobytes). It can be changed.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>location.proxy_buffers_count</id>
+    <label>Proxy Buffers: Count</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Count of buffers for a single connection.</help>
+  </field>
+  <field>
+    <id>location.proxy_buffers_size</id>
+    <label>Proxy Buffers: Size (kB)</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Size of buffers of a single connection</help>
+  </field>
+  <field>
+    <id>location.proxy_busy_buffers_size</id>
+    <label>Proxy Busy Buffers Size (kB)</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>When this buffer size is reached, nginx will send a part of the response to the client.</help>
+  </field>
+  <field>
     <id>location.proxy_send_timeout</id>
     <label>Proxy Send Timeout</label>
     <type>text</type>
