@@ -12,7 +12,7 @@
                 <name type="TextField">
                     <default></default>
                     <Required>Y</Required>
-                    <mask>/^[0-9a-z_\-]{0,32}$/ui</mask>
+                    <mask>/^[0-9a-z_\-]{1,32}$/ui</mask>
                     <ValidationMessage>Only alphanumeric characters, dashes and underscores allowed.</ValidationMessage>
                 </name>
                 <nrpecommand type="TextField">
