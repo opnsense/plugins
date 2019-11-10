@@ -7,13 +7,13 @@
     </field>
     <field>
         <id>general.server_port</id>
-        <label>Server Port</label>
+        <label>Port</label>
         <type>text</type>
         <help>Set the port the daemon is listening to.</help>
     </field>
     <field>
         <id>general.server_address</id>
-        <label>Server Address</label>
+        <label>Listen Address</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
@@ -31,13 +31,13 @@
         <id>general.dont_blame_nrpe</id>
         <label>Allow Arguments</label>
         <type>checkbox</type>
-        <help>Enable to allow arguments sent to NRPE.</help>
+        <help>Enable to allow arguments sent to NRPE. Enabling this option is a high security risk.</help>
     </field>
     <field>
         <id>general.allow_bash_command_substitution</id>
         <label>Allow Bash Substitutions</label>
         <type>checkbox</type>
-        <help>This option determines whether or not the NRPE daemon will allow clients to specify arguments that contain bash command substitutions of the form $(...).</help>
+        <help>This option determines whether or not the NRPE daemon will allow clients to specify arguments that contain bash command substitutions of the form $(...). Enabling this option is a high security risk.</help>
     </field>
     <field>
         <id>general.command_timeout</id>
