@@ -97,7 +97,7 @@
                 <id>nut.blazerser.enable</id>
                 <label>Enable</label>
                 <type>checkbox</type>
-                <help>Enable the BlazerSerial driver.</help>
+                <help>Enable the BlazerSerial driver. Please be aware that this driver needs to run nut-tools as root.</help>
             </field>
             <field>
                 <id>nut.blazerser.args</id>
