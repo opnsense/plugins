@@ -63,6 +63,10 @@
                     </OptionValues>
                     <Required>Y</Required>
                 </debugLevel>
+                <sudoRoot type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </sudoRoot>
             </main>
             <tuning>
                 <startAgents type="IntegerField">
