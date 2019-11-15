@@ -39,6 +39,8 @@
  *    - regfish (regfish.de)
  *    - regfish IPv6 (regfish.de)
  *    - DigitalOcean (digitalocean.com)
+ *    - Linode (linode.com)
+ *    - Linode IPv6 (linode.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -90,6 +92,8 @@
  *  regfish v6          - Last Tested: 15 August 2017
  *  Amazon Route53 v6   - Last Tested: 19 November 2017
  *  DigitalOcean        - Last Tested: 25 June 2019
+ *  Linode              - Last Tested: 12 November 2019
+ *  Linode v6           - Last Tested: 12 November 2019
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -192,6 +196,8 @@ class updatedns
                     $this->_error(5);
                 }
                 break;
+            case 'linode':
+            case 'linode-v6':
             case 'namecheap':
                 if (!$dnsPass) {
                     $this->_error(4);
@@ -242,6 +248,7 @@ class updatedns
             case 'cloudflare-v6':
             case 'custom-v6':
             case 'he-net-v6':
+            case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
                 $this->_useIPv6 = true;
@@ -309,6 +316,8 @@ class updatedns
                 case 'he-net-tunnelbroker':
                 case 'he-net-v6':
                 case 'hn':
+                case 'linode':
+                case 'linode-v6':
                 case 'loopia':
                 case 'namecheap':
                 case 'noip':
@@ -857,6 +866,88 @@ class updatedns
                 $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&{$family}={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
+            case 'linode':
+            case 'linode-v6':
+                $baseUrl = "https://api.linode.com/v4";
+                $fqdn = trim($this->_dnsHost);
+                $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
+
+                if ($this->_dnsWildcard == 'ON') {
+                    $fqdn = "*.$fqdn";
+                }
+
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . $this->_dnsPass,
+                    'Content-Type: application/json'
+                ));
+
+                $domainsUrl = "$baseUrl/domains";
+                curl_setopt($ch, CURLOPT_URL, $domainsUrl);
+                $output = json_decode(curl_exec($ch));
+                $domainId = null;
+
+                // Find matching domain and split the hostname part from it
+                foreach ($output->data as $key => $domainObj) {
+                    if (preg_match("/^{$domainObj->domain}$|\.{$domainObj->domain}$/", $fqdn)) {
+                        $domainId = $domainObj->id;
+                        $hostName = preg_replace("/\.?{$domainObj->domain}$/", '', $fqdn);
+                        $domainName = $domainObj->domain;
+                        break;
+                    }
+                }
+
+                if ($domainId) {
+                    if ($this->_dnsVerboseLog) {
+                        log_error("Dynamic DNS ($fqdn): Found domain name: $domainName, ID: $domainId");
+                    }
+
+                    $dnsRecordsUrl = "$domainsUrl/$domainId/records";
+                    curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
+                    $output = json_decode(curl_exec($ch));
+                    $recordId = null;
+
+                    // Find matching record
+                    foreach ($output->data as $key => $recordObj) {
+                        if ($recordObj->type == $recordType && $recordObj->name == $hostName) {
+                            $recordId = $recordObj->id;
+                            break;
+                        }
+                    }
+
+                    $hostData = array(
+                        "target" => "{$this->_dnsIP}",
+                    );
+
+                    if ($recordId) {
+                        // Update record
+                        if ($this->_dnsVerboseLog) {
+                            log_error("Dynamic DNS ($fqdn): Updating existing record ID: $recordId");
+                        }
+
+                        curl_setopt($ch, CURLOPT_URL, "$dnsRecordsUrl/$recordId");
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                    } else {
+                        // Create record
+                        if ($this->_dnsVerboseLog) {
+                            log_error("Dynamic DNS ($fqdn): Creating new record");
+                        }
+
+                        $hostData['type'] = $recordType;
+                        $hostData['name'] = $hostName;
+                        // Linode will round up to the nearest valid TTL
+                        $hostData['ttl_sec'] = 0;
+
+                        curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+                    }
+
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
+                } else {
+                    log_error("Dynamic DNS($fqdn): No zone found for domain");
+                }
+                break;
             default:
                 break;
         }
@@ -1252,6 +1343,24 @@ class updatedns
                     log_error("Dynamic DNS: PAYLOAD: {$data}");
                     $this->_debug($data);
                 }
+            case 'linode':
+            case 'linode-v6':
+                $fqdn = trim($this->_dnsHost);
+                if ($this->_dnsWildcard == 'ON') {
+                    $fqdn = "*.$fqdn";
+                }
+
+                $output = json_decode($data);
+                if ($output->target === $this->_dnsIP) {
+                    $status = "Dynamic DNS: (Success) $fqdn updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } elseif (!empty($output->errors)) {
+                    $status = "Dynamic DNS ($fqdn): ERROR - Reason: {$output->errors[0]->reason}";
+                } else {
+                    $status = "Dynamic DNS ($fqdn): UNKNOWN ERROR";
+                    log_error("Dynamic DNS ($fqdn): PAYLOAD: {$data}");
+                }
+                break;
             default:
                 break;
         }
