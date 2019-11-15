@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <NRPE cssClass="fa fa-lightbulb-o fa-fw">
+            <Configuration url="/ui/nrpe/general/index" order="10"/>
+        </NRPE>
+    </Services>
+</menu>
