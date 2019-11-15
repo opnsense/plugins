@@ -31,6 +31,7 @@ namespace OPNsense\Unboundplus\Api;
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Unboundplus\Dnsbl;
+use OPNsense\Unboundplus\Miscellaneous;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -46,6 +47,16 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend = new Backend();
         $backend->configdRun('template reload OPNsense/Unboundplus');
         $response = $backend->configdpRun('unboundplus dnsbl', array((string)$mdl->type));
+        return array("response" => $response);
+    }
+
+    public function reloadunboundAction()
+    {
+        $this->sessionClose();
+        $mdl = new Miscellaneous();
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/Unboundplus');
+        $response = $backend->configdpRun('unbound reload', array((string)$mdl->type));
         return array("response" => $response);
     }
 }

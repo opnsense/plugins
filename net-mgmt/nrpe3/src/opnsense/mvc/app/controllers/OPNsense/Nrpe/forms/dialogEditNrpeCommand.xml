@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>command.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the check command.</help>
+    </field>
+    <field>
+        <id>command.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this check.</help>
+    </field>
+    <field>
+        <id>command.nrpecommand</id>
+        <label>Command</label>
+        <type>text</type>
+        <help>Full path to the check command.</help>
+    </field>
+    <field>
+        <id>command.arguments</id>
+        <label>Arguments</label>
+        <type>text</type>
+        <help>Set the arguments for this check commands.</help>
+    </field>
+</form>

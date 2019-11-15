@@ -2,6 +2,7 @@
 
 # Copyright (c) 2018-2019 Michael Muenz <m.muenz@gmail.com>
 # Copyright (c) 2018 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2019 Martin Wasley
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -221,11 +222,14 @@ install() {
 		fi
         done
         # Merge resulting files (/dev/null in case there are none)
-        cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
-        chown unbound:unbound ${DESTDIR}/dnsbl.conf
+        if [ -s "/var/unbound/etc/dnsbl.inc" ]; then
+                cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
+                chown unbound:unbound ${DESTDIR}/dnsbl.conf
+        else
+                rm -rf ${DESTDIR}/dnsbl.conf
+        fi
         rm -rf ${WORKDIR}
         pluginctl -s unbound restart
-
 }
 
 DNSBL=${1}

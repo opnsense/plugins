@@ -8,9 +8,15 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.16
+
+* advanced buffering configuration in location (#1575)
+
 1.15
 
 * add OCSP stapling and verify
+* fix bug sendfile directive is only applied if TLS is enabled
+* allow to configure the maximum header and request line buffer size HTTP Server advanced option (Issue: 1544)
 
 1.14
 

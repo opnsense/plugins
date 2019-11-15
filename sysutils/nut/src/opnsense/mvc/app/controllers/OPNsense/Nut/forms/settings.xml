@@ -97,7 +97,7 @@
                 <id>nut.blazerser.enable</id>
                 <label>Enable</label>
                 <type>checkbox</type>
-                <help>Enable the BlazerSerial driver.</help>
+                <help>Enable the BlazerSerial driver. Please be aware that this driver needs to run nut-tools as root.</help>
             </field>
             <field>
                 <id>nut.blazerser.args</id>
@@ -134,6 +134,22 @@
                 <help>Set the password of the remote NUT server.</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-qx" description="QX-Driver">
+            <field>
+                <id>nut.qx.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the QX driver.</help>
+            </field>
+            <field>
+                <id>nut.qx.args</id>
+                <label>Extra Arguments</label>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
         <subtab id="nut-ups-riello" description="Riello-Driver">
             <field>
                 <id>nut.riello.enable</id>
@@ -148,6 +164,22 @@
                 <type>select_multiple</type>
                 <allownew>true</allownew>
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
+        <subtab id="nut-ups-snmp" description="SNMP-Driver">
+            <field>
+                <id>nut.snmp.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the SNMP driver.</help>
+            </field>
+            <field>
+                <id>nut.snmp.args</id>
+                <label>Extra Arguments</label>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <help>Set extra arguments for this UPS, e.g. "community=public".</help>
             </field>
         </subtab>
     </tab>

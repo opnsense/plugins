@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "namecheap") && $pconfig['username'] == "") {
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -115,6 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'cloudflare-v6':
             case 'eurodns':
             case 'googledomains':
+            case 'linode':
+            case 'linode-v6':
             case 'namecheap':
                 $host_to_check = preg_replace('/^[@*]\./', '', $host_to_check);
                 break;
@@ -341,7 +343,7 @@ include("head.inc");
                     <td>
                       <input name="username" type="text" id="username" value="<?= $pconfig['username'] ?>" />
                       <div class="hidden" data-for="help_for_username">
-                        <?= gettext("Username is required for all types except Namecheap, FreeDNS and Custom Entries.");?>
+                        <?= gettext("Username is required for all types except Namecheap, FreeDNS, Linode and Custom Entries.");?>
                         <br /><?= gettext('Route 53: Enter your Access Key ID.') ?>
                         <br /><?= gettext('Duck DNS: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
@@ -358,6 +360,7 @@ include("head.inc");
                         <br /><?= gettext('Route 53: Enter your Secret Access Key.') ?>
                         <br /><?= gettext('Duck DNS: Leave blank.') ?>
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
+                        <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
                       </div>
                     </td>
                   </tr>

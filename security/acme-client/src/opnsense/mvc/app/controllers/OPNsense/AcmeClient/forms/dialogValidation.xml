@@ -591,6 +591,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>Loopia</label>
+        <type>header</type>
+        <style>table_dns table_dns_loopia</style>
+    </field>
+    <field>
+        <id>validation.dns_loopia_api</id>
+        <label>API Endpoint</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_loopia_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_loopia_password</id>
+        <label>Password</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>LuaDNS</label>
         <type>header</type>
         <style>table_dns table_dns_lua</style>
