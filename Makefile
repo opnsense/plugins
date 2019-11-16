@@ -43,9 +43,6 @@ list:
 	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
 .endfor
 
-list-fix:
-	@MAKE=${MAKE} Scripts/update-list.sh
-
 # shared targets that are sane to run from the root directory
 TARGETS=	clean lint style style-fix style-python sweep test
 
@@ -95,4 +92,9 @@ mfc:
 license:
 	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
 
-.PHONY: license
+readme.md:
+	@MAKE=${MAKE} Scripts/update-list.sh
+
+sync: readme.md license
+
+.PHONY: license readme.md sync
