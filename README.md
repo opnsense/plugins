@@ -48,6 +48,7 @@ net-mgmt/collectd -- Collect system and application performance metrics periodic
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
 net-mgmt/netdata -- Real-time performance monitoring
+net-mgmt/nrpe3 -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
 net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
@@ -94,7 +95,7 @@ sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Sunny Valley Networks Vendor Repository
+vendor/sunnyvalley -- Vendor repository for Sensei (Next Generation Firewall Extensions)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
