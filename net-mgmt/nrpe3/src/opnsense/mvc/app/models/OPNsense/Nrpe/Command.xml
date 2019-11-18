@@ -1,0 +1,27 @@
+<model>
+    <mount>//OPNsense/nrpe/command</mount>
+    <description>NRPE command configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <commands>
+            <command type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^[0-9a-z_\-]{1,32}$/ui</mask>
+                    <ValidationMessage>Only alphanumeric characters, dashes and underscores allowed.</ValidationMessage>
+                </name>
+                <nrpecommand type="TextField">
+                    <Required>Y</Required>
+                </nrpecommand>
+                <arguments type="TextField">
+                    <Required>Y</Required>
+                </arguments>
+            </command>
+        </commands>
+    </items>
+</model>

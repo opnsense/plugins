@@ -1,0 +1,54 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable NRPE</label>
+        <type>checkbox</type>
+        <help>This will activate the NRPE service.</help>
+    </field>
+    <field>
+        <id>general.server_port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Set the port the daemon is listening to.</help>
+    </field>
+    <field>
+        <id>general.server_address</id>
+        <label>Listen Address</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the address the daemon is listening to. Empty means listen to all addresses.</help>
+    </field>
+    <field>
+        <id>general.allowed_hosts</id>
+        <label>Allowed Hosts</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the list of allowed hosts which can query this system.</help>
+    </field>
+    <field>
+        <id>general.dont_blame_nrpe</id>
+        <label>Allow Arguments</label>
+        <type>checkbox</type>
+        <help>Enable to allow arguments sent to NRPE. Enabling this option is a high security risk.</help>
+    </field>
+    <field>
+        <id>general.allow_bash_command_substitution</id>
+        <label>Allow Bash Substitutions</label>
+        <type>checkbox</type>
+        <help>This option determines whether or not the NRPE daemon will allow clients to specify arguments that contain bash command substitutions of the form $(...). Enabling this option is a high security risk.</help>
+    </field>
+    <field>
+        <id>general.command_timeout</id>
+        <label>Command Timeout</label>
+        <type>text</type>
+        <help>This specifies the maximum number of seconds that the NRPE daemon will allow plugins to finish executing before killing them off.</help>
+    </field>
+    <field>
+        <id>general.connection_timeout</id>
+        <label>Connection Timeout</label>
+        <type>text</type>
+        <help>This specifies the maximum number of seconds that the NRPE daemon will wait for a connection to be established before exiting.</help>
+    </field>
+</form>
