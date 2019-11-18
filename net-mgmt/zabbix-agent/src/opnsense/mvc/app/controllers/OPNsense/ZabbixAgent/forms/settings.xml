@@ -55,6 +55,13 @@
             <help><![CDATA[Specifies the debug level for Zabbix agent.]]></help>
             <advanced>false</advanced>
         </field>
+        <field>
+            <id>zabbixagent.settings.main.sudoRoot</id>
+            <label>Enable sudo root permissions</label>
+            <type>checkbox</type>
+            <help><![CDATA[When enabled, a sudo rule is created to grant full root access to Zabbix Agent. This may be required for certain checks.]]></help>
+            <advanced>false</advanced>
+        </field>
     </tab>
     <tab id="zabbixagent-settings-tuning" description="Tuning Parameters">
         <field>
