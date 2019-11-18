@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.12
+
+* Fix sort order to put sender acces in front of recipient access
+
 1.11
 
 * Allow suport for v4 or v6 only or both
