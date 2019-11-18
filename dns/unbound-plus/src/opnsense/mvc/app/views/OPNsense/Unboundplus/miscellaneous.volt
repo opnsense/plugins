@@ -26,7 +26,7 @@
  #}
 
 <div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':dnsblForm,'id':'frm_dnsbl_settings'])}}
+    {{ partial("layout_partials/base_form",['fields':miscellaneousForm,'id':'frm_miscellaneous_settings'])}}
     <div class="col-md-12">
         <hr />
         <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
@@ -35,7 +35,7 @@
 
 <script>
     $(function() {
-        var data_get_map = {'frm_dnsbl_settings':"/api/unboundplus/dnsbl/get"};
+        var data_get_map = {'frm_miscellaneous_settings':"/api/unboundplus/miscellaneous/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
@@ -43,9 +43,9 @@
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/unboundplus/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/unboundplus/miscellaneous/set", formid='frm_miscellaneous_settings',callback_ok=function(){
                 $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/unboundplus/service/dnsbl", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/unboundplus/service/reloadunbound", sendData={}, callback=function(data,status) {
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
