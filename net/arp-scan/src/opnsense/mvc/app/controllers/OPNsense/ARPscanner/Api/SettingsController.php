@@ -59,7 +59,7 @@ class SettingsController extends ApiControllerBase
                 foreach ($ifnames as &$arr) {
                     $ifname = $arr[0];
                     $result['arpscanner']['general']['interface'][$ifname] = array();
-                    $result['arpscanner']['general']['interface'][$ifname]['value'] = join(", ", array($ifname, " (".$arr[2].")"));
+                    $result['arpscanner']['general']['interface'][$ifname]['value'] = join(", ", array($ifname, " (" . $arr[2] . ")"));
                 }
             }
             // $result['arpscanner']['general']['networks'] = '192.168.1.0/24,172.16.45.0/25';
@@ -73,7 +73,7 @@ class SettingsController extends ApiControllerBase
      */
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdl = new ARPscanner();
@@ -85,7 +85,7 @@ class SettingsController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["general." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save
