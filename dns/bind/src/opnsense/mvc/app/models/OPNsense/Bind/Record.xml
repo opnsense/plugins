@@ -29,11 +29,16 @@
                     <OptionValues>
                         <A>A</A>
                         <AAAA>AAAA</AAAA>
+                        <CAA>CAA</CAA>
                         <CNAME>CNAME</CNAME>
+                        <DNSKEY>DNSKEY</DNSKEY>
+                        <DS>DS</DS>
                         <MX>MX</MX>
                         <NS>NS</NS>
                         <PTR>PTR</PTR>
+                        <RRSIG>RRSIG</RRSIG>
                         <SRV>SRV</SRV>
+                        <TLSA>TLSA</TLSA>
                         <TXT>TXT</TXT>
                     </OptionValues>
                 </type>

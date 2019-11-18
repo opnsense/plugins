@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.10
+
+* Add new ressource record types
+
 1.9
 
 * Allow IPv4-only mode
