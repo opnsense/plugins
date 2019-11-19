@@ -1,7 +1,7 @@
 <model>
   <mount>//OPNsense/Rspamd</mount>
   <description>rspamd anti spam filter</description>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <items>
     <general>
       <enabled type="BooleanField">
@@ -119,6 +119,13 @@
       <rewritesubject type="TextField">
         <Required>N</Required>
       </rewritesubject>
+      <historyrows type="IntegerField">
+        <default>200</default>
+        <Required>Y</Required>
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>100000</MaximumValue>
+        <ValidationMessage>Choose a value between 1 and 100000.</ValidationMessage>
+      </historyrows>
     </general>
 
     <milter_headers>
