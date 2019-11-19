@@ -55,6 +55,13 @@
                 <advanced>true</advanced>
                 <help>Enter a prefix added to the subject when Subject Score is reached.</help>
             </field>
+            <field>
+                <id>rspamd.general.historyrows</id>
+                <label>History Rows</label>
+                <type>text</type>
+                <advanced>true</advanced>
+                <help>Set the number of rows to be displayed in rspamd UI.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-general-multimap" description="Multimap Settings">
             <field>
