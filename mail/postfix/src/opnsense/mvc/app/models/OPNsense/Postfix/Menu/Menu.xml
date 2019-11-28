@@ -9,7 +9,7 @@
       <Senderbcc VisibleName="Sender BCC" url="/ui/postfix/senderbcc/index" order="45"/>
       <Sendercanonical VisibleName="Sender Canonical Rewriting" url="/ui/postfix/sendercanonical/index" order="48"/>
       <Address VisibleName="Address Rewriting" url="/ui/postfix/address/index" order="50"/>
-      <LogFile VisibleName="Log File" order="50" url="/diag_logs_postfix.php"/>
+      <LogFile VisibleName="Log File" order="50" url="/ui/diagnostics/log/core/mail"/>
     </Postfix>
   </Services>
 </menu>
