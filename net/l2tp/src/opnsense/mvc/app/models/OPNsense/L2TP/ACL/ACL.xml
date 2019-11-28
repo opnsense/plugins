@@ -20,7 +20,10 @@
     <page-vpn-vpnl2tp-users>
         <name>VPN: L2TP: Users</name>
         <patterns>
-            <pattern>vpn_l2tp_users.php*</pattern>
+            <pattern>ui/diagnostics/log/core/l2tps/*</pattern>
+            <pattern>api/diagnostics/log/core/l2tps/*</pattern>
+            <pattern>ui/diagnostics/log/core/vpn/*</pattern>
+            <pattern>api/diagnostics/log/core/vpn/*</pattern>
         </patterns>
     </page-vpn-vpnl2tp-users>
 </acl>
