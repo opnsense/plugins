@@ -12,6 +12,7 @@ Plugin Changelog
 
 * Remove lame-server log flooding
 * Remove HBBTV DNSBL
+* Rewrite Log File section to new MVC code
 
 1.10
 
