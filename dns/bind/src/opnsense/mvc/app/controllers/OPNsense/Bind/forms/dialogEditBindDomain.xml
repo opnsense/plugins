@@ -31,7 +31,9 @@
     <field>
         <id>domain.allownotifyslave</id>
         <label>Allow Notfiy</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>A list of allowed IP addresses to receive notifies from.</help>
     </field>
     <field>
