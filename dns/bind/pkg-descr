@@ -10,7 +10,8 @@ Plugin Changelog
 
 1.11
 
-* remove lame-server log flooding
+* Remove lame-server log flooding
+* Remove HBBTV DNSBL
 
 1.10
 
