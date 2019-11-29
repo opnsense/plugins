@@ -8,6 +8,12 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.11
+
+* Remove lame-server log flooding
+* Remove HBBTV DNSBL
+* Rewrite Log File section to new MVC code
+
 1.10
 
 * Add new ressource record types
