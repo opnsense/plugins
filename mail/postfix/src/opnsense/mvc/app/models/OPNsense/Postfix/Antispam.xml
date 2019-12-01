@@ -8,7 +8,7 @@
             <Required>Y</Required>
         </enable_rspamd>
         <milter_rspamd type="OptionField">
-            <default>Option1</default>
+            <default>6</default>
             <Required>Y</Required>
             <OptionValues>
                 <Option1 value="6">IPv6</Option1>
