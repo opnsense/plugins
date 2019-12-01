@@ -6,6 +6,11 @@ is completely different.
 Plugin Changelog
 ================
 
+
+1.13
+
+* Allow setting IP version for connecting to rspamd
+
 1.12
 
 * Fix sort order to put sender acces in front of recipient access
