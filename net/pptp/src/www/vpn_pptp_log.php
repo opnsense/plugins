@@ -22,5 +22,5 @@ if ($mode != 'raw') {
     require_once 'vpn_pptp_log.inc';
 } else {
     $logfile = '/var/log/pptps.log';
-    require_once 'diag_logs_template.inc';
+    require_once 'diag_logs_template_pptp.inc';
 }
