@@ -37,6 +37,6 @@
         <id>rip.defaultmetric</id>
         <label>Default Metric</label>
         <type>text</type>
-        <help>Set the default metric between 1 and 16.</help>
+        <help>Set the default metric to a value between 1 and 16.</help>
     </field>
 </form>
