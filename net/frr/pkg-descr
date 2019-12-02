@@ -14,6 +14,7 @@ Plugin Changelog
 1.13
 
 * Fix wrong match statement for IPv6 route-maps
+* Allow to set default-metric for RIP protocol
 
 1.12
 
