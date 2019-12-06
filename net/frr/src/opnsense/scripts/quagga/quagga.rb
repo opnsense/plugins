@@ -113,13 +113,13 @@ class General
     end
 
     # you don't have to understand this regex ;)
-    entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:via (\S+?)|is ([^,]+?)), ([^,\n]+)(?:, (\S+))?/
+    entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:(?:via (\S+?)|is ([^,]+?)|), ([^,\n]+)|(unreachable \(blackhole\)))(?:, (\S+))?/
     entries = []
     while (line = lines.shift&.strip)
       if line.length > 10
-        code, network, ad, metric, via, direct, interface, time = line.scan(entry_regex).first
+        code, network, ad, metric, via, direct, interface, unreachable, time = line.scan(entry_regex).first
         code = code.split('').map {|c| {short: c, long: meanings[c]}}
-        entries << {code: code, network: (network || direct), ad: ad, via: via, metric: metric, interface: interface, time: time }
+        entries << {code: code, network: (network || direct), ad: ad, via: via || unreachable, metric: metric, interface: interface, time: time }
       end
     end
     entries

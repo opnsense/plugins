@@ -11,6 +11,12 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.14
+
+* fix null route issue in parsing
+* add missing via column to routing table for IPv4 (v6 already has it)
+* show BGP status page: also show IPv6 routes
+
 1.13
 
 * Fix wrong match statement for IPv6 route-maps
