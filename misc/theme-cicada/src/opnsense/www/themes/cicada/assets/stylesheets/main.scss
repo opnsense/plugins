@@ -4833,24 +4833,24 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
 
 .btn {
   &.disabled {
-    background-color: #FFFFFF;
+    background-color: #DE7313;
     border-color: #1d1d1d;
     outline: 0;
 
     &:hover, &:focus, &:active, &.active {
-      background-color: #FFFFFF;
+      background-color: #DE7313;
       border-color: #1d1d1d;
       outline: 0;
     }
   }
 
   &[disabled] {
-    background-color: #FFFFFF;
+    background-color: #DE7313;
     border-color: #1d1d1d;
     outline: 0;
 
     &:hover, &:focus, &:active, &.active {
-      background-color: #FFFFFF;
+      background-color: #DE7313;
       border-color: #1d1d1d;
       outline: 0;
     }
@@ -4858,12 +4858,12 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
 }
 
 fieldset[disabled] .btn {
-  background-color: #FFFFFF;
+  background-color: #DE7313;
   border-color: #1d1d1d;
   outline: 0;
 
   &:hover, &:focus, &:active, &.active {
-    background-color: #FFFFFF;
+    background-color: #DE7313;
     border-color: #1d1d1d;
     outline: 0;
   }
@@ -5003,38 +5003,38 @@ fieldset[disabled] .btn-default {
 
 .btn-primary {
   &.disabled {
-    background-color: #515151;
-    border-color: #323232;
+    background-color: #de7313;
+    border-color: #1d1d1d;
     outline: 0;
 
     &:hover, &:focus, &:active, &.active {
-      background-color: #515151;
-      border-color: #323232;
+      background-color: #de7313;
+      border-color: #1d1d1d;
       outline: 0;
     }
   }
 
   &[disabled] {
-    background-color: #515151;
-    border-color: #323232;
+    background-color: #de7313;
+    border-color: #1d1d1d;
     outline: 0;
 
     &:hover, &:focus, &:active, &.active {
-      background-color: #515151;
-      border-color: #323232;
+      background-color: #de7313;
+      border-color: #1d1d1d;
       outline: 0;
     }
   }
 }
 
 fieldset[disabled] .btn-primary {
-  background-color: #515151;
-  border-color: #323232;
+  background-color: #de7313;
+  border-color: #1d1d1d;
   outline: 0;
 
   &:hover, &:focus, &:active, &.active {
-    background-color: #515151;
-    border-color: #323232;
+    background-color: #de7313;
+    border-color: #1d1d1d;
     outline: 0;
   }
 }
@@ -7606,13 +7606,14 @@ a.thumbnail {
 }
 
 .progress {
+  margin-bottom: 3px;
   overflow: hidden;
   height: 20px;
   background-color: #3c3c3b;
   border-radius: 3px;
   position: relative;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 1px 2px rgb(41, 41, 41);
+  -webkit-box-shadow: inset 0px 1px 2px 1px rgb(38, 38, 38);
+  box-shadow: inset 0px 1px 2px 1px rgb(38, 38, 38);
 }
 
 .progress-bar {
@@ -7626,11 +7627,12 @@ a.thumbnail {
   background-color: #ec6d12;
   position: relative;
   z-index: 2;
-  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: inset 0 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 20px 0 rgba(0, 0, 0, 0.15);
   -webkit-transition: width 0.6s ease;
   -o-transition: width 0.6s ease;
   transition: width 0.6s ease;
+  margin: 1px 0 0 0 !important;
 }
 
 .progress-striped .progress-bar, .progress-bar-striped {
@@ -10702,4 +10704,22 @@ h2 {
   &.text-center, &.text-primary {
     color: #fff !important;
   }
+}
+
+.alert.alert-primary.alert-output.m-t-15.m-b-0 {
+  background-color: #333 !important;
+  color: #FFF !important;
+}
+
+label.btn.au-target {
+  color: #EAC80A !important;
+}
+
+.btn-secondary {
+  background-color: #262626 !important;
+  border-color: #5a5a5a !important;
+}
+
+.disabled {
+  color: #bfbfbf !important;
 }
