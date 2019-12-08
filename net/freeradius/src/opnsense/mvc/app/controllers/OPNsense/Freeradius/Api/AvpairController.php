@@ -32,7 +32,7 @@ namespace OPNsense\Freeradius\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
 
-class AclController extends ApiMutableModelControllerBase
+class AvpairController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'avpair';
     protected static $internalModelClass = '\OPNsense\Freeradius\Avpair';
