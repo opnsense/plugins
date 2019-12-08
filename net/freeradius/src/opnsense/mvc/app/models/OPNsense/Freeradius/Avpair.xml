@@ -14,7 +14,7 @@
                 </name>
                 <operator type="TextField">
                     <Required>Y</Required>
-                    <mask>/^(\-\+\~\=){1,2}$/</mask>
+                    <mask>/^([\-\+\~\=]){1,2}$/</mask>
                 </operator>
                 <value type="TextField">
                     <Required>Y</Required>
