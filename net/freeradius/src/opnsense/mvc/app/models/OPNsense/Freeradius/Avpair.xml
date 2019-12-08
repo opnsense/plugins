@@ -15,7 +15,7 @@
                 <operator type="TextField">
                     <Required>Y</Required>
                     <mask>/^(\-\+\~\=){1,2}$/</mask>
-                </password>
+                </operator>
                 <value type="TextField">
                     <Required>Y</Required>
                 </value>
