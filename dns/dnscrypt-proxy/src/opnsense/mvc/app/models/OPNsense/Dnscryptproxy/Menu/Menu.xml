@@ -4,7 +4,7 @@
             <Configuration url="/ui/dnscryptproxy/general/index" order="10"/>
             <GeneralLog VisibleName="Log / General" order="20" url="/ui/diagnostics/log/dnscrypt-proxy/dnscrypt-proxy"/>
             <QueryLog VisibleName="Log / Queries" order="30"  url="/ui/diagnostics/log/dnscrypt-proxy/query"/>
-            <NXLog VisibleName="Log / NX" order="40" url="/ui/diagnostics/log/dnscrypt-proxy/nx"/>            
+            <NXLog VisibleName="Log / NX" order="40" url="/ui/diagnostics/log/dnscrypt-proxy/nx"/>
         </DNSCrypt-Proxy>
     </Services>
 </menu>
