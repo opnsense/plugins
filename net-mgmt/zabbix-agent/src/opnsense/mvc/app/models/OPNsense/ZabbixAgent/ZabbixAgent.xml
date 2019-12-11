@@ -145,8 +145,6 @@
                 <encryptionpsk type="TextField">
                     <default></default>
                     <Required>N</Required>
-                    <mask>/^[A-Fa-f0-9]{32,512}$/</mask>
-                    <ValidationMessage>Should be a hexadecimal string between 32 and 512 characters.</ValidationMessage>
                 </encryptionpsk>
             </features>
         </settings>
