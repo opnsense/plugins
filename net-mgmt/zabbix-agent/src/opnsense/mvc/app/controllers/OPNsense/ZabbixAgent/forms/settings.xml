@@ -132,5 +132,26 @@
             <type>checkbox</type>
             <help><![CDATA[Enable logging of executed shell commands as warnings. Make sure to set the Debug Level accordingly.]]></help>
         </field>
+        <field>
+            <id>zabbixagent.settings.features.encryption</id>
+            <label>PSK based encryption</label>
+            <type>checkbox</type>
+            <help>Enable PSK based encryption for communicating with the Zabbix server</help>
+            <advanced>true</advanced>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.encryptionidentity</id>
+            <label>PSK Identity</label>
+            <type>text</type>
+            <help>>The PSK identity configured must match on agent and server</help>
+            <advanced>true</advanced>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.encryptionpsk</id>
+            <label>PSK</label>
+            <type>text</type>
+            <help>The PSK configured on the Zabbix server</help>
+            <advanced>true</advanced>
+        </field>
     </tab>
 </form>
