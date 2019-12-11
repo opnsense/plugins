@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <description>Zabbix monitoring agent</description>
     <items>
         <!-- local settings that should NOT be synced to another node -->
@@ -132,6 +132,22 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </logRemoteCommands>
+                <encryption type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </encryption>
+                <encryptionidentity type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </encryptionidentity>
+                <encryptionpsk type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                    <mask>/^[A-Fa-f0-9]{32,512}$/</mask>
+                    <ValidationMessage>Should be a hexadecimal string between 32 and 512 characters.</ValidationMessage>
+                </encryptionpsk>
             </features>
         </settings>
         <userparameters>
