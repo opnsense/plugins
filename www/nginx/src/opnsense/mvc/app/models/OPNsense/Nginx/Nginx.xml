@@ -18,6 +18,14 @@
     </webgui>
 
     <http>
+      <workerprocesses type="IntegerField">
+        <default>1</default>
+        <Required>Y</Required>
+      </workerprocesses>
+      <workerconnections type="IntegerField">
+        <default>1024</default>
+        <Required>Y</Required>
+      </workerconnections>
       <sendfile type="BooleanField">
         <default>0</default>
         <Required>N</Required>
