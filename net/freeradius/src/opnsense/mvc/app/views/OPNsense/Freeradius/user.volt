@@ -113,7 +113,6 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="users" class="tab-pane fade in active">
-        <!-- tab page "users" -->
         <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSUser">
             <thead>
             <tr>
@@ -140,8 +139,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-    <div id="avpairs" class="tab-pane fade in active">
-        <!-- tab page "users" -->
+    <div id="avpairs" class="tab-pane fade in">
         <table id="grid-avpairs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSAvpair">
             <thead>
             <tr>
