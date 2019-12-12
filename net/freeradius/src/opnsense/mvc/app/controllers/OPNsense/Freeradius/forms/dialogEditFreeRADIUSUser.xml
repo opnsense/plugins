@@ -130,4 +130,11 @@
         <advanced>true</advanced>
         <help>Set the Service-Type attributes for this user.</help>
     </field>
+    <field>
+        <id>user.linkedAVPair</id>
+        <label>AVPair</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Select the configured AVPairs for this user.</help>
+    </field>
 </form>
