@@ -104,7 +104,7 @@
                 <linkedAVPair type="ModelRelationField">
                     <Model>
                         <template>
-                            <source>OPNsense.freeradius.avpair</source>
+                            <source>OPNsense.Freeradius.Avpair</source>
                             <items>avpairs.avpair</items>
                             <display>name</display>
                         </template>
