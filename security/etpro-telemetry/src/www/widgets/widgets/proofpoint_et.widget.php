@@ -36,7 +36,7 @@
 </style>
 <script src="/ui/js/moment-with-locales.min.js"></script>
 <script>
-    $(window).load(function() {
+    $(window).on("load", function() {
         ajaxGet("/api/diagnostics/proofpoint_et/status", {}, function(data){
             $("#proofpoint_status").removeClass("fa-spin");
             $("#proofpoint_status").removeClass("fa-spinner");
