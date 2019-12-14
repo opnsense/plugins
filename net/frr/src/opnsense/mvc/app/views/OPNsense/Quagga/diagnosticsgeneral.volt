@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <td><%= entry['ad'] %></td>
         <td><%= entry['metric'] %></td>
         <td><%= entry['interface'] %></td>
-	<td><%= entry['via'] %></td>
+        <td><%= entry['via'] %></td>
         <td><%= entry['time'] %></td>
       </tr>
     <% }); %>
