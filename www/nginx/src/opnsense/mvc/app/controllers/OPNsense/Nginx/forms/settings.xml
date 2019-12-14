@@ -20,7 +20,7 @@
                 <id>nginx.http.workerconnections</id>
                 <label>Worker Connections</label>
                 <type>text</type>
-                <help>Set the maximum worker connections</help>
+                <help>Set the maximum connections of each worker.</help>
                 <advanced>true</advanced>
             </field>
             <field>
