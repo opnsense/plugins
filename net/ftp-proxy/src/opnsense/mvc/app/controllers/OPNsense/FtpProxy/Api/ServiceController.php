@@ -38,136 +38,136 @@ use \OPNsense\FtpProxy\FtpProxy;
  */
 class ServiceController extends ApiControllerBase
 {
-	public function statusAction($uuid)
-	{
-		$result = array("result" => "failed", "function" => "status");
-		if ($this->request->isPost()) {
-			$this->sessionClose();
-		}
-		if ($uuid != null) {
-			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-			if ($node != null) {
-				$result['result'] = $this->callBackend('status', $node);
-			}
-		}
-		return $result;
-	}
+    public function statusAction($uuid)
+    {
+        $result = array("result" => "failed", "function" => "status");
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+        }
+        if ($uuid != null) {
+            $mdlFtpProxy = new FtpProxy();
+            $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+            if ($node != null) {
+                $result['result'] = $this->callBackend('status', $node);
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * start a ftp-proxy process
-	 * @param $uuid item unique id
-	 * @return array
-	 */
-	public function startAction($uuid)
-	{
-		$result = array("result" => "failed", "function" => "start");
-		if ($this->request->isPost()) {
-			$this->sessionClose();
-		}
-		if ($uuid != null) {
-			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-			if ($node != null) {
-				$result['result'] = $this->callBackend('start', $node);
-			}
-		}
-		return $result;
-	}
+    /**
+     * start a ftp-proxy process
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function startAction($uuid)
+    {
+        $result = array("result" => "failed", "function" => "start");
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+        }
+        if ($uuid != null) {
+            $mdlFtpProxy = new FtpProxy();
+            $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+            if ($node != null) {
+                $result['result'] = $this->callBackend('start', $node);
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * stop a ftp-proxy process
-	 * @param $uuid item unique id
-	 * @return array
-	 */
-	public function stopAction($uuid)
-	{
-		$result = array("result" => "failed", "function" => "stop");
-		if ($this->request->isPost()) {
-			$this->sessionClose();
-		}
-		if ($uuid != null) {
-			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-			if ($node != null) {
-				$result['result'] = $this->callBackend('stop', $node);
-			}
-		}
-		return $result;
-	}
+    /**
+     * stop a ftp-proxy process
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function stopAction($uuid)
+    {
+        $result = array("result" => "failed", "function" => "stop");
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+        }
+        if ($uuid != null) {
+            $mdlFtpProxy = new FtpProxy();
+            $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+            if ($node != null) {
+                $result['result'] = $this->callBackend('stop', $node);
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * restart a ftp-proxy process
-	 * @param $uuid item unique id
-	 * @return array
-	 */
-	public function restartAction($uuid)
-	{
-		if ($this->request->isPost()) {
-			$this->sessionClose();
-		}
-		if ($uuid != null) {
-			$mdlFtpProxy = new FtpProxy();
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-			if ($node != null) {
-				$result['result'] = $this->callBackend('restart', $node);
-			}
-		}
-		return $result;
-	}
+    /**
+     * restart a ftp-proxy process
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function restartAction($uuid)
+    {
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+        }
+        if ($uuid != null) {
+            $mdlFtpProxy = new FtpProxy();
+            $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+            if ($node != null) {
+                $result['result'] = $this->callBackend('restart', $node);
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * recreate configuration file from template
-	 * @return array
-	 */
-	public function configAction()
-	{
-		$result = array("result" => "failed", "function" => "config");
-		if ($this->request->isPost()) {
-			$this->sessionClose();
-		}
-		$result['result'] = $this->callBackend('template');
-		return $result;
-	}
+    /**
+     * recreate configuration file from template
+     * @return array
+     */
+    public function configAction()
+    {
+        $result = array("result" => "failed", "function" => "config");
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+        }
+        $result['result'] = $this->callBackend('template');
+        return $result;
+    }
 
-	/**
-	 * reload configuration
-	 * @return array
-	 */
-	public function reloadAction()
-	{
-		if ($this->request->isPost()) {
-			$this->sessionClose();
-		}
-		$result = $this->configAction();
-		if ($result['result'] == 'OK') {
-			$result['function'] = "reload";
-			$result['result'] = $this->callBackend('reload');
-		}
-		return $result;
-	}
+    /**
+     * reload configuration
+     * @return array
+     */
+    public function reloadAction()
+    {
+        if ($this->request->isPost()) {
+            $this->sessionClose();
+        }
+        $result = $this->configAction();
+        if ($result['result'] == 'OK') {
+            $result['function'] = "reload";
+            $result['result'] = $this->callBackend('reload');
+        }
+        return $result;
+    }
 
-	/**
-	 * call backend
-	 * @param action, node
-	 * @return string
-	 */
-	protected function callBackend($action, &$node = null)
-	{
-		$backend = new Backend();
-		if ($node != null) {
-			$instance = preg_replace("/\./", "_", $node->listenaddress->__toString()) . "_" . $node->listenport->__toString();
-			return trim($backend->configdpRun('ftpproxy', array($action, $instance)));
-		}
-		if ($action == 'template') {
-			return trim($backend->configdRun('template reload OPNsense/FtpProxy'));
-		}
-		if ($action == 'reload') {
-			$ret = trim($backend->configdRun('ftpproxy reload'));
-			/* also requires anchors in rules: */
-			$backend->configdRun('filter reload');
-			return $ret;
-		}
-		return "Wrong action defined";
-	}
+    /**
+     * call backend
+     * @param action, node
+     * @return string
+     */
+    protected function callBackend($action, &$node = null)
+    {
+        $backend = new Backend();
+        if ($node != null) {
+            $instance = preg_replace("/\./", "_", $node->listenaddress->__toString()) . "_" . $node->listenport->__toString();
+            return trim($backend->configdpRun('ftpproxy', array($action, $instance)));
+        }
+        if ($action == 'template') {
+            return trim($backend->configdRun('template reload OPNsense/FtpProxy'));
+        }
+        if ($action == 'reload') {
+            $ret = trim($backend->configdRun('ftpproxy reload'));
+            /* also requires anchors in rules: */
+            $backend->configdRun('filter reload');
+            return $ret;
+        }
+        return "Wrong action defined";
+    }
 }
