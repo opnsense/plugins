@@ -654,6 +654,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_cf':
                 $proc_env['CF_Key'] = (string)$valObj->dns_cf_key;
                 $proc_env['CF_Email'] = (string)$valObj->dns_cf_email;
+                // FIXME Only one auth method should be present in ENV
+                $proc_env['CF_Token'] = (string)$valObj->dns_cf_token;
+                $proc_env['CF_Account_ID'] = (string)$valObj->dns_cf_account_id;
                 break;
             case 'dns_cloudns':
                 $proc_env['CLOUDNS_AUTH_ID'] = (string)$valObj->dns_cloudns_auth_id;
