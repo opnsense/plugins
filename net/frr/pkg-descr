@@ -11,6 +11,11 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.13
+
+* Fix wrong match statement for IPv6 route-maps
+* Allow to set default-metric for RIP protocol
+
 1.12
 
 * Add passive-interface to OSPFv3 (by Michael Muenz)
