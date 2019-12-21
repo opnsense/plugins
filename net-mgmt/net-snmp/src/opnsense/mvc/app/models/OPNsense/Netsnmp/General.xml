@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/netsnmp/general</mount>
     <description>Netsnmp configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -22,7 +22,14 @@
         <l3visibility type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
-        </l3visibility>
+        </l3visibility>        
+        <sysdesc type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </sysdesc>
+        <opnsenseversion type="TextField">
+            <Required>N</Required>
+        </opnsenseversion>
         <listen type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
