@@ -185,26 +185,35 @@
         <style>table_dns table_dns_cf</style>
     </field>
     <field>
+        <label>Global API Key</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>validation.dns_cf_email</id>
-        <label>CF E-Mail</label>
+        <label>E-Mail</label>
         <type>text</type>
+        <help>Use your CF account with full privileges. This is less secure, a API token should be used instead (see below).</help>
     </field>
     <field>
         <id>validation.dns_cf_key</id>
-        <label>CF Key</label>
+        <label>Key</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>Restricted API Token</label>
+        <type>header</type>
     </field>
     <field>
         <id>validation.dns_cf_account_id</id>
         <label>CF Account ID</label>
         <type>text</type>
-        <help>Can be found in the URI after loggin into the Cloudflare dashboard.</help>
+        <help>Can be found in the URI after logging into the Cloudflare dashboard.</help>
     </field>
     <field>
         <id>validation.dns_cf_token</id>
         <label>CF API Token</label>
         <type>password</type>
-        <help>The token needs "Read" access to Zone.Zone and "Edit" to Zone.DNS across "All zones from an account".</help>
+        <help>The token needs "Read" access to Zone.Zone and "Edit" access to Zone.DNS across all zones from an account.</help>
     </field>
     <field>
         <label>ClouDNS</label>
