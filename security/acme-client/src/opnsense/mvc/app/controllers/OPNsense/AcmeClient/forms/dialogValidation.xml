@@ -653,6 +653,29 @@
         <type>text</type>
     </field>
     <field>
+        <label>MailinaBox</label>
+        <type>header</type>
+        <style>table_dns table_dns_miab</style>
+    </field>
+    <field>
+        <id>validation.dns_miab_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help>User with admin priviledges</help>
+    </field>
+    <field>
+        <id>validation.dns_miab_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Password for admin user</help>
+    </field>
+    <field>
+        <id>validation.dns_miab_server</id>
+        <label>Server</label>
+        <type>text</type>
+        <help>MailinaBox Server FQDN</help>
+    </field>
+    <field>
         <label>Namecheap</label>
         <type>header</type>
         <style>table_dns table_dns_namecheap</style>

@@ -811,6 +811,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ME_Key'] = (string)$valObj->dns_me_key;
                 $proc_env['ME_Secret'] = (string)$valObj->dns_me_secret;
                 break;
+            case 'dns_miab':
+                $proc_env['MIAB_Username'] = (string)$valObj->dns_miab_user;
+                $proc_env['MIAB_Password'] = (string)$valObj->dns_miab_password;
+                $proc_env['MIAB_Server'] = (string)$valObj->dns_miab_server;
+                break;
             case 'dns_namecheap':
                 $proc_env['NAMECHEAP_USERNAME'] = (string)$valObj->dns_namecheap_user;
                 $proc_env['NAMECHEAP_API_KEY'] = (string)$valObj->dns_namecheap_api;
