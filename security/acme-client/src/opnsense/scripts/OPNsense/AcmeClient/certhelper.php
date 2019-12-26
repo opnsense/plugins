@@ -652,9 +652,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['AZUREDNS_CLIENTSECRET'] = (string)$valObj->dns_azuredns_clientsecret;
                 break;
             case 'dns_cf':
+                // Global API key (insecure)
                 $proc_env['CF_Key'] = (string)$valObj->dns_cf_key;
                 $proc_env['CF_Email'] = (string)$valObj->dns_cf_email;
-                // FIXME Only one auth method should be present in ENV
+                // Restricted API token (recommended)
                 $proc_env['CF_Token'] = (string)$valObj->dns_cf_token;
                 $proc_env['CF_Account_ID'] = (string)$valObj->dns_cf_account_id;
                 break;

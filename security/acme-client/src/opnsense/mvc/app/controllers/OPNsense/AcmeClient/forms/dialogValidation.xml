@@ -187,6 +187,7 @@
     <field>
         <label>Global API Key</label>
         <type>header</type>
+        <style>table_dns table_dns_cf</style>
     </field>
     <field>
         <id>validation.dns_cf_email</id>
@@ -202,6 +203,7 @@
     <field>
         <label>Restricted API Token</label>
         <type>header</type>
+        <style>table_dns table_dns_cf</style>
     </field>
     <field>
         <id>validation.dns_cf_account_id</id>
