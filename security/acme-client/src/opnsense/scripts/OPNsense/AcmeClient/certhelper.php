@@ -881,6 +881,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['UNO_Key'] = (string)$valObj->dns_uno_key;
                 $proc_env['UNO_User'] = (string)$valObj->dns_uno_user;
                 break;
+            case 'dns_variomedia':
+                $proc_env['VARIOMEDIA_API_TOKEN'] = (string)$valObj->dns_variomedia_key;
+                break;
             case 'dns_vscale':
                 $proc_env['VSCALE_API_KEY'] = (string)$valObj->dns_vscale_key;
                 break;
