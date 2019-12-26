@@ -629,6 +629,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Setup DNS hook:
         // Set required env variables, write secrets to files, etc.
         switch ((string)$valObj->dns_service) {
+            case 'dns_acmedns':
+                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
+                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
+                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
+                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
+                break;
             case 'dns_ad':
                 $proc_env['AD_API_KEY'] = (string)$valObj->dns_ad_key;
                 break;
@@ -754,6 +760,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
                 $proc_env['GD_Secret'] = (string)$valObj->dns_gd_secret;
+                break;
+            case 'dns_gdnsdk':
+                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
+                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
                 break;
             case 'dns_hostingde':
                 $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
@@ -896,16 +906,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_zonomi':
                 $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
-                break;
-            case 'dns_gdnsdk':
-                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
-                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
-                break;
-            case 'dns_acmedns':
-                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
-                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
-                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
-                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
                 break;
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);
