@@ -192,7 +192,19 @@
     <field>
         <id>validation.dns_cf_key</id>
         <label>CF Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_cf_account_id</id>
+        <label>CF Account ID</label>
         <type>text</type>
+        <help>Can be found in the URI after loggin into the Cloudflare dashboard.</help>
+    </field>
+    <field>
+        <id>validation.dns_cf_token</id>
+        <label>CF API Token</label>
+        <type>password</type>
+        <help>The token needs "Read" access to Zone.Zone and "Edit" to Zone.DNS across "All zones from an account".</help>
     </field>
     <field>
         <label>ClouDNS</label>

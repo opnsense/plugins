@@ -461,6 +461,12 @@
                 <dns_cf_key type="TextField">
                     <Required>N</Required>
                 </dns_cf_key>
+                <dns_cf_token type="TextField">
+                    <Required>N</Required>
+                </dns_cf_token>
+                <dns_cf_account_id type="TextField">
+                    <Required>N</Required>
+                </dns_cf_account_id>
                 <dns_cloudns_auth_id type="TextField">
                     <Required>N</Required>
                 </dns_cloudns_auth_id>
