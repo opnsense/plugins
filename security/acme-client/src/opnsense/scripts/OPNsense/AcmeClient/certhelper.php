@@ -875,6 +875,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['PDNS_ServerId'] = (string)$valObj->dns_pdns_serverid;
                 $proc_env['PDNS_Token'] = (string)$valObj->dns_pdns_token;
                 break;
+            case 'dns_pleskxml':
+                $proc_env['pleskxml_user'] = (string)$valObj->dns_pleskxml_user;
+                $proc_env['pleskxml_pass'] = (string)$valObj->dns_pleskxml_pass;
+                $proc_env['pleskxml_uri'] = (string)$valObj->dns_pleskxml_uri;
+                break;
             case 'dns_selectel':
                 $proc_env['SL_Key'] = (string)$valObj->dns_sl_key;
                 break;
