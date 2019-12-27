@@ -2475,7 +2475,7 @@ input[type="color"]
 	background-color: #686868;
 	opacity: 0.8;
 	filter: alpha(opacity=80);
-	border-color: #ffffff; }
+	border-color: #191919; }
 
   select[disabled]:hover, select[readonly]:hover, fieldset[disabled]:hover,
   textarea[disabled]:hover,
@@ -2526,12 +2526,12 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-	background-color: #686868;
-	opacity: 0.8;
-	filter: alpha(opacity=80);
-	border:1px solid #ffffff;
-	-webkit-box-shadow: none;
-	box-shadow: none; }
+    background-color: #686868;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    border:1px solid #191919;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
 
 textarea {
   height: auto; }
