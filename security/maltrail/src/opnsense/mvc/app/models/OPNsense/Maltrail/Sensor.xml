@@ -11,9 +11,9 @@
             <default>0</default>
             <Required>Y</Required>
         </captureall>
-        <remoteaddress type="HostnameField">
+        <remoteserver type="HostnameField">
             <Required>N</Required>
-        </remoteaddress>
+        </remoteserver>
         <remoteport type="PortField">
             <default>8337</default>
             <Required>Y</Required>
