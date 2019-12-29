@@ -1560,7 +1560,7 @@ a.text-success:hover {
 }
 
 .text-info {
-  color: #d77610;
+  color: #46A50C;
 }
 
 a.text-info:hover {
@@ -1576,7 +1576,7 @@ a.text-warning:hover {
 }
 
 .text-danger {
-  color: #CB4326;
+  color: #DB4829;
 }
 
 a.text-danger:hover {
@@ -10645,6 +10645,12 @@ input[type="checkbox"] {
 
 .modal-header > span {
   color: #000;
+}
+
+.sessions-body table > {
+  thead > tr > th, tbody > tr > td {
+    border-color: #191919 !important;
+  }
 }
 
 .bootstrap-datetimepicker-widget table {

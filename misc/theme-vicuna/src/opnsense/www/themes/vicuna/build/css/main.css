@@ -1133,7 +1133,7 @@ a.text-success:hover {
   color: #7fc54f; }
 
 .text-info {
-  color: #d77610; }
+  color: #46A50C; }
 
 a.text-info:hover {
   color: #245269; }
@@ -1145,7 +1145,7 @@ a.text-warning:hover {
   color: #ec971f; }
 
 .text-danger {
-  color: #CB4326; }
+  color: #DB4829; }
 
 a.text-danger:hover {
   color: #D8482A; }
@@ -6475,6 +6475,10 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 
 .modal-header > span {
   color: #000;
+}
+
+.sessions-body table > thead > tr > th, .sessions-body table > tbody > tr > td {
+  border-color: #191919 !important;
 }
 
 .bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
