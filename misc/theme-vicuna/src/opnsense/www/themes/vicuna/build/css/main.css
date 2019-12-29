@@ -6496,6 +6496,7 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 
 .bootstrap-datetimepicker-widget table td span:hover {
     background: #d77610 !important;
+    color: #ffffff !important;
 }
 
 .modal-side > .p-15 {
