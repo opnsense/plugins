@@ -587,16 +587,34 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             }
         }
 
+        // Check wether IPv6 support is enabled
+        $configObj = Config::getInstance()->object();
+        if (isset($configObj->system->ipv6allow) && ($configObj->system->ipv6allow == "1")) {
+          $_ipv6_enabled = true;
+        } else {
+          $_ipv6_enabled = false;
+        }
+
         // Generate rules for all IP addresses
         $anchor_rules = "";
         if (!empty($iplist)) {
             $dedup_iplist = array_unique($iplist);
             // Add one rule for every IP
             foreach ($dedup_iplist as $ip) {
-                if ($ip == '.') {
-                    continue; // skip broken entries
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                  // IPv4
+                  $_dst = '127.0.0.1';
+                  $_family = 'inet';
+                  log_error("AcmeClient: using IPv4 address: ${ip}");
+                } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+                  // IPv6
+                  $_dst = 'fe80::1';
+                  $_family = 'inet6';
+                  log_error("AcmeClient: using IPv6 address: ${ip}");
+                } else {
+                  continue; // skip broken entries
                 }
-                $anchor_rules .= "rdr pass inet proto tcp from any to ${ip} port 80 -> 127.0.0.1 port ${local_http_port}\n";
+                $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 80 -> ${_dst} port ${local_http_port}\n";
             }
         } else {
             log_error("AcmeClient: no IP addresses found to setup port forward");
