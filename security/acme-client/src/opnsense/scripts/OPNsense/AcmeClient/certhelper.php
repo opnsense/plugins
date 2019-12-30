@@ -608,7 +608,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                   log_error("AcmeClient: using IPv4 address: ${ip}");
                 } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
                   // IPv6
-                  $_dst = 'fe80::1';
+                  $_dst = '::1';
                   $_family = 'inet6';
                   log_error("AcmeClient: using IPv6 address: ${ip}");
                 } else {
