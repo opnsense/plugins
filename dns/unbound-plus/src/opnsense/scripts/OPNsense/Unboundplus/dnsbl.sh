@@ -211,10 +211,31 @@ simpletrack() {
 	rm ${WORKDIR}/simpletrack-raw
 }
 
+
+download_lists() {
+	i=0
+
+	for URL in $(cat ${DESTDIR}/lists.inc | tr ',' ' '); do
+		${FETCH} ${URL} -o ${WORKDIR}/${i}-raw.tmp
+
+		cat ${WORKDIR}/${i}-raw.tmp | grep '^0.0.0.0' | awk '{print $2}' > ${WORKDIR}/${i}-filtered.tmp
+		cat ${WORKDIR}/${i}-raw.tmp | grep '^[a-z]' | awk '{print $1}' >> ${WORKDIR}/${i}-filtered.tmp
+		cat ${WORKDIR}/${i}-filtered.tmp | awk '{gsub("\r","")};{print "server:\nlocal-data: " "\"" $0" A 0.0.0.0\""}' >> ${WORKDIR}/lists.tmp
+
+		rm ${WORKDIR}/${i}-raw.tmp
+		rm ${WORKDIR}/${i}-filtered.tmp
+		i=$((i+1))
+	done
+}
+
 install() {
-        # Put all files in correct format
-        for FILE in $(find ${WORKDIR} -type f); do
-		WHITE=$(cat ${DESTDIR}/whitelist.inc | tr ',' '|')
+
+		# Download all user specified lists
+		download_lists
+
+		# Put all files in correct format
+        for FILE in $(find ${WORKDIR} -type f -not -name *.tmp); do
+		WHITE=$(cat ${DESTDIR}/whitelist.inc | tr ',' '')
 		if [ -z "${WHITE}" ]; then
 			cat ${FILE} | sort -u | awk '{printf "server:\n", $1; printf "local-data: \"%s A 0.0.0.0\"\n", $1}' > ${FILE}.inc
 		else
@@ -222,13 +243,15 @@ install() {
 		fi
         done
         # Merge resulting files (/dev/null in case there are none)
-        if [ -s "/var/unbound/etc/dnsbl.inc" ]; then
+        if [ -s "/var/unbound/etc/dnsbl.inc" ] || [ -s "/var/unbound/etc/lists.inc" ]; then
                 cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null > ${DESTDIR}/dnsbl.conf
-                chown unbound:unbound ${DESTDIR}/dnsbl.conf
+                cat ${WORKDIR}/lists.tmp /dev/null >> ${DESTDIR}/dnsbl.conf
+				chown unbound:unbound ${DESTDIR}/dnsbl.conf
         else
                 rm -rf ${DESTDIR}/dnsbl.conf
         fi
-        rm -rf ${WORKDIR}
+        
+		rm -rf ${WORKDIR}
         pluginctl -s unbound restart
 }
 

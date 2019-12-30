@@ -12,6 +12,14 @@
         <help>Select which kind of DNSBL you want to use.</help>
     </field>
     <field>
+        <id>dnsbl.lists</id>
+        <label>URLs of blacklists</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>List of domains from where blacklist will be downloaded.</help>
+    </field>
+    <field>
         <id>dnsbl.whitelists</id>
         <label>Whitelist Domains</label>
         <type>select_multiple</type>
