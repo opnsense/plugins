@@ -587,16 +587,34 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             }
         }
 
+        // Check wether IPv6 support is enabled
+        $configObj = Config::getInstance()->object();
+        if (isset($configObj->system->ipv6allow) && ($configObj->system->ipv6allow == "1")) {
+          $_ipv6_enabled = true;
+        } else {
+          $_ipv6_enabled = false;
+        }
+
         // Generate rules for all IP addresses
         $anchor_rules = "";
         if (!empty($iplist)) {
             $dedup_iplist = array_unique($iplist);
             // Add one rule for every IP
             foreach ($dedup_iplist as $ip) {
-                if ($ip == '.') {
-                    continue; // skip broken entries
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                  // IPv4
+                  $_dst = '127.0.0.1';
+                  $_family = 'inet';
+                  log_error("AcmeClient: using IPv4 address: ${ip}");
+                } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+                  // IPv6
+                  $_dst = 'fe80::1';
+                  $_family = 'inet6';
+                  log_error("AcmeClient: using IPv6 address: ${ip}");
+                } else {
+                  continue; // skip broken entries
                 }
-                $anchor_rules .= "rdr pass inet proto tcp from any to ${ip} port 80 -> 127.0.0.1 port ${local_http_port}\n";
+                $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 80 -> ${_dst} port ${local_http_port}\n";
             }
         } else {
             log_error("AcmeClient: no IP addresses found to setup port forward");
@@ -629,6 +647,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Setup DNS hook:
         // Set required env variables, write secrets to files, etc.
         switch ((string)$valObj->dns_service) {
+            case 'dns_acmedns':
+                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
+                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
+                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
+                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
+                break;
             case 'dns_ad':
                 $proc_env['AD_API_KEY'] = (string)$valObj->dns_ad_key;
                 break;
@@ -652,9 +676,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['AZUREDNS_CLIENTSECRET'] = (string)$valObj->dns_azuredns_clientsecret;
                 break;
             case 'dns_cf':
+                // Global API key (insecure)
                 $proc_env['CF_Key'] = (string)$valObj->dns_cf_key;
                 $proc_env['CF_Email'] = (string)$valObj->dns_cf_email;
-                // FIXME Only one auth method should be present in ENV
+                // Restricted API token (recommended)
                 $proc_env['CF_Token'] = (string)$valObj->dns_cf_token;
                 $proc_env['CF_Account_ID'] = (string)$valObj->dns_cf_account_id;
                 break;
@@ -753,6 +778,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_gd':
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
                 $proc_env['GD_Secret'] = (string)$valObj->dns_gd_secret;
+                break;
+            case 'dns_gdnsdk':
+                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
+                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
                 break;
             case 'dns_hostingde':
                 $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
@@ -891,6 +920,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['UNO_Key'] = (string)$valObj->dns_uno_key;
                 $proc_env['UNO_User'] = (string)$valObj->dns_uno_user;
                 break;
+            case 'dns_variomedia':
+                $proc_env['VARIOMEDIA_API_TOKEN'] = (string)$valObj->dns_variomedia_key;
+                break;
             case 'dns_vscale':
                 $proc_env['VSCALE_API_KEY'] = (string)$valObj->dns_vscale_key;
                 break;
@@ -902,16 +934,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_zonomi':
                 $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
-                break;
-            case 'dns_gdnsdk':
-                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
-                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
-                break;
-            case 'dns_acmedns':
-                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
-                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
-                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
-                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
                 break;
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);

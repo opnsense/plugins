@@ -408,6 +408,7 @@
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
+                        <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
@@ -843,6 +844,9 @@
                 <dns_acmedns_updateurl type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_variomedia_key type="TextField">
+                   <Required>N</Required>
+                </dns_variomedia_key>
             </validation>
         </validations>
         <actions>
