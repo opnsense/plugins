@@ -56,8 +56,9 @@ install() {
 		
 		if [ -s "/var/unbound/etc/dnsbl.inc" ] || [ -s "/var/unbound/etc/lists.inc" ]; then
             # Join all files into one in Unbound format
+			echo "server:" >> ${DESTDIR}/dnsbl.conf
 			for DOMAIN in $(uniq -i ${WORKDIR}/domains.inc); do
-				echo -e "server:\nlocal-data: \"${DOMAIN} A 0.0.0.0\"" >> ${DESTDIR}/dnsbl.conf
+				echo "local-data: \"${DOMAIN} A 0.0.0.0\"" >> ${DESTDIR}/dnsbl.conf
 			done
 			chown unbound:unbound ${DESTDIR}/dnsbl.conf
         fi
