@@ -13,7 +13,7 @@
     </field>
     <field>
         <id>dnsbl.lists</id>
-        <label>URLs of blacklists</label>
+        <label>URLs of Blacklists</label>
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
