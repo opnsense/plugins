@@ -108,6 +108,12 @@
         <help>Size of history index cache in bytes. Shared memory size for indexing history cache. Range: 128K-2G</help>
     </field>
     <field>
+        <id>general.proxyofflinebuffer</id>
+        <label>Proxy Offline Buffer</label>
+        <type>text</type>
+        <help>Set the time in hours how long the values will be buffered when the server is unreachable.</help>
+    </field>
+    <field>
         <id>general.timeout</id>
         <label>Timeout</label>
         <type>text</type>
