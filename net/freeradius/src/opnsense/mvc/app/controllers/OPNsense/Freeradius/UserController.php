@@ -33,6 +33,7 @@ class UserController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->formDialogEditFreeRADIUSUser = $this->getForm("dialogEditFreeRADIUSUser");
+        $this->view->formDialogEditFreeRADIUSAvpair = $this->getForm("dialogEditFreeRADIUSAvpair");
         $this->view->pick('OPNsense/Freeradius/user');
     }
 }

@@ -61,6 +61,14 @@
        Mikrotik-Wireless-VLANID-Type = {{ user_list.mikrotik_vlan_id_type }},
 {%         endif %}
 {%       endif %}
+{%       if user_list.linkedAVPair|default("") != "" %}
+{%         for avlist in user_list.linkedAVPair.split(",") %}
+{%           set avlistdetail = helpers.getUUID(avlist) %}
+{%           if avlistdetail != {} and avlistdetail.enabled == '1' %} 
+       {{ avlistdetail.name }} {{ avlistdetail.operator }} {{ avlistdetail.value }},
+{%           endif %}       
+{%         endfor %}
+{%       endif %}
        Framed-Protocol = PPP
 
 {%       endif %}
