@@ -44,6 +44,7 @@ mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - dark grey
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
+misc/theme-vicuna -- The vicuna theme - dark anthrazit
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
