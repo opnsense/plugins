@@ -19,6 +19,8 @@
       <name type="TextField">
         <default>UPSName</default>
         <Required>Y</Required>
+        <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+        <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
       </name>
       <listen type="CSVListField">
         <default>127.0.0.1,::1</default>
