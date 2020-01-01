@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -79,6 +79,10 @@
             <default>0</default>
             <Required>Y</Required>
         </hideversion>
+        <disableprefetch type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </disableprefetch>
         <enableratelimiting type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
