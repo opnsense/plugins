@@ -15,6 +15,7 @@ Plugin Changelog
 
 * fix null route issue in parsing
 * add missing via column to routing table for IPv4 (v6 already has it)
+* show BGP status page: also show IPv6 routes
 
 1.13
 
