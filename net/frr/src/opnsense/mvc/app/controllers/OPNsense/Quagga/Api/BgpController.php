@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
@@ -47,6 +48,7 @@ class BgpController extends ApiMutableModelControllerBase
                   "remoteas",
                   "updatesource",
                   "nexthopself",
+                  "multihop",
                   "defaultoriginate",
                   "linkedPrefixlistIn",
                   "linkedPrefixlistOut",

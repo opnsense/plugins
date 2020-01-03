@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.7.0</version>
+    <version>2.8.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -324,6 +324,32 @@
                     <Required>N</Required>
                 </customOptions>
             </stats>
+            <cache>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </enabled>
+                <totalMaxSize type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4095</MaximumValue>
+                    <default>4</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please specify a value between 1 and 4095.</ValidationMessage>
+                </totalMaxSize>
+                <maxAge type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>3600</MaximumValue>
+                    <default>60</default>
+                    <Required>N</Required>
+                    <ValidationMessage>Please specify a value between 1 and 3600.</ValidationMessage>
+                </maxAge>
+                <maxObjectSize type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>2146435072</MaximumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>Please specify a value between 1 and 2146435072.</ValidationMessage>
+                </maxObjectSize>
+            </cache>
         </general>
         <frontends>
             <frontend type="ArrayField">
@@ -336,7 +362,7 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
@@ -347,9 +373,9 @@
                 <bind type="CSVListField">
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
                 <bindOptions type="TextField">
                     <Required>N</Required>
@@ -417,10 +443,6 @@
                     <default>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256</default>
                     <Required>N</Required>
                 </ssl_cipherList>
-                <ssl_http2Enabled type="BooleanField">
-                    <default>0</default>
-                    <Required>N</Required>
-                </ssl_http2Enabled>
                 <ssl_hstsEnabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -641,6 +663,25 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
+                <http2Enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled>
+                <http2Enabled_nontls type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled_nontls>
+                <advertised_protocols type="OptionField">
+                    <Required>N</Required>
+                    <default>h2,http11</default>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <h2>HTTP/2</h2>
+                        <http11>HTTP/1.1</http11>
+                        <http10>HTTP/1.0</http10>
+                    </OptionValues>
+                </advertised_protocols>
                 <forwardFor type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -697,7 +738,7 @@
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
@@ -722,8 +763,16 @@
                         <static-rr>Static Round Robin</static-rr>
                         <leastconn>Least Connections</leastconn>
                         <uri>URI Hash (only HTTP mode)</uri>
+                        <random>Random Algorithm</random>
                     </OptionValues>
                 </algorithm>
+                <random_draws type="IntegerField">
+                    <Required>Y</Required>
+                    <default>2</default>
+                    <MinimumValue>2</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 2 and 1000.</ValidationMessage>
+                </random_draws>
                 <proxyProtocol type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
@@ -791,6 +840,25 @@
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
                     <Required>N</Required>
                 </healthCheckRise>
+                <http2Enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled>
+                <http2Enabled_nontls type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </http2Enabled_nontls>
+                <ba_advertised_protocols type="OptionField">
+                    <Required>N</Required>
+                    <default>h2,http11</default>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <h2>HTTP/2</h2>
+                        <http11>HTTP/1.1</http11>
+                        <http10>HTTP/1.0</http10>
+                    </OptionValues>
+                </ba_advertised_protocols>
                 <persistence type="OptionField">
                     <Required>N</Required>
                     <default>sticktable</default>
@@ -968,14 +1036,18 @@
                 </tuning_noport>
                 <tuning_httpreuse type="OptionField">
                     <Required>N</Required>
-                    <default>never</default>
+                    <default>safe</default>
                     <OptionValues>
-                        <never>Never [default]</never>
-                        <safe>Safe</safe>
+                        <never>Never</never>
+                        <safe>Safe [default]</safe>
                         <aggressive>Aggressive</aggressive>
                         <always>Always</always>
                     </OptionValues>
                 </tuning_httpreuse>
+                <tuning_caching type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </tuning_caching>
                 <linkedActions type="ModelRelationField">
                     <Model>
                         <template>
@@ -1013,7 +1085,7 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <mask>/^([0-9a-zA-Z._]){1,255}$/u</mask>
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </name>
@@ -1134,6 +1206,10 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </interval>
+                <force_ssl type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </force_ssl>
                 <checkport type="IntegerField">
                     <default></default>
                     <MinimumValue>1</MinimumValue>
@@ -1290,7 +1366,6 @@
                         <path_dir>Path contains subdir</path_dir>
                         <path_sub>Path contains string</path_sub>
                         <url_param>URL parameter contains</url_param>
-                        <ssl_fc>SSL/TLS connection established</ssl_fc>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
@@ -1317,12 +1392,14 @@
                         <src_sess_rate>Source IP: session rate</src_sess_rate>
                         <nbsrv>Minimum number of usable servers in backend</nbsrv>
                         <traffic_is_http>Traffic is HTTP</traffic_is_http>
-                        <traffic_is_ssl>Traffic is SSL</traffic_is_ssl>
-                        <ssl_sni>SNI TLS extension matches</ssl_sni>
-                        <ssl_sni_sub>SNI TLS extension contains</ssl_sni_sub>
-                        <ssl_sni_beg>SNI TLS extension starts with</ssl_sni_beg>
-                        <ssl_sni_end>SNI TLS extension ends with</ssl_sni_end>
-                        <ssl_sni_reg>SNI TLS extension regex</ssl_sni_reg>
+                        <traffic_is_ssl>Traffic is SSL (TCP request content inspection)</traffic_is_ssl>
+                        <ssl_fc>Traffic is SSL (locally deciphered)</ssl_fc>
+                        <ssl_fc_sni>SNI TLS extension matches (locally deciphered)</ssl_fc_sni>
+                        <ssl_sni>SNI TLS extension matches (TCP request content inspection)</ssl_sni>
+                        <ssl_sni_sub>SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
+                        <ssl_sni_beg>SNI TLS extension starts with (TCP request content inspection)</ssl_sni_beg>
+                        <ssl_sni_end>SNI TLS extension ends with (TCP request content inspection)</ssl_sni_end>
+                        <ssl_sni_reg>SNI TLS extension regex (TCP request content inspection)</ssl_sni_reg>
                         <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
                 </expression>
@@ -1620,6 +1697,10 @@
                     <ValidationMessage>Related backend item not found</ValidationMessage>
                     <Required>N</Required>
                 </nbsrv_backend>
+                <ssl_fc_sni type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </ssl_fc_sni>
                 <ssl_sni type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>

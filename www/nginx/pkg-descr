@@ -8,6 +8,29 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.17
+
+* allow to set worker_processes and worker_connections (contributed by ibanezbass in #1621)
+
+1.16
+
+* advanced buffering configuration in location (#1575)
+
+1.15
+
+* add OCSP stapling and verify
+* fix bug sendfile directive is only applied if TLS is enabled
+* allow to configure the maximum header and request line buffer size HTTP Server advanced option (Issue: 1544)
+
+1.14
+
+* add load balancer algorithm option (ip_hash)
+* fix URL flag not stored (contributed by jkellerer) [1]
+* allow to whitelist specific source IPs in the web application firewall (contributed by Julio Cesar Camargo) [2]
+
+[1] https://github.com/opnsense/plugins/pull/1375
+[2] https://github.com/opnsense/plugins/pull/1310
+
 1.13
 
 * add support for 0-RTT (Early Data in TLS 1.3)

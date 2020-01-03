@@ -56,6 +56,18 @@ POSSIBILITY OF SUCH DAMAGE.
                 if ($("#validation\\.method").val() == 'dns01') {
                     $("."+service_id).show();
                 }
+                // Show a warning if the Google Cloud SDK plugin is missing.
+                ajaxCall(url="/api/acmeclient/settings/getGcloudPluginStatus", sendData={}, callback=function(data,status) {
+                    if (data['result'] != 0) {
+                        $(".gcloud_plugin_warning").hide();
+                    }
+                });
+                // Show a warning if the BIND plugin is missing.
+                ajaxCall(url="/api/acmeclient/settings/getBindPluginStatus", sendData={}, callback=function(data,status) {
+                    if (data['result'] != 0) {
+                        $(".bind_plugin_warning").hide();
+                    }
+                });
             });
             $("#validation\\.http_service").change(function(){
                 var service_id = 'table_http_' + $(this).val();
@@ -72,6 +84,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#validation\\.http_service").change();
             });
             $("#validation\\.method").change();
+
         })
     });
 

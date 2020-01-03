@@ -1,5 +1,9 @@
 <form>
     <field>
+        <label>Certificate Options</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>certificate.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
@@ -23,8 +27,12 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure additional names that should be part pf the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>You need to forcefully re-issue the certificate if you change "Alt Names" after the certificate was signed by the Let's Encrypt Authority! Use the "issue" button in the Commands column in this case.</div>]]></help>
+        <help><![CDATA[Configure additional names that should be part of the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>You need to forcefully re-issue the certificate if you change "Alt Names" after the certificate was signed by the Let's Encrypt Authority! Use the "issue" button in the Commands column in this case.</div>]]></help>
         <hint>Enter FQDN here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <label>Let's Encrypt Settings</label>
+        <type>header</type>
     </field>
     <field>
         <id>certificate.account</id>
@@ -39,6 +47,22 @@
         <help><![CDATA[Set the Let's Encrypt validation method for this certificate.]]></help>
     </field>
     <field>
+        <id>certificate.autoRenewal</id>
+        <label>Auto Renewal</label>
+        <type>checkbox</type>
+        <help>Enable automatic renewal for this certificate to prevent expiration.</help>
+    </field>
+    <field>
+        <id>certificate.renewInterval</id>
+        <label>Renewal Interval</label>
+        <type>text</type>
+        <help><![CDATA[Specifies the days to renew the cert. The max value is 60 days.]]></help>
+    </field>
+    <field>
+        <label>Security Settings</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>certificate.keyLength</id>
         <label>Key Length</label>
         <type>dropdown</type>
@@ -51,6 +75,10 @@
         <help>Generate and add OCSP Must Staple extension to the certificate.</help>
     </field>
     <field>
+        <label>Advanced Settings</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>certificate.restartActions</id>
         <label>Automations</label>
         <type>select_multiple</type>
@@ -59,15 +87,31 @@
         <help>Choose the automations that should be run after certificate creation and renewal. Basically every application requires a quick restart to reload the updated certificate. If you don't configure an automation, the in-memory certificate may expire and cause security warnings and other issues.</help>
     </field>
     <field>
-        <id>certificate.autoRenewal</id>
-        <label>Auto Renewal</label>
-        <type>checkbox</type>
-        <help>Enable automatic renewal for this certificate to prevent expiration.</help>
+        <id>certificate.aliasmode</id>
+        <label>DNS Alias Mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[Configure DNS alias mode to validate the certificate.]]></help>
     </field>
     <field>
-        <id>certificate.renewInterval</id>
-        <label>Renewal Interval</label>
+        <label>DNS Alias Mode</label>
+        <type>header</type>
+        <style>aliasmode aliasmode_domain</style>
+    </field>
+    <field>
+        <id>certificate.domainalias</id>
+        <label>Domain Alias</label>
         <type>text</type>
-        <help><![CDATA[Specifies the days to renew the cert. The max value is 60 days.]]></help>
+        <help><![CDATA[When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+    </field>
+    <field>
+        <label>DNS Alias Mode</label>
+        <type>header</type>
+        <style>aliasmode aliasmode_challenge</style>
+    </field>
+    <field>
+        <id>certificate.challengealias</id>
+        <label>Challenge Alias</label>
+        <type>text</type>
+        <help><![CDATA[When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
     </field>
 </form>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -136,8 +137,11 @@ class ServiceController extends ApiControllerBase
             $runStatus = $this->statusAction();
 
             // stop acmeclient when disabled
-            if ($runStatus['status'] == "running" &&
-               ($mdlAcme->settings->enabled->__toString() == 0 || $force_restart)) {
+            if (
+                $runStatus['status'] == "running" &&
+                ($mdlAcme->settings->enabled->__toString() == 0 ||
+                $force_restart)
+            ) {
                 $this->stopAction();
             }
 

@@ -31,7 +31,6 @@
 
 require_once("guiconfig.inc");
 require_once("widgets/include/rfc2136.inc");
-require_once("services.inc");
 require_once("interfaces.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
@@ -150,7 +149,7 @@ if (!empty($_REQUEST['getrfc2136status'])) {
           jQuery(divlabel).prop('innerHTML',responseStrings[count]);
       }
   }
-  $(window).load(function() {
+  $(window).on("load", function() {
     // Do the first status check 2 seconds after the dashboard opens
     setTimeout('rfc2136_getstatus()', 2000);
   });

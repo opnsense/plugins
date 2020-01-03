@@ -1,0 +1,25 @@
+<model>
+    <mount>//OPNsense/freeradius/avpair</mount>
+    <description>FreeRADIUS AVPair configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <avpairs>
+            <avpair type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <operator type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([\-\+\~\=]){1,2}$/</mask>
+                </operator>
+                <value type="TextField">
+                    <Required>Y</Required>
+                </value>
+            </avpair>
+        </avpairs>
+    </items>
+</model>

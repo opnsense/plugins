@@ -1,7 +1,7 @@
 {#
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
-Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+Copyright (C) 2017 - 2019 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -32,10 +32,6 @@ POSSIBILITY OF SUCH DAMAGE.
     $( document ).ready(function() {
         updateServiceControlUI('freeradius');
 
-        /*************************************************************************************************************
-         * link grid actions
-         *************************************************************************************************************/
-
         $("#grid-users").UIBootgrid(
             {   'search':'/api/freeradius/user/searchUser',
                 'get':'/api/freeradius/user/getUser/',
@@ -43,6 +39,16 @@ POSSIBILITY OF SUCH DAMAGE.
                 'add':'/api/freeradius/user/addUser/',
                 'del':'/api/freeradius/user/delUser/',
                 'toggle':'/api/freeradius/user/toggleUser/'
+            }
+        );
+
+        $("#grid-avpairs").UIBootgrid(
+            {   'search':'/api/freeradius/avpair/searchAvpair',
+                'get':'/api/freeradius/avpair/getAvpair/',
+                'set':'/api/freeradius/avpair/setAvpair/',
+                'add':'/api/freeradius/avpair/addAvpair/',
+                'del':'/api/freeradius/avpair/delAvpair/',
+                'toggle':'/api/freeradius/avpair/toggleAvpair/'
             }
         );
 
@@ -103,10 +109,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#users">{{ lang._('Users') }}</a></li>
+    <li><a data-toggle="tab" href="#avpairs">{{ lang._('AVPair') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
     <div id="users" class="tab-pane fade in active">
-        <!-- tab page "users" -->
         <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSUser">
             <thead>
             <tr>
@@ -133,6 +139,31 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
+    <div id="avpairs" class="tab-pane fade in">
+        <table id="grid-avpairs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFreeRADIUSAvpair">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                <th data-column-id="operator" data-type="string" data-visible="false">{{ lang._('Operator') }}</th>
+                <th data-column-id="value" data-type="string" data-visible="true">{{ lang._('Value') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div class="col-md-12">
         <hr/>
         <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
@@ -141,3 +172,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSUser,'id':'dialogEditFreeRADIUSUser','label':lang._('Edit User')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditFreeRADIUSAvpair,'id':'dialogEditFreeRADIUSAvpair','label':lang._('Edit AVPair')])}}

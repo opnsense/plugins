@@ -65,24 +65,26 @@ def get_config(rule_update_config):
     return response
 
 
-class EventCollector(object):
+def telemetry_sids():
+    """ collect sids of interest, which are part of the ET-Telemetry delivery
+    :return: set
+    """
+    our_sids = set()
+    if os.path.isfile(RELATED_SIDS_FILE):
+        for line in open(RELATED_SIDS_FILE, 'r'):
+            if line.strip().isdigit():
+                our_sids.add(int(line.strip()))
+    return our_sids
+
+
+class EventCollector:
     """ Event collector, responsible for extracting and anonymising from an eve.json stream
     """
     def __init__(self):
         self._tmp_handle = tempfile.NamedTemporaryFile()
         self._local_networks = list()
-        self._our_sids = set()
+        self._our_sids = telemetry_sids()
         self._get_local_networks()
-        self._get_our_sids()
-
-    def _get_our_sids(self):
-        """ collect sids of interest, which are part of the ET-Telemetry delivery
-        :return: None
-        """
-        if os.path.isfile(RELATED_SIDS_FILE):
-            for line in open(RELATED_SIDS_FILE, 'r'):
-                if line.strip().isdigit():
-                    self._our_sids.add(int(line.strip()))
 
     def _is_rule_of_interest(self, record):
         """ check if rule is of interest for delivery
@@ -111,24 +113,22 @@ class EventCollector(object):
                         except netaddr.core.AddrFormatError:
                             pass
 
-        with tempfile.NamedTemporaryFile() as output_stream:
-            subprocess.call(['ifconfig', '-a'], stdout=output_stream, stderr=open(os.devnull, 'wb'))
-            output_stream.seek(0)
-            for line in output_stream:
-                if line.startswith(b'\tinet'):
-                    parts = line.split()
-                    if len(parts) > 3:
-                        if parts[0] == 'inet6' and parts[2] == 'prefixlen':
-                            # IPv6 addresses
-                            self._local_networks.append(
-                                netaddr.IPNetwork("%s/%s" % (parts[1].split('%')[0], parts[3]))
-                            )
-                        elif parts[0] == 'inet' and len(parts) > 3 and parts[2] == 'netmask':
-                            # IPv4 addresses
-                            mask = int(parts[3], 16)
-                            self._local_networks.append(
-                                netaddr.IPNetwork("%s/%s" % (netaddr.IPAddress(parts[1]), netaddr.IPAddress(mask)))
-                            )
+        sp = subprocess.run(['ifconfig', '-a'], capture_output=True, text=True)
+        for line in sp.stdout.split('\n'):
+            if line.startswith('\tinet'):
+                parts = line.split()
+                if len(parts) > 3:
+                    if parts[0] == 'inet6' and parts[2] == 'prefixlen':
+                        # IPv6 addresses
+                        self._local_networks.append(
+                            netaddr.IPNetwork("%s/%s" % (parts[1].split('%')[0], parts[3]))
+                        )
+                    elif parts[0] == 'inet' and len(parts) > 3 and parts[2] == 'netmask':
+                        # IPv4 addresses
+                        mask = int(parts[3], 16)
+                        self._local_networks.append(
+                            netaddr.IPNetwork("%s/%s" % (netaddr.IPAddress(parts[1]), netaddr.IPAddress(mask)))
+                        )
 
     def is_local_address(self, address):
         """ check if provided address is local for this device

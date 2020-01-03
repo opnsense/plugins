@@ -19,3 +19,5 @@ mx_check.conf:/usr/local/etc/rspamd/local.d/mx_check.conf
 ratelimit.conf:/usr/local/etc/rspamd/local.d/ratelimit.conf
 redis.conf:/usr/local/etc/rspamd/local.d/redis.conf
 spamtrap-map:/usr/local/etc/rspamd/maps.d/spamtrap.map
+classifier-bayes.conf:/usr/local/etc/rspamd/local.d/classifier-bayes.conf
+history_redis.conf:/usr/local/etc/rspamd/local.d/history_redis.conf

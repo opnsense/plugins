@@ -1,7 +1,0 @@
-<menu>
-   <Interfaces>
-      <Diagnostics>
-      <ARPScan VisibleName="ARP Scan" cssClass="fa fa-search fa-fw" url="/ui/arpscanner"/>
-      </Diagnostics>
-   </Interfaces>
-</menu>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  *

@@ -47,6 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
             toggle:'/api/acmeclient/certificates/toggle/',
             sign:'/api/acmeclient/certificates/sign/',
             revoke:'/api/acmeclient/certificates/revoke/',
+            removekey:'/api/acmeclient/certificates/removekey/',
         };
 
         var gridopt = {
@@ -59,9 +60,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 "commands": function (column, row) {
                     return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>";
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {
@@ -314,7 +316,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // sign cert
-            // TODO: this should block other sign/revoke actions
+            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-sign").on("click", function(e)
             {
                 if (gridParams['sign'] != undefined) {
@@ -336,7 +338,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // revoke cert
-            // TODO: this should block other sign/revoke actions
+            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-revoke").on("click", function(e)
             {
                 if (gridParams['revoke'] != undefined) {
@@ -355,7 +357,37 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
+            // remove private key
+            // TODO: this should block other acme.sh actions
+            grid_certificates.find(".command-removekey").on("click", function(e)
+            {
+                if (gridParams['removekey'] != undefined) {
+                    var uuid=$(this).data("row-id");
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('Really remove the private key?%s%sThe certificate will be completely reset. This is useful when the private key has been compromised or when you have changed the key options and want to regenerate the private key.%sNote that you have to revalidate the certificate afterwards in order to create a new private key and a matching certificate.') | format('<br/>', '<br/>', '<br/>') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['removekey'] + uuid,
+                            sendData={},callback=function(data,status){
+                                // reload grid after sign
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    }, 'danger');
+                } else {
+                    console.log("[grid] action removekey missing")
+                }
+            });
+
         });
+
+        // Hide options that are irrelevant in this context.
+        $('#DialogCertificate').on('shown.bs.modal', function (e) {
+            $("#certificate\\.aliasmode").change(function(){
+                $(".aliasmode").hide();
+                $(".aliasmode_"+$(this).val()).show();
+            });
+            $("#certificate\\.aliasmode").change();
+        })
+
 
         /***********************************************************************
          * Commands
@@ -363,7 +395,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         /**
          * Sign or renew ALL certificates
-         * TODO: this should block other sign/revoke actions
+         * TODO: this should block other acme.sh actions
          */
         $("#signallcertsAct").click(function(){
             //$("#signallcertsAct_progress").addClass("fa fa-spinner fa-pulse");

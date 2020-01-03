@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>avpair.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the AVPair.</help>
+    </field>
+    <field>
+        <id>avpair.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this AVPair</help>
+    </field>
+    <field>
+        <id>avpair.operator</id>
+        <label>Operator</label>
+        <type>text</type>
+        <help>Usual operators here are = or +=</help>
+    </field>
+    <field>
+        <id>avpair.value</id>
+        <label>Value</label>
+        <type>text</type>
+        <help>Set the value for this AVPair.</help>
+    </field>
+</form>

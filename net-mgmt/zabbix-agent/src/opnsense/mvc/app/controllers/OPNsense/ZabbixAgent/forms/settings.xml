@@ -55,6 +55,13 @@
             <help><![CDATA[Specifies the debug level for Zabbix agent.]]></help>
             <advanced>false</advanced>
         </field>
+        <field>
+            <id>zabbixagent.settings.main.sudoRoot</id>
+            <label>Enable sudo root permissions</label>
+            <type>checkbox</type>
+            <help><![CDATA[When enabled, a sudo rule is created to grant full root access to Zabbix Agent. This may be required for certain checks.]]></help>
+            <advanced>false</advanced>
+        </field>
     </tab>
     <tab id="zabbixagent-settings-tuning" description="Tuning Parameters">
         <field>
@@ -124,6 +131,24 @@
             <label>Log Remote Commands</label>
             <type>checkbox</type>
             <help><![CDATA[Enable logging of executed shell commands as warnings. Make sure to set the Debug Level accordingly.]]></help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.encryption</id>
+            <label>PSK based encryption</label>
+            <type>checkbox</type>
+            <help>Enable PSK based encryption for communicating with the Zabbix server</help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.encryptionidentity</id>
+            <label>PSK Identity</label>
+            <type>text</type>
+            <help>The PSK identity configured must match on agent and server</help>
+        </field>
+        <field>
+            <id>zabbixagent.settings.features.encryptionpsk</id>
+            <label>PSK</label>
+            <type>text</type>
+            <help>The PSK configured on the Zabbix server</help>
         </field>
     </tab>
 </form>

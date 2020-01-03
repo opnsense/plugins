@@ -6,6 +6,12 @@
         <help>This will activate the BIND daemon.</help>
     </field>
     <field>
+        <id>general.disablev6</id>
+        <label>Disable IPv6</label>
+        <type>checkbox</type>
+        <help>This will run BIND in IPv4-only mode.</help>
+    </field>
+    <field>
         <id>general.listenv4</id>
         <label>Listen IPs</label>
         <style>tokenize</style>
@@ -72,6 +78,13 @@
         <type>checkbox</type>
         <advanced>true</advanced>
         <help>This will hide the local BIND version in DNS queries.</help>
+    </field>
+    <field>
+        <id>general.disableprefetch</id>
+        <label>Disable Prefetching</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>This will disable prefetching of domains before they time out.</help>
     </field>
     <field>
         <id>general.enableratelimiting</id>

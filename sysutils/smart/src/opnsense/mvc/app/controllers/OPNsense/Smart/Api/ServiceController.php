@@ -70,7 +70,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("info", $type, "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("info", $type, "/dev/" . $device));
 
             return array("output" => $output);
         }
@@ -96,7 +96,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("log", $type, "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("log", $type, "/dev/" . $device));
 
             return array("output" => $output);
         }
@@ -122,7 +122,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("test", $type, "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("test", $type, "/dev/" . $device));
 
             return array("output" => $output);
         }
@@ -141,7 +141,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("abort", "/dev/".$device));
+            $output = $backend->configdpRun("smart", array("abort", "/dev/" . $device));
 
             return array("output" => $output);
         }

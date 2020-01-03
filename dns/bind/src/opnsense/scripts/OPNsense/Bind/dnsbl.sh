@@ -98,11 +98,25 @@ mwdomains() {
 	rm ${WORKDIR}/malwaredomains-raw
 }
 
-windowsspyblocker() {
-	# WindowsSpyBlocker
-	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblocker-raw
-	sed "/\.$/d" ${WORKDIR}/windowsspyblocker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblocker
-	rm ${WORKDIR}/windowsspyblocker-raw
+windowsspyblockerspy() {
+	# WindowsSpyBlocker (spy)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblockerspy-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerspy-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerspy
+	rm ${WORKDIR}/windowsspyblockerspy-raw
+}
+
+windowsspyblockerupdate() {
+	# WindowsSpyBlocker (update)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt -o ${WORKDIR}/windowsspyblockerupdate-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerupdate-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerupdate
+	rm ${WORKDIR}/windowsspyblockerupdate-raw
+}
+
+windowsspyblockerextra() {
+	# WindowsSpyBlocker (extra)
+	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt -o ${WORKDIR}/windowsspyblockerextra-raw
+	sed "/\.$/d" ${WORKDIR}/windowsspyblockerextra-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/windowsspyblockerextra
+	rm ${WORKDIR}/windowsspyblockerextra-raw
 }
 
 cameleon() {
@@ -182,13 +196,6 @@ hphosts-pup() {
         rm ${WORKDIR}/hphosts-pup-raw
 }
 
-hbbtv() {
-	# HBBTV List
-	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/hbbtv.txt -o ${WORKDIR}/hbbtv-raw
-	sed "/\.$/d" ${WORKDIR}/hbbtv-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/hbbtv
-	rm ${WORKDIR}/hbbtv-raw
-}
-
 simplead() {
 	# Simple Ad List
 	${FETCH} https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt -o ${WORKDIR}/simplead-raw
@@ -201,13 +208,6 @@ simpletrack() {
 	${FETCH} https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt -o ${WORKDIR}/simpletrack-raw
 	sed "/\.$/d" ${WORKDIR}/simpletrack-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/simpletrack
 	rm ${WORKDIR}/simpletrack-raw
-}
-
-zeusabuse() {
-	# Zeus Tracker List from abuse.ch
-	${FETCH} https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist -o ${WORKDIR}/zeusabuse-raw
-	sed "/\.$/d" ${WORKDIR}/zeusabuse-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/zeusabuse
-	rm ${WORKDIR}/zeusabuse-raw
 }
 
 install() {
@@ -269,9 +269,6 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	hup)
 		hphosts-pup
 		;;
-	ht)
-		hbbtv
-		;;
 	nc)
 		nocoin
 		;;
@@ -297,13 +294,16 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		simpletrack
 		;;
 	ws)
-		windowsspyblocker
+		windowsspyblockerspy
+		;;
+	wsu)
+		windowsspyblockerupdate
+		;;
+	wse)
+		windowsspyblockerextra
 		;;
 	yy)
 		yoyo
-		;;
-	za)
-		zeusabuse
 		;;
 	esac
 done

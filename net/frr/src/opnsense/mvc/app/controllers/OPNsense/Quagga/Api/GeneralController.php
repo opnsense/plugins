@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
@@ -48,7 +49,7 @@ class GeneralController extends ApiControllerBase
     }
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlGeneral = new General();
@@ -60,7 +61,7 @@ class GeneralController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["general.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["general." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save

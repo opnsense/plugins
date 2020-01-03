@@ -1,4 +1,5 @@
 <?php
+
 /*
 
     Copyright (C) 2018 Fabian Franz
@@ -180,7 +181,7 @@ class LogsController extends ApiControllerBase
      */
     private function vhost_exists($uuid)
     {
-        $data = $this->nginx->getNodeByReference('http_server.'. $uuid);
+        $data = $this->nginx->getNodeByReference('http_server.' . $uuid);
         return isset($data);
     }
 
@@ -190,7 +191,7 @@ class LogsController extends ApiControllerBase
      */
     private function stream_exists($uuid)
     {
-        $data = $this->nginx->getNodeByReference('stream_server.'. $uuid);
+        $data = $this->nginx->getNodeByReference('stream_server.' . $uuid);
         return isset($data);
     }
 

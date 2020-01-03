@@ -5,7 +5,7 @@ case "$1" in
     vtysh -d bgpd -c "show ip bgp"
     ;;
   summary)
-    vtysh -d bgpd -c "show ip bgp summary"
+    vtysh -d bgpd -c "show bgp summary"
     ;;
   neighbor)
     vtysh -d bgpd -c "show ip bgp neighbors $2"

@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?php
+
 /*
  * Copyright (C) 2018 Fabian Franz
  * All rights reserved.
@@ -27,6 +28,7 @@
  */
 
 require_once 'config.inc';
+
 use OPNsense\Nginx\Nginx;
 use OPNsense\Nginx\ErrorLogParser;
 use OPNsense\Nginx\AccessLogParser;
@@ -34,7 +36,6 @@ use OPNsense\Nginx\StreamAccessLogParser;
 
 $log_prefix = '/var/log/nginx/';
 $log_suffix = '.log';
-
 
 if ($_SERVER['argc'] != 3) {
     die('{"error": "Incorrect amount of parameters given"}');
@@ -58,7 +59,7 @@ if ($server == 'global') {
 switch ($mode) {
     case 'error':
     case 'access':
-        if ($data = $nginx->getNodeByReference('http_server.'. $server)) {
+        if ($data = $nginx->getNodeByReference('http_server.' . $server)) {
             $server_names = (string)$data->servername;
             if (empty($server_names)) {
                 die('{"error": "The server entry has no server name"}');
@@ -67,7 +68,7 @@ switch ($mode) {
             $log_file_name = $log_prefix . basename($server_names) . '.' . $mode . $log_suffix;
             // this entry has no log file, ignore it
             if (!file_exists($log_file_name)) {
-                continue;
+                break;
             }
             $logparser = null;
 
@@ -78,7 +79,7 @@ switch ($mode) {
             }
             // we cannot parse the file - something went wrong
             if ($logparser == null) {
-                continue;
+                break;
             }
             $lines = array_merge($lines, $logparser->get_result());
             if (empty($lines)) {
@@ -91,7 +92,7 @@ switch ($mode) {
         break;
     case 'streamerror':
     case 'streamaccess':
-        if ($data = $nginx->getNodeByReference('stream_server.'. $server)) {
+        if ($data = $nginx->getNodeByReference('stream_server.' . $server)) {
             $lines = [];
             $mode = str_replace('stream', '', $mode);
             $log_file_name = $log_prefix . 'stream_' . $server . '.' . $mode . $log_suffix;
@@ -108,7 +109,7 @@ switch ($mode) {
             }
             // we cannot parse the file - something went wrong
             if ($logparser == null) {
-                continue;
+                break;
             }
             $lines = array_merge($lines, $logparser->get_result());
             if (empty($lines)) {

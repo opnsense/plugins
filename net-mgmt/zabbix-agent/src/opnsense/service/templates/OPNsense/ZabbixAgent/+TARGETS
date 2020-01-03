@@ -1,2 +1,4 @@
 zabbix_agentd.conf:/usr/local/etc/zabbix_agentd.conf
 rc.conf.d:/etc/rc.conf.d/zabbix_agentd
+sudo_rules:/usr/local/etc/sudoers.d/opnsense_zabbix_agent
+zabbix_agent.psk:/usr/local/etc/zabbix_agent.psk

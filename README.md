@@ -32,35 +32,38 @@ A list of currently available plugins
 benchmarks/iperf -- Connection speed tester
 databases/redis -- Redis DB
 devel/debug -- Debugging Tools
+devel/grid_example -- A sample framework application
 devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
+dns/unbound-plus -- Unbound additions
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-cicada -- The cicada theme - grey/orange
+misc/theme-cicada -- The cicada theme - dark grey
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
+misc/theme-vicuna -- The vicuna theme - dark anthrazit
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
 net-mgmt/netdata -- Real-time performance monitoring
+net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
-net-mgmt/zabbix-agent -- Enterprise-class open source distributed monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
+net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
-net/arp-scan -- Get all peers connected to a local network
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
+net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
-net/l2tp -- L2TP server based on MPD5
+net/l2tp -- End of life, no replacement
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ntopng -- Traffic Analysis and Flow Collection
-net/pppoe -- PPPoE server based on MPD5
-net/pptp -- PPTP server based on MPD5
+net/pppoe -- End of life, no replacement
+net/pptp -- End of life, no replacement
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
@@ -81,6 +84,7 @@ security/softether -- Cross-platform Multi-protocol VPN Program
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
+sysutils/apuled -- PC Engine APU LED control
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
@@ -88,8 +92,10 @@ sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
+sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
+vendor/sunnyvalley -- Vendor repository for Sensei (Next Generation Firewall Extensions)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy

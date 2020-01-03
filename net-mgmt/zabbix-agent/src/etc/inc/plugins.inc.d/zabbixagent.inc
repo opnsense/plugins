@@ -81,6 +81,6 @@ function zabbixagent_xmlrpc_sync()
     $result = array();
     $result['id'] = 'zabbixagent';
     $result['section'] = 'OPNsense.zabbixagent.settings';
-    $result['description'] = gettext('Enterprise-class open source distributed monitoring agent');
+    $result['description'] = gettext('Zabbix monitoring agent');
     return array($result);
 }

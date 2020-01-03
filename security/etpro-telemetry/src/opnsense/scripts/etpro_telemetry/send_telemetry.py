@@ -86,6 +86,9 @@ if not telemetry_state.is_running():
                 # spread traffic to remote host, usual cron interval is 1 minute
                 if not args.direct:
                     time.sleep(random.randint(0, 60))
+                # the eventcollector loop sets exit_code when issues ocure, no data processed doesn't mean
+                # anything is wrong (it's just not of interest to Proofpoint).
+                exit_code = 0
                 for push_data in event_collector:
                     params = {
                         'timeout': 5,
@@ -106,7 +109,6 @@ if not telemetry_state.is_running():
                     else:
                         try:
                             ujson.loads(r.text)
-                            exit_code = 0
                         except ValueError:
                             syslog.syslog(syslog.LOG_ERR, 'telemetry unexpected response %s' % r.text[:256])
                             exit_code = -1

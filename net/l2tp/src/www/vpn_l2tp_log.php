@@ -22,5 +22,5 @@ if ($mode != 'raw') {
     require_once 'vpn_l2tp_log.inc';
 } else {
     $logfile = '/var/log/l2tps.log';
-    require_once 'diag_logs_template.inc';
+    require_once 'diag_logs_template_l2tp.inc';
 }

@@ -27,6 +27,11 @@
     <label>Next-Hop-Self</label>
     <type>checkbox</type>
   </field>
+  <field>
+    <id>neighbor.multihop</id>
+    <label>Multi-Hop</label>
+    <type>checkbox</type>
+  </field>
     <field>
     <id>neighbor.defaultoriginate</id>
     <label>Send Defaultroute</label>

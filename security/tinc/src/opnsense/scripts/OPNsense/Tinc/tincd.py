@@ -59,7 +59,7 @@ def read_config(config_filename):
     return result
 
 def deploy(config_filename):
-    interfaces = (subprocess.check_output(['/sbin/ifconfig','-l'])).decode().split()
+    interfaces = subprocess.run(['/sbin/ifconfig','-l'], capture_output=True, text=True).stdout.split()
     networks = read_config(config_filename)
     # remove previous configuration
     os.system('rm -rf /usr/local/etc/tinc')
@@ -80,6 +80,8 @@ def deploy(config_filename):
         # dump private key
         tmp = network.privkey()
         write_file(tmp['filename'], tmp['content'])
+        with open('/etc/resolv.conf') as fin:
+            write_file("%s/etc/resolv.conf" % network.get_basepath(), fin.read())
 
         # write tinc-up file
         if_up = list()
@@ -89,9 +91,10 @@ def deploy(config_filename):
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
-            tundev = subprocess.check_output(['/sbin/ifconfig',interface_type,'create']).decode().split()[0]
-            subprocess.call(['/sbin/ifconfig',tundev,'name',interface_name])
-            subprocess.call(['/sbin/ifconfig',interface_name,'group','tinc'])
+            tundev = subprocess.run(['/sbin/ifconfig', interface_type, 'create'],
+                                    capture_output=True, text=True).stdout.split()[0]
+            subprocess.run(['/sbin/ifconfig',tundev,'name',interface_name])
+            subprocess.run(['/sbin/ifconfig',interface_name,'group','tinc'])
             if os.path.islink('/dev/%s' % interface_name):
                 os.remove('/dev/%s' % interface_name)
             os.symlink('/dev/%s' % tundev, '/dev/%s' % interface_name)
@@ -100,7 +103,7 @@ def deploy(config_filename):
 if len(sys.argv) > 1:
     if sys.argv[1] == 'stop':
         for instance in glob.glob('/usr/local/etc/tinc/*'):
-            subprocess.call(['/usr/local/sbin/tincd','-n',instance.split('/')[-1], '-k'])
+            subprocess.run(['/usr/local/sbin/tincd','-n',instance.split('/')[-1], '-k'])
     elif sys.argv[1] == 'start':
         for netwrk in deploy('/usr/local/etc/tinc_deploy.xml'):
-            subprocess.call(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R', '-d', netwrk.get_debuglevel()])
+            subprocess.run(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R', '-d', netwrk.get_debuglevel()])

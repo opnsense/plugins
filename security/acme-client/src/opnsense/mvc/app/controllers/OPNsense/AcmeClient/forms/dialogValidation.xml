@@ -185,14 +185,37 @@
         <style>table_dns table_dns_cf</style>
     </field>
     <field>
+        <label>Global API Key</label>
+        <type>header</type>
+        <style>table_dns table_dns_cf</style>
+    </field>
+    <field>
         <id>validation.dns_cf_email</id>
-        <label>CF E-Mail</label>
+        <label>E-Mail</label>
         <type>text</type>
+        <help>Use your CF account with full privileges. This is less secure, a API token should be used instead (see below).</help>
     </field>
     <field>
         <id>validation.dns_cf_key</id>
-        <label>CF Key</label>
+        <label>Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Restricted API Token</label>
+        <type>header</type>
+        <style>table_dns table_dns_cf</style>
+    </field>
+    <field>
+        <id>validation.dns_cf_account_id</id>
+        <label>CF Account ID</label>
         <type>text</type>
+        <help>Can be found in the URI after logging into the Cloudflare dashboard.</help>
+    </field>
+    <field>
+        <id>validation.dns_cf_token</id>
+        <label>CF API Token</label>
+        <type>password</type>
+        <help>The token needs "Read" access to Zone.Zone and "Edit" access to Zone.DNS across all zones from an account.</help>
     </field>
     <field>
         <label>ClouDNS</label>
@@ -282,7 +305,17 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
-        <label>Domain-Offensive</label>
+        <label>Domain-Offensive LetsEncrypt</label>
+        <type>header</type>
+        <style>table_dns table_dns_doapi</style>
+    </field>
+    <field>
+        <id>validation.dns_doapi_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Domain-Offensive Resellerinterface</label>
         <type>header</type>
         <style>table_dns table_dns_do</style>
     </field>
@@ -390,6 +423,30 @@
         <id>validation.dns_gandi_livedns_key</id>
         <label>Key</label>
         <type>text</type>
+    </field>
+    <field>
+        <label>Google Cloud DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_gcloud</style>
+    </field>
+    <field>
+        <label><![CDATA[NOTE: First you must create a <a target="_blank" href="https://cloud.google.com/iam/docs/creating-managing-service-account-keys">service account key</a> using the GCP Console and enable the <a target="_blank" href="https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview">Cloud Resource Manager API</a>. Afterwards paste the full JSON key in the textbox below.]]></label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>validation.dns_gcloud_key</id>
+        <label>JSON Key</label>
+        <type>textbox</type>
+        <help>Provide a service account key in JSON format for your Google Cloud account.</help>
+    </field>
+    <field>
+        <label>Action required</label>
+        <type>header</type>
+        <style>table_dns table_dns_gcloud gcloud_plugin_warning</style>
+    </field>
+    <field>
+        <label><![CDATA[Please manually install the plugin "os-google-cloud-sdk" to enable support for Google Cloud DNS.]]></label>
+        <type>info</type>
     </field>
     <field>
         <label>GoDaddy</label>
@@ -557,6 +614,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>Loopia</label>
+        <type>header</type>
+        <style>table_dns table_dns_loopia</style>
+    </field>
+    <field>
+        <id>validation.dns_loopia_api</id>
+        <label>API Endpoint</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_loopia_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_loopia_password</id>
+        <label>Password</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>LuaDNS</label>
         <type>header</type>
         <style>table_dns table_dns_lua</style>
@@ -587,6 +664,50 @@
         <type>text</type>
     </field>
     <field>
+        <label>MailinaBox</label>
+        <type>header</type>
+        <style>table_dns table_dns_miab</style>
+    </field>
+    <field>
+        <id>validation.dns_miab_user</id>
+        <label>User</label>
+        <type>text</type>
+        <help>User with admin priviledges</help>
+    </field>
+    <field>
+        <id>validation.dns_miab_password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Password for admin user</help>
+    </field>
+    <field>
+        <id>validation.dns_miab_server</id>
+        <label>Server</label>
+        <type>text</type>
+        <help>MailinaBox Server FQDN</help>
+    </field>
+    <field>
+        <label>Namecheap</label>
+        <type>header</type>
+        <style>table_dns table_dns_namecheap</style>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_api</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_namecheap_sourceip</id>
+        <label>Source IP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Name.com</label>
         <type>header</type>
         <style>table_dns table_dns_namecom</style>
@@ -609,6 +730,26 @@
     <field>
         <id>validation.dns_namesilo_key</id>
         <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>netcup DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_netcup</style>
+    </field>
+    <field>
+        <id>validation.dns_netcup_cid</id>
+        <label>Customer number</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_netcup_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_netcup_pw</id>
+        <label>API Password</label>
         <type>text</type>
     </field>
     <field>
@@ -636,6 +777,46 @@
         <label>Secret Key</label>
         <type>textbox</type>
         <help>Requires the whole key file in a format that is compatible with nsupdate.</help>
+    </field>
+    <field>
+        <label>opnsense</label>
+        <type>header</type>
+        <style>table_dns table_dns_opnsense</style>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_host</id>
+        <label>OPNSense Server (FQDN)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_port</id>
+        <label>OPNSense Server Port</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_key</id>
+        <label>User API key </label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_token</id>
+        <label>User API token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_opnsense_insecure</id>
+        <label>Disable TLS Verification</label>
+        <type>checkbox</type>
+        <help>Uncheck this box if you have a valid certificate for your OPNsense interface.</help>
+    </field>
+    <field>
+        <label>Action required</label>
+        <type>header</type>
+        <style>table_dns table_dns_opnsense bind_plugin_warning</style>
+    </field>
+    <field>
+        <label><![CDATA[Please manually install the plugin "os-bind" to enable support for it.]]></label>
+        <type>info</type>
     </field>
     <field>
         <label>OVH</label>
@@ -746,6 +927,27 @@
         <type>text</type>
     </field>
     <field>
+        <label>Plesk XML API</label>
+        <type>header</type>
+        <style>table_dns table_dns_pleskxml</style>
+    </field>
+    <field>
+        <id>validation.dns_pleskxml_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_pleskxml_pass</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_pleskxml_uri</id>
+        <label>Plesk API URI</label>
+        <type>text</type>
+        <help>Plesk XML URIs often look similar to: https://my-plesk-site.com:8443/enterprise/control/agent.php</help>
+    </field>
+    <field>
         <label>Zilore</label>
         <type>header</type>
         <style>table_dns table_dns_zilore</style>
@@ -784,7 +986,7 @@
         <label>ACME DNS</label>
         <type>header</type>
         <style>table_dns table_dns_acmedns</style>
-	</field>
+    </field>
     <field>
         <id>validation.dns_acmedns_user</id>
         <label>User</label>
@@ -805,5 +1007,16 @@
         <label>Update URL</label>
         <type>text</type>
         <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
+    </field>
+    <field>
+        <label>Variomedia</label>
+        <type>header</type>
+        <style>table_dns table_dns_variomedia</style>
+    </field>
+    <field>
+        <id>validation.dns_variomedia_key</id>
+        <label>API Key</label>
+        <type>password</type>
+        <help>You need to obtain your API key from variomedia's customer support.</help>
     </field>
 </form>

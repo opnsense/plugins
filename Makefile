@@ -25,13 +25,13 @@
 
 PAGER?=		less
 
-PLUGIN_ABI=	19.1
+PLUGIN_ABI=	19.7
 
 all:
 	@cat ${.CURDIR}/README.md | ${PAGER}
 
 CATEGORIES=	benchmarks databases devel dns mail misc net-mgmt \
-		net security sysutils www
+		net security sysutils vendor www
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
@@ -92,4 +92,9 @@ mfc:
 license:
 	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
 
-.PHONY: license
+readme.md:
+	@MAKE=${MAKE} Scripts/update-list.sh
+
+sync: readme.md license
+
+.PHONY: license readme.md sync

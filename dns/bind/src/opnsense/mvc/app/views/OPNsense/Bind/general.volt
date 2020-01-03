@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
-    <li><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+    <li><a data-toggle="tab" href="#domains">{{ lang._('Zones') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -86,12 +86,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <div class="alert alert-warning" role="alert" style="min-height:65px;">
             <div style="margin-top: 8px;">{{ lang._('Zone management is still in experimental state, use with caution.') }}</div>
         </div>
-        <table id="grid-domains" class="table table-responsive" data-editDialog="dialogEditBindDomain">
+        <table id="grid-domains" class="table table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
-                    <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                    <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="ttl" data-type="string" data-visible="true">{{ lang._('TTL') }}</th>
                     <th data-column-id="refresh" data-type="string" data-visible="true">{{ lang._('Refresh') }}</th>
                     <th data-column-id="retry" data-type="string" data-visible="true">{{ lang._('Retry') }}</th>
@@ -113,12 +113,15 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <hr/>
+        <div class="col-md-12">
+            <h2>{{ lang._('Records') }}</h2>
+        </div>
         <div id="record-area">
-            <table id="grid-records" class="table table-responsive" data-editDialog="dialogEditBindRecord">
+            <table id="grid-records" class="table table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRecord">
                 <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                    <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="value" data-type="string" data-visible="true">{{ lang._('Value') }}</th>
@@ -139,6 +142,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </table>
         </div>
         <div class="col-md-12">
+            <div id="ChangeMessage" class="alert alert-info" style="display: none" role="alert">
+                {{ lang._('After changing settings, please remember to apply them with the button below') }}
+            </div>
             <hr />
             <button class="btn btn-primary" id="saveAct_domain" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_domain_progress"></i></button>
             <br /><br />
@@ -147,8 +153,8 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindDomain,'id':'dialogEditBindDomain','label':lang._('Edit Domains')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Records')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindDomain,'id':'dialogEditBindDomain','label':lang._('Edit Zone')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Record')])}}
 
 <script>
 $( document ).ready(function() {
@@ -262,5 +268,15 @@ $( document ).ready(function() {
             $("#saveAct_domain_progress").removeClass("fa fa-spinner fa-pulse");
         });
     });
+
+    // Hide options that are irrelevant in this context.
+    $('#dialogEditBindDomain').on('shown.bs.modal', function (e) {
+        $("#domain\\.type").change(function(){
+            $(".zone_type").hide();
+            $(".zone_type_"+$(this).val()).show();
+        });
+        $("#domain\\.type").change();
+    })
+
 });
 </script>
