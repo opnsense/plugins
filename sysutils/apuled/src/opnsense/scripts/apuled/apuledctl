@@ -35,20 +35,29 @@ if [ ! -e "$LED1" ];then
 fi
 
 check_wan(){
-# check internet connection
-# ping f.root-servers.net
 # LED2 - network notifications
-# XXX fix this IP?
-PING_CHECK=$(ping -t 3 -c 3 192.5.5.241 | grep "packet loss" | awk '{print $7}' | cut -d. -f1)
-# ok
-if [ "$PING_CHECK" -eq 0 ];then
-    echo "1" > $LED2
-# latency
-elif [ "$PING_CHECK" -gt 30 ] && [ "$PING_CHECK" -lt 100 ];then
+# Fetch from dpinger the list of gateways and the status of each one
+GWLIST=$(ls /var/run/dpinger* | grep sock)
+
+for GW in $GWLIST; do
+    GWSTATUS=$(nc -U $GW | awk '{print $4}')
+    # We're ONLINE
+    if [ "$GWSTATUS" -eq 0 ];then
+        echo "1" > $LED2
+    # Some losses - LATENCY
+    elif [ "$GWSTATUS" -gt 30 ] && [ "$GWSTATUS" -lt 100 ];then
+        LATENCY=1
+    # One of our Gateways is DOWN - ALARM
+    # Test if the GWs are OK. If just one of the GWs failed the test, the LED will show DOWN status
+    elif [ "$GWSTATUS" -eq 100 ];then
+        echo "f1" > $LED2
+        exit 0
+    fi
+done
+
+# In case of packets loss, I'll warn!
+if [ ! -z "$LATENCY" ];then
     echo "f3" > $LED2
-# link down
-elif [ "$PING_CHECK" -eq 100 ];then
-    echo "f1" > $LED2
 fi
 }
 
@@ -77,6 +86,6 @@ fi
 }
 
 # Main routine
-check_wan
 check_load
 check_disk
+check_wan

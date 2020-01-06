@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.12
+
+* Add checkbox to disable prefetch option
+
 1.11
 
 * Remove lame-server log flooding

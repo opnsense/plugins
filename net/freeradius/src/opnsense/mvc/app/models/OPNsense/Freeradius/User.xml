@@ -101,6 +101,17 @@
                         <Option19 value="19">19</Option19>
                     </OptionValues>
                 </servicetype>
+                <linkedAVPair type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Freeradius.Avpair</source>
+                            <items>avpairs.avpair</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                </linkedAVPair>
             </user>
         </users>
     </items>
