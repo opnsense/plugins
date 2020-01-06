@@ -94,7 +94,7 @@
   </field>
   <field>
     <id>httpserver.ca</id>
-    <label>CA Certificate</label>
+    <label>Client CA Certificate</label>
     <type>dropdown</type>
   </field>
   <field>

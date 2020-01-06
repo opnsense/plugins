@@ -9,6 +9,20 @@
             </field>
         </subtab>
         <subtab id="nginx-http-global" description="Global HTTP Settings">
+             <field>
+                <id>nginx.http.workerprocesses</id>
+                <label>Worker Processes</label>
+                <type>text</type>
+                <help>Set the number of worker processes to run.</help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.workerconnections</id>
+                <label>Worker Connections</label>
+                <type>text</type>
+                <help>Set the maximum connections of each worker.</help>
+                <advanced>true</advanced>
+            </field>
             <field>
                 <id>nginx.http.enabled</id>
                 <label>Enable sendfile</label>
