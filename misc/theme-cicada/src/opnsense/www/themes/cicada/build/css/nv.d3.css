@@ -266,29 +266,28 @@ svg.nvd3-svg {
   Box shadow and border radius styling
 */
 .nvtooltip.with-3d-shadow, .with-3d-shadow .nvtooltip {
-	background-color: rgb(60, 60, 60);
+	background-color: rgb(32, 32, 32);
 	color: rgba(0,0,0,1.0);
 	border: 1px solid rgb(255, 127, 14);
 }
 
-
 .nvd3 text {
-    font: normal 12px Arial, sans-serif;
+  font: normal 12px Arial, sans-serif;
 	fill:#FFF;
 }
 
 .nvd3 .title {
-    font: bold 14px Arial, sans-serif;
+  font: bold 14px Arial, sans-serif;
 }
 
 .nvd3 .nv-background {
-    fill: white;
-    fill-opacity: 0;
+  fill: white;
+  fill-opacity: 0;
 }
 
 .nvd3.nv-noData {
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 	fill:#fff;
 }
 

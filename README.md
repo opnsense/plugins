@@ -41,7 +41,7 @@ dns/rfc2136 -- RFC-2136 Support
 dns/unbound-plus -- Unbound additions
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-cicada -- The cicada theme - grey/orange
+misc/theme-cicada -- The cicada theme - dark grey
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 net-mgmt/collectd -- Collect system and application performance metrics periodically
