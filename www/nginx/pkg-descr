@@ -11,6 +11,7 @@ Plugin Changelog
 1.17
 
 * allow to set worker_processes and worker_connections (contributed by ibanezbass in #1621)
+* fix location access control handling (contributed by Szeraax)
 
 1.16
 
