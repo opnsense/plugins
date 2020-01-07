@@ -394,6 +394,7 @@
                         <dns_linode>Linode API</dns_linode>
                         <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
+                        <dns_miab>MailinaBox API</dns_miab>
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namecheap>Namecheap API</dns_namecheap>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
@@ -403,9 +404,11 @@
                         <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
+                        <dns_pleskxml>Plesk XML API</dns_pleskxml>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
+                        <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
@@ -461,6 +464,12 @@
                 <dns_cf_key type="TextField">
                     <Required>N</Required>
                 </dns_cf_key>
+                <dns_cf_token type="TextField">
+                    <Required>N</Required>
+                </dns_cf_token>
+                <dns_cf_account_id type="TextField">
+                    <Required>N</Required>
+                </dns_cf_account_id>
                 <dns_cloudns_auth_id type="TextField">
                     <Required>N</Required>
                 </dns_cloudns_auth_id>
@@ -690,6 +699,15 @@
                 <dns_lua_key type="TextField">
                     <Required>N</Required>
                 </dns_lua_key>
+                <dns_miab_user type="TextField">
+                    <Required>N</Required>
+                </dns_miab_user>
+                <dns_miab_password type="TextField">
+                    <Required>N</Required>
+                </dns_miab_password>
+                <dns_miab_server type="TextField">
+                    <Required>N</Required>
+                </dns_miab_server>
                 <dns_me_key type="TextField">
                     <Required>N</Required>
                 </dns_me_key>
@@ -763,6 +781,15 @@
                 <dns_ovh_endpoint type="TextField">
                     <Required>N</Required>
                 </dns_ovh_endpoint>
+                <dns_pleskxml_user type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_user>
+                <dns_pleskxml_pass type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_pass>
+                <dns_pleskxml_uri type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_uri>
                 <dns_pdns_url type="TextField">
                     <Required>N</Required>
                 </dns_pdns_url>
@@ -817,6 +844,9 @@
                 <dns_acmedns_updateurl type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_variomedia_key type="TextField">
+                   <Required>N</Required>
+                </dns_variomedia_key>
             </validation>
         </validations>
         <actions>
