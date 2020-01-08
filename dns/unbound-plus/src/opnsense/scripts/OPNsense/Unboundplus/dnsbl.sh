@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/usr/local/bin/bash
 
 # Copyright (c) 2018-2019 Michael Muenz <m.muenz@gmail.com>
 # Copyright (c) 2018 Franco Fichtner <franco@opnsense.org>
 # Copyright (c) 2019 Martin Wasley <martin@team-rebellion.net>
+# Copyright (c) 2020 Petr Kejval <petr.kejval6@gmail.com>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -27,8 +28,6 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-FETCH="/usr/bin/fetch -qT 5"
-
 DESTDIR="/var/unbound/etc"
 WORKDIRPREFIX="/tmp/unbounddnsbl."
 WORKDIR="${WORKDIRPREFIX}${$}"
@@ -37,17 +36,9 @@ rm -rf ${WORKDIRPREFIX}*
 mkdir -p ${WORKDIR}
 
 download_list() {
-	${FETCH} $1 -o ${WORKDIR}/raw.tmp
-	
-	if [ -s "/var/unbound/etc/whitelist.inc" ]; then
-		WHITE=$(cat ${DESTDIR}/whitelist.inc | tr ',' '|')
-	else 
-		WHITE=""
-	fi
+	/usr/bin/fetch -qT 5 $1 -o ${WORKDIR}/raw.tmp
 
-	cat ${WORKDIR}/raw.tmp | grep '^127.0\|^0.0.0.0' | awk '{print $2}' | ( [ -z "$WHITE" ] && cat || egrep -v "$WHITE" ) >> ${WORKDIR}/domains.inc
-	cat ${WORKDIR}/raw.tmp | grep '^[a-z]' | awk '{print $1}' | ( [ -z "$WHITE" ] && cat || egrep -v "$WHITE" ) >> ${WORKDIR}/domains.inc
-
+	cat ${WORKDIR}/raw.tmp | grep '^127.0\|^0.0.0.0\|^[a-z]' | awk '{ if ($2 == "") print $1; else print $2 }' >> ${WORKDIR}/domains.inc
 	rm ${WORKDIR}/raw.tmp
 }
 
@@ -55,11 +46,20 @@ install() {
 		rm ${DESTDIR}/dnsbl.conf
 		
 		if [ -s "/var/unbound/etc/dnsbl.inc" ] || [ -s "/var/unbound/etc/lists.inc" ]; then
-            # Join all files into one in Unbound format
-			echo "server:" >> ${DESTDIR}/dnsbl.conf
+			# Load whitelist
+			WHITE=""
+			if [ -s "/var/unbound/etc/whitelist.inc" ]; then
+				WHITE=$(cat ${DESTDIR}/whitelist.inc | tr ',' '|')
+			fi
+			
+			# Join all files into one in Unbound format
+			echo "server:" >> ${DESTDIR}/dnsbl.conf		
 			for DOMAIN in $(sort -u ${WORKDIR}/domains.inc); do
-				echo "local-data: \"${DOMAIN} A 0.0.0.0\"" >> ${DESTDIR}/dnsbl.conf
+				if [ -z $WHITE ] || [[ ! $DOMAIN  =~ $WHITE ]]; then
+        			echo "local-data: \"${DOMAIN} A 0.0.0.0\"" >> ${DESTDIR}/dnsbl.conf
+    			fi
 			done
+
 			chown unbound:unbound ${DESTDIR}/dnsbl.conf
         fi
 
