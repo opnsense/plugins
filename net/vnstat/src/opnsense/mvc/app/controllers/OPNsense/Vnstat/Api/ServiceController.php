@@ -68,17 +68,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     }
 
     /**
-     * list weekly statistics
-     * @return array
-     */
-    public function weeklyAction()
-    {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat weekly");
-        return array("response" => $response);
-    }
-
-    /**
      * list monthly statistics
      * @return array
      */
