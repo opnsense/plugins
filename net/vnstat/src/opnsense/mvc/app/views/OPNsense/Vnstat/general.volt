@@ -30,7 +30,6 @@
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#hourly">{{ lang._('Hourly Statistics') }}</a></li>
     <li><a data-toggle="tab" href="#daily">{{ lang._('Daily Statistics') }}</a></li>
-    <li><a data-toggle="tab" href="#weekly">{{ lang._('Weekly Statistics') }}</a></li>
     <li><a data-toggle="tab" href="#monthly">{{ lang._('Monthly Statistics') }}</a></li>
 </ul>
 
@@ -51,9 +50,6 @@
     <div id="daily" class="tab-pane fade in">
       <pre id="listdaily"></pre>
     </div>
-    <div id="weekly" class="tab-pane fade in">
-      <pre id="listweekly"></pre>
-    </div>
     <div id="monthly" class="tab-pane fade in">
       <pre id="listmonthly"></pre>
     </div>
@@ -70,11 +66,6 @@ function update_hourly() {
 function update_daily() {
     ajaxCall(url="/api/vnstat/service/daily", sendData={}, callback=function(data,status) {
         $("#listdaily").text(data['response']);
-    });
-}
-function update_weekly() {
-    ajaxCall(url="/api/vnstat/service/weekly", sendData={}, callback=function(data,status) {
-        $("#listweekly").text(data['response']);
     });
 }
 function update_monthly() {
@@ -95,7 +86,6 @@ $( document ).ready(function() {
     // Call function update_neighbor with a auto-refresh of 3 seconds
     setInterval(update_hourly, 3000);
     setInterval(update_daily, 3000);
-    setInterval(update_weekly, 3000);
     setInterval(update_monthly, 3000);
 
     $("#saveAct").click(function(){
