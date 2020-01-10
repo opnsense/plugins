@@ -9,6 +9,11 @@ ensures light use of system resources.
 Plugin Changelog
 ================
 
+1.2
+
+* Remove Weekly statistics, unsupported since vnStat v2
+* Reset of DB is required due to SQLite migration
+
 1.1
 
 * Add button to remove database
