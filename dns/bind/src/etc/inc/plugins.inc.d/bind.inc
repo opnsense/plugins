@@ -53,3 +53,12 @@ function bind_services()
 
     return $services;
 }
+
+function bind_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'bind';
+    $result['section'] = 'OPNsense.bind';
+    $result['description'] = gettext('BIND domain name service');
+    return array($result);
+}
