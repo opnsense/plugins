@@ -136,7 +136,10 @@ def LoadWhitelist():
     print(f"Loaded {len(wl)} whitelist items")
 
     if len(wl) > 0:
-        re_whitelist = re.compile('|'.join(wl))
+        try:
+            re_whitelist = re.compile('|'.join(wl))
+        except Exception as e:
+            print(f"Whitelist regex compile failed: {str(e)}")
 
 def LoadBlacklists():
     """ Loads user defined blacklists URLs. """
