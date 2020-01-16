@@ -30,7 +30,7 @@
 
 import re, urllib3, threading, subprocess
 
-re_pattern = re.compile(r'^127\.0\.0\.1\s|^0.0.0.0\s(.*)|^([a-z_.-]+$)', re.I)
+re_blacklist = re.compile(r'^127\.0\.0\.1\s|^0.0.0.0\s(.*)|^([a-z_.-]+$)', re.I)
 re_whitelist = re.compile(r'$^') # default - match nothing
 blacklist = set()
 urls = set()
@@ -63,23 +63,23 @@ predefined_lists = {
     "yy": "http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext"
 }
 
-def AddToBL(domain):
+def add_to_blacklist(domain):
     """ Checks if domain is present in whitelist. If not, domain is addded to BL set. """
     match = re_whitelist.match(domain)
     if not match:
         blacklist.add(domain)
 
-def Parse(line):
-    """ Check if line matches re_pattern. If so, tries add domain to BL set. """
+def parse_line(line):
+    """ Checks if line matches re_blacklist. If so, tries add domain to BL set. """
     global blacklist
-    match = re_pattern.match(line)
+    match = re_blacklist.match(line)
     if match:
         if match.group(1) != None:
-            AddToBL(match.group(1))
+            add_to_blacklist(match.group(1))
         elif match.group(2) != None:
-            AddToBL(match.group(2))
+            add_to_blacklist(match.group(2))
 
-def Process(url):
+def process_url(url):
     """ Reads and parses blacklisted domains from URL into BL set. """
     print(f"Processing BL items from: {url}") 
     
@@ -88,11 +88,11 @@ def Process(url):
         r = http.request('GET', url)
 
         for line in str(r.data).split('\\n'):
-            Parse(line)
+            parse_line(line)
     except Exception as e:
         print(str(e))
 
-def SaveConfigFile():
+def save_config_file():
     """ Saves blacklist in unbound.conf format """
     print(f"Saving {len(blacklist)} blacklisted domains into dnsbl.conf")
 
@@ -110,7 +110,7 @@ def SaveConfigFile():
         print(str(e))
         exit(1)
 
-def LoadList(path, separator=None):
+def load_list(path, separator=None):
     """ Reads file with specified path into set to ensure unique values. 
     Splits lines with defined separator. If sperator==None no split is performed. """
     result = set()
@@ -128,11 +128,11 @@ def LoadList(path, separator=None):
 
     return result
 
-def LoadWhitelist():
+def load_whitelist():
     """ Loads user defined whitelist in regex format and compiles it. """
     print("Loading whitelist")
     global re_whitelist
-    wl = LoadList('/var/unbound/etc/whitelist.inc', ',')
+    wl = load_list('/var/unbound/etc/whitelist.inc', ',')
     print(f"Loaded {len(wl)} whitelist items")
 
     if len(wl) > 0:
@@ -141,18 +141,18 @@ def LoadWhitelist():
         except Exception as e:
             print(f"Whitelist regex compile failed: {str(e)}")
 
-def LoadBlacklists():
+def load_blacklists():
     """ Loads user defined blacklists URLs. """
     print("Loading blacklists URLs")
     global urls
-    urls = LoadList('/var/unbound/etc/lists.inc', ',')
+    urls = load_list('/var/unbound/etc/lists.inc', ',')
     print(f"Loaded {len(urls)} blacklists URLs")
 
-def LoadPredefinedLists():
+def load_predefined_lists():
     """ Loads user chosen predefined lists """
     print("Loading predefined lists URLs")
     global urls
-    lists = LoadList('/var/unbound/etc/dnsbl.inc')
+    lists = load_list('/var/unbound/etc/dnsbl.inc')
     types = set()
 
     for first in lists:
@@ -175,18 +175,18 @@ def LoadPredefinedLists():
 
 if __name__ == "__main__":
     # Prepare lists from config files
-    LoadWhitelist()
-    LoadBlacklists()
-    LoadPredefinedLists()
+    load_whitelist()
+    load_blacklists()
+    load_predefined_lists()
 
     # Start processing BLs in threads
-    threads = [threading.Thread(target=Process, args=(url,)) for url in urls]
+    threads = [threading.Thread(target=process_url, args=(url,)) for url in urls]
     for t in threads:
         t.start()
     for t in threads:
         t.join()
     
-    SaveConfigFile()
+    save_config_file()
 
     print("Restarting unbound service")
     subprocess.Popen(["pluginctl", "-s", "unbound", "restart"])
