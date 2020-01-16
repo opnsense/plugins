@@ -30,7 +30,7 @@
 
 import re, urllib3, threading, subprocess
 
-re_blacklist = re.compile(r'^127\.0\.0\.1\s|^0.0.0.0\s(.*)|^([a-z_.-]+$)', re.I)
+re_blacklist = re.compile(r'^127\.0\.0\.1\s(.*)|^0\.0\.0\.0\s(.*)|^([a-z_.-]+$)', re.I)
 re_whitelist = re.compile(r'$^') # default - match nothing
 blacklist = set()
 urls = set()
