@@ -30,7 +30,7 @@
 
 import re, urllib3, threading, subprocess
 
-re_blacklist = re.compile(r'^127\.0\.0\.1\s(.*)|^0\.0\.0\.0\s(.*)|^([a-z_.-]+$)', re.I)
+re_blacklist = re.compile(r'(^127\.0\.0\.1\s|^0\.0\.0\.0\s)(.*)|^([a-z_.-]+$)', re.I)
 re_whitelist = re.compile(r'$^') # default - match nothing
 blacklist = set()
 urls = set()
@@ -74,10 +74,10 @@ def parse_line(line):
     global blacklist
     match = re_blacklist.match(line)
     if match:
-        if match.group(1) != None:
-            add_to_blacklist(match.group(1))
-        elif match.group(2) != None:
+        if match.group(2) != None:
             add_to_blacklist(match.group(2))
+        elif match.group(3) != None:
+            add_to_blacklist(match.group(3))
 
 def process_url(url):
     """ Reads and parses blacklisted domains from URL into BL set. """
