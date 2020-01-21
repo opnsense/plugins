@@ -176,7 +176,7 @@ class Mailer extends Base implements IBackupProvider
         $date     = date('Y-m-d');
         $hostname = gethostname();
 
-        PHPMailerAutoload(PHPMailer);
+        PHPMailerAutoload('PHPMailer');
         $mail = new \PHPMailer(true);
         $mail->IsHTML(false);
         $mail->IsSMTP();
