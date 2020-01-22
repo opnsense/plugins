@@ -29,6 +29,8 @@
         </listenport>
         <listenip type="NetworkField">
             <default></default>
+            <FieldSeparator>,</FieldSeparator>
+            <asList>Y</asList>
             <Required>N</Required>
         </listenip>
         <sourceip type="NetworkField">
