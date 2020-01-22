@@ -32,7 +32,9 @@
     <field>
         <id>general.listenip</id>
         <label>Listen IP</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>List of comma delimited IP addresses that the trapper should listen on. Trapper will listen on all network interfaces if this parameter is missing.</help>
     </field>
     <field>
