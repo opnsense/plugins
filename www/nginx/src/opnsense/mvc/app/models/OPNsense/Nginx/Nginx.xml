@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.17.0</version>
+  <version>1.17.1</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -626,7 +626,7 @@
         <Required>N</Required>
         <default>80</default>
       </listen_http_port>
-      <listen_https_port type="PortField">
+      <listen_https_port type="CSVListField">
         <Required>N</Required>
         <default>443</default>
       </listen_https_port>
