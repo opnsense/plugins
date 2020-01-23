@@ -2,13 +2,17 @@
   <field>
     <id>httpserver.listen_http_port</id>
     <label>HTTP Listen Port</label>
-    <type>text</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
     <help>Comma seperated list of ports for server to listen on (no spaces allowed).</help>
   </field>
   <field>
     <id>httpserver.listen_https_port</id>
     <label>HTTPS Listen Port</label>
-    <type>text</type>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
     <help>Comma seperated list of ports for server to listen on (no spaces allowed).</help>
   </field>
   <field>
