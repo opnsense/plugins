@@ -622,12 +622,14 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </syslog_targets>
-      <listen_http_port type="PortField">
+      <listen_http_port type="CSVListField">
         <Required>N</Required>
+        <mask>/^(\d+,?)+$/</mask>
         <default>80</default>
       </listen_http_port>
       <listen_https_port type="CSVListField">
         <Required>N</Required>
+        <mask>/^(\d+,?)+$/</mask>
         <default>443</default>
       </listen_https_port>
       <proxy_protocol type="BooleanField">
