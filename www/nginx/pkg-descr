@@ -8,6 +8,9 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.17.1
+
+* add support for multiple http and https listen ports (contributed by Szeraax)
 1.17
 
 * allow to set worker_processes and worker_connections (contributed by ibanezbass in #1621)
