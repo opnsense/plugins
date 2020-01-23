@@ -5,7 +5,7 @@
     <allownew>true</allownew>
     <style>tokenize</style>
     <type>select_multiple</type>
-    <help>Comma seperated list of ports for server to listen on (no spaces allowed).</help>
+    <help>List of http ports for server to listen on.</help>
   </field>
   <field>
     <id>httpserver.listen_https_port</id>
@@ -13,7 +13,7 @@
     <allownew>true</allownew>
     <style>tokenize</style>
     <type>select_multiple</type>
-    <help>Comma seperated list of ports for server to listen on (no spaces allowed).</help>
+    <help>List of https ports for server to listen on.</help>
   </field>
   <field>
     <id>httpserver.syslog_targets</id>
