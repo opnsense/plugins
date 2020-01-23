@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnsense-tayga
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=tayga
+
+stop_cmd=tayga_stop
+rcvar=tayga_enable
+
+load_rc_config opnsense-tayga
+pidfile=/var/run/${name}.pid
+command=/usr/local/sbin/${name}
+command_args="-p ${pidfile}"
+
+[ -z "$tayga_enable" ] && tayga_enable="NO"
+
+tayga_stop()
+{
+        if [ -n "$rc_pid" ]; then
+            echo "stopping tayga"
+            kill -2 ${rc_pid}
+            ifconfig nat64 destroy
+        else
+            echo "${name} is not running."
+        fi
+}
+
+run_rc_command $1

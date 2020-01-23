@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate Tayga.</help>
+    </field>
+    <field>
+        <id>general.v4address</id>
+        <label>IPv4 Address</label>
+        <type>text</type>
+        <help>This is not your routers IPv4 address. Tayga requires its own address because it acts as an IPv4 and IPv6 router, and needs to be able to send ICMP messages. This address can safely be located inside the dynamic-pool prefix.</help>
+    </field>
+    <field>
+        <id>general.v6address</id>
+        <label>IPv6 Address</label>
+        <type>text</type>
+        <help>This is not your routers IPv6 address. Tayga requires its own address because it acts as an IPv4 and IPv6 router, and needs to be able to send ICMP messages. Tayga will also respond to ICMP echo requests (ping6) at this address. You can leave it unspecified and Tayga will construct its IPv6 address using IPv4 address and the NAT64 prefix.</help>
+    </field>
+    <field>
+        <id>general.v6prefix</id>
+        <label>IPv6 Prefix</label>
+        <type>text</type>
+        <help>This must be a prefix selected from your organizations IPv6 address space or the Well-Known Prefix 64:ff9b::/96. The IPv4 address space is mapped into the IPv6 address space by prepending this prefix to the IPv4 address.</help>
+    </field>
+    <field>
+        <id>general.v4pool</id>
+        <label>IPv4 Pool</label>
+        <type>text</type>
+        <help>Dynamic pool prefix. IPv6 hosts which send traffic through Tayga will be assigned an IPv4 address from the dynamic pool.</help>
+    </field>
+</form>
