@@ -82,7 +82,7 @@
  *  CloudFlare          - Last Tested: 16 April 2019
  *  CloudFlare IPv6     - Last Tested: 16 April 2019
  *  Eurodns             - Last Tested: 25 July 2018
- *  GratisDNS           - Last Tested: 15 August 2012
+ *  GratisDNS           - Last Tested: 26 January 2020
  *  OVH DynHOST         - Last Tested: NEVER
  *  City Network        - Last Tested: 13 November 2013
  *  Duck DNS            - Last Tested: 04 March 2015
@@ -818,10 +818,10 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server . $port . '?hostname=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
                 break;
             case 'gratisdns':
-                $server = "https://ssl.gratisdns.dk/ddns.phtml";
+                $server = "https://admin.gratisdns.com/ddns.php";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 list($hostname, $domain) = explode(".", $this->_dnsHost, 2);
-                curl_setopt($ch, CURLOPT_URL, $server . '?u=' . urlencode($this->_dnsUser) . '&p=' . $this->_dnsPass . '&h=' . $this->_dnsHost . '&d=' . $domain);
+                curl_setopt($ch, CURLOPT_URL, $server . '?u=' . urlencode($this->_dnsUser) . '&p=' . $this->_dnsPass . '&h=' . $this->_dnsHost . '&d=' . $domain . '&i=' . $this->_dnsIP);
                 break;
             case 'ovh-dynhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
