@@ -48,6 +48,8 @@
  *  Linode v6                   - Last Tested: 25 February 2020
  *  Namecheap                   - Last Tested: 31 August 2010
  *  No-IP                       - Last Tested: 15 May 2020
+ *  NetCup DNS API              - Last Tested: 28 April 2021
+ *  NetCup DNS API v6           - Last Tested: 28 April 2021
  *  ODS                         - Last Tested: 02 August 2005
  *  Oray                        - Last Tested: 26 May 2017
  *  STRATO                      - Last Tested: 09 May 2017
@@ -91,6 +93,7 @@ class updatedns
     var $_dnsUpdateURL;
     var $_dnsZoneID;
     var $_dnsResourceID;
+    var $_dnsCustomerID;
     var $_dnsTTL;
     var $status;
     var $_debugID;
@@ -130,6 +133,7 @@ class updatedns
         $forceUpdate = false,
         $dnsZoneID = '',
         $dnsResourceID = '',
+        $dnsCustomerID = '',
         $dnsTTL = '',
         $dnsResultMatch = '',
         $dnsRequestIf = '',
@@ -171,6 +175,12 @@ class updatedns
                     $this->_error(4);
                 } elseif (!$dnsHost) {
                     $this->_error(5);
+                }
+                break;
+            case 'netcup':
+            case 'netcup-v6':
+                if (!$dnsCustomerID) {
+                    $this->_error(11);
                 }
                 break;
             case 'route53':
@@ -253,6 +263,7 @@ class updatedns
             case 'dynv6-v6':
             case 'he-net-v6':
             case 'godaddy-v6':
+            case 'netcup-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
@@ -275,6 +286,7 @@ class updatedns
         $this->_dnsMX = $dnsMX;
         $this->_dnsZoneID = $dnsZoneID;
         $this->_dnsResourceID = $dnsResourceID;
+        $this->_dnsCustomerID = $dnsCustomerID;
         $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
         $this->_checkIP();
@@ -346,6 +358,8 @@ class updatedns
                 case 'linode-v6':
                 case 'loopia':
                 case 'namecheap':
+                case 'netcup':
+                case 'netcup-v6':
                 case 'noip':
                 case 'noip-free':
                 case 'ods':
@@ -388,7 +402,7 @@ class updatedns
             log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
         }
 
-        if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
+        if ($this->_dnsService != 'ods' and $this->_dnsService != 'netcup' and $this->_dnsService != 'netcup-v6' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_USERAGENT, $this->_UserAgent);
@@ -617,6 +631,147 @@ class updatedns
                 $dnspass = trim($this->_dnsPass);
                 $server = "https://dynamicdns.park-your-domain.com/update?host={$hostname}&domain={$domain}&password={$dnspass}&ip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_URL, $server);
+                break;
+            case 'netcup':
+            case 'netcup-v6':
+                 /*/ Setting Variables /*/
+                $ApiUrl='https://ccp.netcup.net/run/webservice/servers/endpoint.php?JSON';
+                $newip = $this->_dnsIP;
+                $recordType = ($this->_useIPv6) ? "AAAA" : "A";
+                list($hostname, $domain) = explode(".", $this->_dnsHost, 2);
+                $apidata = array();
+                $api = curl_init($ApiUrl);
+                curl_setopt($api, CURLOPT_INTERFACE, $this->_dnsRequestIfIP);
+                curl_setopt($api, CURLOPT_TIMEOUT, 15);
+                curl_setopt($api, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($api, CURLOPT_HEADER, false);
+                curl_setopt($api, CURLOPT_USERAGENT, $this->_UserAgent);
+                curl_setopt($api, CURLOPT_CUSTOMREQUEST, 'POST');
+                curl_setopt($api, CURLOPT_HTTPHEADER, array(
+                    'Accept: application/json',
+                    'Content-Type: application/json'
+                ));
+
+                 /*/ define function to get API response with handling of curl/api errors /*/
+                $getResponse = function($curl, string $jsonpayload, array &$result) : bool {
+                    /*
+                        returns true if response is a success, otherwise false
+                        dumps data in array $result (passed by reference!)
+                         $curl          - curl ressource id from curl_init()
+                         $jsonpayload   - JSON-formatted API call
+                         $result       - array("code" => $statuscode,
+                                               "status" => $statustext,
+                                               "data" => $responsedata)
+                    */
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonpayload);
+                    $output = curl_exec($curl);
+                     // check and report any low-level errors
+                    if ($err = curl_errno($curl)) {
+                        $result["code"] = $err;
+                        $result["status"] = curl_strerror($err);
+                        $result["data"] = $output;
+                         // if verbose logging is requested log all additional information
+                        if ($this->_dnsVerboseLog) {
+                            log_error("{$this->_dnsServiceList[$this->_dnsService]} reports cURL error ({$result["code"]}):\n {$result["status"]}");
+                            $this->_debug("curl http info: " . print_r(curl_getinfo($curl),true));
+                            $this->_debug("curl received data: ({$result["data"]})");
+                        }
+                        return false;
+                    }
+                     // check for expected JSON format and extract data
+                    if ($result["data"] = json_decode($output)) {
+                        $result["code"] = $result["data"]->statuscode;
+                        $result["status"] = $this->_dnsVerboseLog ? $result["data"]->longmessage : $result["data"]->shortmessage;
+                         // catch error state if API call fails
+                        if ($result["data"]->status != 'success') {
+                             // if verbose logging is requested log all additional information
+                            if ($this->_dnsVerboseLog) {
+                                log_error("{$this->_dnsServiceList[$this->_dnsService]} return code ({$result["code"]}): %{$result["status"]}");
+                                $this->_debug("request dump:" . preg_replace('/password[":]+\K[^"]+/i','**********MASKED***APIPASSWORD**********',$jsonpayload));
+                                $this->_debug("api response: {$result["data"]}");
+                            }
+                        }
+                         // API call should be a success here
+                        else {
+                            $result["data"] = $result["data"]->responsedata;
+                            return true;
+                        }
+                    }
+                     // report false as fallback for any other states/errors
+                    return false;
+                };
+
+                 /*/ create Netcup DNS API Credentials object /*/
+                $param = new stdClass();
+                $param->clientrequestid = $this->_debugID;
+                $param->apikey = $this->_dnsUser;
+                $param->apipassword = $this->_dnsPass;
+                 // API strictly requires integer for all IDs!
+                $param->customernumber = (int)$this->_dnsCustomerID;
+
+                 /*/ authenticate to Netcup DNS API /*/
+                $payload = json_encode((object)array('action'=>'login','param'=>$param));
+                if ($getResponse($api,$payload,$apidata)) {
+                     // replace apipassword with apisession and set domainname for all following requests
+                    $param->apisessionid = $apidata["data"]->apisessionid;
+                    unset($param->apipassword);
+                    $param->domainname = $domain;
+                }
+
+                 /*/ get dns records and identify resource id /*/
+                if (isset($param->apisessionid)) {
+                    $payload = json_encode((object)array('action'=>'infoDnsRecords','param'=>$param));
+                    if ($getResponse($api,$payload,$apidata)) {
+                         // search dns zone for matching hostname and recordType
+                        foreach ($apidata["data"]->dnsrecords as $key => $dnsrecord) {
+                            if ((strtolower($hostname) == strtolower($dnsrecord->hostname)) and ($recordType == $dnsrecord->type)) {
+                                $newdnsrecord = $dnsrecord;
+                                break;
+                            }
+                        }
+                    }
+
+                 /*/ update with new dnsrecordset /*/
+                    if (isset($newdnsrecord) && $newdnsrecord->destination == $newip) {
+                        log_error("Dynamic DNS ({$this->_dnsHost}): existing dns record({$newdnsrecord->id}) ({$newdnsrecord->destination}) equals current ({$newip}), zone update rejected.\n");
+                    }
+                    else {
+                        if(isset($newdnsrecord)) {
+                             // copy dnsrecord id (integer type!) from existing dns resource entry to update
+                            $dnsrecord_id = (int)$newdnsrecord->id;
+                            log_error("Dynamic DNS ({$this->_dnsHost}): existing dns record({$newdnsrecord->id}) will get updated with ({$newip}).\n");
+                        }
+                        else {
+                             // leave id emtpy to create a new dns entry
+                            $dnsrecord_id = "";
+                            log_error("Dynamic DNS ({$this->_dnsHost}): creating new dns ({$recordType}) record ({$hostname}) with ip ({$newip}).\n");
+                        }
+                         // prepare JSON update payload as required by API
+                        $param->dnsrecordset = new stdClass();
+                        $param->dnsrecordset->dnsrecords = array(
+                            array(
+                                'id' => $dnsrecord_id,
+                                'hostname' => $hostname,
+                                'type' => $recordType,
+                                'destination' => $newip
+                            )
+                        );
+                         // send update request to API and log
+                        $payload = json_encode((object)array('action'=>'updateDnsRecords','param'=>$param));
+                         // if verbose logging is requested log all additional information
+                        if ($getResponse($api,$payload,$apidata) && $this->_dnsVerboseLog) {
+                            log_error("{$this->_dnsServiceList[$this->_dnsService]} return code ({$apidata["code"]}): %{$apidata["status"]}");
+                        }
+                        unset($param->dnsrecordset);
+                    }
+                }
+                 // report dns update result
+                $this->_checkStatus(0, $apidata);
+
+                 /*/ logout and invalidate Netcup DNS API session /*/
+                $payload = json_encode((object)array('action'=>'logout','param'=>$param));
+                $getResponse($api,$payload,$apidata);
+                @curl_close($api);
                 break;
             case 'he-net':
             case 'he-net-v6':
@@ -1502,6 +1657,16 @@ class updatedns
                     $this->_debug($data);
                 }
                 break;
+            case 'netcup':
+            case 'netcup-v6':
+                if ($data["code"] >= 2000 && $data["code"] < 3000) {
+                    $successful_update = true;
+                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS record update successful.";
+                }
+                else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) ({$data["code"]}){$data["status"]}";
+                }
+                break;
             case 'route53':
             case 'route53-v6':
                 $successful_update = true;
@@ -1862,6 +2027,10 @@ class updatedns
                 break;
             case 10:
                 $error = "Dynamic DNS ({$this->_dnsHost}): No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
+                break;
+            case 11:
+                $error = "Netcup DNS API: (Error) No customer ID provided";
+                // $error = "Dynamic DNS: (ERROR!) Mandatory configuration options are missing in update profile.";
                 break;
             default:
                 $error = "Dynamic DNS: (ERROR!) Unknown Response.";
