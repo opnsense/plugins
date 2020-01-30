@@ -646,7 +646,7 @@
             <items>aliases.alias</items>
             <display>name</display>
             <filters>
-              <type>/^(host|network)$/</type>
+              <type>/^(host|network|url|urltable)$/</type>
             </filters>
           </template>
         </Model>
