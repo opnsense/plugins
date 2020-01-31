@@ -40,7 +40,7 @@ class WhitelistController extends ApiMutableModelControllerBase
 
     public function searchWhitelistAction()
     {
-        return $this->searchBase('whitelists.whitelist', array("enabled", "name"));
+        return $this->searchBase('whitelists.whitelist', array("enabled", "name", "comment"));
     }
     public function getWhitelistAction($uuid = null)
     {
