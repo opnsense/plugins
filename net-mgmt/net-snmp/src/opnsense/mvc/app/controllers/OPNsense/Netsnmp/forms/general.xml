@@ -30,10 +30,10 @@
         <help>Make this device visible as Layer 3 enabled.</help>
     </field>
     <field>
-        <id>general.sysdesc</id>
-        <label>Manipulate SysDesc</label>
+        <id>general.versionoid</id>
+        <label>Display Verion in OID</label>
         <type>checkbox</type>
-        <help>If enabled the SysDesc value will output the installed OPNsense version.</help>
+        <help>This let you fetch the current installed version via NET-SNMP-EXTEND-MIB::nsExtendOutput1Line."version"</help>
     </field>
     <field>
         <id>general.listen</id>
