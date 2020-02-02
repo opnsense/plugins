@@ -13,4 +13,4 @@ Plugin Changelog
 
 1.4
 
-* Allow to set the OPNsense version as SysDesc
+* Include installed version number in extended OID
