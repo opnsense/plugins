@@ -23,13 +23,10 @@
             <default>0</default>
             <Required>Y</Required>
         </l3visibility>        
-        <sysdesc type="BooleanField">
+        <versionoid type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
-        </sysdesc>
-        <opnsenseversion type="TextField">
-            <Required>N</Required>
-        </opnsenseversion>
+        </versionoid>
         <listen type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
