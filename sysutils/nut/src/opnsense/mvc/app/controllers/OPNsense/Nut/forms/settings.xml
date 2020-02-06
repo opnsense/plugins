@@ -76,6 +76,22 @@
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-bcmxcpusb" description="BCMXCPUSB-Driver">
+            <field>
+                <id>nut.bcmxcpusb.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the PowerWare BCMXCPUSB driver.</help>
+            </field>
+            <field>
+                <id>nut.bcmxcpusb.args</id>
+                <label>Extra Arguments</label>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
         <subtab id="nut-ups-blazerusb" description="BlazerUSB-Driver">
             <field>
                 <id>nut.blazerusb.enable</id>
