@@ -47,6 +47,7 @@ misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - dark anthrazit
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
+net-mgmt/munin -- Munin monitoring node
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
 net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/nrpe -- Execute nagios plugins
