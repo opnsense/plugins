@@ -22,7 +22,7 @@
         <l3visibility type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
-        </l3visibility>        
+        </l3visibility>
         <versionoid type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
