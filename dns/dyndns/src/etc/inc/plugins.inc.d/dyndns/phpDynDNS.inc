@@ -1490,15 +1490,15 @@ class updatedns
             case 'azurev6':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 if ($http_code == 401) {
-                    $status = $status_intro . '(Error) User Authorization Failed';
+                    $status = 'Dynamic DNS: (Error) User Authorization Failed';
                 } else if ($http_code == 201) {
-                    $status = $status_intro . '(Success) IP Address Changed Successfully!';
+                    $status = 'Dynamic DNS: (Success) IP Address Changed Successfully!';
                     $successful_update = true;
                 } else if ($http_code == 200) {
-                    $status = $status_intro . '(Success) IP Address Changed Successfully!';
+                    $status = 'Dynamic DNS: (Success) IP Address Changed Successfully!';
                     $successful_update = true;
                 } else {
-                    $status = $status_intro . '(Error)" Unknown Response"';
+                    $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
                     $this->_debug($data);
                 }
