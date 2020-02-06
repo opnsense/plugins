@@ -659,6 +659,7 @@
           <X-Real-IP>X-Real-IP (default)</X-Real-IP>
           <X-Forwarded-For>X-Forwarded-For</X-Forwarded-For>
           <proxy_protocol>PROXY Protocol</proxy_protocol>
+          <CF-Connecting-IP>CloudFlare Connecting IP</CF-Connecting-IP>
         </OptionValues>
         <Required>N</Required>
       </real_ip_source>
