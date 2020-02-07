@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-forwards" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyForward">
             <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-width="8em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
                     <th data-column-id="dnsserver" data-type="string" data-visible="true">{{ lang._('DNS Server') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
@@ -79,7 +79,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-cloaks" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyCloak">
             <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-width="8em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="destination" data-type="string" data-visible="true">{{ lang._('Destination') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
@@ -107,7 +107,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-whitelists" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyWhitelist">
             <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-width="8em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
@@ -134,7 +134,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-servers" class="table table-responsive" data-editDialog="dialogEditDnscryptproxyServer">
             <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-width="8em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="stamp" data-type="string" data-visible="true">{{ lang._('SDNS Stamp') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
