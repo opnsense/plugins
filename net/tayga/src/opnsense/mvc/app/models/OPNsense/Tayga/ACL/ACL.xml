@@ -1,0 +1,9 @@
+<acl>
+    <page-tayga-config>
+        <name>Services: Tayga configuration</name>
+        <patterns>
+            <pattern>ui/tayga/*</pattern>
+            <pattern>api/tayga/*</pattern>
+        </patterns>
+    </page-tayga-config>
+</acl>
