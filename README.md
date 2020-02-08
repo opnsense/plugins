@@ -67,6 +67,7 @@ net/pptp -- End of life, no replacement
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
+net/tayga -- Tayga IPv6 64NAT
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- vnStat is a console-based network traffic monitor
 net/wireguard -- WireGuard VPN service

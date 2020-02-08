@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+      <Tayga cssClass="fa fa-exchange" url="/ui/tayga/general/index" />
+    </Services>
+</menu>
