@@ -1,0 +1,2 @@
+munin_node:/etc/rc.conf.d/munin_node
+munin-node.conf:/usr/local/etc/munin/munin-node.conf
