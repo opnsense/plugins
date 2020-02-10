@@ -37,6 +37,9 @@
                 <yy>YoYo List</yy>
             </OptionValues>
         </type>
+        <lists type="CSVListField">
+            <Required>N</Required>
+        </lists>
         <whitelists type="CSVListField">
             <Required>N</Required>
         </whitelists>
