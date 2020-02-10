@@ -12,7 +12,6 @@ Plugin Changelog
 
 * Add proxy header for CloudFlare
 
-
 1.17
 
 * allow to set worker_processes and worker_connections (contributed by ibanezbass in #1621)
