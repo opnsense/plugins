@@ -25,6 +25,6 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>List of domains to whitelist. You can use regex expressions.</help>
+        <help>List of domains to whitelist. You can use regular expressions.</help>
     </field>
 </form>

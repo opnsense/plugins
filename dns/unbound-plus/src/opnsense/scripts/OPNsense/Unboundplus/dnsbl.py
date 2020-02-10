@@ -81,8 +81,8 @@ def parse_line(line):
 
 def process_url(url):
     """ Reads and parses blacklisted domains from URL into BL set. """
-    print(f"Processing BL items from: {url}") 
-    
+    print(f"Processing BL items from: {url}")
+
     try:
         http = urllib3.PoolManager()
         r = http.request('GET', url)
@@ -111,10 +111,10 @@ def save_config_file():
         exit(1)
 
 def load_list(path, separator=None):
-    """ Reads file with specified path into set to ensure unique values. 
+    """ Reads file with specified path into set to ensure unique values.
     Splits lines with defined separator. If sperator==None no split is performed. """
     result = set()
-    
+
     try:
         with open(path, 'r') as file:
             for line in file.readlines():
@@ -162,7 +162,7 @@ def load_predefined_lists():
         for type in first:
             types.add(type)
         break
-    
+
     print(f"Loaded {len(types)} predefined blacklists URLs")
 
     for type in types:
@@ -185,7 +185,7 @@ if __name__ == "__main__":
         t.start()
     for t in threads:
         t.join()
-    
+
     save_config_file()
 
     print("Restarting unbound service")
