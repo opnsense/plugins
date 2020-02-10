@@ -6,3 +6,11 @@ Net-SNMP is a suite of applications used to implement
 SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6.
 
 WWW: http://www.net-snmp.org
+
+
+Plugin Changelog
+----------------
+
+1.4
+
+* Include installed version number in extended OID
