@@ -11,4 +11,10 @@
         <type>text</type>
         <help>Set the domain, IP or expression to whitelist, e.g. ads.* or *.example.com</help>
     </field>
+    <field>
+        <id>whitelist.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional comment field</help>
+    </field>
 </form>
