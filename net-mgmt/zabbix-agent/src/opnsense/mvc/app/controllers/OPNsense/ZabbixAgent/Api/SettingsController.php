@@ -28,6 +28,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\ZabbixAgent\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;

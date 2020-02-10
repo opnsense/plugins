@@ -28,6 +28,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\Zerotier;
 
 use OPNsense\Base\BaseModel;

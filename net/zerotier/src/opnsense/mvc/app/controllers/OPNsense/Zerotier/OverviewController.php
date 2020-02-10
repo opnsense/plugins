@@ -28,6 +28,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\Zerotier;
 
 require_once 'plugins.inc.d/zerotier.inc';

@@ -503,7 +503,7 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
         $files = preg_split('/[,;\s]+/', $options["files"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
         foreach ($files as $file) {
             $uploader->addFile($file, "", $chmod, $chgrp);
-        };
+        }
 
         if (empty($uploader->pending())) {
             Utils::log()->error("Didn't files to upload (files: " . join(", ", $files) . ").");

@@ -28,6 +28,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\AcmeClient\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;

@@ -27,6 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\Tinc\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;

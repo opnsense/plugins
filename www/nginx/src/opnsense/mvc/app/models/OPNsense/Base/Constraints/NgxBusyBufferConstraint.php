@@ -1,4 +1,5 @@
 <?php
+
 /*
 * Copyright (C) 2019 Fabian Franz
 * All rights reserved.
@@ -27,7 +28,6 @@
 
 namespace OPNsense\Base\Constraints;
 
-
 use \Phalcon\Validation\Message;
 
 /**
@@ -49,7 +49,7 @@ class NgxBusyBufferConstraint extends BaseConstraint
                 $proxy_buffers_size_node = $parentNode->proxy_buffers_size;
                 $proxy_busy_buffers_size_node = $parentNode->proxy_busy_buffers_size;
 
-                if(!$this->isEmpty($proxy_buffers_count_node) && !$this->isEmpty($proxy_buffers_size_node)) {
+                if (!$this->isEmpty($proxy_buffers_count_node) && !$this->isEmpty($proxy_buffers_size_node)) {
                     $proxy_buffers_count_int = intval((string) $proxy_buffers_count_node);
                     $proxy_buffers_size_int = intval((string) $proxy_buffers_size_node);
 
@@ -64,30 +64,39 @@ class NgxBusyBufferConstraint extends BaseConstraint
                     $proxy_buffer_size_int = intval((string) $proxy_buffer_size_node);
                 }
 
-                if (isset($proxy_buffers_total_minus1_size) && isset($proxy_busy_buffers_size) &&
-                    $proxy_buffers_total_minus1_size < $proxy_busy_buffers_size) {
+                if (
+                    isset($proxy_buffers_total_minus1_size) && isset($proxy_busy_buffers_size) &&
+                    $proxy_buffers_total_minus1_size < $proxy_busy_buffers_size
+                ) {
                     $validator->appendMessage(new Message(
                         gettext("Proxy Buffer Size must be less than the size of all Proxy Buffers minus one buffer."),
                         $attribute,
-                        $this->getOption('name')));
+                        $this->getOption('name')
+                    ));
                 }
 
                 // nginx: [emerg] "proxy_busy_buffers_size" must be equal to or greater than the maximum of the value of "proxy_buffer_size" and one of the "proxy_buffers"
-                if (isset($proxy_busy_buffers_size) && isset($proxy_buffers_size_int) &&
-                    $proxy_busy_buffers_size < $proxy_buffers_size_int) {
+                if (
+                    isset($proxy_busy_buffers_size) && isset($proxy_buffers_size_int) &&
+                    $proxy_busy_buffers_size < $proxy_buffers_size_int
+                ) {
                     $validator->appendMessage(new Message(
                         gettext("Proxy Busy Buffers Size must be equal to or greater than the maximum of one of the Proxy Buffers."),
                         $attribute,
-                        $this->getOption('name')));
+                        $this->getOption('name')
+                    ));
                 }
 
                 // nginx: [emerg] "proxy_busy_buffers_size" must be equal to or greater than the maximum of the value of "proxy_buffer_size" and one of the "proxy_buffers"
-                if (isset($proxy_busy_buffers_size) && isset($proxy_buffer_size_int) &&
-                    $proxy_busy_buffers_size < $proxy_buffer_size_int) {
+                if (
+                    isset($proxy_busy_buffers_size) && isset($proxy_buffer_size_int) &&
+                    $proxy_busy_buffers_size < $proxy_buffer_size_int
+                ) {
                     $validator->appendMessage(new Message(
                         gettext("Proxy Busy Buffers Size must be equal to or greater than the maximum of the value of Proxy Buffer Size."),
                         $attribute,
-                        $this->getOption('name')));
+                        $this->getOption('name')
+                    ));
                 }
             }
         }

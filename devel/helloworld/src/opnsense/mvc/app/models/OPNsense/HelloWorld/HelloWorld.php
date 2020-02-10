@@ -27,6 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\HelloWorld;
 
 use OPNsense\Base\BaseModel;

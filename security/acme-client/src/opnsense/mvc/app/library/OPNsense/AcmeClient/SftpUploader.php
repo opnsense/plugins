@@ -389,7 +389,7 @@ class SftpUploader
                 $temporary_files[] = $file;
                 Utils::requireThat(chmod($file, 0600), "failed setting user-only permissions on '$file'.");
                 return $file;
-            };
+            }
         }
 
         return false;

@@ -28,6 +28,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\Zerotier;
 
 class IndexController extends \OPNsense\Base\IndexController
