@@ -1,0 +1,28 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable Munin-Node daemon.</help>
+    </field>
+    <field>
+        <id>general.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>Set the hostname which will indicate this system at the central munin platform.</help>
+    </field>
+    <field>
+        <id>general.port</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>Set the port munin listen to.</help>
+    </field>
+    <field>
+        <id>general.allowednetworks</id>
+        <label>Allowed Networks</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the CIDR networks allowed to contact this node. For a single host please use /32</help>
+    </field>
+</form>
