@@ -47,7 +47,6 @@ misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - dark anthrazit
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
-net-mgmt/munin -- Munin monitoring node
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
 net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/nrpe -- Execute nagios plugins
@@ -91,6 +90,7 @@ sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
+sysutils/munin-node -- munin monitorin agent
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
