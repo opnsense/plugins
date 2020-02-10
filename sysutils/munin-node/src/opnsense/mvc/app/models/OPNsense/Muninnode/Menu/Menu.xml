@@ -1,0 +1,7 @@
+<menu>
+  <Services>
+    <Munin-Node cssClass="fa fa-pie-chart">
+      <General url="/ui/muninnode/general/index"/>
+    </Munin-Node>
+  </Services>
+</menu>

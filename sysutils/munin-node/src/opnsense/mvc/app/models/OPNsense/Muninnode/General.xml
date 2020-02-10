@@ -1,0 +1,23 @@
+<model>
+    <mount>//OPNsense/muninnode/general</mount>
+    <description>Munin-Node configuration</description>
+    <version>0.0.2</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <hostname type="TextField">
+            <default>OPNsense</default>
+            <Required>Y</Required>
+        </hostname>
+        <port type="PortField">
+            <default>4949</default>
+            <Required>Y</Required>
+        </port>
+        <allowednetworks type="CSVListField">
+            <default></default>
+            <Required>N</Required>
+        </allowednetworks>
+    </items>
+</model>

@@ -1,0 +1,7 @@
+{% if helpers.exists('OPNsense.muninnode.general.enabled') and OPNsense.muninnode.general.enabled == '1' %}
+munin_node_var_script="/usr/local/opnsense/scripts/OPNsense/Muninnode/setup.sh"
+munin_node_enable="YES"
+{% else %}
+munin_node_enable="NO"
+{% endif %}
+munin_node_var_mfs="/var/cache/munin_node /var/db/munin_node /var/log/munin_node"

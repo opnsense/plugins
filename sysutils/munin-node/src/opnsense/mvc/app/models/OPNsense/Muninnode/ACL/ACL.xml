@@ -1,0 +1,9 @@
+<acl>
+   <page-services-muninnode>
+      <name>Services: Munin-Node</name>
+      <patterns>
+         <pattern>ui/muninnode/*</pattern>
+         <pattern>api/muninnode/*</pattern>
+      </patterns>
+   </page-services-muninnode>
+</acl>
