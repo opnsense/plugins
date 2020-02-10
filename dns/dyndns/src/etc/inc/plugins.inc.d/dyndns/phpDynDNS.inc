@@ -1491,10 +1491,10 @@ class updatedns
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 if ($http_code == 401) {
                     $status = 'Dynamic DNS: (Error) User Authorization Failed';
-                } else if ($http_code == 201) {
+                } elseif ($http_code == 201) {
                     $status = 'Dynamic DNS: (Success) IP Address Changed Successfully!';
                     $successful_update = true;
-                } else if ($http_code == 200) {
+                } elseif ($http_code == 200) {
                     $status = 'Dynamic DNS: (Success) IP Address Changed Successfully!';
                     $successful_update = true;
                 } else {
