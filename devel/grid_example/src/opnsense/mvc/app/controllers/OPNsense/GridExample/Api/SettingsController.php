@@ -27,6 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\GridExample\Api;
 
 use \OPNsense\Base\ApiMutableModelControllerBase;
