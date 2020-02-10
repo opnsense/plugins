@@ -90,7 +90,7 @@ sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
-sysutils/munin-node -- munin monitorin agent
+sysutils/munin-node -- Munin monitorin agent
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools
