@@ -1,6 +1,6 @@
 #!/bin/sh
 OPNSENSE_FLAVOR=$(/usr/local/sbin/opnsense-version -f)
-OPNSENSE_VERSION=$(/usr/local/sbin/opnsense-version -v)
+OPNSENSE_VERSION=$(/usr/local/sbin/opnsense-version -v | cut -d'.' -f1,2)
 REPO_FILE=/usr/local/etc/pkg/repos/SunnyValley.conf
 
 case "${OPNSENSE_FLAVOR}" in
