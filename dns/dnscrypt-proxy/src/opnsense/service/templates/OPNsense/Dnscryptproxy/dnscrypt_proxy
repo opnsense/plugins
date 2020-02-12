@@ -11,3 +11,4 @@ dnscrypt_proxy_dnsbl="{{ OPNsense.dnscryptproxy.dnsbl.type }}"
 {% else %}
 dnscrypt_proxy_enable="NO"
 {% endif %}
+dnscrypt_proxy_var_script="/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy/setup.sh"

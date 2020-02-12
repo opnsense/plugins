@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2020 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -25,9 +25,7 @@
 
 all: check
 
-LOCALBASE?=		/usr/local
-PKG!=			which pkg || echo true
-ARCH!=			uname -p
+.include "defaults.mk"
 
 PLUGIN_ARCH?=		${ARCH}
 PLUGIN_PHP?=		72
@@ -180,11 +178,17 @@ install: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
+		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
+			sed -i '' ${SED_REPLACE} "${DESTDIR}${LOCALBASE}/$${FILE}"; \
+			mv "${DESTDIR}${LOCALBASE}/$${FILE}" "${DESTDIR}${LOCALBASE}/$${FILE%%.in}"; \
+		fi; \
 	done
 	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		if [ -f "$${FILE}.in" ]; then continue; fi; \
+		FILE="$${FILE%%.in}"; \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
 	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
@@ -268,8 +272,12 @@ lint-desc: check
 	fi
 
 lint-shell:
-	@find ${.CURDIR}/src \
-	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
+	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
+	    if [ "$$(head $${FILE} | grep -c '^#!\/bin\/sh$$')" == "0" ]; then \
+	        echo "Missing shebang in $${FILE}"; exit 1; \
+	    fi; \
+	    sh -n $${FILE} || exit 1; \
+	done
 
 lint-xml:
 	@find ${.CURDIR}/src \
