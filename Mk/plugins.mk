@@ -276,7 +276,7 @@ lint-shell:
 	    if [ "$$(head $${FILE} | grep -c '^#!\/bin\/sh$$')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
-	    sh -n $${FILE}; \
+	    sh -n $${FILE} || exit 1; \
 	done
 
 lint-xml:
