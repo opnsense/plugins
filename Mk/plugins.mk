@@ -272,8 +272,12 @@ lint-desc: check
 	fi
 
 lint-shell:
-	@find ${.CURDIR}/src \
-	    -name "*.sh" -type f -print0 | xargs -0 -n1 sh -n
+	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
+	    if [ "$$(head $${FILE} | grep -c '^#!\/bin\/sh$$')" == "0" ]; then \
+	        echo "Missing shebang in $${FILE}"; exit 1; \
+	    fi; \
+	    sh -n $${FILE}; \
+	done
 
 lint-xml:
 	@find ${.CURDIR}/src \
