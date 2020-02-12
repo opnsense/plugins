@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2020 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -25,9 +25,7 @@
 
 all: check
 
-LOCALBASE?=		/usr/local
-PKG!=			which pkg || echo true
-ARCH!=			uname -p
+.include "defaults.mk"
 
 PLUGIN_ARCH?=		${ARCH}
 PLUGIN_PHP?=		72
@@ -178,11 +176,17 @@ install: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
+		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
+			sed -i '' ${SED_REPLACE} "${DESTDIR}${LOCALBASE}/$${FILE}"; \
+			mv "${DESTDIR}${LOCALBASE}/$${FILE}" "${DESTDIR}${LOCALBASE}/$${FILE%%.in}"; \
+		fi; \
 	done
 	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+		if [ -f "$${FILE}.in" ]; then continue; fi; \
+		FILE="$${FILE%%.in}"; \
 		echo ${LOCALBASE}/$${FILE}; \
 	done
 	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
