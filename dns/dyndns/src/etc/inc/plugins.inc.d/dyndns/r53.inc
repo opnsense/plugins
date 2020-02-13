@@ -1,7 +1,6 @@
 <?php
 
 /*
- *
  * Copyright (c) 2011 Dan Myers
  * Copyright (c) 2008 Donovan Schonknecht
  * All rights reserved.
