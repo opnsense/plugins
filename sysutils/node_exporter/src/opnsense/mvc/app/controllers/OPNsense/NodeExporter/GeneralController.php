@@ -28,7 +28,7 @@
 
 namespace OPNsense\NodeExporter;
 
-use \OPNsense\Base\IndexController;
+use OPNsense\Base\IndexController;
 
 class GeneralController extends IndexController
 {

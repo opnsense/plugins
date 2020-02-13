@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?php
+
 /*
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.

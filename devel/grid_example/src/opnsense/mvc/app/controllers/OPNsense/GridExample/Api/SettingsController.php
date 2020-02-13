@@ -30,7 +30,7 @@
 
 namespace OPNsense\GridExample\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
  * a settings controller for our GridExample app, uses our ApiMutableModelControllerBase type

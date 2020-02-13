@@ -30,9 +30,9 @@
 
 namespace OPNsense\Relayd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Relayd\Relayd;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Relayd\Relayd;
 
 /**
  * Class StatusController

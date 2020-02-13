@@ -32,8 +32,8 @@
 
 namespace OPNsense\Rspamd;
 
-use \OPNsense\Core\Backend;
-use \OPNsense\Rspamd\RSpamd;
+use OPNsense\Core\Backend;
+use OPNsense\Rspamd\RSpamd;
 
 /**
 * Class IndexController

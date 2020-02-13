@@ -28,8 +28,8 @@
 
 namespace OPNsense\iperf\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiControllerBase
 {

@@ -30,11 +30,11 @@
 
 namespace OPNsense\ProxyUserACL\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Auth\AuthenticationFactory;
-use \OPNsense\Proxy\Proxy;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Config;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Auth\AuthenticationFactory;
+use OPNsense\Proxy\Proxy;
 
 /**
  * Class SettingsController Handles settings related API actions for the ProxyUserACL

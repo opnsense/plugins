@@ -31,10 +31,10 @@
 
 namespace OPNsense\ZabbixAgent\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Core\Config;
-use \OPNsense\ZabbixAgent\ZabbixAgent;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Config;
+use OPNsense\ZabbixAgent\ZabbixAgent;
 
 /**
  * Class SettingsController

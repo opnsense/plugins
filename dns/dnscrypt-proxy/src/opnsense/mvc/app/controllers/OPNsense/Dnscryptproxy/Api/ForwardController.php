@@ -30,8 +30,8 @@
 
 namespace OPNsense\Dnscryptproxy\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Backend;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class ForwardController extends ApiMutableModelControllerBase
 {

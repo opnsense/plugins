@@ -30,7 +30,7 @@
 
 namespace OPNsense\Netsnmp\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class UserController extends ApiMutableModelControllerBase
 {

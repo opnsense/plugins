@@ -31,11 +31,11 @@ namespace OPNsense\Zerotier\Api;
 
 require_once 'plugins.inc.d/zerotier.inc';
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Core\Backend;
-use \OPNsense\Core\Config;
-use \OPNsense\Zerotier\Zerotier;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\Zerotier\Zerotier;
 
 class NetworkController extends ApiMutableModelControllerBase
 {

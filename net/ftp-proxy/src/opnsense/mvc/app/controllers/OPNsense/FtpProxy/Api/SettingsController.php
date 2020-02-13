@@ -30,10 +30,10 @@
 
 namespace OPNsense\FtpProxy\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Config;
-use \OPNsense\FtpProxy\FtpProxy;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Config;
+use OPNsense\FtpProxy\FtpProxy;
+use OPNsense\Base\UIModelGrid;
 
 /**
  * Class SettingsController

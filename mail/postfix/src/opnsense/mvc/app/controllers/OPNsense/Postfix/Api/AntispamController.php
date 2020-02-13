@@ -29,7 +29,7 @@
 
 namespace OPNsense\Postfix\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class AntispamController extends ApiMutableModelControllerBase
 {

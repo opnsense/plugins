@@ -31,9 +31,9 @@
 
 namespace OPNsense\ZabbixAgent\Api;
 
-use \OPNsense\Base\ApiMutableServiceControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\ZabbixAgent\ZabbixAgent;
+use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\ZabbixAgent\ZabbixAgent;
 
 /**
  * Class ServiceController

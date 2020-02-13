@@ -31,9 +31,9 @@
 
 namespace OPNsense\Quagga\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Quagga\General;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Quagga\General;
+use OPNsense\Core\Config;
 
 class GeneralController extends ApiControllerBase
 {

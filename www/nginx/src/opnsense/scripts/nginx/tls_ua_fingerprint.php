@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?php
+
 /*
  * Copyright (C) 2018 Fabian Franz
  * All rights reserved.

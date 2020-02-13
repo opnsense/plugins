@@ -28,7 +28,7 @@
 
 namespace OPNsense\Tor\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SocksaclController extends ApiMutableModelControllerBase
 {

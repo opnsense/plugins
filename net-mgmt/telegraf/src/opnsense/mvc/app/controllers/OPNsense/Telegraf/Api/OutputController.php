@@ -31,9 +31,9 @@
 
 namespace OPNsense\Telegraf\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Telegraf\Output;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Telegraf\Output;
+use OPNsense\Core\Config;
 
 class OutputController extends ApiControllerBase
 {

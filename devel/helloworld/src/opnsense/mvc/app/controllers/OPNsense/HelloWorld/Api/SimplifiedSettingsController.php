@@ -30,7 +30,7 @@
 
 namespace OPNsense\HelloWorld\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
  * a simplified settings controller for our HelloWorld app, uses our ApiMutableModelControllerBase type

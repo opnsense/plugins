@@ -28,7 +28,7 @@
 
 namespace OPNsense\NodeExporter\Api;
 
-use \OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {

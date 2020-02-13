@@ -31,10 +31,10 @@
 
 namespace OPNsense\Quagga\Api;
 
-use \OPNsense\Quagga\OSPF6;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Quagga\OSPF6;
+use OPNsense\Core\Config;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
 
 class Ospf6settingsController extends ApiMutableModelControllerBase
 {

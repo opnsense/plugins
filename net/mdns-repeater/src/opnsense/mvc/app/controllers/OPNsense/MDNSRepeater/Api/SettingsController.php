@@ -30,7 +30,7 @@
 
 namespace OPNsense\MDNSRepeater\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {

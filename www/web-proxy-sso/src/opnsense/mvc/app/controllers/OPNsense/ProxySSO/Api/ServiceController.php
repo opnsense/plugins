@@ -28,9 +28,9 @@
 
 namespace OPNsense\ProxySSO\Api;
 
-use \OPNsense\Core\Backend;
-use \OPNsense\Core\Config;
-use \OPNsense\ProxySSO\ProxySSO;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\ProxySSO\ProxySSO;
 
 class ServiceController extends \OPNsense\Proxy\Api\ServiceController
 {

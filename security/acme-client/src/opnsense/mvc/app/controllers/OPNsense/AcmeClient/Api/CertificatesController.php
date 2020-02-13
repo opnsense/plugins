@@ -31,11 +31,11 @@
 
 namespace OPNsense\AcmeClient\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Core\Backend;
-use \OPNsense\Core\Config;
-use \OPNsense\AcmeClient\AcmeClient;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\AcmeClient\AcmeClient;
 
 /**
  * Class CertificatesController

@@ -31,8 +31,8 @@
 
 require_once('script/load_phalcon.php');
 
-use \OPNsense\ProxyUserACL\ProxyUserACL;
-use \OPNsense\Core\Config;
+use OPNsense\ProxyUserACL\ProxyUserACL;
+use OPNsense\Core\Config;
 
 $mdlProxyUserACL = new ProxyUserACL();
 $domain = strtoupper((string) Config::getInstance()->object()->system->domain);

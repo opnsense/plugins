@@ -31,7 +31,7 @@ const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 const GROUP_OWNER = 'staff';
 require_once('config.inc');
 require_once('certs.inc');
-use \OPNsense\Nginx\Nginx;
+use OPNsense\Nginx\Nginx;
 
 function export_pem_file($filename, $data, $post_append = null)
 {

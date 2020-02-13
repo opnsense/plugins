@@ -30,7 +30,7 @@
 
 namespace OPNsense\Nut\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SettingsController extends ApiMutableModelControllerBase
 {

@@ -31,8 +31,8 @@
 
 namespace OPNsense\Bind\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Backend;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class DomainController extends ApiMutableModelControllerBase
 {

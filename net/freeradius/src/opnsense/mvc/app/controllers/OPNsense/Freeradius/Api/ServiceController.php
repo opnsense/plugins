@@ -29,9 +29,9 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Freeradius\General;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Freeradius\General;
 
 /**
  * Class ServiceController

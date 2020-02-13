@@ -28,9 +28,9 @@
 
 namespace OPNsense\FtpProxy\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\FtpProxy\FtpProxy;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\FtpProxy\FtpProxy;
 
 /**
  * Class ServiceController

@@ -31,9 +31,9 @@
 
 namespace OPNsense\Collectd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Collectd\General;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Collectd\General;
+use OPNsense\Core\Config;
 
 class GeneralController extends ApiControllerBase
 {

@@ -31,9 +31,9 @@
 
 namespace OPNsense\Collectd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Collectd\General;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Collectd\General;
 
 /**
  * Class ServiceController

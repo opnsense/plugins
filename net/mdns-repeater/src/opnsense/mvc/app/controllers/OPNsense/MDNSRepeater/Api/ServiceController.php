@@ -28,9 +28,9 @@
 
 namespace OPNsense\MDNSRepeater\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\MDNSRepeater\MDNSRepeater;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\MDNSRepeater\MDNSRepeater;
 
 class ServiceController extends ApiControllerBase
 {

@@ -28,10 +28,10 @@
 
 namespace OPNsense\Tor\Api;
 
-use \OPNsense\Tor\ACLSocksPolicy;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Tor\ACLSocksPolicy;
+use OPNsense\Core\Config;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
 
 class ExitaclController extends ApiMutableModelControllerBase
 {

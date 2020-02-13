@@ -30,7 +30,7 @@
 
 namespace OPNsense\Bind\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class AclController extends ApiMutableModelControllerBase
 {

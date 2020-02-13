@@ -30,7 +30,7 @@
 
 namespace OPNsense\Wireguard\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class ClientController extends ApiMutableModelControllerBase
 {

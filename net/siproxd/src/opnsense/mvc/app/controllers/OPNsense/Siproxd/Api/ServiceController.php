@@ -31,9 +31,9 @@
 
 namespace OPNsense\Siproxd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Siproxd\General;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Siproxd\General;
 
 /**
  * Class ServiceController

@@ -28,9 +28,9 @@
 
 namespace OPNsense\Relayd\Api;
 
-use \OPNsense\Base\ApiMutableServiceControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Relayd\Relayd;
+use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Relayd\Relayd;
 
 /**
  * Class ServiceController

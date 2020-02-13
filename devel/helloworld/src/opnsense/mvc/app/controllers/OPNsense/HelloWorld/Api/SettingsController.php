@@ -30,9 +30,9 @@
 
 namespace OPNsense\HelloWorld\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\HelloWorld\HelloWorld;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\HelloWorld\HelloWorld;
+use OPNsense\Core\Config;
 
 /**
  * Class SettingsController Handles settings related API actions for the HelloWorld module

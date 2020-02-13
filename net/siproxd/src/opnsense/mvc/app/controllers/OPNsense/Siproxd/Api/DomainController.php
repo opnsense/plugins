@@ -31,10 +31,10 @@
 
 namespace OPNsense\Siproxd\Api;
 
-use \OPNsense\Siproxd\Domain;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Siproxd\Domain;
+use OPNsense\Core\Config;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
 
 class DomainController extends ApiMutableModelControllerBase
 {

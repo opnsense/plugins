@@ -31,9 +31,9 @@
 
 namespace OPNsense\Telegraf\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Telegraf\General;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Telegraf\General;
 
 /**
  * Class ServiceController

@@ -31,11 +31,11 @@
 
 namespace OPNsense\AcmeClient\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Core\Config;
-use \OPNsense\Cron\Cron;
-use \OPNsense\AcmeClient\AcmeClient;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\Cron\Cron;
+use OPNsense\AcmeClient\AcmeClient;
 
 /**
  * Class ServiceController

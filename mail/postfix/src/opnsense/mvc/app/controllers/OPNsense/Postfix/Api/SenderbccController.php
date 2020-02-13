@@ -28,7 +28,7 @@
 
 namespace OPNsense\Postfix\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class SenderbccController extends ApiMutableModelControllerBase
 {

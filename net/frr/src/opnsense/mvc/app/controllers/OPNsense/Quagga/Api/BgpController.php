@@ -32,7 +32,7 @@
 
 namespace OPNsense\Quagga\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class BgpController extends ApiMutableModelControllerBase
 {

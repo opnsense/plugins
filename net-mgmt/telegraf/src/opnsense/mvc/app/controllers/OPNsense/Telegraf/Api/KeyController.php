@@ -30,7 +30,7 @@
 
 namespace OPNsense\Telegraf\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class KeyController extends ApiMutableModelControllerBase
 {

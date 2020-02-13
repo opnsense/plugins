@@ -30,10 +30,10 @@
 
 namespace OPNsense\iperf\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Core\Config;
-use \OPNsense\Iperf\FakeInstance;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\Iperf\FakeInstance;
 
 class InstanceController extends ApiMutableModelControllerBase
 {

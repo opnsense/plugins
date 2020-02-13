@@ -31,7 +31,7 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class LeaseController extends ApiMutableModelControllerBase
 {

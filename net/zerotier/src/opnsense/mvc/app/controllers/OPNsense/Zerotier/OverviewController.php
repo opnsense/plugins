@@ -33,7 +33,7 @@ namespace OPNsense\Zerotier;
 
 require_once 'plugins.inc.d/zerotier.inc';
 
-use \OPNsense\Core\Backend;
+use OPNsense\Core\Backend;
 
 class OverviewController extends \OPNsense\Base\IndexController
 {

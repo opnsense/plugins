@@ -30,8 +30,8 @@
 
 namespace OPNsense\Tinc\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
 
 /**
  * Class ServiceController

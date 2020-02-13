@@ -28,7 +28,7 @@
 
 namespace OPNsense\NodeExporter\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {

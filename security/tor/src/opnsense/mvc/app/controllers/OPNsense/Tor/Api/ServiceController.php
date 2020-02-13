@@ -31,9 +31,9 @@
 
 namespace OPNsense\Tor\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Tor\General;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Tor\General;
 
 /**
  * Class ServiceController

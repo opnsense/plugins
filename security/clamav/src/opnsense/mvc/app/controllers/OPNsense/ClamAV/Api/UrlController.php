@@ -30,7 +30,7 @@
 
 namespace OPNsense\ClamAV\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class UrlController extends ApiMutableModelControllerBase
 {

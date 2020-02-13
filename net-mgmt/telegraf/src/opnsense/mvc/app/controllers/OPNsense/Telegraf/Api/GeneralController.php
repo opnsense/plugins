@@ -31,9 +31,9 @@
 
 namespace OPNsense\Telegraf\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Telegraf\General;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Telegraf\General;
+use OPNsense\Core\Config;
 
 class GeneralController extends ApiControllerBase
 {

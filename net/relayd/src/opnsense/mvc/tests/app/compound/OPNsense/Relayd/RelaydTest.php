@@ -28,7 +28,7 @@
 
 namespace tests\OPNsense\Relayd\Api;
 
-use \OPNsense\Core\Config;
+use OPNsense\Core\Config;
 
 class RelaydTest extends \PHPUnit\Framework\TestCase
 {

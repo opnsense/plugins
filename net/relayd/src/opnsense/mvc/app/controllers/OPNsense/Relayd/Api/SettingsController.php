@@ -30,10 +30,10 @@
 
 namespace OPNsense\Relayd\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Config;
-use \OPNsense\Relayd\Relayd;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Config;
+use OPNsense\Relayd\Relayd;
+use OPNsense\Base\UIModelGrid;
 
 /**
  * Class SettingsController

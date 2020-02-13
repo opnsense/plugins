@@ -30,9 +30,9 @@
 
 namespace OPNsense\Tinc\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Core\Backend;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Backend;
 
 /**
  * Class SettingsController Handles settings related API actions for Tinc VPN

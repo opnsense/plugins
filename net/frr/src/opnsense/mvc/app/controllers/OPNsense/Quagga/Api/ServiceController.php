@@ -31,9 +31,9 @@
 
 namespace OPNsense\Quagga\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Quagga\General;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Quagga\General;
 
 /**
  * Class ServiceController

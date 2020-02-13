@@ -30,11 +30,11 @@
 
 namespace OPNsense\Tor\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Backend;
-use \OPNsense\Core\Config;
-use \OPNsense\Tor\General;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\Tor\General;
+use OPNsense\Base\UIModelGrid;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
