@@ -12,6 +12,12 @@
         <help>This is not your router's IPv4 address. Tayga requires its own address because it acts as an IPv4 and IPv6 router, and needs to be able to send ICMP messages. This address can safely be located inside the dynamic-pool prefix.</help>
     </field>
     <field>
+        <id>general.v4destination</id>
+        <label>IPv4 Route Target</label>
+        <type>text</type>
+        <help>Set a random unused IP address which will be used to route traffic via nat64 interface.</help>
+    </field>
+    <field>
         <id>general.v6address</id>
         <label>IPv6 Address</label>
         <type>text</type>
