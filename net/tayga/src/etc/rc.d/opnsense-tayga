@@ -27,9 +27,9 @@ tayga_start()
         echo "starting tayga"
         ${command} ${command_args}
         sleep 1
-        ifconfig nat64 inet ${v4address}/32 ${v4destination}
-        route -6 add ${v6pool} -interface nat64
-        route -4 add ${v4pool} -interface nat64
+        ifconfig nat64 inet ${tayga_v4address}/32 ${tayga_v4destination}
+        route -6 add ${tayga_v6prefix} -interface nat64
+        route -4 add ${tayga_v4pool} -interface nat64
 }
 
 tayga_stop()
