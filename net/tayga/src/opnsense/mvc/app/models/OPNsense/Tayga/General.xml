@@ -11,6 +11,10 @@
             <default>192.168.255.1</default>
             <Required>N</Required>
         </v4address>
+        <v4destination type="NetworkField">
+            <default>192.168.254.1</default>
+            <Required>N</Required>
+        </v4address>
         <v6address type="NetworkField">
             <default>2001:db8:1::2</default>
             <Required>N</Required>
