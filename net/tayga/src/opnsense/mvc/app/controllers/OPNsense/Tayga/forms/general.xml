@@ -15,7 +15,7 @@
         <id>general.v4destination</id>
         <label>IPv4 Route Target</label>
         <type>text</type>
-        <help>Set a random unused IP address which will be used to route traffic via nat64 interface.</help>
+        <help>Set a random unused IP address which will be used to route traffic via NAT64 interface.</help>
     </field>
     <field>
         <id>general.v6address</id>
