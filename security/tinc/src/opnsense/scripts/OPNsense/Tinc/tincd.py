@@ -35,6 +35,7 @@ import glob
 import pipes
 import xml.etree.ElementTree
 import subprocess
+import ipaddress
 from lib import objects
 
 def write_file(filename, content, mode=0o600):
@@ -84,9 +85,12 @@ def deploy(config_filename):
             write_file("%s/etc/resolv.conf" % network.get_basepath(), fin.read())
 
         # write tinc-up file
+        interface_address = network.get_local_address()
+        interface_family = "inet6" if ipaddress.ip_network(interface_address, False).version == 6 else "inet"
+
         if_up = list()
         if_up.append("#!/bin/sh")
-        if_up.append("ifconfig %s %s " % (interface_name, pipes.quote(network.get_local_address())))
+        if_up.append("ifconfig %s %s %s " % (interface_name, interface_family, pipes.quote(interface_address)))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
