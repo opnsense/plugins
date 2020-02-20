@@ -11,6 +11,9 @@ Kafka, MQTT, NSQ, and many others.
 Plugin Changelog
 ================
 
+1.7.7
+* Fix log not properly parsed
+
 1.7.6
 
 * Add 'Debug' and 'Quiet' setting
