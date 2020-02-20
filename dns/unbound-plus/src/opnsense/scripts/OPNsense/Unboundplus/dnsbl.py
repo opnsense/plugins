@@ -139,7 +139,7 @@ def load_whitelist():
     print(f"Loaded {len(wl)} whitelist items")
 
     try:
-        re_whitelist = re.compile('|'.join(wl))
+        re_whitelist = re.compile('|'.join(wl), re.I)
     except Exception as e:
         print(f"Whitelist regex compile failed: {str(e)}")
 
