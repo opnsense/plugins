@@ -185,7 +185,6 @@ function dyndns_configure_client($conf)
         $forceUpdate = $conf['force'],
         $dnsZoneID = $conf['zoneid'],
         $dnsResourceID = $conf['resourceid'],
-        $dnsCustomerID = $conf['customerid'],
         $dnsTTL = $conf['ttl'],
         $dnsResultMatch = "{$conf['resultmatch']}",
         $dnsRequestIf = "{$conf['requestif']}",

@@ -93,7 +93,6 @@ class updatedns
     var $_dnsUpdateURL;
     var $_dnsZoneID;
     var $_dnsResourceID;
-    var $_dnsCustomerID;
     var $_dnsTTL;
     var $status;
     var $_debugID;
@@ -133,7 +132,6 @@ class updatedns
         $forceUpdate = false,
         $dnsZoneID = '',
         $dnsResourceID = '',
-        $dnsCustomerID = '',
         $dnsTTL = '',
         $dnsResultMatch = '',
         $dnsRequestIf = '',
@@ -179,7 +177,7 @@ class updatedns
                 break;
             case 'netcup':
             case 'netcup-v6':
-                if (!$dnsCustomerID) {
+                if (!$dnsResourceID) {
                     $this->_error(11);
                 }
                 break;
@@ -286,7 +284,6 @@ class updatedns
         $this->_dnsMX = $dnsMX;
         $this->_dnsZoneID = $dnsZoneID;
         $this->_dnsResourceID = $dnsResourceID;
-        $this->_dnsCustomerID = $dnsCustomerID;
         $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
         $this->_checkIP();
@@ -707,7 +704,7 @@ class updatedns
                 $param->apikey = $this->_dnsUser;
                 $param->apipassword = $this->_dnsPass;
                  // API strictly requires integer for all IDs!
-                $param->customernumber = (int)$this->_dnsCustomerID;
+                $param->customernumber = (int)$this->_dnsResourceID;
 
                  /*/ authenticate to Netcup DNS API /*/
                 $payload = json_encode((object)array('action'=>'login','param'=>$param));
@@ -2029,8 +2026,7 @@ class updatedns
                 $error = "Dynamic DNS ({$this->_dnsHost}): No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
                 break;
             case 11:
-                $error = "Netcup DNS API: (Error) No customer ID provided";
-                // $error = "Dynamic DNS: (ERROR!) Mandatory configuration options are missing in update profile.";
+                $error = "Dynamic DNS: (ERROR!) Mandatory configuration options are missing in update profile.";
                 break;
             default:
                 $error = "Dynamic DNS: (ERROR!) Unknown Response.";

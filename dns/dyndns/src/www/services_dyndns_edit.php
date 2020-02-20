@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_dyndns[$_GET['id']])) {
         $id = $_GET['id'];
     }
-    $config_copy_fieldnames = array('username', 'password', 'host', 'mx', 'type', 'zoneid','resourceid', 'customerid', 'ttl', 'updateurl',
+    $config_copy_fieldnames = array('username', 'password', 'host', 'mx', 'type', 'zoneid','resourceid', 'ttl', 'updateurl',
                                     'resultmatch', 'requestif', 'descr', 'interface');
     foreach ($config_copy_fieldnames as $fieldname) {
         if (isset($id) && isset($a_dyndns[$id][$fieldname])) {
@@ -92,6 +92,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $reqdfieldsn[] = gettext('Resource Id');
         $reqdfields[] = 'ttl';
         $reqdfieldsn[] = gettext('TTL');
+    } elseif (in_array($pconfig['type'], array('netcup','netcup-v6'))) {
+        $reqdfields[] = 'host';
+        $reqdfieldsn[] = gettext('Hostname');
+        $reqdfields[] = 'username';
+        $reqdfieldsn[] = gettext('Username');
+        $reqdfields[] = 'password';
+        $reqdfieldsn[] = gettext('Password');
+        $reqdfields[] = 'resourceid';
+        $reqdfieldsn[] = gettext('Customer Id');
     } elseif ($pconfig['type'] != 'custom' && $pconfig['type'] != 'custom-v6') {
         $reqdfields[] = 'host';
         $reqdfieldsn[] = gettext('Hostname');
@@ -101,9 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $reqdfields[] = 'password';
             $reqdfieldsn[] = gettext('Password');
         }
-    } elseif ($pconfig['type'] != 'netcup' && $pconfig['type'] != 'netcup-v6') {
-        $reqdfields[] = 'customerid';
-        $reqdfieldsn[] = gettext('Customer Id of DNS Hosting Account');
     } else {
         $reqdfields[] = 'updateurl';
         $reqdfieldsn[] = gettext('Update URL');
@@ -163,7 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['interface'] = $pconfig['interface'];
         $dyndns['zoneid'] = $pconfig['zoneid'];
         $dyndns['resourceid'] = $pconfig['resourceid'];
-        $dyndns['customerid'] = $pconfig['customerid'];
         $dyndns['ttl'] = $pconfig['ttl'];
         $dyndns['updateurl'] = $pconfig['updateurl'];
         // Trim hard-to-type but sometimes returned characters
@@ -376,7 +381,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
                         <br /><?= gettext('DigitalOcean: Enter the domain record ID.') ?>
-                        <br /><?= gettext('netcup DNS API: Enter your DNS API Access Key.') ?>
+                        <br class="opt_field type_netcup"/><?= gettext('netcup: Enter your DNS API Access Key.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
@@ -401,7 +406,7 @@ include("head.inc");
                         <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
                         <br /><?= gettext('deSEC: Enter your Token for your hostname, NOT the 36-character Token ID from the webinterface.') ?>
-                        <br /><?= gettext('netcup DNS API: Enter your DNS API secret password.') ?>
+                        <br class="opt_field type_netcup"/><?= gettext('netcup: Enter your DNS API secret password.') ?>
                       </div>
                     </td>
                   </tr>
@@ -421,11 +426,11 @@ include("head.inc");
                       <div class="hidden" data-for="help_for_resourceid">
                         <?= gettext("Enter the resource id of the DNS Zone in Azure.") ?>
                   <tr class="opt_field type_netcup">
-                    <td><a id="help_for_customerid" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("customer Id") ?></td>
+                    <td><a id="help_for_resourceid" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("customer Id") ?></td>
                     <td>
-                      <input name="customerid" type="text" id="customerid" value="<?= $pconfig['customerid'] ?>" />
-                      <div class="hidden" data-for="help_for_customerid">
-                        <?= gettext("Enter your netcup customer ID for the account hosting the dns zone.") ?>
+                      <input name="resourceid" type="text" id="resourceid" value="<?= $pconfig['resourceid'] ?>" />
+                      <div class="hidden" data-for="help_for_resourceid">
+                        <?= gettext("Enter your netcup customer number for the account hosting the dns zone.") ?>
                       </div>
                     </td>
                   </tr>
