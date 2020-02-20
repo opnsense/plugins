@@ -15,6 +15,9 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.6
+* Fix log not properly parsed
+
 1.9.5
 
 * Fix SQLite support
