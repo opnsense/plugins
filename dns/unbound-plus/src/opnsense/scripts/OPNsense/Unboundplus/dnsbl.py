@@ -30,7 +30,7 @@
 
 import re, urllib3, threading, subprocess
 
-re_blacklist = re.compile(r'(^127\.0\.0\.1[\s]+|^0\.0\.0\.0[\s]+)([^\s]+)|^([0-9a-z_.-]+$)', re.I)
+re_blacklist = re.compile(r'(^127\.0\.0\.1[\s]+|^0\.0\.0\.0[\s]+)([0-9a-z_.-]+)(?:\s|$)|^([0-9a-z_.-]+)(?:\s|$)', re.I)
 re_whitelist = re.compile(r'$^') # default - match nothing
 blacklist = set()
 urls = set()
@@ -139,7 +139,7 @@ def load_whitelist():
     print(f"Loaded {len(wl)} whitelist items")
 
     try:
-        re_whitelist = re.compile('|'.join(wl))
+        re_whitelist = re.compile('|'.join(wl), re.I)
     except Exception as e:
         print(f"Whitelist regex compile failed: {str(e)}")
 
