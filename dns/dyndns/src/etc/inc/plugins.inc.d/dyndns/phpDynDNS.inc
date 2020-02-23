@@ -766,8 +766,10 @@ class updatedns
                 $this->_checkStatus(0, $apidata);
 
                  /*/ logout and invalidate Netcup DNS API session /*/
-                $payload = json_encode((object)array('action'=>'logout','param'=>$param));
-                $getResponse($api,$payload,$apidata);
+                if (isset($param->apisessionid)) {
+                    $payload = json_encode((object)array('action'=>'logout','param'=>$param));
+                    $getResponse($api,$payload,$apidata);
+                }
                 @curl_close($api);
                 break;
             case 'he-net':

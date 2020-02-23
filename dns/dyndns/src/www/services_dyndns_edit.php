@@ -381,7 +381,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
                         <br /><?= gettext('DigitalOcean: Enter the domain record ID.') ?>
-                        <br class="opt_field type_netcup"/><?= gettext('netcup: Enter your DNS API Access Key.') ?>
+                        <br /><?= gettext('netcup: Enter your DNS API Access Key.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
@@ -406,7 +406,7 @@ include("head.inc");
                         <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
                         <br /><?= gettext('deSEC: Enter your Token for your hostname, NOT the 36-character Token ID from the webinterface.') ?>
-                        <br class="opt_field type_netcup"/><?= gettext('netcup: Enter your DNS API secret password.') ?>
+                        <br /><?= gettext('netcup: Enter your DNS API secret password.') ?>
                       </div>
                     </td>
                   </tr>
@@ -419,18 +419,13 @@ include("head.inc");
                       </div>
                     </td>
                   </tr>
-                  <tr class="opt_field type_azure">
+                  <tr class="opt_field type_azure type_netcup">
                     <td><a id="help_for_resourceid" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('Resource Id') ?></td>
                     <td>
                       <input name="resourceid" type="text" id="resourceid" value="<?= $pconfig['resourceid'] ?>" />
                       <div class="hidden" data-for="help_for_resourceid">
-                        <?= gettext("Enter the resource id of the DNS Zone in Azure.") ?>
-                  <tr class="opt_field type_netcup">
-                    <td><a id="help_for_resourceid" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("customer Id") ?></td>
-                    <td>
-                      <input name="resourceid" type="text" id="resourceid" value="<?= $pconfig['resourceid'] ?>" />
-                      <div class="hidden" data-for="help_for_resourceid">
-                        <?= gettext("Enter your netcup customer number for the account hosting the dns zone.") ?>
+                        <div class="opt_field type_azure"><?= gettext("Enter the resource id of the DNS Zone in Azure.") ?></div>
+                        <div class="opt_field type_netcup"><?= gettext("Enter your netcup customer number for the account hosting the dns zone.") ?></div>
                       </div>
                     </td>
                   </tr>
