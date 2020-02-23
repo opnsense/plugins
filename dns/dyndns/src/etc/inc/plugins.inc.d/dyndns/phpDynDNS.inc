@@ -667,11 +667,11 @@ class updatedns
                         $result["code"] = $err;
                         $result["status"] = curl_strerror($err);
                         $result["data"] = $output;
-                         // if verbose logging is requested log all additional information
+                         // if verbose logging is requested log all additional information to file
                         if ($this->_dnsVerboseLog) {
                             log_error("{$this->_dnsServiceList[$this->_dnsService]} reports cURL error ({$result["code"]}):\n {$result["status"]}");
                             $this->_debug("curl http info: " . print_r(curl_getinfo($curl),true));
-                            $this->_debug("curl received data: ({$result["data"]})");
+                            $this->_debug("curl received data: " . print_r($result["data"],true));
                         }
                         return false;
                     }
@@ -681,11 +681,11 @@ class updatedns
                         $result["status"] = $this->_dnsVerboseLog ? $result["data"]->longmessage : $result["data"]->shortmessage;
                          // catch error state if API call fails
                         if ($result["data"]->status != 'success') {
-                             // if verbose logging is requested log all additional information
+                             // if verbose logging is requested log all additional information to file
                             if ($this->_dnsVerboseLog) {
                                 log_error("{$this->_dnsServiceList[$this->_dnsService]} return code ({$result["code"]}): %{$result["status"]}");
                                 $this->_debug("request dump:" . preg_replace('/password[":]+\K[^"]+/i','**********MASKED***APIPASSWORD**********',$jsonpayload));
-                                $this->_debug("api response: {$result["data"]}");
+                                $this->_debug("api response: " . print_r($result["data"],true));
                             }
                         }
                          // API call should be a success here
