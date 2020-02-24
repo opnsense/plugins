@@ -116,6 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'cloudflare-v6':
             case 'eurodns':
             case 'googledomains':
+            case 'googledomains-v6':
             case 'linode':
             case 'linode-v6':
             case 'namecheap':

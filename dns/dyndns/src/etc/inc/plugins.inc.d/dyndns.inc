@@ -119,6 +119,7 @@ function dyndns_list()
         'eurodns' => 'EuroDNS',
         'freedns' => 'freeDNS',
         'googledomains' => 'Google Domains',
+        'googledomains-v6'=> 'Google Domains (v6)',
         'gratisdns' => 'GratisDNS',
         'he-net' => 'HE.net',
         'he-net-tunnelbroker' => 'HE.net Tunnelbroker',
