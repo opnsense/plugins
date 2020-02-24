@@ -251,6 +251,7 @@ class updatedns
             case 'custom-v6':
             case 'digitalocean-v6':
             case 'dynv6-v6':
+            case 'googledomains-v6':
             case 'he-net-v6':
             case 'godaddy-v6':
             case 'linode-v6':
@@ -335,6 +336,7 @@ class updatedns
                 case 'godaddy':
                 case 'godaddy-v6':
                 case 'googledomains':
+                case 'googledomains-v6':
                 case 'gratisdns':
                 case 'he-net':
                 case 'he-net-tunnelbroker':
@@ -1008,6 +1010,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server . '?hostname=' . $this->_dnsHost . '&ipv6=' . $this->_dnsIP . '&token=' . $this->_dnsUser);
                 break;
             case 'googledomains':
+            case 'googledomains-v6':
                 $server = "https://domains.google.com/nic/update";
                 $post_data['hostname'] = $this->_dnsHost;
                 $post_data['myip'] = $this->_dnsIP;
@@ -1016,7 +1019,9 @@ class updatedns
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
                 curl_setopt($ch, CURLOPT_URL, $server);
-                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                if (!$this->_useIPv6) {
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                }
                 break;
             case 'strato':
                 $server = "https://dyndns.strato.com/nic/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
@@ -1642,6 +1647,7 @@ class updatedns
             case 'dyndns-static':
             case 'eurodns':
             case 'googledomains':
+            case 'googledomains-v6':
             case 'he-net':
             case 'he-net-tunnelbroker':
             case 'he-net-v6':
@@ -1676,6 +1682,8 @@ class updatedns
                     $status = "Dynamic DNS: (Error) Server-side error or maintenance";
                 } elseif (preg_match('/yours/i', $data)) {
                     $status = "Dynamic DNS: (Error) Specified hostname does not exist under this username";
+                } elseif (preg_match('/conflict/i', $data)) {
+                    $status = "Dynamic DNS: (Error) A custom A/AAAA resource record conflicts with the update";
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
                     log_error("Dynamic DNS: PAYLOAD: {$data}");

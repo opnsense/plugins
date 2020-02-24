@@ -130,6 +130,7 @@ function dyndns_list()
         'godaddy' => 'GoDaddy',
         'godaddy-v6' => 'GoDaddy (v6)',
         'googledomains' => 'Google Domains',
+        'googledomains-v6'=> 'Google Domains (v6)',
         'gratisdns' => 'GratisDNS',
         'he-net' => 'HE.net',
         'he-net-tunnelbroker' => 'HE.net Tunnelbroker',

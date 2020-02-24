@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'godaddy':
             case 'godaddy-v6':
             case 'googledomains':
+            case 'googledomains-v6':
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
