@@ -196,11 +196,11 @@ hphosts-pup() {
         rm ${WORKDIR}/hphosts-pup-raw
 }
 
-hbbtv() {
-	# HBBTV List
-	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/hbbtv.txt -o ${WORKDIR}/hbbtv-raw
-	sed "/\.$/d" ${WORKDIR}/hbbtv-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/hbbtv
-	rm ${WORKDIR}/hbbtv-raw
+smarttv() {
+	# SmartTV List
+	${FETCH} https://raw.githubusercontent.com/Akamaru/Pi-Hole-Lists/master/smarttv.txt -o ${WORKDIR}/smarttv-raw
+	sed "/\.$/d" ${WORKDIR}/smarttv-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/smarttv
+	rm ${WORKDIR}/smarttv-raw
 }
 
 simplead() {
@@ -276,14 +276,14 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	hup)
 		hphosts-pup
 		;;
-	ht)
-		hbbtv
+	st)
+		smarttv
 		;;
 	nc)
 		nocoin
 		;;
 	rw)
-		rwtracker
+		#rwtracker
 		;;
 	mw)
 		mwdomains
