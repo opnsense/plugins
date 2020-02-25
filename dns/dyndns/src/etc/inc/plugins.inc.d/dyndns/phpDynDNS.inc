@@ -97,8 +97,8 @@
  *  dynv6 v6            - Last Tested: 25 June 2019
  *  DigitalOcean        - Last Tested: 25 June 2019
  *  Azure DNS           - Last Tested: 16 October 2019
- *  Linode              - Last Tested: 12 November 2019
- *  Linode v6           - Last Tested: 12 November 2019
+ *  Linode              - Last Tested: 25 February 2020
+ *  Linode v6           - Last Tested: 25 February 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -990,6 +990,7 @@ class updatedns
                 } else {
                     log_error("Dynamic DNS($fqdn): No zone found for domain");
                 }
+                break;
             case 'azurev6':
             case 'azure':
                 $hostname = "{$this->_dnsHost}";
