@@ -134,6 +134,18 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 {% if helpers.exists('OPNsense.postfix.recipient.recipients.recipient') %}
 {% do smtpd_recipient_restrictions.append('check_recipient_access hash:/usr/local/etc/postfix/recipient_access') %}
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_unknown_client_hostname') and OPNsense.postfix.general.reject_unknown_client_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_unknown_client_hostname') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_non_fqdn_helo_hostname') and OPNsense.postfix.general.reject_non_fqdn_helo_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_non_fqdn_helo_hostname') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_invalid_helo_hostname') and OPNsense.postfix.general.reject_invalid_helo_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_invalid_helo_hostname') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_unknown_helo_hostname') and OPNsense.postfix.general.reject_unknown_helo_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_unknown_helo_hostname') %}
+{% endif %}
 {% if helpers.exists('OPNsense.postfix.general.reject_unauth_pipelining') and OPNsense.postfix.general.reject_unauth_pipelining == '1' %}
 {% do smtpd_recipient_restrictions.append('reject_unauth_pipelining') %}
 {% endif %}
