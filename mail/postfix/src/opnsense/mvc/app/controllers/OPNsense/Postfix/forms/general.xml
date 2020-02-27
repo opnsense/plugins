@@ -151,6 +151,26 @@
         <help>If you enable this, every entry in Recipients will be checked against. When there is no match mail will be rejected. Be aware that it does not matter if the action is "OK" or "REJECT". This setup allows you to run postfix in front of an internal system and already rejecting unsolicited mail at the border.</help>
     </field>
     <field>
+        <id>general.reject_unknown_client_hostname</id>
+        <label>Reject Unkown Client Hostname</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.reject_non_fqdn_helo_hostname</id>
+        <label>Reject Non-FQDN HELO Hostname</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.reject_invalid_helo_hostname</id>
+        <label>Reject Invalid HELO Hostname</label>
+        <type>checkbox</type>
+    </field>
+     <field>
+        <id>general.reject_unknown_helo_hostname</id>
+        <label>Reject Unkown HELO Hostname</label>
+        <type>checkbox</type>
+    </field>
+    <field>
         <id>general.reject_unauth_pipelining</id>
         <label>Reject Unauthenticated Pipelining</label>
         <type>checkbox</type>
