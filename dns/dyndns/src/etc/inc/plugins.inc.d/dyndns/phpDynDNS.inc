@@ -736,11 +736,7 @@ class updatedns
                 if ($this->_curlIpresolveV4) {
                     curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 }
-                if ($this->_curlSslVerifypeer) {
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                } else {
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                }
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, (bool) $this->_curlSslVerifypeer);
                 if ($this->_dnsUser != '') {
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
