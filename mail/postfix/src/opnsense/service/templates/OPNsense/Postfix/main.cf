@@ -180,6 +180,22 @@ smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
 
 smtpd_helo_required = yes
 
+{% if helpers.exists('OPNsense.postfix.general.extensive_helo_restrictions') and OPNsense.postfix.general.extensive_helo_restrictions == '1' %}
+smtpd_helo_restrictions =
+        permit_mynetworks,
+        permit_sasl_authenticated,
+        reject_invalid_helo_hostname,
+        reject_non_fqdn_hostname,
+        reject_unknown_hostname
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.extensive_sender_restrictions') and OPNsense.postfix.general.extensive_sender_restrictions == '1' %}
+smtpd_sender_restrictions =
+        permit_mynetworks,
+        permit_sasl_authenticated,
+        reject_unknown_reverse_client_hostname,
+        reject_unknown_sender_domain,
+        reject_non_fqdn_sender
+{% endif %}
 syslog_facility = mail
 syslog_name = postfix
 
