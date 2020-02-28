@@ -111,6 +111,14 @@
             <default>0</default>
             <Required>Y</Required>
         </enforce_recipient_check>
+        <extensive_helo_restrictions type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </extensive_helo_restrictions>
+        <extensive_sender_restrictions type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </extensive_sender_restrictions>
         <reject_unknown_client_hostname type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
