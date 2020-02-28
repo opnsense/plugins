@@ -51,42 +51,6 @@ ${TARGET}:
 .  endfor
 .endfor
 
-ARGS=	diff mfc
-
-# handle argument expansion for required targets
-.for TARGET in ${.TARGETS}
-_TARGET=		${TARGET:C/\-.*//}
-.if ${_TARGET} != ${TARGET}
-.for ARGUMENT in ${ARGS}
-.if ${_TARGET} == ${ARGUMENT}
-${_TARGET}_ARGS+=	${TARGET:C/^[^\-]*(\-|\$)//:S/,/ /g}
-${TARGET}: ${_TARGET}
-.endif
-.endfor
-${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
-.endif
-.endfor
-
-diff:
-	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
-
-mfc:
-.for MFC in ${mfc_ARGS}
-.if exists(${MFC})
-	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
-	@git checkout stable/${PLUGIN_ABI}
-	@git apply /tmp/mfc.diff
-	@git add ${.CURDIR}
-	@if ! git diff --quiet HEAD; then \
-		git commit -m "${MFC}: sync with master"; \
-	fi
-.else
-	@git checkout stable/${PLUGIN_ABI}
-	@git cherry-pick -x ${MFC}
-.endif
-	@git checkout master
-.endfor
-
 license:
 	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
 
