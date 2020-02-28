@@ -51,17 +51,9 @@
                         <inet6>IPv6</inet6>
                     </OptionValues>
                 </ipprotocol>
-                <!--
-                        XXX: needs new field type
-                -->
-                <protocol type="OptionField">
+                <protocol type="ProtocolField">
                     <Required>Y</Required>
                     <default>any</default>
-                    <OptionValues>
-                        <any>any</any>
-                        <tcp>TCP</tcp>
-                        <udp>UDP</udp>
-                    </OptionValues>
                 </protocol>
                 <!--
                         XXX: needs a new field type to validate aliases as well
