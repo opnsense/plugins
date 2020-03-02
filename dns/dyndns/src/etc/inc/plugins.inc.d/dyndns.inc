@@ -97,6 +97,8 @@ function dyndns_list()
 
     return array(
         '3322' => '3322',
+        'all-inkl' => 'All-Inkl',
+        'all-inkl-v6' => 'All-Inkl (v6)',
         'azure' => 'Azure DNS',
         'azurev6' => 'Azure DNS (v6)',
         'citynetwork' => 'City Network',
