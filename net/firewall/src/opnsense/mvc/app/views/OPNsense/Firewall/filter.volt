@@ -1,6 +1,6 @@
 <script>
     $( document ).ready(function() {
-        $("#grid-rules").UIBootgrid({
+        let grid = $("#grid-rules").UIBootgrid({
             search:'/api/firewall/filter/searchItem/',
             get:'/api/firewall/filter/getItem/',
             set:'/api/firewall/filter/setItem/',
@@ -8,6 +8,13 @@
             del:'/api/firewall/filter/delItem/',
             toggle:'/api/firewall/filter/toggleItem/'
         });
+
+        // open edit dialog when opened with a uuid reference
+        if (window.location.hash !== "" && window.location.hash.split("-").length >= 4) {
+            grid.on('loaded.rs.jquery.bootgrid', function(){
+                $(".command-edit:eq(0)").clone(true).data('row-id', window.location.hash).click();
+            });
+        }
     });
 </script>
 
