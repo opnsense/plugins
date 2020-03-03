@@ -78,7 +78,6 @@ class Filter extends BaseModel
                         $rule->source_net->__reference
                     ));
                 }
-
             }
         }
         return $messages;
