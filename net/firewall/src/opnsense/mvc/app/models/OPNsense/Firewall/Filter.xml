@@ -55,11 +55,8 @@
                     <Required>Y</Required>
                     <default>any</default>
                 </protocol>
-                <!--
-                        XXX: needs a new field type to validate aliases as well
-                             should map internally to  'source' => array('network' => $source_net, "not" => true|false),
-                -->
-                <source_net type="NetworkField">
+                <!-- XXX: should map internally to  'source' => array('network' => $source_net, "not" => true|false) -->
+                <source_net type="NetworkAliasField">
                     <default>any</default>
                     <Required>Y</Required>
                 </source_net>
@@ -72,13 +69,9 @@
                     <Required>N</Required>
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>Y</EnableRanges>
-                    <ValidationMessage>Please specify a valid port number, range or known service name</ValidationMessage>
                 </source_port>
-                <!--
-                        XXX: needs a new field type to validate aliases as well
-                             should map internally to  'source' => array('destination' => destination_net, "not" => true|false),
-                -->
-                <destination_net type="NetworkField">
+                <!-- XXX: should map internally to  'source' => array('destination' => destination_net, "not" => true|false) -->
+                <destination_net type="NetworkAliasField">
                     <default>any</default>
                     <Required>Y</Required>
                 </destination_net>
@@ -91,7 +84,6 @@
                     <Required>N</Required>
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>Y</EnableRanges>
-                    <ValidationMessage>Please specify a valid port number, range or known service name</ValidationMessage>
                 </destination_port>
                 <gateway type="JsonKeyValueStoreField">
                     <Required>N</Required>
