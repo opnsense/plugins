@@ -14,7 +14,7 @@ name=maltrailsensor
 rcvar=maltrailsensor_enable
 pidfile=/var/run/${name}.pid
 command=/usr/sbin/daemon
-command_args="-f -P /var/run/maltrailsensor.pid python3.7 /usr/local/share/maltrail/sensor.py"
+command_args="-f -P /var/run/maltrailsensor.pid python3 /usr/local/share/maltrail/sensor.py"
 
 load_rc_config opnsense-maltrailsensor
 
