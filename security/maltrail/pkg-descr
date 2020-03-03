@@ -11,6 +11,10 @@ WWW: https://github.com/stamparm/maltrail
 Changelog
 ---------
 
+1.4
+
+* Switch Python to version 3
+
 1.3
 
 * Fix a typo in model labeling preventing to use remote server logging
