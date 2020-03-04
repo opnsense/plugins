@@ -258,7 +258,7 @@ class updatedns
                 break;
 			case 'cloudflare-token':
 			case 'cloudflare-token-v6':
-				if (!dnsPass) {
+				if (!$dnsPass) {
 					$this->_error(4);
 				} elseif (!$dnsHost) {
                     $this->_error(5);
