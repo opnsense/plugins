@@ -30,7 +30,7 @@
 
 namespace OPNsense\Nrpe\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class CommandController extends ApiMutableModelControllerBase
 {
