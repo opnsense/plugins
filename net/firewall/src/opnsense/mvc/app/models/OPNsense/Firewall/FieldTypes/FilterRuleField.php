@@ -54,6 +54,10 @@ class FilterRuleContainerField extends ContainerField
             if (!in_array($key, $map_manual)) {
                 if (is_a($node, "OPNsense\\Base\\FieldTypes\\BooleanField")) {
                     $result[$key] = !empty((string)$node);
+                } elseif (is_a($node, "OPNsense\\Base\\FieldTypes\\ProtocolField")) {
+                    if ((string)$node != 'any') {
+                        $result[$key] = (string)$node;
+                    }
                 } else {
                     $result[$key] = (string)$node;
                 }
@@ -76,9 +80,8 @@ class FilterRuleContainerField extends ContainerField
                 $result['destination']['port'] = (string)$this->destination_port;
             }
         }
-        // swap enabled
+        // field mappings and differences
         $result['disabled'] = empty((string)$this->enabled);
-        //
         $result['descr'] = (string)$this->description;
         $result['type'] = (string)$this->action;
         if (strpos((string)$this->interface, ",") !== false) {
