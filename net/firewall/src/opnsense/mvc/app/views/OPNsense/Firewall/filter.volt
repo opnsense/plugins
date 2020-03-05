@@ -12,7 +12,7 @@
         // open edit dialog when opened with a uuid reference
         if (window.location.hash !== "" && window.location.hash.split("-").length >= 4) {
             grid.on('loaded.rs.jquery.bootgrid', function(){
-                $(".command-edit:eq(0)").clone(true).data('row-id', window.location.hash).click();
+                $(".command-edit:eq(0)").clone(true).data('row-id', window.location.hash.substr(1)).click();
             });
         }
     });
