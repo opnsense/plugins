@@ -30,6 +30,7 @@
 
 namespace OPNsense\Firewall\FieldTypes;
 
+use OPNsense\Core\Config;
 use OPNsense\Base\FieldTypes\ArrayField;
 use OPNsense\Base\FieldTypes\ContainerField;
 
@@ -80,7 +81,34 @@ class FilterRuleContainerField extends ContainerField
         //
         $result['descr'] = (string)$this->description;
         $result['type'] = (string)$this->action;
+        if (strpos((string)$this->interface, ",") !== false) {
+            $result['floating'] = true;
+        }
         return $result;
+    }
+
+    /**
+     * rule priority is threaded equally to the legacy rules, first "floating" then groups and single interface
+     * rules are handled last
+     * @return int priority in the ruleset, sequence should determine sort order.
+     */
+    public function getPriority()
+    {
+        $configObj = Config::getInstance()->object();
+        $interface = (string)$this->interface;
+        if (strpos($interface, ",") !== false) {
+            // floating (multiple interfaces involved)
+            return 1000;
+        } elseif (!empty($configObj->interfaces) &&
+            !empty($configObj->interfaces->$interface) &&
+            !empty($configObj->interfaces->$interface->type) &&
+            $configObj->interfaces->$interface->type == 'group') {
+            // group type
+            return 2000;
+        } else {
+            // default
+            return 3000;
+        }
     }
 }
 
