@@ -27,7 +27,8 @@
  */
 namespace OPNsense\Firewall\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class FilterController extends ApiMutableModelControllerBase
 {
@@ -62,5 +63,14 @@ class FilterController extends ApiMutableModelControllerBase
     public function toggleItemAction($uuid, $enabled = null)
     {
         return $this->toggleBase("rules.rule", $uuid, $enabled);
+    }
+
+    public function applyAction()
+    {
+        if ($this->request->isPost()) {
+            return array("status" => (new Backend())->configdRun('filter reload'));
+        } else {
+            return array("status" => "error");
+        }
     }
 }
