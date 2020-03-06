@@ -1,0 +1,9 @@
+<acl>
+    <page-filter-api>
+        <name>Firewall: Rules: API</name>
+        <patterns>
+            <pattern>ui/firewall/filter/*</pattern>
+            <pattern>api/firewall/filter/*</pattern>
+        </patterns>
+    </page-filter-api>
+</acl>

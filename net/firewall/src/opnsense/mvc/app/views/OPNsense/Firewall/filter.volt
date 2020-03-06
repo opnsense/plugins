@@ -19,6 +19,8 @@
                 }
             });
         }
+
+        $("#reconfigureAct").SimpleActionButton();
     });
 </script>
 
@@ -29,7 +31,7 @@
 <div class="tab-content content-box">
     <div id="rules" class="tab-pane fade in active">
         <!-- tab page "filter rules" -->
-        <table id="grid-rules" class="table table-condensed table-hover table-striped" data-editDialog="DialogFilterRule">
+        <table id="grid-rules" class="table table-condensed table-hover table-striped" data-editDialog="DialogFilterRule" data-editAlert="FilterRuleChangeMessage">
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -51,6 +53,19 @@
                 </tr>
             </tfoot>
         </table>
+        <div class="col-md-12">
+        <div id="FilterRuleChangeMessage" class="alert alert-info" style="display: none" role="alert">
+            {{ lang._('After changing settings, please remember to apply them with the button below') }}
+        </div>
+        <hr/>
+        <button class="btn btn-primary" id="reconfigureAct"
+                data-endpoint='/api/firewall/filter/apply'
+                data-label="{{ lang._('Apply') }}"
+                data-error-title="{{ lang._('Filter load error') }}"
+                type="button"
+        ></button>
+        <br/><br/>
+    </div>
     </div>
 </div>
 
