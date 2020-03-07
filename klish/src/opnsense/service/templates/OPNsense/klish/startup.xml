@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+     <!--=======================================================-->
+    <OVERVIEW>
+HELP:
+[?]
+    Show the commands list;
+    After a command show it params;
+
+[TAB]
+    Autocomplete the command or params;
+
+[ENTER]
+    Run the command with it params
+
+SHORTCUTS:
+[CTRL-A] - Line begin
+[CTRL-E] - Line end
+[up]     - Previous command in history
+[down]   - Next command in history
+    </OVERVIEW>
+     <!--=======================================================-->
+    <STARTUP view="root-view" prompt="clish>" >
+        <DETAIL>
+Serj Kalichev
+The klish is a fork of original clish.
+Copyright (c) 2010 Serj Kalichev.
+All Rights Reserved.
+
+OPNsense plugin by Cloudfence
+www.cloudfence.com.br
+        </DETAIL>
+    <ACTION>echo "Welcome `whoami`, session started: `date "+%d/%m/%Y %H:%M"`"</ACTION>
+    </STARTUP>
+     <!--=======================================================-->
+</CLISH_MODULE>
