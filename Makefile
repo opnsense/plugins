@@ -92,4 +92,9 @@ mfc:
 license:
 	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
 
-.PHONY: license
+readme.md:
+	@MAKE=${MAKE} Scripts/update-list.sh
+
+sync: readme.md license
+
+.PHONY: license readme.md sync

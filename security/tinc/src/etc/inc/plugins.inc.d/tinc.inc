@@ -51,7 +51,7 @@ function tinc_syslog()
 
     foreach ($mdl->networks->network->iterateItems() as $network) {
         if ($network->enabled == '1') {
-            $logfacilities['tinc']['facility'][] = 'tinc.'.$network->name;
+            $logfacilities['tinc']['facility'][] = 'tinc.' . $network->name;
         }
     }
 

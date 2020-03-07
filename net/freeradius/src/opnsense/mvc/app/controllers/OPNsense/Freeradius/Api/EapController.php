@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
@@ -49,7 +50,7 @@ class EapController extends ApiControllerBase
 
     public function setAction()
     {
-        $result = array("result"=>"failed");
+        $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlEAP = new EAP();
@@ -61,7 +62,7 @@ class EapController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["eap.".$msg->getField()] = $msg->getMessage();
+                $result["validations"]["eap." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save

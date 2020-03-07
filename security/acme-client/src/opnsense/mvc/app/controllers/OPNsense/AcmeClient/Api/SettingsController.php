@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
@@ -58,9 +59,11 @@ class SettingsController extends ApiMutableModelControllerBase
             $backend = new Backend();
 
             // Setup cronjob if AcmeClient and AutoRenewal is enabled.
-            if ((string)$mdlAcme->settings->UpdateCron == "" and
+            if (
+                (string)$mdlAcme->settings->UpdateCron == "" and
                 (string)$mdlAcme->settings->autoRenewal == "1" and
-                (string)$mdlAcme->settings->enabled == "1") {
+                (string)$mdlAcme->settings->enabled == "1"
+            ) {
                 $mdlCron = new Cron();
                 // NOTE: Only configd actions are valid commands for cronjobs
                 //       and they *must* provide a description that is not empty.
@@ -88,9 +91,11 @@ class SettingsController extends ApiMutableModelControllerBase
                     $result['result'] = "unable to add cron";
                 }
             // Delete cronjob if AcmeClient or AutoRenewal is disabled.
-            } elseif ((string)$mdlAcme->settings->UpdateCron != "" and
+            } elseif (
+                (string)$mdlAcme->settings->UpdateCron != "" and
                 ((string)$mdlAcme->settings->autoRenewal == "0" or
-                (string)$mdlAcme->settings->enabled == "0")) {
+                (string)$mdlAcme->settings->enabled == "0")
+            ) {
                 // Get UUID, clean existin entry
                 $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
                 $mdlAcme->settings->UpdateCron = null;
@@ -133,8 +138,10 @@ class SettingsController extends ApiMutableModelControllerBase
             // Setup only if AcmeClient and HAProxy integration is enabled.
             // NOTE: We provide HAProxy integration no matter if the HAProxy plugin
             //       is actually enabled or not. This should avoid confusion.
-            if ((string)$mdlAcme->settings->haproxyIntegration == "1" and
-                (string)$mdlAcme->settings->enabled == "1") {
+            if (
+                (string)$mdlAcme->settings->haproxyIntegration == "1" and
+                (string)$mdlAcme->settings->enabled == "1"
+            ) {
                 $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
                 $backend = new Backend();
 
@@ -311,9 +318,11 @@ class SettingsController extends ApiMutableModelControllerBase
                 // Ensure HAProxy frontend additions have been applied.
                 foreach ($mdlAcme->getNodeByReference('validations.validation')->iterateItems() as $validation) {
                     // Find all (enabled) validation methods with HAProxy integration.
-                    if ((string)$validation->enabled == "1" and
+                    if (
+                        (string)$validation->enabled == "1" and
                         (string)$validation->method == "http01" and
-                        (string)$validation->http_service == "haproxy") {
+                        (string)$validation->http_service == "haproxy"
+                    ) {
                         // Check if HAProxy frontends were specified.
                         if (empty((string)$validation->http_haproxyFrontends)) {
                             // Skip item, no HAProxy frontends were specified.
@@ -385,6 +394,24 @@ class SettingsController extends ApiMutableModelControllerBase
 
         // Check if the required plugin is installed
         if ((string)$mdlAcme->isPluginInstalled('google-cloud-sdk') == "1") {
+            $result['result'] = "1";
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check wether the BIND plugin is installed.
+     * @return array status action
+     */
+    public function getBindPluginStatusAction()
+    {
+        $result = array("result" => "0");
+
+        $mdlAcme = $this->getModel();
+
+        // Check if the required plugin is installed
+        if ((string)$mdlAcme->isPluginInstalled('bind') == "1") {
             $result['result'] = "1";
         }
 

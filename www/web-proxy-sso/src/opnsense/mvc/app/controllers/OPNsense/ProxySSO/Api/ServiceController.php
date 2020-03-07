@@ -92,7 +92,7 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
         if ($this->request->isPost()) {
             $backend = new Backend();
             $cnf = Config::getInstance()->object();
-            $fqdn = $cnf->system->hostname .'.'.$cnf->system->domain;
+            $fqdn = $cnf->system->hostname . '.' . $cnf->system->domain;
             $username = escapeshellarg($this->request->getPost("login"));
             $pass = escapeshellarg($this->request->getPost("password"));
 
@@ -111,7 +111,7 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
     {
         $backend = new Backend();
         $cnf = Config::getInstance()->object();
-        $hostname = $cnf->system->hostname .'.'.$cnf->system->domain;
+        $hostname = $cnf->system->hostname . '.' . $cnf->system->domain;
 
         // LDAP
         $methods = explode(',', $cnf->OPNsense->proxy->forward->authentication->method);

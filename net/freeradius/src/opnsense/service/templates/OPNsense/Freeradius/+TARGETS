@@ -8,6 +8,7 @@ mods-enabled-ldap:/usr/local/etc/raddb/mods-enabled/ldap
 mods-enabled-sql:/usr/local/etc/raddb/mods-enabled/sql
 mods-enabled-sqlippool:/usr/local/etc/raddb/mods-enabled/sqlippool
 queries.conf:/usr/local/etc/raddb/mods-config/sql/main/sqlite/queries.conf
+queries2.conf:/usr/local/etc/raddb/mods-config/sql/ippool/sqlite/queries.conf
 radiusd:/etc/rc.conf.d/radiusd
 radiusd.conf:/usr/local/etc/raddb/radiusd.conf
 sites-enabled-default:/usr/local/etc/raddb/sites-enabled/default

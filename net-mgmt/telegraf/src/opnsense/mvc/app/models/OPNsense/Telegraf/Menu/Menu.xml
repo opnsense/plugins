@@ -4,6 +4,7 @@
       <General order="10" url="/ui/telegraf/general/index"/>
       <Input order="20" url="/ui/telegraf/input/index"/>
       <Output order="30" url="/ui/telegraf/output/index"/>
+      <LogFile VisibleName="Log File" order="40" url="/ui/diagnostics/log/telegraf/telegraf"/>
     </Telegraf>
   </Services>
 </menu>

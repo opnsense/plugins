@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.ZabbixAgent.settings.features.encryption') and OPNsense.ZabbixAgent.settings.features.encryption != '' %}
+{%   if helpers.exists('OPNsense.ZabbixAgent.settings.features.encryptionpsk') and OPNsense.ZabbixAgent.settings.features.encryptionpsk != '' %}
+{{ OPNsense.ZabbixAgent.settings.features.encryptionpsk }}
+{%   endif %}
+{% endif %}

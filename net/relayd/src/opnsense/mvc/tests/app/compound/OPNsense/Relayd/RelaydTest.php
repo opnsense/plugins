@@ -42,7 +42,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$setRelayd = new \OPNsense\Relayd\Api\SettingsController;
+        self::$setRelayd = new \OPNsense\Relayd\Api\SettingsController();
     }
 
     private function cleanupNodes($nodeType = null)
@@ -386,7 +386,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
      */
     public function testServiceController()
     {
-        $svcRelayd = new \OPNsense\Relayd\Api\ServiceController;
+        $svcRelayd = new \OPNsense\Relayd\Api\ServiceController();
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
         // stop possibly running service
@@ -431,7 +431,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
      */
     public function testStatusController()
     {
-        $statRelayd = new \OPNsense\Relayd\Api\StatusController;
+        $statRelayd = new \OPNsense\Relayd\Api\StatusController();
         $response = $statRelayd->sumAction();
         $this->assertEquals($response['result'], 'ok');
         $this->assertEquals($response['rows'][0]['type'], 'relay');
@@ -451,7 +451,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
      */
     public function testCleanup()
     {
-        $svcRelayd = new \OPNsense\Relayd\Api\ServiceController;
+        $svcRelayd = new \OPNsense\Relayd\Api\ServiceController();
         $response = $svcRelayd->stopAction();
         $this->assertEquals($response['response'], "OK\n\n");
 

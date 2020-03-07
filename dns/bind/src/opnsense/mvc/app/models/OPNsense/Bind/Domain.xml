@@ -20,6 +20,11 @@
                 <masterip type="HostnameField">
                     <Required>N</Required>
                 </masterip>
+                <allownotifyslave type="NetworkField">
+                    <Required>N</Required>
+                    <FieldSeparator>,</FieldSeparator>
+                    <asList>Y</asList>
+                </allownotifyslave>
                 <domainname type="TextField">
                     <default></default>
                     <Required>Y</Required>

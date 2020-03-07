@@ -19,5 +19,8 @@
             <multiple>Y</multiple>
             <Required>N</Required>
         </monitorinterface>
+        <whitelist type="CSVListField">
+            <Required>N</Required>
+        </whitelist>
     </items>
 </model>

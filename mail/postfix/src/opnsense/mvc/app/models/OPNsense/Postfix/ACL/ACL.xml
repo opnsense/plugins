@@ -9,7 +9,8 @@
     <page-services-postfix-log>
         <name>Services: Postfix: Log File</name>
         <patterns>
-            <pattern>diag_logs_postfix.php</pattern>
+            <pattern>ui/diagnostics/log/core/mail/*</pattern>
+            <pattern>api/diagnostics/log/core/mail/*</pattern>
         </patterns>
     </page-services-postfix-log>
 </acl>

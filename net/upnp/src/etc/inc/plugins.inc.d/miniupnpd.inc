@@ -93,7 +93,7 @@ function miniupnpd_uuid()
     /* md5 hash of wan mac */
     $uuid = md5(get_interface_mac(get_real_interface("wan")));
     /* put uuid in correct format 8-4-4-4-12 */
-    return substr($uuid, 0, 8).'-'.substr($uuid, 9, 4).'-'.substr($uuid, 13, 4).'-'.substr($uuid, 17, 4).'-'.substr($uuid, 21, 12);
+    return substr($uuid, 0, 8) . '-' . substr($uuid, 9, 4) . '-' . substr($uuid, 13, 4) . '-' . substr($uuid, 17, 4) . '-' . substr($uuid, 21, 12);
 }
 
 function miniupnpd_permuser_list()
@@ -147,7 +147,7 @@ function miniupnpd_configure_do($verbose = false)
             }
             $if = get_real_interface($iface);
             /* above function returns iface if fail */
-            if ($if!=$iface) {
+            if ($if != $iface) {
                 $addr = find_interface_ip($if);
                 /* check that the interface has an ip address before adding parameters */
                 if (is_ipaddr($addr)) {
@@ -173,8 +173,8 @@ function miniupnpd_configure_do($verbose = false)
             }
             /* set upload and download bitrates */
             if (!empty($upnp_config['download']) && !empty($upnp_config['upload'])) {
-                $download = $upnp_config['download']*1000;
-                $upload = $upnp_config['upload']*1000;
+                $download = $upnp_config['download'] * 1000;
+                $upload = $upnp_config['upload'] * 1000;
                 $config_text .= "bitrate_down={$download}\n";
                 $config_text .= "bitrate_up={$upload}\n";
             }
@@ -201,8 +201,8 @@ function miniupnpd_configure_do($verbose = false)
             }
 
             /* set uuid and serial */
-            $config_text .= "uuid=".miniupnpd_uuid()."\n";
-            $config_text .= "serial=".strtoupper(substr(miniupnpd_uuid(), 0, 8))."\n";
+            $config_text .= "uuid=" . miniupnpd_uuid() . "\n";
+            $config_text .= "serial=" . strtoupper(substr(miniupnpd_uuid(), 0, 8)) . "\n";
 
             /* set model number */
             $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";

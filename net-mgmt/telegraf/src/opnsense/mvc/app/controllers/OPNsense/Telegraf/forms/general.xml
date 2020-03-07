@@ -59,4 +59,16 @@
         <type>checkbox</type>
         <help>If set to true, do no set the "host" tag in the Telegraf agent.</help>
     </field>
+    <field>
+        <id>general.quiet</id>
+        <label>Quiet Log</label>
+        <type>checkbox</type>
+        <help>Log only error level messages.</help>
+    </field>
+    <field>
+        <id>general.debug</id>
+        <label>Debug Log</label>
+        <type>checkbox</type>
+        <help>Log at debug level.</help>
+    </field>
 </form>

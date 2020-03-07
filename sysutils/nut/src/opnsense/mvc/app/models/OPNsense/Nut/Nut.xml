@@ -1,7 +1,7 @@
 <model>
   <mount>//OPNsense/Nut</mount>
   <description>Network UPS Tools</description>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <items>
     <general>
       <enable type="BooleanField">
@@ -19,6 +19,8 @@
       <name type="TextField">
         <default>UPSName</default>
         <Required>Y</Required>
+        <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+        <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
       </name>
       <listen type="CSVListField">
         <default>127.0.0.1,::1</default>
@@ -93,6 +95,16 @@
         <Required>N</Required>
       </password>
     </netclient>
+    <qx>
+      <enable type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </enable>
+      <args type="CSVListField">
+        <default>port=auto</default>
+        <Required>N</Required>
+      </args>
+    </qx>
     <riello>
       <enable type="BooleanField">
         <Required>Y</Required>
@@ -103,5 +115,15 @@
         <Required>N</Required>
       </args>
     </riello>
+    <snmp>
+      <enable type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </enable>
+      <args type="CSVListField">
+        <default>community=public</default>
+        <Required>N</Required>
+      </args>
+    </snmp>
   </items>
 </model>

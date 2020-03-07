@@ -1,0 +1,3 @@
+REPO_FILE=/usr/local/etc/pkg/repos/SunnyValley.conf
+
+rm -f "${REPO_FILE}"

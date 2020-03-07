@@ -1,6 +1,6 @@
 # ETPRO telemetry edition
 
-Telemetry tools, depends on `rule-updater.config`, which contains the device registartion number provided by OPNsense.
+Telemetry tools, depends on `rule-updater.config`, which contains the device registration number provided by OPNsense.
 
 for example.
 ```
@@ -48,6 +48,7 @@ optional arguments:
   -s STATE, --state STATE
                         persistent state (and lock) filename
   -d DAYS, --days DAYS  Maximum number of days to look back on initial run
+  -D, --direct          do not sleep before send (disable traffic spread)
 ```
 
 to test using supplied configuration:
@@ -74,6 +75,8 @@ optional arguments:
   -i, --insecure        Insecure, skip certificate validation
   -c CONFIG, --config CONFIG
                         rule downloader configuration
+  -D, --direct          do not sleep before send (disable traffic spread)
+  -t, --test            test mode, output request/response to stdout
 ```
 
 

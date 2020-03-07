@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?php
+
 /**
  *    Copyright (C) 2018 Fabian Franz
  *
@@ -27,7 +28,6 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 
 require_once('config.inc');
 use OPNsense\Core\Config;

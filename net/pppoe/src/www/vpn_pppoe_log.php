@@ -20,5 +20,5 @@ if ($mode != 'raw') {
     require_once 'vpn_pppoe_log.inc';
 } else {
     $logfile = '/var/log/poes.log';
-    require_once 'diag_logs_template.inc';
+    require_once 'diag_logs_template_pppoe.inc';
 }

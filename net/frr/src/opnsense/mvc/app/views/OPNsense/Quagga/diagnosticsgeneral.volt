@@ -36,6 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <th data-column-id="ad" data-type="numeric">{{ lang._('Administrative Distance') }}</th>
       <th data-column-id="metric" data-type="numeric">{{ lang._('Metric') }}</th>
       <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
+      <th data-column-id="via" data-type="string">{{ lang._('Via') }}</th>
       <th data-column-id="time" data-type="string">{{ lang._('Time') }}</th>
     </tr>
   </thead>
@@ -51,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <td><%= entry['ad'] %></td>
         <td><%= entry['metric'] %></td>
         <td><%= entry['interface'] %></td>
+        <td><%= entry['via'] %></td>
         <td><%= entry['time'] %></td>
       </tr>
     <% }); %>

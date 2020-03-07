@@ -306,11 +306,13 @@ class SettingsController extends ApiMutableModelControllerBase
                     $ldapBindURL .= strpos($server['host'], "::") !== false ? "[{$server['host']}]" : $server['host'];
                     $ldapBindURL .= !empty($server['ldap_port']) ? ":{$server['ldap_port']}" : "";
                     $ldap_auth_server = $authFactory->get($server["name"]);
-                    if ($ldap_auth_server->connect(
-                        $ldapBindURL,
-                        $server["ldap_binddn"],
-                        $server["ldap_bindpw"]
-                    ) == false) {
+                    if (
+                        $ldap_auth_server->connect(
+                            $ldapBindURL,
+                            $server["ldap_binddn"],
+                            $server["ldap_bindpw"]
+                        ) == false
+                    ) {
                         return gettext("Error connecting to LDAP server");
                     }
 

@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -105,6 +105,8 @@
                     <normal>normal</normal>
                     <extended>extended</extended>
                     <debug>debug</debug>
+                    <debug2>debug 2</debug2>
+                    <debug3>debug 3</debug3>
                 </OptionValues>
             </logLevel>
         </settings>
@@ -243,6 +245,22 @@
                     <MaximumValue>60</MaximumValue>
                     <default>60</default>
                 </renewInterval>
+                <aliasmode type="OptionField">
+                    <Required>Y</Required>
+                    <default>none</default>
+                    <OptionValues>
+                        <none>Not using DNS alias mode</none>
+                        <automatic>Automatic Mode (uses DNS lookups)</automatic>
+                        <domain>Domain alias mode</domain>
+                        <challenge>Challenge alias mode</challenge>
+                    </OptionValues>
+                </aliasmode>
+                <domainalias type="TextField">
+                    <Required>N</Required>
+                </domainalias>
+                <challengealias type="TextField">
+                    <Required>N</Required>
+                </challengealias>
                 <!-- hidden field; ID of the certificate in Cert Manager -->
                 <certRefId type="TextField">
                     <Required>N</Required>
@@ -374,17 +392,23 @@
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
+                        <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
+                        <dns_miab>MailinaBox API</dns_miab>
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namecheap>Namecheap API</dns_namecheap>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
+                        <dns_netcup>netcup DNS API</dns_netcup>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
+                        <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
+                        <dns_pleskxml>Plesk XML API</dns_pleskxml>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
+                        <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
@@ -440,6 +464,12 @@
                 <dns_cf_key type="TextField">
                     <Required>N</Required>
                 </dns_cf_key>
+                <dns_cf_token type="TextField">
+                    <Required>N</Required>
+                </dns_cf_token>
+                <dns_cf_account_id type="TextField">
+                    <Required>N</Required>
+                </dns_cf_account_id>
                 <dns_cloudns_auth_id type="TextField">
                     <Required>N</Required>
                 </dns_cloudns_auth_id>
@@ -581,8 +611,67 @@
                     <Required>N</Required>
                     <default>cloudflare</default>
                     <OptionValues>
-                        <cloudflare>Cloudflare API</cloudflare>
+                        <aliyun>Aliyun.com API</aliyun>
+                        <aurora>AuroraDNS API</aurora>
+                        <auto>Auto API</auto>
+                        <azure>Azure DNS API</azure>
+                        <cloudflare>CloudFlare API</cloudflare>
+                        <cloudns>ClouDNS API</cloudns>
+                        <cloudxns>CloudXNS API</cloudxns>
+                        <conoha>ConoHa API</conoha>
+                        <constellix>Constellix API</constellix>
+                        <digitalocean>DigitalOcean API</digitalocean>
+                        <dinahosting>Dinahosting API</dinahosting>
+                        <directadmin>DirectAdmin API</directadmin>
+                        <dnsimple>DNSimple API</dnsimple>
+                        <dnsmadeeasy>DnsMadeEasy API</dnsmadeeasy>
+                        <dnspark>DNSPark API</dnspark>
+                        <dnspod>DNSPod API</dnspod>
+                        <dreamhost>Dreamhost API</dreamhost>
+                        <easydns>EasyDNS API</easydns>
+                        <easyname>Easyname API</easyname>
+                        <exoscale>ExoScale API</exoscale>
+                        <gandi>Gandi API</gandi>
+                        <gehirn>Gehirn API</gehirn>
+                        <glesys>Glesys API</glesys>
+                        <godaddy>GoDaddy API</godaddy>
+                        <googleclouddns>Google Cloud DNS API</googleclouddns>
+                        <gratisdns>GratisDNS API</gratisdns>
+                        <henet>Hurricane Electric DNS API</henet>
+                        <hetzner>Hetzner API</hetzner>
+                        <hover>Hover API</hover>
+                        <infoblox>Infoblox API</infoblox>
+                        <internetbs>Internet.bs API</internetbs>
+                        <inwx>INWX API</inwx>
+                        <linode>Linode API</linode>
+                        <linode4>Linode v4 API</linode4>
+                        <localzone>Localzone API</localzone>
+                        <luadns>LuaDNS API</luadns>
+                        <memset>Memset API</memset>
+                        <namecheap>Namecheap API</namecheap>
                         <namesilo>Namesilo API</namesilo>
+                        <netcup>Netcup API</netcup>
+                        <nfsn>NFSN API</nfsn>
+                        <nsone>NS1 API</nsone>
+                        <onapp>OnApp API</onapp>
+                        <online>Online API</online>
+                        <ovh>OVH API</ovh>
+                        <plesk>Plesk API</plesk>
+                        <pointhq>PointHQ API</pointhq>
+                        <powerdns>PowerDNS API</powerdns>
+                        <rackspace>Rackspace API</rackspace>
+                        <rage4>Rage4 API</rage4>
+                        <route53>Route 53 API</route53>
+                        <safedns>SafeDNS API</safedns>
+                        <sakuracloud>SakuraCloud API</sakuracloud>
+                        <softlayer>Softlayer API</softlayer>
+                        <subreg>Subreg API</subreg>
+                        <transip>Transip API</transip>
+                        <vultr>Vultr API</vultr>
+                        <yandex>Yandex API</yandex>
+                        <zeit>Zeit API</zeit>
+                        <zilore>Zilore API</zilore>
+                        <zonomi>Zonomi API</zonomi>
                     </OptionValues>
                 </dns_lexicon_provider>
                 <dns_lexicon_user type="TextField">
@@ -594,12 +683,31 @@
                 <dns_linode_key type="TextField">
                   <Required>N</Required>
                 </dns_linode_key>
+                <dns_loopia_api type="TextField">
+                  <Required>N</Required>
+                  <default>https://api.loopia.se/RPCSERV</default>
+                </dns_loopia_api>
+                <dns_loopia_user type="TextField">
+                  <Required>N</Required>
+                </dns_loopia_user>
+                <dns_loopia_password type="TextField">
+                  <Required>N</Required>
+                </dns_loopia_password>
                 <dns_lua_email type="TextField">
                     <Required>N</Required>
                 </dns_lua_email>
                 <dns_lua_key type="TextField">
                     <Required>N</Required>
                 </dns_lua_key>
+                <dns_miab_user type="TextField">
+                    <Required>N</Required>
+                </dns_miab_user>
+                <dns_miab_password type="TextField">
+                    <Required>N</Required>
+                </dns_miab_password>
+                <dns_miab_server type="TextField">
+                    <Required>N</Required>
+                </dns_miab_server>
                 <dns_me_key type="TextField">
                     <Required>N</Required>
                 </dns_me_key>
@@ -624,6 +732,15 @@
                 <dns_namesilo_key type="TextField">
                     <Required>N</Required>
                 </dns_namesilo_key>
+                <dns_netcup_cid type="TextField">
+                    <Required>N</Required>
+                </dns_netcup_cid>
+                <dns_netcup_key type="TextField">
+                    <Required>N</Required>
+                </dns_netcup_key>
+                <dns_netcup_pw type="TextField">
+                    <Required>N</Required>
+                </dns_netcup_pw>
                 <dns_nsone_key type="TextField">
                     <Required>N</Required>
                 </dns_nsone_key>
@@ -634,6 +751,24 @@
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_key>
+                <dns_opnsense_host type="TextField">
+                    <Required>N</Required>
+                    <default>localhost</default>
+                </dns_opnsense_host>
+                <dns_opnsense_port type="TextField">
+                    <Required>N</Required>
+                    <default>443</default>
+                </dns_opnsense_port>
+                <dns_opnsense_key type="TextField">
+                    <Required>N</Required>
+                </dns_opnsense_key>
+                <dns_opnsense_token type="TextField">
+                    <Required>N</Required>
+                </dns_opnsense_token>
+                <dns_opnsense_insecure type="BooleanField">
+                    <Required>N</Required>
+                    <default>0</default>
+                </dns_opnsense_insecure>
                 <dns_ovh_app_key type="TextField">
                     <Required>N</Required>
                 </dns_ovh_app_key>
@@ -646,6 +781,15 @@
                 <dns_ovh_endpoint type="TextField">
                     <Required>N</Required>
                 </dns_ovh_endpoint>
+                <dns_pleskxml_user type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_user>
+                <dns_pleskxml_pass type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_pass>
+                <dns_pleskxml_uri type="TextField">
+                    <Required>N</Required>
+                </dns_pleskxml_uri>
                 <dns_pdns_url type="TextField">
                     <Required>N</Required>
                 </dns_pdns_url>
@@ -700,6 +844,9 @@
                 <dns_acmedns_updateurl type="TextField">
                    <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_variomedia_key type="TextField">
+                   <Required>N</Required>
+                </dns_variomedia_key>
             </validation>
         </validations>
         <actions>
@@ -728,6 +875,7 @@
                         <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
+                        <upload_sftp>Upload certificate via SFTP</upload_sftp>
                         <configd>System or Plugin Command (select below)</configd>
                     </OptionValues>
                 </type>
@@ -741,6 +889,76 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </highwinds_access_token>
+                <sftp_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </sftp_host>
+                <sftp_host_key type="TextField">
+                    <Required>N</Required>
+                    <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
+                         Reference: https://stackoverflow.com/a/475217 -->
+                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
+                </sftp_host_key>
+                <sftp_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>49151</MaximumValue>
+                    <default>22</default>
+                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                </sftp_port>
+                <sftp_user type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </sftp_user>
+                <sftp_identity_type type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ecdsa>ECDSA</ecdsa>
+                        <rsa>RSA</rsa>
+                        <ed25519>ed25519</ed25519>
+                    </OptionValues>
+                </sftp_identity_type>
+                <sftp_remote_path type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,512}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 512 characters.</ValidationMessage>
+                </sftp_remote_path>
+                <sftp_chgrp type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[0-9]+$/u</mask>
+                    <ValidationMessage>Should be a numeric value.</ValidationMessage>
+                </sftp_chgrp>
+                <sftp_chmod type="TextField">
+                    <Required>N</Required>
+                    <mask>/^0[0-9]{3}$/u</mask>
+                    <ValidationMessage>A unix permission, 4 digits (e.g. 0440).</ValidationMessage>
+                </sftp_chmod>
+                <sftp_chmod_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^0[0-9]{3}$/u</mask>
+                    <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
+                </sftp_chmod_key>
+                <sftp_filename_cert type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_cert>
+                <sftp_filename_key type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_key>
+                <sftp_filename_ca type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_ca>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>

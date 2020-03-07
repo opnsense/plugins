@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  *
@@ -50,7 +51,7 @@ class ServerController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost() && $this->request->hasPost("server")) {
             if ($uuid != null) {
-                $node = $this->getModel()->getNodeByReference('servers.server.'.$uuid);
+                $node = $this->getModel()->getNodeByReference('servers.server.' . $uuid);
             } else {
                 $node = $this->getModel()->servers->server->Add();
             }
@@ -65,7 +66,7 @@ class ServerController extends ApiMutableModelControllerBase
             }
             return $this->validateAndSave($node, 'server');
         }
-        return array("result"=>"failed");
+        return array("result" => "failed");
     }
     public function delServerAction($uuid)
     {
@@ -75,7 +76,7 @@ class ServerController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost() && $this->request->hasPost("server")) {
             if ($uuid != null) {
-                $node = $this->getModel()->getNodeByReference('servers.server.'.$uuid);
+                $node = $this->getModel()->getNodeByReference('servers.server.' . $uuid);
             } else {
                 $node = $this->getModel()->servers->server->Add();
             }
@@ -90,7 +91,7 @@ class ServerController extends ApiMutableModelControllerBase
             }
             return $this->validateAndSave($node, 'server');
         }
-        return array("result"=>"failed");
+        return array("result" => "failed");
     }
     public function toggleServerAction($uuid)
     {

@@ -5,4 +5,10 @@
         <type>checkbox</type>
         <help>This will allow Postfix to connect to rspamd via milter protocol.</help>
     </field>
+    <field>
+        <id>antispam.milter_rspamd</id>
+        <label>Milter IP Version</label>
+        <type>dropdown</type>
+        <help>Select the IP version for connecting to rspamd.</help>
+    </field>
 </form>

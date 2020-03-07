@@ -2,7 +2,7 @@
     <VPN>
       <Tinc cssClass="fa fa-lock fa-fw" order="100">
         <Configuration order="10" url="/ui/tinc"/>
-        <LogFile VisibleName="Log File" order="20" url="/diag_logs_tinc.php"/>
+        <LogFile VisibleName="Log File" order="20" url="/ui/diagnostics/log/core/tinc"/>
       </Tinc>
     </VPN>
 </menu>

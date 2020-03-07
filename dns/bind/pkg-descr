@@ -8,6 +8,37 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.12
+
+* Add checkbox to disable prefetch option
+
+1.11
+
+* Remove lame-server log flooding
+* Remove HBBTV DNSBL
+* Rewrite Log File section to new MVC code
+
+1.10
+
+* Add new ressource record types
+
+1.9
+
+* Allow IPv4-only mode
+
+1.8
+
+* Fix template generation when there is only one zone configured
+* Removed discontinued DNSBL Zeus Tracker list
+
+1.7
+
+* Rename "domain" to "zone", because both forward and reverse zones can be used[1]
+* Automatically replace "@" with a "." in zone contact e-mail address[1]
+* Assorted UX and help text improvements[1]
+
+[1] https://github.com/opnsense/plugins/pull/1431
+
 1.6
 
 * Add update and extra WindowsSpyBlocker list

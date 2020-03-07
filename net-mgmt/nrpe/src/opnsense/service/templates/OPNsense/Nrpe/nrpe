@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.nrpe.general.enabled') and OPNsense.nrpe.general.enabled == '1' %}
+nrpe3_enable="YES"
+{% else %}
+nrpe3_enable="NO"
+{% endif %}

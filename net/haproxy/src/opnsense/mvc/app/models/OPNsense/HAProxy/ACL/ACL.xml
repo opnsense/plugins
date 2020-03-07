@@ -4,7 +4,8 @@
         <patterns>
             <pattern>ui/haproxy/*</pattern>
             <pattern>api/haproxy/*</pattern>
-            <pattern>diag_logs_haproxy.php</pattern>
+            <pattern>ui/diagnostics/log/core/haproxy/*</pattern>
+            <pattern>api/diagnostics/log/core/haproxy/*</pattern>
         </patterns>
     </page-services-haproxy>
 </acl>

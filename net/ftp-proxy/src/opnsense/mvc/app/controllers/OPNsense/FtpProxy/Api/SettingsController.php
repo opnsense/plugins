@@ -41,232 +41,235 @@ use \OPNsense\Base\UIModelGrid;
  */
 class SettingsController extends ApiControllerBase
 {
-	/**
-	 * retrieve ftpproxy settings or return defaults
-	 * @param $uuid item unique id
-	 * @return array
-	 */
-	public function getProxyAction($uuid = null)
-	{
-		$mdlFtpProxy = new FtpProxy();
-		if ($uuid != null) {
-			$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-			if ($node != null) {
-				// return node
-				return array("ftpproxy" => $node->getNodes());
-			}
-		} else {
-			// generate new node, but don't save to disc
-			$node = $mdlFtpProxy->ftpproxy->Add();
-			return array("ftpproxy" => $node->getNodes());
-		}
-		return array();
-	}
+    /**
+     * retrieve ftpproxy settings or return defaults
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function getProxyAction($uuid = null)
+    {
+        $mdlFtpProxy = new FtpProxy();
+        if ($uuid != null) {
+            $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+            if ($node != null) {
+                // return node
+                return array("ftpproxy" => $node->getNodes());
+            }
+        } else {
+            // generate new node, but don't save to disc
+            $node = $mdlFtpProxy->ftpproxy->Add();
+            return array("ftpproxy" => $node->getNodes());
+        }
+        return array();
+    }
 
-	/**
-	 * update ftpproxy with given properties
-	 * @param $uuid item unique id
-	 * @return array
-	 */
-	public function setProxyAction($uuid)
-	{
-		$result = array("result" => "failed");
-		if ($this->request->isPost() && $this->request->hasPost("ftpproxy")) {
-			$mdlFtpProxy = new FtpProxy();
-			// keep a list to detect duplicates later
-			$CurrentProxies =  $mdlFtpProxy->getNodes();
-			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-				if ($node != null) {
-					$Enabled = $node->enabled->__toString();
-					$result = array("result" => "failed", "validations" => array());
-					$proxyInfo = $this->request->getPost("ftpproxy");
+    /**
+     * update ftpproxy with given properties
+     * @param $uuid item unique id
+     * @return array
+     */
+    public function setProxyAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("ftpproxy")) {
+            $mdlFtpProxy = new FtpProxy();
+            // keep a list to detect duplicates later
+            $CurrentProxies =  $mdlFtpProxy->getNodes();
+            if ($uuid != null) {
+                $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+                if ($node != null) {
+                    $Enabled = $node->enabled->__toString();
+                    $result = array("result" => "failed", "validations" => array());
+                    $proxyInfo = $this->request->getPost("ftpproxy");
 
-					$node->setNodes($proxyInfo);
-					$valMsgs = $mdlFtpProxy->performValidation();
-					foreach ($valMsgs as $field => $msg) {
-						$fieldnm = str_replace($node->__reference, "ftpproxy", $msg->getField());
-						$result["validations"][$fieldnm] = $msg->getMessage();
-					}
+                    $node->setNodes($proxyInfo);
+                    $valMsgs = $mdlFtpProxy->performValidation();
+                    foreach ($valMsgs as $field => $msg) {
+                        $fieldnm = str_replace($node->__reference, "ftpproxy", $msg->getField());
+                        $result["validations"][$fieldnm] = $msg->getMessage();
+                    }
 
-					if (count($result['validations']) == 0) {
-						// check for duplicates
-						foreach ($CurrentProxies['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
-							if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress'] &&
-								$node->listenport->__toString() == $CurrentProxy['listenport'] &&
-								$uuid != $CurrentUUID) {
-								return array(
-										  "result" => "failed",
-										  "validations" => array(
-										     "ftpproxy.listenaddress" => "Listen address in combination with Listen port already exists.",
-										     "ftpproxy.listenport" => "Listen port in combination with Listen address already exists."
-								          )
-									   );
-							}
-						}
+                    if (count($result['validations']) == 0) {
+                        // check for duplicates
+                        foreach ($CurrentProxies['ftpproxy'] as $CurrentUUID => &$CurrentProxy) {
+                            if (
+                                $node->listenaddress->__toString() == $CurrentProxy['listenaddress'] &&
+                                $node->listenport->__toString() == $CurrentProxy['listenport'] &&
+                                $uuid != $CurrentUUID
+                            ) {
+                                return array(
+                                          "result" => "failed",
+                                          "validations" => array(
+                                             "ftpproxy.listenaddress" => "Listen address in combination with Listen port already exists.",
+                                             "ftpproxy.listenport" => "Listen port in combination with Listen address already exists."
+                                          )
+                                       );
+                            }
+                        }
 
-				        // save config if validated correctly
-						$mdlFtpProxy->serializeToConfig();
-						Config::getInstance()->save();
-						// reload config
-						$svcFtpProxy = new ServiceController();
-						$result= $svcFtpProxy->reloadAction();
-					}
-				}
-			}
-		}
-		return $result;
-	}
+                        // save config if validated correctly
+                        $mdlFtpProxy->serializeToConfig();
+                        Config::getInstance()->save();
+                        // reload config
+                        $svcFtpProxy = new ServiceController();
+                        $result = $svcFtpProxy->reloadAction();
+                    }
+                }
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * add new ftpproxy and set with attributes from post
-	 * @return array
-	 */
-	public function addProxyAction()
-	{
-		$result = array("result" => "failed");
-		if ($this->request->isPost() && $this->request->hasPost("ftpproxy")) {
-			$result = array("result" => "failed", "validations" => array());
-			$mdlFtpProxy = new FtpProxy();
-			// keep a list to detect duplicates later
-			$CurrentProxies =  $mdlFtpProxy->getNodes();
-			$node = $mdlFtpProxy->ftpproxy->Add();
-			$node->setNodes($this->request->getPost("ftpproxy"));
+    /**
+     * add new ftpproxy and set with attributes from post
+     * @return array
+     */
+    public function addProxyAction()
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost() && $this->request->hasPost("ftpproxy")) {
+            $result = array("result" => "failed", "validations" => array());
+            $mdlFtpProxy = new FtpProxy();
+            // keep a list to detect duplicates later
+            $CurrentProxies =  $mdlFtpProxy->getNodes();
+            $node = $mdlFtpProxy->ftpproxy->Add();
+            $node->setNodes($this->request->getPost("ftpproxy"));
 
-			$valMsgs = $mdlFtpProxy->performValidation();
+            $valMsgs = $mdlFtpProxy->performValidation();
 
-			foreach ($valMsgs as $field => $msg) {
-				$fieldnm = str_replace($node->__reference, "ftpproxy", $msg->getField());
-				$result["validations"][$fieldnm] = $msg->getMessage();
-			}
+            foreach ($valMsgs as $field => $msg) {
+                $fieldnm = str_replace($node->__reference, "ftpproxy", $msg->getField());
+                $result["validations"][$fieldnm] = $msg->getMessage();
+            }
 
-			if (count($result['validations']) == 0) {
-				foreach ($CurrentProxies['ftpproxy'] as &$CurrentProxy) {
-					if ($node->listenaddress->__toString() == $CurrentProxy['listenaddress']
-							&& $node->listenport->__toString() == $CurrentProxy['listenport']) {
-						return array(
-								  "result" => "failed",
-								  "validations" => array(
-								     "ftpproxy.listenaddress" => "Listen address in combination with Listen port already exists.",
-								     "ftpproxy.listenport" => "Listen port in combination with Listen address already exists."
-								   )
-						       );
-					}
-				}
+            if (count($result['validations']) == 0) {
+                foreach ($CurrentProxies['ftpproxy'] as &$CurrentProxy) {
+                    if (
+                        $node->listenaddress->__toString() == $CurrentProxy['listenaddress']
+                            && $node->listenport->__toString() == $CurrentProxy['listenport']
+                    ) {
+                        return array(
+                                  "result" => "failed",
+                                  "validations" => array(
+                                     "ftpproxy.listenaddress" => "Listen address in combination with Listen port already exists.",
+                                     "ftpproxy.listenport" => "Listen port in combination with Listen address already exists."
+                                   )
+                               );
+                    }
+                }
 
-				// save config if validated correctly
-				$mdlFtpProxy->serializeToConfig();
-				Config::getInstance()->save();
-				// reload config
-				$svcFtpProxy = new ServiceController();
-				$result= $svcFtpProxy->reloadAction();
-			}
-		}
-		return $result;
-	}
+                // save config if validated correctly
+                $mdlFtpProxy->serializeToConfig();
+                Config::getInstance()->save();
+                // reload config
+                $svcFtpProxy = new ServiceController();
+                $result = $svcFtpProxy->reloadAction();
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * delete ftpproxy by uuid
-	 * @param $uuid item unique id
-	 * @return array status
-	 */
-	public function delProxyAction($uuid)
-	{
+    /**
+     * delete ftpproxy by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function delProxyAction($uuid)
+    {
 
-		$result = array("result" => "failed");
-		if ($this->request->isPost()) {
-			$mdlFtpProxy = new FtpProxy();
-			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-				if ($node != null) {
-					if ($mdlFtpProxy->ftpproxy->del($uuid) == true) {
-						// if item is removed, serialize to config and save
-						$mdlFtpProxy->serializeToConfig();
-						Config::getInstance()->save();
-						// reload config
-						$svcFtpProxy = new ServiceController();
-						$result= $svcFtpProxy->reloadAction();
-					}
-				} else {
-					$result['result'] = 'not found';
-				}
-			}
-		}
-		return $result;
-	}
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlFtpProxy = new FtpProxy();
+            if ($uuid != null) {
+                $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+                if ($node != null) {
+                    if ($mdlFtpProxy->ftpproxy->del($uuid) == true) {
+                        // if item is removed, serialize to config and save
+                        $mdlFtpProxy->serializeToConfig();
+                        Config::getInstance()->save();
+                        // reload config
+                        $svcFtpProxy = new ServiceController();
+                        $result = $svcFtpProxy->reloadAction();
+                    }
+                } else {
+                    $result['result'] = 'not found';
+                }
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * toggle ftpproxy by uuid (enable/disable)
-	 * @param $uuid item unique id
-	 * @return array status
-	 */
-	public function toggleProxyAction($uuid)
-	{
+    /**
+     * toggle ftpproxy by uuid (enable/disable)
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function toggleProxyAction($uuid)
+    {
 
-		$result = array("result" => "failed");
-		if ($this->request->isPost()) {
-			$mdlFtpProxy = new FtpProxy();
-			if ($uuid != null) {
-				$node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
-				if ($node != null) {
-					if ($node->enabled->__toString() == "1") {
-						$node->enabled = "0";
-					} else {
-						$node->enabled = "1";
-					}
-					// if item has toggled, serialize to config and save
-					$mdlFtpProxy->serializeToConfig();
-					Config::getInstance()->save();
-					// reload config
-					$svcFtpProxy = new ServiceController();
-					$result= $svcFtpProxy->reloadAction();
-				}
-			}
-		}
-		return $result;
-	}
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlFtpProxy = new FtpProxy();
+            if ($uuid != null) {
+                $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
+                if ($node != null) {
+                    if ($node->enabled->__toString() == "1") {
+                        $node->enabled = "0";
+                    } else {
+                        $node->enabled = "1";
+                    }
+                    // if item has toggled, serialize to config and save
+                    $mdlFtpProxy->serializeToConfig();
+                    Config::getInstance()->save();
+                    // reload config
+                    $svcFtpProxy = new ServiceController();
+                    $result = $svcFtpProxy->reloadAction();
+                }
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 *
-	 * search ftpproxy
-	 * @return array
-	 */
-	public function searchProxyAction()
-	{
-		$this->sessionClose();
-		$fields = array(
-				"enabled",
-				"listenaddress",
-				"listenport",
-				"sourceaddress",
-				"rewritesourceport",
-				"idletimeout",
-				"maxsessions",
-				"reverseaddress",
-				"reverseport",
-				"logconnections",
-				"debuglevel",
-				"description"
-		);
-		$mdlFtpProxy = new FtpProxy();
+    /**
+     *
+     * search ftpproxy
+     * @return array
+     */
+    public function searchProxyAction()
+    {
+        $this->sessionClose();
+        $fields = array(
+                "enabled",
+                "listenaddress",
+                "listenport",
+                "sourceaddress",
+                "rewritesourceport",
+                "idletimeout",
+                "maxsessions",
+                "reverseaddress",
+                "reverseport",
+                "logconnections",
+                "debuglevel",
+                "description"
+        );
+        $mdlFtpProxy = new FtpProxy();
 
-		$grid = new UIModelGrid($mdlFtpProxy->ftpproxy);
-		$response = $grid->fetchBindRequest(
-				$this->request,
-				$fields,
-				"listenport"
-				);
-		$svcFtpProxy = new ServiceController();
-		foreach($response['rows'] as &$row) {
-			$result = $svcFtpProxy->statusAction($row['uuid']);
-			if ($result['result'] == 'OK') {
-				$row['status'] = 0;
-				continue;
-			}
-			$row['status'] = 2;
+        $grid = new UIModelGrid($mdlFtpProxy->ftpproxy);
+        $response = $grid->fetchBindRequest(
+            $this->request,
+            $fields,
+            "listenport"
+        );
+        $svcFtpProxy = new ServiceController();
+        foreach ($response['rows'] as &$row) {
+            $result = $svcFtpProxy->statusAction($row['uuid']);
+            if ($result['result'] == 'OK') {
+                $row['status'] = 0;
+                continue;
+            }
+            $row['status'] = 2;
+        }
 
-		}
-
-		return $response;
-	}
+        return $response;
+    }
 }

@@ -6,7 +6,7 @@
               <Features url="/ui/zabbixagent#tab_zabbixagent-settings-features"/>
               <Tuning url="/ui/zabbixagent#tab_zabbixagent-settings-tuning"/>
           </Settings>
-          <Log VisibleName="Log File" order="50" url="/diag_logs_zabbixagent.php"/>
+          <Log VisibleName="Log File" order="50" url="/ui/diagnostics/log/zabbix/zabbix_agentd"/>
       </ZabbixAgent>
     </Services>
 </menu>

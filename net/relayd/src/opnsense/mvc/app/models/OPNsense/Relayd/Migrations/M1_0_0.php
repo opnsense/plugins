@@ -66,8 +66,10 @@ class M1_0_0 extends BaseModelMigration
                     switch ($monitorType->type) {
                         case 'http':
                         case 'https':
-                            if (!empty($monitorType->options->path) &&
-                            !empty($monitorType->options->code)) {
+                            if (
+                                !empty($monitorType->options->path) &&
+                                !empty($monitorType->options->code)
+                            ) {
                                 $setting = array(
                                     'name' => $name,
                                     'path' => $monitorType->options->path,
@@ -115,9 +117,11 @@ class M1_0_0 extends BaseModelMigration
         /* load_balancer lbpool */
         if (!empty($cfgObj->load_balancer->lbpool) && count($cfgObj->load_balancer->lbpool)) {
             foreach ($cfgObj->load_balancer->lbpool as $lbpool) {
-                if (!empty($lbpool->name) &&
+                if (
+                    !empty($lbpool->name) &&
                     !empty($lbpool->servers &&
-                    !empty($lbpool->monitor))) {
+                    !empty($lbpool->monitor))
+                ) {
                     $name = $lbpool->name->__toString();
                     $tableSetting = array(
                         'enabled' => 1,
@@ -191,10 +195,12 @@ class M1_0_0 extends BaseModelMigration
         /* load_balancer virtual_server */
         if (!empty($cfgObj->load_balancer->virtual_server) && count($cfgObj->load_balancer->virtual_server)) {
             foreach ($cfgObj->load_balancer->virtual_server as $virtual_server) {
-                if (!empty($virtual_server->name) &&
+                if (
+                    !empty($virtual_server->name) &&
                     !empty($virtual_server->ipaddr) &&
                     !empty($virtual_server->port) &&
-                    !empty($virtual_server->poolname)) {
+                    !empty($virtual_server->poolname)
+                ) {
                     $poolname = $virtual_server->poolname->__toString();
                     $vserverSetting = array(
                         'enabled' => 1,

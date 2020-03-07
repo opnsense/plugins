@@ -24,7 +24,6 @@
                 <hpf>hpHosts FSA</hpf>
                 <hpp>hpHosts PSH</hpp>
                 <hup>hpHosts PUP</hup>
-                <ht>Hbbtv List</ht>
                 <mw>Malwaredomain List</mw>
                 <nc>NoCoin List</nc>
                 <pt>PornTop1M List</pt>
@@ -36,7 +35,6 @@
                 <wsu>WindowsSpyBlocker (update)</wsu>
                 <wse>WindowsSpyBlocker (extra)</wse>
                 <yy>YoYo List</yy>
-                <za>ZeusTracker Abuse.ch List</za>
             </OptionValues>
         </type>
         <whitelists type="CSVListField">

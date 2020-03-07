@@ -30,7 +30,6 @@
  */
 
 require_once("guiconfig.inc");
-require_once("services.inc");
 require_once('plugins.inc.d/igmpproxy.inc');
 
 $a_igmpproxy = &config_read_array('igmpproxy', 'igmpentry');

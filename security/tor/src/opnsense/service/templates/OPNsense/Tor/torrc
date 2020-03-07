@@ -93,6 +93,10 @@ FirewallPorts {{ OPNsense.tor.general.fascist_firewall_ports }}
 FascistFirewall 0
 {% endif %}
 
+{% if helpers.exists('OPNsense.tor.general.dormant_canceled_by_startup') and OPNsense.tor.general.dormant_canceled_by_startup == '1' %}
+DormantCanceledByStartup 1
+{% endif %}
+
 {% if helpers.exists('OPNsense.tor.general.enable_transparent') and OPNsense.tor.general.enable_transparent == '1' %}
 TransPort {{ OPNsense.tor.general.transparent_port }}
 DNSPort {{ OPNsense.tor.general.transparent_dns }}

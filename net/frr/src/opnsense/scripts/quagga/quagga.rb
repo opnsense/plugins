@@ -113,13 +113,13 @@ class General
     end
 
     # you don't have to understand this regex ;)
-    entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:via (\S+?)|is ([^,]+?)), ([^,\n]+)(?:, (\S+))?/
+    entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:(?:via (\S+?)|is ([^,]+?)|), ([^,\n]+)|(unreachable \(blackhole\)))(?:, (\S+))?/
     entries = []
     while (line = lines.shift&.strip)
       if line.length > 10
-        code, network, ad, metric, via, direct, interface, time = line.scan(entry_regex).first
+        code, network, ad, metric, via, direct, interface, unreachable, time = line.scan(entry_regex).first
         code = code.split('').map {|c| {short: c, long: meanings[c]}}
-        entries << {code: code, network: (network || direct), ad: ad, via: via, metric: metric, interface: interface, time: time }
+        entries << {code: code, network: (network || direct), ad: ad, via: via || unreachable, metric: metric, interface: interface, time: time }
       end
     end
     entries
@@ -394,35 +394,46 @@ class BGP
     output = output.split("\n")
     bgp = {}
 
-    x,y = output.shift.scan(/.*?version is (\d+).*?ID is ([0-9\.]+).*/).first
-    bgp['table_version'] = x
-    bgp['local_router_id'] = y
-
-    # find out, what the status abbreviations mean
-    status_codes = {}
-    line = output.shift
-    line.split(":").last.strip.split(",").each do |x|
-      k,v = x.strip.split(" ")
-      status_codes[k] = v
-    end
-    while line.end_with? ","
-      line = output.shift
-      line.strip.split(",").each do |x|
-        k,v = x.strip.split(" ")
-        status_codes[k] = v
+    # Process the header/definitions
+    while line = output.shift&.rstrip
+      case line
+      when /^BGP table version/
+        x,y = line.scan(/.*?version is (\d+).*?ID is ([0-9\.]+).*/).first
+        bgp['table_version'] = x
+        bgp['local_router_id'] = y
+      when /^Status codes/
+        # find out, what the status abbreviations mean
+        status_codes = {}
+        line.split(":").last.strip.split(",").each do |x|
+          k,v = x.strip.split(" ")
+          status_codes[k] = v
+        end
+        while line.end_with? ","
+          line = output.shift
+          line.strip.split(",").each do |x|
+            k,v = x.strip.split(" ")
+            status_codes[k] = v
+          end
+        end
+      when /^Origin codes/
+        # same like before but for the origin codes
+        origin_codes = {}
+        line.split(":").last.strip.split(",").each do |x|
+          k,v = x.strip.split(" - ")
+          origin_codes[k] = v
+        end
+      when /^Nexthop codes/
+        # Just eat this line, nothing to do with it
+      when ""
+        # Found the end of the header, reached the table
+        break
+      else
+        # eat all other (unexpected) lines
+        puts line if $QUAGGA_DEBUG
       end
     end
 
-    # same like before but for the origin codes
-    origin_codes = {}
-    output.shift.split(":").last.strip.split(",").each do |x|
-      k,v = x.strip.split(" - ")
-      origin_codes[k] = v
-    end
-
-    # drop empty line
-    output.shift
-    # read entries
+    # Process the tabular data
     bgp['output'] = []
     qta = QuaggaTableReader.new(["Network", "Next Hop", "Metric", "LocPrf", "Weight", "Path"])
     qta.read_headline(output.shift,true)

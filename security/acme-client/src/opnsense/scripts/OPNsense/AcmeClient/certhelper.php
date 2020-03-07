@@ -78,23 +78,23 @@ if (isset($options["C"])) {
 switch ($options["a"]) {
     case 'sign':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'renew':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'remove':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'removekey':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     case 'revoke':
         $result = cert_action_validator($options["c"]);
-        echo json_encode(array('status'=>$result));
+        echo json_encode(array('status' => $result));
         break;
     default:
         echo "ERROR: invalid argument specified\n";
@@ -112,7 +112,7 @@ function cert_action_validator($opt_cert_id)
 {
     global $options;
 
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Store certs here after successful issue/renewal. Required for automations.
     $restart_certs = array();
@@ -328,8 +328,18 @@ function eval_optional_acme_args()
     $acme_args[] = isset($options["S"]) ? "--staging" : null; // for debug purpose
 
     // Set log level
-    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "normal" ? "--log-level 1" : "--log-level 2";
-    $acme_args[] = $configObj->OPNsense->AcmeClient->settings->logLevel == "debug" ? "--debug" : null;
+    switch ($configObj->OPNsense->AcmeClient->settings->logLevel) {
+        case "extended":
+            $acme_args[] = "--log-level 2";
+        case "debug":
+            $acme_args[] = "--debug";
+        case "debug2":
+            $acme_args[] = "--debug 2";
+        case "debug3":
+            $acme_args[] = "--debug 3";
+        default:
+            $acme_args[] = "--log-level 1";
+    }
 
     // Remove empty and duplicate elements from array
     return(array_unique(array_filter($acme_args)));
@@ -344,7 +354,8 @@ function run_acme_account_registration($acctObj, $certObj, $modelObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
     $account_key_file = $account_conf_dir . "/account.key";
     $account_json_file = $account_conf_dir . "/account.json";
@@ -459,10 +470,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Required to run pre-defined commands.
     $backend = new Backend();
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames
@@ -511,7 +523,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
     $last_update_time = new \DateTime();
     $last_update_time->setTimestamp($last_update);
     $renew_interval = (string)$certObj->renewInterval;
-    $next_update = $last_update_time->add(new \DateInterval('P'.$renew_interval.'D'));
+    $next_update = $last_update_time->add(new \DateInterval('P' . $renew_interval . 'D'));
 
     // Check if it's time to renew the cert.
     if (isset($options["F"]) or ($current_time >= $next_update)) {
@@ -575,16 +587,34 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             }
         }
 
+        // Check wether IPv6 support is enabled
+        $configObj = Config::getInstance()->object();
+        if (isset($configObj->system->ipv6allow) && ($configObj->system->ipv6allow == "1")) {
+          $_ipv6_enabled = true;
+        } else {
+          $_ipv6_enabled = false;
+        }
+
         // Generate rules for all IP addresses
         $anchor_rules = "";
         if (!empty($iplist)) {
             $dedup_iplist = array_unique($iplist);
             // Add one rule for every IP
             foreach ($dedup_iplist as $ip) {
-                if ($ip == '.') {
-                    continue; // skip broken entries
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                  // IPv4
+                  $_dst = '127.0.0.1';
+                  $_family = 'inet';
+                  log_error("AcmeClient: using IPv4 address: ${ip}");
+                } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+                  // IPv6
+                  $_dst = '::1';
+                  $_family = 'inet6';
+                  log_error("AcmeClient: using IPv6 address: ${ip}");
+                } else {
+                  continue; // skip broken entries
                 }
-                $anchor_rules .= "rdr pass inet proto tcp from any to ${ip} port 80 -> 127.0.0.1 port ${local_http_port}\n";
+                $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 80 -> ${_dst} port ${local_http_port}\n";
             }
         } else {
             log_error("AcmeClient: no IP addresses found to setup port forward");
@@ -617,6 +647,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Setup DNS hook:
         // Set required env variables, write secrets to files, etc.
         switch ((string)$valObj->dns_service) {
+            case 'dns_acmedns':
+                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
+                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
+                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
+                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
+                break;
             case 'dns_ad':
                 $proc_env['AD_API_KEY'] = (string)$valObj->dns_ad_key;
                 break;
@@ -640,8 +676,12 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['AZUREDNS_CLIENTSECRET'] = (string)$valObj->dns_azuredns_clientsecret;
                 break;
             case 'dns_cf':
+                // Global API key (insecure)
                 $proc_env['CF_Key'] = (string)$valObj->dns_cf_key;
                 $proc_env['CF_Email'] = (string)$valObj->dns_cf_email;
+                // Restricted API token (recommended)
+                $proc_env['CF_Token'] = (string)$valObj->dns_cf_token;
+                $proc_env['CF_Account_ID'] = (string)$valObj->dns_cf_account_id;
                 break;
             case 'dns_cloudns':
                 $proc_env['CLOUDNS_AUTH_ID'] = (string)$valObj->dns_cloudns_auth_id;
@@ -739,6 +779,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['GD_Key'] = (string)$valObj->dns_gd_key;
                 $proc_env['GD_Secret'] = (string)$valObj->dns_gd_secret;
                 break;
+            case 'dns_gdnsdk':
+                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
+                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
+                break;
             case 'dns_hostingde':
                 $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
                 $proc_env['HOSTINGDE_APIKEY'] = (string)$valObj->dns_hostingde_apiKey;
@@ -771,9 +815,8 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
-                $proc_env['LEXICON_CLOUDFLARE_USERNAME'] = (string)$valObj->dns_lexicon_user;
-                $proc_env['LEXICON_CLOUDFLARE_TOKEN'] = (string)$valObj->dns_lexicon_token;
-                $proc_env['LEXICON_NAMESILO_TOKEN'] = (string)$valObj->dns_lexicon_token;
+                $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_USERNAME'] = (string)$valObj->dns_lexicon_user;
+                $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_TOKEN'] = (string)$valObj->dns_lexicon_token;
                 if ((string)$valObj->dns_lexicon_provider == 'namesilo') {
                     // Namesilo applies changes to DNS records only every 15 minutes.
                     $acme_hook_options[] = "--dnssleep 960";
@@ -784,6 +827,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Linode can take up to 15 to update DNS records
                 $acme_hook_options[] = "--dnssleep 960";
                 break;
+            case 'dns_loopia':
+                $proc_env['LOOPIA_Api'] = (string)$valObj->dns_loopia_api;
+                $proc_env['LOOPIA_User'] = (string)$valObj->dns_loopia_user;
+                $proc_env['LOOPIA_Password'] = (string)$valObj->dns_loopia_password;
+                break;
             case 'dns_lua':
                 $proc_env['LUA_Key'] = (string)$valObj->dns_lua_key;
                 $proc_env['LUA_Email'] = (string)$valObj->dns_lua_email;
@@ -791,6 +839,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_me':
                 $proc_env['ME_Key'] = (string)$valObj->dns_me_key;
                 $proc_env['ME_Secret'] = (string)$valObj->dns_me_secret;
+                break;
+            case 'dns_miab':
+                $proc_env['MIAB_Username'] = (string)$valObj->dns_miab_user;
+                $proc_env['MIAB_Password'] = (string)$valObj->dns_miab_password;
+                $proc_env['MIAB_Server'] = (string)$valObj->dns_miab_server;
                 break;
             case 'dns_namecheap':
                 $proc_env['NAMECHEAP_USERNAME'] = (string)$valObj->dns_namecheap_user;
@@ -811,6 +864,13 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Namesilo applies changes to DNS records only every 15 minutes.
                 $acme_hook_options[] = "--dnssleep 960";
                 break;
+            case 'dns_netcup':
+                $proc_env['NC_CID'] = (string)$valObj->dns_netcup_cid;
+                $proc_env['NC_Apikey'] = (string)$valObj->dns_netcup_key;
+                $proc_env['NC_Apipw'] = (string)$valObj->dns_netcup_pw;
+                // netcup applies changes to DNS records only every 10 minutes.
+                $acme_hook_options[] = "--dnssleep 600";
+                break;
             case 'dns_nsone':
                 $proc_env['NS1_Key'] = (string)$valObj->dns_nsone_key;
                 break;
@@ -820,6 +880,18 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 file_put_contents($secret_key_filename, $secret_key_data);
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
+                break;
+            case 'dns_opnsense':
+                # BIND plugin must be installed.
+                if ((string)$modelObj->isPluginInstalled('bind') != "1") {
+                    log_error("AcmeClient: BIND plugin is NOT installed. Please install os-bind.");
+                    return(1);
+                }
+                $proc_env['OPNs_Host'] = (string)$valObj->dns_opnsense_host;
+                $proc_env['OPNs_Port'] = (string)$valObj->dns_opnsense_port;
+                $proc_env['OPNs_Key'] = (string)$valObj->dns_opnsense_key;
+                $proc_env['OPNs_Token'] = (string)$valObj->dns_opnsense_token;
+                $proc_env['OPNs_Api_Insecure'] = (string)$valObj->dns_opnsense_insecure;
                 break;
             case 'dns_ovh':
                 $proc_env['OVH_AK'] = (string)$valObj->dns_ovh_app_key;
@@ -832,6 +904,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['PDNS_ServerId'] = (string)$valObj->dns_pdns_serverid;
                 $proc_env['PDNS_Token'] = (string)$valObj->dns_pdns_token;
                 break;
+            case 'dns_pleskxml':
+                $proc_env['pleskxml_user'] = (string)$valObj->dns_pleskxml_user;
+                $proc_env['pleskxml_pass'] = (string)$valObj->dns_pleskxml_pass;
+                $proc_env['pleskxml_uri'] = (string)$valObj->dns_pleskxml_uri;
+                break;
             case 'dns_selectel':
                 $proc_env['SL_Key'] = (string)$valObj->dns_sl_key;
                 break;
@@ -842,6 +919,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_unoeuro':
                 $proc_env['UNO_Key'] = (string)$valObj->dns_uno_key;
                 $proc_env['UNO_User'] = (string)$valObj->dns_uno_user;
+                break;
+            case 'dns_variomedia':
+                $proc_env['VARIOMEDIA_API_TOKEN'] = (string)$valObj->dns_variomedia_key;
                 break;
             case 'dns_vscale':
                 $proc_env['VSCALE_API_KEY'] = (string)$valObj->dns_vscale_key;
@@ -855,16 +935,6 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_zonomi':
                 $proc_env['ZM_Key'] = (string)$valObj->dns_zm_key;
                 break;
-            case 'dns_gdnsdk':
-                $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
-                $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
-                break;
-            case 'dns_acmedns':
-                $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
-                $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
-                $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
-                $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
-                break;
             default:
                 log_error("AcmeClient: invalid DNS-01 service specified: " . (string)$valObj->dns_service);
                 return(1);
@@ -873,10 +943,49 @@ function run_acme_validation($certObj, $valObj, $acctObj)
 
     // Prepare altNames
     $altnames = "";
+
+    // Main domain: Use DNS alias mode for domain validation?
+    // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+    if ($val_method == 'dns01') {
+        switch ((string)$certObj->aliasmode) {
+            case 'automatic':
+                $name = "_acme-challenge." . ltrim((string)$certObj->name, '*.');
+                if ($dst = dns_get_record($name, DNS_CNAME)) {
+                    $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                }
+                break;
+            case 'domain':
+                $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                break;
+            case 'challenge':
+                $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                break;
+        }
+    }
+
     if (!empty((string)$certObj->altNames)) {
         $_altnames = explode(",", (string)$certObj->altNames);
         foreach (explode(",", (string)$certObj->altNames) as $altname) {
             $altnames .= "--domain ${altname} ";
+
+            // altNames: Use DNS alias mode for domain validation?
+            // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+            if ($val_method == 'dns01') {
+                switch ((string)$certObj->aliasmode) {
+                    case 'automatic':
+                        $name = "_acme-challenge." . ltrim($altname, '*.');
+                        if ($dst = dns_get_record($name, DNS_CNAME)) {
+                            $altnames .= "--domain-alias " . $dst[0]['target'] . " ";
+                        }
+                        break;
+                    case 'domain':
+                        $altnames .= "--domain-alias " . (string)$certObj->domainalias . " ";
+                        break;
+                    case 'challenge':
+                        $altnames .= "--challenge-alias " . (string)$certObj->challengealias . " ";
+                        break;
+                }
+            }
         }
     }
 
@@ -960,7 +1069,8 @@ function revoke_cert($certObj, $valObj, $acctObj)
     $acme_args = eval_optional_acme_args();
 
     // Collect account information
-    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id;
+    $acme_env = (string)$modelObj->settings->environment;
+    $account_conf_dir = "/var/etc/acme-client/accounts/" . $acctObj->id . "_${acme_env}";
     $account_conf_file = $account_conf_dir . "/account.conf";
 
     // Generate certificate filenames
@@ -1283,6 +1393,9 @@ function run_restart_actions($certlist, $modelObj)
                 case 'upload_highwinds':
                     $response = $backend->configdRun("acmeclient upload_highwinds ${cert_id} ${action_id}");
                     break;
+                case 'upload_sftp':
+                    $response = $backend->configdRun("acmeclient upload-sftp ${cert_id} ${action_id}");
+                    break;
                 case 'configd':
                     // Make sure a configd command was specified.
                     if (empty((string)$action->configd)) {
@@ -1347,12 +1460,12 @@ function dump_postponed_updates()
         500 => 'internal error',
     ];
 
-    $modelObj = new OPNsense\AcmeClient\AcmeClient;
+    $modelObj = new OPNsense\AcmeClient\AcmeClient();
 
     foreach ($postponed_updates as $pupdate) {
         $_statusCode = $pupdate['statusCode'];
         $_uuid = $pupdate['uuid'];
-        $node = $modelObj->getNodeByReference('certificates.certificate.'.$_uuid);
+        $node = $modelObj->getNodeByReference('certificates.certificate.' . $_uuid);
         if ($node != null) {
             log_error("AcmeClient: storing status '" . $status_descr[$_statusCode] . "' for cert " . (string)$node->name);
             $node->statusCode = $_statusCode;
@@ -1430,7 +1543,7 @@ function local_cert_get_cn($crt, $decode = true)
 }
 
 // taken from system_camanager.php
-function local_ca_import(& $ca, $str, $key = "", $serial = 0)
+function local_ca_import(&$ca, $str, $key = "", $serial = 0)
 {
     global $config;
 
@@ -1445,7 +1558,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     $issuer = cert_get_issuer($str, false);
 
     // Find my issuer unless self-signed
-    if ($issuer <> $subject) {
+    if ($issuer != $subject) {
         $issuer_crt =& lookup_ca_by_subject($issuer);
         if ($issuer_crt) {
             $ca['caref'] = $issuer_crt['refid'];
@@ -1456,7 +1569,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     if (is_array($config['ca'])) {
         foreach ($config['ca'] as & $oca) {
             $issuer = cert_get_issuer($oca['crt']);
-            if ($ca['refid']<>$oca['refid'] && $issuer==$subject) {
+            if ($ca['refid'] != $oca['refid'] && $issuer == $subject) {
                 $oca['caref'] = $ca['refid'];
             }
         }
@@ -1464,7 +1577,7 @@ function local_ca_import(& $ca, $str, $key = "", $serial = 0)
     if (is_array($config['cert'])) {
         foreach ($config['cert'] as & $cert) {
             $issuer = cert_get_issuer($cert['crt']);
-            if ($issuer==$subject) {
+            if ($issuer == $subject) {
                 $cert['caref'] = $ca['refid'];
             }
         }

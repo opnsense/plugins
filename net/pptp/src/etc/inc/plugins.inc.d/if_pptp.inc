@@ -180,7 +180,7 @@ EOD;
 EOD;
 
             if (!isset($pptpdcfg['req128'])) {
-                $mpdconf .=<<<EOD
+                $mpdconf .= <<<EOD
   set mppc yes e40
   set mppc yes e56
 
@@ -205,19 +205,19 @@ EOD;
             if (isset($pptpdcfg['radius']['server']['enable'])) {
                 $authport = (isset($pptpdcfg['radius']['server']['port']) && strlen($pptpdcfg['radius']['server']['port']) > 1) ? $pptpdcfg['radius']['server']['port'] : 1812;
                 $acctport = $authport + 1;
-                $mpdconf .=<<<EOD
+                $mpdconf .= <<<EOD
   set radius server {$pptpdcfg['radius']['server']['ip']} "{$pptpdcfg['radius']['server']['secret']}" {$authport} {$acctport}
 
 EOD;
                 if (isset($pptpdcfg['radius']['server2']['enable'])) {
                     $authport = (isset($pptpdcfg['radius']['server2']['port']) && strlen($pptpdcfg['radius']['server2']['port']) > 1) ? $pptpdcfg['radius']['server2']['port'] : 1812;
                     $acctport = $authport + 1;
-                    $mpdconf .=<<<EOD
+                    $mpdconf .= <<<EOD
   set radius server {$pptpdcfg['radius']['server2']['ip']} "{$pptpdcfg['radius']['server2']['secret2']}" {$authport} {$acctport}
 
 EOD;
                 }
-                $mpdconf .=<<<EOD
+                $mpdconf .= <<<EOD
   set radius retries 3
   set radius timeout 10
   set auth enable radius-auth
@@ -225,7 +225,7 @@ EOD;
 EOD;
 
                 if (isset($pptpdcfg['radius']['accounting'])) {
-                    $mpdconf .=<<<EOD
+                    $mpdconf .= <<<EOD
   set auth enable radius-acct
   set radius acct-update 300
 
@@ -287,7 +287,7 @@ function if_pptp_interfaces()
         if (isset($config['pptpd']['n_pptp_units']) && is_numeric($config['pptpd']['n_pptp_units'])) {
             $pptp_subnets = ip_range_to_subnet_array(
                 $config['pptpd']['remoteip'],
-                long2ip32(ip2long($config['pptpd']['remoteip'])+($config['pptpd']['n_pptp_units']-1))
+                long2ip32(ip2long($config['pptpd']['remoteip']) + ($config['pptpd']['n_pptp_units'] - 1))
             );
         } else {
             $pptp_subnets = ip_range_to_subnet_array(

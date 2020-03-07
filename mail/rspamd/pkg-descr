@@ -5,6 +5,14 @@ lua.
 Plugin Changelog
 ----------------
 
+1.9
+
+* Add History Rows field
+
+1.8
+
+* Add Bayes autolearn option
+
 1.7
 
 * Fix permissions due to upstream changes

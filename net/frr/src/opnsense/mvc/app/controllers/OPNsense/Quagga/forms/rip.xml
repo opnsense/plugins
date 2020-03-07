@@ -33,4 +33,10 @@
         <allownew>true</allownew>
         <help>Enter your networks in CIDR notation like 127.0.0.0/8.</help>
     </field>
+    <field>
+        <id>rip.defaultmetric</id>
+        <label>Default Metric</label>
+        <type>text</type>
+        <help>Set the default metric to a value between 1 and 16.</help>
+    </field>
 </form>

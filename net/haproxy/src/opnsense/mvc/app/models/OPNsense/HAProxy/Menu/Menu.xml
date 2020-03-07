@@ -8,6 +8,7 @@
               <DefaultParameters VisibleName="Default Parameters" url="/ui/haproxy#subtab_haproxy-general-defaults"/>
               <LoggingConfiguration VisibleName="Logging Configuration" url="/ui/haproxy#subtab_haproxy-general-logging"/>
               <StatisticsConfiguration VisibleName="Statistics Configuration" url="/ui/haproxy#subtab_haproxy-general-statistics"/>
+              <CacheConfiguration VisibleName="Cache Configuration" url="/ui/haproxy#subtab_haproxy-general-cache"/>
               <Frontends VisibleName="Frontends" url="/ui/haproxy#frontends"/>
               <Backends VisibleName="Backends" url="/ui/haproxy#backends"/>
               <Servers VisibleName="Servers" url="/ui/haproxy#servers"/>
@@ -26,7 +27,7 @@
               <Counters VisibleName="Counters" url="/ui/haproxy/statistics#counters"/>
               <StickTables VisibleName="Stick Tables" url="/ui/haproxy/statistics#tables"/>
           </Statistics>
-          <Log VisibleName="Log File" order="30" url="/diag_logs_haproxy.php"/>
+          <Log VisibleName="Log File" order="30" url="/ui/diagnostics/log/core/haproxy"/>
       </HAProxy>
     </Services>
 </menu>

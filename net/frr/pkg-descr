@@ -11,6 +11,23 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.14
+
+* fix null route issue in parsing
+* add missing via column to routing table for IPv4 (v6 already has it)
+* show BGP status page: also show IPv6 routes
+
+1.13
+
+* Fix wrong match statement for IPv6 route-maps
+* Allow to set default-metric for RIP protocol
+
+1.12
+
+* Add passive-interface to OSPFv3 (by Michael Muenz)
+* Allow to set area per interface for OSPFv2 (by @twoequaldots)
+* Allow to set ebgp-multihop in BGP (by @bpeavy and Greg Goodrich)
+
 1.11
 
 * Add route-map support to redistribution in OSPF

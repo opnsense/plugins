@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.2.1</version>
-    <description>Enterprise-class open source distributed monitoring agent</description>
+    <version>1.2.3</version>
+    <description>Zabbix monitoring agent</description>
     <items>
         <!-- local settings that should NOT be synced to another node -->
         <local>
@@ -63,6 +63,10 @@
                     </OptionValues>
                     <Required>Y</Required>
                 </debugLevel>
+                <sudoRoot type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </sudoRoot>
             </main>
             <tuning>
                 <startAgents type="IntegerField">
@@ -128,6 +132,20 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </logRemoteCommands>
+                <encryption type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </encryption>
+                <encryptionidentity type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </encryptionidentity>
+                <encryptionpsk type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </encryptionpsk>
             </features>
         </settings>
         <userparameters>

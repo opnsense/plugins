@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.14.0</version>
+  <version>1.17.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -18,6 +18,16 @@
     </webgui>
 
     <http>
+      <workerprocesses type="IntegerField">
+        <default>1</default>
+        <MinimumValue>1</MinimumValue>
+        <Required>Y</Required>
+      </workerprocesses>
+      <workerconnections type="IntegerField">
+        <default>1024</default>
+        <MinimumValue>1</MinimumValue>
+        <Required>Y</Required>
+      </workerconnections>
       <sendfile type="BooleanField">
         <default>0</default>
         <Required>N</Required>
@@ -367,6 +377,42 @@
         <Required>Y</Required>
         <default>0</default>
       </websocket>
+      <proxy_buffer_size type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+        <Constraints>
+          <check001>
+            <type>NgxBusyBufferConstraint</type>
+          </check001>
+        </Constraints>
+      </proxy_buffer_size>
+      <proxy_buffers_count type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+        <Constraints>
+          <check001>
+            <type>NgxBusyBufferConstraint</type>
+          </check001>
+        </Constraints>
+      </proxy_buffers_count>
+      <proxy_buffers_size type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+        <Constraints>
+          <check001>
+            <type>NgxBusyBufferConstraint</type>
+          </check001>
+        </Constraints>
+      </proxy_buffers_size>
+      <proxy_busy_buffers_size type="IntegerField">
+        <Required>N</Required>
+        <minValue>1</minValue>
+        <Constraints>
+          <check001>
+            <type>NgxBusyBufferConstraint</type>
+          </check001>
+        </Constraints>
+      </proxy_busy_buffers_size>
       <proxy_ignore_client_abort type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -686,6 +732,14 @@
         <default>0</default>
         <Required>Y</Required>
       </https_only>
+      <ocsp_stapling type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </ocsp_stapling>
+      <ocsp_verify type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </ocsp_verify>
       <block_nonpublic_data type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -707,6 +761,21 @@
         <default>1</default>
         <Required>Y</Required>
       </sendfile>
+      <client_header_buffer_size type="IntegerField">
+        <Required>Y</Required>
+        <default>1</default>
+        <MinimumValue>1</MinimumValue>
+      </client_header_buffer_size>
+      <large_client_header_buffers_number type="IntegerField">
+        <Required>Y</Required>
+        <default>4</default>
+        <MinimumValue>1</MinimumValue>
+      </large_client_header_buffers_number>
+      <large_client_header_buffers_size type="IntegerField">
+        <Required>Y</Required>
+        <default>8</default>
+        <MinimumValue>1</MinimumValue>
+      </large_client_header_buffers_size>
       <security_header type="ModelRelationField">
         <Model>
           <template>

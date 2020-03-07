@@ -1,0 +1,9 @@
+<acl>
+   <page-nrpe-config>
+      <name>Services: NRPE</name>
+      <patterns>
+         <pattern>ui/nrpe/*</pattern>
+         <pattern>api/nrpe/*</pattern>
+      </patterns>
+   </page-nrpe-config>
+</acl>

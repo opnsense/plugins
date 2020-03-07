@@ -5,7 +5,8 @@
       <patterns>
          <pattern>ui/relayd/*</pattern>
          <pattern>api/relayd/*</pattern>
-         <pattern>diag_logs_relayd.php*</pattern>
+         <pattern>ui/diagnostics/log/core/relayd/*</pattern>
+         <pattern>api/diagnostics/log/core/relayd/*</pattern>
       </patterns>
    </page-services-relayd>
 </acl>
