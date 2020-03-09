@@ -28,6 +28,7 @@
 
 namespace OPNsense\Firewall;
 
+use OPNsense\Core\Config;
 use Phalcon\Validation\Message;
 use OPNsense\Base\BaseModel;
 use OPNsense\Firewall\Util;
@@ -81,5 +82,27 @@ class Filter extends BaseModel
             }
         }
         return $messages;
+    }
+
+    /**
+     * Rollback this model to a previous version.
+     * Make sure to remove this object afterwards, since its contents won't be updated.
+     * @param $revision float|string revision number
+     */
+    public function rollback($revision)
+    {
+        $filename = Config::getInstance()->getBackupFilename($revision);
+        if ($filename) {
+            // fiddle with the dom, copy OPNsense->Firewall->FilterRule from backup to current config
+            $sourcexml = simplexml_load_file($filename);
+            if ($sourcexml->OPNsense->Firewall->FilterRule) {
+                $sourcedom = dom_import_simplexml($sourcexml->OPNsense->Firewall->FilterRule);
+                $targetxml = Config::getInstance()->object();
+                $targetdom = dom_import_simplexml($targetxml->OPNsense->Firewall->FilterRule);
+                $node = $targetdom->ownerDocument->importNode($sourcedom, TRUE);
+                $targetdom->parentNode->replaceChild($node, $targetdom);
+                Config::getInstance()->save();
+            }
+        }
     }
 }
