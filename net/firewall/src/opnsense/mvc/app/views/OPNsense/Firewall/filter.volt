@@ -21,6 +21,47 @@
         }
 
         $("#reconfigureAct").SimpleActionButton();
+        $("#savepointAct").SimpleActionButton({
+            onAction: function(data, status){
+                stdDialogInform(
+                    "{{ lang._('Savepoint created') }}",
+                    data['revision'],
+                    "{{ lang._('Close') }}"
+                );
+            }
+        });
+
+        $("#revertAction").on('click', function(){
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_DEFAULT,
+                title: "{{ lang._('Revert to savepoint') }}",
+                message: "<p>{{ lang._('Enter a savepoint to rollback to.') }}</p>" +
+                    '<div class="form-group" style="display: block;">' +
+                    '<input id="revertToTime" type="text" class="form-control"/>' +
+                    '<span class="error text-danger" id="revertToTimeError"></span>'+
+                    '</div>',
+                buttons: [{
+                    label: "{{ lang._('Revert') }}",
+                    cssClass: 'btn-primary',
+                    action: function(dialogRef) {
+                        ajaxCall("/api/firewall/filter/revert/" + $("#revertToTime").val(), {}, function (data, status) {
+                            if (data.status !== "ok") {
+                                $("#revertToTime").parent().addClass("has-error");
+                                $("#revertToTimeError").html(data.status);
+                            } else {
+                                std_bootgrid_reload("grid-rules");
+                                dialogRef.close();
+                            }
+                        });
+                    }
+                }],
+                onshown: function(dialogRef) {
+                    $("#revertToTime").parent().removeClass("has-error");
+                    $("#revertToTimeError").html("");
+                    $("#revertToTime").val("");
+                }
+            });
+        });
     });
 </script>
 
@@ -64,6 +105,18 @@
                 data-error-title="{{ lang._('Filter load error') }}"
                 type="button"
         ></button>
+
+        <div class="pull-right">
+            <button class="btn" id="savepointAct"
+                    data-endpoint='/api/firewall/filter/savepoint'
+                    data-label="{{ lang._('Savepoint') }}"
+                    data-error-title="{{ lang._('snapshot error') }}"
+                    type="button"
+            ></button>
+            <button  class="btn" id="revertAction">
+                {{ lang._('Revert') }}
+            </button>
+        </div>
         <br/><br/>
     </div>
     </div>

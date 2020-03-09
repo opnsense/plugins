@@ -29,6 +29,7 @@ namespace OPNsense\Firewall\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 
 class FilterController extends ApiMutableModelControllerBase
 {
@@ -69,6 +70,39 @@ class FilterController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             return array("status" => (new Backend())->configdRun('filter reload'));
+        } else {
+            return array("status" => "error");
+        }
+    }
+
+    public function savepointAction()
+    {
+        if ($this->request->isPost()) {
+            // trigger a save, so we know revision->time matches our running config
+            Config::getInstance()->save();
+            return array(
+                "status" => "ok",
+                "retention" => (string)Config::getInstance()->backupCount(),
+                "revision" => (string)Config::getInstance()->object()->revision->time
+            );
+        } else {
+            return array("status" => "error");
+        }
+    }
+
+    public function revertAction($revision)
+    {
+        if ($this->request->isPost()) {
+            Config::getInstance()->lock();
+            $filename = Config::getInstance()->getBackupFilename($revision);
+            if (!$filename) {
+                Config::getInstance()->unlock();
+                return ["status" => gettext("unknown (or removed) savepoint")];
+            }
+            $this->getModel()->rollback($revision);
+            Config::getInstance()->unlock();
+            (new Backend())->configdRun('filter reload');
+            return ["status" => "ok"];
         } else {
             return array("status" => "error");
         }
