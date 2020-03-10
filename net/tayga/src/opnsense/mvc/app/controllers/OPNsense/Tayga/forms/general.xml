@@ -24,6 +24,12 @@
         <help>This is not your routers IPv6 address. Tayga requires its own address because it acts as an IPv4 and IPv6 router, and needs to be able to send ICMP messages. Tayga will also respond to ICMP echo requests (ping6) at this address. You can leave it unspecified and Tayga will construct its IPv6 address using IPv4 address and the NAT64 prefix.</help>
     </field>
     <field>
+        <id>general.v6destination</id>
+        <label>IPv6 Destination</label>
+        <type>text</type>
+        <help>This is not your routers IPv6 address. Tayga requires its own address because it acts as an IPv4 and IPv6 router, and needs to be able to send ICMP messages. Tayga will also respond to ICMP echo requests (ping6) at this address. You can leave it unspecified and Tayga will construct its IPv6 address using IPv4 address and the NAT64 prefix.</help>
+    </field>
+    <field>
         <id>general.v6prefix</id>
         <label>IPv6 Prefix</label>
         <type>text</type>
