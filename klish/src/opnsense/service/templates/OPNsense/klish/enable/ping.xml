@@ -8,8 +8,8 @@
 <VIEW name="ping-view"
     prompt="${SYSTEM_NAME}# ">
 
-<!-- commands set: ping, ping6, arping, traceroute, traceroute6 -->
-<!-- ping, ping6, arping -->
+<!-- commands set: ping, ping6, traceroute, traceroute6 -->
+<!-- ping, ping6 -->
     <COMMAND name="ping"
         help="Send messages to network hosts"
         lock="false"
@@ -27,21 +27,17 @@
                 help="Send ICMP IPv6 messages to network hosts"
                 mode="subcommand"
                 ptype="SUBCOMMAND"/>
-            <PARAM name="arp"
-                help="Send ARP requests to a neighbour host"
-                mode="subcommand"
-                ptype="SUBCOMMAND"/>
         </PARAM>
         <PARAM name="dst"
             help="Hostname or IP-address to ping"
             ptype="STRING"/>
         <PARAM name="source"
-            help="Source IP-address (ip) or interface (ip and arp)"
+            help="Source IP-address (ip) or interface (ip)"
             optional="true"
             mode="subcommand"
             ptype="SUBCOMMAND">
             <PARAM name="src"
-                help="Source IP-address (ip) or interface name (ip and arp)"
+                help="Source IP-address (ip) or interface name (ip)"
                 ptype="STRING"/>
         </PARAM>
         <PARAM name="repeat"
@@ -54,19 +50,16 @@
                 ptype="UINT"/>
         </PARAM>
         <PARAM name="resolve"
-            test='"${proto}"!="arp"'
             help="Resolve names"
             optional="true"
             mode="subcommand"
             ptype="SUBCOMMAND"/>
         <PARAM name="broadcast"
-            test='"${proto}"!="arp"'
             help="Ping broadcast address"
             optional="true"
             mode="subcommand"
             ptype="SUBCOMMAND"/>
         <PARAM name="size"
-            test='"${proto}"!="arp"'
             help="Packet size"
             optional="true"
             mode="subcommand"
@@ -76,7 +69,6 @@
                 ptype="UINT"/>
         </PARAM>
         <PARAM name="interval"
-            test='"${proto}"!="arp"'
             help="The time interval between packets, default is 1"
             optional="true"
             mode="subcommand"
@@ -86,13 +78,11 @@
                 ptype="STRING"/>
         </PARAM>
         <PARAM name="flood"
-            test='"${proto}"!="arp"'
             help="Flood ping"
             optional="true"
             mode="subcommand"
             ptype="SUBCOMMAND"/>
         <PARAM name="duplicate-detect"
-            test='"${proto}"="arp"'
             help="Duplicate address detection mode"
             optional="true"
             mode="subcommand"
@@ -102,14 +92,10 @@
                 "ipv6")
                     cmd="ping6"
                     ;;
-                "arp")
-                    cmd="arping"
-                    ;;
                 *)
                     cmd="ping"
                     ;;
             esac
-            if test "${proto}" != "arp"; then
                 # Resolve names
                 if test -z "${resolve}"; then
                     cmd=$cmd" -n"
@@ -126,10 +112,6 @@
                 fi
                 # Flood ping
                 cmd=$cmd"`expr substr '${ -f :flood}' 1 3`"
-            else
-                # Detect MAC duplicate
-                cmd=$cmd"`expr substr '${ -D :duplicate-detect}' 1 3`"
-            fi
             # Interface or address
             cmd=$cmd"${ -I :src}"
             # Request count

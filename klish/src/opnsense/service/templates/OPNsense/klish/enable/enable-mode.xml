@@ -32,28 +32,6 @@
 
     <COMMAND name="show"
         help="Show running system information"/>
-
-<!--
-
-    <COMMAND name="show ip"
-        help="IP information"/>
-
-    <COMMAND name="show diag"
-        help="Show diagnostic information for port adapters/modules">
-        <ACTION>lspci</ACTION>
-    </COMMAND>
-
-    <COMMAND name="show running-config"
-        help="Current operating configuration">
-        <CONFIG operation="dump"/>
-    </COMMAND>
-
-    <COMMAND name="show startup-config"
-        help="Contents of startup configuration">
-        <ACTION>cat /etc/startup-config</ACTION>
-    </COMMAND>
- -->
-
 </VIEW>
 
 </CLISH_MODULE>
