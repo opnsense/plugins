@@ -28,7 +28,7 @@ tayga_start()
         ${command} ${command_args}
         sleep 1
         ifconfig nat64 inet ${tayga_v4destination}/32 ${tayga_v4address}
-        ifconfig nat64 inet6 ${tayga_v6address}/128
+        ifconfig nat64 inet6 ${tayga_v6estination}/128
         route -6 add ${tayga_v6prefix} -interface nat64
         route -4 add ${tayga_v4pool} -interface nat64
 }
