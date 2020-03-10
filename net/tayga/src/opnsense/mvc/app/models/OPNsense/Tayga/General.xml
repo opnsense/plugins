@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/tayga/general</mount>
     <description>Tayga configuration</description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
