@@ -152,12 +152,12 @@
     </field>
     <field>
         <id>general.extensive_helo_restrictions</id>
-        <label>Extensive HELO Restrictions</label>
+        <label>Advanced HELO Restrictions</label>
         <type>checkbox</type>
     </field>
     <field>
         <id>general.extensive_sender_restrictions</id>
-        <label>Extensive Sender Restrictions</label>
+        <label>Advanced Sender Restrictions</label>
         <type>checkbox</type>
     </field>
     <field>
