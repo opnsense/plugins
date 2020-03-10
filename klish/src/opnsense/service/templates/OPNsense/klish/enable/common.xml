@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+
+<COMMAND name="exit"
+    help="Exit from the CLI"
+    lock="false">
+    <ACTION builtin="clish_close"/>
+</COMMAND>
+
+</CLISH_MODULE>
+
+

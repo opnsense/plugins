@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+
+<VIEW name="enable-view">
+    <COMMAND name="show vpn"
+        help="Select a VPN service"/>
+
+    <COMMAND name="show vpn ipsec"
+        help="Show IPSec VPN status">
+        <ACTION>
+            IPSEC_STATUS=$(ipsec status)
+            if [ ! -z "$IPSEC_STATUS" ];then
+                ipsec status
+            else
+                echo "ipsec service disabled"
+            fi
+        </ACTION>
+    </COMMAND>
+    <COMMAND name="show vpn openvpn"
+        help="Show OpenVPN VPN status">
+        <ACTION>pgrep -f openvpn</ACTION>
+    </COMMAND>
+
+</VIEW>
+
+<VIEW name="configure-view">
+
+    <COMMAND name="vpn"
+        help="Select an interface to configure"/>
+
+    <COMMAND name="interface ethernet"
+        help="Ethernet IEEE 802.3"
+        view="configure-if-view"
+        viewid="iface=eth${iface_num}">
+        <PARAM name="iface_num"
+            help="Ethernet interface number"
+            ptype="IFACE_NUM"/>
+        <CONFIG priority="0x2001" pattern="^${__line}$"/>
+    </COMMAND>
+
+</VIEW>
+
+<VIEW name="configure-if-view"
+    prompt="${SYSTEM_NAME}(config-if-${iface})# "
+    depth="1">
+
+<!-- Inheritance -->
+
+    <NAMESPACE ref="configure-view"
+        help="false"
+        completion="true"/>
+
+<!-- Simple configure-if mode commands -->
+
+    <COMMAND name="exit"
+        help="Exit from interface configuration mode"
+        lock="false">
+        <ACTION builtin="clish_nested_up"/>
+    </COMMAND>
+
+    <COMMAND name="no"
+        help="Negate a command or set its defaults"/>
+
+    <COMMAND name="ip"
+        help="Interface Internet Protocol config commands"/>
+
+    <COMMAND name="no ip"
+        help="Interface Internet Protocol config commands"/>
+
+<!-- IP address -->
+
+    <COMMAND name="ip address"
+        help="Set the IP address of an interface">
+        <PARAM name="ip_method"
+            help="Method to get IP"
+            ptype="SUBCOMMAND"
+            mode="switch">
+            <PARAM name="dhcp"
+                help="IP Address negotiated via DHCP"
+                ptype="SUBCOMMAND"
+                mode="subcommand"/>
+            <PARAM name="ip"
+                help="IP address"
+                ptype="IP_ADDR_MASK"/>
+        </PARAM>
+        <CONFIG/>
+        <ACTION>
+            if test "${ip_method}" = "dhcp"; then
+                dhclient ${iface}
+            elif test "${ip_method}" = "ip"; then
+                ip addr show dev ${iface} | grep "inet " | (while read a b c; do ip addr del $b dev ${iface}; done)
+                ip addr add ${ip} dev ${iface}
+            fi
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="no ip address"
+        help="Set the IP address of an interface">
+        <CONFIG operation="unset" pattern="^ip address"/>
+        <ACTION>
+            ip addr show dev ${iface} | grep "inet " | (while read a b c; do ip addr del $b dev ${iface}; done)
+        </ACTION>
+    </COMMAND>
+
+<!-- Enable/Disable -->
+
+    <COMMAND name="disable"
+        help="Disable the selected interface">
+        <CONFIG operation="unset" pattern="^enable"/>
+        <ACTION>
+            ip link set ${iface} down
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="enable"
+        help="Enable the selected interface">
+        <CONFIG/>
+        <ACTION>
+            ip link set ${iface} up
+        </ACTION>
+    </COMMAND>
+</VIEW>
+
+</CLISH_MODULE>

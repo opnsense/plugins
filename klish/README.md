@@ -25,5 +25,11 @@ Initial commands structure:
 -Services: command `services`
 
 -Power: command `power`
-
+___
 Klish official documentation: [https://github.com/sipwise/klish/blob/master/doc/klish.md](https://github.com/sipwise/klish/blob/master/doc/klish.md)
+
+The klish is a fork of original clish.
+Copyright (c) 2010 Serj Kalichev.
+All Rights Reserved.
+
+

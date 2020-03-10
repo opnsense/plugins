@@ -4,7 +4,7 @@
  xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
                      http://clish.sourceforge.net/XMLSchema/clish.xsd">
      <!--=======================================================-->
-    <OVERVIEW>
+<OVERVIEW>
 HELP:
 [?]
     Show the commands list;
@@ -21,19 +21,38 @@ SHORTCUTS:
 [CTRL-E] - Line end
 [up]     - Previous command in history
 [down]   - Next command in history
-    </OVERVIEW>
+</OVERVIEW>
      <!--=======================================================-->
-    <STARTUP view="root-view" prompt="clish>" >
-        <DETAIL>
+<STARTUP view="info-view">
+    <DETAIL>
+=======================================================
 Serj Kalichev
 The klish is a fork of original clish.
 Copyright (c) 2010 Serj Kalichev.
 All Rights Reserved.
-
-OPNsense plugin by Cloudfence
-www.cloudfence.com.br
-        </DETAIL>
+=======================================================
+                             .mNs  .:-
+                            :yy-  yN-  yNm. -yy-
+                            :Nm-  yN-  :Ny  -mN:
+                            `Nd   yN-  :Ns   dN
+                             Nd   yN-  :Ns   mN
+                         .-/+Nd   yN-  :Ns`-:mN+/-.
+                      `/yhhso+/   yN-  :Ndhhs++oshhy:`
+                     `ymo.        yN-  `s+.       .omy`
+                   ``oN+          +h.               +No``
+                `:shdhh`                            .hddhs:`
+               :dd+-`                                  `-odh:
+              +my`                                        `ym/
+             .md                                            dm`
+             :Ns                                            sN-
+             `md`                                          `dm`
+              /my.                                        .hm/
+                -hms:`                                  .:smh-
+                 -oydmddddddddddddddddddddddddddddddddddyo-
+                    ````````````````````````````````````
+OPNsense plugin by Cloudfence - www.cloudfence.com.br
+    </DETAIL>
     <ACTION>echo "Welcome `whoami`, session started: `date "+%d/%m/%Y %H:%M"`"</ACTION>
-    </STARTUP>
+</STARTUP>
      <!--=======================================================-->
 </CLISH_MODULE>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+
+<VIEW name="configure-view"
+    prompt="${SYSTEM_NAME}(config)# "
+    restore="depth">
+
+<!-- Inheritance -->
+
+    <NAMESPACE ref="enable-view"
+        prefix="do"
+        help="true"
+        completion="true"/>
+
+    <COMMAND name="do"
+        help="To run exec commands in config mode"/>
+
+<!-- Virtual commands -->
+
+    <COMMAND name="no"
+        help="Negate a command or set its defaults"/>
+
+    <COMMAND name="ip"
+        help="Global IP configuration subcommands"/>
+
+    <COMMAND name="no ip"
+        help="Global IP configuration subcommands"/>
+
+<!-- Simple configuration mode commands -->
+
+    <COMMAND name="exit"
+        help="Exit from configure mode"
+        view="enable-view"
+        lock="false">
+    </COMMAND>
+<!--
+    <COMMAND name="hostname"
+        help="Set system's network name">
+        <PARAM name="hostname"
+            help="This system's network name"
+            ptype="STRING"/>
+        <CONFIG priority="0x1000"/>
+        <ACTION>
+        hostname "${hostname}"
+        echo "${hostname}" > /etc/hostname
+        sed -i "s|^127\.0\.0\.1.*$|127.0.0.1 localhost ${hostname}|" /etc/hosts
+        </ACTION>
+    </COMMAND>
+-->
+</VIEW>
+
+</CLISH_MODULE>

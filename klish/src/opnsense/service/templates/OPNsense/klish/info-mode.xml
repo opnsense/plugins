@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+
+<VIEW name="info-view"
+    prompt="clish$>">
+
+<!-- Inheritance -->
+
+    <NAMESPACE ref="ping-view"
+        help="true"
+        completion="true"/>
+
+<!-- Simple non-priveledged mode commands -->
+
+    <COMMAND name="enable"
+        help="Turn on privileged commands"
+        lock="false"
+        interrupt="true">
+        <ACTION>clish -x /usr/local/opnsense/service/templates/OPNsense/klish/enable/</ACTION>
+    </COMMAND>
+
+</VIEW>
+</CLISH_MODULE>
