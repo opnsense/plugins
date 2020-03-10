@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+
+<VIEW name="enable-view">
+    <COMMAND name="show firewall"
+        help="Show Firewall related commands"/>
+
+    <COMMAND name="show firewall states"
+        help="show firewall connections states"
+        interrupt="true">
+        <PARAM name="state"
+            help="VPN tunnel connection ID (conx-xxx)"
+            optional="true"
+            ptype="STRING">
+        </PARAM>
+        <ACTION>
+            if test -n "${conn}"; then
+                clog -f /var/log/ipsec.log | grep "${conn}"
+            else
+                clog -f /var/log/ipsec.log
+            fi
+        </ACTION>
+    </COMMAND>

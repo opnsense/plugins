@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+
+<VIEW name="enable-view">
+    <COMMAND name="show vpn"
+        help="Select a VPN service"/>
+
+
+    <COMMAND name="show vpn ipsec"
+        help="Select a VPN service"/>
+
+    <COMMAND name="show vpn ipsec status"
+        help="Show IPSec VPN status">
+        <ACTION>
+            IPSEC_STATUS=$(ipsec status)
+            if [ ! -z "$IPSEC_STATUS" ];then
+                ipsec status
+            else
+                echo "ipsec service disabled"
+            fi
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="show vpn ipsec log"
+        help="Show IPSec VPN logs"
+        interrupt="true">
+        <PARAM name="conn"
+            help="VPN tunnel connection ID (conx-xxx)"
+            optional="true"
+            ptype="STRING">
+        </PARAM>
+        <ACTION>
+            if test -n "${conn}"; then
+                clog -f /var/log/ipsec.log | grep "${conn}"
+            else
+                clog -f /var/log/ipsec.log
+            fi
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="show vpn openvpn"
+        help="Select a VPN service"/>
+
+    <COMMAND name="show vpn openvpn status"
+        help="Show OpenVPN VPN status">
+        <ACTION>
+            OPENVPN_STATUS=$(pgrep -f openvpn)
+            if [ ! -z "$OPENVPN_STATUS" ];then
+                echo $OPENVPN_STATUS
+            else
+                echo "openvpn service disabled"
+            fi
+        </ACTION>
+    </COMMAND>
+
+</VIEW>
+
+</CLISH_MODULE>

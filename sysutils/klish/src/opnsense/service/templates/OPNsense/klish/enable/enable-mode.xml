@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+<VIEW name="enable-view"
+    prompt="clish#>">
+
+<!-- Inheritance -->
+
+    <NAMESPACE ref="ping-view"
+        help="true"
+        completion="true"/>
+
+<!-- Simple enable mode commands -->
+
+    <COMMAND name="disable"
+        help="Turn off privileged commands">
+        <ACTION builtin="clish_close"/>
+    </COMMAND>
+
+    <COMMAND name="configure"
+        help="Enter configuration mode"/>
+
+    <COMMAND name="configure terminal"
+        help="Configure from the terminal"
+        view="configure-view">
+    </COMMAND>
+
+<!-- Show commands -->
+
+    <COMMAND name="show"
+        help="Show running system information"/>
+</VIEW>
+
+</CLISH_MODULE>
