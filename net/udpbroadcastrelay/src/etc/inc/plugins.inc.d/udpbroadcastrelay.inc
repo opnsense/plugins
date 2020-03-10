@@ -1,6 +1,7 @@
 <?php
 
- /*    Copyright (C) 2020 Martin Wasley
+/*
+ *    Copyright (C) 2020 Martin Wasley
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -24,6 +25,7 @@
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
  */
+ 
 function udpbroadcastrelay_enabled()
 {
     $model = new \OPNsense\UDPBroadcastRelay\UDPBroadcastRelay();

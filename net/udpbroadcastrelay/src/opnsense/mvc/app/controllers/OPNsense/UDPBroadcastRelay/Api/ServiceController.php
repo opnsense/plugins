@@ -37,7 +37,7 @@ use \OPNsense\Core\Backend;
  */
 class ServiceController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'ts';
+    protected static $internalModelName = 'udpbroadcastrelay';
     protected static $internalModelClass = '\OPNsense\\UDPBroadcastRelay\\UDPBroadcastRelay';
     protected static $internalModelUseSafeDelete = true;
 

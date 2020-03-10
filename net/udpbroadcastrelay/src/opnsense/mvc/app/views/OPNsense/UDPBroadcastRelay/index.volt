@@ -79,7 +79,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 <!-- <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#grid-proxies">{{ lang._('FTP Proxies') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#grid-proxies">{{ lang._('UDPBroadcastRelays') }}</a></li>
 </ul> -->
 <div class="tab-content content-box tab-content">
     <div id="udpbroadcastrelays" class="tab-pane fade in active">
