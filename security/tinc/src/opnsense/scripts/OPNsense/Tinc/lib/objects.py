@@ -123,7 +123,6 @@ class Host(NetwConfObject):
     def __init__(self):
         super(Host, self).__init__()
         self._connectTo = "0"
-        self._payload['subnet'] = None
         self._payload['pubkey'] = None
         self._payload['cipher'] = None
 
@@ -139,9 +138,10 @@ class Host(NetwConfObject):
     def config_text(self):
         result = list()
         result.append('Address=%(address)s %(port)s'%self._payload)
-        networks = self._payload['subnet'].split(',')
-        for network in networks:
-            result.append('Subnet=%s' % network)
+        if 'subnet' in self._payload:
+            networks = self._payload['subnet'].split(',')
+            for network in networks:
+                result.append('Subnet=%s' % network)
         result.append('Cipher=%(cipher)s'%self._payload)
         result.append('Digest=sha256')
         result.append(self._payload['pubkey'])
