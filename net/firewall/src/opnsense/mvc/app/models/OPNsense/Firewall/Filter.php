@@ -88,6 +88,7 @@ class Filter extends BaseModel
      * Rollback this model to a previous version.
      * Make sure to remove this object afterwards, since its contents won't be updated.
      * @param $revision float|string revision number
+     * @return bool action performed (backup revision existed)
      */
     public function rollback($revision)
     {
@@ -102,7 +103,9 @@ class Filter extends BaseModel
                 $node = $targetdom->ownerDocument->importNode($sourcedom, TRUE);
                 $targetdom->parentNode->replaceChild($node, $targetdom);
                 Config::getInstance()->save();
+                return true;
             }
         }
+        return false;
     }
 }
