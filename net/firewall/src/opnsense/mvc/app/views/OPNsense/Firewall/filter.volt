@@ -2,12 +2,12 @@
     $( document ).ready(function() {
         let initial_load = true;
         let grid = $("#grid-rules").UIBootgrid({
-            search:'/api/firewall/filter/searchItem/',
-            get:'/api/firewall/filter/getItem/',
-            set:'/api/firewall/filter/setItem/',
-            add:'/api/firewall/filter/addItem/',
-            del:'/api/firewall/filter/delItem/',
-            toggle:'/api/firewall/filter/toggleItem/'
+            search:'/api/firewall/filter/searchRule/',
+            get:'/api/firewall/filter/getRule/',
+            set:'/api/firewall/filter/setRule/',
+            add:'/api/firewall/filter/addRule/',
+            del:'/api/firewall/filter/delRule/',
+            toggle:'/api/firewall/filter/toggleRule/'
         });
 
         // open edit dialog when opened with a uuid reference

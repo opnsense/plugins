@@ -36,32 +36,32 @@ class FilterController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'filter';
     protected static $internalModelClass = 'OPNsense\Firewall\Filter';
 
-    public function searchItemAction()
+    public function searchRuleAction()
     {
         return $this->searchBase("rules.rule", array('enabled', 'sequence', 'description'), "sequence");
     }
 
-    public function setItemAction($uuid)
+    public function setRuleAction($uuid)
     {
         return $this->setBase("rule", "rules.rule", $uuid);
     }
 
-    public function addItemAction()
+    public function addRuleAction()
     {
         return $this->addBase("rule", "rules.rule");
     }
 
-    public function getItemAction($uuid = null)
+    public function getRuleAction($uuid = null)
     {
         return $this->getBase("rule", "rules.rule", $uuid);
     }
 
-    public function delItemAction($uuid)
+    public function delRuleAction($uuid)
     {
         return $this->delBase("rules.rule", $uuid);
     }
 
-    public function toggleItemAction($uuid, $enabled = null)
+    public function toggleRuleAction($uuid, $enabled = null)
     {
         return $this->toggleBase("rules.rule", $uuid, $enabled);
     }
