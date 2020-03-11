@@ -82,7 +82,9 @@ class FilterController extends ApiMutableModelControllerBase
     public function cancelRollbackAction($rollback_revision)
     {
         if ($this->request->isPost()) {
-            return array("status" => (new Backend())->configdpRun('pfplugin cancel_rollback', [$rollback_revision]));
+            return array(
+                "status" => (new Backend())->configdpRun('pfplugin cancel_rollback', [$rollback_revision])
+            );
         } else {
             return array("status" => "error");
         }
