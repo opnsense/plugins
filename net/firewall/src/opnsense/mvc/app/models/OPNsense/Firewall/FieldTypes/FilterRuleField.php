@@ -67,7 +67,9 @@ class FilterRuleContainerField extends ContainerField
         $result['source'] = array();
         if (!empty((string)$this->source_net)) {
             $result['source']['network'] = (string)$this->source_net;
-            $result['source']['not'] = !empty((string)$this->source_not);
+            if (!empty((string)$this->source_not)) {
+                $result['source']['not'] = true;
+            }
             if (!empty((string)$this->source_port)) {
                 $result['source']['port'] = (string)$this->source_port;
             }
@@ -75,7 +77,9 @@ class FilterRuleContainerField extends ContainerField
         $result['destination'] = array();
         if (!empty((string)$this->destination_net)) {
             $result['destination']['network'] = (string)$this->destination_net;
-            $result['destination']['not'] = !empty((string)$this->destination_not);
+            if (!empty((string)$this->destination_not)) {
+                $result['destination']['not'] = true;
+            }
             if (!empty((string)$this->source_port)) {
                 $result['destination']['port'] = (string)$this->destination_port;
             }
