@@ -106,10 +106,12 @@ class FilterRuleContainerField extends ContainerField
         if (strpos($interface, ",") !== false) {
             // floating (multiple interfaces involved)
             return 1000;
-        } elseif (!empty($configObj->interfaces) &&
+        } elseif (
+            !empty($configObj->interfaces) &&
             !empty($configObj->interfaces->$interface) &&
             !empty($configObj->interfaces->$interface->type) &&
-            $configObj->interfaces->$interface->type == 'group') {
+            $configObj->interfaces->$interface->type == 'group'
+        ) {
             // group type
             return 2000;
         } else {

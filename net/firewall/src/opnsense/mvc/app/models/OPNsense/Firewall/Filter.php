@@ -45,18 +45,18 @@ class Filter extends BaseModel
         foreach ($this->rules->rule->iterateItems() as $rule) {
             // validate changed rules
             $rule_changed = false;
-            foreach($rule->iterateItems() as $field) {
+            foreach ($rule->iterateItems() as $field) {
                 $rule_changed = $rule_changed ? $rule_changed : $field->isFieldChanged();
             }
             if ($validateFullModel || $rule_changed) {
                 // port / protocol validation
-                if (!empty((string)$rule->source_port) && !in_array( $rule->protocol, ['TCP', 'UDP'])) {
+                if (!empty((string)$rule->source_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
                     $messages->appendMessage(new Message(
                         gettext("Source ports are only valid for tcp or udp type rules."),
                         $rule->source_port->__reference
                     ));
                 }
-                if (!empty((string)$rule->destination_port) && !in_array( $rule->protocol, ['TCP', 'UDP'])) {
+                if (!empty((string)$rule->destination_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
                     $messages->appendMessage(new Message(
                         gettext("Destination ports are only valid for tcp or udp type rules."),
                         $rule->destination_port->__reference
@@ -100,7 +100,7 @@ class Filter extends BaseModel
                 $sourcedom = dom_import_simplexml($sourcexml->OPNsense->Firewall->FilterRule);
                 $targetxml = Config::getInstance()->object();
                 $targetdom = dom_import_simplexml($targetxml->OPNsense->Firewall->FilterRule);
-                $node = $targetdom->ownerDocument->importNode($sourcedom, TRUE);
+                $node = $targetdom->ownerDocument->importNode($sourcedom, true);
                 $targetdom->parentNode->replaceChild($node, $targetdom);
                 Config::getInstance()->save();
                 return true;

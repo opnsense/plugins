@@ -30,12 +30,12 @@
  /**
   * @param $fw
   */
- function pfplugin_firewall($fw)
- {
-     $mdlFilter = new OPNsense\Firewall\Filter();
-     foreach ($mdlFilter->rules->rule->sortedBy(["sequence"]) as $key => $rule) {
-          $content = $rule->serialize();
-          $content["#ref"] = "ui/firewall/filter#" . (string)$rule->getAttributes()['uuid'];
-          $fw->registerFilterRule($rule->getPriority(), $content);
-     }
- }
+function pfplugin_firewall($fw)
+{
+    $mdlFilter = new OPNsense\Firewall\Filter();
+    foreach ($mdlFilter->rules->rule->sortedBy(["sequence"]) as $key => $rule) {
+         $content = $rule->serialize();
+         $content["#ref"] = "ui/firewall/filter#" . (string)$rule->getAttributes()['uuid'];
+         $fw->registerFilterRule($rule->getPriority(), $content);
+    }
+}

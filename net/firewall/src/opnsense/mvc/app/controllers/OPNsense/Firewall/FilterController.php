@@ -27,7 +27,6 @@
  */
 namespace OPNsense\Firewall;
 
-
 class FilterController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
