@@ -80,7 +80,7 @@ class FilterRuleContainerField extends ContainerField
             if (!empty((string)$this->destination_not)) {
                 $result['destination']['not'] = true;
             }
-            if (!empty((string)$this->source_port)) {
+            if (!empty((string)$this->destination_port)) {
                 $result['destination']['port'] = (string)$this->destination_port;
             }
         }
