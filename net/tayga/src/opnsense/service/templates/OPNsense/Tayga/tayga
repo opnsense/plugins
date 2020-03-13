@@ -6,6 +6,7 @@ tayga_v4destination={{ OPNsense.tayga.general.v4destination }}
 tayga_v4pool={{ OPNsense.tayga.general.v4pool }}
 tayga_v6prefix={{ OPNsense.tayga.general.v6prefix }}
 tayga_v6address={{ OPNsense.tayga.general.v6address }}
+tayga_v6destination={{ OPNsense.tayga.general.v6destination }}
 {% else %}
 tayga_enable="NO"
 {% endif %}
