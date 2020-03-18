@@ -439,7 +439,7 @@
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
                     <th data-column-id="ruletype" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Rule Type') }}</th>
-                    <th data-column-id="identifier" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('ID') }}</th>
+                    <th data-column-id="identifier" data-type="string" data-sortable="true" data-visible="true">{{ lang._('ID') }}</th>
                     <th data-column-id="message" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Message') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
