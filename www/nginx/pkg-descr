@@ -8,6 +8,10 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.19
+
+* Display NAXSI rule ID in volt
+
 1.18
 
 * Add proxy header for CloudFlare
