@@ -590,9 +590,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Check wether IPv6 support is enabled
         $configObj = Config::getInstance()->object();
         if (isset($configObj->system->ipv6allow) && ($configObj->system->ipv6allow == "1")) {
-          $_ipv6_enabled = true;
+            $_ipv6_enabled = true;
         } else {
-          $_ipv6_enabled = false;
+            $_ipv6_enabled = false;
         }
 
         // Generate rules for all IP addresses
@@ -602,17 +602,17 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             // Add one rule for every IP
             foreach ($dedup_iplist as $ip) {
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                  // IPv4
-                  $_dst = '127.0.0.1';
-                  $_family = 'inet';
-                  log_error("AcmeClient: using IPv4 address: ${ip}");
+                    // IPv4
+                    $_dst = '127.0.0.1';
+                    $_family = 'inet';
+                    log_error("AcmeClient: using IPv4 address: ${ip}");
                 } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
-                  // IPv6
-                  $_dst = '::1';
-                  $_family = 'inet6';
-                  log_error("AcmeClient: using IPv6 address: ${ip}");
+                    // IPv6
+                    $_dst = '::1';
+                    $_family = 'inet6';
+                    log_error("AcmeClient: using IPv6 address: ${ip}");
                 } else {
-                  continue; // skip broken entries
+                    continue; // skip broken entries
                 }
                 $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 80 -> ${_dst} port ${local_http_port}\n";
             }

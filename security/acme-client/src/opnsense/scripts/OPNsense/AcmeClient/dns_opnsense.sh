@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 #OPNsense Bind API
 #https://docs.opnsense.org/development/api.html

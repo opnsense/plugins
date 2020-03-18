@@ -28,12 +28,13 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\AcmeClient\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Core\Config;
-use \OPNsense\AcmeClient\AcmeClient;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Config;
+use OPNsense\AcmeClient\AcmeClient;
 
 /**
  * Class AccountsController

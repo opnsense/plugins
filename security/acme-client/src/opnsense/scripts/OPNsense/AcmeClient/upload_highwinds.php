@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?php
+
 /*
  * Copyright (C) 2019 Frank Wall
  * Copyright (C) 2015 Deciso B.V.

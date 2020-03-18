@@ -27,6 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\AcmeClient\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
