@@ -384,7 +384,7 @@ include("head.inc");
                   <tr>
                     <td><a id="help_for_password" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Password") ?></td>
                     <td>
-                      <input name="password" type="password" id="password" value="<?= $pconfig['password'] ?>" />
+                      <input name="password" type="password" autocomplete="new-password" id="password" value="<?= $pconfig['password'] ?>" />
                       <div class="hidden" data-for="help_for_password">
                         <?=gettext('FreeDNS (freedns.afraid.org): Enter your "Authentication Token" provided by FreeDNS.') ?>
                         <br /><?= gettext('Route 53: Enter your Secret Access Key.') ?>
