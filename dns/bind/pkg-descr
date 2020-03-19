@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.13
+
+* Update BIND to 9.16
+
 1.12
 
 * Add checkbox to disable prefetch option
