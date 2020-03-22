@@ -31,9 +31,9 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Freeradius\Eap;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Freeradius\Eap;
+use OPNsense\Core\Config;
 
 class EapController extends ApiControllerBase
 {

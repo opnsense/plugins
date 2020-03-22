@@ -30,7 +30,7 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class AvpairController extends ApiMutableModelControllerBase
 {

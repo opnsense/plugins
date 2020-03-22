@@ -31,10 +31,10 @@
 
 namespace OPNsense\Freeradius\Api;
 
-use \OPNsense\Freeradius\User;
-use \OPNsense\Core\Config;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
+use OPNsense\Freeradius\User;
+use OPNsense\Core\Config;
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
 
 class UserController extends ApiMutableModelControllerBase
 {
