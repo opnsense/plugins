@@ -31,9 +31,9 @@
 
 namespace OPNsense\Telegraf\Api;
 
-use \OPNsense\Base\ApiControllerBase;
-use \OPNsense\Telegraf\Input;
-use \OPNsense\Core\Config;
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Telegraf\Input;
+use OPNsense\Core\Config;
 
 class InputController extends ApiControllerBase
 {
