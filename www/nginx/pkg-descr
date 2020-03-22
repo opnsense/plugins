@@ -8,6 +8,10 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.19
+
+* Add possibility to configure SNI proxying.
+
 1.18
 
 * Add proxy header for CloudFlare
