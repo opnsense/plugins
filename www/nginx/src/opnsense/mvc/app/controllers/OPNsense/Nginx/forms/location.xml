@@ -243,6 +243,13 @@
     <help>Enter a custom timout between data received from the client after which the connection is closed.</help>
   </field>
   <field>
+    <id>location.proxy_ssl_server_name</id>
+    <label>TLS SNI Forwarding</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Check this box, if you want the client SNI header to be used instead of your backend hostname. This settings overrides the configured hostname in the upstream configuration.</help>
+  </field>
+  <field>
     <id>location.proxy_buffer_size</id>
     <label>Proxy Buffer Size (kB)</label>
     <type>text</type>
