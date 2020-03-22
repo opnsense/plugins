@@ -15,8 +15,9 @@
         <mac type="TextField">
             <Required>Y</Required>
             <multiple>N</multiple>
-            <mask>/^((?:[a-f0-9]{2}:){5}(?:[a-f0-9]{2}))$/</mask>
+            <mask>/^((?:[a-fA-F0-9]{2}:){5}(?:[a-fA-F0-9]{2}))$/</mask>
             <default>00:00:00:00:00:00</default>
+            <ValidationMessage>Should be 6 groups of 2 hex characters (a-fA-F0-9) separated by ':'</ValidationMessage>
         </mac>
         <descr type="TextField">
             <Required>N</Required>

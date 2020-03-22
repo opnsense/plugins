@@ -11,6 +11,7 @@ Plugin Changelog
 1.19
 
 * Add possibility to configure SNI proxying.
+* Display NAXSI rule ID in volt
 
 1.18
 

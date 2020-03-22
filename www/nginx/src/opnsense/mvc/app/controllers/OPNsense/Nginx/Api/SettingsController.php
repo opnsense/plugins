@@ -266,7 +266,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // naxsi rules
     public function searchnaxsiruleAction()
     {
-        return $this->searchBase('naxsi_rule', array('description', 'ruletype', 'message'));
+        return $this->searchBase('naxsi_rule', array('description', 'identifier', 'ruletype', 'message'));
     }
 
     public function getnaxsiruleAction($uuid = null)
