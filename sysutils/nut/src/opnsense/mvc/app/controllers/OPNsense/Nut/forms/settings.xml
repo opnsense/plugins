@@ -33,13 +33,13 @@
                 <id>nut.account.admin_password</id>
                 <label>Admin Password</label>
                 <type>text</type>
-                <help>Set the admin password.</help>
+                <help>Set the password for admin user "admin".</help>
             </field>
             <field>
                 <id>nut.account.mon_password</id>
                 <label>Monitor Password</label>
                 <type>text</type>
-                <help>Set the monitor password.</help>
+                <help>Set the password for monitoring user "monuser".</help>
             </field>
         </subtab>
     </tab>
@@ -69,6 +69,22 @@
             </field>
             <field>
                 <id>nut.apcsmart.args</id>
+                <label>Extra Arguments</label>
+                <style>tokenize</style>
+                <type>select_multiple</type>
+                <allownew>true</allownew>
+                <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
+            </field>
+        </subtab>
+        <subtab id="nut-ups-bcmxcpusb" description="BCMXCPUSB-Driver">
+            <field>
+                <id>nut.bcmxcpusb.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the PowerWare BCMXCPUSB driver.</help>
+            </field>
+            <field>
+                <id>nut.bcmxcpusb.args</id>
                 <label>Extra Arguments</label>
                 <style>tokenize</style>
                 <type>select_multiple</type>

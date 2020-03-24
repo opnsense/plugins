@@ -9,6 +9,10 @@ and management interface.
 Plugin Changelog
 ----------------
 
+1.7
+
+* Add PowerWare bcmxcp_usb driver
+
 1.6
 
 * Add QX driver support

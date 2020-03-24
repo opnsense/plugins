@@ -32,8 +32,8 @@
 
 namespace OPNsense\Nut;
 
-use \OPNsense\Core\Backend;
-use \OPNsense\Nut;
+use OPNsense\Core\Backend;
+use OPNsense\Nut;
 
 /**
 * Class IndexController

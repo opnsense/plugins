@@ -30,7 +30,7 @@
 
 namespace OPNsense\Nut;
 
-use \OPNsense\Nut;
+use OPNsense\Nut;
 
 /**
 * Class DiagnosticsController
