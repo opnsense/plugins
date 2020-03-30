@@ -585,8 +585,8 @@ function exportCertificates(array $cert_refids)
             if (!empty((string)$cert->caref)) {
                 $cert = (array)$cert;
                 $item["ca"] = ca_chain($cert);
-            // combine files to export a fullchain.pem
-                $item["fullchain"] = $item["cert"].$item["ca"];
+                // combine files to export a fullchain.pem
+                $item["fullchain"] = $item["cert"] . $item["ca"];
             }
             $result[$refid] = $item;
         }
