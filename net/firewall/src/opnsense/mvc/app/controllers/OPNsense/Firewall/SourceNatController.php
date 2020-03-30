@@ -25,38 +25,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-namespace OPNsense\Firewall\Api;
+namespace OPNsense\Firewall;
 
-
-class FilterController extends FilterBaseController
+class SourceNatController extends \OPNsense\Base\IndexController
 {
-    public function searchRuleAction()
+    public function indexAction()
     {
-        return $this->searchBase("rules.rule", array('enabled', 'sequence', 'description'), "sequence");
-    }
-
-    public function setRuleAction($uuid)
-    {
-        return $this->setBase("rule", "rules.rule", $uuid);
-    }
-
-    public function addRuleAction()
-    {
-        return $this->addBase("rule", "rules.rule");
-    }
-
-    public function getRuleAction($uuid = null)
-    {
-        return $this->getBase("rule", "rules.rule", $uuid);
-    }
-
-    public function delRuleAction($uuid)
-    {
-        return $this->delBase("rules.rule", $uuid);
-    }
-
-    public function toggleRuleAction($uuid, $enabled = null)
-    {
-        return $this->toggleBase("rules.rule", $uuid, $enabled);
+        $this->view->pick('OPNsense/Firewall/filter');
+        $this->view->ruleController = "source_nat";
+        $this->view->formDialogFilterRule = $this->getForm("dialogSNatRule");
     }
 }

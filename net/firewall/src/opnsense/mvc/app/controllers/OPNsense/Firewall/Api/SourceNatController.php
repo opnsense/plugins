@@ -28,35 +28,35 @@
 namespace OPNsense\Firewall\Api;
 
 
-class FilterController extends FilterBaseController
+class SourceNatController extends FilterBaseController
 {
     public function searchRuleAction()
     {
-        return $this->searchBase("rules.rule", array('enabled', 'sequence', 'description'), "sequence");
+        return $this->searchBase("snatrules.rule", array('enabled', 'sequence', 'description'), "sequence");
     }
 
     public function setRuleAction($uuid)
     {
-        return $this->setBase("rule", "rules.rule", $uuid);
+        return $this->setBase("rule", "snatrules.rule", $uuid);
     }
 
     public function addRuleAction()
     {
-        return $this->addBase("rule", "rules.rule");
+        return $this->addBase("rule", "snatrules.rule");
     }
 
     public function getRuleAction($uuid = null)
     {
-        return $this->getBase("rule", "rules.rule", $uuid);
+        return $this->getBase("rule", "snatrules.rule", $uuid);
     }
 
     public function delRuleAction($uuid)
     {
-        return $this->delBase("rules.rule", $uuid);
+        return $this->delBase("snatrules.rule", $uuid);
     }
 
     public function toggleRuleAction($uuid, $enabled = null)
     {
-        return $this->toggleBase("rules.rule", $uuid, $enabled);
+        return $this->toggleBase("snatrules.rule", $uuid, $enabled);
     }
 }

@@ -2,12 +2,12 @@
     $( document ).ready(function() {
         let initial_load = true;
         let grid = $("#grid-rules").UIBootgrid({
-            search:'/api/firewall/filter/searchRule/',
-            get:'/api/firewall/filter/getRule/',
-            set:'/api/firewall/filter/setRule/',
-            add:'/api/firewall/filter/addRule/',
-            del:'/api/firewall/filter/delRule/',
-            toggle:'/api/firewall/filter/toggleRule/'
+            search:'/api/firewall/{{ruleController}}/searchRule/',
+            get:'/api/firewall/{{ruleController}}/getRule/',
+            set:'/api/firewall/{{ruleController}}/setRule/',
+            add:'/api/firewall/{{ruleController}}/addRule/',
+            del:'/api/firewall/{{ruleController}}/delRule/',
+            toggle:'/api/firewall/{{ruleController}}/toggleRule/'
         });
 
         // open edit dialog when opened with a uuid reference
@@ -44,7 +44,7 @@
                     label: "{{ lang._('Revert') }}",
                     cssClass: 'btn-primary',
                     action: function(dialogRef) {
-                        ajaxCall("/api/firewall/filter/revert/" + $("#revertToTime").val(), {}, function (data, status) {
+                        ajaxCall("/api/firewall/{{ruleController}}/revert/" + $("#revertToTime").val(), {}, function (data, status) {
                             if (data.status !== "ok") {
                                 $("#revertToTime").parent().addClass("has-error");
                                 $("#revertToTimeError").html(data.status);
@@ -71,7 +71,7 @@
 </ul>
 <div class="tab-content content-box">
     <div id="rules" class="tab-pane fade in active">
-        <!-- tab page "filter rules" -->
+        <!-- tab page "rules" -->
         <table id="grid-rules" class="table table-condensed table-hover table-striped" data-editDialog="DialogFilterRule" data-editAlert="FilterRuleChangeMessage">
             <thead>
                 <tr>
@@ -100,7 +100,7 @@
         </div>
         <hr/>
         <button class="btn btn-primary" id="reconfigureAct"
-                data-endpoint='/api/firewall/filter/apply'
+                data-endpoint='/api/firewall/{{ruleController}}/apply'
                 data-label="{{ lang._('Apply') }}"
                 data-error-title="{{ lang._('Filter load error') }}"
                 type="button"
@@ -108,7 +108,7 @@
 
         <div class="pull-right">
             <button class="btn" id="savepointAct"
-                    data-endpoint='/api/firewall/filter/savepoint'
+                    data-endpoint='/api/firewall/{{ruleController}}/savepoint'
                     data-label="{{ lang._('Savepoint') }}"
                     data-error-title="{{ lang._('snapshot error') }}"
                     type="button"

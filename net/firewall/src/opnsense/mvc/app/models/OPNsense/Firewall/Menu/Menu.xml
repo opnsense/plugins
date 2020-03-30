@@ -4,6 +4,9 @@
             <Filter order="50" url="/ui/firewall/filter/">
                 <FilterRef url="/ui/firewall/filter#*"/>
             </Filter>
+            <SourceNat order="100" VisibleName="Source NAT" url="/ui/firewall/source_nat/">
+                <FilterRef url="/ui/firewall/source_nat#*"/>
+            </SourceNat>
         </Automation>
     </Firewall>
 </menu>
