@@ -134,6 +134,18 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 {% if helpers.exists('OPNsense.postfix.recipient.recipients.recipient') %}
 {% do smtpd_recipient_restrictions.append('check_recipient_access hash:/usr/local/etc/postfix/recipient_access') %}
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_unknown_client_hostname') and OPNsense.postfix.general.reject_unknown_client_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_unknown_client_hostname') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_non_fqdn_helo_hostname') and OPNsense.postfix.general.reject_non_fqdn_helo_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_non_fqdn_helo_hostname') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_invalid_helo_hostname') and OPNsense.postfix.general.reject_invalid_helo_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_invalid_helo_hostname') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_unknown_helo_hostname') and OPNsense.postfix.general.reject_unknown_helo_hostname == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_unknown_helo_hostname') %}
+{% endif %}
 {% if helpers.exists('OPNsense.postfix.general.reject_unauth_pipelining') and OPNsense.postfix.general.reject_unauth_pipelining == '1' %}
 {% do smtpd_recipient_restrictions.append('reject_unauth_pipelining') %}
 {% endif %}
@@ -168,6 +180,22 @@ smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
 
 smtpd_helo_required = yes
 
+{% if helpers.exists('OPNsense.postfix.general.extensive_helo_restrictions') and OPNsense.postfix.general.extensive_helo_restrictions == '1' %}
+smtpd_helo_restrictions =
+        permit_mynetworks,
+        permit_sasl_authenticated,
+        reject_invalid_helo_hostname,
+        reject_non_fqdn_hostname,
+        reject_unknown_hostname
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.extensive_sender_restrictions') and OPNsense.postfix.general.extensive_sender_restrictions == '1' %}
+smtpd_sender_restrictions =
+        permit_mynetworks,
+        permit_sasl_authenticated,
+        reject_unknown_reverse_client_hostname,
+        reject_unknown_sender_domain,
+        reject_non_fqdn_sender
+{% endif %}
 syslog_facility = mail
 syslog_name = postfix
 
