@@ -28,12 +28,13 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\HAProxy\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Base\UIModelGrid;
-use \OPNsense\Core\Config;
-use \OPNsense\HAProxy\HAProxy;
+use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Config;
+use OPNsense\HAProxy\HAProxy;
 
 /**
  * Class SettingsController
