@@ -11,6 +11,11 @@ WWW: https://github.com/stamparm/maltrail
 Changelog
 ---------
 
+1.5
+
+* Change whitelisting format (by @jkellerer)
+* Add alienvault to disabled feeds
+
 1.4
 
 * Switch Python to version 3
