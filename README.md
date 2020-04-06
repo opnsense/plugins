@@ -53,7 +53,7 @@ net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
-net/firewall -- Firewall API supplemental package
+net/firewall -- Firewall API supplemental package (development only)
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
@@ -69,7 +69,7 @@ net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/tayga -- Tayga IPv6 64NAT
-net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
+net/udpbroadcastrelay -- Control ubpbroadcastrelay processes (development only)
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- vnStat is a console-based network traffic monitor
 net/wireguard -- WireGuard VPN service
@@ -83,11 +83,11 @@ security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only fo
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
-security/softether -- Cross-platform Multi-protocol VPN Program
+security/softether -- Cross-platform Multi-protocol VPN Program (development only)
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
-sysutils/apuled -- PC Engine APU LED control
+sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
