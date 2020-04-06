@@ -38,7 +38,8 @@ PLUGIN_DIRS+=	${_${CATEGORY}}
 
 list:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT)
+	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT) \
+	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_DEVEL _PLUGIN_DEVEL=)" ]; then echo "(development only)"; fi)
 .endfor
 
 # shared targets that are sane to run from the root directory
