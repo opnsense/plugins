@@ -21,7 +21,7 @@
         <id>local.password</id>
         <label>Password</label>
         <type>text</type>
-        <help>Password to authenticate against at the remote server.</help>
+        <help>Password to authenticate against the remote server.</help>
     </field>
     <field>
         <id>local.localaddress</id>
