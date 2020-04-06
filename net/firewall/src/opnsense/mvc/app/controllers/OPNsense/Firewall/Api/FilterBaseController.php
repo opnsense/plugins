@@ -35,7 +35,7 @@ use OPNsense\Core\Config;
  * Class FilterBaseController implements actions for various types
  * @package OPNsense\Firewall\Api
  */
-class FilterBaseController extends ApiMutableModelControllerBase
+abstract class FilterBaseController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'filter';
     protected static $internalModelClass = 'OPNsense\Firewall\Filter';
