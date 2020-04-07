@@ -1,5 +1,7 @@
 <model>
-    <mount>//OPNsense/Firewall/FilterRule</mount>
+    <mount>//OPNsense/Firewall/Filter</mount>
+    <version>1.0.0</version>
+    <migration_prefix>MFP</migration_prefix>
     <description>
         OPNsense firewall filter rules
     </description>
@@ -104,5 +106,80 @@
                 </description>
             </rule>
         </rules>
+        <snatrules>
+            <rule type=".\SourceNatRuleField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <sequence type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>99999</MaximumValue>
+                    <ValidationMessage>provide a valid sequence for sorting</ValidationMessage>
+                    <Required>Y</Required>
+                    <default>1</default>
+                </sequence>
+                <interface type="InterfaceField">
+                    <Required>Y</Required>
+                    <default>lan</default>
+                    <AllowDynamic>Y</AllowDynamic>
+                </interface>
+                <ipprotocol type="OptionField">
+                    <Required>Y</Required>
+                    <default>inet</default>
+                    <OptionValues>
+                        <inet>IPv4</inet>
+                        <inet6>IPv6</inet6>
+                    </OptionValues>
+                </ipprotocol>
+                <protocol type="ProtocolField">
+                    <Required>Y</Required>
+                    <default>any</default>
+                </protocol>
+                <source_net type="NetworkAliasField">
+                    <default>any</default>
+                    <Required>Y</Required>
+                </source_net>
+                <source_not type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </source_not>
+                <source_port type="PortField">
+                    <Required>N</Required>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>Y</EnableRanges>
+                </source_port>
+                <destination_net type="NetworkAliasField">
+                    <default>any</default>
+                    <Required>Y</Required>
+                </destination_net>
+                <destination_not type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </destination_not>
+                <destination_port type="PortField">
+                    <Required>N</Required>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>Y</EnableRanges>
+                </destination_port>
+                <target type="NetworkAliasField">
+                    <default>wanip</default>
+                    <Required>Y</Required>
+                </target>
+                <target_port type="PortField">
+                    <Required>N</Required>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                </target_port>
+                <log type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </log>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </rule>
+        </snatrules>
     </items>
 </model>

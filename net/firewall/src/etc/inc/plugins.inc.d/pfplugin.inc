@@ -38,4 +38,8 @@ function pfplugin_firewall($fw)
          $content["#ref"] = "ui/firewall/filter#" . (string)$rule->getAttributes()['uuid'];
          $fw->registerFilterRule($rule->getPriority(), $content);
     }
+
+    foreach ($mdlFilter->snatrules->rule->sortedBy(["sequence"]) as $key => $rule) {
+         $fw->registerSNatRule(50, $rule->serialize());
+    }
 }
