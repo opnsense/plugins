@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>fixed.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>This will activate the Static daemon if routing protocols are enabled in "General".</help>
+    </field>
+</form>
