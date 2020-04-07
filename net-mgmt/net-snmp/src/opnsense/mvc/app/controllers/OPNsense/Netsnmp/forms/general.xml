@@ -31,7 +31,7 @@
     </field>
     <field>
         <id>general.versionoid</id>
-        <label>Display Verion in OID</label>
+        <label>Display Version in OID</label>
         <type>checkbox</type>
         <help>This let you fetch the current installed version via .1.3.6.1.4.1.8072.1.3.2.3.1.2.7.118.101.114.115.105.111.110</help>
     </field>
