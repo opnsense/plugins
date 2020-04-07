@@ -51,8 +51,11 @@ check:
 .  endif
 .endfor
 
-_PLUGIN_DEVEL?=		yes
+.if defined(_PLUGIN_DEVEL)
 PLUGIN_DEVEL?:=		${_PLUGIN_DEVEL}
+.else
+PLUGIN_DEVEL?=		yes
+.endif
 
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
