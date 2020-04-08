@@ -42,42 +42,61 @@ class Filter extends BaseModel
     {
         // standard model validations
         $messages = parent::performValidation($validateFullModel);
-        foreach ($this->rules->rule->iterateItems() as $rule) {
-            // validate changed rules
-            $rule_changed = false;
-            foreach ($rule->iterateItems() as $field) {
-                $rule_changed = $rule_changed ? $rule_changed : $field->isFieldChanged();
-            }
-            if ($validateFullModel || $rule_changed) {
-                // port / protocol validation
-                if (!empty((string)$rule->source_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
-                    $messages->appendMessage(new Message(
-                        gettext("Source ports are only valid for tcp or udp type rules."),
-                        $rule->source_port->__reference
-                    ));
+        foreach ([$this->rules->rule, $this->snatrules->rule] as $rules) {
+            foreach ($rules->iterateItems() as $rule) {
+                // validate changed rules
+                $rule_changed = false;
+                foreach ($rule->iterateItems() as $field) {
+                    $rule_changed = $rule_changed ? $rule_changed : $field->isFieldChanged();
                 }
-                if (!empty((string)$rule->destination_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
-                    $messages->appendMessage(new Message(
-                        gettext("Destination ports are only valid for tcp or udp type rules."),
-                        $rule->destination_port->__reference
-                    ));
-                }
-                // validate protocol family
-                $dest_is_addr = Util::isSubnet($rule->destination_net) || Util::isIpAddress($rule->destination_net);
-                $dest_proto = strpos($rule->destination_net, ':') === false ? "inet" : "inet6";
-                if ($dest_is_addr && $dest_proto != $rule->ipprotocol) {
-                    $messages->appendMessage(new Message(
-                        gettext("Destination address type should match selected TCP/IP protocol version."),
-                        $rule->destination_net->__reference
-                    ));
-                }
-                $src_is_addr = Util::isSubnet($rule->source_net) || Util::isIpAddress($rule->source_net);
-                $src_proto = strpos($rule->source_net, ':') === false ? "inet" : "inet6";
-                if ($src_is_addr && $src_proto != $rule->ipprotocol) {
-                    $messages->appendMessage(new Message(
-                        gettext("Source address type should match selected TCP/IP protocol version."),
-                        $rule->source_net->__reference
-                    ));
+                if ($validateFullModel || $rule_changed) {
+                    // port / protocol validation
+                    if (!empty((string)$rule->source_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
+                        $messages->appendMessage(new Message(
+                            gettext("Source ports are only valid for tcp or udp type rules."),
+                            $rule->source_port->__reference
+                        ));
+                    }
+                    if (!empty((string)$rule->destination_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
+                        $messages->appendMessage(new Message(
+                            gettext("Destination ports are only valid for tcp or udp type rules."),
+                            $rule->destination_port->__reference
+                        ));
+                    }
+                    // validate protocol family
+                    $dest_is_addr = Util::isSubnet($rule->destination_net) || Util::isIpAddress($rule->destination_net);
+                    $dest_proto = strpos($rule->destination_net, ':') === false ? "inet" : "inet6";
+                    if ($dest_is_addr && $dest_proto != $rule->ipprotocol) {
+                        $messages->appendMessage(new Message(
+                            gettext("Destination address type should match selected TCP/IP protocol version."),
+                            $rule->destination_net->__reference
+                        ));
+                    }
+                    $src_is_addr = Util::isSubnet($rule->source_net) || Util::isIpAddress($rule->source_net);
+                    $src_proto = strpos($rule->source_net, ':') === false ? "inet" : "inet6";
+                    if ($src_is_addr && $src_proto != $rule->ipprotocol) {
+                        $messages->appendMessage(new Message(
+                            gettext("Source address type should match selected TCP/IP protocol version."),
+                            $rule->source_net->__reference
+                        ));
+                    }
+                    // Additional source nat validations
+                    if ($rule->target !== null) {
+                        $target_is_addr = Util::isSubnet($rule->target) || Util::isIpAddress($rule->target);
+                        $target_proto = strpos($rule->target, ':') === false ? "inet" : "inet6";
+                        if ($target_is_addr && $target_proto != $rule->ipprotocol) {
+                            $messages->appendMessage(new Message(
+                                gettext("Target address type should match selected TCP/IP protocol version."),
+                                $rule->target->__reference
+                            ));
+                        }
+                        if (!empty((string)$rule->target_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
+                            $messages->appendMessage(new Message(
+                                gettext("Target ports are only valid for tcp or udp type rules."),
+                                $rule->target_port->__reference
+                            ));
+                        }
+                    }
                 }
             }
         }
