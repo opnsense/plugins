@@ -1,0 +1,46 @@
+<form>
+  <field>
+    <id>networkv6.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>networkv6.ipaddr</id>
+    <label>Network Address</label>
+    <type>text</type>
+    <help>Network Address</help>     
+  </field>
+  <field>
+    <id>networkv6.netmask</id>
+    <label>Network Mask</label>
+    <type>text</type>
+    <help>Network Mask 0 - 128</help>    
+  </field> 
+  <field>
+    <id>networkv6.gateway</id>
+    <label>Gateway</label>
+    <type>text</type>
+    <help>Gateway Address</help>
+  </field>
+  <field>
+    <id>networkv6.interfacename</id>
+    <label>Interface</label>
+    <type>select_multiple</type>
+    <help>Select an interface where to send this traffic</help>
+    <advanced>true</advanced>    
+  </field>
+  <field>
+    <id>networkv6.distance</id>
+    <label>Distance</label>
+    <type>text</type>
+    <help>Set Administrative Distance (Default is 1)</help>
+    <advanced>true</advanced>    
+  </field>  
+  <field>
+    <id>networkv6.blackhole</id>
+    <label>Blackhole</label>
+    <type>checkbox</type>
+    <help>Select to blackhole this traffic</help>
+    <advanced>true</advanced>    
+  </field>    
+</form>

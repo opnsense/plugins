@@ -30,12 +30,13 @@
       <!-- Navigation bar -->
       <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
           <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-          <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+          <li><a data-toggle="tab" href="#ipv4">{{ lang._('IPv4') }}</a></li>
+          <li><a data-toggle="tab" href="#ipv6">{{ lang._('IPv6') }}</a></li>
       </ul>
       <div class="tab-content content-box tab-content">
           <div id="general" class="tab-pane fade in active">
               <div class="content-box" style="padding-bottom: 1.5em;">
-                  {{ partial("layout_partials/base_form",['fields':fixedForm,'id':'frm_fixed_settings'])}}
+                  {{ partial("layout_partials/base_form",['fields':staticdForm,'id':'frm_staticd_settings'])}}
                   <div class="col-md-12">
                       <hr />
                       <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
@@ -43,15 +44,18 @@
               </div>
           </div>
   
-      <!-- Tab: Networks -->
-      <div id="networks" class="tab-pane fade in">
-        <table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
+      <!-- Tab: IPv4 -->
+      <div id="ipv4" class="tab-pane fade in">
+        <table id="grid-ipv4" class="table table-responsive" data-editDialog="DialogEditv4">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network') }}</th>
                     <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
                     <th data-column-id="gateway" data-type="string" data-visible="true">{{ lang._('Gateway') }}</th>
+                    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
+                    <th data-column-id="distance" data-type="string" data-visible="true">{{ lang._('Distance') }}</th>                    
+                    <th data-column-id="blackhole" data-type="string" data-visible="true">{{ lang._('Blackhole') }}</th>                                        
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -70,6 +74,37 @@
             </tfoot>
         </table>
       </div>
+
+      <!-- Tab: IPv6 -->
+      <div id="ipv6" class="tab-pane fade in">
+        <table id="grid-ipv6" class="table table-responsive" data-editDialog="DialogEditv6">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network') }}</th>
+                    <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
+                    <th data-column-id="gateway" data-type="string" data-visible="true">{{ lang._('Gateway') }}</th>
+                    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
+                    <th data-column-id="distance" data-type="string" data-visible="true">{{ lang._('Distance') }}</th>                    
+                    <th data-column-id="blackhole" data-type="string" data-visible="true">{{ lang._('Blackhole') }}</th>                                        
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+      </div>      
   
   <script>
   
@@ -78,7 +113,7 @@
   }
   
   $( document ).ready(function() {
-    var data_get_map = {'frm_fixed_settings':"/api/quagga/fixedsettings/get"};
+    var data_get_map = {'frm_staticd_settings':"/api/quagga/staticdsettings/get"};
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
@@ -87,7 +122,7 @@
   
     // link save button to API set action
     $("#saveAct").click(function(){
-        saveFormToEndpoint(url="/api/quagga/fixedsettings/set",formid='frm_fixed_settings',callback_ok=function(){
+        saveFormToEndpoint(url="/api/quagga/staticdsettings/set",formid='frm_staticd_settings',callback_ok=function(){
           $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
           ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
             quagga_update_status();
@@ -107,18 +142,29 @@
     });
   
   
-    $("#grid-networks").UIBootgrid(
-      { 'search':'/api/quagga/fixedsettings/searchNetwork',
-        'get':'/api/quagga/fixedsettings/getNetwork/',
-        'set':'/api/quagga/fixedsettings/setNetwork/',
-        'add':'/api/quagga/fixedsettings/addNetwork/',
-        'del':'/api/quagga/fixedsettings/delNetwork/',
-        'toggle':'/api/quagga/fixedsettings/toggleNetwork/',
+    $("#grid-ipv4").UIBootgrid(
+      { 'search':'/api/quagga/staticdsettings/searchStaticdv4',
+        'get':'/api/quagga/staticdsettings/getStaticdv4/',
+        'set':'/api/quagga/staticdsettings/setStaticdv4/',
+        'add':'/api/quagga/staticdsettings/addStaticdv4/',
+        'del':'/api/quagga/staticdsettings/delStaticdv4/',
+        'toggle':'/api/quagga/staticdsettings/toggleStaticdv4/',
+        'options':{selection:false, multiSelect:false}
+      }
+    );
+    $("#grid-ipv6").UIBootgrid(
+      { 'search':'/api/quagga/staticdsettings/searchStaticdv6',
+        'get':'/api/quagga/staticdsettings/getStaticdv6/',
+        'set':'/api/quagga/staticdsettings/setStaticdv6/',
+        'add':'/api/quagga/staticdsettings/addStaticdv6/',
+        'del':'/api/quagga/staticdsettings/delStaticdv6/',
+        'toggle':'/api/quagga/staticdsettings/toggleStaticdv6/',
         'options':{selection:false, multiSelect:false}
       }
     );
   });
   </script>
   
-  {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditv4,'id':'DialogEditv4','label':lang._('Edit IPv4')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditv6,'id':'DialogEditv6','label':lang._('Edit IPv6')])}}
   

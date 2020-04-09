@@ -1,0 +1,101 @@
+<model>
+    <mount>//OPNsense/quagga/staticd</mount>
+    <description>Static Routing configuration</description>
+    <version>1.0.4</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <networks>
+                <networkv4 type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <ipaddr type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                        </ipaddr>                       
+                        <netmask type="IntegerField">
+                                <default>24</default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>Y</Required>
+                                <MaximumValue>32</MaximumValue>
+                                <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
+                        </netmask>                       
+                        <gateway type="TextField">
+                                <default></default>                        
+                                <Required>N</Required>
+                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>                                
+                        </gateway>                       
+                        <interfacename type="InterfaceField">
+                                 <Required>N</Required>
+                                 <multiple>N</multiple>
+                                 <default></default>
+                                 <AllowDynamic>Y</AllowDynamic>
+                                 <filters>
+                                         <enable>/^(?!0).*$/</enable>
+                                 </filters>
+                        </interfacename>
+                        <distance type="IntegerField">
+                                <default>1</default>
+                                <Required>N</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>255</MaximumValue>                                                                
+                                <ValidationMessage>Must be between 1 and 255 (default is 1)</ValidationMessage>                                 
+                        </distance>                        
+                        <blackhole type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </blackhole>                                                
+                </networkv4>
+                <networkv6 type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <ipaddr type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <mask>/^[\w:]+:+[\w:]+$/</mask>
+                                <ValidationMessage>Must be an IPv6 Address</ValidationMessage>                                 
+                        </ipaddr>                       
+                        <netmask type="IntegerField">
+                                <default>64</default>
+                                <MinimumValue>0</MinimumValue>
+                                <Required>Y</Required>
+                                <MaximumValue>128</MaximumValue>
+                                <ValidationMessage>Network mask must be between 0 and 128.</ValidationMessage>
+                        </netmask>                       
+                        <gateway type="TextField">
+                                <default></default>                        
+                                <Required>N</Required>
+                                <mask>/^[\w:]+:+[\w:]+$/</mask>
+                                <ValidationMessage>Must be an IPv6 Address</ValidationMessage>                                
+                        </gateway>                       
+                        <interfacename type="InterfaceField">
+                                 <Required>N</Required>
+                                 <multiple>N</multiple>
+                                 <default></default>
+                                 <AllowDynamic>Y</AllowDynamic>
+                                 <filters>
+                                         <enable>/^(?!0).*$/</enable>
+                                 </filters>
+                        </interfacename>
+                        <distance type="IntegerField">
+                                <default>1</default>
+                                <Required>N</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>255</MaximumValue>                                                                
+                                <ValidationMessage>Must be between 1 and 255 (default is 1)</ValidationMessage>                                 
+                        </distance>                         
+                        <blackhole type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </blackhole>                                                
+                </networkv6>                               
+        </networks>
+    </items>
+</model>

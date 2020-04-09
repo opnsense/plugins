@@ -26,6 +26,6 @@ namespace OPNsense\Quagga;
 
 use OPNsense\Base\BaseModel;
 
-class FIXED extends BaseModel
+class Staticd extends BaseModel
 {
 }

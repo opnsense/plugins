@@ -25,12 +25,13 @@
 
 namespace OPNsense\Quagga;
 
-class FixedController extends \OPNsense\Base\IndexController
+class StaticdController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->fixedForm = $this->getForm("fixed");
-        $this->view->formDialogEditNetwork = $this->getForm("dialogEditFIXEDNetwork");
-        $this->view->pick('OPNsense/Quagga/fixed');
+        $this->view->staticdForm = $this->getForm("staticd");
+        $this->view->formDialogEditv4 = $this->getForm("dialogEditStaticdv4");
+        $this->view->formDialogEditv6 = $this->getForm("dialogEditStaticdv6");        
+        $this->view->pick('OPNsense/Quagga/staticd');
     }
 }
