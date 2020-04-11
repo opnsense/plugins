@@ -6,5 +6,9 @@
         <privatedomain type="CSVListField">
             <Required>N</Required>
         </privatedomain>
+        <dotservers type="CSVListField">
+            <Required>N</Required>
+            <mask>/^[a-fA-F0-9\.\@]{1,46}$/</mask>
+        </dotservers>
     </items>
 </model>
