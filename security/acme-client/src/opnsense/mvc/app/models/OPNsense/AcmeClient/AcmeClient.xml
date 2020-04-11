@@ -959,6 +959,12 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_ca>
+                <sftp_filename_fullchain type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_fullchain>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
