@@ -391,6 +391,7 @@
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_kinghost>KingHost DNS API</dns_kinghost>
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
+                        <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_loopia>Loopia API</dns_loopia>
@@ -861,6 +862,9 @@
                 <dns_euserv_password type="TextField">
                     <Required>N</Required>
                 </dns_euserv_password>
+                <dns_leaseweb_key type="TextField">
+                    <Required>N</Required>
+                </dns_leaseweb_key>
             </validation>
         </validations>
         <actions>

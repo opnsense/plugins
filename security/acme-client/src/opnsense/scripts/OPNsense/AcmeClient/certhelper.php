@@ -817,6 +817,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['KNOT_SERVER'] = (string)$valObj->dns_knot_server;
                 $proc_env['KNOT_KEY'] = (string)$valObj->dns_knot_key;
                 break;
+            case 'dns_leaseweb':
+                $proc_env['LSW_Key'] = (string)$valObj->dns_leaseweb_key;
+                break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
                 $proc_env['LEXICON_' . strtoupper($proc_env['PROVIDER']) . '_USERNAME'] = (string)$valObj->dns_lexicon_user;
