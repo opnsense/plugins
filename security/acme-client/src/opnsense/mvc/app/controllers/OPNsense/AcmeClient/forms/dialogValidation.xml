@@ -1019,4 +1019,19 @@
         <type>password</type>
         <help>You need to obtain your API key from variomedia's customer support.</help>
     </field>
+    <field>
+        <label>SchlundTech</label>
+        <type>header</type>
+        <style>table_dns table_dns_schlundtech</style>
+    </field>
+    <field>
+        <id>validation.dns_schlundtech_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_schlundtech_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
 </form>

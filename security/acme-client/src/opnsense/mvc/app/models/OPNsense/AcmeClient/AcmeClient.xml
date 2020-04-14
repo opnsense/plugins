@@ -405,6 +405,7 @@
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_pleskxml>Plesk XML API</dns_pleskxml>
+                        <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
@@ -827,26 +828,32 @@
                     <Required>N</Required>
                 </dns_zm_key>
                 <dns_gdnsdk_user type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_gdnsdk_user>
                 <dns_gdnsdk_password type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_gdnsdk_password>
                 <dns_acmedns_user type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_user>
                 <dns_acmedns_password type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_password>
                 <dns_acmedns_subdomain type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_subdomain>
                 <dns_acmedns_updateurl type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_updateurl>
                 <dns_variomedia_key type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_variomedia_key>
+                <dns_schlundtech_user type="TextField">
+                    <Required>N</Required>
+                </dns_schlundtech_user>
+                <dns_schlundtech_password type="TextField">
+                    <Required>N</Required>
+                </dns_schlundtech_password>
             </validation>
         </validations>
         <actions>

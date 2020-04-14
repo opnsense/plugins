@@ -909,6 +909,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['pleskxml_pass'] = (string)$valObj->dns_pleskxml_pass;
                 $proc_env['pleskxml_uri'] = (string)$valObj->dns_pleskxml_uri;
                 break;
+            case 'dns_schlundtech':
+                $proc_env['SCHLUNDTECH_USER'] = (string)$valObj->dns_schlundtech_user;
+                $proc_env['SCHLUNDTECH_PASSWORD'] = (string)$valObj->dns_schlundtech_password;
+                break;
             case 'dns_selectel':
                 $proc_env['SL_Key'] = (string)$valObj->dns_sl_key;
                 break;
