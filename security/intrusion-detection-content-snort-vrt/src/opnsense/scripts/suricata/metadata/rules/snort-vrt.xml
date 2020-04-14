@@ -123,6 +123,6 @@
 	</files>
 	<properties>
 		<property name="snort_vrt.oinkcode" default=""/>
-		<property name="snort_vrt.rulesfile" default="snortrules-snapshot-29111.tar.gz"/>
+		<property name="snort_vrt.rulesfile" default="snortrules-snapshot-2983.tar.gz"/>
 	</properties>
 </ruleset>
