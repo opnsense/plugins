@@ -732,6 +732,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Dynu_ClientId'] = (string)$valObj->dns_dynu_clientid;
                 $proc_env['Dynu_Secret'] = (string)$valObj->dns_dynu_secret;
                 break;
+            case 'dns_euserv':
+                $proc_env['EUSERV_Username'] = (string)$valObj->dns_euserv_user;
+                $proc_env['EUSERV_Password'] = (string)$valObj->dns_euserv_password;
+                break;
             case 'dns_freedns':
                 $proc_env['FREEDNS_User'] = (string)$valObj->dns_freedns_user;
                 $proc_env['FREEDNS_Password'] = (string)$valObj->dns_freedns_password;

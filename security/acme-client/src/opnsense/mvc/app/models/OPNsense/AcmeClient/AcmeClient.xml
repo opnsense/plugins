@@ -378,6 +378,7 @@
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
                         <dns_dynu>Dynu API</dns_dynu>
+                        <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
@@ -854,6 +855,12 @@
                 <dns_schlundtech_password type="TextField">
                     <Required>N</Required>
                 </dns_schlundtech_password>
+                <dns_euserv_user type="TextField">
+                    <Required>N</Required>
+                </dns_euserv_user>
+                <dns_euserv_password type="TextField">
+                    <Required>N</Required>
+                </dns_euserv_password>
             </validation>
         </validations>
         <actions>
