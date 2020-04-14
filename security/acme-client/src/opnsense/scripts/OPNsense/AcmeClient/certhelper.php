@@ -732,6 +732,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Dynu_ClientId'] = (string)$valObj->dns_dynu_clientid;
                 $proc_env['Dynu_Secret'] = (string)$valObj->dns_dynu_secret;
                 break;
+            case 'dns_euserv':
+                $proc_env['EUSERV_Username'] = (string)$valObj->dns_euserv_user;
+                $proc_env['EUSERV_Password'] = (string)$valObj->dns_euserv_password;
+                break;
             case 'dns_freedns':
                 $proc_env['FREEDNS_User'] = (string)$valObj->dns_freedns_user;
                 $proc_env['FREEDNS_Password'] = (string)$valObj->dns_freedns_password;
@@ -812,6 +816,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_knot':
                 $proc_env['KNOT_SERVER'] = (string)$valObj->dns_knot_server;
                 $proc_env['KNOT_KEY'] = (string)$valObj->dns_knot_key;
+                break;
+            case 'dns_leaseweb':
+                $proc_env['LSW_Key'] = (string)$valObj->dns_leaseweb_key;
                 break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
@@ -908,6 +915,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['pleskxml_user'] = (string)$valObj->dns_pleskxml_user;
                 $proc_env['pleskxml_pass'] = (string)$valObj->dns_pleskxml_pass;
                 $proc_env['pleskxml_uri'] = (string)$valObj->dns_pleskxml_uri;
+                break;
+            case 'dns_schlundtech':
+                $proc_env['SCHLUNDTECH_USER'] = (string)$valObj->dns_schlundtech_user;
+                $proc_env['SCHLUNDTECH_PASSWORD'] = (string)$valObj->dns_schlundtech_password;
                 break;
             case 'dns_selectel':
                 $proc_env['SL_Key'] = (string)$valObj->dns_sl_key;

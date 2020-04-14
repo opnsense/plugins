@@ -1019,4 +1019,44 @@
         <type>password</type>
         <help>You need to obtain your API key from variomedia's customer support.</help>
     </field>
+    <field>
+        <label>SchlundTech</label>
+        <type>header</type>
+        <style>table_dns table_dns_schlundtech</style>
+    </field>
+    <field>
+        <id>validation.dns_schlundtech_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_schlundtech_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>EUserv</label>
+        <type>header</type>
+        <style>table_dns table_dns_euserv</style>
+    </field>
+    <field>
+        <id>validation.dns_euserv_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_euserv_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Leaseweb</label>
+        <type>header</type>
+        <style>table_dns table_dns_leaseweb</style>
+    </field>
+    <field>
+        <id>validation.dns_leaseweb_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
 </form>
