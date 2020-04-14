@@ -120,7 +120,6 @@ const UPLOAD_NAME_TEMPLATES = [
     "key" => ["default" => "{{name}}/key.pem", "option" => "key-name"],
     "ca" => ["default" => "{{name}}/ca.pem", "option" => "ca-name"],
     "fullchain" => ["default" => "{{name}}/fullchain.pem", "option" => "fullchain-name"],
-
 ];
 
 // Exit codes
