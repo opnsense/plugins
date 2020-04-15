@@ -25,7 +25,7 @@
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 function udpbroadcastrelay_enabled()
 {
     $model = new \OPNsense\UDPBroadcastRelay\UDPBroadcastRelay();
@@ -53,17 +53,17 @@ function udpbroadcastrelay_services()
     if (!udpbroadcastrelay_enabled()) {
         return $services;
     }
-    
+
     $model = new \OPNsense\UDPBroadcastRelay\UDPBroadcastRelay();
 
     foreach ($model->udpbroadcastrelay->iterateItems() as $server) {
-     
+
         if ($server->enabled == '0'){
             continue;
         }
 
         $services[] = array(
-            
+
             'description' => $server->description,
             'id' =>  $server->InstanceID,
             'pidfile' => "/var/run/udpbroadcastrelay_{$server->InstanceID}.pid",
@@ -71,13 +71,13 @@ function udpbroadcastrelay_services()
                 'restart' => array('udpbroadcastrelay restart '.$server->InstanceID),
                 'start' => array('udpbroadcastrelay start '.$server->InstanceID),
                 'stop' => array('udpbroadcastrelay stop '.$server->InstanceID),
-               
+
             ),
-            
+
             'name' => 'udpbroadcastrelay',
         );
 
     }
-    
+
     return $services;
 }

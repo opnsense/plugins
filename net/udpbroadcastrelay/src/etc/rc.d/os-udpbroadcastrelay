@@ -81,7 +81,7 @@ udpbroadcastrelay_reload () {
       # get instance flags
       instance_flags="${line#*udpbroadcastrelay}"
       # check if it should run
-      echo 
+      echo
       eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${instance}
 
       if [ -n "$osudpbroadcastrelay_flags" -a "$osudpbroadcastrelay_flags" = "$instance_flags" ]; then
@@ -94,9 +94,9 @@ udpbroadcastrelay_reload () {
       udpbroadcastrelay_stop
    done
    # start configured instances
-  
+
    if [ -n "$osudpbroadcastrelay_instances" ]; then
- 
+
       for i in $osudpbroadcastrelay_instances; do
          eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}
          pidfile="/var/run/udpbroadcastrelay_$i.pid"

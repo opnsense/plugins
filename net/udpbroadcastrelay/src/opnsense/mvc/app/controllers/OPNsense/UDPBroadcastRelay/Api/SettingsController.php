@@ -99,7 +99,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
                     if (count($result['validations']) == 0) {
                         // check for duplicates
-                        
+
                         foreach ($CurrentProxies['udpbroadcastrelay'] as $CurrentUUID => &$CurrentRelay) {
                             if (
                                 $node->InstanceID->__toString() == $CurrentRelay['InstanceID'] &&
@@ -135,7 +135,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                              "udpbroadcastrelay.InstanceID" => "Instance ID already In use."
                                            )
                                        );
-                            }  
+                            }
                             $result = count(explode(',',$node->interfaces));
                             if (
                                 $result < 2 &&
@@ -147,9 +147,9 @@ class SettingsController extends ApiMutableModelControllerBase
                                              "udpbroadcastrelay.interfaces" => "At least two interfaces must be selected."
                                            )
                                        );
-                            }  
+                            }
                         }
-                        
+
                         // save config if validated correctly
                         $mdlUDPBroadcastRelay->serializeToConfig();
                         Config::getInstance()->save();
@@ -189,7 +189,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 foreach ($CurrentProxies['udpbroadcastrelay'] as &$CurrentRelay) {
                     if (
                             $node->InstanceID->__toString() == $CurrentRelay['InstanceID'] &&
-                            $node->listenport->__toString() == $CurrentRelay['listenport'] 
+                            $node->listenport->__toString() == $CurrentRelay['listenport']
                         ) {
                             return array(
                                       "result" => "failed",
@@ -219,9 +219,9 @@ class SettingsController extends ApiMutableModelControllerBase
                                    )
                                );
                     }
-                    
+
                     $result = count(explode(',',$node->interfaces));
-                    if ( 
+                    if (
                         $result < 2
                     ) {
                         return array(

@@ -91,7 +91,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="interfaces" data-width="10em" data-type="string" data-visible="true">{{ lang._('Interfaces') }}</th>
                 <th data-column-id="multicastaddress" data-width="15em" data-type="string" data-visible="true">{{ lang._('Multicast Addresses') }}</th>
                 <th data-column-id="sourceaddress"  data-width="11em" data-type="string" data-visible="true">{{ lang._('Source Address') }}</th>
-                <th data-column-id="listenport" data-width="8em" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>              
+                <th data-column-id="listenport" data-width="8em" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>
                 <th data-column-id="InstanceID" data-width="6em" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
                 <th data-column-id="description" data-width="15em" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>

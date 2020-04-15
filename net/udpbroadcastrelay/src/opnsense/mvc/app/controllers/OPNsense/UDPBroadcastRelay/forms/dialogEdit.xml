@@ -21,8 +21,8 @@
       <id>udpbroadcastrelay.multicastaddress</id>
       <label>Broadcast Address</label>
       <type>select_multiple</type>
-      <allownew>true</allownew>   
-      <style>tokenize</style>      
+      <allownew>true</allownew>
+      <style>tokenize</style>
       <help><![CDATA[Multicast addresses to use on this port when relaying multicast packets. e.g Sonos is 239.255.255.250, you may enter multiple addresses.]]></help>
    </field>
    <field>

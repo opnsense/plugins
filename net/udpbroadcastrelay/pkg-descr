@@ -1,13 +1,13 @@
 udbproadcastrelay is a UDP multicast relayer. Its intended use is to
 rebroadbcast udp packets on a specific port across interfaces, be those
-interfaces physical or VLAN. 
+interfaces physical or VLAN.
 
-It is used where devices such as Sonos or Sky are spread accross 
+It is used where devices such as Sonos or Sky are spread accross
 different subnets and are not able to detect the servers or devices.
 
 Examples of different devices and the ports are as follows:
 
-Syncthing discovery 
+Syncthing discovery
 udp_vars="--id 1 --port 21027 --dev igb1 --dev igb2"
 
 mDNS / Broadcast DNS (Chromecast Discovery + Bonjour + More)
