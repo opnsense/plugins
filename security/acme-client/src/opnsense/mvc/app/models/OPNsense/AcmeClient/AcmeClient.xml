@@ -378,6 +378,7 @@
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
                         <dns_dynu>Dynu API</dns_dynu>
+                        <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
@@ -390,6 +391,7 @@
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_kinghost>KingHost DNS API</dns_kinghost>
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
+                        <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_loopia>Loopia API</dns_loopia>
@@ -405,6 +407,7 @@
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_pleskxml>Plesk XML API</dns_pleskxml>
+                        <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
@@ -827,26 +830,41 @@
                     <Required>N</Required>
                 </dns_zm_key>
                 <dns_gdnsdk_user type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_gdnsdk_user>
                 <dns_gdnsdk_password type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_gdnsdk_password>
                 <dns_acmedns_user type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_user>
                 <dns_acmedns_password type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_password>
                 <dns_acmedns_subdomain type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_subdomain>
                 <dns_acmedns_updateurl type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_updateurl>
                 <dns_variomedia_key type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_variomedia_key>
+                <dns_schlundtech_user type="TextField">
+                    <Required>N</Required>
+                </dns_schlundtech_user>
+                <dns_schlundtech_password type="TextField">
+                    <Required>N</Required>
+                </dns_schlundtech_password>
+                <dns_euserv_user type="TextField">
+                    <Required>N</Required>
+                </dns_euserv_user>
+                <dns_euserv_password type="TextField">
+                    <Required>N</Required>
+                </dns_euserv_password>
+                <dns_leaseweb_key type="TextField">
+                    <Required>N</Required>
+                </dns_leaseweb_key>
             </validation>
         </validations>
         <actions>
@@ -959,6 +977,12 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_ca>
+                <sftp_filename_fullchain type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_fullchain>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
