@@ -15,10 +15,4 @@
         <allownew>true</allownew>
         <help>List of nameservers to use for DoT. Use syntax ip@port like 9.9.9.9@853</help>
     </field>
-    <field>
-        <id>dnsbl.verifydotserver</id>
-        <label>Verify DoT Certificate</label>
-        <type>checkbox</type>
-        <help>This will verify the the certificate of the nameserver against the commonly known root certificates.</help>
-    </field>
 </form>
