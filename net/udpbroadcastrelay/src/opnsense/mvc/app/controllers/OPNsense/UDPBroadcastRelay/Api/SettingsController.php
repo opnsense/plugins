@@ -28,11 +28,11 @@
 
 namespace OPNsense\UDPBroadcastRelay\Api;
 
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Config;
+use OPNsense\UDPBroadcastRelay\UDPBroadcastRelay;
+use OPNsense\Base\UIModelGrid;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\Core\Config;
-use \OPNsense\UDPBroadcastRelay\UDPBroadcastRelay;
-use \OPNsense\Base\UIModelGrid;
 /**
  * Class SettingsController Handles settings related API actions for the UDPBroadcastRelay
  * @package OPNsense\UDPBroadcastRelay
@@ -115,7 +115,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                        );
                             }
                             if (
-                               $node->listenport->__toString() == $CurrentRelay['listenport'] &&
+                                $node->listenport->__toString() == $CurrentRelay['listenport'] &&
                                 $uuid != $CurrentUUID
                             ) {
                                 return array(
@@ -136,7 +136,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                            )
                                        );
                             }
-                            $result = count(explode(',',$node->interfaces));
+                            $result = count(explode(',', $node->interfaces));
                             if (
                                 $result < 2 &&
                                 $uuid != $CurrentUUID
@@ -190,7 +190,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     if (
                             $node->InstanceID->__toString() == $CurrentRelay['InstanceID'] &&
                             $node->listenport->__toString() == $CurrentRelay['listenport']
-                        ) {
+                    ) {
                             return array(
                                       "result" => "failed",
                                       "validations" => array(
@@ -198,9 +198,9 @@ class SettingsController extends ApiMutableModelControllerBase
                                          "udpbroadcastrelay.listenport" => "Listen port already in use."
                                       )
                                 );
-                           }
+                    }
                     if (
-                       $node->listenport->__toString() == $CurrentRelay['listenport']
+                        $node->listenport->__toString() == $CurrentRelay['listenport']
                     ) {
                         return array(
                                   "result" => "failed",
@@ -220,7 +220,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                );
                     }
 
-                    $result = count(explode(',',$node->interfaces));
+                    $result = count(explode(',', $node->interfaces));
                     if (
                         $result < 2
                     ) {

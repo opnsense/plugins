@@ -27,9 +27,10 @@
  */
 
 namespace OPNsense\UDPBroadcastRelay\Api;
-use \OPNsense\Base\ApiMutableModelControllerBase;
-use \OPNsense\UDPBroadcastRelay\UDPBroadcastRelay;
-use \OPNsense\Core\Backend;
+
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\UDPBroadcastRelay\UDPBroadcastRelay;
+use OPNsense\Core\Backend;
 
 /**
  * Class ServiceController Handles settings related API actions for the UDPBroadcastRelay
@@ -38,7 +39,7 @@ use \OPNsense\Core\Backend;
 class ServiceController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'udpbroadcastrelay';
-    protected static $internalModelClass = '\OPNsense\\UDPBroadcastRelay\\UDPBroadcastRelay';
+    protected static $internalModelClass = '\OPNsense\UDPBroadcastRelay\UDPBroadcastRelay';
     protected static $internalModelUseSafeDelete = true;
 
     public function statusAction($uuid)
@@ -167,7 +168,6 @@ class ServiceController extends ApiMutableModelControllerBase
         }
         if ($action == 'reload') {
             return trim($backend->configdRun('udpbroadcastrelay reload'));
-
         }
         return "Wrong action defined";
     }

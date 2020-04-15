@@ -57,26 +57,22 @@ function udpbroadcastrelay_services()
     $model = new \OPNsense\UDPBroadcastRelay\UDPBroadcastRelay();
 
     foreach ($model->udpbroadcastrelay->iterateItems() as $server) {
-
-        if ($server->enabled == '0'){
+        if ($server->enabled == '0') {
             continue;
         }
 
         $services[] = array(
-
             'description' => $server->description,
             'id' =>  $server->InstanceID,
             'pidfile' => "/var/run/udpbroadcastrelay_{$server->InstanceID}.pid",
             'configd' => array(
-                'restart' => array('udpbroadcastrelay restart '.$server->InstanceID),
-                'start' => array('udpbroadcastrelay start '.$server->InstanceID),
-                'stop' => array('udpbroadcastrelay stop '.$server->InstanceID),
+                'restart' => array('udpbroadcastrelay restart ' . $server->InstanceID),
+                'start' => array('udpbroadcastrelay start ' . $server->InstanceID),
+                'stop' => array('udpbroadcastrelay stop ' . $server->InstanceID),
 
             ),
-
             'name' => 'udpbroadcastrelay',
         );
-
     }
 
     return $services;
