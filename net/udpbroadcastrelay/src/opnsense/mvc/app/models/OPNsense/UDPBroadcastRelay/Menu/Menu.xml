@@ -1,0 +1,5 @@
+<menu>
+   <Services>
+      <UDPBroadcastRelay VisibleName="UDP Broadcast Relay" cssClass="fa fa-bolt fa-fw" url="/ui/udpbroadcastrelay"/>
+   </Services>
+</menu>
