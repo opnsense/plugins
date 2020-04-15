@@ -48,6 +48,7 @@ TARGETS=	clean lint style style-fix style-python sweep test
 .for TARGET in ${TARGETS}
 ${TARGET}:
 .  for PLUGIN_DIR in ${PLUGIN_DIRS}
+	@echo ">>> Entering ${PLUGIN_DIR}"
 	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
 .  endfor
 .endfor
