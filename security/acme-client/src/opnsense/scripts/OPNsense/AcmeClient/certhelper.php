@@ -735,6 +735,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_euserv':
                 $proc_env['EUSERV_Username'] = (string)$valObj->dns_euserv_user;
                 $proc_env['EUSERV_Password'] = (string)$valObj->dns_euserv_password;
+                $acme_hook_options[] = "--insecure";
                 break;
             case 'dns_freedns':
                 $proc_env['FREEDNS_User'] = (string)$valObj->dns_freedns_user;

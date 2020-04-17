@@ -420,9 +420,9 @@
                 </dns_service>
                 <dns_sleep type="IntegerField">
                     <MinimumValue>1</MinimumValue>
-                    <MaximumValue>10000</MaximumValue>
+                    <MaximumValue>84600</MaximumValue>
                     <default>120</default>
-                    <ValidationMessage>Please specify a value between 1 and 10000.</ValidationMessage>
+                    <ValidationMessage>Please specify a value between 1 and 84600.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
                 <dns_ad_key type="TextField">
