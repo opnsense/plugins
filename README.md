@@ -53,7 +53,7 @@ net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
-net/firewall -- Firewall API supplemental package (development only)
+net/firewall -- Firewall API supplemental package
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
