@@ -93,7 +93,6 @@
         <id>domain.dnsserver</id>
         <label>DNS Server</label>
         <type>text</type>
-        <help>Set the DNS server hosting this file. This should usually be the FQDN of your firewall where the BIND plugin is installed.
-        In a real world setup, dont forget to add the required Resource Records.</help>
+        <help>Set the DNS server hosting this file. This should usually be the FQDN of your firewall where the BIND plugin is installed. In a real world setup, dont forget to add the required Resource Records.</help>
     </field>
 </form>
