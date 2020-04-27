@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2019 - 2020 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2020 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,12 +28,8 @@
 
 namespace OPNsense\Unboundplus;
 
-class MiscellaneousController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class Upstream extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->miscellaneousForm = $this->getForm('miscellaneous');
-        $this->view->formDialogEditUnboundplusUpstream = $this->getForm("dialogEditUnboundplusUpstream");
-        $this->view->pick('OPNsense/Unboundplus/miscellaneous');
-    }
 }

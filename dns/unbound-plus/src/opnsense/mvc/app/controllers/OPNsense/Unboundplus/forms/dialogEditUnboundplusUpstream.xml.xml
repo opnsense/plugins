@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>upstream.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable or disable this upstream DNS server.</help>
+    </field>
+    <field>
+        <id>upstream.enabledot</id>
+        <label>Enable DoT</label>
+        <type>checkbox</type>
+        <help>Enable or disable DNS over TLS for this server.</help>
+    </field>
+    <field>
+        <id>upstream.server</id>
+        <label>Server IP</label>
+        <type>text</type>
+        <help>IP address of DNS server to forward all requests.</help>
+    </field>
+    <field>
+        <id>upstream.port</id>
+        <label>Server Port</label>
+        <type>text</type>
+        <help>Port of DNS server, for usual DNS use 53, if you use DoT set it to 853.</help>
+    </field>
+</form>

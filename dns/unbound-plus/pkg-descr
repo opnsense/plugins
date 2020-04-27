@@ -6,6 +6,10 @@ WWW: https://github.com/opnsense/plugins/
 Plugin Changelog
 ----------------
 
+1.2
+
+* Move DoT to grid view
+
 1.1
 
 * Add DNS over TLS (DoT) support
