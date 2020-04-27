@@ -37,28 +37,28 @@ class UpstreamController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'upstream';
     protected static $internalModelClass = '\OPNsense\Unboundplus\Upstream';
 
-    public function searchClientAction()
+    public function searchUpstreamAction()
     {
         return $this->searchBase('upstreams.upstream', array("enable", "enabledot", "server", "port"));
     }
-    public function getClientAction($uuid = null)
+    public function getUpstreamAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('upstream', 'upstreams.upstream', $uuid);
     }
-    public function addClientAction()
+    public function addUpstreamAction()
     {
         return $this->addBase('upstream', 'upstreams.upstream');
     }
-    public function delClientAction($uuid)
+    public function delUpstreamAction($uuid)
     {
         return $this->delBase('upstreams.upstream', $uuid);
     }
-    public function setClientAction($uuid)
+    public function setUpstreamAction($uuid)
     {
         return $this->setBase('upstream', 'upstreams.upstream', $uuid);
     }
-    public function toggleClientAction($uuid)
+    public function toggleUpstreamAction($uuid)
     {
         return $this->toggleBase('upstreams.upstream', $uuid);
     }
