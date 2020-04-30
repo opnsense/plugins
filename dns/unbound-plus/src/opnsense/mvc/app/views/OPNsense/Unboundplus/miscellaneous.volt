@@ -45,7 +45,7 @@
             <thead>
                 <tr>
                     <th data-column-id="enable" data-type="string" data-formatter="rowtoggle">{{ lang._('Enable') }}</th>
-                    <th data-column-id="enabledot" data-type="string" data-formatter="rowtoggle">{{ lang._('Enable DoT') }}</th>
+                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="server" data-type="string" data-visible="true">{{ lang._('Server IP') }}</th>
                     <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Server Port') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
