@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/unboundplus/upstream</mount>
     <description>Unbound Upstream DNS configuration</description>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <items>
         <upstreams>
             <upstream type="ArrayField">
@@ -13,7 +13,7 @@
                     <Required>Y</Required>
                     <default>plain</default>
                     <OptionValues>
-                        <plain>Plain<plain>
+                        <plain>Plain</plain>
                         <dot>DoT</dot>
                     </OptionValues>
                 </type>
