@@ -110,11 +110,11 @@ def deploy(config_filename):
 if len(sys.argv) > 1:
     if sys.argv[1] == 'stop':
         for instance in glob.glob('/usr/local/etc/tinc/*'):
-            proc_cat = subprocess.Popen(['cat', '%s/tinc.conf' % instance], stdout=subprocess.PIPE)
-            proc_grep = subprocess.Popen(['grep', 'Device='], stdin=proc_cat.stdout, stdout=subprocess.PIPE)
-            interface_name = proc_grep.communicate()[0].decode('utf-8').rstrip('\n').split('/')[-1]
             subprocess.run(['/usr/local/sbin/tincd','-n',instance.split('/')[-1], '-k'])
-            subprocess.run(['/sbin/ifconfig',interface_name,'destroy'])
+            if os.path.exists('%s/tinc.conf' % instance):
+                interface_name  = open('%s/tinc.conf' % instance).read().split('Device=')[-1].split()[0].split('/')[-1]
+                if interface_name.startswith('tinc'):
+                    subprocess.run(['/sbin/ifconfig',interface_name,'destroy'])
     elif sys.argv[1] == 'start':
         for netwrk in deploy('/usr/local/etc/tinc_deploy.xml'):
             subprocess.run(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R', '-d', netwrk.get_debuglevel()])
