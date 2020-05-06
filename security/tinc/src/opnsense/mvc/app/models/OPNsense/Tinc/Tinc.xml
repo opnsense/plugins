@@ -43,7 +43,7 @@
                     <FieldSeparator>,</FieldSeparator>
                     <Constraints>
                         <check001>
-                            <ValidationMessage>This field must be set in router mode.</ValidationMessage>
+                            <ValidationMessage>Subnet field must be set in router mode.</ValidationMessage>
                             <type>SetIfConstraint</type>
                             <field>mode</field>
                             <check>router</check>
@@ -77,6 +77,11 @@
                       <router>router</router>
                       <switch>switch</switch>
                   </OptionValues>
+                  <Constraints>
+                      <check001>
+                          <reference>subnet.check001</reference>
+                      </check001>
+                  </Constraints>
                 </mode>
                 <PMTUDiscovery type="BooleanField">
                     <default>1</default>
