@@ -137,34 +137,54 @@ const AUTOBLOCK_ALIAS_NAME = 'nginx_autoblock';
 const CRON_RUN_TEN_MINUTES = 10;
 $is_ten_minutes = intval(date('i')) % CRON_RUN_TEN_MINUTES == 0;
 
-// Abort if permanent ban file is missing
-if (!file_exists(PERMANENT_BAN_FILE)) {
-    nginx_print_error('No Log exists - nothing to do');
-    // let create it
-    reopen_logs();
-    exit(0);
-}
-
 // Move log files and inform Nginx that we deleted them
 function create_work_files($include_tls_handshake)
 {
-    rename(PERMANENT_BAN_FILE, PERMANENT_BAN_FILE_WORK);
+    $mapping = [PERMANENT_BAN_FILE => PERMANENT_BAN_FILE_WORK];
     if ($include_tls_handshake) {
-        rename(TLS_HANDSHAKE_FILE, TLS_HANDSHAKE_FILE_WORK);
+        $mapping[TLS_HANDSHAKE_FILE] = TLS_HANDSHAKE_FILE_WORK;
+    }
+
+    $existing_sources = array_filter(array_keys($mapping), "file_exists");
+    $work_files = [];
+
+    if (count($existing_sources) == count($mapping)) {
+        foreach ($mapping as $source => $target) {
+            // Check if we already processing $target in another process and skip it if not stale
+            if (file_exists($target)) {
+                if (time() - (@filemtime($target) ?: 0) > (5 * 60))
+                    @unlink($target);
+                else
+                    continue;
+            }
+
+            // Try to create work and log on failure
+            if (@rename($source, $target)) {
+                @touch($target);
+                $work_files[] = $target;
+            } else {
+                log_error("Failed renaming '$source' to '$target'. Skipping source for next run.");
+            }
+        }
+    } else {
+        //Concurrent invocation. Can be silently ignored since no work files are collected.
+        //log_error("Skipping processing. Missing: " . join(", ", array_diff(array_keys($mapping), $existing_sources)));
     }
 
     reopen_logs();
+    register_shutdown_function("cleanup_work_files", $work_files);
 
-    register_shutdown_function("cleanup_work_files");
+    return $work_files;
 }
 
-function cleanup_work_files()
+function cleanup_work_files($work_files)
 {
-    @unlink(PERMANENT_BAN_FILE_WORK);
+    foreach ($work_files as $file)
+        @unlink($file);
 }
 
 // Checking if our sources are modified and create work files as needed (do nothing if sources are unchanged)
-(function () use ($is_ten_minutes) {
+$work_files = (function () use ($is_ten_minutes) {
     $sources = get_files_lastmodified([CONFIG_FILE, PERMANENT_BAN_FILE]);
 
     $state = @json_decode(@file_get_contents(STATE_FILE), true);
@@ -174,23 +194,33 @@ function cleanup_work_files()
 
     if ($changed || $is_ten_minutes) {
         // Rename sources to ".work" and tell nginx to reopen logs.
-        create_work_files($is_ten_minutes);
+        // Triggering TLS-handshake processor every 10 minutes.
+        $work_files = create_work_files($is_ten_minutes);
 
         // Store state
-        if (!is_array($state))
-            $state = [];
-        $state["sources"] = get_files_lastmodified(array_keys($sources));
-        @file_put_contents(STATE_FILE, json_encode($state));
+        if (!empty($work_files)) {
+            if (!is_array($state))
+                $state = [];
+            $state["sources"] = get_files_lastmodified(array_keys($sources));
+            @file_put_contents(STATE_FILE, json_encode($state));
+        }
 
+        return $work_files;
     } else {
         // Sources are not modified, nothing to do when not in "$is_ten_minutes".
         exit(0);
     }
 })();
 
-// Triggering TLS-handshake processor every 10 minutes.
-if ($is_ten_minutes) {
-    mwexec_bg(TLS_HANDSHAKE_PROCESSING_TASK);
+// Triggering TLS-handshake processor when corresponding work file exists.
+if (in_array(TLS_HANDSHAKE_FILE_WORK, $work_files)) {
+    mwexec(TLS_HANDSHAKE_PROCESSING_TASK);
+}
+
+// Abort if permanent ban file is missing
+if (!in_array(PERMANENT_BAN_FILE_WORK, $work_files)) {
+    nginx_print_error('No Log exists - nothing to do');
+    exit(0);
 }
 
 // Verifing autoblock fw-alias and adding it if missing
