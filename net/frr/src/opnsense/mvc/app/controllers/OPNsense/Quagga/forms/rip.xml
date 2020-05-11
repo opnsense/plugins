@@ -12,8 +12,8 @@
         <help>Choose your RIP version (1 or 2). 1 is classful, 2 supports CIDR.</help>
     </field>
     <field>
-        <id>rip.passiveinterfaces</id>
-        <label>Passive Interfaces</label>
+        <id>rip.activeinterfaces</id>
+        <label>Active Interfaces</label>
         <type>select_multiple</type>
         <help><![CDATA[Select the interfaces, where no RIP packets should be sent to.]]></help>
         <hint>Type or select interface.</hint>

@@ -18,7 +18,7 @@
             <Required>Y</Required>
             <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</mask>
         </networks>
-        <passiveinterfaces type="InterfaceField">
+        <activeinterfaces type="InterfaceField">
                 <Required>N</Required>
                 <multiple>Y</multiple>
                 <default></default>
@@ -26,7 +26,7 @@
                 <filters>
                     <enable>/^(?!0).*$/</enable>
                 </filters>
-        </passiveinterfaces>
+        </activeinterfaces>
         <redistribute type="OptionField">
                 <Required>N</Required>
                 <multiple>Y</multiple>

@@ -30,7 +30,7 @@
             <MaximumValue>16777214</MaximumValue>
             <ValidationMessage>Must be a number between 0 and 16777214.</ValidationMessage>
         </originatemetric>
-        <passiveinterfaces type="InterfaceField">
+        <activeinterfaces type="InterfaceField">
                 <Required>N</Required>
                 <multiple>Y</multiple>
                 <default></default>
@@ -38,7 +38,7 @@
                 <filters>
                     <enable>/^(?!0).*$/</enable>
                 </filters>
-        </passiveinterfaces>
+        </activeinterfaces>
         <redistribute type="OptionField">
                 <Required>N</Required>
                 <multiple>Y</multiple>

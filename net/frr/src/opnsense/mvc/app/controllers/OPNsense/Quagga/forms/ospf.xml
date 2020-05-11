@@ -23,8 +23,8 @@
         <help>If you have a CARP setup, you may want to configure a router id in case of a conflict.</help>
     </field>
     <field>
-        <id>ospf.passiveinterfaces</id>
-        <label>Passive Interfaces</label>
+        <id>ospf.activeinterfaces</id>
+        <label>Active Interfaces</label>
         <type>select_multiple</type>
         <help><![CDATA[Select the interfaces, where no OSPF packets should be sent to.]]></help>
         <hint>Type or select interface.</hint>
