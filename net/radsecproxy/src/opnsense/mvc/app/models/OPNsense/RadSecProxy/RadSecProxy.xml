@@ -189,6 +189,7 @@
                             <display>description</display>
                         </servers>
                     </Model>
+                    <ValidationMessage>Related server not found</ValidationMessage>
                 </server>
 
                 <accountingServer type="ModelRelationField">
@@ -202,6 +203,7 @@
                             <display>description</display>
                         </servers>
                     </Model>
+                    <ValidationMessage>Related server not found</ValidationMessage>
                 </accountingServer>
 
                 <accountingResponse type="OptionField">

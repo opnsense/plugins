@@ -24,13 +24,24 @@
         <id>realm.server</id>
         <label>Server</label>
         <type>select_multiple</type>
+        <sortable>true</sortable>
+        <style>tokenize</style>
         <help>@TODO</help>
+    </field>
+
+    <field>
+        <id>realm.replyMessage</id>
+        <label>Reply-Message</label>
+        <type>text</type>
+        <help><![CDATA[Specify a message to be sent back to the client if a Access-Request is denied because no <b>server</b> is configured.]]></help>
     </field>
     
     <field>
         <id>realm.accountingServer</id>
         <label>Accounting-Server</label>
         <type>select_multiple</type>
+        <sortable>true</sortable>
+        <style>tokenize</style>
         <help>@TODO</help>
     </field>
 
@@ -39,13 +50,6 @@
         <label>Accounting-Response</label>
         <type>dropdown</type>
         <help><![CDATA[Enable sending Accounting-Response instead of ignoring Accounting-Requests when no <b>accoutingServer</b> is configured.]]></help>
-    </field>
-
-    <field>
-        <id>realm.replyMessage</id>
-        <label>Reply-Message</label>
-        <type>text</type>
-        <help><![CDATA[Specify a message to be sent back to the client if a Access-Request is denied because no <b>server</b> is configured.]]></help>
     </field>
 
 </form>
