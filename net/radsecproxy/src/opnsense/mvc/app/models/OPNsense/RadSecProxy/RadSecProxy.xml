@@ -179,8 +179,9 @@
                 </realm>
 
                 <server type="ModelRelationField">
+                    <Multiple>Y</Multiple>
                     <Required>N</Required>
-                    <MultiSelect>Y</MultiSelect>
+                    <Sorted>Y</Sorted>
                     <Model>
                         <servers>
                             <source>OPNsense.RadSecProxy.RadSecProxy</source>
@@ -191,8 +192,9 @@
                 </server>
 
                 <accountingServer type="ModelRelationField">
+                    <Multiple>Y</Multiple>
                     <Required>N</Required>
-                    <MultiSelect>Y</MultiSelect>
+                    <Sorted>Y</Sorted>
                     <Model>
                         <servers>
                             <source>OPNsense.RadSecProxy.RadSecProxy</source>
