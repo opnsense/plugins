@@ -1,0 +1,45 @@
+<form>
+    <field>
+        <id>client.enabled</id>
+        <label>Enable Client</label>
+        <type>checkbox</type>
+        <help>Allow connections from this client</help>
+    </field>
+
+    <field>
+        <id>client.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Short description to identify this client</help>
+    </field>
+    
+    <field>
+        <id>client.host</id>
+        <label>IP / Net</label>
+        <type>text</type>
+        <help>The client's IP or net</help>
+    </field>
+    
+    <field>
+        <id>client.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Choose the type of client. Default Radius-clients use UDP.</help>
+    </field>
+
+    <field>
+        <id>client.secret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <help>The shared RADIUS key with this client. This option is optional for TLS/DTLS and if omitted will default to "radsec". (Note that using a secret other than "radsec" for TLS is a violation of the standard (RFC 6614) and that the proposed standard for DTLS stipulates that the secret must be "radius/dtls".)</help>
+    </field>
+
+    <field>
+        <id>client.customConfig</id>
+        <label>Custom settings</label>
+        <advanced>true</advanced>
+        <type>textbox</type>
+        <help>Freetext-settings which will be pasted unvalidated into the block of this client's setting. Be careful!</help>
+    </field>
+
+</form>

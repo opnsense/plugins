@@ -1,0 +1,176 @@
+<model>
+    <mount>//OPNsense/radsecproxy</mount>
+    <description>
+        RadSecProxy-Management
+    </description>
+    <items>
+        <general>
+            <Enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </Enabled>
+            
+        </general>
+
+        <clients>
+            <client type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+                <description type="TextField">
+                    <Required>Y</Required>
+                </description>
+
+                <host type="NetworkField">
+                    <Required>Y</Required>
+                    <IpAllowed>Y</IpAllowed>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </host>
+
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <default>udp</default>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <tls>TLS</tls>
+                        <dtls>DTLS</dtls>
+                    </OptionValues>    
+                </type>
+
+                <secret type="TextField">
+                    <Required>N</Required>
+                </secret>
+
+                <customConfig type="TextField">
+                    <Required>N</Required>
+                </customConfig>
+            </client>
+        </clients>
+
+        <servers>
+            <server type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+                <description type="TextField">
+                    <Required>Y</Required>
+                </description>
+                
+                <host type="TextField">
+                    <Required>Y</Required>
+                    <IpAllowed>Y</IpAllowed>
+                </host>
+
+                <port type="PortField">
+                </port>
+
+                <statusServer type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                        <minimal>Minimal</minimal>
+                        <auto>Auto</auto>
+                    </OptionValues>
+                </statusServer>
+
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <default>udp</default>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <tls>TLS</tls>
+                        <dtls>DTLS</dtls>
+                    </OptionValues>
+                </type>
+
+                <secret type="TextField">
+                    <Required>N</Required>
+                </secret>
+
+                <tlsConfig type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <tlsConfigs>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>tlsConfigs.tlsConfig</items>
+                            <display>name</display>
+                        </tlsConfigs>
+                    </Model>
+                </tlsConfig>
+
+                <certificateNameCheck type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </certificateNameCheck>
+
+                <matchCertificateAttribute type="TextField">
+                    <Required>N</Required>
+                </matchCertificateAttribute>
+
+                <customConfig type="TextField">
+                    <Required>N</Required>
+                </customConfig>
+            </server>
+        </servers>
+
+        <tlsConfigs>
+            <tlsConfig type="ArrayField">
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <default>default</default>
+
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+
+                </name>
+
+                <description type="TextField">
+                </description>
+
+                <caCertificateRefId type="CertificateField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Field is required</ValidationMessage>
+                    <Type>ca</Type>
+                </caCertificateRefId>
+
+                <proxyCertificateRefId type="CertificateField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Field is required</ValidationMessage>
+                    <Type>cert</Type>
+                </proxyCertificateRefId>
+
+            </tlsConfig>
+        </tlsConfigs>
+
+        <realms>
+            <realm type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+            </realm>
+        </realms>
+    </items>
+</model>

@@ -1,0 +1,31 @@
+<form>
+
+    <field>
+        <id>tlsConfig.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>The TLS-configs unique name</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Short description to identify this TLS-config</help>
+    </field>
+    
+    <field>
+        <id>tlsConfig.caCertificateRefId</id>
+        <label>CA-certificate</label>
+        <type>dropdown</type>
+        <help>The CA certificate file used to verify the peers certificate.</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.proxyCertificateRefId</id>
+        <label>This server's certificate</label>
+        <type>dropdown</type>
+        <help>The server certificate this proxy will use. The file may also contain a certificate chain.</help>
+    </field>
+
+</form>
