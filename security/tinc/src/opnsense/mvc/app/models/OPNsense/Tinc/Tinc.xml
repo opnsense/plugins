@@ -37,10 +37,18 @@
                     <WildcardEnabled>N</WildcardEnabled>
                 </intaddress>
                 <subnet type="NetworkField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <WildcardEnabled>N</WildcardEnabled>
                     <NetMaskRequired>Y</NetMaskRequired>
                     <FieldSeparator>,</FieldSeparator>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Subnet field must be set in router mode.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>mode</field>
+                            <check>router</check>
+                        </check001>
+                    </Constraints>
                 </subnet>
                 <pingtimeout type="IntegerField">
                     <Required>Y</Required>
@@ -69,6 +77,11 @@
                       <router>router</router>
                       <switch>switch</switch>
                   </OptionValues>
+                  <Constraints>
+                      <check001>
+                          <reference>subnet.check001</reference>
+                      </check001>
+                  </Constraints>
                 </mode>
                 <PMTUDiscovery type="BooleanField">
                     <default>1</default>
@@ -123,7 +136,7 @@
                     <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                 </extaddress>
                 <subnet type="NetworkField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <WildcardEnabled>N</WildcardEnabled>
                     <NetMaskRequired>Y</NetMaskRequired>
                     <FieldSeparator>,</FieldSeparator>
