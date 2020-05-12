@@ -169,6 +169,51 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
+                
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+
+                <realm type="TextField">
+                    <Required>Y</Required>
+                </realm>
+
+                <server type="ModelRelationField">
+                    <Required>N</Required>
+                    <MultiSelect>Y</MultiSelect>
+                    <Model>
+                        <servers>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>servers.server</items>
+                            <display>description</display>
+                        </servers>
+                    </Model>
+                </server>
+
+                <accountingServer type="ModelRelationField">
+                    <Required>N</Required>
+                    <MultiSelect>Y</MultiSelect>
+                    <Model>
+                        <servers>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>servers.server</items>
+                            <display>description</display>
+                        </servers>
+                    </Model>
+                </accountingServer>
+
+                <accountingResponse type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </accountingResponse>
+
+                <replyMessage type="TextField">
+                    <Required>N</Required>
+                </replyMessage>
 
             </realm>
         </realms>
