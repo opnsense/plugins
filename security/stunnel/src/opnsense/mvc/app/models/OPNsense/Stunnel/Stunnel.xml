@@ -1,0 +1,61 @@
+<model>
+    <mount>//OPNsense/Stunnel</mount>
+    <version>1.0.0</version>
+    <migration_prefix>MFP</migration_prefix>
+    <description>
+        OPNsense firewall filter rules
+    </description>
+    <items>
+        <services>
+            <service type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <accept_port type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>port needs to be an integer value between 1 and 65535</ValidationMessage>
+                    <Required>Y</Required>
+                </accept_port>
+                <accept_address type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <default>127.0.0.1</default>
+                </accept_address>
+                <connect_address type="HostnameField">
+                    <Required>Y</Required>
+                </connect_address>
+                <connect_port type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>port needs to be an integer value between 1 and 65535</ValidationMessage>
+                    <Required>Y</Required>
+                </connect_port>
+                <cacert type="CertificateField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <Type>ca</Type>
+                    <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
+                </cacert>
+                <ciphers type="JsonKeyValueStoreField">
+                    <Required>Y</Required>
+                    <ConfigdPopulateAct>stunnel ssl ciphers</ConfigdPopulateAct>
+                    <SourceFile>/tmp/stunnel_ciphers_list.json</SourceFile>
+                    <ConfigdPopulateTTL>360</ConfigdPopulateTTL>
+                    <ValidationMessage>Please specify valid tls ciphers.</ValidationMessage>
+                </ciphers>
+                <servercert type="CertificateField">
+                    <Required>N</Required>
+                    <Type>cert</Type>
+                    <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
+                </servercert>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </service>
+        </services>
+    </items>
+</model>

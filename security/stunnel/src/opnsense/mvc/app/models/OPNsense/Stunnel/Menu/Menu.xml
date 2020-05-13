@@ -1,0 +1,7 @@
+<menu>
+    <VPN>
+        <Stunnel cssClass="fa fa-dot-circle-o fa-fw">
+            <Configuration url="/ui/stunnel/services/"/>
+        </Stunnel>
+    </VPN>
+</menu>
