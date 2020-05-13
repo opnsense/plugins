@@ -40,6 +40,7 @@
  *    - regfish IPv6 (regfish.de)
  *    - dynv6 IPv6 (dynv6.com)
  *    - DigitalOcean (digitalocean.com)
+ *    - DigitalOcean IPv6 (digitalocean.com)
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
@@ -99,6 +100,7 @@
  *  Azure DNS           - Last Tested: 16 October 2019
  *  Linode              - Last Tested: 25 February 2020
  *  Linode v6           - Last Tested: 25 February 2020
+ *  DigitalOcean v6     - Last Tested: 13 May 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -266,6 +268,7 @@ class updatedns
             case 'azurev6':
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'digitalocean-v6':
             case 'dynv6-v6':
             case 'he-net-v6':
             case 'linode-v6':
@@ -627,6 +630,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
                 break;
             case 'digitalocean':
+            case 'digitalocean-v6':
                 /*
                 * dnsHost should be the root domain
                 * dnsUser should be the record ID
@@ -634,6 +638,13 @@ class updatedns
                 */
                 $server = "https://api.digitalocean.com/v2/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser;
                 $hostData = array("data" => "{$this->_dnsIP}");
+
+                /*
+                * DigitalOcean does not offer the API via IPv6, so we need
+                * to force sending the request using IPv4 when updating for IPv6
+                */
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -1336,6 +1347,7 @@ class updatedns
                 }
                 break;
             case 'digitalocean':
+            case 'digitalocean-v6':
                 $output = json_decode($data);
                 if ($output->domain_record->data === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) Record ID {$this->_dnsUser} updated to {$this->_dnsIP}";
