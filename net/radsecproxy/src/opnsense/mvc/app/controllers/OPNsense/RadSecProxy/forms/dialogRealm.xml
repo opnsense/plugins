@@ -1,5 +1,10 @@
 <form>
     <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+
+    <field>
         <id>realm.enabled</id>
         <label>Enable Realm</label>
         <type>checkbox</type>
@@ -10,7 +15,7 @@
         <id>realm.realm</id>
         <label>Realm</label>
         <type>text</type>
-        <help>The client's IP or net</help>
+        <help>*|realm|/regex/</help>
     </field>
 
     <field>
@@ -21,12 +26,17 @@
     </field>
     
     <field>
+        <type>header</type>
+        <label>Authentication</label>
+    </field>
+
+    <field>
         <id>realm.server</id>
         <label>Server</label>
         <type>select_multiple</type>
         <sortable>true</sortable>
         <style>tokenize</style>
-        <help>@TODO</help>
+        <help>If not configured, the proxy will deny all Access-Requests for this realm.</help>
     </field>
 
     <field>
@@ -37,12 +47,17 @@
     </field>
     
     <field>
+        <type>header</type>
+        <label>Accounting</label>
+    </field>
+
+    <field>
         <id>realm.accountingServer</id>
         <label>Accounting-Server</label>
         <type>select_multiple</type>
         <sortable>true</sortable>
         <style>tokenize</style>
-        <help>@TODO</help>
+        <help>If not configured, the proxy will silently ignore all Accounting-Requests for this realm.</help>
     </field>
 
     <field>

@@ -176,6 +176,7 @@
 
                 <realm type="TextField">
                     <Required>Y</Required>
+                    <ValidationMessage>Must not be empty</ValidationMessage>
                 </realm>
 
                 <server type="ModelRelationField">

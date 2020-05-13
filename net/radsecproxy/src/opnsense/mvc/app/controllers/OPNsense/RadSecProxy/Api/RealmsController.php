@@ -11,7 +11,7 @@ class RealmsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("realms.realm", array('enabled', 'description'), "description");
+        return $this->searchBase("realms.realm", array('enabled', 'description', 'realm'), "description");
     }
 
     public function setItemAction($uuid)
