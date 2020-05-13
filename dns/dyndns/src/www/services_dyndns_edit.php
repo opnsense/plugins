@@ -301,7 +301,8 @@ include("head.inc");
                       <input name="host" type="text" id="host" value="<?= $pconfig['host'] ?>" />
                       <div class="hidden" data-for="help_for_host">
                         <?= gettext("Enter the complete host/domain name. example: myhost.dyndns.org") ?><br />
-                        <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?>
+                        <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?><br />
+                        <?= gettext("For DigitalOcean, enter the zone/domain name.") ?>
                       </div>
                     </td>
                   </tr>
@@ -349,6 +350,7 @@ include("head.inc");
                         <br /><?= gettext('Duck DNS: Enter your Token.') ?>
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
+                        <br /><?= gettext('DigitalOcean: Enter the domain record ID.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                       </div>
                     </td>
@@ -364,6 +366,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Leave blank.') ?>
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
+                        <br /><?= gettext('DigitalOcean: Enter your Access Token.') ?>
                       </div>
                     </td>
                   </tr>
