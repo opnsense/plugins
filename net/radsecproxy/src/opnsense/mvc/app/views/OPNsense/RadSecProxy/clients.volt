@@ -10,17 +10,16 @@
             }
         );
 
-                // link save button to API set action
+        // link apply button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/radsecproxy/general/set",formid='frm_GeneralSettings',callback_ok=function(){
-                // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
-                    // action to run after reload
-                });
+            // action to run after successful save, for example reconfigure service.
+            ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
+                // action to run after reload
             });
         });
     });
 </script>
+
 <table id="grid-addresses" class="table table-condensed table-hover table-striped" data-editDialog="DialogClient">
     <thead>
         <tr>

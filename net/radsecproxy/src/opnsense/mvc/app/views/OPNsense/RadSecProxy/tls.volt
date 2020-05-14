@@ -10,6 +10,7 @@
             }
         );
 
+        // link apply button to API set action
         $("#saveAct").click(function(){
             // action to run after successful save, for example reconfigure service.
             ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
@@ -18,6 +19,7 @@
         });
     });
 </script>
+
 <table id="grid-addresses" class="table table-condensed table-hover table-striped" data-editDialog="DialogTls">
     <thead>
         <tr>
