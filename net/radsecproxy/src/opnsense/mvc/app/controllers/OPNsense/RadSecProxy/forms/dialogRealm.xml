@@ -15,7 +15,7 @@
         <id>realm.realm</id>
         <label>Realm</label>
         <type>text</type>
-        <help>*|realm|/regex/</help>
+        <help>* | realm | /regex/</help>
     </field>
 
     <field>

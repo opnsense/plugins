@@ -1,4 +1,10 @@
 <form>
+
+    <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+
     <field>
         <id>server.enabled</id>
         <label>Enable server</label>
@@ -17,7 +23,7 @@
         <id>server.host</id>
         <label>Hostname / IP</label>
         <type>text</type>
-        <help>The servers IP or hostname to connect to</help>
+        <help>The server's IP or hostname to connect to</help>
     </field>
 
     <field>
@@ -53,6 +59,12 @@
         <label>TLS-Config</label>
         <type>dropdown</type>
         <help>For a TLS/DTLS client you may also specify the tls option. The option value must be the name of a previously defined TLS block. If this option is not specified, the TLS block with the name defaultClient or default will be used if defined (in that order). If the specified TLS block name does not exist, or the option is not specified and none of the defaults exist, the proxy will exit with an error.</help>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Advanced settings</label>
+        <advanced>true</advanced>
     </field>
 
     <field>
