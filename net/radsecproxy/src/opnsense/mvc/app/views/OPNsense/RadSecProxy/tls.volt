@@ -9,6 +9,13 @@
                 toggle:'/api/radsecproxy/tls/toggleItem/'
             }
         );
+
+        $("#saveAct").click(function(){
+            // action to run after successful save, for example reconfigure service.
+            ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
+                // action to run after reload
+            });
+        });
     });
 </script>
 <table id="grid-addresses" class="table table-condensed table-hover table-striped" data-editDialog="DialogTls">
@@ -33,5 +40,8 @@
     </tfoot>
 </table>
 
+<div class="col-md-12">
+    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Apply') }}</b></button>
+</div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogTls,'id':'DialogTls','label':lang._('Edit TLS-config')])}}

@@ -160,6 +160,25 @@
                     <Type>cert</Type>
                 </proxyCertificateRefId>
 
+                <policyOids type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <ChangeCase>lower</ChangeCase>
+                </policyOids>
+
+                <crlCheck type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </crlCheck>
+
+                <cacheExpiry type="IntegerField">
+                    <Required>N</Required>
+                </cacheExpiry>
+
             </tlsConfig>
         </tlsConfigs>
 

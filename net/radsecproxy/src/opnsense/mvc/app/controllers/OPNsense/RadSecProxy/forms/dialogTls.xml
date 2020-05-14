@@ -28,4 +28,30 @@
         <help>The server certificate this proxy will use. The file may also contain a certificate chain.</help>
     </field>
 
+    <field>
+        <id>tlsConfig.policyOids</id>
+        <label>PolicyOID</label>
+        <advanced>true</advanced>   
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Require the peers certificate to adhere to the policy specified by oid.</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.crlCheck</id>
+        <label>CRLCheck</label>
+        <advanced>true</advanced>   
+        <type>dropdown</type>
+        <help>Enable checking peer certificate against the CRL (default off). Note that radsecproxy does not fetch the CRLs itslef. This has to be done separately, e.g. with fetch-crl(8)</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.cacheExpiry</id>
+        <label>CacheExpiry (seconds)</label>
+        <advanced>true</advanced>   
+        <type>text</type>
+        <help>Specify how many seconds the CA and CRL information should be cached. By default, the CA and CRL are loaded at startup and cached indefinetely. This option may be set to zero to disable caching.</help>
+    </field>
+
 </form>
