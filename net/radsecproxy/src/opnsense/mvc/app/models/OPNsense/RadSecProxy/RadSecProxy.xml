@@ -149,13 +149,13 @@
                 </description>
 
                 <caCertificateRefId type="CertificateField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <ValidationMessage>Field is required</ValidationMessage>
                     <Type>ca</Type>
                 </caCertificateRefId>
 
                 <proxyCertificateRefId type="CertificateField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <ValidationMessage>Field is required</ValidationMessage>
                     <Type>cert</Type>
                 </proxyCertificateRefId>
