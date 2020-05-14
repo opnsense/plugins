@@ -39,14 +39,16 @@
                     <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
                 </cacert>
                 <ciphers type="JsonKeyValueStoreField">
+                    <default>TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,ECDHE-ECDSA-AES128-GCM-SHA256,ECDHE-RSA-AES128-GCM-SHA256,ECDHE-ECDSA-AES256-GCM-SHA384,ECDHE-RSA-AES256-GCM-SHA384,ECDHE-ECDSA-CHACHA20-POLY1305,ECDHE-RSA-CHACHA20-POLY1305,DHE-RSA-AES128-GCM-SHA256,DHE-RSA-AES256-GCM-SHA384</default>
                     <Required>Y</Required>
+                    <multiple>Y</multiple>
                     <ConfigdPopulateAct>stunnel ssl ciphers</ConfigdPopulateAct>
                     <SourceFile>/tmp/stunnel_ciphers_list.json</SourceFile>
                     <ConfigdPopulateTTL>360</ConfigdPopulateTTL>
                     <ValidationMessage>Please specify valid tls ciphers.</ValidationMessage>
                 </ciphers>
                 <servercert type="CertificateField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                     <Type>cert</Type>
                     <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
                 </servercert>

@@ -30,6 +30,12 @@
         <help>The port to forward traffic to.</help>
     </field>
     <field>
+        <id>service.servercert</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select a certificate to use for this service.]]></help>
+    </field>
+    <field>
         <id>service.cacert</id>
         <label>CA to validate connections to</label>
         <type>select_multiple</type>
@@ -40,6 +46,7 @@
         <label>Ciphers</label>
         <type>select_multiple</type>
         <help><![CDATA[Select all accepted TLS ciphers.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>service.description</id>

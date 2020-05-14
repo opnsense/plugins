@@ -33,7 +33,7 @@ class ServicesController extends IndexController
 {
     public function indexAction()
     {
-        $this->view->pick('OPNsense/stunnel/services');
+        $this->view->pick('OPNsense/Stunnel/services');
         $this->view->formDialogService = $this->getForm("dialogService");
     }
 }
