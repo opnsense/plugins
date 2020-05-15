@@ -192,6 +192,12 @@
                 <realm type="TextField">
                     <Required>Y</Required>
                     <ValidationMessage>Must not be empty</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Must be unique</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </realm>
 
                 <server type="ModelRelationField">
