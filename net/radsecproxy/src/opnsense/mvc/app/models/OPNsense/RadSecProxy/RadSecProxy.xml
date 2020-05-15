@@ -48,6 +48,30 @@
                     <Required>N</Required>
                 </secret>
 
+                <tlsConfig type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <tlsConfigs>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>tlsConfigs.tlsConfig</items>
+                            <display>name</display>
+                        </tlsConfigs>
+                    </Model>
+                </tlsConfig>
+
+                <certificateNameCheck type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </certificateNameCheck>
+
+                <matchCertificateAttribute type="TextField">
+                    <Required>N</Required>
+                </matchCertificateAttribute>
+
                 <customConfig type="TextField">
                     <Required>N</Required>
                 </customConfig>
