@@ -1,4 +1,10 @@
 <form>
+
+    <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+
     <field>
         <id>client.enabled</id>
         <label>Enable Client</label>
@@ -32,6 +38,36 @@
         <label>Secret</label>
         <type>text</type>
         <help>The shared RADIUS key with this client. This option is optional for TLS/DTLS and if omitted will default to "radsec". (Note that using a secret other than "radsec" for TLS is a violation of the standard (RFC 6614) and that the proposed standard for DTLS stipulates that the secret must be "radius/dtls".)</help>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Advanced settings</label>
+        <advanced>true</advanced>
+    </field>
+
+    <field>
+        <id>client.tlsConfig</id>
+        <label>TLS-Config</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help>For a TLS/DTLS client you may also specify the tls option. The option value must be the name of a previously defined TLS block. If this option is not specified, the TLS block with the name defaultClient or default will be used if defined (in that order). If the specified TLS block name does not exist, or the option is not specified and none of the defaults exist, the proxy will exit with an error.</help>
+    </field>
+
+    <field>
+        <id>client.certificateNameCheck</id>
+        <label>Certificate-Name-Check</label>
+        <advanced>true</advanced>        
+        <type>dropdown</type>
+        <help>For a TLS/DTLS server, disable the default behaviour of matching CN or SubjectAltName against the specified hostname or IP address.</help>
+    </field>
+
+    <field>
+        <id>client.matchCertificateAttribute</id>
+        <label>Match Certificate-Attribute</label>
+        <advanced>true</advanced>        
+        <type>text</type>
+        <help>Perform additional validation of certificate attributes (CN | SubjectAltName:URI | SubjectAltName:DNS). Currently matching of CN and SubjectAltName types URI DNS and IP is supported.</help>
     </field>
 
     <field>
