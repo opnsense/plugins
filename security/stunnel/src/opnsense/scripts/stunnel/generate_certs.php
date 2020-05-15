@@ -27,7 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+require_once('plugins.inc');
 require_once("legacy_bindings.inc");
 
 use OPNsense\Stunnel\Stunnel;
@@ -77,3 +77,6 @@ foreach($all_certs as $filename => $content) {
     file_put_contents($filename, $content);
     chown($filename, "stunnel");
 }
+
+// trigger certificate revocation lists update
+plugins_configure('crl');

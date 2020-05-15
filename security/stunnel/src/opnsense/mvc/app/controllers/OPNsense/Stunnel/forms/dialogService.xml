@@ -42,6 +42,19 @@
         <help><![CDATA[Select a Certificate Authority to validate connections to. To create a CA, go to <a href="/system_camanager.php">CA Manager</a>.]]></help>
     </field>
     <field>
+        <id>service.enableCRL</id>
+        <label>enable CRL</label>
+        <type>checkbox</type>
+        <help><![CDATA[
+            Enable certificate revocation lists, when selected a CRL with the format XXXXXXXX.r0 is required in the chroot (/var/run/stunnel/certs/).
+            When certificates are managed from this machine, the attached CRLs will be generated automatically.
+            For more information about this option, see CRLpath in stunnels manual.
+
+            If configured and a valid CRL is not available, all connections will be denied.
+            Additions may need a restart of stunnel (when the certificate was already used).
+            ]]></help>
+    </field>
+    <field>
         <id>service.ciphers</id>
         <label>Ciphers</label>
         <type>select_multiple</type>
