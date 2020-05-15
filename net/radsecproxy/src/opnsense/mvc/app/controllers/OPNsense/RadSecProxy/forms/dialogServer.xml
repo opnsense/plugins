@@ -6,13 +6,6 @@
     </field>
 
     <field>
-        <id>server.enabled</id>
-        <label>Enable server</label>
-        <type>checkbox</type>
-        <help>Allow connections to this server</help>
-    </field>
-
-    <field>
         <id>server.description</id>
         <label>Description</label>
         <type>text</type>

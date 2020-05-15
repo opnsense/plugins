@@ -11,7 +11,7 @@ class ServersController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("servers.server", array('enabled', 'description', 'host', 'type', 'tlsConfig'), "name");
+        return $this->searchBase("servers.server", array('description', 'host', 'type', 'tlsConfig'), "name");
     }
 
     public function setItemAction($uuid)
