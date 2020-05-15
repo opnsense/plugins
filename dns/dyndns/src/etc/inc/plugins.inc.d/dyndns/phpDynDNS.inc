@@ -45,7 +45,7 @@
  *    - Linode IPv6 (linode.com)
  * +----------------------------------------------------+
  *  Requirements:
- *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
+ *    - PHP version 5.4 or higher with the CURL Library and the PCRE Library
  * +----------------------------------------------------+
  *  Public Functions
  *    - updatedns()
@@ -61,7 +61,7 @@
  *  DynDNS Dynamic      - Last Tested: 12 July 2005
  *  DynDNS Static       - Last Tested: NEVER
  *  DynDNS Custom       - Last Tested: NEVER
- *  No-IP               - Last Tested: 20 July 2008
+ *  No-IP               - Last Tested: 15 May 2020
  *  HN.org              - Last Tested: 12 July 2005
  *  EasyDNS             - Last Tested: 20 July 2008
  *  DHS                 - Last Tested: 12 July 2005
@@ -103,8 +103,8 @@
  *
  * @author    E.Kristensen
  * @link    http://www.idylldesigns.com/projects/phpdns/
- * @version    0.8
- * @updated    13 October 05 at 21:02:42 GMT
+ * @version    0.9
+ * @updated    15 May 20 at 13:12:42 GMT
  *
  * DNSexit support and multiwan extension for pfSense by Ermal Luçi
  * Custom DNS support by Matt Corallo
@@ -115,7 +115,7 @@ class updatedns
     var $_cacheFile;
     var $_cacheFile_v6;
     var $_debugFile;
-    var $_UserAgent = 'User-Agent: phpDynDNS/0.7';
+    var $_UserAgent = 'User-Agent: phpDynDNS/0.9';
     var $_errorVerbosity = 0;
     var $_dnsService;
     var $_dnsUser;
@@ -445,8 +445,11 @@ class updatedns
                 break;
             case 'noip':
             case 'noip-free':
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                $server = "https://dynupdate.no-ip.com/ducupdate.php";
+                curl_setopt_array($ch, [
+                    CURLOPT_SSL_VERIFYPEER => true,
+                    CURLOPT_USERPWD => $this->_dnsUser.':'.$this->_dnsPass
+                ]);
+                $server = "https://dynupdate.no-ip.com/nic/update";
                 $port = "";
                 if ($this->_dnsServer) {
                     $server = $this->_dnsServer;
@@ -466,7 +469,7 @@ class updatedns
                 } else {
                     $iptoset = $this->_dnsIP;
                 }
-                curl_setopt($ch, CURLOPT_URL, $server . $port . '?username=' . urlencode($this->_dnsUser) . '&pass=' . urlencode($this->_dnsPass) . '&hostname=' . $this->_dnsHost . '&ip=' . $iptoset);
+                curl_setopt($ch, CURLOPT_URL, $server . $port . '?hostname=' . $this->_dnsHost.'&myip=' . $iptoset);
                 break;
             case 'easydns':
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
@@ -1091,62 +1094,35 @@ class updatedns
                 break;
             case 'noip':
             case 'noip-free':
-                list($ip,$code) = explode(":", $data);
+                $noIpPrc = explode(' ', $data);
+                $code = $noIpPrc[0];
+                $ip = isset($noIpPrc[1]) ? $noIpPrc[1] : 'n/a';
                 switch ($code) {
-                    case 0:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address is current, no update performed.";
-                        $successful_update = true;
-                        break;
-                    case 1:
+                    case 'good':
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS hostname update successful.";
                         $successful_update = true;
                         break;
-                    case 2:
+                    case 'nochg':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address is current, no update performed.";
+                        $successful_update = true;
+                        break;
+                    case 'nohost':
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Hostname supplied does not exist.";
                         break;
-                    case 3:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid Username.";
+                    case 'badauth':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid Username or Password.";
                         break;
-                    case 4:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid Password.";
+                    case 'badagent':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
                         break;
-                    case 5:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) To many updates sent.";
+                    case '!donate':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Requested update feature only available to Enhanced subscribers.";
                         break;
-                    case 6:
+                    case '911':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) No-IP servers currently experiencing outages. Retry no sooner than 30 minutes.";
+                        break;
+                    case 'abuse':
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Account disabled due to violation of No-IP terms of service.";
-                        break;
-                    case 7:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid IP. IP Address submitted is improperly formatted or is a private IP address or is on a blacklist.";
-                        break;
-                    case 8:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Disabled / Locked Hostname.";
-                        break;
-                    case 9:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Host updated is configured as a web redirect and no update was performed.";
-                        break;
-                    case 10:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Group supplied does not exist.";
-                        break;
-                    case 11:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS group update is successful.";
-                        $successful_update = true;
-                        break;
-                    case 12:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS group is current, no update performed.";
-                        $successful_update = true;
-                        break;
-                    case 13:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Update client support not available for supplied hostname or group.";
-                        break;
-                    case 14:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Hostname supplied does not have offline settings configured.";
-                        break;
-                    case 99:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
-                        break;
-                    case 100:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
                         break;
                     default:
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
