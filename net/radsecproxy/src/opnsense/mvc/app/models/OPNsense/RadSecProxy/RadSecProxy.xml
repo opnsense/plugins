@@ -9,6 +9,49 @@
                 <default>1</default>
                 <Required>Y</Required>
             </Enabled>
+
+            <logLevel type="OptionField">
+                <Required>Y</Required>
+                <default>2</default>
+                <OptionValues>
+                    <ll1 value="1">1 (only serious errors)</ll1>
+                    <ll2 value="2">2 (default)</ll2>
+                    <ll3 value="3">3</ll3>
+                    <ll4 value="4">4</ll4>
+                    <ll5 value="5">5 (log everything)</ll5>
+                </OptionValues>    
+            </logLevel>
+
+            <logFullUsername type="OptionField">
+                <Required>Y</Required>
+                <default>off</default>
+                <OptionValues>
+                    <on>On</on>
+                    <off>Off</off>
+                </OptionValues>
+            </logFullUsername>
+
+            <logMac type="OptionField">
+                <Required>Y</Required>
+                <default>original</default>
+                <OptionValues>
+                    <Static>Static</Static>
+                    <Original>Original</Original>
+                    <VendorHashed>VendorHashed</VendorHashed>
+                    <VendorKeyHashed>VendorKeyHashed</VendorKeyHashed>
+                    <FullyHashed>FullyHashed</FullyHashed>
+                    <FullyKeyHashed>FullyKeyHashed</FullyKeyHashed>
+                </OptionValues>    
+            </logMac>
+
+            <loopPrevention type="OptionField">
+                <Required>Y</Required>
+                <default>on</default>
+                <OptionValues>
+                    <on>On</on>
+                    <off>Off</off>
+                </OptionValues>
+            </loopPrevention>
             
         </general>
 

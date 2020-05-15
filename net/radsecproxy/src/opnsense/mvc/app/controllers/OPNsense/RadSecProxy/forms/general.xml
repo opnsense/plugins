@@ -4,4 +4,18 @@
         <label>Enable RadSecProxy</label>
         <type>checkbox</type>
     </field>
+
+    <field>
+        <id>radsecproxy.general.logLevel</id>
+        <label>Loglevel</label>
+        <type>dropdown</type>
+        <help>This option specifies the debug level. It must be set to 1, 2, 3, 4 or 5, where 1 logs only serious errors, and 5 logs everything. The default is 2 which logs errors, warnings and a few informational messages.</help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.logFullUsername</id>
+        <label>Log full username</label>
+        <type>dropdown</type>
+        <help>This can be set to off to only log the realm in Access-Accept/Reject log messages (for privacy).</help>
+    </field>
  </form>
