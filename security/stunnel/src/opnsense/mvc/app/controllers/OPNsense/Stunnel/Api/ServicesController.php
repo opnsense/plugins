@@ -35,6 +35,19 @@ class ServicesController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'stunnel';
     protected static $internalModelClass = 'OPNsense\Stunnel\Stunnel';
 
+    protected function save()
+    {
+        // hook service enable status on enabled tunnels
+        $this->getModel()->general->enabled = "0";
+        foreach ($this->getModel()->services->service->__items as $service) {
+            if ((string)$service->enabled == "1") {
+                $this->getModel()->general->enabled = "1";
+                break;
+            }
+        }
+        parent::save();
+    }
+
     public function searchItemAction()
     {
         return $this->searchBase("services.service", array('enabled', 'description'), "description");

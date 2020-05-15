@@ -6,6 +6,12 @@
         OPNsense firewall filter rules
     </description>
     <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+        </general>
         <services>
             <service type="ArrayField">
                 <enabled type="BooleanField">
