@@ -857,7 +857,7 @@
                 <dns_acmeproxy_password type="TextField">
                     <Required>N</Required>
                 </dns_acmeproxy_password>
-		<dns_variomedia_key type="TextField">
+                <dns_variomedia_key type="TextField">
                     <Required>N</Required>
                 </dns_variomedia_key>
                 <dns_schlundtech_user type="TextField">
