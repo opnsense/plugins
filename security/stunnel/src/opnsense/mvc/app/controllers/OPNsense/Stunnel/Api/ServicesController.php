@@ -28,7 +28,7 @@
 
 namespace OPNsense\Stunnel\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class ServicesController extends ApiMutableModelControllerBase
 {

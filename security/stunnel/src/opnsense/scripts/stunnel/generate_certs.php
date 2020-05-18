@@ -52,7 +52,7 @@ foreach ($stunnel->services->service->__items as $service) {
             foreach (explode(",", (string)$service->cacert) as $caid) {
                 foreach ($configObj->ca as $ca) {
                     if ((string)$ca->refid == $caid) {
-                        $all_certs["{$base_path}/{$this_uuid}.ca"] .= base64_decode((string)$ca->crt)."\n";
+                        $all_certs["{$base_path}/{$this_uuid}.ca"] .= base64_decode((string)$ca->crt) . "\n";
                     }
                 }
             }
@@ -73,7 +73,7 @@ foreach (glob("{$base_path}/*") as $filename) {
     }
 }
 
-foreach($all_certs as $filename => $content) {
+foreach ($all_certs as $filename => $content) {
     file_put_contents($filename, $content);
     chown($filename, "stunnel");
 }
