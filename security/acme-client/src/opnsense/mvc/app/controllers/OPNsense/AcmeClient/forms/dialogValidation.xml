@@ -1009,7 +1009,7 @@
         <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
     </field>
     <field>
-        <label>acmeproxy</label>
+        <label>Acmeproxy</label>
         <type>header</type>
         <style>table_dns table_dns_acmeproxy</style>
     </field>
@@ -1017,8 +1017,9 @@
         <id>validation.dns_acmeproxy_endpoint</id>
         <label>Endpoint</label>
         <type>text</type>
-        <help>Specify the acmeproxy endpoint URL, i.e. https://acmeproxy.examp
-    </field>                                                                      <field>
+        <help>Specify the acmeproxy endpoint URL, i.e. https://acmeproxy.example.com/</help>
+    </field>
+    <field>
         <id>validation.dns_acmeproxy_username</id>
         <label>User</label>
         <type>text</type>
