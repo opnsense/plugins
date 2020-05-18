@@ -1,0 +1,9 @@
+<acl>
+    <page-services-stunnel>
+        <name>Services: Stunnel</name>
+        <patterns>
+            <pattern>ui/stunnel/*</pattern>
+            <pattern>api/stunnel/*</pattern>
+        </patterns>
+    </page-services-stunnel>
+</acl>
