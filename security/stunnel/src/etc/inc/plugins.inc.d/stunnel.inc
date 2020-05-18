@@ -85,3 +85,12 @@ function stunnel_refresh_crls()
         }
     }
 }
+
+function stunnel_syslog()
+{
+    $logfacilities = array();
+    $logfacilities['stunnel'] = array(
+        'facility' => array('stunnel')
+    );
+    return $logfacilities;
+}
