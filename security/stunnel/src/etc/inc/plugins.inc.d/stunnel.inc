@@ -28,9 +28,9 @@
 
 function stunnel_configure()
 {
-   return array(
+    return array(
        'crl' => array('stunnel_refresh_crls')
-   );
+    );
 }
 
 function stunnel_refresh_crls()
