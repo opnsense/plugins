@@ -43,6 +43,7 @@
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
+*    -  All-Inkl.com (all-inkl.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -99,6 +100,7 @@
  *  Azure DNS           - Last Tested: 16 October 2019
  *  Linode              - Last Tested: 25 February 2020
  *  Linode v6           - Last Tested: 25 February 2020
+ *  All-Inkl.com        - Last Tested: 18 May 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -264,6 +266,7 @@ class updatedns
 
         switch ($dnsService) {
             case 'azurev6':
+            case 'all-inkl-v6':
             case 'cloudflare-v6':
             case 'custom-v6':
             case 'dynv6-v6':
@@ -314,6 +317,8 @@ class updatedns
         } else {
             switch ($this->_dnsService) {
                 case '3322':
+                case 'all-inkl':	
+                case 'all-inkl-v6':	
                 case 'azure':
                 case 'azurev6':
                 case 'citynetwork':
@@ -1059,6 +1064,13 @@ class updatedns
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
+            case 'all-inkl':
+            case 'all-inkl-v6':
+                $url = 'https://dyndns.kasserver.com/?myip=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':'.$this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $url );
+                break; 
+
             default:
                 break;
         }
@@ -1504,6 +1516,24 @@ class updatedns
                     $this->_debug($data);
                 }
                 break;
+            case 'all-inkl':
+            case 'all-inkl-v6':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if (preg_match('/good\s'.$this->_dnsIP.'/i', $data)) {
+                    $status =  "IP Address Changed Successfully! {$this->_dnsIP}";
+                    $successful_update = true;
+                } else if (preg_match('/good/i', $data)) {
+                    $status = "Result did not match.";
+                } else if ($http_code == 401) {
+                    $status = "Invalid username or password";
+                } else {
+                    $status = "Unknown Response";
+                    // log_error($status_intro . gettext("PAYLOAD:") . " " . $header . $data);
+                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $this->_debug($data);
+                   
+            }
+            break; 
             default:
                 break;
         }
