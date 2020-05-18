@@ -94,3 +94,14 @@ function stunnel_syslog()
     );
     return $logfacilities;
 }
+
+function stunnel_xmlrpc_sync()
+{
+    $result = array();
+    $result[] = array(
+        'description' => gettext('Stunnel'),
+        'section' => 'OPNsense.Stunnel',
+        'id' => 'stunnel',
+    );
+    return $result;
+}
