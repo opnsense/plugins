@@ -266,7 +266,6 @@ class updatedns
 
         switch ($dnsService) {
             case 'azurev6':
-            case 'all-inkl-v6':
             case 'cloudflare-v6':
             case 'custom-v6':
             case 'dynv6-v6':
@@ -318,7 +317,6 @@ class updatedns
             switch ($this->_dnsService) {
                 case '3322':
                 case 'all-inkl':	
-                case 'all-inkl-v6':	
                 case 'azure':
                 case 'azurev6':
                 case 'citynetwork':
@@ -1065,7 +1063,6 @@ class updatedns
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
             case 'all-inkl':
-            case 'all-inkl-v6':
                 $url = 'https://dyndns.kasserver.com/?myip=' . $this->_dnsIP;
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':'.$this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $url );
@@ -1517,7 +1514,6 @@ class updatedns
                 }
                 break;
             case 'all-inkl':
-            case 'all-inkl-v6':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 if (preg_match('/good\s'.$this->_dnsIP.'/i', $data)) {
                     $status =  "IP Address Changed Successfully! {$this->_dnsIP}";
