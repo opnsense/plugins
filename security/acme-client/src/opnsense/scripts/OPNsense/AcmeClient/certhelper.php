@@ -653,6 +653,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
                 $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
                 break;
+            case 'dns_acmeproxy':
+                $proc_env['ACMEPROXY_ENDPOINT'] = (string)$valObj->dns_acmeproxy_endpoint;
+                $proc_env['ACMEPROXY_USERNAME'] = (string)$valObj->dns_acmeproxy_username;
+                $proc_env['ACMEPROXY_PASSWORD'] = (string)$valObj->dns_acmeproxy_password;
+                break;
             case 'dns_ad':
                 $proc_env['AD_API_KEY'] = (string)$valObj->dns_ad_key;
                 break;
