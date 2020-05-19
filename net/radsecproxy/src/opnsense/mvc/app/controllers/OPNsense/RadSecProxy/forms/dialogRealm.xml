@@ -1,6 +1,7 @@
 <form>
+
     <field>
-        <type>header</type>
+        <type>section_title</type>
         <label>General</label>
     </field>
 
@@ -26,7 +27,7 @@
     </field>
     
     <field>
-        <type>header</type>
+        <type>section_title</type>
         <label>Authentication</label>
     </field>
 
@@ -47,7 +48,7 @@
     </field>
     
     <field>
-        <type>header</type>
+        <type>section_title</type>
         <label>Accounting</label>
     </field>
 
