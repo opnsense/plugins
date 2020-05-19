@@ -35,5 +35,6 @@ class ServicesController extends IndexController
     {
         $this->view->pick('OPNsense/Stunnel/services');
         $this->view->formDialogService = $this->getForm("dialogService");
+        $this->view->formGeneral = $this->getForm("general");
     }
 }

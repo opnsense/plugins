@@ -90,7 +90,7 @@ function stunnel_syslog()
 {
     $logfacilities = array();
     $logfacilities['stunnel'] = array(
-        'facility' => array('stunnel')
+        'facility' => array('stunnel', 'identd_stunnel')
     );
     return $logfacilities;
 }

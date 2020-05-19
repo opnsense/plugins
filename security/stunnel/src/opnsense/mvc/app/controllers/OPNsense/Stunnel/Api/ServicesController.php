@@ -45,7 +45,7 @@ class ServicesController extends ApiMutableModelControllerBase
                 break;
             }
         }
-        parent::save();
+        return parent::save();
     }
 
     public function searchItemAction()
@@ -76,5 +76,14 @@ class ServicesController extends ApiMutableModelControllerBase
     public function toggleItemAction($uuid, $enabled = null)
     {
         return $this->toggleBase("services.service", $uuid, $enabled);
+    }
+
+    public function getAction()
+    {
+        $result = array();
+        $result[static::$internalModelName] = [
+            "general" => $this->getModel()->general->getNodes()
+        ];
+        return $result;
     }
 }
