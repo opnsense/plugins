@@ -179,5 +179,5 @@ if __name__ == '__main__':
         run_listener()
     else:
         syslog.syslog(syslog.LOG_NOTICE, 'daemonize stunnel_identd.')
-        daemon = Daemonize(app="identd_stunnel", pid='/var/run/stunnel_identd.pid', action=run_listener)
+        daemon = Daemonize(app="identd_stunnel", pid='/var/run/identd_stunnel.pid', action=run_listener)
         daemon.start()
