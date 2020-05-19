@@ -1,2 +1,3 @@
 stunnel.conf:/usr/local/etc/stunnel/stunnel.conf
 rc.conf.d:/etc/rc.conf.d/stunnel
+syslog-ng-stunnel-ident.conf:/usr/local/etc/syslog-ng.conf.d/syslog-ng-stunnel-ident.conf
