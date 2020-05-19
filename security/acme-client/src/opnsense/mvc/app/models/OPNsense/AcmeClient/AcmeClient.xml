@@ -358,6 +358,7 @@
                     <default>dns_nsupdate</default>
                     <OptionValues>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
+                        <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
                         <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
@@ -847,6 +848,15 @@
                 <dns_acmedns_updateurl type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_acmeproxy_endpoint type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_endpoint>
+                <dns_acmeproxy_username type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_username>
+                <dns_acmeproxy_password type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_password>
                 <dns_variomedia_key type="TextField">
                     <Required>N</Required>
                 </dns_variomedia_key>
