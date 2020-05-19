@@ -1,4 +1,5 @@
 <form>
+
     <field>
         <id>radsecproxy.general.Enabled</id>
         <label>Enable RadSecProxy</label>
@@ -18,4 +19,5 @@
         <type>dropdown</type>
         <help>This can be set to off to only log the realm in Access-Accept/Reject log messages (for privacy).</help>
     </field>
+
  </form>
