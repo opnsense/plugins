@@ -20,4 +20,32 @@
         <help>This can be set to off to only log the realm in Access-Accept/Reject log messages (for privacy).</help>
     </field>
 
+    <field>
+        <id>radsecproxy.general.logMac</id>
+        <label>Log MAC</label>
+        <type>dropdown</type>
+        <help><![CDATA[The LogMAC option can be used to control if and how Calling-Station-Id (the users Ethernet MAC address) is being logged. It can be set to one of <b>Static</b>, <b>Original</b>, <b>VendorHashed</b>, <b>VendorKeyHashed</b>, <b>FullyHashed</b> or <b>FullyKeyHashed</b>. The default value for LogMAC is <b>Original</b>.]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.loopPrevention</id>
+        <label>Loop-prevention</label>
+        <type>dropdown</type>
+        <help>When this is enabled (on), a request will never be sent to a server named the same as the client it was received from. I.e., the names of the client block and the server block are compared. Note that this only gives limited protection against loops. It can be used as a basic option and inside server blocks where it overrides the basic setting.</help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Advanced settings</label>
+        <advanced>true</advanced>
+    </field>
+    
+    <field>
+        <id>radsecproxy.general.customConfig</id>
+        <label>Custom settings</label>
+        <advanced>true</advanced>
+        <type>textbox</type>
+        <help>Freetext-settings which will be pasted unvalidated into the main-block of radsecproxy's settings. Be careful!</help>
+    </field>
+
  </form>

@@ -5,6 +5,7 @@
     </description>
     <items>
         <general>
+
             <Enabled type="BooleanField">
                 <default>1</default>
                 <Required>Y</Required>
@@ -12,7 +13,7 @@
 
             <logLevel type="OptionField">
                 <Required>Y</Required>
-                <default>2</default>
+                <default>ll2</default>
                 <OptionValues>
                     <ll1 value="1">1 (only serious errors)</ll1>
                     <ll2 value="2">2 (default)</ll2>
@@ -52,7 +53,11 @@
                     <off>Off</off>
                 </OptionValues>
             </loopPrevention>
-            
+
+            <customConfig type="TextField">
+                <Required>N</Required>
+            </customConfig>
+
         </general>
 
         <clients>
