@@ -52,13 +52,13 @@ function stunnel_services()
             // only report status from identd seperately, control is combined with stunnel
             $services[] = array(
                 'description' => gettext('Identd (stunnel)'),
-                'stunnel' => array(
+                'identd_stunnel' => array(
                     'restart' => array('stunnel restart'),
                     'start' => array('stunnel start'),
                     'stop' => array('stunnel stop'),
                 ),
                 'name' => 'identd_stunnel',
-                'pidfile' => '/var/run/stunnel_identd.pid',
+                'pidfile' => '/var/run/identd_stunnel.pid',
             );
         }
     }
