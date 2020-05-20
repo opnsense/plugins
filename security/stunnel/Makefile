@@ -1,5 +1,6 @@
 PLUGIN_NAME=		stunnel
 PLUGIN_VERSION=		0.2
+PLUGIN_REVISION=	2
 PLUGIN_COMMENT=		stunnel TLS proxy
 PLUGIN_MAINTAINER=	ad@opnsense.org
 PLUGIN_DEPENDS=		stunnel
