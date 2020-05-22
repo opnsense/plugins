@@ -1418,14 +1418,14 @@ function run_restart_actions($certlist, $modelObj)
                     if (empty((string)$action->configd)) {
                         log_error("AcmeClient: no configd command specified for automation: " . $action->name);
                         $result = '1';
-                        continue; // Continue with next action.
+                    } else {
+                        $response = $backend->configdRun((string)$action->configd);
                     }
-                    $response = $backend->configdRun((string)$action->configd);
                     break;
                 default:
                     log_error("AcmeClient: an invalid automation was specified: " . (string)$action->type);
                     $return = 1;
-                    continue; // Continue with next action.
+                    break;
             }
         }
     }
