@@ -23,7 +23,7 @@
             <Required>Y</Required>
         </v6destination>
         <v6prefix type="NetworkField">
-            <default>2001:db8:1:ffff::/96</default>
+            <default>64:ff9b::/96</default>
             <Required>Y</Required>
         </v6prefix>
         <v4pool type="NetworkField">

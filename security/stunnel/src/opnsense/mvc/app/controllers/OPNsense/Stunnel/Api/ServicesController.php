@@ -78,7 +78,7 @@ class ServicesController extends ApiMutableModelControllerBase
         return $this->toggleBase("services.service", $uuid, $enabled);
     }
 
-    public function getAction()
+  public function getAction()
     {
         $result = array();
         $result[static::$internalModelName] = [

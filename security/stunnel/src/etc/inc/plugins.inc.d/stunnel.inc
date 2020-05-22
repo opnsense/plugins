@@ -33,7 +33,6 @@ function stunnel_configure()
     );
 }
 
-
 function stunnel_services()
 {
     $services = array();
