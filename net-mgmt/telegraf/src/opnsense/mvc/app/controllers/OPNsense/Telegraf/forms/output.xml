@@ -36,6 +36,36 @@
         <help>Set the password for authentication.</help>
     </field>
     <field>
+        <id>output.influx_v2_enable</id>
+        <label>Enable Influx v2 Output</label>
+        <type>checkbox</type>
+        <help>This will enable InfluxDB v2 as output. Format is without square brackets, just like http://192.168.0.1:9999.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_url</id>
+        <label>Influx v2 URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_token</id>
+        <label>Influx v2 Token</label>
+        <type>text</type>
+        <help>Influx v2 authentication token.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_organization</id>
+        <label>Influx v2 Organization Name</label>
+        <type>text</type>
+        <help>Influx v2 organization name.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_bucket</id>
+        <label>Influx v2 Bucket Name</label>
+        <type>text</type>
+        <help>Influx v2 bucket name.</help>
+    </field>
+    <field>
         <id>output.graphite_enable</id>
         <label>Enable Graphite Output</label>
         <type>checkbox</type>
