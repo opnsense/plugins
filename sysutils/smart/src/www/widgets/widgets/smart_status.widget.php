@@ -32,6 +32,10 @@ require_once('guiconfig.inc');
 require_once('widgets/include/smart_status.inc');
 
 $devs = json_decode(configd_run('smart detailed list'));
+if (empty($devs)) {
+  echo 'Unable to retrieve status';
+  return;
+}
 
 ?>
 
