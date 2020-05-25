@@ -10,7 +10,7 @@ for directory in ${RADSECPROXY_DIRS}; do
 done
 
 
-# export required data to filesystem
-php /usr/local/opnsense/scripts/OPNsense/RadSecProxy/generate_certs.php #> /dev/null 2>&1
+# export required certs to filesystem
+php /usr/local/opnsense/scripts/OPNsense/RadSecProxy/generate_certs.php > /dev/null 2>&1
 
 exit 0
