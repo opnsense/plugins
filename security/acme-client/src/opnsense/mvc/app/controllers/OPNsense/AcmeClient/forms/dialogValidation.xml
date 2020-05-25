@@ -772,7 +772,6 @@
         <label>Server (FQDN)</label>
         <type>text</type>
     </field>
-        <field>
         <id>validation.dns_nsupdate_zone</id>
         <label>Zone</label>
         <type>text</type>
