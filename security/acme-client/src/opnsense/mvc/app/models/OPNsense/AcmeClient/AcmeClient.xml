@@ -751,6 +751,9 @@
                 <dns_nsupdate_server type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_server>
+                <dns_nsupdate_zone type="TextField">
+                    <Required>N</Required>
+                </dns_nsupdate_zone>
                 <!-- TODO: maybe we should base64encode this field? -->
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
