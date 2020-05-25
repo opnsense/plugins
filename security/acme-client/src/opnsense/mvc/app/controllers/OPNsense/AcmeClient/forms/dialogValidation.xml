@@ -772,6 +772,12 @@
         <label>Server (FQDN)</label>
         <type>text</type>
     </field>
+        <field>
+        <id>validation.dns_nsupdate_zone</id>
+        <label>Zone</label>
+        <type>text</type>
+        <help>Set hosted zone (e.g. example.com) as some DNS Providers require, such as dyn.com's 'Standard DNS' service.</help>
+    </field>
     <field>
         <id>validation.dns_nsupdate_key</id>
         <label>Secret Key</label>
