@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.radsecproxy.general.Enabled') and OPNsense.radsecproxy.general.Enabled == '1' %}
+radsecproxy_enable="YES"
+{% else %}
+radsecproxy_enable="NO"
+{% endif %}

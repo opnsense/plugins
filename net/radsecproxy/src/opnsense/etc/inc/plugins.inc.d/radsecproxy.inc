@@ -32,6 +32,20 @@ function radsecproxy_enabled()
     return false;
 }
 
+function radsecproxy_syslog()
+{
+    $syslogconf = array();
+
+    $syslogconf['radsecproxy'] = array(
+        'local' => '/var/log/radsecproxy.log',
+        'facility' => array('radsecproxy'),
+        'remote' => 'relayd',
+    );
+
+    return $syslogconf;
+}
+
+
 function radsecproxy_services()
 {
     $services = array();
