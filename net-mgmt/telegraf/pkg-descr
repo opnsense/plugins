@@ -12,6 +12,7 @@ Plugin Changelog
 ================
 
 1.8.0
+
 * Add InfluxDB v2 output support
 
 1.7.7

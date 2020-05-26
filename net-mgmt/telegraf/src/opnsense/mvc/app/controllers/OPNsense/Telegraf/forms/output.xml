@@ -55,15 +55,15 @@
     </field>
     <field>
         <id>output.influx_v2_organization</id>
-        <label>Influx v2 Organization Name</label>
+        <label>Influx v2 Organization</label>
         <type>text</type>
-        <help>Influx v2 organization name.</help>
+        <help>Set the name of the organization in Influx v2.</help>
     </field>
     <field>
         <id>output.influx_v2_bucket</id>
-        <label>Influx v2 Bucket Name</label>
+        <label>Influx v2 Bucket</label>
         <type>text</type>
-        <help>Influx v2 bucket name.</help>
+        <help>Set the name of the bucket in Influx v2.</help>
     </field>
     <field>
         <id>output.graphite_enable</id>
