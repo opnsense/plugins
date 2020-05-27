@@ -52,7 +52,7 @@ function radsecproxy_services()
 
     if (radsecproxy_enabled()) {
         $services[] = array(
-            'description' => gettext('RadiusSecureProxy - radsecproxy'),
+            'description' => gettext('Radius Secure Proxy'),
             'configd' => array(
                 'restart' => array('radsecproxy restart'),
                 'start' => array('radsecproxy start'),
