@@ -9,7 +9,6 @@
         // link save button to API set action
         $("#saveAct").click(function(){
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-            updateServiceControlUI('radsecproxy');
             saveFormToEndpoint(url="/api/radsecproxy/general/set",formid='frm_GeneralSettings',callback_ok=function(){
                 // action to run after successful save, for example reconfigure service.
                 ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {

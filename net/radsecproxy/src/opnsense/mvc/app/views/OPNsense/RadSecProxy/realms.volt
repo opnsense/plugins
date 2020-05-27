@@ -9,12 +9,16 @@
                 toggle:'/api/radsecproxy/realms/toggleItem/'
             }
         );
+        updateServiceControlUI('radsecproxy');
 
         // link apply button to API set action
         $("#saveAct").click(function(){
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             // action to run after successful save, for example reconfigure service.
             ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
                 // action to run after reload
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                    updateServiceControlUI('radsecproxy');
             });
         });
     });
@@ -44,7 +48,7 @@
 </table>
 
 <div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Apply') }}</b></button>
+    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAct_progress"></i></button>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogRealm,'id':'DialogRealm','label':lang._('Edit realm')])}}

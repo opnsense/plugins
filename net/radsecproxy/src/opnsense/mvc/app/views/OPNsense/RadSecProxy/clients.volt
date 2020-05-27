@@ -9,16 +9,30 @@
                 toggle:'/api/radsecproxy/clients/toggleItem/'
             }
         );
+        updateServiceControlUI('radsecproxy');
 
         // link apply button to API set action
         $("#saveAct").click(function(){
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
             // action to run after successful save, for example reconfigure service.
             ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
                 // action to run after reload
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                    updateServiceControlUI('radsecproxy');
+                    $('#applyAlert').hide();
             });
         });
+
+        $('#DialogClient').on('hidden.bs.modal', function (e) {
+            $('#applyAlert').show();
+        })
     });
 </script>
+
+<div class="alert alert-info collapse" role="alert" style="min-height: 65px;" id="applyAlert">
+    <button class="btn btn-primary pull-right"  id="saveAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAct_progress"></i></button>
+    <div style="margin-top: 8px;">The  configuration has been changed.<br>You must apply the changes in order for them to take effect.</div>
+</div>
 
 <table id="grid-addresses" class="table table-condensed table-hover table-striped" data-editDialog="DialogClient">
     <thead>
@@ -43,9 +57,5 @@
         </tr>
     </tfoot>
 </table>
-
-<div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-</div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogClient,'id':'DialogClient','label':lang._('Edit client')])}}
