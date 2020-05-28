@@ -893,6 +893,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 file_put_contents($secret_key_filename, $secret_key_data);
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
+                $proc_env['NSUPDATE_ZONE'] = (string)$valObj->dns_nsupdate_zone;
                 break;
             case 'dns_opnsense':
                 # BIND plugin must be installed.
