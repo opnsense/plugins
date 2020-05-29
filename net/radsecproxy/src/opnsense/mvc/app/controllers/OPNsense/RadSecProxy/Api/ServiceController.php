@@ -28,4 +28,18 @@ class ServiceController extends ApiMutableServiceControllerBase
     //     }
     //     return array("status" => $status);
     // }
+
+    public function checkconfigAction()
+    {
+        $backend = new Backend();
+        // first generate template based on current configuration
+        $backend->configdRun('template reload OPNsense/RadSecProxy');
+        // now export all the required files (or syntax check will fail)
+        $backend->configdRun("radsecproxy setup");
+        // finally run the syntax check
+        $response = $backend->configdRun("radsecproxy checkconfig");
+
+        return array("result" => trim($response));
+    }
+
 }
