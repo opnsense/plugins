@@ -18,7 +18,7 @@
             ajaxCall(url="/api/radsecproxy/service/reconfigure", sendData={},callback=function(data,status) {
                 // action to run after reload
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                    updateServiceControlUI('radsecproxy');
+                updateServiceControlUI('radsecproxy');
             });
         });
     });
