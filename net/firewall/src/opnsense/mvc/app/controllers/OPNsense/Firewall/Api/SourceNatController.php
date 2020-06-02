@@ -27,7 +27,6 @@
  */
 namespace OPNsense\Firewall\Api;
 
-
 class SourceNatController extends FilterBaseController
 {
     public function searchRuleAction()

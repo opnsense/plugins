@@ -61,3 +61,19 @@ function tayga_xmlrpc_sync()
     $result['description'] = gettext('Tayga');
     return array($result);
 }
+
+function tayga_interfaces()
+{
+    $interfaces = array();
+    if (!tayga_enabled()) {
+        return $interfaces;
+    }
+    $oic = array('enable' => true);
+    $oic['if'] = 'nat64';
+    $oic['descr'] = 'Tayga';
+    $oic['type'] = 'none';
+    $oic['virtual'] = true;
+    $oic['networks'] = array();
+    $interfaces['tayga'] = $oic;
+    return $interfaces;
+}

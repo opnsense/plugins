@@ -296,16 +296,17 @@ function uploadCertificatesToHost(array $options): int
                 Utils::log()->error("Failed on " . json_encode($uploader->current(), JSON_UNESCAPED_SLASHES));
 
                 switch ($result) {
-                    case SftpUploader::UPLOAD_ERROR_CHGRP_FAILED:
-                    case SftpUploader::UPLOAD_ERROR_CHMOD_FAILED:
-                    case SftpUploader::UPLOAD_ERROR_NO_OVERWRITE:
-                        continue;
-
                     case SftpUploader::UPLOAD_ERROR_NO_PERMISSION:
                         return EXITCODE_ERROR_NO_PERMISSION;
 
                     case SftpUploader::UPLOAD_ERROR:
                         return EXITCODE_ERROR;
+
+                    case SftpUploader::UPLOAD_ERROR_CHGRP_FAILED:
+                    case SftpUploader::UPLOAD_ERROR_CHMOD_FAILED:
+                    case SftpUploader::UPLOAD_ERROR_NO_OVERWRITE:
+                    default:
+                        break;
                 }
             } else {
                 break;
