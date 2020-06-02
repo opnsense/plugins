@@ -7,6 +7,7 @@
             <Servers VisibleName="Servers" order="30" url="/ui/radsecproxy/servers" />
             <Realms VisibleName="Realms" order="40" url="/ui/radsecproxy/realms" />
             <Tls VisibleName="TLS" order="50" url="/ui/radsecproxy/tls" />
+            <Logs VisibleName="Logs" order="60" url="/ui/diagnostics/log/core/radsecproxy" />
         </RadSecProxy>
     </Services>
 </menu>
