@@ -39,8 +39,10 @@ class MFP1_0_0 extends BaseModelMigration
     {
         // Move OPNsense->Firewall->FilterRule ---> OPNsense->Firewall->Filter
         $cfgObj = Config::getInstance()->object();
-        if (!empty($cfgObj->OPNsense) && !empty($cfgObj->OPNsense->Firewall)
-                && !empty($cfgObj->OPNsense->Firewall->FilterRule)) {
+        if (
+            !empty($cfgObj->OPNsense) && !empty($cfgObj->OPNsense->Firewall)
+                && !empty($cfgObj->OPNsense->Firewall->FilterRule)
+        ) {
             // model migration created a new, empty rules section
             if (empty($cfgObj->OPNsense->Firewall->Filter->rules)) {
                 unset($cfgObj->OPNsense->Firewall->Filter->rules);

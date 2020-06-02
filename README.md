@@ -84,6 +84,7 @@ security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs r
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
+security/stunnel -- stunnel TLS proxy (development only)
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml

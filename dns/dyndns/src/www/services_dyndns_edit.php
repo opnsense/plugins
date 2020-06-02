@@ -364,6 +364,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Leave blank.') ?>
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
+                        <br /><?= gettext('Cloudflare: Enter Global API Key.') ?>
                       </div>
                     </td>
                   </tr>
