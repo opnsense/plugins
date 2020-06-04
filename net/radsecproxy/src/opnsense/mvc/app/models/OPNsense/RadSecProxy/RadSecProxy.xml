@@ -3,6 +3,7 @@
     <description>
         RadSecProxy-Management
     </description>
+    <version>0.8.0</version>
     <items>
         <general>
 
@@ -67,8 +68,14 @@
                     <Required>Y</Required>
                 </enabled>
 
-                <description type="TextField">
+                <identifier type="TextField">
                     <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                </identifier>
+
+                <description type="TextField">
+                    <Required>N</Required>
                 </description>
 
                 <host type="NetworkField">
@@ -143,8 +150,14 @@
         <servers>
             <server type="ArrayField">
 
-                <description type="TextField">
+                <identifier type="TextField">
                     <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                </identifier>
+
+                <description type="TextField">
+                    <Required>N</Required>
                 </description>
                 
                 <host type="TextField">

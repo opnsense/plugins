@@ -6,6 +6,13 @@
     </field>
 
     <field>
+        <id>server.identifier</id>
+        <label>Unique identifier</label>
+        <type>text</type>
+        <help>Unique identifier for this server</help>
+    </field>
+
+    <field>
         <id>server.description</id>
         <label>Description</label>
         <type>text</type>

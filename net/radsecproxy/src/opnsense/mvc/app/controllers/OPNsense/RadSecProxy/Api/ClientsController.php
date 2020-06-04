@@ -11,7 +11,7 @@ class ClientsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("clients.client", array('enabled', 'description', 'host', 'type'), "name");
+        return $this->searchBase("clients.client", array('enabled', 'description', 'host', 'identifier', 'type'), "name");
     }
 
     public function setItemAction($uuid)

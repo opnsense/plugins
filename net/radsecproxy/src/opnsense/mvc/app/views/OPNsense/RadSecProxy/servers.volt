@@ -29,6 +29,7 @@
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="host" data-type="string">{{ lang._('Host') }}</th>
+            <th data-column-id="identifier" data-type="string">{{ lang._('Identifier') }}</th>
             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
             <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
             <th data-column-id="tlsConfig" data-type="string">{{ lang._('TLS-Config') }}</th>

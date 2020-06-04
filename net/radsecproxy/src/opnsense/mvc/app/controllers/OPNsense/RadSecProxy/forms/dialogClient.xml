@@ -13,10 +13,17 @@
     </field>
 
     <field>
+        <id>client.identifier</id>
+        <label>Unique identifier</label>
+        <type>text</type>
+        <help>Unique identifier for this client</help>
+    </field>
+
+    <field>
         <id>client.description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Short description to identify this client</help>
+        <help>Short description of this client</help>
     </field>
     
     <field>

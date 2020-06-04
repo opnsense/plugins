@@ -7,9 +7,9 @@
 
     <field>
         <id>tlsConfig.name</id>
-        <label>Name</label>
+        <label>Unique identifier</label>
         <type>text</type>
-        <help>The TLS-configs unique name</help>
+        <help>This TLS-config's unique name</help>
     </field>
 
     <field>
