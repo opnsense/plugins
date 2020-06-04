@@ -28,8 +28,10 @@
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
-            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
             <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+            <th data-column-id="caCertificateRefId" data-type="string">{{ lang._('CA-certificate') }}</th>
+            <th data-column-id="proxyCertificateRefId" data-type="string">{{ lang._('Proxy-certificate') }}</th>
             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
         </tr>
     </thead>

@@ -11,7 +11,7 @@ class TlsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("tlsConfigs.tlsConfig", array('description', 'name'), "name");
+        return $this->searchBase("tlsConfigs.tlsConfig", array('description', 'name', 'caCertificateRefId', 'proxyCertificateRefId'), "name");
     }
 
     public function setItemAction($uuid)

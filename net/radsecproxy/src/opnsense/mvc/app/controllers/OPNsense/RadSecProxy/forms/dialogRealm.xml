@@ -9,7 +9,7 @@
         <id>realm.enabled</id>
         <label>Enable Realm</label>
         <type>checkbox</type>
-        <help>Use this realm</help>
+        <help>Enable this realm</help>
     </field>
     
     <field>

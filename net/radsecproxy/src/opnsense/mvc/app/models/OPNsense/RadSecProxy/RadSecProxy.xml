@@ -249,22 +249,22 @@
                     <Constraints>
                         <check001>
                             <type>UniqueConstraint</type>
+                            <ValidationMessage>Name already in use</ValidationMessage>
                         </check001>
                     </Constraints>
-
                 </name>
 
                 <description type="TextField">
                 </description>
 
                 <caCertificateRefId type="CertificateField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                     <ValidationMessage>Field is required</ValidationMessage>
                     <Type>ca</Type>
                 </caCertificateRefId>
 
                 <proxyCertificateRefId type="CertificateField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                     <ValidationMessage>Field is required</ValidationMessage>
                     <Type>cert</Type>
                 </proxyCertificateRefId>
@@ -272,7 +272,6 @@
                 <policyOids type="CSVListField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
-                    <ChangeCase>lower</ChangeCase>
                 </policyOids>
 
                 <crlCheck type="OptionField">
