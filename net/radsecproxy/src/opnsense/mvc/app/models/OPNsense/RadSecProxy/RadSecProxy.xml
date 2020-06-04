@@ -192,6 +192,20 @@
 
                 <secret type="TextField">
                     <Required>N</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Must be set for UDP-servers.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>type</field>
+                            <check>udp</check>
+                        </check001>
+                        <check002>
+                            <ValidationMessage>Must be set for TCP-servers.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>type</field>
+                            <check>tcp</check>
+                        </check002>
+                    </Constraints>
                 </secret>
 
                 <tlsConfig type="ModelRelationField">
