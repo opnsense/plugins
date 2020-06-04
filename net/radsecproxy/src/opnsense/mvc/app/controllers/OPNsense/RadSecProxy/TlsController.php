@@ -1,5 +1,7 @@
 <?php
+
 namespace OPNsense\RadSecProxy;
+
 class TlsController extends \OPNsense\Base\IndexController
 {
     public function indexAction()

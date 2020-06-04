@@ -2,7 +2,7 @@
 
 namespace OPNsense\RadSecProxy\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class RealmsController extends ApiMutableModelControllerBase
 {

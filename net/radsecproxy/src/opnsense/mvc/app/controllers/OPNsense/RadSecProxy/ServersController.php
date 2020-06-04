@@ -1,5 +1,7 @@
 <?php
+
 namespace OPNsense\RadSecProxy;
+
 class ServersController extends \OPNsense\Base\IndexController
 {
     public function indexAction()

@@ -2,7 +2,7 @@
 
 namespace OPNsense\RadSecProxy\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class ServersController extends ApiMutableModelControllerBase
 {
@@ -11,7 +11,11 @@ class ServersController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("servers.server", array('description', 'host', 'type', 'identifier', 'tlsConfig'), "name");
+        return $this->searchBase(
+            "servers.server",
+            array('description', 'host', 'type', 'identifier', 'tlsConfig'),
+            "name"
+        );
     }
 
     public function setItemAction($uuid)

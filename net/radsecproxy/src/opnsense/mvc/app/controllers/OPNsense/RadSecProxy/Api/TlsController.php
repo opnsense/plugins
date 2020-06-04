@@ -2,7 +2,7 @@
 
 namespace OPNsense\RadSecProxy\Api;
 
-use \OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 class TlsController extends ApiMutableModelControllerBase
 {
@@ -11,7 +11,11 @@ class TlsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("tlsConfigs.tlsConfig", array('description', 'name', 'caCertificateRefId', 'proxyCertificateRefId'), "name");
+        return $this->searchBase(
+            "tlsConfigs.tlsConfig",
+            array('description', 'name', 'caCertificateRefId', 'proxyCertificateRefId'),
+            "name"
+        );
     }
 
     public function setItemAction($uuid)

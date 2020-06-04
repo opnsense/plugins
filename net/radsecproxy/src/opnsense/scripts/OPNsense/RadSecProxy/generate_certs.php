@@ -1,5 +1,5 @@
+#!/usr/local/bin/php
 <?php
-
 
 require_once("config.inc");
 require_once("certs.inc");
@@ -13,30 +13,36 @@ $outputFolder = "/usr/local/etc/radsecproxy.d/certs/";
 echo "begin generating of RadSecProxy-TLS-certificates\n";
 echo "output-directory: " . $outputFolder . "\n";
 
-function writeCertFile($pathToFile, $certificateData) {
-    // generate cert pem file
-    $pem_content = trim(str_replace("\n\n", "\n", str_replace(
-        "\r",
-        "",
-        base64_decode((string)$certificateData)
-    )));
+if (! function_exists('writeCertFile')) {
+    function writeCertFile($pathToFile, $certificateData)
+    {
+        // generate cert pem file
+        $pem_content = trim(str_replace("\n\n", "\n", str_replace(
+            "\r",
+            "",
+            base64_decode((string)$certificateData)
+        )));
 
-    $pem_content .= "\n";
-    file_put_contents($pathToFile, $pem_content);
-    chmod($pathToFile, 0600);
-    echo "generated file " . $pathToFile . "\n";
+        $pem_content .= "\n";
+        file_put_contents($pathToFile, $pem_content);
+        chmod($pathToFile, 0600);
+        echo "generated file " . $pathToFile . "\n";
+    }
 }
 
-function deleteFilesInFolder($pathToFolder) {
-    echo "deleting all files in folder " . $pathToFolder . "\n";
-    $files = glob($pathToFolder . '/*');
-    
-    foreach($files as $file){
-        //Make sure that this is a file and not a directory.
-        if(is_file($file)){
-            //Use the unlink function to delete the file.
-            unlink($file);
-            echo "deleted file " . $file . "\n";
+if (! function_exists('deleteFilesInFolder')) {
+    function deleteFilesInFolder($pathToFolder)
+    {
+        echo "deleting all files in folder " . $pathToFolder . "\n";
+        $files = glob($pathToFolder . '/*');
+        
+        foreach ($files as $file) {
+            //Make sure that this is a file and not a directory.
+            if (is_file($file)) {
+                //Use the unlink function to delete the file.
+                unlink($file);
+                echo "deleted file " . $file . "\n";
+            }
         }
     }
 }
@@ -46,7 +52,6 @@ $configObj = Config::getInstance()->object();
 
 deleteFilesInFolder($outputFolder);
 if (isset($configObj->OPNsense->radsecproxy->tlsConfigs)) {
-
     foreach ($configObj->OPNsense->radsecproxy->tlsConfigs->children() as $tlsConfig) {
         echo "parsing TLS-config \"" . $tlsConfig->name . "\"\n";
 
