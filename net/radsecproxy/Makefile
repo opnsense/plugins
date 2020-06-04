@@ -1,5 +1,5 @@
 PLUGIN_NAME=    	radsecproxy
-PLUGIN_VERSION=     0.8.0
+PLUGIN_VERSION=     1.0.0
 PLUGIN_COMMENT=     radsecproxy - a generic RADIUS proxy that provides both RADIUS UDP and TCP/TLS (RadSec) transport.
 PLUGIN_DEPENDS=		radsecproxy
 PLUGIN_MAINTAINER= 	tobias@boehnert.dev
