@@ -1,0 +1,2 @@
+chronyd:/etc/rc.conf.d/chronyd
+chrony.conf:/usr/local/etc/chrony.conf

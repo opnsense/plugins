@@ -1,0 +1,31 @@
+<model>
+    <mount>//OPNsense/chrony/general</mount>
+    <description>Chrony configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <port type="PortField">
+            <default>323</default>
+            <Required>Y</Required>
+        </port>
+        <peer1 type="HostnameField">
+            <default>0.opnsense.pool.ntp.org</default>
+            <Required>Y</Required>
+        </peer1>
+        <peer2 type="HostnameField">
+            <default>1.opnsense.pool.ntp.org</default>
+            <Required>N</Required>
+        </peer2>
+        <peer3 type="HostnameField">
+            <default>2.opnsense.pool.ntp.org</default>
+            <Required>N</Required>
+        </peer3>
+        <allowednetworks type="NetworkField">
+            <Required>N</Required>
+            <asList>Y</asList>
+        </allowednetworks>
+    </items>
+</model>

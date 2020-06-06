@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable Chrony time daemon.</help>
+    </field>
+    <field>
+        <id>general.port</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>Set the port chrony listen to.</help>
+    </field>
+    <field>
+        <id>general.peer1</id>
+        <label>Peer 1</label>
+        <type>text</type>
+        <help>Set the primary NTP Peer.</help>
+    </field>
+    <field>
+        <id>general.peer2</id>
+        <label>Peer 2</label>
+        <type>text</type>
+        <help>Set an additional NTP Peer.</help>
+    </field>
+    <field>
+        <id>general.peer3</id>
+        <label>Peer 3</label>
+        <type>text</type>
+        <help>Set an additional NTP Peer.</help>
+    </field>
+    <field>
+        <id>general.allowednetworks</id>
+        <label>Allowed Networks</label>
+        <type>text</type>
+        <help>Set the networks allowed to synchronize time with this server. If this value is not set it will also not listen to the port and just synchronize the time for itself.</help>
+    </field>
+</form>
