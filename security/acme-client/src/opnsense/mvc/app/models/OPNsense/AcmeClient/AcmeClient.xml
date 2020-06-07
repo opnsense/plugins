@@ -366,8 +366,8 @@
                         <dns_azure>Azure DNS API</dns_azure>
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cloudns>ClouDNS API</dns_cloudns>
-                        <dns_cn>Core-Networks API</dns_cn>
                         <dns_cx>CloudXNS.com API</dns_cx>
+                        <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dgon>DigitalOcean API</dns_dgon>
