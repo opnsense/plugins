@@ -6,12 +6,6 @@
         <help>Enable or disable this upstream DNS server.</help>
     </field>
     <field>
-        <id>upstream.type</id>
-        <label>Type</label>
-        <type>dropdown</type>
-        <help>Select the type of DNS to use. Plain for usual DNS, DoT for DNS over TLS.</help>
-    </field>
-    <field>
         <id>upstream.server</id>
         <label>Server IP</label>
         <type>text</type>
@@ -22,5 +16,11 @@
         <label>Server Port</label>
         <type>text</type>
         <help>Port of DNS server, for usual DNS use 53, if you use DoT set it to 853.</help>
+    </field>
+    <field>
+        <id>upstream.validatehost</id>
+        <label>Validate Certificate</label>
+        <type>text</type>
+        <help>Here you can set the SNI in server certificate to validate the remote nameserver.</help>
     </field>
 </form>

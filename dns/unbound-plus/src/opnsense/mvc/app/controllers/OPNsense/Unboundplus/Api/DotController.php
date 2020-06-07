@@ -32,34 +32,34 @@ namespace OPNsense\Unboundplus\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
-class UpstreamController extends ApiMutableModelControllerBase
+class DotController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'upstream';
-    protected static $internalModelClass = '\OPNsense\Unboundplus\Upstream';
+    protected static $internalModelName = 'dot';
+    protected static $internalModelClass = '\OPNsense\Unboundplus\Dot';
 
-    public function searchUpstreamAction()
+    public function searchDotAction()
     {
-        return $this->searchBase('upstreams.upstream', array("enable", "type", "server", "port"));
+        return $this->searchBase('dots.dot', array("enable", "server", "port", "validatehost"));
     }
-    public function getUpstreamAction($uuid = null)
+    public function getDotAction($uuid = null)
     {
         $this->sessionClose();
-        return $this->getBase('upstream', 'upstreams.upstream', $uuid);
+        return $this->getBase('dot', 'dots.dot', $uuid);
     }
-    public function addUpstreamAction()
+    public function addDotAction()
     {
-        return $this->addBase('upstream', 'upstreams.upstream');
+        return $this->addBase('dot', 'dots.dot');
     }
-    public function delUpstreamAction($uuid)
+    public function delDotAction($uuid)
     {
-        return $this->delBase('upstreams.upstream', $uuid);
+        return $this->delBase('dots.dot', $uuid);
     }
-    public function setUpstreamAction($uuid)
+    public function setDotAction($uuid)
     {
-        return $this->setBase('upstream', 'upstreams.upstream', $uuid);
+        return $this->setBase('dot', 'dots.dot', $uuid);
     }
-    public function toggleUpstreamAction($uuid)
+    public function toggleDotAction($uuid)
     {
-        return $this->toggleBase('upstreams.upstream', $uuid);
+        return $this->toggleBase('dots.dot', $uuid);
     }
 }

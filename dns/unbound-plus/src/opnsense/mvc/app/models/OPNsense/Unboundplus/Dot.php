@@ -30,6 +30,6 @@ namespace OPNsense\Unboundplus;
 
 use OPNsense\Base\BaseModel;
 
-class Upstream extends BaseModel
+class Dot extends BaseModel
 {
 }

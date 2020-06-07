@@ -27,7 +27,7 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#upstream">{{ lang._('Upstream DNS') }}</a></li>
+    <li><a data-toggle="tab" href="#dot">{{ lang._('DoT') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -40,14 +40,14 @@
             </div>
         </div>
     </div>
-    <div id="upstream" class="tab-pane fade in">
-        <table id="grid-upstream" class="table table-responsive" data-editDialog="dialogEditUnboundplusUpstream">
+    <div id="dot" class="tab-pane fade in">
+        <table id="grid-dot" class="table table-responsive" data-editDialog="dialogEditUnboundplusDot">
             <thead>
                 <tr>
                     <th data-column-id="enable" data-type="string" data-formatter="rowtoggle">{{ lang._('Enable') }}</th>
-                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="server" data-type="string" data-visible="true">{{ lang._('Server IP') }}</th>
                     <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Server Port') }}</th>
+                    <th data-column-id="validatehost" data-type="string" data-visible="true">{{ lang._('Certificate SNI') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -65,13 +65,13 @@
         </table>
         <div class="col-md-12">
             <hr />
-            <button class="btn btn-primary"  id="saveAct_upstream" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_upstream_progress"></i></button>
+            <button class="btn btn-primary"  id="saveAct_dot" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_dot_progress"></i></button>
             <br /><br />
         </div>
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditUnboundplusUpstream,'id':'dialogEditUnboundplusUpstream','label':lang._('Edit Upstream DNS')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditUnboundplusDot,'id':'dialogEditUnboundplusDot','label':lang._('Edit DoT')])}}
     
 <script>
     $(function() {
@@ -81,13 +81,13 @@
             $('.selectpicker').selectpicker('refresh');
         });
 
-        $("#grid-upstream").UIBootgrid(
-            {   'search':'/api/unboundplus/upstream/searchUpstream',
-                'get':'/api/unboundplus/upstream/getUpstream/',
-                'set':'/api/unboundplus/upstream/setUpstream/',
-                'add':'/api/unboundplus/upstream/addUpstream/',
-                'del':'/api/unboundplus/upstream/delUpstream/',
-                'toggle':'/api/unboundplus/upstream/toggleUpstream/'
+        $("#grid-dot").UIBootgrid(
+            {   'search':'/api/unboundplus/dot/searchDot',
+                'get':'/api/unboundplus/dot/getDot/',
+                'set':'/api/unboundplus/dot/setDot/',
+                'add':'/api/unboundplus/dot/addDot/',
+                'del':'/api/unboundplus/dot/delDot/',
+                'toggle':'/api/unboundplus/dot/toggleDot/'
             }
         );
 
@@ -101,7 +101,7 @@
         });
 
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/unboundplus/upstream/set", formid='frm_upstream_settings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/unboundplus/dot/set", formid='frm_dot_settings',callback_ok=function(){
                 $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/unboundplus/service/reloadunbound", sendData={}, callback=function(data,status) {
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");

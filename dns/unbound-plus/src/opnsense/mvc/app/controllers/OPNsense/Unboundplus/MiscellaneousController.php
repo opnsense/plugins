@@ -33,7 +33,7 @@ class MiscellaneousController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->miscellaneousForm = $this->getForm('miscellaneous');
-        $this->view->formDialogEditUnboundplusUpstream = $this->getForm("dialogEditUnboundplusUpstream");
+        $this->view->formDialogEditUnboundplusDot = $this->getForm("dialogEditUnboundplusDot");
         $this->view->pick('OPNsense/Unboundplus/miscellaneous');
     }
 }
