@@ -1101,4 +1101,14 @@
         <label>API Password</label>
         <type>password</type>
     </field>
+    <field>
+        <label>ArvanCloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_arvan</style>
+    </field>
+    <field>
+        <id>validation.dns_arvan_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
 </form>

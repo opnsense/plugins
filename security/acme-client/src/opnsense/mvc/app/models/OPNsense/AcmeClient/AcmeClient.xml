@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -361,6 +361,7 @@
                         <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
+                        <dns_arvan>ArvanCloud API</dns_arvan>
                         <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS API</dns_azure>
@@ -885,6 +886,9 @@
                 <dns_cn_password type="TextField">
                     <Required>N</Required>
                 </dns_cn_password>
+                <dns_arvan_token type="TextField">
+                    <Required>N</Required>
+                </dns_arvan_token>
             </validation>
         </validations>
         <actions>

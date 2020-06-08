@@ -665,6 +665,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Ali_Key'] = (string)$valObj->dns_ali_key;
                 $proc_env['Ali_Secret'] = (string)$valObj->dns_ali_secret;
                 break;
+            case 'dns_arvan':
+                $proc_env['Arvan_Token'] = (string)$valObj->dns_arvan_token;
+                break;
             case 'dns_autodns':
                 $proc_env['AUTODNS_USER'] = (string)$valObj->dns_autodns_user;
                 $proc_env['AUTODNS_PASSWORD'] = (string)$valObj->dns_autodns_password;
