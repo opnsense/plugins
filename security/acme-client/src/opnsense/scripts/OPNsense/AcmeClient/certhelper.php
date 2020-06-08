@@ -665,6 +665,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['Ali_Key'] = (string)$valObj->dns_ali_key;
                 $proc_env['Ali_Secret'] = (string)$valObj->dns_ali_secret;
                 break;
+            case 'dns_arvan':
+                $proc_env['Arvan_Token'] = (string)$valObj->dns_arvan_token;
+                break;
             case 'dns_autodns':
                 $proc_env['AUTODNS_USER'] = (string)$valObj->dns_autodns_user;
                 $proc_env['AUTODNS_PASSWORD'] = (string)$valObj->dns_autodns_password;
@@ -796,6 +799,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_gdnsdk':
                 $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
                 $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
+                break;
+            case 'dns_hetzner':
+                $proc_env['HETZNER_Token'] = (string)$valObj->dns_hetzner_token;
                 break;
             case 'dns_hostingde':
                 $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
