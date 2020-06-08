@@ -12,22 +12,12 @@
         <help>Set the port chrony listen to.</help>
     </field>
     <field>
-        <id>general.peer1</id>
-        <label>Peer 1</label>
-        <type>text</type>
-        <help>Set the primary NTP Peer.</help>
-    </field>
-    <field>
-        <id>general.peer2</id>
-        <label>Peer 2</label>
-        <type>text</type>
-        <help>Set an additional NTP Peer.</help>
-    </field>
-    <field>
-        <id>general.peer3</id>
-        <label>Peer 3</label>
-        <type>text</type>
-        <help>Set an additional NTP Peer.</help>
+        <id>general.peers</id>
+        <label>NTP Peers</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set as many NTP peers you need.</help>
     </field>
     <field>
         <id>general.allowednetworks</id>

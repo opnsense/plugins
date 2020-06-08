@@ -47,11 +47,12 @@
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){
                 $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                    ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
-                        updateServiceControlUI('chrony');
-                        $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                    });
+                ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('chrony');
+                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
+
     });
 </script>
