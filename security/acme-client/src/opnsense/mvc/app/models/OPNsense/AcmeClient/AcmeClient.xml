@@ -367,6 +367,7 @@
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cloudns>ClouDNS API</dns_cloudns>
                         <dns_cx>CloudXNS.com API</dns_cx>
+                        <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dgon>DigitalOcean API</dns_dgon>
@@ -878,6 +879,12 @@
                 <dns_leaseweb_key type="TextField">
                     <Required>N</Required>
                 </dns_leaseweb_key>
+                <dns_cn_user type="TextField">
+                    <Required>N</Required>
+                </dns_cn_user>
+                <dns_cn_password type="TextField">
+                    <Required>N</Required>
+                </dns_cn_password>
             </validation>
         </validations>
         <actions>
