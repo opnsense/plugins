@@ -800,6 +800,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
                 $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
                 break;
+            case 'dns_hetzner':
+                $proc_env['HETZNER_Token'] = (string)$valObj->dns_hetzner_token;
+                break;
             case 'dns_hostingde':
                 $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
                 $proc_env['HOSTINGDE_APIKEY'] = (string)$valObj->dns_hostingde_apiKey;

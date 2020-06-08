@@ -387,6 +387,7 @@
                         <dns_gd>GoDaddy.com API</dns_gd>
                         <dns_gcloud>Google Cloud DNS API</dns_gcloud>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
+                        <dns_hetzner>Hetzner DNS API</dns_hetzner>
                         <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
@@ -889,6 +890,9 @@
                 <dns_arvan_token type="TextField">
                     <Required>N</Required>
                 </dns_arvan_token>
+                <dns_hetzner_token type="TextField">
+                    <Required>N</Required>
+                </dns_hetzner_token>
             </validation>
         </validations>
         <actions>
