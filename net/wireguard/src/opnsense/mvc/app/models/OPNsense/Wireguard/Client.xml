@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/client</mount>
     <description>Wireguard Client configuration</description>
-    <version>0.0.5</version>
+    <version>0.0.4</version>
     <items>
         <clients>
             <client type="ArrayField">
@@ -16,7 +16,7 @@
                     <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
                 </name>
                 <pubkey type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </pubkey>
                 <psk type="TextField">
                     <Required>N</Required>
