@@ -1,24 +1,24 @@
 <form>
     <field>
-        <id>upstream.enable</id>
+        <id>dot.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>Enable or disable this upstream DNS server.</help>
+        <help>Enable or disable this DNS server.</help>
     </field>
     <field>
-        <id>upstream.server</id>
+        <id>dot.server</id>
         <label>Server IP</label>
         <type>text</type>
         <help>IP address of DNS server to forward all requests.</help>
     </field>
     <field>
-        <id>upstream.port</id>
+        <id>dot.port</id>
         <label>Server Port</label>
         <type>text</type>
-        <help>Port of DNS server, for usual DNS use 53, if you use DoT set it to 853.</help>
+        <help>Port of DNS server, when using DNS over TLS it is usually 853.</help>
     </field>
     <field>
-        <id>upstream.validatehost</id>
+        <id>dot.validatehost</id>
         <label>Validate Certificate</label>
         <type>text</type>
         <help>Here you can set the SNI in server certificate to validate the remote nameserver.</help>

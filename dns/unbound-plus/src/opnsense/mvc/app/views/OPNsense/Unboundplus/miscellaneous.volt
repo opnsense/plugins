@@ -27,7 +27,7 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#dot">{{ lang._('DoT') }}</a></li>
+    <li><a data-toggle="tab" href="#dot">{{ lang._('DNS over TLS') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -44,7 +44,7 @@
         <table id="grid-dot" class="table table-responsive" data-editDialog="dialogEditUnboundplusDot">
             <thead>
                 <tr>
-                    <th data-column-id="enable" data-type="string" data-formatter="rowtoggle">{{ lang._('Enable') }}</th>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enable') }}</th>
                     <th data-column-id="server" data-type="string" data-visible="true">{{ lang._('Server IP') }}</th>
                     <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Server Port') }}</th>
                     <th data-column-id="validatehost" data-type="string" data-visible="true">{{ lang._('Certificate SNI') }}</th>
@@ -71,7 +71,7 @@
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditUnboundplusDot,'id':'dialogEditUnboundplusDot','label':lang._('Edit DoT')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditUnboundplusDot,'id':'dialogEditUnboundplusDot','label':lang._('Edit DNS over TLS')])}}
     
 <script>
     $(function() {
@@ -100,12 +100,10 @@
             });
         });
 
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/unboundplus/dot/set", formid='frm_dot_settings',callback_ok=function(){
-                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/unboundplus/service/reloadunbound", sendData={}, callback=function(data,status) {
-                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                });
+        $("#saveAct_dot").click(function(){
+            $("#saveAct_dot_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/unboundplus/service/reloadunbound", sendData={}, callback=function(data,status) {
+                $("#saveAct_dot_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });

@@ -39,7 +39,7 @@ class DotController extends ApiMutableModelControllerBase
 
     public function searchDotAction()
     {
-        return $this->searchBase('dots.dot', array("enable", "server", "port", "validatehost"));
+        return $this->searchBase('dots.dot', array("enabled", "server", "port", "validatehost"));
     }
     public function getDotAction($uuid = null)
     {
