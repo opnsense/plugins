@@ -206,9 +206,9 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	nc)
 		nocoin
 		;;
-  au)
-    urlhaus
-    ;;
+	au)
+		urlhaus
+		;;
 	pa)
 		pornall
 		;;
