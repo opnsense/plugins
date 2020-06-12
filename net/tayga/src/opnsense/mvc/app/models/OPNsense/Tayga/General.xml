@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/tayga/general</mount>
     <description>Tayga configuration</description>
-    <version>0.0.2</version>
+    <version>0.0.4</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -9,19 +9,26 @@
         </enabled>
         <v4address type="NetworkField">
             <default>192.168.255.1</default>
-            <Required>N</Required>
+            <Required>Y</Required>
         </v4address>
+        <v4destination type="NetworkField">
+            <default>192.168.254.1</default>
+            <Required>Y</Required>
+        </v4destination>
         <v6address type="NetworkField">
-            <default>2001:db8:1::2</default>
             <Required>N</Required>
         </v6address>
+        <v6destination type="NetworkField">
+            <default>2001:db8:1:ffff::1</default>
+            <Required>Y</Required>
+        </v6destination>
         <v6prefix type="NetworkField">
-            <default>2001:db8:1:ffff::/96</default>
-            <Required>N</Required>
+            <default>64:ff9b::/96</default>
+            <Required>Y</Required>
         </v6prefix>
         <v4pool type="NetworkField">
             <default>192.168.255.0/24</default>
-            <Required>N</Required>
+            <Required>Y</Required>
         </v4pool>
     </items>
 </model>

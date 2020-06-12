@@ -16,6 +16,7 @@ Plugin Changelog
 ================
 
 1.9.6
+
 * Fix log not properly parsed
 
 1.9.5

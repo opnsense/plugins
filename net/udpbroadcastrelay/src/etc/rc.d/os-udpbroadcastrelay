@@ -1,0 +1,170 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: osudpbroadcastrelay
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="osudpbroadcastrelay"
+rcvar="osudpbroadcastrelay_enable"
+command="/usr/local/sbin/udpbroadcastrelay"
+extra_commands="reload"
+reload_cmd="udpbroadcastrelay_reload"
+
+
+load_rc_config $name
+
+if [ -n "$2" ]; then
+   eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${2}
+   pidfile="/var/run/udpbroadcastrelay_$2.pid"
+fi
+
+
+udpbroadcastrelay_start () {
+   udpbroadcastrelay_status
+   if [ $? -eq 0 ]; then # already running
+      return 0
+   fi
+   run_rc_command "start"
+   if [ $? -eq 0 ]; then
+      cmd_string=`basename ${procname:-${command}}`
+      cmd="ps ax -o pid= -o command= | grep $cmd_string | grep -e "$osudpbroadcastrelay_flags" | grep -v grep | awk '{ print $1 }"
+      ps_pid=$cmd
+      if [ -z "$ps_pid" ]; then
+         err 1 "Cannot get pid for $cmd_string $osudpbroadcastrelay_flags"
+      fi
+      return $?
+   fi
+   return 1
+}
+
+udpbroadcastrelay_stop () {
+   udpbroadcastrelay_status
+   if [ $? -eq 1 ]; then # already stopped
+      return 0
+   fi
+   run_rc_command "stop"
+   if [ $? -ne 0 ]; then
+      err 1 "Cannot stop udpbroadcastrelay with pid from $pidfile"
+   fi
+   rm -f $pidfile
+   return $?
+}
+
+udpbroadcastrelay_restart () {
+   udpbroadcastrelay_stop
+   if [ $? -ne 0 ]; then
+      return $?
+   fi
+   udpbroadcastrelay_start
+   return $?
+}
+
+udpbroadcastrelay_status () {
+   if [ -z "$pidfile" ]; then
+      err 1 "Instance name unknown"
+   fi
+   run_rc_command "status"
+   return $?
+}
+
+udpbroadcastrelay_reload () {
+   osudpbroadcastrelay_flags=""
+   pidfile=""
+   # get running instances
+   ps ax -o pid= -o command= | grep "udpbroadcastrelay" | grep -v grep | while read line; do
+      # get instance name
+      instance=`echo $line | awk '{printf "%s", $4 }' | sed 's/\./_/g'`
+      # get instance flags
+      instance_flags="${line#*udpbroadcastrelay}"
+      # check if it should run
+      echo
+      eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${instance}
+
+      if [ -n "$osudpbroadcastrelay_flags" -a "$osudpbroadcastrelay_flags" = "$instance_flags" ]; then
+         echo "running instance $instance match config"
+         continue
+      fi
+      echo "running instance $instance not configured"
+      osudpbroadcastrelay_flags=$instance_flags
+      pidfile="/var/run/udpbroadcastrelay_$instance.pid"
+      udpbroadcastrelay_stop
+   done
+   # start configured instances
+
+   if [ -n "$osudpbroadcastrelay_instances" ]; then
+
+      for i in $osudpbroadcastrelay_instances; do
+         eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}
+         pidfile="/var/run/udpbroadcastrelay_$i.pid"
+         run_rc_command "start"
+      done
+   fi
+   return 0
+}
+
+case $1 in
+   start)
+      if [ -z "$osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}" -o -z "$pidfile" ]; then
+         if [ -n "$osudpbroadcastrelay_instances" ]; then
+            for i in $osudpbroadcastrelay_instances; do
+               eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}
+               pidfile="/var/run/udpbroadcastrelay_$i.pid"
+               udpbroadcastrelay_start
+            done
+         fi
+      else
+         udpbroadcastrelay_start
+      fi
+      exit $?
+      ;;
+   stop)
+      if [ -z "$osudpbroadcastrelay_flags" -o -z "$pidfile" ]; then
+         if [ -n "$osudpbroadcastrelay_instances" ]; then
+            for i in $osudpbroadcastrelay_instances; do
+               eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}
+               pidfile="/var/run/udpbroadcastrelay_$i.pid"
+               udpbroadcastrelay_stop
+            done
+         fi
+      else
+         udpbroadcastrelay_stop
+      fi
+      exit $?
+      ;;
+   restart)
+      if [ -z "$osudpbroadcastrelay_flags" -o -z "$pidfile" ]; then
+         if [ -n "$osudpbroadcastrelay_instances" ]; then
+            for i in $osudpbroadcastrelay_instances; do
+               eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}
+               pidfile="/var/run/udpbroadcastrelay_$i.pid"
+               udpbroadcastrelay_restart
+            done
+         fi
+      else
+         udpbroadcastrelay_restart
+      fi
+      exit $?
+      ;;
+   status)
+      if [ -z "$osudpbroadcastrelay_flags" -a -z "$pidfile" ]; then
+         if [ -n "$osudpbroadcastrelay_instances" ]; then
+            for i in $osudpbroadcastrelay_instances; do
+               eval osudpbroadcastrelay_flags=\$osudpbroadcastrelay_${i}
+               pidfile="/var/run/udpbroadcastrelay_$i.pid"
+               udpbroadcastrelay_status
+            done
+         fi
+      else
+         udpbroadcastrelay_status
+      fi
+      exit $?
+      ;;
+   reload)
+      udpbroadcastrelay_reload;
+      exit $?
+      ;;
+esac

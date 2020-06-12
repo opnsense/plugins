@@ -2,3 +2,15 @@ Unbound-Plus is a collecion of additional features to Unbound,
 including DNSBL and DNS-over-TLS support.
 
 WWW: https://github.com/opnsense/plugins/
+
+Plugin Changelog
+----------------
+
+1.1
+
+* Add DNS over TLS (DoT) support
+
+1.0
+
+* Add DNSBL feature
+* Allow to set private domains

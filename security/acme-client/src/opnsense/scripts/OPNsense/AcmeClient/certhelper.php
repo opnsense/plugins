@@ -653,12 +653,20 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ACMEDNS_SUBDOMAIN'] = (string)$valObj->dns_acmedns_subdomain;
                 $proc_env['ACMEDNS_UPDATE_URL'] = (string)$valObj->dns_acmedns_updateurl;
                 break;
+            case 'dns_acmeproxy':
+                $proc_env['ACMEPROXY_ENDPOINT'] = (string)$valObj->dns_acmeproxy_endpoint;
+                $proc_env['ACMEPROXY_USERNAME'] = (string)$valObj->dns_acmeproxy_username;
+                $proc_env['ACMEPROXY_PASSWORD'] = (string)$valObj->dns_acmeproxy_password;
+                break;
             case 'dns_ad':
                 $proc_env['AD_API_KEY'] = (string)$valObj->dns_ad_key;
                 break;
             case 'dns_ali':
                 $proc_env['Ali_Key'] = (string)$valObj->dns_ali_key;
                 $proc_env['Ali_Secret'] = (string)$valObj->dns_ali_secret;
+                break;
+            case 'dns_arvan':
+                $proc_env['Arvan_Token'] = (string)$valObj->dns_arvan_token;
                 break;
             case 'dns_autodns':
                 $proc_env['AUTODNS_USER'] = (string)$valObj->dns_autodns_user;
@@ -687,6 +695,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['CLOUDNS_AUTH_ID'] = (string)$valObj->dns_cloudns_auth_id;
                 $proc_env['CLOUDNS_SUB_AUTH_ID'] = (string)$valObj->dns_cloudns_sub_auth_id;
                 $proc_env['CLOUDNS_AUTH_PASSWORD'] = (string)$valObj->dns_cloudns_auth_password;
+                break;
+            case 'dns_cn':
+                $proc_env['CN_User'] = (string)$valObj->dns_cn_user;
+                $proc_env['CN_Password'] = (string)$valObj->dns_cn_password;
                 break;
             case 'dns_cx':
                 $proc_env['CX_Key'] = (string)$valObj->dns_cx_key;
@@ -731,6 +743,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_dynu':
                 $proc_env['Dynu_ClientId'] = (string)$valObj->dns_dynu_clientid;
                 $proc_env['Dynu_Secret'] = (string)$valObj->dns_dynu_secret;
+                break;
+            case 'dns_euserv':
+                $proc_env['EUSERV_Username'] = (string)$valObj->dns_euserv_user;
+                $proc_env['EUSERV_Password'] = (string)$valObj->dns_euserv_password;
+                $acme_hook_options[] = "--insecure";
                 break;
             case 'dns_freedns':
                 $proc_env['FREEDNS_User'] = (string)$valObj->dns_freedns_user;
@@ -783,6 +800,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['GDNSDK_Username'] = (string)$valObj->dns_gdnsdk_user;
                 $proc_env['GDNSDK_Password'] = (string)$valObj->dns_gdnsdk_password;
                 break;
+            case 'dns_hetzner':
+                $proc_env['HETZNER_Token'] = (string)$valObj->dns_hetzner_token;
+                break;
             case 'dns_hostingde':
                 $proc_env['HOSTINGDE_ENDPOINT'] = (string)$valObj->dns_hostingde_server;
                 $proc_env['HOSTINGDE_APIKEY'] = (string)$valObj->dns_hostingde_apiKey;
@@ -812,6 +832,9 @@ function run_acme_validation($certObj, $valObj, $acctObj)
             case 'dns_knot':
                 $proc_env['KNOT_SERVER'] = (string)$valObj->dns_knot_server;
                 $proc_env['KNOT_KEY'] = (string)$valObj->dns_knot_key;
+                break;
+            case 'dns_leaseweb':
+                $proc_env['LSW_Key'] = (string)$valObj->dns_leaseweb_key;
                 break;
             case 'dns_lexicon':
                 $proc_env['PROVIDER'] = (string)$valObj->dns_lexicon_provider;
@@ -880,6 +903,7 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 file_put_contents($secret_key_filename, $secret_key_data);
                 $proc_env['NSUPDATE_KEY'] = $secret_key_filename;
                 $proc_env['NSUPDATE_SERVER'] = (string)$valObj->dns_nsupdate_server;
+                $proc_env['NSUPDATE_ZONE'] = (string)$valObj->dns_nsupdate_zone;
                 break;
             case 'dns_opnsense':
                 # BIND plugin must be installed.
@@ -908,6 +932,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['pleskxml_user'] = (string)$valObj->dns_pleskxml_user;
                 $proc_env['pleskxml_pass'] = (string)$valObj->dns_pleskxml_pass;
                 $proc_env['pleskxml_uri'] = (string)$valObj->dns_pleskxml_uri;
+                break;
+            case 'dns_schlundtech':
+                $proc_env['SCHLUNDTECH_USER'] = (string)$valObj->dns_schlundtech_user;
+                $proc_env['SCHLUNDTECH_PASSWORD'] = (string)$valObj->dns_schlundtech_password;
                 break;
             case 'dns_selectel':
                 $proc_env['SL_Key'] = (string)$valObj->dns_sl_key;
@@ -1401,14 +1429,14 @@ function run_restart_actions($certlist, $modelObj)
                     if (empty((string)$action->configd)) {
                         log_error("AcmeClient: no configd command specified for automation: " . $action->name);
                         $result = '1';
-                        continue; // Continue with next action.
+                    } else {
+                        $response = $backend->configdRun((string)$action->configd);
                     }
-                    $response = $backend->configdRun((string)$action->configd);
                     break;
                 default:
                     log_error("AcmeClient: an invalid automation was specified: " . (string)$action->type);
                     $return = 1;
-                    continue; // Continue with next action.
+                    break;
             }
         }
     }

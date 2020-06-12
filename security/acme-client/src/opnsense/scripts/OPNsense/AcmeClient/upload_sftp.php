@@ -66,7 +66,7 @@ const COMMANDS = [
         "options" => [
             "host::", "port::", "host-key::", "user::", "identity-type::", "remote-path::",
             "certificates::", "files::", "chgrp::", "chmod::", "chmod-key::",
-            "cert-name::", "key-name::", "ca-name::"],
+            "cert-name::", "key-name::", "ca-name::", "fullchain-name::"],
         "implementation" => "commandUpload",
         "default" => true,
     ],
@@ -119,6 +119,7 @@ const UPLOAD_NAME_TEMPLATES = [
     "cert" => ["default" => "{{name}}/cert.pem", "option" => "cert-name"],
     "key" => ["default" => "{{name}}/key.pem", "option" => "key-name"],
     "ca" => ["default" => "{{name}}/ca.pem", "option" => "ca-name"],
+    "fullchain" => ["default" => "{{name}}/fullchain.pem", "option" => "fullchain-name"],
 ];
 
 // Exit codes
@@ -295,16 +296,17 @@ function uploadCertificatesToHost(array $options): int
                 Utils::log()->error("Failed on " . json_encode($uploader->current(), JSON_UNESCAPED_SLASHES));
 
                 switch ($result) {
-                    case SftpUploader::UPLOAD_ERROR_CHGRP_FAILED:
-                    case SftpUploader::UPLOAD_ERROR_CHMOD_FAILED:
-                    case SftpUploader::UPLOAD_ERROR_NO_OVERWRITE:
-                        continue;
-
                     case SftpUploader::UPLOAD_ERROR_NO_PERMISSION:
                         return EXITCODE_ERROR_NO_PERMISSION;
 
                     case SftpUploader::UPLOAD_ERROR:
                         return EXITCODE_ERROR;
+
+                    case SftpUploader::UPLOAD_ERROR_CHGRP_FAILED:
+                    case SftpUploader::UPLOAD_ERROR_CHMOD_FAILED:
+                    case SftpUploader::UPLOAD_ERROR_NO_OVERWRITE:
+                    default:
+                        break;
                 }
             } else {
                 break;
@@ -420,6 +422,7 @@ function getOptionsById($automation_id, $silent = false)
                 "cert-name" => trim((string)$action->sftp_filename_cert),
                 "key-name" => trim((string)$action->sftp_filename_key),
                 "ca-name" => trim((string)$action->sftp_filename_ca),
+                "fullchain-name" => trim((string)$action->sftp_filename_fullchain),
                 "certificates" => "", // defaults to all (= empty), may be overridden via CLI
             ];
         } elseif (!$silent) {
@@ -582,6 +585,8 @@ function exportCertificates(array $cert_refids)
             if (!empty((string)$cert->caref)) {
                 $cert = (array)$cert;
                 $item["ca"] = ca_chain($cert);
+                // combine files to export a fullchain.pem
+                $item["fullchain"] = $item["cert"] . $item["ca"];
             }
             $result[$refid] = $item;
         }

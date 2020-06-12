@@ -68,12 +68,12 @@
         this.msec.period = time - this.msec.last;
         this.msec.last = time;
     };
-    const UpstremModel = Backbone.Model.extend({
+    const UpstreamModel = Backbone.Model.extend({
         idAttribute: 'uuid'
     });
     const UpstreamCollection = Backbone.Collection.extend({
         url: '/api/nginx/settings/searchupstream',
-        model: UpstremModel,
+        model: UpstreamModel,
         parse: function(response) {
             return response.rows;
         },

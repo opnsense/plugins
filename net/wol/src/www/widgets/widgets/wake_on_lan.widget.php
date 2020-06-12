@@ -45,7 +45,7 @@ $wol = new Wol();
   <tbody>
 <?php
     foreach ($wol->wolentry->iterateItems() as $wolent):
-      $is_active = exec("/usr/sbin/arp -an |/usr/bin/grep {$wolent->mac}| /usr/bin/wc -l|/usr/bin/awk '{print $1;}'");?>
+      $is_active = exec("/usr/sbin/arp -an |/usr/bin/grep -i {$wolent->mac}| /usr/bin/wc -l|/usr/bin/awk '{print $1;}'");?>
     <tr>
         <td><?= !empty((string)$wolent->descr) ? $wolent->descr : gettext('Unnamed entry') ?><br/><?= $wolent->mac ?></td>
         <td><?=htmlspecialchars(convert_friendly_interface_to_friendly_descr((string)$wolent->interface));?></td>

@@ -26,18 +26,41 @@
 LOCALBASE?=	/usr/local
 PAGER?=		less
 
-OPENSSL?=	${LOCALBASE}/bin/openssl
-
-_FLAVOUR!=	if [ -f ${OPENSSL} ]; then ${OPENSSL} version; fi
-FLAVOUR?=	${_FLAVOUR:[1]}
-
 PKG!=		which pkg || echo true
 GIT!=		which git || echo true
-ARCH!=		uname -p
+
+_PLUGIN_ARCH!=	uname -p
+PLUGIN_ARCH?=	${_PLUGIN_ARCH}
+
+OPENSSL?=	${LOCALBASE}/bin/openssl
+
+.if ! defined(PLUGIN_FLAVOUR)
+.if exists(${OPENSSL})
+_PLUGIN_FLAVOUR!=	${OPENSSL} version
+PLUGIN_FLAVOUR?=	${_PLUGIN_FLAVOUR:[1]}
+.else
+.warning "Detected 'Base' flavour is not currently supported"
+PLUGIN_FLAVOUR?=	Base
+.endif
+.endif
+
+PHPBIN=		${LOCALBASE}/bin/php
+
+.if exists(${PHPBIN})
+_PLUGIN_PHP!=	${PHPBIN} -v
+PLUGIN_PHP?=	${_PLUGIN_PHP:[2]:S/./ /g:[1..2]:tW:S/ //}
+.endif
+
+PYTHONLINK=	${LOCALBASE}/bin/python3
+
+.if exists(${PYTHONLINK})
+_PLUGIN_PYTHON!=${PYTHONLINK} -V
+PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
+.endif
 
 PLUGIN_ABI?=	20.1
-PLUGIN_ARCH?=	${ARCH}
-PLUGIN_FLAVOUR=	${FLAVOUR}
+PLUGIN_PHP?=	72
+PLUGIN_PYTHON?=	37
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \

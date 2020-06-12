@@ -1,4 +1,5 @@
 {% if helpers.exists('OPNsense.dnscryptproxy.general.enabled') and OPNsense.dnscryptproxy.general.enabled == '1' %}
+dnscrypt_proxy_var_script="/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy/setup.sh"
 dnscrypt_proxy_enable="YES"
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.allowprivileged') and OPNsense.dnscryptproxy.general.allowprivileged == '1' %}
 dnscrypt_proxy_suexec="YES"
@@ -11,4 +12,3 @@ dnscrypt_proxy_dnsbl="{{ OPNsense.dnscryptproxy.dnsbl.type }}"
 {% else %}
 dnscrypt_proxy_enable="NO"
 {% endif %}
-dnscrypt_proxy_var_script="/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy/setup.sh"

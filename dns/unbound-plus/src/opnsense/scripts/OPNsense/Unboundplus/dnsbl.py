@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 # DNS BL script
-# Copyright 2020 Petr Kejval <petr.kejval6@gmail.com>
+# Copyright (c) 2020 Petr Kejval <petr.kejval6@gmail.com>
 
 # Downloads blacklisted domains from user specified URLs and "compile" them into unbound.conf compatible file
 
@@ -86,11 +86,12 @@ def process_url(url):
     print(f"Processing BL items from: {url}")
 
     try:
-        http = urllib3.PoolManager()
-        r = http.request('GET', url)
+        http = urllib3.PoolManager(timeout=5.0)
+        r = http.request('GET', url, retries=2)
 
-        for line in str(r.data).split('\\n'):
-            parse_line(line)
+        if r.status == 200:
+            for line in str(r.data).split('\\n'):
+                parse_line(line)
     except Exception as e:
         print(str(e))
 
@@ -135,7 +136,8 @@ def load_whitelist():
     print("Loading whitelist")
     global re_whitelist
     wl = load_list('/var/unbound/etc/whitelist.inc', ',')
-    wl.add('.*localhost$')
+    wl.add(r'.*localhost$')
+    wl.add(r'^(?![a-zA-Z\d]).*') # Exclude domains NOT starting with alphanumeric char
     print(f"Loaded {len(wl)} whitelist items")
 
     try:

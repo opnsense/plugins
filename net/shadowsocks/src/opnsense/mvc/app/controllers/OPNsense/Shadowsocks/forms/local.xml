@@ -18,6 +18,12 @@
         <help>Port of the remote server.</help>
     </field>
     <field>
+        <id>local.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Password to authenticate against the remote server.</help>
+    </field>
+    <field>
         <id>local.localaddress</id>
         <label>Local Address</label>
         <type>text</type>
@@ -28,12 +34,6 @@
         <label>Local Port</label>
         <type>text</type>
         <help>The local port of the daemon, default is fine.</help>
-    </field>
-    <field>
-        <id>local.password</id>
-        <label>Password</label>
-        <type>text</type>
-        <help>Password to authenticate against the server.</help>
     </field>
     <field>
         <id>local.cipher</id>

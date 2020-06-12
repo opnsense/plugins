@@ -1,0 +1,52 @@
+<form>
+   <field>
+      <id>udpbroadcastrelay.enabled</id>
+      <label>enabled</label>
+      <type>checkbox</type>
+      <help><![CDATA[Enable or disable this udp relay.]]></help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.listenport</id>
+      <label>Relay Port</label>
+      <type>text</type>
+      <help><![CDATA[Port where the relay will listen for packets to relay. e.g. Sonos is Port 1900.]]></help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.interfaces</id>
+      <label>Relay Interfaces</label>
+      <type>select_multiple</type>
+      <help>At least two interfaces must be selected.</help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.multicastaddress</id>
+      <label>Broadcast Address</label>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <style>tokenize</style>
+      <help><![CDATA[Multicast addresses to use on this port when relaying multicast packets. e.g Sonos is 239.255.255.250, you may enter multiple addresses.]]></help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.sourceaddress</id>
+      <label>Source Address</label>
+      <type>text</type>
+      <help><![CDATA[The relay will use this as the source address for packets leaving the interface. The special values of "1.1.1.1" and "1.1.1.2" mean for the relayed packet to use the outgoing interface's address as the source IP address. "1.1.1.1" also means use the original packet's destination port as the new source port for the relayed packet. "1.1.1.2" means keep the source port unaltered from the original. Chromecast users should use 1.1.1.1.]]></help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.InstanceID</id>
+      <label>Instance ID</label>
+      <type>text</type>
+      <help><![CDATA[Each Relay instance requires a unique ID. Valid values are 1 - 63]]></help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.RevertTTL</id>
+      <label>Use TTL for ID</label>
+      <type>checkbox</type>
+      <help><![CDATA[Use the ID to set the TTL Value of the packet (Original method) rather than DSCP, default is not ticked]]></help>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.description</id>
+      <label>Description</label>
+      <type>text</type>
+      <help><![CDATA[Brief description of this udp relay]]></help>
+   </field>
+</form>

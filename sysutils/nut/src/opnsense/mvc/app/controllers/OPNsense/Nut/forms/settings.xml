@@ -33,13 +33,13 @@
                 <id>nut.account.admin_password</id>
                 <label>Admin Password</label>
                 <type>text</type>
-                <help>Set the admin password.</help>
+                <help>Set the password for admin user "admin".</help>
             </field>
             <field>
                 <id>nut.account.mon_password</id>
                 <label>Monitor Password</label>
                 <type>text</type>
-                <help>Set the monitor password.</help>
+                <help>Set the password for monitoring user "monuser".</help>
             </field>
         </subtab>
     </tab>
