@@ -114,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         switch ($pconfig['type']) {
             case 'cloudflare':
             case 'cloudflare-v6':
-			case 'cloudflare-token':
-			case 'cloudflare-token-v6':
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
             case 'eurodns':
             case 'googledomains':
             case 'linode':
@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['interface'] = $pconfig['interface'];
         $dyndns['zoneid'] = $pconfig['zoneid'];
         $dyndns['resourceid'] = $pconfig['resourceid'];
-		//This field *must* finally be an integer. So anything else has to be filtered...
+        //This field *must* finally be an integer. So anything else has to be filtered...
         $dyndns['ttl'] = intval(preg_replace('/[^0-9\.]/', '', $pconfig['ttl']));
         $dyndns['updateurl'] = $pconfig['updateurl'];
         // Trim hard-to-type but sometimes returned characters
@@ -217,7 +217,7 @@ include("head.inc");
                 break;
               case 'cloudflare':
               case 'cloudflare-v6':
-                $(".type_default").show();			  
+                $(".type_default").show();
                 $(".type_cloudflare").show();
                 break;
               case 'cloudflare-token':
@@ -432,7 +432,7 @@ include("head.inc");
                       <input name="ttl" type="text" id="ttl" value="<?= $pconfig['ttl'] ?>" />
                       <div class="hidden" data-for="help_for_ttl">
                         <?= gettext("Choose TTL for your dns record.") ?>
-						<br /><?= gettext('Cloudflare: value "1" means "Auto". Anything below 1 will be updated with value 1/Auto.') ?>
+                        <br /><?= gettext('Cloudflare: value "1" means "Auto". Anything below 1 will be updated with value 1/Auto.') ?>
                       </div>
                     </td>
                   </tr>

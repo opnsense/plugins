@@ -83,7 +83,7 @@
  *  DNS-O-Matic                 - Last Tested: 9 September 2010
  *  Cloudflare                  - Last Tested: 16 April 2019
  *  Cloudflare IPv6             - Last Tested: 16 April 2019
- *  Cloudflare w/API token      - Last Tested: 26 February 2020
+ *  Cloudflare w/API token      - Last Tested: 13 June 2020
  *  Cloudflare w/API token v6   - Last Tested: NEVER
  *  Eurodns                     - Last Tested: 25 July 2018
  *  GratisDNS                   - Last Tested: 26 January 2020
@@ -112,7 +112,6 @@
  *
  * DNSexit support and multiwan extension for pfSense by Ermal Luçi
  * Custom DNS support by Matt Corallo
- * Cloudflare API token enhancements by Andreas Rupper
  */
 
 class updatedns
@@ -256,15 +255,16 @@ class updatedns
                     $this->_error(9);
                 }
                 break;
-			case 'cloudflare-token':
-			case 'cloudflare-token-v6':
-				if (!$dnsPass) {
-					$this->_error(4);
-				} elseif (!$dnsHost) {
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
+                if (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsHost) {
                     $this->_error(5);
-				} elseif (!$dnsTTL) {
+                } elseif (!$dnsTTL) {
                     $this->_error(9);
                 }
+                break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
@@ -285,7 +285,7 @@ class updatedns
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
-			case 'cloudflare-token-v6':
+            case 'cloudflare-token-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -334,8 +334,8 @@ class updatedns
                 case 'citynetwork':
                 case 'cloudflare':
                 case 'cloudflare-v6':
-				case 'cloudflare-token':
-				case 'cloudflare-token-v6':
+                case 'cloudflare-token':
+                case 'cloudflare-token-v6':
                 case 'custom':
                 case 'custom-v6':
                 case 'dhs':
@@ -766,15 +766,12 @@ class updatedns
                 break;
             case 'cloudflare':
             case 'cloudflare-v6':
-			case 'cloudflare-token':
-			case 'cloudflare-token-v6':
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
                 $baseUrl = 'https://api.cloudflare.com/client/v4';
                 $fqdn = str_replace(' ', '', $this->_dnsHost);
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
-                $ttlData = intval($this->_dnsTTL);
-                if($ttlData < 1) {
-                    	$ttlData = 1;
-                }
+                $ttlData = intval($this->_dnsTTL) < 1 ? 1 : intval($this->_dnsTTL);
                 $hostData = array(
                     "content" => "{$this->_dnsIP}",
                     "type" => $recordType,
@@ -782,20 +779,19 @@ class updatedns
                     "ttl" => $ttlData
                 );
 
-				// Determine if service is token based or user/password based and define appropriate header
-				if (strpos($this->_dnsService, 'token') !== false) {
-					$headerAuth = array(
-						"Authorization: Bearer {$this->_dnsPass}",
-						'Content-Type: application/json'
-					);
-				}
-				else {
-					$headerAuth = array(
-						"X-Auth-Email: {$this->_dnsUser}",
-						"X-Auth-Key: {$this->_dnsPass}",
-						'Content-Type: application/json'
-					);
-				}
+                // Determine if service is token based or user/password based and define appropriate header
+                if (strpos($this->_dnsService, 'token') !== false) {
+                    $headerAuth = array(
+                        "Authorization: Bearer {$this->_dnsPass}",
+                        'Content-Type: application/json'
+                    );
+                } else {
+                    $headerAuth = array(
+                        "X-Auth-Email: {$this->_dnsUser}",
+                        "X-Auth-Key: {$this->_dnsPass}",
+                        'Content-Type: application/json'
+                    );
+                }
 
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headerAuth);
@@ -1357,8 +1353,8 @@ class updatedns
                 break;
             case 'cloudflare':
             case 'cloudflare-v6':
-			case 'cloudflare-token':
-			case 'cloudflare-token-v6':
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
                 $output = json_decode($data);
                 if ($output->result->content === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
