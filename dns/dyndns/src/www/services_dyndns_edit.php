@@ -139,6 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("The username contains invalid characters.");
     }
 
+    if ((string)((int)$pconfig['ttl']) != $pconfig['ttl']) {
+        $input_errors[] = gettext("The TTL value needs to be a valid integer number.");
+    }
+
 
     if (count($input_errors) == 0) {
         $dyndns = array();
@@ -155,8 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['interface'] = $pconfig['interface'];
         $dyndns['zoneid'] = $pconfig['zoneid'];
         $dyndns['resourceid'] = $pconfig['resourceid'];
-        //This field *must* finally be an integer. So anything else has to be filtered...
-        $dyndns['ttl'] = intval(preg_replace('/[^0-9\.]/', '', $pconfig['ttl']));
+        $dyndns['ttl'] = $pconfig['ttl'];
         $dyndns['updateurl'] = $pconfig['updateurl'];
         // Trim hard-to-type but sometimes returned characters
         $dyndns['resultmatch'] = trim($pconfig['resultmatch'], "\t\n\r");
