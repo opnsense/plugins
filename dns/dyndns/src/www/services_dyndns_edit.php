@@ -143,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("The TTL value needs to be a valid integer number.");
     }
 
-
     if (count($input_errors) == 0) {
         $dyndns = array();
         $dyndns['type'] = $pconfig['type'];
