@@ -320,7 +320,7 @@
                         <servers>
                             <source>OPNsense.RadSecProxy.RadSecProxy</source>
                             <items>servers.server</items>
-                            <display>description</display>
+                            <display>identifier</display>
                         </servers>
                     </Model>
                     <ValidationMessage>Related server not found</ValidationMessage>
@@ -334,7 +334,7 @@
                         <servers>
                             <source>OPNsense.RadSecProxy.RadSecProxy</source>
                             <items>servers.server</items>
-                            <display>description</display>
+                            <display>identifier</display>
                         </servers>
                     </Model>
                     <ValidationMessage>Related server not found</ValidationMessage>
