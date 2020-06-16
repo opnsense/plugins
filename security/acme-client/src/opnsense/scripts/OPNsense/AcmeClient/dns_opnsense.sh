@@ -131,7 +131,7 @@ _get_root() {
   domain=$1
   i=2
   p=1
-  if _opns_rest "GET" "/domain/get"; then
+  if _opns_rest "GET" "/domain/searchDomain"; then
     _domain_response="$response"
   else
     return 1
@@ -144,7 +144,7 @@ _get_root() {
       return 1
     fi
     _debug h "$h"
-    id=$(echo $_domain_response| _egrep_o "\"[^\"]*\":{\"enabled\":\"1\",\"type\":{\"master\":{\"value\":\"master\",\"selected\":1},\"slave\":{\"value\":\"slave\",\"selected\":0}},\"masterip\":\"[^\"]*\",\"domainname\":\"${h}\"" | cut -d ':'  -f 1  | cut -d '"' -f 2 )
+    id=$(echo "$_domain_response" | tr '{}' '\n' | grep '\"enabled\":\"1\".*\"type\":\"master\".*\"domainname\":\"'$h'\"' | tr ',' '\n' | grep '\"uuid\":' | sed -r 's/"uuid":"//g;s/"//g')
 
     if [ -n "$id" ];then
       _debug id "$id"
