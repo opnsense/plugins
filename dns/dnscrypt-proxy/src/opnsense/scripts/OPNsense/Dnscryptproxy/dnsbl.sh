@@ -77,13 +77,6 @@ nocoin() {
 	rm ${WORKDIR}/nocoin-raw
 }
 
-urlhaus() {
-	# Urlhaus abuse.ch
-	${FETCH} https://urlhaus.abuse.ch/downloads/text -o ${WORKDIR}/urlhaus-raw
-	sed "/\.$/d" ${WORKDIR}/urlhaus-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/urlhaus
-	rm ${WORKDIR}/urlhaus-raw
-}
-
 windowsspyblockerspy() {
 	# WindowsSpyBlocker (spy)
 	${FETCH} https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt -o ${WORKDIR}/windowsspyblockerspy-raw
