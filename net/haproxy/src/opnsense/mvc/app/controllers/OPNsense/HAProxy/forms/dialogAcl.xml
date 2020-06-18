@@ -479,6 +479,12 @@
         <help><![CDATA[The value of the Server Name TLS extension sent by a client ends with the specified string (suffix match).]]></help>
     </field>
     <field>
+        <id>acl.ssl_sni_reg</id>
+        <label>SNI Regex</label>
+        <type>text</type>
+        <help><![CDATA[The value of the Server Name TLS extension sent by a client matches with the specified regular expression.]]></help>
+    </field>
+    <field>
         <label>Parameters</label>
         <type>header</type>
         <style>expression_table table_http_auth</style>
