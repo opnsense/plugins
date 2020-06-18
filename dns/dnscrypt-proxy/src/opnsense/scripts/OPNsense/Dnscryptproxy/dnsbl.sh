@@ -195,7 +195,6 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	ep)
 		easyprivacy
 		;;
-		;;
 	nc)
 		nocoin
 		;;
