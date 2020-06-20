@@ -35,12 +35,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-headerchecks").UIBootgrid(
-            {   'search':'/api/postfix/headerchecks/searchHeaderCheck',
-                'get':'/api/postfix/headerchecks/getHeaderCheck/',
-                'set':'/api/postfix/headerchecks/setHeaderCheck/',
-                'add':'/api/postfix/headerchecks/addHeaderCheck/',
-                'del':'/api/postfix/headerchecks/delHeaderCheck/',
-                'toggle':'/api/postfix/headerchecks/toggleHeaderCheck/'
+            {   'search':'/api/postfix/headerchecks/searchHeadercheck',
+                'get':'/api/postfix/headerchecks/getHeadercheck/',
+                'set':'/api/postfix/headerchecks/setHeadercheck/',
+                'add':'/api/postfix/headerchecks/addHeadercheck/',
+                'del':'/api/postfix/headerchecks/delHeadercheck/',
+                'toggle':'/api/postfix/headerchecks/toggleHeadercheck/'
             }
         );
 
@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="tab-content content-box tab-content">
     <div id="headerchecks" class="tab-pane fade in active">
         <!-- tab page "headerchecks" -->
-        <table id="grid-headerchecks" class="table table-responsive" data-editDialog="dialogEditPostfixHeaderChecks">
+        <table id="grid-headerchecks" class="table table-responsive" data-editDialog="dialogEditPostfixHeaderchecks">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -83,4 +83,4 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixHeaderChecks,'id':'dialogEditPostfixHeaderChecks','label':lang._('Edit header_check rule')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixHeaderchecks,'id':'dialogEditPostfixHeaderchecks','label':lang._('Edit header_check rule')])}}

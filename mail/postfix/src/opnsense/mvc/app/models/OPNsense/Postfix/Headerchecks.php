@@ -26,6 +26,6 @@ use OPNsense\Base\BaseModel;
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-class HeaderChecks extends BaseModel
+class Headerchecks extends BaseModel
 {
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Starkstromkonsument <https://github.com/Starkstromkonsument>
+ * Copyright (C) 2020 Starkstromkonsument <https://github.com/Starkstromkonsument> 
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,42 +26,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Postfix\Api;
+namespace OPNsense\Postfix;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-
-class HeaderChecksController extends ApiMutableModelControllerBase
+class HeaderchecksController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelName = 'headerchecks';
-    protected static $internalModelClass = '\OPNsense\Postfix\HeaderChecks';
-
-    public function searchHeaderChecksAction()
+    public function indexAction()
     {
-        return $this->searchBase('headerchecks.headercheck', array("enabled", "expression", "filter"));
-    }
-
-    public function getHeaderChecksAction($uuid = null)
-    {
-        return $this->getBase('headerchecks', 'headerchecks.headercheck', $uuid);
-    }
-
-    public function addHeaderChecksAction()
-    {
-        return $this->addBase('headerchecks', 'headerchecks.headercheck');
-    }
-
-    public function delHeaderChecksAction($uuid)
-    {
-        return $this->delBase('headerchecks.headercheck', $uuid);
-    }
-
-    public function setHeaderChecksAction($uuid)
-    {
-        return $this->setBase('headerchecks', 'headerchecks.headercheck', $uuid);
-    }
-
-    public function toggleHeaderChecksAction($uuid)
-    {
-        return $this->toggleBase('headerchecks.headercheck', $uuid);
+        $this->view->formDialogEditPostfixHeaderchecks = $this->getForm("dialogEditPostfixHeaderchecks");
+        $this->view->pick('OPNsense/Postfix/headerchecks');
     }
 }
