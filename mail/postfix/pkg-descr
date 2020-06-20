@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.15
+
+* Add support for header_checks
+
 1.14
 
 * Add more anti-spam features into postfix itself
