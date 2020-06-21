@@ -107,8 +107,7 @@ def save_config_file():
             else:
                 file.write('server:\n')
                 for line in blacklist:
-                    #file.write('local-zone: "' + str(line) + '" static\n')
-                    file.write('local-data: "' + str(line) + ' A 0.0.0.0"\n')
+                    file.write('local-zone: "' + str(line) + '" static\n')
     except Exception as e:
         print(str(e))
         exit(1)
