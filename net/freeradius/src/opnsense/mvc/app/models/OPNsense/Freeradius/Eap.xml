@@ -11,6 +11,7 @@
                 <md5>MD5</md5>
                 <mschapv2>MSCHAPv2</mschapv2>
                 <peap>PEAP</peap>
+                <tls>TLS</tls>
                 <ttls>TTLS</ttls>
             </OptionValues>
         </default_eap_type>
