@@ -40,27 +40,27 @@ class HeaderchecksController extends ApiMutableModelControllerBase
         return $this->searchBase('headerchecks.headercheck', array("enabled", "expression", "filter"));
     }
 
-    public function getHeaderchecksAction($uuid = null)
+    public function getHeadercheckAction($uuid = null)
     {
-        return $this->getBase('headerchecks', 'headerchecks.headercheck', $uuid);
+        return $this->getBase('headercheck', 'headerchecks.headercheck', $uuid);
     }
 
-    public function addHeaderchecksAction()
+    public function addHeadercheckAction()
     {
-        return $this->addBase('headerchecks', 'headerchecks.headercheck');
+        return $this->addBase('headercheck', 'headerchecks.headercheck');
     }
 
-    public function delHeaderchecksAction($uuid)
+    public function delHeadercheckAction($uuid)
     {
         return $this->delBase('headerchecks.headercheck', $uuid);
     }
 
-    public function setHeaderchecksAction($uuid)
+    public function setHeadercheckAction($uuid)
     {
-        return $this->setBase('headerchecks', 'headerchecks.headercheck', $uuid);
+        return $this->setBase('headercheck', 'headerchecks.headercheck', $uuid);
     }
 
-    public function toggleHeaderchecksAction($uuid)
+    public function toggleHeadercheckAction($uuid)
     {
         return $this->toggleBase('headerchecks.headercheck', $uuid);
     }
