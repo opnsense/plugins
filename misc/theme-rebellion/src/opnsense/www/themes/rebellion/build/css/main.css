@@ -1441,7 +1441,7 @@ a.text-success:hover {
 }
 
 .text-info {
-  color: #ffffff;
+  color: #00ffff;
 }
 
 a.text-info:hover {
@@ -7647,7 +7647,6 @@ textarea#update_status:hover {
 
 .fa-times-circle::before {
   content: "";
-  color: #B13116;
 }
 
 .fa-refresh::before {
