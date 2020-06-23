@@ -32,7 +32,7 @@ class HeaderchecksController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->formDialogEditPostfixHeaderchecks = $this->getForm("dialogEditPostfixHeaderchecks");
+        $this->view->formDialogEditPostfixHeadercheck = $this->getForm("dialogEditPostfixHeadercheck");
         $this->view->pick('OPNsense/Postfix/headerchecks');
     }
 }

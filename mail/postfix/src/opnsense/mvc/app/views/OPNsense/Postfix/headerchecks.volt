@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-headerchecks").UIBootgrid(
-            {   'search':'/api/postfix/headerchecks/searchHeadercheck',
+            {   'search':'/api/postfix/headerchecks/searchHeaderchecks',
                 'get':'/api/postfix/headerchecks/getHeadercheck/',
                 'set':'/api/postfix/headerchecks/setHeadercheck/',
                 'add':'/api/postfix/headerchecks/addHeadercheck/',
@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="tab-content content-box tab-content">
     <div id="headerchecks" class="tab-pane fade in active">
         <!-- tab page "headerchecks" -->
-        <table id="grid-headerchecks" class="table table-responsive" data-editDialog="dialogEditPostfixHeaderchecks">
+        <table id="grid-headerchecks" class="table table-responsive" data-editDialog="dialogEditPostfixHeadercheck">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -83,4 +83,4 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixHeaderchecks,'id':'dialogEditPostfixHeaderchecks','label':lang._('Edit header_check rule')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPostfixHeadercheck,'id':'dialogEditPostfixHeadercheck','label':lang._('Edit header_check rule')])}}
