@@ -7,13 +7,3 @@ over TCP and DTLS. The aim is for the proxy to have
 sufficient features to be flexible, while at the same time
 to be small, efficient and easy to configure.
 
-Plugin Changelog
-================
-
-v1.0.2  Minor fixes
-        - code-cleanup, preparation for pull-request
-
-v1.0.1  Minor fixes
-        - added uniqueness-validation to unique-identifiers
-
-v1.0.0  First release
