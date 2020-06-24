@@ -33,6 +33,39 @@ function stunnel_configure()
     );
 }
 
+function stunnel_services()
+{
+    $services = array();
+    $mdl = new \OPNsense\Stunnel\Stunnel();
+    if ($mdl->general->enabled == '1') {
+        $services[] = array(
+            'description' => gettext('Stunnel'),
+            'stunnel' => array(
+                'restart' => array('stunnel restart'),
+                'start' => array('stunnel start'),
+                'stop' => array('stunnel stop'),
+            ),
+            'name' => 'stunnel',
+            'pidfile' => '/var/run/stunnel/stunnel.pid',
+        );
+        if ($mdl->general->enable_ident_server == '1') {
+            // only report status from identd seperately, control is combined with stunnel
+            $services[] = array(
+                'description' => gettext('Identd (stunnel)'),
+                'identd_stunnel' => array(
+                    'restart' => array('stunnel restart'),
+                    'start' => array('stunnel start'),
+                    'stop' => array('stunnel stop'),
+                ),
+                'name' => 'identd_stunnel',
+                'pidfile' => '/var/run/identd_stunnel.pid',
+            );
+        }
+    }
+    return $services;
+}
+
+
 function stunnel_refresh_crls()
 {
     $stunnel = new OPNsense\Stunnel\Stunnel();
@@ -90,7 +123,7 @@ function stunnel_syslog()
 {
     $logfacilities = array();
     $logfacilities['stunnel'] = array(
-        'facility' => array('stunnel')
+        'facility' => array('stunnel', 'identd_stunnel')
     );
     return $logfacilities;
 }

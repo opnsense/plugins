@@ -1,9 +1,8 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
-    <version>1.0.0</version>
-    <migration_prefix>MFP</migration_prefix>
+    <version>1.0.1</version>
     <description>
-        OPNsense firewall filter rules
+        Stunnel TLS encryption proxy
     </description>
     <items>
         <general>
@@ -11,6 +10,14 @@
                 <default>1</default>
                 <Required>Y</Required>
             </enabled>
+            <chroot type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </chroot>
+            <enable_ident_server type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enable_ident_server>
         </general>
         <services>
             <service type="ArrayField">

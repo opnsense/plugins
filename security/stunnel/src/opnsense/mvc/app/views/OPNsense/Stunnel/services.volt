@@ -35,14 +35,30 @@
                 toggle:'/api/stunnel/services/toggleItem/'
             }
         );
-        $("#reconfigureAct").SimpleActionButton();
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/stunnel/services/set", 'frm_general_settings', function(){
+                    dfObj.resolve();
+                });
+                return dfObj;
+            }
+        });
         updateServiceControlUI('stunnel');
+
+        let data_get_map = {'frm_general_settings':"/api/stunnel/services/get"};
+        mapDataToFormUI(data_get_map).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
+
     });
 </script>
 
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" id="destinations" href="#tab_services">{{ lang._('Services') }}</a></li>
+    <li><a data-toggle="tab" id="general" href="#tab_general">{{ lang._('General') }}</a></li>
 </ul>
 <div class="tab-content content-box">
     <div id="tab_services" class="tab-pane fade in active">
@@ -68,6 +84,10 @@
             </tr>
             </tfoot>
         </table>
+    </div>
+    <div id="tab_general" class="tab-pane">
+        <!-- tab page "general" -->
+          {{ partial("layout_partials/base_form",['fields':formGeneral,'id':'frm_general_settings'])}}
     </div>
     <div class="col-md-12">
         <div id="stunnelChangeMessage" class="alert alert-info" style="display: none" role="alert">
