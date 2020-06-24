@@ -68,7 +68,7 @@ net/pptp -- End of life, no replacement
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
-net/tayga -- Tayga IPv6 64NAT
+net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes (development only)
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- vnStat is a console-based network traffic monitor
@@ -84,7 +84,7 @@ security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs r
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
-security/stunnel -- stunnel TLS proxy (development only)
+security/stunnel -- stunnel TLS proxy
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
