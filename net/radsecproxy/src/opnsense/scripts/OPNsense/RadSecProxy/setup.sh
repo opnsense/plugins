@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# NOTE: Keep /var/haproxy on this list, see GH issue opnsense/plugins #39.
 RADSECPROXY_DIRS="/usr/local/etc/radsecproxy.d /usr/local/etc/radsecproxy.d/certs"
 
 for directory in ${RADSECPROXY_DIRS}; do

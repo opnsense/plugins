@@ -1,5 +1,4 @@
 <menu>
-    <!-- Plugin HelloWorld menu -->
     <Services>
         <RadSecProxy VisibleName="RadSecProxy" cssClass="fa fa-shield fa-fw">
             <Basic VisibleName="General" order="10" url="/ui/radsecproxy/general" />
