@@ -1,7 +1,7 @@
 <form>
 
     <field>
-        <id>radsecproxy.general.Enabled</id>
+        <id>radsecproxy.general.enabled</id>
         <label>Enable RadSecProxy</label>
         <type>checkbox</type>
     </field>

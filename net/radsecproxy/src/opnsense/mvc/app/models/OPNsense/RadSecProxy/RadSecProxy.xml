@@ -3,14 +3,14 @@
     <description>
         RadSecProxy-Management
     </description>
-    <version>1.0.2</version>
+    <version>0.0.1</version>
     <items>
         <general>
 
-            <Enabled type="BooleanField">
-                <default>1</default>
+            <enabled type="BooleanField">
+                <default>0</default>
                 <Required>Y</Required>
-            </Enabled>
+            </enabled>
 
             <logLevel type="OptionField">
                 <Required>Y</Required>
@@ -160,7 +160,6 @@
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
-
                     <Constraints>
                         <check001>
                             <type>UniqueConstraint</type>
@@ -179,6 +178,7 @@
                 </host>
 
                 <port type="PortField">
+                    <Required>N</Required>
                 </port>
 
                 <statusServer type="OptionField">
@@ -258,7 +258,6 @@
                     <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
                     <default>default</default>
-
                     <Constraints>
                         <check001>
                             <type>UniqueConstraint</type>
@@ -268,6 +267,7 @@
                 </name>
 
                 <description type="TextField">
+                    <Required>N</Required>
                 </description>
 
                 <caCertificateRefId type="CertificateField">

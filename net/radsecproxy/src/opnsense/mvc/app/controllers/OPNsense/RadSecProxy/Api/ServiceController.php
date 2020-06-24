@@ -16,7 +16,7 @@
     AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
     OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
     SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LssIABILITY, WHETHER IN
     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
@@ -31,24 +31,10 @@ class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceClass = '\OPNsense\RadSecProxy\RadSecProxy';
     protected static $internalServiceTemplate = 'OPNsense/RadSecProxy';
-    protected static $internalServiceEnabled = 'general.Enabled';
+    protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'radsecproxy';
     protected function reconfigureForceRestart()
     {
         return 0;
-    }
-
-    public function checkconfigAction()
-    {
-        $backend = new Backend();
-        // first generate template based on current configuration
-        $backend->configdRun('template reload OPNsense/RadSecProxy');
-        
-        // now export all the required files (or syntax check will fail)
-        $backend->configdRun("radsecproxy setup");
-
-        // finally run the syntax check
-        $response = $backend->configdRun("radsecproxy checkconfig");
-        return array("result" => trim($response));
     }
 }

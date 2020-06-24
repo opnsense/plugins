@@ -25,7 +25,7 @@
 function radsecproxy_enabled()
 {
     $model = new \OPNsense\RadSecProxy\RadSecProxy();
-    if ((string)$model->general->Enabled == '1') {
+    if ((string)$model->general->enabled == '1') {
         return true;
     }
 
