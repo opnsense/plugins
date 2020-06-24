@@ -1086,4 +1086,39 @@
         <label>API Key</label>
         <type>password</type>
     </field>
+    <field>
+        <label>Core-Networks API</label>
+        <type>header</type>
+        <style>table_dns table_dns_cn</style>
+    </field>
+    <field>
+        <id>validation.dns_cn_user</id>
+        <label>API User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cn_password</id>
+        <label>API Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>ArvanCloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_arvan</style>
+    </field>
+    <field>
+        <id>validation.dns_arvan_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Hetzner DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hetzner</style>
+    </field>
+    <field>
+        <id>validation.dns_hetzner_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
 </form>
