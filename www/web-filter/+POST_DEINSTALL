@@ -1,0 +1,13 @@
+# remove
+rm -f /usr/local/etc/squid/post-auth/squidGuard-plugin.conf
+rm -f /usr/local/etc/squid/squidGuard.conf
+rm -rf /usr/local/etc/squid/db
+
+if [ -f /var/run/squid/squid.pid ]; then
+    configctl proxy reload
+fi
+
+# reload menus
+/usr/local/etc/rc.configure_plugins
+# reload configd
+service configd restart

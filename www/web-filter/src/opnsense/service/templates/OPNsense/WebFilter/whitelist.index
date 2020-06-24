@@ -1,0 +1,7 @@
+{%  for rule in helpers.toList('OPNsense.webfilter.rules.rule') %}
+{% if rule.whitelistdomains|default('') != "" %}
+{%      for line in rule.whitelistdomains.split(',') %}
+{{ line }}:rule_{{rule.sequence}}
+{%      endfor %}
+{% endif %}
+{%  endfor %}

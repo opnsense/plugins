@@ -1,0 +1,7 @@
+{%  for rule in helpers.toList('OPNsense.webfilter.rules.rule') %}
+{% if rule.blacklistregex|default('') != "" %}
+{%      for line in rule.blacklistregex.split(',') %}
+{{ line }}:rule_{{rule.sequence}}
+{%      endfor %}
+{% endif %}
+{%  endfor %}

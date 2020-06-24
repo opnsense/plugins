@@ -1,0 +1,8 @@
+name: opnsense-webfilter
+version: 0.1
+origin: opnsense/webfilter
+comment: WebFilter Plugin
+desc: configuration templates for WebFilter
+maintainer: julio at cloudfence.com.br
+www: https://cloudfence.com.br
+prefix: /

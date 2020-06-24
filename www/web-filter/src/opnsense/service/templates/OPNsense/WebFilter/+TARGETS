@@ -1,0 +1,6 @@
+squidGuard.conf:/usr/local/etc/squid/squidGuard.conf
+squidGuard-plugin.conf:/usr/local/etc/squid/post-auth/squidGuard-plugin.conf
+blacklist.index:/usr/local/etc/squid/db/Blacklist/blacklist.index
+whitelist.index:/usr/local/etc/squid/db/Whitelist/whitelist.index
+blacklistregex.index:/usr/local/etc/squid/db/Blacklist/blacklistregex.index
+whitelistregex.index:/usr/local/etc/squid/db/Whitelist/whitelistregex.index

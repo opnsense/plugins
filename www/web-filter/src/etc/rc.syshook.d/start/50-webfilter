@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export webfilter_enable="YES"
+
+# start webfilter service
+/usr/local/etc/rc.d/webfilter start

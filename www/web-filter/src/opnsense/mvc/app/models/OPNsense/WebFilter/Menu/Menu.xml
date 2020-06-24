@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <WebProxy>
+            <WebFilter VisibleName="Web Filter Rules" order="27" url="/ui/webfilter/"/>
+            <BlockLog VisibleName="Web Filter logs" order="60" url="/diag_logs_wfblock.php"/>
+        </WebProxy>
+    </Services>
+</menu>

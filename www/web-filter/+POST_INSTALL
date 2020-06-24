@@ -1,0 +1,22 @@
+mkdir /usr/local/etc/squid/db
+
+
+chown squid:squid /usr/local/etc/squid/db
+chmod +x /usr/local/opnsense/scripts/webfilter/*
+chmod +x /usr/local/etc/rc.syshook.d/start/50-webfilter
+chmod +x /usr/local/etc/rc.d/webfilter
+
+# reload menus
+/usr/local/etc/rc.configure_plugins
+# reload configd
+service configd restart
+
+if [ -f /var/run/squid/squid.pid ]; then
+    configctl webfilter reconfigure
+fi
+
+#Update WCF Database
+echo "Updating Web Content filter database..."
+sleep 2
+configctl webfilter updatewfdb
+echo "Installation finished!"

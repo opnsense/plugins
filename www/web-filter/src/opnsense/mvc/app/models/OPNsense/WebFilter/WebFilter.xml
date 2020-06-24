@@ -1,0 +1,104 @@
+<model>
+    <mount>//OPNsense/webfilter</mount>
+    <description>WebFilter Rules</description>
+    <items>
+        <rules>
+            <rule type="ArrayField">
+                <sequence type="IntegerField">
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                    <ValidationMessage>Sequence numbers are allowed between 10 and 99.</ValidationMessage>
+                    <Required>Y</Required>
+                    <default>1</default>
+                </sequence>
+                <origin type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([a-z,A-Z,1-9]){0,30}$/</mask>
+                    <ValidationMessage>Origin should be regular text of max 30 characters.</ValidationMessage>
+                </origin>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <action type="OptionField">
+                <default>block</default>
+                <Required>Y</Required>
+                <BlankDesc>Block</BlankDesc>
+                <OptionValues>
+                    <block>Block</block>
+                    <pass>BlockAll</pass>
+                </OptionValues>
+                </action>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([A-Za-z][A-Za-z0-9_-]{1,19})$/</mask>
+                    <ValidationMessage>Rule names are are allowed up to 20 characters, must begin with a letter and can contain letters, numbers, hyphens or underscores.</ValidationMessage>
+                </name>
+                <source type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([\/0-9a-fA-F.:,])*/u</mask>
+                    <ValidationMessage>Please enter a valid IP or subnet address</ValidationMessage>
+                </source>
+                <groupindex type="TextField">
+                    <Required>Y</Required>
+                    <default>groups.index</default>
+                    <Mask>/^[a-zA-Z0-9]{1,245}\.?[a-zA-z0-9]{1,10}$/</Mask>
+                    <ValidationMessage>AD Groups index not found!</ValidationMessage>
+                </groupindex>
+                <userindex type="TextField">
+                    <Required>Y</Required>
+                    <default>users.index</default>
+                    <Mask>/^[a-zA-Z0-9]{1,245}\.?[a-zA-z0-9]{1,10}$/</Mask>
+                    <ValidationMessage>AD Users index not found!</ValidationMessage>
+                </userindex>
+                <time type="TextField">
+                    <Required>Y</Required>
+                    <default>time.db</default>
+                    <ValidationMessage>The filename may only contain letters,digits and one dot (not required).</ValidationMessage>
+                </time>
+                <username type="CSVListField">
+                    <Required>N</Required>
+                    <ValidationMessage>Usernames are are allowed up to 20 characters, must begin with a letter and can contain letters, numbers, hyphens or underscores.</ValidationMessage>
+                </username>
+                <filename type="TextField">
+                    <Required>Y</Required>
+                    <default>wicat.db</default>
+                    <Mask>/^[a-zA-Z0-9]{1,245}\.?[a-zA-z0-9]{1,10}$/</Mask>
+                    <ValidationMessage>The filename may only contain letters,digits and one dot (not required).</ValidationMessage>
+                </filename>
+                <destination type="JsonKeyValueStoreField">
+                    <Required>N</Required>
+                    <SourceField>filename</SourceField>
+                    <SourceFile>/usr/local/etc/squid/db/%s</SourceFile>
+                    <SelectAll>N</SelectAll>
+                    <Multiple>Y</Multiple>
+                </destination>
+                <blacklistdomains type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9.:,-]){0,}/</mask>
+                    <ValidationMessage>Please enter ip addresses or domain names here</ValidationMessage>
+                </blacklistdomains>
+                <whitelistdomains type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9.:,-]){0,}/</mask>
+                    <ValidationMessage>Please enter ip addresses or domain names here</ValidationMessage>
+                </whitelistdomains>
+                <blacklistregex type="CSVListField">
+                    <Required>N</Required>
+                </blacklistregex>
+                <whitelistregex type="CSVListField">
+                    <Required>N</Required>
+                </whitelistregex>
+                <urlerror type="UrlField">
+                    <Required>N</Required>
+                    <ValidationMessage>This does not look like a valid url. The http:// must be in URL</ValidationMessage>
+                </urlerror>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Enter a description.</ValidationMessage>
+                    <Required>Y</Required>
+                </description>
+            </rule>
+        </rules>
+    </items>
+</model>

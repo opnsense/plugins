@@ -1,0 +1,134 @@
+<form>
+    <field>
+        <id>rule.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Select if this rule is enabled or not</help>
+    </field>
+    <field>
+        <id>rule.sequence</id>
+        <label>Sequence</label>
+        <type>text</type>
+        <help>Rule number sequence, the lowest will be the first match.</help>
+    </field>
+    <field>
+        <id>rule.action</id>
+        <label>Rule Action</label>
+        <type>dropdown</type>
+        <help><![CDATA[<b>Block:</b> Blocks only selected categories (and blacklisted items).<br><b>BlockAll:</b> Blocks all navigation, <b>except</b> selected categories (and whitelisted items).]]></help>
+    </field>
+    <field>
+        <id>rule.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Enter the rule descriptive name.</help>
+    </field>
+    <field>
+        <id>rule.groupindex</id>
+        <label>Source Options</label>
+        <type>hidden</type>
+        <value>groups.index</value>
+        <help><![CDATA[The source options precendence order is:<br>1-User, 2-Host IP/Subnet<br><b>IMPORTANT: Just one option will be processed, the precendence order applies here.</b>]]>
+        </help>
+    </field>
+    <field>
+        <id>rule.username</id>
+        <label>Usernames</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help>Enter usernames - only local auth backend accepted</help>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>rule.source</id>
+        <label>IP</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help>Enter the source hosts or subnets that this rule will apply to</help>
+        <hint>Type hosts or subnets (ex. 192.168.1.10 192.168.2.0/24)</hint>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>rule.filename</id>
+        <label>Destination Options</label>
+        <type>hidden</type>
+        <value>wicat.db</value>
+        <help>Choose the destination options.</help>
+    </field>
+    <field>
+        <id>rule.destination</id>
+        <label>Categories</label>
+        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <nbDropdownElements>300</nbDropdownElements>
+        <help><![CDATA[Select categories to use, leave empty for all.]]></help>
+    </field>
+    <field>
+        <id>rule.blacklistdomains</id>
+        <label>Blacklisted Domains</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+         <help><![CDATA[Blacklisted domains. If some domain is not already categorized is a good idea to put it here.]]></help>
+        <allownew>true</allownew>
+        <advanced>true</advanced>
+    </field>
+        <field>
+        <id>rule.blacklistregex</id>
+        <label>Blacklist RegEx</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Blacklist regular expressions.<br/>
+        You must use a regular expression, use a comma or press Enter for new item.<br/>
+        <div class="alert alert-info">
+            <b>Examples:</b><br/>
+            <b class="text-primary">mydomain.com</b> -> matches on <b>*.mydomain.com</b><br/>
+            <b class="text-primary">^https?:\/\/([a-zA-Z]+)\.mydomain\.</b> -> matches on <b>http(s)://textONLY.mydomain.*</b><br/>
+            <b class="text-primary">\.gif$</b> -> matches on <b>\*.gif</b> but not on <b class="text-danger">\*.gif\test</b><br/>
+            <b class="text-primary">\[0-9]+\.gif$</b> -> matches on <b>\123.gif</b> but not on <b class="text-danger">\test.gif</b><br/>
+        </div>
+        <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+        <advanced>true</advanced>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>rule.whitelistdomains</id>
+        <label>Whitelisted Domains</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+         <help><![CDATA[Whitelisted domains. Exceptions that not must be filtered by WebFilter]]></help>
+        <allownew>true</allownew>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>rule.whitelistregex</id>
+        <label>Whitelist RegEx</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help><![CDATA[Whitelist regular expressions.<br/>
+        You must use a regular expression, use a comma or press Enter for new item.<br/>
+        <div class="alert alert-info">
+            <b>Examples:</b><br/>
+            <b class="text-primary">mydomain.com</b> -> matches on <b>*.mydomain.com</b><br/>
+            <b class="text-primary">^https?:\/\/([a-zA-Z]+)\.mydomain\.</b> -> matches on <b>http(s)://textONLY.mydomain.*</b><br/>
+            <b class="text-primary">\.gif$</b> -> matches on <b>\*.gif</b> but not on <b class="text-danger">\*.gif\test</b><br/>
+            <b class="text-primary">\[0-9]+\.gif$</b> -> matches on <b>\123.gif</b> but not on <b class="text-danger">\test.gif</b><br/>
+        </div>
+        <div class="text-info"><b>TIP: </b>You can also paste a comma separated list into this field.</div>]]></help>
+        <advanced>true</advanced>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>rule.urlerror</id>
+        <label>URL Blocked Page</label>
+        <type>text</type>
+        <help>Enter an URL to show while user is attempting to access some blocked page.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>rule.description</id>
+        <label>Rule Description</label>
+        <type>text</type>
+        <help>Enter a description to explain what this rule will do.</help>
+    </field>
+</form>
