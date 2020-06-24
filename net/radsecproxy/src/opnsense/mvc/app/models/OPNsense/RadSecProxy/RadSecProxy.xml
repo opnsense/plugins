@@ -3,7 +3,7 @@
     <description>
         RadSecProxy-Management
     </description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <general>
 
@@ -160,7 +160,7 @@
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
-                    
+
                     <Constraints>
                         <check001>
                             <type>UniqueConstraint</type>

@@ -10,4 +10,7 @@ to be small, efficient and easy to configure.
 Plugin Changelog
 ================
 
-1.0 First release
+v1.0.1  Minor fixes
+        - added uniqueness-validation to unique-identifiers
+
+v1.0.0  First release
