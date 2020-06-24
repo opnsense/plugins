@@ -779,6 +779,12 @@
         <help>Requires the whole key file in a format that is compatible with nsupdate.</help>
     </field>
     <field>
+        <id>validation.dns_nsupdate_zone</id>
+        <label>Zone</label>
+        <type>text</type>
+        <help>Optionally set the name of the hosted zone (e.g. example.com) as some DNS Providers require, like dyn.com's 'Standard DNS'.</help>
+    </field>
+    <field>
         <label>opnsense</label>
         <type>header</type>
         <style>table_dns table_dns_opnsense</style>
@@ -1078,6 +1084,41 @@
     <field>
         <id>validation.dns_leaseweb_key</id>
         <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Core-Networks API</label>
+        <type>header</type>
+        <style>table_dns table_dns_cn</style>
+    </field>
+    <field>
+        <id>validation.dns_cn_user</id>
+        <label>API User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cn_password</id>
+        <label>API Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>ArvanCloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_arvan</style>
+    </field>
+    <field>
+        <id>validation.dns_arvan_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Hetzner DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hetzner</style>
+    </field>
+    <field>
+        <id>validation.dns_hetzner_token</id>
+        <label>API Token</label>
         <type>password</type>
     </field>
 </form>
