@@ -72,6 +72,12 @@
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Identifier already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </identifier>
 
                 <description type="TextField">
@@ -154,6 +160,13 @@
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Identifier already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </identifier>
 
                 <description type="TextField">
