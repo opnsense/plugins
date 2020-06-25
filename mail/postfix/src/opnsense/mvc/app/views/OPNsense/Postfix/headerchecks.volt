@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="tab-content content-box tab-content">
     <div id="headerchecks" class="tab-pane fade in active">
         <!-- tab page "headerchecks" -->
-        <table id="grid-headerchecks" class="table table-responsive" data-editDialog="dialogEditPostfixHeadercheck">
+        <table id="grid-headerchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditPostfixHeadercheck">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
