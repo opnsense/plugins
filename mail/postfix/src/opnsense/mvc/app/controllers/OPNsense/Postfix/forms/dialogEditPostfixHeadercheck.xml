@@ -15,6 +15,7 @@
         <id>headercheck.filter</id>
         <label>Process filter</label>
         <type>dropdown</type>
-        <help><![CDATA[Set when the header_check should be processed.<br>See the <a href="http://www.postfix.org/header_checks.5.html">Postfix manual about header_checks(5)</a>]]></help>
+        <help><![CDATA[Set when the header_check should be processed.<br>See the <a href="http://www.postfix.org/header_checks.5.html" target="_blank">Postfix manual about header_checks(5)</a>]]></help>
+        <hint>RECEIVING = header_checks / DELIVERING =  smtp_header_checks</hint>
     </field>
 </form>
