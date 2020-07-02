@@ -1,3 +1,3 @@
 <?php
 
-$wireguard_title = gettext("WireGuard");
+$wireguard_title = gettext('WireGuard');
