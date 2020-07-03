@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("The username contains invalid characters.");
     }
 
-    if ((string)((int)$pconfig['ttl']) != $pconfig['ttl']) {
+    if (!empty($pconfig['ttl']) && (string)((int)$pconfig['ttl']) != $pconfig['ttl']) {
         $input_errors[] = gettext("The TTL value needs to be a valid integer number.");
     }
 
