@@ -15,8 +15,8 @@
                 <filter type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <WHILE_DELIVERING>WHILE DELIVERING MAIL</WHILE_DELIVERING>
-                        <WHILE_RECEIVING>WHILE RECEIVING MAIL</WHILE_RECEIVING>
+                        <WHILE_DELIVERING>while delivering mail</WHILE_DELIVERING>
+                        <WHILE_RECEIVING>while receiving mail</WHILE_RECEIVING>
                     </OptionValues>
                 </filter>
             </headercheck>
