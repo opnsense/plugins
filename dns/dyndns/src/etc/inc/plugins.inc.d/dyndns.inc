@@ -120,6 +120,7 @@ function dyndns_list()
         'easydns' => 'easyDNS',
         'eurodns' => 'EuroDNS',
         'freedns' => 'freeDNS',
+        'gandi-livedns' => 'Gandi LiveDNS',
         'googledomains' => 'Google Domains',
         'gratisdns' => 'GratisDNS',
         'he-net' => 'HE.net',

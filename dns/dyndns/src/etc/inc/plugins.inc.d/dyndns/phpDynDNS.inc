@@ -42,6 +42,7 @@
  *    - regfish IPv6 (regfish.de)
  *    - dynv6 IPv6 (dynv6.com)
  *    - DigitalOcean (digitalocean.com)
+ *    - Gandi LiveDNS (gandi.net)
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
@@ -340,6 +341,7 @@ class updatedns
                 case 'custom-v6':
                 case 'dhs':
                 case 'digitalocean':
+                case 'gandi-livedns':
                 case 'dnsexit':
                 case 'dnsomatic':
                 case 'duckdns':
@@ -661,6 +663,31 @@ class updatedns
                 ));
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
                 curl_setopt($ch, CURLOPT_URL, $server);
+                break;
+            case 'gandi-livedns':
+                /*
+                * https://github.com/vizion8-dan
+                * Tested on OPNsense 20.1.8_1-amd64 - IPv4 (A)
+                * dnsHost ("Hostname" field in OPNsense) should be the 2nd-level domain ("example.org") 
+                * dnsUser ("Username" field in OPNsense) should be the subdomain / A-record ("myrecord" in 2nd-level domain) 
+                * dnsPass should be the Gandi-API key
+                */
+                $server = "https://dns.api.gandi.net/api/v5/domains/". $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
+
+                log_error("DAN: ". $server);
+                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["'. $this->_dnsIP . '"]}';
+                log_error("DAN: ". $body);
+
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    "X-Api-Key: {$this->_dnsPass}",
+                    'Content-Type: application/json'
+                ));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                log_error("DAN: ". $server);
                 break;
             case 'selfhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
@@ -1376,6 +1403,24 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
                     log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
+                }
+                break;
+            case 'gandi-livedns':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong API Key.';    
+                } elseif ($http_code == 403) {
+                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
+                } elseif ($http_code == 201) {
+                    $status = 'Dynamic DNS: (Success) Record was created!';
+                    $successful_update = true;
+                } elseif ($http_code == 200) {
+                    $status = 'Dynamic DNS: (Success) Same record already exists. Nothing was changed!';
+                    $successful_update = true;
+                } else {
+                    $status = 'Dynamic DNS: (Error) "Unknown Response"';
+                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case 'gratisdns':

@@ -315,7 +315,8 @@ include("head.inc");
                       <input name="host" type="text" id="host" value="<?= $pconfig['host'] ?>" />
                       <div class="hidden" data-for="help_for_host">
                         <?= gettext("Enter the complete host/domain name. example: myhost.dyndns.org") ?><br />
-                        <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?>
+                        <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?><br />
+                        <?= gettext('Gandi LiveDNS: Enter the 2nd-level domain ("example.org").') ?> 
                       </div>
                     </td>
                   </tr>
@@ -364,6 +365,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
+                        <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                       </div>
                     </td>
                   </tr>
@@ -379,6 +381,7 @@ include("head.inc");
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
                         <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
+                        <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                       </div>
                     </td>
                   </tr>
