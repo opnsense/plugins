@@ -14,10 +14,12 @@
         <peers type="HostnameField">
             <default>0.opnsense.pool.ntp.org</default>
             <Required>Y</Required>
+            <FieldSeparator>,</FieldSeparator>
             <asList>Y</asList>
         </peers>
         <allowednetworks type="NetworkField">
             <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
             <asList>Y</asList>
         </allowednetworks>
     </items>
