@@ -120,6 +120,8 @@ function dyndns_list()
         'easydns' => 'easyDNS',
         'eurodns' => 'EuroDNS',
         'freedns' => 'freeDNS',
+        'godaddy' => 'GoDaddy',
+        'godaddy-v6' => 'GoDaddy (v6)',
         'googledomains' => 'Google Domains',
         'gratisdns' => 'GratisDNS',
         'he-net' => 'HE.net',

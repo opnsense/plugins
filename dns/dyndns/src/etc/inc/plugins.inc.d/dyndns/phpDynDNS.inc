@@ -45,6 +45,8 @@
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
+ *    - GoDaddy (godaddy.com)
+ *    - GoDaddy IPv6 (godaddy.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -103,6 +105,8 @@
  *  Azure DNS                   - Last Tested: 16 October 2019
  *  Linode                      - Last Tested: 25 February 2020
  *  Linode v6                   - Last Tested: 25 February 2020
+ *  GoDaddy                     - Last Tested: 10 July 2020
+ *  GoDaddy v6                  - Last Tested: 10 July 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -282,6 +286,7 @@ class updatedns
             case 'custom-v6':
             case 'dynv6-v6':
             case 'he-net-v6':
+            case 'godaddy-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
@@ -352,6 +357,8 @@ class updatedns
                 case 'easydns':
                 case 'eurodns':
                 case 'freedns':
+                case 'godaddy':
+                case 'godaddy-v6':
                 case 'googledomains':
                 case 'gratisdns':
                 case 'he-net':
@@ -1090,6 +1097,46 @@ class updatedns
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
+            case 'godaddy':
+            case 'godaddy-v6':
+                /* Read https://developer.godaddy.com/ for API documentation */
+                $baseApiUrl = 'https://api.godaddy.com/v1/domains/';
+                $recordType = $this->_useIPv6 ? "AAAA" : "A";
+                $splitHost = explode('.', trim($this->_dnsHost));
+                $dnsDomain = '*';
+                if ($this->_dnsWildcard != 'ON') {
+                    $dnsDomain = array_shift($splitHost);
+                }
+                $dnsHost = implode('.', $splitHost);
+
+                $url = $baseApiUrl  . $dnsHost . '/records/' . $recordType . '/' . $dnsDomain;
+
+                /* body can contain multiple options (data, port, priority, service, ttl, weight) */
+                $data = array();
+                $data[] = array('data' => $this->_dnsIP);
+                if ($this->_dnsTTL) {
+                    $data[0]['ttl'] = $this->_dnsTTL;
+                } else {
+                    // minimum allowed by GoDaddy
+                    $data[0]['ttl'] = 600;
+                }
+                $jsonBody = json_encode($data);
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS: calling $url with body: $jsonBody");
+                }
+
+                /* PUT JSON /v1/domains/{domain}/records/{type}/{name} */
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Accept: application/json',
+                        'Content-Type: application/json',
+                        'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
+                ));
+                curl_setopt($ch, CURLOPT_URL, $url);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                break;
             default:
                 break;
         }
@@ -1535,6 +1582,23 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
                     $this->_debug($data);
+                }
+                break;
+            case 'godaddy':
+            case 'godaddy-v6':
+                /* See https://developer.godaddy.com/ for API documentation, not all codes are handled. */
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $successful_update = false;
+                if ($http_code == 200) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
+                } else if ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Authentication info not sent or invalid';
+                }else if ($http_code == 404) {
+                    $status = 'Dynamic DNS: (Error) Resource not found';
+                } else {
+                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
                 }
                 break;
             default:
