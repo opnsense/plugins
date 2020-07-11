@@ -9,7 +9,7 @@
         <id>headercheck.expression</id>
         <label>Expression</label>
         <type>text</type>
-        <help><![CDATA[Set a regexp (POSIX regular expression) and an action to process like <pre>/^\s*User-Agent/ IGNORE</pre><b>Note: The regexp is not validated by this form. Please test it carefully.</b>]]></help>
+        <help><![CDATA[Set a regexp (POSIX regular expression) and an action to process like <pre>/^\s*User-Agent/ IGNORE</pre>Note: The regexp is not validated by this form. Please test it carefully.]]></help>
     </field>
     <field>
         <id>headercheck.filter</id>
