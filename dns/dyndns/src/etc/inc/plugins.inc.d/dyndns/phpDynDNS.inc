@@ -580,7 +580,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, 'https://freedns.afraid.org/dynamic/update.php?' . $this->_dnsPass);
                 break;
             case 'dnsexit':
-                curl_setopt($ch, CURLOPT_URL, 'https://www.dnsexit.com/RemoteUpdate.sv?login=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_URL, 'https://update.dnsexit.com/RemoteUpdate.sv?login=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
                 break;
             case 'loopia':
                 $this->_dnsWildcard = (isset($this->_dnsWildcard) && $this->_dnsWildcard == true) ? 'ON' : 'OFF';
@@ -1265,7 +1265,7 @@ class updatedns
                 }
                 break;
             case 'dnsexit':
-                if (preg_match("/is the same/i", $data)) {
+                if (preg_match("/IP not changed/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
                     $successful_update = true;
                 } elseif (preg_match("/Success/i", $data)) {
