@@ -153,7 +153,13 @@
         <id>general.p_memory_enable</id>
         <label>Enable memory plugin</label>
         <type>checkbox</type>
-        <help>The Memory plugin collects physical memory utilization (Used, buffered, cached and free).</help>
+        <help>The Memory plugin collects physical memory utilization (used, buffered, cached and free).</help>
+    </field>
+    <field>
+        <id>general.p_swap_enable</id>
+        <label>Enable swap plugin</label>
+        <type>checkbox</type>
+        <help>The Swap plugin collects swap space utilization (used and free).</help>
     </field>
     <field>
         <id>general.p_processes_enable</id>
