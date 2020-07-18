@@ -96,6 +96,12 @@
         <help>String to set after the hostname. For compatibility reason default is collectd, but you can also simply remove it.</help>
     </field>
     <field>
+        <id>general.p_graphite_separate_instances</id>
+        <label>Graphite separate instances</label>
+        <type>checkbox</type>
+        <help>Enabling sends the plugin instance and type instance to Graphite as separate path components: host.cpu.0.cpu.idle. Disabling sends the plugin and plugin instance as one path component and type and type instance as another component: host.cpu-0.cpu-idle.</help>
+    </field>
+    <field>
         <id>general.p_contextswitch_enable</id>
         <label>Enable contextswitch plugin</label>
         <type>checkbox</type>
