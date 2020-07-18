@@ -114,6 +114,12 @@
         <help>The CPU plugin collects the amount of time spent by the CPU in various states, most notably executing user code, executing system code, waiting for IO-operations and being idle.</help>
     </field>
     <field>
+        <id>general.p_cpu_percent</id>
+        <label>Report cpu usage in percent</label>
+        <type>checkbox</type>
+        <help>When set, report CPU usage in percent instead of units of kernel time.</help>
+    </field>
+    <field>
         <id>general.p_cpu_aggregates</id>
         <label>Enable cpu aggregates</label>
         <type>checkbox</type>
