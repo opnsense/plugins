@@ -126,6 +126,12 @@
         <help>Send aggregate values for CPU metrics in addition to values for individual cores.</help>
     </field>
     <field>
+        <id>general.p_cputemp_enable</id>
+        <label>Enable cputemp plugin</label>
+        <type>checkbox</type>
+        <help>The CPUtemp plugin collects the CPU temperature over time.</help>
+    </field>
+    <field>
         <id>general.p_df_enable</id>
         <label>Enable df plugin</label>
         <type>checkbox</type>
