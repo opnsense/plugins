@@ -1,5 +1,9 @@
 <form>
     <field>
+        <type>section_title</type>
+        <label>General</label>
+    </field>
+    <field>
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
@@ -22,6 +26,10 @@
         <label>Interval</label>
         <type>text</type>
         <help>Global interval when to fetch values in seconds.</help>
+    </field>
+    <field>
+        <type>section_title</type>
+        <label>Output Plugins</label>
     </field>
     <field>
         <id>general.p_network_enable</id>
@@ -100,6 +108,10 @@
         <label>Graphite separate instances</label>
         <type>checkbox</type>
         <help>Enabling sends the plugin instance and type instance to Graphite as separate path components: host.cpu.0.cpu.idle. Disabling sends the plugin and plugin instance as one path component and type and type instance as another component: host.cpu-0.cpu-idle.</help>
+    </field>
+    <field>
+        <type>section_title</type>
+        <label>Input Plugins</label>
     </field>
     <field>
         <id>general.p_contextswitch_enable</id>
