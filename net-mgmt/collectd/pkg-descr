@@ -3,4 +3,29 @@ performance metrics periodically and provides mechanisms
 to store the values in a variety of ways, for example
 in RRD files.
 
+
+Plugin Changelog
+================
+
+1.3
+
+* Add support for CPU aggregation
+* Make Graphite separate instances configurable
+* Add disk I/O plugin
+
+1.2 
+
+* Make Hostname optional
+
+1.1
+
+* Add prefix and postfix fields for Graphite
+
+1.0
+
+* Allow exporting to network
+* Allow exporting to Graphite
+* Allow usage of most important plugins
+
+
 WWW: http://www.collectd.org
