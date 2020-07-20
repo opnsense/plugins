@@ -14,7 +14,7 @@
 
             <logLevel type="OptionField">
                 <Required>Y</Required>
-                <default>ll2</default>
+                <default>2</default>
                 <OptionValues>
                     <ll1 value="1">1 (only serious errors)</ll1>
                     <ll2 value="2">2 (default)</ll2>
@@ -35,7 +35,7 @@
 
             <logMac type="OptionField">
                 <Required>Y</Required>
-                <default>original</default>
+                <default>Original</default>
                 <OptionValues>
                     <Static>Static</Static>
                     <Original>Original</Original>
