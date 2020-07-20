@@ -38,18 +38,18 @@
         </p_network_port>
         <p_network_username type="TextField">
             <default></default>
-	    <Required>N</Required>
-	    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
-	</p_network_username>
-        <p_network_password type="TextField">
-            <default></default>
-	    <Required>N</Required>
-	    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
-	</p_network_password>
-        <p_network_encryption type="BooleanField">
-            <default>0</default>
-	    <Required>N</Required>
-	</p_network_encryption>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+        </p_network_username>
+            <p_network_password type="TextField">
+                <default></default>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+        </p_network_password>
+            <p_network_encryption type="BooleanField">
+                <default>0</default>
+            <Required>N</Required>
+        </p_network_encryption>
         <p_graphite_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>
@@ -77,6 +77,10 @@
             <default>collectd</default>
             <Required>N</Required>
         </p_graphite_postfix>
+        <p_graphite_separate_instances type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_graphite_separate_instances>
         <p_contextswitch_enable type="BooleanField">
             <default>1</default>
             <Required>N</Required>
@@ -85,6 +89,18 @@
             <default>1</default>
             <Required>N</Required>
         </p_cpu_enable>
+        <p_cpu_percent type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_cpu_percent>
+        <p_cpu_aggregates type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_cpu_aggregates>
+        <p_disk_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_disk_enable>
         <p_df_enable type="BooleanField">
             <default>1</default>
             <Required>N</Required>
@@ -101,6 +117,10 @@
             <default>1</default>
             <Required>N</Required>
         </p_memory_enable>
+        <p_swap_enable type="BooleanField">
+            <default>1</default>
+            <Required>N</Required>
+        </p_swap_enable>
         <p_processes_enable type="BooleanField">
             <default>1</default>
             <Required>N</Required>
