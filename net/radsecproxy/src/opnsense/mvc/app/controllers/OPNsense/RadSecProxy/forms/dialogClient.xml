@@ -77,12 +77,4 @@
         <help>Perform additional validation of certificate attributes (CN | SubjectAltName:URI | SubjectAltName:DNS). Currently matching of CN and SubjectAltName types URI DNS and IP is supported.</help>
     </field>
 
-    <field>
-        <id>client.customConfig</id>
-        <label>Custom settings</label>
-        <advanced>true</advanced>
-        <type>textbox</type>
-        <help>Freetext-settings which will be pasted unvalidated into the block of this client's setting. Be careful!</help>
-    </field>
-
 </form>

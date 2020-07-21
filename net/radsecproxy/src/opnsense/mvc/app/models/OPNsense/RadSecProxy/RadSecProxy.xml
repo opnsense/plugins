@@ -55,9 +55,37 @@
                 </OptionValues>
             </loopPrevention>
 
-            <customConfig type="TextField">
+            <listenUdp type="TextField">
                 <Required>N</Required>
-            </customConfig>
+            </listenUdp>
+
+            <listenTcp type="TextField">
+                <Required>N</Required>
+            </listenTcp>
+
+            <listenTls type="TextField">
+                <Required>N</Required>
+            </listenTls>
+
+            <listenDtls type="TextField">
+                <Required>N</Required>
+            </listenDtls>
+
+            <sourceUdp type="TextField">
+                <Required>N</Required>
+            </sourceUdp>
+
+            <sourceTcp type="TextField">
+                <Required>N</Required>
+            </sourceTcp>
+
+            <sourceTls type="TextField">
+                <Required>N</Required>
+            </sourceTls>
+
+            <sourceDtls type="TextField">
+                <Required>N</Required>
+            </sourceDtls>
 
         </general>
 
@@ -147,9 +175,6 @@
                     <Required>N</Required>
                 </matchCertificateAttribute>
 
-                <customConfig type="TextField">
-                    <Required>N</Required>
-                </customConfig>
             </client>
         </clients>
 
@@ -245,9 +270,6 @@
                     <Required>N</Required>
                 </matchCertificateAttribute>
 
-                <customConfig type="TextField">
-                    <Required>N</Required>
-                </customConfig>
             </server>
         </servers>
 
