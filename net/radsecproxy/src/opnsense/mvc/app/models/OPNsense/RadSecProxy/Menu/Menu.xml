@@ -2,11 +2,12 @@
     <Services>
         <RadSecProxy VisibleName="RadSecProxy" cssClass="fa fa-shield fa-fw">
             <Basic VisibleName="General" order="10" url="/ui/radsecproxy/general" />
-            <Clients VisibleName="Client" order="20" url="/ui/radsecproxy/clients" />
+            <Clients VisibleName="Clients" order="20" url="/ui/radsecproxy/clients" />
             <Servers VisibleName="Servers" order="30" url="/ui/radsecproxy/servers" />
             <Realms VisibleName="Realms" order="40" url="/ui/radsecproxy/realms" />
             <Tls VisibleName="TLS" order="50" url="/ui/radsecproxy/tls" />
-            <Logs VisibleName="Logs" order="60" url="/ui/diagnostics/log/core/radsecproxy" />
+            <Rewrites VisibleName="Rewrite-Rules" order="60" url="/ui/radsecproxy/rewrites" />
+            <Logs VisibleName="Logs" order="70" url="/ui/diagnostics/log/core/radsecproxy" />
         </RadSecProxy>
     </Services>
 </menu>

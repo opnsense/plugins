@@ -91,6 +91,7 @@
 
         <clients>
             <client type="ArrayField">
+
                 <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -174,6 +175,28 @@
                 <matchCertificateAttribute type="TextField">
                     <Required>N</Required>
                 </matchCertificateAttribute>
+
+                <rewriteIn type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteIn>
+
+                <rewriteOut type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteOut>
 
             </client>
         </clients>
@@ -270,11 +293,34 @@
                     <Required>N</Required>
                 </matchCertificateAttribute>
 
+                <rewriteIn type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteIn>
+
+                <rewriteOut type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteOut>
+
             </server>
         </servers>
 
         <tlsConfigs>
             <tlsConfig type="ArrayField">
+
                 <name type="TextField">
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
@@ -327,6 +373,7 @@
 
         <realms>
             <realm type="ArrayField">
+
                 <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -390,5 +437,78 @@
 
             </realm>
         </realms>
+
+        <rewrites>
+            <rewrite type="ArrayField">
+
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <default>default</default>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Name already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </name>
+
+                <addAttributes type="TextField">
+                    <Required>N</Required>
+                </addAttributes>
+
+                <addVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </addVendorAttributes>
+
+                <supplementAttributes type="TextField">
+                    <Required>N</Required>
+                </supplementAttributes>
+
+                <supplementVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </supplementVendorAttributes>
+
+                <modifyAttributes type="TextField">
+                    <Required>N</Required>
+                </modifyAttributes>
+
+                <modifyVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </modifyVendorAttributes>
+
+                <removeAttributes type="TextField">
+                    <Required>N</Required>
+                </removeAttributes>
+
+                <removeVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </removeVendorAttributes>
+
+                <whitelistMode type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </whitelistMode>
+ 
+                <whitelistAttributes type="TextField">
+                    <Required>N</Required>
+                </whitelistAttributes>
+ 
+                <whitelistVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </whitelistVendorAttributes>
+
+            </rewrite>
+        </rewrites>
     </items>
 </model>

@@ -77,4 +77,20 @@
         <help>Perform additional validation of certificate attributes (CN | SubjectAltName:URI | SubjectAltName:DNS). Currently matching of CN and SubjectAltName types URI DNS and IP is supported.</help>
     </field>
 
+    <field>
+        <id>client.rewriteIn</id>
+        <label>Rewrite incoming requests</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help><![CDATA[Apply the operations in the specified rewrite block on incoming (request) or outgoing (response) messages from this client. Rewriting incoming messages is done before, outgoing after other processing. If the <b>RewriteIn</b> is not configured, the rewrite blocks <b>defaultClient</b> or <b>default</b> will be applied if defined. No default blocks are applied for <b>RewriteOut</b>.]]></help>
+    </field>
+
+    <field>
+        <id>client.rewriteOut</id>
+        <label>Rewrite outgoing requests</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help><![CDATA[Apply the operations in the specified rewrite block on incoming (request) or outgoing (response) messages from this client. Rewriting incoming messages is done before, outgoing after other processing. If the <b>RewriteIn</b> is not configured, the rewrite blocks <b>defaultClient</b> or <b>default</b> will be applied if defined. No default blocks are applied for <b>RewriteOut</b>.]]></help>
+    </field>
+
 </form>
