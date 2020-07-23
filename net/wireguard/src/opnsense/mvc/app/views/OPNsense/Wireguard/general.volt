@@ -36,6 +36,10 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
 
+<div class="alert alert-warning" role="alert" style="min-height:65px;">
+  <div style="margin-top: 8px;">{{ lang._('The WireGuard VPN software is still in experimental state, use with caution.') }}</div>
+</div>
+
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
