@@ -13,7 +13,7 @@ Plugin Changelog
 * Make Graphite separate instances configurable (contributed by @pmhausen)
 * Add disk I/O plugin (contributed by @pmhausen)
 
-1.2 
+1.2
 
 * Make Hostname optional
 
