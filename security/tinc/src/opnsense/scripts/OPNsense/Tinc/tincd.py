@@ -86,11 +86,14 @@ def deploy(config_filename):
 
         # write tinc-up file
         interface_address = network.get_local_address()
-        interface_family = "inet6" if ipaddress.ip_network(interface_address, False).version == 6 else "inet"
+        interface_network = ipaddress.ip_network(interface_address, False)
+        interface_family = "inet6" if interface_network.version == 6 else "inet"
+        interface_configd = "newipv6" if interface_network.version == 6 else "newip"
 
         if_up = list()
         if_up.append("#!/bin/sh")
-        if_up.append("ifconfig %s %s %s " % (interface_name, interface_family, pipes.quote(interface_address)))
+        if_up.append("ifconfig %s %s %s" % (interface_name, interface_family, pipes.quote(interface_address)))
+        if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
@@ -108,6 +111,10 @@ if len(sys.argv) > 1:
     if sys.argv[1] == 'stop':
         for instance in glob.glob('/usr/local/etc/tinc/*'):
             subprocess.run(['/usr/local/sbin/tincd','-n',instance.split('/')[-1], '-k'])
+            if os.path.exists('%s/tinc.conf' % instance):
+                interface_name  = open('%s/tinc.conf' % instance).read().split('Device=')[-1].split()[0].split('/')[-1]
+                if interface_name.startswith('tinc'):
+                    subprocess.run(['/sbin/ifconfig',interface_name,'destroy'])
     elif sys.argv[1] == 'start':
         for netwrk in deploy('/usr/local/etc/tinc_deploy.xml'):
             subprocess.run(['/usr/local/sbin/tincd','-n',netwrk.get_network(), '-R', '-d', netwrk.get_debuglevel()])
