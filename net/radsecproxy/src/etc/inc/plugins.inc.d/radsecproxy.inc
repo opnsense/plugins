@@ -34,13 +34,22 @@ function radsecproxy_enabled()
 
 function radsecproxy_syslog()
 {
-    $syslogconf = array();
+    // $syslogconf = array();
 
-    $syslogconf['radsecproxy'] = array(
+    // $syslogconf['radsecproxy'] = array(
+    //     'local' => '/var/log/radsecproxy.log',
+    //     'facility' => array('radsecproxy'),
+    //     'remote' => 'relayd',
+    // );
+
+    // return $syslogconf;
+
+    $logfacilities = array();
+    $logfacilities['radsecproxy'] = array(
         'facility' => array('LOG_DAEMON'),
     );
+    return $logfacilities;
 
-    return $syslogconf;
 }
 
 
