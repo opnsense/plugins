@@ -117,6 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
             case 'eurodns':
+            case 'godaddy':
+            case 'godaddy-v6':
             case 'googledomains':
             case 'linode':
             case 'linode-v6':
@@ -364,6 +366,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
+                        <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
                       </div>
                     </td>
                   </tr>
@@ -379,6 +382,7 @@ include("head.inc");
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
                         <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
+                        <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
                       </div>
                     </td>
                   </tr>
