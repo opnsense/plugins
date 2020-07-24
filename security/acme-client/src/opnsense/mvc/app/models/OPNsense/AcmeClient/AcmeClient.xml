@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -358,17 +358,20 @@
                     <default>dns_nsupdate</default>
                     <OptionValues>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
+                        <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
+                        <dns_arvan>ArvanCloud API</dns_arvan>
                         <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS API</dns_azure>
-                        <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cloudns>ClouDNS API</dns_cloudns>
+                        <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
+                        <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
-                        <dns_da>DirectAdmin API</dns_da>
                         <dns_dgon>DigitalOcean API</dns_dgon>
+                        <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
                         <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_dp>DNSPod.cn API</dns_dp>
@@ -378,11 +381,13 @@
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
                         <dns_dynu>Dynu API</dns_dynu>
+                        <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com API</dns_gd>
                         <dns_gcloud>Google Cloud DNS API</dns_gcloud>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
+                        <dns_hetzner>Hetzner DNS API</dns_hetzner>
                         <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
@@ -390,6 +395,7 @@
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_kinghost>KingHost DNS API</dns_kinghost>
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
+                        <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
                         <dns_loopia>Loopia API</dns_loopia>
@@ -405,6 +411,7 @@
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_pleskxml>Plesk XML API</dns_pleskxml>
+                        <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
@@ -417,9 +424,9 @@
                 </dns_service>
                 <dns_sleep type="IntegerField">
                     <MinimumValue>1</MinimumValue>
-                    <MaximumValue>10000</MaximumValue>
+                    <MaximumValue>84600</MaximumValue>
                     <default>120</default>
-                    <ValidationMessage>Please specify a value between 1 and 10000.</ValidationMessage>
+                    <ValidationMessage>Please specify a value between 1 and 84600.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
                 <dns_ad_key type="TextField">
@@ -747,6 +754,9 @@
                 <dns_nsupdate_server type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_server>
+                <dns_nsupdate_zone type="TextField">
+                    <Required>N</Required>
+                </dns_nsupdate_zone>
                 <!-- TODO: maybe we should base64encode this field? -->
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
@@ -827,26 +837,62 @@
                     <Required>N</Required>
                 </dns_zm_key>
                 <dns_gdnsdk_user type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_gdnsdk_user>
                 <dns_gdnsdk_password type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_gdnsdk_password>
                 <dns_acmedns_user type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_user>
                 <dns_acmedns_password type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_password>
                 <dns_acmedns_subdomain type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_subdomain>
                 <dns_acmedns_updateurl type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_acmeproxy_endpoint type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_endpoint>
+                <dns_acmeproxy_username type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_username>
+                <dns_acmeproxy_password type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_password>
                 <dns_variomedia_key type="TextField">
-                   <Required>N</Required>
+                    <Required>N</Required>
                 </dns_variomedia_key>
+                <dns_schlundtech_user type="TextField">
+                    <Required>N</Required>
+                </dns_schlundtech_user>
+                <dns_schlundtech_password type="TextField">
+                    <Required>N</Required>
+                </dns_schlundtech_password>
+                <dns_euserv_user type="TextField">
+                    <Required>N</Required>
+                </dns_euserv_user>
+                <dns_euserv_password type="TextField">
+                    <Required>N</Required>
+                </dns_euserv_password>
+                <dns_leaseweb_key type="TextField">
+                    <Required>N</Required>
+                </dns_leaseweb_key>
+                <dns_cn_user type="TextField">
+                    <Required>N</Required>
+                </dns_cn_user>
+                <dns_cn_password type="TextField">
+                    <Required>N</Required>
+                </dns_cn_password>
+                <dns_arvan_token type="TextField">
+                    <Required>N</Required>
+                </dns_arvan_token>
+                <dns_hetzner_token type="TextField">
+                    <Required>N</Required>
+                </dns_hetzner_token>
             </validation>
         </validations>
         <actions>
@@ -959,6 +1005,12 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_ca>
+                <sftp_filename_fullchain type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.
+                                       Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
+                </sftp_filename_fullchain>
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>

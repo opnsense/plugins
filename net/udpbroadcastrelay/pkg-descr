@@ -1,0 +1,29 @@
+udbproadcastrelay is a UDP multicast relayer. Its intended use is to
+rebroadbcast udp packets on a specific port across interfaces, be those
+interfaces physical or VLAN.
+
+It is used where devices such as Sonos or Sky are spread accross
+different subnets and are not able to detect the servers or devices.
+
+Examples of different devices and the ports are as follows:
+
+Syncthing discovery
+udp_vars="--id 1 --port 21027 --dev igb1 --dev igb2"
+
+mDNS / Broadcast DNS (Chromecast Discovery + Bonjour + More)
+udp_vars="--id 1 --port 5353 --dev eth0 --dev eth1 --multicast 224.0.0.251 -s 1.1.1.1"
+
+(Chromecast requires broadcasts to originate from an address on its subnet) use
+the rebroadbcast address option.
+
+SSDP (Sonos Roku Discovery + More)
+udp_vars="--id 1 --port 1900 --dev eth0 --dev eth1 --multicast 239.255.255.250"
+
+Lifx Bulb Discovery
+udp_vars=" --id 1 --port 56700 --dev eth0 --dev eth1"
+
+Broadlink IR Emitter Discovery
+udp_vars=" --id 1 --port 80 --dev eth0 --dev eth1"
+
+Warcraft 3 Server Discovery
+udp_vars=" --id 1 --port 6112 --dev eth0 --dev eth1"

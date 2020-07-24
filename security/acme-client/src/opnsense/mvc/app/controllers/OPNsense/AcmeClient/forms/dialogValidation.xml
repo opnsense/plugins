@@ -779,6 +779,12 @@
         <help>Requires the whole key file in a format that is compatible with nsupdate.</help>
     </field>
     <field>
+        <id>validation.dns_nsupdate_zone</id>
+        <label>Zone</label>
+        <type>text</type>
+        <help>Optionally set the name of the hosted zone (e.g. example.com) as some DNS Providers require, like dyn.com's 'Standard DNS'.</help>
+    </field>
+    <field>
         <label>opnsense</label>
         <type>header</type>
         <style>table_dns table_dns_opnsense</style>
@@ -1009,6 +1015,27 @@
         <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
     </field>
     <field>
+        <label>Acmeproxy</label>
+        <type>header</type>
+        <style>table_dns table_dns_acmeproxy</style>
+    </field>
+    <field>
+        <id>validation.dns_acmeproxy_endpoint</id>
+        <label>Endpoint</label>
+        <type>text</type>
+        <help>Specify the acmeproxy endpoint URL, i.e. https://acmeproxy.example.com/</help>
+    </field>
+    <field>
+        <id>validation.dns_acmeproxy_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_acmeproxy_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Variomedia</label>
         <type>header</type>
         <style>table_dns table_dns_variomedia</style>
@@ -1018,5 +1045,80 @@
         <label>API Key</label>
         <type>password</type>
         <help>You need to obtain your API key from variomedia's customer support.</help>
+    </field>
+    <field>
+        <label>SchlundTech</label>
+        <type>header</type>
+        <style>table_dns table_dns_schlundtech</style>
+    </field>
+    <field>
+        <id>validation.dns_schlundtech_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_schlundtech_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>EUserv</label>
+        <type>header</type>
+        <style>table_dns table_dns_euserv</style>
+    </field>
+    <field>
+        <id>validation.dns_euserv_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_euserv_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Leaseweb</label>
+        <type>header</type>
+        <style>table_dns table_dns_leaseweb</style>
+    </field>
+    <field>
+        <id>validation.dns_leaseweb_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Core-Networks API</label>
+        <type>header</type>
+        <style>table_dns table_dns_cn</style>
+    </field>
+    <field>
+        <id>validation.dns_cn_user</id>
+        <label>API User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cn_password</id>
+        <label>API Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>ArvanCloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_arvan</style>
+    </field>
+    <field>
+        <id>validation.dns_arvan_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Hetzner DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hetzner</style>
+    </field>
+    <field>
+        <id>validation.dns_hetzner_token</id>
+        <label>API Token</label>
+        <type>password</type>
     </field>
 </form>

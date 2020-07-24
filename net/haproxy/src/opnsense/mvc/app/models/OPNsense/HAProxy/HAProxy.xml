@@ -1388,7 +1388,7 @@
                         <src_http_req_cnt>Source IP: number of HTTP requests</src_http_req_cnt>
                         <src_http_req_rate>Source IP: rate of HTTP requests</src_http_req_rate>
                         <!-- <src_inc_gpc0>Source IP: increment the first General Purpose Counter</src_inc_gpc0> -->
-                        <src_sess_cnt>Source IP: cumulative number of connections</src_sess_cnt>
+                        <src_sess_cnt>Source IP: cumulative number of sessions</src_sess_cnt>
                         <src_sess_rate>Source IP: session rate</src_sess_rate>
                         <nbsrv>Minimum number of usable servers in backend</nbsrv>
                         <traffic_is_http>Traffic is HTTP</traffic_is_http>

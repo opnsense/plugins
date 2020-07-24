@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap") && $pconfig['username'] == "") {
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -114,7 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         switch ($pconfig['type']) {
             case 'cloudflare':
             case 'cloudflare-v6':
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
             case 'eurodns':
+            case 'godaddy':
+            case 'godaddy-v6':
             case 'googledomains':
             case 'linode':
             case 'linode-v6':
@@ -137,6 +141,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext("The username contains invalid characters.");
     }
 
+    if (!empty($pconfig['ttl']) && (string)((int)$pconfig['ttl']) != $pconfig['ttl']) {
+        $input_errors[] = gettext("The TTL value needs to be a valid integer number.");
+    }
 
     if (count($input_errors) == 0) {
         $dyndns = array();
@@ -211,6 +218,15 @@ include("head.inc");
               case "azure":
               case "azurev6":
                 $(".type_azure").show();
+                break;
+              case 'cloudflare':
+              case 'cloudflare-v6':
+                $(".type_default").show();
+                $(".type_cloudflare").show();
+                break;
+              case 'cloudflare-token':
+              case 'cloudflare-token-v6':
+                $(".type_cloudflare").show();
                 break;
               default:
                 $(".type_default").show();
@@ -339,7 +355,7 @@ include("head.inc");
                       <?= gettext("Verify SSL peer") ?>
                     </td>
                   </tr>
-                  <tr>
+                  <tr class ="opt_field type_custom type_route53 type_azure type_default">
                     <td><a id="help_for_username" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Username") ?></td>
                     <td>
                       <input name="username" type="text" id="username" value="<?= $pconfig['username'] ?>" />
@@ -350,6 +366,7 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
+                        <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
                       </div>
                     </td>
                   </tr>
@@ -364,6 +381,8 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Leave blank.') ?>
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
+                        <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
+                        <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
                       </div>
                     </td>
                   </tr>
@@ -413,12 +432,13 @@ include("head.inc");
                       </div>
                     </td>
                   </tr>
-                  <tr class="opt_field type_route53  type_azure">
+                  <tr class="opt_field type_route53 type_azure type_cloudflare">
                     <td><a id="help_for_ttl" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("TTL");?></td>
                     <td>
                       <input name="ttl" type="text" id="ttl" value="<?= $pconfig['ttl'] ?>" />
                       <div class="hidden" data-for="help_for_ttl">
                         <?= gettext("Choose TTL for your dns record.") ?>
+                        <br /><?= gettext('Cloudflare: value "1" means "Auto". Anything below 1 will be updated with value 1/Auto.') ?>
                       </div>
                     </td>
                   </tr>

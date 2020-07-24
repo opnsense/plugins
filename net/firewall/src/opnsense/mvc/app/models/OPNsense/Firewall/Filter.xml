@@ -169,6 +169,7 @@
                 <target_port type="PortField">
                     <Required>N</Required>
                     <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>Y</EnableRanges>
                 </target_port>
                 <log type="BooleanField">
                     <default>0</default>

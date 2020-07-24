@@ -26,8 +26,10 @@
  *    - DNS-O-Matic (dnsomatic.com)
  *    - Custom dynamic DNS (any URL)
  *    - Custom dynamic DNS IPv6 (any URL)
- *    - CloudFlare (www.cloudflare.com)
- *    - CloudFlare IPv6 (www.cloudflare.com)
+ *    - Cloudflare (www.cloudflare.com)
+ *    - Cloudflare IPv6 (www.cloudflare.com)
+ *    - Cloudflare API token (www.cloudflare.com)
+ *    - Cloudflare API token IPv6 (www.cloudflare.com)
  *    - Eurodns (eurodns.com)
  *    - GratisDNS (gratisdns.dk)
  *    - City Network (citynetwork.se)
@@ -43,6 +45,8 @@
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
+ *    - GoDaddy (godaddy.com)
+ *    - GoDaddy IPv6 (godaddy.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -58,47 +62,51 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
- *  DynDNS Dynamic      - Last Tested: 12 July 2005
- *  DynDNS Static       - Last Tested: NEVER
- *  DynDNS Custom       - Last Tested: NEVER
- *  No-IP               - Last Tested: 20 July 2008
- *  HN.org              - Last Tested: 12 July 2005
- *  EasyDNS             - Last Tested: 20 July 2008
- *  DHS                 - Last Tested: 12 July 2005
- *  ZoneEdit            - Last Tested: NEVER
- *  Dyns                - Last Tested: NEVER
- *  ODS                 - Last Tested: 02 August 2005
- *  FreeDNS             - Last Tested: 23 Feb 2011
- *  Loopia              - Last Tested: NEVER
- *  StaticCling         - Last Tested: 27 April 2006
- *  DNSexit             - Last Tested: 20 July 2008
- *  Namecheap           - Last Tested: 31 August 2010
- *  HE.net              - Last Tested: 7 July 2013
- *  HE.net IPv6         - Last Tested: 7 July 2013
- *  HE.net Tunnel       - Last Tested: 28 June 2011
- *  SelfHost            - Last Tested: 26 December 2011
- *  Amazon Route53      - Last Tested: 01 April 2012
- *  DNS-O-Matic         - Last Tested: 9 September 2010
- *  CloudFlare          - Last Tested: 16 April 2019
- *  CloudFlare IPv6     - Last Tested: 16 April 2019
- *  Eurodns             - Last Tested: 25 July 2018
- *  GratisDNS           - Last Tested: 26 January 2020
- *  OVH DynHOST         - Last Tested: NEVER
- *  City Network        - Last Tested: 13 November 2013
- *  Duck DNS            - Last Tested: 04 March 2015
- *  Google Domains      - Last Tested: 20 February 2017
- *  STRATO              - Last Tested: 09 May 2017
- *  3322                - Last Tested: 26 May 2017
- *  Oray                - Last Tested: 26 May 2017
- *  regfish             - Last Tested: 15 August 2017
- *  regfish v6          - Last Tested: 15 August 2017
- *  Amazon Route53 v6   - Last Tested: 19 November 2017
- *  dynv6               - Last Tested: 25 June 2019
- *  dynv6 v6            - Last Tested: 25 June 2019
- *  DigitalOcean        - Last Tested: 25 June 2019
- *  Azure DNS           - Last Tested: 16 October 2019
- *  Linode              - Last Tested: 25 February 2020
- *  Linode v6           - Last Tested: 25 February 2020
+ *  DynDNS Dynamic              - Last Tested: 12 July 2005
+ *  DynDNS Static               - Last Tested: NEVER
+ *  DynDNS Custom               - Last Tested: NEVER
+ *  No-IP                       - Last Tested: 20 July 2008
+ *  HN.org                      - Last Tested: 12 July 2005
+ *  EasyDNS                     - Last Tested: 20 July 2008
+ *  DHS                         - Last Tested: 12 July 2005
+ *  ZoneEdit                    - Last Tested: NEVER
+ *  Dyns                        - Last Tested: NEVER
+ *  ODS                         - Last Tested: 02 August 2005
+ *  FreeDNS                     - Last Tested: 23 Feb 2011
+ *  Loopia                      - Last Tested: NEVER
+ *  StaticCling                 - Last Tested: 27 April 2006
+ *  DNSexit                     - Last Tested: 20 July 2008
+ *  Namecheap                   - Last Tested: 31 August 2010
+ *  HE.net                      - Last Tested: 7 July 2013
+ *  HE.net IPv6                 - Last Tested: 7 July 2013
+ *  HE.net Tunnel               - Last Tested: 28 June 2011
+ *  SelfHost                    - Last Tested: 26 December 2011
+ *  Amazon Route53              - Last Tested: 01 April 2012
+ *  DNS-O-Matic                 - Last Tested: 9 September 2010
+ *  Cloudflare                  - Last Tested: 16 April 2019
+ *  Cloudflare IPv6             - Last Tested: 16 April 2019
+ *  Cloudflare w/API token      - Last Tested: 13 June 2020
+ *  Cloudflare w/API token v6   - Last Tested: NEVER
+ *  Eurodns                     - Last Tested: 25 July 2018
+ *  GratisDNS                   - Last Tested: 26 January 2020
+ *  OVH DynHOST                 - Last Tested: NEVER
+ *  City Network                - Last Tested: 13 November 2013
+ *  Duck DNS                    - Last Tested: 04 March 2015
+ *  Google Domains              - Last Tested: 20 February 2017
+ *  STRATO                      - Last Tested: 09 May 2017
+ *  3322                        - Last Tested: 26 May 2017
+ *  Oray                        - Last Tested: 26 May 2017
+ *  regfish                     - Last Tested: 15 August 2017
+ *  regfish v6                  - Last Tested: 15 August 2017
+ *  Amazon Route53 v6           - Last Tested: 19 November 2017
+ *  dynv6                       - Last Tested: 25 June 2019
+ *  dynv6 v6                    - Last Tested: 25 June 2019
+ *  DigitalOcean                - Last Tested: 25 June 2019
+ *  Azure DNS                   - Last Tested: 16 October 2019
+ *  Linode                      - Last Tested: 25 February 2020
+ *  Linode v6                   - Last Tested: 25 February 2020
+ *  GoDaddy                     - Last Tested: 10 July 2020
+ *  GoDaddy v6                  - Last Tested: 10 July 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -251,6 +259,16 @@ class updatedns
                     $this->_error(9);
                 }
                 break;
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
+                if (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsHost) {
+                    $this->_error(5);
+                } elseif (!$dnsTTL) {
+                    $this->_error(9);
+                }
+                break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
@@ -268,9 +286,11 @@ class updatedns
             case 'custom-v6':
             case 'dynv6-v6':
             case 'he-net-v6':
+            case 'godaddy-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
+            case 'cloudflare-token-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -319,6 +339,8 @@ class updatedns
                 case 'citynetwork':
                 case 'cloudflare':
                 case 'cloudflare-v6':
+                case 'cloudflare-token':
+                case 'cloudflare-token-v6':
                 case 'custom':
                 case 'custom-v6':
                 case 'dhs':
@@ -335,6 +357,8 @@ class updatedns
                 case 'easydns':
                 case 'eurodns':
                 case 'freedns':
+                case 'godaddy':
+                case 'godaddy-v6':
                 case 'googledomains':
                 case 'gratisdns':
                 case 'he-net':
@@ -563,7 +587,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, 'https://freedns.afraid.org/dynamic/update.php?' . $this->_dnsPass);
                 break;
             case 'dnsexit':
-                curl_setopt($ch, CURLOPT_URL, 'https://www.dnsexit.com/RemoteUpdate.sv?login=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_URL, 'https://update.dnsexit.com/RemoteUpdate.sv?login=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
                 break;
             case 'loopia':
                 $this->_dnsWildcard = (isset($this->_dnsWildcard) && $this->_dnsWildcard == true) ? 'ON' : 'OFF';
@@ -749,21 +773,35 @@ class updatedns
                 break;
             case 'cloudflare':
             case 'cloudflare-v6':
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
                 $baseUrl = 'https://api.cloudflare.com/client/v4';
                 $fqdn = str_replace(' ', '', $this->_dnsHost);
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
+                $ttlData = intval($this->_dnsTTL) < 1 ? 1 : intval($this->_dnsTTL);
                 $hostData = array(
                     "content" => "{$this->_dnsIP}",
                     "type" => $recordType,
-                    "name" => $fqdn
+                    "name" => $fqdn,
+                    "ttl" => $ttlData
                 );
 
+                // Determine if service is token based or user/password based and define appropriate header
+                if (strpos($this->_dnsService, 'token') !== false) {
+                    $headerAuth = array(
+                        "Authorization: Bearer {$this->_dnsPass}",
+                        'Content-Type: application/json'
+                    );
+                } else {
+                    $headerAuth = array(
+                        "X-Auth-Email: {$this->_dnsUser}",
+                        "X-Auth-Key: {$this->_dnsPass}",
+                        'Content-Type: application/json'
+                    );
+                }
+
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    "X-Auth-Email: {$this->_dnsUser}",
-                    "X-Auth-Key: {$this->_dnsPass}",
-                    'Content-Type: application/json'
-                ));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headerAuth);
 
                 // Get all zone info
                 $zonesUrl = "$baseUrl/zones";
@@ -1059,6 +1097,46 @@ class updatedns
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
+            case 'godaddy':
+            case 'godaddy-v6':
+                /* Read https://developer.godaddy.com/ for API documentation */
+                $baseApiUrl = 'https://api.godaddy.com/v1/domains/';
+                $recordType = $this->_useIPv6 ? "AAAA" : "A";
+                $splitHost = explode('.', trim($this->_dnsHost));
+                $dnsDomain = '*';
+                if ($this->_dnsWildcard != 'ON') {
+                    $dnsDomain = array_shift($splitHost);
+                }
+                $dnsHost = implode('.', $splitHost);
+
+                $url = $baseApiUrl  . $dnsHost . '/records/' . $recordType . '/' . $dnsDomain;
+
+                /* body can contain multiple options (data, port, priority, service, ttl, weight) */
+                $data = array();
+                $data[] = array('data' => $this->_dnsIP);
+                if ($this->_dnsTTL) {
+                    $data[0]['ttl'] = $this->_dnsTTL;
+                } else {
+                    // minimum allowed by GoDaddy
+                    $data[0]['ttl'] = 600;
+                }
+                $jsonBody = json_encode($data);
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS: calling $url with body: $jsonBody");
+                }
+
+                /* PUT JSON /v1/domains/{domain}/records/{type}/{name} */
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Accept: application/json',
+                        'Content-Type: application/json',
+                        'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
+                ));
+                curl_setopt($ch, CURLOPT_URL, $url);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                break;
             default:
                 break;
         }
@@ -1234,7 +1312,7 @@ class updatedns
                 }
                 break;
             case 'dnsexit':
-                if (preg_match("/is the same/i", $data)) {
+                if (preg_match("/IP not changed/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
                     $successful_update = true;
                 } elseif (preg_match("/Success/i", $data)) {
@@ -1322,12 +1400,14 @@ class updatedns
                 break;
             case 'cloudflare':
             case 'cloudflare-v6':
+            case 'cloudflare-token':
+            case 'cloudflare-token-v6':
                 $output = json_decode($data);
                 if ($output->result->content === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
                     $successful_update = true;
                 } elseif ($output->errors[0]->code === 9103) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with CloudFlare.";
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with Cloudflare.";
                 } elseif (($output->success) && (!$output->result[0]->id)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
                 } else {
@@ -1502,6 +1582,23 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
                     $this->_debug($data);
+                }
+                break;
+            case 'godaddy':
+            case 'godaddy-v6':
+                /* See https://developer.godaddy.com/ for API documentation, not all codes are handled. */
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $successful_update = false;
+                if ($http_code == 200) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
+                } else if ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Authentication info not sent or invalid';
+                }else if ($http_code == 404) {
+                    $status = 'Dynamic DNS: (Error) Resource not found';
+                } else {
+                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
                 }
                 break;
             default:

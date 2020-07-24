@@ -134,6 +134,15 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>action.sftp_filename_fullchain</id>
+        <label>Naming "fullchain.pem"</label>
+        <type>text</type>
+        <help>Name template for the public certificate fullchain file (cert + ca).
+            Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded.
+            Leave blank to use default "{{name}}/fullchain.pem".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Required Parameters</label>
         <type>header</type>
         <style>method_table method_table_configd</style>
