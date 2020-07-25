@@ -6,8 +6,9 @@ chown -R zabbix:zabbix /var/db/zabbix
 chmod 755 /var/db/zabbix
 
 # Setup logging
-touch /var/log/zabbix_proxy.log
-chown -R zabbix:zabbix /var/log/zabbix_proxy.log
+mkdir /var/log/zabbix
+chown -R zabbix:zabbix /var/log/zabbix
+chmod 770 /var/log/zabbix
 
 # Setup PID directory
 mkdir -p /var/run/zabbix
