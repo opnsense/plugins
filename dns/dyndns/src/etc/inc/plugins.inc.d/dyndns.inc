@@ -121,6 +121,8 @@ function dyndns_list()
         'eurodns' => 'EuroDNS',
         'freedns' => 'freeDNS',
         'gandi-livedns' => 'Gandi LiveDNS',
+        'godaddy' => 'GoDaddy',
+        'godaddy-v6' => 'GoDaddy (v6)',
         'googledomains' => 'Google Domains',
         'gratisdns' => 'GratisDNS',
         'he-net' => 'HE.net',

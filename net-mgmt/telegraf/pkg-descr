@@ -11,6 +11,11 @@ Kafka, MQTT, NSQ, and many others.
 Plugin Changelog
 ================
 
+1.8.1
+
+* Fix 'flush interval' templating by @Jontron123
+* Add ability to disable TLS for Graphite by @primemaster
+
 1.8.0
 
 * Add InfluxDB v2 output support

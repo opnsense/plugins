@@ -1,5 +1,9 @@
 <form>
     <field>
+        <type>section_title</type>
+        <label>General</label>
+    </field>
+    <field>
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
@@ -22,6 +26,10 @@
         <label>Interval</label>
         <type>text</type>
         <help>Global interval when to fetch values in seconds.</help>
+    </field>
+    <field>
+        <type>section_title</type>
+        <label>Output Plugins</label>
     </field>
     <field>
         <id>general.p_network_enable</id>
@@ -85,15 +93,25 @@
     </field>
     <field>
         <id>general.p_graphite_prefix</id>
-        <label>Graphite Prefix</label>
+        <label>Graphite prefix</label>
         <type>text</type>
         <help>Prefix to set before the hostname. If it ends with a dot it creates an own directory.</help>
     </field>
     <field>
         <id>general.p_graphite_postfix</id>
-        <label>Graphite Postfix</label>
+        <label>Graphite postfix</label>
         <type>text</type>
         <help>String to set after the hostname. For compatibility reason default is collectd, but you can also simply remove it.</help>
+    </field>
+    <field>
+        <id>general.p_graphite_separate_instances</id>
+        <label>Graphite separate instances</label>
+        <type>checkbox</type>
+        <help>Enabling sends the plugin instance and type instance to Graphite as separate path components: host.cpu.0.cpu.idle. Disabling sends the plugin and plugin instance as one path component and type and type instance as another component: host.cpu-0.cpu-idle.</help>
+    </field>
+    <field>
+        <type>section_title</type>
+        <label>Input Plugins</label>
     </field>
     <field>
         <id>general.p_contextswitch_enable</id>
@@ -106,6 +124,24 @@
         <label>Enable cpu plugin</label>
         <type>checkbox</type>
         <help>The CPU plugin collects the amount of time spent by the CPU in various states, most notably executing user code, executing system code, waiting for IO-operations and being idle.</help>
+    </field>
+    <field>
+        <id>general.p_cpu_percent</id>
+        <label>Report cpu usage in percent</label>
+        <type>checkbox</type>
+        <help>When set, report CPU usage in percent instead of units of kernel time.</help>
+    </field>
+    <field>
+        <id>general.p_cpu_aggregates</id>
+        <label>Enable cpu aggregates</label>
+        <type>checkbox</type>
+        <help>Send aggregate values for CPU metrics in addition to values for individual cores.</help>
+    </field>
+    <field>
+        <id>general.p_disk_enable</id>
+        <label>Enable disk plugin</label>
+        <type>checkbox</type>
+        <help>The Disk plugin collects disk I/O information, i.e. read and write operations per second.</help>
     </field>
     <field>
         <id>general.p_df_enable</id>
@@ -129,7 +165,13 @@
         <id>general.p_memory_enable</id>
         <label>Enable memory plugin</label>
         <type>checkbox</type>
-        <help>The Memory plugin collects physical memory utilization (Used, buffered, cached and free).</help>
+        <help>The Memory plugin collects physical memory utilization (used, buffered, cached and free).</help>
+    </field>
+    <field>
+        <id>general.p_swap_enable</id>
+        <label>Enable swap plugin</label>
+        <type>checkbox</type>
+        <help>The Swap plugin collects swap space utilization (used and free).</help>
     </field>
     <field>
         <id>general.p_processes_enable</id>
