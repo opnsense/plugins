@@ -4,6 +4,8 @@
       <patterns>
          <pattern>ui/zabbixproxy/*</pattern>
          <pattern>api/zabbixproxy/*</pattern>
+         <pattern>ui/diagnostics/log/core/zabbix_proxy/*</pattern>
+         <pattern>api/diagnostics/log/core/zabbix_proxy/*</pattern>
       </patterns>
    </page-services-zabbixproxy>
 </acl>
