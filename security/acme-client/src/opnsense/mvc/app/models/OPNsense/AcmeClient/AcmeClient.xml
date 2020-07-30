@@ -398,6 +398,7 @@
                         <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
+                        <dns_linode_v4>Linode Cloud API</dns_linode_v4>
                         <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_miab>MailinaBox API</dns_miab>
@@ -690,6 +691,9 @@
                 <dns_linode_key type="TextField">
                   <Required>N</Required>
                 </dns_linode_key>
+                <dns_linode_v4_key type="TextField">
+                  <Required>N</Required>
+                </dns_linode_v4_key>
                 <dns_loopia_api type="TextField">
                   <Required>N</Required>
                   <default>https://api.loopia.se/RPCSERV</default>
