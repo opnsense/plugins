@@ -52,9 +52,9 @@ function postfix_syslog()
 {
     $syslogconf = array();
 
-    $syslogconf['mail'] = array(
+    $syslogconf['postfix'] = array(
         'facility' => array('postfix'),
-        'remote' => 'mail',
+        'remote' => 'postfix',
     );
 
     return $syslogconf;
