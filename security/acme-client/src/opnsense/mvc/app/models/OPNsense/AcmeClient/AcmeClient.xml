@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.6.1</version>
+    <version>1.6.2</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -357,6 +357,7 @@
                     <Required>Y</Required>
                     <default>dns_nsupdate</default>
                     <OptionValues>
+                        <dns_1984hosting>1984Hosting API</dns_1984hosting>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
                         <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
@@ -893,6 +894,12 @@
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
+                <dns_1984hosting_user type="TextField">
+                    <Required>N</Required>
+                </dns_1984hosting_user>
+                <dns_1984hosting_password type="TextField">
+                    <Required>N</Required>
+                </dns_1984hosting_password>
             </validation>
         </validations>
         <actions>

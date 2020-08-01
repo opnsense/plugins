@@ -647,6 +647,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Setup DNS hook:
         // Set required env variables, write secrets to files, etc.
         switch ((string)$valObj->dns_service) {
+            case 'dns_1984hosting':
+                $proc_env['One984HOSTING_Username'] = (string)$valObj->dns_1984hosting_user;
+                $proc_env['One984HOSTING_Password'] = (string)$valObj->dns_1984hosting_password;
+                break;
             case 'dns_acmedns':
                 $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
                 $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
