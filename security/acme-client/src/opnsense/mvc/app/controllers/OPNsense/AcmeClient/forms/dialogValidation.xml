@@ -1131,4 +1131,19 @@
         <label>API Token</label>
         <type>password</type>
     </field>
+    <field>
+        <label>1984Hosting API</label>
+        <type>header</type>
+        <style>table_dns table_dns_1984hosting</style>
+    </field>
+    <field>
+        <id>validation.dns_1984hosting_user</id>
+        <label>API User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_1984hosting_password</id>
+        <label>API Password</label>
+        <type>password</type>
+    </field>
 </form>
