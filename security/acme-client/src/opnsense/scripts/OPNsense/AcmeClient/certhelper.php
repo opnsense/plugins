@@ -850,6 +850,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 // Linode can take up to 15 to update DNS records
                 $acme_hook_options[] = "--dnssleep 960";
                 break;
+            case 'dns_linode_v4':
+                $proc_env['LINODE_V4_API_KEY'] = (string)$valObj->dns_linode_v4_key;
+                // Linode can take up to 15 to update DNS records
+                $acme_hook_options[] = "--dnssleep 960";
+                break;
             case 'dns_loopia':
                 $proc_env['LOOPIA_Api'] = (string)$valObj->dns_loopia_api;
                 $proc_env['LOOPIA_User'] = (string)$valObj->dns_loopia_user;
