@@ -12,6 +12,10 @@ WWW: http://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.3
+
+* Add logfile to WebUI (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+
 1.2
 
 * Allow adding multiple listen addresses
