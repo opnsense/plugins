@@ -96,6 +96,7 @@ function dyndns_list()
      */
 
     return array(
+        '1984Hosting' => '1984Hosting',
         '3322' => '3322',
         'azure' => 'Azure DNS',
         'azurev6' => 'Azure DNS (v6)',

@@ -36,6 +36,7 @@
  *    - Duck DNS (duckdns.org)
  *    - Google Domains (domains.google.com)
  *    - STRATO (strato.com)
+ *    - 1984Hosting (1984Hosting.com)
  *    - 3322 (3322.net)
  *    - Oray (oray.com)
  *    - regfish (regfish.de)
@@ -94,6 +95,7 @@
  *  Duck DNS                    - Last Tested: 04 March 2015
  *  Google Domains              - Last Tested: 20 February 2017
  *  STRATO                      - Last Tested: 09 May 2017
+ *  1984Hosting                 - Last Tested: 03 August 2020
  *  3322                        - Last Tested: 26 May 2017
  *  Oray                        - Last Tested: 26 May 2017
  *  regfish                     - Last Tested: 15 August 2017
@@ -214,6 +216,7 @@ class updatedns
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
+            case '1984Hosting':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
@@ -333,6 +336,7 @@ class updatedns
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
+                case '1984Hosting':
                 case '3322':
                 case 'azure':
                 case 'azurev6':
@@ -929,6 +933,11 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server);
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
+            case '1984Hosting':
+                $server = "https://api.1984.is/1.0/freedns/?apikey={$this->_dnsPass}&domain={$this->_dnsHost}&ip={$this->_dnsIP}";
+                curl_setopt($ch, CURLOPT_URL, $server);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                break;
             case '3322':
                 $server = "http://members.3322.net/dyndns/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
@@ -1466,6 +1475,20 @@ class updatedns
                         $status = "Dynamic DNS: (Unknown Response)";
                         log_error("Dynamic DNS: PAYLOAD: {$data}");
                         $this->_debug($data);
+                }
+                break;
+            case '1984Hosting':
+                $output = json_decode($data);
+                if ($output->ok === true) {
+                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } elseif ($output->error) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with 1984Hosting.";
+                } elseif ($output->lookup) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
+                } else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                 }
                 break;
             case '3322':
