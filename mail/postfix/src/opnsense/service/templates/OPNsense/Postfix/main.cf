@@ -162,6 +162,7 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 {% do smtpd_recipient_restrictions.append('reject_non_fqdn_recipient') %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.permit_sasl_authenticated') and OPNsense.postfix.general.permit_sasl_authenticated == '1' %}
+smtpd_sasl_auth_enable = yes
 {% do smtpd_recipient_restrictions.append('permit_sasl_authenticated') %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.permit_tls_clientcerts') and OPNsense.postfix.general.permit_tls_clientcerts == '1' %}
