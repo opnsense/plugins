@@ -113,7 +113,7 @@ class General
     end
 
     # you don't have to understand this regex ;)
-    entry_regex = /(\S+?)\s+?(\S+?)(?: \[(\d+)\/(\d+)\])? (?:(?:via (\S+?)|is ([^,]+?)|), ([^,\n]+)|(unreachable \(blackhole\)))(?:, (\S+))?/
+    entry_regex = /(\S+?|\S\s\S)\s+(\S+\d)?\s(?:\[(\d+)\/(\d+)\])?(?:.+\s(\d+\S+\d+|(c\w+d|u\w+e|b\w+e)))(?:,\s(\D+[^,]))?(?:.+\s((\d\S+\d)))/
     entries = []
     while (line = lines.shift&.strip)
       if line.length > 10
