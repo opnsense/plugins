@@ -123,10 +123,4 @@
         <type>checkbox</type>
         <help>Can increase metric gather times.</help>
     </field>
-    <field>
-        <id>input.custom</id>
-        <label>Custom inputs</label>
-        <type>textbox</type>
-        <help>You can add custom inputs here.</help>
-    </field>
 </form>

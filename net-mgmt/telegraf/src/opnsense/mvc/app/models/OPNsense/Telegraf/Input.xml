@@ -82,9 +82,5 @@
             <default>0</default>
             <Required>N</Required>
         </ntpq_dns_lookup>
-        <custom type="TextField">
-            <default></default>
-            <Required>N</Required>
-        </custom>
     </items>
 </model>
