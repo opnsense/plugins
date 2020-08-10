@@ -33,6 +33,7 @@ namespace OPNsense\Wireguard\Api;
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Wireguard\General;
+use OPNsense\Wireguard\Client;
 
 /**
  * Class ServiceController
@@ -52,7 +53,20 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function showconfAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun("wireguard showconf");
+        $response_org = $backend->configdRun("wireguard showconf");
+        $response = '';
+
+        $pubnames = $this->getPubkeyNames();
+        $rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
+        foreach($rp_lines as $line)
+        {
+            if(substr($line, 0, 6) == 'peer: ')
+            {
+                $key = trim(substr($line, 6));
+                if(isset($pubnames[$key])) $line.= ' * '.$pubnames[$key];
+            }
+            $response.= $line.PHP_EOL;
+        }
         return array("response" => $response);
     }
 
@@ -62,8 +76,52 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function showhandshakeAction()
     {
+        $curtime = time();
         $backend = new Backend();
-        $response = $backend->configdRun("wireguard showhandshake");
-        return array("response" => $response);
+        $response_org = $backend->configdRun("wireguard showhandshake");
+        $resp_arr = array();
+
+        $pubnames = $this->getPubkeyNames();
+        $rp_lines = preg_split('/\r\n|\r|\n/', $response_org);
+        foreach($rp_lines as $line)
+        {
+            $line = trim($line);
+            if(empty($line)) continue;
+            $cols = preg_split('/[\s]+/', $line);
+            if(count($cols) > 2)
+            {
+                $name = isset($pubnames[$cols[1]]) ? $pubnames[$cols[1]] : '<UNKNOWN>';
+                $timediff = $curtime - intval($cols[2]);
+                $date = !empty($cols[2]) ? ($timediff < 600 ? $timediff." sec. ago\t" : date('Y-m-d H:i:s', intval($cols[2]))) : "NEVER CONNECTED\t";
+                $extratab = empty($cols[2]) ? "\t\t" : "\t";
+                $resp_arr[] = $line.$extratab.$date."\t".$name;
+            } else {
+                $resp_arr[] = $line;
+            }
+        }
+        sort($resp_arr);
+
+        return array("response" => implode(PHP_EOL, $resp_arr));
     }
+
+    /**
+     * build Dictionary pubkey => name
+     * @return array
+     */
+    private function getPubkeyNames()
+    {
+        $mdlclients = new Client();
+        $search = $mdlclients->getNodes();
+
+        $ret = array();
+        if(isset($search['clients']['client']) && is_array($search['clients']['client']))
+        {
+            foreach($search['clients']['client'] as $client)
+            {
+                $ret[$client['pubkey']] = $client['name'];
+            }
+        }
+        return $ret;
+    }
+
 }

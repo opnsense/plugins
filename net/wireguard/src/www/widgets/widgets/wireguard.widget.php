@@ -30,6 +30,24 @@
 require_once("guiconfig.inc");
 require_once("widgets/include/wireguard.inc");
 
+function getPubkeyNames()
+{
+    $mdlclients = new OPNsense\Wireguard\Client();
+    $search = $mdlclients->getNodes();
+
+    $ret = array();
+    if(isset($search['clients']['client']) && is_array($search['clients']['client']))
+    {
+        foreach($search['clients']['client'] as $client)
+        {
+            $ret[$client['pubkey']] = $client['name'];
+        }
+    }
+    return $ret;
+}
+
+$pubnames = getPubkeyNames();
+
 $data = trim(configd_run("wireguard widget"));
 
 $empty = strlen($data) == 0;
@@ -50,6 +68,8 @@ $empty = strlen($data) == 0;
 
     foreach ($handshakes as $handshake):
         $item = explode("\t", $handshake);
+        if(count($item)<3) continue;
+        $name = isset($pubnames[$item[1]]) ? $pubnames[$item[1]] : $item[1];
 
         $epoch = $item[2];
         $latest = "-";
@@ -60,7 +80,7 @@ $empty = strlen($data) == 0;
 
     <tr>
         <td><?= $item[0] ?></td>
-        <td><?= gettext(substr($item[1], 0, 10)) ?>...</td>
+        <td><span title="<?= $item[1] ?>"><?= $name ?></span></td>
         <td><?= $latest ?></td>
     </tr>
 
