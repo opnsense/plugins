@@ -46,7 +46,15 @@ function getPubkeyNames()
     return $ret;
 }
 
-$pubnames = getPubkeyNames();
+function getInterfaceNames()
+{
+    $iflist = array();
+    foreach (legacy_config_get_interfaces(array('virtual' => false)) as $if => $ifdetail) {
+        $iflist[$if] = $ifdetail['descr'];
+        if($ifdetail['if'] != $if) $iflist[$ifdetail['if']] = $ifdetail['descr'];
+    }
+    return $iflist;
+}
 
 $data = trim(configd_run("wireguard widget"));
 
@@ -64,12 +72,15 @@ $empty = strlen($data) == 0;
     <tbody>
 
 <?php if (!$empty):
+    $ifnames = getInterfaceNames();
+    $pubnames = getPubkeyNames();
     $handshakes = explode("\n", $data);
 
     foreach ($handshakes as $handshake):
         $item = explode("\t", $handshake);
         if(count($item)<3) continue;
-        $name = isset($pubnames[$item[1]]) ? $pubnames[$item[1]] : $item[1];
+        $ifname = isset($ifnames[$item[0]]) ? $ifnames[$item[0]] : $item[0];
+        $pubname = isset($pubnames[$item[1]]) ? $pubnames[$item[1]] : gettext(substr($item[1], 0, 10)).'...';
 
         $epoch = $item[2];
         $latest = "-";
@@ -79,8 +90,8 @@ $empty = strlen($data) == 0;
         endif; ?>
 
     <tr>
-        <td><?= $item[0] ?></td>
-        <td><span title="<?= $item[1] ?>"><?= $name ?></span></td>
+        <td><span title="<?= $item[0] ?>"><?= $ifname ?></span></td>
+        <td><span title="<?= $item[1] ?>"><?= $pubname ?></span></td>
         <td><?= $latest ?></td>
     </tr>
 
