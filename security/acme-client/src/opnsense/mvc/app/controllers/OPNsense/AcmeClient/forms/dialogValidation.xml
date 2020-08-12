@@ -552,6 +552,21 @@
         <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
     </field>
     <field>
+        <label>Joker</label>
+        <type>header</type>
+        <style>table_dns table_dns_joker</style>
+    </field>
+    <field>
+        <id>validation.dns_joker_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_joker_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>KingHost</label>
         <type>header</type>
         <style>table_dns table_dns_kinghost</style>
@@ -610,6 +625,16 @@
     </field>
     <field>
         <id>validation.dns_linode_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Linode Cloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_linode_v4</style>
+    </field>
+    <field>
+        <id>validation.dns_linode_v4_key</id>
         <label>Key</label>
         <type>text</type>
     </field>
@@ -1119,6 +1144,21 @@
     <field>
         <id>validation.dns_hetzner_token</id>
         <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>1984Hosting API</label>
+        <type>header</type>
+        <style>table_dns table_dns_1984hosting</style>
+    </field>
+    <field>
+        <id>validation.dns_1984hosting_user</id>
+        <label>API User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_1984hosting_password</id>
+        <label>API Password</label>
         <type>password</type>
     </field>
 </form>
