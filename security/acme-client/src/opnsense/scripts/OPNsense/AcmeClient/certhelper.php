@@ -829,6 +829,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ISPC_Api'] = (string)$valObj->dns_ispconfig_api;
                 $proc_env['ISPC_Api_Insecure'] = (string)$valObj->dns_ispconfig_insecure;
                 break;
+            case 'dns_joker':
+                $proc_env['JOKER_USERNAME'] = (string)$valObj->dns_joker_username;
+                $proc_env['JOKER_PASSWORD'] = (string)$valObj->dns_joker_password;
+                break;
             case 'dns_kinghost':
                 $proc_env['KINGHOST_username'] = (string)$valObj->dns_kinghost_username;
                 $proc_env['KINGHOST_Password'] = (string)$valObj->dns_kinghost_password;

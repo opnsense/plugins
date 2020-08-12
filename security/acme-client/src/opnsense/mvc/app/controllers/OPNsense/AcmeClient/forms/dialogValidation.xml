@@ -552,6 +552,21 @@
         <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
     </field>
     <field>
+        <label>Joker</label>
+        <type>header</type>
+        <style>table_dns table_dns_joker</style>
+    </field>
+    <field>
+        <id>validation.dns_joker_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_joker_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>KingHost</label>
         <type>header</type>
         <style>table_dns table_dns_kinghost</style>
