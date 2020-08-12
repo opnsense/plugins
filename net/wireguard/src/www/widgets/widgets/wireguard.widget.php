@@ -76,7 +76,7 @@ $empty = strlen($data) == 0;
         } ?>
 
     <tr>
-        <td><span class="fa fa-exchange text-<?= (time() - $epoch < 130) ? 'sucess' : 'danger' ?>"></span>&nbsp;
+        <td><span class="fa fa-exchange text-<?= (time() - $epoch < 130) ? 'success' : 'danger' ?>"></span>&nbsp;
         <span title="<?= $item[0] ?>"><?= $ifname ?></span></td>
         <td><span title="<?= $item[1] ?>"><?= $pubname ?></span></td>
         <td><?= $latest ?></td>

@@ -27,14 +27,14 @@ namespace OPNsense\Wireguard;
 use OPNsense\Base\BaseModel;
 
 class Client extends BaseModel
-{
+{  
    function getAllPubkeysWithNames()
    {
       $search = $this->getNodes();
       $ret = array();
-      if(isset($search->clients->client) && is_array($search->clients->client)) {
-         foreach($search->clients->client as $client) {
-               $ret[$client->pubkey] = $client->name;
+      if(isset($search['clients']['client']) && is_array($search['clients']['client'])) {
+         foreach($search['clients']['client'] as $client) {
+               $ret[$client['pubkey']] = $client['name'];
          }
       }
       return $ret;
