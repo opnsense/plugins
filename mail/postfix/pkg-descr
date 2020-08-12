@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.15
+
+* Fix Log viewer
+
 1.14
 
 * Add more anti-spam features into postfix itself
