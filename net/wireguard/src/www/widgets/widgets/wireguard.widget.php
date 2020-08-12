@@ -30,22 +30,6 @@
 require_once("guiconfig.inc");
 require_once("widgets/include/wireguard.inc");
 
-function getPubkeyNames()
-{
-    $mdlclients = new OPNsense\Wireguard\Client();
-    $search = $mdlclients->getNodes();
-
-    $ret = array();
-    if(isset($search['clients']['client']) && is_array($search['clients']['client']))
-    {
-        foreach($search['clients']['client'] as $client)
-        {
-            $ret[$client['pubkey']] = $client['name'];
-        }
-    }
-    return $ret;
-}
-
 function getInterfaceNames()
 {
     $iflist = array();
@@ -73,24 +57,27 @@ $empty = strlen($data) == 0;
 
 <?php if (!$empty):
     $ifnames = getInterfaceNames();
-    $pubnames = getPubkeyNames();
+    $pubnames = (new OPNsense\Wireguard\Client())->getAllPubkeysWithNames();
+    
     $handshakes = explode("\n", $data);
 
     foreach ($handshakes as $handshake):
         $item = explode("\t", $handshake);
-        if(count($item)<3) continue;
+        if(count($item) < 3) continue;
         $ifname = isset($ifnames[$item[0]]) ? $ifnames[$item[0]] : $item[0];
         $pubname = isset($pubnames[$item[1]]) ? $pubnames[$item[1]] : gettext(substr($item[1], 0, 10)).'...';
 
         $epoch = $item[2];
         $latest = "-";
-        if ($epoch > 0):
+
+        if ($epoch > 0) {
             $dt = new DateTime("@$epoch");
             $latest = $dt->format(gettext("Y-m-d H:i:sP"));
-        endif; ?>
+        } ?>
 
     <tr>
-        <td><span title="<?= $item[0] ?>"><?= $ifname ?></span></td>
+        <td><span class="fa fa-exchange text-<?= (time() - $epoch < 130) ? 'sucess' : 'danger' ?>"></span>&nbsp;
+        <span title="<?= $item[0] ?>"><?= $ifname ?></span></td>
         <td><span title="<?= $item[1] ?>"><?= $pubname ?></span></td>
         <td><?= $latest ?></td>
     </tr>
