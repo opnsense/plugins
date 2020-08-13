@@ -16,3 +16,4 @@ Plugin Changelog
 
 * Add Changelog (Starkstromkonsument <https://github.com/Starkstromkonsument>)
 * Fix logformat (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+* Switch to Zabbix Agent 5.0
