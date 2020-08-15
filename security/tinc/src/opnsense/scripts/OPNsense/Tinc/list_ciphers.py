@@ -34,11 +34,15 @@ import ujson
 response = dict()
 
 p = subprocess.run(['/usr/local/bin/openssl', 'enc', '-ciphers'], capture_output=True, text=True)
-for line in p.stdout.split("\n"):
-    if not line.startswith('Supported'):
-        for item in line.split():
-            if len(item) > 1:
-                response[item[1:]] = item[1:]
+ciphers_start = False
+for f in [p.stdout, p.stderr]:
+    for line in f.split("\n"):
+        if line.startswith('Supported ciphers:') or line.startswith('Valid ciphername values:'):
+            ciphers_start = True
+        elif ciphers_start:
+            for item in line.split():
+                if len(item) > 1:
+                    response[item[1:]] = item[1:]
 
 response["none"] = "None"
 # output generated keys
