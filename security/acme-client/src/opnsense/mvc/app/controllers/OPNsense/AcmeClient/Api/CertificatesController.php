@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017-2019 Frank Wall
+ *    Copyright (C) 2017-2020 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -150,6 +150,26 @@ class CertificatesController extends ApiMutableModelControllerBase
                     $response = $backend->configdRun("acmeclient revoke-cert {$cert_id}");
                     return array("response" => $response);
                 }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * rerun automation for the certificate by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function automationAction($uuid)
+    {
+        $result = array("result" => "failed");
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $cert_id = $node->id;
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient run-automation {$cert_id}");
             }
         }
         return $result;
