@@ -199,6 +199,17 @@
                         <x-3>redispatch on the 3rd retry prior to the last retry</x-3>
                     </OptionValues>
                 </redispatch>
+                <init_addr type="OptionField">
+                    <Required>N</Required>
+                    <default>last,libc</default>
+                    <Multiple>Y</Multiple>
+                    <Sorted>Y</Sorted>
+                    <OptionValues>
+                        <last>last</last>
+                        <libc>libc</libc>
+                        <none>none</none>
+                    </OptionValues>
+                </init_addr>
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>

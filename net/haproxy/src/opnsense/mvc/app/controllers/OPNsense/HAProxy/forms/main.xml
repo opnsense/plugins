@@ -228,6 +228,14 @@
                 <help><![CDATA[Enable or disable session redistribution in case of connection failure.]]></help>
             </field>
             <field>
+                <id>haproxy.general.defaults.init_addr</id>
+                <label>DNS Resolve Order</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <sortable>true</sortable>
+                <help><![CDATA[Indicates in which order server addresses should be resolved upon startup. Method "last" suggests to pick the address which appears in the state file. Method "libc" uses the libc's internal resolver. Method "none" specifically indicates that the server should start without any valid IP address in a down state. It can be useful to ignore some DNS issues upon startup, waiting for the situation to get fixed later. Defaults to "last,libc".]]></help>
+            </field>
+            <field>
                 <id>haproxy.general.defaults.customOptions</id>
                 <label>Custom options</label>
                 <type>textbox</type>
