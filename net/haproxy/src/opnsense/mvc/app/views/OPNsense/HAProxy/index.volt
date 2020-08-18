@@ -198,6 +198,19 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#grid-resolvers").UIBootgrid(
+            {   search:'/api/haproxy/settings/searchResolvers',
+                get:'/api/haproxy/settings/getResolver/',
+                set:'/api/haproxy/settings/setResolver/',
+                add:'/api/haproxy/settings/addResolver/',
+                del:'/api/haproxy/settings/delResolver/',
+                toggle:'/api/haproxy/settings/toggleResolver/',
+                options: {
+                    rowCount:[10,25,50,100,500,1000]
+                }
+            }
+        );
+
         // hook into on-show event for dialog to extend layout.
         $('#DialogAcl').on('shown.bs.modal', function (e) {
             $("#acl\\.expression").change(function(){
@@ -538,6 +551,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
             <li><a data-toggle="tab" href="#mapfiles">{{ lang._('Map Files') }}</a></li>
             <li><a data-toggle="tab" href="#cpus">{{ lang._('CPU Affinity Rules') }}</a></li>
+            <li><a data-toggle="tab" href="#resolvers">{{ lang._('Resolvers') }}</a></li>
         </ul>
     </li>
 </ul>
@@ -626,8 +640,9 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sLua scripts:%s Include your own Lua code/scripts to extend HAProxy's functionality. The Lua code can be used in certain %sRules%s, for example.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sMap Files:%s A map allows to map a data in input to an other one on output. For example, this makes it possible to map a large number of domains to backend pools without using the GUI. Map files need to be used in %sRules%s, otherwise they are ignored.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sCPU Affinity Rules:%s This feature makes it possible to bind HAProxy's processes/threads to a specific CPU (or a CPU set). Furthermore it is possible to select CPU Affinity Rules in %sPublic Services%s to restrict them to a certain set of processes/threads/CPUs.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sResolvers:%s This feature allows in-depth configuration of how HAProxy handles name resolution and interacts with name resolvers (DNS). Each resolver configuration can be used in %sBackend Pools%s to apply individual name resolution configurations.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#process" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#process" target="_blank">', '</a>','<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -1067,6 +1082,41 @@ POSSIBILITY OF SUCH DAMAGE.
             <br/>
         </div>
     </div>
+
+    <div id="resolvers" class="tab-pane fade">
+        <!-- tab page "resolvers" -->
+        <table id="grid-resolvers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogResolver">
+            <thead>
+            <tr>
+                <th data-column-id="resolverid" data-type="number"  data-visible="false">{{ lang._('Resolver ID') }}</th>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                <th data-column-id="nameservers" data-type="string">{{ lang._('Nameservers') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <!-- apply button -->
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct-resolvers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="configtestAct-resolvers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
+    </div>
 </div>
 
 {# include dialogs #}
@@ -1082,3 +1132,4 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error Message')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogMapfile,'id':'DialogMapfile','label':lang._('Edit Map File')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogCpu,'id':'DialogCpu','label':lang._('Edit CPU Affinity Rule')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogResolver,'id':'DialogResolver','label':lang._('Edit Resolver')])}}

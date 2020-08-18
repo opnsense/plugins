@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.9.0</version>
+    <version>2.10.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -792,6 +792,18 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedServers>
+                <linkedResolver type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>resolvers.resolver</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related resolver not found</ValidationMessage>
+                    <multiple>N</multiple>
+                    <Required>N</Required>
+                </linkedResolver>
                 <source type="TextField">
                     <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
@@ -2482,5 +2494,57 @@
                 </cpu_id>
             </cpu>
         </cpus>
+        <resolvers>
+            <resolver type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <nameservers type="CSVListField">
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or 192.168.1.1:53.</ValidationMessage>
+                </nameservers>
+                <parse_resolv_conf type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </parse_resolv_conf>
+                <resolve_retries type="IntegerField">
+                    <default>3</default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 100000.</ValidationMessage>
+                    <Required>N</Required>
+                </resolve_retries>
+                <timeout_resolve type="TextField">
+                    <default>1s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </timeout_resolve>
+                <timeout_retry type="TextField">
+                    <default>1s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </timeout_retry>
+            </resolver>
+        </resolvers>
     </items>
 </model>

@@ -55,6 +55,13 @@
         <hint>Type server name or choose from list.</hint>
     </field>
     <field>
+        <id>backend.linkedResolver</id>
+        <label>Resolver</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the custom resolver configuration that should be used for all servers in this backend.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>backend.source</id>
         <label>Source address</label>
         <type>text</type>
