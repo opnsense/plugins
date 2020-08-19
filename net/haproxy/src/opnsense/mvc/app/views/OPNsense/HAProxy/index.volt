@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     $( document ).ready(function() {
 
+        // get general HAProxy settings
         var data_get_map = {'frm_haproxy':"/api/haproxy/settings/get"};
 
         // load initial data
@@ -298,7 +299,7 @@ POSSIBILITY OF SUCH DAMAGE.
          * Commands
          **********************************************************************/
 
-        // Reconfigure haproxy - activate changes
+        // reconfigure haproxy to activate changes
         $('[id*="reconfigureAct"]').each(function(){
             $(this).click(function(){
 
@@ -366,7 +367,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
-        // Test configuration file
+        // test configuration file
         $('[id*="configtestAct"]').each(function(){
             $(this).click(function(){
 
@@ -407,34 +408,115 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
-        // form save event handlers for all defined forms
-        $('[id*="save_"]').each(function(){
+        // save general settings and perform a config test
+        $('[id*="saveAndTestAct"]').each(function(){
             $(this).click(function(){
-                var frm_id = $(this).closest("form").attr("id");
-                var frm_title = $(this).closest("form").attr("data-title");
+                // extract the form id from the button id
+                var frm_id = "frm_" + $(this).attr("id").split('_')[1]
 
-                // set progress animation
-                $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
-
-                // save data for tab
+                // save data for this tab
                 saveFormToEndpoint(url="/api/haproxy/settings/set",formid=frm_id,callback_ok=function(){
+                    // set progress animation
+                    $('[id*="saveAndTestAct_progress"]').each(function(){
+                        $(this).addClass("fa fa-spinner fa-pulse");
+                    });
 
-                    // on correct save, perform reconfigure
-                    ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
-                        if (status != "success" || data['status'] != 'ok') {
+                    // on correct save, perform config test
+                    ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
+                        if (data['result'].indexOf('ALERT') > -1) {
                             BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
-                                message: data['status'],
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: "{{ lang._('HAProxy config contains critical errors') }}",
+                                message: data['result'],
                                 draggable: true
                             });
-                        } else {
-                            ajaxCall(url="/api/haproxy/service/status", sendData={}, callback=function(data,status) {
-                                updateServiceStatusUI(data['status']);
+                        } else if (data['result'].indexOf('WARNING') > -1) {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_WARNING,
+                                title: "{{ lang._('HAProxy config contains minor errors') }}",
+                                message: data['result'],
+                                draggable: true
                             });
                         }
-                        // when done, disable progress animation.
-                        $("#"+frm_id+"_progress").removeClass("fa fa-spinner fa-pulse");
+                        // when done, disable progress animation
+                        $('[id*="saveAndTestAct_progress"]').each(function(){
+                            $(this).removeClass("fa fa-spinner fa-pulse");
+                        });
+                    });
+                });
+            });
+        });
+
+        // save general settings and reconfigure HAProxy
+        $('[id*="saveAndReconfigureAct"]').each(function(){
+            $(this).click(function(){
+                // extract the form id from the button id
+                var frm_id = "frm_" + $(this).attr("id").split('_')[1]
+
+                // save data for this tab
+                saveFormToEndpoint(url="/api/haproxy/settings/set",formid=frm_id,callback_ok=function(){
+                    // set progress animation
+                    $('[id*="saveAndReconfigureAct_progress"]').each(function(){
+                        $(this).addClass("fa fa-spinner fa-pulse");
+                    });
+
+                    // on correct save, perform config test
+                    ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
+                        // show warning in case of critical errors
+                        if (data['result'].indexOf('ALERT') > -1) {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: "{{ lang._('HAProxy config contains critical errors') }}",
+                                message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Try anyway?') }}",
+                                buttons: [{
+                                    label: '{{ lang._('Continue') }}',
+                                    cssClass: 'btn-primary',
+                                    action: function(dlg){
+                                        ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                                            if (status != "success" || data['status'] != 'ok') {
+                                                BootstrapDialog.show({
+                                                    type: BootstrapDialog.TYPE_WARNING,
+                                                    title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                                    message: data['status'],
+                                                    draggable: true
+                                                });
+                                            }
+                                        });
+                                        // when done, disable progress animation
+                                        $('[id*="saveAndReconfigureAct_progress"]').each(function(){
+                                            $(this).removeClass("fa fa-spinner fa-pulse");
+                                        });
+                                        dlg.close();
+                                    }
+                                }, {
+                                    icon: 'fa fa-trash-o',
+                                    label: '{{ lang._('Abort') }}',
+                                    action: function(dlg){
+                                        // when done, disable progress animation
+                                        $('[id*="saveAndReconfigureAct_progress"]').each(function(){
+                                            $(this).removeClass("fa fa-spinner fa-pulse");
+                                        });
+                                        dlg.close();
+                                    }
+                                }]
+                            });
+                        } else {
+                            ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                                if (status != "success" || data['status'] != 'ok') {
+                                    BootstrapDialog.show({
+                                        type: BootstrapDialog.TYPE_WARNING,
+                                        title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                        message: data['status'],
+                                        draggable: true
+                                    });
+                                }
+                                // when done, disable progress animation
+                                $('[id*="saveAndReconfigureAct_progress"]').each(function(){
+                                    $(this).removeClass("fa fa-spinner fa-pulse");
+                                });
+                            });
+                        }
+                    //});
                     });
 
                 });
@@ -513,30 +595,24 @@ POSSIBILITY OF SUCH DAMAGE.
         </ul>
     </li>
 
-    {# add automatically generated tabs #}
-    {% for tab in mainForm['tabs']|default([]) %}
-        {% if tab['subtabs']|default(false) %}
-        {# Tab with dropdown #}
-        <li role="presentation" class="dropdown">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
-                <b><span class="caret"></span></b>
-            </a>
-            <a data-toggle="tab" onclick="$('#subtab_item_{{tab['subtabs'][0][0]}}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
-            <ul class="dropdown-menu" role="menu">
-                {% for subtab in tab['subtabs']|default({})%}
-                <li><a data-toggle="tab" id="subtab_item_{{subtab[0]}}" href="#subtab_{{subtab[0]}}">{{subtab[1]}}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% else %}
-        {# Standard Tab #}
-        <li>
-                <a data-toggle="tab" href="#tab_{{tab[0]}}">
-                    <b>{{tab[1]}}</b>
-                </a>
-        </li>
-        {% endif %}
-    {% endfor %}
+    <li role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}general-introduction{% else %}settings-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Settings') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            {% if showIntro|default('0')=='1' %}
+            <li><a data-toggle="tab" id="general-introduction" href="#subtab_haproxy-general-introduction">{{ lang._('Introduction') }}</a></li>
+            {% endif %}
+            <li><a data-toggle="tab" id="general-settings-tab" href="#general-settings">{{ lang._('Service') }}</a></li>
+            <li><a data-toggle="tab" href="#general-tuning">{{ lang._('Global Parameters') }}</a></li>
+            <li><a data-toggle="tab" href="#general-defaults">{{ lang._('Default Parameters') }}</a></li>
+            <li><a data-toggle="tab" href="#general-logging">{{ lang._('Logging') }}</a></li>
+            <li><a data-toggle="tab" href="#general-stats">{{ lang._('Statistics') }}</a></li>
+            <li><a data-toggle="tab" href="#general-cache">{{ lang._('Cache') }}</a></li>
+            <li><a data-toggle="tab" href="#general-peers">{{ lang._('Peers') }}</a></li>
+        </ul>
+    </li>
 
     <li role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
@@ -566,7 +642,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Add %sReal Servers:%s All physical or virtual servers that HAProxy should use to load balance between or proxy to.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('Add %sBackend Pools:%s Group the previously added servers to build a server farm. All servers in a group usually deliver the same content. The Backend Pool takes care of health monitoring and load distribution. A Backend Pool must be configured even if you only have a single server.') | format('<b>', '</b>')}}</li>
               <li>{{ lang._('Add %sPublic Services:%s The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying.') | format('<b>', '</b>') }}</li>
-              <li>{{ lang._('Lastly, enable HAProxy using the %sService Settings%s.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Lastly, enable HAProxy using the %sService%s settings page.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
             <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
@@ -631,6 +707,24 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
+    <div id="subtab_haproxy-general-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>{{ lang._('Settings') }}</h1>
+            <p>{{ lang._("Manage HAProxy core configuration:") }}</p>
+            <ul>
+              <li>{{ lang._("%sService:%s Basic service management and options to control HAProxy's restart behaviour.") | format('<b>', '</b>') }}</li>
+              <li>{{ lang._("%sGlobal Parameters:%s Tuning parameters and global defaults that cannot be overriden elsewhere.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sDefault Parameters:%s Define default parameters for all %sPublic Services%s, %sBackend Pools%s and %sReal Servers%s here. They may be overriden elsewhere.") | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sLogging:%s Configure HAProxy's logging behaviour and enable remote logging.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sStatistics:%s This manages HAProxy's internal statistics reporting.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sCache:%s HAProxy's cache which was designed to perform cache on small objects (favicon, css, etc.). This is a minimalist low-maintenance cache which runs in RAM.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sPeers:%s Configure a communication channel between two HAProxy instances. This will propagate entries of any data-types in stick-tables between these HAProxy instances over TCP connections in a multi-master fashion. Useful when aiming for a seamless failover in a HA setup.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#10" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#3.5" target="_blank">', '</a>') }}</p>
+            <br/>
+        </div>
+    </div>
+
     <div id="subtab_haproxy-advanced-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>{{ lang._('Advanced Features') }}</h1>
@@ -647,25 +741,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
-    {# add automatically generated tabs #}
-    {% for tab in mainForm['tabs']|default([]) %}
-        {% if tab['subtabs']|default(false) %}
-            {# Tab with dropdown #}
-            {% for subtab in tab['subtabs']|default({})%}
-                <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if mainForm['activetab']|default("") == subtab[0] %} in active {% endif %}">
-                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if tab['subtabs']|default(false)==false %}
-            <div id="tab_{{tab[0]}}" class="tab-pane fade{% if mainForm['activetab']|default("") == tab[0] %} in active {% endif %}">
-                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
-            </div>
-        {% endif %}
-    {% endfor %}
-
     <div id="frontends" class="tab-pane fade">
-        <!-- tab page "frontends" -->
         <table id="grid-frontends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFrontend">
             <thead>
             <tr>
@@ -689,7 +765,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-frontends" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -700,7 +775,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="backends" class="tab-pane fade">
-        <!-- tab page "backends" -->
         <table id="grid-backends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogBackend">
             <thead>
             <tr>
@@ -724,7 +798,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-backends" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -735,7 +808,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="servers" class="tab-pane fade">
-        <!-- tab page "servers" -->
         <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer">
             <thead>
             <tr>
@@ -761,7 +833,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-servers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -772,7 +843,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="healthchecks" class="tab-pane fade">
-        <!-- tab page "healthchecks" -->
         <table id="grid-healthchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogHealthcheck">
             <thead>
             <tr>
@@ -795,7 +865,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-healthchecks" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -806,7 +875,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="actions" class="tab-pane fade">
-        <!-- tab page "actions" -->
         <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction">
             <thead>
             <tr>
@@ -829,7 +897,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-actions" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -840,7 +907,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="acls" class="tab-pane fade">
-        <!-- tab page "acls" -->
         <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAcl">
             <thead>
             <tr>
@@ -863,7 +929,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-acls" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -874,7 +939,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="users" class="tab-pane fade">
-        <!-- tab page "users" -->
         <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogUser">
             <thead>
             <tr>
@@ -898,7 +962,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-users" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -909,7 +972,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="groups" class="tab-pane fade">
-        <!-- tab page "groups" -->
         <table id="grid-groups" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogGroup">
             <thead>
             <tr>
@@ -933,7 +995,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-groups" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -944,7 +1005,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="luas" class="tab-pane fade">
-        <!-- tab page "luas" -->
         <table id="grid-luas" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogLua">
             <thead>
             <tr>
@@ -968,7 +1028,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-luas" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -979,7 +1038,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="errorfiles" class="tab-pane fade">
-        <!-- tab page "errorfiles" -->
         <table id="grid-errorfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogErrorfile">
             <thead>
             <tr>
@@ -1002,7 +1060,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-errorfiles" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -1013,7 +1070,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="mapfiles" class="tab-pane fade">
-        <!-- tab page "mapfiles" -->
         <table id="grid-mapfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMapfile">
             <thead>
             <tr>
@@ -1036,7 +1092,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-mapfiles" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -1047,7 +1102,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="cpus" class="tab-pane fade">
-        <!-- tab page "cpus" -->
         <table id="grid-cpus" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCpu">
             <thead>
             <tr>
@@ -1073,7 +1127,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-cpus" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
@@ -1084,7 +1137,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="resolvers" class="tab-pane fade">
-        <!-- tab page "resolvers" -->
         <table id="grid-resolvers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogResolver">
             <thead>
             <tr>
@@ -1108,13 +1160,90 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <!-- apply button -->
         <div class="col-md-12">
             <hr/>
             <button class="btn btn-primary" id="reconfigureAct-resolvers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
             <button class="btn btn-primary" id="configtestAct-resolvers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
             <br/>
             <br/>
+        </div>
+    </div>
+
+    <!-- subtabs for general "Settings" tab below -->
+    <div id="general-settings" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalSettingsForm,'id':'frm_haproxy-general-settings'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-settings" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct_haproxy-general-settings" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="general-tuning" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalTuningForm,'id':'frm_haproxy-general-tuning'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-tuning" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct_haproxy-general-tuning" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="general-defaults" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalDefaultsForm,'id':'frm_haproxy-general-defaults'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-defaults" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct_haproxy-general-defaults" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="general-logging" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalLoggingForm,'id':'frm_haproxy-general-logging'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-logging" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct_haproxy-general-logging" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="general-stats" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalStatsForm,'id':'frm_haproxy-general-stats'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-stats" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct_haproxy-general-stats" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="general-cache" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalCacheForm,'id':'frm_haproxy-general-cache'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-cache" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct-haproxy-general-cache" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="general-peers" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalPeersForm,'id':'frm_haproxy-general-peers'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_haproxy-general-peers" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+                <button class="btn btn-primary" id="saveAndTestAct_haproxy-general-peers" type="button"><b>{{ lang._('Save & Test syntax') }}</b><i id="saveAndTestAct_progress" class=""></i></button>
+            </div>
         </div>
     </div>
 </div>
