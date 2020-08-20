@@ -1592,9 +1592,9 @@ class updatedns
                 if ($http_code == 200) {
                     $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
                     $successful_update = true;
-                } else if ($http_code == 401) {
+                } elseif ($http_code == 401) {
                     $status = 'Dynamic DNS: (Error) Authentication info not sent or invalid';
-                }else if ($http_code == 404) {
+                } elseif ($http_code == 404) {
                     $status = 'Dynamic DNS: (Error) Resource not found';
                 } else {
                     $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";

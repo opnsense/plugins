@@ -227,8 +227,8 @@ function cert_action_validator($opt_cert_id)
                 if ($options["a"] == "automation") {
                     // Check if the cert was successul issued
                     if (!empty((string)$certObj->statusCode) and (string)$certObj->statusCode == '200') {
-                      log_error("AcmeClient: ready to run automation for certificate: " . (string)$certObj->name);
-                      $restart_certs[] = $certObj;
+                        log_error("AcmeClient: ready to run automation for certificate: " . (string)$certObj->name);
+                        $restart_certs[] = $certObj;
                     } else {
                         log_error("AcmeClient: failed to run automation, certificate status not OK: " . (string)$certObj->name);
                         return(1);
