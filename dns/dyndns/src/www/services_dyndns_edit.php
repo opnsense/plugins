@@ -318,7 +318,7 @@ include("head.inc");
                       <div class="hidden" data-for="help_for_host">
                         <?= gettext("Enter the complete host/domain name. example: myhost.dyndns.org") ?><br />
                         <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?><br />
-                        <?= gettext('Gandi LiveDNS: Enter the 2nd-level domain ("example.org").') ?> 
+                        <?= gettext('Gandi LiveDNS: Enter the 2nd-level domain ("example.org").') ?>
                       </div>
                     </td>
                   </tr>

@@ -676,8 +676,8 @@ class updatedns
                 /*
                 * https://github.com/vizion8-dan
                 * Tested on OPNsense 20.1.8_1-amd64 - IPv4 (A)
-                * dnsHost ("Hostname" field in OPNsense) should be the 2nd-level domain ("example.org") 
-                * dnsUser ("Username" field in OPNsense) should be the subdomain / A-record ("myrecord" in 2nd-level domain) 
+                * dnsHost ("Hostname" field in OPNsense) should be the 2nd-level domain ("example.org")
+                * dnsUser ("Username" field in OPNsense) should be the subdomain / A-record ("myrecord" in 2nd-level domain)
                 * dnsPass should be the Gandi-API key
                 */
                 $server = "https://dns.api.gandi.net/api/v5/domains/". $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
@@ -1453,7 +1453,7 @@ class updatedns
             case 'gandi-livedns':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 if ($http_code == 401) {
-                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong API Key.';    
+                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong API Key.';
                 } elseif ($http_code == 403) {
                     $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
                 } elseif ($http_code == 201) {
