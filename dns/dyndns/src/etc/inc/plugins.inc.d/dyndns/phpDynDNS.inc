@@ -681,9 +681,7 @@ class updatedns
                 */
                 $server = "https://dns.api.gandi.net/api/v5/domains/". $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
 
-                log_error("DAN: ". $server);
                 $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["'. $this->_dnsIP . '"]}';
-                log_error("DAN: ". $body);
 
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
