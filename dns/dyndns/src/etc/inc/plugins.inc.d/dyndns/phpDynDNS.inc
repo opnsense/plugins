@@ -693,7 +693,6 @@ class updatedns
                 ));
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
                 curl_setopt($ch, CURLOPT_URL, $server);
-                log_error("DAN: ". $server);
                 break;
             case 'selfhost':
                 if (isset($this->_dnsWildcard) && $this->_dnsWildcard != "OFF") {
