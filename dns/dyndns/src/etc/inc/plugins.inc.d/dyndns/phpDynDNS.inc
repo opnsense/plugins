@@ -108,6 +108,7 @@
  *  Linode v6                   - Last Tested: 25 February 2020
  *  GoDaddy                     - Last Tested: 10 July 2020
  *  GoDaddy v6                  - Last Tested: 10 July 2020
+ *  Gandi LiveDNS               - Last Tested: 24 August 2020
  * +====================================================+
  *
  * @author    E.Kristensen
