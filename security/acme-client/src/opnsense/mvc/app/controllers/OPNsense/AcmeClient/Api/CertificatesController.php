@@ -69,9 +69,11 @@ class CertificatesController extends ApiMutableModelControllerBase
         if ($uuid != null) {
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
-                $cert_id = $node->id;
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient remove-cert {$cert_id}");
+                $response = $backend->configdRun("acmeclient remove-cert {$uuid}");
+                // Give configd some time to start this operation before the
+                // cert is removed from config.
+                sleep(2);
             }
         }
         return $this->delBase('certificates.certificate', $uuid);
@@ -101,9 +103,8 @@ class CertificatesController extends ApiMutableModelControllerBase
             if ($uuid != null) {
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
-                    $cert_id = $node->id;
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient sign-cert {$cert_id}");
+                    $response = $backend->configdRun("acmeclient sign-cert ${uuid}");
                     return array("response" => $response);
                 }
             }
@@ -123,9 +124,8 @@ class CertificatesController extends ApiMutableModelControllerBase
         if ($uuid != null) {
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
-                $cert_id = $node->id;
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient remove-key {$cert_id}");
+                $response = $backend->configdRun("acmeclient remove-key ${uuid}");
             }
         }
         return $result;
@@ -145,9 +145,8 @@ class CertificatesController extends ApiMutableModelControllerBase
             if ($uuid != null) {
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
-                    $cert_id = $node->id;
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient revoke-cert {$cert_id}");
+                    $response = $backend->configdRun("acmeclient revoke-cert ${uuid}");
                     return array("response" => $response);
                 }
             }
@@ -167,9 +166,8 @@ class CertificatesController extends ApiMutableModelControllerBase
         if ($uuid != null) {
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
-                $cert_id = $node->id;
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient run-automation {$cert_id}");
+                $response = $backend->configdRun("acmeclient run-automation ${uuid}");
             }
         }
         return $result;
