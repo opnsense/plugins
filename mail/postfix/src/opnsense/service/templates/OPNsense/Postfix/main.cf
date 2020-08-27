@@ -112,6 +112,9 @@ relayhost = {{ OPNsense.postfix.general.relayhost }}
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/usr/local/etc/postfix/smtp_auth
 smtp_sasl_security_options =
+
+{% if helpers.exists('OPNsense.postfix.general.permit_sasl_authenticated') and OPNsense.postfix.general.permit_sasl_authenticated == '1' %}
+smtpd_sasl_auth_enable = yes
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
@@ -162,7 +165,6 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 {% do smtpd_recipient_restrictions.append('reject_non_fqdn_recipient') %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.permit_sasl_authenticated') and OPNsense.postfix.general.permit_sasl_authenticated == '1' %}
-smtpd_sasl_auth_enable = yes
 {% do smtpd_recipient_restrictions.append('permit_sasl_authenticated') %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.permit_tls_clientcerts') and OPNsense.postfix.general.permit_tls_clientcerts == '1' %}
