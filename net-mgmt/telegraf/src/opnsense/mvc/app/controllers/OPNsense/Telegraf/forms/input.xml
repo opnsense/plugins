@@ -119,7 +119,7 @@
     </field>
     <field>
         <id>input.ntpq_dns_lookup</id>
-        <label>NTPQ DNS lookup</label>
+        <label>NTPQ DNS Lookup</label>
         <type>checkbox</type>
         <help>Can increase metric gather times.</help>
     </field>
