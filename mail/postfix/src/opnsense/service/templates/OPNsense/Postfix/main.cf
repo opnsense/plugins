@@ -112,6 +112,7 @@ relayhost = {{ OPNsense.postfix.general.relayhost }}
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/usr/local/etc/postfix/smtp_auth
 smtp_sasl_security_options =
+{% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.permit_sasl_authenticated') and OPNsense.postfix.general.permit_sasl_authenticated == '1' %}
 smtpd_sasl_auth_enable = yes
