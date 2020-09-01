@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2019 Frank Wall
+ * Copyright (C) 2017-2020 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -93,6 +93,10 @@ switch ($options["a"]) {
         echo json_encode(array('status' => $result));
         break;
     case 'revoke':
+        $result = cert_action_validator($options["c"]);
+        echo json_encode(array('status' => $result));
+        break;
+    case 'automation':
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status' => $result));
         break;
@@ -217,6 +221,19 @@ function cert_action_validator($opt_cert_id)
                         log_error("AcmeClient: failed to remove the private key and reset certificate " . (string)$certObj->name);
                         return(1);
                     }
+                }
+
+                // Only run certificate automation
+                if ($options["a"] == "automation") {
+                    // Check if the cert was successul issued
+                    if (!empty((string)$certObj->statusCode) and (string)$certObj->statusCode == '200') {
+                        log_error("AcmeClient: ready to run automation for certificate: " . (string)$certObj->name);
+                        $restart_certs[] = $certObj;
+                    } else {
+                        log_error("AcmeClient: failed to run automation, certificate status not OK: " . (string)$certObj->name);
+                        return(1);
+                    }
+                    break; // Stop after first match.
                 }
 
                 // Make sure we found the configured validation method
