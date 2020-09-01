@@ -206,6 +206,28 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_http-request_set-var</style>
+    </field>
+    <field>
+        <id>action.http_request_set_var_scope</id>
+        <label>Variable Scope</label>
+        <type>dropdown</type>
+        <help><![CDATA[The name of the variable starts with an indication about its scope.]]></help>
+    </field>
+    <field>
+        <id>action.http_request_set_var_name</id>
+        <label>Variable Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.http_request_set_var_expr</id>
+        <label>Expression</label>
+        <type>text</type>
+        <help><![CDATA[A standard HAProxy expression formed by a sample-fetch followed by some converters.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_http-response_lua</style>
     </field>
     <field>
@@ -309,6 +331,28 @@
         <label>HTTP Reason Text</label>
         <type>text</type>
         <help><![CDATA[An optional custom reason text for the HTTP status code. If empty the default reason for the specified code will be used.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_http-response_set-var</style>
+    </field>
+    <field>
+        <id>action.http_response_set_var_scope</id>
+        <label>Variable Scope</label>
+        <type>dropdown</type>
+        <help><![CDATA[The name of the variable starts with an indication about its scope.]]></help>
+    </field>
+    <field>
+        <id>action.http_response_set_var_name</id>
+        <label>Variable Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.http_response_set_var_expr</id>
+        <label>Expression</label>
+        <type>text</type>
+        <help><![CDATA[A standard HAProxy expression formed by a sample-fetch followed by some converters.]]></help>
     </field>
     <field>
         <label>Parameters</label>

@@ -379,4 +379,34 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('users.user', array('enabled', 'name', 'description'), 'name');
     }
+
+    public function getresolverAction($uuid = null)
+    {
+        return $this->getBase('resolver', 'resolvers.resolver', $uuid);
+    }
+
+    public function setresolverAction($uuid)
+    {
+        return $this->setBase('resolver', 'resolvers.resolver', $uuid);
+    }
+
+    public function addresolverAction()
+    {
+        return $this->addBase('resolver', 'resolvers.resolver');
+    }
+
+    public function delresolverAction($uuid)
+    {
+        return $this->delBase('resolvers.resolver', $uuid);
+    }
+
+    public function toggleresolverAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('resolvers.resolver', $uuid);
+    }
+
+    public function searchresolversAction()
+    {
+        return $this->searchBase('resolvers.resolver', array('enabled', 'name', 'nameservers'), 'name');
+    }
 }
