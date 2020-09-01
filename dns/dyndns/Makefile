@@ -1,5 +1,5 @@
 PLUGIN_NAME=		dyndns
-PLUGIN_VERSION=		1.22
+PLUGIN_VERSION=		1.23
 PLUGIN_COMMENT=		Dynamic DNS Support
 PLUGIN_MAINTAINER=	franco@opnsense.org
 
