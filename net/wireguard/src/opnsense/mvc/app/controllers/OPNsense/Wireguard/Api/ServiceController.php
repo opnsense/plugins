@@ -30,7 +30,7 @@
 
 namespace OPNsense\Wireguard\Api;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Wireguard\General;
 
@@ -38,12 +38,52 @@ use OPNsense\Wireguard\General;
  * Class ServiceController
  * @package OPNsense\Wireguard
  */
-class ServiceController extends ApiMutableServiceControllerBase
+class ServiceController extends ApiControllerBase
 {
-    protected static $internalServiceClass = '\OPNsense\Wireguard\General';
-    protected static $internalServiceTemplate = 'OPNsense/Wireguard';
-    protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'wireguard';
+    /**
+     * start wireguard service
+     * @return array
+     */
+    public function startAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('wireguard start');
+            return array('response' => $response);
+        } else {
+            return array('response' => array());
+        }
+    }
+
+    /**
+     * stop wireguard service
+     * @return array
+     */
+    public function stopAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('wireguard stop');
+            return array('response' => $response);
+        } else {
+            return array('response' => array());
+        }
+    }
+
+    /**
+     * restart wireguard service
+     * @return array
+     */
+    public function restartAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('wireguard restart');
+            return array('response' => $response);
+        } else {
+            return array('response' => array());
+        }
+    }
 
     /**
      * show wireguard config
@@ -68,7 +108,30 @@ class ServiceController extends ApiMutableServiceControllerBase
     }
 
     /**
-     * Gracefully reload Wireguard with latest configuration
+     * retrieves status of wireguard
+     * @return array
+     */
+    public function statusAction()
+    {
+        $backend = new Backend();
+        $general = new General();
+        $response = $backend->configdRun("wireguard showconf");
+
+        if (strpos($response, "interface:") !== false) {
+            $status = "running";
+        } else {
+            if ($general->enabled->__toString() == 0) {
+                $status = "disabled";
+            } else {
+                $status = "stopped";
+            }
+        }
+
+        return array("status" => $status);
+    }
+
+    /**
+     * Start/stop/reload Wireguard
      * @return array
      */
     public function reconfigureAction()
@@ -76,9 +139,20 @@ class ServiceController extends ApiMutableServiceControllerBase
         if ($this->request->isPost()) {
             $this->sessionClose();
 
+            $general = new General();
             $backend = new Backend();
-            $backend->configdRun('template reload OPNsense/Wireguard');
-            $backend->configdRun("wireguard reload");
+
+            if ($general->enabled->__toString() != 1) {
+                $backend->configdRun("wireguard stop");
+            } else {
+                $backend->configdRun('template reload OPNsense/Wireguard');
+                $runStatus = $this->statusAction();
+                if ($runStatus['status'] == 'running') {
+                    $backend->configdRun("wireguard reload");
+                } else {
+                    $backend->configdRun("wireguard start");
+                }
+            }
             return array("status" => "ok");
         } else {
             return array("status" => "failed");
