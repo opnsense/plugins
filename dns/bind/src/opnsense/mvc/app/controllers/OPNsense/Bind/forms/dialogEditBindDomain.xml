@@ -45,7 +45,7 @@
         <id>domain.allowtransfer</id>
         <label>Allow Transfer</label>
         <type>dropdown</type>
-        <help>Define an ACL where you allow which server can retrieve this zone.</help>
+        <help>Define an ACL where you allow which server can retrieve this zone. If this value is empty, domain transfers from everywhere are allowed.</help>
     </field>
     <field>
         <id>domain.allowquery</id>
