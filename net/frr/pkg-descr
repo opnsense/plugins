@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.16
+
+* Fix templating for router IDs in OSPF3 daemon
+
 1.15
 
 * Disable eBGP policies introduced with FRR 7.4
