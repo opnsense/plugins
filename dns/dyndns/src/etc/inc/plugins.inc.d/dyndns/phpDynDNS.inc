@@ -1180,7 +1180,7 @@ class updatedns
                 * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
                 * dnsHost should be the domain
                 * dnsPass should be the token, NOT the token id
-                * IPv6 is empty so desec API will not set this to the IPv6 of the sending interface if the connection is made via IPv6
+                * IPv6 is empty so deSEC API will not set this to the IPv6 of the sending interface if the connection is made via IPv6
                 */
                 $server = "https://update.dedyn.io/";
                 $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $this->_dnsIP . '&myipv6=""';
