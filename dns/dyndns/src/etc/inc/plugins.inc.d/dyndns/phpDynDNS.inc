@@ -1192,10 +1192,9 @@ class updatedns
                 * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
                 * dnsHost should be the domain
                 * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
-                * IPv4 is empty so desec API will not set this to the IPv4 of the sending interface if the connection is made via IPv4
                 */
-                $server = "https://update.dedyn.io/";
-                $url = '?hostname=' . $this->_dnsHost . '&myipv4=""' . '&myipv6=' . $this->_dnsIP;
+                $server = "https://update6.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv6=' . $this->_dnsIP;
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
                 break;
