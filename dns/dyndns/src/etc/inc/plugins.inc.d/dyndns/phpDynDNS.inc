@@ -49,6 +49,7 @@
  *    - GoDaddy (godaddy.com)
  *    - GoDaddy IPv6 (godaddy.com)
  *    - deSEC (desec.io)
+ *    - deSEC IPv6 (desec.io)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -111,6 +112,7 @@
  *  GoDaddy v6                  - Last Tested: 10 July 2020
  *  Gandi LiveDNS               - Last Tested: 24 August 2020
  *  deSEC                       - Last Tested:
+ *  deSEC v6                    - Last Tested: 
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -274,6 +276,7 @@ class updatedns
                 }
                 break;
             case 'desec':
+            case 'desec-v6':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
@@ -302,6 +305,7 @@ class updatedns
             case 'regfish-v6':
             case 'route53-v6':
             case 'cloudflare-token-v6':
+            case 'desec-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -1183,6 +1187,18 @@ class updatedns
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
                 break;
+            case 'desec-v6':
+                /*
+                * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
+                * dnsHost should be the domain
+                * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
+                * IPv4 is empty so desec API will not set this to the IPv4 of the sending interface if the connection is made via IPv4
+                */
+                $server = "https://update.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv4=""' . '&myipv6=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                break;
             default:
                 break;
         }
@@ -1666,6 +1682,7 @@ class updatedns
                 }
                 break;
             case 'desec':
+            case 'desec-v6':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 /*
                 * HTTP Code 404 should not be possible due to dnsUser == dnsHost, a wrong hostname should cause HTTP 401 Unauthorized.
