@@ -106,6 +106,7 @@ function dyndns_list()
         'cloudflare-token-v6' => 'Cloudflare API token (v6)',
         'custom' => 'Custom',
         'custom-v6' => 'Custom (v6)',
+        'desec' => 'deSEC',
         'dhs' => 'DHS',
         'digitalocean' => 'DigitalOcean',
         'dnsexit' => 'DNSexit',

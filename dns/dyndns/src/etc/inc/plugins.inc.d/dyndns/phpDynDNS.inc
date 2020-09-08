@@ -48,6 +48,7 @@
  *    - Linode IPv6 (linode.com)
  *    - GoDaddy (godaddy.com)
  *    - GoDaddy IPv6 (godaddy.com)
+ *    - deSEC (desec.io)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -109,6 +110,7 @@
  *  GoDaddy                     - Last Tested: 10 July 2020
  *  GoDaddy v6                  - Last Tested: 10 July 2020
  *  Gandi LiveDNS               - Last Tested: 24 August 2020
+ *  deSEC                       - Last Tested:
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -269,6 +271,13 @@ class updatedns
                     $this->_error(5);
                 } elseif (!$dnsTTL) {
                     $this->_error(9);
+                }
+                break;
+            case 'desec':
+                if (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsHost) {
+                    $this->_error(5);
                 }
                 break;
             default:
@@ -1162,6 +1171,18 @@ class updatedns
 
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
                 break;
+            case 'desec':
+                /*
+                * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
+                * dnsHost should be the domain
+                * dnsPass should be the token, NOT the token id
+                * IPv6 is empty so desec API will not set this to the IPv6 of the sending interface if the connection is made via IPv6
+                */
+                $server = "https://update.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $this->_dnsIP . '&myipv6=""';
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                break;
             default:
                 break;
         }
@@ -1642,6 +1663,22 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
                     log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
+                }
+                break;
+            case 'desec':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                /*
+                * HTTP Code 404 should not be possible due to dnsUser == dnsHost, a wrong hostname should cause HTTP 401 Unauthorized.
+                */
+                if ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong Password.';
+                } elseif ($http_code == 403) {
+                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. The selected hostname is not eligible for dynamic updates.';
+                } elseif ($http_code == 429) {
+                    $status = 'Dynamic DNS: (Error) Rate limit reached. Please don\'t try more than one request per minute.';
+                } elseif ($http_code == 200 AND preg_match('/good/i', $data)) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
                 }
                 break;
             default:
