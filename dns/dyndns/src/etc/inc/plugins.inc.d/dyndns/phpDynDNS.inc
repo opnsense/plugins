@@ -111,8 +111,8 @@
  *  GoDaddy                     - Last Tested: 10 July 2020
  *  GoDaddy v6                  - Last Tested: 10 July 2020
  *  Gandi LiveDNS               - Last Tested: 24 August 2020
- *  deSEC                       - Last Tested:
- *  deSEC v6                    - Last Tested: 
+ *  deSEC                       - Last Tested: 09 September 2020
+ *  deSEC v6                    - Last Tested: 09 September 2020
  * +====================================================+
  *
  * @author    E.Kristensen
