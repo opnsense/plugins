@@ -46,6 +46,11 @@ foreach ($stunnel->services->service->__items as $service) {
                 $all_certs["{$base_path}/{$this_uuid}.crt"] =
                     base64_decode((string)$cert->crt) . "\n" . base64_decode((string)$cert->prv);
             }
+            if (!empty((string)$cert->caref)) {
+                $cert = (array)$cert;
+                $ca = ca_chain($cert);
+                $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . $ca;
+            }
         }
         if (!empty((string)$service->cacert)) {
             $all_certs["{$base_path}/{$this_uuid}.ca"] = "";
