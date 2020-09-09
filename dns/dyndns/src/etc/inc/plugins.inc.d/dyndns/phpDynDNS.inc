@@ -50,6 +50,7 @@
  *    - GoDaddy IPv6 (godaddy.com)
  *    - deSEC (desec.io)
  *    - deSEC IPv6 (desec.io)
+ *    - deSEC IPv4 + IPv6 (desec.io)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -113,6 +114,7 @@
  *  Gandi LiveDNS               - Last Tested: 24 August 2020
  *  deSEC                       - Last Tested: 09 September 2020
  *  deSEC v6                    - Last Tested: 09 September 2020
+ *  deSEC v4 + v6               - Last Tested: 09 September 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -276,6 +278,7 @@ class updatedns
                 }
                 break;
             case 'desec':
+            case 'desec-v4-v6':
             case 'desec-v6':
                 if (!$dnsPass) {
                     $this->_error(4);
@@ -305,6 +308,7 @@ class updatedns
             case 'regfish-v6':
             case 'route53-v6':
             case 'cloudflare-token-v6':
+            case 'desec-v4-v6':
             case 'desec-v6':
                 $this->_useIPv6 = true;
                 break;
@@ -359,6 +363,7 @@ class updatedns
                 case 'custom':
                 case 'custom-v6':
                 case 'desec':
+                case 'desec-v4-v6':
                 case 'desec-v6':
                 case 'dhs':
                 case 'digitalocean':
@@ -1190,6 +1195,25 @@ class updatedns
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
+            case 'desec-v4-v6':
+                /*
+                * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
+                * dnsHost should be the domain
+                * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
+                * IPv4 is determined by deSEC API via the sending interface
+                */
+                
+                // temporarily disable useIPv6 to get IPv4 Address
+                $this->_useIPv6 = false;
+                $ipv4 = $this->_checkIP();
+                $this->_useIPv6 = true;
+
+                $server = "https://update.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $ipv4 . '&myipv6=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
             case 'desec-v6':
                 /*
                 * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
@@ -1686,6 +1710,7 @@ class updatedns
                 }
                 break;
             case 'desec':
+            case 'desec-v4-v6':
             case 'desec-v6':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 /*
