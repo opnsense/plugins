@@ -358,6 +358,8 @@ class updatedns
                 case 'cloudflare-token-v6':
                 case 'custom':
                 case 'custom-v6':
+                case 'desec':
+                case 'desec-v6':
                 case 'dhs':
                 case 'digitalocean':
                 case 'gandi-livedns':
