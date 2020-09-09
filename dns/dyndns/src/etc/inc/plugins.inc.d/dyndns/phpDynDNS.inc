@@ -1188,6 +1188,7 @@ class updatedns
                 $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $this->_dnsIP . '&myipv6=""';
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
             case 'desec-v6':
                 /*
@@ -1199,6 +1200,7 @@ class updatedns
                 $url = '?hostname=' . $this->_dnsHost . '&myipv6=' . $this->_dnsIP;
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
             default:
                 break;
