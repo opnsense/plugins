@@ -47,7 +47,7 @@ function rtsphelper_start()
         return;
     }
 
-    mwexec_bg('/usr/local/bin/python2.7 /usr/local/opnsense/scripts/net/rtsphelper/rtsphelper.py');
+    mwexec_bg('/usr/local/bin/python3 /usr/local/opnsense/scripts/net/rtsphelper/rtsphelper.py');
 }
 
 function rtsphelper_stop()
