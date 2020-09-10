@@ -5,6 +5,10 @@ lua.
 Plugin Changelog
 ----------------
 
+1.10
+
+* Add nameserver option
+
 1.9
 
 * Add History Rows field
