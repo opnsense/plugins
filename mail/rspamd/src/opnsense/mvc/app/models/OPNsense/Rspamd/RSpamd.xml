@@ -129,6 +129,8 @@
       <nameserver type="HostnameField">
         <default>127.0.0.1</default>
         <Required>Y</Required>
+        <FieldSeparator>,</FieldSeparator>
+        <asList>Y</asList>
       </nameserver>
     </general>
 
