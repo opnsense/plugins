@@ -1,0 +1,21 @@
+mkdir /usr/local/etc/squid/db
+
+chown squid:squid /usr/local/etc/squid/db
+chmod +x /usr/local/opnsense/scripts/webfilter/*
+chmod +x /usr/local/etc/rc.syshook.d/start/50-webfilter
+chmod +x /usr/local/etc/rc.d/webfilter
+chown squid:squid /usr/local/etc/squid/db
+
+CURL_BIN=$(which curl)
+CURL_CMD="curl"
+
+# reload menus
+/usr/local/etc/rc.configure_plugins
+# reload configd
+service configd restart
+
+configctl template reload OPNsense/WebFilter
+if [ -f /var/run/squid/squid.pid ]; then
+    configctl webfilter reconfigure
+fi
+echo "All done!"

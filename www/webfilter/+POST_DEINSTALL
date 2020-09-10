@@ -1,0 +1,10 @@
+rm -rf /usr/local/etc/squid/db
+
+if [ -f /var/run/squid/squid.pid ]; then
+    configctl proxy restart
+fi
+
+# reload menus
+/usr/local/etc/rc.configure_plugins
+# reload configd
+service configd restart

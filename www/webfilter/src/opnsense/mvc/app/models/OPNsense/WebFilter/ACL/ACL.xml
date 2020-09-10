@@ -1,0 +1,20 @@
+<acl>
+    <!-- unique acl key, must be globally unique for all acl's  -->
+    <page-system-webfilter>
+        <name>Services: Web Filter: Rules page</name>
+        <description>Allow access to the 'Services: Web Filter: Rules' page.</description>
+        <patterns>
+            <pattern>ui/webfilter/*</pattern>
+            <pattern>api/webfilter/*</pattern>
+        </patterns>
+    </page-system-webfilter>
+    <page-webfilter-logs>
+        <name>Services: Web Filter: Logs page</name>
+        <description>Allow access to the 'Services: Web Filter: Logs' page.</description>
+        <patterns>
+            <pattern>diag_logs_proxy.php*</pattern>
+            <pattern>webfilter_log_parser.php*</pattern>
+            <pattern>webfilter_monitor_data.php*</pattern>
+        </patterns>
+    </page-webfilter-logs>
+</acl>

@@ -1,0 +1,8 @@
+name: squidGuard-plugin
+version: 0.1.1-dev
+origin: opnsense/squidGuard
+comment: SquidGuard plugin 
+desc: configuration templates for WebFilter
+maintainer: julio at cloudfence.pt
+www: https://cloudfence.pt
+prefix: /

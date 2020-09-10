@@ -1,0 +1,132 @@
+<model>
+    <mount>//OPNsense/webfilter</mount>
+    <version>2.1.0</version>
+    <description>WebFilter Rules</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <sguardprocs type="IntegerField">
+                <default>5</default>
+                <MinimumValue>5</MinimumValue>
+                <MaximumValue>50</MaximumValue>
+                <ValidationMessage>Please specify a value between 5 and 50.</ValidationMessage>
+                <Required>Y</Required>
+            </sguardprocs>
+            <categoriesurl type="UrlField">
+                <Required>N</Required>
+                <ValidationMessage>This does not look like a valid url.</ValidationMessage>
+            </categoriesurl>
+            <blacklistfile type="TextField">
+                <Required>Y</Required>
+                <default>blacklist.db</default>
+                <Mask>/^[a-zA-Z0-9]{1,245}\.?[a-zA-z0-9]{1,10}$/</Mask>
+                <ValidationMessage>The filename may only contain letters,digits and one dot (not required).</ValidationMessage>
+            </blacklistfile>
+            <categories type="JsonKeyValueStoreField">
+                <Required>N</Required>
+                <SourceField>blacklistfile</SourceField>
+                <SourceFile>/usr/local/etc/squid/db/%s</SourceFile>
+                <SelectAll>Y</SelectAll>
+                <Multiple>Y</Multiple>
+            </categories>
+        </general>
+        <rules>
+            <rule type="ArrayField">
+                <sequence type="IntegerField">
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                    <ValidationMessage>Sequence numbers are allowed between 10 and 99.</ValidationMessage>
+                    <Required>Y</Required>
+                    <default>10</default>
+                </sequence>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <action type="OptionField">
+                    <default>block</default>
+                    <Required>Y</Required>
+                    <BlankDesc>Block</BlankDesc>
+                    <OptionValues>
+                        <block>Block</block>
+                        <pass>BlockAll</pass>
+                    </OptionValues>
+                </action>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([A-Za-z][A-Za-z0-9_-]{1,19})$/</mask>
+                    <ValidationMessage>Rule names are are allowed up to 20 characters, must begin with a letter and can contain letters, numbers, hyphens or underscores.</ValidationMessage>
+                </name>
+                <source type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([\/0-9a-fA-F.:,])*/u</mask>
+                    <ValidationMessage>Please enter a valid IP or subnet address</ValidationMessage>
+                </source>
+                <aduser type="CSVListField">
+                    <Required>N</Required>
+                    <SelectAll>N</SelectAll>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Please insert users</ValidationMessage>
+                </aduser>
+                <categoriesindex type="TextField">
+                    <Required>Y</Required>
+                    <default>categories.index</default>
+                    <Mask>/^[a-zA-Z0-9]{1,245}\.?[a-zA-z0-9]{1,10}$/</Mask>
+                    <ValidationMessage>The filename may only contain letters,digits and one dot (not required).</ValidationMessage>
+                </categoriesindex>
+                <safesearch type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </safesearch>
+                <googleapps type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9]){0,}\.([a-zA-Z0-9].){0,}/</mask>
+                    <ValidationMessage>Please enter a valid domain name here</ValidationMessage>
+                </googleapps>
+                <youtube type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <strict>Strict</strict>
+                        <moderate>Moderate</moderate>
+                    </OptionValues>
+                </youtube>
+                <destination type="JsonKeyValueStoreField">
+                    <Required>N</Required>
+                    <SourceField>categoriesindex</SourceField>
+                    <SourceFile>/usr/local/etc/squid/db/%s</SourceFile>
+                    <SelectAll>N</SelectAll>
+                    <Multiple>Y</Multiple>
+                </destination>
+                <blacklistdomains type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9.:,-]){0,}/</mask>
+                    <ValidationMessage>Please enter ip addresses or domain names here</ValidationMessage>
+                </blacklistdomains>
+                <whitelistdomains type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9.:,-]){0,}/</mask>
+                    <ValidationMessage>Please enter ip addresses or domain names here</ValidationMessage>
+                </whitelistdomains>
+                <blacklistregex type="CSVListField">
+                    <Required>N</Required>
+                </blacklistregex>
+                <whitelistregex type="CSVListField">
+                    <Required>N</Required>
+                </whitelistregex>
+                <urlerror type="TextField">
+                    <mask>/^http\:\/\/([a-zA-Z0-9.:,-]){0,}/</mask>
+                    <Required>N</Required>
+                    <ValidationMessage>This does not look like a valid url. The http:// must be in URL</ValidationMessage>
+                </urlerror>
+                <description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Enter a description.</ValidationMessage>
+                    <Required>Y</Required>
+                </description>
+            </rule>
+        </rules>
+    </items>
+</model>

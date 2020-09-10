@@ -1,0 +1,34 @@
+<form>
+    <tab id="webfilter-general" description="Settings">
+        <subtab id="webfilter-general-settings" description="General">
+            <field>
+                <id>webfilter.general.enabled</id>
+                <label>Enable Web Filter</label>
+                <type>checkbox</type>
+                <help>Enable SquidGuard.</help>
+            </field>
+            <field>
+                <id>webfilter.general.sguardprocs</id>
+                <label>Number of processes</label>
+                <type>text</type>
+                <help>Max number of SquidGuard processes to spawn (between 5-50)</help>
+            </field>
+            <field>
+                <id>webfilter.general.categoriesurl</id>
+                <label>Blacklist Categories URL</label>
+                <type>text</type>
+                <help>URL to fetch the blacklist categories</help>
+            </field>
+            <field>
+                <id>webfilter.general.categories</id>
+                <label>Enabled Categories</label>
+                <type>text</type>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <nbDropdownElements>300</nbDropdownElements>
+                <help><![CDATA[Select categories to enable in rules.]]></help>
+            </field>        
+        </subtab>
+    </tab>
+    <activetab>webfilter-general-settings</activetab>
+</form>

@@ -1,0 +1,10 @@
+webfilter.conf:/usr/local/etc/webfilter/webfilter.conf
+squidGuard.conf:/usr/local/etc/squid/squidGuard.conf
+ssl-options.conf:/usr/local/etc/squid/pre-auth/ssl-options.conf
+squidGuard-plugin.conf:/usr/local/etc/squid/post-auth/squidGuard-plugin.conf
+blacklist.index:/usr/local/etc/squid/db/Blacklist/blacklist.index
+whitelist.index:/usr/local/etc/squid/db/Whitelist/whitelist.index
+blacklist.index:/usr/local/etc/squid/db/Blacklist/blacklist.index
+blacklistregex.index:/usr/local/etc/squid/db/Blacklist/blacklistregex.index
+whitelist.index:/usr/local/etc/squid/db/Whitelist/whitelist.index
+whitelistregex.index:/usr/local/etc/squid/db/Whitelist/whitelistregex.index
