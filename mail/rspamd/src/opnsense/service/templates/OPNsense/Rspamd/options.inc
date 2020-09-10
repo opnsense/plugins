@@ -3,5 +3,5 @@
 #
 
 dns {
-         nameserver = [{{ """ + ("','".join(OPNsense.Rspamd.general.nameserver.split(','))) + """ }}];
+         nameserver = [{{ "'" + ("','".join(OPNsense.Rspamd.general.nameserver.split(','))) + "'" }}];
 }
