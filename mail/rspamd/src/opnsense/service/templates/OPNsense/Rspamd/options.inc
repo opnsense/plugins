@@ -2,10 +2,6 @@
 # the next update.
 #
 
-{% if helpers.exists('OPNsense.Rspamd.general.enabled') and OPNsense.Rspamd.general.enabled == '1' %}
-
 dns {
          nameserver = [{{ """ + ("','".join(OPNsense.Rspamd.general.nameserver.split(','))) + """ }}];
 }
-
-{% endif %}
