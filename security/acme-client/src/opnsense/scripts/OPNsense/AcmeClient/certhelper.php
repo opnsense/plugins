@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2019 Frank Wall
+ * Copyright (C) 2017-2020 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -93,6 +93,10 @@ switch ($options["a"]) {
         echo json_encode(array('status' => $result));
         break;
     case 'revoke':
+        $result = cert_action_validator($options["c"]);
+        echo json_encode(array('status' => $result));
+        break;
+    case 'automation':
         $result = cert_action_validator($options["c"]);
         echo json_encode(array('status' => $result));
         break;
@@ -217,6 +221,19 @@ function cert_action_validator($opt_cert_id)
                         log_error("AcmeClient: failed to remove the private key and reset certificate " . (string)$certObj->name);
                         return(1);
                     }
+                }
+
+                // Only run certificate automation
+                if ($options["a"] == "automation") {
+                    // Check if the cert was successul issued
+                    if (!empty((string)$certObj->statusCode) and (string)$certObj->statusCode == '200') {
+                        log_error("AcmeClient: ready to run automation for certificate: " . (string)$certObj->name);
+                        $restart_certs[] = $certObj;
+                    } else {
+                        log_error("AcmeClient: failed to run automation, certificate status not OK: " . (string)$certObj->name);
+                        return(1);
+                    }
+                    break; // Stop after first match.
                 }
 
                 // Make sure we found the configured validation method
@@ -647,6 +664,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
         // Setup DNS hook:
         // Set required env variables, write secrets to files, etc.
         switch ((string)$valObj->dns_service) {
+            case 'dns_1984hosting':
+                $proc_env['One984HOSTING_Username'] = (string)$valObj->dns_1984hosting_user;
+                $proc_env['One984HOSTING_Password'] = (string)$valObj->dns_1984hosting_password;
+                break;
             case 'dns_acmedns':
                 $proc_env['ACMEDNS_USERNAME'] = (string)$valObj->dns_acmedns_user;
                 $proc_env['ACMEDNS_PASSWORD'] = (string)$valObj->dns_acmedns_password;
@@ -825,6 +846,10 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 $proc_env['ISPC_Api'] = (string)$valObj->dns_ispconfig_api;
                 $proc_env['ISPC_Api_Insecure'] = (string)$valObj->dns_ispconfig_insecure;
                 break;
+            case 'dns_joker':
+                $proc_env['JOKER_USERNAME'] = (string)$valObj->dns_joker_username;
+                $proc_env['JOKER_PASSWORD'] = (string)$valObj->dns_joker_password;
+                break;
             case 'dns_kinghost':
                 $proc_env['KINGHOST_username'] = (string)$valObj->dns_kinghost_username;
                 $proc_env['KINGHOST_Password'] = (string)$valObj->dns_kinghost_password;
@@ -847,6 +872,11 @@ function run_acme_validation($certObj, $valObj, $acctObj)
                 break;
             case 'dns_linode':
                 $proc_env['LINODE_API_KEY'] = (string)$valObj->dns_linode_key;
+                // Linode can take up to 15 to update DNS records
+                $acme_hook_options[] = "--dnssleep 960";
+                break;
+            case 'dns_linode_v4':
+                $proc_env['LINODE_V4_API_KEY'] = (string)$valObj->dns_linode_v4_key;
                 // Linode can take up to 15 to update DNS records
                 $acme_hook_options[] = "--dnssleep 960";
                 break;

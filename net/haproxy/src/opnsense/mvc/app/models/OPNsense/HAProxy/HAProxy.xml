@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>2.8.0</version>
+    <version>2.10.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -199,6 +199,17 @@
                         <x-3>redispatch on the 3rd retry prior to the last retry</x-3>
                     </OptionValues>
                 </redispatch>
+                <init_addr type="OptionField">
+                    <Required>N</Required>
+                    <default>last,libc</default>
+                    <Multiple>Y</Multiple>
+                    <Sorted>Y</Sorted>
+                    <OptionValues>
+                        <last>last</last>
+                        <libc>libc</libc>
+                        <none>none</none>
+                    </OptionValues>
+                </init_addr>
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
@@ -792,6 +803,18 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedServers>
+                <linkedResolver type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>resolvers.resolver</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related resolver not found</ValidationMessage>
+                    <multiple>N</multiple>
+                    <Required>N</Required>
+                </linkedResolver>
                 <source type="TextField">
                     <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
@@ -1829,6 +1852,7 @@
                         <http-request_replace-header>http-request header replace</http-request_replace-header>
                         <http-request_replace-value>http-request header replace value</http-request_replace-value>
                         <http-request_set-path>http-request set-path</http-request_set-path>
+                        <http-request_set-var>http-request set-var</http-request_set-var>
                         <http-response_allow>http-response allow</http-response_allow>
                         <http-response_deny>http-response deny</http-response_deny>
                         <http-response_lua>http-response lua script</http-response_lua>
@@ -1837,7 +1861,8 @@
                         <http-response_del-header>http-response header delete</http-response_del-header>
                         <http-response_replace-header>http-response header replace</http-response_replace-header>
                         <http-response_replace-value>http-response header replace value</http-response_replace-value>
-                        <http-response_set-status>Set HTTP status code in response</http-response_set-status>
+                        <http-response_set-status>http-response set-status</http-response_set-status>
+                        <http-response_set-var>http-response set-var</http-response_set-var>
                         <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
                         <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
                         <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
@@ -1934,6 +1959,25 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_request_set_path>
+                <http_request_set_var_scope type="OptionField">
+                    <Required>N</Required>
+                    <default>txn</default>
+                    <OptionValues>
+                        <proc>variable is shared with the whole process</proc>
+                        <sess>variable is shared with the whole session</sess>
+                        <txn>variable is shared with the transaction (request/response)</txn>
+                        <req>variable is shared only during request processing</req>
+                        <res>variable is shared only during response processing</res>
+                    </OptionValues>
+                </http_request_set_var_scope>
+                <http_request_set_var_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_set_var_name>
+                <http_request_set_var_expr type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_request_set_var_expr>
                 <http_response_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
@@ -1984,6 +2028,25 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_response_set_status_reason>
+                <http_response_set_var_scope type="OptionField">
+                    <Required>N</Required>
+                    <default>txn</default>
+                    <OptionValues>
+                        <proc>variable is shared with the whole process</proc>
+                        <sess>variable is shared with the whole session</sess>
+                        <txn>variable is shared with the transaction (request/response)</txn>
+                        <req>variable is shared only during request processing</req>
+                        <res>variable is shared only during response processing</res>
+                    </OptionValues>
+                </http_response_set_var_scope>
+                <http_response_set_var_name type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_set_var_name>
+                <http_response_set_var_expr type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </http_response_set_var_expr>
                 <tcp_request_content_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
@@ -2179,6 +2242,10 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </members>
+                <add_userlist type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </add_userlist>
             </group>
         </groups>
         <users>
@@ -2438,5 +2505,57 @@
                 </cpu_id>
             </cpu>
         </cpus>
+        <resolvers>
+            <resolver type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <nameservers type="CSVListField">
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or 192.168.1.1:53.</ValidationMessage>
+                </nameservers>
+                <parse_resolv_conf type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </parse_resolv_conf>
+                <resolve_retries type="IntegerField">
+                    <default>3</default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 100000.</ValidationMessage>
+                    <Required>N</Required>
+                </resolve_retries>
+                <timeout_resolve type="TextField">
+                    <default>1s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </timeout_resolve>
+                <timeout_retry type="TextField">
+                    <default>1s</default>
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </timeout_retry>
+            </resolver>
+        </resolvers>
     </items>
 </model>

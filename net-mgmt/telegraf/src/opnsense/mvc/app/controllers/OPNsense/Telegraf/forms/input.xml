@@ -111,4 +111,16 @@
         <type>checkbox</type>
         <help>Enable the collection of ZFS statistics.</help>
     </field>
+    <field>
+        <id>input.ntpq</id>
+        <label>NTPQ</label>
+        <type>checkbox</type>
+        <help>Enable the collection of NTP query metrics.</help>
+    </field>
+    <field>
+        <id>input.ntpq_dns_lookup</id>
+        <label>NTPQ DNS Lookup</label>
+        <type>checkbox</type>
+        <help>Can increase metric gather times.</help>
+    </field>
 </form>

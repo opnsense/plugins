@@ -2,7 +2,7 @@
 
 (Partially duplicates code from opnsense_bootgrid_plugin.js.)
 
-Copyright (C) 2017 Frank Wall
+Copyright (C) 2017-2020 Frank Wall
 Copyright (C) 2015 Deciso B.V.
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
@@ -48,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
             sign:'/api/acmeclient/certificates/sign/',
             revoke:'/api/acmeclient/certificates/revoke/',
             removekey:'/api/acmeclient/certificates/removekey/',
+            automation:'/api/acmeclient/certificates/automation/',
         };
 
         var gridopt = {
@@ -61,6 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-automation\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
                         "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
@@ -374,6 +376,26 @@ POSSIBILITY OF SUCH DAMAGE.
                     }, 'danger');
                 } else {
                     console.log("[grid] action removekey missing")
+                }
+            });
+
+            // run automation
+            // TODO: this should block other acme.sh actions
+            grid_certificates.find(".command-automation").on("click", function(e)
+            {
+                if (gridParams['automation'] != undefined) {
+                    var uuid=$(this).data("row-id");
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('Rerun all automations for the selected certificate?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['automation'] + uuid,
+                            sendData={},callback=function(data,status){
+                                // reload grid after sign
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    });
+                } else {
+                    console.log("[grid] action automation missing")
                 }
             });
 
