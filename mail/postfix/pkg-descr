@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.16
+
+* Add support for header_checks (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+
 1.15
 
 * Fix Log viewer
