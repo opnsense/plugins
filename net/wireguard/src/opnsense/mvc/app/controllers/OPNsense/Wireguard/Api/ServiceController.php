@@ -30,8 +30,10 @@
 
 namespace OPNsense\Wireguard\Api;
 
+require_once('config.inc');
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 use OPNsense\Wireguard\General;
 
 /**
@@ -144,18 +146,41 @@ class ServiceController extends ApiControllerBase
 
             if ($general->enabled->__toString() != 1) {
                 $backend->configdRun("wireguard stop");
-            } else {
-                $backend->configdRun('template reload OPNsense/Wireguard');
+            }
+
+            $backend->configdRun('template reload OPNsense/Wireguard');
+
+            if ($general->enabled->__toString() == 1) {
                 $runStatus = $this->statusAction();
-                if ($runStatus['status'] == 'running') {
+                if (!$this->hasServerChange($backend) && $runStatus['status'] == 'running') {
                     $backend->configdRun("wireguard reload");
                 } else {
-                    $backend->configdRun("wireguard start");
+                    $backend->configdRun("wireguard restart");
                 }
             }
             return array("status" => "ok");
         } else {
             return array("status" => "failed");
         }
+    }
+
+    private function hasServerChange($backend)
+    {
+        return $this->countConfiguredServers() != $this->runningServers($backend);
+    }
+
+    private function countConfiguredServers()
+    {
+        $config = Config::getInstance()->toArray();
+        if (!isset($config['OPNsense']['wireguard']['server']['servers'])) {
+            return 0;
+        }
+        return count($config['OPNsense']['wireguard']['server']['servers']['server']);
+    }
+
+    private function runningServers($backend)
+    {
+        $showconf = $backend->configdRun("wireguard showconf");
+        return substr_count($showconf, 'interface:');
     }
 }
