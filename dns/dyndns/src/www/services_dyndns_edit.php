@@ -370,7 +370,7 @@ include("head.inc");
                       <?= gettext("Verify SSL peer") ?>
                     </td>
                   </tr>
-                  <tr class ="opt_field type_custom type_route53 type_azure type_default">
+                  <tr class ="opt_field type_custom type_route53 type_azure type_netcup type_default">
                     <td><a id="help_for_username" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Username") ?></td>
                     <td>
                       <input name="username" type="text" id="username" value="<?= $pconfig['username'] ?>" />
