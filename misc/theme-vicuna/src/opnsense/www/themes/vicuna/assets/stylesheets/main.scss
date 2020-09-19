@@ -6202,7 +6202,7 @@ a:focus {
     }
 
     &.active > a {
-      color: #FFF;
+      color: #D77610;
       background-color: #393939;
       border-bottom-color: transparent;
       cursor: pointer;
@@ -6210,7 +6210,7 @@ a:focus {
       filter: alpha(opacity = 100);
 
       &:hover, &:focus {
-        color: #FFF;
+        color: #D77610;
         background-color: #393939;
         border-bottom-color: transparent;
         cursor: pointer;
@@ -10743,7 +10743,11 @@ ul.jqtree-tree {
   }
 }
 
-.interface-table, .modal-side-settings {
+.interface-table {
+  background-color: #191919 !important;
+}
+
+.modal-side-settings {
   background-color: #172229 !important;
 }
 

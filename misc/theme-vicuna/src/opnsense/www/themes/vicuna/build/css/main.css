@@ -3605,7 +3605,7 @@ tbody.collapse.in {
 	  cursor:pointer;}
 	.nav-tabs > li > a:hover {opacity: 0.8; filter: alpha(opacity=80);}
     .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-      color: #FFF;
+      color: #D77610;
       background-color: #393939;
       border-bottom-color: transparent;
       cursor: pointer;
@@ -6561,7 +6561,7 @@ ul.jqtree-tree .jqtree-title {
 }
 
 .interface-table {
-  background-color: #172229 !important;
+  background-color: #191919 !important;
 }
 
 .modal-side-settings {
