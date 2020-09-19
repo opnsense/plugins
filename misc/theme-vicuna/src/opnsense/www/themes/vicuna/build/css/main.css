@@ -6543,3 +6543,31 @@ label.btn.au-target {
 .ui-resizable-e {
   border-right: 1px solid #191919 !important;
 }
+
+.phase1_tr td {
+  background-color: #315a71 !important;
+}
+
+ul.jqtree-tree .jqtree-toggler:hover {
+  color:#dd630d !important;
+}
+
+ul.jqtree-tree .jqtree-toggler {
+  color:#fff !important;
+}
+
+ul.jqtree-tree .jqtree-title {
+  color:#9d9d9d !important;
+}
+
+.interface-table {
+  background-color: #172229 !important;
+}
+
+.modal-side-settings {
+  background-color: #172229 !important;
+}
+
+[role="listbox"] {
+  border: 1px solid #191919 !important;
+}
