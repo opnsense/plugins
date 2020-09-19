@@ -6561,7 +6561,8 @@ ul.jqtree-tree .jqtree-title {
 }
 
 .interface-table {
-  background-color: #191919 !important;
+  background-color: #172229 !important;
+  border: 0.1px solid #191919 !important;
 }
 
 .modal-side-settings {
