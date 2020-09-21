@@ -6462,7 +6462,7 @@ h3:hover, h3:focus {
   border: 1px solid #191919;
 }
 
-  /*additional extensions for sensei*/
+  /*additional extensions for sensei and more*/
 
 .preloader-wrapper {
   background-color: #202020 !important;
@@ -6586,4 +6586,32 @@ label.btn.au-target {
 
 .metric-table tbody > tr:last-child > td, .list-table tbody > tr:last-child > td {
   border-bottom: 1px solid #555 !important;
+}
+
+.phase1_tr td {
+  background-color: #262626 !important;
+}
+
+ul.jqtree-tree .jqtree-toggler:hover {
+  color:#dd630d !important;
+}
+
+ul.jqtree-tree .jqtree-toggler {
+  color:#fff !important;
+}
+
+ul.jqtree-tree .jqtree-title {
+  color:#9d9d9d !important;
+}
+
+.interface-table {
+  background-color: #242424 !important;
+}
+
+.modal-side-settings {
+  background-color: #2f2f2f !important;
+}
+
+[role="listbox"] {
+  border: 1px solid #191919 !important;
 }
