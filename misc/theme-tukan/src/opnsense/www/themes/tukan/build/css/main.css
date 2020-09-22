@@ -4334,7 +4334,11 @@ a.thumbnail.active {
   padding: 15px;
   margin-bottom: 20px;
   border: 1px solid #b0b0b0;
-  border-radius: 3px; }
+  border-radius: 3px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30);
+}
+
   .alert h4 {
     margin-top: 0;
     color: inherit; }
@@ -4368,7 +4372,11 @@ a.thumbnail.active {
 .alert-info {
 	background-color: #fbfbfb;
 	border-color: #a5a5a5;
-	color: #000;}
+	color: #000;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30);
+}
+
   .alert-info hr {
     border-top-color: #DA4829; }
   .alert-info .alert-link {
@@ -5723,17 +5731,19 @@ body {
   margin-left: 20px;
   margin-right: 20px;
   border: 1px solid #b0b0b0;
-  border-radius: 3px;
-  min-height: 51px;
+  border-radius: 0px;
+  min-height: 47px;
   height:auto;
-  padding: 8px 20px 7px 20px;
+  padding: 6px 14px 5px 14px;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.30); }
 
 .page-content-head, .content-box-head {
-  padding-bottom: 10px;
-  padding-top: 17px;
-  color:#000;}
+  padding-bottom: 2px;
+  padding-top: 10px;
+  color:#000;
+}
+
   .page-content-head .navbar-nav, .content-box-head .navbar-nav {
     width: 100%; }
   .page-content-head h1, .content-box-head h1, .page-content-head h2, .content-box-head h2, .page-content-head h3, .content-box-head h3 {
@@ -5742,7 +5752,8 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 15px 0 21px; }
+  padding: 9px 0px 21px 0px;
+}
 
 .page-side {
   background: #172c38;
