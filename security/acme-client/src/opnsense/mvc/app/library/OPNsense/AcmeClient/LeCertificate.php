@@ -28,8 +28,9 @@
 
 namespace OPNsense\AcmeClient;
 
-// Load legacy functions for import()
-require_once("certs.inc");
+// Load legacy functions
+require_once("certs.inc"); // used in import()
+require_once("util.inc"); // for exec_safe()
 
 use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
@@ -436,7 +437,7 @@ class LeCertificate extends LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--remove '
           . implode(' ', $this->acme_args) . ' '
-          . '--domain ' . (string)$this->config->name;
+          . exec_safe('--domain %s', (string)$this->config->name);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -527,7 +528,7 @@ class LeCertificate extends LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--revoke '
           . implode(' ', $this->acme_args) . ' '
-          . '--domain ' . (string)$this->config->name . ' '
+          . exec_safe('--domain %s', (string)$this->config->name) . ' '
           . "--accountconf ${account_conf_file}";
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);

@@ -34,6 +34,9 @@ use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
 use OPNsense\AcmeClient\LeUtils;
 
+// Load legacy functions
+require_once("util.inc"); // for exec_safe()
+
 /**
  * LeValidation stub file, contains shared logic for all validation methods.
  * @package OPNsense\AcmeClient
@@ -229,7 +232,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->cert_challengealias = $challengealias;
 
         // Main domain for acme
-        $this->acme_args[] = '--domain ' . $certname;
+        $this->acme_args[] = exec_safe('--domain %s', $certname);
 
         // Main domain: Use DNS alias mode for domain validation?
         // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
@@ -238,14 +241,14 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                 case 'automatic':
                     $name = '_acme-challenge.' . ltrim((string)$this->cert_name, '*.');
                     if ($dst = dns_get_record($name, DNS_CNAME)) {
-                        $this->acme_args[] = '--domain-alias ' . $dst[0]['target'];
+                        $this->acme_args[] = exec_safe('--domain-alias %s', $dst[0]['target']);
                     }
                     break;
                 case 'domain':
-                    $this->acme_args[] = '--domain-alias ' . (string)$this->cert_domainalias;
+                    $this->acme_args[] = exec_safe('--domain-alias %s', (string)$this->cert_domainalias);
                     break;
                 case 'challenge':
-                    $this->acme_args[] = '--challenge-alias ' . (string)$this->cert_challengealias;
+                    $this->acme_args[] = exec_safe('--challenge-alias %s', (string)$this->cert_challengealias);
                     break;
             }
         }
@@ -253,7 +256,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // altNames
         if (!empty((string)$this->cert_altnames)) {
             foreach (explode(",", (string)$this->cert_altnames) as $altname) {
-                $this->acme_args[] = "--domain ${altname}";
+                $this->acme_args[] = exec_safe('--domain %s', $altname);
 
                 // altNames: Use DNS alias mode for domain validation?
                 // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
@@ -262,14 +265,14 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                         case 'automatic':
                             $name = "_acme-challenge." . ltrim($altname, '*.');
                             if ($dst = dns_get_record($name, DNS_CNAME)) {
-                                $this->acme_args[] = '--domain-alias ' . $dst[0]['target'];
+                                $this->acme_args[] = exec_safe('--domain-alias %s', $dst[0]['target']);
                             }
                             break;
                         case 'domain':
-                            $this->acme_args[] = '--domain-alias ' . (string)$this->cert_domainalias;
+                            $this->acme_args[] = exec_safe('--domain-alias %s', (string)$this->cert_domainalias);
                             break;
                         case 'challenge':
-                            $this->acme_args[] = '--challenge-alias ' . (string)$this->cert_challengealias;
+                            $this->acme_args[] = exec_safe('--challenge-alias %s', (string)$this->cert_challengealias);
                             break;
                     }
                 }
