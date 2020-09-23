@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.17
+
+* Fix templating for BGP AS-Path Lists (by Steve Buzonas)
+
 1.16
 
 * Fix templating for router IDs in OSPF3 daemon
