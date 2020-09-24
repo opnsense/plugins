@@ -46,14 +46,12 @@
                     <Required>Y</Required>
                 </connect_port>
                 <protocol type="OptionField">
-                    <default>none</default>
                     <OptionValues>
-                        <none>not set [default]</none>
                         <imap>IMAP</imap>
                         <pop3>POP3</pop3>
                         <smtp>SMTP</smtp>
                     </OptionValues>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </protocol>
                 <cacert type="CertificateField">
                     <Required>N</Required>
