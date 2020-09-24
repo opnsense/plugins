@@ -30,6 +30,12 @@
         <help>The port to forward traffic to.</help>
     </field>
     <field>
+        <id>service.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>The application protocol to negotiate TLS.</help>
+    </field>
+    <field>
         <id>service.servercert</id>
         <label>Certificate</label>
         <type>dropdown</type>

@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>
         Stunnel TLS encryption proxy
     </description>
@@ -45,6 +45,14 @@
                     <ValidationMessage>port needs to be an integer value between 1 and 65535</ValidationMessage>
                     <Required>Y</Required>
                 </connect_port>
+                <protocol type="OptionField">
+                    <OptionValues>
+                        <imap>IMAP</imap>
+                        <pop3>POP3</pop3>
+                        <smtp>SMTP</smtp>
+                    </OptionValues>
+                    <Required>N</Required>
+                </protocol>
                 <cacert type="CertificateField">
                     <Required>N</Required>
                     <multiple>Y</multiple>
