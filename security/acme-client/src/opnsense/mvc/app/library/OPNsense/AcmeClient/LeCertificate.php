@@ -221,7 +221,7 @@ class LeCertificate extends LeCommon
         // Check if cert was previously imported
         if (!empty((string)$this->config->certRefId)) {
             // Check if the previously imported certificate can still be found
-            foreach (Config::getInstance()->object()->ca as $cfgCert) {
+            foreach (Config::getInstance()->object()->cert as $cfgCert) {
                 // Check if IDs match
                 if ((string)$this->config->certRefId == (string)$cfgCert->refid) {
                     $cert_found = true;
