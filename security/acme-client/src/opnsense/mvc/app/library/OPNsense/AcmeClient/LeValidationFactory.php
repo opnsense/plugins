@@ -84,7 +84,7 @@ class LeValidationFactory
                 }
             }
         }
-        LeUtils::log_error("challenge type not supported: " . (string)$objVal->method . " (${uuid})");
+        LeUtils::log_error("challenge type not supported: " . (string)$search_name . " (${uuid})");
         return null;
     }
 }
