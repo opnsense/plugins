@@ -309,15 +309,18 @@ class updatedns
         $this->_dnsZoneID = $dnsZoneID;
         $this->_dnsResourceID = $dnsResourceID;
         $this->_dnsTTL = $dnsTTL;
-        $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
+        $this->_if = dyndns_failover_interface($dnsIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
         $this->_checkIP();
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
-        $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, $this->_useIPv6 ? 'inet6' : 'all');
+        $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
         }
-        $this->_dnsRequestIfIP = $this->_useIPv6 ? get_interface_ipv6($this->_dnsRequestIf) : get_interface_ip($this->_dnsRequestIf);
+        $this->_dnsRequestIfIP = ($this->_useIPv6 && !$this->_curlIpresolveV4) ? get_interface_ipv6($this->_dnsRequestIf) : get_interface_ip($this->_dnsRequestIf);
+        if ($this->_dnsVerboseLog) {
+            log_error("Dynamic DNS ({$this->_dnsHost}): get IP of {$this->_dnsRequestIf} to send update from. found {$this->_dnsRequestIfIP}");
+        }
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
         $this->_forceUpdateNeeded = $forceUpdate;
