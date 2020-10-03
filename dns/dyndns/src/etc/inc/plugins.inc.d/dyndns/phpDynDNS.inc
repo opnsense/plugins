@@ -26,6 +26,7 @@
  *    - DNS-O-Matic (dnsomatic.com)
  *    - Custom dynamic DNS (any URL)
  *    - Custom dynamic DNS IPv6 (any URL)
+ *    - Custom dynamic DNS IPv4 + IPv6 (any URL)
  *    - Cloudflare (www.cloudflare.com)
  *    - Cloudflare IPv6 (www.cloudflare.com)
  *    - Cloudflare API token (www.cloudflare.com)
@@ -132,6 +133,7 @@ class updatedns
     var $_dnsPass;
     var $_dnsHost;
     var $_dnsIP;
+    var $_dnsIPv6;
     var $_dnsWildcard;
     var $_dnsMX;
     var $_dnsBackMX;
@@ -153,6 +155,7 @@ class updatedns
     var $_dnsMaxCacheAgeDays;
     var $_dnsDummyUpdateDone;
     var $_forceUpdateNeeded;
+    var $_useIPv4;
     var $_useIPv6;
 
     /*
@@ -232,6 +235,7 @@ class updatedns
                 break;
             case 'custom':
             case 'custom-v6':
+            case 'custom-v4-v6':
                 if (!$dnsUpdateURL) {
                     $this->_error(7);
                 }
@@ -281,7 +285,7 @@ class updatedns
                 }
                 break;
         }
-
+        /* Set usage of IPv4 and IPv6 */
         switch ($dnsService) {
             case 'azurev6':
             case 'cloudflare-v6':
@@ -293,10 +297,17 @@ class updatedns
             case 'regfish-v6':
             case 'route53-v6':
             case 'cloudflare-token-v6':
+                $this->_useIPv4 = false;
+                $this->_useIPv6 = true;
+                break;
+            case 'custom-v4-v6':
+                $this->_useIPv4 = true;
                 $this->_useIPv6 = true;
                 break;
             default:
+                $this->_useIPv4 = true;
                 $this->_useIPv6 = false;
+                break;
         }
         $this->_dnsService = strtolower($dnsService);
         $this->_dnsUser = $dnsUser;
@@ -310,7 +321,14 @@ class updatedns
         $this->_dnsResourceID = $dnsResourceID;
         $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
-        $this->_checkIP();
+
+        // Get current WAN IP(s) and ensure that we were able to lookup the IP
+        if (!$this->_checkIP()) {
+            log_error("Dynamic DNS ({$this->_dnsHost}): There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.");
+            unlock($dyndnslck);
+            return;
+        }
+
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
         $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
@@ -324,13 +342,6 @@ class updatedns
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
         $this->_forceUpdateNeeded = $forceUpdate;
-
-        // Ensure that we were able to lookup the IP
-        if (!is_ipaddr($this->_dnsIP)) {
-            log_error("Dynamic DNS ({$this->_dnsHost}) There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.");
-            unlock($dyndnslck);
-            return;
-        }
 
         $this->_debugID = rand(1000000, 9999999);
 
@@ -348,6 +359,7 @@ class updatedns
                 case 'cloudflare-token-v6':
                 case 'custom':
                 case 'custom-v6':
+                case 'custom-v4-v6':
                 case 'dhs':
                 case 'digitalocean':
                 case 'gandi-livedns':
@@ -797,6 +809,22 @@ class updatedns
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
                 $server = str_replace("%IP%", $this->_dnsIP, $this->_dnsUpdateURL);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                break;
+            case 'custom-v4-v6':
+                if ($this->_curlIpresolveV4) {
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                }
+                if ($this->_curlSslVerifypeer) {
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                } else {
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                }
+                if ($this->_dnsUser != '') {
+                    curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
+                }
+                $server = str_replace("%IP%", $this->_dnsIP, $this->_dnsUpdateURL);
+                $server = str_replace("%IPv6%", $this->_dnsIPv6, $server);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'cloudflare':
@@ -1406,11 +1434,13 @@ class updatedns
                 break;
             case 'custom':
             case 'custom-v6':
+            case 'custom-v4-v6':
                 $successful_update = false;
                 if ($this->_dnsResultMatch == "") {
                     $successful_update = true;
                 } else {
                     $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIP, $this->_dnsResultMatch);
+                    $this->_dnsResultMatch = str_replace("%IPv6%", $this->_dnsIPv6, $this->_dnsResultMatch);
                     $matches = preg_split("/(?<!\\\\)\\|/", $this->_dnsResultMatch);
                     foreach ($matches as $match) {
                         $match = str_replace("\\|", "|", $match);
@@ -1421,9 +1451,9 @@ class updatedns
                     unset($matches);
                 }
                 if ($successful_update == true) {
-                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                    $status = "Dynamic DNS: (Success) IP address updated successfully!";
                 } else {
-                    $status = "Dynamic DNS: (Error) Result did not match.";
+                    $status = "Dynamic DNS: (Error) Result did not match. PAYLOAD: {$data}";
                 }
                 break;
             case 'cloudflare':
@@ -1652,19 +1682,19 @@ class updatedns
         }
 
         if ($successful_update == true) {
-            /* Write WAN IP to cache file */
-            $wan_ip = $this->_checkIP();
-            if ($this->_useIPv6 == false && $wan_ip > 0) {
+            /* Write WAN IPv4 to cache file */
+            if ($this->_useIPv4 && is_ipaddrv4($this->_dnsIP)) {
                 $currentTime = time();
-                log_error("Dynamic DNS: updating cache file {$this->_cacheFile}: {$wan_ip}");
-                @file_put_contents($this->_cacheFile, "{$wan_ip}|{$currentTime}");
+                log_error("Dynamic DNS: updating IPv4 cache file {$this->_cacheFile}: {$this->_dnsIP}");
+                @file_put_contents($this->_cacheFile, "{$this->_dnsIP}|{$currentTime}");
             } else {
                 @unlink($this->_cacheFile);
             }
-            if ($this->_useIPv6 == true && $wan_ip > 0) {
+            /* Write WAN IPv6 to cache file */
+            if ($this->_useIPv6 && is_ipaddrv6($this->_dnsIPv6)) {
                 $currentTime = time();
-                log_error("Dynamic DNS: updating cache file {$this->_cacheFile_v6}: {$wan_ip}");
-                @file_put_contents($this->_cacheFile_v6, "{$wan_ip}|{$currentTime}");
+                log_error("Dynamic DNS: updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
+                @file_put_contents($this->_cacheFile_v6, "{$this->_dnsIPv6}|{$currentTime}");
             } else {
                 @unlink($this->_cacheFile_v6);
             }
@@ -1728,41 +1758,37 @@ class updatedns
     function _detectChange()
     {
         $currentTime = time();
+        $log_error = "";
+        $initial = false;
 
-        $wan_ip = $this->_checkIP();
-        if ($wan_ip == 0) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): Current WAN IP could not be determined, skipping update process.");
-            return false;
-        }
-        $log_error = "Dynamic DNS ({$this->_dnsHost}): Current WAN IP: {$wan_ip} ";
-
-        if ($this->_useIPv6 == true) {
-            if (file_exists($this->_cacheFile_v6)) {
-                $contents = file_get_contents($this->_cacheFile_v6);
-                list($cacheIP,$cacheTime) = explode('|', $contents);
-                $this->_debug($cacheIP . '/' . $cacheTime);
-                $initial = false;
-                $log_error .= "Cached IPv6: {$cacheIP} ";
-            } else {
-                $cacheIP = '::';
-                @file_put_contents($this->_cacheFile, "::|{$currentTime}");
-                $cacheTime = $currentTime;
-                $initial = true;
-                $log_error .= "No Cached IPv6 found.";
-            }
-        } else {
+        if ($this->_useIPv4) {
+            $log_error .= "Dynamic DNS ({$this->_dnsHost}): Current WAN IPv4: {$this->_dnsIP}";
             if (file_exists($this->_cacheFile)) {
                 $contents = file_get_contents($this->_cacheFile);
-                list($cacheIP,$cacheTime) = explode('|', $contents);
-                $this->_debug($cacheIP . '/' . $cacheTime);
-                $initial = false;
-                $log_error .= "Cached IP: {$cacheIP} ";
+                list($cacheIPv4,$cacheTimeIPv4) = explode('|', $contents);
+                $this->_debug($cacheIPv4 . '/' . $cacheTime);
+                $log_error .= "Cached IPv4: {$cacheIPv4} ";
             } else {
-                $cacheIP = '0.0.0.0';
+                $cacheIPv4 = '0.0.0.0';
                 @file_put_contents($this->_cacheFile, "0.0.0.0|{$currentTime}");
-                $cacheTime = $currentTime;
+                $cacheTimeIPv4 = $currentTime;
                 $initial = true;
-                $log_error .= "No Cached IP found.";
+                $log_error .= "No Cached IPv4 found.";
+            }
+        }
+        if ($this->_useIPv6) {
+            $log_error .= "Dynamic DNS ({$this->_dnsHost}): Current WAN IPv6: {$this->_dnsIPv6}";
+            if (file_exists($this->_cacheFile_v6)) {
+                $contents = file_get_contents($this->_cacheFile_v6);
+                list($cacheIPv6,$cacheTimeIPv6) = explode('|', $contents);
+                $this->_debug($cacheIPv6 . '/' . $cacheTimeIPv6);
+                $log_error .= "Cached IPv6: {$cacheIPv6} ";
+            } else {
+                $cacheIPv6 = '::';
+                @file_put_contents($this->_cacheFile, "::|{$currentTime}");
+                $cacheTimeIPv6 = $currentTime;
+                $initial = true;
+                $log_error .= "No Cached IPv6 found.";
             }
         }
         if ($this->_dnsVerboseLog) {
@@ -1773,17 +1799,21 @@ class updatedns
         $maxCacheAgeSecs = $this->_dnsMaxCacheAgeDays * 24 * 60 * 60;
 
         $needs_updating = false;
+        $update_reason = "";
         /* lets determine if the item needs updating */
-        if ($cacheIP != $wan_ip) {
+        if ($this->_useIPv4 && ($cacheIPv4 != $this->_dnsIP)) {
             $needs_updating = true;
-            $update_reason = "Dynamic DNS: cacheIP != wan_ip.  Updating. ";
-            $update_reason .= "Cached IP: {$cacheIP} WAN IP: {$wan_ip} ";
+            $update_reason .= "Dynamic DNS: Cached IPv4 ({$cacheIPv4}) != WAN IPv4 ({$this->_dnsIP}).  Updating. ";
         }
-        if (($currentTime - $cacheTime) > $maxCacheAgeSecs) {
+        if ($this->_useIPv6 && ($cacheIPv6 != $this->_dnsIPv6)) {
+            $needs_updating = true;
+            $update_reason .= "Dynamic DNS: Cached IPv6 ({$cacheIPv6}) != WAN IPv6 ({$this->_dnsIPv6}).  Updating. ";
+        }
+        if ((($currentTime - $cacheTimeIPv4) > $maxCacheAgeSecs) || (($currentTime - $cacheTimeIPv6) > $maxCacheAgeSecs)) {
             $needs_updating = true;
             $this->_forceUpdateNeeded = true;
-            $update_reason = "Dynamic DNS: More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating. ";
-            $update_reason .= "{$currentTime} - {$cacheTime} > {$maxCacheAgeSecs} ";
+            $update_reason .= "Dynamic DNS: More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating. ";
+            $update_reason .= "{$currentTime} - {$cacheTimeIPv4} > {$maxCacheAgeSecs} or {$currentTime} - {$cacheTimeIPv6} > {$maxCacheAgeSecs} ";
         }
         if ($initial == true) {
             $needs_updating = true;
@@ -1819,21 +1849,44 @@ class updatedns
 
     function _checkIP()
     {
-        $ip_address = get_dyndns_ip($this->_if, $this->_useIPv6 ? 6 : 4);
-        if (!is_ipaddr($ip_address)) {
-            if ($this->_dnsVerboseLog) {
-                log_error("Dynamic DNS ({$this->_dnsHost}): IP address could not be extracted");
-            }
+        $success = false;
 
-            $ip_address = 0;
-        } else {
-            if ($this->_dnsVerboseLog) {
-                log_error("Dynamic DNS ({$this->_dnsHost}): {$ip_address} extracted");
-            }
+        /* fetch and validate IPv4 */
+        if ($this->_useIPv4) {
+            $ipv4_address = get_dyndns_ip($this->_if, 4);
+            if (!is_ipaddrv4($ipv4_address)) {
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 address could not be extracted");
+                }
+            } else {
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 address {$ipv4_address} extracted");
+                }
 
-            $this->_dnsIP = $ip_address;
+                $this->_dnsIP = $ipv4_address;
+                $success = true;
+            }
         }
 
-        return $ip_address;
+        /* fetch and validate IPv6 */
+        if ($this->_useIPv6) {
+            $ipv6_address = get_dyndns_ip($this->_if, 6);
+            if (!is_ipaddrv6($ipv6_address)) {
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 address could not be extracted");
+                }
+
+                $ip_address = 0;
+            } else {
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 address {$ipv6_address} extracted");
+                }
+
+                $this->_dnsIPv6 = $ipv6_address;
+                $success = ($success && true);
+            }
+        }
+
+        return $success;
     }
 }
