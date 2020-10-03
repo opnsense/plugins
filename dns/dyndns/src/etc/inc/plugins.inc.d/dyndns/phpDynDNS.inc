@@ -322,6 +322,12 @@ class updatedns
         $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
 
+        if ($this->_dnsVerboseLog) {
+            log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
+            log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 enabled: {$this->_useIPv4}");
+            log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 enabled: {$this->_useIPv6}");
+        }
+
         // Get current WAN IP(s) and ensure that we were able to lookup the IP
         if (!$this->_checkIP()) {
             log_error("Dynamic DNS ({$this->_dnsHost}): There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.");
@@ -426,7 +432,7 @@ class updatedns
     function _update()
     {
         if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
+            log_error("Dynamic DNS ({$this->_dnsHost}): _update() starting.");
         }
 
         if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
@@ -1211,7 +1217,6 @@ class updatedns
     {
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): _checkStatus() starting.");
-            log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
         }
         $successful_update = false;
         if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' && @curl_error($ch)) {
@@ -1685,7 +1690,9 @@ class updatedns
             /* Write WAN IPv4 to cache file */
             if ($this->_useIPv4 && is_ipaddrv4($this->_dnsIPv4)) {
                 $currentTime = time();
-                log_error("Dynamic DNS: updating IPv4 cache file {$this->_cacheFile_v4}: {$this->_dnsIPv4}");
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS: updating IPv4 cache file {$this->_cacheFile_v4}: {$this->_dnsIPv4}");
+                }
                 @file_put_contents($this->_cacheFile_v4, "{$this->_dnsIPv4}|{$currentTime}");
             } else {
                 @unlink($this->_cacheFile_v4);
@@ -1693,7 +1700,9 @@ class updatedns
             /* Write WAN IPv6 to cache file */
             if ($this->_useIPv6 && is_ipaddrv6($this->_dnsIPv6)) {
                 $currentTime = time();
-                log_error("Dynamic DNS: updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS: updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
+                }
                 @file_put_contents($this->_cacheFile_v6, "{$this->_dnsIPv6}|{$currentTime}");
             } else {
                 @unlink($this->_cacheFile_v6);
@@ -1757,6 +1766,9 @@ class updatedns
      */
     function _detectChange()
     {
+        if ($this->_dnsVerboseLog) {
+            log_error("Dynamic DNS ({$this->_dnsHost}): _detectChange() starting.");
+        }
         $currentTime = time();
         $log_error = "";
         $initial = false;
@@ -1849,6 +1861,9 @@ class updatedns
 
     function _checkIP()
     {
+        if ($this->_dnsVerboseLog) {
+            log_error("Dynamic DNS ({$this->_dnsHost}): _checkIP() starting.");
+        }
         $success = false;
 
         /* fetch and validate IPv4 */
