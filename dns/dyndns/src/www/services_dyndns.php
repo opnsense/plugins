@@ -161,11 +161,12 @@ $main_buttons = array(
                           $cached_ip_s = explode('|', $fdata);
                           $cached_ip = $cached_ip_s[0];
                           echo sprintf(
-                              '<font color="%s">%s</font>',
+                              '<font color="%s">%s</font><br>',
                               $ipaddr != $cached_ip ? 'red' : 'green',
                               htmlspecialchars($cached_ip)
                           );
-                      } elseif (!empty($fdata6)) {
+                      }
+                      if (!empty($fdata6)) {
                           $cached_ipv6_s = explode('|', $fdata6);
                           $cached_ipv6 = $cached_ipv6_s[0];
                           echo sprintf(
@@ -173,7 +174,8 @@ $main_buttons = array(
                               $ipv6addr != $cached_ipv6 ? 'red' : 'green',
                               htmlspecialchars($cached_ipv6)
                           );
-                      } else {
+                      }
+                      if (empty($fdata) && empty($fdata6)) {
                           echo sprintf('<span class="text-muted">%s</span>', gettext('N/A'));
                       }?>
                       </td>

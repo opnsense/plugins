@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $reqdfieldsn[] = gettext('Resource Id');
         $reqdfields[] = 'ttl';
         $reqdfieldsn[] = gettext('TTL');
-    } elseif ($pconfig['type'] != 'custom' && $pconfig['type'] != 'custom-v6') {
+    } elseif ($pconfig['type'] != 'custom' && $pconfig['type'] != 'custom-v6' && $pconfig['type'] != 'custom-v4-v6') {
         $reqdfields[] = 'host';
         $reqdfieldsn[] = gettext('Hostname');
         $reqdfields[] = 'username';
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['updateurl'] = $pconfig['updateurl'];
         // Trim hard-to-type but sometimes returned characters
         $dyndns['resultmatch'] = trim($pconfig['resultmatch'], "\t\n\r");
-        ($dyndns['type'] == "custom" || $dyndns['type'] == "custom-v6") ? $dyndns['requestif'] = $pconfig['requestif'] : $dyndns['requestif'] = $pconfig['interface'];
+        ($dyndns['type'] == "custom" || $dyndns['type'] == "custom-v6" || $dyndns['type'] == "custom-v4-v6") ? $dyndns['requestif'] = $pconfig['requestif'] : $dyndns['requestif'] = $pconfig['interface'];
         $dyndns['descr'] = $pconfig['descr'];
         $dyndns['force'] = isset($pconfig['force']);
         if ($dyndns['username'] == "none") {
@@ -209,6 +209,7 @@ include("head.inc");
           switch ($(this).val()) {
               case "custom":
               case "custom-v6":
+              case "custom-v4-v6":
                 $(".type_custom").show();
                 break;
               case "route53":
@@ -415,6 +416,8 @@ include("head.inc");
                         <?= gettext("This is the only field required by for Custom Dynamic DNS, and is only used by Custom Entries.") ?>
                         <br />
                         <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
+                        <br />
+                        <?= gettext("For Custom (v4/v6) you can additionally use %IPv6%.") ?>
                       </div>
                     </td>
                   </tr>
@@ -427,7 +430,7 @@ include("head.inc");
                         <br />
                         <?= gettext("This field should be identical to what your dynamic DNS Provider will return if the update succeeds, leave it blank to disable checking of returned results.");?>
                         <br />
-                        <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
+                        <?= gettext("If you need the new IP to be included in the request, put %IP% in its place. For Custom (v4/v6) you can additionally use %IPv6%.") ?>
                         <br />
                         <?= gettext('If you need to include multiple possible values, separate them with a |. If your provider includes a |, escape it with \|') ?>
                         <br />
