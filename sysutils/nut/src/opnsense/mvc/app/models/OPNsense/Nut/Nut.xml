@@ -98,6 +98,10 @@
         <default></default>
         <Required>N</Required>
       </address>
+      <port type="TextField">
+        <default>3493</default>
+        <Required>N</Required>
+      </port>
       <user type="TextField">
         <Required>N</Required>
       </user>
