@@ -814,8 +814,12 @@ class updatedns
                 if ($this->_dnsUser != '') {
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
-                $server = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsUpdateURL);
-                curl_setopt($ch, CURLOPT_URL, $server);
+                if ($this->_useIPv4) {
+                    $this->_dnsUpdateURL = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsUpdateURL);
+                }
+                $this->_dnsUpdateURL = str_replace("%IP%", $this->_dnsIPv6, $this->_dnsUpdateURL);
+                $this->_dnsUpdateURL = str_replace("%IPv6%", $this->_dnsIPv6, $this->_dnsUpdateURL);
+                curl_setopt($ch, CURLOPT_URL, $this->_dnsUpdateURL);
                 break;
             case 'custom-v4-v6':
                 if ($this->_curlIpresolveV4) {
@@ -829,9 +833,9 @@ class updatedns
                 if ($this->_dnsUser != '') {
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
-                $server = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsUpdateURL);
-                $server = str_replace("%IPv6%", $this->_dnsIPv6, $server);
-                curl_setopt($ch, CURLOPT_URL, $server);
+                $this->_dnsUpdateURL = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsUpdateURL);
+                $this->_dnsUpdateURL = str_replace("%IPv6%", $this->_dnsIPv6, $this->_dnsUpdateURL);
+                curl_setopt($ch, CURLOPT_URL, $this->_dnsUpdateURL);
                 break;
             case 'cloudflare':
             case 'cloudflare-v6':
@@ -1444,7 +1448,10 @@ class updatedns
                 if ($this->_dnsResultMatch == "") {
                     $successful_update = true;
                 } else {
-                    $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsResultMatch);
+                    if ($this->_useIPv4) {
+                        $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsResultMatch);
+                    }
+                    $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIPv6, $this->_dnsResultMatch);
                     $this->_dnsResultMatch = str_replace("%IPv6%", $this->_dnsIPv6, $this->_dnsResultMatch);
                     $matches = preg_split("/(?<!\\\\)\\|/", $this->_dnsResultMatch);
                     foreach ($matches as $match) {
