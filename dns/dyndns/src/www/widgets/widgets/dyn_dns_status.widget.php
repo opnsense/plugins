@@ -63,11 +63,12 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
             $cached_ip_s = explode('|', $fdata);
             $cached_ip = $cached_ip_s[0];
             echo sprintf(
-                '<span class="%s">%s</span>',
+                '<span class="%s">%s</span><br>',
                 $ipaddr != $cached_ip ? 'text-danger' : '',
                 htmlspecialchars($cached_ip)
             );
-        } elseif (!empty($fdata6)) {
+        }
+        if (!empty($fdata6)) {
             $cached_ipv6_s = explode('|', $fdata6);
             $cached_ipv6 = $cached_ipv6_s[0];
             echo sprintf(
@@ -75,7 +76,8 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
                 $ipv6addr != $cached_ipv6 ? 'text-danger' : '',
                 htmlspecialchars($cached_ipv6)
             );
-        } else {
+        }
+        if (empty($fdata) && empty($fdata6)) {
             echo gettext('N/A');
         }
     }
