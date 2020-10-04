@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2020 Frank Wall (derived from certhelper.php)
+ * Copyright (C) 2017-2020 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>

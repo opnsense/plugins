@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall (derived from upload_sftp.php)
+ * Copyright (C) 2020 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
