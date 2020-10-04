@@ -1,1 +1,13 @@
 Support for numerous Dynamic DNS services (DynDNS et al)
+
+Plugin Changelog
+----------------
+
+1.24
+
+* Add Changelog (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+* Fix bug for "Force IPv4 resolving" with IPv6 service types (Starkstromkonsument)
+* Rewrite parts of the code to support usage of IPv4 and IPv6 within the same service type (Starkstromkonsument)
+* reduce number of calls to _checkIP() per update from three to one (Starkstromkonsument)
+* Tidy up logging (Starkstromkonsument)
+* Add new service type "Custom (v4/v6)" for updatin A and AAAA records in one URL (Starkstromkonsument)
