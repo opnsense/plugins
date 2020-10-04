@@ -98,7 +98,7 @@
         <default></default>
         <Required>N</Required>
       </address>
-      <port type="TextField">
+      <port type="PortField">
         <default>3493</default>
         <Required>N</Required>
       </port>
