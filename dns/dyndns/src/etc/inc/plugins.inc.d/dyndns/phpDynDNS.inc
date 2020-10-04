@@ -1777,31 +1777,29 @@ class updatedns
             log_error("Dynamic DNS ({$this->_dnsHost}): _detectChange() starting.");
         }
         $currentTime = time();
-        $log_error = "";
+        $log_error = "Dynamic DNS ({$this->_dnsHost}): ";
         $initial = false;
 
         if ($this->_useIPv4) {
-            $log_error .= "Dynamic DNS ({$this->_dnsHost}): Current WAN IPv4: {$this->_dnsIPv4}";
             if (file_exists($this->_cacheFile_v4)) {
                 $contents = file_get_contents($this->_cacheFile_v4);
                 list($cacheIPv4,$cacheTimeIPv4) = explode('|', $contents);
-                $this->_debug($cacheIPv4 . '/' . $cacheTime);
-                $log_error .= "Cached IPv4: {$cacheIPv4} ";
+                $this->_debug($cacheIPv4 . '/' . $cacheTimeIPv4);
+                $log_error .= "Cached IPv4: {$cacheIPv4}. ";
             } else {
                 $cacheIPv4 = '0.0.0.0';
                 @file_put_contents($this->_cacheFile_v4, "0.0.0.0|{$currentTime}");
                 $cacheTimeIPv4 = $currentTime;
                 $initial = true;
-                $log_error .= "No Cached IPv4 found.";
+                $log_error .= "No Cached IPv4 found. ";
             }
         }
         if ($this->_useIPv6) {
-            $log_error .= "Dynamic DNS ({$this->_dnsHost}): Current WAN IPv6: {$this->_dnsIPv6}";
             if (file_exists($this->_cacheFile_v6)) {
                 $contents = file_get_contents($this->_cacheFile_v6);
                 list($cacheIPv6,$cacheTimeIPv6) = explode('|', $contents);
                 $this->_debug($cacheIPv6 . '/' . $cacheTimeIPv6);
-                $log_error .= "Cached IPv6: {$cacheIPv6} ";
+                $log_error .= "Cached IPv6: {$cacheIPv6}.";
             } else {
                 $cacheIPv6 = '::';
                 @file_put_contents($this->_cacheFile_v4, "::|{$currentTime}");
@@ -1818,20 +1816,20 @@ class updatedns
         $maxCacheAgeSecs = $this->_dnsMaxCacheAgeDays * 24 * 60 * 60;
 
         $needs_updating = false;
-        $update_reason = "";
+        $update_reason = "Dynamic DNS ({$this->_dnsHost}): ";
         /* lets determine if the item needs updating */
         if ($this->_useIPv4 && ($cacheIPv4 != $this->_dnsIPv4)) {
             $needs_updating = true;
-            $update_reason .= "Dynamic DNS: Cached IPv4 ({$cacheIPv4}) != WAN IPv4 ({$this->_dnsIPv4}).  Updating. ";
+            $update_reason .= "Cached IPv4 ({$cacheIPv4}) != WAN IPv4 ({$this->_dnsIPv4}).  Updating. ";
         }
         if ($this->_useIPv6 && ($cacheIPv6 != $this->_dnsIPv6)) {
             $needs_updating = true;
-            $update_reason .= "Dynamic DNS: Cached IPv6 ({$cacheIPv6}) != WAN IPv6 ({$this->_dnsIPv6}).  Updating. ";
+            $update_reason .= "Cached IPv6 ({$cacheIPv6}) != WAN IPv6 ({$this->_dnsIPv6}).  Updating. ";
         }
         if ((($currentTime - $cacheTimeIPv4) > $maxCacheAgeSecs) || (($currentTime - $cacheTimeIPv6) > $maxCacheAgeSecs)) {
             $needs_updating = true;
             $this->_forceUpdateNeeded = true;
-            $update_reason .= "Dynamic DNS: More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating. ";
+            $update_reason .= "More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating. ";
             $update_reason .= "{$currentTime} - {$cacheTimeIPv4} > {$maxCacheAgeSecs} or {$currentTime} - {$cacheTimeIPv6} > {$maxCacheAgeSecs} ";
         }
         if ($initial == true) {
