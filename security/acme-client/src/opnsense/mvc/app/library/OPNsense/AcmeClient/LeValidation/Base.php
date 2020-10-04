@@ -82,8 +82,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Store acme hook
         switch ((string)$this->config->method) {
             case 'dns01':
-                $this->acme_args[] = '--dns ' . (string)$this->config->dns_service;
-                $this->acme_args[] = '--dnssleep ' . (string)$this->config->dns_sleep;
+                $this->acme_args[] = exec_safe('--dns %s', (string)$this->config->dns_service);
+                $this->acme_args[] = exec_safe('--dnssleep %s', (string)$this->config->dns_sleep);
                 break;
             case 'http01':
                 $this->acme_args[] = '--webroot /var/etc/acme-client/challenges';
@@ -91,11 +91,11 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         }
 
         // Store acme filenames
-        $this->acme_args[] = '--home ' . self::ACME_HOME_DIR;
-        $this->acme_args[] = '--certpath ' . sprintf(self::ACME_CERT_FILE, $this->cert_id);
-        $this->acme_args[] = '--keypath ' . sprintf(self::ACME_KEY_FILE, $this->cert_id);
-        $this->acme_args[] = '--capath ' . sprintf(self::ACME_CHAIN_FILE, $this->cert_id);
-        $this->acme_args[] = '--fullchainpath ' . sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id);
+        $this->acme_args[] = exec_safe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = exec_safe('--certpath %s', sprintf(self::ACME_CERT_FILE, $this->cert_id));
+        $this->acme_args[] = exec_safe('--keypath %s', sprintf(self::ACME_KEY_FILE, $this->cert_id));
+        $this->acme_args[] = exec_safe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
+        $this->acme_args[] = exec_safe('--fullchainpath %s', sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id));
 
         return true;
     }
@@ -165,7 +165,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . "--${acme_action} "
           . implode(' ', $this->acme_args) . ' '
-          . "--accountconf ${account_conf_file}";
+          . exec_safe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -215,7 +215,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             $key_length = $length;
         }
 
-        $this->acme_args[] = '--keylength ' . $key_length;
+        $this->acme_args[] = exec_safe('--keylength %s', $key_length);
         $this->cert_keylength = $length;
     }
 
@@ -296,6 +296,6 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      */
     public function setRenewal(int $interval = 60)
     {
-        $this->acme_args[] = '--days ' . (string)$interval;
+        $this->acme_args[] = exec_safe('--days %s', (string)$interval);
     }
 }

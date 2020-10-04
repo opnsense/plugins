@@ -88,11 +88,11 @@ class LeCertificate extends LeCommon
         $this->cert_fullchain_file = (string)sprintf(self::ACME_FULLCHAIN_FILE, $this->config->id);
 
         // Store acme filenames
-        $this->acme_args[] = '--home ' . self::ACME_HOME_DIR;
-        $this->acme_args[] = '--certpath ' . $this->cert_file;
-        $this->acme_args[] = '--keypath ' . $this->cert_key_file;
-        $this->acme_args[] = '--capath ' . $this->cert_chain_file;
-        $this->acme_args[] = '--fullchainpath ' . $this->cert_fullchain_file;
+        $this->acme_args[] = exec_safe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = exec_safe('--certpath %s', $this->cert_file);
+        $this->acme_args[] = exec_safe('--keypath %s', $this->cert_key_file);
+        $this->acme_args[] = exec_safe('--capath %s', $this->cert_chain_file);
+        $this->acme_args[] = exec_safe('--fullchainpath %s', $this->cert_fullchain_file);
     }
 
     /**
@@ -529,7 +529,7 @@ class LeCertificate extends LeCommon
           . '--revoke '
           . implode(' ', $this->acme_args) . ' '
           . exec_safe('--domain %s', (string)$this->config->name) . ' '
-          . "--accountconf ${account_conf_file}";
+          . exec_safe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 

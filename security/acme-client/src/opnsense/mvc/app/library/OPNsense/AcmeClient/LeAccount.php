@@ -57,7 +57,7 @@ class LeAccount extends LeCommon
         $this->setEnvironment();
 
         // Store acme filenames
-        $this->acme_args[] = '--home ' . self::ACME_HOME_DIR;
+        $this->acme_args[] = exec_safe('--home %s', self::ACME_HOME_DIR);
     }
 
     /**
@@ -118,8 +118,8 @@ class LeAccount extends LeCommon
                 $acmecmd = '/usr/local/sbin/acme.sh '
                   . '--createAccountKey '
                   . implode(' ', $this->acme_args) . ' '
-                  . '--accountkeylength ' . self::ACME_ACCOUNT_KEY_LENGTH . ' '
-                  . "--accountconf ${account_conf_file}";
+                  . exec_safe('--accountkeylength %s', self::ACME_ACCOUNT_KEY_LENGTH) . ' '
+                  . exec_safe('--accountconf %s', $account_conf_file);
                 LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
                 $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -226,7 +226,7 @@ class LeAccount extends LeCommon
             $acmecmd = '/usr/local/sbin/acme.sh '
               . '--registeraccount '
               . implode(' ', $this->acme_args) . ' '
-              . '--accountconf ' . $this->account_conf_file;
+              . exec_safe('--accountconf %s', $this->account_conf_file);
             LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
             $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
