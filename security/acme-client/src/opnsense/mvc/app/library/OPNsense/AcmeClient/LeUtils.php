@@ -4,7 +4,11 @@
  * Copyright (C) 2017-2020 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
+ * Copyright (C) 2010 Ermal Luçi
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
+ * Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
+ * Copyright (C) 2004-2007 Scott Ullrich <sullrich@gmail.com>
+ * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,6 +51,27 @@ class LeUtils
     public static function base64url_encode($str)
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
+    }
+
+    /**
+     * Properly escape arguments to prevent shell command injection.
+     * This is a copy of the exec_safe() legacy function.
+     * @param string $format The format string to use.
+     * @param string $args The arguments to escape.
+     * @return array|string The formatted and escaped arguments.
+     */
+    public static function execSafe($format, $args = array())
+    {
+        if (!is_array($args)) {
+            /* just in case there's only one argument */
+            $args = array($args);
+        }
+
+        foreach ($args as $id => $arg) {
+            $args[$id] = escapeshellarg($arg);
+        }
+
+        return vsprintf($format, $args);
     }
 
     // Copied from system_camanager.php.
