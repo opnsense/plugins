@@ -6,6 +6,12 @@
     <help>Enable / Disable</help>
   </field>
   <field>
+    <id>routemap.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Add an optional description for this route-map.</help>
+  </field>
+  <field>
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
