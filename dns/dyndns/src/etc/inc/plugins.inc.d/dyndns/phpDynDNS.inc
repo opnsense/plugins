@@ -1871,7 +1871,7 @@ class updatedns
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): _checkIP() starting.");
         }
-        $success = false;
+        $success = true;
 
         /* fetch and validate IPv4 */
         if ($this->_useIPv4) {
@@ -1880,13 +1880,12 @@ class updatedns
                 if ($this->_dnsVerboseLog) {
                     log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 address could not be extracted");
                 }
+                $success = false;
             } else {
                 if ($this->_dnsVerboseLog) {
                     log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 address {$ipv4_address} extracted");
                 }
-
                 $this->_dnsIPv4 = $ipv4_address;
-                $success = true;
             }
         }
 
@@ -1897,15 +1896,12 @@ class updatedns
                 if ($this->_dnsVerboseLog) {
                     log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 address could not be extracted");
                 }
-
-                $ip_address = 0;
+                $success = false;
             } else {
                 if ($this->_dnsVerboseLog) {
                     log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 address {$ipv6_address} extracted");
                 }
-
                 $this->_dnsIPv6 = $ipv6_address;
-                $success = ($success && true);
             }
         }
 
