@@ -4,11 +4,7 @@
  * Copyright (C) 2017-2020 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
- * Copyright (C) 2010 Ermal Luçi
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
- * Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
- * Copyright (C) 2004-2007 Scott Ullrich <sullrich@gmail.com>
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
