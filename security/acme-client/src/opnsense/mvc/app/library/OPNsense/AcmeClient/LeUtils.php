@@ -49,6 +49,27 @@ class LeUtils
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
+    /**
+     * Properly escape arguments to prevent shell command injection.
+     * This is a copy of the exec_safe() legacy function.
+     * @param string $format The format string to use.
+     * @param string $args The arguments to escape.
+     * @return array|string The formatted and escaped arguments.
+     */
+    public static function execSafe($format, $args = array())
+    {
+        if (!is_array($args)) {
+            /* just in case there's only one argument */
+            $args = array($args);
+        }
+
+        foreach ($args as $id => $arg) {
+            $args[$id] = escapeshellarg($arg);
+        }
+
+        return vsprintf($format, $args);
+    }
+
     // Copied from system_camanager.php.
     public static function local_ca_import(&$ca, $str, $key = "", $serial = 0)
     {
