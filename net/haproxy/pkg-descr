@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+2.25
+
+Added:
+* add support for TLSv1.3 (#790)
+
 2.24
 
 Added:
