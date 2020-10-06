@@ -29,6 +29,10 @@
                 </check001>
             </Constraints>
         </url>
+        <branch type="TextField">
+          <default>master</default>
+          <Required>Y</Required>
+        </branch>
         <privkey type="TextField">
             <Required>N</Required>
         </privkey>
