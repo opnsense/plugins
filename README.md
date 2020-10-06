@@ -89,7 +89,7 @@ sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
-sysutils/git-backup -- Track config changes using git
+sysutils/git-backup -- Track config changes using git (development only)
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitorin agent
