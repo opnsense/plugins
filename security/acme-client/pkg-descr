@@ -14,6 +14,7 @@ Added:
 * add new OOP backend to improve reliability and maintainability (#1398)
 * add status for accounts to backend and WebGUI
 * add button to manually trigger account registration
+* add support for All-Inkl.com domain API (#1130)
 * add plugin changelog
 
 Fixed:

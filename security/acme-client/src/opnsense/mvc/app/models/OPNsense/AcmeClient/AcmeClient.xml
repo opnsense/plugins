@@ -372,6 +372,7 @@
                         <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
+                        <dns_kas>All-Inkl.com domain API</dns_kas>
                         <dns_arvan>ArvanCloud API</dns_arvan>
                         <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
@@ -921,6 +922,19 @@
                 <dns_1984hosting_password type="TextField">
                     <Required>N</Required>
                 </dns_1984hosting_password>
+                <dns_kas_login type="TextField">
+                    <Required>N</Required>
+                </dns_kas_login>
+                <dns_kas_authdata type="TextField">
+                    <Required>N</Required>
+                </dns_kas_authdata>
+                <dns_kas_authtype type="OptionField">
+                    <Required>N</Required>
+                    <default>sha1</default>
+                    <OptionValues>
+                        <sha1>SHA1</sha1>
+                    </OptionValues>
+                </dns_kas_authtype>
             </validation>
         </validations>
         <actions>

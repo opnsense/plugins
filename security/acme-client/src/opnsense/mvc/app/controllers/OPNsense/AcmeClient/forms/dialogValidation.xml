@@ -1161,4 +1161,24 @@
         <label>API Password</label>
         <type>password</type>
     </field>
+    <field>
+        <label>All-Inkl.com domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_kas</style>
+    </field>
+    <field>
+        <id>validation.dns_kas_login</id>
+        <label>KAS Login</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_kas_authdata</id>
+        <label>KAS Authdata</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_kas_authtype</id>
+        <label>KAS Authtype</label>
+        <type>dropdown</type>
+    </field>
 </form>
