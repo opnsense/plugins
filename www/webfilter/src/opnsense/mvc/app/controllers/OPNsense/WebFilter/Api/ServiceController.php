@@ -30,22 +30,22 @@
  *
  */
 
-namespace OPNsense\WebFilter\Api;
+namespace OPNsense\SquidGuard\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
-use OPNsense\WebFilter\WebFilter;
+use OPNsense\SquidGuard\SquidGuard;
 
 
 /**
  * Class ServiceController
- * @package OPNsense\WebFilter
+ * @package OPNsense\SquidGuard
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
 
-    protected static $internalServiceClass = '\OPNsense\WebFilter\WebFilter';
-    protected static $internalServiceTemplate = 'OPNsense/WebFilter';
+    protected static $internalServiceClass = '\OPNsense\SquidGuard\SquidGuard';
+    protected static $internalServiceTemplate = 'OPNsense/SquidGuard';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'webfilter';
 
@@ -56,7 +56,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             $this->getModel()->configClean();
             $model = $this->getModel();
             $backend = new Backend();
-            $backend->configdRun("template reload OPNsense/WebFilter");
+            $backend->configdRun("template reload OPNsense/SquidGuard");
             $backend->configdRun("webfilter reconfigure");
             return array("status" => "ok");
         } else {
