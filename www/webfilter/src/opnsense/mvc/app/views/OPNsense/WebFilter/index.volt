@@ -44,7 +44,7 @@ function timeoutCheck() {
     $( document ).ready(function() {
 
         function isSubsystemDirty() {
-         ajaxGet("/api/webfilter/settings/dirty", {}, function(data,status) {
+         ajaxGet("/api/webfilter/settings/dirty", {}, function(data, status) {
             if (status == "success") {
                if (data.webfilter.dirty === true) {
                   $("#configChangedMsg").removeClass("hidden");
@@ -265,4 +265,3 @@ function timeoutCheck() {
 
 {# include dialogs #}
 {{ partial("layout_partials/base_dialog",['fields':formDialogRules,'id':'DialogRules','label':lang._('Edit Rules')])}}
-
