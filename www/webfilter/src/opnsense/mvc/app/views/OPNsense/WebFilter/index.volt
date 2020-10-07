@@ -41,7 +41,7 @@ function timeoutCheck() {
         }
     });
 }
-    $( document ).ready(function() {
+    $(function() {
 
         function isSubsystemDirty() {
          ajaxGet("/api/webfilter/settings/dirty", {}, function(data, status) {
