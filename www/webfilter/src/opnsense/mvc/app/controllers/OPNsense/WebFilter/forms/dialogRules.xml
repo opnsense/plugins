@@ -30,7 +30,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter the usernames.]]></help>
+        <help>Enter the usernames.</help>
     </field>
     <field>
         <id>rule.source</id>
