@@ -6,7 +6,6 @@ SquidGuard based plugin.
 - Block websites based on categories;
 - Custom block pages;
 - RegEx based rules;
-- G
 
 ### TODO
 -Port log viewer to the new OPNsense MVC standard
