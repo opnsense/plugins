@@ -155,7 +155,7 @@ class Git extends Base implements IBackupProvider
         $url = (string)$mdl->url;
         $pos = strpos($url, '//');
         // inject credentials in url (either username or username:password, depending on transport)
-        if (stripos(trim((string)$mdl->$url),'http')) {
+        if (stripos(trim((string)$mdl->url),'http') === 0) {
             $cred = urlencode((string)$mdl->user) . ":" . urlencode((string)$mdl->password);
             $url = substr($url,0, $pos+2) . "{$cred}@" . substr($url, $pos+2);
         } else {
@@ -169,7 +169,7 @@ class Git extends Base implements IBackupProvider
         );
         if (strpos($pushtxt, '__exit_ok__')) {
             $error_type = null;
-        } elseif (strpos($pushtxt, 'Permission denied')) {
+        } elseif (strpos($pushtxt, 'Permission denied') || strpos($pushtxt, 'Authentication failed ')) {
             $error_type = "authentication failure";
         } elseif (strpos($pushtxt, 'WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED')) {
             $error_type = "ssh hostkey changed";
