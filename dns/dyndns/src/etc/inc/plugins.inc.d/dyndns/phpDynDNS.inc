@@ -1463,9 +1463,9 @@ class updatedns
                     unset($matches);
                 }
                 if ($successful_update == true) {
-                    $status = "Dynamic DNS: (Success) IP address updated successfully!";
+                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address updated successfully!";
                 } else {
-                    $status = "Dynamic DNS: (Error) Result did not match. PAYLOAD: {$data}";
+                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Result did not match. PAYLOAD: {$data}";
                 }
                 break;
             case 'cloudflare':
