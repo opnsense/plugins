@@ -40,10 +40,6 @@ domains)
     local INDEX_CLEAN=$(cat $BLACKLIST_INDEX | grep -v ^$ > /tmp/blacklist.index.$$)
     mv /tmp/blacklist.index.$$ $BLACKLIST_INDEX
 
-    # dir sanitization
-    # Suspeita de derrubar o SquidGuard - ref. issue #144
-    # rm -f $BLACKLIST_DOMAINS.*
-
     # create domains file to each rule
     for rule in $(cat $BLACKLIST_INDEX | cut -d: -f2); do
         #let's populate the file
@@ -59,10 +55,6 @@ regex)
     # index sanitization
     local INDEX_CLEAN=$(cat $BLACKLISTREGEX_INDEX | grep -v ^$ > /tmp/blacklistregex.index.$$)
     mv /tmp/blacklistregex.index.$$ $BLACKLISTREGEX_INDEX
-
-    # dir sanitization
-    # Suspeita de derrubar o SquidGuard - ref. issue #144
-    # rm -f $BLACKLIST_REGEX.*
 
     # create domains file to each rule
     for rule in $(cat $BLACKLISTREGEX_INDEX | cut -d: -f2); do
@@ -94,10 +86,6 @@ domains)
     local INDEX_CLEAN=$(cat $WHITELIST_INDEX | grep -v ^$ > /tmp/whitelist.index.$$)
     mv /tmp/whitelist.index.$$ $WHITELIST_INDEX
 
-    # dir sanitization
-    # Suspeita de derrubar o SquidGuard - ref. issue #144
-    #rm -f $WHITELIST_DOMAINS.*
-
     # create domains file to each rule
     for rule in $(cat $WHITELIST_INDEX | cut -d: -f2); do
         #let's populate the file
@@ -113,10 +101,6 @@ regex)
     # index sanitization
     local INDEX_CLEAN=$(cat $WHITELISTREGEX_INDEX | grep -v ^$ > /tmp/whitelistregex.index.$$)
     mv /tmp/whitelistregex.index.$$ $WHITELISTREGEX_INDEX
-
-    # dir sanitization
-    # Suspeita de derrubar o SquidGuard - ref. issue #144
-    #rm -f $WHITELIST_REGEX.*
 
     # create domains file to each rule
     for rule in $(cat $WHITELISTREGEX_INDEX | cut -d: -f2); do
@@ -141,14 +125,6 @@ local TMP_CATEG_INDEX="/tmp/categories.index.$$"
 local DEST_CHECK=$(xmllint --nocdata --xpath "//webfilter//rules//destination" /conf/config.xml | cut -d">" -f2 |
  cut -d"<" -f1 | sed 's/\,/ /g')
 local ACTIVE_CATEG=$(xmllint --nocdata --xpath "//webfilter//general//categories" /conf/config.xml | cut -d">" -f2 | cut -d"<" -f1 | sed 's/\,/ /g')
-
-#for category in $DEST_CHECK; do
-#        CHK_IFEXIST=$(echo $ACTIVE_CATEG | grep $category )
-#        if [ -z "$CHK_IFEXIST" ];then
-#                echo "The category $category is in use and can't be removed!"
-#                exit 0
-#        fi
-#done
 
 # Build JSON index
 echo -n "{" > $TMP_CATEG_INDEX
