@@ -201,9 +201,7 @@ class updatedns
         $this->_curlIpresolveV4 = $curlIpresolveV4;
         $this->_curlSslVerifypeer = $curlSslVerifypeer;
         $this->_dnsVerboseLog = $dnsVerboseLog;
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS: updatedns() starting");
-        }
+        $this->_log("updatedns() starting");
 
         $dyndnslck = lock("DDNS" . $dnsID, LOCK_EX);
 
@@ -309,6 +307,9 @@ class updatedns
                 $this->_useIPv6 = false;
                 break;
         }
+        $this->_log("IPv4 enabled: " . $this->_bool2str($this->_useIPv4));
+        $this->_log("IPv6 enabled: " . $this->_bool2str($this->_useIPv6));
+
         $this->_dnsService = strtolower($dnsService);
         $this->_dnsUser = $dnsUser;
         $this->_dnsPass = $dnsPass;
@@ -321,40 +322,32 @@ class updatedns
         $this->_dnsResourceID = $dnsResourceID;
         $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
-
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
-            log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 enabled: " . $this->_bool2str($this->_useIPv4));
-            log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 enabled: " . $this->_bool2str($this->_useIPv6));
-        }
+        $this->_log("Current Service: {$this->_dnsService}");
 
         // Get current WAN IP(s) and ensure that we were able to lookup the IP
         if (!$this->_checkIP()) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.");
+            $this->_log("There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.", 0);
             unlock($dyndnslck);
             return;
         }
 
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
+
         $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
-        }
+        $this->_log("running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
+
         $this->_dnsRequestIfIP = ($this->_useIPv6 && !$this->_curlIpresolveV4) ? get_interface_ipv6($this->_dnsRequestIf) : get_interface_ip($this->_dnsRequestIf);
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): get IP of {$this->_dnsRequestIf} to send update from. found {$this->_dnsRequestIfIP}");
-        }
+        $this->_log("get IP of {$this->_dnsRequestIf} to send update from. found {$this->_dnsRequestIfIP}");
+
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
+
         /* FIXME Don't save "force" in config.xml if button "Save and Force Update" is pressed?! Or add extra checkbox? */
         $this->_forceUpdateNeeded = ($forceUpdate == 1);
+        $this->_log("Force Update: " . $this->_bool2str($this->_forceUpdateNeeded));
 
         $this->_debugID = rand(1000000, 9999999);
-
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): Force Update: " . $this->_bool2str($this->_forceUpdateNeeded));
-        }
 
         if (!$this->_forceUpdateNeeded && !$this->_detectChange()) {
             $this->_error(10);
@@ -436,9 +429,7 @@ class updatedns
      */
     function _update()
     {
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): _update() starting.");
-        }
+        $this->_log("_update() starting.");
 
         if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
@@ -515,7 +506,7 @@ class updatedns
                     // Update the IP to a dummy value to force No-IP free accounts to see a change.
                     $iptoset = "192.168.1.1";
                     $this->_dnsDummyUpdateDone = true;
-                    log_error("Dynamic DNS ({$this->_dnsHost}): Processing dummy update on No-IP free account. IP temporarily set to " . $iptoset);
+                    $this->_log("Processing dummy update on No-IP free account. IP temporarily set to " . $iptoset);
                 } else {
                     $iptoset = $this->_dnsIPv4;
                 }
@@ -912,7 +903,7 @@ class updatedns
                     }
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
                     if ($recordCount > 1) {
-                        log_error("Dynamic DNS ($fqdn): Warning: multiple records for $hostName found");
+                        $this->_log("Warning: multiple records for $hostName found", 0);
                     }
                 }
                 break;
@@ -1051,9 +1042,7 @@ class updatedns
                 }
 
                 if ($domainId) {
-                    if ($this->_dnsVerboseLog) {
-                        log_error("Dynamic DNS ($fqdn): Found domain name: $domainName, ID: $domainId");
-                    }
+                    $this->_log("Found domain name: $domainName, ID: $domainId");
 
                     $dnsRecordsUrl = "$domainsUrl/$domainId/records";
                     curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
@@ -1074,17 +1063,13 @@ class updatedns
 
                     if ($recordId) {
                         // Update record
-                        if ($this->_dnsVerboseLog) {
-                            log_error("Dynamic DNS ($fqdn): Updating existing record ID: $recordId");
-                        }
+                        $this->_log("Updating existing record ID: $recordId");
 
                         curl_setopt($ch, CURLOPT_URL, "$dnsRecordsUrl/$recordId");
                         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                     } else {
                         // Create record
-                        if ($this->_dnsVerboseLog) {
-                            log_error("Dynamic DNS ($fqdn): Creating new record");
-                        }
+                        $this->_log("Creating new record");
 
                         $hostData['type'] = $recordType;
                         $hostData['name'] = $hostName;
@@ -1097,7 +1082,7 @@ class updatedns
 
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
                 } else {
-                    log_error("Dynamic DNS($fqdn): No zone found for domain");
+                    $this->_log("No zone found for domain", 0);
                 }
                 break;
             case 'azurev6':
@@ -1116,7 +1101,7 @@ class updatedns
                 if (isset($result['sid'])) {
                     $subscriptionid = $result['sid'];
                 } else {
-                    log_error("Azure subscription id not found in resource id ({$resourceid})");
+                    $this->_log("Azure subscription id not found in resource id ({$resourceid})", 0);
                     return false;
                 }
                 // find tenant id from subscription id
@@ -1130,7 +1115,7 @@ class updatedns
                 if (isset($result['tid'])) {
                     $tenantid = $result['tid'];
                 } else {
-                    log_error("Tenant ID not found");
+                    $this->_log("Tenant ID not found", 0);
                     return false;
                 }
                  // get an bearer token
@@ -1145,7 +1130,7 @@ class updatedns
                 if (isset($result['tok'])) {
                     $bearertoken = $result['tok'];
                 } else {
-                    log_error("no valid bearer token");
+                    $this->_log("no valid bearer token", 0);
                     return false;
                 }
                 // Update the DNS record
@@ -1192,9 +1177,7 @@ class updatedns
                     $data[0]['ttl'] = 600;
                 }
                 $jsonBody = json_encode($data);
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS: calling $url with body: $jsonBody");
-                }
+                    $this->_log("calling $url with body: $jsonBody");
 
                 /* PUT JSON /v1/domains/{domain}/records/{type}/{name} */
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1224,13 +1207,12 @@ class updatedns
      */
     function _checkStatus($ch, $data)
     {
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): _checkStatus() starting.");
-        }
+        $this->_log("_checkStatus() starting.");
+
         $successful_update = false;
         if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6' && @curl_error($ch)) {
             $status = "Curl error occurred: " . curl_error($ch);
-            log_error($status);
+            $this->_log($status, 0);
             $this->status = $status;
             return;
         }
@@ -1242,81 +1224,81 @@ class updatedns
                 list($ip,$code) = explode(":", $data);
                 switch ($code) {
                     case 0:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address is current, no update performed.";
+                        $status = "(Success) IP address is current, no update performed.";
                         $successful_update = true;
                         break;
                     case 1:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS hostname update successful.";
+                        $status = "(Success) DNS hostname update successful.";
                         $successful_update = true;
                         break;
                     case 2:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Hostname supplied does not exist.";
+                        $status = "(Error) Hostname supplied does not exist.";
                         break;
                     case 3:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid Username.";
+                        $status = "(Error) Invalid Username.";
                         break;
                     case 4:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid Password.";
+                        $status = "(Error) Invalid Password.";
                         break;
                     case 5:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) To many updates sent.";
+                        $status = "(Error) To many updates sent.";
                         break;
                     case 6:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Account disabled due to violation of No-IP terms of service.";
+                        $status = "(Error) Account disabled due to violation of No-IP terms of service.";
                         break;
                     case 7:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid IP. IP Address submitted is improperly formatted or is a private IP address or is on a blacklist.";
+                        $status = "(Error) Invalid IP. IP Address submitted is improperly formatted or is a private IP address or is on a blacklist.";
                         break;
                     case 8:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Disabled / Locked Hostname.";
+                        $status = "(Error) Disabled / Locked Hostname.";
                         break;
                     case 9:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Host updated is configured as a web redirect and no update was performed.";
+                        $status = "(Error) Host updated is configured as a web redirect and no update was performed.";
                         break;
                     case 10:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Group supplied does not exist.";
+                        $status = "(Error) Group supplied does not exist.";
                         break;
                     case 11:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS group update is successful.";
+                        $status = "(Success) DNS group update is successful.";
                         $successful_update = true;
                         break;
                     case 12:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS group is current, no update performed.";
+                        $status = "(Success) DNS group is current, no update performed.";
                         $successful_update = true;
                         break;
                     case 13:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Update client support not available for supplied hostname or group.";
+                        $status = "(Error) Update client support not available for supplied hostname or group.";
                         break;
                     case 14:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Hostname supplied does not have offline settings configured.";
+                        $status = "(Error) Hostname supplied does not have offline settings configured.";
                         break;
                     case 99:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
+                        $status = "(Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
                         break;
                     case 100:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
+                        $status = "(Error) Client disabled. Client should exit and not perform any more updates without user intervention.";
                         break;
                     default:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
+                        $status = "(Unknown Response)";
                         $this->_debug("Unknown Response: " . $data);
                         break;
                 }
                 break;
             case 'easydns':
                 if (preg_match('/NOACCESS/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Authentication Failed: Username and/or Password was Incorrect.";
+                    $status = "(Error) Authentication Failed: Username and/or Password was Incorrect.";
                 } elseif (preg_match('/NOSERVICE/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) No Service: Dynamic DNS Service has been disabled for this domain.";
+                    $status = "(Error) No Service: Dynamic DNS Service has been disabled for this domain.";
                 } elseif (preg_match('/ILLEGAL INPUT/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Illegal Input: Self-Explanatory";
+                    $status = "(Error) Illegal Input: Self-Explanatory";
                 } elseif (preg_match('/TOOSOON/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Too Soon: Not Enough Time Has Elapsed Since Last Update";
+                    $status = "(Error) Too Soon: Not Enough Time Has Elapsed Since Last Update";
                 } elseif (preg_match('/NOERROR/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Updated Successfully!";
+                    $status = "(Success) IP Updated Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
@@ -1325,96 +1307,96 @@ class updatedns
                 break;
             case 'zoneedit':
                 if (preg_match('/799/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error 799) Update Failed!";
+                    $status = "(Error 799) Update Failed!";
                 } elseif (preg_match('/700/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error 700) Update Failed!";
+                    $status = "(Error 700) Update Failed!";
                 } elseif (preg_match('/200/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
+                    $status = "(Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } elseif (preg_match('/201/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
+                    $status = "(Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'dyns':
                 if (preg_match("/400/i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - The URL was malformed. Required parameters were not provided.";
+                    $status = "(Error) Bad Request - The URL was malformed. Required parameters were not provided.";
                 } elseif (preg_match('/402/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Update Too Soon - You have tried updating to quickly since last change.";
+                    $status = "(Error) Update Too Soon - You have tried updating to quickly since last change.";
                 } elseif (preg_match('/403/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Database Error - There was a server-sided database error.";
+                    $status = "(Error) Database Error - There was a server-sided database error.";
                 } elseif (preg_match('/405/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Hostname Error - The hostname (" . $this->_dnsHost . ") doesn't belong to you.";
+                    $status = "(Error) Hostname Error - The hostname (" . $this->_dnsHost . ") doesn't belong to you.";
                 } elseif (preg_match('/200/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
+                    $status = "(Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'ods':
                 if (preg_match("/299/i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
+                    $status = "(Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'freedns':
                 if (preg_match("/has not changed./i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
+                    $status = "(Success) No Change In IP Address";
                     $successful_update = true;
                 } elseif (preg_match("/Updated/i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Changed Successfully!";
+                    $status = "(Success) IP Address Changed Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'dnsexit':
                 if (preg_match("/IP not changed/i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
+                    $status = "(Success) No Change In IP Address";
                     $successful_update = true;
                 } elseif (preg_match("/Success/i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Changed Successfully!";
+                    $status = "(Success) IP Address Changed Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'staticcling':
                 if (preg_match("/invalid ip/i", $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - The IP provided was invalid.";
+                    $status = "(Error) Bad Request - The IP provided was invalid.";
                 } elseif (preg_match('/required info missing/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - Required parameters were not provided.";
+                    $status = "(Error) Bad Request - Required parameters were not provided.";
                 } elseif (preg_match('/invalid characters/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Bad Request - Illegal characters in either the username or the password.";
+                    $status = "(Error) Bad Request - Illegal characters in either the username or the password.";
                 } elseif (preg_match('/bad password/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid password.";
+                    $status = "(Error) Invalid password.";
                 } elseif (preg_match('/account locked/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) This account has been administratively locked.";
+                    $status = "(Error) This account has been administratively locked.";
                 } elseif (preg_match('/update too frequent/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Updating too frequently.";
+                    $status = "(Error) Updating too frequently.";
                 } elseif (preg_match('/DB error/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Server side error.";
+                    $status = "(Error) Server side error.";
                 } elseif (preg_match('/success/i', $data)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP Address Updated Successfully!";
+                    $status = "(Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
@@ -1422,14 +1404,14 @@ class updatedns
                 $tmp = str_replace("^M", "", $data);
                 $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
-                    $status = "Dynamic DNS: (Error) Server side error.";
+                    $status = "(Error) Server side error.";
                 } elseif (preg_match("/request is badly formed/i", $data)) {
-                    $status = "Dynamic DNS: (Error) Badly Formed Request (check your settings).";
+                    $status = "(Error) Badly Formed Request (check your settings).";
                 } elseif ((string)$ncresponse->ErrCount === "0") {
-                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                    $status = "(Success) IP Address Updated Successfully!";
                     $successful_update = true;
                 } elseif (isset($ncresponse->ErrCount) && is_numeric((string)$ncresponse->ErrCount) && (string)$ncresponse->ErrCount > 0) {
-                    $status = "Dynamic DNS: (Error) ";
+                    $status = "(Error) ";
                     if (isset($ncresponse->errors)) {
                         foreach ($ncresponse->errors->children() as $err) {
                             $status .= (string)$err . " ";
@@ -1437,8 +1419,8 @@ class updatedns
                     }
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
@@ -1468,9 +1450,9 @@ class updatedns
                     unset($matches);
                 }
                 if ($successful_update == true) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address updated successfully!";
+                    $status = "(Success) IP address updated successfully!";
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Result did not match. PAYLOAD: {$data}";
+                    $status = "(Error) Result did not match. PAYLOAD: {$data}";
                 }
                 break;
             case 'cloudflare':
@@ -1479,70 +1461,70 @@ class updatedns
             case 'cloudflare-token-v6':
                 $output = json_decode($data);
                 if ($output->result->content === $this->_dnsIPv4) {
-                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIPv4}";
+                    $status = "(Success) {$this->_dnsHost} updated to {$this->_dnsIPv4}";
                     $successful_update = true;
                 } elseif ($output->errors[0]->code === 9103) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with Cloudflare.";
+                    $status = "ERROR - Invalid Credentials! Don't forget to use API Key for password field with Cloudflare.";
                 } elseif (($output->success) && (!$output->result[0]->id)) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
+                    $status = "ERROR - Zone ID was not found.";
                 } else {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
-                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $status = "UNKNOWN ERROR - {$output->errors[0]->message}";
+                    $this->_log("PAYLOAD: {$data}", 0);
                 }
                 break;
             case 'digitalocean':
                 $output = json_decode($data);
                 if ($output->domain_record->data === $this->_dnsIPv4) {
-                    $status = "Dynamic DNS: (Success) Record ID {$this->_dnsUser} updated to {$this->_dnsIPv4}";
+                    $status = "(Success) Record ID {$this->_dnsUser} updated to {$this->_dnsIPv4}";
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
-                    log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
+                    $status = "Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
+                    $this->_log("Record ID ({$this->_dnsUser}): PAYLOAD: {$data}", 0);
                 }
                 break;
             case 'gandi-livedns':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 if ($http_code == 401) {
-                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong API Key.';
+                    $status = '(Error) Bad authentication attempt because of a wrong API Key.';
                 } elseif ($http_code == 403) {
-                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
+                    $status = '(Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
                 } elseif ($http_code == 201) {
-                    $status = 'Dynamic DNS: (Success) Record was created!';
+                    $status = '(Success) Record was created!';
                     $successful_update = true;
                 } elseif ($http_code == 200) {
-                    $status = 'Dynamic DNS: (Success) Same record already exists. Nothing was changed!';
+                    $status = '(Success) Same record already exists. Nothing was changed!';
                     $successful_update = true;
                 } else {
-                    $status = 'Dynamic DNS: (Error) "Unknown Response"';
-                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $status = '(Error) "Unknown Response"';
+                    $this->_log("HTTP Status: {$http_code}  PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'gratisdns':
                 if (preg_match('/Forkerte værdier/i', $data)) {
-                        $status = "Dynamic DNS: (Error) Wrong values - Update could not be completed.";
+                        $status = "(Error) Wrong values - Update could not be completed.";
                 } elseif (preg_match('/Bruger login: Bruger eksistere ikke/i', $data)) {
-                        $status = "Dynamic DNS: (Error) Unknown username - User does not exist.";
+                        $status = "(Error) Unknown username - User does not exist.";
                 } elseif (preg_match('/Bruger login: 1Fejl i kodeord/i', $data)) {
-                        $status = "Dynamic DNS: (Error) Wrong password - Remember password is case sensitive.";
+                        $status = "(Error) Wrong password - Remember password is case sensitive.";
                 } elseif (preg_match('/Domæne kan IKKE administreres af bruger/i', $data)) {
-                        $status = "Dynamic DNS: (Error) User unable to administer the selected domain.";
+                        $status = "(Error) User unable to administer the selected domain.";
                 } elseif (preg_match('/OK/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                        $status = "(Success) IP Address Updated Successfully!";
                         $successful_update = true;
                 } else {
-                        $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
+                        $status = "(Unknown Response)";
+                        $this->_log("PAYLOAD: {$data}", 0);
                         $this->_debug($data);
                 }
                 break;
             case 'duckdns':
                 if (preg_match('/OK/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                        $status = "(Success) IP Address Updated Successfully!";
                         $successful_update = true;
                 } else {
-                        $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
+                        $status = "(Unknown Response)";
+                        $this->_log("PAYLOAD: {$data}", 0);
                         $this->_debug($data);
                 }
                 break;
@@ -1550,14 +1532,14 @@ class updatedns
             case 'dynv6-v6':
                 /* API-Documentation: https://dynv6.com/docs/apis */
                 if (preg_match('/addresses updated/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                        $status = "(Success) IP Address Updated Successfully!";
                         $successful_update = true;
                 } elseif (preg_match('/addresses unchanged/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Unchanged!";
+                        $status = "(Success) IP Address Unchanged!";
                         $successful_update = true;
                 } else {
-                        $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
+                        $status = "(Unknown Response)";
+                        $this->_log("PAYLOAD: {$data}", 0);
                         $this->_debug($data);
                 }
                 break;
@@ -1578,102 +1560,104 @@ class updatedns
             case 'selfhost':
             case 'strato':
                 if (preg_match('/notfqdn/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Not a FQDN";
+                    $status = "(Error) Not a FQDN";
                 } elseif (preg_match('/nochg/i', $data)) {
-                    $status = "Dynamic DNS: (Success) No change in IP address";
+                    $status = "(Success) No change in IP address";
                     $successful_update = true;
                 } elseif (preg_match('/good/i', $data)) {
-                    $status = "Dynamic DNS: (Success) IP address updated successfully ({$this->_dnsIPv4})";
+                    $status = "(Success) IP address updated successfully ({$this->_dnsIPv4})";
                     $successful_update = true;
                 } elseif (preg_match('/badauth/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Authentication failed";
+                    $status = "(Error) Authentication failed";
                 } elseif (preg_match("/badip/i", $data)) {
-                    $status = "Dynamic DNS: (Error) IP address provided is invalid";
+                    $status = "(Error) IP address provided is invalid";
                 } elseif (preg_match('/nohost/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Hostname does not exist or does not have dynamic DNS enabled";
+                    $status = "(Error) Hostname does not exist or does not have dynamic DNS enabled";
                 } elseif (preg_match('/numhost/i', $data)) {
-                    $status = "Dynamic DNS: (Error) You may update up to 20 hosts only";
+                    $status = "(Error) You may update up to 20 hosts only";
                 } elseif (preg_match('/dnserr/i', $data)) {
-                    $status = "Dynamic DNS: (Error) DNS error, stop updating for 30 minutes.";
+                    $status = "(Error) DNS error, stop updating for 30 minutes.";
                 } elseif (preg_match('/badagent/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Bad request";
+                    $status = "(Error) Bad request";
                 } elseif (preg_match('/abuse/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Access has been blocked for abuse";
+                    $status = "(Error) Access has been blocked for abuse";
                 } elseif (preg_match('/911/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Server-side error or maintenance";
+                    $status = "(Error) Server-side error or maintenance";
                 } elseif (preg_match('/yours/i', $data)) {
-                    $status = "Dynamic DNS: (Error) Specified hostname does not exist under this username";
+                    $status = "(Error) Specified hostname does not exist under this username";
                 } else {
-                    $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
             case 'regfish':
             case 'regfish-v6':
                 if (preg_match('/\|100\|/', $data)) {
-                    $status = 'Dynamic DNS: (Success) Update successful';
+                    $status = '(Success) Update successful';
                     $successful_update = true;
                 } elseif (preg_match('/\|101\|/', $data)) {
-                    $status = 'Dynamic DNS: (Success) Still up-to-date';
+                    $status = '(Success) Still up-to-date';
                     $successful_update = true;
                 } elseif (preg_match('/\|401\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Standard authentication failed';
+                    $status = '(Error) Standard authentication failed';
                 } elseif (preg_match('/\|402\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Authentication failed';
+                    $status = '(Error) Authentication failed';
                 } elseif (preg_match('/\|406\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Invalid resource record';
+                    $status = '(Error) Invalid resource record';
                 } elseif (preg_match('/\|407\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Invalid TTL range';
+                    $status = '(Error) Invalid TTL range';
                 } elseif (preg_match('/\|408\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Invalid IPv4';
+                    $status = '(Error) Invalid IPv4';
                 } elseif (preg_match('/\|409\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Invalid IPv6';
+                    $status = '(Error) Invalid IPv6';
                 } elseif (preg_match('/\|410\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Unknown authentication type';
+                    $status = '(Error) Unknown authentication type';
                 } elseif (preg_match('/\|412\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Domain format is wrong, missing trailing dot?';
+                    $status = '(Error) Domain format is wrong, missing trailing dot?';
                 } elseif (preg_match('/\|414\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Unexpected error';
+                    $status = '(Error) Unexpected error';
                 } elseif (preg_match('/\|415\|/', $data)) {
-                    $status = 'Dynamic DNS: (Error) Cannot update load balancer';
+                    $status = '(Error) Cannot update load balancer';
                 } else {
-                    $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $status = "(Unknown Response)";
+                    $this->_log("PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
             case 'linode':
             case 'linode-v6':
                 $fqdn = trim($this->_dnsHost);
+                $fqdn_log = "";
                 if ($this->_dnsWildcard == 'ON') {
                     $fqdn = "*.$fqdn";
+                    $fqdn_log = "Wildcard: {$fqdn}, ";
                 }
 
                 $output = json_decode($data);
                 if ($output->target === $this->_dnsIPv4) {
-                    $status = "Dynamic DNS: (Success) $fqdn updated to {$this->_dnsIPv4}";
+                    $status = "(Success) $fqdn updated to {$this->_dnsIPv4}";
                     $successful_update = true;
                 } elseif (!empty($output->errors)) {
-                    $status = "Dynamic DNS ($fqdn): ERROR - Reason: {$output->errors[0]->reason}";
+                    $status = "{$fqdn_log}ERROR - Reason: {$output->errors[0]->reason}";
                 } else {
-                    $status = "Dynamic DNS ($fqdn): UNKNOWN ERROR";
-                    log_error("Dynamic DNS ($fqdn): PAYLOAD: {$data}");
+                    $status = "{$fqdn_log}UNKNOWN ERROR";
+                    $this->_log("{$fqdn_log}PAYLOAD: {$data}", 0);
                 }
                 break;
             case 'azure':
             case 'azurev6':
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 if ($http_code == 401) {
-                    $status = 'Dynamic DNS: (Error) User Authorization Failed';
+                    $status = '(Error) User Authorization Failed';
                 } elseif ($http_code == 201) {
-                    $status = 'Dynamic DNS: (Success) IP Address Changed Successfully!';
+                    $status = '(Success) IP Address Changed Successfully!';
                     $successful_update = true;
                 } elseif ($http_code == 200) {
-                    $status = 'Dynamic DNS: (Success) IP Address Changed Successfully!';
+                    $status = '(Success) IP Address Changed Successfully!';
                     $successful_update = true;
                 } else {
-                    $status = 'Dynamic DNS: (Error) "Unknown Response"';
-                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $status = '(Error) "Unknown Response"';
+                    $this->_log("HTTP Status: {$http_code}  PAYLOAD: {$data}", 0);
                     $this->_debug($data);
                 }
                 break;
@@ -1683,15 +1667,15 @@ class updatedns
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 $successful_update = false;
                 if ($http_code == 200) {
-                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $status = '(Success) IP Address Updated Successfully!';
                     $successful_update = true;
                 } elseif ($http_code == 401) {
-                    $status = 'Dynamic DNS: (Error) Authentication info not sent or invalid';
+                    $status = '(Error) Authentication info not sent or invalid';
                 } elseif ($http_code == 404) {
-                    $status = 'Dynamic DNS: (Error) Resource not found';
+                    $status = '(Error) Resource not found';
                 } else {
-                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
-                    log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
+                    $status = "(Error) Repsonse not handled check the following: {$data}";
+                    $this->_log("(Error) HTTPS Status: {$http_code} PAYLOAD: {$data}", 0);
                 }
                 break;
             default:
@@ -1702,9 +1686,7 @@ class updatedns
             /* Write WAN IPv4 to cache file */
             if ($this->_useIPv4 && is_ipaddrv4($this->_dnsIPv4)) {
                 $currentTime = time();
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS: ({$this->_dnsHost}): updating IPv4 cache file {$this->_cacheFile_v4}: {$this->_dnsIPv4}");
-                }
+                $this->_log("updating IPv4 cache file {$this->_cacheFile_v4}: {$this->_dnsIPv4}");
                 @file_put_contents($this->_cacheFile_v4, "{$this->_dnsIPv4}|{$currentTime}");
             } else {
                 @unlink($this->_cacheFile_v4);
@@ -1712,16 +1694,14 @@ class updatedns
             /* Write WAN IPv6 to cache file */
             if ($this->_useIPv6 && is_ipaddrv6($this->_dnsIPv6)) {
                 $currentTime = time();
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS: ({$this->_dnsHost}): updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
-                }
+                $this->_log("updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
                 @file_put_contents($this->_cacheFile_v6, "{$this->_dnsIPv6}|{$currentTime}");
             } else {
                 @unlink($this->_cacheFile_v6);
             }
         }
         $this->status = $status;
-        log_error($status);
+        $this->_log($status, 0);
     }
 
     /*
@@ -1734,22 +1714,22 @@ class updatedns
             case 0:
                 break;
             case 2:
-                $error = 'Dynamic DNS: (ERROR!) No Dynamic DNS Service provider was selected.';
+                $error = '(ERROR!) No Dynamic DNS Service provider was selected.';
                 break;
             case 3:
-                $error = 'Dynamic DNS: (ERROR!) No Username Provided.';
+                $error = '(ERROR!) No Username Provided.';
                 break;
             case 4:
-                $error = 'Dynamic DNS: (ERROR!) No Password Provided.';
+                $error = '(ERROR!) No Password Provided.';
                 break;
             case 5:
-                $error = 'Dynamic DNS: (ERROR!) No Hostname Provided.';
+                $error = '(ERROR!) No Hostname Provided.';
                 break;
             case 6:
-                $error = 'Dynamic DNS: (ERROR!) The Dynamic DNS Service provided is not yet supported.';
+                $error = '(ERROR!) The Dynamic DNS Service provided is not yet supported.';
                 break;
             case 7:
-                $error = 'Dynamic DNS: (ERROR!) No Update URL Provided.';
+                $error = '(ERROR!) No Update URL Provided.';
                 break;
             case 8:
                 $status = "Route 53: (Error) Invalid ZoneID";
@@ -1758,16 +1738,16 @@ class updatedns
                 $status = "Route 53: (Error) Invalid TTL";
                 break;
             case 10:
-                $error = "Dynamic DNS ({$this->_dnsHost}): No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
+                $error = "No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
                 break;
             default:
-                $error = "Dynamic DNS: (ERROR!) Unknown Response.";
+                $error = "(ERROR!) Unknown Response.";
                 /* FIXME: $data isn't in scope here */
                 /* $this->_debug($data); */
                 break;
         }
         $this->lastError = $error;
-        log_error($error);
+        $this->_log($error, 0);
     }
 
     /*
@@ -1778,11 +1758,9 @@ class updatedns
      */
     function _detectChange()
     {
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): _detectChange() starting.");
-        }
+        $this->_log("_detectChange() starting.");
+
         $currentTime = time();
-        $log_error = "Dynamic DNS ({$this->_dnsHost}): ";
         $initial = false;
 
         if ($this->_useIPv4) {
@@ -1790,13 +1768,13 @@ class updatedns
                 $contents = file_get_contents($this->_cacheFile_v4);
                 list($cacheIPv4,$cacheTimeIPv4) = explode('|', $contents);
                 $this->_debug($cacheIPv4 . '/' . $cacheTimeIPv4);
-                $log_error .= "Cached IPv4: {$cacheIPv4}. ";
+                $this->_log("Cached IPv4: {$cacheIPv4}.");
             } else {
                 $cacheIPv4 = '0.0.0.0';
                 @file_put_contents($this->_cacheFile_v4, "0.0.0.0|{$currentTime}");
                 $cacheTimeIPv4 = $currentTime;
                 $initial = true;
-                $log_error .= "No Cached IPv4 found. ";
+                $this->_log("No Cached IPv4 found.");
             }
         }
         if ($this->_useIPv6) {
@@ -1804,55 +1782,42 @@ class updatedns
                 $contents = file_get_contents($this->_cacheFile_v6);
                 list($cacheIPv6,$cacheTimeIPv6) = explode('|', $contents);
                 $this->_debug($cacheIPv6 . '/' . $cacheTimeIPv6);
-                $log_error .= "Cached IPv6: {$cacheIPv6}.";
+                $this->_log("Cached IPv6: {$cacheIPv6}.");
             } else {
                 $cacheIPv6 = '::';
                 @file_put_contents($this->_cacheFile_v4, "::|{$currentTime}");
                 $cacheTimeIPv6 = $currentTime;
                 $initial = true;
-                $log_error .= "No Cached IPv6 found.";
+                $this->_log("No Cached IPv6 found.");
             }
-        }
-        if ($this->_dnsVerboseLog) {
-            log_error($log_error);
         }
 
         // Convert seconds = days * hr/day * min/hr * sec/min
         $maxCacheAgeSecs = $this->_dnsMaxCacheAgeDays * 24 * 60 * 60;
 
         $needs_updating = false;
-        $update_reason = "Dynamic DNS ({$this->_dnsHost}): ";
         /* lets determine if the item needs updating */
         if ($this->_useIPv4 && ($cacheIPv4 != $this->_dnsIPv4)) {
             $needs_updating = true;
-            $update_reason .= "Cached IPv4 ({$cacheIPv4}) != WAN IPv4 ({$this->_dnsIPv4}).  Updating. ";
+            $this->_log("Cached IPv4 ({$cacheIPv4}) != WAN IPv4 ({$this->_dnsIPv4}).  Updating.");
         }
         if ($this->_useIPv6 && ($cacheIPv6 != $this->_dnsIPv6)) {
             $needs_updating = true;
-            $update_reason .= "Cached IPv6 ({$cacheIPv6}) != WAN IPv6 ({$this->_dnsIPv6}).  Updating. ";
+            $this->_log("Cached IPv6 ({$cacheIPv6}) != WAN IPv6 ({$this->_dnsIPv6}).  Updating.");
         }
         if ((($currentTime - $cacheTimeIPv4) > $maxCacheAgeSecs) || (($currentTime - $cacheTimeIPv6) > $maxCacheAgeSecs)) {
             $needs_updating = true;
             $this->_forceUpdateNeeded = true;
-            $update_reason .= "More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating. ";
-            $update_reason .= "{$currentTime} - {$cacheTimeIPv4} > {$maxCacheAgeSecs} or {$currentTime} - {$cacheTimeIPv6} > {$maxCacheAgeSecs} ";
+            $this->_log("More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating.");
+            $this->_log("{$currentTime} - {$cacheTimeIPv4} > {$maxCacheAgeSecs} or {$currentTime} - {$cacheTimeIPv6} > {$maxCacheAgeSecs}");
         }
         if ($initial == true) {
             $needs_updating = true;
-            $update_reason .= "Initial update. ";
+            $this->_log("Initial update.");
         }
 
-        /*   finally if we need updating then store the
-         *   new cache value and return true
-         */
-        if ($needs_updating == true) {
-            if ($this->_dnsVerboseLog) {
-                log_error("Dynamic DNS ({$this->_dnsHost}): {$update_reason}");
-            }
-            return true;
-        }
-
-        return false;
+        /* finally if we need updating then return true */
+        return $needs_updating;
     }
 
     /*
@@ -1871,23 +1836,17 @@ class updatedns
 
     function _checkIP()
     {
-        if ($this->_dnsVerboseLog) {
-            log_error("Dynamic DNS ({$this->_dnsHost}): _checkIP() starting.");
-        }
+        $this->_log("_checkIP() starting.");
         $success = true;
 
         /* fetch and validate IPv4 */
         if ($this->_useIPv4) {
             $ipv4_address = get_dyndns_ip($this->_if, 4);
             if (!is_ipaddrv4($ipv4_address)) {
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 address could not be extracted");
-                }
+                $this->_log("IPv4 address could not be extracted");
                 $success = false;
             } else {
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 address {$ipv4_address} extracted");
-                }
+                $this->_log("IPv4 address {$ipv4_address} extracted");
                 $this->_dnsIPv4 = $ipv4_address;
             }
         }
@@ -1896,14 +1855,10 @@ class updatedns
         if ($this->_useIPv6) {
             $ipv6_address = get_dyndns_ip($this->_if, 6);
             if (!is_ipaddrv6($ipv6_address)) {
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 address could not be extracted");
-                }
+                $this->_log("IPv6 address could not be extracted");
                 $success = false;
             } else {
-                if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 address {$ipv6_address} extracted");
-                }
+                $this->_log("IPv6 address {$ipv6_address} extracted");
                 $this->_dnsIPv6 = $ipv6_address;
             }
         }
@@ -1923,6 +1878,45 @@ class updatedns
         }
         else {
                 return "no bool";
+        }
+    }
+
+    /*
+     * Private Function (added 10 October 2020)
+     *   log message
+     *   Values for loglevel of message: 0 = normal, 1 = verbose
+     *   returns false, if no message or wrong loglevel is provided
+     *
+     *   FIXME Implement logging to dedicated logfile
+     */
+    function _log($msg, $loglevel = 1) {
+        /* check for valid message */
+        if ($msg == "") {
+            return false;
+        }
+
+        /* assemble prefix for message to log */
+        $msg_prefix = "Dynamic DNS";
+        $msg_prefix .= ($this->_dnsHost !== "") ? " ({$this->_dnsHost}):" : ":";
+
+        /* Handle loglevel */
+        switch($loglevel) {
+            case 0:
+                /* always log messages of this loglevel to syslog */
+                log_error("{$msg_prefix} {$msg}");
+                return true;
+            case 1:
+                /* just log messages of this loglevel if verbose logging is enabled */
+                if ($this->_dnsVerboseLog) {
+                    log_error("{$msg_prefix} {$msg}");
+                }
+                return true;
+            default:
+                /* just log this if verbose logging is enabled */
+                if ($this->_dnsVerboseLog) {
+                    log_error("{$msg_prefix} wrong loglevel ({$loglevel}) for message: {$msg}");
+                }
+                return false;
         }
     }
 }
