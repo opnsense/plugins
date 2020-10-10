@@ -151,8 +151,8 @@ function timeoutCheck() {
         // form save event handlers for all defined forms
         $('[id*="save_"]').each(function(){
             $(this).click(function(){
-                var frm_id = $(this).closest("form").attr("id");
-                var frm_title = $(this).closest("form").attr("data-title");
+                const frm_id = $(this).closest("form").attr("id");
+                const frm_title = $(this).closest("form").attr("data-title");
 
                 // set progress animation
                 $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
