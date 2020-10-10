@@ -68,7 +68,7 @@ function timeoutCheck() {
       /**
        * apply changes and reload webfilter
        */
-      $('#btnApplyConfig').unbind('click').click(function(){
+      $('#btnApplyConfig').off('click').click(function(){
          $('#btnApplyConfigProgress').addClass("fa fa-spinner fa-pulse");
          ajaxCall("/api/webfilter/service/reconfigure", {}, function(data,status) {
             $("#responseMsg").addClass("hidden");
