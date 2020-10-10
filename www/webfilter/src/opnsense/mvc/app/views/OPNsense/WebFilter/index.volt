@@ -182,13 +182,13 @@ function timeoutCheck() {
             });
         });
 
-    $("#dl_categ").click(function(){
-        $("#dl_categ_progress").addClass("fa fa-spinner fa-pulse");
-        $("#dl_categ").prop("disabled", true);
-        ajaxCall(url="/api/webfilter/service/download", sendData={action:1}, callback_ok=function(){
-            setTimeout(timeoutCheck, 2500);
+        $("#dl_categ").click(function(){
+            $("#dl_categ_progress").addClass("fa fa-spinner fa-pulse");
+            $("#dl_categ").prop("disabled", true);
+            ajaxCall(url="/api/webfilter/service/download", sendData={action:1}, callback_ok=function(){
+                setTimeout(timeoutCheck, 2500);
+            });
         });
-    });
 
         // update history on tab state and implement navigation
         if(window.location.hash != "") {
