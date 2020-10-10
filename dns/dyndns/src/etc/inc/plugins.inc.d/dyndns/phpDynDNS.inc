@@ -324,8 +324,8 @@ class updatedns
 
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): Current Service: {$this->_dnsService}");
-            log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 enabled: {$this->_useIPv4}");
-            log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 enabled: {$this->_useIPv6}");
+            log_error("Dynamic DNS ({$this->_dnsHost}): IPv4 enabled: " . $this->_bool2str($this->_useIPv4));
+            log_error("Dynamic DNS ({$this->_dnsHost}): IPv6 enabled: " . $this->_bool2str($this->_useIPv6));
         }
 
         // Get current WAN IP(s) and ensure that we were able to lookup the IP
@@ -347,11 +347,16 @@ class updatedns
         }
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
-        $this->_forceUpdateNeeded = $forceUpdate;
+        /* FIXME Don't save "force" in config.xml if button "Save and Force Update" is pressed?! Or add extra checkbox? */
+        $this->_forceUpdateNeeded = ($forceUpdate == 1);
 
         $this->_debugID = rand(1000000, 9999999);
 
-        if ($forceUpdate == false && $this->_detectChange() == false) {
+        if ($this->_dnsVerboseLog) {
+            log_error("Dynamic DNS ({$this->_dnsHost}): Force Update: " . $this->_bool2str($this->_forceUpdateNeeded));
+        }
+
+        if (!$this->_forceUpdateNeeded && !$this->_detectChange()) {
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
@@ -1698,7 +1703,7 @@ class updatedns
             if ($this->_useIPv4 && is_ipaddrv4($this->_dnsIPv4)) {
                 $currentTime = time();
                 if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS: updating IPv4 cache file {$this->_cacheFile_v4}: {$this->_dnsIPv4}");
+                    log_error("Dynamic DNS: ({$this->_dnsHost}): updating IPv4 cache file {$this->_cacheFile_v4}: {$this->_dnsIPv4}");
                 }
                 @file_put_contents($this->_cacheFile_v4, "{$this->_dnsIPv4}|{$currentTime}");
             } else {
@@ -1708,7 +1713,7 @@ class updatedns
             if ($this->_useIPv6 && is_ipaddrv6($this->_dnsIPv6)) {
                 $currentTime = time();
                 if ($this->_dnsVerboseLog) {
-                    log_error("Dynamic DNS: updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
+                    log_error("Dynamic DNS: ({$this->_dnsHost}): updating IPv6 cache file {$this->_cacheFile_v6}: {$this->_dnsIPv6}");
                 }
                 @file_put_contents($this->_cacheFile_v6, "{$this->_dnsIPv6}|{$currentTime}");
             } else {
@@ -1904,5 +1909,20 @@ class updatedns
         }
 
         return $success;
+    }
+
+    /*
+     * Private Function (added 10 October 2020)
+     *   converts a bool to it's corresponding string
+     *   returns "no bool" if no valid bool is provided
+     */
+    function _bool2str($bool) {
+        /* Check if is bool */
+        if (is_bool($bool)) {
+                return $bool ? "true" : "false";
+        }
+        else {
+                return "no bool";
+        }
     }
 }
