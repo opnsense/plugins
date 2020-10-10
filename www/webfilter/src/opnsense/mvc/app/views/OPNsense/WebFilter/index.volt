@@ -83,7 +83,7 @@ function timeoutCheck() {
          });
       });
 
-        var data_get_map = {'frm_webfilter':"/api/webfilter/settings/get"};
+        const data_get_map = {'frm_webfilter':"/api/webfilter/settings/get"};
 
         // load initial data
         mapDataToFormUI(data_get_map).done(function(){
