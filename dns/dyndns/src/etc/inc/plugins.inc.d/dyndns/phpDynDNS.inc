@@ -201,14 +201,16 @@ class updatedns
         $this->_curlIpresolveV4 = $curlIpresolveV4;
         $this->_curlSslVerifypeer = $curlSslVerifypeer;
         $this->_dnsVerboseLog = $dnsVerboseLog;
-        $this->_log("updatedns() starting");
-
-        $dyndnslck = lock("DDNS" . $dnsID, LOCK_EX);
 
         if (!$dnsService) {
             $this->_error(2);
         }
-        switch ($dnsService) {
+        $this->_dnsService = strtolower($dnsService);
+
+        $dyndnslck = lock("DDNS" . $dnsID, LOCK_EX);
+
+        /* catch errors for unset dnsHost, dnsUser, dnsPass, dnsZoneID, dnsResourceID, dnsTTL, dnsUpdateURL*/
+        switch ($this->_dnsService) {
             case 'freedns':
                 if (!$dnsHost) {
                     $this->_error(5);
@@ -283,8 +285,24 @@ class updatedns
                 }
                 break;
         }
+        $this->_dnsUser = trim($dnsUser);
+        $this->_dnsPass = trim($dnsPass);
+        $this->_dnsHost = trim($dnsHost);
+        $this->_dnsServer = trim($dnsServer);
+        $this->_dnsPort = trim($dnsPort);
+        $this->_dnsWildcard = $dnsWildcard;
+        $this->_dnsMX = trim($dnsMX);
+        $this->_dnsZoneID = trim($dnsZoneID);
+        $this->_dnsResourceID = trim($dnsResourceID);
+        $this->_dnsTTL = trim($dnsTTL);
+        $this->_dnsUpdateURL = trim($dnsUpdateURL);
+        $this->_dnsResultMatch = $dnsResultMatch;
+
+        $this->_log("updatedns() starting");
+        // $this->_log("Current Service: {$this->_dnsService}");
+
         /* Set usage of IPv4 and IPv6 */
-        switch ($dnsService) {
+        switch ($this->_dnsService) {
             case 'azurev6':
             case 'cloudflare-v6':
             case 'custom-v6':
@@ -309,36 +327,21 @@ class updatedns
         }
         $this->_log("IPv4 enabled: " . $this->_bool2str($this->_useIPv4));
         $this->_log("IPv6 enabled: " . $this->_bool2str($this->_useIPv6));
+        $this->_log("CURL options: Force IPv4 resolving: " . $this->_bool2str($this->_curlIpresolveV4) . " / Verify SSL peer: " . $this->_bool2str($this->_curlSslVerifypeer));
 
-        $this->_dnsService = strtolower($dnsService);
-        $this->_dnsUser = $dnsUser;
-        $this->_dnsPass = $dnsPass;
-        $this->_dnsHost = $dnsHost;
-        $this->_dnsServer = $dnsServer;
-        $this->_dnsPort = $dnsPort;
-        $this->_dnsWildcard = $dnsWildcard;
-        $this->_dnsMX = $dnsMX;
-        $this->_dnsZoneID = $dnsZoneID;
-        $this->_dnsResourceID = $dnsResourceID;
-        $this->_dnsTTL = $dnsTTL;
         $this->_if = dyndns_failover_interface($dnsIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
-        $this->_log("Current Service: {$this->_dnsService}");
+        $this->_log("Interface to monitor: {$dnsIf} ({$this->_if})");
 
-        // Get current WAN IP(s) and ensure that we were able to lookup the IP
+        /* Get current WAN IP(s) and ensure that we were able to lookup the IP */
         if (!$this->_checkIP()) {
             $this->_log("There was an error trying to determine the public IP for interface - {$dnsIf}({$this->_if}). Probably interface is not a WAN interface.", 0);
             unlock($dyndnslck);
             return;
         }
 
-        $this->_dnsUpdateURL = $dnsUpdateURL;
-        $this->_dnsResultMatch = $dnsResultMatch;
-
         $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, ($this->_useIPv6 && !$this->_curlIpresolveV4) ? 'inet6' : 'all');
-        $this->_log("running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
-
         $this->_dnsRequestIfIP = ($this->_useIPv6 && !$this->_curlIpresolveV4) ? get_interface_ipv6($this->_dnsRequestIf) : get_interface_ip($this->_dnsRequestIf);
-        $this->_log("get IP of {$this->_dnsRequestIf} to send update from. found {$this->_dnsRequestIfIP}");
+        $this->_log("Interface to send update from: {$dnsRequestIf} ({$this->_dnsRequestIf}) with IP: {$this->_dnsRequestIfIP}");
 
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
@@ -649,7 +652,7 @@ class updatedns
                     https://dynamicdns.park-your-domain.com/update?host=[host_name]&domain=[domain.com]&password=[domain_password]&ip=[your_ip]
                 */
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                $dparts = explode(".", trim($this->_dnsHost));
+                $dparts = explode(".", $this->_dnsHost);
                 $domain_part_count = ($dparts[count($dparts) - 1] == "uk") ? 3 : 2;
                 $domain_offset = count($dparts) - $domain_part_count;
                 $hostname = implode(".", array_slice($dparts, 0, $domain_offset));
@@ -838,7 +841,7 @@ class updatedns
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
                 $baseUrl = 'https://api.cloudflare.com/client/v4';
-                $fqdn = str_replace(' ', '', $this->_dnsHost);
+                $fqdn = $this->_dnsHost;
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
                 $ttlData = intval($this->_dnsTTL) < 1 ? 1 : intval($this->_dnsTTL);
                 $hostData = array(
@@ -1012,7 +1015,7 @@ class updatedns
             case 'linode':
             case 'linode-v6':
                 $baseUrl = "https://api.linode.com/v4";
-                $fqdn = trim($this->_dnsHost);
+                $fqdn = $this->_dnsHost;
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
 
                 if ($this->_dnsWildcard == 'ON') {
@@ -1158,7 +1161,7 @@ class updatedns
                 /* Read https://developer.godaddy.com/ for API documentation */
                 $baseApiUrl = 'https://api.godaddy.com/v1/domains/';
                 $recordType = $this->_useIPv6 ? "AAAA" : "A";
-                $splitHost = explode('.', trim($this->_dnsHost));
+                $splitHost = explode('.', $this->_dnsHost);
                 $dnsDomain = '*';
                 if ($this->_dnsWildcard != 'ON') {
                     $dnsDomain = array_shift($splitHost);
@@ -1626,7 +1629,7 @@ class updatedns
                 }
             case 'linode':
             case 'linode-v6':
-                $fqdn = trim($this->_dnsHost);
+                $fqdn = $this->_dnsHost;
                 $fqdn_log = "";
                 if ($this->_dnsWildcard == 'ON') {
                     $fqdn = "*.$fqdn";
@@ -1808,7 +1811,7 @@ class updatedns
         if ((($currentTime - $cacheTimeIPv4) > $maxCacheAgeSecs) || (($currentTime - $cacheTimeIPv6) > $maxCacheAgeSecs)) {
             $needs_updating = true;
             $this->_forceUpdateNeeded = true;
-            $this->_log("More than " . $this->_dnsMaxCacheAgeDays . " days.  Updating.");
+            $this->_log("Last update longer ago than " . $this->_dnsMaxCacheAgeDays . " days.  Updating.");
             $this->_log("{$currentTime} - {$cacheTimeIPv4} > {$maxCacheAgeSecs} or {$currentTime} - {$cacheTimeIPv6} > {$maxCacheAgeSecs}");
         }
         if ($initial == true) {
@@ -1897,7 +1900,7 @@ class updatedns
 
         /* assemble prefix for message to log */
         $msg_prefix = "Dynamic DNS";
-        $msg_prefix .= ($this->_dnsHost !== "") ? " ({$this->_dnsHost}):" : ":";
+        $msg_prefix .= ($this->_dnsHost !== "") ? " ({$this->_dnsService}: {$this->_dnsHost}):" : "({$this->_dnsService}):";
 
         /* Handle loglevel */
         switch($loglevel) {
