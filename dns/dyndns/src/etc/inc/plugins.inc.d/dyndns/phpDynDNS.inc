@@ -1437,6 +1437,8 @@ class updatedns
                 $successful_update = false;
                 if ($this->_dnsResultMatch == "") {
                     $successful_update = true;
+                    $this->_log("(Warning) No Result Match configured. PAYLOAD: \"{$data}\"", 0);
+                    $status = "(Unknown) IP address update performed successfully. Result can not be verified!";
                 } else {
                     if ($this->_useIPv4) {
                         $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIPv4, $this->_dnsResultMatch);
@@ -1448,14 +1450,13 @@ class updatedns
                         $match = str_replace("\\|", "|", $match);
                         if (strcmp($match, trim($data, "\t\n\r")) == 0) {
                             $successful_update = true;
+                            $status = "(Success) IP address(es) updated(ed) successfully!";
                         }
                     }
                     unset($matches);
                 }
-                if ($successful_update == true) {
-                    $status = "(Success) IP address updated successfully!";
-                } else {
-                    $status = "(Error) Result did not match. PAYLOAD: {$data}";
+                if (!$successful_update) {
+                    $status = "(Error) Result did not match. PAYLOAD: \"{$data}\"";
                 }
                 break;
             case 'cloudflare':
