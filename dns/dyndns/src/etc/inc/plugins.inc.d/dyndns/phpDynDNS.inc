@@ -1742,7 +1742,7 @@ class updatedns
                 $status = "Route 53: (Error) Invalid TTL";
                 break;
             case 10:
-                $error = "No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
+                $error = "No change in my IP address(es) and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
                 break;
             default:
                 $error = "(ERROR!) Unknown Response.";
@@ -1772,7 +1772,7 @@ class updatedns
                 $contents = file_get_contents($this->_cacheFile_v4);
                 list($cacheIPv4,$cacheTimeIPv4) = explode('|', $contents);
                 $this->_debug($cacheIPv4 . '/' . $cacheTimeIPv4);
-                $this->_log("Cached IPv4: {$cacheIPv4}.");
+                $this->_log("Cached IPv4: {$cacheIPv4} / Last update: " . date("Y-m-d\TH:i:s", $cacheTimeIPv4));
             } else {
                 $cacheIPv4 = '0.0.0.0';
                 @file_put_contents($this->_cacheFile_v4, "0.0.0.0|{$currentTime}");
@@ -1786,7 +1786,7 @@ class updatedns
                 $contents = file_get_contents($this->_cacheFile_v6);
                 list($cacheIPv6,$cacheTimeIPv6) = explode('|', $contents);
                 $this->_debug($cacheIPv6 . '/' . $cacheTimeIPv6);
-                $this->_log("Cached IPv6: {$cacheIPv6}.");
+                $this->_log("Cached IPv6: {$cacheIPv6} / Last update: " . date("Y-m-d\TH:i:s", $cacheTimeIPv6));
             } else {
                 $cacheIPv6 = '::';
                 @file_put_contents($this->_cacheFile_v4, "::|{$currentTime}");
@@ -1809,11 +1809,13 @@ class updatedns
             $needs_updating = true;
             $this->_log("Cached IPv6 ({$cacheIPv6}) != WAN IPv6 ({$this->_dnsIPv6}).  Updating.");
         }
-        if ((($currentTime - $cacheTimeIPv4) > $maxCacheAgeSecs) || (($currentTime - $cacheTimeIPv6) > $maxCacheAgeSecs)) {
+        if ($this->_useIPv4 && (($currentTime - $cacheTimeIPv4) > $maxCacheAgeSecs)) {
             $needs_updating = true;
-            $this->_forceUpdateNeeded = true;
-            $this->_log("Last update longer ago than " . $this->_dnsMaxCacheAgeDays . " days.  Updating.");
-            $this->_log("{$currentTime} - {$cacheTimeIPv4} > {$maxCacheAgeSecs} or {$currentTime} - {$cacheTimeIPv6} > {$maxCacheAgeSecs}");
+            $this->_log("Last IPv4-Update longer ago than " . $this->_dnsMaxCacheAgeDays . " days.  Updating.");
+        }
+        if ($this->_useIPv6 && (($currentTime - $cacheTimeIPv6) > $maxCacheAgeSecs)) {
+            $needs_updating = true;
+            $this->_log("Last IPv6-Update longer ago than " . $this->_dnsMaxCacheAgeDays . " days.  Updating.");
         }
         if ($initial == true) {
             $needs_updating = true;
