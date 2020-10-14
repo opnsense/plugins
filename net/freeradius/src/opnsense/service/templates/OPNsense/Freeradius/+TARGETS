@@ -14,4 +14,5 @@ radiusd.conf:/usr/local/etc/raddb/radiusd.conf
 sites-enabled-default:/usr/local/etc/raddb/sites-enabled/default
 sites-enabled-dhcp:/usr/local/etc/raddb/sites-enabled/dhcp
 sites-enabled-inner-tunnel:/usr/local/etc/raddb/sites-enabled/inner-tunnel
+sites-enabled-check-eap-tls:/usr/local/etc/raddb/sites-enabled/check-eap-tls
 users:/usr/local/etc/raddb/mods-config/files/authorize

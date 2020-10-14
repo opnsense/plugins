@@ -15,6 +15,12 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.8
+
+* Add support for checking TLS certificate names
+* Allow / and @ as part of the user-names
+* Allow TLS as the default EAP type
+
 1.9.7
 
 * Fix Login-Time validation
