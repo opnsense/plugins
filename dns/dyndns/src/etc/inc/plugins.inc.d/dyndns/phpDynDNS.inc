@@ -109,6 +109,8 @@
  *  GoDaddy                     - Last Tested: 10 July 2020
  *  GoDaddy v6                  - Last Tested: 10 July 2020
  *  Gandi LiveDNS               - Last Tested: 24 August 2020
+ *  ISPConfig 3.1+ API          - Last Tested: 18 October 2020
+ *  ISPConfig 3.1+ API v6       - Last Tested: 18 October 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -138,6 +140,9 @@ class updatedns
     var $_dnsServer;
     var $_dnsPort;
     var $_dnsUpdateURL;
+    var $_dnsApiUrl;
+    var $_dnsZone;
+    var $_dnsRecordName;
     var $_dnsZoneID;
     var $_dnsResourceID;
     var $_dnsTTL;
@@ -185,7 +190,10 @@ class updatedns
         $dnsID = '',
         $dnsVerboseLog = false,
         $curlIpresolveV4 = false,
-        $curlSslVerifypeer = true
+        $curlSslVerifypeer = true,
+        $dnsApiUrl = '',
+        $dnsZone = '',
+        $dnsRecordName = ''
     ) {
 
         /* XXX because the call stack is upside down we need to reassemble config parts here... */
@@ -271,6 +279,20 @@ class updatedns
                     $this->_error(9);
                 }
                 break;
+            case 'ispconfig':
+            case 'ispconfig-v6':
+                if (!$dnsUser) {
+                    $this->_error(3);
+                } else if (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsApiUrl) {
+                    $this->_error(7);
+                } elseif (!$dnsZone) {
+                    $this->_error(11);
+                } elseif (!$dnsRecordName) {
+                    $this->_error(12);
+                }
+                break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
@@ -289,6 +311,7 @@ class updatedns
             case 'dynv6-v6':
             case 'he-net-v6':
             case 'godaddy-v6':
+            case 'ispconfig-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
@@ -312,6 +335,9 @@ class updatedns
         $this->_if = dyndns_failover_interface($dnsIf, $this->_useIPv6 ? 'inet6' : 'all');
         $this->_checkIP();
         $this->_dnsUpdateURL = $dnsUpdateURL;
+        $this->_dnsApiUrl = $dnsApiUrl;
+        $this->_dnsZone = $dnsZone;
+        $this->_dnsRecordName = $dnsRecordName;
         $this->_dnsResultMatch = $dnsResultMatch;
         $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, $this->_useIPv6 ? 'inet6' : 'all');
         if ($this->_dnsVerboseLog) {
@@ -368,6 +394,8 @@ class updatedns
                 case 'he-net-tunnelbroker':
                 case 'he-net-v6':
                 case 'hn':
+                case 'ispconfig':
+                case 'ispconfig-v6';
                 case 'linode':
                 case 'linode-v6':
                 case 'loopia':
@@ -1162,6 +1190,117 @@ class updatedns
 
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
                 break;
+            case 'ispconfig':
+            case 'ispconfig-v6':
+                if ($this->_curlIpresolveV4) {
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                }
+                if ($this->_curlSslVerifypeer) {
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                } else {
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                }
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json'
+                ));
+
+                // Login and get a session ID
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Getting ISPConfig Session");
+                }
+                $loginApiUrl = "{$this->_dnsApiUrl}?login";
+                $loginData = array(
+                    "username" => $this->_dnsUser, 
+                    "password" => $this->_dnsPass,
+                    "client_login" => false
+                );
+                curl_setopt($ch, CURLOPT_URL, $loginApiUrl);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($loginData));
+                $loginOutput = json_decode(curl_exec($ch));
+                if (!property_exists($loginOutput, 'code') || $loginOutput->code !== 'ok') {
+                    $message = "Dynamic DNS ({$this->_dnsHost}): Error: Unable to get ISPConfig Session";
+                    if (property_exists($loginOutput, 'message')) $message .= ": {$loginOutput->message}";
+                    log_error($message);
+                    return false;
+                }
+                $sessionId = $loginOutput->response;
+
+                // Get zone info
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Getting ISPConfig Zone Information");
+                }
+                $zoneGetApiUrl = "{$this->_dnsApiUrl}?dns_zone_get";
+                $zoneGetData = array(
+                    "session_id" => $sessionId,
+                    "primary_id" => array(
+                        "origin" => $this->_dnsZone
+                    )
+                );
+                curl_setopt($ch, CURLOPT_URL, $zoneGetApiUrl);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($zoneGetData));
+                $zoneGetOutput = json_decode(curl_exec($ch));
+                if (!property_exists($zoneGetOutput, 'code') || $zoneGetOutput->code !== 'ok') {
+                    $message = "Dynamic DNS ({$this->_dnsHost}): Error: Unable to get ISPConfig Zone Data for {$this->_dnsZone}";
+                    if (property_exists($zoneGetOutput, 'message')) $message .= ": {$zoneGetOutput->message}";
+                    log_error($message);
+                    return false;
+                } elseif (count($zoneGetOutput->response) == 0) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Error: Specified ISPConfig DNS Zone ({$this->_dnsZone}) does not exist");
+                    return false;
+                }
+                $zoneId = $zoneGetOutput->response[0]->id;
+
+                // Get record info
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Getting ISPConfig Record Information");
+                }
+                $recordGetFunction = ($this->_useIPv6) ? "dns_aaaa_get" : "dns_a_get";
+                $recordGetType = ($this->_useIPv6) ? "AAAA" : "A";
+                $recordGetApiUrl = "{$this->_dnsApiUrl}?{$recordGetFunction}";
+                $recordGetData = array(
+                    "session_id" => $sessionId,
+                    "primary_id" => array(
+                        "zone" => $zoneId,
+                        "name" => $this->_dnsRecordName,
+                        "type" => $recordGetType
+                    )
+                );
+                curl_setopt($ch, CURLOPT_URL, $recordGetApiUrl);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($recordGetData));
+                $recordGetOutput = json_decode(curl_exec($ch));
+                if (!property_exists($recordGetOutput, 'code') || $recordGetOutput->code !== 'ok') {
+                    $message = "Dynamic DNS ({$this->_dnsHost}): Error: Unable to get ISPConfig Record Data for {$this->_dnsRecordName}";
+                    if (property_exists($recordGetOutput, 'message')) $message .= ": {$recordGetOutput->message}";
+                    log_error($message);
+                    return false;
+                } elseif (count($recordGetOutput->response) == 0) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Error: Specified ISPConfig Record Name ({$this->_dnsRecordName}) does not exist");
+                    return false;
+                } elseif (count($recordGetOutput->response) > 1) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Error: Multiple records found with Record Name ({$this->_dnsRecordName})");
+                    return false;
+                }
+                $recordId = intval($recordGetOutput->response[0]->id);
+
+                // Update record entry
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): Updating Record Information");
+                }
+                $recordUpdateFunction = ($this->_useIPv6) ? "dns_aaaa_update" : "dns_a_update";
+                $recordUpdateApiUrl = "{$this->_dnsApiUrl}?{$recordUpdateFunction}";
+                $recordUpdateData = array(
+                    "session_id" => $sessionId,
+                    "client_id" => 0,
+                    "primary_id" => $recordId,
+                    "params" => array(
+                        "data" => $this->_dnsIP,
+                        "dns_rr_id" => $recordId
+                    ),
+                    "update_serial" => true
+                );
+                curl_setopt($ch, CURLOPT_URL, $recordUpdateApiUrl);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($recordUpdateData));
+                break;
             default:
                 break;
         }
@@ -1644,6 +1783,25 @@ class updatedns
                     log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
                 }
                 break;
+            case 'ispconfig':
+            case 'ispconfig-v6':
+                $output = json_decode($data);
+                if ($output === NULL || !property_exists($output, 'code') || $output->code !== 'ok') {
+                    $status = "Dynamic DNS: (Error) Unknown Response";
+                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $this->_debug($data);
+                }
+                if ($output->response === 0) {
+                    $status = "Dynamic DNS: (Success) No change in IP address";
+                    $successful_update = true;
+                } elseif ($output->response === 1) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
+                } else {
+                    $status = 'Dynamic DNS: (Warning) Multiple records updated!';
+                    $successful_update = true;
+                }
+                break;
             default:
                 break;
         }
@@ -1705,6 +1863,12 @@ class updatedns
                 break;
             case 10:
                 $error = "Dynamic DNS ({$this->_dnsHost}): No change in my IP address and/or " . $this->_dnsMaxCacheAgeDays . " days has not passed. Not updating dynamic DNS entry.";
+                break;
+            case 11:
+                $error = "Dynamic DNS: (ERROR!) No DNS Zone Provided.";
+                break;
+            case 12:
+                $error = "Dynamic DNS: (ERROR!) No Record Name Provided.";
                 break;
             default:
                 $error = "Dynamic DNS: (ERROR!) Unknown Response.";

@@ -128,6 +128,8 @@ function dyndns_list()
         'he-net' => 'HE.net',
         'he-net-tunnelbroker' => 'HE.net Tunnelbroker',
         'he-net-v6' => 'HE.net (v6)',
+        'ispconfig' => 'ISPConfig 3.1+ API',
+        'ispconfig-v6' => 'ISPConfig 3.1+ API (v6)',
         'linode' => 'Linode',
         'linode-v6' => 'Linode (v6)',
         'loopia' => 'Loopia',
@@ -181,7 +183,10 @@ function dyndns_configure_client($conf)
         $dnsID = "{$conf['id']}",
         $dnsVerboseLog = $conf['verboselog'],
         $curlIpresolveV4 = $conf['curl_ipresolve_v4'],
-        $curlSslVerifypeer = $conf['curl_ssl_verifypeer']
+        $curlSslVerifypeer = $conf['curl_ssl_verifypeer'],
+        $dnsApiUrl = $conf['apiurl'],
+        $dnsZone = $conf['dnszone'],
+        $dnsRecordName = $conf['recordname']
     );
 }
 

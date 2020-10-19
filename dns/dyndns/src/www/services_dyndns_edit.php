@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $id = $_GET['id'];
     }
     $config_copy_fieldnames = array('username', 'password', 'host', 'mx', 'type', 'zoneid','resourceid', 'ttl', 'updateurl',
-                                    'resultmatch', 'requestif', 'descr', 'interface');
+                                    'apiurl', 'dnszone', 'recordname', 'resultmatch', 'requestif', 'descr', 'interface');
     foreach ($config_copy_fieldnames as $fieldname) {
         if (isset($id) && isset($a_dyndns[$id][$fieldname])) {
             $pconfig[$fieldname] = $a_dyndns[$id][$fieldname];
@@ -92,6 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $reqdfieldsn[] = gettext('Resource Id');
         $reqdfields[] = 'ttl';
         $reqdfieldsn[] = gettext('TTL');
+    } elseif (in_array($pconfig['type'], array('ispconfig', 'ispconfig-v6'))) {
+        $reqdfields[] = 'apiurl';
+        $reqdfieldsn[] = gettext('API URL');
+        $reqdfields[] = 'dnszone';
+        $reqdfieldsn[] = gettext('DNS Zone');
+        $reqdfields[] = 'recordname';
+        $reqdfieldsn[] = gettext('Record Name');
+        $reqdfields[] = 'username';
+        $reqdfieldsn[] = gettext('Username');
+        $reqdfields[] = 'password';
+        $reqdfieldsn[] = gettext('Password');
     } elseif ($pconfig['type'] != 'custom' && $pconfig['type'] != 'custom-v6') {
         $reqdfields[] = 'host';
         $reqdfieldsn[] = gettext('Hostname');
@@ -150,7 +161,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['type'] = $pconfig['type'];
         $dyndns['username'] = $pconfig['username'];
         $dyndns['password'] = $pconfig['password'];
-        $dyndns['host'] = $pconfig['host'];
+        // Create the host for display purposes for ispconfig configurations
+        if (in_array($dyndns['type'], array('ispconfig', 'ispconfig-v6'))) {
+            $dyndns['host'] = ($pconfig['dnszone'] == $pconfig['recordname']) ? $pconfig['dnszone'] : "{$pconfig['recordname']}.{$pconfig['dnszone']}";
+        } else {
+            $dyndns['host'] = $pconfig['host'];
+        }
         $dyndns['mx'] = $pconfig['mx'];
         $dyndns['wildcard'] = !empty($pconfig['wildcard']);
         $dyndns['verboselog'] = !empty($pconfig['verboselog']);
@@ -162,6 +178,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['resourceid'] = $pconfig['resourceid'];
         $dyndns['ttl'] = $pconfig['ttl'];
         $dyndns['updateurl'] = $pconfig['updateurl'];
+        $dyndns['apiurl'] = $pconfig['apiurl'];
+        $dyndns['dnszone'] = $pconfig['dnszone'];
+        $dyndns['recordname'] = $pconfig['recordname'];
         // Trim hard-to-type but sometimes returned characters
         $dyndns['resultmatch'] = trim($pconfig['resultmatch'], "\t\n\r");
         ($dyndns['type'] == "custom" || $dyndns['type'] == "custom-v6") ? $dyndns['requestif'] = $pconfig['requestif'] : $dyndns['requestif'] = $pconfig['interface'];
@@ -227,6 +246,11 @@ include("head.inc");
               case 'cloudflare-token':
               case 'cloudflare-token-v6':
                 $(".type_cloudflare").show();
+                break;
+              case 'ispconfig':
+              case 'ispconfig-v6':
+                $(".type_ispconfig").show();
+                $(".type_not_ispconfig").hide();
                 break;
               default:
                 $(".type_default").show();
@@ -311,7 +335,7 @@ include("head.inc");
                        </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr class="type_not_ispconfig">
                     <td><a id="help_for_host" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Hostname") ?></td>
                     <td>
                       <input name="host" type="text" id="host" value="<?= $pconfig['host'] ?>" />
@@ -347,7 +371,7 @@ include("head.inc");
                       <strong><?= gettext("Enable verbose logging") ?></strong>
                     </td>
                   </tr>
-                  <tr class="opt_field type_custom">
+                  <tr class="opt_field type_custom type_ispconfig">
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("CURL options"); ?></td>
                     <td>
                       <input name="curl_ipresolve_v4" type="checkbox" id="curl_ipresolve_v4" value="yes" <?= empty($pconfig['curl_ipresolve_v4']) ? '' : 'checked="checked"' ?> />
@@ -356,7 +380,7 @@ include("head.inc");
                       <?= gettext("Verify SSL peer") ?>
                     </td>
                   </tr>
-                  <tr class ="opt_field type_custom type_route53 type_azure type_default">
+                  <tr class ="opt_field type_custom type_ispconfig type_route53 type_azure type_default">
                     <td><a id="help_for_username" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Username") ?></td>
                     <td>
                       <input name="username" type="text" id="username" value="<?= $pconfig['username'] ?>" />
@@ -369,6 +393,7 @@ include("head.inc");
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
+                        <br /><?= gettext('ISPConfig: Enter an ISPConfig Remote User with DNS zone, A, and AAA function permissions.') ?>
                       </div>
                     </td>
                   </tr>
@@ -386,6 +411,7 @@ include("head.inc");
                         <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
                         <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
+                        <br /><?= gettext('ISPConfig: Enter the password for the ISPConfig Remote User.') ?>
                       </div>
                     </td>
                   </tr>
@@ -404,6 +430,33 @@ include("head.inc");
                       <input name="resourceid" type="text" id="resourceid" value="<?= $pconfig['resourceid'] ?>" />
                       <div class="hidden" data-for="help_for_resourceid">
                         <?= gettext("Enter the resource id of the DNS Zone in Azure.") ?>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="opt_field type_ispconfig">
+                    <td><a id="help_for_apiurl" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("API URL") ?></td>
+                    <td>
+                      <input name="apiurl" type="text" id="apiurl" value="<?= $pconfig['apiurl'] ?>" />
+                      <div class="hidden" data-for="help_for_apiurl">
+                        <?= gettext("The JSON API URL for ISPConfig. Example: https://www.example.com:8080/remote/json.php") ?>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="opt_field type_ispconfig">
+                    <td><a id="help_for_dnszone" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("DNS Zone") ?></td>
+                    <td>
+                      <input name="dnszone" type="text" id="dnszone" value="<?= $pconfig['dnszone'] ?>" />
+                      <div class="hidden" data-for="help_for_dnszone">
+                        <?= gettext("The DNS Zone containing the record in ISPConfig to be updated. Example: example.com.") ?>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="opt_field type_ispconfig">
+                    <td><a id="help_for_recordname" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Record Name") ?></td>
+                    <td>
+                      <input name="recordname" type="text" id="recordname" value="<?= $pconfig['recordname'] ?>" />
+                      <div class="hidden" data-for="help_for_recordname">
+                        <?= gettext("The record name in ISPConfig to be updated. Example: www") ?>
                       </div>
                     </td>
                   </tr>
