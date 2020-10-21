@@ -593,7 +593,11 @@ eap {
                 # virtual server has access to these attributes, and can
                 # be used to accept or reject the request.
                 #
-        #       virtual_server = check-eap-tls
+{% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.eap.check_tls_names') and OPNsense.freeradius.eap.check_tls_names == '1' %}
+                virtual_server = check-eap-tls
+{%   endif %}
+{% endif %}
         }
 
 

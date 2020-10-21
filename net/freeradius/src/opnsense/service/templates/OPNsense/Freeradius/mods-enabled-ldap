@@ -28,6 +28,7 @@ ldap {
                 control:LM-Password             := 'sambaLmPassword'
                 control:NT-Password             := 'sambaNtPassword'
                 control:LM-Password             := 'dBCSPwd'
+                control:NT-Password             := 'ipaNTHash'
                 control:Password-With-Header    += 'userPassword'
                 control:SMB-Account-CTRL-TEXT   := 'acctFlags'
                 control:Expiration              := 'radiusExpiration'
