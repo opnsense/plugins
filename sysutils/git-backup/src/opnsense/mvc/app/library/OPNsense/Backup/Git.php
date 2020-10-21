@@ -105,17 +105,17 @@ class Git extends Base implements IBackupProvider
     /**
      * @inheritdoc
      */
-     public function setConfiguration($conf)
-     {
-         $mdl = new GitSettings();
-         $this->setModelProperties($mdl, $conf);
-         $validation_messages = $this->validateModel($mdl);
-         if (empty($validation_messages)) {
-             $mdl->serializeToConfig();
-             Config::getInstance()->save();
-         }
-         return $validation_messages;
-     }
+    public function setConfiguration($conf)
+    {
+        $mdl = new GitSettings();
+        $this->setModelProperties($mdl, $conf);
+        $validation_messages = $this->validateModel($mdl);
+        if (empty($validation_messages)) {
+            $mdl->serializeToConfig();
+            Config::getInstance()->save();
+        }
+        return $validation_messages;
+    }
 
     /**
      * Backup is responsible for initialising the local repo and pusing it to upstream.
@@ -148,21 +148,20 @@ class Git extends Base implements IBackupProvider
         // When there are unprocessed config backups, flush them out.
         (new Backend())->configdRun("system event config_changed");
         // configure upstream
-        exec("cd {$targetdir} && ".
-            "{$git} config core.sshCommand ".
-            "\"ssh -i {$ident_file} -o StrictHostKeyChecking=accept-new -o PasswordAuthentication=no\""
-        );
+        exec("cd {$targetdir} && " .
+            "{$git} config core.sshCommand " .
+            "\"ssh -i {$ident_file} -o StrictHostKeyChecking=accept-new -o PasswordAuthentication=no\"");
         $url = (string)$mdl->url;
         $pos = strpos($url, '//');
         // inject credentials in url (either username or username:password, depending on transport)
-        if (stripos(trim((string)$mdl->url),'http') === 0) {
+        if (stripos(trim((string)$mdl->url), 'http') === 0) {
             $cred = urlencode((string)$mdl->user) . ":" . urlencode((string)$mdl->password);
-            $url = substr($url,0, $pos+2) . "{$cred}@" . substr($url, $pos+2);
+            $url = substr($url, 0, $pos + 2) . "{$cred}@" . substr($url, $pos + 2);
         } else {
-            $url = substr($url,0, $pos+2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos+2);
+            $url = substr($url, 0, $pos + 2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos + 2);
         }
         exec("cd {$targetdir} && git remote remove origin");
-        exec("cd {$targetdir} && git remote add origin ". escapeshellarg($url));
+        exec("cd {$targetdir} && git remote add origin " . escapeshellarg($url));
         $pushtxt = shell_exec(
             "(cd {$targetdir} && git push origin " . escapeshellarg("master:{$mdl->branch}") .
             " && echo '__exit_ok__') 2>&1"
@@ -179,7 +178,7 @@ class Git extends Base implements IBackupProvider
             $error_type = "unknown error, check log for details";
         }
         if (!empty($error_type)) {
-            syslog(LOG_ERR, "git-backup {$error_type} (".str_replace("\n", " ", $pushtxt).")");
+            syslog(LOG_ERR, "git-backup {$error_type} (" . str_replace("\n", " ", $pushtxt) . ")");
             throw new \Exception($error_type);
         } else {
             // return filelist in git
