@@ -597,7 +597,7 @@ eap {
 {%   if helpers.exists('OPNsense.freeradius.eap.check_tls_names') and OPNsense.freeradius.eap.check_tls_names == '1' %}
                 virtual_server = check-eap-tls
 {%   endif %}
-{% endif %}	
+{% endif %}
         }
 
 
