@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -39,6 +39,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <address type="NetworkField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -130,6 +134,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <number type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -156,6 +164,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -196,6 +208,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>

@@ -44,6 +44,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->searchBase(
             'neighbors.neighbor',
             array("enabled",
+                  "description",
                   "address",
                   "remoteas",
                   "updatesource",
@@ -82,7 +83,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'aspaths.aspath',
-            array("enabled", "number", "action", "as" )
+            array("enabled", "description", "number", "action", "as" )
         );
     }
 
@@ -111,7 +112,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'prefixlists.prefixlist',
-            array("enabled", "name", "seqnumber", "action", "network" )
+            array("enabled", "description", "name", "seqnumber", "action", "network" )
         );
     }
     public function getPrefixlistAction($uuid = null)
@@ -139,7 +140,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'routemaps.routemap',
-            array("enabled", "name", "action", "id", "match", "match2", "set")
+            array("enabled", "description", "name", "action", "id", "match", "match2", "set")
         );
     }
 
