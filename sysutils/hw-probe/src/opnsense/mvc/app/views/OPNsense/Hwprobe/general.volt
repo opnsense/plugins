@@ -29,7 +29,7 @@
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
     <div class="col-md-12">
         <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+        <button class="btn btn-primary" id="reportAct" type="button"><b>{{ lang._('Generate') }}</b> <i id="reportAct_progress"></i></button>
     </div>
 </div>
 
@@ -37,14 +37,11 @@
     $(function() {
 
         // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/hwprobe/general/set", formid='frm_general_settings',callback_ok=function(){
-                    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                        ajaxCall(url="/api/hwprobe/service/reconfigure", sendData={}, callback=function(data,status) {
-                            updateServiceControlUI('hwprobe');
-                            $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                        });
-            });
+        $("#reportAct").click(function(){
+                $("#reportAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/hwprobe/service/report", sendData={}, callback=function(data,status) {
+                    $("#reportAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
         });
     });
 </script>

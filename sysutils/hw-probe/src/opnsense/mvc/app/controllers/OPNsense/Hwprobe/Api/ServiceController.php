@@ -29,6 +29,7 @@
 namespace OPNsense\Hwprobe\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -36,4 +37,15 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Hwprobe';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'hwprobe';
+
+    /**
+     * generate report
+     * @return array
+     */
+    public function reportAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("hwprobe report");
+        return array("response" => $response);
+    }
 }
