@@ -77,6 +77,17 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdRun("vnstat monthly");
         return array("response" => $response);
     }
+    
+    /**
+     * list statistics as json output
+     * @return array
+     */
+    public function jsonAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("vnstat --json");
+        return array("response" => $response);
+    }    
 
     /**
      * remove database folder
