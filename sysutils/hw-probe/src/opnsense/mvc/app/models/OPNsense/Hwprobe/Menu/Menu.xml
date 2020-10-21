@@ -1,0 +1,7 @@
+<menu>
+  <Services>
+    <HWProbe cssClass="fa fa-pie-chart">
+      <General url="/ui/hwprobe/general/index"/>
+    </HWProbe>
+  </Services>
+</menu>
