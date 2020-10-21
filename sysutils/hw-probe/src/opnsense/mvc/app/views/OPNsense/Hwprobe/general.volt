@@ -26,7 +26,10 @@
  #}
 
 <div class="content-box" style="padding-bottom: 1.5em;">
-    <div id="hourly" class="tab-pane fade in">
+    <div class="col-md-12">
+        <hr />
+    </div>
+    <div id="hourly" class="tab-pane col-md-12 fade in">
       <pre id="listreport"></pre>
     </div>
     <div class="col-md-12">
@@ -48,3 +51,4 @@
         });
     });
 </script>
+
