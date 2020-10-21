@@ -26,13 +26,12 @@
  #}
 
 <div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+    <div id="hourly" class="tab-pane fade in">
+      <pre id="listreport"></pre>
+    </div>
     <div class="col-md-12">
         <hr />
         <button class="btn btn-primary" id="reportAct" type="button"><b>{{ lang._('Generate') }}</b> <i id="reportAct_progress"></i></button>
-    </div>
-    <div id="hourly" class="tab-pane fade in">
-      <pre id="listreport"></pre>
     </div>
 </div>
 
