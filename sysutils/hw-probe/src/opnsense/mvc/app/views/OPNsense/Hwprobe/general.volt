@@ -31,6 +31,9 @@
         <hr />
         <button class="btn btn-primary" id="reportAct" type="button"><b>{{ lang._('Generate') }}</b> <i id="reportAct_progress"></i></button>
     </div>
+    <div id="hourly" class="tab-pane fade in">
+      <pre id="listreport"></pre>
+    </div>
 </div>
 
 <script>
@@ -40,6 +43,7 @@
         $("#reportAct").click(function(){
                 $("#reportAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/hwprobe/service/report", sendData={}, callback=function(data,status) {
+                    $("#listreport").text(data['response']);
                     $("#reportAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
         });
