@@ -85,7 +85,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function jsonAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun("vnstat --json");
+        $response = $backend->configdRun("vnstat json");
         return array("response" => $response);
     }    
 
