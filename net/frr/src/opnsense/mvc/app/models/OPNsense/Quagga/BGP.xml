@@ -293,6 +293,18 @@
                                 <Multiple>N</Multiple>
                                 <Required>N</Required>
                         </match2>
+                        <match3 type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>communitylists.communitylist</items>
+                                                <display>name</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </match3>
                         <set type="TextField">
                                 <Required>N</Required>
                         </set>

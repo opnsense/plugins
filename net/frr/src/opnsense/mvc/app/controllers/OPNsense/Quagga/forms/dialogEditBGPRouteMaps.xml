@@ -45,6 +45,14 @@
     <allownew>true</allownew>
     <help>Select the Prefix List.</help>
   </field>
+  <field>
+    <id>routemap.match3</id>
+    <label>Community List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Select the Community List.</help>
+  </field>
     <field>
     <id>routemap.set</id>
     <label>Set</label>
