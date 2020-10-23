@@ -91,6 +91,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
+        <sortable>true</sortable>
         <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
