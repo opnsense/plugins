@@ -30,8 +30,8 @@
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
-    <id>communitylist.communty</id>
-    <label>Network</label>
+    <id>communitylist.community</id>
+    <label>Community</label>
     <type>text</type>
     <help>The community you want to match. You can also regex and it is not validated so please be careful.</help>
   </field>
