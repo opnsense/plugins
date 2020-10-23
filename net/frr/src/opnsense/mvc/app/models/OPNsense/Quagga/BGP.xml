@@ -298,7 +298,7 @@
                                         <template>
                                                 <source>OPNsense.quagga.bgp</source>
                                                 <items>communitylists.communitylist</items>
-                                                <display>name</display>
+                                                <display>number</display>
                                         </template>
                                 </Model>
                                 <ValidationMessage>Related item not found</ValidationMessage>
