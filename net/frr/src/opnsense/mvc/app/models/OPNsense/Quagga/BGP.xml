@@ -202,6 +202,43 @@
                         </network>
                 </prefixlist>
         </prefixlists>
+        <communitylists>
+                <communitylist type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
+                        <number type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>500</MaximumValue>
+                                <ValidationMessage>Set a number between 1 and 500.</ValidationMessage>
+                        </number>
+                        <seqnumber type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
+                        </seqnumber>
+                        <action type="OptionField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <OptionValues>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
+                        <community type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </community>
+                </communitylist>
+        </communitylists>
         <routemaps>
                 <routemap type="ArrayField">
                         <enabled type="BooleanField">
