@@ -13,6 +13,7 @@
                 <peap>PEAP</peap>
                 <tls>TLS</tls>
                 <ttls>TTLS</ttls>
+				<ttls-gtc>TTLS-GTC</ttls-gtc>
             </OptionValues>
         </default_eap_type>
         <enable_client_cert type="BooleanField">
