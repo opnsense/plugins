@@ -62,6 +62,6 @@ class MailboxController extends ApiMutableModelControllerBase
 
     public function toggleMailboxAction($uuid)
     {
-        return $this->toggleBase('mailboxs.mailbox', $uuid);
+        return $this->toggleBase('mailboxes.mailbox', $uuid);
     }
 }
