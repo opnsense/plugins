@@ -1,0 +1,44 @@
+<form>
+    <field>
+        <id>mailbox.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the mailbox retrieving.</help>
+    </field>
+    <field>
+        <id>mailbox.host</id>
+        <label>Host</label>
+        <type>text</type>
+        <help>Hostname of the mail server where mailbox is located.</help>
+    </field>
+    <field>
+        <id>mailbox.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>Choose the protocol to use.</help>
+    </field>
+    <field>
+        <id>mailbox.user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Username to authenticate against remote mail server.</help>
+    </field>
+    <field>
+        <id>mailbox.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Password to authenticate against remote mail server.</help>
+    </field>
+    <field>
+        <id>mailbox.destinationmail</id>
+        <label>Destination Email</label>
+        <type>text</type>
+        <help>Set the mail address to deliver fetched mails to.</help>
+    </field>
+    <field>
+        <id>mailbox.destination</id>
+        <label>Destination Host</label>
+        <type>text</type>
+        <help>Set the mail server hostname or IP to deliver fetched mails to.</help>
+    </field>
+</form>
