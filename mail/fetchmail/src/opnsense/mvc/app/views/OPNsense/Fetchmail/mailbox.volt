@@ -25,9 +25,8 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 <div class="tab-content content-box tab-content">
-    <div id="headerchecks" class="tab-pane fade in active">
-        <!-- tab page "headerchecks" -->
-        <table id="grid-headerchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFetchmailMailbox">
+    <div id="mailbox" class="tab-pane fade in active">
+        <table id="grid-mailbox" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditFetchmailMailbox">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -66,13 +65,13 @@
 
 $(function() {
 
-    $("#grid-headerchecks").UIBootgrid(
-        {   'search':'/api/fetchmail/headerchecks/searchMailbox',
-            'get':'/api/fetchmail/headerchecks/getMailbox/',
-            'set':'/api/fetchmail/headerchecks/setMailbox/',
-            'add':'/api/fetchmail/headerchecks/addMailbox/',
-            'del':'/api/fetchmail/headerchecks/delMailbox/',
-            'toggle':'/api/fetchmail/headerchecks/toggleMailbox/'
+    $("#grid-mailbox").UIBootgrid(
+        {   'search':'/api/fetchmail/mailbox/searchMailbox',
+            'get':'/api/fetchmail/mailbox/getMailbox/',
+            'set':'/api/fetchmail/mailbox/setMailbox/',
+            'add':'/api/fetchmail/mailbox/addMailbox/',
+            'del':'/api/fetchmail/mailbox/delMailbox/',
+            'toggle':'/api/fetchmail/mailbox/toggleMailbox/'
         }
     );
 
