@@ -1,1 +1,2 @@
 fetchmailrc:/.fetchmailrc
+fetchmail:/etc/rc.conf.d/fetchmail
