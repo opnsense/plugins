@@ -3,7 +3,7 @@
     <description>Fetchmail configuration</description>
     <version>0.1</version>
     <items>
-        <mailboxess>
+        <mailboxes>
             <mailbox type="ArrayField">
                 <enabled type="BooleanField">
                     <default>1</default>
@@ -32,6 +32,6 @@
                     <Required>Y</Required>
                 </destination>
             </mailbox>
-        </mailboxess>
+        </mailboxes>
     </items>
 </model>
