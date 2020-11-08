@@ -31,6 +31,13 @@
                 <destination type="HostnameField">
                     <Required>Y</Required>
                 </destination>
+                <usessl type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </usessl>
+                <sslfingerprint type="TextField">
+                    <Required>N</Required>
+                </sslfingerprint>                
             </mailbox>
         </mailboxes>
     </items>

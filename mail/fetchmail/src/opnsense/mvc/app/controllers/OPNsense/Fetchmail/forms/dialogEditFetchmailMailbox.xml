@@ -41,4 +41,15 @@
         <type>text</type>
         <help>Set the mail server hostname or IP to deliver fetched mails to.</help>
     </field>
+        <id>mailbox.usessl</id>
+        <label>Use SSL</label>
+        <type>checkbox</type>
+        <help>This will enable or disable usage of encrypted connections. For IMAP and POP3 it will switch the ports to 993 and 995.</help>
+    </field>
+    <field>
+        <id>mailbox.sslfingerprint</id>
+        <label>Certificate Fingerprint</label>
+        <type>text</type>
+        <help>If the server is using a self-signed certificate, the only option fetching mails is to enter the certficiate fingerprint here.</help>
+    </field>
 </form>
