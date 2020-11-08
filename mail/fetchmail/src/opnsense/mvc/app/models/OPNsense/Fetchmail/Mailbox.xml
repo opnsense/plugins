@@ -37,6 +37,7 @@
                 </usessl>
                 <sslfingerprint type="TextField">
                     <Required>N</Required>
+                    <mask>/^[A-Fa-f0-9\:]$/</mask>
                 </sslfingerprint>                
             </mailbox>
         </mailboxes>
