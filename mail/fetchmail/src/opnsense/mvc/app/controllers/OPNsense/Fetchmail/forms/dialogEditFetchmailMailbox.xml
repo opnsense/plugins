@@ -41,6 +41,7 @@
         <type>text</type>
         <help>Set the mail server hostname or IP to deliver fetched mails to.</help>
     </field>
+    <field>
         <id>mailbox.usessl</id>
         <label>Use SSL</label>
         <type>checkbox</type>
