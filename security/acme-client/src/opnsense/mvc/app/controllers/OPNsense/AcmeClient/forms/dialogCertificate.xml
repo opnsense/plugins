@@ -42,9 +42,9 @@
     </field>
     <field>
         <id>certificate.validationMethod</id>
-        <label>Validation Method</label>
+        <label>Challenge Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt validation method for this certificate.]]></help>
+        <help><![CDATA[Set the Let's Encrypt challenge type for this certificate.]]></help>
     </field>
     <field>
         <id>certificate.autoRenewal</id>
