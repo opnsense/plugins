@@ -38,6 +38,18 @@
     <type>text</type>
   </field>
   <field>
+    <id>interface.cost_demoted</id>
+    <label>Cost (when demoted)</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.carp_depend_on</id>
+    <label>Depend on (carp)</label>
+    <type>dropdown</type>
+    <help>The carp VHID to depend on, when this virtual address is not in master state,
+      the interface cost will be set to the demoted cost (specified above).</help>
+  </field>
+  <field>
     <id>interface.hellointerval</id>
     <label>Hello Interval</label>
     <type>text</type>
