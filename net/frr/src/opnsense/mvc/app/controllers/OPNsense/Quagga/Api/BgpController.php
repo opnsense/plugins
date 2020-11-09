@@ -3,7 +3,7 @@
 /**
  *    Copyright (C) 2015 - 2017 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
- *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2017 - 2020 Michael Muenz <m.muenz@gmail.com>
  *
  *    All rights reserved.
  *
@@ -134,6 +134,34 @@ class BgpController extends ApiMutableModelControllerBase
     public function setPrefixlistAction($uuid)
     {
         return $this->setBase('prefixlist', 'prefixlists.prefixlist', $uuid);
+    }
+
+    public function searchCommunitylistAction()
+    {
+        return $this->searchBase(
+            'communitylists.communitylist',
+            array("enabled", "description", "number", "seqnumber", "action", "community" )
+        );
+    }
+    public function getCommunitylistAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('communitylist', 'communitylists.communitylist', $uuid);
+    }
+
+    public function addCommunitylistAction()
+    {
+        return $this->addBase('communitylist', 'communitylists.communitylist');
+    }
+
+    public function delCommunitylistAction($uuid)
+    {
+        return $this->delBase('communitylists.communitylist', $uuid);
+    }
+
+    public function setCommunitylistAction($uuid)
+    {
+        return $this->setBase('communitylist', 'communitylists.communitylist', $uuid);
     }
 
     public function searchRoutemapAction()
