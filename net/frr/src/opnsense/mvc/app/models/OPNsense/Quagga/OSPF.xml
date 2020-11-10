@@ -160,17 +160,17 @@
                         </area>
                         <cost type="IntegerField">
                                 <default></default>
-                                <MinimumValue>0</MinimumValue>
+                                <MinimumValue>1</MinimumValue>
                                 <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Cost must be between 0 and 4294967295.</ValidationMessage>
+                                <MaximumValue>65535</MaximumValue>
+                                <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
                         </cost>
                         <cost_demoted type="IntegerField">
                                 <default></default>
-                                <MinimumValue>0</MinimumValue>
+                                <MinimumValue>1</MinimumValue>
                                 <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Cost must be between 0 and 4294967295.</ValidationMessage>
+                                <MaximumValue>65535</MaximumValue>
+                                <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
                         </cost_demoted>
                         <carp_depend_on type="VirtualIPField">
                             <type>carp</type>
