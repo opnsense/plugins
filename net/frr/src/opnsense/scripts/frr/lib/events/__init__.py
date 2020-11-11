@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3
 """
     Copyright (c) 2020 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
@@ -25,21 +24,21 @@
     POSSIBILITY OF SUCH DAMAGE.
 
 """
+import glob
+import importlib
 import sys
-import syslog
-import lib.events
-from lib import InterfaceStatus, VtySH
+import os
+from ..base import BaseEventHandler
 
-if __name__ == '__main__':
-    syslog.openlog('frr_carp', logoption=syslog.LOG_DAEMON, facility=syslog.LOG_LOCAL1)
-    syslog.syslog(syslog.LOG_NOTICE, 'FRR received carp configuration event.')
-    ifstatus = InterfaceStatus()
-    vtysh = VtySH()
-    if vtysh.is_active:
-        for event in lib.events.get_events():
-            event_object = event(ifstatus=ifstatus, vtysh=vtysh)
-            if event_object.should_run:
-                syslog.syslog(syslog.LOG_NOTICE, 'FRR trigger %s event.' % event_object.__class__.__name__)
-                event_object.execute()
-    else:
-        syslog.syslog(syslog.LOG_ERR, 'no frr deamons active.')
+
+def get_events():
+    """ iterate event handlers
+    """
+    for filename in glob.glob("%s/*.py" % os.path.dirname(__file__)):
+        importlib.import_module(".%s" % os.path.splitext(os.path.basename(filename))[0], __name__)
+
+    for module_name in dir(sys.modules[__name__]):
+        for attribute_name in dir(getattr(sys.modules[__name__], module_name)):
+            cls = getattr(getattr(sys.modules[__name__], module_name), attribute_name)
+            if isinstance(cls, type) and issubclass(cls, BaseEventHandler) and cls != BaseEventHandler:
+                yield cls

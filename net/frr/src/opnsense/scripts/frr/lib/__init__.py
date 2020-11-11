@@ -69,8 +69,8 @@ class VtySH:
         self.init()
 
     def init(self):
-        # wait maximum 30 seconds for daemon to startup
-        for i in range(30):
+        # wait a maximum of 5 seconds for daemon to startup
+        for i in range(5):
             try:
                 self._daemons = self.execute('show daemons', lambda x: x.decode().split())
                 break

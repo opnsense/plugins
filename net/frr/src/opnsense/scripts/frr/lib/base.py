@@ -25,7 +25,7 @@
 
 """
 
-class baseEventHandler:
+class BaseEventHandler:
     def __init__(self, ifstatus, vtysh):
         self.ifstatus = ifstatus
         self.vtysh = vtysh
