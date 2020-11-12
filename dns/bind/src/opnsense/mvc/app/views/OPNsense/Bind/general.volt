@@ -72,6 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td colspan="5"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -108,6 +109,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td colspan="5"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -136,6 +138,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td colspan="5"></td>
                     <td>
                         <button id="recordAddBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button id="recordDelBtn" data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
                 </tfoot>
@@ -219,9 +222,11 @@ $( document ).ready(function() {
                 if (ids.length > 0) {
                     request['domain'] = ids[0];
                     $("#recordAddBtn").show();
+                    $("#recordDelBtn").show();
                     $("#record-area").show();
                 } else {
                     $("#recordAddBtn").hide();
+                    $("#recordDelBtn").hide();
                     $("#record-area").hide();
                 }
                 return request;
