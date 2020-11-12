@@ -13,6 +13,7 @@ Plugin Changelog
 * Reject built-in ACL names
 * Fix truncated checkboxes
 * Add button to delete selected items
+* Relax ACL name mask (allow underscores and hyphens)
 
 1.13
 
