@@ -55,7 +55,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="acls" class="tab-pane fade in">
-        <table id="grid-acls" class="table table-responsive" data-editDialog="dialogEditBindAcl">
+        <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogEditBindAcl">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -86,7 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <div class="alert alert-warning" role="alert" style="min-height:65px;">
             <div style="margin-top: 8px;">{{ lang._('Zone management is still in experimental state, use with caution.') }}</div>
         </div>
-        <table id="grid-domains" class="table table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
+        <table id="grid-domains" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -117,7 +117,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <h2>{{ lang._('Records') }}</h2>
         </div>
         <div id="record-area">
-            <table id="grid-records" class="table table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRecord">
+            <table id="grid-records" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRecord">
                 <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
