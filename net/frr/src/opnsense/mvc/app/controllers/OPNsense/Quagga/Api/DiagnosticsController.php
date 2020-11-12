@@ -129,10 +129,6 @@ class DiagnosticsController extends ApiControllerBase
     {
         return $this->get_general_information('routes');
     }
-    public function logAction()
-    {
-        return $this->get_general_information('log')['response']['general_log'];
-    }
     public function generalroutes6Action()
     {
         return $this->get_general_information('routes6');
