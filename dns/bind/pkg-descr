@@ -8,6 +8,12 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.14
+
+* Reject built-in ACL names
+* Fix truncated checkboxes
+* Add button to delete selected items
+
 1.13
 
 * Update BIND to 9.16
