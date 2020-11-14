@@ -30,8 +30,6 @@ class NetwConfObject(object):
         self._payload = dict()
         self._payload['hostname'] = None
         self._payload['network'] = None
-        self._payload['address'] = None
-        self._payload['port'] = None
 
     def is_valid(self):
         for key in self._payload:
@@ -97,6 +95,10 @@ class Network(NetwConfObject):
     def config_text(self):
         result = list()
         result.append('AddressFamily=any')
+        if 'address' in self._payload:
+            addresses = self._payload['address'].split(',')
+            for address in addresses:
+                result.append('Address=%s %s' % (address, self._payload['port']))
         result.append('Mode=%(mode)s' % self._payload)
         result.append('PMTUDiscovery=%(PMTUDiscovery)s' % self._payload)
         result.append('Port=%(port)s' % self._payload)
@@ -137,7 +139,10 @@ class Host(NetwConfObject):
 
     def config_text(self):
         result = list()
-        result.append('Address=%(address)s %(port)s'%self._payload)
+        if 'address' in self._payload:
+            addresses = self._payload['address'].split(',')
+            for address in addresses:
+                result.append('Address=%s %s' % (address, self._payload['port']))
         if 'subnet' in self._payload:
             networks = self._payload['subnet'].split(',')
             for network in networks:

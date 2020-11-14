@@ -22,7 +22,7 @@
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extaddress type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                 </extaddress>
                 <extport type="IntegerField">
@@ -132,7 +132,7 @@
                     <ValidationMessage>Port number must be between 1...65535</ValidationMessage>
                 </extport>
                 <extaddress type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                 </extaddress>
                 <subnet type="NetworkField">

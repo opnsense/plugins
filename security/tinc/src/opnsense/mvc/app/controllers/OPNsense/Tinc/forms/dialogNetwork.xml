@@ -69,7 +69,7 @@
         <id>network.extaddress</id>
         <label>Ext. Address</label>
         <type>text</type>
-        <help>This machines external address to use</help>
+        <help>This machines external addresses to use (separated by comma)</help>
     </field>
     <field>
         <id>network.extport</id>
