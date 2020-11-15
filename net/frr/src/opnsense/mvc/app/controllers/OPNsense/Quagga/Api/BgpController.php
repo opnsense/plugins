@@ -48,6 +48,8 @@ class BgpController extends ApiMutableModelControllerBase
                   "updatesource",
                   "nexthopself",
                   "multihop",
+                  "keepalive",
+                  "holddown",
                   "defaultoriginate",
                   "linkedPrefixlistIn",
                   "linkedPrefixlistOut",
