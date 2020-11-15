@@ -68,8 +68,10 @@
     <field>
         <id>network.extaddress</id>
         <label>Ext. Address</label>
-        <type>text</type>
-        <help>This machines external address to use</help>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>External addresses of this machine</help>
     </field>
     <field>
         <id>network.extport</id>
@@ -80,7 +82,9 @@
     <field>
         <id>network.subnet</id>
         <label>Subnet</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help>This machines part of the network</help>
     </field>
     <field>
