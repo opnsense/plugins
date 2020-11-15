@@ -30,6 +30,8 @@ class NetwConfObject(object):
         self._payload = dict()
         self._payload['hostname'] = None
         self._payload['network'] = None
+        self._payload['address'] = ''
+        self._payload['port'] = None
 
     def is_valid(self):
         for key in self._payload:
@@ -52,6 +54,11 @@ class NetwConfObject(object):
 
     def get_basepath(self):
         return '/usr/local/etc/tinc/%(network)s' % self._payload
+
+    def get_addresses(self):
+        if not self._payload['address']:
+            return
+        yield from self._payload['address'].split(',')
 
 class Network(NetwConfObject):
     def __init__(self):
@@ -95,10 +102,6 @@ class Network(NetwConfObject):
     def config_text(self):
         result = list()
         result.append('AddressFamily=any')
-        if 'address' in self._payload:
-            addresses = self._payload['address'].split(',')
-            for address in addresses:
-                result.append('Address=%s %s' % (address, self._payload['port']))
         result.append('Mode=%(mode)s' % self._payload)
         result.append('PMTUDiscovery=%(PMTUDiscovery)s' % self._payload)
         result.append('Port=%(port)s' % self._payload)
@@ -108,7 +111,7 @@ class Network(NetwConfObject):
                 result.append('ConnectTo = %s' % (host.get_hostname(),))
         result.append('Device=/dev/tinc%(id)s' % self._payload)
         result.append('Name=%(hostname)s' % self._payload)
-        return '\n'.join(result)
+        return '\n'.join(result) + '\n'
 
     def filename(self):
         return self.get_basepath() + '/tinc.conf'
@@ -129,7 +132,7 @@ class Host(NetwConfObject):
         self._payload['cipher'] = None
 
     def connect_to_this_host(self):
-        if self.is_valid() and self._connectTo == "1":
+        if self.is_valid() and self._payload['address'] and self._connectTo == "1":
             return True
         else:
             return False
@@ -137,20 +140,21 @@ class Host(NetwConfObject):
     def set_connectto(self, value):
         self._connectTo = value.text
 
+    def get_subnets(self):
+        if not self._payload['subnet']:
+            return
+        yield from self._payload['subnet'].split(',')
+
     def config_text(self):
         result = list()
-        if 'address' in self._payload:
-            addresses = self._payload['address'].split(',')
-            for address in addresses:
-                result.append('Address=%s %s' % (address, self._payload['port']))
-        if 'subnet' in self._payload:
-            networks = self._payload['subnet'].split(',')
-            for network in networks:
-                result.append('Subnet=%s' % network)
+        for address in self.get_addresses():
+            result.append('Address=%s %s' % (address, self._payload['port']))
+        for network in self.get_subnets():
+            result.append('Subnet=%s' % network)
         result.append('Cipher=%(cipher)s'%self._payload)
         result.append('Digest=sha256')
         result.append(self._payload['pubkey'])
-        return '\n'.join(result)
+        return '\n'.join(result) + '\n'
 
     def filename(self):
         return '%s/hosts/%s' % (self.get_basepath(), self._payload['hostname'])
