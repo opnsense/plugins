@@ -24,9 +24,11 @@
     POSSIBILITY OF SUCH DAMAGE.
 
 """
+from . import InterfaceStatus, VtySH
+
 
 class BaseEventHandler:
-    def __init__(self, ifstatus, vtysh):
+    def __init__(self, ifstatus: InterfaceStatus, vtysh: VtySH):
         self.ifstatus = ifstatus
         self.vtysh = vtysh
 
