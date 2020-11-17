@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.19
+
+* OSPF influence interface cost via carp
+
 1.18
 
 * Add description fields to BGP tabs
