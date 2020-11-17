@@ -27,6 +27,8 @@
 import time
 import subprocess
 import ujson
+from collections.abc import Callable
+
 
 class InterfaceStatus:
     def __init__(self):
@@ -54,7 +56,7 @@ class InterfaceStatus:
 
         self._carp_addresses = carp_addresses
 
-    def address_status(self, address):
+    def address_status(self, address: str):
         if address in self._carp_addresses:
             return self._carp_addresses[address]['status']
         return 'none'
@@ -77,14 +79,14 @@ class VtySH:
             except VtySHExecError:
                 time.sleep(1)
 
-    def is_running(self, daemon):
+    def is_running(self, daemon: str):
         return daemon in self._daemons
 
     @property
     def is_active(self):
         return len(self._daemons) > 0
 
-    def execute(self, command, translate=ujson.loads, configure=False):
+    def execute(self, command: str, translate: Callable=ujson.loads, configure: bool=False):
         args = ['/usr/local/bin/vtysh']
         if configure:
             args = args + ['-c', 'configure terminal']
