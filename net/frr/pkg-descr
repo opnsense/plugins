@@ -14,6 +14,7 @@ Plugin Changelog
 1.19
 
 * OSPF influence interface cost via carp
+* Uniform logging
 
 1.18
 
