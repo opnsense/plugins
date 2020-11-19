@@ -75,6 +75,18 @@ PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
 
+MASTERDIR?=   ${.CURDIR}
+
+.if ${MASTERDIR} != ${.CURDIR}
+SLAVE_PLUGIN?=  yes
+SRCDIR?=        ${MASTERDIR}/src
+PLUGIN_COMMENT+=  [UNSUPPORTED]
+.else
+SLAVE_PLUGIN?=  no
+SRCDIR?=        ${.CURDIR}/src
+PLUGIN_COMMENT+=  [RECOMMENDED]
+.endif
+
 name: check
 	@echo ${PLUGIN_PKGNAME}
 
@@ -119,26 +131,26 @@ scripts-pre:
 	done
 
 scripts-auto:
-	@if [ -d ${.CURDIR}/src/etc/rc.syshook.d ]; then \
+	@if [ -d ${SRCDIR}/etc/rc.syshook.d ]; then \
 		for SYSHOOK in early start; do \
-			for FILE in $$(cd ${.CURDIR}/src/etc/rc.syshook.d && \
+			for FILE in $$(cd ${SRCDIR}/etc/rc.syshook.d && \
 			    find -s . -type f -name "*.$${SYSHOOK}"); do \
 				echo ${LOCALBASE}/etc/rc.syshook.d/$${FILE#./} >> \
 				    ${DESTDIR}/+POST_INSTALL; \
 			done; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/src/opnsense/service/conf/actions.d ]; then \
+	@if [ -d ${SRCDIR}/opnsense/service/conf/actions.d ]; then \
 		cat ${TEMPLATESDIR}/actions.d >> ${DESTDIR}/+POST_INSTALL; \
 	fi
-	@if [ -d ${.CURDIR}/src/etc/rc.loader.d ]; then \
+	@if [ -d ${SRCDIR}/etc/rc.loader.d ]; then \
 		for SCRIPT in +POST_INSTALL +POST_DEINSTALL; do \
 			cat ${TEMPLATESDIR}/rc.loader.d >> \
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
-		for FILE in $$(cd ${.CURDIR}/src/opnsense/mvc/app/models && \
+	@if [ -d ${SRCDIR}/opnsense/mvc/app/models ]; then \
+		for FILE in $$(cd ${SRCDIR}/opnsense/mvc/app/models && \
 		    find -s . -depth 2 -type d); do \
 			cat ${TEMPLATESDIR}/models | \
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
@@ -150,8 +162,8 @@ scripts-auto:
 			    ${DESTDIR}/$${SCRIPT}; \
 		done; \
 	fi
-	@if [ -d ${.CURDIR}/src/opnsense/service/templates ]; then \
-		for FILE in $$(cd ${.CURDIR}/src/opnsense/service/templates && \
+	@if [ -d ${SRCDIR}/opnsense/service/templates ]; then \
+		for FILE in $$(cd ${SRCDIR}/opnsense/service/templates && \
 		    find -s . -depth 2 -type d); do \
 			cat ${TEMPLATESDIR}/templates | \
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
@@ -175,8 +187,8 @@ scripts-post:
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
-		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
+	@(cd ${SRCDIR}; find * -type f) | while read FILE; do \
+		tar -C ${SRCDIR} -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
 			sed -i '' ${SED_REPLACE} "${DESTDIR}${LOCALBASE}/$${FILE}"; \
@@ -186,7 +198,7 @@ install: check
 	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${SRCDIR}; find * -type f) | while read FILE; do \
 		if [ -f "$${FILE}.in" ]; then continue; fi; \
 		FILE="$${FILE%%.in}"; \
 		echo ${LOCALBASE}/$${FILE}; \
@@ -206,16 +218,16 @@ metadata: check
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${SRCDIR}; find * -type f) | while read FILE; do \
 		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
-		    tar -C ${.CURDIR}/src -xpf -; \
+		    tar -C ${SRCDIR} -xpf -; \
 	done
 
 remove: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${SRCDIR}; find * -type f) | while read FILE; do \
 		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
 	done
-	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
+	@(cd ${SRCDIR}; find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
 			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
@@ -253,16 +265,16 @@ upgrade: upgrade-check package
 	@${PKG} add ${PKGDIR}/*.txz
 
 mount: check
-	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
+	mount_unionfs ${SRCDIR} ${DESTDIR}${LOCALBASE}
 
 umount: check
-	umount -f "<above>:${.CURDIR}/src"
+	umount -f "<above>:${SRCDIR}"
 
 clean: check
-	@if [ -d ${.CURDIR}/src ]; then \
-	    git reset -q ${.CURDIR}/src && \
-	    git checkout -f ${.CURDIR}/src && \
-	    git clean -xdqf ${.CURDIR}/src; \
+	@if [ -d ${SRCDIR} ]; then \
+	    git reset -q ${SRCDIR} && \
+	    git checkout -f ${SRCDIR} && \
+	    git clean -xdqf ${SRCDIR}; \
 	fi
 	@rm -rf ${.CURDIR}/work
 
@@ -272,7 +284,7 @@ lint-desc: check
 	fi
 
 lint-shell:
-	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
+	@for FILE in $$(find ${SRCDIR} -name "*.sh" -type f); do \
 	    if [ "$$(head $${FILE} | grep -c '^#!\/bin\/sh$$')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
@@ -280,11 +292,11 @@ lint-shell:
 	done
 
 lint-xml:
-	@find ${.CURDIR}/src \
+	@find ${SRCDIR} \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
 
 lint-exec: check
-.for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
+.for DIR in ${SRCDIR}/opnsense/scripts ${SRCDIR}/etc/rc.d ${SRCDIR}/etc/rc.syshook.d
 .if exists(${DIR})
 	@find ${DIR} -type f ! -name "*.xml" -print0 | \
 	    xargs -0 -t -n1 test -x || \
