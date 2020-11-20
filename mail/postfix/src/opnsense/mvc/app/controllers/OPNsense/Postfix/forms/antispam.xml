@@ -5,4 +5,10 @@
         <type>checkbox</type>
         <help>This will allow Postfix to connect to rspamd via milter protocol.</help>
     </field>
+    <field>
+        <id>antispam.default_action</id>
+        <label>Milter Default Action</label>
+        <type>dropdown</type>
+        <help>What Postfix will do when the Rspamd milter becomes unavailable. Tempfail will tell the remote server to try again later.</help>
+    </field>
 </form>
