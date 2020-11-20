@@ -209,6 +209,12 @@
         <help>For example recipients without a domain or only a hostname.</help>
     </field>
     <field>
+        <id>general.reject_unverified_recipient</id>
+        <label>Reject Unverified Recipient</label>
+        <type>checkbox</type>
+        <help>Verify that the Recipient User is known to the next hop. Please be aware that this can put unwanted load onto the next server.</help>
+    </field>
+    <field>
         <id>general.permit_sasl_authenticated</id>
         <label>Permit SASL Authenticated</label>
         <type>checkbox</type>
