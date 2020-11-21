@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+2.1
+
+Fixed:
+* fix creation of nsupdate secrets file
+
 2.0
 
 Added:
