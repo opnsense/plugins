@@ -382,6 +382,7 @@
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_dedyn>deSEC.io API</dns_dedyn>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
@@ -935,6 +936,12 @@
                         <sha1>SHA1</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
+                <dns_dedyn_token type="TextField">
+                    <Required>N</Required>
+                </dns_dedyn_token>
+                <dns_dedyn_name type="TextField">
+                    <Required>N</Required>
+                </dns_dedyn_name>
             </validation>
         </validations>
         <actions>

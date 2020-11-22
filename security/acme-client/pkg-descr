@@ -15,6 +15,7 @@ Added:
 * add status for accounts to backend and WebGUI
 * add button to manually trigger account registration
 * add support for All-Inkl.com domain API (#1130)
+* add support for deSEC.io domain API
 * add plugin changelog
 
 Fixed:
