@@ -13,6 +13,9 @@ Plugin Changelog
 Added:
 * add support for deSEC.io domain API (#2120)
 
+Fixed:
+* fix creation of nsupdate secrets file
+
 2.0
 
 Added:
@@ -23,13 +26,13 @@ Added:
 * add plugin changelog
 
 Fixed:
-* fix bug where configuration could get lost (#1526)
+* fix bug where configuration changes could get lost (#1526)
 * fix Cyon DNS API (password not set)
 
 Changed:
 * now an Automation may run multiple times during bulk issue/renewal (previously only once)
 * rename "Validation Methods" to "Challenge Types" to adopt official LE wording
-* rename Menu entry "Automation" to "Automations"
+* rename menu entry "Automation" to "Automations"
 * specify python version for gcloud SDK
 * rephrase several log messages
 * add more detailed output when debug logging is enabled
