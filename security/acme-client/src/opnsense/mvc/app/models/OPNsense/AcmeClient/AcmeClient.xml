@@ -936,12 +936,12 @@
                         <sha1>SHA1</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
-                <dns_dedyn_token type="TextField">
+                <dns_desec_token type="TextField">
                     <Required>N</Required>
-                </dns_dedyn_token>
-                <dns_dedyn_name type="TextField">
+                </dns_desec_token>
+                <dns_desec_name type="TextField">
                     <Required>N</Required>
-                </dns_dedyn_name>
+                </dns_desec_name>
             </validation>
         </validations>
         <actions>
