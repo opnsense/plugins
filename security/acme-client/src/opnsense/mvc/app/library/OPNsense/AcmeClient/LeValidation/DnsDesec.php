@@ -35,11 +35,11 @@ use OPNsense\Core\Config;
  * deSEC API
  * @package OPNsense\AcmeClient
  */
-class DnsAws extends Base implements LeValidationInterface
+class DnsDesec extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['DEDYN_TOKEN'] = (string)$this->config->dns_dedyn_token;
-        $this->acme_env['DEDYN_NAME'] = (string)$this->config->dns_dedyn_name;
+        $this->acme_env['DEDYN_TOKEN'] = (string)$this->config->dns_desec_token;
+        $this->acme_env['DEDYN_NAME'] = (string)$this->config->dns_desec_name;
     }
 }
