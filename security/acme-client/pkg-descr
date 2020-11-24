@@ -10,6 +10,9 @@ Plugin Changelog
 
 2.1
 
+Added:
+* add support for deSEC.io domain API (#2120)
+
 Fixed:
 * fix creation of nsupdate secrets file
 

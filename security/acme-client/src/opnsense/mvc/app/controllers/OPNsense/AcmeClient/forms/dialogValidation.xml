@@ -1181,4 +1181,19 @@
         <label>KAS Authtype</label>
         <type>dropdown</type>
     </field>
+    <field>
+        <label>deSEC.io API</label>
+        <type>header</type>
+        <style>table_dns table_dns_desec</style>
+    </field>
+    <field>
+        <id>validation.dns_desec_token</id>
+        <label>deSEC token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_desec_name</id>
+        <label>deSEC domain</label>
+        <type>text</type>
+    </field>
 </form>
