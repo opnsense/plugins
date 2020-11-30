@@ -121,8 +121,8 @@ smtpd_sasl_auth_enable = yes
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
-smtpd_milters = inet:localhost:11332
-non_smtpd_milters = inet:localhost:11332
+smtpd_milters = unix:/var/run/rspamd/milter.sock
+non_smtpd_milters = unix:/var/run/rspamd/milter.sock
 milter_protocol = 6
 milter_default_action = {{ OPNsense.postfix.antispam.default_action }}
 {% endif %}
