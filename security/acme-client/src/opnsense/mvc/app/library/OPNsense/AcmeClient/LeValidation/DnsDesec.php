@@ -32,21 +32,14 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * BIND nsupdate
+ * deSEC API
  * @package OPNsense\AcmeClient
  */
-class DnsNsupdate extends Base implements LeValidationInterface
+class DnsDesec extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
-        $secret_key_filename = "${configdir}/secret.key";
-        $secret_key_data = (string)$this->config->dns_nsupdate_key . "\n";
-        file_put_contents($secret_key_filename, $secret_key_data);
-
-        // Add env variables
-        $this->acme_env['NSUPDATE_KEY'] = $secret_key_filename;
-        $this->acme_env['NSUPDATE_SERVER'] = (string)$this->config->dns_nsupdate_server;
-        $this->acme_env['NSUPDATE_ZONE'] = (string)$this->config->dns_nsupdate_zone;
+        $this->acme_env['DEDYN_TOKEN'] = (string)$this->config->dns_desec_token;
+        $this->acme_env['DEDYN_NAME'] = (string)$this->config->dns_desec_name;
     }
 }
