@@ -124,7 +124,7 @@ smtpd_sasl_auth_enable = yes
 smtpd_milters = inet:localhost:11332
 non_smtpd_milters = inet:localhost:11332
 milter_protocol = 6
-milter_default_action = accept
+milter_default_action = {{ OPNsense.postfix.antispam.default_action }}
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.enforce_recipient_check') and OPNsense.postfix.general.enforce_recipient_check == '1' %}
