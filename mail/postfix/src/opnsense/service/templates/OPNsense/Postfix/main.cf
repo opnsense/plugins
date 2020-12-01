@@ -178,6 +178,9 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 {% if helpers.exists('OPNsense.postfix.general.reject_unauth_destination') and OPNsense.postfix.general.reject_unauth_destination == '1' %}
 {% do smtpd_recipient_restrictions.append('reject_unauth_destination') %}
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_unverified_recipient') and OPNsense.postfix.general.reject_unverified_recipient == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_unverified_recipient') %}
+{% endif %}
 
 {% if smtpd_recipient_restrictions|length >= 1 %}
 smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
