@@ -15,6 +15,7 @@ Added:
 
 Fixed:
 * fix creation of nsupdate secrets file
+* fix certificate chain when existing cert was signed by a new CA (#2126)
 
 2.0
 

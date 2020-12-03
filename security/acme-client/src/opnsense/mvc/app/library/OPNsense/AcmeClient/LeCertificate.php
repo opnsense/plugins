@@ -262,6 +262,8 @@ class LeCertificate extends LeCommon
                     $cfgCert->crt = $cert['crt'];
                     $cfgCert->prv = $cert['prv'];
                     $cfgCert->descr = $cert['descr'];
+                    // Update CA ref, because it may be signed by a different CA.
+                    $cfgCert->caref = $cert['caref'];
                     break;
                 }
             }
