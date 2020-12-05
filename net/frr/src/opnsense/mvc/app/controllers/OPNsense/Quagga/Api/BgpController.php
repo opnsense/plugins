@@ -50,6 +50,7 @@ class BgpController extends ApiMutableModelControllerBase
                   "multihop",
                   "keepalive",
                   "holddown",
+                  "connecttimer",
                   "defaultoriginate",
                   "linkedPrefixlistIn",
                   "linkedPrefixlistOut",
