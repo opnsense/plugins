@@ -58,7 +58,7 @@
     <type>text</type>
     <advanced>true</advanced>
     <help>The time in seconds how fast a neighbor tries to reconnect.</help>
-  </field>  
+  </field>
   <field>
     <id>neighbor.defaultoriginate</id>
     <label>Send Defaultroute</label>
