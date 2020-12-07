@@ -1,9 +1,7 @@
-#!/usr/local/bin/php
 <?php
 
 /*
- * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
- * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
+ * Copyright (C) 2020 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,35 +26,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once('config.inc');
-require_once('util.inc');
-require_once('plugins.inc.d/frr.inc');
+namespace OPNsense\Quagga\Migrations;
 
-if (frr_carp_enabled()) {
-    // XXX: carp enable/disable mode
-    $subsystem = !empty($argv[1]) ? $argv[1] : '';
-    $type = !empty($argv[2]) ? $argv[2] : '';
+use OPNsense\Core\Config;
+use OPNsense\Base\BaseModelMigration;
+use OPNSense\Quagga\General;
 
-    if ($type != 'MASTER' && $type != 'BACKUP') {
-        log_error("Carp '$type' event unknown from source '{$subsystem}'");
-        exit(1);
+class M1_0_2 extends BaseModelMigration
+{
+    /**
+     * @param Quagga $model
+     */
+    public function run($model)
+    {
+        // XXX: since migrations act per (general) version, we need to check which sub model is calling us.
+        if ($model instanceof General) {
+            $cfgObj = Config::getInstance()->object();
+            if (!empty($cfgObj->OPNsense->quagga->general->enablelogfile)) {
+                if ((string)$model->enablesyslog != "1") {
+                    $model->sysloglevel = (string)$cfgObj->OPNsense->quagga->general->logfilelevel;
+                }
+                $model->enablesyslog = "1";
+            }
+        }
     }
-
-    if (!strstr($subsystem, '@')) {
-        log_error("Carp '$type' event triggered from wrong source '{$subsystem}'");
-        exit(1);
-    }
-
-    switch ($type) {
-        case 'MASTER':
-            shell_exec('/usr/local/etc/rc.d/frr start');
-            break;
-        case 'BACKUP':
-            shell_exec('/usr/local/etc/rc.d/frr stop');
-            break;
-    }
-} elseif (frr_enabled()) {
-    // XXX: when not toggling between active and disabled, pass event so underlaying protocols can
-    //      determine which actions to perform when reaching a certain state.
-    shell_exec('/usr/local/opnsense/scripts/frr/carp_event_handler');
 }

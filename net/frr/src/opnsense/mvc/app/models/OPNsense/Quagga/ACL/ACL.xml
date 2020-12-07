@@ -4,6 +4,7 @@
       <patterns>
          <pattern>ui/quagga/*</pattern>
          <pattern>api/quagga/*</pattern>
+         <pattern>ui/diagnostics/log/routing/frr</pattern>
       </patterns>
    </page-routing>
 </acl>
