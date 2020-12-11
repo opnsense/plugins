@@ -30,7 +30,6 @@ namespace OPNsense\AcmeClient;
 
 // Load legacy functions
 require_once("certs.inc"); // used in import()
-require_once("util.inc"); // for exec_safe()
 
 use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
@@ -88,11 +87,11 @@ class LeCertificate extends LeCommon
         $this->cert_fullchain_file = (string)sprintf(self::ACME_FULLCHAIN_FILE, $this->config->id);
 
         // Store acme filenames
-        $this->acme_args[] = '--home ' . self::ACME_HOME_DIR;
-        $this->acme_args[] = '--certpath ' . $this->cert_file;
-        $this->acme_args[] = '--keypath ' . $this->cert_key_file;
-        $this->acme_args[] = '--capath ' . $this->cert_chain_file;
-        $this->acme_args[] = '--fullchainpath ' . $this->cert_fullchain_file;
+        $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--certpath %s', $this->cert_file);
+        $this->acme_args[] = LeUtils::execSafe('--keypath %s', $this->cert_key_file);
+        $this->acme_args[] = LeUtils::execSafe('--capath %s', $this->cert_chain_file);
+        $this->acme_args[] = LeUtils::execSafe('--fullchainpath %s', $this->cert_fullchain_file);
     }
 
     /**
@@ -263,6 +262,8 @@ class LeCertificate extends LeCommon
                     $cfgCert->crt = $cert['crt'];
                     $cfgCert->prv = $cert['prv'];
                     $cfgCert->descr = $cert['descr'];
+                    // Update CA ref, because it may be signed by a different CA.
+                    $cfgCert->caref = $cert['caref'];
                     break;
                 }
             }
@@ -437,7 +438,7 @@ class LeCertificate extends LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--remove '
           . implode(' ', $this->acme_args) . ' '
-          . exec_safe('--domain %s', (string)$this->config->name);
+          . LeUtils::execSafe('--domain %s', (string)$this->config->name);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -528,8 +529,8 @@ class LeCertificate extends LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--revoke '
           . implode(' ', $this->acme_args) . ' '
-          . exec_safe('--domain %s', (string)$this->config->name) . ' '
-          . "--accountconf ${account_conf_file}";
+          . LeUtils::execSafe('--domain %s', (string)$this->config->name) . ' '
+          . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 

@@ -700,9 +700,9 @@ class updatedns
                 * dnsUser ("Username" field in OPNsense) should be the subdomain / A-record ("myrecord" in 2nd-level domain)
                 * dnsPass should be the Gandi-API key
                 */
-                $server = "https://dns.api.gandi.net/api/v5/domains/". $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
+                $server = "https://dns.api.gandi.net/api/v5/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
 
-                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["'. $this->_dnsIPv4 . '"]}';
+                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["' . $this->_dnsIP . '"]}';
 
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');

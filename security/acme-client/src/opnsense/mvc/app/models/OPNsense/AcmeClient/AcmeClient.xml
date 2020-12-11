@@ -372,6 +372,7 @@
                         <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
+                        <dns_kas>All-Inkl.com domain API</dns_kas>
                         <dns_arvan>ArvanCloud API</dns_arvan>
                         <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
@@ -381,6 +382,7 @@
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_desec>deSEC.io API</dns_desec>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
@@ -506,10 +508,10 @@
                     <Required>N</Required>
                 </dns_cx_secret>
                 <dns_cyon_user type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_cyon_user>
                 <dns_cyon_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_cyon_password>
                 <dns_da_key type="TextField">
                     <Required>N</Required>
@@ -519,19 +521,19 @@
                     <default>1</default>
                 </dns_da_insecure>
                 <dns_dgon_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_dgon_key>
                 <dns_dnsimple_token type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_dnsimple_token>
                 <dns_doapi_token type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_doapi_token>
                 <dns_do_pid type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_do_pid>
                 <dns_do_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_do_password>
                 <dns_dp_id type="TextField">
                     <Required>N</Required>
@@ -707,20 +709,20 @@
                     <Required>N</Required>
                 </dns_lexicon_token>
                 <dns_linode_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_linode_key>
                 <dns_linode_v4_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_linode_v4_key>
                 <dns_loopia_api type="TextField">
-                  <Required>N</Required>
-                  <default>https://api.loopia.se/RPCSERV</default>
+                    <Required>N</Required>
+                    <default>https://api.loopia.se/RPCSERV</default>
                 </dns_loopia_api>
                 <dns_loopia_user type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_loopia_user>
                 <dns_loopia_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_loopia_password>
                 <dns_lua_email type="TextField">
                     <Required>N</Required>
@@ -921,6 +923,25 @@
                 <dns_1984hosting_password type="TextField">
                     <Required>N</Required>
                 </dns_1984hosting_password>
+                <dns_kas_login type="TextField">
+                    <Required>N</Required>
+                </dns_kas_login>
+                <dns_kas_authdata type="TextField">
+                    <Required>N</Required>
+                </dns_kas_authdata>
+                <dns_kas_authtype type="OptionField">
+                    <Required>N</Required>
+                    <default>sha1</default>
+                    <OptionValues>
+                        <sha1>SHA1</sha1>
+                    </OptionValues>
+                </dns_kas_authtype>
+                <dns_desec_token type="TextField">
+                    <Required>N</Required>
+                </dns_desec_token>
+                <dns_desec_name type="TextField">
+                    <Required>N</Required>
+                </dns_desec_name>
             </validation>
         </validations>
         <actions>

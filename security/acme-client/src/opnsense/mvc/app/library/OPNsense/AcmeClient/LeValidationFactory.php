@@ -1,7 +1,7 @@
 <?php
 
-/**
- * Copyright (C) 2020 Frank Wall (derived from OPNsense/Auth)
+/*
+ * Copyright (C) 2020 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * All rights reserved.
  *
@@ -29,7 +29,7 @@
 
 namespace OPNsense\AcmeClient;
 
-use \OPNsense\AcmeClient\AcmeClient;
+use OPNsense\AcmeClient\AcmeClient;
 
 /**
 * Class LeValidationFactory

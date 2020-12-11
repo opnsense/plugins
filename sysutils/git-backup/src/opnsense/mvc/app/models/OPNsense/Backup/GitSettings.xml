@@ -1,0 +1,53 @@
+<model>
+    <mount>//system/backup/git</mount>
+    <version>1.0.0</version>
+    <description>OPNsense Git Backup Settings</description>
+    <items>
+        <enabled type="BooleanField">
+          <default>0</default>
+          <Required>Y</Required>
+          <Constraints>
+              <check001>
+                  <reference>user.check001</reference>
+              </check001>
+              <check002>
+                  <reference>url.check001</reference>
+              </check002>
+          </Constraints>
+        </enabled>
+        <url type="TextField">
+            <Required>N</Required>
+            <mask>/^((https)|(ssh))?:\/\/.*[^\/]$/</mask>
+            <ValidationMessage>A valid git location must be provided. e.g. ssh://server/project.git, https://server/project.git</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>A backup location (url) is required.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </url>
+        <branch type="TextField">
+          <default>master</default>
+          <Required>Y</Required>
+        </branch>
+        <privkey type="TextField">
+            <Required>N</Required>
+        </privkey>
+        <user type="TextField">
+          <Constraints>
+              <check001>
+                  <ValidationMessage>A username is required.</ValidationMessage>
+                  <type>DependConstraint</type>
+                  <addFields>
+                      <field1>enabled</field1>
+                  </addFields>
+              </check001>
+          </Constraints>
+        </user>
+        <password type="TextField">
+        </password>
+    </items>
+</model>

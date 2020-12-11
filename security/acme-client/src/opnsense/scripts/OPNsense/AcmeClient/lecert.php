@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall (derived from upload_sftp.php)
+ * Copyright (C) 2020 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -142,8 +142,10 @@ function main()
     $force = isset($options['force']) ? true : false;
 
     // Verify mode and arguments
-    if (empty($options) || isset($options['h']) || isset($options['help']) ||
-        (isset($options['mode']) and !validateMode($options['mode']))) {
+    if (
+        empty($options) || isset($options['h']) || isset($options['help']) ||
+        (isset($options['mode']) and !validateMode($options['mode']))
+    ) {
          // Not enough or invalid arguments specified.
          help();
     } elseif (($options['mode'] === 'issue') && (isset($options['cert']) || isset($options['all']))) {
