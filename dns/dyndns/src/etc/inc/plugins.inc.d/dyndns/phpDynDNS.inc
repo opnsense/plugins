@@ -702,7 +702,7 @@ class updatedns
                 */
                 $server = "https://dns.api.gandi.net/api/v5/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
 
-                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["' . $this->_dnsIP . '"]}';
+                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["' . $this->_dnsIPv4 . '"]}';
 
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
