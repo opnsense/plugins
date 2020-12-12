@@ -91,7 +91,7 @@ $(document).ready(function() {
       $('#overview').html(content)
   });
 
-  ajaxCall(url="/api/quagga/diagnostics/showipbgpsummary", sendData={}, callback=function(data,status) {
+  ajaxCall(url="/api/quagga/diagnostics/bgpsummary/plain", sendData={}, callback=function(data,status) {
       $("#summarycontent").text(data['response']);
   });
 });
