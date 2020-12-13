@@ -41,43 +41,49 @@ POSSIBILITY OF SUCH DAMAGE.
     </tr>
   </thead>
   <tbody>
-    <% _.each(general_routes, function(entry) { %>
-      <tr>
-        <td>
-          <% _.each(entry['code'], function(code) { %>
-            <abbr title="<%= translate(code['long']) %>"><%= (code['short']) %></abbr>
-          <% }); %>
-        </td>
-        <td><%= entry['network'] %></td>
-        <td><%= entry['ad'] %></td>
-        <td><%= entry['metric'] %></td>
-        <td><%= entry['interface'] %></td>
-        <td><%= entry['via'] %></td>
-        <td><%= entry['time'] %></td>
-      </tr>
+    <% _.forEach(routes, function(route_array, network) { %>
+      <% _.forEach(route_array, function(route) { %>
+        <% _.forEach(route['nexthops'], function(nexthop) { %>
+        <% let protocol = translateProtocol(route['protocol'], ipVersion); %>
+        <tr>
+          <td><% if(typeof(protocol) != "string") { %>
+            <abbr title="<%= protocol['long'] %>"><%= protocol['short'] %></abbr>
+            <% } else { %>
+            <%= route['protocol'] %>
+            <% } %>
+            <% if(typeof(route['selected']) != "undefined" && route['selected']) { %>
+            <abbr title="{{ lang._('Selected') }}">&gt;</abbr>
+            <% } %>
+            <% if(typeof(route['installed']) != "undefined" && route['installed']) { %>
+              <abbr title="{{ lang._('FIB') }}">&ast;</abbr>
+              <% } %>
+          </td>
+          <td><%= network %></td>
+          <td><%= route['distance'] %></td>
+          <td><%= route['metric'] %></td>
+          <td><%= nexthop['interfaceName'] %></td>
+          <td><%= (typeof(nexthop['ip']) != "undefined" ? nexthop['ip'] : '{{ lang._('Directly Attached') }}') %></td>
+          <td><%= route['uptime'] %></td>
+        </tr>
+        <% }); %>
+      <% }); %>
     <% }); %>
   </tbody>
 </table>
 </script>
 
 <script>
-function translate(content) {
-  tr = {};
-  tr['kernel route'] = '{{ lang._('Kernel Route') }}';
-  tr['FIB route'] = '{{ lang._('FIB Route') }}';
-  tr['connected'] = '{{ lang._('Connected') }}';
-  tr['selected route'] = '{{ lang._('Selected Route') }}';
-  tr['OSPF'] = '{{ lang._('OSPF') }}';
-  tr['RIP'] = '{{ lang._('RIP') }}';
-  tr['BGP'] = '{{ lang._('BGP') }}';
-  if (_.has(tr,content))
-  {
-    return tr[content];
-  }
-  else
-  {
-    return content;
-  }
+function translateProtocol(data, ipVersion)
+{
+  tr = []
+  // routing table tab
+  tr['kernel'] = {short: 'K', long: '{{ lang._('Kernel') }}'}
+  tr['connected'] = {short: 'C', long: '{{ lang._('Connected') }}'}
+  tr['bgp'] = {short: 'B', long: '{{ lang._('BGP') }}'}
+  tr['ospf'] = {short: 'O', long: '{{ lang._('OSPFv3') }}'}
+  if(ipVersion == 4) tr['ospf']['long'] = '{{ lang._('OSPF') }}'
+
+  return _.has(tr,data) ? tr[data] : data
 }
 
 dataconverters = {
@@ -100,13 +106,13 @@ dataconverters = {
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
-  ajaxCall(url="/api/quagga/diagnostics/generalroutes", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())(data['response'])
+  ajaxCall(url="/api/quagga/diagnostics/generalroute", sendData={}, callback=function(data,status) {
+    content = _.template($('#routestpl').html())({routes: data['response'], ipVersion: 4})
     $('#routing').html(content)
     //$('#routing table').bootgrid({converters: dataconverters})
   });
-  ajaxCall(url="/api/quagga/diagnostics/generalroutes6", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())({general_routes: data['response']['general_routes6']})
+  ajaxCall(url="/api/quagga/diagnostics/generalroute6", sendData={}, callback=function(data,status) {
+    content = _.template($('#routestpl').html())({routes: data['response'], ipVersion: 6})
     $('#routing6').html(content)
     //$('#routing6 table').bootgrid({converters: dataconverters})
   });
