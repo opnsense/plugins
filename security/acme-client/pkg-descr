@@ -10,6 +10,9 @@ Plugin Changelog
 
 2.2
 
+Added:
+* add support for hexonet.com DNS API (#2134)
+
 Fixed:
 * fix DNS challenge alias mode (#2128, #2130)
 

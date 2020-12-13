@@ -1221,4 +1221,20 @@
         <label>deSEC domain</label>
         <type>text</type>
     </field>
+    <field>
+        <label>hexonet.com DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hexonet</style>
+    </field>
+    <field>
+        <id>validation.dns_hexonet_login</id>
+        <label>Login</label>
+        <type>text</type>
+        <help>This should be a combination of the username and role ID. For example, when the username is "myuser" and role ID is "testrole", then "myuser!testrole" must be used here.</help>
+    </field>
+    <field>
+        <id>validation.dns_hexonet_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
 </form>

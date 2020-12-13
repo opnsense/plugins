@@ -401,6 +401,7 @@
                         <dns_gcloud>Google Cloud DNS API</dns_gcloud>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_hetzner>Hetzner DNS API</dns_hetzner>
+                        <dns_hexonet>hexonet.com DNS API</dns_hexonet>
                         <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
@@ -917,6 +918,12 @@
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
+                <dns_hexonet_login type="TextField">
+                    <Required>N</Required>
+                </dns_hexonet_login>
+                <dns_hexonet_password type="TextField">
+                    <Required>N</Required>
+                </dns_hexonet_password>
                 <dns_1984hosting_user type="TextField">
                     <Required>N</Required>
                 </dns_1984hosting_user>
