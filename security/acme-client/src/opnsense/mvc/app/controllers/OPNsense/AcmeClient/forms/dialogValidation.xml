@@ -753,6 +753,11 @@
         <style>table_dns table_dns_namesilo</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_namesilo</style>
+    </field>
+    <field>
         <id>validation.dns_namesilo_key</id>
         <label>Key</label>
         <type>text</type>

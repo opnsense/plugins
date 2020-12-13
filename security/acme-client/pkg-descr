@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+2.2
+
+Changed:
+* BREAKING: use configured DNS sleep time for Namesilo instead of hardcoded value (#2121)
+
 2.1
 
 Added:
