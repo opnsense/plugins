@@ -33,62 +33,76 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <script type="text/x-template" id="overviewtpl">
-  <table>
+  <table class="table table-striped">
     <tr>
       <td>{{ lang._('Table Version') }}</td>
-      <td><%= bgp_overview['table_version'] %></td>
+      <td><%= tableVersion %></td>
     </tr>
     <tr>
       <td>{{ lang._('Local Router ID') }}</td>
-      <td><%= bgp_overview['local_router_id'] %></td>
+      <td><%= routerId %></td>
+    </tr>
+    <tr>
+      <td>{{ lang._('Local AS') }}</td>
+      <td><%= localAS %></td>
     </tr>
   </table>
-  <table>
+</script>
+<script type="text/x-template" id="routestpl">
+  <table class="table table-striped">
     <thead>
       <tr>
-        <th>{{ lang._('Status') }}</th>
-        <th>{{ lang._('Network') }}</th>
-        <th>{{ lang._('Next Hop') }}</th>
-        <th>{{ lang._('Metric') }}</th>
-        <th>{{ lang._('LocPrf') }}</th>
-        <th>{{ lang._('Weight') }}</th>
-        <th>{{ lang._('Path') }}</th>
+        <th data-column-id="status" data-type="raw">{{ lang._('Status') }}</th>
+        <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
+        <th data-column-id="nexthop" data-type="string">{{ lang._('Next Hop') }}</th>
+        <th data-column-id="metric" data-type="numeric">{{ lang._('Metric') }}</th>
+        <th data-column-id="locprf" data-type="numeric">{{ lang._('LocPrf') }}</th>
+        <th data-column-id="weight" data-type="numeric">{{ lang._('Weight') }}</th>
+        <th data-column-id="path" data-type="string">{{ lang._('Path') }}</th>
+        <th data-column-id="origin" data-type="string">{{ lang._('Origin') }}</th>
       </tr>
     </thead>
     <tbody>
-      <% _.each(bgp_overview['output'], function (row) { %>
-        <tr>
-          <td>
-            <% _.each(row['status'], function(element) { %>
-              <abbr title="<%= translate(element['dn']) %>"><%= element['abb'] %></abbr>
-            <% }) %>
-          </td>
-          <td><%= row['Network'] %></td>
-          <td><%= row['Next Hop'] %></td>
-          <td><%= row['Metric'] %></td>
-          <td><%= row['LocPrf'] %></td>
-          <td><%= row['Weight'] %></td>
-          <td>
-            <% _.each(row['Path'], function(element) { %>
-              <abbr title="<%= translate(element['dn']) %>"><%= element['abb'] %></abbr>
-            <% }) %>
-          </td>
-        </tr>
+      <% _.forEach(routes, function(route_array, network) { %>
+        <% _.forEach(route_array, function(route) { %>
+          <% _.forEach(route['nexthops'], function(nexthop) { %>
+            <tr>
+              <td>
+                <% if(typeof(route['valid']) != "undefined" && route['valid']) { %>
+                  <abbr title="{{ lang._('Valid') }}">&ast;</abbr>
+                <% } %>
+                <% if(typeof(route['bestpath']) != "undefined" && route['bestpath']) { %>
+                  <abbr title="{{ lang._('Best') }}">&gt;</abbr>
+                <% } %>
+                <% if(typeof(route['pathFrom']) != "undefined" && route['pathFrom'] == 'internal') { %>
+                  <abbr title="{{ lang._('Internal') }}">i</abbr>
+                <% } %>
+              </td>
+              <td><%= network %></td>
+              <td><%= nexthop['ip'] %></td>
+              <td><%= route['metric'] %></td>
+              <td><%= route['locPrf'] %></td>
+              <td><%= route['weight'] %></td>
+              <td><%= route['path'] %></td>
+              <td><%= route['origin'] %></td>
+            </tr>
+          <% }); %>
+        <% }); %>
       <% }); %>
     </tbody>
   </table>
 </script>
+
 <script src="/ui/js/quagga/lodash.js"></script>
 <script>
-function translate(x) {
-  return x;
-}
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
-  ajaxCall(url="/api/quagga/diagnostics/showipbgp", sendData={}, callback=function(data,status) {
+  ajaxCall(url="/api/quagga/diagnostics/bgpoverview", sendData={}, callback=function(data,status) {
       content = _.template($('#overviewtpl').html())(data['response'])
       $('#overview').html(content)
+      content = _.template($('#routestpl').html())(data['response'])
+      $('#routing').html(content)
   });
 
   ajaxCall(url="/api/quagga/diagnostics/bgpsummary/plain", sendData={}, callback=function(data,status) {
@@ -100,13 +114,13 @@ $(document).ready(function() {
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
+    <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
     <li><a data-toggle="tab" href="#summary">{{ lang._('Summary') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="overview" class="tab-pane fade in active">
-      {{ lang._('loading...') }}
-    </div>
+    <div id="overview" class="tab-pane fade in active"></div>
+    <div id="routing" class="tab-pane fade in"></div>
     <div id="summary" class="tab-pane fade in">
       <pre id="summarycontent"></pre>
     </div>
