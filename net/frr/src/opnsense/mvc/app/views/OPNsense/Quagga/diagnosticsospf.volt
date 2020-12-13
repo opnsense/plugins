@@ -441,11 +441,9 @@ $(document).ready(function() {
     content = _.template($('#overviewtpl').html())(data['response'])
     $('#overview').html(content)
   });
-  /*ajaxCall(url="/api/quagga/diagnostics/ospfdatabase", sendData={}, callback=function(data,status) {
-    content = _.template($('#databasetpl').html())(data['response'])
-    $('#database').html(content)
-    $('#database table').bootgrid()
-  });*/
+  ajaxCall(url="/api/quagga/diagnostics/ospfdatabase/plain", sendData={}, callback=function(data,status) {
+    $('#databasecontent').text(data['response'])
+  });
   ajaxCall(url="/api/quagga/diagnostics/ospfroute", sendData={}, callback=function(data,status) {
     content = _.template($('#routestpl').html())({routes: data['response']})
     $('#routing').html(content)
@@ -476,14 +474,11 @@ $(document).ready(function() {
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="overview" class="tab-pane fade in active">
-    </div>
-    <div id="routing" class="tab-pane fade in">
-    </div>
+    <div id="overview" class="tab-pane fade in active"></div>
+    <div id="routing" class="tab-pane fade in"></div>
     <div id="database" class="tab-pane fade in">
+      <pre id="databasecontent"></pre>
     </div>
-    <div id="neighbor" class="tab-pane fade in">
-    </div>
-    <div id="interface" class="tab-pane fade in">
-    </div>
+    <div id="neighbor" class="tab-pane fade in"></div>
+    <div id="interface" class="tab-pane fade in"></div>
 </div>
