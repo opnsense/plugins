@@ -12,6 +12,10 @@ Plugin Changelog
 
 Changed:
 * BREAKING: use configured DNS sleep time for Namesilo instead of hardcoded value (#2121)
+* BREAKING: use configured DNS sleep time for Lexicon/Namesilo instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Linode instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Linode v4 instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Netcup instead of hardcoded value
 
 2.1
 
