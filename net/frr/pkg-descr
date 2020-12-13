@@ -14,12 +14,12 @@ Plugin Changelog
 1.20
 
 * Allow to adjust reference cost for OSPF calculation
+* Add configuration profile selection
 
 1.19
 
 * OSPF influence interface cost via carp
 * Uniform logging
-* Add configuration profile selection
 
 1.18
 
