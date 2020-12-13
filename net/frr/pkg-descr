@@ -19,6 +19,7 @@ Plugin Changelog
 
 * OSPF influence interface cost via carp
 * Uniform logging
+* Add configuration profile selection
 
 1.18
 
