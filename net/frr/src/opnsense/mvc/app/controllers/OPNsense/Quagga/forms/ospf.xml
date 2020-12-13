@@ -27,7 +27,7 @@
         <label>Reference Cost</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>Here you can adjust the reference cost for path calculation. Mostly needed when you bundle interfaces to higher bandwidth.</help>
+        <help>Here you can adjust the reference cost in Mbps for path calculation. Mostly needed when you bundle interfaces to higher bandwidth.</help>
     </field>
     <field>
         <id>ospf.passiveinterfaces</id>
