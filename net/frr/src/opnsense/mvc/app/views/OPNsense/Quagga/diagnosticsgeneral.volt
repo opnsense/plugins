@@ -28,7 +28,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 <script src="/ui/js/quagga/lodash.js"></script>
 <script type="text/x-template" id="routestpl">
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th data-column-id="code" data-type="raw">{{ lang._('Code') }}</th>
