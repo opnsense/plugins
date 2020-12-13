@@ -32,19 +32,14 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Lexicon DNS API
+ * Hexonet DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsLexicon extends Base implements LeValidationInterface
+class DnsHexonet extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $provider = (string)$this->config->dns_lexicon_provider;
-        $env_user = 'LEXICON_' . strtoupper($provider) . '_USERNAME';
-        $env_token = 'LEXICON_' . strtoupper($provider) . '_TOKEN';
-
-        $this->acme_env['PROVIDER'] = $provider;
-        $this->acme_env[$env_user] = (string)$this->config->dns_lexicon_user;
-        $this->acme_env[$env_token] = (string)$this->config->dns_lexicon_token;
+        $this->acme_env['Hexonet_Login'] = (string)$this->config->dns_hexonet_login;
+        $this->acme_env['Hexonet_Password'] = (string)$this->config->dns_hexonet_password;
     }
 }
