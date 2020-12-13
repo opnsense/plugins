@@ -10,6 +10,9 @@ Plugin Changelog
 
 2.2
 
+Fixed:
+* fix DNS challenge alias mode (#2128, #2130)
+
 Changed:
 * BREAKING: use configured DNS sleep time for Namesilo instead of hardcoded value (#2121)
 * BREAKING: use configured DNS sleep time for Lexicon/Namesilo instead of hardcoded value
