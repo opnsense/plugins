@@ -271,7 +271,7 @@ POSSIBILITY OF SUCH DAMAGE.
  <table class="table table-striped">
   <thead>
     <tr>
-      <th data-column-id="type" data-type="raw">{{ lang._('Type') }}</th>
+      <th data-column-id="type" data-type="string" data-formatter="route_type">{{ lang._('Type') }}</th>
       <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
       <th data-column-id="cost" data-type="numeric">{{ lang._('Cost') }}</th>
       <th data-column-id="area" data-type="string">{{ lang._('Area') }}</th>
@@ -282,16 +282,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <tbody>
     <% _.forEach(routes, function(route, network) { %>
       <tr>
-        <td>
-          <% _.forEach(route['routeType'].split(' '), function(routeType) { %>
-            <% if(routeType == "") return; %>
-            <% if(translate(routeType) == routeType) { %>
-              <%= routeType %>
-            <% } else { %>
-              <% console.log('Y U NO WORK?!'); %>
-              <abbr title="<%= translate(routeType) %>"><%= routeType %></abbr>
-          <% } }); %>
-        </td>
+        <td><%= route['routeType'] %></td>
         <td><%= network %></td>
         <td><%= route['cost'] %></td>
         <td><%= route['area'] %></td>
@@ -423,16 +414,21 @@ function checkmark(bin)
   return "<i class=\"fa " + (bin ? "fa-check-square" : "fa-square") + " text-muted\"></i>";
 }
 
-dataconverters = {
-    boolean: {
-        from: function (value) { return (value == 'true') || (value == true); },
-        to: function (value) { return checkmark(value) }
-    },
-    raw: {
-        from: function (value) { return value },
-        to: function (value) { return value }
-    }
-}
+dataformatters = {
+  route_type: function(column, row) {
+    let result = ''
+    _.forEach(row.type.split(' '), function(routeType) {
+      if(translate(routeType) == routeType) {
+        result += routeType;
+      }
+      else {
+        result += '<abbr title="' + translate(routeType) + '">' + routeType + '</abbr>';
+      }
+      result += ' ';
+    });
+    return result;
+  }
+};
 
 $(document).ready(function() {
   updateServiceControlUI('quagga');
@@ -447,7 +443,7 @@ $(document).ready(function() {
   ajaxCall(url="/api/quagga/diagnostics/ospfroute", sendData={}, callback=function(data,status) {
     content = _.template($('#routestpl').html())({routes: data['response']})
     $('#routing').html(content)
-    $('#routing table').bootgrid({converters: dataconverters})
+    $('#routing table').bootgrid({formatters: dataformatters})
   });
   ajaxCall(url="/api/quagga/diagnostics/ospfneighbor", sendData={}, callback=function(data,status) {
     content = _.template($('#neighbortpl').html())(data['response'])
