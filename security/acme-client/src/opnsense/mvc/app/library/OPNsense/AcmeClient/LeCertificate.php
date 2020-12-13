@@ -637,7 +637,7 @@ class LeCertificate extends LeCommon
             }
 
             // Configure validation object
-            $val->setNames($this->config->name, $this->config->altNames);
+            $val->setNames($this->config->name, $this->config->altNames, $this->config->aliasmode, $this->config->domainalias, $this->config->challengealias);
             $val->setRenewal((int)$this->config->renewInterval);
             $val->setForce($this->force);
             // strip prefix from key value
