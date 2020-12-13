@@ -105,6 +105,10 @@ $(document).ready(function() {
       $('#routing').html(content)
   });
 
+  ajaxCall(url="/api/quagga/diagnostics/bgpneighbors/plain", sendData={}, callback=function(data,status) {
+      $('#neighborscontent').text(data['response'])
+  });
+
   ajaxCall(url="/api/quagga/diagnostics/bgpsummary/plain", sendData={}, callback=function(data,status) {
       $("#summarycontent").text(data['response']);
   });
@@ -115,12 +119,16 @@ $(document).ready(function() {
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
     <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#summary">{{ lang._('Summary') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
     <div id="overview" class="tab-pane fade in active"></div>
     <div id="routing" class="tab-pane fade in"></div>
+    <div id="neighbors" class="tab-pane fade in">
+      <pre id="neighborscontent"></pre>
+    </div>
     <div id="summary" class="tab-pane fade in">
       <pre id="summarycontent"></pre>
     </div>
