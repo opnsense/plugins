@@ -31,7 +31,9 @@ POSSIBILITY OF SUCH DAMAGE.
 <table class="table table-striped">
   <thead>
     <tr>
-      <th data-column-id="code" data-type="raw">{{ lang._('Code') }}</th>
+      <th data-column-id="code" data-type="string" data-formatter="code">{{ lang._('Code') }}</th>
+      <th data-column-id="selected" data-type="boolean" data-visible="false">{{ lang._('Selected') }}</th>
+      <th data-column-id="installed" data-type="boolean" data-visible="false">{{ lang._('Installed') }}</th>
       <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
       <th data-column-id="ad" data-type="numeric">{{ lang._('Administrative Distance') }}</th>
       <th data-column-id="metric" data-type="numeric">{{ lang._('Metric') }}</th>
@@ -44,20 +46,10 @@ POSSIBILITY OF SUCH DAMAGE.
     <% _.forEach(routes, function(route_array, network) { %>
       <% _.forEach(route_array, function(route) { %>
         <% _.forEach(route['nexthops'], function(nexthop) { %>
-        <% let protocol = translateProtocol(route['protocol']); %>
         <tr>
-          <td><% if(typeof(protocol) != "string") { %>
-            <abbr title="<%= protocol['long'] %>"><%= protocol['short'] %></abbr>
-            <% } else { %>
-            <%= route['protocol'] %>
-            <% } %>
-            <% if(typeof(route['selected']) != "undefined" && route['selected']) { %>
-            <abbr title="{{ lang._('Selected') }}">&gt;</abbr>
-            <% } %>
-            <% if(typeof(route['installed']) != "undefined" && route['installed']) { %>
-              <abbr title="{{ lang._('FIB') }}">&ast;</abbr>
-              <% } %>
-          </td>
+          <td><%= route['protocol'] %></td>
+          <td><%= (typeof(route['selected']) != "undefined" && route['selected']) %></td>
+          <td><%= (typeof(route['installed']) != "undefined" && route['installed']) %></td>
           <td><%= network %></td>
           <td><%= route['distance'] %></td>
           <td><%= route['metric'] %></td>
@@ -87,21 +79,32 @@ function translateProtocol(data)
 }
 
 dataconverters = {
-    boolean: {
-        from: function (value) { return (value == 'true') || (value == true); },
-        to: function (value) { return checkmark(value) }
-    },
-    raw: {
-        from: function (value) {
-            console.log(value)
-            return value
-        },
-        to: function (value) {
-            console.log(value);
-            return value
-        }
-    }
+  boolean: {
+      from: function (value) { return (value == 'true') || (value == true); },
+      to: function (value) { return value }
+  }
 }
+
+dataformatters = {
+  code: function(column, row) {
+    let result = row.code;
+    let protocol = translateProtocol(row.code);
+
+    if(typeof(protocol) != "string") { 
+      result = '<abbr title="' + protocol['long'] + '">' + protocol['short'] + '</abbr> ';
+    }
+
+    if(row.selected) {
+      result += '<abbr title="{{ lang._('Selected') }}">&gt;</abbr> ';
+    }
+
+    if(row.installed) {
+      result += '<abbr title="{{ lang._('FIB') }}">&ast;</abbr>';
+    }
+
+    return result;
+  }
+};
 
 $(document).ready(function() {
   updateServiceControlUI('quagga');
@@ -109,12 +112,12 @@ $(document).ready(function() {
   ajaxCall(url="/api/quagga/diagnostics/generalroute", sendData={}, callback=function(data,status) {
     content = _.template($('#routestpl').html())({routes: data['response']})
     $('#routing').html(content)
-    //$('#routing table').bootgrid({converters: dataconverters})
+    $('#routing table').bootgrid({converters: dataconverters, formatters: dataformatters})
   });
   ajaxCall(url="/api/quagga/diagnostics/generalroute6", sendData={}, callback=function(data,status) {
     content = _.template($('#routestpl').html())({routes: data['response']})
     $('#routing6').html(content)
-    //$('#routing6 table').bootgrid({converters: dataconverters})
+    $('#routing6 table').bootgrid({converters: dataconverters, formatters: dataformatters})
   });
   ajaxCall(url="/api/quagga/diagnostics/generalrunningconfig", sendData={}, callback=function(data,status) {
       $("#runningconfig").text(data['response']);
