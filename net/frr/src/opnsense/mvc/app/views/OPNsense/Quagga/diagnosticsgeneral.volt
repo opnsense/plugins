@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <% _.forEach(routes, function(route_array, network) { %>
       <% _.forEach(route_array, function(route) { %>
         <% _.forEach(route['nexthops'], function(nexthop) { %>
-        <% let protocol = translateProtocol(route['protocol'], ipVersion); %>
+        <% let protocol = translateProtocol(route['protocol']); %>
         <tr>
           <td><% if(typeof(protocol) != "string") { %>
             <abbr title="<%= protocol['long'] %>"><%= protocol['short'] %></abbr>
@@ -73,15 +73,15 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <script>
-function translateProtocol(data, ipVersion)
+function translateProtocol(data)
 {
   tr = []
   // routing table tab
   tr['kernel'] = {short: 'K', long: '{{ lang._('Kernel') }}'}
   tr['connected'] = {short: 'C', long: '{{ lang._('Connected') }}'}
   tr['bgp'] = {short: 'B', long: '{{ lang._('BGP') }}'}
-  tr['ospf'] = {short: 'O', long: '{{ lang._('OSPFv3') }}'}
-  if(ipVersion == 4) tr['ospf']['long'] = '{{ lang._('OSPF') }}'
+  tr['ospf'] = {short: 'O', long: '{{ lang._('OSPF') }}'}
+  tr['ospf6'] = {short: 'O', long: '{{ lang._('OSPFv3') }}'}
 
   return _.has(tr,data) ? tr[data] : data
 }
@@ -107,12 +107,12 @@ $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/generalroute", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())({routes: data['response'], ipVersion: 4})
+    content = _.template($('#routestpl').html())({routes: data['response']})
     $('#routing').html(content)
     //$('#routing table').bootgrid({converters: dataconverters})
   });
   ajaxCall(url="/api/quagga/diagnostics/generalroute6", sendData={}, callback=function(data,status) {
-    content = _.template($('#routestpl').html())({routes: data['response'], ipVersion: 6})
+    content = _.template($('#routestpl').html())({routes: data['response']})
     $('#routing6').html(content)
     //$('#routing6 table').bootgrid({converters: dataconverters})
   });
