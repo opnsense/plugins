@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <th data-column-id="locprf" data-type="numeric" data-width="5%">{{ lang._('LocPrf') }}</th>
         <th data-column-id="weight" data-type="numeric" data-width="6%">{{ lang._('Weight') }}</th>
         <th data-column-id="path" data-type="string" data-width="16%">{{ lang._('Path') }}</th>
-        <th data-column-id="origin" data-type="string" data-width="10%">{{ lang._('Origin') }}</th>
+        <th data-column-id="origin" data-type="string" data-formatter="origin" data-width="10%">{{ lang._('Origin') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -92,6 +92,9 @@ let dataformatters = {
     } else {
         return "<span class=\"fa fa-times\" data-value=\"0\" data-row-id=\"" + row.uuid + "\"></span>";
     }
+  },
+  origin: function(column, row) {
+    return (row[column.id] === 'incomplete' ? '<abbr title="{{ lang._('Incomplete') }}">&quest;</abbr>' : row[column.id]);
   }
 }
 
