@@ -34,18 +34,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/x-template" id="overviewtpl">
   <table class="table table-striped">
-    <tr>
-      <td>{{ lang._('Table Version') }}</td>
-      <td><%= tableVersion %></td>
-    </tr>
-    <tr>
-      <td>{{ lang._('Local Router ID') }}</td>
-      <td><%= routerId %></td>
-    </tr>
-    <tr>
-      <td>{{ lang._('Local AS') }}</td>
-      <td><%= localAS %></td>
-    </tr>
+    <tbody>
+      <tr>
+        <td>{{ lang._('Table Version') }}</td>
+        <td><%= tableVersion %></td>
+      </tr>
+      <tr>
+        <td>{{ lang._('Local Router ID') }}</td>
+        <td><%= routerId %></td>
+      </tr>
+      <tr>
+        <td>{{ lang._('Local AS') }}</td>
+        <td><%= localAS %></td>
+      </tr>
+    </tbody>
   </table>
 </script>
 <script type="text/x-template" id="routestpl">
@@ -98,18 +100,18 @@ POSSIBILITY OF SUCH DAMAGE.
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
-  ajaxCall(url="/api/quagga/diagnostics/bgpoverview", sendData={}, callback=function(data,status) {
-      content = _.template($('#overviewtpl').html())(data['response'])
-      $('#overview').html(content)
-      content = _.template($('#routestpl').html())(data['response'])
-      $('#routing').html(content)
+  ajaxCall(url="/api/quagga/diagnostics/bgpoverview", sendData={}, callback=function(data, status) {
+      let content = _.template($('#overviewtpl').html())(data['response']);
+      $('#overview').html(content);
+      content = _.template($('#routestpl').html())(data['response']);
+      $('#routing').html(content);
   });
 
-  ajaxCall(url="/api/quagga/diagnostics/bgpneighbors/plain", sendData={}, callback=function(data,status) {
-      $('#neighborscontent').text(data['response'])
+  ajaxCall(url="/api/quagga/diagnostics/bgpneighbors/plain", sendData={}, callback=function(data, status) {
+      $('#neighborscontent').text(data['response']);
   });
 
-  ajaxCall(url="/api/quagga/diagnostics/bgpsummary/plain", sendData={}, callback=function(data,status) {
+  ajaxCall(url="/api/quagga/diagnostics/bgpsummary/plain", sendData={}, callback=function(data, status) {
       $("#summarycontent").text(data['response']);
   });
 });
@@ -117,19 +119,19 @@ $(document).ready(function() {
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
-    <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
-    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
-    <li><a data-toggle="tab" href="#summary">{{ lang._('Summary') }}</a></li>
+  <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
+  <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
+  <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
+  <li><a data-toggle="tab" href="#summary">{{ lang._('Summary') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
-    <div id="overview" class="tab-pane fade in active"></div>
-    <div id="routing" class="tab-pane fade in"></div>
-    <div id="neighbors" class="tab-pane fade in">
-      <pre id="neighborscontent"></pre>
-    </div>
-    <div id="summary" class="tab-pane fade in">
-      <pre id="summarycontent"></pre>
-    </div>
+  <div id="overview" class="tab-pane fade in active"></div>
+  <div id="routing" class="tab-pane fade in"></div>
+  <div id="neighbors" class="tab-pane fade in">
+    <pre id="neighborscontent"></pre>
+  </div>
+  <div id="summary" class="tab-pane fade in">
+    <pre id="summarycontent"></pre>
+  </div>
 </div>
