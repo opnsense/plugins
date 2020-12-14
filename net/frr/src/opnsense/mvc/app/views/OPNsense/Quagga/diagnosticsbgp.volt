@@ -55,14 +55,16 @@ POSSIBILITY OF SUCH DAMAGE.
   <table class="table table-striped">
     <thead>
       <tr>
-        <th data-column-id="status" data-type="raw">{{ lang._('Status') }}</th>
-        <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
-        <th data-column-id="nexthop" data-type="string">{{ lang._('Next Hop') }}</th>
-        <th data-column-id="metric" data-type="numeric">{{ lang._('Metric') }}</th>
-        <th data-column-id="locprf" data-type="numeric">{{ lang._('LocPrf') }}</th>
-        <th data-column-id="weight" data-type="numeric">{{ lang._('Weight') }}</th>
-        <th data-column-id="path" data-type="string">{{ lang._('Path') }}</th>
-        <th data-column-id="origin" data-type="string">{{ lang._('Origin') }}</th>
+        <th data-column-id="valid" data-type="boolean" data-formatter="boolean" data-width="5%">{{ lang._('Valid') }}</th>
+        <th data-column-id="best" data-type="boolean" data-formatter="boolean" data-width="5%">{{ lang._('Best') }}</th>
+        <th data-column-id="internal" data-type="boolean" data-formatter="boolean" data-width="6%">{{ lang._('Internal') }}</th>
+        <th data-column-id="network" data-type="string" data-width="21%">{{ lang._('Network') }}</th>
+        <th data-column-id="nexthop" data-type="string" data-width="21%">{{ lang._('Next Hop') }}</th>
+        <th data-column-id="metric" data-type="numeric" data-width="5%">{{ lang._('Metric') }}</th>
+        <th data-column-id="locprf" data-type="numeric" data-width="5%">{{ lang._('LocPrf') }}</th>
+        <th data-column-id="weight" data-type="numeric" data-width="6%">{{ lang._('Weight') }}</th>
+        <th data-column-id="path" data-type="string" data-width="16%">{{ lang._('Path') }}</th>
+        <th data-column-id="origin" data-type="string" data-width="10%">{{ lang._('Origin') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -70,23 +72,15 @@ POSSIBILITY OF SUCH DAMAGE.
         <% _.forEach(route_array, function(route) { %>
           <% _.forEach(route['nexthops'], function(nexthop) { %>
             <tr>
-              <td>
-                <% if(typeof(route['valid']) != "undefined" && route['valid']) { %>
-                  <abbr title="{{ lang._('Valid') }}">&ast;</abbr>
-                <% } %>
-                <% if(typeof(route['bestpath']) != "undefined" && route['bestpath']) { %>
-                  <abbr title="{{ lang._('Best') }}">&gt;</abbr>
-                <% } %>
-                <% if(typeof(route['pathFrom']) != "undefined" && route['pathFrom'] == 'internal') { %>
-                  <abbr title="{{ lang._('Internal') }}">i</abbr>
-                <% } %>
-              </td>
+              <td><%= (typeof(route['valid']) != "undefined" && route['valid']) %></td>
+              <td><%= (typeof(route['bestpath']) != "undefined" && route['bestpath']) %></td>
+              <td><%= (typeof(route['pathFrom']) != "undefined" && route['pathFrom'] == 'internal') %></td>
               <td><%= network %></td>
               <td><%= nexthop['ip'] %></td>
               <td><%= route['metric'] %></td>
               <td><%= route['locPrf'] %></td>
               <td><%= route['weight'] %></td>
-              <td><%= route['path'] %></td>
+              <td><%= (route['path'] == "" ? "{{ lang._('Internal') }}" : route['path']) %></td>
               <td><%= route['origin'] %></td>
             </tr>
           <% }); %>
@@ -98,22 +92,43 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
 <script type="text/javascript">
+let dataconverters = {
+  boolean: {
+    from: function (value) { return (value == 'true') || (value == true); },
+    to: function (value) { return value; }
+  }
+}
+
+let dataformatters = {
+  boolean: function (column, row) {
+    if (row[column.id]) {
+        return "<span class=\"fa fa-check\" data-value=\"1\" data-row-id=\"" + row.uuid + "\"></span>";
+    } else {
+        return "<span class=\"fa fa-times\" data-value=\"0\" data-row-id=\"" + row.uuid + "\"></span>";
+    }
+  }
+}
+
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
   ajaxCall(url="/api/quagga/diagnostics/bgpoverview", sendData={}, callback=function(data, status) {
-      let content = _.template($('#overviewtpl').html())(data['response']);
-      $('#overview').html(content);
-      content = _.template($('#routestpl').html())(data['response']);
-      $('#routing').html(content);
+    let content = _.template($('#overviewtpl').html())(data['response']);
+    $('#overview').html(content);
+    content = _.template($('#routestpl').html())(data['response']);
+    $('#routing').html(content);
+    $('#routing table').bootgrid({
+      converters: dataconverters,
+      formatters: dataformatters
+    });
   });
 
   ajaxCall(url="/api/quagga/diagnostics/bgpneighbors/plain", sendData={}, callback=function(data, status) {
-      $('#neighborscontent').text(data['response']);
+    $('#neighborscontent').text(data['response']);
   });
 
   ajaxCall(url="/api/quagga/diagnostics/bgpsummary/plain", sendData={}, callback=function(data, status) {
-      $("#summarycontent").text(data['response']);
+    $("#summarycontent").text(data['response']);
   });
 });
 </script>
