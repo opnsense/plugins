@@ -34,24 +34,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script type="text/x-template" id="overviewtpl">
   <h2>{{ lang._('General') }}</h2>
-  <table class="table table-striped">
-    <tbody>
-      <tr>
-        <td>{{ lang._('Table Version') }}</td>
-        <td><%= tableVersion %></td>
-      </tr>
-      <tr>
-        <td>{{ lang._('Local Router ID') }}</td>
-        <td><%= routerId %></td>
-      </tr>
-      <tr>
-        <td>{{ lang._('Local AS') }}</td>
-        <td><%= localAS %></td>
-      </tr>
-    </tbody>
-  </table>
+  
 </script>
 <script type="text/x-template" id="routestpl">
+  <h2>{{ lang._('Table Version') }}: <%= tableVersion %></h2>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -112,12 +98,19 @@ let dataformatters = {
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
-  ajaxCall(url="/api/quagga/diagnostics/bgpoverview", sendData={}, callback=function(data, status) {
-    let content = _.template($('#overviewtpl').html())(data['response']);
-    $('#overview').html(content);
+  ajaxCall(url="/api/quagga/diagnostics/bgproute4", sendData={}, callback=function(data, status) {
     content = _.template($('#routestpl').html())(data['response']);
     $('#routing').html(content);
     $('#routing table').bootgrid({
+      converters: dataconverters,
+      formatters: dataformatters
+    });
+  });
+
+  ajaxCall(url="/api/quagga/diagnostics/bgproute6", sendData={}, callback=function(data, status) {
+    content = _.template($('#routestpl').html())(data['response']);
+    $('#routing6').html(content);
+    $('#routing6 table').bootgrid({
       converters: dataconverters,
       formatters: dataformatters
     });
@@ -135,15 +128,15 @@ $(document).ready(function() {
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-  <li class="active"><a data-toggle="tab" href="#overview">{{ lang._('Overview') }}</a></li>
-  <li><a data-toggle="tab" href="#routing">{{ lang._('Routing Table') }}</a></li>
+  <li class="active"><a data-toggle="tab" href="#routing">IPv4 {{ lang._('Routing Table') }}</a></li>
+  <li><a data-toggle="tab" href="#routing6">IPv6 {{ lang._('Routing Table') }}</a></li>
   <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
   <li><a data-toggle="tab" href="#summary">{{ lang._('Summary') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
-  <div id="overview" class="tab-pane fade in active"></div>
-  <div id="routing" class="tab-pane fade in"></div>
+  <div id="routing" class="tab-pane fade in active"></div>
+  <div id="routing6" class="tab-pane fade in"></div>
   <div id="neighbors" class="tab-pane fade in">
     <pre id="neighborscontent"></pre>
   </div>

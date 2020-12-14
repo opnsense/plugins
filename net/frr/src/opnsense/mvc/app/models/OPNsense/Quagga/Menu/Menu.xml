@@ -5,12 +5,12 @@
     <OSPF VisibleName="OSPF" cssClass="fa fa-map fa-fw" url="/ui/quagga/ospf/index" order="20" />
     <OSPFv3 VisibleName="OSPFv3" cssClass="fa fa-map fa-fw" url="/ui/quagga/ospf6/index" order="25" />
     <!--<ISIS VisibleName="IS-IS" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/isis/index" order="30" />-->
-    <BGP VisibleName="BGPv4" cssClass="fa fa-globe fa-fw" url="/ui/quagga/bgp/index" order="40" />
+    <BGP VisibleName="BGP" cssClass="fa fa-globe fa-fw" url="/ui/quagga/bgp/index" order="40" />
     <Diagnostics VisibleName="Diagnostics" cssClass="fa fa-medkit fa-fw" order="50">
       <General VisibleName="General" url="/ui/quagga/diagnostics/general" order="1" />
       <OSPF VisibleName="OSPF" url="/ui/quagga/diagnostics/ospf" order="20" />
       <OSPFv3 VisibleName="OSPFv3" url="/ui/quagga/diagnostics/ospfv3" order="25" />
-      <BGP VisibleName="BGPv4" url="/ui/quagga/diagnostics/bgp" order="40" />
+      <BGP VisibleName="BGP" url="/ui/quagga/diagnostics/bgp" order="40" />
       <LOG VisibleName="Log" url="/ui/diagnostics/log/routing/frr" order="100" />
     </Diagnostics>
   </Routing>

@@ -103,17 +103,15 @@ $(document).ready(function() {
 
   ajaxCall(url="/api/quagga/diagnostics/generalroute", sendData={}, callback=function(data, status) {
     let content = _.template($('#routestpl').html())({
-      routes: data['response']
+      routes: data['response']['ipv4']
     });
     $('#routing').html(content);
     $('#routing table').bootgrid({
       converters: dataconverters,
       formatters: dataformatters
     });
-  });
-  ajaxCall(url="/api/quagga/diagnostics/generalroute6", sendData={}, callback=function(data, status) {
-    let content = _.template($('#routestpl').html())({
-      routes: data['response']
+    content = _.template($('#routestpl').html())({
+      routes: data['response']['ipv6']
     });
     $('#routing6').html(content);
     $('#routing6 table').bootgrid({
@@ -121,6 +119,7 @@ $(document).ready(function() {
       formatters: dataformatters
     });
   });
+
   ajaxCall(url="/api/quagga/diagnostics/generalrunningconfig", sendData={}, callback=function(data, status) {
       $("#runningconfig").text(data['response']);
   });

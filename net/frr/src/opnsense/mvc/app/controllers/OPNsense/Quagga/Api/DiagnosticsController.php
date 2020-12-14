@@ -55,7 +55,14 @@ class DiagnosticsController extends ApiControllerBase
 
     public function generalrouteAction($format = "json"): array
     {
-        return $this->getInformation("general", "route", $format);
+        $routes4 = $this->getInformation("general", "route4", $format)['response'];
+        $routes6 = $this->getInformation("general", "route6", $format)['response'];
+        return array("response" => ($format === "json" ? array("ipv4" => $routes4, "ipv6" => $routes6) : $routes4.$routes6));
+    }
+
+    public function generalroute4Action($format = "json"): array
+    {
+        return $this->getInformation("general", "route4", $format);
     }
 
     public function generalroute6Action($format = "json"): array
@@ -63,9 +70,19 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("general", "route6", $format);
     }
 
-    public function bgpoverviewAction($format = "json"): array
+    public function bgprouteAction($format = "json"): array
     {
-        return $this->getInformation("bgp", "overview", $format);
+        return $this->getInformation("bgp", "route", $format);
+    }
+
+    public function bgproute4Action($format = "json"): array
+    {
+        return $this->getInformation("bgp", "route4", $format);
+    }
+
+    public function bgproute6Action($format = "json"): array
+    {
+        return $this->getInformation("bgp", "route6", $format);
     }
 
     public function bgpsummaryAction($format = "json"): array
