@@ -33,6 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <script type="text/x-template" id="overviewtpl">
+  <h2>{{ lang._('General') }}</h2>
   <table class="table table-striped">
     <tbody>
       <tr>
@@ -95,8 +96,8 @@ POSSIBILITY OF SUCH DAMAGE.
   </table>
 </script>
 
-<script src="/ui/js/quagga/lodash.js"></script>
-<script>
+<script type="text/javascript" src="/ui/js/quagga/lodash.js"></script>
+<script type="text/javascript">
 $(document).ready(function() {
   updateServiceControlUI('quagga');
 
