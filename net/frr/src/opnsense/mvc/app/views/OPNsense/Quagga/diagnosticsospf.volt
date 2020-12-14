@@ -267,7 +267,6 @@ POSSIBILITY OF SUCH DAMAGE.
 <% }); %>
 </script>-->
 <script type="text/x-template" id="routestpl">
-<h2>{{ lang._('Routing Table') }}</h2>
  <table class="table table-striped">
   <thead>
     <tr>
