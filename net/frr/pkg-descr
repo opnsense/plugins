@@ -11,6 +11,11 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.20
+
+* Allow to adjust reference cost for OSPF calculation
+* Add configuration profile selection
+
 1.19
 
 * OSPF influence interface cost via carp
