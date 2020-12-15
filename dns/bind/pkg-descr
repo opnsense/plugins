@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.15
+
+* Add support for "Transfer Source [IP|IPv6]" options
+
 1.14
 
 * Reject built-in ACL names
