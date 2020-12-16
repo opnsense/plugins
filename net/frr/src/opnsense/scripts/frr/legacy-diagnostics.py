@@ -181,13 +181,39 @@ class OSPFv3(Daemon):
     return {}
 
   def route(self):
-    return {}
+    route = []
+    lines = self._show('route')
+
+    for line in lines:
+      columns = re.split(r'\s+', line.strip())
+      route.append({
+        'f1': columns[0],
+        'f2': columns[1],
+        'network': columns[2],
+        'gateway': columns[3],
+        'interface': columns[4],
+        'time': columns[5],
+      })
+
+    return route
 
   def interface(self):
     return {}
 
   def neighbor(self):
-    return {}
+    neighbors = []
+    lines = self._show('neighbor')
+
+    tr = FRRTableReader(titles=['Neighbor ID','Pri', 'DeadTime', r'State/IfState', r'Duration I/F[State]'])
+    ll = lines.pop(0)
+    tr.read_header(ll)
+
+    for line in lines:
+      neighbor = tr.read_line(line)
+      neighbor['Pri'] = int(neighbor['Pri'])
+      neighbors.append(neighbor)
+
+    return neighbors
 
   def overview(self):
     return {}
