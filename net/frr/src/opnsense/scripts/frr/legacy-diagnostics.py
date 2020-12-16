@@ -52,7 +52,7 @@ class FRRTableReader:
     if len(line) > self.columns[-1]['start_index']:
       for column in self.columns:
         # use the column's name as dict key and just extract the data from start to end index
-        result[column['title']] = line[column['start_index']:column['end_index']].strip()
+        result[column['title'].strip()] = line[column['start_index']:column['end_index']].strip()
 
     return result
 
