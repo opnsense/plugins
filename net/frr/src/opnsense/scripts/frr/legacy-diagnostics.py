@@ -248,4 +248,4 @@ if __name__ == '__main__':
   elif args.ospfv3_overview:
     result['ospfv3_overview'] = ospfv3.overview()
 
-  print(ujson.dumps(result))
+  print(ujson.dumps(result, escape_forward_slashes=False))
