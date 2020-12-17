@@ -84,12 +84,6 @@ class Daemon:
     return list(filter(None,vtysh.execute(command='show ' + suffix, translate=bytes.decode).split('\n')))
 
 class OSPF(Daemon):
-  RE_ROUTER = r'OSPF Router with ID \(([\.\d]+)\)'
-  RE_ROUTERLINKSTATES = r'Router Link States \(Area ([\.\d]+)\)'
-  RE_NETLINKSTATES = r'Net Link States \(Area ([\.\d]+)\)'
-  RE_SUMMARYLINKSTATES = r'Summary Link States \(Area ([\.\d]+)\)'
-  EXTERNALLINKSTATES = 'AS External Link States'
-
   def _show(self, suffix: str):
     return super()._show('ip ospf ' + suffix)
 
@@ -126,12 +120,12 @@ class OSPF(Daemon):
 
         myre = Re()
         # this is going to be dirty
-        if myre.search(self.RE_ROUTER, heading):
+        if myre.search(r'OSPF Router with ID \(([\.\d]+)\)', heading):
           router = myre.last_match.group(1)
           if not router in db:
             db[router] = {}
           mode = 'router'
-        elif myre.search(self.RE_ROUTERLINKSTATES, heading):
+        elif myre.search(r'Router Link States \(Area ([\.\d]+)\)', heading):
           mode = 'router_link_state_area'
           area = myre.last_match.group(1)
           if not mode in db[router]:
@@ -139,7 +133,7 @@ class OSPF(Daemon):
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = rltr
-        elif myre.search(self.RE_NETLINKSTATES, heading):
+        elif myre.search(r'Net Link States \(Area ([\.\d]+)\)', heading):
           mode = 'net_link_state_area'
           area = myre.last_match.group(1)
           if not mode in db[router]:
@@ -147,7 +141,7 @@ class OSPF(Daemon):
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = nltr
-        elif myre.search(self.RE_SUMMARYLINKSTATES, heading):
+        elif myre.search(r'Summary Link States \(Area ([\.\d]+)\)', heading):
           mode = 'summary_link_state_area'
           area = myre.last_match.group(1)
           if not mode in db[router]:
@@ -155,7 +149,7 @@ class OSPF(Daemon):
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = sltr
-        elif heading == self.EXTERNALLINKSTATES:
+        elif heading == 'AS External Link States':
           mode = 'external_states'
           if not mode in db[router]:
             db[router][mode] = []
