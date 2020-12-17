@@ -78,6 +78,7 @@ class DaemonError(Exception):
 class Daemon:
   def __init__(self, vtysh: VtySH):
     self.vtysh = vtysh
+    self.myre = Re()
 
   def _show(self, suffix: str):
     # execute the command and filter out empty lines so subsequent iterations don't have to  deal with them
@@ -118,32 +119,31 @@ class OSPF(Daemon):
         heading = line.strip()
         header_parsed = False
 
-        myre = Re()
         # this is going to be dirty
-        if myre.search(r'OSPF Router with ID \(([\.\d]+)\)', heading):
-          router = myre.last_match.group(1)
+        if self.myre.search(r'OSPF Router with ID \(([\.\d]+)\)', heading):
+          router = self.myre.last_match.group(1)
           if not router in db:
             db[router] = {}
           mode = 'router'
-        elif myre.search(r'Router Link States \(Area ([\.\d]+)\)', heading):
+        elif self.myre.search(r'Router Link States \(Area ([\.\d]+)\)', heading):
           mode = 'router_link_state_area'
-          area = myre.last_match.group(1)
+          area = self.myre.last_match.group(1)
           if not mode in db[router]:
             db[router][mode] = {}
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = rltr
-        elif myre.search(r'Net Link States \(Area ([\.\d]+)\)', heading):
+        elif self.myre.search(r'Net Link States \(Area ([\.\d]+)\)', heading):
           mode = 'net_link_state_area'
-          area = myre.last_match.group(1)
+          area = self.myre.last_match.group(1)
           if not mode in db[router]:
             db[router][mode] = {}
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = nltr
-        elif myre.search(r'Summary Link States \(Area ([\.\d]+)\)', heading):
+        elif self.myre.search(r'Summary Link States \(Area ([\.\d]+)\)', heading):
           mode = 'summary_link_state_area'
-          area = myre.last_match.group(1)
+          area = self.myre.last_match.group(1)
           if not mode in db[router]:
             db[router][mode] = {}
           if not area in db[router][mode]:
@@ -168,7 +168,7 @@ class OSPF(Daemon):
         else:
           if mode == 'router':
             raise DaemonError('attempting to parse a table row but the mode is \'router\'. please debug the FRR output:\n\n\n'+lines)
-          if mode == 'external_states':
+          elif mode == 'external_states':
             db[router][mode].append(tr.read_line(line))
           else:
             db[router][mode][area].append(tr.read_line(line))
@@ -180,7 +180,61 @@ class OSPFv3(Daemon):
     return super()._show('ipv6 ospf6 ' + suffix)
 
   def database(self):
-    return {}
+    database = {}
+    lines = map(str.strip, self._show('database'))
+
+    # table reader
+    tr = FRRTableReader(titles=["Type", "LSId", "AdvRouter", "     Age", "  SeqNum","                       Payload"])
+    # whether or not the header for the current section has already been parsed
+    header_parsed = False
+    # the current router
+    router = None
+    # the current area
+    area = None
+    # the current mode
+    mode = None
+
+    for line in lines:
+      # here we go again...
+      if self.myre.search(r'Area Scoped Link State Database \(Area (.*)\)', line):
+        header_parsed = False
+        mode = 'scoped_link_db'
+        area = self.myre.last_match.group(1)
+        if not mode in database:
+          database[mode] = {}
+        if not area in database[mode]:
+          database[mode][area] = []
+      elif self.myre.search(r'I\/F Scoped Link State Database \(I\/F (\S+) in Area (.*)\)', line):
+        header_parsed = False
+        mode = 'if_scoped_link_state'
+        interface = self.myre.last_match.group(1)
+        area = self.myre.last_match.group(2)
+        if not mode in database:
+          database[mode] = {}
+        if not interface in database[mode]:
+          database[mode][interface] = {}
+        if not area in database[mode][interface]:
+          database[mode][interface][area] = []
+      elif line == 'AS Scoped Link State Database':
+        header_parsed = False
+        mode = 'as_scoped'
+        if not mode in database:
+          database[mode] = []
+      else:
+        if not header_parsed:
+          tr.read_header(line)
+          header_parsed = True
+        else:
+          if mode == 'scoped_link_db':
+            database[mode][area].append(tr.read_line(line))
+          elif mode == 'if_scoped_link_state':
+            database[mode][interface][area].append(tr.read_line(line))
+          elif mode == 'as_scoped':
+            database[mode].append(tr.read_line(line))
+          else:
+            raise DaemonError('invalid mode, failed to parse line: ' + line)
+
+    return database
 
   def route(self):
     route = []
@@ -204,62 +258,62 @@ class OSPFv3(Daemon):
     lines = map(str.strip, self._show('interface'))
 
     # the interface currently being parsed
-    current_if = ''
+    current_if = None
 
     for line in lines:
-      myre = Re()
+      self.myre = Re()
       # here we go again...
-      if myre.search(r'(\S+) is (down|up), type ([A-Z]+)', line):
-        current_if = myre.last_match.group(1)
+      if self.myre.search(r'(\S+) is (down|up), type ([A-Z]+)', line):
+        current_if = self.myre.last_match.group(1)
         interface[current_if] = {
-          'up': True if myre.last_match.group(2) == 'up' else False,
-          'type': myre.last_match.group(3),
+          'up': True if self.myre.last_match.group(2) == 'up' else False,
+          'type': self.myre.last_match.group(3),
           'enabled': True
         }
-      elif myre.search(r'Interface ID: (\d+)', line):
-        interface[current_if]['id'] = myre.last_match.group(1)
-      elif myre.search(r'OSPF not enabled on this interface', line):
+      elif self.myre.search(r'Interface ID: (\d+)', line):
+        interface[current_if]['id'] = self.myre.last_match.group(1)
+      elif self.myre.search(r'OSPF not enabled on this interface', line):
         interface[current_if]['enabled'] = False
-      elif myre.search(r'Instance ID (\d+), Interface MTU (\d+) \(autodetect: (\d+)\)', line):
-        interface[current_if]['instance_id'] = int(myre.last_match.group(1))
-        interface[current_if]['interface_mtu'] = int(myre.last_match.group(2))
-        interface[current_if]['interface_mtu_autodetect'] = int(myre.last_match.group(3))
-      elif myre.search(r'(inet |inet6): (\S+)', line):
-        family = 'IPv6' if myre.last_match.group(1) == 'inet6' else 'IPv4'
+      elif self.myre.search(r'Instance ID (\d+), Interface MTU (\d+) \(autodetect: (\d+)\)', line):
+        interface[current_if]['instance_id'] = int(self.myre.last_match.group(1))
+        interface[current_if]['interface_mtu'] = int(self.myre.last_match.group(2))
+        interface[current_if]['interface_mtu_autodetect'] = int(self.myre.last_match.group(3))
+      elif self.myre.search(r'(inet |inet6): (\S+)', line):
+        family = 'IPv6' if self.myre.last_match.group(1) == 'inet6' else 'IPv4'
         if not family in interface[current_if]:
           interface[current_if][family] = []
-        interface[current_if][family].append(myre.last_match.group(2))
-      elif myre.search(r'MTU mismatch detection: (en|dis)abled', line):
-        interface[current_if]['mtu_mismatch_detection'] = True if myre.last_match.group(1) == 'en' else False
-      elif myre.search(r'DR: (\S+) BDR: (\S+)', line):
-        interface[current_if]['designated_router'] = myre.last_match.group(1)
-        interface[current_if]['backup_designated_router'] = myre.last_match.group(2)
-      elif myre.search(r'State (\S+), Transmit Delay (\d+) sec, Priority (\d+)', line):
-        interface[current_if]['state'] = myre.last_match.group(1)
-        interface[current_if]['transmit_delay'] = int(myre.last_match.group(2))
-        interface[current_if]['priority'] = int(myre.last_match.group(3))
-      elif myre.search(r'Number of I\/F scoped LSAs is (\d+)', line):
-        interface[current_if]['number_if_scoped_lsas'] = int(myre.last_match.group(1))
-      elif myre.search(r'(\d+) Pending LSAs for (\S+) in Time ([\d:]+)(?: (.*))', line):
+        interface[current_if][family].append(self.myre.last_match.group(2))
+      elif self.myre.search(r'MTU mismatch detection: (en|dis)abled', line):
+        interface[current_if]['mtu_mismatch_detection'] = True if self.myre.last_match.group(1) == 'en' else False
+      elif self.myre.search(r'DR: (\S+) BDR: (\S+)', line):
+        interface[current_if]['designated_router'] = self.myre.last_match.group(1)
+        interface[current_if]['backup_designated_router'] = self.myre.last_match.group(2)
+      elif self.myre.search(r'State (\S+), Transmit Delay (\d+) sec, Priority (\d+)', line):
+        interface[current_if]['state'] = self.myre.last_match.group(1)
+        interface[current_if]['transmit_delay'] = int(self.myre.last_match.group(2))
+        interface[current_if]['priority'] = int(self.myre.last_match.group(3))
+      elif self.myre.search(r'Number of I\/F scoped LSAs is (\d+)', line):
+        interface[current_if]['number_if_scoped_lsas'] = int(self.myre.last_match.group(1))
+      elif self.myre.search(r'(\d+) Pending LSAs for (\S+) in Time ([\d:]+)(?: (.*))', line):
         if not 'pending_lsas' in interface[current_if]:
           interface[current_if]['pending_lsas'] = {}
-        interface[current_if]['pending_lsas'][myre.last_match.group(2)] = {
-          'time': myre.last_match.group(3),
-          'count': myre.last_match.group(1),
-          'flags': myre.last_match.group(4)
+        interface[current_if]['pending_lsas'][self.myre.last_match.group(2)] = {
+          'time': self.myre.last_match.group(3),
+          'count': self.myre.last_match.group(1),
+          'flags': self.myre.last_match.group(4)
         }
-      elif myre.search(r'Hello (\d+), Dead (\d+), Retransmit (\d+)', line):
+      elif self.myre.search(r'Hello (\d+), Dead (\d+), Retransmit (\d+)', line):
         interface[current_if]['timers'] = {
-          'hello': int(myre.last_match.group(1)),
-          'dead': int(myre.last_match.group(2)),
-          'retransmit': int(myre.last_match.group(3))
+          'hello': int(self.myre.last_match.group(1)),
+          'dead': int(self.myre.last_match.group(2)),
+          'retransmit': int(self.myre.last_match.group(3))
         }
-      elif myre.search(r'Area ID (\S+), Cost (\d+)', line):
+      elif self.myre.search(r'Area ID (\S+), Cost (\d+)', line):
         if not 'area_cost' in interface[current_if]:
           interface[current_if]['area_cost'] = []
         interface[current_if]['area_cost'].append({
-          'area': myre.last_match.group(1),
-          'cost': int(myre.last_match.group(2))
+          'area': self.myre.last_match.group(1),
+          'cost': int(self.myre.last_match.group(2))
         })
       elif line in ['Internet Address:', 'Timer intervals configured:']:
         # ignore these strings
