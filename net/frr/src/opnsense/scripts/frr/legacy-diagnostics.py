@@ -7,6 +7,22 @@ import re
 from typing import List,Dict
 from lib import VtySH
 
+class Re(object):
+  """ Custom regex helper class
+
+  Use to conveniently build switch-case like constructs using if/elif
+  Kudos to https://stackoverflow.com/a/4980181
+  """
+
+  def __init__(self):
+    self.last_match = None
+  def match(self,pattern,text):
+    self.last_match = re.match(pattern,text)
+    return self.last_match
+  def search(self,pattern,text):
+    self.last_match = re.search(pattern,text)
+    return self.last_match
+
 class FRRTableReader:
   def __init__(self, titles: List[str]=[]):
     self.titles = titles
@@ -108,53 +124,45 @@ class OSPF(Daemon):
         heading = line.strip()
         header_parsed = False
 
+        myre = Re()
         # this is going to be dirty
-        match = re.search(self.RE_ROUTER, heading)
-        if match:
-           router = match.group(1)
-           if not router in db:
+        if myre.search(self.RE_ROUTER, heading):
+          router = myre.last_match.group(1)
+          if not router in db:
             db[router] = {}
-           mode = 'router'
-           continue
-        match = re.search(self.RE_ROUTERLINKSTATES, heading)
-        if match:
+          mode = 'router'
+        elif myre.search(self.RE_ROUTERLINKSTATES, heading):
           mode = 'router_link_state_area'
-          area = match.group(1)
+          area = myre.last_match.group(1)
           if not mode in db[router]:
             db[router][mode] = {}
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = rltr
-          continue
-        match = re.search(self.RE_NETLINKSTATES, heading)
-        if match:
+        elif myre.search(self.RE_NETLINKSTATES, heading):
           mode = 'net_link_state_area'
-          area = match.group(1)
+          area = myre.last_match.group(1)
           if not mode in db[router]:
             db[router][mode] = {}
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = nltr
-          continue
-        match = re.search(self.RE_SUMMARYLINKSTATES, heading)
-        if match:
+        elif myre.search(self.RE_SUMMARYLINKSTATES, heading):
           mode = 'summary_link_state_area'
-          area = match.group(1)
+          area = myre.last_match.group(1)
           if not mode in db[router]:
             db[router][mode] = {}
           if not area in db[router][mode]:
             db[router][mode][area] = []
           tr = sltr
-          continue
-        if heading == self.EXTERNALLINKSTATES:
+        elif heading == self.EXTERNALLINKSTATES:
           mode = 'external_states'
           if not mode in db[router]:
             db[router][mode] = []
           tr = eltr
-          continue
-
+        else:
+          raise DaemonError('failed to parse heading: ' + heading)
         # told you.
-        raise DaemonError('failed to parse heading: ' + heading)
       else:
         if not header_parsed:
           if mode in ['summary_link_state_area', 'external_states']:
