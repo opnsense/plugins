@@ -207,8 +207,71 @@ class OSPFv3(Daemon):
 
   def interface(self):
     interface = {}
-
     lines = map(str.strip, self._show('interface'))
+
+    # the interface currently being parsed
+    current_if = ''
+
+    for line in lines:
+      myre = Re()
+      # here we go again...
+      if myre.search(r'(\S+) is (down|up), type ([A-Z]+)', line):
+        current_if = myre.last_match.group(1)
+        interface[current_if] = {
+          'up': True if myre.last_match.group(2) == 'up' else False,
+          'type': myre.last_match.group(3),
+          'enabled': True
+        }
+      elif myre.search(r'Interface ID: (\d+)', line):
+        interface[current_if]['id'] = myre.last_match.group(1)
+      elif myre.search(r'OSPF not enabled on this interface', line):
+        interface[current_if]['enabled'] = False
+      elif myre.search(r'Instance ID (\d+), Interface MTU (\d+) \(autodetect: (\d+)\)', line):
+        interface[current_if]['instance_id'] = int(myre.last_match.group(1))
+        interface[current_if]['interface_mtu'] = int(myre.last_match.group(2))
+        interface[current_if]['interface_mtu_autodetect'] = int(myre.last_match.group(3))
+      elif myre.search(r'(inet |inet6): (\S+)', line):
+        family = 'IPv6' if myre.last_match.group(1) == 'inet6' else 'IPv4'
+        if not family in interface[current_if]:
+          interface[current_if][family] = []
+        interface[current_if][family].append(myre.last_match.group(2))
+      elif myre.search(r'MTU mismatch detection: (en|dis)abled', line):
+        interface[current_if]['mtu_mismatch_detection'] = True if myre.last_match.group(1) == 'en' else False
+      elif myre.search(r'DR: (\S+) BDR: (\S+)', line):
+        interface[current_if]['designated_router'] = myre.last_match.group(1)
+        interface[current_if]['backup_designated_router'] = myre.last_match.group(2)
+      elif myre.search(r'State (\S+), Transmit Delay (\d+) sec, Priority (\d+)', line):
+        interface[current_if]['state'] = myre.last_match.group(1)
+        interface[current_if]['transmit_delay'] = int(myre.last_match.group(2))
+        interface[current_if]['priority'] = int(myre.last_match.group(3))
+      elif myre.search(r'Number of I\/F scoped LSAs is (\d+)', line):
+        interface[current_if]['number_if_scoped_lsas'] = int(myre.last_match.group(1))
+      elif myre.search(r'(\d+) Pending LSAs for (\S+) in Time ([\d:]+)(?: (.*))', line):
+        if not 'pending_lsas' in interface[current_if]:
+          interface[current_if]['pending_lsas'] = {}
+        interface[current_if]['pending_lsas'][myre.last_match.group(2)] = {
+          'time': myre.last_match.group(3),
+          'count': myre.last_match.group(1),
+          'flags': myre.last_match.group(4)
+        }
+      elif myre.search(r'Hello (\d+), Dead (\d+), Retransmit (\d+)', line):
+        interface[current_if]['timers'] = {
+          'hello': int(myre.last_match.group(1)),
+          'dead': int(myre.last_match.group(2)),
+          'retransmit': int(myre.last_match.group(3))
+        }
+      elif myre.search(r'Area ID (\S+), Cost (\d+)', line):
+        if not 'area_cost' in interface[current_if]:
+          interface[current_if]['area_cost'] = []
+        interface[current_if]['area_cost'].append({
+          'area': myre.last_match.group(1),
+          'cost': int(myre.last_match.group(2))
+        })
+      elif line in ['Internet Address:', 'Timer intervals configured:']:
+        # ignore these strings
+        pass
+      else:
+        raise DaemonError('failed to parse line: ' + line)
 
     return interface
 
