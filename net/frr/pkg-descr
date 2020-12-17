@@ -32,7 +32,6 @@ Plugin Changelog
 * Webif Diagnostics/BGP: Align routing table style with other pages
 * Webif Diagnostics/BGP: Add Neighbors tab
 
-
 1.20
 
 * Allow to adjust reference cost for OSPF calculation
