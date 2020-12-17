@@ -32,10 +32,6 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_form",['fields':diagnosticsForm,'id':'frm_diagnostics_settings'])}}
 #}
 
-<script type="text/x-template" id="overviewtpl">
-  <h2>{{ lang._('General') }}</h2>
-  
-</script>
 <script type="text/x-template" id="routestpl">
   <h2>{{ lang._('Table Version') }}: <%= tableVersion %></h2>
   <table class="table table-striped">
