@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+2.26
+
+Fixed:
+* preserve sort order of default SSL bind options
+
 2.25
 
 Added:

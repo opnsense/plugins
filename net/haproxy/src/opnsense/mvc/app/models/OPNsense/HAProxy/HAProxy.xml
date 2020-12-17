@@ -130,6 +130,7 @@
                 <ssl_bindOptions type="OptionField">
                     <Required>N</Required>
                     <default>no-sslv3,no-tlsv10,no-tls-tickets</default>
+                    <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <OptionValues>
                         <no-sslv3>no-sslv3</no-sslv3>
