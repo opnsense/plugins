@@ -184,7 +184,7 @@ class OSPFv3(Daemon):
     lines = map(str.strip, self._show('database'))
 
     # table reader
-    tr = FRRTableReader(titles=["Type", "LSId", "AdvRouter", "     Age", "  SeqNum","                       Payload"])
+    tr = FRRTableReader(titles=["Type", "LSId", "AdvRouter", " Age", "  SeqNum","                       Payload"])
     # whether or not the header for the current section has already been parsed
     header_parsed = False
     # the current router
