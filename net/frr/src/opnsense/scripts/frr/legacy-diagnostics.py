@@ -261,7 +261,6 @@ class OSPFv3(Daemon):
     current_if = None
 
     for line in lines:
-      self.myre = Re()
       # here we go again...
       if self.myre.search(r'(\S+) is (down|up), type ([A-Z]+)', line):
         current_if = self.myre.last_match.group(1)
@@ -339,8 +338,50 @@ class OSPFv3(Daemon):
     return neighbors
 
   def overview(self):
-    overview = {}
-    lines = map(str.strip, self._show('overview'))
+    overview = {'areas': {}}
+    lines = map(str.strip, self._show(''))
+
+    current_area = None
+
+    for line in lines:
+      if self.myre.search(r'OSPFv3 Routing Process \((\d+)\) with Router-ID ([\d\.]+)', line):
+        overview['router_id'] = self.myre.last_match.group(2)
+        overview['routing_process'] = int(self.myre.last_match.group(1))
+      elif self.myre.search(r'Initial SPF scheduling delay (\d+) millisec\(s\)', line):
+        overview['initial_spf_scheduling_delay'] = int(self.myre.last_match.group(1))
+      elif self.myre.search(r'(Min|Max)imum hold time between consecutive SPFs (\d+) milli?second\(s\)', line):
+        if not 'hold_time' in overview:
+          overview['hold_time'] = {}
+        overview['hold_time'][self.myre.last_match.group(1).lower()] = int(self.myre.last_match.group(2))
+      elif line == 'This router is an ASBR (injecting external routing information)':
+        overview['asbr'] = True
+      elif self.myre.search(r'SPF timer is (.*)', line):
+        overview['spf_timer'] = self.myre.last_match.group(1)
+      elif self.myre.search(r'Running (.*)', line):
+        overview['running_time'] = self.myre.last_match.group(1)
+      elif self.myre.search(r'Number of AS scoped LSAs is (\d+)', line):
+        overview['number_as_scoped'] = int(self.myre.last_match.group(1))
+      elif self.myre.search(r'Hold time multiplier is currently (\d+)', line):
+        overview['current_hold_time_multipier'] = int(self.myre.last_match.group(1))
+      elif self.myre.search(r'Number of areas in this router is (\d+)', line):
+        overview['number_of_areas'] = int(self.myre.last_match.group(1))
+      elif self.myre.search(r'^Area ([\d\.]*)', line):
+        current_area = self.myre.last_match.group(1)
+        overview['areas'][current_area] = {}
+      elif self.myre.search(r'Interface attached to this area: (.*)', line):
+        overview['areas'][current_area]['interfaces'] = self.myre.last_match.group(1).split(' ')
+      elif self.myre.search(r'Number of Area scoped LSAs is (.*)', line):
+        overview['areas'][current_area]['number_lsas'] = int(self.myre.last_match.group(1))
+      elif (self.myre.search(r'LSA minimum arrival (.*)', line)
+        or self.myre.search(r'SPF algorithm last executed (.*)', line)
+        or self.myre.search(r'Last SPF duration (.*)', line)
+        or self.myre.search(r'SPF last executed (.*)', line)
+        or self.myre.search(r'Number of Area scoped LSAs is (.*)', line)
+        ):
+        # skip these lines
+        pass
+      else:
+        raise DaemonError('failed to parse line: ' + line)
 
     return overview
 
