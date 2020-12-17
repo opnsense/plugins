@@ -80,11 +80,11 @@ class OSPF(Daemon):
   def database(self):
     db = {}
     # table reader for Route Link States
-    rltr = FRRTableReader(titles=["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Link count"])
+    rltr = FRRTableReader(titles=['Link ID', 'ADV Router', 'Age', 'Seq#', 'CkSum', 'Link count'])
     # table reader for Net Link States
-    nltr = FRRTableReader(titles=["Link ID", "ADV Router", "Age", "Seq#", "CkSum"])
+    nltr = FRRTableReader(titles=['Link ID', 'ADV Router', 'Age', 'Seq#', 'CkSum'])
     # table reader for Summary Link States
-    sltr = FRRTableReader(titles=["Link ID", "ADV Router", "Age", "Seq#", "CkSum", "Route\n"])
+    sltr = FRRTableReader(titles=['Link ID', 'ADV Router', 'Age', 'Seq#', 'CkSum', 'Route\n'])
     # table reader for AS External Link States (columns are identical to Summary Link States)
     eltr = sltr
 
@@ -198,7 +198,7 @@ class OSPFv3(Daemon):
     return route
 
   def interface(self):
-    return {}
+    lines = self._show('interface')
 
   def neighbor(self):
     neighbors = []
