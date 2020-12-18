@@ -237,4 +237,10 @@
     <style>selectpicker</style>
     <help>If you choose multiple limits, the strictest will be used.</help>
   </field>
+  <field>
+    <id>httpserver.errorpages</id>
+    <label>Error Pages</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+  </field>
 </form>

@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.20.0</version>
+  <version>1.21.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -843,6 +843,18 @@
         <Required>Y</Required>
         <default>0</default>
       </zero_rtt>
+      <errorpages type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>errorpage</items>
+            <display>name</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </errorpages>
     </http_server>
 
     <stream_server type="ArrayField">
@@ -1432,6 +1444,30 @@
         <MinimumValue>1</MinimumValue>
       </rate>
     </limit_zone>
+
+    <errorpage type="ArrayField">
+      <name type="TextField">
+        <Required>Y</Required>
+      </name>
+      <statuscodes type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <code403>403</code403>
+          <code404>404</code404>
+          <code405>405</code405>
+          <code429>429</code429>
+          <code500>500</code500>
+          <code501>501</code501>
+          <code502>502</code502>
+          <code503>503</code503>
+          <code504>504</code504>
+        </OptionValues>
+        <Required>Y</Required>
+      </statuscodes>
+      <page type="TextField">
+        <Required>Y</Required>
+      </page>
+    </errorpage>
 
     <tls_fingerprint type="ArrayField">
       <description type="TextField">

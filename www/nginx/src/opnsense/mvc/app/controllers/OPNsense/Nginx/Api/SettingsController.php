@@ -374,6 +374,33 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('limit_zone', 'limit_zone', $uuid);
     }
 
+    // Error pages
+    public function searcherrorpageAction()
+    {
+        return $this->searchBase('errorpage', array('name', 'statuscodes', 'page'));
+    }
+
+    public function geterrorpageAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('errorpage', 'errorpage', $uuid);
+    }
+
+    public function adderrorpageAction()
+    {
+        return $this->addBase('errorpage', 'errorpage');
+    }
+
+    public function delerrorpageAction($uuid)
+    {
+        return $this->delBase('errorpage', $uuid);
+    }
+
+    public function seterrorpageAction($uuid)
+    {
+        return $this->setBase('errorpage', 'errorpage', $uuid);
+    }
+
     // TLS fingerprints for MITM detection
     public function searchtls_fingerprintAction()
     {

@@ -1,0 +1,21 @@
+<form>
+    <field>
+        <id>errorpage.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Enter a name for your error page.</help>
+    </field>
+    <field>
+        <id>errorpage.statuscodes</id>
+        <label>Status Codes</label>
+        <type>select_multiple</type>
+        <style>selectpicker</style>
+        <help>Enter the HTTP status codes for which the error page shall be shown.</help>
+    </field>
+    <field>
+        <id>errorpage.page</id>
+        <label>Page</label>
+        <type>text</type>
+        <help>The page to show, relative to /usr/local/etc/nginx/views</help>
+    </field>
+</form>
