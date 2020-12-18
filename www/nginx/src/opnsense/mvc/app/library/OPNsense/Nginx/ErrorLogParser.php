@@ -41,7 +41,7 @@ class ErrorLogParser
     {
         $this->file_name = $file_name;
         $this->lines = file($this->file_name);
-        $this->result = array_map([$this, 'parse_line'], $this->lines);
+        $this->result = array_reverse(array_map([$this, 'parse_line'], $this->lines));
     }
     private function parse_line($line)
     {

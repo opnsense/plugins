@@ -49,7 +49,7 @@ class StreamAccessLogParser
         $handle = @fopen($this->file_name, 'r');
         if ($handle) {
             while (($buffer = fgets($handle)) !== false) {
-                $this->result[] = $this->parse_line($buffer);
+                array_unshift($this->result, $this->parse_line($buffer));
             }
             fclose($handle);
         }
