@@ -12,6 +12,7 @@ if helpers.exists('OPNsense.quagga.ospf6.enabled') and OPNsense.quagga.ospf6.ena
 if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}{%
 if helpers.exists('OPNsense.quagga.isis.enabled') and OPNsense.quagga.isis.enabled == '1' %} isisd{% endif %}"
 frr_carp_demote="{% if not helpers.empty('OPNsense.quagga.ospf.carp_demote') %} ospfd{% endif %}"
+start_postcmd="/usr/local/opnsense/scripts/frr/carp_event_handler"
 {% else %}
 frr_enable="NO"
 {% endif %}

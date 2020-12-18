@@ -4,6 +4,10 @@ better in virtual environments.
 Plugin Changelog
 ----------------
 
+1.1
+
+* Add NTS support
+
 1.0
 
 * Allow to adjust the listening port

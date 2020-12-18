@@ -212,6 +212,7 @@
         <id>general.permit_sasl_authenticated</id>
         <label>Permit SASL Authenticated</label>
         <type>checkbox</type>
+        <help>Allow SASL authenticated senders to relay. Will also enable smtpd_sasl_auth.</help>
     </field>
     <field>
         <id>general.permit_tls_clientcerts</id>

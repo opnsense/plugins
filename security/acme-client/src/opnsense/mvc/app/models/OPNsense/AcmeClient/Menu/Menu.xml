@@ -6,9 +6,9 @@
               <General url="/ui/acmeclient#general-settings"/>
           </Settings>
           <Accounts VisibleName="Accounts" order="20" url="/ui/acmeclient/accounts"/>
-          <Validations VisibleName="Validation Methods" order="30" url="/ui/acmeclient/validations"/>
+          <Validations VisibleName="Challenge Types" order="30" url="/ui/acmeclient/validations"/>
           <Certificates order="40" url="/ui/acmeclient/certificates"/>
-          <Automation VisibleName="Automation" order="50" url="/ui/acmeclient/actions"/>
+          <Automations VisibleName="Automations" order="50" url="/ui/acmeclient/actions"/>
           <LogFile VisibleName="Log File" order="60" url="/diag_logs_acmeclient.php"/>
       </LEAcmeClient>
     </Services>

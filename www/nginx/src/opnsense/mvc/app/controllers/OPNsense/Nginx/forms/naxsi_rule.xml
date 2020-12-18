@@ -8,7 +8,7 @@
         <id>naxsi_rule.message</id>
         <label>Message</label>
         <type>text</type>
-	<help>A string describing the pattern. This is mostly used for analyzing and to have some human-understandable text.</help>
+        <help>A string describing the pattern. This is mostly used for analyzing and to have some human-understandable text.</help>
     </field>
     <field>
         <id>naxsi_rule.negate</id>
@@ -20,7 +20,7 @@
         <id>naxsi_rule.identifier</id>
         <label>ID</label>
         <type>text</type>
-	<help>The unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)</help>
+       <help>The unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)</help>
     </field>
     <field>
         <id>naxsi_rule.ruletype</id>
@@ -31,7 +31,7 @@
         <id>naxsi_rule.regex</id>
         <label>Use Regular Expressions</label>
         <type>checkbox</type>
-	<help>If enabled, the match value, the URL, named parameters and headers are matched using regular expressions; otherwise only exact matches trigger the rule.</help>
+       <help>If enabled, the match value, the URL, named parameters and headers are matched using regular expressions; otherwise only exact matches trigger the rule.</help>
     </field>
     <field>
         <id>naxsi_rule.match_value</id>
@@ -48,25 +48,25 @@
         <id>naxsi_rule.args</id>
         <label>Search in any GET Argument</label>
         <type>checkbox</type>
-	<help>Search for matchs in a request's GET arguments.</help>
+       <help>Search for matchs in a request's GET arguments.</help>
     </field>
     <field>
         <id>naxsi_rule.url</id>
         <label>Search in URL</label>
         <type>checkbox</type>
-	<help>Search for matchs in a request's URL (everything before ?).</help>
+        <help>Search for matchs in a request's URL (everything before ?).</help>
     </field>
     <field>
         <id>naxsi_rule.headers</id>
         <label>Search in any HTTP Header</label>
         <type>checkbox</type>
-	<help>Search for matchs in a request's HTTP headers.</help>
+       <help>Search for matchs in a request's HTTP headers.</help>
     </field>
     <field>
         <id>naxsi_rule.body</id>
         <label>Search in any POST Argument and in Body</label>
         <type>checkbox</type>
-	<help>Search for matchs in a request's POST arguments and its raw (unparsed) body.</help>
+        <help>Search for matchs in a request's POST arguments and its raw (unparsed) body.</help>
     </field>
     <field>
         <id>naxsi_rule.name</id>
@@ -78,13 +78,13 @@
         <id>naxsi_rule.file_extension</id>
         <label>Search in Filename</label>
         <type>checkbox</type>
-	<help>Search for matchs in a multipart POST request's filenames.</help>
+        <help>Search for matchs in a multipart POST request's filenames.</help>
     </field>
     <field>
         <id>naxsi_rule.raw_body</id>
         <label>Search in Raw Body</label>
         <type>checkbox</type>
-	<help>Search for matchs in a request's raw unparsed body.</help>
+        <help>Search for matchs in a request's raw unparsed body.</help>
     </field>
     <field>
         <id>naxsi_rule.dollar_url</id>
@@ -114,7 +114,7 @@
         <id>naxsi_rule.score</id>
         <label>Score</label>
         <type>text</type>
-	<help>If the rule matches the counter of each policy containting the rule will increase. If a policie's counter exceeds the configured "value" (to be configured at the policy) the policy's action gets triggered.</help>
+        <help>If the rule matches the counter of each policy containing the rule will increase. If a policy's counter exceeds the configured "value" (to be configured at the policy) the policy's action gets triggered.</help>
     </field>
 
 </form>

@@ -53,7 +53,7 @@ net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
 net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
-net/chrony -- Chrony time synchronisation (development only)
+net/chrony -- Chrony time synchronisation
 net/firewall -- Firewall API supplemental package
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
@@ -89,6 +89,8 @@ sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/git-backup -- Track config changes using git
+sysutils/hw-probe -- Collect hardware diagnostics (development only)
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitorin agent

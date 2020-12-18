@@ -318,13 +318,12 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // sign cert
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-sign").on("click", function(e)
             {
                 if (gridParams['sign'] != undefined) {
                     var uuid=$(this).data("row-id");
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Forcefully (re-)issue the selected certificate?') }}',
+                        '{{ lang._('Forcefully issue or renew the selected certificate?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         // Handle HAProxy integration (no-op if not applicable)
                         ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
@@ -340,7 +339,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // revoke cert
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-revoke").on("click", function(e)
             {
                 if (gridParams['revoke'] != undefined) {
@@ -360,7 +358,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // remove private key
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-removekey").on("click", function(e)
             {
                 if (gridParams['removekey'] != undefined) {
@@ -380,7 +377,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // run automation
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-automation").on("click", function(e)
             {
                 if (gridParams['automation'] != undefined) {
@@ -417,7 +413,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
         /**
          * Sign or renew ALL certificates
-         * TODO: this should block other acme.sh actions
          */
         $("#signallcertsAct").click(function(){
             //$("#signallcertsAct_progress").addClass("fa fa-spinner fa-pulse");

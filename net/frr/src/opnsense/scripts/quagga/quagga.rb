@@ -129,14 +129,6 @@ class General
     routes(true)
   end
 
-  def log
-    File.read('/var/log/frr.log').lines.select {|l| l.strip.length > 10}.map do |line|
-      date, time, service, message = line.split(' ', 4)
-      date = date.split('/').reverse.join(".") # format dd.mm.yyyy
-      service = service.split(':').first if service
-      {date: date, time:time, service: service, message: message }
-    end
-  end
 end
 
 class OSPF
@@ -708,9 +700,6 @@ OptionParser.new do |opts|
   end
   opts.on("-6", "--general-routes6", "Print Routing Table (IPv6)") do |od|
     options[:general_routes6] = od
-  end
-  opts.on("-l", "--general-log", "Print Logs") do |od|
-    options[:general_log] = od
   end
   ### BGP
   opts.on("-B", "--bgp-overview", "Print an overview of BGP") do |od|

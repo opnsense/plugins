@@ -91,12 +91,31 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
+        <sortable>true</sortable>
         <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_minVersion</id>
+        <label>Minimum SSL Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option enforces use of the specified version (or higher) on SSL connections.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_maxVersion</id>
+        <label>Maximum SSL Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option enforces use of the specified version (or lower) on SSL connections.]]></help>
     </field>
     <field>
         <id>haproxy.general.tuning.ssl_cipherList</id>
         <label>Cipher List</label>
         <type>text</type>
-        <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake.]]></help>
+        <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake up to TLSv1.2.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_cipherSuites</id>
+        <label>Cipher Suites</label>
+        <type>text</type>
+        <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake for TLSv1.3.]]></help>
     </field>
 </form>

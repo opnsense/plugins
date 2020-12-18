@@ -7,13 +7,13 @@
   <field>
     <id>interface.interfacename</id>
     <label>Interface</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Select an interface where this settings apply to.</help>
   </field>
   <field>
     <id>interface.authtype</id>
     <label>Authentication Type</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
   </field>
   <field>
     <id>interface.authkey</id>
@@ -30,12 +30,24 @@
     <id>interface.area</id>
     <label>Area</label>
     <type>text</type>
-    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
+    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once.</help>
   </field>
   <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
+  </field>
+  <field>
+    <id>interface.cost_demoted</id>
+    <label>Cost (when demoted)</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.carp_depend_on</id>
+    <label>Depend on (carp)</label>
+    <type>dropdown</type>
+    <help>The carp VHID to depend on, when this virtual address is not in master state,
+      the interface cost will be set to the demoted cost (specified above).</help>
   </field>
   <field>
     <id>interface.hellointerval</id>
@@ -65,6 +77,6 @@
   <field>
     <id>interface.networktype</id>
     <label>Network Type</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
   </field>
 </form>
