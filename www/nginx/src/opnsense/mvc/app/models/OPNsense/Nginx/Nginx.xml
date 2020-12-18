@@ -1452,21 +1452,44 @@
       <statuscodes type="OptionField">
         <multiple>Y</multiple>
         <OptionValues>
-          <code403>403</code403>
-          <code404>404</code404>
-          <code405>405</code405>
-          <code429>429</code429>
-          <code500>500</code500>
-          <code501>501</code501>
-          <code502>502</code502>
-          <code503>503</code503>
-          <code504>504</code504>
+          <status400>400 Bad Request</status400>
+          <status401>401 Unauthorized</status401>
+          <status403>403 Forbidden</status403>
+          <status404>404 Not Found</status404>
+          <status405>405 Method Not Allowed</status405>
+	  <status407>407 Proxy Authentication Required</status407>
+	  <status408>408 Request Timeout</status408>
+	  <status410>410 Gone</status410>
+	  <status415>415 Unsupported Media Type</status415>
+          <status429>429 Too Many Requests</status429>
+          <status431>431 Request Header Fields Too Large</status431>
+          <status500>500 Internal Server Error</status500>
+          <status501>501 Not Implemented</status501>
+          <status502>502 Bad Gateway</status502>
+          <status503>503 Service Unavailable</status503>
+          <status504>504 Gateway Timeout</status504>
         </OptionValues>
         <Required>Y</Required>
       </statuscodes>
       <page type="TextField">
         <Required>Y</Required>
       </page>
+      <response type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <status200>200 OK</status200>
+	  <status300>300 Multiple Choice</status300>
+          <status301>301 Moved Permanently</status301>
+	  <status302>302 Found</status302>
+          <status401>401 Unauthorized</status401>
+          <status403>403 Forbidden</status403>
+          <status404>404 Not Found</status404>
+	  <status451>451 Unavailable For Legal Reasons</status451>
+          <status500>500 Internal Server Error</status500>
+          <status503>503 Service Unavailable</status503>
+        </OptionValues>
+        <Required>N</Required>
+      </response>
     </errorpage>
 
     <tls_fingerprint type="ArrayField">

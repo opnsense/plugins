@@ -18,4 +18,12 @@
         <type>text</type>
         <help>The page to show, relative to /usr/local/etc/nginx/views</help>
     </field>
+    <field>
+        <id>errorpage.response</id>
+        <label>Response Status Code</label>
+        <type>dropdown</type>
+        <style>selectpicker</style>
+        <help>Optionally enter a HTTP status code to change the response to.</help>
+	<advanced>true</advanced>
+    </field>
 </form>

@@ -79,7 +79,28 @@ function init_grids() {
                 'set': '/api/nginx/settings/set' + element + '/',
                 'add': '/api/nginx/settings/add' + element + '/',
                 'del': '/api/nginx/settings/del' + element + '/',
-                'options': {selection: false, multiSelect: false}
+                'options': {
+                    selection: false,
+                    multiSelect: false,
+                    formatters: {
+                        "commands": function (column, row) {
+                            return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                        },
+                        "response": function (column, row) {
+                            return ((row.response == "none") ? "unchanged" : row.response);
+                        },
+                        "statuscodes": function (column, row) {
+                            var result = Array();
+                            var elems = row.statuscodes.split(",");
+			    for (var elem of elems) {
+			    	result.push(elem.substr(0, 3));
+			    }
+                            return result.join(", ");
+                        }
+                    }
+                }
             }
         );
     });

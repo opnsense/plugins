@@ -601,9 +601,9 @@
         <table id="grid-errorpage" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="errorpage_dlg">
             <thead>
                 <tr>
-                    <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="statuscodes" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Status Codes') }}</th>
-                    <th data-column-id="page" data-type="string" data-sortable="false">{{ lang._('Page') }}</th>
+                    <th data-column-id="name" data-width="15%" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="statuscodes" data-type="string" data-formatter="statuscodes" data-sortable="false" data-visible="true">{{ lang._('Status Codes') }}</th>
+                    <th data-column-id="response" data-width="13em" data-type="string" data-formatter="response" data-sortable="true">{{ lang._('Response') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>

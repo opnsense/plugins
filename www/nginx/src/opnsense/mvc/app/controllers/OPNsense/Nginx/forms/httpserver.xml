@@ -242,5 +242,6 @@
     <label>Error Pages</label>
     <style>selectpicker</style>
     <type>select_multiple</type>
+    <help>Select custom error pages to display instead of the default builtin error pages. If at least one error page is selected here, all default error pages will be disabled.</help>
   </field>
 </form>

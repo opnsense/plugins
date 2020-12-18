@@ -377,7 +377,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Error pages
     public function searcherrorpageAction()
     {
-        return $this->searchBase('errorpage', array('name', 'statuscodes', 'page'));
+        return $this->searchBase('errorpage', array('name', 'statuscodes', 'response'));
     }
 
     public function geterrorpageAction($uuid = null)
