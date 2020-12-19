@@ -587,6 +587,7 @@
         <Required>Y</Required>
       </headers>
       <body type="BooleanField">
+        <default>0</default>
         <Required>Y</Required>
       </body>
       <dollar_args_var type="TextField">
