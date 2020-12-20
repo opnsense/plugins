@@ -46,27 +46,20 @@ class NaxsiIdentifierConstraint extends BaseConstraint
 
             // Validate whitelist IDs
             if ($parentNode->match_type == 'wl') {
-                // Whitelists can use several IDs
-                $vals = explode(",", (string)$node);
+                $vals = explode(",", (string)$node); // Whitelists can use several IDs
                 $pos = 0;
                 $neg = 0;
+
                 // Check each ID
                 foreach ($vals as $val) {
                     $intval = intval($val);
 
-                    // Check if numeric
                     if (!is_numeric($val)) {
-                        $validator->appendMessage(new Message(
-                            gettext("All rule IDs need to be numeric."),
-                            $attribute
-                        ));
+                        $validator->appendMessage(new Message(gettext("All rule IDs need to be numeric."), $attribute));
                     }
                     // 0 can only be used solely
                     elseif ($intval == 0 && count($vals) > 1) {
-                        $validator->appendMessage(new Message(
-                            gettext("If ID 0 is specified, no other IDs can be listed."),
-                            $attribute
-                        ));
+                        $validator->appendMessage(new Message(gettext("If ID 0 is specified, no other IDs can be listed."), $attribute));
                     }
                     elseif ($intval < 0) {
                         $neg++;
@@ -76,42 +69,30 @@ class NaxsiIdentifierConstraint extends BaseConstraint
                     }
                 }
 
-                // If numeric, all IDs need to be positive or all negative
+                // All IDs need to be positive or all negative
                 if ($neg > 0 && $pos > 0) {
-                    $validator->appendMessage(new Message(
-                        gettext("Negative and positive IDs cannot be mixed."),
-                        $attribute
-                    ));
+                    $validator->appendMessage(new Message(gettext("Negative and positive IDs cannot be mixed."), $attribute));
                 }
             }
             // Validate rule IDs
             else {
                 $val = (string)$node;
-                // Check if numeric
                 if (!is_numeric($val)) {
                     // Did the user try to specify multiple IDs?
                     if (strpos($val, ',')) {
-                        $validator->appendMessage(new Message(
-                            gettext("Rules can only have a single ID."),
-                            $attribute
-                        ));
+                        $validator->appendMessage(new Message(gettext("Rules can only have a single ID."), $attribute));
                     }
                     else {
-                        $validator->appendMessage(new Message(
-                            gettext("Rule IDs need to be numeric."),
-                            $attribute
-                        ));
+                        $validator->appendMessage(new Message(gettext("Rule IDs need to be numeric."), $attribute));
                     }
                 }
                 // Check that no internal ID was used
                 elseif (intval($val) < 1000) {
-                    $validator->appendMessage(new Message(
-                        gettext("Rule IDs lower than 1000 are reserved for internal rules."),
-                        $attribute
-                    ));
+                    $validator->appendMessage(new Message(gettext("Rule IDs lower than 1000 are reserved for internal rules."), $attribute));
                 }
             }
         }
+
         return true;
     }
 }

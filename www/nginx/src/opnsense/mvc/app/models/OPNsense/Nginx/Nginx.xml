@@ -533,9 +533,9 @@
       <identifier type="TextField">
         <Required>Y</Required>
         <Constraints>
-            <check001>
-                <type>NaxsiIdentifierConstraint</type>
-            </check001>
+          <check001>
+            <type>NaxsiIdentifierConstraint</type>
+          </check001>
         </Constraints>
       </identifier>
       <dollar_url type="TextField">
@@ -561,6 +561,11 @@
           <id>Blacklist</id>
           <wl>Whitelist</wl>
         </OptionValues>
+        <Constraints>
+          <check001>
+            <reference>identifier.check001</reference>
+          </check001>
+        </Constraints>
       </match_type>
       <negate type="BooleanField">
         <Required>Y</Required>
