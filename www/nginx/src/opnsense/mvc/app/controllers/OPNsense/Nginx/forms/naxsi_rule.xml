@@ -20,12 +20,13 @@
         <id>naxsi_rule.identifier</id>
         <label>ID</label>
         <type>text</type>
-        <help>The unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)</help>
+        <help>For blacklist rules, the unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)&lt;br&gt;For whitelists, specify one or more comma separated IDs to whitelist. 0 whitelists all rules.</help>
     </field>
     <field>
         <id>naxsi_rule.ruletype</id>
         <label>Rule Type</label>
         <type>dropdown</type>
+        <help>Main rules increase the policiy's score if matched. Basic rules are added directly to the location and match immeditaly. Basic rules are specifically useful for whitelist rules. Also basic rules need to be added to a policy to allow association with a location.</help>
     </field>
     <field>
         <id>naxsi_rule.regex</id>
@@ -43,6 +44,7 @@
         <label>Match Type</label>
         <type>dropdown</type>
         <style>selectpicker</style>
+        <help>A blacklist rule increases the policy's score if the pattern matches. A whitelist rule instructs Naxsi to ignore specific rules under specific conditions.</help>
     </field>
     <field>
         <id>naxsi_rule.args</id>
