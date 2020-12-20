@@ -91,12 +91,13 @@ function init_grids() {
                         "response": function (column, row) {
                             return ((row.response == "none") ? "unchanged" : row.response);
                         },
+                        // Extract 3 digit HTTP status code from string with human readable text (302 Found -> 302)
                         "statuscodes": function (column, row) {
-                            var result = Array();
-                            var elems = row.statuscodes.split(",");
-			    for (var elem of elems) {
-			    	result.push(elem.substr(0, 3));
-			    }
+                            const result = [];
+                            const elems = row.statuscodes.split(",");
+                            for (let elem of elems) {
+                                result.push(elem.substr(0, 3));
+                            }
                             return result.join(", ");
                         }
                     }
