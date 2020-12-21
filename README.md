@@ -90,7 +90,7 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
-sysutils/hw-probe -- Collect hardware diagnostics (development only)
+sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitorin agent
