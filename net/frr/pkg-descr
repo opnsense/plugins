@@ -11,6 +11,27 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.21
+
+* Deprecate Ruby parser for FRR diagnostic output, remove Ruby dependency
+* Use FRR's json output where available
+* Introduce Python parser for FRR output where json is not (yet) available
+* Streamline diagnostic action names
+* Streamline diagnostic API endpoint names
+* Add diagnostic action and API endpoint for BGP neighbors
+* Webif Diagnostics/General: Fix routing tables
+* Webif Diagnostics/General: Align routing table style with other pages
+* Webif Diagnostics/OSPF: Correctly display areas in "Overview" tab
+* Webif Diagnostics/OSPF: Fix area rendering to "NaN" in "Route Table" tab
+* Webif Diagnostics/OSPF: Use only one table in "Route Table" tab
+* Webif Diagnostics/OSPF: Add mouseover hints to Type column in "Route Table" tab
+* Webif Diagnostics/OSPF: Slight presentation adjustments in "Neighbor" tab
+* Webif Diagnostics/OSPFv3: Fix age and sequence number rendering to "NaN" in "Database" tab
+* Webif Diagnostics/BGP: Rename page from "BGPv4" to just "BGP"
+* Webif Diagnostics/BGP: Replace "Overview" tab with distinct "IPv4 Routing Table" and "IPv6 Routing table" tabs
+* Webif Diagnostics/BGP: Align routing table style with other pages
+* Webif Diagnostics/BGP: Add Neighbors tab
+
 1.20
 
 * Allow to adjust reference cost for OSPF calculation
