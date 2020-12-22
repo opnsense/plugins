@@ -57,7 +57,11 @@ class DiagnosticsController extends ApiControllerBase
     {
         $routes4 = $this->getInformation("general", "route4", $format)['response'];
         $routes6 = $this->getInformation("general", "route6", $format)['response'];
-        return array("response" => ($format === "json" ? array("ipv4" => $routes4, "ipv6" => $routes6) : $routes4.$routes6));
+        if ($format === "json") {
+            return array("response" => array("ipv4" => $routes4, "ipv6" => $routes6));
+        } else {
+            return array("response" => $routes4.$routes6);
+        }
     }
 
     public function generalroute4Action($format = "json"): array
