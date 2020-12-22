@@ -41,96 +41,111 @@ use OPNsense\Core\Config;
  */
 class DiagnosticsController extends ApiControllerBase
 {
-    /**
-     * show ip bgp
-     * @return array
-     */
-    public function showipbgpAction()
+    private function getInformation(string $daemon, string $name, string $format): array
     {
         $backend = new Backend();
-        $response = json_decode(trim($backend->configdRun("quagga diag-bgp2")));
-        return array("response" => $response);
+        $response = $backend->configdRun("quagga diagnostics ".$daemon."_".$name.($format === "json" ? "_json" : ""));
+        return array("response" => ($format === "json" ? json_decode($response) : $response));
     }
-    /**
-     * show ip bgp summary
-     * @return array
-     */
-    public function showipbgpsummaryAction()
+
+    public function generalrunningconfigAction(): array
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("quagga diag-bgp summary");
-        return array("response" => $response);
+        return $this->getInformation("general", "running-config", "plain");
     }
-    public function showrunningconfigAction()
+
+    public function generalrouteAction($format = "json"): array
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("quagga general-runningconfig");
-        return array("response" => $response);
+        $routes4 = $this->getInformation("general", "route4", $format)['response'];
+        $routes6 = $this->getInformation("general", "route6", $format)['response'];
+        if ($format === "json") {
+            return array("response" => array("ipv4" => $routes4, "ipv6" => $routes6));
+        } else {
+            return array("response" => $routes4.$routes6);
+        }
     }
-    private function get_ospf_information($name)
+
+    public function generalroute4Action($format = "json"): array
     {
-        $backend = new Backend();
-        return array("response" => json_decode(trim($backend->configdRun("quagga ospf-$name"))));
+        return $this->getInformation("general", "route4", $format);
     }
-    private function get_ospf3_information($name)
+
+    public function generalroute6Action($format = "json"): array
     {
-        $backend = new Backend();
-        return array("response" => json_decode(trim($backend->configdRun("quagga ospfv3-$name"))));
+        return $this->getInformation("general", "route6", $format);
     }
-    // OSPFv2
-    public function ospfoverviewAction()
+
+    public function bgprouteAction($format = "json"): array
     {
-        return $this->get_ospf_information('overview');
+        return $this->getInformation("bgp", "route", $format);
     }
-    public function ospfneighborAction()
+
+    public function bgproute4Action($format = "json"): array
     {
-        return $this->get_ospf_information('neighbor');
+        return $this->getInformation("bgp", "route4", $format);
     }
-    public function ospfrouteAction()
+
+    public function bgproute6Action($format = "json"): array
     {
-        return $this->get_ospf_information('route');
+        return $this->getInformation("bgp", "route6", $format);
     }
-    public function ospfdatabaseAction()
+
+    public function bgpsummaryAction($format = "json"): array
     {
-        return $this->get_ospf_information('database');
+        return $this->getInformation("bgp", "summary", $format);
     }
-    public function ospfinterfaceAction()
+
+    public function bgpneighborsAction($format = "json"): array
     {
-        return $this->get_ospf_information('interface');
+        return $this->getInformation("bgp", "neighbors", $format);
     }
-    // OSPFv3
-    public function ospfv3overviewAction()
+
+    public function ospfoverviewAction($format = "json"): array
     {
-        return $this->get_ospf3_information('overview');
+        return $this->getInformation("ospf", "overview", $format);
     }
-    public function ospfv3neighborAction()
+
+    public function ospfneighborAction($format = "json"): array
     {
-        return $this->get_ospf3_information('neighbor');
+        return $this->getInformation("ospf", "neighbor", $format);
     }
-    public function ospfv3routeAction()
+
+    public function ospfrouteAction($format = "json"): array
     {
-        return $this->get_ospf3_information('route');
+        return $this->getInformation("ospf", "route", $format);
     }
-    public function ospfv3databaseAction()
+
+    public function ospfdatabaseAction($format = "json"): array
     {
-        return $this->get_ospf3_information('database');
+        return $this->getInformation("ospf", "database", $format);
     }
-    public function ospfv3interfaceAction()
+
+    public function ospfinterfaceAction($format = "json"): array
     {
-        return $this->get_ospf3_information('interface');
+        return $this->getInformation("ospf", "interface", $format);
     }
-    // General
-    private function get_general_information($name)
+
+    public function ospfv3overviewAction($format = "json"): array
     {
-        $backend = new Backend();
-        return array("response" => json_decode(trim($backend->configdRun("quagga general-$name")), true));
+        return $this->getInformation("ospfv3", "overview", $format);
     }
-    public function generalroutesAction()
+
+    public function ospfv3neighborAction($format = "json"): array
     {
-        return $this->get_general_information('routes');
+        return $this->getInformation("ospfv3", "neighbor", $format);
     }
-    public function generalroutes6Action()
+
+    public function ospfv3routeAction($format = "json"): array
     {
-        return $this->get_general_information('routes6');
+        return $this->getInformation("ospfv3", "route", $format);
+    }
+
+    public function ospfv3databaseAction($format = "json"): array
+    {
+        return $this->getInformation("ospfv3", "database", $format);
+    }
+
+    public function ospfv3interfaceAction($format = "json"): array
+    {
+        return $this->getInformation("ospfv3", "interface", $format);
     }
 }
