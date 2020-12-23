@@ -273,7 +273,7 @@
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="serverentries" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Servers') }}</th>
                 <th data-column-id="load_balancing_algorithm" data-type="string" data-sortable="false"  data-visible="false">{{ lang._('Load Balancing') }}</th>
-                <th data-column-id="tls_enable" data-type="boolean" data-width="12em" data-sortable="false"  data-visible="true">{{ lang._('HTTPS Enabled') }}</th>
+                <th data-column-id="tls_enable" data-type="boolean" data-width="12em" data-sortable="false"  data-visible="true">{{ lang._('TLS Enabled') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
