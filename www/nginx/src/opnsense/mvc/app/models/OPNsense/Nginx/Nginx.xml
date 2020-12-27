@@ -1472,9 +1472,26 @@
         <Required>Y</Required>
       </statuscodes>
       <pagecontent type="Base64Field">
-        <Required>Y</Required>
         <default>PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsaW5pdGlhbC1zY2FsZT0xIiAvPgogICAgPHRpdGxlPkVycm9yPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KICAgIDxoMT5FcnJvcjwvaDE+CiAgICA8cD5Tb3JyeSwgYnV0IHNvbWV0aGluZyB3ZW50IHdyb25nLjwvcD4KPC9ib2R5Pgo8L2h0bWw+</default>
+        <Constraints>
+          <check001>
+            <type>SingleSelectConstraint</type>
+            <ValidationMessage>Page content is required if redirect is not used and needs to be empty otherwise.</ValidationMessage>
+            <addFields>
+              <field1>redirect</field1>
+            </addFields>
+            <isRequired>Y</isRequired>
+          </check001>
+        </Constraints>
       </pagecontent>
+      <redirect type="UrlField">
+        <Required>N</Required>
+        <Constraints>
+          <check001>
+            <reference>pagecontent.check001</reference>
+          </check001>
+        </Constraints>
+      </redirect>
       <response type="OptionField">
         <multiple>N</multiple>
         <OptionValues>

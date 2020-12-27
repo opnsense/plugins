@@ -247,7 +247,7 @@ foreach ($nginx->cache_path->iterateItems() as $cache_path) {
 
 // create custom error pages
 const ERRORPAGE_DIR = '/usr/local/etc/nginx/views';
-@mkdir(ERRORPAGE_DIR, 0750, true);
+@mkdir(ERRORPAGE_DIR, 0755, true);
 $used_errorpages = array();
 // search used error pages
 foreach ($nginx->http_server->iterateItems() as $http_server) {
@@ -264,10 +264,17 @@ foreach ($nginx->errorpage->iterateItems() as $errorpage) {
     $uuid = str_replace('-', '', $errorpage->getAttributes()['uuid']);
     if (in_array($uuid, $used_errorpages)) {
         $filename = "error_$uuid.html";
-        $current_content = @file_get_contents(ERRORPAGE_DIR . "/$filename");
-        $new_content = base64_decode((string)$errorpage->pagecontent);
-        if ($current_content != $new_content) {
-            @file_put_contents(ERRORPAGE_DIR . "/$filename", $new_content);
+        $content = base64_decode((string)$errorpage->pagecontent);
+        // Does error page have a content?
+        if (strlen($content) > 0) {
+            $fs_hash = @hash_file("sha1", ERRORPAGE_DIR . "/$filename");
+            if ($fs_hash !== hash("sha1", $content)) {
+                @file_put_contents(ERRORPAGE_DIR . "/$filename", $content);
+            }
+            chmod(ERRORPAGE_DIR . "/$filename", 0644);
+        }
+        else {
+            unset($used_errorpages[array_search($uuid, $used_errorpages)]);
         }
     }
 }
