@@ -383,12 +383,18 @@ class SettingsController extends ApiMutableModelControllerBase
     public function geterrorpageAction($uuid = null)
     {
         $this->sessionClose();
-        return $this->getBase('errorpage', 'errorpage', $uuid);
+        $data = $this->getBase('errorpage', 'errorpage', $uuid);
+        // Decode base64 encoded page content
+        $data['errorpage']['pagecontent'] = base64_decode($data['errorpage']['pagecontent']);
+        return $data;
     }
 
     public function adderrorpageAction()
     {
-        return $this->addBase('errorpage', 'errorpage');
+        return $this->addBase('errorpage', 'errorpage', array(
+            // Encode page content with base64
+            'pagecontent' => base64_encode($this->request->getPost('errorpage')['pagecontent'])
+        ));
     }
 
     public function delerrorpageAction($uuid)
@@ -398,7 +404,10 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function seterrorpageAction($uuid)
     {
-        return $this->setBase('errorpage', 'errorpage', $uuid);
+        return $this->setBase('errorpage', 'errorpage', $uuid, array(
+            // Encode page content with base64
+            'pagecontent' => base64_encode($this->request->getPost('errorpage')['pagecontent'])
+        ));
     }
 
     // TLS fingerprints for MITM detection

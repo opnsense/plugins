@@ -239,9 +239,46 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
         unset($file);
     }
 }
+
 // create directories for cache
 foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
+}
+
+// create custom error pages
+const ERRORPAGE_DIR = '/usr/local/etc/nginx/views';
+@mkdir(ERRORPAGE_DIR, 0750, true);
+$used_errorpages = array();
+// search used error pages
+foreach ($nginx->http_server->iterateItems() as $http_server) {
+    $pages = explode(',', $http_server->errorpages);
+    foreach ($pages as $page) {
+        $page = str_replace('-', '', $page);
+        if (!in_array($page, $used_errorpages)) {
+            $used_errorpages[] = $page;
+        }
+    }
+}
+// create/update error pages
+foreach ($nginx->errorpage->iterateItems() as $errorpage) {
+    $uuid = str_replace('-', '', $errorpage->getAttributes()['uuid']);
+    if (in_array($uuid, $used_errorpages)) {
+        $filename = "error_$uuid.html";
+        $current_content = @file_get_contents(ERRORPAGE_DIR . "/$filename");
+        $new_content = base64_decode((string)$errorpage->pagecontent);
+        if ($current_content != $new_content) {
+            @file_put_contents(ERRORPAGE_DIR . "/$filename", $new_content);
+        }
+    }
+}
+// delete unused (old) error pages
+$dir = new \DirectoryIterator(ERRORPAGE_DIR);
+foreach ($dir as $file) {
+    if ($file->isFile() && strpos($file->getFilename(), 'error_') === 0) {
+        if (!in_array(substr($file->getFilename(), 6, 32), $used_errorpages)) {
+            @unlink($file->getPathname());
+        }
+    }
 }
 
 // export TLS fingerprint database for MitM detection
