@@ -312,4 +312,11 @@
     <advanced>true</advanced>
     <help>If you enable this option, nginx will not terminate the connection to the backend server if the client connection is terminated.</help>
   </field>
+  <field>
+    <id>location.errorpages</id>
+    <label>Error Pages</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+    <help>Select custom error pages to display instead of the default builtin error pages. Selection will override error pages configured on HTTP server.</help>
+  </field>
 </form>

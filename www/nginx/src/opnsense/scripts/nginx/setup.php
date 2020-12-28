@@ -249,13 +249,15 @@ foreach ($nginx->cache_path->iterateItems() as $cache_path) {
 const ERRORPAGE_DIR = '/usr/local/etc/nginx/views';
 @mkdir(ERRORPAGE_DIR, 0755, true);
 $used_errorpages = array();
-// search used error pages
-foreach ($nginx->http_server->iterateItems() as $http_server) {
-    $pages = explode(',', $http_server->errorpages);
-    foreach ($pages as $page) {
-        $page = str_replace('-', '', $page);
-        if (!in_array($page, $used_errorpages)) {
-            $used_errorpages[] = $page;
+// search used error pages in http servers and locations
+foreach (array($nginx->http_server, $nginx->location) as $entity) {
+    foreach ($entity->iterateItems() as $element) {
+        $pages = explode(',', $element->errorpages);
+        foreach ($pages as $page) {
+            $page = str_replace('-', '', $page);
+            if (!in_array($page, $used_errorpages)) {
+                $used_errorpages[] = $page;
+            }
         }
     }
 }

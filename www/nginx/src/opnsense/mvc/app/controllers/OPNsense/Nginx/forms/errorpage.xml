@@ -30,7 +30,7 @@
         <label>Response Status Code</label>
         <type>dropdown</type>
         <style>selectpicker</style>
-        <help>Optionally enter a HTTP status code to change the response to.</help>
+        <help>Optionally enter a HTTP status code to change the response to. This does not work in combination with a redirection target.</help>
         <advanced>true</advanced>
     </field>
 </form>
