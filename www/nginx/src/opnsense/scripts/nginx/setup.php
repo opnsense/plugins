@@ -261,6 +261,15 @@ foreach (array($nginx->http_server, $nginx->location) as $entity) {
         }
     }
 }
+// search used WAF error pages
+foreach ($nginx->location->iterateItems() as $location) {
+    if ($location->secrules_errorpage != '') {
+        $page = str_replace('-', '', $location->secrules_errorpage);
+        if (!in_array($page, $used_errorpages)) {
+            $used_errorpages[] = $page;
+        }
+    }
+}
 // create/update error pages
 foreach ($nginx->errorpage->iterateItems() as $errorpage) {
     $uuid = str_replace('-', '', $errorpage->getAttributes()['uuid']);

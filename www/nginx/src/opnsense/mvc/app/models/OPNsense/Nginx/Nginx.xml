@@ -204,6 +204,21 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_learning_mode>
+      <secrules_errorpage type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>errorpage</items>
+            <display>name</display>
+            <filters>
+              <pagecontent>/.+/</pagecontent>
+            </filters>
+          </template>
+        </Model>
+        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </secrules_errorpage>
       <xss_block_score type="IntegerField">
         <Required>N</Required>
       </xss_block_score>
