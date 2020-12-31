@@ -2,7 +2,8 @@
 
 /*
 
-    Copyright (C) 2018 Fabian Franz
+    Copyright (C) 2018-2020 Fabian Franz
+    Copyright (C) 2020 Manuel Faux
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -43,7 +44,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function accessesAction($uuid = null)
+    public function accessesAction($uuid = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -51,7 +52,7 @@ class LogsController extends ApiControllerBase
             return $this->list_vhosts();
         } else {
             // emulate REST call for a specific log /accesses/uuid
-            $this->call_configd('access', $uuid);
+            $this->call_configd('access', $uuid, $page, $perPage, $query);
         }
     }
 
@@ -71,7 +72,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function errorsAction($uuid = null)
+    public function errorsAction($uuid = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -79,7 +80,7 @@ class LogsController extends ApiControllerBase
             return $this->list_vhosts();
         } else {
             // emulate REST call for a specific log /errors/uuid
-            $this->call_configd('error', $uuid);
+            $this->call_configd('error', $uuid, $page, $perPage, $query);
         }
     }
 
@@ -90,7 +91,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function streamAccessesAction($uuid = null)
+    public function stream_accessesAction($uuid = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -98,7 +99,7 @@ class LogsController extends ApiControllerBase
             return $this->list_streams();
         } else {
             // emulate REST call for a specific log /stream_accesses/uuid
-            $this->call_configd_stream('streamaccess', $uuid);
+            $this->call_configd_stream('streamaccess', $uuid, $page, $perPage, $query);
         }
     }
 
@@ -109,7 +110,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function streamErrorsAction($uuid = null)
+    public function stream_errorsAction($uuid = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -117,7 +118,7 @@ class LogsController extends ApiControllerBase
             return $this->list_streams();
         } else {
             // emulate REST call for a specific log /stream_errors/uuid
-            $this->call_configd_stream('streamerror', $uuid);
+            $this->call_configd_stream('streamerror', $uuid, $page, $perPage, $query);
         }
     }
 
@@ -128,13 +129,17 @@ class LogsController extends ApiControllerBase
      * @return |null
      * @throws \Exception ?
      */
-    private function call_configd($type, $uuid)
+    private function call_configd($type, $uuid, $page, $perPage, $query)
     {
         if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
             $this->response->setStatusCode(404, "Not Found");
         }
 
-        return $this->sendConfigdToClient('nginx log ' . $type . ' ' . $uuid);
+        $page = intval($page);
+        $perPage = intval($perPage);
+        $query = str_replace('"', '\"', urldecode($query));
+
+        return $this->sendConfigdToClient("nginx log $type $uuid $page $perPage $query");
     }
     /**
      * @param $type string access or error for the used log type
@@ -142,13 +147,13 @@ class LogsController extends ApiControllerBase
      * @return |null
      * @throws \Exception ?
      */
-    private function call_configd_stream($type, $uuid)
+    private function call_configd_stream($type, $uuid, $page, $perPage)
     {
         if (!$this->stream_exists($uuid)) {
             $this->response->setStatusCode(404, "Not Found");
         }
 
-        return $this->sendConfigdToClient('nginx log ' . $type . ' ' . $uuid);
+        return $this->sendConfigdToClient("nginx log $type $uuid $page $perPage");
     }
 
     /**

@@ -1,5 +1,5 @@
 <% let count = 0; %><table class="table table-striped">
-    <thead>
+    <thead class="sticky-top">
         <tr>
             <% if (log_type === 'errors' || log_type === 'stream_errors') {
             count = 5; %>
@@ -58,14 +58,19 @@
     </thead>
     <tbody>
     </tbody>
-    <tfoot>
+    <tfoot class="sticky-bottom">
         <tr>
-            <td>
-                <button class="btn btn-primary" id="paging_back"><i class="fa fa-backward" aria-hidden="true"></i></button>
-                <button class="btn btn-primary" id="paging_forward"><i class="fa fa-forward " aria-hidden="true"></i></button>
+            <td class="text-nowrap">
+                <button class="btn btn-primary" id="paging_first"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="paging_back"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="paging_forward"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="paging_last"><i class="fa fa-fast-forward " aria-hidden="true"></i></button>
             </td>
-            <td colspan="3">
-                Entries per page:
+            <td>
+                Page <span id="currentpage">1</span>/<span id="pagecount">0</span>
+            </td>
+            <td colspan="2">
+                <label for="entrycount"><span id="entrycountdisplay">100</span> lines per page</label>
                 <input type="range" list="tickmarks" min="5" max="1000" step="5" id="entrycount" value="100" />
                 <datalist id="tickmarks">
                     <option value="5" label="5">
@@ -81,7 +86,7 @@
                     <option value="1000" label="1000">
                 </datalist>
             </td>
-            <td colspan="<%= count - 3 %>"></td>
+            <td colspan="<%= count - 4 %>">Found lines: <span id="resultcount">0</span>/<span id="totalcount">0</span></td>
         </tr>
     </tfoot>
 </table>

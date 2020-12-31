@@ -25,6 +25,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #}
 
+<link rel="stylesheet" href="{{ cache_safe('/ui/css/nginx/logs.css') }}" type="text/css" />
+
 <div id="logapplication"></div>
 
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>

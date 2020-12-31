@@ -2,7 +2,8 @@
 
 /*
 
-    Copyright (C) 2018 Fabian Franz
+    Copyright (C) 2018-2020 Fabian Franz
+    Copyright (C) 2020 Manuel Faux
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -31,31 +32,9 @@ namespace OPNsense\Nginx;
 
 class StreamAccessLogParser
 {
-    private $file_name;
-    private $result;
-
     private const LogLineRegex = '/(\S+) \[([\d\sa-z\:\-\/\+]+)\] (\S+?) (\d+) (\d+) (\d+) (\d+(?:\.\d+)?)/i';
 
-
-    function __construct($file_name)
-    {
-        $this->file_name = $file_name;
-        $this->result = array();
-        $this->parse_file();
-    }
-
-    private function parse_file()
-    {
-        $handle = @fopen($this->file_name, 'r');
-        if ($handle) {
-            while (($buffer = fgets($handle)) !== false) {
-                $this->result[] = $this->parse_line($buffer);
-            }
-            fclose($handle);
-        }
-    }
-
-    private function parse_line($line)
+    protected function parse_line($line)
     {
         $container = new StreamAccessLogLine();
         if (preg_match(self::LogLineRegex, $line, $data)) {
@@ -67,10 +46,5 @@ class StreamAccessLogParser
             $container->session_time = $data[6];
         }
         return $container;
-    }
-
-    public function get_result()
-    {
-        return $this->result;
     }
 }
