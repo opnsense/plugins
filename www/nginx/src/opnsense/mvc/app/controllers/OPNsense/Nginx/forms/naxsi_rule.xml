@@ -19,7 +19,10 @@
     <field>
         <id>naxsi_rule.identifier</id>
         <label>ID</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <style>tokenize</style>
+        <type>select_multiple</type>
         <help>For blacklist rules, the unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)&lt;br&gt;For whitelists, specify one or more comma separated IDs to whitelist. 0 whitelists all rules.</help>
     </field>
     <field>

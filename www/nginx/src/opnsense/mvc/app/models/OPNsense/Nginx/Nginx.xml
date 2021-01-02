@@ -530,7 +530,7 @@
           </check001>
         </Constraints>
       </message>
-      <identifier type="TextField">
+      <identifier type="CSVListField">
         <Required>Y</Required>
         <Constraints>
           <check001>
