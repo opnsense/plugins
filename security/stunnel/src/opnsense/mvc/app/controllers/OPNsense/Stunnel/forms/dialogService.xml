@@ -68,6 +68,12 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>service.client_mode</id>
+        <label>Client mode</label>
+        <type>checkbox</type>
+        <help><![CDATA[Use client mode for this tunnel (i.e. connect to an SSL server, do not act as an SSL server).]]></help>
+    </field>
+    <field>
         <id>service.description</id>
         <label>Description</label>
         <type>text</type>
