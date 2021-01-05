@@ -42,11 +42,9 @@ const LogView = Backbone.View.extend({
     page_entry_count: 100,
     current_page: 0,
     filter_delay: -1,
-    //current_filtered_collection: null,
 
     initialize: function() {
         this.collection = new LogLinesCollection();
-        //this.filter_model = new Backbone.Model();
         this.listenTo(this.collection, "sync", this.clear_and_render);
         this.listenTo(this.collection, "update", this.clear_and_render);
         this.listenTo(this.collection.filter_model, "change", this.clear_and_render);
@@ -103,9 +101,10 @@ const LogView = Backbone.View.extend({
         logline.render();
         parent_element.append(logline.$el);
     },
-    get_log: function(type, uuid) {
+    get_log: function(type, uuid, fileNo) {
         this.collection.uuid = uuid;
         this.collection.logType = type;
+        this.collection.fileNo = fileNo;
         this.type = type;
         this.$el.html('');
         this.collection.filter_model.clear();

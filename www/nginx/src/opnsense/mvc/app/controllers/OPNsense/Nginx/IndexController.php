@@ -72,14 +72,6 @@ class IndexController extends \OPNsense\Base\IndexController
     }
 
     /**
-     * show the nginx logs page /ui/nginx/index/logs
-     */
-    public function logsAction()
-    {
-        $this->view->pick('OPNsense/Nginx/logs');
-    }
-
-    /**
      * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
      */
     public function tlsHandshakesAction()

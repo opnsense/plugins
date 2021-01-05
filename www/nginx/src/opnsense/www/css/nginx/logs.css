@@ -24,14 +24,20 @@
 * POSSIBILITY OF SUCH DAMAGE.
 */
 
-thead.sticky-top {
+thead.sticky-top th {
     position: sticky;
-    top: 50px;
+    top: 100px;
     background-color: white;
 }
 
-tfoot.sticky-bottom {
+thead.sticky-top tr:first-child th {
+    top: 50px;
+}
+
+tfoot.sticky-bottom th {
     position: sticky;
     bottom: 50px;
     background-color: white;
+    font-weight: normal;
+    font-family: inherit;
 }

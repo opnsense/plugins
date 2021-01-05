@@ -37,15 +37,16 @@
 <a data-toggle="tab"
    class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block mainentry"
    style="border-right: 0px;"><b><%= _.escape(name) %></b></a>
-<ul class="dropdown-menu" role="menu">
+<ul class="dropdown-menu" role="menu" id="tab_<%= _.escape(id) %>">
     <% model.forEach(function(row) { %>
     <li>
         <a data-toggle="tab"
            class="menuEntry"
            data-model-cid="<%= row.cid %>"
-           data-model-uuid="<%= row.escape('id') %>"
-           id="subtab_item_<%= row.escape('id') %>"
-           href="#subtab_<%= row.escape('id') %>"><%= row.has("server_name") ? row.escape("server_name") : row.escape("port") %></a>
+           data-model-uuid="<%= _.escape(id) %>"
+           data-model-fileno="<%= row.escape('number') %>"
+           id="subtab_item_<%= _.escape(id) %>_<%= row.escape('number') %>"
+           href="#subtab_<%= _.escape(id) %>"><%= row.escape("date") %></a>
     </li>
     <% }) %>
 </ul>

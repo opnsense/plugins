@@ -1,15 +1,22 @@
-import {defaultEndpoints} from './config';
+import LogServerCollection from './models/LogServerCollection';
 import LogCategoryList from './controller/LogCategoryList';
 import LogView from './controller/LogView';
 
 const logview = new LogView();
 
-const menu = new LogCategoryList({
-    collection: defaultEndpoints,
-    logview: logview
+const type = $('#logapplication').data('log');
+const servers = new LogServerCollection({
+    logType: type
 });
 
-$(document.getElementById('logapplication'))
+const menu = new LogCategoryList({
+    collection: servers,
+    logview: logview,
+    logType: type
+});
+
+$('#logapplication')
     .append(menu.$el)
     .append(logview.$el);
+servers.fetch();
 menu.render();

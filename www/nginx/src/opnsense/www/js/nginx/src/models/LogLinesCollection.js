@@ -3,11 +3,12 @@ import LogLine from "./LogLine";
 const LogLinesCollection = Backbone.Collection.extend({
     model: LogLine,
     url: function () {
-        return `/api/nginx/logs/${this.logType}/${this.uuid}/${this.page}/${this.pageSize}/${this.create_filter()}`;
+        return `/api/nginx/logs/${this.logType}/${this.uuid}/${this.fileNo}/${this.page}/${this.pageSize}/${this.create_filter()}`;
     },
     initialize: function () {
         this.logType = 'none';
         this.uuid = 'none';
+        this.fileNo = -1;
         this.page = 0;
         this.pageSize = 0;
         this.filter_model = new Backbone.Model();

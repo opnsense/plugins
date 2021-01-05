@@ -2,7 +2,6 @@
 <?php
 
 /*
- * Copyright (C) 2018-2020 Fabian Franz
  * Copyright (C) 2020 Manuel Faux
  * All rights reserved.
  *
@@ -31,14 +30,33 @@
 require_once 'config.inc';
 
 use OPNsense\Nginx\Nginx;
-use OPNsense\Nginx\ErrorLogParser;
-use OPNsense\Nginx\AccessLogParser;
-use OPNsense\Nginx\StreamAccessLogParser;
 
 $log_prefix = '/var/log/nginx/';
 $log_suffix = '.log';
 
-if ($_SERVER['argc'] < 6) {
+function list_logfiles($prefix) {
+    global $log_prefix;
+    $filename = $log_prefix . $prefix;
+
+    $result = [];
+    $files = glob("$filename*", GLOB_NOSORT);
+    foreach ($files as $file) {
+        // Extract number of logrotate (e.g. error.log.4.gz) and set -1 for currently active file
+        $number = (strlen($file) > strlen($filename)) ? substr($file, strlen($filename) + 1, -3) : -1;
+        $result[$number] = array(
+            'filename' => substr($file, strlen($log_prefix)),
+            'date' => ($number >= 0) ? date('d/M/Y', filemtime($file) - 3600) : 'current',
+            'number' => $number
+        );
+    }
+
+    ksort($result, SORT_NUMERIC);
+    $result = array_values($result);
+
+    return $result;
+}
+
+if ($_SERVER['argc'] < 3) {
     die('{"error": "Incorrect amount of parameters given"}');
 }
 
@@ -46,28 +64,12 @@ if ($_SERVER['argc'] < 6) {
 $mode = $_SERVER['argv'][1];
 // second parameter: uuid of server
 $server = $_SERVER['argv'][2];
-// third parameter: file number
-$file_no = intval($_SERVER['argv'][3]);
-// third parameter: current page
-$page = max(intval($_SERVER['argv'][4]), 0);
-// fourth parameter: lines per page
-$per_page = max(intval($_SERVER['argv'][5]), 1);
-// fifth parameter: filter query
-$query = json_decode($_SERVER['argv'][6], true);
 $nginx = new Nginx();
-
-if ($query === null) {
-    $query = array();
-}
-
-if ($file_no >= 0) {
-    $log_suffix .= ".$file_no.gz";
-}
 
 $result = [];
 // special case: the global error log
 if ($server == 'global') {
-    $logparser = new ErrorLogParser($log_prefix . 'error.log', $page, $per_page, $query);
+    $result = list_logfiles('error.log');
 }
 else {
     switch ($mode) {
@@ -78,18 +80,9 @@ else {
                 if (empty($server_names)) {
                     die('{"error": "The server entry has no server name"}');
                 }
-                $log_file_name = $log_prefix . basename($server_names) . '.' . $mode . $log_suffix;
-                // this entry has no log file, ignore it
-                if (!file_exists($log_file_name)) {
-                    break;
-                }
-                $logparser = null;
 
-                if ($mode == 'error') {
-                    $logparser = new ErrorLogParser($log_file_name, $page, $per_page, $query);
-                } elseif ($mode == 'access') {
-                    $logparser = new AccessLogParser($log_file_name, $page, $per_page, $query);
-                }
+                $log_file_name = basename($server_names) . '.' . $mode . $log_suffix;
+                $result = list_logfiles($log_file_name);
             }
             else {
                 die('{"error": "UUID not found"}');
@@ -99,41 +92,14 @@ else {
         case 'streamaccess':
             if ($data = $nginx->getNodeByReference('stream_server.' . $server)) {
                 $mode = str_replace('stream', '', $mode);
-                $log_file_name = $log_prefix . 'stream_' . $server . '.' . $mode . $log_suffix;
-                // this entry has no log file, ignore it
-                if (!file_exists($log_file_name)) {
-                    die('{"error": "file not found"}');
-                }
-                $logparser = null;
-
-                if ($mode == 'error') {
-                    $logparser = new ErrorLogParser($log_file_name, $page, $per_page, $query);
-                } elseif ($mode == 'access') {
-                    $logparser = new StreamAccessLogParser($log_file_name, $page, $per_page, $query);
-                }
+                $log_file_name = 'stream_' . $server . '.' . $mode . $log_suffix;
+                $result = list_logfiles($log_file_name);
             } else {
                 die('{"error": "UUID not found"}');
             }
             break;
         default:
             die('{"error": "action (' . $mode . ') not found"}');
-    }
-}
-
-
-// we cannot parse the file - something went wrong
-if ($logparser === null) {
-    $result['error'] = 'cannot retrieve requested logs';
-}
-else {
-    $result['lines'] = $logparser->get_result();
-    if (count($result['lines']) > 0) {
-        $result['pages'] = $logparser->page_count;
-        $result['total'] = $logparser->total_lines;
-        $result['found'] = $logparser->query_lines;
-    }
-    else {
-        $result['error'] = 'no lines found';
     }
 }
 

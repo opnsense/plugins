@@ -41,18 +41,26 @@ class LogsController extends ApiControllerBase
      * "/" -> list of access logs
      * "/uuid" -> conent of access log
      * @param null|string $uuid log uuid of the HTTP server from which the error log should be returned
+     * @param $fileno int number of logfile to retrieve
+     * @param $page int pagination page to retrieve
+     * @param $perPage int number of entries per page
+     * @param $query string filter string to apply
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function accessesAction($uuid = null, $page = 0, $perPage = 0, $query = "")
+    public function accessesAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /accesses delivers a list of servers with access logs
             return $this->list_vhosts();
-        } else {
+        }
+        elseif (!isset($fileno)) {
+            return $this->list_logfiles('access', $uuid);
+        }
+        else {
             // emulate REST call for a specific log /accesses/uuid
-            $this->call_configd('access', $uuid, $page, $perPage, $query);
+            $this->get_logs('access', $uuid, $fileno, $page, $perPage, $query);
         }
     }
 
@@ -69,18 +77,26 @@ class LogsController extends ApiControllerBase
      * "/" -> list of error logs
      * "/uuid" -> conent of error log
      * @param null|string $uuid uuid of the HTTP server from which the error log should be returned
+     * @param $fileno int number of logfile to retrieve
+     * @param $page int pagination page to retrieve
+     * @param $perPage int number of entries per page
+     * @param $query string filter string to apply
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function errorsAction($uuid = null, $page = 0, $perPage = 0, $query = "")
+    public function errorsAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /errors delivers a list of servers with error logs
             return $this->list_vhosts();
-        } else {
+        }
+        elseif (!isset($fileno)) {
+            return $this->list_logfiles('error', $uuid);
+        }
+        else {
             // emulate REST call for a specific log /errors/uuid
-            $this->call_configd('error', $uuid, $page, $perPage, $query);
+            $this->get_logs('error', $uuid, $fileno, $page, $perPage, $query);
         }
     }
 
@@ -88,18 +104,26 @@ class LogsController extends ApiControllerBase
      * "/" -> list of access logs
      * "/uuid" -> conent of access log
      * @param null|string $uuid log uuid of the stream server from which the error log should be returned
+     * @param $fileno int number of logfile to retrieve
+     * @param $page int pagination page to retrieve
+     * @param $perPage int number of entries per page
+     * @param $query string filter string to apply
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function stream_accessesAction($uuid = null, $page = 0, $perPage = 0, $query = "")
+    public function stream_accessesAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /stream_accesses delivers a list of servers with access logs
             return $this->list_streams();
-        } else {
+        }
+        elseif (!isset($fileno)) {
+            return $this->list_logfiles('streamaccess', $uuid);
+        }
+        else {
             // emulate REST call for a specific log /stream_accesses/uuid
-            $this->call_configd_stream('streamaccess', $uuid, $page, $perPage, $query);
+            $this->get_stream_logs('streamaccess', $uuid, $fileno, $page, $perPage, $query);
         }
     }
 
@@ -107,31 +131,46 @@ class LogsController extends ApiControllerBase
      * "/" -> list of access logs
      * "/uuid" -> conent of error log
      * @param null $uuid uuid of the stream server from which the error log should be returned
+     * @param $fileno int number of logfile to retrieve
+     * @param $page int pagination page to retrieve
+     * @param $perPage int number of entries per page
+     * @param $query string filter string to apply
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function stream_errorsAction($uuid = null, $page = 0, $perPage = 0, $query = "")
+    public function stream_errorsAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /stream_errors delivers a list of servers with error logs
             return $this->list_streams();
-        } else {
+        }
+        elseif (!isset($fileno)) {
+            return $this->list_logfiles('streamerror', $uuid);
+        }
+        else {
             // emulate REST call for a specific log /stream_errors/uuid
-            $this->call_configd_stream('streamerror', $uuid, $page, $perPage, $query);
+            $this->get_stream_logs('streamerror', $uuid, $fileno, $page, $perPage, $query);
         }
     }
 
 
     /**
+     * Retrieve log content for HTTP server.
+     *
      * @param $type string access or error for the used log type
      * @param $uuid string uuid of the server
+     * @param $fileno int number of logfile to retrieve
+     * @param $page int pagination page to retrieve
+     * @param $perPage int number of entries per page
+     * @param $query string filter string to apply
      * @return |null
      * @throws \Exception ?
      */
-    private function call_configd($type, $uuid, $page, $perPage, $query)
+    private function get_logs($type, $uuid, $fileno, $page, $perPage, $query)
     {
         if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
+        // TODO check $fileno
             $this->response->setStatusCode(404, "Not Found");
         }
 
@@ -139,21 +178,63 @@ class LogsController extends ApiControllerBase
         $perPage = intval($perPage);
         $query = str_replace('"', '\"', urldecode($query));
 
-        return $this->sendConfigdToClient("nginx log $type $uuid $page $perPage $query");
+        return $this->sendConfigdToClient("nginx log $type $uuid $fileno $page $perPage $query");
     }
+
     /**
+     * Retrieve available log files for specific HTTP server uuid.
+     *
      * @param $type string access or error for the used log type
      * @param $uuid string uuid of the server
      * @return |null
      * @throws \Exception ?
      */
-    private function call_configd_stream($type, $uuid, $page, $perPage)
+    private function list_logfiles($type, $uuid)
+    {
+        if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
+            $this->response->setStatusCode(404, "Not Found");
+        }
+
+        return $this->sendConfigdToClient("nginx listlogs $type $uuid");
+    }
+
+    /**
+     * Retrieve log content for stream server.
+     *
+     * @param $type string access or error for the used log type
+     * @param $uuid string uuid of the server
+     * @param $fileno int number of logfile to retrieve
+     * @param $page int pagination page to retrieve
+     * @param $perPage int number of entries per page
+     * @param $query string filter string to apply
+     * @return |null
+     * @throws \Exception ?
+     */
+    private function get_stream_logs($type, $uuid, $fileno, $page, $perPage)
+    {
+        if (!$this->stream_exists($uuid)) {
+        // TODO check $fileno
+            $this->response->setStatusCode(404, "Not Found");
+        }
+
+        return $this->sendConfigdToClient("nginx log $type $uuid $fileno $page $perPage");
+    }
+
+    /**
+     * Retrieve available log files for specific stream server uuid.
+     *
+     * @param $type string access or error for the used log type
+     * @param $uuid string uuid of the server
+     * @return |null
+     * @throws \Exception ?
+     */
+    private function list_stream_logfiles($type, $uuid)
     {
         if (!$this->stream_exists($uuid)) {
             $this->response->setStatusCode(404, "Not Found");
         }
 
-        return $this->sendConfigdToClient("nginx log $type $uuid $page $perPage");
+        return $this->sendConfigdToClient("nginx listlogs $type $uuid");
     }
 
     /**

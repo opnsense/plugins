@@ -10,29 +10,36 @@ let LogCategoryList = Backbone.View.extend({
         this.listenTo(this.collection, "sync",   this.render);
         this.listenTo(this.collection, "update", this.render);
         this.logview = data.logview;
+        this.logType = data.logType;
     },
 
     render: function() {
         this.$el.attr('role', 'tablist');
         this.$el.html('');
-        this.collection.forEach((element) => this.render_one(element));
-        this.render_single_tabs();
+
+        if (this.logType == 'global') {
+            this.render_single_tabs();
+        }
+        else {
+            this.collection.forEach((element) => this.render_one(element));
+        }
     },
 
     render_one: function(element) {
-        const servers = new LogCollection(
+        const files = new LogCollection(
             {
-                uuid: element.get('url'),
-                logType: element.get('logType')
+                uuid: element.get('id'),
+                logType: this.logType
             }
         );
         const logList = new TabLogList({
-            collection: servers,
+            collection: files,
             model: element,
+            logType: this.logType,
             logview: this.logview
         });
         this.$el.append(logList.$el);
-        servers.fetch();
+        files.fetch();
     },
     render_single_tabs: function () {
         const single_tab = new SingleTab({
