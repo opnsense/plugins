@@ -26,7 +26,7 @@
 
 thead.sticky-top th {
     position: sticky;
-    top: 100px;
+    top: 80px;
     background-color: white;
 }
 

@@ -27,7 +27,7 @@ let TabLogList = Backbone.View.extend({
             TabTemplateCollection({
                 model: this.collection,
                 id: this.model.get('id'),
-                name: this.model.has('server_name') ? this.model.get('server_name') : "Port " . this.model.get('port')
+                name: this.model.has('server_name') ? this.model.get('server_name') : "Port " + this.model.get('port')
             })
         );
     },

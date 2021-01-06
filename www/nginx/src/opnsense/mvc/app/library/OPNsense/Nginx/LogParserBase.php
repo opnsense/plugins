@@ -45,69 +45,14 @@ abstract class LogParserBase
         $this->query_lines = 0;
         $this->result = array();
 
-        if (substr($this->file_name, -2) == "gz") {
-            $this->parse_gzfile();
-        }
-        else {
-            $this->parse_file();
-        }
-    }
-
-    /**
-     * Reverse read logfile, count lines, save lines which match filter and
-     * count matching lines.
-     */
-    private function parse_file()
-    {
-        $handle = @fopen($this->file_name, 'r');
-        if ($handle) {
-            $cnt = 0;
-            $total = 0;
-            for ($line = '', $pos = -2; fseek($handle, $pos, SEEK_END) !== -1; $pos--) {
-                $char = fgetc($handle);
-                if ($char === "\n") {
-                    $pass = true;
-                    $parsed_line = $this->parse_line($line);
-                    if (count($this->query) > 0) {
-                        foreach ($this->query as $key => $val) {
-                            $val = (string)$val;
-                            if (!empty($val) && strpos($parsed_line->{$key}, (string)$val) === false) {
-                                $pass = false;
-                            }
-                        }
-                    }
-
-                    if ($pass) {
-                        if (floor($cnt / $this->per_page) == $this->page) {
-                            $this->result[] = $parsed_line;
-                        }
-                        $cnt++;
-                    }
-
-                    $line = '';
-                    $total++;
-                }
-                else {
-                    $line = $char . $line;
-                }
-            }
-            fclose($handle);
-
-            $this->page_count = floor($cnt / $this->per_page);
-            $this->total_lines = $total;
-            $this->query_lines = $cnt;
-        }
+        $this->parse_file();
     }
 
     /**
      * Forward read complete gz compressed logfile into memory, reverse file,
      * count lines, save lines which match filter and count matching lines.
-     *
-     * FIXME: Find reasonable way to avoid reading complete file to memory and
-     *        still allow reverse-reading. SEEK_END is not supported for gz
-     *        file handles in PHP.
      */
-    private function parse_gzfile()
+    private function parse_file()
     {
         $lines = gzfile($this->file_name);
         if ($lines !== false && count($lines) > 0) {
