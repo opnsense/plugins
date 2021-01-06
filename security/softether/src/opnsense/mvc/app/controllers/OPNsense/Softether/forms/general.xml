@@ -5,4 +5,10 @@
         <type>checkbox</type>
         <help>This will activate SoftEther vpnserver process.</help>
     </field>
+    <field>
+        <id>general.enablecarp</id>
+        <label>Enable CARP Failover</label>
+        <type>checkbox</type>
+        <help>This will activate the vpnserver service only on the master device.</help>
+    </field>
 </form>
