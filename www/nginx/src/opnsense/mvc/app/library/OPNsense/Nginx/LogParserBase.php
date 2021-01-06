@@ -34,7 +34,15 @@ abstract class LogParserBase
 {
     protected $result;
 
-    function __construct($file_name, $page, $per_page, $query)
+    /**
+     * Constructs a new LogParserBase instance.
+     *
+     * @param $file_name string path to log file of the HTTP server to be parsed
+     * @param $page int pagination page to retrieve
+     * @param $per_page int number of entries per page
+     * @param $query string filter string to apply
+     */
+    function __construct($file_name, $page = 0, $per_page = 1, $query = array())
     {
         $this->file_name = $file_name;
         $this->page = $page;
