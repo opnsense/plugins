@@ -9,7 +9,6 @@ let TabLogList = Backbone.View.extend({
     },
 
     initialize: function(data) {
-        this.listenTo(this.collection, "sync", this.render);
         this.listenTo(this.collection, "update", this.render);
         this.logType = data.logType;
         this.logview = data.logview;

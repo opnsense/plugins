@@ -47,16 +47,16 @@ $mode = $_SERVER['argv'][1];
 // second parameter: uuid of server
 $server = $_SERVER['argv'][2];
 // third parameter: file number
-$file_no = intval($_SERVER['argv'][3]);
+$file_no = (strlen($_SERVER['argv'][3]) > 0) ? max(intval($_SERVER['argv'][3]), -1) : -1;
 // third parameter: current page
 $page = max(intval($_SERVER['argv'][4]), 0);
 // fourth parameter: lines per page
-$per_page = max(intval($_SERVER['argv'][5]), 1);
+$per_page = max(intval($_SERVER['argv'][5]), 0);
 // fifth parameter: filter query
 $query = json_decode($_SERVER['argv'][6], true);
 $nginx = new Nginx();
 
-if ($query === null) {
+if (!is_array($query)) {
     $query = array();
 }
 
@@ -67,7 +67,7 @@ if ($file_no >= 0) {
 $result = [];
 // special case: the global error log
 if ($server == 'global') {
-    $logparser = new ErrorLogParser($log_prefix . 'error.log', $page, $per_page, $query);
+    $logparser = new ErrorLogParser($log_prefix . 'error' . $log_suffix, $page, $per_page, $query);
 }
 else {
     switch ($mode) {
@@ -131,6 +131,8 @@ else {
         $result['pages'] = $logparser->page_count;
         $result['total'] = $logparser->total_lines;
         $result['found'] = $logparser->query_lines;
+        $result['returned'] = count($result['lines']);
+        $result['query'] = json_encode($query);
     }
     else {
         $result['error'] = 'no lines found';

@@ -7,7 +7,6 @@ let LogCategoryList = Backbone.View.extend({
     className: "nav nav-tabs",
 
     initialize: function(data) {
-        this.listenTo(this.collection, "sync",   this.render);
         this.listenTo(this.collection, "update", this.render);
         this.logview = data.logview;
         this.logType = data.logType;
@@ -18,14 +17,14 @@ let LogCategoryList = Backbone.View.extend({
         this.$el.html('');
 
         if (this.logType == 'global') {
-            this.render_single_tabs();
+            this.render_global_error_tab();
         }
         else {
-            this.collection.forEach((element) => this.render_one(element));
+            this.collection.forEach((element) => this.render_one_server(element));
         }
     },
 
-    render_one: function(element) {
+    render_one_server: function(element) {
         const files = new LogCollection(
             {
                 uuid: element.get('id'),
@@ -41,15 +40,25 @@ let LogCategoryList = Backbone.View.extend({
         this.$el.append(logList.$el);
         files.fetch();
     },
-    render_single_tabs: function () {
-        const single_tab = new SingleTab({
-            logview: this.logview,
-            log_name: 'global',
-            visible_name: 'Global Error Log',
-            log_type: 'errors'});
-        single_tab.render();
-        this.$el.append(single_tab.$el);
 
+    render_global_error_tab: function () {
+        const files = new LogCollection(
+            {
+                uuid: 'global',
+                logType: 'errors'
+            }
+        );
+        const logList = new TabLogList({
+            collection: files,
+            model: new Backbone.Model({
+                server_name: 'Global Error Log',
+                id: 'global'
+            }),
+            logType: 'errors',
+            logview: this.logview
+        });
+        this.$el.append(logList.$el);
+        files.fetch();
     }
 });
 

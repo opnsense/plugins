@@ -30,7 +30,7 @@
 
 namespace OPNsense\Nginx;
 
-class StreamAccessLogParser
+class StreamAccessLogParser extends LogParserBase
 {
     private const LogLineRegex = '/(\S+) \[([\d\sa-z\:\-\/\+]+)\] (\S+?) (\d+) (\d+) (\d+) (\d+(?:\.\d+)?)/i';
 

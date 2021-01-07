@@ -38,11 +38,12 @@ abstract class LogParserBase
      * Constructs a new LogParserBase instance.
      *
      * @param $file_name string path to log file of the HTTP server to be parsed
-     * @param $page int pagination page to retrieve
-     * @param $per_page int number of entries per page
+     * @param $page int pagination page to retrieve (first page is 0)
+     * @param $per_page int number of entries per page if positive, retrieve
+     *                      all elements otherwise
      * @param $query string filter string to apply
      */
-    function __construct($file_name, $page = 0, $per_page = 1, $query = array())
+    function __construct($file_name, $page = 0, $per_page = 0, $query = array())
     {
         $this->file_name = $file_name;
         $this->page = $page;
@@ -65,12 +66,24 @@ abstract class LogParserBase
         $lines = gzfile($this->file_name);
         if ($lines !== false && count($lines) > 0) {
             $lines = array_reverse($lines);
+
+            $filtering = false;
+            // Did we receive a non-zero filtering query?
+            foreach ($this->query as $key => $val) {
+                if (strlen($val) > 0) {
+                    $filtering = true;
+                }
+            }
             
             $cnt = 0;
             foreach ($lines as $line) {
                 $pass = true;
-                $parsed_line = $this->parse_line($line);
-                if (count($this->query) > 0) {
+
+                $parsed_line = '';
+                // Perform filtering if needed
+                if ($filtering) {
+                    $parsed_line = $this->parse_line($line);
+
                     foreach ($this->query as $key => $val) {
                         $val = (string)$val;
                         if (!empty($val) && strpos($parsed_line->{$key}, (string)$val) === false) {
@@ -80,14 +93,19 @@ abstract class LogParserBase
                 }
 
                 if ($pass) {
-                    if (floor($cnt / $this->per_page) == $this->page) {
+                    if ($this->per_page <= 0 || floor($cnt / $this->per_page) == $this->page) {
+                        // Only parse line if not already parsed due to filtering
+                        if (!$filtering) {
+                            $parsed_line = $this->parse_line($line);
+                        }
+
                         $this->result[] = $parsed_line;
                     }
                     $cnt++;
                 }
             }
 
-            $this->page_count = floor(count($lines) / $this->per_page);
+            $this->page_count = $this->per_page > 0 ? ceil($cnt / $this->per_page) : 1;
             $this->total_lines = count($lines);
             $this->query_lines = $cnt;
         }
