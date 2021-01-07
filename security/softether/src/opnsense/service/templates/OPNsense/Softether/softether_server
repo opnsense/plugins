@@ -2,7 +2,7 @@
 softether_server_var_script="/usr/local/opnsense/scripts/OPNsense/Softether/setup.sh"
 softether_server_enable="YES"
 {% if helpers.exists('OPNsense.softether.general.enablecarp') and OPNsense.softether.general.enablecarp == '1' %}
-start_precmd="ifconfig | grep 'carp: MASTER'"
+required_files="/var/run/softether/CARP_MASTER"
 {% endif %}
 {% else %}
 softether_server_enable="NO"

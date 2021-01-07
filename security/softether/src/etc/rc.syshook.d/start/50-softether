@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# XXX this should not be strictly needed
-/usr/local/etc/rc.d/softether_server start

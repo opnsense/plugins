@@ -49,9 +49,13 @@ if (softether_carp_enabled()) {
 
     switch ($type) {
         case 'MASTER':
+            touch('/var/run/softether/CARP_MASTER');
             shell_exec('/usr/local/etc/rc.d/softether_server start');
             break;
         case 'BACKUP':
+            if (file_exists('/var/run/softether/CARP_MASTER')) {
+                unlink('/var/run/softether/CARP_MASTER');
+            }
             shell_exec('/usr/local/etc/rc.d/softether_server stop');
             break;
     }
