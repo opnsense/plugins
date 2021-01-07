@@ -14,7 +14,7 @@
                     <Required>Y</Required>
                 </name>
                 <pubkey type="TextField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                 </pubkey>
                 <psk type="TextField">
                     <Required>N</Required>
