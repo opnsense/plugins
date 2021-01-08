@@ -11,4 +11,11 @@
         <type>checkbox</type>
         <help>This will activate the vpnserver service only on the master device.</help>
     </field>
+    <field>
+        <id>general.carpinterfaces</id>
+        <label>Monitored CARP interfaces</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Select the interfaces, whose CARP transitions should be monitored.]]></help>
+        <hint>Type or select interface.</hint>
+    </field>
 </form>

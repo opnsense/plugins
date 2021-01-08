@@ -39,6 +39,12 @@ function softether_carp_enabled()
         (string)$model->enablecarp == '1';
 }
 
+function softether_carp_interfaces()
+{
+    $model = new \OPNsense\Softether\General();
+    return (string)$model->carpinterfaces;
+}
+
 function softether_services()
 {
     $services = array();

@@ -30,6 +30,7 @@
 
 require_once('config.inc');
 require_once('util.inc');
+require_once('interfaces.inc');
 require_once('plugins.inc.d/softether.inc');
 
 if (softether_carp_enabled()) {
@@ -45,6 +46,13 @@ if (softether_carp_enabled()) {
     if (!strstr($subsystem, '@')) {
         log_error("Carp '$type' event triggered from wrong source '{$subsystem}'");
         exit(1);
+    }
+
+    list ($vhid, $iface) = explode('@', $subsystem);
+    $friendly = convert_real_interface_to_friendly_interface_name($iface);
+
+    if (!(strpos(softether_carp_interfaces(),$friendly) !== false)) {
+        exit(0);
     }
 
     switch ($type) {
