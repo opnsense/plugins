@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2021 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -88,10 +88,15 @@ ${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
 .endif
 .endfor
 
-diff:
+ensure-stable:
+	@if ! git show-ref --verify --quiet refs/heads/stable/${PLUGIN_ABI}; then \
+		git update-ref refs/heads/stable/${PLUGIN_ABI} refs/remotes/origin/stable/${PLUGIN_ABI}; \
+	fi
+
+diff: ensure-stable
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
 
-mfc:
+mfc: ensure-stable
 .for MFC in ${mfc_ARGS}
 .if exists(${MFC})
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
@@ -107,3 +112,9 @@ mfc:
 .endif
 	@git checkout master
 .endfor
+
+stable:
+	@git checkout stable/${PLUGIN_ABI}
+
+master:
+	@git checkout master
