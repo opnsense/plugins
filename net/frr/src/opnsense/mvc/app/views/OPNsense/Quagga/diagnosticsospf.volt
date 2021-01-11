@@ -104,7 +104,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <% if (areas) { %>
     <h2>{{ lang._('Areas') }}</h2>
     <% _.forEach(areas, function(area, areaname) { %>
-      <br /> 
+      <br />
       <table class="table table-striped">
         <thead>
           <tr>
