@@ -91,6 +91,8 @@ ${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
 ensure-stable:
 	@if ! git show-ref --verify --quiet refs/heads/stable/${PLUGIN_ABI}; then \
 		git update-ref refs/heads/stable/${PLUGIN_ABI} refs/remotes/origin/stable/${PLUGIN_ABI}; \
+		git config branch.stable/${PLUGIN_ABI}.merge refs/heads/stable/${PLUGIN_ABI}; \
+		git config branch.stable/${PLUGIN_ABI}.remote origin; \
 	fi
 
 diff: ensure-stable
