@@ -8,6 +8,30 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+2.2
+
+Added:
+* add support for hexonet.com DNS API (#2134)
+
+Fixed:
+* fix DNS challenge alias mode (#2128, #2130)
+
+Changed:
+* BREAKING: use configured DNS sleep time for Namesilo instead of hardcoded value (#2121)
+* BREAKING: use configured DNS sleep time for Lexicon/Namesilo instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Linode instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Linode v4 instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Netcup instead of hardcoded value
+
+2.1
+
+Added:
+* add support for deSEC.io domain API (#2120)
+
+Fixed:
+* fix creation of nsupdate secrets file
+* fix certificate chain when existing cert was signed by a new CA (#2126)
+
 2.0
 
 Added:
@@ -18,13 +42,13 @@ Added:
 * add plugin changelog
 
 Fixed:
-* fix bug where configuration could get lost (#1526)
+* fix bug where configuration changes could get lost (#1526)
 * fix Cyon DNS API (password not set)
 
 Changed:
 * now an Automation may run multiple times during bulk issue/renewal (previously only once)
 * rename "Validation Methods" to "Challenge Types" to adopt official LE wording
-* rename Menu entry "Automation" to "Automations"
+* rename menu entry "Automation" to "Automations"
 * specify python version for gcloud SDK
 * rephrase several log messages
 * add more detailed output when debug logging is enabled

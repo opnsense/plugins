@@ -42,7 +42,5 @@ class DnsNetcup extends Base implements LeValidationInterface
         $this->acme_env['NC_CID'] = (string)$this->config->dns_netcup_cid;
         $this->acme_env['NC_Apikey'] = (string)$this->config->dns_netcup_key;
         $this->acme_env['NC_Apipw'] = (string)$this->config->dns_netcup_pw;
-        // netcup applies changes to DNS records only every 10 minutes.
-        $this->acme_args[] = '--dnssleep 600';
     }
 }

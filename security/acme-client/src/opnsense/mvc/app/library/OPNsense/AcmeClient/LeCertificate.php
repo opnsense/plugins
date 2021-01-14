@@ -262,6 +262,8 @@ class LeCertificate extends LeCommon
                     $cfgCert->crt = $cert['crt'];
                     $cfgCert->prv = $cert['prv'];
                     $cfgCert->descr = $cert['descr'];
+                    // Update CA ref, because it may be signed by a different CA.
+                    $cfgCert->caref = $cert['caref'];
                     break;
                 }
             }
@@ -635,7 +637,7 @@ class LeCertificate extends LeCommon
             }
 
             // Configure validation object
-            $val->setNames($this->config->name, $this->config->altNames);
+            $val->setNames($this->config->name, $this->config->altNames, $this->config->aliasmode, $this->config->domainalias, $this->config->challengealias);
             $val->setRenewal((int)$this->config->renewInterval);
             $val->setForce($this->force);
             // strip prefix from key value

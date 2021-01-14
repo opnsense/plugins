@@ -12,8 +12,8 @@
                 <name type="TextField">
                     <default></default>
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
+                    <mask>/^(?!any$|localhost$|localnets$|none$)[0-9a-zA-Z_\-]{1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z_-. Built-in ACL names must not be used: any, localhost, localnets, none.</ValidationMessage>
                 </name>
                 <networks type="NetworkField">
                     <default></default>

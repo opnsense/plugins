@@ -142,8 +142,10 @@ function main()
     $force = isset($options['force']) ? true : false;
 
     // Verify mode and arguments
-    if (empty($options) || isset($options['h']) || isset($options['help']) ||
-        (isset($options['mode']) and !validateMode($options['mode']))) {
+    if (
+        empty($options) || isset($options['h']) || isset($options['help']) ||
+        (isset($options['mode']) and !validateMode($options['mode']))
+    ) {
          // Not enough or invalid arguments specified.
          help();
     } elseif (($options['mode'] === 'issue') && (isset($options['cert']) || isset($options['all']))) {

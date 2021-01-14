@@ -64,6 +64,8 @@ ldap {
                 reply:Tunnel-Type               := 'radiusTunnelType'
                 reply:Tunnel-Medium-Type        := 'radiusTunnelMediumType'
                 reply:Tunnel-Private-Group-Id   := 'radiusTunnelPrivateGroupId'
+                reply:Mikrotik-Wireless-VLANID  := 'radiusTunnelPrivateGroupId'
+                reply:Mikrotik-Wireless-VLANID-type   := 'radiusTunnelType'
                 control:                        += 'radiusControlAttribute'
                 request:                        += 'radiusRequestAttribute'
                 reply:                          += 'radiusReplyAttribute'
