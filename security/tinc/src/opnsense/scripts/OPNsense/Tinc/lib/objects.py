@@ -141,7 +141,7 @@ class Host(NetwConfObject):
         self._connectTo = value.text
 
     def get_subnets(self):
-        if not self._payload['subnet']:
+        if not 'subnet' in self._payload:
             return
         yield from self._payload['subnet'].split(',')
 
