@@ -1,12 +1,16 @@
 <model>
     <mount>//OPNsense/ntopng/general</mount>
     <description>ntopng configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <community type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </community>
         <interface type="InterfaceField">
             <Required>N</Required>
             <Multiple>N</Multiple>
