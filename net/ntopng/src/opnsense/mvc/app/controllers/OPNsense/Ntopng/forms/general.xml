@@ -6,6 +6,12 @@
         <help>This will activate ntopng.</help>
     </field>
     <field>
+        <id>general.community</id>
+        <label>Enable Community License</label>
+        <type>checkbox</type>
+        <help>This will start ntopng in community mode.</help>
+    </field>
+    <field>
         <id>general.interface</id>
         <label>Interfaces</label>
         <type>dropdown</type>
