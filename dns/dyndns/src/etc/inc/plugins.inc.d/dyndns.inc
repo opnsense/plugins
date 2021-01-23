@@ -104,6 +104,8 @@ function dyndns_list()
         'cloudflare-v6' => 'Cloudflare (v6)',
         'cloudflare-token' => 'Cloudflare API token',
         'cloudflare-token-v6' => 'Cloudflare API token (v6)',
+        'hetzner' => 'Hetzner DNS Console',
+        'hetzner-v6' => 'Hetzner DNS Console (v6)',
         'custom' => 'Custom',
         'custom-v6' => 'Custom (v6)',
         'dhs' => 'DHS',

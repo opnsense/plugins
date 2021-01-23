@@ -30,6 +30,8 @@
  *    - Cloudflare IPv6 (www.cloudflare.com)
  *    - Cloudflare API token (www.cloudflare.com)
  *    - Cloudflare API token IPv6 (www.cloudflare.com)
+ *    - Hetzner (hetzner.com)
+ *    - Hetzner IPv6 (hetzner.com)
  *    - Eurodns (eurodns.com)
  *    - GratisDNS (gratisdns.dk)
  *    - City Network (citynetwork.se)
@@ -263,6 +265,8 @@ class updatedns
                 break;
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
+            case 'hetzner':
+            case 'hetzner-v6':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
@@ -293,6 +297,7 @@ class updatedns
             case 'regfish-v6':
             case 'route53-v6':
             case 'cloudflare-token-v6':
+            case 'hetzner-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -367,6 +372,8 @@ class updatedns
                 case 'he-net':
                 case 'he-net-tunnelbroker':
                 case 'he-net-v6':
+                case 'hetzner':
+                case 'hetzner-v6':
                 case 'hn':
                 case 'linode':
                 case 'linode-v6':
@@ -868,6 +875,87 @@ class updatedns
                     if ($recordCount > 1) {
                         log_error("Dynamic DNS ($fqdn): Warning: multiple records for $hostName found");
                     }
+                }
+                break;
+            case 'hetzner':
+            case 'hetzner-v6':
+                $baseUrl = 'https://dns.hetzner.com/api/v1';
+                $fqdn = str_replace(' ', '', $this->_dnsHost);
+                $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
+                $ttlData = intval($this->_dnsTTL) < 1 ? 120 : intval($this->_dnsTTL);
+                $hostData = array(
+                    "value" => "{$this->_dnsIP}",
+                    "type" => $recordType,
+                    "name" => "",
+                    "ttl" => $ttlData,
+		    "zone_id" => ""
+                );
+
+                $headerAuth = array(
+                    "Auth-API-Token: {$this->_dnsPass}",
+                    'Content-Type: application/json'
+                );
+
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headerAuth);
+
+                // Get all zone info
+                $zonesUrl = "$baseUrl/zones";
+                curl_setopt($ch, CURLOPT_URL, $zonesUrl);
+                $rawoutput = curl_exec($ch);
+                $output = json_decode($rawoutput);
+                $zoneId = null; // Set default value
+
+
+                // Iterate zone objects, check if $fqdn is equal to or ends with zone name
+                foreach ($output->zones as $key => $zoneObj) {
+
+                    if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
+                        // Found matching zone
+                        $zoneId = $zoneObj->id;
+                        // Get $hostName from $fqdn, set $domainName
+                        // These are only really used for log messages.
+                        $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
+                        $domainName = $zoneObj->name;
+
+                        break;
+                    }
+                }
+
+                if ($zoneId) { // If zone ID was found get host ID
+                    $dnsRecordsUrl = "$baseUrl/records?zone_id=$zoneId";
+                    curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
+                    $rawoutput = curl_exec($ch);
+                    $output = json_decode($rawoutput);
+                    $recordId = null;
+
+
+                    // Iterate zone objects, check if $hostName exist of the same type
+                    foreach ($output->records as $key => $recordObj) {
+                        if (preg_match("/^{$recordObj->name}$/", $hostName)) {
+                            if ($recordObj->type == $recordType) {
+                                // Found matching host
+                                $recordId = $recordObj->id;
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($recordId) { // If record ID was found, update record
+                        $setRecordUrl = "$baseUrl/records/$recordId";
+                        curl_setopt($ch, CURLOPT_URL, $setRecordUrl);
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                    }
+                    else {
+                        $setRecordUrl = "$baseUrl/records";
+                        curl_setopt($ch, CURLOPT_URL, $setRecordUrl);
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+                    }
+
+                    $hostData["zone_id"] = $zoneId;
+                    $hostData["name"] = $hostName;
+
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
                 }
                 break;
             case 'eurodns':
@@ -1443,6 +1531,23 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                }
+                break;
+            case 'hetzner':
+            case 'hetzner-v6':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $output = json_decode($data);
+                if ($output->record->value === $this->_dnsIP) {
+                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } elseif ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong API Key.';
+                } elseif ($http_code == 403) {
+                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
+                } else {
+                    $status = 'Dynamic DNS: (Error) "Unknown Response"';
+                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case 'digitalocean':
