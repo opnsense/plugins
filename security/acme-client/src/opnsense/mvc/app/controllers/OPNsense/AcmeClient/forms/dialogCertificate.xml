@@ -7,7 +7,7 @@
         <id>certificate.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this certificate</help>
+        <help>Enable this certificate. When disabled, no attemps to issue or renew the certificate will be made.</help>
     </field>
     <field>
         <id>certificate.name</id>
@@ -50,7 +50,7 @@
         <id>certificate.autoRenewal</id>
         <label>Auto Renewal</label>
         <type>checkbox</type>
-        <help>Enable automatic renewal for this certificate to prevent expiration.</help>
+        <help>Enable automatic renewal for this certificate to prevent expiration. When disabled, the cron job will ignore this certificate. Note that it is still possible to renew the certificate from the GUI.</help>
     </field>
     <field>
         <id>certificate.renewInterval</id>
