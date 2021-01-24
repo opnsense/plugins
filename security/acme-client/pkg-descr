@@ -10,6 +10,9 @@ Plugin Changelog
 
 2.3
 
+Added:
+* add support for Infomaniak domain API (#2169)
+
 Fixed:
 * fix "auto renewal" options not working in certificate and plugin settings (#2178)
 
