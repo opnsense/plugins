@@ -1237,4 +1237,14 @@
         <label>Password</label>
         <type>password</type>
     </field>
+    <field>
+        <label>Infomaniak DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_infomaniak</style>
+    </field>
+    <field>
+        <id>validation.dns_infomaniak_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
 </form>
