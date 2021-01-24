@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,6 +80,7 @@ abstract class LeCommon
     protected $command_args;        # optional args for configdRun()
 
     // Basic object information
+    protected $cron;                # Run from cron job
     protected $config;              # AcmeClient config object
     protected $debug;               # Debug logging (bool)
     protected $environment;         # Let's Encrypt environment (uses shortnames)

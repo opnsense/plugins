@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,14 +32,13 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Ali DNS API
+ * Infomaniak DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsAli extends Base implements LeValidationInterface
+class DnsInfomaniak extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['Ali_Key'] = (string)$this->config->dns_ali_key;
-        $this->acme_env['Ali_Secret'] = (string)$this->config->dns_ali_secret;
+        $this->acme_env['INFOMANIAK_API_TOKEN'] = (string)$this->config->dns_infomaniak_token;
     }
 }
