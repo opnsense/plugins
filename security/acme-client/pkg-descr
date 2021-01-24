@@ -15,6 +15,7 @@ Added:
 
 Fixed:
 * fix "auto renewal" options not working in certificate and plugin settings (#2178)
+* fix Aliyun DNS API (#2200)
 
 2.2
 
