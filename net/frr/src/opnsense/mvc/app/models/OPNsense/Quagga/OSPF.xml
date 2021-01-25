@@ -172,7 +172,7 @@
                                 <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
                         </cost>
                         <cost_demoted type="IntegerField">
-                                <default></default>
+                                <default>65535</default>
                                 <MinimumValue>1</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>65535</MaximumValue>
