@@ -126,13 +126,13 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         if (substr($hostname, -1) != ".") {
             $hostname .= ".";
         }
-		
-		/* declare key algorithm 
-		   define default for migration from version without algorithm configuration */
-		$keyalgo = $dnsupdate['keyalgo'];
-		if (empty($keyalgo)) {
-           $keyalgo = 'hmac-md5';
-		}
+
+        /* declare key algorithm
+           define default for migration from version without algorithm configuration */
+        $keyalgo = $dnsupdate['keyalgo'];
+        if (empty($keyalgo)) {
+            $keyalgo = 'hmac-md5';
+        }
 
         /* generate update instructions */
         $upinst = "";
