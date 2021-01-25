@@ -126,6 +126,13 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         if (substr($hostname, -1) != ".") {
             $hostname .= ".";
         }
+		
+		/* declare key algorithm 
+		   define default for migration from version without algorithm configuration */
+		$keyalgo = $dnsupdate['keyalgo'];
+		if (empty($keyalgo)) {
+           $keyalgo = 'hmac-md5';
+		}
 
         /* generate update instructions */
         $upinst = "";
@@ -196,7 +203,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             @file_put_contents("/var/etc/nsupdatecmds{$i}", $upinst);
             unset($upinst);
             /* invoke nsupdate */
-            $cmd = "/usr/local/bin/nsupdate -y {$dnsupdate['keyalgo']}:{$keyname}:{$dnsupdate['keydata']}";
+            $cmd = "/usr/local/bin/nsupdate -y {$keyalgo}:{$keyname}:{$dnsupdate['keydata']}";
             if (isset($dnsupdate['usetcp'])) {
                 $cmd .= " -v";
             }
