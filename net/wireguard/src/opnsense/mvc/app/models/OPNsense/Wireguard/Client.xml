@@ -15,12 +15,10 @@
                 </name>
                 <pubkey type="Base64Field">
                     <Required>N</Required>
-                    <mask>/^[a-zA-Z0-9+=\/]{44}$/</mask>
                     <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
                 </pubkey>
                 <psk type="Base64Field">
                     <Required>N</Required>
-                    <mask>/^[a-zA-Z0-9+=\/]{44}$/</mask>
                     <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
                 </psk>
                 <tunneladdress type="NetworkField">
