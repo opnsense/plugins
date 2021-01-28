@@ -13,10 +13,10 @@
                     <default></default>
                     <Required>Y</Required>
                 </name>
-                <pubkey type="TextField">
+                <pubkey type="Base64Field">
                     <Required>Y</Required>
                 </pubkey>
-                <psk type="TextField">
+                <psk type="Base64Field">
                     <Required>N</Required>
                     <mask>/^[a-zA-Z0-9+\/]{43}=$/</mask>
                     <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
