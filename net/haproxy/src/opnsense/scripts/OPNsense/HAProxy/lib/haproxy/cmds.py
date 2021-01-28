@@ -2,6 +2,12 @@
 """cmds.py - Implementations of the different HAProxy commands"""
 
 import re
+import csv
+import json
+import math
+from pprint import pprint
+
+from io import StringIO
 
 class Cmd():
     """Cmd - Command base class"""
@@ -41,6 +47,8 @@ class Cmd():
 
     def getResult(self, res):
         """Returns raw results gathered from HAProxy"""
+        if res == '\n':
+            res = None
         return res
 
     def getResultObj(self, res):
@@ -133,40 +141,87 @@ class showSessions(Cmd):
 
 class baseStat(Cmd):
     """Base class for stats commands."""
+    def getDict(self, res):
+        # clean response
+        res = re.sub(r'^# ', '', res, re.MULTILINE)
+        res = re.sub(r',\n', '\n', res, re.MULTILINE)
+        res = re.sub(r',\n\n', '\n', res, re.MULTILINE)
 
-    def getCols(self, res):
-        """Get columns from stats output."""
-        mobj = re.match("^#(?P<columns>.*)$", res, re.MULTILINE)
+        csv_string = StringIO(res)
+        return csv.DictReader(csv_string, delimiter=',')
 
-        if mobj:
-            return dict((a, i) for i, a in enumerate(mobj.groupdict()['columns'].split(',')))
-        raise Exception("Could not parse columns from HAProxy output")
+    def getBootstrapOutput(self, **kwargs):
+        rows = kwargs['rows']
+        # search
+        if kwargs['search']:
+            filtered_rows = []
+            for row in rows:
+                def inner(row):
+                    for k,v in row.items():
+                        if kwargs['search'] in v:
+                            return row
+                    return None
+                match = inner(row)
+                if match:
+                    filtered_rows.append(match)
+            rows = filtered_rows
+
+        # sort
+        rows.sort(key=lambda k : k[kwargs['sort_col']], reverse=True if kwargs['sort_dir'] == 'desc' else False)
+
+        # pager
+        total = len(rows)
+        pages = [rows[i:i + kwargs['page_rows']] for i in range(0, total, kwargs['page_rows'])]
+        if pages and (kwargs['page'] > len(pages) or kwargs['page'] < 1):
+            raise KeyError(f"Current page {kwargs['page']} does not exist. Available pages: {len(pages)}")
+        page = pages[kwargs['page'] - 1] if pages else []
+
+        return json.dumps({
+            "rows": page,
+            "total": total,
+            "rowCount": kwargs['page_rows'],
+            "current": kwargs['page']
+        })
 
 class showServers(baseStat):
-    """Show servers in the given backend"""
-
-    req_args = ['backend']
+    """Show all servers. If backend is given, show only servers for this backend. """
     cmdTxt = "show stat\r\n"
-    helpTxt = "Lists servers in the given backend"
+    helpTxt = "Lists all servers. Filter for servers in backend, if set."
 
     def getResult(self, res):
-        return "\n".join(self.getResultObj(res))
+        if self.args['output'] == 'json':
+            return json.dumps(self.getResultObj(res))
+
+        if self.args['output'] == 'bootstrap':
+            rows = self.getResultObj(res)
+            args = {
+                "rows": rows,
+                "page": int(self.args['page']) if self.args['page'] != None else 1,
+                "page_rows": int(self.args['page_rows']) if self.args['page_rows'] != None else len(rows),
+                "search": self.args['search'],
+                "sort_col": self.args['sort_col'] if self.args['sort_col'] else 'id',
+                "sort_dir": self.args['sort_dir'],
+            }
+            return self.getBootstrapOutput(**args)
+
+        return self.getResultObj(res)
 
     def getResultObj(self, res):
         servers = []
-        cols = self.getCols(res)
 
-        for line in res.split('\n'):
-            if line.startswith(self.args['backend']):
-                # Lines for server start with the name of the
-                # backend.
+        reader = self.getDict(res)
+        for row in reader:
+            # show only server
+            if row['svname'] in ['BACKEND', 'FRONTEND']:
+                continue
 
-                outCols = line.split(',')
-                if outCols[cols['svname']] != 'BACKEND':
-                    servers.append(" " .join(("Name: %s" % outCols[cols['svname']],
-                                              "Status: %s" % outCols[cols['status']],
-                                              "Weight: %s" %  outCols[cols['weight']],
-                                              "bIn: %s" % outCols[cols['bin']],
-                                              "bOut: %s" % outCols[cols['bout']])))
+            # filter server for given backend
+            if self.args['backend'] and row['pxname'] != self.args['backend']:
+                continue
+
+            # add id
+            row['id'] = f"{row['pxname']}/{row['svname']}"
+            row.move_to_end('id', last=False)
+            servers.append(dict(row))
 
         return servers

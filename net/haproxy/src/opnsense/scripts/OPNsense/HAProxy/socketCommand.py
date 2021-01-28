@@ -2,6 +2,7 @@
 import os
 import sys
 import argparse
+import traceback
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from haproxy.conn import HaPConn
@@ -44,6 +45,44 @@ def get_args():
         help='Specify value for a set command.',
         default=None
     )
+    parser.add_argument(
+        '--output',
+        help='Specify output format.',
+        choices=['json', 'bootstrap'],
+        default=None
+    )
+    parser.add_argument(
+        '--page-rows',
+        help='Limit output to the specified numbers of rows per page.',
+        default=None
+    )
+    parser.add_argument(
+        '--page',
+        help='Output page number.',
+        default=None
+    )
+    parser.add_argument(
+        '--search',
+        help='Search for string.',
+        default=None
+    )
+    parser.add_argument(
+        '--sort-col',
+        help='Sort output on this column.',
+        default=None
+    )
+    parser.add_argument(
+        '--sort-dir',
+        help='Sort output in this direction.',
+        default=None
+    )
+    parser.add_argument(
+        '--debug',
+        type=bool,
+        help='Show debug output.',
+        default=False
+    )
+
     return parser.parse_args()
 
 args = get_args()
@@ -53,9 +92,16 @@ command_args = {key:val for key,val in vars(args).items() if key !="command"}
 try:
     con = HaPConn(SOCKET)
     if con:
-        print(con.sendCmd(command_class(**command_args)))
+        result = con.sendCmd(command_class(**command_args), objectify=False)
+        if result:
+            print(result)
     else:
         print(f"Could not open socket {SOCKET}")
     # pylint: disable=broad-except
 except Exception as exc:
     print(f"While talking to {SOCKET}: {exc}")
+    if args['debug']:
+        tb = traceback.format_exc()
+        print(tb)
+
+

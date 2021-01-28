@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2016 Frank Wall
+Copyright (C) 2021 Andreas Stuerz
 OPNsense® is Copyright © 2014 – 2016 by Deciso B.V.
 All rights reserved.
 
@@ -29,47 +29,96 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
-        var gridopt = {
-            ajax: false,
-            selection: false,
-            multiSelect: false
-        };
         $("#grid-status").bootgrid('destroy');
-        $("#grid-status").bootgrid(gridopt);
+        var grid_status = $("#grid-status").UIBootgrid({
+            search: '/api/haproxy/maintenance/searchServer',
+            options: {
+                ajax: true,
+                selection: false,
+                multiSelect: false,
+                keepSelection: true,
+                rowCount:[10,25,50,100,500,1000],
+                searchSettings: {
+                    delay: 250,
+                    characters: 1
+                },
+                formatters: {
+                    "commands": function (column, row) {
+                        buttons = ""
+                        buttons += "<button type=\"button\" title=\"Set administrative state to ready. Puts the server in normal mode.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
+                        buttons += "<button type=\"button\" title=\"Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
+                        buttons += "<button type=\"button\" title=\"Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
+                        buttons += "<button type=\"button\" title=\"Change a server's weight.\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
+                        return buttons;
+                    },
+                },
+            }
+        }).on("loaded.rs.jquery.bootgrid", function(){
+            // set server status
+            grid_status.find(".command-set-state").on("click", function(e)
+            {
+                var uuid = $(this).data("row-id");
+                var backend = uuid.split("/")[0];
+                var server = uuid.split("/")[1];
+                var state = $(this).data("state");
 
-        // update server
-        $("#update-server").click(function() {
-            $('#processing-dialog').modal('show');
-            ajaxGet(url = "/api/haproxy/statistics/counters/", sendData={},
-                    callback = function (data, status) {
-                        if (status == "success") {
-                            // status
-                            $("#status_nav").show();
-                            $("#grid-status").bootgrid('destroy');
-                            var html = [];
-                            $.each(data, function (key, value) {
-                                var fields = ["id", "pxname", "svname", "status", "lastchg", "weight", "act", "downtime"];
-                                tr_str = '<tr>';
-                                for (var i = 0; i < fields.length; i++) {
-                                    if (value[fields[i]] != null) {
-                                        tr_str += '<td>' + value[fields[i]] + '</td>';
-                                    } else {
-                                        tr_str += '<td></td>';
+                payload = {
+                  'backend': backend,
+                  'server': server,
+                  'state': state
+                };
+
+                question = '{{ lang._('Set administrative state for this server?') }} </br></br>';
+                question += '<b>{{ lang._('Server: ') }}' + uuid + '</b></br>';
+                question += '<b>{{ lang._('State: ') }}' + state + '</b></br></br>';
+
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    question,
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                    $.post('/api/haproxy/maintenance/serverState', payload, function(data) {
+                        if (data.status != 'ok') {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: "{{ lang._('Error setting HAProxy server administrative state') }}",
+                                message: data.message,
+                                draggable: true,
+                                buttons: [{
+                                    label: '{{ lang._('Close') }}',
+                                    action: function(dialog){
+                                      dialog.close();
                                     }
-                                }
-                                tr_str += '</tr>';
-                                html.push(tr_str);
+                                }]
                             });
-                            $("#grid-status > tbody").html(html.join(''));
-                            $("#grid-status").bootgrid(gridopt);
+                        } else {
+                            $("#grid-status").bootgrid("reload");
                         }
-                        $('#processing-dialog').modal('hide');
-                    }
-            );
+                    });
+                });
+            });
+
+            // set server weight
+            grid_status.find(".command-set-weight").on("click", function(e)
+            {
+                var uuid = $(this).data("row-id");
+                var backend = uuid.split("/")[0];
+                var server = uuid.split("/")[1];
+                var weight = $(this).data("weight");
+
+                payload = {
+                  'backend': backend,
+                  'server': server,
+                  'weight': weight
+                };
+
+                console.log(payload);
+
+                alert(uuid + '  ' + weight);
+
+
+            });
+
         });
 
-        // initial load
-        $("#update-server").click();
     });
 </script>
 
@@ -87,32 +136,19 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="pxname" data-type="string">{{ lang._('Proxy') }}</th>
                 <th data-column-id="svname" data-type="string">{{ lang._('Server') }}</th>
                 <th data-column-id="status" data-type="string">{{ lang._('Status') }}</th>
-                <th data-column-id="lastchg" data-type="string">{{ lang._('Last Change') }}</th>
                 <th data-column-id="weight" data-type="string">{{ lang._('Weight') }}</th>
+                <th data-column-id="scur" data-type="string">{{ lang._('Sessions') }}</th>
+                <th data-column-id="bin" data-type="string">{{ lang._('Bytes in') }}</th>
+                <th data-column-id="bout" data-type="string">{{ lang._('Bytes out') }}</th>
                 <th data-column-id="act" data-type="string">{{ lang._('Active') }}</th>
                 <th data-column-id="downtime" data-type="string">{{ lang._('Downtime') }}</th>
+                <th data-column-id="lastchg" data-type="string">{{ lang._('Last Change') }}</th>
+                <th data-column-id="commands" data-width="8em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
-        <div  class="col-sm-12">
-            <div class="row">
-                <table class="table">
-                    <tr>
-                        <td>
-                            <div class="pull-right">
-                                <button id="update-server" type="button" class="btn btn-default">
-                                    <span>{{ lang._('Refresh') }}</span>
-                                    <span class="fa fa-refresh"></span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <hr/>
-        </div>
     </div>
 </div>
 
