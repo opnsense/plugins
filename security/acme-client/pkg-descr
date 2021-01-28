@@ -8,6 +8,15 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+2.3
+
+Added:
+* add support for Infomaniak domain API (#2169)
+
+Fixed:
+* fix "auto renewal" options not working in certificate and plugin settings (#2178)
+* fix Aliyun DNS API (#2200)
+
 2.2
 
 Added:

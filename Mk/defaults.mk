@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2021 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -59,7 +59,7 @@ PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
 PLUGIN_ABI?=	20.7
-PLUGIN_PHP?=	72
+PLUGIN_PHP?=	73
 PLUGIN_PYTHON?=	37
 
 REPLACEMENTS=	PLUGIN_ABI \
@@ -88,10 +88,17 @@ ${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
 .endif
 .endfor
 
-diff:
+ensure-stable:
+	@if ! git show-ref --verify --quiet refs/heads/stable/${PLUGIN_ABI}; then \
+		git update-ref refs/heads/stable/${PLUGIN_ABI} refs/remotes/origin/stable/${PLUGIN_ABI}; \
+		git config branch.stable/${PLUGIN_ABI}.merge refs/heads/stable/${PLUGIN_ABI}; \
+		git config branch.stable/${PLUGIN_ABI}.remote origin; \
+	fi
+
+diff: ensure-stable
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
 
-mfc:
+mfc: ensure-stable
 .for MFC in ${mfc_ARGS}
 .if exists(${MFC})
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
@@ -107,3 +114,9 @@ mfc:
 .endif
 	@git checkout master
 .endfor
+
+stable:
+	@git checkout stable/${PLUGIN_ABI}
+
+master:
+	@git checkout master
