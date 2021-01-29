@@ -5778,7 +5778,7 @@ body {
   padding: 0px 0px;
   margin: 0px 0px;
   background-color: none;
-  border: 1px solid #191919;
+  border: 1px solid #111;
   -webkit-box-shadow: 0px 3px 3px rgba(17, 17, 17, 0.8);
   box-shadow: 0px 3px 3px rgba(17, 17, 17, 0.8); }
 .content-box hr {
@@ -5822,7 +5822,7 @@ body {
     padding-top: 0 !important; } }
 
 .page-login {
-  background: #172c38; }
+  background: #131c22; }
   .page-login .container {
     min-height: 100%;
     margin-bottom: -60px; }
@@ -6571,4 +6571,9 @@ ul.jqtree-tree .jqtree-title {
 
 [role="listbox"] {
   border: 1px solid #191919 !important;
+}
+
+.interface-table-tr td {
+  background-color: #d77610 !important;
+  color: #FFF !important;
 }
