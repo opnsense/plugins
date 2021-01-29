@@ -17,10 +17,10 @@
 
 .tokenize.focus > .tokens-container {
   outline: 0;
-	border-color:#191919;
-	background-color:#21303A;
-	-webkit-box-shadow: none;
-	box-shadow: none;
+  border-color:#191919;
+  background-color:#21303A;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .tokenize > .tokens-container.input-sm {
@@ -35,11 +35,11 @@
 
 .tokenize > .tokens-container > .token {
   padding: 0 1.2em 0 5px;
-	background-color: #d7af10;
+  background-color: #d7af10;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-	border: 1px solid #191919;
+  border: 1px solid #191919;
 }
 
 .tokenize > .tokens-container > .token,
@@ -68,12 +68,12 @@
 }
 
 .tokenize > .tokens-container > .placeholder {
-	color:#c9c9c9;
+  color:#c9c9c9;
   padding: 0;
 }
 
 .tokenize > .tokens-container > .token-search {
-	color:#FFF;
+  color:#FFF;
   padding: 0;
 }
 
@@ -87,12 +87,11 @@
   padding: 0;
   margin: 0;
   line-height: 1em;
-	border:none;
+  border:none;
   outline: none;
   width: 100%;
   background-color: transparent;
 }
-
 
 .tokenize > .tokens-container > .token-search > input::-ms-clear {
   display: none;
@@ -126,7 +125,7 @@
 
 .tokenize > .tokens-container > .token > .dismiss:after {
   content: "×";
-	color: #FFF;
+  color: #FFF;
 }
 
 .tokenize > .tokens-container > .token.pending-delete > .dismiss {
