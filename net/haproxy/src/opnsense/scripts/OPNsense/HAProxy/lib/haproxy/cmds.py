@@ -6,6 +6,7 @@ import csv
 import json
 from io import StringIO
 
+
 class Cmd():
     """Cmd - Command base class"""
     req_args = []
