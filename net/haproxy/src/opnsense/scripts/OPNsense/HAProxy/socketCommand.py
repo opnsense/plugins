@@ -22,10 +22,7 @@ VALID_COMMANDS = {
 }
 
 def get_args():
-    parser = argparse.ArgumentParser(
-        description='Send haproxy commands via socket.',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
+    parser = argparse.ArgumentParser(description='Send haproxy commands via socket.')
     parser.add_argument('command',
         choices=list(VALID_COMMANDS),
         help='The command to execute via haproxy socket'
@@ -97,7 +94,6 @@ try:
             print(result)
     else:
         print(f"Could not open socket {SOCKET}")
-    # pylint: disable=broad-except
 except Exception as exc:
     print(f"While talking to {SOCKET}: {exc}")
     if args['debug']:

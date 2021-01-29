@@ -46,9 +46,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     "commands": function (column, row) {
                         buttons = ""
                         buttons += "<button type=\"button\" title=\"Set administrative state to ready. Puts the server in normal mode.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
-                        buttons += "<button type=\"button\" title=\"Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
-                        buttons += "<button type=\"button\" title=\"Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
-                        buttons += "<button type=\"button\" title=\"Change a server's weight.\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"Change a server's weight.\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
                         return buttons;
                     },
                 },
@@ -68,9 +68,9 @@ POSSIBILITY OF SUCH DAMAGE.
                   'state': state
                 };
 
-                question = '{{ lang._('Set administrative state for this server?') }} </br></br>';
-                question += '<b>{{ lang._('Server: ') }}' + uuid + '</b></br>';
+                question = '<b>{{ lang._('Server: ') }}' + uuid + '</b></br>';
                 question += '<b>{{ lang._('State: ') }}' + state + '</b></br></br>';
+                question += '{{ lang._('Set administrative state for this server?') }} </br></br>';
 
                 stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                     question,
@@ -102,23 +102,46 @@ POSSIBILITY OF SUCH DAMAGE.
                 var uuid = $(this).data("row-id");
                 var backend = uuid.split("/")[0];
                 var server = uuid.split("/")[1];
-                var weight = $(this).data("weight");
+                var currentWeight = $(this).data("weight");
 
-                payload = {
-                  'backend': backend,
-                  'server': server,
-                  'weight': weight
-                };
+                question = '<b>{{ lang._('Server: ') }}' + uuid + '</b></br></br>';
+                question += '<b>{{ lang._('Weight: ') }}</b>';
+                question += '<div class="form-group" style="display: block;">';
+                question += '<input class="form-control" id="newWeight" value="' + currentWeight  + '" type="text"/>';
+                question += '</div>';
+                question += '{{ lang._('Set weight for this server?') }} </br></br>';
 
-                console.log(payload);
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    question,
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
 
-                alert(uuid + '  ' + weight);
+                    payload = {
+                      'backend': backend,
+                      'server': server,
+                      'weight': $("#newWeight").val()
+                    };
 
-
+                    $.post('/api/haproxy/maintenance/serverWeight', payload, function(data) {
+                        if (data.status != 'ok') {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: "{{ lang._('Error setting HAProxy server weight') }}",
+                                message: data.message,
+                                draggable: true,
+                                buttons: [{
+                                    label: '{{ lang._('Close') }}',
+                                    action: function(dialog){
+                                      dialog.close();
+                                    }
+                                }]
+                            });
+                        } else {
+                            $("#grid-status").bootgrid("reload");
+                        }
+                    });
+                });
             });
-
         });
-
     });
 </script>
 
@@ -135,7 +158,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">{{ lang._('id') }}</th>
                 <th data-column-id="pxname" data-type="string">{{ lang._('Proxy') }}</th>
                 <th data-column-id="svname" data-type="string">{{ lang._('Server') }}</th>
+                <th data-column-id="addr" data-type="string">{{ lang._('Address') }}</th>
                 <th data-column-id="status" data-type="string">{{ lang._('Status') }}</th>
+                <th data-column-id="check_status" data-type="string">{{ lang._('Check Status') }}</th>
                 <th data-column-id="weight" data-type="string">{{ lang._('Weight') }}</th>
                 <th data-column-id="scur" data-type="string">{{ lang._('Sessions') }}</th>
                 <th data-column-id="bin" data-type="string">{{ lang._('Bytes in') }}</th>
@@ -148,6 +173,17 @@ POSSIBILITY OF SUCH DAMAGE.
             </thead>
             <tbody>
             </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="setStateBulk" data-state=\"ready\" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
+                    <button data-action="setStateBulk" data-state=\"drain\" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
+                    <button data-action="setStateBulk" data-state=\"maint\" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
+                    <button data-action="setWeightBulk" data-weight=\"\" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
+                </td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </div>

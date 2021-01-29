@@ -4,14 +4,11 @@
 import re
 import csv
 import json
-import math
-from pprint import pprint
-
 from io import StringIO
+
 
 class Cmd():
     """Cmd - Command base class"""
-
     req_args = []
     args = {}
     cmdTxt = ""
@@ -21,7 +18,7 @@ class Cmd():
     def __init__(self, *args, **kwargs):
         """Argument to the command are given in kwargs only. We ignore *args."""
         self.args = kwargs
-        valid_kwargs = [k for (k,v) in kwargs.items() if v is not None]
+        valid_kwargs = [k for (k, v) in kwargs.items() if v is not None]
 
         if not all([a in valid_kwargs for a in self.req_args]):
             raise Exception(f"Wrong number of arguments. Required arguments are: {self.WhatArgs()}")
@@ -55,11 +52,13 @@ class Cmd():
         """Returns refined output from HAProxy, packed inside a Python obj i.e. a dict()"""
         return res
 
+
 class setServerAgent(Cmd):
     """Set server agent command."""
     cmdTxt = "set server %(backend)s/%(server)s agent %(value)s\r\n"
     req_args = ['backend', 'server', 'value']
     helpTxt = "Force a server's agent to a new state."
+
 
 class setServerHealth(Cmd):
     """Set server health command."""
@@ -67,17 +66,20 @@ class setServerHealth(Cmd):
     req_args = ['backend', 'server', 'value']
     helpTxt = "Force a server's health to a new state."
 
+
 class setServerState(Cmd):
     """Set server state command."""
     cmdTxt = "set server %(backend)s/%(server)s state %(value)s\r\n"
     req_args = ['backend', 'server', 'value']
     helpTxt = "Force a server's administrative state to a new state."
 
+
 class setServerWeight(Cmd):
     """Set server weight command."""
     cmdTxt = "set server %(backend)s/%(server)s weight %(value)s\r\n"
     req_args = ['backend', 'server', 'value']
     helpTxt = "Force a server's weight to a new state."
+
 
 class showFBEnds(Cmd):
     """Base class for getting a listing Frontends and Backends"""
@@ -108,15 +110,18 @@ class showFBEnds(Cmd):
                 result.append(e.split(",")[0])
         return result
 
+
 class showFrontends(showFBEnds):
     """Show frontends command."""
     switch = "frontend"
     helpTxt = "List all Frontends."
 
+
 class showBackends(showFBEnds):
     """Show backends command."""
     switch = "backend"
     helpTxt = "List all Backends."
+
 
 class showInfo(Cmd):
     """Show info HAProxy command"""
@@ -131,6 +136,7 @@ class showInfo(Cmd):
 
         return resDict
 
+
 class showSessions(Cmd):
     """Show sess HAProxy command"""
     cmdTxt = "show sess\r\n"
@@ -139,8 +145,10 @@ class showSessions(Cmd):
     def getResultObj(self, res):
         return res.split('\n')
 
+
 class baseStat(Cmd):
     """Base class for stats commands."""
+
     def getDict(self, res):
         # clean response
         res = re.sub(r'^# ', '', res, re.MULTILINE)
@@ -157,17 +165,18 @@ class baseStat(Cmd):
             filtered_rows = []
             for row in rows:
                 def inner(row):
-                    for k,v in row.items():
+                    for k, v in row.items():
                         if kwargs['search'] in v:
                             return row
                     return None
+
                 match = inner(row)
                 if match:
                     filtered_rows.append(match)
             rows = filtered_rows
 
         # sort
-        rows.sort(key=lambda k : k[kwargs['sort_col']], reverse=True if kwargs['sort_dir'] == 'desc' else False)
+        rows.sort(key=lambda k: k[kwargs['sort_col']], reverse=True if kwargs['sort_dir'] == 'desc' else False)
 
         # pager
         total = len(rows)
@@ -182,6 +191,7 @@ class baseStat(Cmd):
             "rowCount": kwargs['page_rows'],
             "current": kwargs['page']
         })
+
 
 class showServers(baseStat):
     """Show all servers. If backend is given, show only servers for this backend. """
