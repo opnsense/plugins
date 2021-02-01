@@ -5,6 +5,10 @@ lua.
 Plugin Changelog
 ----------------
 
+1.11
+
+* Fix Milter Protocol by binding to Unix Sockets
+
 1.10
 
 * Add nameserver option
