@@ -28,8 +28,8 @@ all:
 
 .include "Mk/defaults.mk"
 
-CATEGORIES=	benchmarks databases devel dns mail misc net-mgmt \
-		net security sysutils vendor www
+CATEGORIES!=	ls -1d [a-z0-9]*
+CATEGORIES:=	${CATEGORIES:Nruleset.xml}
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
