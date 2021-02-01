@@ -121,11 +121,10 @@ smtpd_sasl_auth_enable = yes
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.antispam.enable_rspamd') and OPNsense.postfix.antispam.enable_rspamd == '1' %}
-smtpd_milters = inet:localhost:11332
-non_smtpd_milters = inet:localhost:11332
-milter_protocol = {{ OPNsense.postfix.antispam.milter_rspamd }}
-milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_authen}
-milter_default_action = accept
+smtpd_milters = unix:/var/run/rspamd/milter.sock
+non_smtpd_milters = $smtpd_milters
+milter_protocol = 6
+milter_default_action = {{ OPNsense.postfix.antispam.default_action }}
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.enforce_recipient_check') and OPNsense.postfix.general.enforce_recipient_check == '1' %}
@@ -178,6 +177,9 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.reject_unauth_destination') and OPNsense.postfix.general.reject_unauth_destination == '1' %}
 {% do smtpd_recipient_restrictions.append('reject_unauth_destination') %}
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.reject_unverified_recipient') and OPNsense.postfix.general.reject_unverified_recipient == '1' %}
+{% do smtpd_recipient_restrictions.append('reject_unverified_recipient') %}
 {% endif %}
 
 {% if smtpd_recipient_restrictions|length >= 1 %}
