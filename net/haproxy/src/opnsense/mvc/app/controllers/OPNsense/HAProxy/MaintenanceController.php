@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2021 Andreas Stuerz
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
