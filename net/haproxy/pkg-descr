@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.0
+
+Added:
+* new feature to change server state and weight on-the-fly (#2213)
+
 2.26
 
 Fixed:
