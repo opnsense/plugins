@@ -73,8 +73,6 @@ class HaPConn(object):
             res += output.decode('ASCII')
             output = self.sock.recv(const.HAP_BUFSIZE)
 
-        self.close()
-
         if objectify:
             return cmd.getResultObj(res)
 

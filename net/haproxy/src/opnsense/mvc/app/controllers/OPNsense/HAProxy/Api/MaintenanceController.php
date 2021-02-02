@@ -47,9 +47,6 @@ class MaintenanceController extends ApiControllerBase
      */
     public function searchServerAction()
     {
-        #print_r($this->request->getPost());
-        #print_r($this->request->getPost('sort'));
-
         return $this->getData(
             ["server_status_list"],
             ["rowCount", "current", "searchPhrase", "sort"]
@@ -77,6 +74,30 @@ class MaintenanceController extends ApiControllerBase
         return $this->saveData(
             ["server_state"],
             ["backend", "server", "state"]
+        );
+    }
+
+    /**
+     * set server administrative state for multiple servers
+     * @return array|mixed
+     */
+    public function serverStateBulkAction()
+    {
+        return $this->saveData(
+            ["server_state_bulk"],
+            ["server_ids", "state"]
+        );
+    }
+
+    /**
+     * set server weight for multiple servers
+     * @return array|mixed
+     */
+    public function serverWeightBulkAction()
+    {
+        return $this->saveData(
+            ["server_weight_bulk"],
+            ["server_ids", "weight"]
         );
     }
 

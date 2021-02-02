@@ -34,8 +34,8 @@ POSSIBILITY OF SUCH DAMAGE.
             search: '/api/haproxy/maintenance/searchServer',
             options: {
                 ajax: true,
-                selection: false,
-                multiSelect: false,
+                selection: true,
+                multiSelect: true,
                 keepSelection: true,
                 rowCount:[10,25,50,100,500,1000],
                 searchSettings: {
@@ -54,15 +54,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 },
             }
         }).on("loaded.rs.jquery.bootgrid", function(){
-            // set server status
-            grid_status.find(".command-set-state").on("click", function(e)
-            {
+            // set single - server state
+            grid_status.find(".command-set-state").off().on("click", function(e) {
                 var uuid = $(this).data("row-id");
                 var backend = uuid.split("/")[0];
                 var server = uuid.split("/")[1];
                 var state = $(this).data("state");
-
-                payload = {
+                var payload = {
                   'backend': backend,
                   'server': server,
                   'state': state
@@ -75,30 +73,29 @@ POSSIBILITY OF SUCH DAMAGE.
                 stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                     question,
                     '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                    $.post('/api/haproxy/maintenance/serverState', payload, function(data) {
-                        if (data.status != 'ok') {
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_DANGER,
-                                title: "{{ lang._('Error setting HAProxy server administrative state') }}",
-                                message: data.message,
-                                draggable: true,
-                                buttons: [{
-                                    label: '{{ lang._('Close') }}',
-                                    action: function(dialog){
-                                      dialog.close();
-                                    }
-                                }]
-                            });
-                        } else {
-                            $("#grid-status").bootgrid("reload");
-                        }
-                    });
+                        $.post('/api/haproxy/maintenance/serverState', payload, function(data) {
+                            if (data.status != 'ok') {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    title: "{{ lang._('Error setting HAProxy server administrative state') }}",
+                                    message: data.message,
+                                    buttons: [{
+                                        label: '{{ lang._('Close') }}',
+                                        action: function(dialog){
+                                          dialog.close();
+                                        }
+                                    }]
+                                });
+                            } else {
+                                $("#grid-status").bootgrid("reload");
+                            }
+                        });
                 });
+
             });
 
-            // set server weight
-            grid_status.find(".command-set-weight").on("click", function(e)
-            {
+            // set single - server weight
+            grid_status.find(".command-set-weight").off().on("click", function(e) {
                 var uuid = $(this).data("row-id");
                 var backend = uuid.split("/")[0];
                 var server = uuid.split("/")[1];
@@ -115,7 +112,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     question,
                     '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
 
-                    payload = {
+                    var payload = {
                       'backend': backend,
                       'server': server,
                       'weight': $("#newWeight").val()
@@ -127,7 +124,6 @@ POSSIBILITY OF SUCH DAMAGE.
                                 type: BootstrapDialog.TYPE_DANGER,
                                 title: "{{ lang._('Error setting HAProxy server weight') }}",
                                 message: data.message,
-                                draggable: true,
                                 buttons: [{
                                     label: '{{ lang._('Close') }}',
                                     action: function(dialog){
@@ -141,6 +137,105 @@ POSSIBILITY OF SUCH DAMAGE.
                     });
                 });
             });
+
+            // set bulk - server state
+            grid_status.find("*[data-action=setStateBulk]").off().on("click", function(e) {
+                var rows = $("#grid-status").bootgrid("getSelectedRows");
+                var server_ids = rows.join()
+                var state = $(this).data("state");
+                var payload = {
+                  'server_ids': server_ids,
+                  'state': state
+                };
+
+                if (rows != undefined && rows.length > 0) {
+                    question = '<b>{{ lang._('Selected server: ') }}</b></br>';
+                    question += '<ul>';
+                    $.each(rows, function(key, id){
+                        question += '<li>' + id + '</li>';
+                    });
+                    question += '</ul>';
+                    question += '<b>{{ lang._('State: ') }}' + state + '</b></br></br>';
+                    question += '{{ lang._('Set administrative state for all selected server?') }} </br></br>';
+
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        question,
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                            $.post('/api/haproxy/maintenance/serverStateBulk', payload, function(data) {
+                                if (data.status != 'ok') {
+                                    BootstrapDialog.show({
+                                        type: BootstrapDialog.TYPE_DANGER,
+                                        title: "{{ lang._('Error setting HAProxy server administrative state') }}",
+                                        message: data.message,
+                                        buttons: [{
+                                            label: '{{ lang._('Close') }}',
+                                            action: function(dialog){
+                                              dialog.close();
+                                              // reload - because some are successfully executed
+                                              $("#grid-status").bootgrid("reload");
+                                            }
+                                        }]
+                                    });
+                                } else {
+                                    $("#grid-status").bootgrid("deselect");
+                                    $("#grid-status").bootgrid("reload");
+                                }
+                            });
+                    });
+                }
+            });
+
+            // set bulk - server weight
+            grid_status.find("*[data-action=setWeightBulk]").off().on("click", function(e) {
+                var rows = $("#grid-status").bootgrid("getSelectedRows");
+                var server_ids = rows.join()
+
+                if (rows != undefined && rows.length > 0) {
+                    question = '<b>{{ lang._('Selected server: ') }}</b></br>';
+                    question += '<ul>';
+                    $.each(rows, function(key, id){
+                        question += '<li>' + id + '</li>';
+                    });
+                    question += '</ul>';
+                    question += '<b>{{ lang._('Weight: ') }}</b>';
+                    question += '<div class="form-group" style="display: block;">';
+                    question += '<input class="form-control" id="newBulkWeight" value="" type="text"/>';
+                    question += '</div>';
+                    question += '{{ lang._('Set weight for all selected server?') }} </br></br>';
+
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        question,
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                            var payload = {
+                              'server_ids': server_ids,
+                              'weight': $("#newBulkWeight").val()
+                            };
+
+                            $.post('/api/haproxy/maintenance/serverWeightBulk', payload, function(data) {
+                                if (data.status != 'ok') {
+                                    BootstrapDialog.show({
+                                        type: BootstrapDialog.TYPE_DANGER,
+                                        title: "{{ lang._('Error setting HAProxy server weight') }}",
+                                        message: data.message,
+                                        buttons: [{
+                                            label: '{{ lang._('Close') }}',
+                                            action: function(dialog){
+                                              dialog.close();
+                                              // reload - because some are successfully executed
+                                              $("#grid-status").bootgrid("reload");
+
+                                            }
+                                        }]
+                                    });
+                                } else {
+                                    $("#grid-status").bootgrid("deselect");
+                                    $("#grid-status").bootgrid("reload");
+                                }
+                            });
+                    });
+                }
+            });
+
         });
     });
 </script>
@@ -177,10 +272,10 @@ POSSIBILITY OF SUCH DAMAGE.
             <tr>
                 <td></td>
                 <td>
-                    <button data-action="setStateBulk" data-state=\"ready\" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
-                    <button data-action="setStateBulk" data-state=\"drain\" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
-                    <button data-action="setStateBulk" data-state=\"maint\" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
-                    <button data-action="setWeightBulk" data-weight=\"\" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
+                    <button data-action="setStateBulk" title="Set administrative state to ready for all selected items." data-state="ready" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
+                    <button data-action="setStateBulk" title="Set administrative state to drain for all selected items." data-state="drain" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
+                    <button data-action="setStateBulk" title="Set administrative state to maintenance for all selected items." data-state="maint" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
+                    <button data-action="setWeightBulk" data-weight="" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
                 </td>
             </tr>
             </tfoot>
