@@ -86,7 +86,7 @@
                     </OptionValues>
                 </sslServerVerify>
                 <maxDHSize type="IntegerField">
-                    <default>1024</default>
+                    <default>2048</default>
                     <MinimumValue>1024</MinimumValue>
                     <MaximumValue>16384</MaximumValue>
                     <ValidationMessage>Please specify a value between 1024 and 16384.</ValidationMessage>
@@ -107,12 +107,16 @@
                     <Required>N</Required>
                 </checkBufferSize>
                 <spreadChecks type="IntegerField">
-                    <default>0</default>
+                    <default>2</default>
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>50</MaximumValue>
                     <ValidationMessage>Please specify a value between 0 and 50.</ValidationMessage>
                     <Required>Y</Required>
                 </spreadChecks>
+                <bogusProxyEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </bogusProxyEnabled>
                 <luaMaxMem type="IntegerField">
                     <default>0</default>
                     <MinimumValue>0</MinimumValue>
@@ -1322,6 +1326,7 @@
                     <OptionValues>
                         <http10>HTTP/1.0 [default]</http10>
                         <http11>HTTP/1.1</http11>
+                        <http2>HTTP/2</http2>
                     </OptionValues>
                 </http_version>
                 <http_host type="TextField">

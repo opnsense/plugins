@@ -69,6 +69,12 @@
         <help><![CDATA[Add some randomness in the check interval between 0 and +/- 50%. A value between 2 and 5 seems to show good results. The default value is 0 (disabled).]]></help>
     </field>
     <field>
+        <id>haproxy.general.tuning.bogusProxyEnabled</id>
+        <label>Enable old bogus PROXY v2 implementation</label>
+        <type>checkbox</type>
+        <help><![CDATA[A bug in the PROXY protocol v2 implementation was present in HAProxy up to version 2.1. Enabling this option reverts this old buggy behaviour.]]></help>
+    </field>
+    <field>
         <id>haproxy.general.tuning.customOptions</id>
         <label>Custom options</label>
         <type>textbox</type>

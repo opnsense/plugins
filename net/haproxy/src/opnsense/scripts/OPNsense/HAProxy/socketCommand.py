@@ -148,7 +148,7 @@ try:
         if con:
             result = con.sendCmd(command_class(**command_args), objectify=False)
             if result:
-                print(result.strip())
+                print(result)
         else:
             print(f"Could not open socket {SOCKET}")
 

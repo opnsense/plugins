@@ -11,12 +11,20 @@ Plugin Changelog
 Added:
 * new feature to change server state and weight on-the-fly (#2213)
 * add new SSL bind option: prefer-client-ciphers
+* add global option to enable old buggy behaviour for PROXY v2 connections
+* add support for HTTP/2 in health checks
+
+Fixed:
+* fix maintenance page (python error: 'list' object has no attribute 'strip')
 
 Changed:
 * change default SSL version to TLSv1.2 (ssl-min-ver)
 * remove weak ciphers from (default) SSL settings
 * remove default SSL bind options that would conflict with ssl-min-ver
 * move SSL bind options below other SSL settings, they are rarely used nowadays
+* change default for tune.ssl.default-dh-param from 1024 to 2048
+* use new "http-check send" command for HTTP health checks
+* change default for spreadChecks from 0 to 2
 
 2.26
 
