@@ -27,12 +27,21 @@ all: check
 
 .include "defaults.mk"
 
+PLUGINSDIR=		${.CURDIR}/../..
+TEMPLATESDIR=		${PLUGINSDIR}/Templates
+SCRIPTSDIR=		${PLUGINSDIR}/Scripts
+
+.if exists(${GIT}) && exists(${GITVERSION})
+PLUGIN_COMMIT!=		${GITVERSION}
+.else
+PLUGIN_COMMIT=		unknown 0 undefined
+.endif
+
+PLUGIN_HASH?=		${PLUGIN_COMMIT:[3]}
+
 PLUGIN_DESC=		pkg-descr
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
-
-PLUGINSDIR=		${.CURDIR}/../..
-TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
 PLUGIN_WWW?=		https://opnsense.org/
 PLUGIN_REVISION?=	0
@@ -183,7 +192,7 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" "${DESTDIR}${LOCALBASE}/$${FILE%%.in}"; \
 		fi; \
 	done
-	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
+	cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
@@ -312,9 +321,9 @@ sweep: check
 	fi
 	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
-	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 	find ${.CURDIR} -type f -depth 1 -print0 | \
-	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+	    xargs -0 -n1 ${SCRIPTSDIRs/cleanfile
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 
