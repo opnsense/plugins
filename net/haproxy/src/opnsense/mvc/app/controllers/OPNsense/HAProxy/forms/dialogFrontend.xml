@@ -90,15 +90,6 @@
         <style>mode_table table_http table_ssl table_ssl_advanced table_ssl_advanced_true</style>
     </field>
     <field>
-        <id>frontend.ssl_bindOptions</id>
-        <label>Bind options</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <sortable>true</sortable>
-        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
-    </field>
-    <field>
         <id>frontend.ssl_minVersion</id>
         <label>Minimum SSL Version</label>
         <type>dropdown</type>
@@ -145,6 +136,15 @@
         <label>HSTS max-age</label>
         <type>text</type>
         <help><![CDATA[Future requests to the domain should use only HTTPS for the specified time (in seconds): 15768000 = 6 months]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_bindOptions</id>
+        <label>Bind options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
         <label>Client Certificate Auth</label>

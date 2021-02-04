@@ -10,6 +10,13 @@ Plugin Changelog
 
 Added:
 * new feature to change server state and weight on-the-fly (#2213)
+* add new SSL bind option: prefer-client-ciphers
+
+Changed:
+* change default SSL version to TLSv1.2 (ssl-min-ver)
+* remove weak ciphers from (default) SSL settings
+* remove default SSL bind options that would conflict with ssl-min-ver
+* move SSL bind options below other SSL settings, they are rarely used nowadays
 
 2.26
 
