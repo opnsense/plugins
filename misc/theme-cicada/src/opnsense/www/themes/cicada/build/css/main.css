@@ -6615,3 +6615,8 @@ ul.jqtree-tree .jqtree-title {
 [role="listbox"] {
   border: 1px solid #191919 !important;
 }
+
+.interface-table-tr td {
+  background-color: #d77610 !important;
+  color: #FFF !important;
+}
