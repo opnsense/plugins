@@ -8,3 +8,8 @@ done
 
 touch /var/log/redis/redis.log
 chown redis:redis /var/log/redis/redis.log
+
+# Add 'rspamd' user to 'redis' group to allow Unix socket access
+if [ -f "/usr/local/bin/rspamd" ]; then
+  /usr/sbin/pw group mod redis -m rspamd
+fi

@@ -11,3 +11,8 @@ chmod o+rx /usr/local/etc/rspamd/local.d
 chown -R rspamd:rspamd /var/db/rspamd
 chown -R rspamd:rspamd /var/log/rspamd
 chown -R rspamd:rspamd /var/run/rspamd
+
+# Add 'rspamd' user to 'redis' group to allow Unix socket access
+if [ -f "/usr/local/bin/rspamd" ]; then
+  /usr/sbin/pw group mod redis -m rspamd
+fi
