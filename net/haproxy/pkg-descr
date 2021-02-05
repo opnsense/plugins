@@ -13,6 +13,7 @@ Added:
 * add new SSL bind option: prefer-client-ciphers
 * add global option to enable old buggy behaviour for PROXY v2 connections
 * add support for HTTP/2 in health checks
+* add config export (#2035)
 
 Fixed:
 * fix maintenance page (python error: 'list' object has no attribute 'strip')

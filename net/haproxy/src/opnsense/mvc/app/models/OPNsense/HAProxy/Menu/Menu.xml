@@ -32,6 +32,7 @@
               <Server VisibleName="Server" url="/ui/haproxy/maintenance#server"/>
           </Maintenance>
           <Log VisibleName="Log File" order="40" url="/ui/diagnostics/log/core/haproxy"/>
+          <Export VisibleName="Config Export" order="50" url="/ui/haproxy/export"/>
       </HAProxy>
     </Services>
 </menu>
