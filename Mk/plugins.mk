@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2020 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -27,9 +27,9 @@ all: check
 
 .include "defaults.mk"
 
-PLUGINSDIR=		${.CURDIR}/../..
-TEMPLATESDIR=		${PLUGINSDIR}/Templates
+PLUGINSDIR?=		${.CURDIR}/../..
 SCRIPTSDIR=		${PLUGINSDIR}/Scripts
+TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
 .if exists(${GIT}) && exists(${GITVERSION})
 PLUGIN_COMMIT!=		${GITVERSION}
@@ -333,7 +333,7 @@ style: check
 	@: > ${.CURDIR}/.style.out
 .for STYLEDIR in ${STYLEDIRS}
 	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		(phpcs --standard=${.CURDIR}/../../ruleset.xml \
+		(phpcs --standard=${PLUGINSDIR}/ruleset.xml \
 		    ${.CURDIR}/${STYLEDIR} || true) > \
 		    ${.CURDIR}/.style.out; \
 	fi
@@ -348,7 +348,7 @@ style: check
 style-fix: check
 .for STYLEDIR in ${STYLEDIRS}
 	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		phpcbf --standard=${.CURDIR}/../../ruleset.xml \
+		phpcbf --standard=${PLUGINSDIR}/ruleset.xml \
 		    ${.CURDIR}/${STYLEDIR} || true; \
 	fi
 .endfor
