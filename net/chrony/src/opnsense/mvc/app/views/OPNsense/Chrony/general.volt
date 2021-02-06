@@ -33,23 +33,27 @@
     <li><a data-toggle="tab" href="#chronyauthdata">{{ lang._('Auth Data') }}</a></li>
 </ul>
 
-<div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-    <div class="col-md-12">
-        <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+<div class="tab-content content-box tab-content">
+    <div id="general" class="tab-pane fade in active">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+            </div>
+        </div>
     </div>
     <div id="chronysources" class="tab-pane fade in">
-      <pre id="listchronysources"></pre>
+        <pre id="listchronysources"></pre>
     </div>
     <div id="chronystats" class="tab-pane fade in">
-      <pre id="listchronystats"></pre>
+        <pre id="listchronystats"></pre>
     </div>
     <div id="chronytracking" class="tab-pane fade in">
-      <pre id="listchronytracking"></pre>
+        <pre id="listchronytracking"></pre>
     </div>
     <div id="chronyauthdata" class="tab-pane fade in">
-      <pre id="listchronyauthdata"></pre>
+        <pre id="listchronyauthdata"></pre>
     </div>
 </div>
 
