@@ -28,7 +28,7 @@
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#chronysources">{{ lang._('Sources') }}</a></li>
-    <li><a data-toggle="tab" href="#chronystats">{{ lang._('Stats') }}</a></li>
+    <li><a data-toggle="tab" href="#chronysourcestats">{{ lang._('Source Stats') }}</a></li>
     <li><a data-toggle="tab" href="#chronytracking">{{ lang._('Tracking') }}</a></li>
     <li><a data-toggle="tab" href="#chronyauthdata">{{ lang._('Auth Data') }}</a></li>
 </ul>
@@ -46,8 +46,8 @@
     <div id="chronysources" class="tab-pane fade in">
         <pre id="listchronysources"></pre>
     </div>
-    <div id="chronystats" class="tab-pane fade in">
-        <pre id="listchronystats"></pre>
+    <div id="chronysourcestats" class="tab-pane fade in">
+        <pre id="listchronysourcestats"></pre>
     </div>
     <div id="chronytracking" class="tab-pane fade in">
         <pre id="listchronytracking"></pre>
@@ -66,9 +66,9 @@ function update_chronysources() {
     });
 }
 
-function update_chronystats() {
-    ajaxCall(url="/api/chrony/service/chronystats", sendData={}, callback=function(data,status) {
-        $("#listchronystats").text(data['response']);
+function update_chronysourcestats() {
+    ajaxCall(url="/api/chrony/service/chronysourcestats", sendData={}, callback=function(data,status) {
+        $("#listchronysourcestats").text(data['response']);
     });
 }
 
@@ -96,7 +96,7 @@ function update_chronyauthdata() {
 
     // Call function update_neighbor with a auto-refresh of 5 seconds
     setInterval(update_chronysources, 5000);
-    setInterval(update_chronystats, 5000);
+    setInterval(update_chronysourcestats, 5000);
     setInterval(update_chronytracking, 5000);
     setInterval(update_chronyauthdata, 5000);
  
