@@ -29,6 +29,8 @@
 namespace OPNsense\Chrony\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Chrony\General;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
