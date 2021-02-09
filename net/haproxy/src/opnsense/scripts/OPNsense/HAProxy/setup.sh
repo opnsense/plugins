@@ -18,4 +18,14 @@ find /var/haproxy -type d -exec chmod 550 {} \;
 /usr/local/opnsense/scripts/OPNsense/HAProxy/exportErrorFiles.php > /dev/null 2>&1
 /usr/local/opnsense/scripts/OPNsense/HAProxy/exportMapFiles.php > /dev/null 2>&1
 
+# deploy new config
+case "$1" in
+deploy)
+    # run syntax check against newly generated config
+    if /usr/local/sbin/haproxy -c -f /usr/local/etc/haproxy.conf.staging > /dev/null 2>&1; then
+        cp /usr/local/etc/haproxy.conf.staging /usr/local/etc/haproxy.conf
+    fi
+    ;;
+esac
+
 exit 0

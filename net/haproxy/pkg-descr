@@ -14,9 +14,12 @@ Added:
 * add global option to enable old buggy behaviour for PROXY v2 connections
 * add support for HTTP/2 in health checks
 * add config export (#2035)
+* add config diff
+* guard against broken config by using a staging config file
 
 Fixed:
 * fix maintenance page (python error: 'list' object has no attribute 'strip')
+* prevent service outage by aborting "Apply" when configtest fails
 
 Changed:
 * change default SSL version to TLSv1.2 (ssl-min-ver)
@@ -26,6 +29,7 @@ Changed:
 * change default for tune.ssl.default-dh-param from 1024 to 2048
 * use new "http-check send" command for HTTP health checks
 * change default for spreadChecks from 0 to 2
+* no longer overwrite live config file when running a syntax check
 
 2.26
 

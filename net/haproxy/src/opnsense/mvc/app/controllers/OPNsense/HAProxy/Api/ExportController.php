@@ -53,6 +53,17 @@ class ExportController extends ApiControllerBase
     }
 
     /**
+     * get config diff
+     * @return string
+     */
+    public function diffAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("haproxy configdiff");
+        return array("response" => $response);
+    }
+
+    /**
      * download config file or config archive
      * @return array|mixed
      */

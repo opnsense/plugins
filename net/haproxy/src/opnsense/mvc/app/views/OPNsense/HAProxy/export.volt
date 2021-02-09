@@ -40,6 +40,35 @@ POSSIBILITY OF SUCH DAMAGE.
         update_showconf();
 
         /**
+         * show HAProxy config diff
+         */
+        function update_showdiff() {
+            ajaxCall(url="/api/haproxy/export/diff/", sendData={}, callback=function(data,status) {
+                diff = '';
+                var lines = data['response'].split("\n");
+                $.each(lines, function(n, line) {
+                    switch(line.substring(0,1)) {
+                        case '+':
+                            color = '#3bbb33';
+                            break;
+                        case '-':
+                            color = '#c13928';
+                            break;
+                        case '@':
+                            color = '#3bb9c3';
+                            break;
+                        default:
+                            color = '#000000';
+                    }
+                    diff += '<span style="color: ' + color + '; white-space: pre-wrap; font-family: monospace;">' + line + '</span><br>';
+
+                });
+                $("#showdiff").append(diff);
+            });
+        }
+        update_showdiff();
+
+        /**
          * download HAProxy config
          */
         $('[id*="exportbtn"]').each(function(){
@@ -66,6 +95,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#export"><b>{{ lang._('Config Export') }}</b></a></li>
+    <li><a data-toggle="tab" href="#diff">{{ lang._('Config Diff') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">
@@ -78,6 +108,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 <button class="btn btn-primary" id="exportbtn" data-type="config" type="button"><b>{{ lang._('Download Config') }}</b></button>
                 <button class="btn btn-primary" id="exportbtn" data-type="all" type="button"><b>{{ lang._('Download All') }}</b></button>
             </div>
+        </div>
+    </div>
+
+    <div id="diff" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            <div id="showdiff"></div>
         </div>
     </div>
 
