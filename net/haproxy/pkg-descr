@@ -20,6 +20,7 @@ Added:
 Fixed:
 * fix maintenance page (python error: 'list' object has no attribute 'strip')
 * prevent service outage by aborting "Apply" when configtest fails
+* fix direct links to individual statistics tabs
 
 Changed:
 * change default SSL version to TLSv1.2 (ssl-min-ver)

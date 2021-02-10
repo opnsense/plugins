@@ -314,7 +314,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
                         title: "{{ lang._('HAProxy configtest found critical errors') }}",
-                        message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Run syntax check for further details.') }}",
+                        message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Run syntax check for further details or review the changes in the %sConfiguration Diff%s.')|format('<a href=\"/ui/haproxy/export#diff\">','</a>') }}",
                         buttons: [{
                             icon: 'fa fa-trash-o',
                             label: '{{ lang._('Abort') }}',
