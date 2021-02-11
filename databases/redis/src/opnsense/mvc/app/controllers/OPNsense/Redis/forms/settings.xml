@@ -24,7 +24,7 @@
         <id>redis.general.port</id>
         <label>TCP Listen Port</label>
         <type>text</type>
-        <help>Enter a valid TCP port.</help>
+        <help>Enter a valid TCP port. Set this value to 0 if you only want to use a local Unix socket connection.</help>
       </field>
       <field>
         <id>redis.general.log_level</id>
