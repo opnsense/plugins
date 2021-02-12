@@ -123,6 +123,8 @@ abstract class LeCommon
         // Store config objects
         $this->config = $obj;
         $this->model = $model;
+        // Set log file
+        $this->acme_args[] = LeUtils::execSafe('--log %s', self::ACME_LOG_FILE);
         return true;
     }
 

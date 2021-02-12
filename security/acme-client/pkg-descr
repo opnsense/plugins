@@ -12,6 +12,7 @@ Plugin Changelog
 
 Fixed:
 * fix missing "--ecc" parameter when renewing ECC certs (#2223)
+* fix log file location (#2227)
 
 2.3
 
