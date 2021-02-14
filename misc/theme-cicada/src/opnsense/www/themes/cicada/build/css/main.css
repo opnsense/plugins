@@ -2472,9 +2472,7 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-	background-color: #686868;
-	opacity: 0.8;
-	filter: alpha(opacity=80);
+	background-color: none !important;
 	border-color: #191919; }
 
   select[disabled]:hover, select[readonly]:hover, fieldset[disabled]:hover,
@@ -2526,9 +2524,7 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    background-color: none;
     border:1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none; }
@@ -6331,11 +6327,11 @@ label > input[type="radio"] {
 
 #ipsec .ipsec-tab {
 	background-color: #3a3a3a !important;
-	color: #928873 !important;
+	color: #FFF !important;
 }
 
 #ipsec .ipsec-tab.activetab {
-	background-color: #262626 !important;
+	background-color: #2d2d2d !important;
 	color: #dd630d !important;
 }
 .fw_pass {

@@ -335,11 +335,6 @@ svg.nvd3-svg {
     fill-opacity: .7;
 }
 
-circle.nv-legend-symbol {
-  fill: rgb(151, 151, 151) !important;
-  stroke: rgb(151, 151, 151) !important;
-}
-
 /**********
 *  Print
 */

@@ -6513,3 +6513,7 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 label.btn.au-target {
   color: #FFF !important;
 }
+
+.table.border {
+    border: 1px solid #bdbdbd;
+}

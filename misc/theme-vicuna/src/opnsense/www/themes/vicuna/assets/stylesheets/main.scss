@@ -10434,12 +10434,14 @@ label > input {
   }
 
   .ipsec-tab {
-    background-color: #839caa !important;
+    background-color: #202f3a !important;
     color: #FFF !important;
+    opacity: 0.5;
 
     &.activetab {
-      background-color: #315a71 !important;
-      color: #FFF !important;
+      background-color: #202f3a !important;
+      color: #D77610 !important;
+      opacity: 1;
     }
   }
 }
@@ -10759,4 +10761,8 @@ ul.jqtree-tree {
 .interface-table-tr td {
   background-color: #d77610 !important;
   color: #FFF !important;
+}
+
+.table.border {
+  border: 1px solid #181818 !important;
 }
