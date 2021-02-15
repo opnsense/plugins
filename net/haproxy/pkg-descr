@@ -16,6 +16,7 @@ Added:
 * add config export (#2035)
 * add config diff
 * guard against broken config by using a staging config file
+* add basic OCSP stapling support (#1430)
 
 Fixed:
 * fix maintenance page (python error: 'list' object has no attribute 'strip')
@@ -31,6 +32,7 @@ Changed:
 * use new "http-check send" command for HTTP health checks
 * change default for spreadChecks from 0 to 2
 * no longer overwrite live config file when running a syntax check
+* make restart/reload commands usable in cron jobs
 
 2.26
 

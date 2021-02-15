@@ -80,7 +80,13 @@ foreach ($configNodes as $key => $value) {
                                             if (!empty((string)$cert->caref)) {
                                                 $cert = (array)$cert;
                                                 $ca = ca_chain($cert);
+                                                // append the CA to the certificate data
                                                 $pem_content .= "\n" . $ca;
+                                                // additionally export CA to it's own file,
+                                                // not required for HAProxy, but makes OCSP handling easier
+                                                $output_ca_filename = $export_path . $cert_refid . ".issuer";
+                                                file_put_contents($output_ca_filename, $ca);
+                                                chmod($output_ca_filename, 0600);
                                             }
                                         }
                                         // generate pem file for individual certs

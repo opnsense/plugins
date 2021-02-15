@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -f /etc/rc.conf.d/haproxy ]; then
+. /etc/rc.conf.d/haproxy
+fi
+
 # NOTE: Keep /var/haproxy on this list, see GH issue opnsense/plugins #39.
 HAPROXY_DIRS="/var/haproxy /var/haproxy/var/run /tmp/haproxy /tmp/haproxy/ssl /tmp/haproxy/lua /tmp/haproxy/errorfiles /tmp/haproxy/mapfiles"
 
@@ -17,6 +21,11 @@ find /var/haproxy -type d -exec chmod 550 {} \;
 /usr/local/opnsense/scripts/OPNsense/HAProxy/exportLuaScripts.php > /dev/null 2>&1
 /usr/local/opnsense/scripts/OPNsense/HAProxy/exportErrorFiles.php > /dev/null 2>&1
 /usr/local/opnsense/scripts/OPNsense/HAProxy/exportMapFiles.php > /dev/null 2>&1
+
+# update OCSP data
+if [ "${haproxy_ocsp}" == "YES" ]; then
+  /usr/local/opnsense/scripts/OPNsense/HAProxy/updateOcsp.sh > /dev/null 2>&1
+fi
 
 # deploy new config
 case "$1" in
