@@ -328,7 +328,7 @@ sweep: check
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
 revision:
-	${SCRIPTSDIR}/revbump.sh ${.CURDIR}
+	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 
