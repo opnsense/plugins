@@ -1,5 +1,6 @@
 PLUGIN_NAME=		sunnyvalley
 PLUGIN_VERSION=		1.2
+PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		Vendor repository for Sensei (Next Generation Firewall Extensions)
 PLUGIN_MAINTAINER=	opensource@sunnyvalley.io
 PLUGIN_WWW=		https://www.sunnyvalley.io
