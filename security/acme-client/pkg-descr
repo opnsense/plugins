@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * add new page to show AcmeClient entries from system log
+* add tooltips for certificate command buttons (#2188)
 
 Fixed:
 * fix missing "--ecc" parameter when renewing ECC certs (#2223)
