@@ -71,6 +71,15 @@ function acmeclient_services()
     return $services;
 }
 
+function acmeclient_syslog()
+{
+    $logfacilities = array();
+    $logfacilities['acmeclient'] = array(
+        'facility' => array('acmeclient', 'acme.sh')
+    );
+    return $logfacilities;
+}
+
 /**
  *  NOTE: Does NOT support configuration sync (xmlrpc). The required acme.sh
  *        state files are missing on the secondary node and thus all attempts
