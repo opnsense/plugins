@@ -656,6 +656,7 @@ class LeCertificate extends LeCommon
             $val->setNames($this->config->name, $this->config->altNames, $this->config->aliasmode, $this->config->domainalias, $this->config->challengealias);
             $val->setRenewal((int)$this->config->renewInterval);
             $val->setForce($this->force);
+            $val->setOcsp((string)$this->config->ocsp == 1 ? true : false);
             // strip prefix from key value
             $val->setKey(substr($this->config->keyLength, 4));
             $val->prepare();
