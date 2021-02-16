@@ -344,11 +344,11 @@ class LeCertificate extends LeCommon
 
         // Check if called by auto renewal process.
         if (($acme_action == 'renew') and ($this->cron == 1) and ($auto_renewal == 0)) {
-          LeUtils::log('auto renewal is globally disabled, skipping certificate: ' . (string)$this->config->name);
-          return false;
+            LeUtils::log('auto renewal is globally disabled, skipping certificate: ' . (string)$this->config->name);
+            return false;
         } elseif (($acme_action == 'renew') and ($this->cron == 1) and ((string)$this->config->autoRenewal == 0)) {
-          LeUtils::log('auto renewal is disabled for certificate: ' . (string)$this->config->name);
-          return false;
+            LeUtils::log('auto renewal is disabled for certificate: ' . (string)$this->config->name);
+            return false;
         }
         LeUtils::log("${acme_action} certificate: " . (string)$this->config->name);
 
