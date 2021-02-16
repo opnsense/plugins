@@ -51,7 +51,7 @@ def get_args():
     )
     parser.add_argument(
         '--server-ids',
-        help='Attempt action on a list of server, specified as a comma seperated list e.g. back1/server1,back2/server3',
+        help='Attempt action on a list of server, specified as a comma separated list e.g. back1/server1,back2/server3',
         default=None
     )
     parser.add_argument(
@@ -142,7 +142,6 @@ try:
                 if result:
                     print(f"{server_id}: {result.strip()}")
                 con.close()
-
     else:
         # single
         con = HaPConn(SOCKET)

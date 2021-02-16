@@ -47,7 +47,7 @@ frontends:
 {%  for frontend in enabled_frontends %}
   "{{ frontend.id }}":
     name: {{ frontend.name }}
-    crt_list_path: {{ cert_template % frontend.id }}
+    crt_list_path: {{ crt_list_template % frontend.id }}
     certs:
 {%    for cert_refid in frontend.certs %}
       {{ cert_refid }}:

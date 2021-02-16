@@ -145,10 +145,10 @@ class showSslCrtList(Cmd):
         for line in res.split("\n"):
             if line.startswith('# '):
                 list_id = line.split("# ")[1]
-                result[f"{list_id}"] = []
+                result["certs"] = []
 
             if list_id and line.startswith('/'):
-                result[f"{list_id}"].append(line)
+                result["certs"].append(line)
 
         if result:
            return result
@@ -186,10 +186,9 @@ class showSslCert(Cmd):
 
                 if key == 'Filename':
                     cert_id = val
-                    result[f"{cert_id}"] = {}
 
                 if cert_id:
-                    result[f"{cert_id}"][key] = val
+                    result[key] = val
 
         if result:
             return result
@@ -261,6 +260,7 @@ class showFBEnds(Cmd):
         for e in lines:
             me = re.match(cl, e)
             if me:
+                print(e)
                 result.append(e.split(",")[0])
         return result
 
