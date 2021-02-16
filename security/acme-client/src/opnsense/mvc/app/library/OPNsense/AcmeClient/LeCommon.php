@@ -153,26 +153,36 @@ abstract class LeCommon
 
         switch ($loglevel) {
             case 'extended':
+                $this->acme_args[] = '--syslog 6';
                 $this->acme_args[] = '--log-level 2';
                 $this->debug = false;
                 break;
             case 'debug':
+                $this->acme_args[] = '--syslog 7';
                 $this->acme_args[] = '--debug';
                 $this->debug = true;
                 break;
             case 'debug2':
+                $this->acme_args[] = '--syslog 7';
                 $this->acme_args[] = '--debug 2';
                 $this->debug = true;
                 break;
             case 'debug3':
+                $this->acme_args[] = '--syslog 7';
                 $this->acme_args[] = '--debug 3';
                 $this->debug = true;
                 break;
             default:
+                $this->acme_args[] = '--syslog 6';
                 $this->acme_args[] = '--log-level 1';
                 $this->debug = false;
                 break;
         }
+
+        // Set log file
+        // NOTE: This log file is no longer exposed to the GUI. However, it may
+        // still turn out to be useful for debug purposes in rare egde cases.
+        $this->acme_args[] = LeUtils::execSafe('--log %s', self::ACME_LOG_FILE);
     }
 
     /**
