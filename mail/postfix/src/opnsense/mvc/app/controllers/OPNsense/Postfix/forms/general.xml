@@ -229,4 +229,10 @@
         <label>Reject Unauthenticated Destination</label>
         <type>checkbox</type>
     </field>
+    <field>
+        <id>general.reject_unverified_recipient</id>
+        <label>Reject Unverified Recipient</label>
+        <type>checkbox</type>
+        <help>Use Recipient Address Verification. Please keep in mind that this could put significant load onto the next server.</help>
+    </field>
 </form>
