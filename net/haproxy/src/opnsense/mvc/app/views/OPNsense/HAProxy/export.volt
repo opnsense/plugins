@@ -45,24 +45,28 @@ POSSIBILITY OF SUCH DAMAGE.
         function update_showdiff() {
             ajaxCall(url="/api/haproxy/export/diff/", sendData={}, callback=function(data,status) {
                 diff = '';
-                var lines = data['response'].split("\n");
-                $.each(lines, function(n, line) {
-                    switch(line.substring(0,1)) {
-                        case '+':
-                            color = '#3bbb33';
-                            break;
-                        case '-':
-                            color = '#c13928';
-                            break;
-                        case '@':
-                            color = '#3bb9c3';
-                            break;
-                        default:
-                            color = '#000000';
-                    }
-                    diff += '<span style="color: ' + color + '; white-space: pre-wrap; font-family: monospace;">' + line + '</span><br>';
+                if (data['response'] && data['response'].trim()) {
+                    var lines = data['response'].split("\n");
+                    $.each(lines, function(n, line) {
+                        switch(line.substring(0,1)) {
+                            case '+':
+                                color = '#3bbb33';
+                                break;
+                            case '-':
+                                color = '#c13928';
+                                break;
+                            case '@':
+                                color = '#3bb9c3';
+                                break;
+                            default:
+                                color = '#000000';
+                        }
+                        diff += '<span style="color: ' + color + '; white-space: pre-wrap; font-family: monospace;">' + line + '</span><br>';
 
-                });
+                    });
+                } else {
+                    diff = "<br><span style=\"color: #000000; white-space: pre-wrap; font-family: monospace;\"> {{ lang._('New and old config files are identical.') }}</span><br>";
+                }
                 $("#showdiff").append(diff);
             });
         }
