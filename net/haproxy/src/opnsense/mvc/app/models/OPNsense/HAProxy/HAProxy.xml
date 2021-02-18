@@ -1466,6 +1466,11 @@
                         <path_reg>Path regex</path_reg>
                         <path_dir>Path contains subdir</path_dir>
                         <path_sub>Path contains string</path_sub>
+                        <cust_hdr_beg>HTTP Header starts with</cust_hdr_beg>
+                        <cust_hdr_end>HTTP Header ends with</cust_hdr_end>
+                        <cust_hdr>HTTP Header matches</cust_hdr>
+                        <cust_hdr_reg>HTTP Header regex</cust_hdr_reg>
+                        <cust_hdr_sub>HTTP Header contains</cust_hdr_sub>
                         <url_param>URL parameter contains</url_param>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
@@ -1563,6 +1568,56 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </path_sub>
+                <cust_hdr_beg_name type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_beg_name>
+                <cust_hdr_beg type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_beg>
+                <cust_hdr_end_name type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_end_name>
+                <cust_hdr_end type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_end>
+                <cust_hdr_name type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_name>
+                <cust_hdr type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr>
+                <cust_hdr_reg_name type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_reg_name>
+                <cust_hdr_reg type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_reg>
+                <cust_hdr_sub_name type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_sub_name>
+                <cust_hdr_sub type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </cust_hdr_sub>
                 <url_param type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
