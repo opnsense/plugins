@@ -928,6 +928,18 @@
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
                     <Required>N</Required>
                 </healthCheckRise>
+                <linkedMailer type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>mailers.mailer</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related mailer not found</ValidationMessage>
+                    <multiple>N</multiple>
+                    <Required>N</Required>
+                </linkedMailer>
                 <http2Enabled type="BooleanField">
                     <default>0</default>
                     <Required>N</Required>
@@ -2623,5 +2635,64 @@
                 </timeout_retry>
             </resolver>
         </resolvers>
+        <mailers>
+            <mailer type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <mailservers type="CSVListField">
+                    <Required>Y</Required>
+                    <Sorted>Y</Sorted>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide mailserver addresses, i.e. 192.168.1.1:25.</ValidationMessage>
+                </mailservers>
+                <sender type="EmailField">
+                    <Required>Y</Required>
+                </sender>
+                <recipient type="EmailField">
+                    <Required>Y</Required>
+                </recipient>
+                <loglevel type="OptionField">
+                    <Required>Y</Required>
+                    <default>alert</default>
+                    <OptionValues>
+                        <emerg>emerg</emerg>
+                        <alert>alert</alert>
+                        <crit>crit</crit>
+                        <err>err</err>
+                        <warning>warning</warning>
+                        <notice>notice</notice>
+                        <info>info</info>
+                        <debug>debug</debug>
+                    </OptionValues>
+                </loglevel>
+                <timeout type="TextField">
+                    <default>30</default>
+                    <MinimumValue>4</MinimumValue>
+                    <MaximumValue>10000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 4 and 10000 seconds.</ValidationMessage>
+                    <Required>Y</Required>
+                </timeout>
+                <hostname type="HostnameField">
+                    <Required>N</Required>
+                </hostname>
+            </mailer>
+        </mailers>
     </items>
 </model>

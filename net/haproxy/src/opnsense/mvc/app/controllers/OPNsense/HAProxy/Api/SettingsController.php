@@ -409,4 +409,34 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('resolvers.resolver', array('enabled', 'name', 'nameservers'), 'name');
     }
+
+    public function getmailerAction($uuid = null)
+    {
+        return $this->getBase('mailer', 'mailers.mailer', $uuid);
+    }
+
+    public function setmailerAction($uuid)
+    {
+        return $this->setBase('mailer', 'mailers.mailer', $uuid);
+    }
+
+    public function addmailerAction()
+    {
+        return $this->addBase('mailer', 'mailers.mailer');
+    }
+
+    public function delmailerAction($uuid)
+    {
+        return $this->delBase('mailers.mailer', $uuid);
+    }
+
+    public function togglemailerAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('mailers.mailer', $uuid);
+    }
+
+    public function searchmailersAction()
+    {
+        return $this->searchBase('mailers.mailer', array('enabled', 'name', 'mailservers', 'sender', 'recipient'), 'name');
+    }
 }

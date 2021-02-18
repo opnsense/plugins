@@ -17,6 +17,7 @@ Added:
 * add config diff
 * guard against broken config by using a staging config file
 * add basic OCSP stapling support (#1430)
+* add support for e-mail alerts and mailers (#1669)
 
 Fixed:
 * fix maintenance page (python error: 'list' object has no attribute 'strip')

@@ -212,6 +212,19 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#grid-mailers").UIBootgrid(
+            {   search:'/api/haproxy/settings/searchMailers',
+                get:'/api/haproxy/settings/getMailer/',
+                set:'/api/haproxy/settings/setMailer/',
+                add:'/api/haproxy/settings/addMailer/',
+                del:'/api/haproxy/settings/delMailer/',
+                toggle:'/api/haproxy/settings/toggleMailer/',
+                options: {
+                    rowCount:[10,25,50,100,500,1000]
+                }
+            }
+        );
+
         // hook into on-show event for dialog to extend layout.
         $('#DialogAcl').on('shown.bs.modal', function (e) {
             $("#acl\\.expression").change(function(){
@@ -608,6 +621,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" href="#mapfiles">{{ lang._('Map Files') }}</a></li>
             <li><a data-toggle="tab" href="#cpus">{{ lang._('CPU Affinity Rules') }}</a></li>
             <li><a data-toggle="tab" href="#resolvers">{{ lang._('Resolvers') }}</a></li>
+            <li><a data-toggle="tab" href="#mailers">{{ lang._('E-Mail Alerts') }}</a></li>
         </ul>
     </li>
 </ul>
@@ -715,6 +729,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sMap Files:%s A map allows to map a data in input to an other one on output. For example, this makes it possible to map a large number of domains to backend pools without using the GUI. Map files need to be used in %sRules%s, otherwise they are ignored.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sCPU Affinity Rules:%s This feature makes it possible to bind HAProxy's processes/threads to a specific CPU (or a CPU set). Furthermore it is possible to select CPU Affinity Rules in %sPublic Services%s to restrict them to a certain set of processes/threads/CPUs.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sResolvers:%s This feature allows in-depth configuration of how HAProxy handles name resolution and interacts with name resolvers (DNS). Each resolver configuration can be used in %sBackend Pools%s to apply individual name resolution configurations.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._("%sE-Mail Alerts:%s It is possible to send email alerts when the state of servers changes. Each configuration can be used in %sBackend Pools%s to send e-mail alerts to the configured recipient.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#process" target="_blank">', '</a>','<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
             <br/>
@@ -1149,6 +1164,40 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
+    <div id="mailers" class="tab-pane fade">
+        <table id="grid-mailers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMailer">
+            <thead>
+            <tr>
+                <th data-column-id="mailerid" data-type="number"  data-visible="false">{{ lang._('Mailer ID') }}</th>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                <th data-column-id="Sender" data-type="string">{{ lang._('Sender') }}</th>
+                <th data-column-id="Recipient" data-type="string">{{ lang._('Recipient') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct-mailers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="configtestAct-mailers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
+    </div>
+
     <!-- subtabs for general "Settings" tab below -->
     <div id="general-settings" class="tab-pane fade">
         <div class="content-box" style="padding-bottom: 1.5em;">
@@ -1242,3 +1291,4 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogMapfile,'id':'DialogMapfile','label':lang._('Edit Map File')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogCpu,'id':'DialogCpu','label':lang._('Edit CPU Affinity Rule')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogResolver,'id':'DialogResolver','label':lang._('Edit Resolver')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogMailer,'id':'DialogMailer','label':lang._('Edit E-Mail Alert')])}}

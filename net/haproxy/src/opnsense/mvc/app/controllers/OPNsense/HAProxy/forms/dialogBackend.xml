@@ -120,6 +120,12 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.linkedMailer</id>
+        <label>E-Mail Alert</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select an e-mail alert configuration. An e-mail is sent when the state of a server changes.]]></help>
+    </field>
+    <field>
         <label>HTTP(S) settings</label>
         <type>header</type>
         <style>mode_table table_http</style>
