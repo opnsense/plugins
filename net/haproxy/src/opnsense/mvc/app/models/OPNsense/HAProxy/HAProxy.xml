@@ -880,6 +880,24 @@
                     <multiple>N</multiple>
                     <Required>N</Required>
                 </linkedResolver>
+                <resolverOpts type="OptionField">
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <allow-dup-ip>allow-dup-ip</allow-dup-ip>
+                        <ignore-weight>ignore-weight</ignore-weight>
+                        <prevent-dup-ip>prevent-dup-ip</prevent-dup-ip>
+                    </OptionValues>
+                </resolverOpts>
+                <resolvePrefer type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                    <OptionValues>
+                        <ipv4>prefer IPv4</ipv4>
+                        <ipv6>prefer IPv6 [default]</ipv6>
+                    </OptionValues>
+                </resolvePrefer>
                 <source type="TextField">
                     <mask>/^((([0-9a-zA-Z._\-\*:]+)))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
@@ -1197,7 +1215,7 @@
                 <address type="TextField">
                     <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
                     <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </address>
                 <port type="IntegerField">
                     <MinimumValue>1</MinimumValue>
@@ -1213,7 +1231,7 @@
                     <Required>N</Required>
                 </checkport>
                 <mode type="OptionField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <default>active</default>
                     <OptionValues>
                         <active>active [default]</active>
@@ -1221,6 +1239,54 @@
                         <disabled>disabled</disabled>
                     </OptionValues>
                 </mode>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <default>static</default>
+                    <OptionValues>
+                        <static>static</static>
+                        <template>template</template>
+                    </OptionValues>
+                </type>
+                <serviceName type="TextField">
+                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+                    <ValidationMessage>Please specify a valid service name.</ValidationMessage>
+                    <Required>N</Required>
+                </serviceName>
+                <number type="TextField">
+                    <mask>/^[0-9]+(-[0-9]+)?/u</mask>
+                    <ValidationMessage>Please specify a valid number or range.</ValidationMessage>
+                    <Required>N</Required>
+                </number>
+                <linkedResolver type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>resolvers.resolver</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related resolver not found</ValidationMessage>
+                    <multiple>N</multiple>
+                    <Required>N</Required>
+                </linkedResolver>
+                <resolverOpts type="OptionField">
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <allow-dup-ip>allow-dup-ip</allow-dup-ip>
+                        <ignore-weight>ignore-weight</ignore-weight>
+                        <prevent-dup-ip>prevent-dup-ip</prevent-dup-ip>
+                    </OptionValues>
+                </resolverOpts>
+                <resolvePrefer type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                    <OptionValues>
+                        <ipv4>prefer IPv4</ipv4>
+                        <ipv6>prefer IPv6 [default]</ipv6>
+                    </OptionValues>
+                </resolvePrefer>
                 <ssl type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>

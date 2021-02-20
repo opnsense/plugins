@@ -230,7 +230,6 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#acl\\.expression").change(function(){
                 var service_id = 'table_' + $(this).val();
                 $(".expression_table").hide();
-                // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
             });
             $("#acl\\.expression").change();
@@ -241,7 +240,6 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#action\\.type").change(function(){
                 var service_id = 'table_' + $(this).val();
                 $(".type_table").hide();
-                // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
             });
             $("#action\\.type").change();
@@ -306,6 +304,16 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("."+service_id).show();
             });
             $("#healthcheck\\.type").change();
+        })
+
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogServer').on('shown.bs.modal', function (e) {
+            $("#server\\.type").change(function(){
+                var service_id = 'table_server_type_' + $(this).val();
+                $(".table_server_type").hide();
+                $("."+service_id).show();
+            });
+            $("#server\\.type").change();
         })
 
         /***********************************************************************
@@ -647,12 +655,12 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_haproxy-real-servers-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>{{ lang._('Real Servers') }}</h1>
-            <p>{{ lang._('HAProxy needs to know which servers should be used to serve content. The following minimum information must be provided for each server:') }}</p>
+            <p>{{ lang._('HAProxy needs to know which servers should be used to serve content. Either add a static server configuration or use a template to initialize multiple servers at once. The latter one can also be used to discover the available services via DNS SRV records. The following minimum information must be provided for each server:') }}</p>
             <ul>
-              <li>{{ lang._('%sFQDN or IP:%s The IP address or fully-qualified domain name that should be used when communicating with your server.') | format('<b>', '</b>') }}</li>
-              <li>{{ lang._('%sPort:%s The TCP or UDP port that should be used. If unset, the same port the client connected to will be used.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sStatic Servers:%s The IP address or fully-qualified domain name that should be used when communicating with your server. Additionally the TCP or UDP port that should be used. If unset, the same port the client connected to will be used.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sServer Templates:%s A prefix is required to build the server names. Additionally a service name or FQDN is required to identify the servers this template initializes') | format('<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("Please note that advanced mode settings allow you to disable a certain server or to configure it as a backup server in a Backend Pool. Another neat option is the possibility to adjust a server's weight relative to other servers in the same Backend Pool.") }}</p>
+            <p>{{ lang._("Please note that advanced mode settings allow you to adjust a server's weight relative to other servers in the same Backend Pool, in addition to fine-grained health check options.") }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -809,6 +817,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Server Name') }}</th>
+                <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Server Address') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Server Port') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>

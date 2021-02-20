@@ -132,7 +132,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchServersAction()
     {
-        return $this->searchBase('servers.server', array('enabled', 'name', 'address', 'port', 'description'), 'name');
+        return $this->searchBase('servers.server', array('enabled', 'name', 'type', 'address', 'port', 'description'), 'name');
     }
 
     public function getHealthcheckAction($uuid = null)

@@ -19,6 +19,9 @@ Added:
 * add basic OCSP stapling support (#1430)
 * add support for e-mail alerts and mailers (#1669)
 * add support for custom header checks (#1907)
+* add support for server templates (#1975)
+* add support for additional resolver options (#1975)
+* add support for resolve-prefer option (#1975)
 
 Fixed:
 * fix maintenance page (python error: 'list' object has no attribute 'strip')
@@ -35,6 +38,7 @@ Changed:
 * change default for spreadChecks from 0 to 2
 * no longer overwrite live config file when running a syntax check
 * make restart/reload commands usable in cron jobs
+* relax GUI input validation for servers, move validation to jinja template (#1975)
 
 2.26
 

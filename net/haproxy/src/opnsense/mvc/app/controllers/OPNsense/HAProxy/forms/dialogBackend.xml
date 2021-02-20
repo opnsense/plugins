@@ -62,6 +62,22 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.resolverOpts</id>
+        <label>Resolver Options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Add resolver options. Use TAB key to complete typing.]]></help>
+        <hint>Type option name or choose from list.</hint>
+    </field>
+    <field>
+        <id>backend.resolvePrefer</id>
+        <label>Prefer IP Family</label>
+        <type>dropdown</type>
+        <help><![CDATA[When DNS resolution is enabled for a server and multiple IP addresses from different families are returned, HAProxy will prefer using an IP address from the selected family.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>backend.source</id>
         <label>Source address</label>
         <type>text</type>
