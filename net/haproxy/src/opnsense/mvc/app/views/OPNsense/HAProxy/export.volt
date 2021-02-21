@@ -34,7 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         function update_showconf() {
             ajaxCall(url="/api/haproxy/export/config/", sendData={}, callback=function(data,status) {
-                $("#showconf").text(data['response']);
+                if (data['response'] && data['response'].trim()) {
+                    $("#showconf").text(data['response']);
+                } else {
+                    conf_help = "<br><span style=\"color: #000000; white-space: pre-wrap; font-family: monospace;\"> {{ lang._('Config file not found. Run a syntax check to create it.') }}</span><br>";
+                    $("#showconfempty").append(conf_help);
+                    $("#showconf").hide();
+                }
             });
         }
         update_showconf();
@@ -116,6 +122,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <div id="export" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
+            <div id="showconfempty"></div>
             <pre id="showconf"></pre>
             <div class="col-md-12">
                 <hr />
