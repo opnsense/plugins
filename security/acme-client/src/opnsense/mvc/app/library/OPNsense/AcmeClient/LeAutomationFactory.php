@@ -29,7 +29,7 @@
 
 namespace OPNsense\AcmeClient;
 
-use \OPNsense\AcmeClient\AcmeClient;
+use OPNsense\AcmeClient\AcmeClient;
 
 /**
 * Class LeAutomationFactory

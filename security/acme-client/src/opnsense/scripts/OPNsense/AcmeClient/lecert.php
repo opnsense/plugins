@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -78,6 +78,7 @@ const STATIC_OPTIONS = <<<TXT
 --all               Work with ALL enabled certificates
 --account           The account UUID when working with an Lets Encrypt account
 --force             Force certain operations (i.e. renew)
+--cron              Special mode when running from cron (i.e. consider auto renew settings)
 TXT;
 
 // Examples that will be display in usage information.
@@ -138,12 +139,15 @@ function validateMode($mode)
 function main()
 {
     // Parse command line arguments
-    $options = getopt('h', ['account:', 'all', 'cert:', 'force', 'help', 'mode:']);
+    $options = getopt('h', ['account:', 'all', 'cert:', 'cron', 'force', 'help', 'mode:']);
     $force = isset($options['force']) ? true : false;
+    $cron = isset($options['cron']) ? true : false;
 
     // Verify mode and arguments
-    if (empty($options) || isset($options['h']) || isset($options['help']) ||
-        (isset($options['mode']) and !validateMode($options['mode']))) {
+    if (
+        empty($options) || isset($options['h']) || isset($options['help']) ||
+        (isset($options['mode']) and !validateMode($options['mode']))
+    ) {
          // Not enough or invalid arguments specified.
          help();
     } elseif (($options['mode'] === 'issue') && (isset($options['cert']) || isset($options['all']))) {
@@ -156,7 +160,7 @@ function main()
             // Iterate over all certificates
             foreach ($acme->certificates->children() as $certCfg) {
                 $cert_uuid = (string)$certCfg->attributes()['uuid'];
-                $cert = new LeCertificate($cert_uuid, $force);
+                $cert = new LeCertificate($cert_uuid, $force, $cron);
                 // NOTE: Disabled certificates are automatically ignored by LeCertificate.
                 $cert->issue();
             }

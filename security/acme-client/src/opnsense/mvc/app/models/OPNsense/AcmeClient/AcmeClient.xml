@@ -382,6 +382,7 @@
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_desec>deSEC.io API</dns_desec>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
@@ -400,9 +401,11 @@
                         <dns_gcloud>Google Cloud DNS API</dns_gcloud>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_hetzner>Hetzner DNS API</dns_hetzner>
+                        <dns_hexonet>hexonet.com DNS API</dns_hexonet>
                         <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
+                        <dns_infomaniak>Infomaniak API</dns_infomaniak>
                         <dns_inwx>INWX XMLRPC API</dns_inwx>
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_joker>Joker API</dns_joker>
@@ -507,10 +510,10 @@
                     <Required>N</Required>
                 </dns_cx_secret>
                 <dns_cyon_user type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_cyon_user>
                 <dns_cyon_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_cyon_password>
                 <dns_da_key type="TextField">
                     <Required>N</Required>
@@ -520,19 +523,19 @@
                     <default>1</default>
                 </dns_da_insecure>
                 <dns_dgon_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_dgon_key>
                 <dns_dnsimple_token type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_dnsimple_token>
                 <dns_doapi_token type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_doapi_token>
                 <dns_do_pid type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_do_pid>
                 <dns_do_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_do_password>
                 <dns_dp_id type="TextField">
                     <Required>N</Required>
@@ -708,20 +711,20 @@
                     <Required>N</Required>
                 </dns_lexicon_token>
                 <dns_linode_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_linode_key>
                 <dns_linode_v4_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_linode_v4_key>
                 <dns_loopia_api type="TextField">
-                  <Required>N</Required>
-                  <default>https://api.loopia.se/RPCSERV</default>
+                    <Required>N</Required>
+                    <default>https://api.loopia.se/RPCSERV</default>
                 </dns_loopia_api>
                 <dns_loopia_user type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_loopia_user>
                 <dns_loopia_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_loopia_password>
                 <dns_lua_email type="TextField">
                     <Required>N</Required>
@@ -916,6 +919,12 @@
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
+                <dns_hexonet_login type="TextField">
+                    <Required>N</Required>
+                </dns_hexonet_login>
+                <dns_hexonet_password type="TextField">
+                    <Required>N</Required>
+                </dns_hexonet_password>
                 <dns_1984hosting_user type="TextField">
                     <Required>N</Required>
                 </dns_1984hosting_user>
@@ -935,6 +944,15 @@
                         <sha1>SHA1</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
+                <dns_desec_token type="TextField">
+                    <Required>N</Required>
+                </dns_desec_token>
+                <dns_desec_name type="TextField">
+                    <Required>N</Required>
+                </dns_desec_name>
+                <dns_infomaniak_token type="TextField">
+                    <Required>N</Required>
+                </dns_infomaniak_token>
             </validation>
         </validations>
         <actions>

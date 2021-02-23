@@ -680,9 +680,9 @@ class updatedns
                 * dnsUser ("Username" field in OPNsense) should be the subdomain / A-record ("myrecord" in 2nd-level domain)
                 * dnsPass should be the Gandi-API key
                 */
-                $server = "https://dns.api.gandi.net/api/v5/domains/". $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
+                $server = "https://dns.api.gandi.net/api/v5/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
 
-                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["'. $this->_dnsIP . '"]}';
+                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["' . $this->_dnsIP . '"]}';
 
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -883,7 +883,12 @@ class updatedns
             case 'gratisdns':
                 $server = "https://admin.gratisdns.com/ddns.php";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                list($hostname, $domain) = explode(".", $this->_dnsHost, 2);
+                if (substr_count($this->_dnsHost, ".") < 2) {
+                    $domain = $this->_dnsHost;
+                    $hostname = $this->_dnsHost;
+                } else {
+                    list($hostname, $domain) = explode(".", $this->_dnsHost, 2);
+                }
                 curl_setopt($ch, CURLOPT_URL, $server . '?u=' . urlencode($this->_dnsUser) . '&p=' . $this->_dnsPass . '&h=' . $this->_dnsHost . '&d=' . $domain . '&i=' . $this->_dnsIP);
                 break;
             case 'ovh-dynhost':

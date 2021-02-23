@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,14 +45,17 @@ class LeCertificate extends LeCommon
     public const CONFIG_PATH = 'certificates.certificate';
 
     /*
-     * create the object by collecting and storing all required data
+     * Create the object by collecting and storing all required data
      * @param $uuid string the UUID of the configuration object
+     * @param $force bool whether to enforce issue/renewal of the cert
+     * @param $cron bool run from cron job
      */
-    public function __construct(string $uuid, bool $force = false)
+    public function __construct(string $uuid, bool $force = false, bool $cron = false)
     {
         // Store basic information
         $this->uuid = $uuid;
         $this->force = $force;
+        $this->cron = $cron;
 
         // Get config object
         $this->loadConfig(self::CONFIG_PATH, $this->uuid);
@@ -262,6 +265,8 @@ class LeCertificate extends LeCommon
                     $cfgCert->crt = $cert['crt'];
                     $cfgCert->prv = $cert['prv'];
                     $cfgCert->descr = $cert['descr'];
+                    // Update CA ref, because it may be signed by a different CA.
+                    $cfgCert->caref = $cert['caref'];
                     break;
                 }
             }
@@ -316,13 +321,13 @@ class LeCertificate extends LeCommon
 
         // Issue or renew?
         if (!empty((string)$this->config->lastUpdate) and !($this->force)) {
-            $acme_action = "renew";
+            $acme_action = 'renew';
             $renew = true;
         } else {
             // Default: Issue a new certificate.
             // If "force" is specified, forcefully re-issue the cert, no matter if it's required.
             // NOTE: This is useful when switching from acme staging to production servers.
-            $acme_action = "issue";
+            $acme_action = 'issue';
             $renew = false;
         }
 
@@ -330,6 +335,19 @@ class LeCertificate extends LeCommon
         if (!($this->needsRenewal()) and !($this->force)) {
             // Renewal not required. Do nothing.
             LeUtils::log("issue/renewal not required for certificate: " . (string)$this->config->name);
+            return false;
+        }
+
+        // Get auto renewal plugin setting.
+        $configObj = Config::getInstance()->object();
+        $auto_renewal = $configObj->OPNsense->AcmeClient->settings->autoRenewal;
+
+        // Check if called by auto renewal process.
+        if (($acme_action == 'renew') and ($this->cron == 1) and ($auto_renewal == 0)) {
+            LeUtils::log('auto renewal is globally disabled, skipping certificate: ' . (string)$this->config->name);
+            return false;
+        } elseif (($acme_action == 'renew') and ($this->cron == 1) and ((string)$this->config->autoRenewal == 0)) {
+            LeUtils::log('auto renewal is disabled for certificate: ' . (string)$this->config->name);
             return false;
         }
         LeUtils::log("${acme_action} certificate: " . (string)$this->config->name);
@@ -635,9 +653,10 @@ class LeCertificate extends LeCommon
             }
 
             // Configure validation object
-            $val->setNames($this->config->name, $this->config->altNames);
+            $val->setNames($this->config->name, $this->config->altNames, $this->config->aliasmode, $this->config->domainalias, $this->config->challengealias);
             $val->setRenewal((int)$this->config->renewInterval);
             $val->setForce($this->force);
+            $val->setOcsp((string)$this->config->ocsp == 1 ? true : false);
             // strip prefix from key value
             $val->setKey(substr($this->config->keyLength, 4));
             $val->prepare();

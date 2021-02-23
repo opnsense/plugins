@@ -9,7 +9,7 @@
         <id>acmeclient.settings.autoRenewal</id>
         <label>Auto Renewal</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable automatic renewal for certificates to prevent expiration. This will add a cronjob to the system. You may want to customize the cronjob schedule to your needs, because re-issueing a certificate may lead to a short downtime, depending on the selected challenge type and service.]]></help>
+        <help><![CDATA[Enable automatic renewal for certificates to prevent expiration. This will add a cron job to the system. You may want to customize the cron job schedule to your needs, because re-issueing a certificate may lead to a short downtime, depending on the selected challenge type and service.]]></help>
     </field>
     <field>
         <id>acmeclient.settings.environment</id>

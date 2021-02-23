@@ -55,6 +55,7 @@ $empty = strlen($data) == 0;
         $latest = "-";
         if ($epoch > 0):
             $dt = new DateTime("@$epoch");
+            $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
             $latest = $dt->format(gettext("Y-m-d H:i:sP"));
         endif; ?>
 

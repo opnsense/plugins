@@ -23,6 +23,13 @@
         <help>If you have a CARP setup, you may want to configure a router id in case of a conflict.</help>
     </field>
     <field>
+        <id>ospf.costreference</id>
+        <label>Reference Cost</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Here you can adjust the reference cost in Mbps for path calculation. Mostly needed when you bundle interfaces to higher bandwidth.</help>
+    </field>
+    <field>
         <id>ospf.passiveinterfaces</id>
         <label>Passive Interfaces</label>
         <type>select_multiple</type>

@@ -44,15 +44,6 @@ misc/theme-cicada -- The cicada theme - dark grey
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - dark anthrazit
-net-mgmt/collectd -- Collect system and application performance metrics periodically
-net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
-net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
-net-mgmt/netdata -- Real-time performance monitoring
-net-mgmt/nrpe -- Execute nagios plugins
-net-mgmt/telegraf -- Agent for collecting metrics and data
-net-mgmt/zabbix-agent -- Zabbix monitoring agent
-net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
-net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
 net/chrony -- Chrony time synchronisation
 net/firewall -- Firewall API supplemental package
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
@@ -73,6 +64,15 @@ net/vnstat -- vnStat is a console-based network traffic monitor
 net/wireguard -- WireGuard VPN service
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
+net-mgmt/collectd -- Collect system and application performance metrics periodically
+net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
+net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
+net-mgmt/netdata -- Real-time performance monitoring
+net-mgmt/nrpe -- Execute nagios plugins
+net-mgmt/telegraf -- Agent for collecting metrics and data
+net-mgmt/zabbix-agent -- Zabbix monitoring agent
+net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
+net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
 security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/etpro-telemetry -- ET Pro Telemetry Edition
@@ -90,6 +90,7 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
+sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitorin agent
