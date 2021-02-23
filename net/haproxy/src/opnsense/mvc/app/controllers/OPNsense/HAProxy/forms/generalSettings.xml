@@ -25,7 +25,7 @@
         <id>haproxy.general.storeOcsp</id>
         <label>Store OCSP responses</label>
         <type>checkbox</type>
-        <help><![CDATA[Retrieve OCSP data everytime when starting or restarting HAProxy. For every certificate, the OCSP response will be fetched and stored in filesystem, and automatically picked-up by HAProxy on startup. However, depending on the number of certificates and other circumstances, this may noticeably increase the time required to start/restart the HAProxy service. Note that this only updates the OCSP responses during start/restart, you need to setup a cron job to periodically update this data too.]]></help>
+        <help><![CDATA[Retrieve OCSP data everytime when starting or restarting HAProxy. For every certificate, the OCSP response will be fetched and stored in filesystem, and automatically picked-up by HAProxy on startup. However, depending on the number of certificates and other circumstances, this may noticeably increase the time required to start/restart the HAProxy service. Note that this only updates the OCSP responses once during start/restart, you need to setup a cron job to periodically update this data too.]]></help>
     </field>
     <field>
         <id>haproxy.general.showIntro</id>
