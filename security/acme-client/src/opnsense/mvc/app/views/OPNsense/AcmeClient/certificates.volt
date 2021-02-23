@@ -59,13 +59,13 @@ POSSIBILITY OF SUCH DAMAGE.
             url: '/api/acmeclient/certificates/search',
             formatters: {
                 "commands": function (column, row) {
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-automation\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                    return "<button type=\"button\" title=\"{{ lang._('edit certificate') }}\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" title=\"{{ lang._('copy certificate') }}\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('issue or renew certificate') }}\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('run automations') }}\" class=\"btn btn-xs btn-default command-automation\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('revoke certificate') }}\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('reset certificate') }}\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('remove certificate') }}\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {

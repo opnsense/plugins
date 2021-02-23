@@ -6333,13 +6333,15 @@ label > input[type="radio"] {
 }
 
 #ipsec .ipsec-tab {
-	background-color: #839caa !important;
+	background-color: #202f3a !important;
 	color: #FFF !important;
+  opacity: 0.5;
 }
 
 #ipsec .ipsec-tab.activetab {
-	background-color: #315a71 !important;
-	color: #FFF !important;
+	background-color: #202f3a !important;
+	color: #D77610 !important;
+  opacity: 1;
 }
 .fw_pass {
   background-color: #203a23 !important;
@@ -6576,4 +6578,8 @@ ul.jqtree-tree .jqtree-title {
 .interface-table-tr td {
   background-color: #d77610 !important;
   color: #FFF !important;
+}
+
+.table.border {
+  border: 1px solid #181818 !important;
 }

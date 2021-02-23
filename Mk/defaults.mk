@@ -26,8 +26,13 @@
 LOCALBASE?=	/usr/local
 PAGER?=		less
 
-PKG!=		which pkg || echo true
+PKG=		${LOCALBASE}/sbin/pkg
+.if ! exists(${PKG})
+PKG=		true
+.endif
 GIT!=		which git || echo true
+
+GITVERSION=	${SCRIPTSDIR}/version.sh
 
 _PLUGIN_ARCH!=	uname -p
 PLUGIN_ARCH?=	${_PLUGIN_ARCH}
@@ -64,7 +69,13 @@ PLUGIN_PYTHON?=	37
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
-		PLUGIN_FLAVOUR
+		PLUGIN_FLAVOUR \
+		PLUGIN_HASH \
+		PLUGIN_MAINTAINER \
+		PLUGIN_NAME \
+		PLUGIN_PKGNAME \
+		PLUGIN_PKGVERSION \
+		PLUGIN_WWW
 
 SED_REPLACE=	# empty
 
