@@ -41,6 +41,9 @@ Changed:
 * make restart/reload commands usable in cron jobs
 * relax GUI input validation for servers, move validation to jinja template (#1975)
 
+Deprecated:
+* nbproc is deprecated and will be removed in os-haproxy 4.0
+
 2.26
 
 Fixed:

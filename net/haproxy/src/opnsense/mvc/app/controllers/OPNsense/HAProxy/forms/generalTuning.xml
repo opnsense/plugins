@@ -12,9 +12,9 @@
     </field>
     <field>
         <id>haproxy.general.tuning.nbproc</id>
-        <label>HAProxy processes</label>
+        <label>HAProxy processes (DEPRECATED)</label>
         <type>text</type>
-        <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>NOTE:</b> You may experience random issues in multi-process mode. For more information about the "nbproc" option please see the HAProxy Documentation.</div>]]></help>
+        <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>WARNING:</b> This option is deprecated and will be removed in a future version of HAProxy, threads should be used instead.</div>]]></help>
         <advanced>true</advanced>
     </field>
     <field>
