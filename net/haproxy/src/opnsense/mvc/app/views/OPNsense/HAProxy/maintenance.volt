@@ -45,10 +45,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 formatters: {
                     "commands": function (column, row) {
                         buttons = ""
-                        buttons += "<button type=\"button\" title=\"Set administrative state to ready. Puts the server in normal mode.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
-                        buttons += " <button type=\"button\" title=\"Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
-                        buttons += " <button type=\"button\" title=\"Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
-                        buttons += " <button type=\"button\" title=\"Change a server's weight.\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
+                        buttons += "<button type=\"button\" title=\"{{ lang._('Set administrative state to ready. Puts the server in normal mode.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"{{ lang._('Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"{{ lang._('Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"{{ lang._('Change server weight.') }}\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
                         return buttons;
                     },
                 },
@@ -272,10 +272,10 @@ POSSIBILITY OF SUCH DAMAGE.
             <tr>
                 <td></td>
                 <td>
-                    <button data-action="setStateBulk" title="Set administrative state to ready for all selected items." data-state="ready" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
-                    <button data-action="setStateBulk" title="Set administrative state to drain for all selected items." data-state="drain" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
-                    <button data-action="setStateBulk" title="Set administrative state to maintenance for all selected items." data-state="maint" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
-                    <button data-action="setWeightBulk" data-weight="" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
+                    <button data-action="setStateBulk" title="{{ lang._('Set administrative state to ready for all selected items.') }}" data-state="ready" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
+                    <button data-action="setStateBulk" title="{{ lang._('Set administrative state to drain for all selected items.') }}" data-state="drain" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
+                    <button data-action="setStateBulk" title="{{ lang._('Set administrative state to maintenance for all selected items.') }}" data-state="maint" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
+                    <button data-action="setWeightBulk" title="{{ lang._('Change server weight for all selected items.') }}" data-weight="" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
                 </td>
             </tr>
             </tfoot>

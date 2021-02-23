@@ -90,15 +90,6 @@
         <style>mode_table table_http table_ssl table_ssl_advanced table_ssl_advanced_true</style>
     </field>
     <field>
-        <id>frontend.ssl_bindOptions</id>
-        <label>Bind options</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <sortable>true</sortable>
-        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
-    </field>
-    <field>
         <id>frontend.ssl_minVersion</id>
         <label>Minimum SSL Version</label>
         <type>dropdown</type>
@@ -145,6 +136,15 @@
         <label>HSTS max-age</label>
         <type>text</type>
         <help><![CDATA[Future requests to the domain should use only HTTPS for the specified time (in seconds): 15768000 = 6 months]]></help>
+    </field>
+    <field>
+        <id>frontend.ssl_bindOptions</id>
+        <label>Bind options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
         <label>Client Certificate Auth</label>
@@ -322,14 +322,14 @@
         <id>frontend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
         <hint>Choose a stick-table type.</hint>
     </field>
     <field>
         <id>frontend.stickiness_dataTypes</id>
         <label>Stored data types</label>
         <type>select_multiple</type>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>frontend.stickiness_expire</id>
@@ -356,7 +356,7 @@
         <id>frontend.stickiness_counter_key</id>
         <label>Sticky counter key</label>
         <type>text</type>
-        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
