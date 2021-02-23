@@ -164,7 +164,6 @@ class Diff(SyncWithTarget):
                 print(f"  CERT DEL :   {diff['del']}")
 
     def show_transactions(self, output_format):
-
         if output_format == 'json':
             print(json.dumps({'transactions': self.transactions}))
 
