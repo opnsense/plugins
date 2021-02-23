@@ -45,6 +45,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/HAProxy';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'haproxy';
+    protected static $internalModelUseSafeDelete = true;
 
     /**
      * run syntax check for haproxy configuration

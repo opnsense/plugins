@@ -44,6 +44,7 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'haproxy';
     protected static $internalModelClass = '\OPNsense\HAProxy\HAProxy';
+    protected static $internalModelUseSafeDelete = true;
 
     public function getFrontendAction($uuid = null)
     {

@@ -27,6 +27,7 @@ Added:
 Fixed:
 * prevent service outage by aborting "Apply" when configtest fails
 * fix direct links to individual statistics tabs
+* prevent the deletion of items that are still referenced elsewhere (core/#1897)
 
 Changed:
 * change default SSL version to TLSv1.2 (ssl-min-ver)
