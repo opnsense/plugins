@@ -113,7 +113,7 @@ class Diff(SyncWithTarget):
                 status[crt_list.frontend_id]['certs'][cert.cert_id] = {
                     'path': cert.path,
                     'local': cert.local,
-                    'remote': cert.local,
+                    'remote': cert.remote,
                 }
         return status
 
@@ -260,7 +260,7 @@ class Diff(SyncWithTarget):
                         print("    " + repr(message))
 
                 for cert in crt_list['del']:
-                    print(f"  DEL: {cert['cert']}")
+                    print(f"\n DEL: {cert['cert']}")
                     for message in cert['messages']:
                         print("    " + repr(message))
                 print()
