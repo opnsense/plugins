@@ -142,7 +142,7 @@ class TestCommands(unittest.TestCase):
             "sessions": "show sess",
             "servers": "show stat",
             "show-ssl-crt-lists": "show ssl crt-list",
-            "show-ssl-crt-list": "show ssl crt-list /tmp/haproxy/ssl/601a7392cc9984.99301413.certlist",
+            "show-ssl-crt-list": "show ssl crt-list -n /tmp/haproxy/ssl/601a7392cc9984.99301413.certlist",
             "show-ssl-certs": "show ssl cert",
             "show-ssl-cert": "show ssl cert /tmp/haproxy/ssl/601a70e4844b0.pem",
             "add-to-crt-list": "add ssl crt-list /tmp/haproxy/ssl/601a7392cc9984.99301413.certlist /tmp/haproxy/ssl/601a70e4844b0.pem",

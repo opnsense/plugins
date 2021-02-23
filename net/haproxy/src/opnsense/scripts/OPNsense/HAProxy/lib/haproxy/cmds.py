@@ -135,7 +135,7 @@ class showSslCrtLists(Cmd):
         return result
 
 class showSslCrtList(Cmd):
-    cmdTxt = "show ssl crt-list %(crt_list)s\r\n"
+    cmdTxt = "show ssl crt-list -n %(crt_list)s\r\n"
     req_args = ['crt_list']
     helpTxt = "Show the the content of a crt-list."
 
