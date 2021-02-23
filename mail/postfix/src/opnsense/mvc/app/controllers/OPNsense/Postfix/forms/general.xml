@@ -90,10 +90,16 @@
         <help>Disable SSLv2 and SSLv3, only TLS allowed.</help>
     </field>
     <field>
-        <id>general.disable_weak_ciphers</id>
-        <label>Disable Weak Ciphers And Algorithms</label>
-        <type>checkbox</type>
-        <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
+        <id>general.tls_server_compatibility</id>
+        <label>TLS Server Compatibility</label>
+        <type>dropdown</type>
+        <help>TLS version/ cipher compatibility of the SMTP service</help>
+    </field>
+    <field>
+        <id>general.tls_client_compatibility</id>
+        <label>TLS Client Compatibility</label>
+        <type>dropdown</type>
+        <help>TLS version/ cipher compatibility of the SMTP Client</help>
     </field>
     <field>
         <id>general.tlswrappermode</id>
