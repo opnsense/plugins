@@ -9,7 +9,8 @@ Plugin Changelog
 3.0
 
 Added:
-* new feature to change server state and weight on-the-fly (#2213)
+* add new maintenance page to change server state and weight on-the-fly (#2213)
+* add new commands to update SSL certificates in runtime (#2244, #1882)
 * add new SSL bind option: prefer-client-ciphers
 * add global option to enable old buggy behaviour for PROXY v2 connections
 * add support for HTTP/2 in health checks
@@ -24,7 +25,6 @@ Added:
 * add support for resolve-prefer option (#1975)
 
 Fixed:
-* fix maintenance page (python error: 'list' object has no attribute 'strip')
 * prevent service outage by aborting "Apply" when configtest fails
 * fix direct links to individual statistics tabs
 
