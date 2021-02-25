@@ -42,6 +42,18 @@ use OPNsense\HAProxy\HAProxy;
 class MaintenanceController extends ApiControllerBase
 {
     /**
+     * jQuery bootstrap certificates diff list
+     * @return array|mixed
+     */
+    public function searchCertificateDiffAction()
+    {
+        return $this->getData(
+            ["cert_diff_list"],
+            ["rowCount", "current", "searchPhrase", "sort"]
+        );
+    }
+
+    /**
      * jQuery bootstrap server list
      * @return array|mixed
      */
@@ -50,6 +62,42 @@ class MaintenanceController extends ApiControllerBase
         return $this->getData(
             ["server_status_list"],
             ["rowCount", "current", "searchPhrase", "sort"]
+        );
+    }
+
+    /**
+     * sync certificate for frontends
+     * @return array|mixed
+     */
+    public function certSyncAction()
+    {
+        return $this->syncCerts(
+            ["cert_sync"],
+            ["frontend_ids"]
+        );
+    }
+
+    /**
+     * show certificate diff for frontends
+     * @return array|mixed
+     */
+    public function certDiffAction()
+    {
+        return $this->getData(
+            ["cert_diff"],
+            ["frontend_ids"]
+        );
+    }
+
+    /**
+     * show certificate actions for frontends
+     * @return array|mixed
+     */
+    public function certActionsAction()
+    {
+        return $this->getData(
+            ["cert_actions"],
+            ["frontend_ids"]
         );
     }
 
@@ -145,7 +193,7 @@ class MaintenanceController extends ApiControllerBase
     }
 
     /**
-     * Executes a backend command to save data
+     * Executes a backend command which returns output on error
      * @param array $command
      * @param array $arguments
      * @return array|string[]
@@ -167,4 +215,28 @@ class MaintenanceController extends ApiControllerBase
             "message" => 'only accept POST Requests.'
         ];
     }
+
+    /**
+     * Executes a ssl certificate sync
+     * @param array $command
+     * @param array $arguments
+     * @return array|string[]
+     */
+    protected function syncCerts(array $command, array $arguments = [])
+    {
+        if ($this->request->isPost()) {
+            $output = $this->safeBackendCmd($command, $arguments);
+            $result = json_decode($output, true);
+
+            return [
+                "status" => "ok",
+                "result" => $result,
+            ];
+        }
+        return [
+            "status" => 'unavailable',
+            "message" => 'only accept POST Requests.'
+        ];
+    }
+
 }

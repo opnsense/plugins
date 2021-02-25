@@ -17,7 +17,7 @@ from haproxy import cmds
 class SyncWithTarget:
     """ Base class for sync objects to a target """
 
-    def __init__(self, socket='/var/run/haproxy.socket'):
+    def __init__(self, socket='/var/run/haproxy.socket', **kwargs):
         self.socket = socket
 
     def _execute_remote_cmd(self, command_class, **command_args):
@@ -40,7 +40,7 @@ class SyncWithTarget:
 class Diff(SyncWithTarget):
     """ Represents a full diff to sync with remote """
 
-    def __init__(self, crt_lists=None):
+    def __init__(self, crt_lists=None, **kwargs):
         super().__init__()
         if crt_lists is None:
             crt_lists = []
@@ -48,6 +48,13 @@ class Diff(SyncWithTarget):
         self._diff = self._calc_diff()
         self._status = self._get_status()
         self._transactions = self._get_transactions()
+
+        self.output_format = kwargs['output']
+        self.page = kwargs['page']
+        self.page_rows = kwargs['page_rows']
+        self.search = kwargs['search']
+        self.sort_col = kwargs['sort_col']
+        self.sort_dir = kwargs['sort_dir']
 
     @property
     def diff(self):
@@ -65,13 +72,53 @@ class Diff(SyncWithTarget):
     def status(self):
         return self._status
 
-    def _calc_diff(self):
-        result = {}
-        for crt_list in self:
-            result[crt_list.frontend_id] = crt_list.diff
-        return result
+    def _get_bootgrid_output(self, rows):
+        """ Returns jquery bootgrid output """
+        args = {
+            "rows": rows,
+            "page": int(self.page) if self.page != None else 1,
+            "page_rows": int(self.page_rows) if self.page_rows != None else len(rows),
+            "search": self.search,
+            "sort_col": self.sort_col if self.sort_col else 'id',
+            "sort_dir": self.sort_dir,
+        }
 
-    def abort(self, output_format):
+        # search
+        if args['search']:
+            filtered_rows = []
+            for row in rows:
+                def inner(row):
+                    for k, v in row.items():
+                        if args['search'] in v:
+                            return row
+                    return None
+
+                match = inner(row)
+                if match:
+                    filtered_rows.append(match)
+            rows = filtered_rows
+
+        # sort
+        rows.sort(key=lambda k: k[args['sort_col']], reverse=True if args['sort_dir'] == 'desc' else False)
+
+        # pager
+        total = len(rows)
+        pages = [rows[i:i + args['page_rows']] for i in range(0, total, args['page_rows'])]
+        if pages and (args['page'] > len(pages) or args['page'] < 1):
+            raise KeyError(f"Current page {args['page']} does not exist. Available pages: {len(pages)}")
+        page = pages[args['page'] - 1] if pages else []
+
+        return json.dumps({
+            "rows": page,
+            "total": total,
+            "rowCount": args['page_rows'],
+            "current": args['page']
+        })
+
+    def _calc_diff(self):
+        return [crt_list.diff for crt_list in self if crt_list.diff['total_count'] > 0]
+
+    def abort(self):
         """ Abort transactions"""
         aborted = []
         for certfile in self.transactions:
@@ -83,10 +130,10 @@ class Diff(SyncWithTarget):
                 "output": output,
             })
 
-        if output_format == 'json':
+        if self.output_format == 'json':
             print(json.dumps({'abort': aborted}))
 
-        if output_format == 'raw':
+        if self.output_format == 'raw':
             for item in aborted:
                 print(f"ABORT transaction: {item['cert']}")
                 print(f"  {repr(item['output'])}")
@@ -117,12 +164,12 @@ class Diff(SyncWithTarget):
                 }
         return status
 
-    def show_status(self, output_format):
+    def show_diff(self):
         """ Shows current local and remote state """
-        if output_format == 'json':
+        if self.output_format == 'json':
             print(json.dumps(self.status))
 
-        if output_format == 'raw':
+        if self.output_format == 'raw':
             print("## STATUS ##")
             for frontend_id, crt_list in self.status.items():
                 print(f"CRT_LIST: {crt_list['path']}")
@@ -140,14 +187,17 @@ class Diff(SyncWithTarget):
                     print(f"      REMOTE: {cert['remote']}")
                 print()
 
-    def show_diff(self, output_format):
+    def show_actions(self):
         """ Shows what will be synced to target """
-        if output_format == 'json':
+        if self.output_format == 'json':
             print(json.dumps(self.diff))
 
-        if output_format == 'raw':
+        if self.output_format == 'bootgrid':
+            print(self._get_bootgrid_output(self.diff))
+
+        if self.output_format == 'raw':
             print("## DIFF ##")
-            for frontend_id, diff in self.diff.items():
+            for diff in self.diff:
                 print(f"CRT LIST: {diff['path']}")
                 print(f"  FRONTEND NAME: {diff['frontend_name']}")
                 print(f"  FRONTEND ID: {diff['frontend_id']}")
@@ -157,34 +207,62 @@ class Diff(SyncWithTarget):
                     print(f"     Serial:  {update['meta']['Serial']}")
                     print(f"     Issuer:  {update['meta']['Issuer']}")
                     print(f"     Subject: {update['meta']['Subject']}")
+                    print()
                 else:
                     if not diff['update']:
                         print(f"  CERT UPDATE: []")
-                print(f"  CERT ADD :   {diff['add']}")
-                print(f"  CERT DEL :   {diff['del']}")
 
-    def show_transactions(self, output_format):
-        if output_format == 'json':
+                for add in diff['add']:
+                    print(f"  CERT ADD:")
+                    print(f"     Cert:    {add}")
+                    print()
+                else:
+                    if not diff['add']:
+                        print(f"  CERT ADD: []")
+
+                for remove in diff['remove']:
+                    print(f"  CERT REMOVE:")
+                    print(f"     Cert:    {remove['certfile']}")
+                    print(f"     Serial:  {remove['meta'].get('Serial', None)}")
+                    print(f"     Issuer:  {remove['meta'].get('Issuer', None)}")
+                    print(f"     Subject: {remove['meta'].get('Subject', None)}")
+                    print()
+                else:
+                    if not diff['remove']:
+                        print(f"  CERT REMOVE: []")
+
+
+    def show_transactions(self):
+        if self.output_format == 'json':
             print(json.dumps({'transactions': self.transactions}))
 
-        if output_format == 'raw':
+        if self.output_format == 'raw':
             print("## OPEN TRANSACTIONS ##")
             for cert in self.transactions:
                 print(cert)
 
-    def sync(self, output_format):
+    def sync(self):
         """ Sync to target """
-        sync = {}
+        sync = {
+            'modified': [],
+            'deleted': [],
+            'add_count': 0,
+            'remove_count': 0,
+            'update_count': 0,
+            'del_count': 0,
+        }
         certs_to_delete = []
-        for frontend_id, diff in self.diff.items():
-            sync[frontend_id] = {
+        for diff in self.diff:
+            sync_item = {
                 'frontend_name': diff['frontend_name'],
                 'frontend_id': diff['frontend_id'],
                 'path': diff['path'],
                 'add': [],
                 'remove': [],
                 'update': [],
-                'del': []
+                'add_count': 0,
+                'remove_count': 0,
+                'update_count': 0,
             }
 
             # update cert content
@@ -200,48 +278,60 @@ class Diff(SyncWithTarget):
                 output = self._execute_remote_cmd(cmds.commitSslCrt, certfile=cert['certfile'])
                 messages.append(output)
 
-                sync[frontend_id]['update'].append({
+                sync_item['update'].append({
                     'cert': cert['certfile'],
                     'messages': messages
                 })
+                sync['update_count'] += 1
+                sync_item['update_count'] += 1
 
             # add to crt-list
             for cert in diff['add']:
                 messages = []
                 output = self._execute_remote_cmd(cmds.addToSslCrtList, crt_list=diff['path'], certfile=cert)
                 messages.append(output)
-                sync[frontend_id]['add'].append({
+                sync_item['add'].append({
                     'cert': cert,
                     'messages': messages
                 })
+                sync['add_count'] += 1
+                sync_item['add_count'] += 1
 
             # remove from crt-list
-            for cert in diff['del']:
+            for cert in diff['remove']:
                 messages = []
-                output = self._execute_remote_cmd(cmds.delFromSslCrtList, crt_list=diff['path'], certfile=cert)
+                output = self._execute_remote_cmd(cmds.delFromSslCrtList, crt_list=diff['path'], certfile=cert['certfile'])
                 messages.append(output)
-                certs_to_delete.append(cert.split(":")[0])
-                sync[frontend_id]['remove'].append({
-                    'cert': cert,
+                certs_to_delete.append(cert['certfile'].split(":")[0])
+                sync_item['remove'].append({
+                    'cert': cert['certfile'],
                     'messages': messages
                 })
+                sync['remove_count'] += 1
+                sync_item['remove_count'] += 1
+
+            modified_items = sync_item['update_count'] + sync_item['add_count'] + sync_item['remove_count']
+            if modified_items:
+                sync['modified'].append(sync_item)
 
         # delete unused certs operation - haproxy does not allow to delete certs in use
         for cert in certs_to_delete:
             messages = []
             output = self._execute_remote_cmd(cmds.delSslCrt, certfile=cert)
             messages.append(output)
-            sync[frontend_id]['del'].append({
+            cert_item = {
                 'cert': cert,
                 'messages': messages
-            })
+            }
+            sync['del_count'] += 1
+            sync['deleted'].append(cert_item)
 
-        if output_format == 'json':
-            print(json.dumps(self.diff))
+        if self.output_format == 'json':
+            print(json.dumps(sync))
 
-        if output_format == 'raw':
+        if self.output_format == 'raw':
             print("## SYNC ##")
-            for frontend_id, crt_list in sync.items():
+            for crt_list in sync['modified']:
                 print(f"CRT-LIST: {crt_list['path']}")
                 print(f"  FRONTEND NAME: {crt_list['frontend_name']}")
                 print(f"  FRONTEND ID: {crt_list['frontend_id']}")
@@ -249,6 +339,7 @@ class Diff(SyncWithTarget):
                     print(f"  UPDATE: {cert['cert']}")
                     for message in cert['messages']:
                         print("    " + repr(message))
+
                 for cert in crt_list['add']:
                     print(f"  ADD: {cert['cert']}")
                     for message in cert['messages']:
@@ -259,10 +350,10 @@ class Diff(SyncWithTarget):
                     for message in cert['messages']:
                         print("    " + repr(message))
 
-                for cert in crt_list['del']:
-                    print(f"\n DEL: {cert['cert']}")
-                    for message in cert['messages']:
-                        print("    " + repr(message))
+            for cert in sync['deleted']:
+                print(f"\n  DEL: {cert['cert']}")
+                for message in cert['messages']:
+                    print("    " + repr(message))
                 print()
 
     def __iter__(self):
@@ -339,12 +430,17 @@ class CertList(SyncWithTarget):
     def _calc_diff(self):
         """ return needed operations to get remote object in sync """
         diff = {
+            'id': self.frontend_id,
             'frontend_name': self.frontend_name,
             'frontend_id': self.frontend_id,
             'path': self.path,
             'add': [],
-            'del': [],
-            'update': []
+            'add_count': 0,
+            'remove': [],
+            'remove_count': 0,
+            'update': [],
+            'update_count': 0,
+            'total_count': 0
         }
         # skip when there is no remote crt list
         if self.remote is None:
@@ -352,8 +448,26 @@ class CertList(SyncWithTarget):
 
         # certs to add, delete and update on the remote target
         diff['add'] = self.diff_list(self.local, self.remote)
-        diff['del'] = self.diff_list(self.remote, self.local)
+        diff['add_count'] = len(diff['add'])
+        #for certpath in self.diff_list(self.local, self.remote):
+        #    diff['add'].append({
+        #        "certfile": certpath,
+        #        "meta": self._execute_remote_cmd(cmds.showSslCert, certfile=certpath)
+        #    })
+        #diff['add_count'] = len(diff['add'])
+
+        # remove
+        for certpath in self.diff_list(self.remote, self.local):
+            diff['remove'].append({
+                "certfile": certpath,
+                "meta": self._execute_remote_cmd(cmds.showSslCert, certfile=certpath.split(":")[0])
+            })
+        diff['remove_count'] = len(diff['remove'])
+
         diff['update'] = [cert.diff for cert in self.certs if cert.diff]
+        diff['update_count'] = len(diff['update'])
+
+        diff['total_count'] = diff['add_count'] + diff['remove_count'] + diff['update_count']
 
         return diff
 
@@ -499,7 +613,7 @@ def get_args():
     )
     parser.add_argument(
         'command',
-        choices=['status', 'diff', 'sync', 'transactions', 'abort'],
+        choices=['diff', 'actions', 'sync', 'transactions', 'abort'],
         nargs='+',
         help="Execute one or more operations."
     )
@@ -520,9 +634,35 @@ def get_args():
     )
     parser.add_argument(
         '--output',
+        '-o',
         help='Specify output format.',
-        choices=['json', 'raw'],
+        choices=['json', 'raw', 'bootgrid'],
         default="raw"
+    )
+    parser.add_argument(
+        '--page-rows',
+        help='Limit output to the specified numbers of rows per page.',
+        default=None
+    )
+    parser.add_argument(
+        '--page',
+        help='Output page number.',
+        default=None
+    )
+    parser.add_argument(
+        '--search',
+        help='Search for string.',
+        default=None
+    )
+    parser.add_argument(
+        '--sort-col',
+        help='Sort output on this column.',
+        default=None
+    )
+    parser.add_argument(
+        '--sort-dir',
+        help='Sort output in this direction.',
+        default=None
     )
     return parser.parse_args()
 
@@ -562,16 +702,16 @@ def get_crt_lists_from_config(configfile):
 
 args = get_args()
 crt_lists = get_crt_lists_from_config(args.config)
-diff = Diff(crt_lists=crt_lists)
+diff = Diff(crt_lists=crt_lists, **vars(args))
 
 """ Sync ssl certs from configfile to HaProxy """
-if "status" in args.command:
-    diff.show_status(args.output)
 if "diff" in args.command:
-    diff.show_diff(args.output)
+    diff.show_diff()
+if "actions" in args.command:
+    diff.show_actions()
 if "abort" in args.command:
-    diff.abort(args.output)
+    diff.abort()
 if "transactions" in args.command:
-    diff.show_transactions(args.output)
+    diff.show_transactions()
 if "sync" in args.command:
-    diff.sync(args.output)
+    diff.sync()
