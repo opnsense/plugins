@@ -29,6 +29,36 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
     $( document ).ready(function() {
         // grid-certificates
+        function syncErrorMessage(modified, deleted) {
+            message = ``;
+            modified.forEach(function(item) {
+                message += `<b>{{ lang._('Public Service Name:') }} ${item.frontend_name}</b></br></br>`;
+
+                item.update.forEach(function(update) {
+                    message += `<b>{{ lang._('UPDATE / NEW:') }} ${update.cert}:</b></br>`;
+                    message += `<pre>${update.messages.join("")}</pre>`;
+                });
+
+                item.add.forEach(function(add) {
+                    message += `<b>{{ lang._('ADD:') }} ${add.cert}:</b></br>`;
+                    message += `<pre>${add.messages.join("</br>")}</pre>`;
+                });
+
+                item.remove.forEach(function(remove) {
+                    message += `<b>{{ lang._('REMOVE:') }} ${remove.cert}:</b></br>`;
+                    message += `<pre>${remove.messages.join("</br>")}</pre>`;
+                });
+            });
+
+            deleted.forEach(function(del) {
+                message += `<b>{{ lang._('DELETE:') }} ${del.cert}:</b></br>`;
+                message += `<pre>${del.messages.join("</br>")}</pre>`;
+            });
+
+            return message;
+        }
+
+
         $("#grid-certificates").bootgrid('destroy');
         var grid_certificates = $("#grid-certificates").UIBootgrid({
             search: '/api/haproxy/maintenance/searchCertificateDiff',
