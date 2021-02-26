@@ -5758,7 +5758,6 @@ body {
 .page-content-head h1, content-box-head h1 {
     padding-left: 10px;
     padding-right: 10px;
-    '/*background-color: #354248; */
     color: #000;
     text-decoration-line: none;
     font-weight: bold;
@@ -5859,14 +5858,14 @@ body {
   font-size: 12px; 
   max-width: 400px;
   margin: 0px auto 0px auto;
-  background-color: #535353;}
+  background-color: #172c38;}
 
 .login-modal-container {
   color:#FFF;
   border: none;
   max-width: 400px;
   margin: 100px auto 0px auto; 
-  background-color:#535353;}
+  background-color: #172c38;}
 .login-modal-head {
   height: 75px;
   padding: 0 20px; }
