@@ -2951,7 +2951,7 @@ select[multiple].input-lg,
 
   .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
     background-color: #f0f0f0;
-    color:#FFF;
+    color:#000;
     outline:0; }
   .btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled]:active, .btn-default[disabled].active, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
     background-color: #FFFFFF;

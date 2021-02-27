@@ -4917,14 +4917,14 @@ fieldset[disabled] .btn {
 .btn-default {
   &:active, &.active {
     background-color: #f0f0f0;
-    color: #FFF;
+    color: #000;
     outline: 0;
   }
 }
 
 .open > .btn-default.dropdown-toggle {
   background-color: #f0f0f0;
-  color: #FFF;
+  color: #000;
   outline: 0;
 }
 
