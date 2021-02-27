@@ -6,6 +6,13 @@
         <help>This will activate the routing service.</help>
     </field>
     <field>
+        <id>general.profile</id>
+        <label>Profile</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Control FRR's default profile. "traditional" is the default, "datacenter" is more aggressive. Please refer to the <a href="http://docs.frrouting.org/en/latest/basic.html#profiles">FRR documentation</a> for more information.]]></help>
+    </field>
+    <field>
         <id>general.enablecarp</id>
         <label>Enable CARP Failover</label>
         <type>checkbox</type>

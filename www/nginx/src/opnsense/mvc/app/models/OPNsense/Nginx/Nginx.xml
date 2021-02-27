@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.19.0</version>
+  <version>1.20.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -534,10 +534,6 @@
         <Required>Y</Required>
         <minValue>1000</minValue>
       </identifier>
-      <url type="TextField">
-        <Required>N</Required>
-        <pattern>/^[^"]+$/</pattern>
-      </url>
       <dollar_url type="TextField">
         <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
@@ -590,6 +586,10 @@
       <headers type="BooleanField">
         <Required>Y</Required>
       </headers>
+      <body type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </body>
       <dollar_args_var type="TextField">
         <pattern>/^[^"]+$/</pattern>
       </dollar_args_var>

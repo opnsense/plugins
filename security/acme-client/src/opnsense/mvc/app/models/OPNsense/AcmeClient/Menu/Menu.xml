@@ -9,7 +9,10 @@
           <Validations VisibleName="Challenge Types" order="30" url="/ui/acmeclient/validations"/>
           <Certificates order="40" url="/ui/acmeclient/certificates"/>
           <Automations VisibleName="Automations" order="50" url="/ui/acmeclient/actions"/>
-          <LogFile VisibleName="Log File" order="60" url="/diag_logs_acmeclient.php"/>
+          <Logs VisibleName="Log Files" order="60" url="/ui/acmeclient/logs">
+              <SystemLog VisibleName="System Log" order="10" url="/ui/acmeclient/logs"/>
+              <AcmeLog VisibleName="Acme Log" order="20" url="/ui/diagnostics/log/core/acmeclient"/>
+          </Logs>
       </LEAcmeClient>
     </Services>
 </menu>

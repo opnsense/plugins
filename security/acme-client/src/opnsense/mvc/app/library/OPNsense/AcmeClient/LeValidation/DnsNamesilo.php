@@ -40,7 +40,5 @@ class DnsNamesilo extends Base implements LeValidationInterface
     public function prepare()
     {
         $this->acme_env['Namesilo_Key'] = (string)$this->config->dns_namesilo_key;
-        // Namesilo applies changes to DNS records only every 15 minutes.
-        $this->acme_args[] = '--dnssleep 960';
     }
 }

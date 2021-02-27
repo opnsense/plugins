@@ -195,6 +195,7 @@ $( document ).ready(function() {
             selection: true,
             multiSelect: false,
             rowSelect: true,
+            rowCount: [3,7,14,20,50,100,-1]
         }
     }).on("selected.rs.jquery.bootgrid", function(e, rows) {
         $("#grid-records").bootgrid('reload');
@@ -216,8 +217,7 @@ $( document ).ready(function() {
         'toggle':'/api/bind/record/toggleRecord/',
         options:{
             useRequestHandlerOnGet: true,
-            requestHandler: function() {
-                let request = {'domain': 'not_found'};
+            requestHandler: function(request) {
                 let ids = $("#grid-domains").bootgrid("getSelectedRows");
                 if (ids.length > 0) {
                     request['domain'] = ids[0];
@@ -225,6 +225,7 @@ $( document ).ready(function() {
                     $("#recordDelBtn").show();
                     $("#record-area").show();
                 } else {
+                    request['domain'] = 'not_found';
                     $("#recordAddBtn").hide();
                     $("#recordDelBtn").hide();
                     $("#record-area").hide();

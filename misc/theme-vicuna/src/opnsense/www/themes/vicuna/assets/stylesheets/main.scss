@@ -9639,7 +9639,7 @@ body {
   padding: 0px 0px;
   margin: 0px 0px;
   background-color: none;
-  border: 1px solid #191919;
+  border: 1px solid #111;
   -webkit-box-shadow: 0px 3px 3px rgba(17, 17, 17, 0.8);
   box-shadow: 0px 3px 3px rgba(17, 17, 17, 0.8);
 
@@ -9709,7 +9709,7 @@ body {
 }
 
 .page-login {
-  background: #172c38;
+  background: #131c22;
 
   .container {
     min-height: 100%;
@@ -10434,12 +10434,14 @@ label > input {
   }
 
   .ipsec-tab {
-    background-color: #839caa !important;
+    background-color: #202f3a !important;
     color: #FFF !important;
+    opacity: 0.5;
 
     &.activetab {
-      background-color: #315a71 !important;
-      color: #FFF !important;
+      background-color: #202f3a !important;
+      color: #D77610 !important;
+      opacity: 1;
     }
   }
 }
@@ -10754,4 +10756,13 @@ ul.jqtree-tree {
 
 [role="listbox"] {
   border: 1px solid #191919 !important;
+}
+
+.interface-table-tr td {
+  background-color: #d77610 !important;
+  color: #FFF !important;
+}
+
+.table.border {
+  border: 1px solid #181818 !important;
 }

@@ -7,6 +7,15 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <profile type="OptionField">
+            <Required>Y</Required>
+            <multiple>N</multiple>
+            <default>traditional</default>
+            <OptionValues>
+                <traditional>Traditional</traditional>
+                <datacenter>Datacenter</datacenter>
+            </OptionValues>
+        </profile>
         <enablecarp type="BooleanField">
             <default>0</default>
             <Required>Y</Required>

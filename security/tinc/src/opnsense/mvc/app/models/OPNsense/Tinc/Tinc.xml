@@ -23,7 +23,7 @@
                 </hostname>
                 <extaddress type="HostnameField">
                     <Required>N</Required>
-                    <IpAllowed>1</IpAllowed>
+                    <IpAllowed>Y</IpAllowed>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </extaddress>
@@ -136,7 +136,7 @@
                 </extport>
                 <extaddress type="HostnameField">
                     <Required>N</Required>
-                    <IpAllowed>1</IpAllowed>
+                    <IpAllowed>Y</IpAllowed>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <Constraints>

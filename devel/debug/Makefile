@@ -1,5 +1,6 @@
 PLUGIN_NAME=		debug
 PLUGIN_VERSION=		1.3
+PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		Debugging Tools
 PLUGIN_DEPENDS=		php${PLUGIN_PHP}-pear-PHP_CodeSniffer \
 			php${PLUGIN_PHP}-pecl-xdebug \

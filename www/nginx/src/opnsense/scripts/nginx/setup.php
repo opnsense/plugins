@@ -198,16 +198,16 @@ if (isset($nginx['upstream'])) {
             }
             if (!empty($upstream['tls_trusted_certificate'])) {
                 $cas = array();
-                if (is_array($http_server['ca'])) {
-                    foreach ($http_server['ca'] as $caref) {
-                        $ca = find_ca($caref);
-                        if (isset($ca)) {
-                            $cas[] = $ca;
-                        }
+                $carefs = explode(",", $upstream['tls_trusted_certificate']);
+                foreach ($carefs as $caref) {
+                    $ca = find_ca($caref);
+                    if (isset($ca)) {
+                        $cas[] = base64_decode($ca['crt']);
                     }
                 }
                 export_pem_file(
                     '/usr/local/etc/nginx/key/trust_upstream_' . $upstream_uuid . '.pem',
+                    '',
                     implode("\n", $cas)
                 );
             }

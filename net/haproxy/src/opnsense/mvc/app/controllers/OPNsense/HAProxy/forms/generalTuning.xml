@@ -69,6 +69,12 @@
         <help><![CDATA[Add some randomness in the check interval between 0 and +/- 50%. A value between 2 and 5 seems to show good results. The default value is 0 (disabled).]]></help>
     </field>
     <field>
+        <id>haproxy.general.tuning.bogusProxyEnabled</id>
+        <label>Enable old bogus PROXY v2 implementation</label>
+        <type>checkbox</type>
+        <help><![CDATA[A bug in the PROXY protocol v2 implementation was present in HAProxy up to version 2.1. Enabling this option reverts this old buggy behaviour.]]></help>
+    </field>
+    <field>
         <id>haproxy.general.tuning.customOptions</id>
         <label>Custom options</label>
         <type>textbox</type>
@@ -84,14 +90,6 @@
         <label>Enabled</label>
         <type>checkbox</type>
         <help><![CDATA[Enable global SSL default values.]]></help>
-    </field>
-    <field>
-        <id>haproxy.general.tuning.ssl_bindOptions</id>
-        <label>Bind options</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
         <id>haproxy.general.tuning.ssl_minVersion</id>
@@ -116,5 +114,14 @@
         <label>Cipher Suites</label>
         <type>text</type>
         <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake for TLSv1.3.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_bindOptions</id>
+        <label>Bind options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
 </form>

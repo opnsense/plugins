@@ -53,6 +53,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->formDialogGroup = $this->getForm("dialogGroup");
         $this->view->formDialogHealthcheck = $this->getForm("dialogHealthcheck");
         $this->view->formDialogLua = $this->getForm("dialogLua");
+        $this->view->formDialogMailer = $this->getForm("dialogMailer");
         $this->view->formDialogMapfile = $this->getForm("dialogMapfile");
         $this->view->formDialogResolver = $this->getForm("dialogResolver");
         $this->view->formDialogServer = $this->getForm("dialogServer");
