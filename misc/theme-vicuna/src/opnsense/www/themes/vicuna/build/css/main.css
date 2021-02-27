@@ -1051,7 +1051,8 @@ h6, .h6 {
     font-size: 75%; }
 
 h1, .h1 {
-  font-size: 23px; }
+  font-size: 23px;
+  text-transform: uppercase; }
 
 h2, .h2 {
   font-size: 16px; }
@@ -5743,7 +5744,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 9px 0px 21px 0px; }
+  padding: 8px 0px 21px 0px; }
 
 .page-side {
   background: #172229;
@@ -6132,7 +6133,7 @@ button.toggle-sidebar {
   font-weight: normal; }
 
 .table > tbody > tr > td:last-child {
-padding-right: 15px; }
+  padding-right: 5px; }
 
 /* helpers */
 .__nowrap {
@@ -6582,4 +6583,12 @@ ul.jqtree-tree .jqtree-title {
 
 .table.border {
   border: 1px solid #181818 !important;
+}
+
+.rule.text-muted > td:nth-child(1n+3) {
+  text-decoration: line-through;
+}
+
+.rule.text-muted > td:last-child {
+  text-decoration:none;
 }
