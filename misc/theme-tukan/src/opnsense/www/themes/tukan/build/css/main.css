@@ -6521,7 +6521,7 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 }
 
 .panel-report-tools:hover {
-  color: #000 !important;
+  color: #FFF !important;
 }
 
 .alert-primary {
