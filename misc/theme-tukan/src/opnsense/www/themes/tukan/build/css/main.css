@@ -4075,8 +4075,8 @@ tbody.collapse.in {
       padding: 6px 12px;
       line-height: 1.428571429;
       text-decoration: none;
-      color: #FFFFFF;
-      background-color: #427795;
+      color: #FFF;
+      background-color: #45565f;
       border: 1px solid rgba(23, 44, 56, 0.4);
       margin-left: -1px;
       cursor: pointer; }
