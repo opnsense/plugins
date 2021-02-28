@@ -6207,7 +6207,7 @@ button.toggle-sidebar {
 .active-menu-title, .active-menu a {
   text-decoration: none;
   position: relative;
-  background-color: #1D3746; }
+  background-color: #24323a; }
   .active-menu-title:before, .active-menu a:before {
     width: 3px; }
   .active-menu-title.active, .active-menu a.active {
