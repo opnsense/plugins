@@ -3407,7 +3407,7 @@ input {
 
 select:focus, textarea:focus {
   color: #000;
-  border-color: #4B86A8;
+  border-color: #FF6E05;
   background-color: none;
   outline: 0;
 }
@@ -3415,7 +3415,7 @@ select:focus, textarea:focus {
 input {
   &[type="text"]:focus, &[type="password"]:focus, &[type="datetime"]:focus, &[type="datetime-local"]:focus, &[type="date"]:focus, &[type="month"]:focus, &[type="time"]:focus, &[type="week"]:focus, &[type="number"]:focus, &[type="email"]:focus, &[type="url"]:focus, &[type="search"]:focus, &[type="tel"]:focus, &[type="color"]:focus {
     color: #000;
-    border-color: #4B86A8;
+    border-color: #FF6E05;
     background-color: none;
     outline: 0;
   }
