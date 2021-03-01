@@ -4916,15 +4916,15 @@ fieldset[disabled] .btn {
 
 .btn-default {
   &:active, &.active {
-    background-color: #f0f0f0;
-    color: #000;
+    background-color: #172c38;
+    color: #FFF;
     outline: 0;
   }
 }
 
 .open > .btn-default.dropdown-toggle {
-  background-color: #f0f0f0;
-  color: #000;
+  background-color: #172c38;
+  color: #FFF;
   outline: 0;
 }
 
