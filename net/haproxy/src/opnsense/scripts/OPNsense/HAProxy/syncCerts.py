@@ -384,7 +384,7 @@ class CertList(SyncWithTarget):
         self._local_default = default_cert
         self._local = self._get_local_state()
         self._remote_ln = self._get_remote_state(cmds.showSslCrtList, crt_list=self._path)
-        self._remote = [cert_ln.split(":")[0] for cert_ln in self._remote_ln]
+        self._remote = [cert_ln.split(":")[0] for cert_ln in self._remote_ln] if self._remote_ln else []
         self._diff = self._calc_diff()
 
     @property
@@ -418,7 +418,7 @@ class CertList(SyncWithTarget):
     @property
     def remote_ln(self):
         """ Certs with line number"""
-        return self._remote_ln
+        return self._remote_ln if self._remote_ln else []
 
     @property
     def remote(self):
@@ -427,7 +427,7 @@ class CertList(SyncWithTarget):
             This ensures that the default cert is always on top.
         """
         if self._local_default is not None and self.local_default != self.remote_default:
-            return self._remote_ln
+            return self.remote_ln
         return self._remote
 
     @property
