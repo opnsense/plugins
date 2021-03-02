@@ -170,22 +170,24 @@ class Diff(SyncWithTarget):
             print(json.dumps(self.status))
 
         if self.output_format == 'raw':
-            print("## STATUS ##")
             for frontend_id, crt_list in self.status.items():
-                print(f"CRT_LIST: {crt_list['path']}")
-                print(f"  FRONTEND NAME:  {crt_list['frontend_name']}")
-                print(f"  FRONTEND ID:    {frontend_id}")
-                print(f"  LOCAL CERTS:    {crt_list['local_certs']}")
-                print(f"  REMOTE CERTS:   {crt_list['remote_certs']}")
-                print(f"  LOCAL DEFAULT:  {crt_list['local_default']}")
-                print(f"  REMOTE DEFAULT: {crt_list['remote_default']}")
-
+                print(f"FRONTEND NAME: {crt_list['frontend_name']}")
+                print(f"  CONFIG:")
                 for cert_id, cert in crt_list['certs'].items():
-                    print()
-                    print(f"    CERT: {cert['path']}")
-                    print(f"      LOCAL:  {cert['local']}")
-                    print(f"      REMOTE: {cert['remote']}")
-                print()
+                    if cert['path'] == crt_list['local_default']:
+                        print(f"    CERT (Default):")
+                    else:
+                        print(f"    CERT:")
+                    print(f"      Serial:  {cert['local']['Serial']}")
+                    print(f"      Issuer:  {cert['local']['Issuer']}")
+                    print(f"      Subject: {cert['local']['Subject']}")
+                print(f"  ACTIVE:")
+                for cert in crt_list['remote_certs']:
+                    meta = self._execute_remote_cmd(cmds.showSslCert, certfile=cert.split(":")[0])
+                    print(f"    CERT:")
+                    print(f"      Serial:  {meta['Serial']}")
+                    print(f"      Issuer:  {meta['Issuer']}")
+                    print(f"      Subject: {meta['Subject']}")
 
     def show_actions(self):
         """ Shows what will be synced to target """
@@ -198,18 +200,22 @@ class Diff(SyncWithTarget):
         if self.output_format == 'raw':
             for diff in self.diff:
                 print(f"FRONTEND: {diff['frontend_name']}")
+
+                print(f"  CRT-LIST: {diff['path']}")
                 for update in diff['update']:
                     print(f"  CERT NEW / UPDATE:")
+                    print(f"     Cert:    {update['certfile']}")
                     print(f"     Serial:  {update['meta'].get('Serial', None)}")
                     print(f"     Issuer:  {update['meta'].get('Issuer', None)}")
                     print(f"     Subject: {update['meta'].get('Subject', None)}")
                     print()
                 else:
                     if not diff['update']:
-                        print(f"  CERT UPDATE: []")
+                        print(f"  CERT NEW / UPDATE: []")
 
                 for add in diff['add']:
                     print(f"  CERT ADD:")
+                    print(f"     Cert:    {add['certfile']}")
                     print(f"     Serial:  {add['meta'].get('Serial', None)}")
                     print(f"     Issuer:  {add['meta'].get('Issuer', None)}")
                     print(f"     Subject: {add['meta'].get('Subject', None)}")
@@ -220,6 +226,7 @@ class Diff(SyncWithTarget):
 
                 for remove in diff['remove']:
                     print(f"  CERT REMOVE:")
+                    print(f"     Cert:    {remove['certfile']}")
                     print(f"     Serial:  {remove['meta'].get('Serial', None)}")
                     print(f"     Issuer:  {remove['meta'].get('Issuer', None)}")
                     print(f"     Subject: {remove['meta'].get('Subject', None)}")
@@ -227,6 +234,7 @@ class Diff(SyncWithTarget):
                 else:
                     if not diff['remove']:
                         print(f"  CERT REMOVE: []")
+                        print()
 
 
     def show_transactions(self):
@@ -308,11 +316,10 @@ class Diff(SyncWithTarget):
                     'messages': messages
                 })
 
-                if "Success!" in output:
+                if "deleted in crtlist" in output:
                     sync['remove_count'] += 1
                     sync_item['remove_count'] += 1
 
-            #modified_items = sync_item['update_count'] + sync_item['add_count'] + sync_item['remove_count']
             sync['modified'].append(sync_item)
 
         # delete unused certs operation - haproxy does not allow to delete certs in use

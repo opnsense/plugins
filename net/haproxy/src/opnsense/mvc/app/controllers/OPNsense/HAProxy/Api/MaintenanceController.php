@@ -47,6 +47,9 @@ class MaintenanceController extends ApiControllerBase
      */
     public function searchCertificateDiffAction()
     {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
         return $this->getData(
             ["cert_diff_list"],
             ["rowCount", "current", "searchPhrase", "sort"]
@@ -59,6 +62,9 @@ class MaintenanceController extends ApiControllerBase
      */
     public function searchServerAction()
     {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
         return $this->getData(
             ["server_status_list"],
             ["rowCount", "current", "searchPhrase", "sort"]
@@ -71,9 +77,26 @@ class MaintenanceController extends ApiControllerBase
      */
     public function certSyncAction()
     {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
         return $this->syncCerts(
             ["cert_sync"],
             ["frontend_ids"]
+        );
+    }
+
+    /**
+     * sync certificate for frontends
+     * @return array|mixed
+     */
+    public function certSyncBulkAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
+        return $this->syncCerts(
+            ["cert_sync_bulk"]
         );
     }
 
@@ -83,6 +106,9 @@ class MaintenanceController extends ApiControllerBase
      */
     public function certDiffAction()
     {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
         return $this->getData(
             ["cert_diff"],
             ["frontend_ids"]
@@ -95,6 +121,9 @@ class MaintenanceController extends ApiControllerBase
      */
     public function certActionsAction()
     {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
         return $this->getData(
             ["cert_actions"],
             ["frontend_ids"]
