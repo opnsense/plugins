@@ -5077,8 +5077,8 @@ button.close {
   background-color: #FFF;}
 .modal-body .table-hover > tbody > tr:hover > td,
 .modal-body .table-hover > tbody > tr:hover > th {
-  background-color: #bcc8ce;
-  color: #000; }
+  background-color: #f06702;
+  color: #FFF; }
 
 .modal-footer {
   padding: 5px;
