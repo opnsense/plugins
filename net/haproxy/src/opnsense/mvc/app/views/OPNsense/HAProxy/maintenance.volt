@@ -26,9 +26,198 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-
 <script>
     $( document ).ready(function() {
+        // grid-certificates
+        function syncErrorMessage(modified, deleted) {
+            message = ``;
+            modified.forEach(function(item) {
+                message += `<b>{{ lang._('Public Service Name:') }} ${item.frontend_name}</b></br></br>`;
+
+                item.update.forEach(function(update) {
+                    message += `<b>{{ lang._('UPDATE / NEW:') }} ${update.cert}:</b></br>`;
+                    message += `<pre>${update.messages.join("")}</pre>`;
+                });
+
+                item.add.forEach(function(add) {
+                    message += `<b>{{ lang._('ADD:') }} ${add.cert}:</b></br>`;
+                    message += `<pre>${add.messages.join("</br>")}</pre>`;
+                });
+
+                item.remove.forEach(function(remove) {
+                    message += `<b>{{ lang._('REMOVE:') }} ${remove.cert}:</b></br>`;
+                    message += `<pre>${remove.messages.join("</br>")}</pre>`;
+                });
+                message += `</br>`;
+            });
+
+            message += `<b>{{ lang._('CERTIFICATES:') }}</b></br></br>`;
+            deleted.forEach(function(del) {
+                message += `<b>{{ lang._('DELETE:') }} ${del.cert}:</b></br>`;
+                message += `<pre>${del.messages.join("</br>")}</pre>`;
+            });
+
+            return message;
+        }
+
+        function showDiffDialog(payload) {
+            $.post('/api/haproxy/maintenance/certDiff', payload, function(data) {
+                BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_INFO,
+                    title: "{{ lang._('Diff between configured and active ssl certificates') }}",
+                    message: `<pre>${data}</pre>`,
+                    buttons: [{
+                        label: '{{ lang._('Close') }}',
+                        action: function(dialog){
+                          dialog.close();
+                        }
+                    }]
+                });
+            });
+        }
+
+        function applyDiffDialog(payload, requested_count) {
+            $.post('/api/haproxy/maintenance/certActions', payload, function(data_actions) {
+                question = ''
+                question += `<pre>${data_actions}</pre>`;
+                question += '<b>{{ lang._('Apply ssl certificates to HaProxy?') }}</b></br></br>';
+
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    question,
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                    $.post('/api/haproxy/maintenance/certSync', payload, function(data) {
+                        modified_count = data.result.add_count + data.result.remove_count + data.result.update_count;
+
+                        if (requested_count != modified_count) {
+                            var error_msg = syncErrorMessage(data.result.modified, data.result.deleted);
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: "{{ lang._('Error applying ssl certificates to HAProxy') }}",
+                                message: error_msg,
+                                buttons: [{
+                                    label: '{{ lang._('Close') }}',
+                                    action: function(dialog){
+                                      dialog.close();
+                                    }
+                                }]
+                            });
+                        }
+                        $("#grid-certificates").bootgrid("reload");
+                    });
+                });
+            });
+        }
+
+        $("#grid-certificates").bootgrid('destroy');
+        var grid_certificates = $("#grid-certificates").UIBootgrid({
+            search: '/api/haproxy/maintenance/searchCertificateDiff',
+            options: {
+                ajax: true,
+                selection: true,
+                multiSelect: true,
+                keepSelection: true,
+                rowCount:[10,25,50,100,500,1000],
+                searchSettings: {
+                    delay: 250,
+                    characters: 1
+                },
+                formatters: {
+                    "commands": function (column, row) {
+                        buttons = ""
+                        buttons += "<button type=\"button\"  data-action=\"showDiff\" title=\"{{ lang._('Show diff between configured ssl certificates and certificates from HAProxy memory.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-info-circle\"></span></button>"
+                        buttons += " <button type=\"button\" data-action=\"applyDiff\" title=\"{{ lang._('Apply diff and sync certificates into HAProxy memory.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-refresh\"></span></button>"
+                        return buttons;
+                    },
+                },
+            }
+        }).on("loaded.rs.jquery.bootgrid", function(){
+            grid_certificates.find("*[data-action=showDiff]").off().on("click", function(e) {
+                var row_id = $(this).data("row-id");
+                var frontend_ids = row_id;
+                var payload = {
+                  'frontend_ids': frontend_ids,
+                };
+                showDiffDialog(payload);
+            });
+
+            grid_certificates.find("*[data-action=applyDiff]").off().on("click", function(e) {
+                var row_id = $(this).data("row-id");
+                var rows = $("#grid-certificates").bootgrid("getCurrentRows");
+                var row =  rows.filter(function(row) {
+                	return row.id == row_id;
+                })[0];
+                var requested_count = row.total_count;
+                var frontend_ids = row.id
+                var payload = {
+                  'frontend_ids': frontend_ids,
+                };
+
+                applyDiffDialog(payload, requested_count);
+            });
+
+            grid_certificates.find("*[data-action=showDiffBulk]").off().on("click", function(e) {
+                var rows = $("#grid-certificates").bootgrid("getSelectedRows");
+                var payload = {
+                  'frontend_ids': rows.join()
+                };
+                if (rows != undefined && rows.length > 0) {
+                    showDiffDialog(payload);
+                }
+            });
+
+            grid_certificates.find("*[data-action=applyDiffBulk]").off().on("click", function(e) {
+                var rows = $("#grid-certificates").bootgrid("getSelectedRows");
+                var frontend_ids = rows.join();
+                var all_rows = $("#grid-certificates").bootgrid("getCurrentRows");
+                var requested_count = 0;
+                all_rows.forEach(function(row) {
+                    if (rows.indexOf(row.id) != -1) {
+                        requested_count = requested_count + row.total_count;
+                    }
+                });
+                var payload = {
+                  'frontend_ids': frontend_ids,
+                };
+                if (rows != undefined && rows.length > 0) {
+                    applyDiffDialog(payload, requested_count);
+                }
+            });
+        });
+
+        // Apply all changes
+        $("*[data-action=applyDiffAll]").off().on("click", function(e) {
+            $('[id*="applyDiffAll_progress"]').each(function(){
+                $(this).addClass("fa fa-spinner fa-pulse");
+            });
+            var all_rows = $("#grid-certificates").bootgrid("getCurrentRows");
+            var requested_count = 0;
+            all_rows.forEach(function(row) {
+                requested_count = requested_count + row.total_count;
+            });
+
+            var payload = {};
+            $.post('/api/haproxy/maintenance/certSyncBulk', payload, function(data) {
+                modified_count = data.result.add_count + data.result.remove_count + data.result.update_count;
+                if (requested_count != modified_count) {
+                    var error_msg = syncErrorMessage(data.result.modified, data.result.deleted);
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_DANGER,
+                        title: "{{ lang._('Error applying ssl certificates to HAProxy') }}",
+                        message: error_msg,
+                        buttons: [{
+                            label: '{{ lang._('Close') }}',
+                            action: function(dialog){
+                              dialog.close();
+                            }
+                        }]
+                    });
+                }
+                $("#grid-certificates").bootgrid("reload");
+                $("#applyDiffAll_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+
+        // grid-status
         $("#grid-status").bootgrid('destroy');
         var grid_status = $("#grid-status").UIBootgrid({
             search: '/api/haproxy/maintenance/searchServer',
@@ -45,7 +234,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 formatters: {
                     "commands": function (column, row) {
                         buttons = ""
-                        buttons += "<button type=\"button\" title=\"{{ lang._('Set administrative state to ready. Puts the server in normal mode.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
+                        buttons += "<button type=\"button\"  title=\"{{ lang._('Set administrative state to ready. Puts the server in normal mode.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
                         buttons += " <button type=\"button\" title=\"{{ lang._('Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
                         buttons += " <button type=\"button\" title=\"{{ lang._('Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
                         buttons += " <button type=\"button\" title=\"{{ lang._('Change server weight.') }}\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
@@ -91,7 +280,6 @@ POSSIBILITY OF SUCH DAMAGE.
                             }
                         });
                 });
-
             });
 
             // set single - server weight
@@ -242,6 +430,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     <li class="active"><a data-toggle="tab" href="#server"><b>{{ lang._('Server') }}</b></a></li>
+    <li><a data-toggle="tab" href="#ssl-certs"><b>{{ lang._('SSL Certificates') }}</b></a></li>
 </ul>
 
 <div class="content-box tab-content">
@@ -280,6 +469,39 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
+    </div>
+
+    <div id="ssl-certs" class="tab-pane fade in">
+        <!-- tab page "ssl-certs" -->
+        <table id="grid-certificates" class="table table-condensed table-hover table-striped table-responsive">
+            <thead>
+            <tr>
+                <th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">{{ lang._('id') }}</th>
+                <th data-column-id="frontend_name" data-type="string">{{ lang._('Public Service Name') }}</th>
+                <th data-column-id="update_count" data-type="string">{{ lang._('Update Certificates') }}</th>
+                <th data-column-id="add_count" data-type="string">{{ lang._('Add Certificates') }}</th>
+                <th data-column-id="remove_count" data-type="string">{{ lang._('Remove Certificates') }}</th>
+                <th data-column-id="commands" data-width="8em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="showDiffBulk" title="{{ lang._('Show diff between configured ssl certificates and certificates from HAProxy memory for selected frontends.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-info-circle"></span></button>
+                    <button data-action="applyDiffBulk" title="{{ lang._('Apply diff and sync certificates into HAProxy memory for selected frontends.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-refresh"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="col-md-12">
+            <hr/>
+            <button data-action="applyDiffAll" class="btn btn-primary" type="button"><b>{{ lang._('Apply') }}</b><i id="applyDiffAll_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
     </div>
 </div>
 
