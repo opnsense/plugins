@@ -68,7 +68,7 @@ class ExportController extends ApiControllerBase
      * @return array|mixed
      */
     public function downloadAction($type)
-    {               
+    {
         $backend = new Backend();
 
         if ($type == 'config') {

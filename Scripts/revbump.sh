@@ -8,7 +8,7 @@ if [ -z "${DIR}" ]; then
 	DIR=.
 fi
 
-REV=$(make -C ${DIR} -V PLUGIN_REVISION)
+REV=$(make -C ${DIR} -v PLUGIN_REVISION)
 REV=$(expr ${REV} \+ 1)
 
 grep -v ^PLUGIN_REVISION ${DIR}/Makefile > ${DIR}/Makefile.tmp

@@ -48,7 +48,7 @@ class TestCommands(unittest.TestCase):
         pKmFJ2e2VSnTZIBJvD58HMR+WNAEp7tHffHk2z/mPPtdRdxW5Zieoe5+6+HDtwgG
         +VCAIWMkC36Dvg==
         -----END CERTIFICATE-----
-        
+
         -----BEGIN RSA PRIVATE KEY-----
         MIIJKgIBAAKCAgEAvsNKU59F2gpl1fzbk7hD64Q3zk1hH9Im1IsN9ppF5tqdsPPG
         n3Q8QgcKpnJ/SrtnPl4Xqp3bJyV20lJWTxuVU7ImM8g4tStQB4XojTtv8A4E7/wN
@@ -100,8 +100,7 @@ class TestCommands(unittest.TestCase):
         9WYZS7hlKyqVBESJuonR15biy7Xov5ELl6A821cskZO3vTwtlBSeCDiqaeVLpKR3
         aYwf5YZo7v+N8KBSLEdLNjoKK4PfXUdczD7uOUllbd4/MRgCn4EmFvmpljGiEQ==
         -----END RSA PRIVATE KEY-----
-        
-        
+
         -----BEGIN CERTIFICATE-----
         MIIEqzCCApOgAwIBAgIRAIvhKg5ZRO08VGQx8JdhT+UwDQYJKoZIhvcNAQELBQAw
         GjEYMBYGA1UEAwwPRmFrZSBMRSBSb290IFgxMB4XDTE2MDUyMzIyMDc1OVoXDTM2
