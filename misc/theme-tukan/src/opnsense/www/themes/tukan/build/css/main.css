@@ -2470,7 +2470,7 @@ input[type="color"]
 	background-color: #f0f0f0;
 	opacity: 1.0;
 	filter: alpha(opacity=100);
-	border-color: #4d83a1;
+	border-color: #a8a8a8;
 	color:#a8a8a8;}
 
   select[disabled]:hover, select[readonly]:hover, fieldset[disabled]:hover,
