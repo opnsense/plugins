@@ -544,8 +544,15 @@ class Cert(SyncWithTarget):
 
     def _get_local_state(self):
         cert_obj = self._get_cert_data()
+        serial = cert_obj.get_serial_number()
+        serial_hex = "%X" % serial
+
+        if len(serial_hex) % 2 != 0:
+            padding = len(serial_hex) + 1
+            serial_hex = f"%.{padding}X" % serial
+
         return {
-            "Serial": '%.2x'.upper() % cert_obj.get_serial_number(),
+            "Serial": serial_hex,
             "Subject": self._glue(cert_obj.get_subject().get_components()),
             "Issuer": self._glue(cert_obj.get_issuer().get_components())
         }
