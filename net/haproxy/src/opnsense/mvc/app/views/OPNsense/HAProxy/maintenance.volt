@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $.post('/api/haproxy/maintenance/certDiff', payload, function(data) {
                 BootstrapDialog.show({
                     type: BootstrapDialog.TYPE_INFO,
-                    title: "{{ lang._('Diff between configured and remote ssl certificates') }}",
+                    title: "{{ lang._('Diff between configured and active ssl certificates') }}",
                     message: `<pre>${data}</pre>`,
                     buttons: [{
                         label: '{{ lang._('Close') }}',
