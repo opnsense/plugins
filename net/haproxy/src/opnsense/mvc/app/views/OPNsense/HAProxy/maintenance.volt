@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $.post('/api/haproxy/maintenance/certDiff', payload, function(data) {
                 BootstrapDialog.show({
                     type: BootstrapDialog.TYPE_INFO,
-                    title: "{{ lang._('Diff between configured and active ssl certificates') }}",
+                    title: "{{ lang._('Diff between configured and active SSL certificates') }}",
                     message: `<pre>${data}</pre>`,
                     buttons: [{
                         label: '{{ lang._('Close') }}',
@@ -80,7 +80,7 @@ POSSIBILITY OF SUCH DAMAGE.
             $.post('/api/haproxy/maintenance/certActions', payload, function(data_actions) {
                 question = ''
                 question += `<pre>${data_actions}</pre>`;
-                question += '<b>{{ lang._('Apply ssl certificates to HaProxy?') }}</b></br></br>';
+                question += '<b>{{ lang._('Apply SSL certificates to HAProxy?') }}</b></br></br>';
 
                 stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                     question,
@@ -92,7 +92,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             var error_msg = syncErrorMessage(data.result.modified, data.result.deleted);
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
-                                title: "{{ lang._('Error applying ssl certificates to HAProxy') }}",
+                                title: "{{ lang._('Error applying SSL certificates to HAProxy') }}",
                                 message: error_msg,
                                 buttons: [{
                                     label: '{{ lang._('Close') }}',
@@ -124,8 +124,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 formatters: {
                     "commands": function (column, row) {
                         buttons = ""
-                        buttons += "<button type=\"button\"  data-action=\"showDiff\" title=\"{{ lang._('Show diff between configured ssl certificates and certificates from HAProxy memory.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-info-circle\"></span></button>"
-                        buttons += " <button type=\"button\" data-action=\"applyDiff\" title=\"{{ lang._('Apply diff and sync certificates into HAProxy memory.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-refresh\"></span></button>"
+                        buttons += "<button type=\"button\"  data-action=\"showDiff\" title=\"{{ lang._('Show diff between configured SSL certificates and certificates from running HAProxy service.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-info-circle\"></span></button>"
+                        buttons += " <button type=\"button\" data-action=\"applyDiff\" title=\"{{ lang._('Apply diff and sync certificates into running HAProxy service.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-refresh\"></span></button>"
                         return buttons;
                     },
                 },
@@ -202,7 +202,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     var error_msg = syncErrorMessage(data.result.modified, data.result.deleted);
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
-                        title: "{{ lang._('Error applying ssl certificates to HAProxy') }}",
+                        title: "{{ lang._('Error applying SSL certificates to HAProxy') }}",
                         message: error_msg,
                         buttons: [{
                             label: '{{ lang._('Close') }}',
@@ -344,7 +344,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     });
                     question += '</ul>';
                     question += '<b>{{ lang._('State: ') }}' + state + '</b></br></br>';
-                    question += '{{ lang._('Set administrative state for all selected server?') }} </br></br>';
+                    question += '{{ lang._('Set administrative state for all selected servers?') }} </br></br>';
 
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                         question,
@@ -389,7 +389,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     question += '<div class="form-group" style="display: block;">';
                     question += '<input class="form-control" id="newBulkWeight" value="" type="text"/>';
                     question += '</div>';
-                    question += '{{ lang._('Set weight for all selected server?') }} </br></br>';
+                    question += '{{ lang._('Set weight for all selected servers?') }} </br></br>';
 
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                         question,
@@ -451,11 +451,11 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
             <tr>
                 <th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">{{ lang._('id') }}</th>
-                <th data-column-id="pxname" data-type="string">{{ lang._('Proxy') }}</th>
-                <th data-column-id="svname" data-type="string">{{ lang._('Server') }}</th>
+                <th data-column-id="pxname" data-width="9em" data-type="string">{{ lang._('Virtual Service') }}</th>
+                <th data-column-id="svname" data-width="9em" data-type="string">{{ lang._('Real Server') }}</th>
                 <th data-column-id="addr" data-type="string">{{ lang._('Address') }}</th>
                 <th data-column-id="status" data-type="string">{{ lang._('Status') }}</th>
-                <th data-column-id="check_status" data-type="string">{{ lang._('Check Status') }}</th>
+                <th data-column-id="check_status" data-width="8em" data-type="string">{{ lang._('Check Status') }}</th>
                 <th data-column-id="weight" data-type="string">{{ lang._('Weight') }}</th>
                 <th data-column-id="scur" data-type="string">{{ lang._('Sessions') }}</th>
                 <th data-column-id="bin" data-type="string">{{ lang._('Bytes in') }}</th>
@@ -501,8 +501,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <tr>
                 <td></td>
                 <td>
-                    <button data-action="showDiffBulk" title="{{ lang._('Show diff between configured ssl certificates and certificates from HAProxy memory for selected frontends.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-info-circle"></span></button>
-                    <button data-action="applyDiffBulk" title="{{ lang._('Apply diff and sync certificates into HAProxy memory for selected frontends.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-refresh"></span></button>
+                    <button data-action="showDiffBulk" title="{{ lang._('Show diff between configured SSL certificates and certificates from running HAProxy service for selected Public Services.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-info-circle"></span></button>
+                    <button data-action="applyDiffBulk" title="{{ lang._('Apply diff and sync certificates into running HAProxy service for selected Public Services.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-refresh"></span></button>
                 </td>
             </tr>
             </tfoot>
