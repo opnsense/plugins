@@ -4813,7 +4813,7 @@ select[multiple].input-lg, .form-horizontal .form-group-lg select[multiple].form
 
 .btn {
   &:hover, &:focus {
-    background-color: #e8e8e8;
+    background-color: #dbdbdb;
     color: #000;
     border-radius: 3px;
     border: 1px solid #1b4257;
@@ -4908,7 +4908,7 @@ fieldset[disabled] .btn {
 .act_flush {
   &:hover, &:focus {
     color: #000;
-    background-color: #e8e8e8;
+    background-color: #dbdbdb;
     border-color: 1px solid #1d1d1d;
     outline: 0;
   }
@@ -4916,15 +4916,15 @@ fieldset[disabled] .btn {
 
 .btn-default {
   &:active, &.active {
-    background-color: #172c38;
-    color: #FFF;
+    background-color: #dbdbdb;
+    color: #000;
     outline: 0;
   }
 }
 
 .open > .btn-default.dropdown-toggle {
-  background-color: #172c38;
-  color: #FFF;
+  background-color: #dbdbdb;
+  color: #000;
   outline: 0;
 }
 

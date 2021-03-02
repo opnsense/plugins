@@ -2910,7 +2910,7 @@ select[multiple].input-lg,
   border-color: #1d1d1d;
   text-decoration: none; }
 .btn:hover, .btn:focus {
-	background-color: #e8e8e8;
+	background-color: #dbdbdb;
 	color: #000;
 	border-radius: 3px;
 	border: 1px solid #1b4257;
@@ -2945,13 +2945,13 @@ select[multiple].input-lg,
 
 .act_flush:hover, .act_flush:focus {
   color: #000;
-  background-color: #e8e8e8;
+  background-color: #dbdbdb;
   border-color: 1px solid #1d1d1d;
   outline:0; }
 
   .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
-    background-color: #172c38;
-    color:#FFF;
+    background-color: #dbdbdb;
+    color:#000;
     outline:0; }
   .btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled]:active, .btn-default[disabled].active, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
     background-color: #FFFFFF;
