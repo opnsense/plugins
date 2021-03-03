@@ -5487,7 +5487,7 @@ button.close {
 
 .show {
   display: block !important;
-  color:#757575;}
+  color: #22C400; }
 
 .invisible {
   visibility: hidden; }
@@ -5725,7 +5725,7 @@ body {
   margin-left: 20px;
   margin-right: 20px;
   border-top: 1px solid #191919;
-  border-radius: 3px;
+  border-radius: 0;
   min-height: 47px;
   height:auto;
   padding: 7px 14px 5px 14px;
@@ -5744,7 +5744,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 7px 0px 21px 0px; }
+  padding: 10px 0px 21px 0px; }
 
 .page-side {
   background: #172229;
