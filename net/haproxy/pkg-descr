@@ -23,6 +23,7 @@ Added:
 * add support for server templates (#1975)
 * add support for additional resolver options (#1975)
 * add support for resolve-prefer option (#1975)
+* add pre-defined cron jobs to maintenance page
 
 Fixed:
 * prevent service outage by aborting "Apply" when configtest fails

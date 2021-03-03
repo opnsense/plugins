@@ -28,6 +28,72 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 <script>
     $( document ).ready(function() {
+
+        // Get cronjobs
+        var cronjobs_data_get_map = {'frm_cronjobs':"/api/haproxy/maintenance/get"};
+        // load initial data
+        mapDataToFormUI(cronjobs_data_get_map).done(function(data){
+            // Add link to cron job edit page: First iterate over all cron settings.
+            // FIXME: Oh boy, this is ugly. Should be refactored.
+            $.each(data.frm_cronjobs.haproxy.maintenance.cronjobs, function(key, value) {
+                // Check if cron setting is enabled.
+                if (value == 1) {
+                    // Find the matching cron job reference.
+                    cron_cfg = key + 'Cron';
+                    $.each(data.frm_cronjobs.haproxy.maintenance.cronjobs, function(cronkey, cronvalue) {
+                        // Check if it is the correct entry for this cron setting.
+                        if (cronkey == cron_cfg) {
+                            // Get the cron job UUID.
+                            $.each(cronvalue, function(refkey, refvalue) {
+                                // Only the "selected" item belongs to this entry.
+                                if (refvalue.selected == 1) {
+                                    // Find the correct container for this cron setting.
+                                    content_id = "[id=\"haproxy.maintenance.cronjobs." + key + "\"]";
+                                    $(content_id).each(function(){
+                                        // Finally add the link to the cron job edit page.
+                                        cron_link = "<br><a href=\"/ui/cron/item/open/" + refkey + "\">{{ lang._('Configure cron job') }}</a>";
+                                        $(this).closest("td").append(cron_link);
+                                    });
+                                };
+                            });
+                        };
+                    });
+                };
+            });
+
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        // Save & reconfigure cron to activate changes
+        $('[id*="saveAndReconfigureAct"]').each(function(){
+            $(this).click(function(){
+                // set progress animation
+                $('[id*="saveAndReconfigureAct_progress"]').each(function(){
+                    $(this).addClass("fa fa-spinner fa-pulse");
+                });
+
+                // extract the form id from the button id
+                var frm_id = "frm_" + $(this).attr("id").split('_')[1]
+
+                // save data for this tab
+                saveFormToEndpoint(url="/api/haproxy/maintenance/set",formid=frm_id,callback_ok=function(){
+                    // Handle cron integration
+                    ajaxCall(url="/api/haproxy/maintenance/fetchCronIntegration", sendData={}, callback=function(data,status) {
+                    });
+
+                    // when done, disable progress animation
+                    $('[id*="saveAndReconfigureAct_progress"]').each(function(){
+                        $(this).removeClass("fa fa-spinner fa-pulse");
+                        // reload page to show or hide links to cron edit page
+                        setTimeout(function () {
+                            window.location.reload(true)
+                        }, 300);
+                    });
+                });
+            });
+        });
+
         // grid-certificates
         function syncErrorMessage(modified, deleted) {
             message = ``;
@@ -440,8 +506,9 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#server"><b>{{ lang._('Server') }}</b></a></li>
+    <li class="active"><a data-toggle="tab" href="#server"><b>{{ lang._('Servers') }}</b></a></li>
     <li><a data-toggle="tab" href="#ssl-certs"><b>{{ lang._('SSL Certificates') }}</b></a></li>
+    <li><a data-toggle="tab" href="#cronjobs"><b>{{ lang._('Cron Jobs') }}</b></a></li>
 </ul>
 
 <div class="content-box tab-content">
@@ -512,6 +579,21 @@ POSSIBILITY OF SUCH DAMAGE.
             <button data-action="applyDiffAll" class="btn btn-primary" type="button"><b>{{ lang._('Apply') }}</b><i id="applyDiffAll_progress" class=""></i></button>
             <br/>
             <br/>
+        </div>
+    </div>
+
+    <div id="cronjobs" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':maintenanceCronjobsForm,'id':'frm_cronjobs'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAndReconfigureAct_cronjobs" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAndReconfigureAct_progress"></i></button>
+            </div>
+            <div class="col-md-12">
+              <br/>
+              {{ lang._('%sNOTE:%s When enabling multiple cron jobs, please adjust them so that they do not run at the same time. Check the %scron settings page%s for more cron job details and additional customization options.') | format('<b>', '</b>', '<a href="/ui/cron">', '</a>') }}
+              <br/>
+            </div>
         </div>
     </div>
 </div>
