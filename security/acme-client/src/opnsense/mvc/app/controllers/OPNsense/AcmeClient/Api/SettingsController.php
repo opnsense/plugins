@@ -86,6 +86,8 @@ class SettingsController extends ApiMutableModelControllerBase
                     Config::getInstance()->save();
                     // Refresh the crontab
                     $backend->configdRun('template reload OPNsense/Cron');
+                    // (res)start daemon
+                    $backend->configdRun("cron restart");
                     $result['result'] = "new";
                     $result['uuid'] = $cron_uuid;
                 } else {
@@ -99,7 +101,7 @@ class SettingsController extends ApiMutableModelControllerBase
             ) {
                 // Get UUID, clean existin entry
                 $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
-                $mdlAcme->settings->UpdateCron = null;
+                $mdlAcme->settings->UpdateCron = "";
                 $mdlCron = new Cron();
                 // Delete the cronjob item
                 if ($mdlCron->jobs->job->del($cron_uuid)) {
@@ -109,6 +111,8 @@ class SettingsController extends ApiMutableModelControllerBase
                     Config::getInstance()->save();
                     // Regenerate the crontab
                     $backend->configdRun('template reload OPNsense/Cron');
+                    // (res)start daemon
+                    $backend->configdRun("cron restart");
                     $result['result'] = "deleted";
                 } else {
                     $result['result'] = "unable to delete cron";

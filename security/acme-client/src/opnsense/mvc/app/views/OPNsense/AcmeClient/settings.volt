@@ -54,8 +54,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
         // Save & reconfigure acme-client to activate changes
         $("#reconfigureAct").click(function(){
-            // TODO: reload the page afterwards to show/hide the "Schedule" tab
-
             // set progress animation
             $('[id*="reconfigureAct_progress"]').each(function(){
                 $(this).addClass("fa fa-spinner fa-pulse");
@@ -99,6 +97,10 @@ POSSIBILITY OF SUCH DAMAGE.
                                 // when done, disable progress animation
                                 $('[id*="reconfigureAct_progress"]').each(function(){
                                     $(this).removeClass("fa fa-spinner fa-pulse");
+                                    // reload page to show or hide links to cron edit page
+                                    setTimeout(function () {
+                                        window.location.reload(true)
+                                    }, 300);
                                 });
                                 dlg.close();
                             }
@@ -132,6 +134,10 @@ POSSIBILITY OF SUCH DAMAGE.
                                 // when done, disable progress animation
                                 $('[id*="reconfigureAct_progress"]').each(function(){
                                     $(this).removeClass("fa fa-spinner fa-pulse");
+                                    // reload page to show or hide links to cron edit page
+                                    setTimeout(function () {
+                                        window.location.reload(true)
+                                    }, 300);
                                 });
                             });
                         });
