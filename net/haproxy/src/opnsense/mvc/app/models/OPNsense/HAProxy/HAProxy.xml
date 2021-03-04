@@ -2815,5 +2815,81 @@
                 </hostname>
             </mailer>
         </mailers>
+        <maintenance>
+            <cronjobs>
+                <syncCerts type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </syncCerts>
+                <syncCertsCron type="ModelRelationField">
+                    <Model>
+                        <queues>
+                            <source>OPNsense.Cron.Cron</source>
+                            <items>jobs.job</items>
+                            <display>description</display>
+                            <filters>
+                                <origin>/HAProxy/</origin>
+                            </filters>
+                        </queues>
+                    </Model>
+                    <ValidationMessage>Related cron not found.</ValidationMessage>
+                    <Required>N</Required>
+                </syncCertsCron>
+                <updateOcsp type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </updateOcsp>
+                <updateOcspCron type="ModelRelationField">
+                    <Model>
+                        <queues>
+                            <source>OPNsense.Cron.Cron</source>
+                            <items>jobs.job</items>
+                            <display>description</display>
+                            <filters>
+                                <origin>/HAProxy/</origin>
+                            </filters>
+                        </queues>
+                    </Model>
+                    <ValidationMessage>Related cron not found.</ValidationMessage>
+                    <Required>N</Required>
+                </updateOcspCron>
+                <reloadService type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </reloadService>
+                <reloadServiceCron type="ModelRelationField">
+                    <Model>
+                        <queues>
+                            <source>OPNsense.Cron.Cron</source>
+                            <items>jobs.job</items>
+                            <display>description</display>
+                            <filters>
+                                <origin>/HAProxy/</origin>
+                            </filters>
+                        </queues>
+                    </Model>
+                    <ValidationMessage>Related cron not found.</ValidationMessage>
+                    <Required>N</Required>
+                </reloadServiceCron>
+                <restartService type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </restartService>
+                <restartServiceCron type="ModelRelationField">
+                    <Model>
+                        <queues>
+                            <source>OPNsense.Cron.Cron</source>
+                            <items>jobs.job</items>
+                            <display>description</display>
+                            <filters>
+                                <origin>/HAProxy/</origin>
+                            </filters>
+                        </queues>
+                    </Model>
+                    <ValidationMessage>Related cron not found.</ValidationMessage>
+                    <Required>N</Required>
+                </restartServiceCron>
+            </cronjobs>
+        </maintenance>
     </items>
 </model>

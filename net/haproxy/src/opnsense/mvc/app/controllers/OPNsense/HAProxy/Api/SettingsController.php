@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2016-2021 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -44,6 +44,7 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'haproxy';
     protected static $internalModelClass = '\OPNsense\HAProxy\HAProxy';
+    protected static $internalModelUseSafeDelete = true;
 
     public function getFrontendAction($uuid = null)
     {

@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2016-2018 Frank Wall
+ * Copyright (C) 2016-2021 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * All rights reserved.
  *
