@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                     content_id = "[id=\"haproxy.maintenance.cronjobs." + key + "\"]";
                                     $(content_id).each(function(){
                                         // Finally add the link to the cron job edit page.
-                                        cron_link = "<br><a href=\"/ui/cron/item/open/" + refkey + "\">{{ lang._('Configure cron job') }}</a>";
+                                        cron_link = "<br><a href=\"/ui/cron/item/open/" + refkey + "\"><span class=\"fa fa-pencil\"></span> {{ lang._('Configure cron job') }}</a>";
                                         $(this).closest("td").append(cron_link);
                                     });
                                 };
@@ -190,8 +190,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 formatters: {
                     "commands": function (column, row) {
                         buttons = ""
-                        buttons += "<button type=\"button\"  data-action=\"showDiff\" title=\"{{ lang._('Show diff between configured SSL certificates and certificates from running HAProxy service.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-info-circle\"></span></button>"
-                        buttons += " <button type=\"button\" data-action=\"applyDiff\" title=\"{{ lang._('Apply diff and sync certificates into running HAProxy service.') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-refresh\"></span></button>"
+                        buttons += "<button type=\"button\"  data-action=\"showDiff\" title=\"{{ lang._('Show diff') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-info-circle\"></span></button>"
+                        buttons += " <button type=\"button\" data-action=\"applyDiff\" title=\"{{ lang._('Apply changes') }}\" class=\"btn btn-xs btn-default\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-refresh\"></span></button>"
                         return buttons;
                     },
                 },
@@ -300,10 +300,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 formatters: {
                     "commands": function (column, row) {
                         buttons = ""
-                        buttons += "<button type=\"button\"  title=\"{{ lang._('Set administrative state to ready. Puts the server in normal mode.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
-                        buttons += " <button type=\"button\" title=\"{{ lang._('Set administrative state to drain. Removes the server from load balancing but still allows it to be health checked and to accept new persistent connections') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
-                        buttons += " <button type=\"button\" title=\"{{ lang._('Set administrative state to maintenance. Disables any traffic to the server as well as any health checks.') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
-                        buttons += " <button type=\"button\" title=\"{{ lang._('Change server weight.') }}\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
+                        buttons += "<button type=\"button\"  title=\"{{ lang._('Set state to ready') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"ready\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"{{ lang._('Set state to drain') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"drain\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-sort-amount-desc\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"{{ lang._('Set state to maintenance') }}\" class=\"btn btn-xs btn-default command-set-state\" data-state=\"maint\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-wrench\"></span></button>"
+                        buttons += " <button type=\"button\" title=\"{{ lang._('Change server weight') }}\" class=\"btn btn-xs btn-default command-set-weight\" data-weight=\"" + row.weight + "\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-balance-scale\"></span></button>"
                         return buttons;
                     },
                 },
@@ -539,14 +539,24 @@ POSSIBILITY OF SUCH DAMAGE.
             <tr>
                 <td></td>
                 <td>
-                    <button data-action="setStateBulk" title="{{ lang._('Set administrative state to ready for all selected items.') }}" data-state="ready" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
-                    <button data-action="setStateBulk" title="{{ lang._('Set administrative state to drain for all selected items.') }}" data-state="drain" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
-                    <button data-action="setStateBulk" title="{{ lang._('Set administrative state to maintenance for all selected items.') }}" data-state="maint" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
-                    <button data-action="setWeightBulk" title="{{ lang._('Change server weight for all selected items.') }}" data-weight="" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
+                    <button data-action="setStateBulk" title="{{ lang._('Set state to ready (bulk)') }}" data-state="ready" type="button" class="btn btn-xs btn-default"><span class="fa fa-check"></span></button>
+                    <button data-action="setStateBulk" title="{{ lang._('Set state to drain (bulk)') }}" data-state="drain" type="button" class="btn btn-xs btn-default"><span class="fa fa-sort-amount-desc"></span></button>
+                    <button data-action="setStateBulk" title="{{ lang._('Set state to maintenance (bulk)') }}" data-state="maint" type="button" class="btn btn-xs btn-default"><span class="fa fa-wrench"></span></button>
+                    <button data-action="setWeightBulk" title="{{ lang._('Change server weight (bulk)') }}" data-weight="" type="button" class="btn btn-xs btn-default"><span class="fa fa-balance-scale"></span></button>
                 </td>
             </tr>
             </tfoot>
         </table>
+        <div class="col-md-12">
+          <p>{{ lang._("%sChoose a command to change a server's state in runtime:%s") | format('<b>', '</b>') }}</p>
+          <ul>
+            <li><span class="fa fa-check"></span> {{ lang._('%sSet state to ready:%s This puts the server in normal mode.') | format('<b>', '</b>') }}</li>
+            <li><span class="fa fa-sort-amount-desc"></span> {{ lang._('%sSet state to drain:%s This removes the server from load balancing. Health checks will continue to run and it still accepts new persistent connections.') | format('<b>', '</b>') }}</li>
+            <li><span class="fa fa-wrench"></span> {{ lang._('%sSet state to maintenance:%s This disables any traffic to the server. Health checks will also be disabled.') | format('<b>', '</b>') }}</li>
+            <li><span class="fa fa-balance-scale"></span> {{ lang._("%sChange server weight:%s Adjust the server's weight relative to other servers. Servers will receive a load proportional to their weight.") | format('<b>', '</b>') }}</li>
+          </ul>
+          <p>{{ lang._('%sNOTE:%s These changes will not be persisted across restarts of HAProxy.') | format('<b>', '</b>') }}</p>
+        </div>
     </div>
 
     <div id="ssl-certs" class="tab-pane fade in">
@@ -568,8 +578,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <tr>
                 <td></td>
                 <td>
-                    <button data-action="showDiffBulk" title="{{ lang._('Show diff between configured SSL certificates and certificates from running HAProxy service for selected Public Services.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-info-circle"></span></button>
-                    <button data-action="applyDiffBulk" title="{{ lang._('Apply diff and sync certificates into running HAProxy service for selected Public Services.') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-refresh"></span></button>
+                    <button data-action="showDiffBulk" title="{{ lang._('Show diff (bulk)') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-info-circle"></span></button>
+                    <button data-action="applyDiffBulk" title="{{ lang._('Apply changes (bulk)') }}" type="button" class="btn btn-xs btn-default"><span class="fa fa-refresh"></span></button>
                 </td>
             </tr>
             </tfoot>
@@ -579,6 +589,14 @@ POSSIBILITY OF SUCH DAMAGE.
             <button data-action="applyDiffAll" class="btn btn-primary" type="button"><b>{{ lang._('Apply') }}</b><i id="applyDiffAll_progress" class=""></i></button>
             <br/>
             <br/>
+        </div>
+        <div class="col-md-12">
+          <p>{{ lang._("%sApply SSL certificate changes in runtime:%s") | format('<b>', '</b>') }}</p>
+          <ul>
+            <li><span class="fa fa-info-circle"></span> {{ lang._('%sShow diff:%s Show difference between configured SSL certificates and SSL certificates from the running HAProxy service.') | format('<b>', '</b>') }}</li>
+            <li><span class="fa fa-refresh"></span> {{ lang._('%sApply changes:%s Apply all changes by syncing all shown SSL certificates into running HAProxy service.') | format('<b>', '</b>') }}</li>
+          </ul>
+          <p>{{ lang._('%sNOTE:%s Changes can only be applied for Public Services that already exist in the running HAProxy service. When adding or removing Public Services HAProxy must be reloaded or restarted.') | format('<b>', '</b>') }}</p>
         </div>
     </div>
 
