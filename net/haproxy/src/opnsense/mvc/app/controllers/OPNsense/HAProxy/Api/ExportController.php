@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2021 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -39,41 +39,56 @@ use OPNsense\HAProxy\HAProxy;
  * Class StatisticsController
  * @package OPNsense\HAProxy
  */
-class StatisticsController extends ApiControllerBase
+class ExportController extends ApiControllerBase
 {
     /**
-     * get info
-     * @return array|mixed
+     * get config
+     * @return string
      */
-    public function infoAction()
+    public function configAction()
     {
         $backend = new Backend();
-        $responseRaw = $backend->configdRun("haproxy statistics info");
-        $response = json_decode($responseRaw, true);
-        return $response;
+        $response = $backend->configdRun("haproxy showconf");
+        return array("response" => $response);
     }
 
     /**
-     * get counters
-     * @return array|mixed
+     * get config diff
+     * @return string
      */
-    public function countersAction()
+    public function diffAction()
     {
         $backend = new Backend();
-        $responseRaw = $backend->configdRun("haproxy statistics stat");
-        $response = json_decode($responseRaw, true);
-        return $response;
+        $response = $backend->configdRun("haproxy configdiff");
+        return array("response" => $response);
     }
 
     /**
-     * get tables
+     * download config file or config archive
      * @return array|mixed
      */
-    public function tablesAction()
+    public function downloadAction($type)
     {
         $backend = new Backend();
-        $responseRaw = $backend->configdRun("haproxy statistics table");
-        $response = json_decode($responseRaw, true);
+
+        if ($type == 'config') {
+            $result = $backend->configdRun("haproxy showconf");
+            $filename = 'haproxy.conf';
+            $filetype = 'text/plain';
+            $content = $result;
+        } else {
+            $result = $backend->configdRun("haproxy exportall");
+            $filename = 'haproxy_config_export.zip';
+            $filetype = 'application/zip';
+            $content = file_get_contents('/tmp/haproxy_config_export.zip');
+        }
+
+        $response = array(
+          'result' => $result,
+          'filename' => $filename,
+          'filetype' => $filetype,
+          'content' => base64_encode($content),
+        );
         return $response;
     }
 }

@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
- *    Copyright (C) 2015 Deciso B.V.
+ *    Copyright (C) 2021 Frank Wall
  *
  *    All rights reserved.
  *
@@ -29,51 +28,17 @@
  *
  */
 
-namespace OPNsense\HAProxy\Api;
+namespace OPNsense\HAProxy\Migrations;
 
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\HAProxy\HAProxy;
+use OPNsense\Base\BaseModelMigration;
 
-/**
- * Class StatisticsController
- * @package OPNsense\HAProxy
- */
-class StatisticsController extends ApiControllerBase
+class M3_0_0 extends BaseModelMigration
 {
-    /**
-     * get info
-     * @return array|mixed
-     */
-    public function infoAction()
+    public function run($model)
     {
-        $backend = new Backend();
-        $responseRaw = $backend->configdRun("haproxy statistics info");
-        $response = json_decode($responseRaw, true);
-        return $response;
-    }
-
-    /**
-     * get counters
-     * @return array|mixed
-     */
-    public function countersAction()
-    {
-        $backend = new Backend();
-        $responseRaw = $backend->configdRun("haproxy statistics stat");
-        $response = json_decode($responseRaw, true);
-        return $response;
-    }
-
-    /**
-     * get tables
-     * @return array|mixed
-     */
-    public function tablesAction()
-    {
-        $backend = new Backend();
-        $responseRaw = $backend->configdRun("haproxy statistics table");
-        $response = json_decode($responseRaw, true);
-        return $response;
+        // Servers have a 'type' field now
+        foreach ($model->getNodeByReference('servers.server')->iterateItems() as $server) {
+            $server->type = 'static';
+        }
     }
 }
