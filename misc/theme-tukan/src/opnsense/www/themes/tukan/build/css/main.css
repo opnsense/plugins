@@ -6096,12 +6096,12 @@ button.toggle-sidebar {
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
  outline:0;
- font-weight: bold; }
+ font-weight: 100; }
 
 .nav-tabs > li.active > a {
   background: #172c38 !important;
   outline:0;
-  font-weight: bold;  }
+  font-weight: 100;  }
 
 .nav-tabs > li > a.visible-lg-inline-block:not(.pull-right) {
   border-top-right-radius: 0px !important;
@@ -6151,7 +6151,7 @@ button.toggle-sidebar {
   border: 0px !important; }
 
 .table th, strong, b {
-  font-weight: bold;  }
+  font-weight: 100;  }
 
 .table > tbody > tr > td:last-child {
   padding-right: 5px; }

@@ -10081,18 +10081,18 @@ button.toggle-sidebar {
     li {
       > a {
         outline: 0;
-        font-weight: bold;
+        font-weight: 100;
 
         &:hover, &:focus {
           outline: 0;
-          font-weight: bold;
+          font-weight: 100;
         }
       }
 
       &.active > a {
         background: #172c38 !important;
         outline: 0;
-        font-weight: bold;
+        font-weight: 100;
       }
 
       > a.visible-lg-inline-block {
@@ -10171,7 +10171,7 @@ button.toggle-sidebar {
 }
 
 .table th, strong, b {
-  font-weight: bold;
+  font-weight: 100;
 }
 
 .table > tbody > tr > td:last-child {
