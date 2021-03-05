@@ -7591,11 +7591,9 @@ a.thumbnail {
   color: #000;
   overflow: hidden;
   height: 20px;
-  background-color: #DBDBDB;
-  border-radius: 3px;
+  background-color: #EAEAEA;
+  border: 1px solid #b9b9b9;
   position: relative;
-  -webkit-box-shadow: inset 0px 1px 2px 1px rgb(172, 172, 172);
-  box-shadow: inset inset 0px 1px 2px 1px rgb(172, 172, 172);
 }
 
 .progress-bar {

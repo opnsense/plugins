@@ -4421,11 +4421,9 @@ a.thumbnail.active {
   color: #000;
   overflow: hidden;
   height: 20px;
-  background-color: #DBDBDB;
-  border-radius: 3px;
-  position: relative;
-  -webkit-box-shadow: inset 0px 1px 2px 1px rgb(172, 172, 172);
-	box-shadow: inset inset 0px 1px 2px 1px rgb(172, 172, 172); }
+  background-color: #EAEAEA;
+  border: 1px solid #b9b9b9;
+  position: relative; }
 
 .progress-bar {
   float: left;
