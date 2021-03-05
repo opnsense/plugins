@@ -72,15 +72,15 @@ class ExportController extends ApiControllerBase
         $backend = new Backend();
 
         if ($type == 'config') {
-          $result = $backend->configdRun("haproxy showconf");
-          $filename = 'haproxy.conf';
-          $filetype = 'text/plain';
-          $content = $result;
+            $result = $backend->configdRun("haproxy showconf");
+            $filename = 'haproxy.conf';
+            $filetype = 'text/plain';
+            $content = $result;
         } else {
-          $result = $backend->configdRun("haproxy exportall");
-          $filename = 'haproxy_config_export.zip';
-          $filetype = 'application/zip';
-          $content = file_get_contents('/tmp/haproxy_config_export.zip');
+            $result = $backend->configdRun("haproxy exportall");
+            $filename = 'haproxy_config_export.zip';
+            $filetype = 'application/zip';
+            $content = file_get_contents('/tmp/haproxy_config_export.zip');
         }
 
         $response = array(

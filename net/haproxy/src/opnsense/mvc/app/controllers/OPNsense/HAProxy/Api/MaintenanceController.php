@@ -295,7 +295,6 @@ class MaintenanceController extends ApiMutableModelControllerBase
 
             // Iterate over all possible cron jobs
             foreach ($cronjobs as $cron => $cron_action) {
-
                 // Name of the item that holds the cron UUID
                 $cron_ref = "${cron}Cron";
 
@@ -303,7 +302,6 @@ class MaintenanceController extends ApiMutableModelControllerBase
                 if ((string)$mdlHaproxy->maintenance->cronjobs->$cron == "1") {
                     // Check if a cron job already exists
                     if ((string)$mdlHaproxy->maintenance->cronjobs->$cron_ref == "") {
-
                         // Create new cron job
                         $mdlCron = new Cron();
                         // NOTE: Only configd actions are valid commands for cronjobs
@@ -339,7 +337,6 @@ class MaintenanceController extends ApiMutableModelControllerBase
                 } else {
                     // Check if a cron job exists
                     if ((string)$mdlHaproxy->maintenance->cronjobs->$cron_ref != "") {
-
                         // Clean existin entry
                         $cron_uuid = (string)$mdlHaproxy->maintenance->cronjobs->$cron_ref;
                         $mdlHaproxy->maintenance->cronjobs->$cron_ref = "";

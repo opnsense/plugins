@@ -210,7 +210,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 var row_id = $(this).data("row-id");
                 var rows = $("#grid-certificates").bootgrid("getCurrentRows");
                 var row =  rows.filter(function(row) {
-                	return row.id == row_id;
+			return row.id == row_id;
                 })[0];
                 var requested_count = row.total_count;
                 var frontend_ids = row.id
