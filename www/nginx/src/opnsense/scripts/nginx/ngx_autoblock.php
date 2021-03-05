@@ -59,8 +59,9 @@ function exec_hidden($command): void
 
 function modify_blocklist($tablename, array $allIps, $operation = "add"): void
 {
-    if (empty($allIps) || !in_array($operation, ["add", "delete"]))
+    if (empty($allIps) || !in_array($operation, ["add", "delete"])) {
         return;
+    }
 
     $tablename = escapeshellarg($tablename);
     $operation = escapeshellarg($operation);
@@ -91,8 +92,9 @@ function read_all_from_blocklist($tablename)
     $process = proc_open("/sbin/pfctl -t ${tablename} -T show", $descriptorspec, $pipes);
     if (is_resource($process)) {
         $ips = [];
-        while ($ip = fgets($pipes[1], 96))
+        while ($ip = fgets($pipes[1], 96)) {
             $ips[] = strtolower(trim($ip));
+        }
 
         fclose($pipes[1]);
         proc_close($process);
@@ -152,10 +154,11 @@ function create_work_files($include_tls_handshake)
         foreach ($mapping as $source => $target) {
             // Check if we already processing $target in another process and skip it if not stale
             if (file_exists($target)) {
-                if (time() - (@filemtime($target) ?: 0) > (5 * 60))
+                if (time() - (@filemtime($target) ?: 0) > (5 * 60)) {
                     @unlink($target);
-                else
+                } else {
                     continue;
+                }
             }
 
             // Try to create work and log on failure
@@ -179,8 +182,9 @@ function create_work_files($include_tls_handshake)
 
 function cleanup_work_files($work_files)
 {
-    foreach ($work_files as $file)
+    foreach ($work_files as $file) {
         @unlink($file);
+    }
 }
 
 // Checking if our sources are modified and create work files as needed (do nothing if sources are unchanged)
@@ -199,8 +203,9 @@ $work_files = (function () use ($is_ten_minutes) {
 
         // Store state
         if (!empty($work_files)) {
-            if (!is_array($state))
+            if (!is_array($state)) {
                 $state = [];
+            }
             $state["sources"] = get_files_lastmodified(array_keys($sources));
             @file_put_contents(STATE_FILE, json_encode($state));
         }
