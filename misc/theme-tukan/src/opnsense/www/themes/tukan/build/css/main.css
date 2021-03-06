@@ -2040,7 +2040,7 @@ th {
     padding: 10px 0px 10px 20px;
     line-height: 1.428571429;
     vertical-align: top;
-	border-top: 1px solid #c8c8c8; }
+    border-top: 1px solid #f0f0f0; }
   .table > thead > tr > th {
     vertical-align: bottom;  }
   .table > caption + thead > tr:first-child > th,
