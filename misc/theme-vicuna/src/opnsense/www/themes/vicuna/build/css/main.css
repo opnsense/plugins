@@ -6591,3 +6591,7 @@ ul.jqtree-tree .jqtree-title {
 .rule.text-muted > td:last-child {
   text-decoration:none;
 }
+
+#reports-tab {
+    border-bottom: 1px solid #191919;
+}
