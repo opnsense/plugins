@@ -369,6 +369,7 @@ include("head.inc");
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
+                        <br /><?= gettext('DigitalOcean: Enter your DNS record id.') ?>
                       </div>
                     </td>
                   </tr>
@@ -386,6 +387,7 @@ include("head.inc");
                         <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
                         <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
+                        <br /><?= gettext('DigitalOcean: Enter your API token.') ?>
                       </div>
                     </td>
                   </tr>

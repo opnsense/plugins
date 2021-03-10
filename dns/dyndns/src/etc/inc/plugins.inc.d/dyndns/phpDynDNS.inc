@@ -42,6 +42,7 @@
  *    - regfish IPv6 (regfish.de)
  *    - dynv6 IPv6 (dynv6.com)
  *    - DigitalOcean (digitalocean.com)
+ *    - DigitalOcean IPv6 (digitalocean.com)
  *    - Gandi LiveDNS (gandi.net)
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
@@ -102,7 +103,8 @@
  *  Amazon Route53 v6           - Last Tested: 19 November 2017
  *  dynv6                       - Last Tested: 25 June 2019
  *  dynv6 v6                    - Last Tested: 25 June 2019
- *  DigitalOcean                - Last Tested: 25 June 2019
+ *  DigitalOcean                - Last Tested: 10 March 2021
+ *  DigitalOcean IPv6           - Last Tested: 10 March 2021
  *  Azure DNS                   - Last Tested: 16 October 2019
  *  Linode                      - Last Tested: 25 February 2020
  *  Linode v6                   - Last Tested: 25 February 2020
@@ -293,6 +295,7 @@ class updatedns
             case 'regfish-v6':
             case 'route53-v6':
             case 'cloudflare-token-v6':
+            case 'digitalocean-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -347,6 +350,7 @@ class updatedns
                 case 'custom-v6':
                 case 'dhs':
                 case 'digitalocean':
+                case 'digitalocean-v6':
                 case 'gandi-livedns':
                 case 'dnsexit':
                 case 'dnsomatic':
@@ -654,6 +658,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
                 break;
             case 'digitalocean':
+            case 'digitalocean-v6':
                 /*
                 * dnsHost should be the root domain
                 * dnsUser should be the record ID
@@ -665,6 +670,9 @@ class updatedns
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_DNS_LOCAL_IP4, $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     "Authorization: Bearer {$this->_dnsPass}",
                     'Content-Type: application/json'
@@ -1446,6 +1454,7 @@ class updatedns
                 }
                 break;
             case 'digitalocean':
+            case 'digitalocean-v6':
                 $output = json_decode($data);
                 if ($output->domain_record->data === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) Record ID {$this->_dnsUser} updated to {$this->_dnsIP}";
