@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.1
+
+Changed:
+* rules: only accept a single value for backend/server fields (#2266)
+
 3.0
 
 Added:
