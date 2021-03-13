@@ -86,6 +86,12 @@
         <help>Number of pre-forked instances of discoverers.</help>
     </field>
     <field>
+        <id>general.startvmwarecollectors</id>
+        <label>Start VMware Collectors</label>
+        <type>text</type>
+        <help>Number of pre-forked instances of VMware Collectors.</help>
+    </field>
+    <field>
         <id>general.starthttppollers</id>
         <label>Start HTTP Pollers</label>
         <type>text</type>
