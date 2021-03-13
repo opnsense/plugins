@@ -16,6 +16,7 @@ Plugin Changelog
 
 * Allow setting ConfigFrequency
 * Allow setting DataSenderFrequency
+* Allow setting StartVMwareCollectors
 
 1.3
 
