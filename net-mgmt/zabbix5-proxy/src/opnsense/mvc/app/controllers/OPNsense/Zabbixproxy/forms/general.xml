@@ -122,6 +122,18 @@
         <help>Specifies how long we wait for agent, SNMP device or external check (in seconds).</help>
     </field>
     <field>
+        <id>general.configfrequency</id>
+        <label>Config Frequency</label>
+        <type>text</type>
+        <help>Specifies the time how often proxy retrieves configuration data from zabbix server (in seconds).</help>
+    </field>    
+    <field>
+        <id>general.datasenderfrequency</id>
+        <label>Data Sender Frequency</label>
+        <type>text</type>
+        <help>Specifies the time how often the proxy will send collected data to the server (in seconds).</help>
+    </field>
+    <field>
         <id>general.encryption</id>
         <label>PSK based encryption</label>
         <type>checkbox</type>
