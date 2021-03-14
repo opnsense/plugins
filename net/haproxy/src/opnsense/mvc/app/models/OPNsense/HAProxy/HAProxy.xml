@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -2086,7 +2086,7 @@
                         </template>
                     </Model>
                     <ValidationMessage>Related backend item not found</ValidationMessage>
-                    <Multiple>Y</Multiple>
+                    <Multiple>N</Multiple>
                     <Required>N</Required>
                 </use_backend>
                 <use_server type="ModelRelationField">
@@ -2098,7 +2098,7 @@
                         </template>
                     </Model>
                     <ValidationMessage>Related server item not found</ValidationMessage>
-                    <Multiple>Y</Multiple>
+                    <Multiple>N</Multiple>
                     <Required>N</Required>
                 </use_server>
                 <http_request_auth type="TextField">
