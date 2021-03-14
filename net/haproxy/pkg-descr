@@ -8,6 +8,9 @@ Plugin Changelog
 
 3.1
 
+Fixed:
+* fix items that cannot be deleted (#2266)
+
 Changed:
 * rules: only accept a single value for backend/server fields (#2266)
 
