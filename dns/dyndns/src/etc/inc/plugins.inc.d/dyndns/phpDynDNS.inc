@@ -834,6 +834,12 @@ class updatedns
                 $output = json_decode(curl_exec($ch));
                 $zoneId = null; // Set default value
 
+                // Ensure valid object returned.
+                if (is_null($output)) {
+                    log_error("Dynamic DNS ($fqdn): Error: invalid JSON object returned");
+                    break;
+                }
+
                 // Iterate zone objects, check if $fqdn is equal to or ends with zone name
                 foreach ($output->result as $key => $zoneObj) {
                     if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
