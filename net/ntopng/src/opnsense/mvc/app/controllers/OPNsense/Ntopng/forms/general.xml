@@ -6,17 +6,23 @@
         <help>This will activate ntopng.</help>
     </field>
     <field>
+        <id>general.disablelogin</id>
+        <label>Disable ntopng user authentication</label>
+        <type>checkbox</type>
+        <help>Select to skip ntopng login authentication screen, allowing anyone to access ntopng GUI.</help>
+    </field>
+    <field>
         <id>general.interface</id>
-        <label>Interfaces</label>
-        <type>dropdown</type>
+        <label>Listening interfaces</label>
+        <type>select_multiple</type>
         <advanced>true</advanced>
-        <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
+        <help>Select interfaces to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
         <id>general.httpport</id>
         <label>HTTP Port</label>
         <type>text</type>
-        <help>HTTP Port this service listens on.</help>
+        <help>HTTP Port this service listens on. Set to 0 to disable http listener. </help>
     </field>
     <field>
         <id>general.httpsport</id>

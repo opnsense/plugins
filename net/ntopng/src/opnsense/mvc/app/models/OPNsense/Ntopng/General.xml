@@ -7,9 +7,13 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <disablelogin type="BooleanField">
+            <default>0</default>        
+            <Required>N</Required>
+        </disablelogin>         
         <interface type="InterfaceField">
             <Required>N</Required>
-            <Multiple>N</Multiple>
+            <Multiple>Y</Multiple>
         </interface>
         <httpport type="PortField">
             <Required>Y</Required>
