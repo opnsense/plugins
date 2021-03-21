@@ -1,0 +1,60 @@
+<model>
+    <mount>//OPNsense/QemuGuestAgent</mount>
+    <version>1.0.0</version>
+    <description>QEMU Guest Agent for OPNsense</description>
+    <items>
+        <general>
+            <Enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </Enabled>
+            <LogDebug type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </LogDebug>
+            <DisabledRPCs type="OptionField">
+                <Required>N</Required>
+                <default></default>
+                <Sorted>Y</Sorted>
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <guest-exec>guest-exec</guest-exec>
+                    <guest-exec-status>guest-exec-status</guest-exec-status>
+                    <guest-file-close>guest-file-close</guest-file-close>
+                    <guest-file-flush>guest-file-flush</guest-file-flush>
+                    <guest-file-open>guest-file-open</guest-file-open>
+                    <guest-file-read>guest-file-read</guest-file-read>
+                    <guest-file-seek>guest-file-seek</guest-file-seek>
+                    <guest-file-write>guest-file-write</guest-file-write>
+                    <guest-fsfreeze-freeze>guest-fsfreeze-freeze</guest-fsfreeze-freeze>
+                    <guest-fsfreeze-freeze-list>guest-fsfreeze-freeze-list</guest-fsfreeze-freeze-list>
+                    <guest-fsfreeze-status>guest-fsfreeze-status</guest-fsfreeze-status>
+                    <guest-fsfreeze-thaw>guest-fsfreeze-thaw</guest-fsfreeze-thaw>
+                    <guest-fstrim>guest-fstrim</guest-fstrim>
+                    <guest-get-fsinfo>guest-get-fsinfo</guest-get-fsinfo>
+                    <guest-get-host-name>guest-get-host-name</guest-get-host-name>
+                    <guest-get-memory-block-info>guest-get-memory-block-info</guest-get-memory-block-info>
+                    <guest-get-memory-blocks>guest-get-memory-blocks</guest-get-memory-blocks>
+                    <guest-get-osinfo>guest-get-osinfo</guest-get-osinfo>
+                    <guest-get-time>guest-get-time</guest-get-time>
+                    <guest-get-timezone>guest-get-timezone</guest-get-timezone>
+                    <guest-get-users>guest-get-users</guest-get-users>
+                    <guest-get-vcpus>guest-get-vcpus</guest-get-vcpus>
+                    <guest-info>guest-info</guest-info>
+                    <guest-network-get-interfaces>guest-network-get-interfaces</guest-network-get-interfaces>
+                    <guest-ping>guest-ping</guest-ping>
+                    <guest-set-memory-blocks>guest-set-memory-blocks</guest-set-memory-blocks>
+                    <guest-set-time>guest-set-time</guest-set-time>
+                    <guest-set-user-password>guest-set-user-password</guest-set-user-password>
+                    <guest-set-vcpus>guest-set-vcpus</guest-set-vcpus>
+                    <guest-shutdown>guest-shutdown</guest-shutdown>
+                    <guest-suspend-disk>guest-suspend-disk</guest-suspend-disk>
+                    <guest-suspend-hybrid>guest-suspend-hybrid</guest-suspend-hybrid>
+                    <guest-suspend-ram>guest-suspend-ram</guest-suspend-ram>
+                    <guest-sync>guest-sync</guest-sync>
+                    <guest-sync-delimited>guest-sync-delimited</guest-sync-delimited>
+                </OptionValues>
+            </DisabledRPCs>
+        </general>
+    </items>
+</model>
