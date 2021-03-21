@@ -57,6 +57,7 @@ class ServiceController extends ApiControllerBase
         if ($this->request->isPost()) {
             $device = $this->request->getPost('device');
             $type   = $this->request->getPost('type');
+            $json   = $this->request->getPost('json');
 
             if (!in_array($device, $this->getDevices())) {
                 return array("message" => "Invalid device name");
@@ -70,7 +71,15 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("info", $type, "/dev/" . $device));
+            $params = array("info", $type, "/dev/" . $device);
+            if ($json != NULL) {
+                $params[0] = "info_json";
+            }
+
+            $output = $backend->configdpRun("smart", $params);
+            if ($json != NULL) {
+                $output = json_decode($output, true);
+            }
 
             return array("output" => $output);
         }
