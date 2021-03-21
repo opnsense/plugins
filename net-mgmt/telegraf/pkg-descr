@@ -11,6 +11,10 @@ Kafka, MQTT, NSQ, and many others.
 Plugin Changelog
 ================
 
+1.9.0
+
+* Add Datadog output
+
 1.8.2
 
 * Add 'ntpq' input
