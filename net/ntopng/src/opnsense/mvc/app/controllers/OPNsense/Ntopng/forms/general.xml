@@ -13,10 +13,10 @@
     </field>
     <field>
         <id>general.interface</id>
-        <label>Listening interfaces</label>
+        <label>Tracked interfaces</label>
         <type>select_multiple</type>
         <advanced>true</advanced>
-        <help>Select interfaces to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
+        <help>Select interfaces that ntopng will monitor. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
         <id>general.httpport</id>
