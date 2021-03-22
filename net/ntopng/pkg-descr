@@ -8,6 +8,12 @@ and on Windows as well.
 Plugin Changelog
 ================
 
+1.2 r2
+
+* allow multiple interfaces to be selected
+* allow http port to be 0 (whichs disables http listener)
+* added the checkbox to bypass user login validation
+
 1.2
 
 * Changed data directory to avoid warning

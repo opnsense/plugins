@@ -15,10 +15,12 @@
             <Required>N</Required>
             <Multiple>Y</Multiple>
         </interface>
-        <httpport type="PortField">
+        <httpport type="IntegerField">
             <Required>Y</Required>
             <default>3000</default>
-        </httpport>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>65565</MaximumValue>
+            <ValidationMessage>Port must be between 0 and 65535</ValidationMessage>
         <httpsport type="PortField">
             <Required>N</Required>
             <Constraints>
