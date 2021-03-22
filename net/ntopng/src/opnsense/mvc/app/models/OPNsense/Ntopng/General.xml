@@ -21,6 +21,7 @@
             <MinimumValue>0</MinimumValue>
             <MaximumValue>65565</MaximumValue>
             <ValidationMessage>Port must be between 0 and 65535</ValidationMessage>
+        </httpport>
         <httpsport type="PortField">
             <Required>N</Required>
             <Constraints>
