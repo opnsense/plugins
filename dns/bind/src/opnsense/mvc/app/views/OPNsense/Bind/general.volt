@@ -275,6 +275,14 @@ $( document ).ready(function() {
         });
     });
 
+    $('#domain\\.transferkeyalgo').on('change', function(e) {
+        if (e.target.selectedIndex === 0) {
+            $('#domain\\.transferkey').val('').attr('readonly', true);
+        } else {
+            $('#domain\\.transferkey').attr('readonly', false);
+        }
+    });
+
     // Hide options that are irrelevant in this context.
     $('#dialogEditBindDomain').on('shown.bs.modal', function (e) {
         $("#domain\\.type").change(function(){
