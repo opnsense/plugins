@@ -1,0 +1,8 @@
+<model>
+    <mount>//OPNsense/speedtest</mount>
+    <description>
+        Speedtest plugin
+    </description>
+    <items>
+    </items>
+</model>
