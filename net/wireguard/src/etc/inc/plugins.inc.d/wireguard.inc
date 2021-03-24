@@ -75,5 +75,6 @@ function wireguard_xmlrpc_sync()
     $result['id'] = 'wireguard';
     $result['section'] = 'OPNsense.wireguard';
     $result['description'] = gettext('WireGuard');
+    $result['services'] = ['wireguard-go'];
     return array($result);
 }
