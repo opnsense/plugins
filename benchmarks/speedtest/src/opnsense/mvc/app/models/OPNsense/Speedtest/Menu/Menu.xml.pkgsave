@@ -1,0 +1,5 @@
+<menu>
+  <Reporting>
+    <Speedtest cssClass="fa fa-area-chart" VisibleName="Speedtest" url="/ui/speedtest/"/>
+  </Reporting>
+</menu>

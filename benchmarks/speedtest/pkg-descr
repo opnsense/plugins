@@ -1,0 +1,8 @@
+speedtest is an OPNsense wrapper for speedtest CLI and speedtest
+binary test. It generates the CSV history of tests and can be included
+in cron as a regular task.
+
+This package is just a GUI wrapper and doesn't include the actual
+speedtest package; if speedtest is not found, it offers instructions
+to install either the implementation of http speedtest (from BSD ports)
+or the TCP socket BSD speedtest provided by Oookla.
