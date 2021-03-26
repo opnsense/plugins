@@ -1,3 +1,0 @@
-Speedtest plugin is an OPNsense wrapper for speedtest CLI and speedtest
-binary test. It generates the CSV history of tests and can be included
-in cron as a regular task.
