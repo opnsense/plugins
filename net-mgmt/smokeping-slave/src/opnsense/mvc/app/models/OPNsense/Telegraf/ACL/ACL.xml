@@ -1,0 +1,9 @@
+<acl>
+   <page-services-smokeping>
+      <name>Services: Smokeping</name>
+      <patterns>
+         <pattern>ui/smokeping/*</pattern>
+         <pattern>api/smokeping/*</pattern>
+      </patterns>
+   </page-services-smokeping>
+</acl>

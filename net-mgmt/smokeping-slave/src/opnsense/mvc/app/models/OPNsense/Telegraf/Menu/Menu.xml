@@ -1,0 +1,7 @@
+<menu>
+  <Services>
+    <Smokeping cssClass="fa fa-area-chart">
+      <General order="10" url="/ui/smokeping/general/index"/>
+    </Smokeping>
+  </Services>
+</menu>

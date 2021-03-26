@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.smokeping.general.enabled') and OPNsense.smokeping.general.enabled == '1' %}
+smokeping_var_script="/usr/local/opnsense/scripts/OPNsense/Smokeping/setup.sh"
+smokeping_enable="YES"
+{% else %}
+smokeping_enable="NO"
+{% endif %}

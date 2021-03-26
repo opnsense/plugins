@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable Smokeping</label>
+        <type>checkbox</type>
+        <help>This will activate the smokeping agent.</help>
+    </field>
+    <field>
+        <id>general.master_url</id>
+        <label>Smokeping Master URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>general.slave_secret</id>
+        <label>Slave Secret</label>
+        <type>text</type>
+        <help>The authentication secret for the Smokeping Slave to the Master</help>
+    </field>
+    <field>
+        <id>general.slave_name</id>
+        <label>Slave Name</label>
+        <type>text</type>
+        <help>Name of this Smokeping Slave.</help>
+    </field>
+</form>
