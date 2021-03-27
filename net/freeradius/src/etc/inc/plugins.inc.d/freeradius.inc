@@ -54,5 +54,6 @@ function freeradius_xmlrpc_sync()
     $result['id'] = 'freeradius';
     $result['section'] = 'OPNsense.freeradius';
     $result['description'] = gettext('Freeradius');
+    $result['services'] = ["freeradius"];
     return array($result);
 }
