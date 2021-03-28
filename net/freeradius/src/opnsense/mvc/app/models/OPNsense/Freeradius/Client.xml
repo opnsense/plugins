@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/client</mount>
     <description>FreeRADIUS client configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <clients>
             <client type="ArrayField">
@@ -15,7 +15,7 @@
                 <secret type="TextField">
                     <Required>Y</Required>
                 </secret>
-                <ip type="TextField">
+                <ip type="HostnameField">
                     <Required>N</Required>
                 </ip>
             </client>
