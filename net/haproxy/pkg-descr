@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.2
+
+Changed:
+* ignore incompatible ciphersuites options when LibreSSL is used (#2013)
+
 3.1
 
 Fixed:
