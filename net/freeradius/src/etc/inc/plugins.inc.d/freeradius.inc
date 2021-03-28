@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2017 - 2021 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -46,4 +46,13 @@ function freeradius_services()
     }
 
     return $services;
+}
+
+function freeradius_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'freeradius';
+    $result['section'] = 'OPNsense.freeradius';
+    $result['description'] = gettext('Freeradius');
+    return array($result);
 }
