@@ -68,3 +68,13 @@ function wireguard_interfaces()
     $interfaces['wireguard'] = $oic;
     return $interfaces;
 }
+
+function wireguard_xmlrpc_sync()
+{
+    $result = array();
+    $result['id'] = 'wireguard';
+    $result['section'] = 'OPNsense.wireguard';
+    $result['description'] = gettext('WireGuard');
+    $result['services'] = ['wireguard-go'];
+    return array($result);
+}
