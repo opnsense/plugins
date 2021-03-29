@@ -66,5 +66,6 @@ function qemuguestagent_xmlrpc_sync()
     $result['id'] = 'qemuguestagent';
     $result['section'] = 'OPNsense.QemuGuestAgent';
     $result['description'] = gettext('QEMU Guest Agent');
+    $result['services'] = ['qemu-ga'];
     return array($result);
 }
