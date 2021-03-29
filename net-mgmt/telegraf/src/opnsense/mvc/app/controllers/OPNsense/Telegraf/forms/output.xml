@@ -167,4 +167,22 @@
         <type>checkbox</type>
         <help>Send string metrics as Prometheus labels.</help>
     </field>
+    <field>
+        <id>output.datadog_enable</id>
+        <label>Enable Datadog Output</label>
+        <type>checkbox</type>
+        <help>This will enable Datadog output.</help>
+    </field>
+    <field>
+        <id>output.datadog_url</id>
+        <label>Datadog URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to. Format is without square brackets, just like https://app.datadoghq.com/api/v1/series.</help>
+    </field>
+    <field>
+        <id>output.datadog_apikey</id>
+        <label>Datadog API Key</label>
+        <type>text</type>
+        <help>Set the API Key for accessing Datadog.</help>
+    </field>
 </form>
