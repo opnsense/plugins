@@ -13,7 +13,7 @@
     </field>
     <field>
         <id>general.interface</id>
-        <label>Tracked interfaces</label>
+        <label>Monitored interfaces</label>
         <type>select_multiple</type>
         <advanced>true</advanced>
         <help>Select interfaces that ntopng will monitor. Set to none if you want to choose the interface via ntopng UI.</help>
