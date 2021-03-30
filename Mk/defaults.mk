@@ -121,7 +121,9 @@ mfc: ensure-stable
 	fi
 .else
 	@git checkout stable/${PLUGIN_ABI}
-	@git cherry-pick -x ${MFC}
+	@if ! git cherry-pick -x ${MFC}; then \
+		git cherry-pick --abort; \
+	fi
 .endif
 	@git checkout master
 .endfor
@@ -130,4 +132,9 @@ stable:
 	@git checkout stable/${PLUGIN_ABI}
 
 master:
+	@git checkout master
+
+rebase:
+	@git checkout stable/${PLUGIN_ABI}
+	@git rebase -i
 	@git checkout master
