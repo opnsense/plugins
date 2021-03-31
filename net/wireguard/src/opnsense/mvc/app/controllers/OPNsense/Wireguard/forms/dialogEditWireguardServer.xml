@@ -48,6 +48,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
+        <advanced>true</advanced>
         <help>Set the interface specific DNS server.</help>
     </field>
     <field>
