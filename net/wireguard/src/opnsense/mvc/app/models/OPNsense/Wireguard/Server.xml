@@ -28,8 +28,7 @@
                     <Required>N</Required>
                 </privkey>
                 <port type="PortField">
-                    <default>51820</default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </port>
                 <mtu type="IntegerField">
                     <MinimumValue>1</MinimumValue>

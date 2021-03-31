@@ -33,7 +33,7 @@
         <id>server.port</id>
         <label>Listen Port</label>
         <type>text</type>
-        <help>Set port for this instance to listen on.</help>
+        <help>Optionally set a fixed port for this instance to listen on. The standard port range starts at 51820.</help>
     </field>
     <field>
         <id>server.mtu</id>
