@@ -141,6 +141,6 @@
         <id>input.intrusion_detection_alerts</id>
         <label>Intrusion Dectection Alerts</label>
         <type>checkbox</type>
-        <help>Requires Intrustion detection alerts are stored locally </help>
+        <help>Requires Intrustion detection alerts are stored locally.</help>
    </field>
 </form>
