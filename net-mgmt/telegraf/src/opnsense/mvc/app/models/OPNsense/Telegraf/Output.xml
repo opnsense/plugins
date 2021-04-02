@@ -121,5 +121,9 @@
             <default></default>
             <Required>N</Required>
         </datadog_apikey>
+        <intrusion_detection_alerts type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </intrusion_detection_alerts>
     </items>
 </model>
