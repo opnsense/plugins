@@ -10,6 +10,9 @@ Kafka, MQTT, NSQ, and many others.
 
 Plugin Changelog
 ================
+1.10.0
+
+* Add intrusion detection alert input
 
 1.9.0
 
