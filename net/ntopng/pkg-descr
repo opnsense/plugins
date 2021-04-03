@@ -1,4 +1,4 @@
-tontopng is the next generation version of the original ntop,
+ntopng is the next generation version of the original ntop,
 a network traffic probe that monitors network usage. ntopng
 is based on libpcap and it has been written in a portable
 way in order to virtually run on every Unix platform, MacOSX
