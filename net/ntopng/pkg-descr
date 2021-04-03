@@ -1,4 +1,4 @@
-ntopng is the next generation version of the original ntop,
+tontopng is the next generation version of the original ntop,
 a network traffic probe that monitors network usage. ntopng
 is based on libpcap and it has been written in a portable
 way in order to virtually run on every Unix platform, MacOSX
@@ -8,11 +8,12 @@ and on Windows as well.
 Plugin Changelog
 ================
 
-1.2 r2
+1.3
 
 * allow multiple interfaces to be selected
-* allow http port to be 0 (whichs disables http listener)
-* added the checkbox to bypass user login validation
+* if cert is chosen, https is enabled. No cert, http is enabled
+* checkbox to bypass user login validation
+* allow explicit selection of community version 
 
 1.2
 

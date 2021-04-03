@@ -43,17 +43,34 @@ POSSIBILITY OF SUCH DAMAGE.
             <div class="col-md-12">
                 <hr />
                 <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+                <hr />
+                <span id='ntopngLinkBox'></span>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+let http_prefix = "http://";
+let hostname = '';
+let port = 3000;
+function updateNtopngURL() {
+  port = document.getElementById("general.httpport").value;
+  let cert = document.getElementById("general.cert").value.trim();
+  if (cert !== '') http_prefix = "https://";
+  let ntopng_url = http_prefix + hostname + ':' + port;
+  $("#ntopngLinkBox").html("").html("Once ntopng is running <a href='" + ntopng_url + "' target='_blank'>click here to open the Web Interface</a>.");
+}
 $( document ).ready(function() {
+    // read hostname from URL
+    var l = document.createElement("a");
+    l.href = window.location.href;
+    hostname = l.hostname;    
     var data_get_map = {'frm_general_settings':"/api/ntopng/general/get"};
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
+        updateNtopngURL();
     });
 
     updateServiceControlUI('ntopng');
@@ -71,9 +88,9 @@ $( document ).ready(function() {
             ajaxCall(url="/api/ntopng/service/reconfigure", sendData={}, callback=function(data,status) {
 		updateServiceControlUI('ntopng');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                updateNtopngURL();
             });
         });
     });
-
 });
 </script>

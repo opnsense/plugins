@@ -15,33 +15,13 @@
             <Required>N</Required>
             <Multiple>Y</Multiple>
         </interface>
-        <httpport type="IntegerField">
+        <httpport type="PortField">
             <Required>Y</Required>
             <default>3000</default>
-            <MinimumValue>0</MinimumValue>
-            <MaximumValue>65565</MaximumValue>
-            <ValidationMessage>Port must be between 0 and 65535</ValidationMessage>
         </httpport>
-        <httpsport type="PortField">
-            <Required>N</Required>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>Please select a HTTPS port and a valid certificate</ValidationMessage>
-                    <type>AllOrNoneConstraint</type>
-                    <addFields>
-                        <field1>cert</field1>
-                    </addFields>
-                </check001>
-            </Constraints>
-        </httpsport>
         <cert type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
-            <Constraints>
-                <check001>
-                    <reference>httpsport.check001</reference>
-                </check001>
-            </Constraints>
         </cert>
         <dnsmode type="OptionField">
             <Required>N</Required>
@@ -52,5 +32,13 @@
                 <Option3 value="3">Do not decode DNS responses and do not resolve numeric IPs</Option3>
             </OptionValues>
         </dnsmode>
+        <localnet type="TextField">
+            <Required>N</Required>
+            <default></default>
+        </localnet>
+        <community type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </community>        
     </items>
 </model>

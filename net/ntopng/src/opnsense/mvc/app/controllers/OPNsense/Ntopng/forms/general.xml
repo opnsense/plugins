@@ -9,37 +9,47 @@
         <id>general.disablelogin</id>
         <label>Disable ntopng user authentication</label>
         <type>checkbox</type>
-        <help>Select to skip ntopng login authentication screen, allowing anyone to access ntopng GUI.</help>
+        <help>Remove login splashscreen and launch ntopng portal without authentication.</help>
     </field>
     <field>
         <id>general.interface</id>
         <label>Monitored interfaces</label>
         <type>select_multiple</type>
+        <style>selectpicker</style>        
         <advanced>true</advanced>
-        <help>Select interfaces that ntopng will monitor. Set to none if you want to choose the interface via ntopng UI.</help>
+        <help>Select interfaces that ntopng will monitor. Set to none if you want ntopng to monitor all available interfaces.</help>
     </field>
+    <field>
+        <id>general.localnet</id>
+        <label>Local Networks</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Configure the local networks (CIDR format, comma-separated list).</help>
+    </field>    
     <field>
         <id>general.httpport</id>
-        <label>HTTP Port</label>
+        <label>HTTP/S Port</label>
         <type>text</type>
-        <help>HTTP Port this service listens on. Set to 0 to disable http listener. </help>
-    </field>
-    <field>
-        <id>general.httpsport</id>
-        <label>HTTPS Port</label>
-        <type>text</type>
-        <help>HTTPS Port this service listens on. If you enable HTTPS you will be redirected from HTTP to HTTPS. Please select a certificate below</help>
+        <help>HTTP/S Port for ntopng UI. To enable HTTPS, select a certificate below.</help>
     </field>
     <field>
         <id>general.cert</id>
         <label>Certificate</label>
         <type>dropdown</type>
-        <help>Set the certificate to use for HTTPS connections.</help>
+        <help>Set the certificate to use with HTTPS. Select None for HTTP.</help>
     </field>
     <field>
         <id>general.dnsmode</id>
         <label>DNS Mode</label>
         <type>dropdown</type>
+        <advanced>true</advanced>
         <help>Sets the DNS resolution mode.</help>
+    </field>
+    <field>
+        <id>license.community</id>
+        <label>Community Mode</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Run ntopng in Community mode, a license is not required.</help>
     </field>
 </form>
