@@ -46,7 +46,7 @@
         <help>Sets the DNS resolution mode.</help>
     </field>
     <field>
-        <id>license.community</id>
+        <id>general.community</id>
         <label>Community Mode</label>
         <type>checkbox</type>
         <advanced>true</advanced>
