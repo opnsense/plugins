@@ -123,7 +123,7 @@
         <id>general.relayhost</id>
         <label>Smart Host</label>
         <type>text</type>
-        <help>Set the IP address or FQDN where all outgoung mails are sent to.</help>
+        <help>Set the IP address or FQDN where all outgoing mails are sent to.</help>
     </field>
     <field>
         <id>general.smtpauth_enabled</id>
@@ -198,13 +198,13 @@
     </field>
     <field>
         <id>general.reject_non_fqdn_sender</id>
-        <label>Reject Non FQDN Sender</label>
+        <label>Reject Non-FQDN Sender</label>
         <type>checkbox</type>
         <help>For example senders without a domain or only a hostname.</help>
     </field>
     <field>
         <id>general.reject_non_fqdn_recipient</id>
-        <label>Reject Non FQDN Recipient</label>
+        <label>Reject Non-FQDN Recipient</label>
         <type>checkbox</type>
         <help>For example recipients without a domain or only a hostname.</help>
     </field>
