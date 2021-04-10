@@ -30,7 +30,7 @@
 require_once("guiconfig.inc");
 require_once("widgets/include/wireguard.inc");
 
-$data = trim(configd_run("wireguard widget"));
+$data = trim(configd_run('wireguard showhandshake'));
 
 $empty = strlen($data) == 0;
 ?>

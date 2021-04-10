@@ -45,7 +45,7 @@ class StatisticsController extends ApiControllerBase
      * get info
      * @return array|mixed
      */
-    public function infoAction($zoneid = 0)
+    public function infoAction()
     {
         $backend = new Backend();
         $responseRaw = $backend->configdRun("haproxy statistics info");
@@ -57,7 +57,7 @@ class StatisticsController extends ApiControllerBase
      * get counters
      * @return array|mixed
      */
-    public function countersAction($zoneid = 0)
+    public function countersAction()
     {
         $backend = new Backend();
         $responseRaw = $backend->configdRun("haproxy statistics stat");
@@ -69,7 +69,7 @@ class StatisticsController extends ApiControllerBase
      * get tables
      * @return array|mixed
      */
-    public function tablesAction($zoneid = 0)
+    public function tablesAction()
     {
         $backend = new Backend();
         $responseRaw = $backend->configdRun("haproxy statistics table");

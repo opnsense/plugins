@@ -135,6 +135,7 @@ function stunnel_xmlrpc_sync()
         'description' => gettext('Stunnel'),
         'section' => 'OPNsense.Stunnel',
         'id' => 'stunnel',
+        'services' => ['stunnel', 'identd_stunnel'],
     );
     return $result;
 }
