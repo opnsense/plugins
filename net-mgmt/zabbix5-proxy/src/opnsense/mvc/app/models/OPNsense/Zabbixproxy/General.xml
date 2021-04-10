@@ -61,6 +61,9 @@
             <default>1</default>
             <Required>N</Required>
         </startdiscoverers>
+        <startvmwarecollectors type="IntegerField">
+            <Required>N</Required>
+        </startvmwarecollectors>
         <starthttppollers type="IntegerField">
             <default>1</default>
             <Required>N</Required>
@@ -87,6 +90,12 @@
             <default>4</default>
             <Required>N</Required>
         </timeout>
+        <configfrequency type="IntegerField">
+            <Required>N</Required>
+        </configfrequency>
+        <datasenderfrequency type="IntegerField">
+            <Required>N</Required>
+        </datasenderfrequency>
         <encryption type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
