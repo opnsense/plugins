@@ -34,7 +34,7 @@ function fetchmail_services()
 
     if (isset($config['OPNsense']['fetchmail']['general']['enabled']) && $config['OPNsense']['fetchmail']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('Postfix'),
+            'description' => gettext('Fetchmail'),
             'configd' => array(
                 'restart' => array('fetchmail restart'),
                 'start' => array('fetchmail start'),
