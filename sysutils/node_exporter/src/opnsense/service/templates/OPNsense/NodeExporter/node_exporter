@@ -4,44 +4,49 @@
 {% if helpers.exists('OPNsense.NodeExporter.enabled') and OPNsense.NodeExporter.enabled == '1' %}
 
 {%- set collector = "--collector." -%}
+{%- set no_collector = "--no-collector." -%}
 
-{%- if OPNsense.NodeExporter.cpu == '1' -%}
-    {%- set cpu = collector + "cpu " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.cpu') -%}
+    {%- set cpu = no_collector + "cpu " -%}
 {%- endif -%}
 
-{%- if OPNsense.NodeExporter.exec == '1' -%}
-    {%- set exec = collector + "exec " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.exec') -%}
+    {%- set exec = no_collector + "exec " -%}
 {%- endif -%}
 
-{%- if OPNsense.NodeExporter.filesystem == '1' -%}
-    {%- set filesystem = collector + "filesystem " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.filesystem') -%}
+    {%- set filesystem = no_collector + "filesystem " -%}
 {%- endif -%}
 
-{%- if OPNsense.NodeExporter.loadavg == '1' -%}
-    {%- set loadavg = collector + "loadavg " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.loadavg') -%}
+    {%- set loadavg = no_collector + "loadavg " -%}
 {%- endif -%}
 
-{%- if OPNsense.NodeExporter.meminfo == '1' -%}
-    {%- set meminfo = collector + "meminfo " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.meminfo') -%}
+    {%- set meminfo = no_collector + "meminfo " -%}
 {%- endif -%}
 
-{%- if OPNsense.NodeExporter.netdev == '1' -%}
-    {%- set netdev = collector + "netdev " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.netdev') -%}
+    {%- set netdev = no_collector + "netdev " -%}
 {%- endif -%}
 
 {%- if OPNsense.NodeExporter.ntp == '1' -%}
     {%- set ntp = collector + "ntp " -%}
 {%- endif -%}
 
-{%- if OPNsense.NodeExporter.time == '1' -%}
-    {%- set time = collector + "time " -%}
+{%- if helpers.empty('OPNsense.NodeExporter.time') -%}
+    {%- set time = no_collector + "time " -%}
 {%- endif -%}
 
 {%- if OPNsense.NodeExporter.devstat == '1' -%}
     {%- set devstat = collector + "devstat " -%}
 {%- endif -%}
 
-node_exporter_args="{{ cpu }}{{ exec }}{{ filesystem }}{{ loadavg }}{{ meminfo }}{{ netdev }}{{ ntp }}{{ time }}{{ devstat }}"
+{%- if helpers.empty('OPNsense.NodeExporter.zfs') -%}
+    {%- set zfs = no_collector + "zfs " -%}
+{%- endif -%}
+
+node_exporter_args="{{ cpu }}{{ exec }}{{ filesystem }}{{ loadavg }}{{ meminfo }}{{ netdev }}{{ ntp }}{{ time }}{{ devstat }}{{ zfs }}"
 node_exporter_listen_address="{{ OPNsense.NodeExporter.listenaddress }}:{{ OPNsense.NodeExporter.listenport }}"
 node_exporter_enable="YES"
 

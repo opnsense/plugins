@@ -325,7 +325,10 @@ sweep: check
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 	find ${.CURDIR} -type f -depth 1 -print0 | \
-	    xargs -0 -n1 ${SCRIPTSDIRs/cleanfile
+	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
+
+revision:
+	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 

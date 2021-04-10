@@ -79,5 +79,6 @@ function haproxy_xmlrpc_sync()
     $result['id'] = 'haproxy';
     $result['section'] = 'OPNsense.HAProxy';
     $result['description'] = gettext('HAProxy Load Balancer');
+    $result['services'] = ['haproxy'];
     return array($result);
 }

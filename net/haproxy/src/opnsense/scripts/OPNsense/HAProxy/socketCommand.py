@@ -19,6 +19,17 @@ VALID_COMMANDS = {
     "show-info": cmds.showInfo,
     "show-sessions": cmds.showSessions,
     "show-servers": cmds.showServers,
+    "show-ssl-crt-lists": cmds.showSslCrtLists,
+    "show-ssl-crt-list": cmds.showSslCrtList,
+    "show-ssl-certs": cmds.showSslCerts,
+    "show-ssl-cert": cmds.showSslCert,
+    "add-to-crt-list": cmds.addToSslCrtList,
+    "del-from-crt-list": cmds.delFromSslCrtList,
+    "new-ssl-cert": cmds.newSslCrt,
+    "update-ssl-cert": cmds.updateSslCrt,
+    "del-ssl-cert": cmds.delSslCrt,
+    "commit-ssl-cert": cmds.commitSslCrt,
+    "abort-ssl-cert": cmds.abortSslCrt,
 }
 
 def get_args():
@@ -40,12 +51,27 @@ def get_args():
     )
     parser.add_argument(
         '--server-ids',
-        help='Attempt action on a list of server, specified as a comma seperated list e.g. back1/server1,back2/server3',
+        help='Attempt action on a list of server, specified as a comma separated list e.g. back1/server1,back2/server3',
         default=None
     )
     parser.add_argument(
         '--value',
         help='Specify value for a set command.',
+        default=None
+    )
+    parser.add_argument(
+        '--payload',
+        help='Specify payload for a update command. either string or filepath',
+        default=None
+    )
+    parser.add_argument(
+        '--crt-list',
+        help='Set a filepath for a crt-list.',
+        default=None
+    )
+    parser.add_argument(
+        '--certfile',
+        help='Set a filepath for a certificate.',
         default=None
     )
     parser.add_argument(
@@ -89,6 +115,14 @@ def get_args():
     return parser.parse_args()
 
 args = get_args()
+if args.payload and os.path.isfile(args.payload):
+    with open(args.payload) as payload_file:
+        payload_content = ""
+        for line in payload_file:
+            if line.rstrip():
+                payload_content += line
+    args.payload = payload_content
+
 command_class = VALID_COMMANDS.get(args.command, None)
 command_args = {key: val for key, val in vars(args).items() if key != "command"}
 
@@ -108,14 +142,13 @@ try:
                 if result:
                     print(f"{server_id}: {result.strip()}")
                 con.close()
-
     else:
         # single
         con = HaPConn(SOCKET)
         if con:
             result = con.sendCmd(command_class(**command_args), objectify=False)
             if result:
-                print(result.strip())
+                print(result)
         else:
             print(f"Could not open socket {SOCKET}")
 

@@ -137,7 +137,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         if ($this->cert_keylength == 'ec256' || $this->cert_keylength == 'ec384') {
             if ($renew == true) {
                 // If it's a renew then pass --ecc to acme client to locate the correct cert directory
-                $acme_args[] = '--ecc';
+                $this->acme_args[] = '--ecc';
             }
         }
 
