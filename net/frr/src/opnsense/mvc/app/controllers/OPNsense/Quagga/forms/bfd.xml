@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>bfd.enabled</id>
-        <label>enable</label>
+        <label>Enable</label>
         <type>checkbox</type>
         <help>This will activate the BFD service.</help>
     </field>
