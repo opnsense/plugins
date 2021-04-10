@@ -29,4 +29,16 @@
         <type>text</type>
         <help>Port of the logging server. Leave empty when sensor and server run on the same system.</help>
     </field>
+    <field>
+        <id>sensor.syslogserver</id>
+        <label>Syslog Server</label>
+        <type>text</type>
+        <help>IP address of the remote syslog server.</help>
+    </field>
+    <field>
+        <id>sensor.syslogport</id>
+        <label>Syslog Port</label>
+        <type>text</type>
+        <help>Port of the syslog server.</help>
+    </field>
 </form>
