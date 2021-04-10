@@ -187,8 +187,9 @@ class RequestHandler(socketserver.StreamRequestHandler):
 
 
 def run_listener():
-    server = socketserver.TCPServer(('0.0.0.0', 113), RequestHandler, bind_and_activate=False)
+    server = socketserver.ThreadingTCPServer(('0.0.0.0', 113), RequestHandler, bind_and_activate=False)
     server.allow_reuse_address = True
+    server.request_queue_size = 128
     server.server_bind()
     server.server_activate()
     server.serve_forever()

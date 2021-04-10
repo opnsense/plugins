@@ -15,6 +15,22 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.10
+
+* Add HA config sync
+
+1.9.9
+
+* Create option to set EAP-TTLS-GTC (contributed by Kjeld Schouten-Lebbing)
+* Add LDAP reply Mikrotik-Wireless-VLANID and Mikrotik-Wireless-VLANID-type (contributed by foxikmax)
+* Fix DHCP support
+
+1.9.8
+
+* Add support for checking TLS certificate names
+* Allow / and @ as part of the user-names
+* Allow TLS as the default EAP type
+
 1.9.7
 
 * Fix Login-Time validation

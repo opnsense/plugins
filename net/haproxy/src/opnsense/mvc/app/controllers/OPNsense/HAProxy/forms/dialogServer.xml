@@ -7,9 +7,9 @@
     </field>
     <field>
         <id>server.name</id>
-        <label>Name</label>
+        <label>Name or Prefix</label>
         <type>text</type>
-        <help>Name to identify this server.</help>
+        <help>Name to identify a static server. When creating a server template, then this prefix is used for the server names to be built.</help>
     </field>
     <field>
         <id>server.description</id>
@@ -18,11 +18,58 @@
         <help>Description for this server.</help>
     </field>
     <field>
+        <id>server.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Either configure a static server or a template to initialize multiple servers with shared parameters.</help>
+    </field>
+    <field>
+        <label>Static Server</label>
+        <type>header</type>
+        <style>table_server_type table_server_type_static</style>
+    </field>
+    <field>
         <id>server.address</id>
         <label>FQDN or IP</label>
         <type>text</type>
         <help><![CDATA[Provide either the FQDN or the IP address of this server.]]></help>
         <hint>Enter server address.</hint>
+    </field>
+    <field>
+        <label>Server Template</label>
+        <type>header</type>
+        <style>table_server_type table_server_type_template</style>
+    </field>
+    <field>
+        <id>server.serviceName</id>
+        <label>Service Name or FQDN</label>
+        <type>text</type>
+        <help><![CDATA[Provide either the FQDN for all the servers this template initializes or a service name to discover the available services via DNS SRV records.]]></help>
+    </field>
+    <field>
+        <id>server.number</id>
+        <label>Number of Servers</label>
+        <type>text</type>
+        <help><![CDATA[The number of servers this template initializes, i.e. 5 or 1-5.]]></help>
+    </field>
+    <field>
+        <id>server.linkedResolver</id>
+        <label>Resolvers</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specify the resolver that the server template should look at to discover available services via DNS.]]></help>
+    </field>
+    <field>
+        <id>server.resolverOpts</id>
+        <label>Resolver Options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Add resolver options. Use TAB key to complete typing.]]></help>
+        <hint>Type option name or choose from list.</hint>
+    </field>
+    <field>
+        <label>Common Options</label>
+        <type>header</type>
     </field>
     <field>
         <id>server.port</id>
@@ -35,6 +82,13 @@
         <label>Mode</label>
         <type>dropdown</type>
         <help><![CDATA[Sets the operation mode to use for this server.]]></help>
+    </field>
+    <field>
+        <id>server.resolvePrefer</id>
+        <label>Prefer IP Family</label>
+        <type>dropdown</type>
+        <help><![CDATA[When DNS resolution is enabled for a server and multiple IP addresses from different families are returned, HAProxy will prefer using an IP address from the selected family.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>server.ssl</id>

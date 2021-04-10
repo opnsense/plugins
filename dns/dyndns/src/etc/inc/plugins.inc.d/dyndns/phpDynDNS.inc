@@ -42,9 +42,12 @@
  *    - regfish IPv6 (regfish.de)
  *    - dynv6 IPv6 (dynv6.com)
  *    - DigitalOcean (digitalocean.com)
+ *    - Gandi LiveDNS (gandi.net)
  *    - Azure DNS (azure.microsoft.com)
  *    - Linode (linode.com)
  *    - Linode IPv6 (linode.com)
+ *    - GoDaddy (godaddy.com)
+ *    - GoDaddy IPv6 (godaddy.com)
  * +----------------------------------------------------+
  *  Requirements:
  *    - PHP version 4.0.2 or higher with the CURL Library and the PCRE Library
@@ -103,6 +106,9 @@
  *  Azure DNS                   - Last Tested: 16 October 2019
  *  Linode                      - Last Tested: 25 February 2020
  *  Linode v6                   - Last Tested: 25 February 2020
+ *  GoDaddy                     - Last Tested: 10 July 2020
+ *  GoDaddy v6                  - Last Tested: 10 July 2020
+ *  Gandi LiveDNS               - Last Tested: 24 August 2020
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -282,6 +288,7 @@ class updatedns
             case 'custom-v6':
             case 'dynv6-v6':
             case 'he-net-v6':
+            case 'godaddy-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
@@ -340,6 +347,7 @@ class updatedns
                 case 'custom-v6':
                 case 'dhs':
                 case 'digitalocean':
+                case 'gandi-livedns':
                 case 'dnsexit':
                 case 'dnsomatic':
                 case 'duckdns':
@@ -352,6 +360,8 @@ class updatedns
                 case 'easydns':
                 case 'eurodns':
                 case 'freedns':
+                case 'godaddy':
+                case 'godaddy-v6':
                 case 'googledomains':
                 case 'gratisdns':
                 case 'he-net':
@@ -580,7 +590,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, 'https://freedns.afraid.org/dynamic/update.php?' . $this->_dnsPass);
                 break;
             case 'dnsexit':
-                curl_setopt($ch, CURLOPT_URL, 'https://www.dnsexit.com/RemoteUpdate.sv?login=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
+                curl_setopt($ch, CURLOPT_URL, 'https://update.dnsexit.com/RemoteUpdate.sv?login=' . urlencode($this->_dnsUser) . '&password=' . $this->_dnsPass . '&host=' . $this->_dnsHost . '&myip=' . $this->_dnsIP);
                 break;
             case 'loopia':
                 $this->_dnsWildcard = (isset($this->_dnsWildcard) && $this->_dnsWildcard == true) ? 'ON' : 'OFF';
@@ -660,6 +670,28 @@ class updatedns
                     'Content-Type: application/json'
                 ));
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($hostData));
+                curl_setopt($ch, CURLOPT_URL, $server);
+                break;
+            case 'gandi-livedns':
+                /*
+                * https://github.com/vizion8-dan
+                * Tested on OPNsense 20.1.8_1-amd64 - IPv4 (A)
+                * dnsHost ("Hostname" field in OPNsense) should be the 2nd-level domain ("example.org")
+                * dnsUser ("Username" field in OPNsense) should be the subdomain / A-record ("myrecord" in 2nd-level domain)
+                * dnsPass should be the Gandi-API key
+                */
+                $server = "https://dns.api.gandi.net/api/v5/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser . "/A";
+
+                $body = '{"rrset_ttl":"' . "300" . '", "rrset_values":["' . $this->_dnsIP . '"]}';
+
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    "X-Api-Key: {$this->_dnsPass}",
+                    'Content-Type: application/json'
+                ));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'selfhost':
@@ -851,7 +883,12 @@ class updatedns
             case 'gratisdns':
                 $server = "https://admin.gratisdns.com/ddns.php";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                list($hostname, $domain) = explode(".", $this->_dnsHost, 2);
+                if (substr_count($this->_dnsHost, ".") < 2) {
+                    $domain = $this->_dnsHost;
+                    $hostname = $this->_dnsHost;
+                } else {
+                    list($hostname, $domain) = explode(".", $this->_dnsHost, 2);
+                }
                 curl_setopt($ch, CURLOPT_URL, $server . '?u=' . urlencode($this->_dnsUser) . '&p=' . $this->_dnsPass . '&h=' . $this->_dnsHost . '&d=' . $domain . '&i=' . $this->_dnsIP);
                 break;
             case 'ovh-dynhost':
@@ -1090,6 +1127,46 @@ class updatedns
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
+            case 'godaddy':
+            case 'godaddy-v6':
+                /* Read https://developer.godaddy.com/ for API documentation */
+                $baseApiUrl = 'https://api.godaddy.com/v1/domains/';
+                $recordType = $this->_useIPv6 ? "AAAA" : "A";
+                $splitHost = explode('.', trim($this->_dnsHost));
+                $dnsDomain = '*';
+                if ($this->_dnsWildcard != 'ON') {
+                    $dnsDomain = array_shift($splitHost);
+                }
+                $dnsHost = implode('.', $splitHost);
+
+                $url = $baseApiUrl  . $dnsHost . '/records/' . $recordType . '/' . $dnsDomain;
+
+                /* body can contain multiple options (data, port, priority, service, ttl, weight) */
+                $data = array();
+                $data[] = array('data' => $this->_dnsIP);
+                if ($this->_dnsTTL) {
+                    $data[0]['ttl'] = $this->_dnsTTL;
+                } else {
+                    // minimum allowed by GoDaddy
+                    $data[0]['ttl'] = 600;
+                }
+                $jsonBody = json_encode($data);
+                if ($this->_dnsVerboseLog) {
+                    log_error("Dynamic DNS: calling $url with body: $jsonBody");
+                }
+
+                /* PUT JSON /v1/domains/{domain}/records/{type}/{name} */
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Accept: application/json',
+                        'Content-Type: application/json',
+                        'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
+                ));
+                curl_setopt($ch, CURLOPT_URL, $url);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                break;
             default:
                 break;
         }
@@ -1265,7 +1342,7 @@ class updatedns
                 }
                 break;
             case 'dnsexit':
-                if (preg_match("/is the same/i", $data)) {
+                if (preg_match("/IP not changed/i", $data)) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Success) No Change In IP Address";
                     $successful_update = true;
                 } elseif (preg_match("/Success/i", $data)) {
@@ -1376,6 +1453,24 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
                     log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
+                }
+                break;
+            case 'gandi-livedns':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong API Key.';
+                } elseif ($http_code == 403) {
+                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
+                } elseif ($http_code == 201) {
+                    $status = 'Dynamic DNS: (Success) Record was created!';
+                    $successful_update = true;
+                } elseif ($http_code == 200) {
+                    $status = 'Dynamic DNS: (Success) Same record already exists. Nothing was changed!';
+                    $successful_update = true;
+                } else {
+                    $status = 'Dynamic DNS: (Error) "Unknown Response"';
+                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case 'gratisdns':
@@ -1535,6 +1630,23 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
                     $this->_debug($data);
+                }
+                break;
+            case 'godaddy':
+            case 'godaddy-v6':
+                /* See https://developer.godaddy.com/ for API documentation, not all codes are handled. */
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $successful_update = false;
+                if ($http_code == 200) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
+                } elseif ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Authentication info not sent or invalid';
+                } elseif ($http_code == 404) {
+                    $status = 'Dynamic DNS: (Error) Resource not found';
+                } else {
+                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
                 }
                 break;
             default:

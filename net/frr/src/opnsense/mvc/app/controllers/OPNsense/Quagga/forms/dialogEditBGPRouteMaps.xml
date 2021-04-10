@@ -6,6 +6,12 @@
     <help>Enable / Disable</help>
   </field>
   <field>
+    <id>routemap.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Add an optional description for this route-map.</help>
+  </field>
+  <field>
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
@@ -38,6 +44,14 @@
     <style>tokenize</style>
     <allownew>true</allownew>
     <help>Select the Prefix List.</help>
+  </field>
+  <field>
+    <id>routemap.match3</id>
+    <label>Community List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Select the Community List.</help>
   </field>
     <field>
     <id>routemap.set</id>

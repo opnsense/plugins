@@ -5,6 +5,7 @@ mods-enabled-counter:/usr/local/etc/raddb/mods-enabled/counter
 mods-enabled-dhcp_sqlippool:/usr/local/etc/raddb/mods-enabled/dhcp_sqlippool
 mods-enabled-eap:/usr/local/etc/raddb/mods-enabled/eap
 mods-enabled-ldap:/usr/local/etc/raddb/mods-enabled/ldap
+mods-enabled-mac2ip:/usr/local/etc/raddb/mods-enabled/mac2ip
 mods-enabled-sql:/usr/local/etc/raddb/mods-enabled/sql
 mods-enabled-sqlippool:/usr/local/etc/raddb/mods-enabled/sqlippool
 queries.conf:/usr/local/etc/raddb/mods-config/sql/main/sqlite/queries.conf
@@ -14,4 +15,5 @@ radiusd.conf:/usr/local/etc/raddb/radiusd.conf
 sites-enabled-default:/usr/local/etc/raddb/sites-enabled/default
 sites-enabled-dhcp:/usr/local/etc/raddb/sites-enabled/dhcp
 sites-enabled-inner-tunnel:/usr/local/etc/raddb/sites-enabled/inner-tunnel
+sites-enabled-check-eap-tls:/usr/local/etc/raddb/sites-enabled/check-eap-tls
 users:/usr/local/etc/raddb/mods-config/files/authorize

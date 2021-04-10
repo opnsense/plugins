@@ -10,6 +10,22 @@ Kafka, MQTT, NSQ, and many others.
 
 Plugin Changelog
 ================
+1.10.0
+
+* Add intrusion detection alert input
+
+1.9.0
+
+* Add Datadog output
+
+1.8.2
+
+* Add 'ntpq' input
+
+1.8.1
+
+* Fix 'flush interval' templating by @Jontron123
+* Add ability to disable TLS for Graphite by @primemaster
 
 1.8.0
 

@@ -1,0 +1,61 @@
+<form>
+    <field>
+        <id>mailer.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this mailer configuration.</help>
+    </field>
+    <field>
+        <id>mailer.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Choose a name for this mailer configuration.</help>
+    </field>
+    <field>
+        <id>mailer.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Choose a optional description for this mailer configuration.</help>
+    </field>
+    <field>
+        <id>mailer.mailservers</id>
+        <label>Mail Servers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Add mailservers to this mailer configuration, i.e. 192.168.1.1:25. Use TAB key to complete typing.]]></help>
+        <hint>Enter ip:port here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>mailer.sender</id>
+        <label>Mail Sender</label>
+        <type>text</type>
+        <help><![CDATA[Declare the from email address to be used in both the envelope and header of email alerts.]]></help>
+    </field>
+    <field>
+        <id>mailer.recipient</id>
+        <label>Mail Recipient</label>
+        <type>text</type>
+        <help><![CDATA[Declare both the recipient address in the envelope and to address in the header of email alerts.]]></help>
+    </field>
+    <field>
+        <id>mailer.loglevel</id>
+        <label>Alert Log Level</label>
+        <type>dropdown</type>
+        <help><![CDATA[Declare the maximum log level of messages for which email alerts will be sent. This acts as a filter on the sending of email alerts.]]></help>
+    </field>
+    <field>
+        <id>mailer.timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Defines the time (in seconds) available for a mail/connection to be made and send to the mail server.]]></help>
+    </field>
+    <field>
+        <id>mailer.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help><![CDATA[Declare the to hostname address to be used when communicating with mailers.]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

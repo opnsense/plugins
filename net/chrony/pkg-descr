@@ -1,0 +1,18 @@
+An alternative to native ntpd daemon. In some edge cases chrony works
+better in virtual environments.
+
+Plugin Changelog
+----------------
+
+1.1
+
+* Add NTS support
+
+1.0
+
+* Allow to adjust the listening port
+* Allow setting of up to three peers
+* Use of allowed networks
+
+
+WWW: https://chrony.tuxfamily.org/
