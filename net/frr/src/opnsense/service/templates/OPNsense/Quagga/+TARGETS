@@ -1,3 +1,4 @@
+bfdd.conf:/usr/local/etc/frr/bfdd.conf
 bgpd.conf:/usr/local/etc/frr/bgpd.conf
 ospfd.conf:/usr/local/etc/frr/ospfd.conf
 ospfd_carp.conf:/usr/local/etc/frr/ospfd_carp.conf
