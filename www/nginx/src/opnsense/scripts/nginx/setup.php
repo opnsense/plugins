@@ -154,7 +154,7 @@ if (isset($nginx['stream_server'])) {
                     $ca = find_ca($caref);
                     if (isset($ca)) {
                         export_pem_file(
-                            KEY_DIRECTORY . $hostname . '_ca.pem',
+                            KEY_DIRECTORY . $stream_server['@attributes']['uuid'] . '_ca.pem',
                             $ca['crt']
                         );
                     }
