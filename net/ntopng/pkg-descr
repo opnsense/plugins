@@ -8,6 +8,14 @@ and on Windows as well.
 Plugin Changelog
 ================
 
+1.3
+
+* Allow multiple interfaces to be selected
+* Allow login bypass
+* (Advanced) Allow entry of local network
+* Combined http and https ports togerher
+* use https if cert is selected, http if no cert
+
 1.2
 
 * Changed data directory to avoid warning

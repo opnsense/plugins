@@ -6,23 +6,30 @@
         <help>This will activate ntopng.</help>
     </field>
     <field>
+        <id>general.authbypass</id>
+        <label>Bypass login</label>
+        <type>checkbox</type>
+        <help>This will disable login for all hosts.</help>
+    </field>    
+    <field>
         <id>general.interface</id>
         <label>Interfaces</label>
-        <type>dropdown</type>
-        <advanced>true</advanced>
-        <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
+        <type>select_multiple</type>
+        <style>selectpicker</style>
+        <help>Select the interfaces to listen to. Leave empty to choose the interface in ntopng or to connect to nProbe only.</help>
     </field>
+    <field>
+        <id>general.localnet</id>
+        <label>Local Networks</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Configure the local networks (CIDR format, comma-separated list).</help>
+    </field>    
     <field>
         <id>general.httpport</id>
-        <label>HTTP Port</label>
+        <label>HTTP(S) Port</label>
         <type>text</type>
-        <help>HTTP Port this service listens on.</help>
-    </field>
-    <field>
-        <id>general.httpsport</id>
-        <label>HTTPS Port</label>
-        <type>text</type>
-        <help>HTTPS Port this service listens on. If you enable HTTPS you will be redirected from HTTP to HTTPS. Please select a certificate below</help>
+        <help>HTTP port this service listens on. To enable HTTPS on this port please select a certificate below.</help>
     </field>
     <field>
         <id>general.cert</id>
