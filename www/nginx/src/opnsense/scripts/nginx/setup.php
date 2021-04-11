@@ -86,7 +86,7 @@ if (isset($nginx['http_server'])) {
           // try to find the reference
             $cert = find_cert($http_server['certificate']);
             if (!isset($cert)) {
-                next;
+                continue;
             }
             $chain = [];
             $ca_chain = ca_chain_array($cert);
@@ -121,7 +121,7 @@ if (isset($nginx['http_server'])) {
 }
 // end http, begin streams
 if (isset($nginx['stream_server'])) {
-    if (is_array($nginx['stream_server']) && !isset($nginx['stream_server']['servername'])) {
+    if (is_array($nginx['stream_server']) && !isset($nginx['stream_server']['@attributes']['uuid'])) {
         $stream_servers = $nginx['stream_server'];
     } else {
         $stream_servers = array($nginx['stream_server']);
@@ -131,7 +131,7 @@ if (isset($nginx['stream_server'])) {
           // try to find the reference
             $cert = find_cert($stream_server['certificate']);
             if (!isset($cert)) {
-                next;
+                continue;
             }
             $chain = [];
             $ca_chain = ca_chain_array($cert);
@@ -184,7 +184,7 @@ if (isset($nginx['upstream'])) {
                     foreach (ca_chain_array($cert) as $entry) {
                         $chain[] = base64_decode($entry['crt']);
                     }
-                    $hostname = explode(',', $http_server['servername'])[0];
+
                     export_pem_file(
                         KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.pem',
                         $cert['crt'],
