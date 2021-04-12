@@ -26,7 +26,7 @@
     </field>
     <field>
         <id>general.sysloglevel</id>
-        <label>log level</label>
+        <label>Log Level</label>
         <type>dropdown</type>
         <help>This is the detail level of the log. A higher level means more data is logged.</help>
     </field>
