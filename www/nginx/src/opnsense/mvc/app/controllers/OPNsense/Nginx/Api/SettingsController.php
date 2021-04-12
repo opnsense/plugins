@@ -169,12 +169,10 @@ class SettingsController extends ApiMutableModelControllerBase
             if ($row['enable_secrules']) {
                 if ($row['enable_learning_mode']) {
                     $row['waf_status'] = gettext('learning');
-                }
-                else {
+                } else {
                     $row['waf_status'] = gettext('enabled');
                 }
-            }
-            else {
+            } else {
                 $row['waf_status'] = gettext('disabled');
             }
         }

@@ -60,11 +60,9 @@ class NaxsiIdentifierConstraint extends BaseConstraint
                     // 0 can only be used solely
                     elseif ($intval == 0 && count($vals) > 1) {
                         $validator->appendMessage(new Message(gettext("If ID 0 is specified, no other IDs can be listed."), $attribute));
-                    }
-                    elseif ($intval < 0) {
+                    } elseif ($intval < 0) {
                         $neg++;
-                    }
-                    elseif ($intval > 0) {
+                    } elseif ($intval > 0) {
                         $pos++;
                     }
                 }
@@ -81,8 +79,7 @@ class NaxsiIdentifierConstraint extends BaseConstraint
                     // Did the user try to specify multiple IDs?
                     if (strpos($val, ',')) {
                         $validator->appendMessage(new Message(gettext("Rules can only have a single ID."), $attribute));
-                    }
-                    else {
+                    } else {
                         $validator->appendMessage(new Message(gettext("Rule IDs need to be numeric."), $attribute));
                     }
                 }
