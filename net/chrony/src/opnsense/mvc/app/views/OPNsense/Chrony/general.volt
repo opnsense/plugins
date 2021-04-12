@@ -99,7 +99,7 @@ function update_chronyauthdata() {
     setInterval(update_chronysourcestats, 5000);
     setInterval(update_chronytracking, 5000);
     setInterval(update_chronyauthdata, 5000);
- 
+
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){

@@ -132,7 +132,7 @@
         <label>Config Frequency</label>
         <type>text</type>
         <help>Specifies the time how often proxy retrieves configuration data from zabbix server (in seconds).</help>
-    </field>    
+    </field>
     <field>
         <id>general.datasenderfrequency</id>
         <label>Data Sender Frequency</label>
