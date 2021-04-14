@@ -1,0 +1,101 @@
+<form>
+
+    <field>
+        <id>rewrite.enabled</id>
+        <label>Enable rewrite-rule</label>
+        <type>checkbox</type>
+        <help>Use this rule</help>
+    </field>
+
+    <field>
+        <id>rewrite.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique name for this rule</help>
+    </field>
+
+    <field>
+        <id>rewrite.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Short description of this rule</help>
+    </field>
+
+    <field>
+        <id>rewrite.addAttributes</id>
+        <label>Add attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>attribute:value</i>, one per line<br/>Add an attribute to the radius message and set it to value. The attribute must be specified using the numerical attribute id. The value can either be numerical, a string, or a hex value. If the value starts with a number, it is interpreted as a 32bit unsigned integer. Use the ’ character at the start of the value to force string interpretation. When using hex value, it is recommended to also lead with ’ to avoid unintended numeric interpretation. See the CONFIGURATION SYNTAX section for further details.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.addVendorAttributes</id>
+        <label>Add vendor-attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>vendor:subattribute:value</i>, one per line<br/>Add a vendor attribute to the radius message, specified by vendor and subattribute. Both vendor and subattribute must be specified as numerical values. The format of value is the same as for addAttribute above.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.supplementAttributes</id>
+        <label>Add supplement-attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>attribute:value</i>, one per line<br/>Add an attribute to the radius message and set it to value, only if the attribute is not yet present on the message. The format of value is the same as for addAttribute above.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.supplementVendorAttributes</id>
+        <label>Add supplement-vendor-attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>vendor:subattribute:value</i>, one per line<br/>Add a vendor attribute to the radius message only if the subattribute of this vendor is not yet present on the message. The format of is the same as for addVendorAttribute above.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.modifyAttributes</id>
+        <label>Modify attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>attribute:/regex/replace/</i>, one per line<br/>Modify the given attribute using the regex replace pattern. As above, attribute must be specified by a numerical value. Example usage: modifyAttribute 1:/^(.*)@local$/\1@example.com/]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.modifyVendorAttributes</id>
+        <label>Modify vendor-attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>vendor:subattribute:/regex/replace/</i>, one per line<br/>Modify the given subattribute of given vendor using the regex replace pattern. Other than the added vendor, the same syntax as for ModifyAttribute applies.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.removeAttributes</id>
+        <label>Remove attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>attribute</i>, one per line<br/>Remove all attributes with the given id.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.removeVendorAttributes</id>
+        <label>Remove vendor-attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>vendor[:subattribute]</i>, one per line<br/>Remove all vendor attributes that match the given vendor and subattribute. If the subattribute is omitted, all attributes with the given vendor id are removed.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.whitelistMode</id>
+        <label>Whitelist-mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[Enable whitelist mode. All attributes except those configured with <b>WhitelistAttribute</b> or <b>WhitelistVendorAttribute</b> will be removed. While whitelist mode is active, <b>RemoveAttribute</b> and <b>RemoveVendorAttribute</b> statements are ignored.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.whitelistAttributes</id>
+        <label>Whitelist attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>attribute</i>, one per line<br/>Do not remove attributes with the given id when WhitelistMode is on. Ignored otherwise.]]></help>
+    </field>
+
+    <field>
+        <id>rewrite.whitelistVendorAttributes</id>
+        <label>Whitelist vendor-attribute(s)</label>
+        <type>textbox</type>
+        <help><![CDATA[<i>vendor[:subattribute]</i>, one per line<br/>Do not remove vendor attributes that match the given vendor and subattribute when WhitelistMode is on. Ignored otherwise. If the subattribute is omitted, the complete vendor attribute is whitelisted. Otherwise only the specified subattribute is kept but all other subattributes are removed.]]></help>
+    </field>
+
+</form>
