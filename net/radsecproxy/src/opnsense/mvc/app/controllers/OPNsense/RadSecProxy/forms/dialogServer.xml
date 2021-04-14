@@ -70,7 +70,7 @@
     <field>
         <id>server.certificateNameCheck</id>
         <label>Certificate-Name-Check</label>
-        <advanced>true</advanced>        
+        <advanced>true</advanced>
         <type>dropdown</type>
         <help>For a TLS/DTLS server, disable the default behaviour of matching CN or SubjectAltName against the specified hostname or IP address.</help>
     </field>
@@ -78,7 +78,7 @@
     <field>
         <id>server.matchCertificateAttribute</id>
         <label>Match Certificate-Attribute</label>
-        <advanced>true</advanced>        
+        <advanced>true</advanced>
         <type>text</type>
         <help>Perform additional validation of certificate attributes (CN | SubjectAltName:URI | SubjectAltName:DNS). Currently matching of CN and SubjectAltName types URI DNS and IP is supported. Note that currently this option can only be specified once in a client block.</help>
     </field>

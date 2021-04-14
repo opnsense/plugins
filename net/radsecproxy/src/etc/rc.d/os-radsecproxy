@@ -31,13 +31,13 @@ command_args="-c /usr/local/etc/radsecproxy.conf -i ${pidfile}"
 start_precmd="radsecproxy_prestart"
 stop_postcmd="radsecproxy_poststop"
 
-radsecproxy_prestart() 
+radsecproxy_prestart()
 {
 	mkdir -p $(dirname $pidfile)
 	chown ${user}:${group} $(dirname $pidfile)
 }
 
-radsecproxy_poststop() 
+radsecproxy_poststop()
 {
 	rm -f ${pidfile}
 }

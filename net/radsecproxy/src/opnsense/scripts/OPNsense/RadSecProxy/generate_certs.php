@@ -57,7 +57,7 @@ if (! function_exists('deleteFilesInFolder')) {
     {
         echo "deleting all files in folder " . $pathToFolder . "\n";
         $files = glob($pathToFolder . '/*');
-        
+
         foreach ($files as $file) {
             //Make sure that this is a file and not a directory.
             if (is_file($file)) {

@@ -5,7 +5,7 @@
             $('.selectpicker').selectpicker('refresh');
         });
         updateServiceControlUI('radsecproxy');
-        
+
         // link save button to API set action
         $("#saveAct").click(function(){
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
@@ -18,7 +18,7 @@
                 });
             });
         });
-        
+
     });
 </script>
 <div class="content-box" style="padding-bottom: 1.5em;">

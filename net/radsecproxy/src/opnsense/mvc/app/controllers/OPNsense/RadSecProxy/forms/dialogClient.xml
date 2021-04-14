@@ -25,14 +25,14 @@
         <type>text</type>
         <help>Short description of this client</help>
     </field>
-    
+
     <field>
         <id>client.host</id>
         <label>IP / Net</label>
         <type>text</type>
         <help>The client's IP or net</help>
     </field>
-    
+
     <field>
         <id>client.type</id>
         <label>Type</label>
@@ -64,7 +64,7 @@
     <field>
         <id>client.certificateNameCheck</id>
         <label>Certificate-Name-Check</label>
-        <advanced>true</advanced>        
+        <advanced>true</advanced>
         <type>dropdown</type>
         <help>For a TLS/DTLS server, disable the default behaviour of matching CN or SubjectAltName against the specified hostname or IP address.</help>
     </field>
@@ -72,7 +72,7 @@
     <field>
         <id>client.matchCertificateAttribute</id>
         <label>Match Certificate-Attribute</label>
-        <advanced>true</advanced>        
+        <advanced>true</advanced>
         <type>text</type>
         <help>Perform additional validation of certificate attributes (CN | SubjectAltName:URI | SubjectAltName:DNS). Currently matching of CN and SubjectAltName types URI DNS and IP is supported.</help>
     </field>

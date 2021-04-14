@@ -21,7 +21,7 @@
                     <ll3 value="3">3</ll3>
                     <ll4 value="4">4</ll4>
                     <ll5 value="5">5 (log everything)</ll5>
-                </OptionValues>    
+                </OptionValues>
             </logLevel>
 
             <logFullUsername type="OptionField">
@@ -43,7 +43,7 @@
                     <VendorKeyHashed>VendorKeyHashed</VendorKeyHashed>
                     <FullyHashed>FullyHashed</FullyHashed>
                     <FullyKeyHashed>FullyKeyHashed</FullyKeyHashed>
-                </OptionValues>    
+                </OptionValues>
             </logMac>
 
             <loopPrevention type="OptionField">
@@ -131,7 +131,7 @@
                         <tcp>TCP</tcp>
                         <tls>TLS</tls>
                         <dtls>DTLS</dtls>
-                    </OptionValues>    
+                    </OptionValues>
                 </type>
 
                 <secret type="TextField">
@@ -219,7 +219,7 @@
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
-                
+
                 <host type="TextField">
                     <Required>Y</Required>
                     <IpAllowed>Y</IpAllowed>
@@ -378,7 +378,7 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
-                
+
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
@@ -499,11 +499,11 @@
                         <off>Off</off>
                     </OptionValues>
                 </whitelistMode>
- 
+
                 <whitelistAttributes type="TextField">
                     <Required>N</Required>
                 </whitelistAttributes>
- 
+
                 <whitelistVendorAttributes type="TextField">
                     <Required>N</Required>
                 </whitelistVendorAttributes>

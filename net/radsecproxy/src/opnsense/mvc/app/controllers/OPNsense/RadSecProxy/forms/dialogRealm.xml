@@ -11,7 +11,7 @@
         <type>checkbox</type>
         <help>Enable this realm</help>
     </field>
-    
+
     <field>
         <id>realm.realm</id>
         <label>Realm</label>
@@ -25,7 +25,7 @@
         <type>text</type>
         <help>Short description to identify this realm and its target</help>
     </field>
-    
+
     <field>
         <type>section_title</type>
         <label>Authentication</label>
@@ -46,7 +46,7 @@
         <type>text</type>
         <help><![CDATA[Specify a message to be sent back to the client if a Access-Request is denied because no <b>server</b> is configured.]]></help>
     </field>
-    
+
     <field>
         <type>section_title</type>
         <label>Accounting</label>

@@ -39,7 +39,7 @@
         <label>Advanced settings</label>
         <advanced>true</advanced>
     </field>
-    
+
     <field>
         <type>section_title</type>
         <label>Listening IPs and Ports</label>
@@ -78,7 +78,7 @@
         <advanced>true</advanced>
         <help><![CDATA[Format: (address|*)[:port]]]></help>
     </field>
-    
+
     <field>
         <type>section_title</type>
         <label>Source IPs and Ports</label>
