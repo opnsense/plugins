@@ -1,7 +1,4 @@
-radsecproxy - GUI
-
-A user-interface for the configuration of radsecproxy,
-a generic RADIUS proxy that in addition to usual RADIUS UDP
+A generic RADIUS proxy that in addition to usual RADIUS UDP
 transport, also supports TLS (RadSec), as well as RADIUS
 over TCP and DTLS. The aim is for the proxy to have
 sufficient features to be flexible, while at the same time
