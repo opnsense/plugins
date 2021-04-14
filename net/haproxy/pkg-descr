@@ -8,6 +8,9 @@ Plugin Changelog
 
 3.2
 
+Fixed:
+* fix config test when HAProxy service is not enabled
+
 Changed:
 * ignore incompatible ciphersuites options when LibreSSL is used (#2013)
 
