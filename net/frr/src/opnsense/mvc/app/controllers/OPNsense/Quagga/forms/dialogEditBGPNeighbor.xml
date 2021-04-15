@@ -5,6 +5,12 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>neighbor.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Set an optional description for this neighbor.</help>
+  </field>
+  <field>
     <id>neighbor.address</id>
     <label>Peer-IP</label>
     <type>text</type>
@@ -32,7 +38,28 @@
     <label>Multi-Hop</label>
     <type>checkbox</type>
   </field>
-    <field>
+  <field>
+    <id>neighbor.keepalive</id>
+    <label>Keepalive</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Keepalive timer to check if the neighbor is still up. Default when unset is 60 seconds.</help>
+  </field>
+  <field>
+    <id>neighbor.holddown</id>
+    <label>Hold Down Time</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>The time in seconds when a neighbor is considered dead. This is usually 3 times the keeplive timer and when unset 180 seconds.</help>
+  </field>
+  <field>
+    <id>neighbor.connecttimer</id>
+    <label>Connect Timer</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>The time in seconds how fast a neighbor tries to reconnect.</help>
+  </field>
+  <field>
     <id>neighbor.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>

@@ -9,3 +9,5 @@ senderbcc:/usr/local/etc/postfix/senderbcc
 recipientbcc:/usr/local/etc/postfix/recipientbcc
 smtp_auth:/usr/local/etc/postfix/smtp_auth
 sendercanonical:/usr/local/etc/postfix/sendercanonical
+header_checks_delivering:/usr/local/etc/postfix/header_checks_delivering
+header_checks_receiving:/usr/local/etc/postfix/header_checks_receiving

@@ -34,6 +34,20 @@
         <help>Set the port the service should listen to.</help>
     </field>
     <field>
+        <id>general.transfersource</id>
+        <label>Transfer Source IP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv4 address used as a source for zone transfers.</help>
+    </field>
+    <field>
+        <id>general.transfersourcev6</id>
+        <label>Transfer Source IPv6</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>This determines which local address is bound to IPv6 TCP connections used to fetch zones transferred inbound by the server.</help>
+    </field>
+    <field>
         <id>general.forwarders</id>
         <label>DNS Forwarders</label>
         <style>tokenize</style>

@@ -7,4 +7,13 @@ any event. This allows a fast reaction to server problems. Zabbix offers
 excellent reporting and data visualisation features based on the stored
 data. This makes Zabbix ideal for capacity planning.
 
-WWW: http://www.zabbix.com/
+WWW: https://www.zabbix.com/
+
+Plugin Changelog
+----------------
+
+1.8
+
+* Add Changelog (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+* Fix logformat (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+* Switch to Zabbix Agent 5.0

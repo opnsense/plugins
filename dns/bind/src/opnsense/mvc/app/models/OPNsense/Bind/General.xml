@@ -27,6 +27,16 @@
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv6>
+        <transfersource type="NetworkField">
+            <Required>N</Required>
+            <AddressFamily>ipv4</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </transfersource>
+        <transfersourcev6 type="NetworkField">
+            <Required>N</Required>
+            <AddressFamily>ipv6</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </transfersourcev6>
         <port type="PortField">
             <default>53530</default>
             <Required>Y</Required>

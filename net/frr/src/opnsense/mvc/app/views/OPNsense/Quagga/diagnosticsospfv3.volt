@@ -130,7 +130,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <th data-column-id="lsid" data-type="string">{{ lang._('LS ID') }}</th>
             <th data-column-id="advrouter" data-type="string">{{ lang._('Advertising Router') }}</th>
             <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
-            <th data-column-id="seqnr" data-type="numeric">{{ lang._('Sequence Number') }}</th>
+            <th data-column-id="seqnr" data-type="string">{{ lang._('Sequence Number') }}</th>
             <th data-column-id="payload" data-type="string">{{ lang._('Payload') }}</th>
           </tr>
         </thead>
@@ -163,7 +163,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <th data-column-id="lsid" data-type="string">{{ lang._('LS ID') }}</th>
               <th data-column-id="advrouter" data-type="string">{{ lang._('Advertising Router') }}</th>
               <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
-              <th data-column-id="seqnr" data-type="numeric">{{ lang._('Sequence Number') }}</th>
+              <th data-column-id="seqnr" data-type="string">{{ lang._('Sequence Number') }}</th>
               <th data-column-id="payload" data-type="string">{{ lang._('Payload') }}</th>
             </tr>
           </thead>
@@ -192,7 +192,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <th data-column-id="lsid" data-type="string">{{ lang._('LS ID') }}</th>
           <th data-column-id="advrouter" data-type="string">{{ lang._('Advertising Router') }}</th>
           <th data-column-id="age" data-type="numeric">{{ lang._('Age') }}</th>
-          <th data-column-id="seqnr" data-type="numeric">{{ lang._('Sequence Number') }}</th>
+          <th data-column-id="seqnr" data-type="string">{{ lang._('Sequence Number') }}</th>
           <th data-column-id="payload" data-type="string">{{ lang._('Payload') }}</th>
         </tr>
       </thead>

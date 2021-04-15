@@ -1,0 +1,21 @@
+<form>
+    <field>
+        <id>headercheck.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the header_check rule.</help>
+    </field>
+    <field>
+        <id>headercheck.expression</id>
+        <label>Expression</label>
+        <type>text</type>
+        <help><![CDATA[Set a regexp (POSIX regular expression) and an action to process like <pre>/^\s*User-Agent/ IGNORE</pre>Note: The regexp is not validated by this form. Please test it carefully.]]></help>
+    </field>
+    <field>
+        <id>headercheck.filter</id>
+        <label>Process filter</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set when the header_check should be processed.<br>See the <a href="http://www.postfix.org/header_checks.5.html" target="_blank">Postfix manual about header_checks(5)</a>]]></help>
+        <hint>RECEIVING = header_checks / DELIVERING = smtp_header_checks</hint>
+    </field>
+</form>

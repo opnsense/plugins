@@ -36,6 +36,36 @@
         <help>Set the password for authentication.</help>
     </field>
     <field>
+        <id>output.influx_v2_enable</id>
+        <label>Enable Influx v2 Output</label>
+        <type>checkbox</type>
+        <help>This will enable InfluxDB v2 as output. Format is without square brackets, just like http://192.168.0.1:9999.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_url</id>
+        <label>Influx v2 URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_token</id>
+        <label>Influx v2 Token</label>
+        <type>text</type>
+        <help>Influx v2 authentication token.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_organization</id>
+        <label>Influx v2 Organization</label>
+        <type>text</type>
+        <help>Set the name of the organization in Influx v2.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_bucket</id>
+        <label>Influx v2 Bucket</label>
+        <type>text</type>
+        <help>Set the name of the bucket in Influx v2.</help>
+    </field>
+    <field>
         <id>output.graphite_enable</id>
         <label>Enable Graphite Output</label>
         <type>checkbox</type>
@@ -45,7 +75,7 @@
         <id>output.graphite_server</id>
         <label>Graphite Server</label>
         <type>text</type>
-        <help>Set the IP and port where metrics shoud be sent to.</help>
+        <help>Set the IP and port where metrics shoud be sent to. Format: IP:port.</help>
     </field>
     <field>
         <id>output.graphite_prefix</id>
@@ -61,9 +91,15 @@
     </field>
     <field>
         <id>output.graphite_verify</id>
-        <label>Graphite SSL Verification</label>
+        <label>Graphite SSL/TLS Verification</label>
         <type>checkbox</type>
         <help>This will enable verification of a secure connection to Graphite. Default is disabled for compatibility reasons.</help>
+    </field>
+    <field>
+        <id>output.graphite_ssl_disable</id>
+        <label>Disable Graphite SSL/TLS</label>
+        <type>checkbox</type>
+        <help>This will disable SSL/TLS connection to Graphite host. Default is encrypted connection.</help>
     </field>
     <field>
         <id>output.graphite_tagsupport</id>
@@ -130,5 +166,23 @@
         <label>Prometheus String as Label</label>
         <type>checkbox</type>
         <help>Send string metrics as Prometheus labels.</help>
+    </field>
+    <field>
+        <id>output.datadog_enable</id>
+        <label>Enable Datadog Output</label>
+        <type>checkbox</type>
+        <help>This will enable Datadog output.</help>
+    </field>
+    <field>
+        <id>output.datadog_url</id>
+        <label>Datadog URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics shoud be sent to. Format is without square brackets, just like https://app.datadoghq.com/api/v1/series.</help>
+    </field>
+    <field>
+        <id>output.datadog_apikey</id>
+        <label>Datadog API Key</label>
+        <type>text</type>
+        <help>Set the API Key for accessing Datadog.</help>
     </field>
 </form>

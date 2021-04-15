@@ -28,7 +28,6 @@
  *
  */
 
-
 namespace OPNsense\Firewall\FieldTypes;
 
 use OPNsense\Base\FieldTypes\ArrayField;

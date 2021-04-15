@@ -1,0 +1,8 @@
+<menu>
+    <VPN>
+        <Stunnel cssClass="fa fa-dot-circle-o fa-fw"  order="110">
+            <Configuration url="/ui/stunnel/services/"/>
+            <LogFile VisibleName="Log File" url="/ui/diagnostics/log/core/stunnel"/>
+        </Stunnel>
+    </VPN>
+</menu>
