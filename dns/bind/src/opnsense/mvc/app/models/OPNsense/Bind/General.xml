@@ -72,6 +72,17 @@
             <Required>N</Required>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
         </recursion>
+        <allowtransfer type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>N</Multiple>
+            <Required>N</Required>
+        </allowtransfer>
         <dnssecvalidation type="OptionField">
             <OptionValues>
                 <no>No</no>
