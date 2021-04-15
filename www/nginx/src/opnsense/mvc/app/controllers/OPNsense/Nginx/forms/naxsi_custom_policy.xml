@@ -15,6 +15,7 @@
         <id>custompolicy.value</id>
         <type>text</type>
         <label>Value</label>
+        <help>If the sum of scores of all matching rules exceed the configured value the policy's action will get triggered.</help>
     </field>
     <field>
         <id>custompolicy.operator</id>

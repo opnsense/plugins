@@ -1453,7 +1453,8 @@ h6 {
 }
 
 h1, .h1 {
-  font-size: 23px;
+  font-size: 22px;
+  text-transform: uppercase;
 }
 
 h2, .h2 {
@@ -3495,297 +3496,231 @@ input {
 select {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] select {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 textarea {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] textarea {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="text"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="text"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="password"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="password"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="datetime"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="datetime"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="datetime-local"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="datetime-local"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="date"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="date"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="month"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="month"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="time"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="time"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="week"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="week"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="number"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="number"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="email"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="email"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="url"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="url"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="search"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="search"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="tel"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="tel"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 input[type="color"] {
   &[disabled], &[readonly] {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none !important;
     border-color: #191919;
   }
 }
 
 fieldset[disabled] input[type="color"] {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none !important;
   border-color: #191919;
 }
 
 select {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3794,9 +3729,7 @@ select {
 
 fieldset[disabled]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3805,9 +3738,7 @@ fieldset[disabled]:hover {
 textarea {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3816,9 +3747,7 @@ textarea {
 
 fieldset[disabled]:hover textarea:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3827,9 +3756,7 @@ fieldset[disabled]:hover textarea:hover {
 input[type="text"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3838,9 +3765,7 @@ input[type="text"] {
 
 fieldset[disabled]:hover input[type="text"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3849,9 +3774,7 @@ fieldset[disabled]:hover input[type="text"]:hover {
 input[type="password"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3860,9 +3783,7 @@ input[type="password"] {
 
 fieldset[disabled]:hover input[type="password"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3871,9 +3792,7 @@ fieldset[disabled]:hover input[type="password"]:hover {
 input[type="datetime"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3882,9 +3801,7 @@ input[type="datetime"] {
 
 fieldset[disabled]:hover input[type="datetime"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3893,9 +3810,7 @@ fieldset[disabled]:hover input[type="datetime"]:hover {
 input[type="datetime-local"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3904,9 +3819,7 @@ input[type="datetime-local"] {
 
 fieldset[disabled]:hover input[type="datetime-local"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3915,9 +3828,7 @@ fieldset[disabled]:hover input[type="datetime-local"]:hover {
 input[type="date"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3926,9 +3837,7 @@ input[type="date"] {
 
 fieldset[disabled]:hover input[type="date"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3937,9 +3846,7 @@ fieldset[disabled]:hover input[type="date"]:hover {
 input[type="month"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3948,9 +3855,7 @@ input[type="month"] {
 
 fieldset[disabled]:hover input[type="month"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3959,9 +3864,7 @@ fieldset[disabled]:hover input[type="month"]:hover {
 input[type="time"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3970,9 +3873,7 @@ input[type="time"] {
 
 fieldset[disabled]:hover input[type="time"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3981,9 +3882,7 @@ fieldset[disabled]:hover input[type="time"]:hover {
 input[type="week"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3992,9 +3891,7 @@ input[type="week"] {
 
 fieldset[disabled]:hover input[type="week"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -4003,9 +3900,7 @@ fieldset[disabled]:hover input[type="week"]:hover {
 input[type="number"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4014,9 +3909,7 @@ input[type="number"] {
 
 fieldset[disabled]:hover input[type="number"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -4025,9 +3918,7 @@ fieldset[disabled]:hover input[type="number"]:hover {
 input[type="email"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4036,9 +3927,7 @@ input[type="email"] {
 
 fieldset[disabled]:hover input[type="email"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -4047,9 +3936,7 @@ fieldset[disabled]:hover input[type="email"]:hover {
 input[type="url"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4058,9 +3945,7 @@ input[type="url"] {
 
 fieldset[disabled]:hover input[type="url"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -4069,9 +3954,7 @@ fieldset[disabled]:hover input[type="url"]:hover {
 input[type="search"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4080,9 +3963,7 @@ input[type="search"] {
 
 fieldset[disabled]:hover input[type="search"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -4091,9 +3972,7 @@ fieldset[disabled]:hover input[type="search"]:hover {
 input[type="tel"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4102,9 +3981,7 @@ input[type="tel"] {
 
 fieldset[disabled]:hover input[type="tel"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -4113,9 +3990,7 @@ fieldset[disabled]:hover input[type="tel"]:hover {
 input[type="color"] {
   &[disabled]:hover, &[readonly]:hover {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    background-color: none;
     border: 1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4124,9 +3999,7 @@ input[type="color"] {
 
 fieldset[disabled]:hover input[type="color"]:hover {
   cursor: not-allowed;
-  background-color: #686868;
-  opacity: 0.8;
-  filter: alpha(opacity = 80);
+  background-color: none;
   border: 1px solid #191919;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -9283,7 +9156,7 @@ button.close {
 
 .show {
   display: block !important;
-  color: #B3B3B3;
+  color: #22C400;
 }
 
 .invisible {
@@ -9593,7 +9466,7 @@ body {
     border-radius: 0;
     min-height: 47px;
     height: auto;
-    padding: 6px 14px 5px 14px;
+    padding: 7px 14px 5px 14px;
     -webkit-box-shadow: 0 3px 4px rgb(23, 23, 23);
     box-shadow: 0 3px 4px rgb(23, 23, 23);
   }
@@ -9618,7 +9491,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 9px 0px 21px 0px;
+  padding: 7px 0px 21px 0px;
 }
 
 .page-side {
@@ -10154,7 +10027,7 @@ button.toggle-sidebar {
 }
 
 .table > tbody > tr > td:last-child {
-  padding-right: 15px;
+  padding-right: 5px;
 }
 
 /* helpers */
@@ -10411,10 +10284,10 @@ label > input {
 
   .ipsec-tab {
     background-color: #3a3a3a !important;
-    color: #928873 !important;
+    color: #FFF !important;
 
     &.activetab {
-      background-color: #262626 !important;
+      background-color: #2d2d2d !important;
       color: #dd630d !important;
     }
   }
@@ -10752,7 +10625,7 @@ ul.jqtree-tree {
 }
 
 .interface-table {
-  background-color: #242424 !important;
+  background-color: #191919 !important;
 }
 
 .modal-side-settings {
@@ -10761,4 +10634,27 @@ ul.jqtree-tree {
 
 [role="listbox"] {
   border: 1px solid #191919 !important;
+}
+
+.interface-table-tr td {
+  background-color: #d77610 !important;
+  color: #FFF !important;
+}
+
+.table.border {
+  border: 1px solid #191919 !important;
+}
+
+.rule.text-muted > td {
+  &:nth-child(1n+3) {
+    text-decoration: line-through;
+  }
+
+  &:last-child {
+    text-decoration: none;
+  }
+}
+
+#reports-tab {
+  border-bottom: 1px solid #191919;
 }

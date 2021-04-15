@@ -32,29 +32,31 @@ require_once('config.inc');
 require_once('util.inc');
 require_once('plugins.inc.d/frr.inc');
 
-if (!frr_carp_enabled()) {
-    /* nothing to do */
-    exit(0);
-}
+if (frr_carp_enabled()) {
+    // XXX: carp enable/disable mode
+    $subsystem = !empty($argv[1]) ? $argv[1] : '';
+    $type = !empty($argv[2]) ? $argv[2] : '';
 
-$subsystem = !empty($argv[1]) ? $argv[1] : '';
-$type = !empty($argv[2]) ? $argv[2] : '';
+    if ($type != 'MASTER' && $type != 'BACKUP') {
+        log_error("Carp '$type' event unknown from source '{$subsystem}'");
+        exit(1);
+    }
 
-if ($type != 'MASTER' && $type != 'BACKUP') {
-    log_error("Carp '$type' event unknown from source '{$subsystem}'");
-    exit(1);
-}
+    if (!strstr($subsystem, '@')) {
+        log_error("Carp '$type' event triggered from wrong source '{$subsystem}'");
+        exit(1);
+    }
 
-if (!strstr($subsystem, '@')) {
-    log_error("Carp '$type' event triggered from wrong source '{$subsystem}'");
-    exit(1);
-}
-
-switch ($type) {
-    case 'MASTER':
-        shell_exec('/usr/local/etc/rc.d/frr start');
-        break;
-    case 'BACKUP':
-        shell_exec('/usr/local/etc/rc.d/frr stop');
-        break;
+    switch ($type) {
+        case 'MASTER':
+            shell_exec('/usr/local/etc/rc.d/frr start');
+            break;
+        case 'BACKUP':
+            shell_exec('/usr/local/etc/rc.d/frr stop');
+            break;
+    }
+} elseif (frr_enabled()) {
+    // XXX: when not toggling between active and disabled, pass event so underlaying protocols can
+    //      determine which actions to perform when reaching a certain state.
+    shell_exec('/usr/local/opnsense/scripts/frr/carp_event_handler');
 }

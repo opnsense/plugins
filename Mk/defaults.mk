@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2021 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -26,8 +26,13 @@
 LOCALBASE?=	/usr/local
 PAGER?=		less
 
-PKG!=		which pkg || echo true
+PKG=		${LOCALBASE}/sbin/pkg
+.if ! exists(${PKG})
+PKG=		true
+.endif
 GIT!=		which git || echo true
+
+GITVERSION=	${SCRIPTSDIR}/version.sh
 
 _PLUGIN_ARCH!=	uname -p
 PLUGIN_ARCH?=	${_PLUGIN_ARCH}
@@ -58,13 +63,19 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-PLUGIN_ABI?=	20.7
-PLUGIN_PHP?=	72
+PLUGIN_ABI?=	21.1
+PLUGIN_PHP?=	73
 PLUGIN_PYTHON?=	37
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
-		PLUGIN_FLAVOUR
+		PLUGIN_FLAVOUR \
+		PLUGIN_HASH \
+		PLUGIN_MAINTAINER \
+		PLUGIN_NAME \
+		PLUGIN_PKGNAME \
+		PLUGIN_PKGVERSION \
+		PLUGIN_WWW
 
 SED_REPLACE=	# empty
 
@@ -88,10 +99,17 @@ ${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
 .endif
 .endfor
 
-diff:
+ensure-stable:
+	@if ! git show-ref --verify --quiet refs/heads/stable/${PLUGIN_ABI}; then \
+		git update-ref refs/heads/stable/${PLUGIN_ABI} refs/remotes/origin/stable/${PLUGIN_ABI}; \
+		git config branch.stable/${PLUGIN_ABI}.merge refs/heads/stable/${PLUGIN_ABI}; \
+		git config branch.stable/${PLUGIN_ABI}.remote origin; \
+	fi
+
+diff: ensure-stable
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
 
-mfc:
+mfc: ensure-stable
 .for MFC in ${mfc_ARGS}
 .if exists(${MFC})
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
@@ -103,7 +121,20 @@ mfc:
 	fi
 .else
 	@git checkout stable/${PLUGIN_ABI}
-	@git cherry-pick -x ${MFC}
+	@if ! git cherry-pick -x ${MFC}; then \
+		git cherry-pick --abort; \
+	fi
 .endif
 	@git checkout master
 .endfor
+
+stable:
+	@git checkout stable/${PLUGIN_ABI}
+
+master:
+	@git checkout master
+
+rebase:
+	@git checkout stable/${PLUGIN_ABI}
+	@git rebase -i
+	@git checkout master

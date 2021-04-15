@@ -1,7 +1,7 @@
 PLUGIN_NAME=		haproxy
-PLUGIN_VERSION=		2.25
+PLUGIN_VERSION=		3.2
 PLUGIN_COMMENT=		Reliable, high performance TCP/HTTP load balancer
-PLUGIN_DEPENDS=		haproxy20
+PLUGIN_DEPENDS=		haproxy
 PLUGIN_MAINTAINER=	opnsense@moov.de
 
 .include "../../Mk/plugins.mk"

@@ -16,6 +16,14 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.5
+
+* Allow synchronization of config
+
+1.4
+
+* Add IPv6 gateway support (contributed by Alexander Korinek)
+
 1.3
 
 * Client/peer name validation to use HostnameField

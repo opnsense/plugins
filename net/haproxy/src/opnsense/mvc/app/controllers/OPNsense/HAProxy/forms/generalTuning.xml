@@ -7,14 +7,14 @@
         <id>haproxy.general.tuning.root</id>
         <label>Run as root</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable or disable HAProxy running as root.<br/><div class="text-info"><b>NOTE:</b> Enabling root could be a security issue but it's required by some feature.</div>]]></help>
+        <help><![CDATA[Enable or disable HAProxy running as user root. Enabling this option is strongly discouraged.<br/><div class="text-info"><b>NOTE:</b> Running as user root could be a security issue but it may be required by some features.</div>]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>haproxy.general.tuning.nbproc</id>
-        <label>HAProxy processes</label>
+        <label>HAProxy processes (DEPRECATED)</label>
         <type>text</type>
-        <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>NOTE:</b> You may experience random issues in multi-process mode. For more information about the "nbproc" option please see the HAProxy Documentation.</div>]]></help>
+        <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>WARNING:</b> This option is deprecated and will be removed in a future version of HAProxy, threads should be used instead.</div>]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -69,6 +69,12 @@
         <help><![CDATA[Add some randomness in the check interval between 0 and +/- 50%. A value between 2 and 5 seems to show good results. The default value is 0 (disabled).]]></help>
     </field>
     <field>
+        <id>haproxy.general.tuning.bogusProxyEnabled</id>
+        <label>Enable old bogus PROXY v2 implementation</label>
+        <type>checkbox</type>
+        <help><![CDATA[A bug in the PROXY protocol v2 implementation was present in HAProxy up to version 2.1. Enabling this option reverts this old buggy behaviour.]]></help>
+    </field>
+    <field>
         <id>haproxy.general.tuning.customOptions</id>
         <label>Custom options</label>
         <type>textbox</type>
@@ -84,14 +90,6 @@
         <label>Enabled</label>
         <type>checkbox</type>
         <help><![CDATA[Enable global SSL default values.]]></help>
-    </field>
-    <field>
-        <id>haproxy.general.tuning.ssl_bindOptions</id>
-        <label>Bind options</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
     <field>
         <id>haproxy.general.tuning.ssl_minVersion</id>
@@ -116,5 +114,14 @@
         <label>Cipher Suites</label>
         <type>text</type>
         <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake for TLSv1.3.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_bindOptions</id>
+        <label>Bind options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
 </form>

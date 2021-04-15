@@ -6,6 +6,11 @@ is completely different.
 Plugin Changelog
 ================
 
+1.18
+
+* Add 'milter_default_action' choice
+* Fix Milter Protocol
+
 1.17
 
 * Add smtpd_sasl_auth_enable to configuration (by @fhloston)

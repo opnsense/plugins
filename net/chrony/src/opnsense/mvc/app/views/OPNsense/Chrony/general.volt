@@ -1,6 +1,6 @@
 {#
  # Copyright (c) 2019 Deciso B.V.
- # Copyright (c) 2020 Michael Muenz <m.muenz@gmail.com>
+ # Copyright (c) 2020-2021 Michael Muenz <m.muenz@gmail.com>
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -25,15 +25,66 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-<div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-    <div class="col-md-12">
-        <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#chronysources">{{ lang._('Sources') }}</a></li>
+    <li><a data-toggle="tab" href="#chronysourcestats">{{ lang._('Source Stats') }}</a></li>
+    <li><a data-toggle="tab" href="#chronytracking">{{ lang._('Tracking') }}</a></li>
+    <li><a data-toggle="tab" href="#chronyauthdata">{{ lang._('Auth Data') }}</a></li>
+</ul>
+
+<div class="tab-content content-box tab-content">
+    <div id="general" class="tab-pane fade in active">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="chronysources" class="tab-pane fade in">
+        <pre id="listchronysources"></pre>
+    </div>
+    <div id="chronysourcestats" class="tab-pane fade in">
+        <pre id="listchronysourcestats"></pre>
+    </div>
+    <div id="chronytracking" class="tab-pane fade in">
+        <pre id="listchronytracking"></pre>
+    </div>
+    <div id="chronyauthdata" class="tab-pane fade in">
+        <pre id="listchronyauthdata"></pre>
     </div>
 </div>
 
 <script>
+
+// Put API call into a function, needed for auto-refresh
+function update_chronysources() {
+    ajaxCall(url="/api/chrony/service/chronysources", sendData={}, callback=function(data,status) {
+        $("#listchronysources").text(data['response']);
+    });
+}
+
+function update_chronysourcestats() {
+    ajaxCall(url="/api/chrony/service/chronysourcestats", sendData={}, callback=function(data,status) {
+        $("#listchronysourcestats").text(data['response']);
+    });
+}
+
+// Put API call into a function, needed for auto-refresh
+function update_chronytracking() {
+    ajaxCall(url="/api/chrony/service/chronytracking", sendData={}, callback=function(data,status) {
+        $("#listchronytracking").text(data['response']);
+    });
+}
+
+function update_chronyauthdata() {
+    ajaxCall(url="/api/chrony/service/chronyauthdata", sendData={}, callback=function(data,status) {
+        $("#listchronyauthdata").text(data['response']);
+    });
+}
+
     $(function() {
         var data_get_map = {'frm_general_settings':"/api/chrony/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
@@ -41,7 +92,13 @@
             $('.selectpicker').selectpicker('refresh');
         });
 
-     updateServiceControlUI('chrony');
+    updateServiceControlUI('chrony');
+
+    // Call function update_neighbor with a auto-refresh of 5 seconds
+    setInterval(update_chronysources, 5000);
+    setInterval(update_chronysourcestats, 5000);
+    setInterval(update_chronytracking, 5000);
+    setInterval(update_chronyauthdata, 5000);
 
         // link save button to API set action
         $("#saveAct").click(function(){

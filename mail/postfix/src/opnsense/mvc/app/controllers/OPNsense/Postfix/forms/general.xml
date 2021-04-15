@@ -73,7 +73,7 @@
         <id>general.message_size_limit</id>
         <label>Message Size Limit</label>
         <type>text</type>
-        <help>Set the max size for messages to accept, default is 501200000 Byte which is 50MB. Values must be entered in Bytes.</help>
+        <help>Set the max size for messages to accept, default is 51200000 Bytes which is 50MB. Values must be entered in Bytes.</help>
     </field>
     <field>
         <id>general.masquerade_domains</id>
@@ -81,7 +81,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Masquerade internal domains to the outside. When you set example.com, the domain host.internal.example.com will be rewritten to exmaple.com when mail leaves the system.</help>
+        <help>Masquerade internal domains to the outside. When you set example.com, the domain host.internal.example.com will be rewritten to example.com when mail leaves the system.</help>
     </field>
     <field>
         <id>general.disable_ssl</id>
@@ -123,7 +123,7 @@
         <id>general.relayhost</id>
         <label>Smart Host</label>
         <type>text</type>
-        <help>Set the IP address or FQDN where all outgoung mails are sent to.</help>
+        <help>Set the IP address or FQDN where all outgoing mails are sent to.</help>
     </field>
     <field>
         <id>general.smtpauth_enabled</id>
@@ -148,7 +148,7 @@
         <label>Enforce Recipient Relay Check</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>If you enable this, every entry in Recipients will be checked against. When there is no match mail will be rejected. Be aware that it does not matter if the action is "OK" or "REJECT". This setup allows you to run postfix in front of an internal system and already rejecting unsolicited mail at the border.</help>
+        <help>If you enable this, every entry in Recipients will be checked against. When there is no match mail will be rejected. Be aware that it does not matter if the action is "OK" or "REJECT". This setup allows you to run postfix in front of an internal system and already reject unsolicited mail at the border.</help>
     </field>
     <field>
         <id>general.extensive_helo_restrictions</id>
@@ -162,7 +162,7 @@
     </field>
     <field>
         <id>general.reject_unknown_client_hostname</id>
-        <label>Reject Unkown Client Hostname</label>
+        <label>Reject Unknown Client Hostname</label>
         <type>checkbox</type>
     </field>
     <field>
@@ -177,7 +177,7 @@
     </field>
      <field>
         <id>general.reject_unknown_helo_hostname</id>
-        <label>Reject Unkown HELO Hostname</label>
+        <label>Reject Unknown HELO Hostname</label>
         <type>checkbox</type>
     </field>
     <field>
@@ -198,13 +198,13 @@
     </field>
     <field>
         <id>general.reject_non_fqdn_sender</id>
-        <label>Reject Non FQDN Sender</label>
+        <label>Reject Non-FQDN Sender</label>
         <type>checkbox</type>
         <help>For example senders without a domain or only a hostname.</help>
     </field>
     <field>
         <id>general.reject_non_fqdn_recipient</id>
-        <label>Reject Non FQDN Recipient</label>
+        <label>Reject Non-FQDN Recipient</label>
         <type>checkbox</type>
         <help>For example recipients without a domain or only a hostname.</help>
     </field>
@@ -228,5 +228,11 @@
         <id>general.reject_unauth_destination</id>
         <label>Reject Unauthenticated Destination</label>
         <type>checkbox</type>
+    </field>
+    <field>
+        <id>general.reject_unverified_recipient</id>
+        <label>Reject Unverified Recipient</label>
+        <type>checkbox</type>
+        <help>Use Recipient Address Verification. Please keep in mind that this could put significant load onto the next server.</help>
     </field>
 </form>

@@ -8,6 +8,15 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.21
+
+* fix performance issue with autoban feature (contributed by jkellerer)
+
+1.20
+
+* User interface improvements of NAXSI configuration (contributed by 8191)
+* Fixed missing certificate validation of upstreams (contributed by 8191)
+
 1.19
 
 * Add possibility to configure SNI proxying.

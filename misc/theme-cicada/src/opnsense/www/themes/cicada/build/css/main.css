@@ -1050,7 +1050,8 @@ h6, .h6 {
     font-size: 75%; }
 
 h1, .h1 {
-  font-size: 23px; }
+  font-size: 22px;
+  text-transform: uppercase; }
 
 h2, .h2 {
   font-size: 16px; }
@@ -2472,9 +2473,7 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-	background-color: #686868;
-	opacity: 0.8;
-	filter: alpha(opacity=80);
+	background-color: none !important;
 	border-color: #191919; }
 
   select[disabled]:hover, select[readonly]:hover, fieldset[disabled]:hover,
@@ -2526,9 +2525,7 @@ input[type="color"]
 
    {
     cursor: not-allowed;
-    background-color: #686868;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    background-color: none;
     border:1px solid #191919;
     -webkit-box-shadow: none;
     box-shadow: none; }
@@ -5509,7 +5506,7 @@ button.close {
 
 .show {
   display: block !important;
-  color:#B3B3B3;}
+  color: #22C400; }
 
 .invisible {
   visibility: hidden; }
@@ -5747,7 +5744,7 @@ body {
   border-radius: 0;
   min-height: 47px;
   height: auto;
-  padding: 6px 14px 5px 14px;
+  padding: 7px 14px 5px 14px;
   -webkit-box-shadow: 0 3px 4px rgb(23, 23, 23);
   box-shadow: 0 3px 4px rgb(23, 23, 23); }
 .page-content-head, .content-box-head {
@@ -5761,7 +5758,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 9px 0px 21px 0px; }
+  padding: 7px 0px 21px 0px; }
 
 .page-side {
   background: #202020;
@@ -6148,7 +6145,7 @@ button.toggle-sidebar {
   font-weight: normal; }
 
 .table > tbody > tr > td:last-child {
-padding-right: 15px; }
+  padding-right: 5px; }
 
 /* helpers */
 .__nowrap {
@@ -6331,11 +6328,11 @@ label > input[type="radio"] {
 
 #ipsec .ipsec-tab {
 	background-color: #3a3a3a !important;
-	color: #928873 !important;
+	color: #FFF !important;
 }
 
 #ipsec .ipsec-tab.activetab {
-	background-color: #262626 !important;
+	background-color: #2d2d2d !important;
 	color: #dd630d !important;
 }
 .fw_pass {
@@ -6605,7 +6602,7 @@ ul.jqtree-tree .jqtree-title {
 }
 
 .interface-table {
-  background-color: #242424 !important;
+  background-color: #191919 !important;
 }
 
 .modal-side-settings {
@@ -6614,4 +6611,25 @@ ul.jqtree-tree .jqtree-title {
 
 [role="listbox"] {
   border: 1px solid #191919 !important;
+}
+
+.interface-table-tr td {
+  background-color: #d77610 !important;
+  color: #FFF !important;
+}
+
+.table.border {
+  border: 1px solid #191919 !important;
+}
+
+.rule.text-muted > td:nth-child(1n+3) {
+  text-decoration: line-through;
+}
+
+.rule.text-muted > td:last-child {
+  text-decoration:none;
+}
+
+#reports-tab {
+    border-bottom: 1px solid #191919;
 }

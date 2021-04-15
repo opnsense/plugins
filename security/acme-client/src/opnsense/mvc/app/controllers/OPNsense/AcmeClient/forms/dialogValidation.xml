@@ -604,6 +604,11 @@
         <style>table_dns table_dns_lexicon</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 1000 may be required.</label>
+        <type>header</type>
+        <style>table_dns table_dns_lexicon</style>
+    </field>
+    <field>
         <id>validation.dns_lexicon_provider</id>
         <label>Provider</label>
         <type>dropdown</type>
@@ -624,12 +629,22 @@
         <style>table_dns table_dns_linode</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_linode</style>
+    </field>
+    <field>
         <id>validation.dns_linode_key</id>
         <label>Key</label>
         <type>text</type>
     </field>
     <field>
         <label>Linode Cloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_linode_v4</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
         <type>header</type>
         <style>table_dns table_dns_linode_v4</style>
     </field>
@@ -753,12 +768,22 @@
         <style>table_dns table_dns_namesilo</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_namesilo</style>
+    </field>
+    <field>
         <id>validation.dns_namesilo_key</id>
         <label>Key</label>
         <type>text</type>
     </field>
     <field>
         <label>netcup DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_netcup</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 600 is recommended.</label>
         <type>header</type>
         <style>table_dns table_dns_netcup</style>
     </field>
@@ -1180,5 +1205,46 @@
         <id>validation.dns_kas_authtype</id>
         <label>KAS Authtype</label>
         <type>dropdown</type>
+    </field>
+    <field>
+        <label>deSEC.io API</label>
+        <type>header</type>
+        <style>table_dns table_dns_desec</style>
+    </field>
+    <field>
+        <id>validation.dns_desec_token</id>
+        <label>deSEC token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_desec_name</id>
+        <label>deSEC domain</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>hexonet.com DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hexonet</style>
+    </field>
+    <field>
+        <id>validation.dns_hexonet_login</id>
+        <label>Login</label>
+        <type>text</type>
+        <help>This should be a combination of the username and role ID. For example, when the username is "myuser" and role ID is "testrole", then "myuser!testrole" must be used here.</help>
+    </field>
+    <field>
+        <id>validation.dns_hexonet_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Infomaniak DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_infomaniak</style>
+    </field>
+    <field>
+        <id>validation.dns_infomaniak_token</id>
+        <label>API Token</label>
+        <type>password</type>
     </field>
 </form>

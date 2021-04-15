@@ -87,17 +87,31 @@
     </field>
     <field>
         <id>input.ping</id>
-        <label>Ping</label>
+        <label>Ping (IPv4)</label>
         <type>checkbox</type>
-        <help>Ping Hosts and measure the metrics.</help>
+        <help>Ping Hosts using IPv4 and measure the metrics.</help>
     </field>
     <field>
         <id>input.ping_hosts</id>
-        <label>Ping Hosts</label>
+        <label>Ping Hosts (IPv4)</label>
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Set the Hosts to ping in a CSV list.</help>
+        <help>Set the Hosts to ping using IPv4 in a CSV list.</help>
+    </field>
+    <field>
+        <id>input.ping6</id>
+        <label>Ping (IPv6)</label>
+        <type>checkbox</type>
+        <help>Ping Hosts using IPv6 and measure the metrics.</help>
+    </field>
+    <field>
+        <id>input.ping6_hosts</id>
+        <label>Ping Hosts (IPv6)</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Set the Hosts to ping using IPv6 in a CSV list.</help>
     </field>
     <field>
         <id>input.haproxy</id>
@@ -123,4 +137,10 @@
         <type>checkbox</type>
         <help>Can increase metric gather times.</help>
     </field>
+    <field>
+        <id>input.intrusion_detection_alerts</id>
+        <label>Intrusion Dectection Alerts</label>
+        <type>checkbox</type>
+        <help>Requires Intrustion detection alerts are stored locally.</help>
+   </field>
 </form>

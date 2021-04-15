@@ -1,4 +1,5 @@
 Copyright (c) 2015-2020 Ad Schellevis <ad@opnsense.org>
+Copyright (c) 2021 Andreas Stuerz
 Copyright (c) 2019 Cloudfence - Julio Camargo (JCC)
 Copyright (c) 2005-2006 Colin Smith <ethethlay@gmail.com>
 Copyright (c) 2020 D. Domig
@@ -11,22 +12,25 @@ Copyright (c) 2006 Eric Friesen
 Copyright (c) 2008-2010 Ermal Luçi
 Copyright (c) 2017-2019 Fabian Franz
 Copyright (c) 2019 Felix Matouschek <felix@matouschek.org>
-Copyright (c) 2014-2020 Franco Fichtner <franco@opnsense.org>
-Copyright (c) 2016-2020 Frank Wall
+Copyright (c) 2014-2021 Franco Fichtner <franco@opnsense.org>
+Copyright (c) 2016-2021 Frank Wall
 Copyright (c) 2016 IT-assistans Sverige AB
 Copyright (c) 2010 Jim Pingle <jimp@pfsense.org>
 Copyright (c) 2015 Jos Schellevis
 Copyright (c) 2018 João Vilaça <machadovilaca@gmail.com>
 Copyright (c) 2019 Juergen Kellerer
+Copyright (c) 2020 Manuel Faux
 Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
+Copyright (c) 2020 Marc Leuser
 Copyright (c) 2020 Martin Wasley
-Copyright (c) 2017-2020 Michael Muenz <m.muenz@gmail.com>
+Copyright (c) 2017-2021 Michael Muenz <m.muenz@gmail.com>
 Copyright (c) 2004-2012 Scott Ullrich <sullrich@gmail.com>
-Copyright (c) 2010-2012 Seth Mos <seth.mos@dds.nl>
+Copyright (c) 2010 Seth Mos <seth.mos@dds.nl>
 Copyright (c) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
 Copyright (c) 2017-2019 Smart-Soft
 Copyright (c) 2013 Stanley P. Miller \ stan-qaz
 Copyright (c) 2020 Starkstromkonsument
+Copyright (c) 2020 Tobias Boehnert
 Copyright (c) 2010 Yehuda Katz
 Copyright (c) 2015 YoungJoo.Kim <vozltx@gmail.com>
 Copyright (c) 2020 devNan0 <nan0@nan0.dev>
