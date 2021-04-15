@@ -8,6 +8,11 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.17
+
+* Make "Allow Transfer" and "Allow Query" configuration available to slave zones
+* Add "Allow Transfer" to General page for default/fallback
+
 1.16
 
 * Fix slave zone templating
