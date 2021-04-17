@@ -1,0 +1,33 @@
+<model>
+    <mount>//OPNsense/dnsbl</mount>
+    <description>DNSBL configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <type type="OptionField">
+            <Required>N</Required>
+            <Multiple>Y</Multiple>
+            <OptionValues>
+                <aa>AdAway List</aa>
+                <ag>AdGuard List</ag>
+                <bla>Blocklist.site Ads</bla>
+                <blf>Blocklist.site Fraud</blf>
+                <blp>Blocklist.site Phishing</blp>
+                <el>Easy List</el>
+                <ep>Easyprivacy List</ep>
+                <nc>NoCoin List</nc>
+                <pt>PornTop1M List</pt>
+                <sa>Simple Ad List</sa>
+                <st>Simple Tracker List</st>
+                <sb>Steven Black List</sb>
+                <ws>WindowsSpyBlocker (spy)</ws>
+                <wsu>WindowsSpyBlocker (update)</wsu>
+                <wse>WindowsSpyBlocker (extra)</wse>
+                <yy>YoYo List</yy>
+            </OptionValues>
+        </type>
+    </items>
+</model>

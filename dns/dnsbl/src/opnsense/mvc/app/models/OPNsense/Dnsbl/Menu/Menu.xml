@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <DNSBL VisibleName="DNSBL" url="/ui/dnsbl" cssClass="fa fa-lock fa-fw"> </DNSBL>
+    </Services>
+</menu>

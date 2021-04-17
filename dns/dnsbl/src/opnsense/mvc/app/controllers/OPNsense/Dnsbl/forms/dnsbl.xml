@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>settings.enabled</id> <!-- is this needed? -->
+        <label>Enable DNSBL and RPZ</label>
+        <type>checkbox</type>
+        <help>This will enable the use of DNS Blocklists for ADs, Malware, or both.</help>
+    </field>
+    <field>
+        <id>settings.type</id>
+        <label>Type of DNSBL</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Select which kind of DNSBL you want to use.<br>This blacklist is located at the following path:<br>/usr/local/etc/dnsbl/blacklist.txt]]></help>
+    </field>
+</form>
