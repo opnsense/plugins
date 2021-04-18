@@ -1,0 +1,4 @@
+export SCRIPTS_DIR=/usr/local/opnsense/scripts/OPNsense/Dnsbl
+# Set our scripts to executable.
+echo "Setting scripts executable: fetch-lists.sh"
+chmod +x ${SCRIPTS_DIR}/fetch-lists.sh

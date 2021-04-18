@@ -1,0 +1,15 @@
+{# /etc/rc.conf.d/dnsbl #}
+{#
+This is used by the script fetch-lists.sh to know which lists to include.
+
+if [ -z "${DNSBL}" ]; then
+	. /etc/rc.conf.d/dnscrypt_proxy
+	DNSBL=${dnscrypt_proxy_dnsbl}
+fi
+
+#}
+{%   if helpers.exists('OPNsense.dnsbl.enabled') and OPNsense.dnsbl.enabled == '1' %}
+{%     if helpers.exists('OPNsense.dnsbl.type') and OPNsense.dnsbl.type != '' %}
+dnsbl_type="{{ OPNsense.dnsbl.type }}"
+{%     endif %}
+{%   endif %}

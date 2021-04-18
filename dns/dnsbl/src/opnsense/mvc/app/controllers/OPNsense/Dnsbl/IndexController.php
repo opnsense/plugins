@@ -3,17 +3,13 @@
 /*
     Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
        this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -26,43 +22,13 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-/**
- * Function to add dnscrypt-proxy plugin to the services of OPNsense.
- *
- * This add the service to the System: Diagnostics: Services page at
- * http://<opnsense>/status_services.php
- *
- * @return array the services array
-*/
-function dnscryptproxy_services()
+namespace OPNsense\Dnsbl;
+
+class IndexController extends \OPNsense\Base\IndexController
 {
-
-    ///
-    ob_start();
-    var_dump('TEST');
-    $ob_var_dump = ob_get_clean();
-    file_put_contents('/tmp/php_debug.txt', strip_tags(strtr($ob_var_dump, ['=&gt;' => '=>']))."\n", FILE_APPEND);
-    ///
-
-    $services = array();
-
-    $model = new \OPNsense\Dnscryptproxy\Settings();
-
-    if ( ! ((string) $model->enabled == '1')) {
-        // return empty array if not enabled
-        return $services;
+    public function indexAction()
+    {
+        $this->view->this_form = $this->getForm('dnsbl');
+        $this->view->pick('OPNsense/Dnsbl/index');
     }
-
-    $services[] = array(
-        'description' => gettext($model->label), // Description column
-        'configd' => array(
-            'restart' => array($model->configd_name.' restart'),
-            'start' => array($model->configd_name.' start'),
-            'stop' => array($model->configd_name.' stop'),
-        ),
-        'name' => $model->name, // Service column
-        'pid' => '/var/run/dnscrypt-proxy.pid',
-    );
-
-    return $services;
 }

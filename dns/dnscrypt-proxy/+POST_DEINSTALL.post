@@ -1,0 +1,4 @@
+
+# Do some clean up
+echo "Cleaning up tmp files"
+rm -rf /tmp/dnscrypt-proxy_*

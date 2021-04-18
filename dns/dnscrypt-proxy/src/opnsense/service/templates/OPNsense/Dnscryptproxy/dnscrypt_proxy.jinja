@@ -1,0 +1,12 @@
+{# /usr/local/etc/rc.conf.d/dnscrypt_proxy #}
+
+{% set plugin_name = "dnscrypt-proxy" %}
+{# Only do if service is enabled. #}
+{% if OPNsense[plugin_name]["enabled"] == '1' %}
+dnscrypt_proxy_enable="YES"
+{%   if OPNsense[plugin_name]["allowprivileged"] == '1' %}
+dnscrypt_proxy_suexec="YES"
+{%   endif %}
+{% else %}
+dnscrypt_proxy_enable="NO"
+{% endif %}

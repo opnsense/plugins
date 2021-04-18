@@ -1,0 +1,14 @@
+{#- /usr/local/etc/dnscrypt-proxy/captive-portals.txt -#}
+
+{%- set plugin_name = 'dnscrypt-proxy' %}
+{%  if OPNsense[plugin_name]['enabled'] == '1' %}
+{%      if OPNsense[plugin_name]['captive_portals'] is defined %}
+{%          if OPNsense[plugin_name]['captive_portals']['enabled'] == '1' %}
+{%              if OPNsense[plugin_name]['captive_portals']['entries'] is defined %}
+{%                   for entry in helpers.toList('OPNsense.dnscrypt-proxy.captive_portals.entries') if entry['enabled'] == '1'  %}
+{{ entry['domain_name'] }}	{{ entry['ips'] }}
+{%                   endfor %}
+{%              endif %}
+{%          endif %}
+{%     endif %}
+{% endif %}
