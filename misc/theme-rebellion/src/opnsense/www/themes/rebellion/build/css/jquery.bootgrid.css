@@ -78,7 +78,7 @@
   outline: 0;
 }
 .bootgrid-table th > .column-header-anchor {
-    background-color: #929292;
+    background-color: #444444;
   color: #eee;
   cursor: not-allowed;
   display: block;
