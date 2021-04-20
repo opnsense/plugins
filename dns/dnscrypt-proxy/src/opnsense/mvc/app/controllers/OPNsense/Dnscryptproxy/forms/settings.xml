@@ -3,6 +3,11 @@
         <subtab id="basic_settings" description="Basic Settings">
             <model>settings</model>
             <field>
+                <id>settings.first_time_setup</id>
+                <hidden>true</hidden>
+                <type>checkbox</type>
+            </field>
+            <field>
                 <id>settings.enabled</id>
                 <label>Enable DNSCrypt-Proxy</label>
                 <help><![CDATA[This will enable the dnscrypt-proxy service.]]></help>

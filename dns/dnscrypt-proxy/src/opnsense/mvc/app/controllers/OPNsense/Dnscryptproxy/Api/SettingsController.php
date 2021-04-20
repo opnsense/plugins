@@ -563,12 +563,17 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function restoreSourcesAction()
     {
+        $myController = new ControllerBase();
+        $this_form = $myController->getForm('settings');   // Pull in the form data.
+
+        $target = 'sources.source';
+        $target_array = $this->searchFields($target, $this_form['tabs']);
         // First we get the current sources to use the UUIDs of each to delete them.
-        $sources = $this->searchBase($this->sources, array('enabled', 'name', 'urls', 'cache_file', 'minisign_key', 'refresh_delay', 'prefix'));
+        $sources = $this->searchBase($target_array['path'], $target_array['fields']);
 
         // Deleting each rows in the sources node. This is inefficient, but negligable as most wont add more than these two anyway.
         foreach ($sources['rows'] as $source) {
-            $this->delBase('sources.source', $source['uuid']);
+            $this->delBase($target_array['path'], $source['uuid']);
         }
         $this->sessionClose();
 
@@ -594,8 +599,8 @@ class SettingsController extends ApiMutableModelControllerBase
         );
 
         // Add our settings, and put the settings into the results variable. Also inefficient.
-        $result[1] = $this->addBase('public_resolvers', $this->sources);
-        $result[2] = $this->addBase('relays', $this->sources);
+        $result[1] = $this->addBase('public_resolvers', $target_array['path']);
+        $result[2] = $this->addBase('relays', $target_array['path']);
         // Setting our status to ok for SimpleActionButton()
         $result['status'] = 'ok';
 

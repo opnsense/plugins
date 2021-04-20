@@ -69,6 +69,8 @@ def main():
             tmp_file = open("/tmp/dnscrypt-proxy_resolvers_" + mode + ".json", "w")
             tmp_file.write(json.dumps(resolvers,indent=4))
             tmp_file.close()
+            print(json.dumps(resolvers,indent=4))
+
         else:
             print(json.dumps(resolvers,indent=4))
 

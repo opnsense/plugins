@@ -53,5 +53,13 @@ $( document ).ready(function() {
 {# /* Define this object now so we can push tabs to it later. */ #}
 {{  partial("OPNsense/Dnscryptproxy/layout_partials/base_script_content") }}
 
+    mapDataToFormUI(data_get_map).done(function(){
+{#/*    # Update the fields using the tokenizer style. */#}
+        formatTokenizersUI();
+{#/*    # Refresh the data for the select picker fields. */#}
+        $('.selectpicker').selectpicker('refresh');
+    });
+
+
 });
 </script>

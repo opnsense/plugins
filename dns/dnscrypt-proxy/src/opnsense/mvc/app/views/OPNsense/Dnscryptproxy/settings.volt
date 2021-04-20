@@ -56,6 +56,13 @@ $( document ).ready(function() {
 {#/* Define this object now so we can push tabs to it later. */#}
     var data_get_map = {};
 
+{#/* Display a message to the user while we load settings. */#}
+    BootstrapDialog.show({
+        title: 'Loading settings',
+        message: 'Please wait while settings are loaded...',
+        closable: false
+    });
+
 {#/* Attachment to trigger restoring the default sources via api. */#}
     $("#btn_restoreSourcesAct").SimpleActionButton({
 {#/*    We're defining onPreAction here in order to display a confirm dialog
@@ -76,7 +83,7 @@ $( document ).ready(function() {
                 btnOKLabel: '{{ lang._('Yes') }}',
                 callback: function (result) {
                     if (result) {
-{#/*                    User answered yes, we can return dfObj now. */#}
+{#/*                    User answered yes, we can resolve dfObj now. */#}
                         dfObj.resolve();
                     } else {
 {#/*                    User answered no, clean up the spinner added by SimpleActionButton(), and then do nothing. */#}
@@ -92,12 +99,53 @@ $( document ).ready(function() {
         onAction: function(data, status){
 {#/*        This executes after the API call is complete.
              We need to refresh the grid since the data has changed. */#}
-            std_bootgrid_reload("bootgrid_settings.sources.source"); {#/* id attribute of the bootgrid HTML element. */#}
+            std_bootgrid_reload("bootgrid_sources_source"); {#/* id attribute of the bootgrid HTML element. */#}
         }
     });
 
 {#/* Dynamically build all attachments using the form data */#}
 {{ partial("OPNsense/Dnscryptproxy/layout_partials/base_script_content") }}
+
+{#/*
+    # Map data to our fields. */#}
+    mapDataToFormUI(data_get_map).done(function(){
+{#/*    # Do the first time setup, pre-configuring some default settings and such. */#}
+        if ($('#' + $.escapeSelector('settings.first_time_setup')).prop("checked") == false) {
+{#/*        # Set up default sources */#}
+            const dfObj = new $.Deferred();
+            var element = $('#' + $.escapeSelector('settings.first_time_setup'));
+            var this_frm = $(element).closest("form");
+            var frm_id = this_frm.attr("id");
+            var frm_model = this_frm.attr("data-model");
+            var api_url="/api/{{ plugin_name }}/" + frm_model + "/set";
+{#/*        # Dismiss the loading dialog, and then display a new First-Time setup dialog */#}
+            $('div[class^="modal bootstrap-dialog"]').modal('toggle');
+            BootstrapDialog.show({
+                title: 'First Time Configuration',
+                message: 'Performing first time configuration. Please wait...',
+                closable: false
+            });
+            ajaxCall("/api/dnscryptproxy/settings/restoreSources", {}, function(){
+                dfObj.resolve();
+{#/*            # flip bit for first time set up */#}
+                $('#' + $.escapeSelector('settings.first_time_setup')).prop("checked", true)
+                saveFormToEndpoint(url=api_url, formid=frm_id, callback_ok=function(){
+                    ajaxCall(url="/api/{{ plugin_name }}/service/reconfigure", sendData={}, function(data,status){
+{#/*                # Force a page reload to reload dropdowns and such. */#}
+                    window.location.reload();
+                    });
+                });
+                return dfObj;
+            });
+
+        };
+{#/*    # Update the fields using the tokenizer style. */#}
+        formatTokenizersUI();
+{#/*    # Refresh the data for the select picker fields. */#}
+        $('.selectpicker').selectpicker('refresh');
+{#/*    # Dismiss our loading dialog */#}
+        $('div[class^="modal bootstrap-dialog"]').modal('toggle');
+    });
 
 });
 

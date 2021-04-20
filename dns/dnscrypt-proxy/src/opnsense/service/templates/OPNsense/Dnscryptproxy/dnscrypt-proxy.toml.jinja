@@ -1,10 +1,8 @@
-{# /usr/local/etc/dnscrypt-proxy/dnscrypt-proxy.toml -#}
-{%- set plugin_name = 'dnscrypt-proxy' %}
+{# /usr/local/etc/dnscrypt-proxy/dnscrypt-proxy.toml #}
+{% set plugin_name = 'dnscrypt-proxy' %}
 {% set plugin_dir = '/usr/local/etc/dnscrypt-proxy' %}
 {% set cfg = OPNsense[plugin_name] %}
 {% set cfg_path = 'OPNsense.'~plugin_name %}
-
-{% if cfg['enabled'] == '1' -%}
 
 ################################################################################
 #                                                                              #
@@ -20,84 +18,84 @@
 #                                                                              #
 ################################################################################
 
-{%      if cfg['server_selection_method'] == '1' %}
-{%          set server_list = [] %}
-{#          server_names is comma delimited string of UUIDs, split() to iterate through. #}
-{%          if helpers.exists(cfg_path~'.server_names') %}
-{%              for for_server in cfg['server_names'].split(',') %}
+{%  if cfg['server_selection_method'] == '1' %}
+{%      set server_list = [] %}
+{#      server_names is comma delimited string of UUIDs, split() to iterate through. #}
+{%      if helpers.exists(cfg_path~'.server_names') %}
+{%          for for_server in cfg['server_names'].split(',') %}
 {#              Use the server node and set it as a variable so we can reference the name. #}
 {#              {%- set server = helpers.getUUID(for_server) %} #}
 {#              # Add the server name to the list. #}
 {#              {%-         do server_list.append(server.name) %} #}
-{%                  do server_list.append(for_server) %}
-{%              endfor %}
-{#              Print the server list, joining and surrounding each server with single quotes. #}
-{%          endif %}
-{%          if server_list != [] %} {# Don't put this setting unless we have servers names to put. #}
+{%              do server_list.append(for_server) %}
+{%          endfor %}
+{#          Print the server list, joining and surrounding each server with single quotes. #}
+{%      endif %}
+{%      if server_list != [] %} {# Don't put this setting unless we have servers names to put. #}
 server_names = [{{ "'" + server_list|join("','") + "'" }}]
-{%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%      if cfg['listen_addresses'] is defined %}
+{%  if cfg['listen_addresses'] is defined %}
 listen_addresses = [{{ "'" + ("','".join(cfg['listen_addresses'].split(','))) + "'" }}]
-{%      else %}
+{%  else %}
 listen_addresses = []
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['max_clients'] is defined %}
+{%  if cfg['max_clients'] is defined %}
 max_clients = {{ cfg['max_clients'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['ipv4_servers'] is defined %}
+{%  if cfg['ipv4_servers'] is defined %}
 ipv4_servers = {{ 'true' if (cfg['ipv4_servers'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['ipv6_servers'] is defined %}
+{%  if cfg['ipv6_servers'] is defined %}
 ipv6_servers = {{ 'true' if (cfg['ipv6_servers'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['dnscrypt_servers'] is defined %}
+{%  if cfg['dnscrypt_servers'] is defined %}
 dnscrypt_servers = {{ 'true' if (cfg['dnscrypt_servers'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['doh_servers'] is defined %}
+{%  if cfg['doh_servers'] is defined %}
 doh_servers = {{ 'true' if (cfg['doh_servers'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['server_selection_method'] == '0' %}
+{%  if cfg['server_selection_method'] == '0' %}
 
 ################################################################################
 #         Automatic Server Selection                                           #
 ################################################################################
 
-{%          if cfg['require_dnssec'] is defined %}
+{%      if cfg['require_dnssec'] is defined %}
 require_dnssec = {{ 'true' if (cfg['require_dnssec'] == '1') else 'false' }}
-{%          endif -%}
+{%      endif -%}
 
-{%          if cfg['require_nolog'] is defined %}
+{%      if cfg['require_nolog'] is defined %}
 require_nolog = {{ 'true' if (cfg['require_nolog'] == '1') else 'false' }}
-{%          endif -%}
+{%      endif -%}
 
-{%          if cfg['require_nofilter'] is defined %}
+{%      if cfg['require_nofilter'] is defined %}
 require_nofilter = {{ 'true' if (cfg['require_nolog'] == '1') else 'false' }}
-{%          endif -%}
+{%      endif -%}
 
-{%          if cfg['disabled_server_names'] is defined %}
-{%              set disabled_server_list = [] %}
+{%      if cfg['disabled_server_names'] is defined %}
+{%          set disabled_server_list = [] %}
 {#              server_names is comma delimited string of UUIDs, split() to iterate through. #}
-{%              if helpers.exists(cfg_path~'.disabled_server_names') %}
-{%                  for for_server in cfg['disabled_server_names'].split(',') %}
+{%          if helpers.exists(cfg_path~'.disabled_server_names') %}
+{%              for for_server in cfg['disabled_server_names'].split(',') %}
 {#                      Use the server node and set it as a variable so we can reference the name. #}
 {#                      {%- set server = helpers.getUUID(for_server) %} #}
 {#                      Add the server name to the list. #}
 {#                      {%- do server_list.append(server.name) %} #}
-{%                      do disabled_server_list.append(for_server) %}
-{%                  endfor %}
+{%                  do disabled_server_list.append(for_server) %}
+{%              endfor %}
 {#                  Print the server list, joining and surrounding each server with single quotes. #}
-{%              endif %}
 {%          endif %}
-disabled_server_names = [{{ "'" + disabled_server_list|join("','") + "'" }}]
 {%      endif %}
+disabled_server_names = [{{ "'" + disabled_server_list|join("','") + "'" }}]
+{%  endif %}
 
 ################################################################################
 #                                                                              #
@@ -105,97 +103,97 @@ disabled_server_names = [{{ "'" + disabled_server_list|join("','") + "'" }}]
 #                                                                              #
 ################################################################################
 
-{%      if cfg['force_tcp'] is defined %}
+{%  if cfg['force_tcp'] is defined %}
 force_tcp = {{ 'true' if (cfg['force_tcp'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['proxy'] is defined %}
+{%  if cfg['proxy'] is defined %}
 proxy = 'socks5://{{ cfg['proxy'] }}'
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['http_proxy'] is defined %}
+{%  if cfg['http_proxy'] is defined %}
 http_proxy = 'http://{{ cfg['http_proxy'] }}'
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['timeout'] is defined %}
+{%  if cfg['timeout'] is defined %}
 timeout = {{ cfg['timeout'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['keepalive'] is defined %}
+{%  if cfg['keepalive'] is defined %}
 keepalive = {{ cfg['keepalive'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['edns_client_subnet'] is defined %}
+{%  if cfg['edns_client_subnet'] is defined %}
 edns_client_subnet = [{{ "'" + ("','".join(cfg['edns_client_subnet'].split(','))) + "'" }}]
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['lb_strategy'] is defined %}
+{%  if cfg['lb_strategy'] is defined %}
 lb_strategy = {{ cfg['lb_strategy'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['lb_estimator'] is defined %}
+{%  if cfg['lb_estimator'] is defined %}
 lb_estimator = {{ cfg['lb_estimator'] }}
-{%      endif %}
+{%  endif %}
 
 ################################################################################
 #         Logging Settings                                                     #
 ################################################################################
 
-{%      if cfg['log_level'] is defined %}
+{%  if cfg['log_level'] is defined %}
 log_level = {{ cfg['log_level'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['log_files_max_size'] is defined %}
+{%  if cfg['log_files_max_size'] is defined %}
 log_files_max_size = {{ cfg['log_files_max_size'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['log_files_max_age'] is defined %}
+{%  if cfg['log_files_max_age'] is defined %}
 log_files_max_age = {{ cfg['log_files_max_age'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['log_files_max_backups'] is defined %}
+{%  if cfg['log_files_max_backups'] is defined %}
 log_files_max_backups = {{ cfg['log_files_max_backups'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['cert_refresh_delay'] is defined %}
+{%  if cfg['cert_refresh_delay'] is defined %}
 cert_refresh_delay = {{ cfg['cert_refresh_delay'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['dnscrypt_ephemeral_keys'] is defined %}
+{%  if cfg['dnscrypt_ephemeral_keys'] is defined %}
 dnscrypt_ephemeral_keys = {{ 'true' if (cfg['dnscrypt_ephemeral_keys'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['tls_disable_session_tickets'] is defined %}
+{%  if cfg['tls_disable_session_tickets'] is defined %}
 tls_disable_session_tickets = {{ 'true' if (cfg['tls_disable_session_tickets'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['tls_cipher_suite'] is defined %}
+{%  if cfg['tls_cipher_suite'] is defined %}
 tls_cipher_suite = [{{ cfg['tls_cipher_suite'] }}]
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['bootstrap_resolvers'] is defined %}
+{%  if cfg['bootstrap_resolvers'] is defined %}
 fallback_resolvers = [{{ "'" + ("','".join(cfg['bootstrap_resolvers'].split(','))) + "'" }}]
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['ignore_system_dns'] is defined %}
+{%  if cfg['ignore_system_dns'] is defined %}
 ignore_system_dns = {{ 'true' if (cfg['ignore_system_dns'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['netprobe_address'] is defined %}
+{%  if cfg['netprobe_address'] is defined %}
 netprobe_address = '{{ cfg['netprobe_address'] }}'
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['netprobe_timeout'] is defined %}
+{%  if cfg['netprobe_timeout'] is defined %}
 netprobe_timeout = {{ cfg['netprobe_timeout'] }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['offline_mode'] is defined %}
+{%  if cfg['offline_mode'] is defined %}
 offline_mode = {{ 'true' if (cfg['offline_mode'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['query_meta'] is defined %}
+{%  if cfg['query_meta'] is defined %}
 # query_meta = [{{ "'" + ("','".join(cfg['query_meta'].split(','))) + "'" }}]
-{%      endif -%}
+{%  endif -%}
 
 log_file = '/var/log/dnscrypt-proxy/main.log'
 use_syslog = false
@@ -204,21 +202,21 @@ use_syslog = false
 #         Filter Settings                                                      #
 ################################################################################
 
-{%      if cfg['block_ipv6'] is defined %}
+{%  if cfg['block_ipv6'] is defined %}
 block_ipv6 = {{ 'true' if (cfg['block_ipv6'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['block_unqualified'] is defined %}
+{%  if cfg['block_unqualified'] is defined %}
 block_unqualified = {{ 'true' if (cfg['block_unqualified'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['block_undelegated'] is defined %}
+{%  if cfg['block_undelegated'] is defined %}
 block_undelegated = {{ 'true' if (cfg['block_undelegated'] == '1') else 'false' }}
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['reject_ttl'] is defined %}
+{%  if cfg['reject_ttl'] is defined %}
 reject_ttl = {{ cfg['reject_ttl'] }}
-{%      endif -%}
+{%  endif -%}
 
 {%     if cfg['forwarding_enabled'] == '1' %}
 
@@ -227,58 +225,58 @@ reject_ttl = {{ cfg['reject_ttl'] }}
 ################################################################################
 
 forwarding_rules = 'forwarding-rules.txt'
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['cloaking_enabled'] == '1' %}
+{%  if cfg['cloaking_enabled'] == '1' %}
 
 ################################################################################
 #      Cloaking Rules                                                          #
 ################################################################################
 
-{%          if cfg['cloaking_type'] == 'external' and
+{%      if cfg['cloaking_type'] == 'external' and
                 cfg['cloaking_file_external'] is defined %}
 cloaking_rules = '{{ cfg['cloaking_file_external'] }}'
-{%          elif cfg['cloaking_type'] == 'manual' and
+{%      elif cfg['cloaking_type'] == 'manual' and
                 cfg['cloaking_file_manual'] is defined %}
 cloaking_rules = 'cloaking-manual.txt'
-{%          elif cfg['cloaking_type'] == 'internal' %}
+{%      elif cfg['cloaking_type'] == 'internal' %}
 cloaking_rules = 'cloaking-internal.txt'
-{%          endif %}
-
 {%      endif %}
+
+{%  endif %}
 
 ################################################################################
 #        DNS cache                                                             #
 ################################################################################
 
-{%      if cfg['cache'] == '1' %}
+{%  if cfg['cache'] == '1' %}
 cache = true
-{%          if cfg['cache_size'] is defined %}
+{%      if cfg['cache_size'] is defined %}
 cache_size = {{ cfg['cache_size'] }}
-{%          endif -%}
-
-{%          if cfg['cache_min_ttl'] is defined %}
-cache_min_ttl = {{ cfg['cache_min_ttl'] }}
-{%          endif -%}
-
-{%          if cfg['cache_max_ttl'] is defined %}
-cache_max_ttl = {{ cfg['cache_max_ttl'] }}
-{%          endif -%}
-
-{%          if cfg['cache_neg_min_ttl'] is defined %}
-cache_neg_min_ttl = {{ cfg['cache_neg_min_ttl'] }}
-{%          endif -%}
-
-{%          if cfg['cache_neg_max_ttl'] is defined %}
-cache_neg_max_ttl = {{ cfg['cache_neg_max_ttl'] }}
-{%          endif -%}
-
-{%      else %}
-cache = false
-
 {%      endif -%}
 
-{%      if cfg['captive_portals']['enabled'] == '1' %}
+{%      if cfg['cache_min_ttl'] is defined %}
+cache_min_ttl = {{ cfg['cache_min_ttl'] }}
+{%      endif -%}
+
+{%      if cfg['cache_max_ttl'] is defined %}
+cache_max_ttl = {{ cfg['cache_max_ttl'] }}
+{%      endif -%}
+
+{%      if cfg['cache_neg_min_ttl'] is defined %}
+cache_neg_min_ttl = {{ cfg['cache_neg_min_ttl'] }}
+{%      endif -%}
+
+{%      if cfg['cache_neg_max_ttl'] is defined %}
+cache_neg_max_ttl = {{ cfg['cache_neg_max_ttl'] }}
+{%      endif -%}
+
+{%  else %}
+cache = false
+
+{%  endif -%}
+
+{%  if cfg['captive_portals']['enabled'] == '1' %}
 
 ################################################################################
 #        Captive portal handling                                               #
@@ -287,34 +285,34 @@ cache = false
 [captive_portals]
   map_file = 'captive-portals.txt'
 
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['local_doh']['enabled'] == '1' %}
+{%  if cfg['local_doh']['enabled'] == '1' %}
 
 ################################################################################
 #        Local DoH server                                                      #
 ################################################################################
 
 [local_doh]
-{%          if cfg['local_doh']['listen_addresses'] is defined %}
+{%      if cfg['local_doh']['listen_addresses'] is defined %}
   listen_addresses = [{{ "'" + ("','".join(cfg['local_doh']['listen_addresses'].split(','))) + "'" }}]
-{%          endif -%}
-{%          if cfg['local_doh']['path'] is defined %}
+{%      endif -%}
+{%      if cfg['local_doh']['path'] is defined %}
   path = '{{ cfg['local_doh']['path'] }}'
-{%          endif -%}
-{%          if cfg['local_doh']['cert'] is defined %}
+{%      endif -%}
+{%      if cfg['local_doh']['cert'] is defined %}
 {# Statically defined file, content is filled by the configd template engine on reload.
    See: dns/dnscrypt-proxy/src/opnsense/service/templates/OPNsense/Dnscryptproxy/local_doh-cert.pem.jinja #}
   cert_file = 'local_doh-cert.pem'
-{%          endif -%}
-{%          if cfg['local_doh']['cert_key'] is defined %}
+{%      endif -%}
+{%      if cfg['local_doh']['cert_key'] is defined %}
 {# Statically defined file, content is filled by the configd template engine on reload.
    See: dns/dnscrypt-proxy/src/opnsense/service/templates/OPNsense/Dnscryptproxy/local_doh-cert_key.pem.jinja #}
   cert_key_file = 'local_doh-cert_key.pem'
-{%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%      if cfg['query_logging'] == '1' %}
+{%  if cfg['query_logging'] == '1' %}
 
 ################################################################################
 #        Query logging                                                         #
@@ -327,14 +325,14 @@ cache = false
   file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
-{%      if cfg['query_log']['ignored_qtypes'] is defined %}
+{%  if cfg['query_log']['ignored_qtypes'] is defined %}
   ignored_qtypes = [{{ "'" + ("','".join(cfg['query_log']['ignored_qtypes'].split(','))) + "'" }}]
-{%      endif -%}
+{%  endif -%}
 
 
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['nx_logging'] == '1' %}
+{%  if cfg['nx_logging'] == '1' %}
 
 ################################################################################
 #        Suspicious queries logging                                            #
@@ -345,141 +343,142 @@ cache = false
    See: dns/dnscrypt-proxy/src/opnsense/mvc/app/controllers/OPNsense/Dnscryptproxy/forms/page_logs.xml #}
   file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['blocked_names_enabled'] == '1' %}
+{%  if cfg['blocked_names_enabled'] == '1' %}
 
 ################################################################################
 #        Pattern-based blocking (blocklists)                                   #
 ################################################################################
 
 [blocked_names]
-{%          if cfg['blocked_names_type'] == 'external' and
+{%      if cfg['blocked_names_type'] == 'external' and
                 cfg['blocked_names_file_external'] is defined %}
   blocked_names_file = '{{ cfg['blocked_names_file_external'] }}'
-{%          elif cfg['blocked_names_type'] == 'manual' and
+{%      elif cfg['blocked_names_type'] == 'manual' and
                 cfg['blocked_names_file_manual'] is defined %}
   blocked_names_file = 'blocked-names-manual.txt'
-{%          elif cfg['blocked_names_type'] == 'internal' %}
+{%      elif cfg['blocked_names_type'] == 'internal' %}
   blocked_names_file = 'blocked-names-internal.txt'
-{%          endif %}
-{%          if cfg['blocked_names_logging'] == '1' %}
+{%      endif %}
+{%      if cfg['blocked_names_logging'] == '1' %}
   log_file = '/var/log/dnscrypt-proxy/blocked-names.log'
   log_format = 'tsv'
-{%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%      if cfg['blocked_ips_enabled'] == '1' %}
+{%  if cfg['blocked_ips_enabled'] == '1' %}
 
 ################################################################################
 #        Pattern-based IP blocking (IP blocklists)                             #
 ################################################################################
 
 [blocked_ips]
-{%          if cfg['blocked_ips_type'] == 'external' and
+{%      if cfg['blocked_ips_type'] == 'external' and
                 cfg['blocked_ips_file_external'] is defined %}
   blocked_ips_file = '{{ cfg['blocked_ips_file_external'] }}'
-{%          elif cfg['blocked_ips_type'] == 'manual' and
+{%      elif cfg['blocked_ips_type'] == 'manual' and
                 cfg['blocked_ips_file_manual'] is defined %}
   blocked_ips_file = 'blocked-ips-manual.txt'
-{%          elif cfg['blocked_ips_type'] == 'internal' %}
+{%      elif cfg['blocked_ips_type'] == 'internal' %}
   blocked_ips_file = 'blocked-ips-internal.txt'
-{%          endif %}
-{%          if cfg['blocked_ips_logging'] == '1' %}
+{%      endif %}
+{%      if cfg['blocked_ips_logging'] == '1' %}
   log_file = '/var/log/dnscrypt-proxy/blocked-ips.log'
   log_format = 'tsv'
-{%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%      if cfg['allowed_names_enabled'] == '1' %}
+{%  if cfg['allowed_names_enabled'] == '1' %}
 
 ################################################################################
 #   Pattern-based allow lists (blocklists bypass)                             #
 ################################################################################
 
 [allowed_names]
-{%          if cfg['allowed_names_type'] == 'external' and
+{%      if cfg['allowed_names_type'] == 'external' and
                 cfg['allowed_names_file_external'] is defined %}
   allowed_names_file = '{{ cfg['allowed_names_file_external'] }}'
-{%          elif cfg['allowed_names_type'] == 'manual' and
+{%      elif cfg['allowed_names_type'] == 'manual' and
                 cfg['allowed_names_file_manual'] is defined %}
   allowed_names_file = 'allowed-names-manual.txt'
-{%          elif cfg['allowed_names_type'] == 'internal' %}
+{%      elif cfg['allowed_names_type'] == 'internal' %}
   allowed_names_file = 'allowed-names-internal.txt'
-{%          endif %}
-{%          if cfg['allowed_names_logging'] == '1' %}
+{%      endif %}
+{%      if cfg['allowed_names_logging'] == '1' %}
   log_file = '/var/log/dnscrypt-proxy/allowed-names.log'
   log_format = 'tsv'
-{%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%      if cfg['allowed_ips_enabled'] == '1' %}
+{%  if cfg['allowed_ips_enabled'] == '1' %}
 
 ################################################################################
 #   Pattern-based allowed IPs lists (blocklists bypass)                        #
 ################################################################################
 
 [allowed_ips]
-{%          if cfg['allowed_ips_type'] == 'external' and
+{%      if cfg['allowed_ips_type'] == 'external' and
                 cfg['allowed_ips_file_external'] is defined %}
   allowed_ips_file = '{{ cfg['allowed_ips_file_external'] }}'
-{%          elif cfg['allowed_ips_type'] == 'manual' and
+{%      elif cfg['allowed_ips_type'] == 'manual' and
                 cfg['allowed_ips_file_manual'] is defined %}
   allowed_ips_file = 'allowed-ips-manual.txt'
-{%          elif cfg['allowed_ips_type'] == 'internal' %}
+{%      elif cfg['allowed_ips_type'] == 'internal' %}
   allowed_ips_file = 'allowed-ips-internal.txt'
-{%          endif %}
-{%          if cfg['allowed_ips_logging'] == '1' %}
+{%      endif %}
+{%      if cfg['allowed_ips_logging'] == '1' %}
   log_file = '/var/log/dnscrypt-proxy/allowed-ips.log'
   log_format = 'tsv'
-{%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%-      if cfg['schedules']['schedule'] is defined %}
+{%  if cfg['schedules'] is defined %}
+{%      if cfg['schedules']['schedule'] is defined %}
 {%          set schedules_list = [] %}
 {%          for schedule in helpers.toList(cfg_path~'.schedules.schedule') %}
 {%              if schedule.enabled == '1' %}
 {%                  do schedules_list.append("  [schedules.'"~schedule.name~"']") %}
 {%                  if schedule.mon_start_hour is defined and
-                        schedule.mon_start_min is defined and
-                        schedule.mon_stop_hour is defined and
-                        schedule.mon_stop_min is defined %}
+                            schedule.mon_start_min is defined and
+                            schedule.mon_stop_hour is defined and
+                            schedule.mon_stop_min is defined %}
 {%                      do schedules_list.append("    mon = [{after='"~schedule.mon_start_hour|int~":"~schedule.mon_start_min[1:3]~"', before='"~schedule.mon_stop_hour|int~":"~schedule.mon_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%                  if schedule.tue_start_hour is defined and
-                        schedule.tue_start_min is defined and
-                        schedule.tue_stop_hour is defined and
-                        schedule.tue_stop_min is defined %}
+                            schedule.tue_start_min is defined and
+                            schedule.tue_stop_hour is defined and
+                            schedule.tue_stop_min is defined %}
 {%                      do schedules_list.append("    tue = [{after='"~schedule.tue_start_hour|int~":"~schedule.tue_start_min[1:3]~"', before='"~schedule.tue_stop_hour|int~":"~schedule.tue_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%                  if schedule.wed_start_hour is defined and
-                        schedule.wed_start_min is defined and
-                        schedule.wed_stop_hour is defined and
-                        schedule.wed_stop_min is defined %}
+                            schedule.wed_start_min is defined and
+                            schedule.wed_stop_hour is defined and
+                            schedule.wed_stop_min is defined %}
 {%                      do schedules_list.append("    wed = [{after='"~schedule.wed_start_hour|int~":"~schedule.wed_start_min[1:3]~"', before='"~schedule.wed_stop_hour|int~":"~schedule.wed_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%                  if schedule.thu_start_hour is defined and
-                        schedule.thu_start_min is defined and
-                        schedule.thu_stop_hour is defined and
-                        schedule.thu_stop_min is defined %}
+                            schedule.thu_start_min is defined and
+                            schedule.thu_stop_hour is defined and
+                            schedule.thu_stop_min is defined %}
 {%                      do schedules_list.append("    thu = [{after='"~schedule.thu_start_hour|int~":"~schedule.thu_start_min[1:3]~"', before='"~schedule.thu_stop_hour|int~":"~schedule.thu_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%                  if schedule.fri_start_hour is defined and
-                        schedule.fri_start_min is defined and
-                        schedule.fri_stop_hour is defined and
-                        schedule.fri_stop_min is defined %}
+                            schedule.fri_start_min is defined and
+                            schedule.fri_stop_hour is defined and
+                            schedule.fri_stop_min is defined %}
 {%                      do schedules_list.append("    fri = [{after='"~schedule.fri_start_hour|int~":"~schedule.fri_start_min[1:3]~"', before='"~schedule.fri_stop_hour|int~":"~schedule.fri_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%                  if schedule.sat_start_hour is defined and
-                        schedule.sat_start_min is defined and
-                        schedule.sat_stop_hour is defined and
-                        schedule.sat_stop_min is defined %}
+                            schedule.sat_start_min is defined and
+                            schedule.sat_stop_hour is defined and
+                            schedule.sat_stop_min is defined %}
 {%                      do schedules_list.append("    sat = [{after='"~schedule.sat_start_hour|int~":"~schedule.sat_start_min[1:3]~"', before='"~schedule.sat_stop_hour|int~":"~schedule.sat_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%                  if schedule.sun_start_hour is defined and
-                        schedule.sun_start_min is defined and
-                        schedule.sun_stop_hour is defined and
-                        schedule.sun_stop_min is defined %}
+                            schedule.sun_start_min is defined and
+                            schedule.sun_stop_hour is defined and
+                            schedule.sun_stop_min is defined %}
 {%                      do schedules_list.append("    sun = [{after='"~schedule.sun_start_hour|int~":"~schedule.sun_start_min[1:3]~"', before='"~schedule.sun_stop_hour|int~":"~schedule.sun_stop_min[1:3]~"'}]") %}
 {%                  endif %}
 {%              endif %}
@@ -494,8 +493,10 @@ cache = false
 {{ schedules_list|join('\n') }}
 {%          endif %}
 {%      endif %}
+{%  endif %}
 
-{%-      if cfg['sources']['source'] is defined %}
+{%  if cfg['sources'] is defined %}
+{%      if cfg['sources']['source'] is defined %}
 {%          set sources_list = [] %}
 {%          for source in helpers.toList(cfg_path~'.sources.source') %}
 {%              if source.enabled == '1' %}
@@ -520,29 +521,31 @@ cache = false
 [sources]
 {{ sources_list|join('\n') }}
 {%          endif %}
-{%      endif -%}
+{%      endif %}
+{%  endif -%}
 
-{%      if cfg['broken_implementations']['fragments_blocked'] is defined %}
+{%  if cfg['broken_implementations']['fragments_blocked'] is defined %}
 
 ################################################################################
 #        Servers with known bugs                                               #
 ################################################################################
 
 [broken_implementations]
-{%          set server_list = [] %}
-{%          for for_server in cfg['broken_implementations']['fragments_blocked'].split(',') %}
+{%      set server_list = [] %}
+{%      for for_server in cfg['broken_implementations']['fragments_blocked'].split(',') %}
 {# Use the server node and set it as a variable so we can reference the name. #}
 {# {%- set server = helpers.getUUID(for_server) %} #}
 {#         # Add the server name to the list. #}
 {# {%-         do server_list.append(server.name) %} #}
-{%              do server_list.append(for_server) %}
-{%          endfor %}
+{%          do server_list.append(for_server) %}
+{%      endfor %}
 {# Print the server list, joining and surrounding each server with single quotes. #}
   fragments_blocked = [{{ "'" + server_list|join("','") + "'" }}]
 
-{%      endif %}
+{%  endif -%}
 
-{%-      if cfg['doh_client_x509_auth']['creds'] is defined %}
+{%  if cfg['doh_client_x509_auth'] is defined %}
+{%      if cfg['doh_client_x509_auth']['creds'] is defined %}
 {%          set creds_list = [] %}
 {%          for cred in helpers.toList(cfg_path~'.doh_client_x509_auth.creds') %}
 {%              if cred.enabled == '1' %}
@@ -571,35 +574,35 @@ cache = false
 
 {%          endif %}
 {%      endif %}
+{%  endif -%}
 
-{%-     if cfg['anonymized_dns']['routes'] is defined %}
+{%  if cfg['anonymized_dns'] is defined %}
+{%      if cfg['anonymized_dns']['routes'] is defined %}
 {#
-            The anonymized routes are a bit complicated, and roundabout.
-            We have to separate each route entry (line) with a comma.
-            To do this we build an array route_list, each interation through the routes
-            adds one entry onto the list. The list starts empty and we append to it.
-            The join() function is smart to not add a comma on single item lists,
-            and not to add a comma for the last item. This makes the output very clean. #}
+                The anonymized routes are a bit complicated, and roundabout.
+                We have to separate each route entry (line) with a comma.
+                To do this we build an array route_list, each interation through the routes
+                adds one entry onto the list. The list starts empty and we append to it.
+                The join() function is smart to not add a comma on single item lists,
+                and not to add a comma for the last item. This makes the output very clean. #}
 {%          set route_list = [] %}
-{#          # We use a toList here because it will always return a list even if one entry is all that's found #}
+{#              # We use a toList here because it will always return a list even if one entry is all that's found #}
 {%          for for_route in helpers.toList(cfg_path~'.anonymized_dns.routes') %}
 {%              if for_route.enabled == '1' %}
-{#              # This list gets reset with each iteration of routes. #}
+{#                      # This list gets reset with each iteration of routes. #}
 {%                  set via_list = [] %}
-{#                  # We need to split the via entry up as it's currently a string of UUIDs, delimited by commas #}
-{#                  # Splitting will allow us to iterate #}
-{#                  # Maybe it's not stored as UUID anymore #}
+{#                      # We need to split the via entry up as it's currently a string of UUIDs, delimited by commas #}
+{#                      # Splitting will allow us to iterate #}
+{#                      # Maybe it's not stored as UUID anymore #}
 {%                  for for_via in for_route.via.split(',') %}
-{#                      # Really counting on the UUID being actually unique so we can find it without the path #}
-{#                      # Use getUUID and set it as a variable so we can reference the name, and append. #}
-{#                      set relay = helpers.getUUID(for_via) #}
-{#                      Maybe don't need to do this ^ anymore. #}
+{#                          # Really counting on the UUID being actually unique so we can find it without the path #}
+{#                          # Use getUUID and set it as a variable so we can reference the name, and append. #}
+{#                          set relay = helpers.getUUID(for_via) #}
+{#                          Maybe don't need to do this ^ anymore. #}
 {%                      do via_list.append(for_via) %}
 {%                  endfor %}
-{#                  # Build the route entry taking care to make sure the brackets, commas, and quotes are in the right place. #}
-{#                  # For some reason instead of returning the asterisk from the config, it returns 0, so we have to swap it out explicitely #}
-{#                  if for_route.server_name == '0' %}    {%- set route_server_name = '*' %}    {%- else %}{%- set route_server_name = for_route.server_name %}{%- endif %} #}
-{#                  Maybe don't need to do this anymore ^ #}
+{#                      # Build the route entry taking care to make sure the brackets, commas, and quotes are in the right place. #}
+{#                      # For some reason instead of returning the asterisk from the config, it returns 0, so we have to swap it out explicitely #}
 {%                  do route_list.append("{server_name='"~for_route.server_name~"', via=["~"'"~via_list|join("','") + "'" + ']}') %}
 {%              endif %}
 {%          endfor %}
@@ -625,43 +628,44 @@ routes = [
 
 {%          endif %}
 {%      endif %}
+{%  endif -%}
 
-{%      if cfg['dns64']['enabled'] == '1' %}
+{%  if cfg['dns64']['enabled'] == '1' %}
 
 ################################################################################
 #            DNS64                                                             #
 ################################################################################
 
 [dns64]
-{%          set prefix_list = [] %}
-{%          for each in helpers.toList(cfg_path~'.dns64.prefixes') %}
-{%              if each.enabled == '1' %}
-{%                  do prefix_list.append("'"~each.prefix~"'") %}
-{%              endif %}
-{%          endfor %}
-{%          if prefix_list|length > 0 %}
+{%      set prefix_list = [] %}
+{%      for each in helpers.toList(cfg_path~'.dns64.prefixes') %}
+{%          if each.enabled == '1' %}
+{%              do prefix_list.append("'"~each.prefix~"'") %}
+{%          endif %}
+{%      endfor %}
+{%      if prefix_list|length > 0 %}
   prefix = [{{ prefix_list|join(', ') }}]
+{%      endif %}
+{%      set resolver_list = [] %}
+{%      for each in helpers.toList(cfg_path~'.dns64.resolvers') %}
+{%          if each.enabled == '1' %}
+{%              do resolver_list.append("'"~each.resolver~"'") %}
 {%          endif %}
-{%          set resolver_list = [] %}
-{%          for each in helpers.toList(cfg_path~'.dns64.resolvers') %}
-{%              if each.enabled == '1' %}
-{%                  do resolver_list.append("'"~each.resolver~"'") %}
-{%              endif %}
-{%          endfor %}
-{%          if resolver_list|length > 0 %}
+{%      endfor %}
+{%      if resolver_list|length > 0 %}
   resolver = [{{ resolver_list|join(', ') }}]
-{%          endif %}
+{%      endif %}
 
-{%      endif -%}
+{%  endif -%}
 
-{%      if cfg['static'] is defined %}
-{%          if cfg['static']['entries'] is defined %}
-{%              set static_list = [] %}
-{%              for entry_list in helpers.toList(cfg_path~'.static.entries') if entry_list['enabled'] == '1' %}
-{%                      do static_list.append("  [static.'"~entry_list['name']~"']") %}
-{%                      do static_list.append("    stamp = 'sdns://"~entry_list['stamp']~"'") %}
-{%              endfor %}
-{%              if static_list|length > 1 %} {# Only display this section if we have at least one server (2 lines). #}
+{%  if cfg['static'] is defined %}
+{%      if cfg['static']['entries'] is defined %}
+{%          set static_list = [] %}
+{%          for entry_list in helpers.toList(cfg_path~'.static.entries') if entry_list['enabled'] == '1' %}
+{%                  do static_list.append("  [static.'"~entry_list['name']~"']") %}
+{%                  do static_list.append("    stamp = 'sdns://"~entry_list['stamp']~"'") %}
+{%          endfor %}
+{%          if static_list|length > 1 %} {# Only display this section if we have at least one server (2 lines). #}
 
 ################################################################################
 #            Static entries                                                    #
@@ -669,7 +673,6 @@ routes = [
 
 [static]
 {{ static_list|join('\n') }}
-{%              endif %}
 {%          endif %}
 {%      endif %}
 {%  endif %}

@@ -4,6 +4,8 @@
     <!-- <version>0.0.1</version> Can't get this to work correctly -->
     <!-- <description>dnscrypt-proxy configuration</description> Doesn't work? -->
     <items>
+        <first_time_setup type="BooleanField">
+        </first_time_setup>
         <enabled type="BooleanField">
             <default>0</default>
             <required>Y</required>
@@ -16,7 +18,7 @@
         <server_names type="JsonKeyValueStoreField">
             <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
             <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
-            <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
+            <ConfigdPopulateTTL>0</ConfigdPopulateTTL>
             <SortByValue>N</SortByValue>
             <Multiple>Y</Multiple>
         </server_names>
@@ -67,7 +69,7 @@
         <disabled_server_names type="JsonKeyValueStoreField">
             <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
             <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
-            <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
+            <ConfigdPopulateTTL>0</ConfigdPopulateTTL>
             <SortByValue>N</SortByValue>
             <Multiple>Y</Multiple>
         </disabled_server_names>
@@ -1190,7 +1192,7 @@
             <fragments_blocked type="JsonKeyValueStoreField">
                 <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
                 <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
-                <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
+                <ConfigdPopulateTTL>0</ConfigdPopulateTTL>
                 <SortByValue>N</SortByValue>
                 <Multiple>Y</Multiple>
             </fragments_blocked>

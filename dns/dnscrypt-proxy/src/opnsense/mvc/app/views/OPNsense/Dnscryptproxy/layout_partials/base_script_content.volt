@@ -101,16 +101,17 @@
     # Basic function to save the form, and reconfigure after saving
     # displays a dialog if there is some issue */#}
     function saveFormAndReconfigure(element){
-        var this_frm = $(element).closest("form")
+        const dfObj = new $.Deferred();
+        var this_frm = $(element).closest("form");
         var frm_id = this_frm.attr("id");
         var frm_title = this_frm.attr("data-title");
         var frm_model = this_frm.attr("data-model");
         var api_url="/api/{{ plugin_name }}/" + frm_model + "/set";
 
-        saveFormToEndpoint(url=api_url, formid=frm_id, callback_ok=function(){
-{#/*        # on correct save, perform reconfigure. set progress animation when reloading */#}
-            $("#" + frm_id + "_progress").addClass("fa fa-spinner fa-pulse");
+{#/*    # set progress animation when saving */#}
+        $("#" + frm_id + "_progress").addClass("fa fa-spinner fa-pulse");
 
+        saveFormToEndpoint(url=api_url, formid=frm_id, callback_ok=function(){
             ajaxCall(url="/api/{{ plugin_name }}/service/reconfigure", sendData={}, callback=function(data,status){
 {#/*            # when done, disable progress animation. */#}
                 $("#" + frm_id + "_progress").removeClass("fa fa-spinner fa-pulse");
@@ -131,10 +132,12 @@
                 } else {
                     ajaxCall(url="/api/{{ plugin_name }}/service/status", sendData={}, callback=function(data,status) {
                         updateServiceStatusUI(data['status']);
+                        dfObj.resolve();
                     });
                 }
             });
         });
+        return dfObj;
     }
 
 
@@ -157,16 +160,6 @@
         $(this).click(function() {
             saveFormAndReconfigure($(this));
         });
-    });
-
-{#/*
-    # This will execute when mapDataToFormUI() is done
-    # Set/refreash various parts of the form. */#}
-    mapDataToFormUI(data_get_map).done(function(data){
-        {#/* # Update the fields using the tokenizer style. */#}
-        formatTokenizersUI();
-        {#/* # Refresh the data for the select picker fields. */#}
-        $('.selectpicker').selectpicker('refresh');
     });
 
 {#/*
