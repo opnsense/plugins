@@ -12,6 +12,12 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.4
+
+* Allow setting ConfigFrequency
+* Allow setting DataSenderFrequency
+* Allow setting StartVMwareCollectors
+
 1.3
 
 * Switch to zabbix5-proxy
