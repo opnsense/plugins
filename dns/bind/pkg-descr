@@ -10,8 +10,8 @@ Plugin Changelog
 
 1.17
 
-* Make "Allow Transfer" and "Allow Query" configuration available to slave zones
-* Add "Allow Transfer" to General page for default/fallback
+* Make "Allow Transfer" and "Allow Query" configuration available to slave zones (contributed by Ang Iongchun)
+* Add "Allow Transfer" to General page for default/fallback (contributed by Ang Iongchun)
 
 1.16
 
