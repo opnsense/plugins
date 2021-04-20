@@ -853,6 +853,9 @@
                 <dns_vscale_key type="TextField">
                     <Required>N</Required>
                 </dns_vscale_key>
+                <dns_vultr_key type="TextField">
+                    <Required>N</Required>
+                </dns_vultr_key>
                 <dns_yandex_token type="TextField">
                     <Required>N</Required>
                 </dns_yandex_token>
