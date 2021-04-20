@@ -13,6 +13,7 @@ Changelog
 
 1.7
 
+* Allow sensor cron restart
 * Add syslog export
 
 1.6
