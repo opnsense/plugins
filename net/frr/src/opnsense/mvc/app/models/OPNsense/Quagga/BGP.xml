@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.5</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -17,6 +17,10 @@
             <Required>N</Required>
             <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
         </routerid>
+        <graceful type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </graceful>
         <networks type="CSVListField">
             <default></default>
             <Required>N</Required>
@@ -39,6 +43,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <address type="NetworkField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -66,6 +74,21 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </multihop>
+                        <keepalive type="IntegerField">
+                                <Required>N</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>1000</MaximumValue>
+                        </keepalive>
+                        <holddown type="IntegerField">
+                                <Required>N</Required>
+                                <MinimumValue>3</MinimumValue>
+                                <MaximumValue>3000</MaximumValue>
+                        </holddown>
+                        <connecttimer type="IntegerField">
+                                <Required>N</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>65000</MaximumValue>
+                        </connecttimer>
                         <defaultoriginate type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
@@ -130,6 +153,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <number type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -156,6 +183,10 @@
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -190,12 +221,53 @@
                         </network>
                 </prefixlist>
         </prefixlists>
+        <communitylists>
+                <communitylist type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
+                        <number type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>500</MaximumValue>
+                                <ValidationMessage>Set a number between 1 and 500.</ValidationMessage>
+                        </number>
+                        <seqnumber type="IntegerField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <MinimumValue>10</MinimumValue>
+                                <MaximumValue>99</MaximumValue>
+                        </seqnumber>
+                        <action type="OptionField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <OptionValues>
+                                        <permit>Permit</permit>
+                                        <deny>Deny</deny>
+                                </OptionValues>
+                        </action>
+                        <community type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </community>
+                </communitylist>
+        </communitylists>
         <routemaps>
                 <routemap type="ArrayField">
                         <enabled type="BooleanField">
                                 <default>1</default>
                                 <Required>Y</Required>
                         </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
                         <name type="TextField">
                                 <default></default>
                                 <Required>Y</Required>
@@ -240,6 +312,18 @@
                                 <Multiple>N</Multiple>
                                 <Required>N</Required>
                         </match2>
+                        <match3 type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>communitylists.communitylist</items>
+                                                <display>number</display>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </match3>
                         <set type="TextField">
                                 <Required>N</Required>
                         </set>

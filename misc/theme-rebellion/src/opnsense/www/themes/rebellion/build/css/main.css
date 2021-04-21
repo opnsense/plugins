@@ -1441,7 +1441,7 @@ a.text-success:hover {
 }
 
 .text-info {
-  color: #ffffff;
+  color: #00ffff;
 }
 
 a.text-info:hover {
@@ -4708,7 +4708,7 @@ tbody.collapse.in {
   background-color: transparent;
 }
 .navbar-default .navbar-text {
-  color: #2B2B2B;
+  color: #aaaaaa;
 }
 .navbar-default .navbar-nav > li > a {
   color: #C1C1c1;
@@ -7647,7 +7647,6 @@ textarea#update_status:hover {
 
 .fa-times-circle::before {
   content: "";
-  color: #B13116;
 }
 
 .fa-refresh::before {

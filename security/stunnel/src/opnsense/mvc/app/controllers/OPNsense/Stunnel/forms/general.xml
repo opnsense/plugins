@@ -1,0 +1,21 @@
+<form>
+    <field>
+        <id>stunnel.general.chroot</id>
+        <label>chroot service</label>
+        <type>checkbox</type>
+        <help>Start stunnel in it a chroot, although this is a more secure option there are small points of attention before
+          using this. Since system logging is detached after startup, stunnel seems to have difficulties handing syslog configuration changes
+          which need a service restart. If this happens, you need to restart stunnel manually as well.
+        </help>
+    </field>
+    <field>
+        <id>stunnel.general.enable_ident_server</id>
+        <label>enable ident protocol</label>
+        <type>checkbox</type>
+        <help>Enable internal ident service (rfc1413), which tracks authenticated tcp sessions and returns the associated user
+          of the certificate used by stunnel (cn part). When enabled, this service listens on port tcp/113 and accepts port pairs as defined by rfc1413.
+          Make sure you deny untrusted clients access to this facility, usually it only makes sense to allow access from this
+          firewall (allowed by default).
+        </help>
+    </field>
+</form>

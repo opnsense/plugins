@@ -62,6 +62,15 @@
                 <advanced>true</advanced>
                 <help>Set the number of rows to be displayed in rspamd UI.</help>
             </field>
+            <field>
+                <id>rspamd.general.nameserver</id>
+                <label>Nameserver</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <advanced>true</advanced>
+                <help>Set the nameservers for resolving DNS requests.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-general-multimap" description="Multimap Settings">
             <field>

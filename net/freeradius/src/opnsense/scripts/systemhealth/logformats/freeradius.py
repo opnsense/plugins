@@ -27,7 +27,7 @@
 import re
 import datetime
 from . import BaseLogFormat
-freeradius_timeformat = r'^([A-Za-z]{3}\s[A-Za-z]{3}\s\d{1,2}\s\d{2}:\d{2}:\d{2}\s\d{4}\s[:]).*'
+freeradius_timeformat = r'^([A-Za-z]{3}\s[A-Za-z]{3}\s+\d{1,2}\s\d{2}:\d{2}:\d{2}\s\d{4}\s[:]).*'
 
 
 class FreeRADIUSLogFormat(BaseLogFormat):
