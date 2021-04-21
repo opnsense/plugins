@@ -29,4 +29,10 @@
         <type>dropdown</type>
         <help>This enables CRL checking, please restart this service with every change to the CRL.</help>
     </field>
+    <field>
+        <id>eap.check_tls_names</id>
+        <label>Check TLS Common-Name</label>
+        <type>checkbox</type>
+        <help>Checks that the username given by the user matches the Common-Name of the certificate.</help>
+    </field>
 </form>

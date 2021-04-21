@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.17.0</version>
+  <version>1.20.1</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -460,6 +460,10 @@
         <Required>N</Required>
         <MinimumValue>0</MinimumValue>
       </proxy_max_temp_file_size>
+      <proxy_ssl_server_name type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </proxy_ssl_server_name>
     </location>
 
     <custom_policy type="ArrayField">
@@ -526,14 +530,14 @@
           </check001>
         </Constraints>
       </message>
-      <identifier type="IntegerField">
+      <identifier type="CSVListField">
         <Required>Y</Required>
-        <minValue>1000</minValue>
+        <Constraints>
+          <check001>
+            <type>NaxsiIdentifierConstraint</type>
+          </check001>
+        </Constraints>
       </identifier>
-      <url type="TextField">
-        <Required>N</Required>
-        <pattern>/^[^"]+$/</pattern>
-      </url>
       <dollar_url type="TextField">
         <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
@@ -557,6 +561,11 @@
           <id>Blacklist</id>
           <wl>Whitelist</wl>
         </OptionValues>
+        <Constraints>
+          <check001>
+            <reference>identifier.check001</reference>
+          </check001>
+        </Constraints>
       </match_type>
       <negate type="BooleanField">
         <Required>Y</Required>
@@ -586,6 +595,10 @@
       <headers type="BooleanField">
         <Required>Y</Required>
       </headers>
+      <body type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </body>
       <dollar_args_var type="TextField">
         <pattern>/^[^"]+$/</pattern>
       </dollar_args_var>

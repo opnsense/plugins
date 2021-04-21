@@ -1,3 +1,4 @@
 maltrailsensor:/etc/rc.conf.d/opnsense-maltrailsensor
 maltrailserver:/etc/rc.conf.d/opnsense-maltrailserver
 maltrail.conf:/usr/local/share/maltrail/maltrail.conf
+user_whitelist.txt:/usr/local/share/maltrail/misc/user_whitelist.txt

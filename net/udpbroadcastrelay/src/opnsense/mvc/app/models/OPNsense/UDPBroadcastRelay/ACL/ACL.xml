@@ -1,0 +1,9 @@
+<acl>
+   <page-services-udpbroadcastrelay>
+      <name>Services: UDP Broadcast Relay</name>
+      <patterns>
+         <pattern>ui/udpbroadcastrelay/*</pattern>
+         <pattern>api/udpbroadcastrelay/*</pattern>
+      </patterns>
+   </page-services-udpbroadcastrelay>
+</acl>

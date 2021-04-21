@@ -1,0 +1,9 @@
+<acl>
+   <page-services-chrony>
+      <name>Services: Chrony</name>
+      <patterns>
+         <pattern>ui/chrony/*</pattern>
+         <pattern>api/chrony/*</pattern>
+      </patterns>
+   </page-services-chrony>
+</acl>

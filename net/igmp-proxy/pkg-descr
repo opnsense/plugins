@@ -1,4 +1,4 @@
 Igmpproxy is a simple multicast routing daemon based on mrouted.
 It uses IGMP forwarding to dynamically route multicast traffic.
 
-WWW: http://igmpproxy.sourceforge.net/
+WWW: https://github.com/pali/igmpproxy

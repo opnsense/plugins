@@ -1,6 +1,12 @@
 {% if helpers.exists('OPNsense.tayga.general.enabled') and OPNsense.tayga.general.enabled == '1' %}
 tayga_var_script="/usr/local/opnsense/scripts/OPNsense/Tayga/setup.sh"
 tayga_enable="YES"
+tayga_v4address={{ OPNsense.tayga.general.v4address }}
+tayga_v4destination={{ OPNsense.tayga.general.v4destination }}
+tayga_v4pool={{ OPNsense.tayga.general.v4pool }}
+tayga_v6prefix={{ OPNsense.tayga.general.v6prefix }}
+tayga_v6address={{ OPNsense.tayga.general.v6address }}
+tayga_v6destination={{ OPNsense.tayga.general.v6destination }}
 {% else %}
 tayga_enable="NO"
 {% endif %}

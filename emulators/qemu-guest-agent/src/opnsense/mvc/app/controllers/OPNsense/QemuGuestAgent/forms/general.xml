@@ -1,0 +1,23 @@
+<form>
+    <field>
+        <id>qemuguestagent.general.Enabled</id>
+        <label>Enable Service</label>
+        <type>checkbox</type>
+        <help>Enable the QEMU guest agent service.</help>
+    </field>
+    <field>
+        <id>qemuguestagent.general.LogDebug</id>
+        <label>Debug Logging</label>
+        <type>checkbox</type>
+        <help>Log extra debugging information.</help>
+    </field>
+    <field>
+        <id>qemuguestagent.general.DisabledRPCs</id>
+        <label>Disabled RPCs</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help>A list of RPCs to disable.</help>
+    </field>
+</form>
