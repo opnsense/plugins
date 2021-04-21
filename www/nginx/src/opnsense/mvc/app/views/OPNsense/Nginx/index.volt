@@ -217,8 +217,12 @@
                 <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
                 <th data-column-id="path_prefix" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Path Prefix') }}</th>
                 <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
-                <th data-column-id="enable_secrules" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('WAF Enabled') }}</th>
-                <th data-column-id="force_https" data-type="boolean" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
+                <th data-column-id="upstream" data-type="string" data-sortable="true"  data-visible="false">{{ lang._('Upstream') }}</th>
+                <th data-column-id="waf_status" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('WAF Status') }}</th>
+                <th data-column-id="xss_block_score" data-type="string" data-sortable="true"  data-visible="false">{{ lang._('XSS Score') }}</th>
+                <th data-column-id="sqli_block_score" data-type="string" data-sortable="true"  data-visible="false">{{ lang._('SQLi Score') }}</th>
+                <th data-column-id="custom_policy" data-type="string" data-width="50%" data-sortable="true"  data-visible="false">{{ lang._('WAF Policies') }}</th>
+                <th data-column-id="force_https" data-type="boolean" data-width="10em" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
@@ -268,6 +272,8 @@
             <tr>
                 <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
                 <th data-column-id="serverentries" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Servers') }}</th>
+                <th data-column-id="load_balancing_algorithm" data-type="string" data-sortable="false"  data-visible="false">{{ lang._('Load Balancing') }}</th>
+                <th data-column-id="tls_enable" data-type="boolean" data-width="12em" data-sortable="false"  data-visible="true">{{ lang._('TLS Enabled') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
@@ -332,10 +338,12 @@
             <thead>
                 <tr>
                     <th data-column-id="servername" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Servername') }}</th>
-                    <th data-column-id="https_only" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('HTTPS Only') }}</th>
+                    <th data-column-id="locations" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Locations') }}</th>
+                    <th data-column-id="root" data-type="string" data-sortable="true" data-visible="false">{{ lang._('File System Root') }}</th>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
-                    <th data-column-id="listen_http_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
-                    <th data-column-id="listen_https_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
+                    <th data-column-id="https_only" data-type="boolean" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Only') }}</th>
+                    <th data-column-id="listen_http_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
+                    <th data-column-id="listen_https_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -414,9 +422,10 @@
             <thead>
                 <tr>
                     <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="operator" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
-                    <th data-column-id="value" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Value') }}</th>
-                    <th data-column-id="action" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Action') }}</th>
+                    <th data-column-id="operator" data-type="boolean" data-width="12em" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
+                    <th data-column-id="value" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Value') }}</th>
+                    <th data-column-id="naxsi_rules" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Rules') }}</th>
+                    <th data-column-id="action" data-type="string" data-width="12em" data-sortable="true" data-visible="true">{{ lang._('Action') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -438,8 +447,11 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="ruletype" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Rule Type') }}</th>
+                    <th data-column-id="ruletype" data-type="boolean" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Rule Type') }}</th>
+                    <th data-column-id="match_type" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Match Type') }}</th>
                     <th data-column-id="identifier" data-type="string" data-sortable="true" data-visible="true">{{ lang._('ID') }}</th>
+                    <th data-column-id="score" data-type="integer" data-width=7em" data-sortable="true" data-visible="true">{{ lang._('Score') }}</th>
+                    <th data-column-id="match_value" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Value') }}</th>
                     <th data-column-id="message" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Message') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>

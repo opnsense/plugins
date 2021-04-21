@@ -6,6 +6,12 @@
     <help>Enable / Disable</help>
   </field>
   <field>
+    <id>aspath.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Add an optional description for this AS-Path list.</help>
+  </field>
+  <field>
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>

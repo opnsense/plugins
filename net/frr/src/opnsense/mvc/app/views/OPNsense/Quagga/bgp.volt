@@ -2,7 +2,7 @@
 
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
 Copyright (C) 2017 Fabian Franz
-Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+Copyright (C) 2017 - 2020 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -33,6 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#aspaths">{{ lang._('AS Path Lists') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#communitylists">{{ lang._('Community Lists') }}</a></li>
     <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
@@ -50,12 +51,9 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
                     <th data-column-id="address" data-type="string" data-visible="true">{{ lang._('Neighbor Address') }}</th>
                     <th data-column-id="remoteas" data-type="string" data-visible="true">{{ lang._('Remote AS') }}</th>
-                    <th data-column-id="updatesource" data-type="string" data-visible="true">{{ lang._('Update Source Address') }}</th>
-                    <th data-column-id="nexthopself" data-type="string" data-formatter="rowtoggle">{{ lang._('Next Hop Self') }}</th>
-                    <th data-column-id="multihop" data-type="string" data-formatter="rowtoggle">{{ lang._('Multi Hop') }}</th>
-                    <th data-column-id="defaultoriginate" data-type="string" data-formatter="rowtoggle">{{ lang._('Default Originate') }}</th>
                     <th data-column-id="linkedPrefixlistIn" data-type="string" data-visible="true">{{ lang._('Prefix List inbound') }}</th>
                     <th data-column-id="linkedPrefixlistOut" data-type="string" data-visible="true">{{ lang._('Prefix List outbound') }}</th>
                     <th data-column-id="linkedRoutemapIn" data-type="string" data-visible="true">{{ lang._('Route Map inbound') }}</th>
@@ -83,6 +81,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
                     <th data-column-id="number" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Number') }}</th>
                     <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
                     <th data-column-id="as" data-type="string" data-visible="true" data-sortable="false">{{ lang._('AS Number') }}</th>
@@ -110,9 +109,38 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
                     <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Secquence Number') }}</th>
                     <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
                     <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="communitylists" class="tab-pane fade in">
+        <table id="grid-communitylists" class="table table-responsive" data-editDialog="DialogEditBGPCommunityLists">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="number" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Number') }}</th>
+                    <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Secquence Number') }}</th>
+                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
+                    <th data-column-id="community" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Community') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -137,10 +165,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
                     <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
                     <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
                     <th data-column-id="match" data-type="string" data-visible="true">{{ lang._('AS Path List') }}</th>
                     <th data-column-id="match2" data-type="string" data-visible="true">{{ lang._('Prefix List') }}</th>
+                    <th data-column-id="match3" data-type="string" data-visible="true">{{ lang._('Community List') }}</th>
                     <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
@@ -225,6 +255,16 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
+  $("#grid-communitylists").UIBootgrid(
+    { 'search':'/api/quagga/bgp/searchCommunitylist',
+      'get':'/api/quagga/bgp/getCommunitylist/',
+      'set':'/api/quagga/bgp/setCommunitylist/',
+      'add':'/api/quagga/bgp/addCommunitylist/',
+      'del':'/api/quagga/bgp/delCommunitylist/',
+      'toggle':'/api/quagga/bgp/toggleCommunitylist/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
   $("#grid-routemaps").UIBootgrid(
     { 'search':'/api/quagga/bgp/searchRoutemap',
       'get':'/api/quagga/bgp/getRoutemap/',
@@ -241,4 +281,5 @@ $(document).ready(function() {
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS Paths')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':'DialogEditBGPPrefixLists','label':lang._('Edit Prefix Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPCommunityLists,'id':'DialogEditBGPCommunityLists','label':lang._('Edit Community Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route Maps')])}}

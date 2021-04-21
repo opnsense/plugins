@@ -1,0 +1,3 @@
+This package adds a backup option using git version control.
+
+Due to the sensitive nature of the data being send to the backup, we strongly advise to not use a public service to send backups to.

@@ -1,0 +1,9 @@
+<acl>
+   <page-services-hwprobe>
+      <name>Services: HWProbe</name>
+      <patterns>
+         <pattern>ui/hwprobe/*</pattern>
+         <pattern>api/hwprobe/*</pattern>
+      </patterns>
+   </page-services-hwprobe>
+</acl>

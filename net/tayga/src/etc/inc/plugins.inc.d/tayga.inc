@@ -59,5 +59,22 @@ function tayga_xmlrpc_sync()
     $result['id'] = 'taygavpn';
     $result['section'] = 'OPNsense.tayga';
     $result['description'] = gettext('Tayga');
+    $result['services'] = ['tayga'];
     return array($result);
+}
+
+function tayga_interfaces()
+{
+    $interfaces = array();
+    if (!tayga_enabled()) {
+        return $interfaces;
+    }
+    $oic = array('enable' => true);
+    $oic['if'] = 'nat64';
+    $oic['descr'] = 'Tayga';
+    $oic['type'] = 'none';
+    $oic['virtual'] = true;
+    $oic['networks'] = array();
+    $interfaces['tayga'] = $oic;
+    return $interfaces;
 }

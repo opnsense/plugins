@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>1.6.0</version>
+    <version>2.0.0</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -143,10 +143,21 @@
                 <key type="TextField">
                     <Required>N</Required>
                 </key>
-                <!-- hidden field; last update of this account (unixtime) -->
+                <!-- TODO: old value that was migrated to statusLastUpdate, should be removed -->
                 <lastUpdate type="IntegerField">
                     <Required>N</Required>
                 </lastUpdate>
+                <!-- hidden field; status of last operation -->
+                <statusCode type="IntegerField">
+                    <Required>N</Required>
+                    <default>100</default>
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                </statusCode>
+                <!-- hidden field; timestamp for statusCode -->
+                <statusLastUpdate type="IntegerField">
+                    <Required>N</Required>
+                </statusLastUpdate>
             </account>
         </accounts>
         <certificates>
@@ -272,8 +283,7 @@
                 <!-- hidden field; status of last operation -->
                 <statusCode type="IntegerField">
                     <Required>N</Required>
-                    <!-- XXX: enable once data migration is working -->
-                    <!-- <default>100</default> -->
+                    <default>100</default>
                     <MinimumValue>100</MinimumValue>
                     <MaximumValue>1000</MaximumValue>
                 </statusCode>
@@ -357,18 +367,24 @@
                     <Required>Y</Required>
                     <default>dns_nsupdate</default>
                     <OptionValues>
+                        <dns_1984hosting>1984Hosting API</dns_1984hosting>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
+                        <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
+                        <dns_kas>All-Inkl.com domain API</dns_kas>
+                        <dns_arvan>ArvanCloud API</dns_arvan>
                         <dns_autodns>AutoDNS (InterNetX) API</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS API</dns_azure>
-                        <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cloudns>ClouDNS API</dns_cloudns>
+                        <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
+                        <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
-                        <dns_da>DirectAdmin API</dns_da>
+                        <dns_desec>deSEC.io API</dns_desec>
                         <dns_dgon>DigitalOcean API</dns_dgon>
+                        <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
                         <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_dp>DNSPod.cn API</dns_dp>
@@ -384,16 +400,21 @@
                         <dns_gd>GoDaddy.com API</dns_gd>
                         <dns_gcloud>Google Cloud DNS API</dns_gcloud>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
+                        <dns_hetzner>Hetzner DNS API</dns_hetzner>
+                        <dns_hexonet>hexonet.com DNS API</dns_hexonet>
                         <dns_hostingde>hosting.de API</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox API</dns_infoblox>
+                        <dns_infomaniak>Infomaniak API</dns_infomaniak>
                         <dns_inwx>INWX XMLRPC API</dns_inwx>
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
+                        <dns_joker>Joker API</dns_joker>
                         <dns_kinghost>KingHost DNS API</dns_kinghost>
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
                         <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
                         <dns_linode>Linode API</dns_linode>
+                        <dns_linode_v4>Linode Cloud API</dns_linode_v4>
                         <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_miab>MailinaBox API</dns_miab>
@@ -489,10 +510,10 @@
                     <Required>N</Required>
                 </dns_cx_secret>
                 <dns_cyon_user type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_cyon_user>
                 <dns_cyon_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_cyon_password>
                 <dns_da_key type="TextField">
                     <Required>N</Required>
@@ -502,19 +523,19 @@
                     <default>1</default>
                 </dns_da_insecure>
                 <dns_dgon_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_dgon_key>
                 <dns_dnsimple_token type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_dnsimple_token>
                 <dns_doapi_token type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_doapi_token>
                 <dns_do_pid type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_do_pid>
                 <dns_do_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_do_password>
                 <dns_dp_id type="TextField">
                     <Required>N</Required>
@@ -598,6 +619,12 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_ispconfig_insecure>
+                <dns_joker_username type="TextField">
+                    <Required>N</Required>
+                </dns_joker_username>
+                <dns_joker_password type="TextField">
+                    <Required>N</Required>
+                </dns_joker_password>
                 <dns_kinghost_username type="TextField">
                     <Required>N</Required>
                 </dns_kinghost_username>
@@ -684,17 +711,20 @@
                     <Required>N</Required>
                 </dns_lexicon_token>
                 <dns_linode_key type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_linode_key>
+                <dns_linode_v4_key type="TextField">
+                    <Required>N</Required>
+                </dns_linode_v4_key>
                 <dns_loopia_api type="TextField">
-                  <Required>N</Required>
-                  <default>https://api.loopia.se/RPCSERV</default>
+                    <Required>N</Required>
+                    <default>https://api.loopia.se/RPCSERV</default>
                 </dns_loopia_api>
                 <dns_loopia_user type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_loopia_user>
                 <dns_loopia_password type="TextField">
-                  <Required>N</Required>
+                    <Required>N</Required>
                 </dns_loopia_password>
                 <dns_lua_email type="TextField">
                     <Required>N</Required>
@@ -750,6 +780,9 @@
                 <dns_nsupdate_server type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_server>
+                <dns_nsupdate_zone type="TextField">
+                    <Required>N</Required>
+                </dns_nsupdate_zone>
                 <!-- TODO: maybe we should base64encode this field? -->
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
@@ -847,6 +880,15 @@
                 <dns_acmedns_updateurl type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_acmeproxy_endpoint type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_endpoint>
+                <dns_acmeproxy_username type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_username>
+                <dns_acmeproxy_password type="TextField">
+                    <Required>N</Required>
+                </dns_acmeproxy_password>
                 <dns_variomedia_key type="TextField">
                     <Required>N</Required>
                 </dns_variomedia_key>
@@ -865,6 +907,52 @@
                 <dns_leaseweb_key type="TextField">
                     <Required>N</Required>
                 </dns_leaseweb_key>
+                <dns_cn_user type="TextField">
+                    <Required>N</Required>
+                </dns_cn_user>
+                <dns_cn_password type="TextField">
+                    <Required>N</Required>
+                </dns_cn_password>
+                <dns_arvan_token type="TextField">
+                    <Required>N</Required>
+                </dns_arvan_token>
+                <dns_hetzner_token type="TextField">
+                    <Required>N</Required>
+                </dns_hetzner_token>
+                <dns_hexonet_login type="TextField">
+                    <Required>N</Required>
+                </dns_hexonet_login>
+                <dns_hexonet_password type="TextField">
+                    <Required>N</Required>
+                </dns_hexonet_password>
+                <dns_1984hosting_user type="TextField">
+                    <Required>N</Required>
+                </dns_1984hosting_user>
+                <dns_1984hosting_password type="TextField">
+                    <Required>N</Required>
+                </dns_1984hosting_password>
+                <dns_kas_login type="TextField">
+                    <Required>N</Required>
+                </dns_kas_login>
+                <dns_kas_authdata type="TextField">
+                    <Required>N</Required>
+                </dns_kas_authdata>
+                <dns_kas_authtype type="OptionField">
+                    <Required>N</Required>
+                    <default>sha1</default>
+                    <OptionValues>
+                        <sha1>SHA1</sha1>
+                    </OptionValues>
+                </dns_kas_authtype>
+                <dns_desec_token type="TextField">
+                    <Required>N</Required>
+                </dns_desec_token>
+                <dns_desec_name type="TextField">
+                    <Required>N</Required>
+                </dns_desec_name>
+                <dns_infomaniak_token type="TextField">
+                    <Required>N</Required>
+                </dns_infomaniak_token>
             </validation>
         </validations>
         <actions>
