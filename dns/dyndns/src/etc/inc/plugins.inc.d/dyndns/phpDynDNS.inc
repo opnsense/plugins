@@ -64,8 +64,8 @@
  *
  * @author    E.Kristensen
  * @link    http://www.idylldesigns.com/projects/phpdns/
- * @version    0.9
- * @updated    15 May 20 at 13:12:42 GMT
+ * @version    0.8
+ * @updated    13 October 05 at 21:02:42 GMT
  *
  * DNSexit support and multiwan extension for pfSense by Ermal Luçi
  * Custom DNS support by Matt Corallo
