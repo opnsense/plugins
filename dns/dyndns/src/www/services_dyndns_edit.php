@@ -369,6 +369,7 @@ include("head.inc");
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
+                        <br /><?= gettext('FreeDNS: Leave blank.') ?>
                       </div>
                     </td>
                   </tr>
