@@ -41,5 +41,6 @@ class MaintenanceController extends \OPNsense\Base\IndexController
     {
         // choose template
         $this->view->pick('OPNsense/HAProxy/maintenance');
+        $this->view->maintenanceCronjobsForm = $this->getForm("maintenanceCronjobs");
     }
 }

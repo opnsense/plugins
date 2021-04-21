@@ -31,25 +31,107 @@
 
 namespace OPNsense\HAProxy\Api;
 
-use OPNsense\Base\ApiControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+use OPNsense\Cron\Cron;
 use OPNsense\HAProxy\HAProxy;
 
 /**
  * Class MaintenanceController
  * @package OPNsense\HAProxy
  */
-class MaintenanceController extends ApiControllerBase
+class MaintenanceController extends ApiMutableModelControllerBase
 {
+    protected static $internalModelName = 'haproxy';
+    protected static $internalModelClass = '\OPNsense\HAProxy\HAProxy';
+
+    /**
+     * jQuery bootstrap certificates diff list
+     * @return array|mixed
+     */
+    public function searchCertificateDiffAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
+        return $this->getData(
+            ["cert_diff_list"],
+            ["rowCount", "current", "searchPhrase", "sort"]
+        );
+    }
+
     /**
      * jQuery bootstrap server list
      * @return array|mixed
      */
     public function searchServerAction()
     {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
         return $this->getData(
             ["server_status_list"],
             ["rowCount", "current", "searchPhrase", "sort"]
+        );
+    }
+
+    /**
+     * sync certificate for frontends
+     * @return array|mixed
+     */
+    public function certSyncAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
+        return $this->syncCerts(
+            ["cert_sync"],
+            ["frontend_ids"]
+        );
+    }
+
+    /**
+     * sync certificate for frontends
+     * @return array|mixed
+     */
+    public function certSyncBulkAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
+        return $this->syncCerts(
+            ["cert_sync_bulk"]
+        );
+    }
+
+    /**
+     * show certificate diff for frontends
+     * @return array|mixed
+     */
+    public function certDiffAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
+        return $this->getData(
+            ["cert_diff"],
+            ["frontend_ids"]
+        );
+    }
+
+    /**
+     * show certificate actions for frontends
+     * @return array|mixed
+     */
+    public function certActionsAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun('template reload OPNsense/HAProxy');
+
+        return $this->getData(
+            ["cert_actions"],
+            ["frontend_ids"]
         );
     }
 
@@ -145,7 +227,7 @@ class MaintenanceController extends ApiControllerBase
     }
 
     /**
-     * Executes a backend command to save data
+     * Executes a backend command which returns output on error
      * @param array $command
      * @param array $arguments
      * @return array|string[]
@@ -166,5 +248,121 @@ class MaintenanceController extends ApiControllerBase
             "status" => 'unavailable',
             "message" => 'only accept POST Requests.'
         ];
+    }
+
+    /**
+     * Executes a ssl certificate sync
+     * @param array $command
+     * @param array $arguments
+     * @return array|string[]
+     */
+    protected function syncCerts(array $command, array $arguments = [])
+    {
+        if ($this->request->isPost()) {
+            $output = $this->safeBackendCmd($command, $arguments);
+            $result = json_decode($output, true);
+
+            return [
+                "status" => "ok",
+                "result" => $result,
+            ];
+        }
+        return [
+            "status" => 'unavailable',
+            "message" => 'only accept POST Requests.'
+        ];
+    }
+
+    /**
+     * create new cron job or return already available one
+     * @return array status action
+     */
+    public function fetchCronIntegrationAction()
+    {
+        $result = array("result" => "no change");
+
+        if ($this->request->isPost()) {
+            $mdlHaproxy = $this->getModel();
+            $backend = new Backend();
+
+            // Define possible cron jobs with their configd actions
+            $cronjobs = array(
+                'syncCerts' => 'cert_sync_bulk',
+                'updateOcsp' => 'update_ocsp',
+                'reloadService' => 'reload',
+                'restartService' => 'restart',
+            );
+
+            // Iterate over all possible cron jobs
+            foreach ($cronjobs as $cron => $cron_action) {
+                // Name of the item that holds the cron UUID
+                $cron_ref = "${cron}Cron";
+
+                // Check if the cron job is enabled or disabled
+                if ((string)$mdlHaproxy->maintenance->cronjobs->$cron == "1") {
+                    // Check if a cron job already exists
+                    if ((string)$mdlHaproxy->maintenance->cronjobs->$cron_ref == "") {
+                        // Create new cron job
+                        $mdlCron = new Cron();
+                        // NOTE: Only configd actions are valid commands for cronjobs
+                        //       and they *must* provide a description that is not empty.
+                        $cron_uuid = $mdlCron->newDailyJob(
+                            "HAProxy",
+                            "haproxy ${cron_action}",
+                            "Added by HAProxy plugin",
+                            "*",
+                            "1"
+                        );
+                        $mdlHaproxy->maintenance->cronjobs->$cron_ref = $cron_uuid;
+
+                        // Save updated configuration.
+                        if ($mdlCron->performValidation()->count() == 0) {
+                            $mdlCron->serializeToConfig();
+                            // save data to config, do not validate because the current in memory model doesn't know about the
+                            // cron item just created.
+                            $mdlHaproxy->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                            Config::getInstance()->save();
+                            // Refresh the crontab
+                            $backend->configdRun('template reload OPNsense/Cron');
+                            // (res)start daemon
+                            $backend->configdRun("cron restart");
+                            $this->getLogger()->error("HAProxy: successfully created cron job $cron ($cron_uuid)");
+                            $result['result'] = "new";
+                            $result['uuid'] = $cron_uuid;
+                        } else {
+                            $this->getLogger()->error("HAProxy: unable to create cron job $cron");
+                            $result['result'] = "unable to add cron";
+                        }
+                    }
+                } else {
+                    // Check if a cron job exists
+                    if ((string)$mdlHaproxy->maintenance->cronjobs->$cron_ref != "") {
+                        // Clean existin entry
+                        $cron_uuid = (string)$mdlHaproxy->maintenance->cronjobs->$cron_ref;
+                        $mdlHaproxy->maintenance->cronjobs->$cron_ref = "";
+
+                        // Delete the cronjob item
+                        $mdlCron = new Cron();
+                        if ($mdlCron->jobs->job->del($cron_uuid)) {
+                            // If item is removed, serialize to config and save
+                            $mdlCron->serializeToConfig();
+                            $mdlHaproxy->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                            Config::getInstance()->save();
+                            // Regenerate the crontab
+                            $backend->configdRun('template reload OPNsense/Cron');
+                            // (res)start daemon
+                            $backend->configdRun("cron restart");
+                            $this->getLogger()->error("HAProxy: successfully deleted cron job $cron ($cron_uuid)");
+                            $result['result'] = "deleted";
+                        } else {
+                            $this->getLogger()->error("HAProxy: unable to delete cron job $cron ($cron_uuid)");
+                            $result['result'] = "unable to delete cron";
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }

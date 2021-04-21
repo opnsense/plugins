@@ -30,8 +30,8 @@ GENPRIV="/usr/local/bin/wg genkey"
 GENPUB="/usr/local/bin/wg pubkey"
 
 cleanup() {
-  # Delete old files
-  rm -f $TMPDIR/wireguard.*
+	# Delete old files
+	rm -f $TMPDIR/wireguard.*
 }
 
 private() {
@@ -45,11 +45,11 @@ public() {
 }
 
 case "$1" in
-        private)
-                cleanup
-                private
-                ;;
-        public)
-                public
-                ;;
+private)
+	cleanup
+	private
+	;;
+public)
+	public
+	;;
 esac

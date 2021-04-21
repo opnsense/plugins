@@ -284,7 +284,7 @@ lint-desc: check
 
 lint-shell:
 	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
-	    if [ "$$(head $${FILE} | grep -c '^#!\/bin\/sh$$')" == "0" ]; then \
+	    if [ "$$(head $${FILE} | grep -cx '#!\/bin\/sh')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
 	    sh -n $${FILE} || exit 1; \
@@ -325,7 +325,10 @@ sweep: check
 	    ! -name "*.ser" -type f -print0 | \
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 	find ${.CURDIR} -type f -depth 1 -print0 | \
-	    xargs -0 -n1 ${SCRIPTSDIRs/cleanfile
+	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
+
+revision:
+	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 

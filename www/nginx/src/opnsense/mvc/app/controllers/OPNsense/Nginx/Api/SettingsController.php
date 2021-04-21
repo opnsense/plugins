@@ -104,7 +104,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Upstream
     public function searchupstreamAction()
     {
-        return $this->searchBase('upstream', array('description', 'serverentries'));
+        return $this->searchBase('upstream', array('description', 'serverentries', 'tls_enable', 'load_balancing_algorithm'));
     }
 
     public function getupstreamAction($uuid = null)
@@ -158,7 +158,26 @@ class SettingsController extends ApiMutableModelControllerBase
     // Location
     public function searchlocationAction()
     {
-        return $this->searchBase('location', array('description','urlpattern', 'path_prefix', 'matchtype', 'enable_secrules', 'force_https'));
+        $data = $this->searchBase('location', array(
+            'description','urlpattern', 'path_prefix', 'matchtype', 'upstream',
+            'enable_secrules', 'enable_learning_mode', 'force_https',
+            'xss_block_score', 'sqli_block_score', 'custom_policy'
+        ));
+
+        // Create "waf_status" column (enabled/disabled/learning)
+        foreach ($data['rows'] as &$row) {
+            if ($row['enable_secrules']) {
+                if ($row['enable_learning_mode']) {
+                    $row['waf_status'] = gettext('learning');
+                } else {
+                    $row['waf_status'] = gettext('enabled');
+                }
+            } else {
+                $row['waf_status'] = gettext('disabled');
+            }
+        }
+
+        return $data;
     }
 
     public function getlocationAction($uuid = null)
@@ -185,7 +204,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Custom Policy
     public function searchcustompolicyAction()
     {
-        return $this->searchBase('custom_policy', array('name', 'operator', 'value', 'action'));
+        return $this->searchBase('custom_policy', array('name', 'operator', 'value', 'action', 'naxsi_rules'));
     }
 
     public function getcustompolicyAction($uuid = null)
@@ -212,7 +231,10 @@ class SettingsController extends ApiMutableModelControllerBase
     // http server
     public function searchhttpserverAction()
     {
-        return $this->searchBase('http_server', array('servername', 'https_only', 'certificate', 'listen_http_port', 'listen_https_port'));
+        return $this->searchBase('http_server', array(
+            'servername', 'locations', 'root', 'https_only', 'certificate',
+            'listen_http_port', 'listen_https_port'
+        ));
     }
 
     public function gethttpserverAction($uuid = null)
@@ -266,7 +288,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // naxsi rules
     public function searchnaxsiruleAction()
     {
-        return $this->searchBase('naxsi_rule', array('description', 'identifier', 'ruletype', 'message'));
+        return $this->searchBase('naxsi_rule', array('description', 'identifier', 'ruletype', 'match_type', 'score', 'match_value', 'message'));
     }
 
     public function getnaxsiruleAction($uuid = null)

@@ -70,7 +70,7 @@ class HaPConn(object):
         output = self.sock.recv(const.HAP_BUFSIZE)
 
         while output:
-            res += output.decode('ASCII')
+            res += output.decode('UTF-8')
             output = self.sock.recv(const.HAP_BUFSIZE)
 
         if objectify:

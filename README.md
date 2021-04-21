@@ -38,6 +38,8 @@ dns/bind -- BIND domain name service
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
+emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense (development only)
+mail/fetchmail -- Remote-mail retrieval utility (development only)
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - dark grey
@@ -54,6 +56,7 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ntopng -- Traffic Analysis and Flow Collection
+net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport (development only)
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
@@ -76,13 +79,14 @@ net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
 security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/etpro-telemetry -- ET Pro Telemetry Edition
+security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
-security/stunnel -- stunnel TLS proxy
+security/stunnel -- Stunnel TLS proxy
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
@@ -93,7 +97,7 @@ sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
-sysutils/munin-node -- Munin monitorin agent
+sysutils/munin-node -- Munin monitoring agent
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/smart -- SMART tools

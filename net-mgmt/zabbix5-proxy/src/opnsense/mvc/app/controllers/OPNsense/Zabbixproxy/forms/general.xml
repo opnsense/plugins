@@ -86,6 +86,12 @@
         <help>Number of pre-forked instances of discoverers.</help>
     </field>
     <field>
+        <id>general.startvmwarecollectors</id>
+        <label>Start VMware Collectors</label>
+        <type>text</type>
+        <help>Number of pre-forked instances of VMware Collectors.</help>
+    </field>
+    <field>
         <id>general.starthttppollers</id>
         <label>Start HTTP Pollers</label>
         <type>text</type>
@@ -120,6 +126,18 @@
         <label>Timeout</label>
         <type>text</type>
         <help>Specifies how long we wait for agent, SNMP device or external check (in seconds).</help>
+    </field>
+    <field>
+        <id>general.configfrequency</id>
+        <label>Config Frequency</label>
+        <type>text</type>
+        <help>Specifies the time how often proxy retrieves configuration data from zabbix server (in seconds).</help>
+    </field>
+    <field>
+        <id>general.datasenderfrequency</id>
+        <label>Data Sender Frequency</label>
+        <type>text</type>
+        <help>Specifies the time how often the proxy will send collected data to the server (in seconds).</help>
     </field>
     <field>
         <id>general.encryption</id>

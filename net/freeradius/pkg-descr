@@ -15,6 +15,14 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.11
+
+Add IPv6 support to client IP
+
+1.9.10
+
+* Add HA config sync
+
 1.9.9
 
 * Create option to set EAP-TTLS-GTC (contributed by Kjeld Schouten-Lebbing)
