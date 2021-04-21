@@ -1238,7 +1238,7 @@ class updatedns
                 * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
                 * IPv4 is determined by deSEC API via the sending interface
                 */
-                
+
                 // temporarily disable useIPv6 to get IPv4 Address
                 $this->_useIPv6 = false;
                 $ipv4 = $this->_checkIP();
@@ -1775,7 +1775,7 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Access to the resource is denied. The selected hostname is not eligible for dynamic updates.';
                 } elseif ($http_code == 429) {
                     $status = 'Dynamic DNS: (Error) Rate limit reached. Please don\'t try more than one request per minute.';
-                } elseif ($http_code == 200 AND preg_match('/good/i', $data)) {
+                } elseif ($http_code == 200 && preg_match('/good/i', $data)) {
                     $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
                     $successful_update = true;
                 }
