@@ -785,16 +785,18 @@ class updatedns
                 $output = json_decode(curl_exec($ch));
                 $zoneId = null; // Set default value
 
-                // Iterate zone objects, check if $fqdn is equal to or ends with zone name
-                foreach ($output->result as $key => $zoneObj) {
-                    if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
-                        // Found matching zone
-                        $zoneId = $zoneObj->id;
-                        // Get $hostName from $fqdn, set $domainName
-                        // These are only really used for log messages.
-                        $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
-                        $domainName = $zoneObj->name;
-                        break;
+                if (!empty($output->result)) {
+                    // Iterate zone objects, check if $fqdn is equal to or ends with zone name
+                    foreach ($output->result as $key => $zoneObj) {
+                        if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
+                            // Found matching zone
+                            $zoneId = $zoneObj->id;
+                            // Get $hostName from $fqdn, set $domainName
+                            // These are only really used for log messages.
+                            $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
+                            $domainName = $zoneObj->name;
+                            break;
+                        }
                     }
                 }
 
@@ -846,39 +848,40 @@ class updatedns
                 // Get all zone info
                 $zonesUrl = "$baseUrl/zones";
                 curl_setopt($ch, CURLOPT_URL, $zonesUrl);
-                $rawoutput = curl_exec($ch);
-                $output = json_decode($rawoutput);
+                $output = json_decode(curl_exec($ch));
                 $zoneId = null; // Set default value
 
-                // Iterate zone objects, check if $fqdn is equal to or ends with zone name
-                foreach ($output->zones as $key => $zoneObj) {
-                    if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
-                        // Found matching zone
-                        $zoneId = $zoneObj->id;
-                        // Get $hostName from $fqdn, set $domainName
-                        // These are only really used for log messages.
-                        $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
-                        $domainName = $zoneObj->name;
+                if (!empty($output->zones)) {
+                    // Iterate zone objects, check if $fqdn is equal to or ends with zone name
+                    foreach ($output->zones as $key => $zoneObj) {
+                        if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
+                            // Found matching zone
+                            $zoneId = $zoneObj->id;
+                            // Get $hostName from $fqdn, set $domainName
+                            // These are only really used for log messages.
+                            $hostName = preg_replace("/\.?{$zoneObj->name}$/", '', $fqdn);
+                            $domainName = $zoneObj->name;
 
-                        break;
+                            break;
+                        }
                     }
                 }
 
                 if ($zoneId) { // If zone ID was found get host ID
                     $dnsRecordsUrl = "$baseUrl/records?zone_id=$zoneId";
                     curl_setopt($ch, CURLOPT_URL, $dnsRecordsUrl);
-                    $rawoutput = curl_exec($ch);
-                    $output = json_decode($rawoutput);
+                    $output = json_decode(curl_exec($ch));
                     $recordId = null;
 
-
-                    // Iterate zone objects, check if $hostName exist of the same type
-                    foreach ($output->records as $key => $recordObj) {
-                        if (preg_match("/^{$recordObj->name}$/", $hostName)) {
-                            if ($recordObj->type == $recordType) {
-                                // Found matching host
-                                $recordId = $recordObj->id;
-                                break;
+                    if (!empty($output->records)) {
+                        // Iterate zone objects, check if $hostName exist of the same type
+                        foreach ($output->records as $key => $recordObj) {
+                            if (preg_match("/^{$recordObj->name}$/", $hostName)) {
+                                if ($recordObj->type == $recordType) {
+                                    // Found matching host
+                                    $recordId = $recordObj->id;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1028,13 +1031,15 @@ class updatedns
                 $output = json_decode(curl_exec($ch));
                 $domainId = null;
 
-                // Find matching domain and split the hostname part from it
-                foreach ($output->data as $key => $domainObj) {
-                    if (preg_match("/^{$domainObj->domain}$|\.{$domainObj->domain}$/", $fqdn)) {
-                        $domainId = $domainObj->id;
-                        $hostName = preg_replace("/\.?{$domainObj->domain}$/", '', $fqdn);
-                        $domainName = $domainObj->domain;
-                        break;
+                if (!empty($output->data)) {
+                    // Find matching domain and split the hostname part from it
+                    foreach ($output->data as $key => $domainObj) {
+                        if (preg_match("/^{$domainObj->domain}$|\.{$domainObj->domain}$/", $fqdn)) {
+                            $domainId = $domainObj->id;
+                            $hostName = preg_replace("/\.?{$domainObj->domain}$/", '', $fqdn);
+                            $domainName = $domainObj->domain;
+                            break;
+                        }
                     }
                 }
 
@@ -1048,17 +1053,17 @@ class updatedns
                     $output = json_decode(curl_exec($ch));
                     $recordId = null;
 
-                    // Find matching record
-                    foreach ($output->data as $key => $recordObj) {
-                        if ($recordObj->type == $recordType && $recordObj->name == $hostName) {
-                            $recordId = $recordObj->id;
-                            break;
+                    if (!empty($output->data)) {
+                        // Find matching record
+                        foreach ($output->data as $key => $recordObj) {
+                            if ($recordObj->type == $recordType && $recordObj->name == $hostName) {
+                                $recordId = $recordObj->id;
+                                break;
+                            }
                         }
                     }
 
-                    $hostData = array(
-                        "target" => "{$this->_dnsIP}",
-                    );
+                    $hostData = [ 'target' => "{$this->_dnsIP}" ];
 
                     if ($recordId) {
                         // Update record
