@@ -448,7 +448,7 @@ class updatedns
             case 'noip-free':
                 curl_setopt_array($ch, [
                     CURLOPT_SSL_VERIFYPEER => true,
-                    CURLOPT_USERPWD => $this->_dnsUser.':'.$this->_dnsPass
+                    CURLOPT_USERPWD => $this->_dnsUser . ':' . $this->_dnsPass
                 ]);
                 $server = "https://dynupdate.no-ip.com/nic/update";
                 $port = "";
@@ -470,7 +470,7 @@ class updatedns
                 } else {
                     $iptoset = $this->_dnsIP;
                 }
-                curl_setopt($ch, CURLOPT_URL, $server . $port . '?hostname=' . $this->_dnsHost.'&myip=' . $iptoset);
+                curl_setopt($ch, CURLOPT_URL, $server . $port . '?hostname=' . $this->_dnsHost . '&myip=' . $iptoset);
                 break;
             case 'easydns':
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
