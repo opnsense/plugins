@@ -1777,6 +1777,8 @@ class updatedns
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                     $this->_debug($data);
+                }
+                break;
             case 'godaddy':
             case 'godaddy-v6':
                 /* See https://developer.godaddy.com/ for API documentation, not all codes are handled. */
