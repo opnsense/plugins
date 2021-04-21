@@ -128,6 +128,8 @@ function dyndns_list()
         'he-net' => 'HE.net',
         'he-net-tunnelbroker' => 'HE.net Tunnelbroker',
         'he-net-v6' => 'HE.net (v6)',
+        'hetzner' => 'Hetzner DNS Console',
+        'hetzner-v6' => 'Hetzner DNS Console (v6)',
         'linode' => 'Linode',
         'linode-v6' => 'Linode (v6)',
         'loopia' => 'Loopia',
