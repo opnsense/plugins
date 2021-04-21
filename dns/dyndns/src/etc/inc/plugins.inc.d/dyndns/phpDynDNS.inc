@@ -15,6 +15,7 @@
  *    - _checkIP()
  * +----------------------------------------------------+
  *  3322                        - Last Tested: 26 May 2017
+ *  All-Inkl                    - Last Tested: 02 March 2020
  *  Amazon Route53              - Last Tested: 01 April 2012
  *  Amazon Route53 v6           - Last Tested: 19 November 2017
  *  Azure DNS                   - Last Tested: 16 October 2019
@@ -243,6 +244,7 @@ class updatedns
         }
 
         switch ($dnsService) {
+            case 'all-inkl-v6':
             case 'azurev6':
             case 'cloudflare-v6':
             case 'custom-v6':
@@ -299,6 +301,8 @@ class updatedns
         } else {
             switch ($this->_dnsService) {
                 case '3322':
+                case 'all-inkl':
+                case 'all-inkl-v6':
                 case 'azure':
                 case 'azurev6':
                 case 'citynetwork':
@@ -1178,6 +1182,20 @@ class updatedns
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 break;
+            case 'all-inkl':
+            case 'all-inkl-v6':
+                $server = "https://dyndns.kasserver.com/";
+                $url = $server . '?myip=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_URL, $url );
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
+                // fix: All-Inkl dyndns.kasserver.com only supports v4
+                $ipv4 = get_interface_ip($this->_dnsRequestIf);
+                if (!is_ipaddr($ipv4)) {
+                    log_error("Dynamic DNS ({$this->_dnsHost}): (Error) Need a IPv4 address on $this->_dnsRequestIf!");
+                    return false;
+                }
+                curl_setopt($ch, CURLOPT_INTERFACE, $ipv4);
+                // fix end
             case 'godaddy':
             case 'godaddy-v6':
                 /* Read https://developer.godaddy.com/ for API documentation */
@@ -1742,6 +1760,22 @@ class updatedns
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
+                    $this->_debug($data);
+                }
+                break;
+            case 'all-inkl':
+            case 'all-inkl-v6':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if (preg_match('/good\s' . $this->_dnsIP . '/i', $data)) {
+                    $status = "Dynamic DNS: (Success) IP Update Successfully!";
+                    $successful_update = true;
+                } elseif ($http_code == 401) {
+                    $status = "Dynamic DNS: (Error) Authentication failed!";
+                } elseif (preg_match('/bad\s\(dyndns_target_ip_syntax_incorrect\)/i', $data)) {
+                    $status = "Dynamic DNS: (Error) IP Syntax incorrect ($this->_dnsIP)!";
+                } else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                     $this->_debug($data);
                 }
                 break;
