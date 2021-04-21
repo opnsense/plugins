@@ -61,5 +61,6 @@ function nginx_xmlrpc_sync()
     $result['id'] = 'nginx';
     $result['section'] = 'OPNsense.Nginx';
     $result['description'] = gettext('Nginx Load Balancer');
+    $result['services'] = ['nginx'];
     return array($result);
 }

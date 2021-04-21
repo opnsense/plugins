@@ -91,7 +91,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#validations">{{ lang._('Validation Methods') }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#validations">{{ lang._('Challenge Types') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -122,4 +122,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogValidation,'id':'DialogValidation','label':lang._('Edit Validation Method')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogValidation,'id':'DialogValidation','label':lang._('Edit Challenge Type')])}}

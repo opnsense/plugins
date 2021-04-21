@@ -1,0 +1,81 @@
+<form>
+    <field>
+        <id>service.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this rule</help>
+    </field>
+    <field>
+        <id>service.accept_address</id>
+        <label>Listen address</label>
+        <type>text</type>
+        <help>If possible, a loopback address is the safest choice here, you can forward traffic to it using the firewall.</help>
+    </field>
+    <field>
+        <id>service.accept_port</id>
+        <label>Listen port</label>
+        <type>text</type>
+        <help>The port on which connections will be accepted.</help>
+    </field>
+    <field>
+        <id>service.connect_address</id>
+        <label>Target hostname</label>
+        <type>text</type>
+        <help>The other end of this tunnel.</help>
+    </field>
+    <field>
+        <id>service.connect_port</id>
+        <label>Target port</label>
+        <type>text</type>
+        <help>The port to forward traffic to.</help>
+    </field>
+    <field>
+        <id>service.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>The application protocol to negotiate TLS.</help>
+    </field>
+    <field>
+        <id>service.servercert</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select a certificate to use for this service.]]></help>
+    </field>
+    <field>
+        <id>service.cacert</id>
+        <label>CA to validate connections to</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Select a Certificate Authority to validate connections to. To create a CA, go to <a href="/system_camanager.php">CA Manager</a>.]]></help>
+    </field>
+    <field>
+        <id>service.enableCRL</id>
+        <label>enable CRL</label>
+        <type>checkbox</type>
+        <help><![CDATA[
+            Enable certificate revocation lists, when selected a CRL with the format XXXXXXXX.r0 is required in the chroot (/var/run/stunnel/certs/).
+            When certificates are managed from this machine, the attached CRLs will be generated automatically.
+            For more information about this option, see CRLpath in stunnels manual.
+
+            If configured and a valid CRL is not available, all connections will be denied.
+            Additions may need a restart of stunnel (when the certificate was already used).
+            ]]></help>
+    </field>
+    <field>
+        <id>service.clientmode</id>
+        <label>Client mode</label>
+        <type>checkbox</type>
+        <help><![CDATA[Use client mode for this tunnel. Connect to an SSL server, do not act as an SSL server.]]></help>
+    </field>
+    <field>
+        <id>service.ciphers</id>
+        <label>Ciphers</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Select all accepted TLS ciphers.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>service.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>
