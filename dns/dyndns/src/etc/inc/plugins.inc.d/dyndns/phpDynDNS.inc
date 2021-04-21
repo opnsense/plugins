@@ -51,6 +51,9 @@
  *  STRATO                      - Last Tested: 09 May 2017
  *  SelfHost                    - Last Tested: 26 December 2011
  *  StaticCling                 - Last Tested: 27 April 2006
+ *  deSEC                       - Last Tested: 09 September 2020
+ *  deSEC v6                    - Last Tested: 09 September 2020
+ *  deSEC v4 + v6               - Last Tested: 09 September 2020
  *  dynv6                       - Last Tested: 25 June 2019
  *  dynv6 v6                    - Last Tested: 25 June 2019
  *  regfish                     - Last Tested: 15 August 2017
@@ -219,6 +222,15 @@ class updatedns
                     $this->_error(9);
                 }
                 break;
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
+                if (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsHost) {
+                    $this->_error(5);
+                }
+                break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
@@ -241,6 +253,8 @@ class updatedns
             case 'regfish-v6':
             case 'route53-v6':
             case 'cloudflare-token-v6':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'hetzner-v6':
                 $this->_useIPv6 = true;
                 break;
@@ -294,6 +308,9 @@ class updatedns
                 case 'cloudflare-token-v6':
                 case 'custom':
                 case 'custom-v6':
+                case 'desec':
+                case 'desec-v4-v6':
+                case 'desec-v6':
                 case 'dhs':
                 case 'digitalocean':
                 case 'gandi-livedns':
@@ -1201,6 +1218,51 @@ class updatedns
 
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
                 break;
+            case 'desec':
+                /*
+                * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
+                * dnsHost should be the domain
+                * dnsPass should be the token, NOT the token id
+                * IPv6 is empty so deSEC API will not set this to the IPv6 of the sending interface if the connection is made via IPv6
+                */
+                $server = "https://update.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $this->_dnsIP . '&myipv6=""';
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
+            case 'desec-v4-v6':
+                /*
+                * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
+                * dnsHost should be the domain
+                * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
+                * IPv4 is determined by deSEC API via the sending interface
+                */
+                
+                // temporarily disable useIPv6 to get IPv4 Address
+                $this->_useIPv6 = false;
+                $ipv4 = $this->_checkIP();
+                $this->_useIPv6 = true;
+
+                $server = "https://update.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $ipv4 . '&myipv6=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
+            case 'desec-v6':
+                /*
+                * https://desec.readthedocs.io/en/latest/dyndns/update-api.html
+                * dnsHost should be the domain
+                * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
+                */
+                $server = "https://update6.dedyn.io/";
+                $url = '?hostname=' . $this->_dnsHost . '&myipv6=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
             default:
                 break;
         }
@@ -1698,6 +1760,24 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
                     log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
+                }
+                break;
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                /*
+                * HTTP Code 404 should not be possible due to dnsUser == dnsHost, a wrong hostname should cause HTTP 401 Unauthorized.
+                */
+                if ($http_code == 401) {
+                    $status = 'Dynamic DNS: (Error) Bad authentication attempt because of a wrong Password.';
+                } elseif ($http_code == 403) {
+                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. The selected hostname is not eligible for dynamic updates.';
+                } elseif ($http_code == 429) {
+                    $status = 'Dynamic DNS: (Error) Rate limit reached. Please don\'t try more than one request per minute.';
+                } elseif ($http_code == 200 AND preg_match('/good/i', $data)) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
                 }
                 break;
             default:

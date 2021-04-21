@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6") && $pconfig['username'] == "") {
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -369,6 +369,7 @@ include("head.inc");
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
+                        <br /><?= gettext('deSEC: no Username necessary. Your Hostname is used instead.') ?>
                         <br /><?= gettext('FreeDNS: Leave blank.') ?>
                       </div>
                     </td>
@@ -387,6 +388,7 @@ include("head.inc");
                         <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
                         <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
+                        <br /><?= gettext('deSEC: Enter your Token for your hostname, NOT the 36-character Token ID from the webinterface.') ?>
                       </div>
                     </td>
                   </tr>
