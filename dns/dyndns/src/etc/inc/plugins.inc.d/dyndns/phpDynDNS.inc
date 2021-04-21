@@ -1186,8 +1186,8 @@ class updatedns
             case 'all-inkl-v6':
                 $server = "https://dyndns.kasserver.com/";
                 $url = $server . '?myip=' . $this->_dnsIP;
-                curl_setopt($ch, CURLOPT_URL, $url );
-                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
                 // fix: All-Inkl dyndns.kasserver.com only supports v4
                 $ipv4 = get_interface_ip($this->_dnsRequestIf);
                 if (!is_ipaddr($ipv4)) {
