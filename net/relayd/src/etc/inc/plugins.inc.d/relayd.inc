@@ -73,6 +73,7 @@ function relayd_xmlrpc_sync()
     $result[] = array(
         'description' => gettext('Relayd Load Balancer'),
         'section' => 'OPNsense.relayd',
+        'services' => ['relayd'],
         /* kept for backwards compat: */
         'id' => 'lb',
     );

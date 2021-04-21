@@ -66,6 +66,13 @@
         <ping_hosts type="CSVListField">
             <Required>N</Required>
         </ping_hosts>
+        <ping6 type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </ping6>
+        <ping6_hosts type="CSVListField">
+            <Required>N</Required>
+        </ping6_hosts>
         <haproxy type="BooleanField">
             <default>0</default>
             <Required>N</Required>

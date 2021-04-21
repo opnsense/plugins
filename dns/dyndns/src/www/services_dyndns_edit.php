@@ -370,6 +370,7 @@ include("head.inc");
                         <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
                         <br /><?= gettext('deSEC: no Username necessary. Your Hostname is used instead.') ?>
+                        <br /><?= gettext('FreeDNS: Leave blank.') ?>
                       </div>
                     </td>
                   </tr>

@@ -1,0 +1,121 @@
+<form>
+
+    <field>
+        <id>radsecproxy.general.enabled</id>
+        <label>Enable RadSecProxy</label>
+        <type>checkbox</type>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.logLevel</id>
+        <label>Loglevel</label>
+        <type>dropdown</type>
+        <help>This option specifies the debug level. It must be set to 1, 2, 3, 4 or 5, where 1 logs only serious errors, and 5 logs everything. The default is 2 which logs errors, warnings and a few informational messages.</help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.logFullUsername</id>
+        <label>Log full username</label>
+        <type>dropdown</type>
+        <help>This can be set to off to only log the realm in Access-Accept/Reject log messages (for privacy).</help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.logMac</id>
+        <label>Log MAC</label>
+        <type>dropdown</type>
+        <help><![CDATA[The LogMAC option can be used to control if and how Calling-Station-Id (the users Ethernet MAC address) is being logged. It can be set to one of <b>Static</b>, <b>Original</b>, <b>VendorHashed</b>, <b>VendorKeyHashed</b>, <b>FullyHashed</b> or <b>FullyKeyHashed</b>. The default value for LogMAC is <b>Original</b>.]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.loopPrevention</id>
+        <label>Loop-prevention</label>
+        <type>dropdown</type>
+        <help>When this is enabled (on), a request will never be sent to a server named the same as the client it was received from. I.e., the names of the client block and the server block are compared. Note that this only gives limited protection against loops. It can be used as a basic option and inside server blocks where it overrides the basic setting.</help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Advanced settings</label>
+        <advanced>true</advanced>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Listening IPs and Ports</label>
+        <advanced>true</advanced>
+        <help>Listen for the address and port for the respective protocol. Normally the proxy will listen to the standard ports if configured to handle clients with the respective protocol. The default ports are 1812 for UDP and TCP and 2083 for TLS and DTLS. On most systems it will do this for all of the system’s IP addresses (both IPv4 and IPv6). On some systems however, it may respond to only IPv4 or only IPv6. To specify an alternate port you may use a value on the form *:port where port is any valid port number. If you also want to specify a specific address you can do e.g. 192.168.1.1:1812 or [2001:db8::1]:1812. The port may be omitted if you want the default one. Note that you must use brackets around the IPv6 address. These options may be specified multiple times to listen to multiple addresses and/or ports for each protocol.</help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.listenUdp</id>
+        <label>Listen UDP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.listenTcp</id>
+        <label>Listen TCP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.listenTls</id>
+        <label>Listen TLS</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.listenDtls</id>
+        <label>Listen DTLS</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Source IPs and Ports</label>
+        <advanced>true</advanced>
+        <help>This can be used to specify source address and/or source port that the proxy will use for connecting to clients to send messages (e.g. Access Request). The same syntax as for Listen... applies.</help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.sourceUdp</id>
+        <label>Source UDP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.sourceTcp</id>
+        <label>Source TCP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.sourceTls</id>
+        <label>Source TLS</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+    <field>
+        <id>radsecproxy.general.sourceDtls</id>
+        <label>Source DTLS</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Format: (address|*)[:port]]]></help>
+    </field>
+
+ </form>

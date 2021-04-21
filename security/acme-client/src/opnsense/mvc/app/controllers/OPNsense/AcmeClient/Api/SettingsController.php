@@ -384,7 +384,7 @@ class SettingsController extends ApiMutableModelControllerBase
     }
 
     /**
-     * Check wether the Google Cloud plugin is installed.
+     * Check whether the Google Cloud plugin is installed.
      * @return array status action
      */
     public function getGcloudPluginStatusAction()
@@ -402,7 +402,7 @@ class SettingsController extends ApiMutableModelControllerBase
     }
 
     /**
-     * Check wether the BIND plugin is installed.
+     * Check whether the BIND plugin is installed.
      * @return array status action
      */
     public function getBindPluginStatusAction()

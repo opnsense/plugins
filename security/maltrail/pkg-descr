@@ -11,6 +11,15 @@ WWW: https://github.com/stamparm/maltrail
 Changelog
 ---------
 
+1.7
+
+* Allow sensor cron restart
+* Add syslog export
+
+1.6
+
+* Allow to set capture buffer size
+
 1.5
 
 * Change whitelisting format (by @jkellerer)
