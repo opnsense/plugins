@@ -27,6 +27,7 @@
  *  DNS-O-Matic                 - Last Tested: 9 September 2010
  *  DNSexit                     - Last Tested: 20 July 2008
  *  DigitalOcean                - Last Tested: 25 June 2019
+ *  DigitalOcean v6             - Last Tested: 13 May 2020
  *  Duck DNS                    - Last Tested: 04 March 2015
  *  DynDNS Dynamic              - Last Tested: 12 July 2005
  *  EasyDNS                     - Last Tested: 20 July 2008
@@ -248,6 +249,7 @@ class updatedns
             case 'azurev6':
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'digitalocean-v6':
             case 'dynv6-v6':
             case 'he-net-v6':
             case 'godaddy-v6':
@@ -626,6 +628,7 @@ class updatedns
                 curl_setopt($ch, CURLOPT_URL, $server . 'hostname=' . $this->_dnsHost);
                 break;
             case 'digitalocean':
+            case 'digitalocean-v6':
                 /*
                 * dnsHost should be the root domain
                 * dnsUser should be the record ID
@@ -633,6 +636,13 @@ class updatedns
                 */
                 $server = "https://api.digitalocean.com/v2/domains/" . $this->_dnsHost . "/records/" . $this->_dnsUser;
                 $hostData = array("data" => "{$this->_dnsIP}");
+
+                /*
+                * DigitalOcean does not offer the API via IPv6, so we need
+                * to force sending the request using IPv4 when updating for IPv6
+                */
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -1577,6 +1587,7 @@ class updatedns
                 }
                 break;
             case 'digitalocean':
+            case 'digitalocean-v6':
                 $output = json_decode($data);
                 if ($output->domain_record->data === $this->_dnsIP) {
                     $status = "Dynamic DNS: (Success) Record ID {$this->_dnsUser} updated to {$this->_dnsIP}";
