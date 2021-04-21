@@ -1,4 +1,4 @@
-# dnscrypt-proxy plugin v2.0.45 revision 1
+# dnscrypt-proxy plugin v2.0.45
 
 # ![dnscrypt-proxy 2](https://raw.github.com/dnscrypt/dnscrypt-proxy/master/logo.png?3)
 
