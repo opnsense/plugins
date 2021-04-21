@@ -15,7 +15,7 @@
  *    - _checkIP()
  * +----------------------------------------------------+
  *  3322                        - Last Tested: 26 May 2017
- *  All-Inkl                   - Last Tested: 02 March 2020
+ *  All-Inkl                    - Last Tested: 02 March 2020
  *  Amazon Route53              - Last Tested: 01 April 2012
  *  Amazon Route53 v6           - Last Tested: 19 November 2017
  *  Azure DNS                   - Last Tested: 16 October 2019
