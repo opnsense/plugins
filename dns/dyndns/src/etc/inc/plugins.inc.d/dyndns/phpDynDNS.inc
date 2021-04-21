@@ -22,16 +22,12 @@
  *  Cloudflare                  - Last Tested: 16 April 2019
  *  Cloudflare IPv6             - Last Tested: 16 April 2019
  *  Cloudflare w/API token      - Last Tested: 13 June 2020
- *  Cloudflare w/API token v6   - Last Tested: NEVER
  *  DHS                         - Last Tested: 12 July 2005
  *  DNS-O-Matic                 - Last Tested: 9 September 2010
  *  DNSexit                     - Last Tested: 20 July 2008
  *  DigitalOcean                - Last Tested: 25 June 2019
  *  Duck DNS                    - Last Tested: 04 March 2015
- *  DynDNS Custom               - Last Tested: NEVER
  *  DynDNS Dynamic              - Last Tested: 12 July 2005
- *  DynDNS Static               - Last Tested: NEVER
- *  Dyns                        - Last Tested: NEVER
  *  EasyDNS                     - Last Tested: 20 July 2008
  *  Eurodns                     - Last Tested: 25 July 2018
  *  FreeDNS                     - Last Tested: 06 March 2021
@@ -43,19 +39,18 @@
  *  HE.net                      - Last Tested: 7 July 2013
  *  HE.net IPv6                 - Last Tested: 7 July 2013
  *  HE.net Tunnel               - Last Tested: 28 June 2011
+ *  Hetzner DNS Console         - Last Tested: 06 February 2021
+ *  Hetzner DNS Console v6      - Last Tested: 06 February 2021
  *  HN.org                      - Last Tested: 12 July 2005
  *  Linode                      - Last Tested: 25 February 2020
  *  Linode v6                   - Last Tested: 25 February 2020
- *  Loopia                      - Last Tested: NEVER
  *  Namecheap                   - Last Tested: 31 August 2010
  *  No-IP                       - Last Tested: 20 July 2008
  *  ODS                         - Last Tested: 02 August 2005
- *  OVH DynHOST                 - Last Tested: NEVER
  *  Oray                        - Last Tested: 26 May 2017
  *  STRATO                      - Last Tested: 09 May 2017
  *  SelfHost                    - Last Tested: 26 December 2011
  *  StaticCling                 - Last Tested: 27 April 2006
- *  ZoneEdit                    - Last Tested: NEVER
  *  dynv6                       - Last Tested: 25 June 2019
  *  dynv6 v6                    - Last Tested: 25 June 2019
  *  regfish                     - Last Tested: 15 August 2017
@@ -832,18 +827,18 @@ class updatedns
                 $fqdn = str_replace(' ', '', $this->_dnsHost);
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
                 $ttlData = intval($this->_dnsTTL) < 1 ? 120 : intval($this->_dnsTTL);
-                $hostData = array(
+                $hostData = [
                     "value" => "{$this->_dnsIP}",
                     "type" => $recordType,
                     "name" => "",
                     "ttl" => $ttlData,
-		    "zone_id" => ""
-                );
+                    "zone_id" => ""
+                ];
 
-                $headerAuth = array(
+                $headerAuth = [
                     "Auth-API-Token: {$this->_dnsPass}",
                     'Content-Type: application/json'
-                );
+                ];
 
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headerAuth);
@@ -855,10 +850,8 @@ class updatedns
                 $output = json_decode($rawoutput);
                 $zoneId = null; // Set default value
 
-
                 // Iterate zone objects, check if $fqdn is equal to or ends with zone name
                 foreach ($output->zones as $key => $zoneObj) {
-
                     if (preg_match("/^{$zoneObj->name}$|\.{$zoneObj->name}$/", $fqdn)) {
                         // Found matching zone
                         $zoneId = $zoneObj->id;
@@ -894,8 +887,7 @@ class updatedns
                         $setRecordUrl = "$baseUrl/records/$recordId";
                         curl_setopt($ch, CURLOPT_URL, $setRecordUrl);
                         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                    }
-                    else {
+                    } else {
                         $setRecordUrl = "$baseUrl/records";
                         curl_setopt($ch, CURLOPT_URL, $setRecordUrl);
                         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
