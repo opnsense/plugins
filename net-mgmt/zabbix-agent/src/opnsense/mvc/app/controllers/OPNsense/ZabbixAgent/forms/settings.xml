@@ -42,6 +42,13 @@
             <help><![CDATA[List of IP addresses (or hostnames) of Zabbix servers. Incoming connections will be accepted only from the hosts listed here.]]></help>
         </field>
         <field>
+            <id>zabbixagent.settings.main.syslogEnable</id>
+            <label>Log to syslog</label>
+            <type>text</type>
+            <help><![CDATA[Use syslog, instead of logging to file.]]></help>
+            <advanced>true</advanced>
+        </field>
+        <field>
             <id>zabbixagent.settings.main.logFileSize</id>
             <label>Log File Size</label>
             <type>text</type>
