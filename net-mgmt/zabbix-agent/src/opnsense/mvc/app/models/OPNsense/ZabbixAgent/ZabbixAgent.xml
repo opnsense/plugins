@@ -45,6 +45,10 @@
                     <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </sourceIP>
+                <syslogEnable type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </syslogEnable>
                 <logFileSize type="IntegerField">
                     <default>100</default>
                     <MinimumValue>1</MinimumValue>
