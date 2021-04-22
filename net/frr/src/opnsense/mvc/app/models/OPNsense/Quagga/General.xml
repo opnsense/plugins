@@ -24,6 +24,10 @@
             <default>1</default>
             <Required>Y</Required>
         </enablesyslog>
+        <enablesnmp type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enablesnmp>
         <sysloglevel type="OptionField">
             <Required>Y</Required>
             <multiple>N</multiple>
