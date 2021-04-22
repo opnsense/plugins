@@ -1,0 +1,127 @@
+<form>
+    <field>
+        <label>Global Parameters</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.root</id>
+        <label>Run as root</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable HAProxy running as user root. Enabling this option is strongly discouraged.<br/><div class="text-info"><b>NOTE:</b> Running as user root could be a security issue but it may be required by some features.</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.nbproc</id>
+        <label>HAProxy processes (DEPRECATED)</label>
+        <type>text</type>
+        <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>WARNING:</b> This option is deprecated and will be removed in a future version of HAProxy, threads should be used instead.</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.nbthread</id>
+        <label>HAProxy threads</label>
+        <type>text</type>
+        <help><![CDATA[Number of threads to create for each HAProxy process.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.maxConnections</id>
+        <label>Maximum connections</label>
+        <type>text</type>
+        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> HAProxy will not be able to allocate enough memory if you set this value too high. Consider raising the settings for kern.maxfiles and kern.maxfilesperproc if you need to specify a non-default value.</div>]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.sslServerVerify</id>
+        <label>Verify SSL Server Certificates</label>
+        <type>dropdown</type>
+        <help><![CDATA[This enforces a certain behavior for SSL verify on servers, ignoring per-server settings. If set to 'enforce verify', server certificates are verified. If set to 'disable verify', server certificates are not verified. The default is 'no preference' to only use per-server configurations and not enforce a global default for all servers.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.maxDHSize</id>
+        <label>Maximum SSL DH Size</label>
+        <type>text</type>
+        <help><![CDATA[Sets the maximum size of the Diffie-Hellman parameters used for generating the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange (default is 1024).<br/><div class="text-info"><b>NOTE:</b> Higher values will increase the CPU load. For more information about the "tune.ssl.default-dh-param" option please see the HAProxy Documentation.</div>]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.bufferSize</id>
+        <label>Buffer size</label>
+        <type>text</type>
+        <help><![CDATA[Change the buffer size (in bytes). Lower values allow more sessions to coexist in the same amount of RAM, and higher values allow some applications with very large cookies to work. The default value is 16384. <br/><div class="text-info"><b>NOTE:</b> It is strongly recommended not to change this from the default value, as very low values will break some services such as statistics, and values larger than default size will increase memory usage, possibly causing the system to run out of memory.</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.checkBufferSize</id>
+        <label>Health check buffer size</label>
+        <type>text</type>
+        <help><![CDATA[Change the check buffer size (in bytes). Higher values may help find string or regex patterns in very large pages, though doing so may imply more memory and CPU usage. The default value is 16384.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.luaMaxMem</id>
+        <label>Maximum RAM per LUA process</label>
+        <type>text</type>
+        <help><![CDATA[Sets the maximum amount of RAM in megabytes per process usable by Lua. By default it is zero which means unlimited. It is important to set a limit to ensure that a bug in a script will not result in the system running out of memory.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.spreadChecks</id>
+        <label>Spread checks</label>
+        <type>text</type>
+        <help><![CDATA[Add some randomness in the check interval between 0 and +/- 50%. A value between 2 and 5 seems to show good results. The default value is 0 (disabled).]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.bogusProxyEnabled</id>
+        <label>Enable old bogus PROXY v2 implementation</label>
+        <type>checkbox</type>
+        <help><![CDATA[A bug in the PROXY protocol v2 implementation was present in HAProxy up to version 2.1. Enabling this option reverts this old buggy behaviour.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.customOptions</id>
+        <label>Custom options</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the global settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>SSL default settings</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_defaultsEnabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable global SSL default values.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_minVersion</id>
+        <label>Minimum SSL Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option enforces use of the specified version (or higher) on SSL connections.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_maxVersion</id>
+        <label>Maximum SSL Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option enforces use of the specified version (or lower) on SSL connections.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_cipherList</id>
+        <label>Cipher List</label>
+        <type>text</type>
+        <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake up to TLSv1.2.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_cipherSuites</id>
+        <label>Cipher Suites</label>
+        <type>text</type>
+        <help><![CDATA[It sets the default string describing the list of cipher algorithms ("cipher suite") that are negotiated during the SSL/TLS handshake for TLSv1.3.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ssl_bindOptions</id>
+        <label>Bind options</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
+    </field>
+</form>

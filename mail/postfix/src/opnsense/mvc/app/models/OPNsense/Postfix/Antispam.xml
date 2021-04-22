@@ -1,19 +1,19 @@
 <model>
     <mount>//OPNsense/postfix/antispam</mount>
     <description>Postfix Antispam configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enable_rspamd type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
         </enable_rspamd>
-        <milter_rspamd type="OptionField">
-            <default>6</default>
+        <default_action type="OptionField">
+            <default>accept</default>
             <Required>Y</Required>
             <OptionValues>
-                <Option1 value="6">IPv6</Option1>
-                <Option2 value="4">IPv4</Option2>
+                <accept>accept</accept>
+                <tempfail>tempfail</tempfail>
             </OptionValues>
-        </milter_rspamd>
+        </default_action>
     </items>
 </model>

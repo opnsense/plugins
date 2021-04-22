@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/maltrail/sensor</mount>
     <description>Maltrail sensor configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -11,6 +11,12 @@
             <default>0</default>
             <Required>Y</Required>
         </captureall>
+        <capturebuffer type="IntegerField">
+            <MinimumValue>10</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Please specify a buffer size between 10 and 1000 MB</ValidationMessage>
+            <Required>N</Required>
+        </capturebuffer>
         <remoteserver type="HostnameField">
             <Required>N</Required>
         </remoteserver>
@@ -18,5 +24,12 @@
             <default>8337</default>
             <Required>Y</Required>
         </remoteport>
+        <syslogserver type="HostnameField">
+            <Required>N</Required>
+        </syslogserver>
+        <syslogport type="PortField">
+            <default>514</default>
+            <Required>Y</Required>
+        </syslogport>
     </items>
 </model>

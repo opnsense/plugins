@@ -2,7 +2,7 @@
 
 (Partially duplicates code from opnsense_bootgrid_plugin.js.)
 
-Copyright (C) 2017 Frank Wall
+Copyright (C) 2017-2020 Frank Wall
 Copyright (C) 2015 Deciso B.V.
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
@@ -48,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
             sign:'/api/acmeclient/certificates/sign/',
             revoke:'/api/acmeclient/certificates/revoke/',
             removekey:'/api/acmeclient/certificates/removekey/',
+            automation:'/api/acmeclient/certificates/automation/',
         };
 
         var gridopt = {
@@ -58,12 +59,13 @@ POSSIBILITY OF SUCH DAMAGE.
             url: '/api/acmeclient/certificates/search',
             formatters: {
                 "commands": function (column, row) {
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                    return "<button type=\"button\" title=\"{{ lang._('edit certificate') }}\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" title=\"{{ lang._('copy certificate') }}\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('issue or renew certificate') }}\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('run automations') }}\" class=\"btn btn-xs btn-default command-automation\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('revoke certificate') }}\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('reset certificate') }}\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('remove certificate') }}\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {
@@ -316,13 +318,12 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // sign cert
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-sign").on("click", function(e)
             {
                 if (gridParams['sign'] != undefined) {
                     var uuid=$(this).data("row-id");
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Forcefully (re-)issue the selected certificate?') }}',
+                        '{{ lang._('Forcefully issue or renew the selected certificate?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         // Handle HAProxy integration (no-op if not applicable)
                         ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
@@ -338,7 +339,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // revoke cert
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-revoke").on("click", function(e)
             {
                 if (gridParams['revoke'] != undefined) {
@@ -358,7 +358,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // remove private key
-            // TODO: this should block other acme.sh actions
             grid_certificates.find(".command-removekey").on("click", function(e)
             {
                 if (gridParams['removekey'] != undefined) {
@@ -374,6 +373,25 @@ POSSIBILITY OF SUCH DAMAGE.
                     }, 'danger');
                 } else {
                     console.log("[grid] action removekey missing")
+                }
+            });
+
+            // run automation
+            grid_certificates.find(".command-automation").on("click", function(e)
+            {
+                if (gridParams['automation'] != undefined) {
+                    var uuid=$(this).data("row-id");
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('Rerun all automations for the selected certificate?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['automation'] + uuid,
+                            sendData={},callback=function(data,status){
+                                // reload grid after sign
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    });
+                } else {
+                    console.log("[grid] action automation missing")
                 }
             });
 
@@ -395,7 +413,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
         /**
          * Sign or renew ALL certificates
-         * TODO: this should block other acme.sh actions
          */
         $("#signallcertsAct").click(function(){
             //$("#signallcertsAct_progress").addClass("fa fa-spinner fa-pulse");

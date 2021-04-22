@@ -8,6 +8,7 @@
         <id>naxsi_rule.message</id>
         <label>Message</label>
         <type>text</type>
+        <help>A string describing the pattern. This is mostly used for analyzing and to have some human-understandable text.</help>
     </field>
     <field>
         <id>naxsi_rule.negate</id>
@@ -18,17 +19,23 @@
     <field>
         <id>naxsi_rule.identifier</id>
         <label>ID</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <help>For blacklist rules, the unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)&lt;br&gt;For whitelists, specify one or more comma separated IDs to whitelist. 0 whitelists all rules.</help>
     </field>
     <field>
         <id>naxsi_rule.ruletype</id>
         <label>Rule Type</label>
         <type>dropdown</type>
+        <help>Main rules increase the policiy's score if matched. Basic rules are added directly to the location and match immeditaly. Basic rules are specifically useful for whitelist rules. Also basic rules need to be added to a policy to allow association with a location.</help>
     </field>
     <field>
         <id>naxsi_rule.regex</id>
         <label>Use Regular Expressions</label>
         <type>checkbox</type>
+        <help>If enabled, the match value, the URL, named parameters and headers are matched using regular expressions; otherwise only exact matches trigger the rule.</help>
     </field>
     <field>
         <id>naxsi_rule.match_value</id>
@@ -40,71 +47,79 @@
         <label>Match Type</label>
         <type>dropdown</type>
         <style>selectpicker</style>
+        <help>A blacklist rule increases the policy's score if the pattern matches. A whitelist rule instructs Naxsi to ignore specific rules under specific conditions.</help>
     </field>
     <field>
         <id>naxsi_rule.args</id>
-        <label>Arguments</label>
+        <label>Search in any GET Argument</label>
         <type>checkbox</type>
+        <help>Search for matchs in a request's GET arguments.</help>
     </field>
     <field>
         <id>naxsi_rule.url</id>
-        <label>URL</label>
+        <label>Search in URL</label>
         <type>checkbox</type>
+        <help>Search for matchs in a request's URL (everything before ?).</help>
     </field>
     <field>
         <id>naxsi_rule.headers</id>
-        <label>Headers</label>
+        <label>Search in any HTTP Header</label>
         <type>checkbox</type>
+        <help>Search for matchs in a request's HTTP headers.</help>
     </field>
     <field>
         <id>naxsi_rule.body</id>
-        <label>Body</label>
+        <label>Search in any POST Argument and in Body</label>
         <type>checkbox</type>
+        <help>Search for matchs in a request's POST arguments and its raw (unparsed) body.</help>
     </field>
     <field>
         <id>naxsi_rule.name</id>
-        <label>Name</label>
+        <label>Match Name Instead of Value</label>
         <type>checkbox</type>
         <help>Check this box to match the variable name and not its content when matching any of the above checkboxes.</help>
     </field>
     <field>
         <id>naxsi_rule.file_extension</id>
-        <label>File Extension</label>
+        <label>Search in Filename</label>
         <type>checkbox</type>
+        <help>Search for matchs in a multipart POST request's filenames.</help>
     </field>
     <field>
         <id>naxsi_rule.raw_body</id>
-        <label>Raw Body</label>
+        <label>Search in Raw Body</label>
         <type>checkbox</type>
+        <help>Search for matchs in a request's raw unparsed body.</help>
     </field>
     <field>
         <id>naxsi_rule.dollar_url</id>
-        <label>URL or URL Pattern</label>
+        <label>Restrict to URL</label>
         <type>text</type>
-        <help>Enter the name of a parameter to match.</help>
+        <help>Restrict match to a specific URL (supports regular expressions if enabled for this rule).</help>
     </field>
     <field>
         <id>naxsi_rule.dollar_args_var</id>
-        <label>Named Argument</label>
+        <label>Search in specific GET Argument</label>
         <type>text</type>
-        <help>Enter the name of a parameter to match.</help>
+        <help>Enter the name of a GET parameter to restrict matches to (supports regular expressions if enabled for this rule).</help>
     </field>
     <field>
         <id>naxsi_rule.dollar_body_var</id>
-        <label>Named Body Variable</label>
+        <label>Search in specific POST Argument</label>
         <type>text</type>
-        <help>Enter the name of a variable in the HTTP body to match.</help>
+        <help>Enter the name of a POST parameter to restrict matches to (supports regular expressions if enabled for this rule).</help>
     </field>
     <field>
         <id>naxsi_rule.dollar_headers_var</id>
-        <label>Named Header</label>
+        <label>Search in specific HTTP Header</label>
         <type>text</type>
-        <help>Enter the name of an HTTP header to match.</help>
+        <help>Enter the name of a HTTP header to restrict matches to (supports regular expressions if enabled for this rule).</help>
     </field>
     <field>
         <id>naxsi_rule.score</id>
         <label>Score</label>
         <type>text</type>
+        <help>If the rule matches the counter of each policy containing the rule will increase. If a policy's counter exceeds the configured "value" (to be configured at the policy) the policy's action gets triggered.</help>
     </field>
 
 </form>
