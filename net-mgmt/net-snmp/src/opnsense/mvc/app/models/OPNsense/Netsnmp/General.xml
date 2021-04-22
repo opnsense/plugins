@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/netsnmp/general</mount>
     <description>Netsnmp configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -27,6 +27,10 @@
             <default>0</default>
             <Required>Y</Required>
         </versionoid>
+        <enableagentx type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enableagentx>
         <listen type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
