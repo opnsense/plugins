@@ -12,6 +12,10 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.5
+
+* Add log file to web GUI (contributed by Starkstromkonsument)
+
 1.4
 
 * Allow setting ConfigFrequency
@@ -21,7 +25,6 @@ Plugin Changelog
 1.3
 
 * Switch to zabbix5-proxy
-* Add logfile to WebUI (Starkstromkonsument <https://github.com/Starkstromkonsument>)
 
 1.2
 

@@ -1,6 +1,6 @@
 """
     Copyright (c) 2020 Ad Schellevis <ad@opnsense.org>
-    Copyright (C) 2020 Starkstromkonsument <https://github.com/Starkstromkonsument>
+    Copyright (C) 2020 Starkstromkonsument
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
