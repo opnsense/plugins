@@ -19,6 +19,12 @@
         <help>This will activate the routing service only on the master device.</help>
     </field>
     <field>
+        <id>general.enablesnmp</id>
+        <label>Enable SNMP AgentX Support</label>
+        <type>checkbox</type>
+        <help>This will activate support for Net-SNMP AgentX.</help>
+    </field>
+    <field>
         <id>general.enablesyslog</id>
         <label>Enable logging</label>
         <type>checkbox</type>
