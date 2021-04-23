@@ -14,6 +14,7 @@ Plugin Changelog
 1.22
 
 * Add BFD support
+* Add support for agentx (contributed by Joshua Schmidlkofer)
 
 1.21
 
