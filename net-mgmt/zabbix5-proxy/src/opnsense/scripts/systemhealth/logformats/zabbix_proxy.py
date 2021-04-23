@@ -53,4 +53,3 @@ class ZabbixLogFormat(BaseLogFormat):
     def line(line):
         tmp = re.match(zabbix_timeformat, line)
         return tmp.group(3)
-
