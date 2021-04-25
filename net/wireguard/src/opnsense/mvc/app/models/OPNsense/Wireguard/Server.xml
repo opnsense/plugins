@@ -43,7 +43,7 @@
                 <tunneladdress type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <asList>Y</asList>
                 </tunneladdress>
                 <disableroutes type="BooleanField">
