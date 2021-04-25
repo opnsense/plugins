@@ -355,6 +355,10 @@ This whole approach results in a massive section for a relatively small amount o
 
 #### Controllers
 
+The documentation for the Controllers is located here:
+
+**[PHP Documentation](https://agh1467.github.io/dnscrypt-proxy-v2.0.45/packages/OPNsense-Dnscryptproxy.html)**
+
 The Controller footprint is expanded a little due to the additional page definitions. An additional controller not related to a pages is `ControllerBase.php` this is copied from Core and is used to parse form XMLs differently when using `getForm()`. This function walks deeper into the XML, parses element attributes, and supports arrays beyond the first and second levels. This allows for much more flexibility in the XML design to be able to create more complex layout_partials to dynamically create elements on a page.
 
 The controllers here aren't overly complex. The only differences from the originals are utilizing the custom `getForm()`, utilizing setVars() to set the variables instead of the magic setter (purely aesthetic reasons), changing the variable convention, and absence of calls to parse edit dialog forms.
@@ -396,10 +400,6 @@ There is one script for importing lists (allowed/blocked/cloaking), another for 
 The PHP scripts exist only because it was one way I found I could retrieve data out of the config from outside of an API. I'm not sure if this is the best approach. I see that configd is able to parse the config using pure python, this may be the preferred method, and I will probably switch to that approach later.
 
 The setup.sh script has been replaced with a +POST_INSTALL.post action. References to this script in the configd conf have been removed, as they're unnecessary.
-
-### PHP Documentation
-
-<Link to the PHP docs?>
 
 ### Notes from the DNSCrypt Proxy installation
 
