@@ -49,14 +49,14 @@ if (isset($configObj->OPNsense->$plugin_name->sources)) {
 
     if (count($cache_files) > 0) {
         if ($argv[1] == 'names') {
-            exec($cmd . ' ' . escapeshellarg(implode(',', $cache_files)) . ' ' . 'names', $output);
-            $tmp_file = '/tmp/' . $plugin_name . '_relays_names.json';
+            exec($cmd.' '.escapeshellarg(implode(',', $cache_files)).' '.'names', $output);
+            $tmp_file = '/tmp/'.$plugin_name.'_relays_names.json';
             $tmp_file_handle = fopen($tmp_file, 'w');
             $output_j = join("\n", $output);
             fwrite($tmp_file_handle, $output_j);
             fclose($tmp_file_handle);
         } else {
-            exec($cmd . ' ' . escapeshellarg(implode(',', $cache_files)), $output);
+            exec($cmd.' '.escapeshellarg(implode(',', $cache_files)), $output);
             $output_j = join("\n", $output);
             echo($output_j);
         }
