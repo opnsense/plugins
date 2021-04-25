@@ -312,7 +312,7 @@ cache = false
 {%      endif %}
 {%  endif -%}
 
-{%  if cfg['query_logging'] == '1' %}
+{%  if cfg['query_log']['enabled'] == '1' %}
 
 ################################################################################
 #        Query logging                                                         #
@@ -325,11 +325,9 @@ cache = false
   file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
-{%  if cfg['query_log']['ignored_qtypes'] is defined %}
+{%      if cfg['query_log']['ignored_qtypes'] is defined %}
   ignored_qtypes = [{{ "'" + ("','".join(cfg['query_log']['ignored_qtypes'].split(','))) + "'" }}]
-{%  endif -%}
-
-
+{%      endif %}
 {%  endif -%}
 
 {%  if cfg['nx_logging'] == '1' %}
