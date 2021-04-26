@@ -68,19 +68,28 @@ if (isset($configObj->OPNsense->$plugin_name->doh_client_x509_auth->creds)) {
 
         // Open and write out our files if we have something to write.
         if (isset($cred->client_cert)) {
-            $client_cert_handle = fopen($plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $client_cert_suffix, 'w');
+            $client_cert_handle = fopen(
+                $plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $client_cert_suffix,
+                'w'
+            );
             fwrite($client_cert_handle, $cred->client_cert->__toString());
             fclose($client_cert_handle);
         }
 
         if (isset($cred->client_cert_key)) {
-            $client_cert_key_handle = fopen($plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $client_cert_key_suffix, 'w');
+            $client_cert_key_handle = fopen(
+                $plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $client_cert_key_suffix,
+                'w'
+            );
             fwrite($client_cert_key_handle, $cred->client_cert_key->__toString());
             fclose($client_cert_key_handle);
         }
 
         if (isset($cred->root_ca)) {
-            $root_ca_cert_handle = fopen($plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $root_ca_cert_suffix, 'w');
+            $root_ca_cert_handle = fopen(
+                $plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $root_ca_cert_suffix,
+                'w'
+            );
             fwrite($root_ca_cert_handle, $cred->root_ca->__toString());
             fclose($root_ca_cert_handle);
         }

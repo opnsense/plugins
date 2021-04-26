@@ -113,7 +113,9 @@ class FileController extends ApiControllerBase
                     // parses the content of the file for valid characters.
                     // If parse passes, the uploaded file is copied to the
                     // destination. Returns JSON of status and action.
-                    $response = $backend->configdpRun($settings->configd_name . ' import-list ' . end($target_exp) . ' ' . $temp_filename);
+                    $response = $backend->configdpRun(
+                        $settings->configd_name . ' import-list ' . end($target_exp) . ' ' . $temp_filename
+                    );
 
                     // If configd reports "Execute error," then $response is NULL.
                     // This can happen if there is a misconfiguration in the action (aka missing script/command).
@@ -237,7 +239,11 @@ class FileController extends ApiControllerBase
                     $this->sessionClose();
                     $backend = new Backend();
                     $target_exp = explode('.', $field);
-                    $response = array('status' => $backend->configdpRun($settings->configd_name . ' remove-' . end($target_exp)));
+                    $response = array(
+                        'status' => $backend->configdpRun(
+                            $settings->configd_name . ' remove-' . end($target_exp)
+                        ),
+                    );
                     if (trim($response['status']) != 'OK') {
                         $response['error'] = 'Error encountered';
                     }

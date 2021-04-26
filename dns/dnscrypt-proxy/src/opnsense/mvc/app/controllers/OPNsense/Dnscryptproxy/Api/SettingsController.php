@@ -236,12 +236,12 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         if (
             in_array($action, array(
-            'search',
-            'get',
-            'set',
-            'add',
-            'del',
-            'toggle',
+                'search',
+                'get',
+                'set',
+                'add',
+                'del',
+                'toggle',
             ))
         ) { // Check that we only operate on valid actions.
             if (array_key_exists($target, $this->valid_grid_targets)) {  // Only operate on valid targets.
@@ -279,7 +279,8 @@ class SettingsController extends ApiMutableModelControllerBase
                         return $this->toggleBase($target, $uuid);
                     default:
                         // If we get here it's probably a bug in this function.
-                        $result['message'] = 'Some parameters were missing for action "' . $action . '" on target "' . $target . '"';
+                        $result['message'] =
+                            'Some parameters were missing for action "' . $action . '" on target "' . $target . '"';
                 }
             } else {
                 $result['message'] = 'Unsupported target ' . $target;
@@ -350,11 +351,12 @@ class SettingsController extends ApiMutableModelControllerBase
                                     if (isset($field['columns'])) {
                                         foreach ($field['columns'] as $field_element => $field_element_value) {
                                             if ($field_element == 'column') {
-                                                // This is another check for non-nested array corner case same as with field above.
+                                                // This is another check for non-nested array
+                                                // corner case same as with field above.
                                                 // This will happen if there is only one column defined.
                                                 if (
                                                     ! (
-                                                    is_array($field_element_value[0]) ||
+                                                        is_array($field_element_value[0]) ||
                                                     ($field_element_value[0]) instanceof Traversable
                                                     )
                                                 ) {
@@ -478,7 +480,8 @@ class SettingsController extends ApiMutableModelControllerBase
             if (! is_null($target)) {  // Only do stuff if target is actually set.
                 if (is_array($data)) {  // Only do this if the data we have is an array.
                     if (array_key_exists($target, $this->valid_grid_targets)) {  // Only operate on valid targets.
-                        $path = $this->$target;  // Set the path to the class var of the same name as the value of $target.
+                        // Set the path to the class var of the same name as the value of $target.
+                        $path = $this->$target;
                     } else {
                         return array('status' => 'Specified target "' . $target . "' does not exist.");
                     }
@@ -572,7 +575,8 @@ class SettingsController extends ApiMutableModelControllerBase
         // First we get the current sources to use the UUIDs of each to delete them.
         $sources = $this->searchBase($target, $this->valid_grid_targets[$target]);
 
-        // Deleting each rows in the sources node. This is inefficient, but negligable as most wont add more than these two anyway.
+        // Deleting each rows in the sources node. This is inefficient,
+        // but negligable as most wont add more than these two anyway.
         foreach ($sources['rows'] as $source) {
             $this->delBase($target, $source['uuid']);
         }
@@ -583,16 +587,22 @@ class SettingsController extends ApiMutableModelControllerBase
         $_POST['public_resolvers'] = array(
             'enabled' => 1,
             'name' => 'public-resolvers',
-            'urls' => 'https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md,https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md',
+            'urls' => implode(',', array(
+                'https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md',
+                'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md',
+            )),
             'cache_file' => 'public-resolvers.md',
             'minisign_key' => 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3',
-            'refresh_delay' => (int) '',  //Have to expicitley define this value as int for validiation, the default setting for this is undefined.
+            'refresh_delay' => (int) '',  //Have to expicitley cast int for validiation, default is undefined.
             'prefix' => '',
         );
         $_POST['relays'] = array(
             'enabled' => 1,
             'name' => 'relays',
-            'urls' => 'https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md,https://download.dnscrypt.info/resolvers-list/v3/relays.md',
+            'urls' => implode(',', array(
+                'https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md',
+                'https://download.dnscrypt.info/resolvers-list/v3/relays.md',
+            )),
             'cache_file' => 'relays.md',
             'minisign_key' => 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3',
             'refresh_delay' => 72,
@@ -647,7 +657,8 @@ class SettingsController extends ApiMutableModelControllerBase
         $result = array('rows' => array());
         $recordIndex = 0;
 
-        // Run the configd command and get the results put into an array. Expects to receive JSON. Maybe add validation later.
+        // Run the configd command and get the results put into an array.
+        // Expects to receive JSON. Maybe add validation later.
         $response = json_decode($backend->configdpRun($configd_cmd), true);
 
         if (! empty($response)) {
@@ -685,16 +696,20 @@ class SettingsController extends ApiMutableModelControllerBase
 
                     foreach ($fields as $fieldname) {  //Iterate through the field list provided as function param.
                         // For each field in the row, we check to see if the searchPhrase is found, one at a time.
-                        // Catch a corner case where a row is missing from the data, test for null (manually defined servers have no description).
+                        // Catch a corner case where a row is missing from the data,
+                        // test for null (manually defined servers have no description).
                         $field = (isset($row[$fieldname]) ? $row[$fieldname] : null);
                         if (! is_null($field)) {
                             if (is_array($field)) {  // Only do if this is an array
-                                foreach ($field as $fieldvalue) {  //Iterate through each value of this array and evaluate.
-                                    if (strtolower($searchPhrase) == strtolower($fieldname)) {  // If the field name happens to match the searchPhrase, we might be a boolean.
-                                        if (is_int($fieldvalue) && ($fieldvalue == 0 || $fieldvalue == 1)) {  // Guess if the field is a boolean.
+                                foreach ($field as $fieldvalue) {
+                                    if (strtolower($searchPhrase) == strtolower($fieldname)) {
+                                        // If the field name happens to match the searchPhrase, we might be a boolean.
+                                        if (is_int($fieldvalue) && ($fieldvalue == 0 || $fieldvalue == 1)) {
+                                            // Guess if the field is a boolean.
                                             if ($fieldvalue == 1) {
-                                                # Guessing that int(1) will mean true.
-                                                # Have to use 0 or 1 here because opensense_bootgrid_plugin.js uses that instead of true/false.
+                                                // Guessing that int(1) will mean true.
+                                                // Have to use 0 or 1 here because opensense_bootgrid_plugin.js
+                                                // uses that instead of true/false.
                                                 $searchFound = true;
 
                                                 break;
@@ -715,8 +730,10 @@ class SettingsController extends ApiMutableModelControllerBase
                                     }
                                 }
                             } else {
-                                if (strtolower($searchPhrase) == strtolower($fieldname)) {  // If the field name happens to match the searchPhrase, we might be a boolean.
-                                    if (is_int($field) && ($field == 0 || $field == 1)) {  // Guess if the field is a boolean.
+                                if (strtolower($searchPhrase) == strtolower($fieldname)) {
+                                    // If the field name happens to match the searchPhrase, we might be a boolean.
+                                    if (is_int($field) && ($field == 0 || $field == 1)) {
+                                        // Guess if the field is a boolean.
                                         if ($field == 1) {
                                             # Guessing that int(1) will mean true.
                                             $searchFound = true;
