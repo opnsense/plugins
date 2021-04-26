@@ -53,38 +53,65 @@
 {%  if this_field['target'] is defined %} {# Only do this if we have a target. #}
 {#      Create an id derived from the target, escaping periods. #}
 <?php $safe_id = preg_replace('/\./','_',$this_field['target']); ?>
-<tr id="row_{{ safe_id }}" {% if this_field['advanced']|default(false)=='true' %} data-advanced="true"{% endif %}>
+<tr
+    id="row_{{ safe_id }}"
+    {{ this_field['advanced']|default(false) ? 'data-advanced="true"' : '' }}
+>
     <td colspan="3">
 {%      if this_field['label']|default('') != '' %}
-            <div class="control-label" id="control_label_{{ safe_id }}">
+        <div class="control-label" id="control_label_{{ safe_id }}">
 {%          if this_field['help']|default(false) %}
-                    <a id="help_for_{{ safe_id }}" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a>
+            <a
+                id="help_for_{{ safe_id }}"
+                href="#"
+                class="showhelp"
+            >
+                    <i class="fa fa-info-circle"></i>
+            </a>
 {%          elseif this_field['help']|default(false) == false %}
-                    <i class="fa fa-info-circle text-muted"></i>
+            <i class="fa fa-info-circle text-muted"></i>
 {%          endif %}
-                <b>{{ this_field['label'] }}</b>
-            </div>
+            <b>{{ lang._('%s')|format(this_field['label']) }}</b>
+        </div>
 {%          if this_field['help']|default(false) %}
-                <div class="hidden" data-for="help_for_{{ safe_id }}">
-                    <small>{{ this_field['help'] }}</small>
-                </div>
+        <div class="hidden" data-for="help_for_{{ safe_id }}">
+            <small>{{ lang._('%s')|format(this_field['help']) }}</small>
+        </div>
 {%          endif %}
 {%      endif %}
 {#  # data-editDialog value must match button values on the edit dialog.
     # The bootgrid plugin uses it like:
     # $("#btn_"+editDlg+"_save").unbind('click');
     # $("#"+editDlg).modal('hide');
-    # so this means that the dialog can't have a . (or other unsafe) in the name since
+    # so this means that the dialog can't have
+    # a . (or other unsafe) in the name since
     # it isn't escaped before using the var in a selector
     # in opnsense_bootgrid_plugin.js #}
-        <table id="bootgrid_{{ safe_id }}" class="table table-condensed table-hover table-striped table-responsive bootgrid-table" {% if this_field['dialog']|default(false) %}data-editDialog="bootgrid_dialog_{{ safe_id }}"{% endif %}>
+        <table
+            id="bootgrid_{{ safe_id }}"
+            class="
+                table
+                table-condensed
+                table-hover
+                table-striped
+                table-responsive
+                bootgrid-table"
+            data-editDialog="{{ this_field['dialog']|default(false) ? 'bootgrid_dialog_'~safe_id : '' }}"
+        >
             <thead>
                 <tr>
 {#  # There are four formatters defined in opnsense_bootgrid_plugin.js,
     # two of them are already used here, another is commandsWithInfo
     # Need to add visibleInSelection #}
 {%      if this_field['api']['toggle']|default('') != '' %}
-                        <th data-column-id="enabled" data-width="0em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th
+                        data-column-id="enabled"
+                        data-width="0em"
+                        data-type="string"
+                        data-formatter="rowtoggle"
+                    >
+                        {{ lang._('%s')|format('Enabled') }}
+                    </th>
 {%      endif %}
 {%      if this_field['columns']['column'][0] is not iterable %}
 {%          set columns_var = [this_field['columns']['column']] %}
@@ -93,59 +120,123 @@
 {%      endif %}
 {%      for index, column in columns_var %}
 {%          set data_formatter = "" %}
-                            <th data-column-id="{{ column['@attributes']['id']|default('') }}"
-                                {%- if column['@attributes']['width']|default('') != '' %} data-width="{{ column['@attributes']['width'] }}" {% endif %}
-                                {%- if column['@attributes']['size']|default('') != '' %} data-size="{{ column['@attributes']['size'] }}" {% endif %}
-                                data-type="{{ column['@attributes']['type']|default('string') }}"
-                                data-visible="{{ column['@attributes']['visible']|default('true') }}"
-                                {# We do this to support other data formatters, right now just boolean. #}
-                                {%- if column['@attributes']['data-formatter']|default('') != '' %} data-formatter="{{ column['@attributes']['data-formatter'] }}"{% endif %}
-                            >
+                    <th
+                        data-column-id="{{ column['@attributes']['id']|default('') }}"
+                        data-width="{{ column['@attributes']['width']|default('') }}"
+                        data-size="{{ column['@attributes']['size']|default('') }}"
+                        data-type="{{ column['@attributes']['type']|default('string') }}"
+                        data-visible="{{ column['@attributes']['visible']|default('true') }}"
+                        data-formatter="{{ column['@attributes']['data-formatter']|default('') }}"
+                    >
 {%          if column is type('array') %}
-                                {{ lang._('%s')|format(column[0]|default('')) }}
+                        {{ lang._('%s')|format(column[0]|default('')) }}
 {%          endif %}
-                            </th>
+                    </th>
 {%      endfor %}
-{%      if (this_field['api']['del']|default('') != '' and this_field['api']['set']|default('') != '' and this_field['api']['get']|default('') != '' and this_field['api']['add']|default('') != '') %}
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7em">{{ lang._('Commands') }}</th>
+{%      if (this_field['api']['del']|default('') != '' and
+            this_field['api']['set']|default('') != '' and
+            this_field['api']['get']|default('') != '' and
+            this_field['api']['add']|default('') != '') %}
+                    <th
+                        data-column-id="commands"
+                        data-formatter="commands"
+                        data-sortable="false"
+                        data-width="7em"
+                    >
+                        {{ lang._('%s')|format('Commands') }}
+                    </th>
 {%      endif %}
-{#                  # Column to house the UUID of each row in the table. Hidden form the user. #}
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false" visibleInSelection="false">{{ lang._('ID') }}</th>
+{#                  # Column to house the UUID of each row
+                    # in the table. Hidden form the user. #}
+                    <th
+                        data-column-id="uuid"
+                        data-type="string"
+                        data-identifier="true"
+                        data-visible="false"
+                        visibleInSelection="false"
+                    >
+                        {{ lang._('%s')|format('ID') }}
+                    </th>
                 </tr>
             </thead>
             <tbody
-                {% if this_field['style']|default('') == 'log' %} {# style field is probably overloaded here, supposed to also be used for css class(es) #}
+{%      if this_field['style']|default('') == 'log' %}
+{#  # style field is probably overloaded here,
+    # supposed to also be used for css class(es) #}
                     {# This is a style for displaying log files.
                        It will respect whitespace and use a fixed-width font
                        for better readability. We override the style and
                        font of the tbody element. #}
-                    style="white-space: pre; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: small;"
-                {% elseif this_field['style']|default('') != '' %}
-                    {# This is for if another style is specified in the form data. #}
-                    style="{{ this_field['style'] }}"
-                {% endif %}
+                style="
+                    white-space: pre;
+                    font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+                    font-size: small;"
+{%      elseif this_field['style']|default('') != '' %}
+{#              # This is for if another style is specified in the form data. #}
+                style="{{ this_field['style'] }}"
+{%      endif %}
             ></tbody>
             <tfoot>
                 <tr>{# Start a new row for our buttons. #}
-{%      if (this_field['api']['add']|default('') != '') or (this_field['api']['del']|default('') != '') %}
-                        <td colspan="{{ (index + 1) }}"></td> {# We use the index from the foreach loop above to put the commands one column after the last field. #}
-                        <td>
-{%          if this_field['api']['add']|default('') != '' %}<button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>{% endif %}
-{%          if this_field['api']['del']|default('') != '' %}<button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>{% endif %}
-                        </td>
+{%      if (this_field['api']['add']|default('') != '' or
+            this_field['api']['del']|default('') != '') %}
+{#  We use the index from the foreach loop above
+    to put the commands one column after the last field. #}
+                    <td colspan="{{ (index + 1) }}"></td>
+                    <td>
+{%          if this_field['api']['add']|default('') != '' %}
+                        <button
+                            data-action="add"
+                            type="button"
+                            class="btn btn-xs btn-default"
+                        >
+                            <span class="fa fa-plus"></span>
+                        </button>
+{%          endif %}
+{%          if this_field['api']['del']|default('') != '' %}
+                        <button
+                            data-action="deleteSelected"
+                            type="button"
+                            class="btn btn-xs btn-default"
+                        >
+                            <span class="fa fa-trash-o"></span>
+                        </button>
+{%          endif %}
+                    </td>
 {%      endif %}
-{%      if (this_field['api']['export']|default('') != '' or this_field['api']['export']|default('') != '') %}
-                </tr> {# Close the previous row, and start a new one. This still looks good even when there isn't an add/del button. #}
+{%      if (this_field['api']['export']|default('') != '' or
+            this_field['api']['export']|default('') != '') %}
+                </tr>
+{#  # Close the previous row, and start a new one.
+    # This still looks good even when there isn't an add/del button. #}
                 <tr>
-                        <td colspan="{{ (index + 1) }}"></td> {# We use the index from the foreach loop above to put the commands one column after the last field. #}
-                        <td>
+{#  # We use the index from the foreach loop above
+    # to put the commands one column after the last field. #}
+                    <td colspan="{{ (index + 1) }}"></td>
+                    <td>
 {%          if this_field['api']['export']|default('') != '' %}
-                            <button id="btn_bootgrid_{{ safe_id }}_export" data-toggle="tooltip" title="{{ lang._('Download') }}" type="button" class="btn btn-xs btn-default"> <span class="fa fa-cloud-download"></span></button>
+                        <button
+                            id="btn_bootgrid_{{ safe_id }}_export"
+                            data-toggle="tooltip"
+                            title="{{ lang._('%s')|format('Download') }}"
+                            type="button"
+                            class="btn btn-xs btn-default"
+                        >
+                            <span class="fa fa-cloud-download"></span>
+                        </button>
 {%          endif %}
 {%          if this_field['api']['import']|default('') != '' %}
-                            <button id="btn_bootgrid_{{ safe_id }}_import" data-toggle="tooltip" title="{{ lang._('Upload') }}" type="button" class="btn btn-xs btn-default"> <span class="fa fa-cloud-upload"></span></button>
+                        <button
+                            id="btn_bootgrid_{{ safe_id }}_import"
+                            data-toggle="tooltip"
+                            title="{{ lang._('%s')|format('Upload') }}"
+                            type="button"
+                            class="btn btn-xs btn-default"
+                        >
+                            <span class="fa fa-cloud-upload"></span>
+                        </button>
 {%          endif %}
-                        </td>
+                    </td>
 {%      endif %}
                 </tr>
             </tfoot>
