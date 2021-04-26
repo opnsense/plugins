@@ -234,14 +234,16 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function gridAction($action, $target, $uuid = null)
     {
-        if (in_array($action, array(
+        if (
+            in_array($action, array(
             'search',
             'get',
             'set',
             'add',
             'del',
             'toggle',
-        ))) { // Check that we only operate on valid actions.
+            ))
+        ) { // Check that we only operate on valid actions.
             if (array_key_exists($target, $this->valid_grid_targets)) {  // Only operate on valid targets.
                 $tmp = explode('.', $target);  // Split target on dots, have to use a temp var here.
                 $key_name = end($tmp);         // Get the last node from the path, and this will be our $key_name.
@@ -253,12 +255,12 @@ class SettingsController extends ApiMutableModelControllerBase
                     case ($action === 'search' && isset($this->valid_grid_targets[$target])):
                         if ($target === 'relays') { // Take care of custom searches first.
                             return $this->bootgridConfigd(
-                                $settings->configd_name.' get-relays',
+                                $settings->configd_name . ' get-relays',
                                 $this->valid_grid_targets[$target]
                             );
                         } elseif ($target === 'resolver_list') {
                             return $this->bootgridConfigd(
-                                $settings->configd_name.' get-resolvers',
+                                $settings->configd_name . ' get-resolvers',
                                 $this->valid_grid_targets[$target]
                             );
                         } elseif (isset($target)) { // All other searches, check $target is set.
@@ -277,13 +279,13 @@ class SettingsController extends ApiMutableModelControllerBase
                         return $this->toggleBase($target, $uuid);
                     default:
                         // If we get here it's probably a bug in this function.
-                        $result['message'] = 'Some parameters were missing for action "'.$action.'" on target "'.$target.'"';
+                        $result['message'] = 'Some parameters were missing for action "' . $action . '" on target "' . $target . '"';
                 }
             } else {
-                $result['message'] = 'Unsupported target '.$target;
+                $result['message'] = 'Unsupported target ' . $target;
             }
         } else {
-            $result['message'] = 'Action "'.$action.'" not found.';
+            $result['message'] = 'Action "' . $action . '" not found.';
         }
         // Since we've gotten here, no valid options were presented,
         // we need to return a valid array for the bootgrid to consume though.
@@ -333,7 +335,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     // We need to detect when SimpleXMLElement puts a field as the
                     // field array itself, instead of inside an array.
                     // We wrap it in an array to fix this.
-                    if ( ! (isset($tab_element_value[0]))) {
+                    if (! (isset($tab_element_value[0]))) {
                         $fields = [$tab_element_value];
                     } elseif (
                         is_array($tab_element_value[0]) ||
@@ -350,10 +352,11 @@ class SettingsController extends ApiMutableModelControllerBase
                                             if ($field_element == 'column') {
                                                 // This is another check for non-nested array corner case same as with field above.
                                                 // This will happen if there is only one column defined.
-                                                if ( ! (
+                                                if (
+                                                    ! (
                                                     is_array($field_element_value[0]) ||
                                                     ($field_element_value[0]) instanceof Traversable
-                                                )
+                                                    )
                                                 ) {
                                                     $column_var = [$field_element_value];
                                                 } elseif (
@@ -411,11 +414,11 @@ class SettingsController extends ApiMutableModelControllerBase
         if ($this->request->isGet()) {
             // Retrive the value of the target key in the GET request.
             $target = $this->request->get('target');
-            if ( ! is_null($target)) {  // If we have a target, check it against the list.
+            if (! is_null($target)) {  // If we have a target, check it against the list.
                 if (array_key_exists($target, $this->valid_grid_targets)) {  // Only operate on valid targets.
                     $path = $this->$target;  // Set the path to the class var of the same name as the value of $target.
                 } else {
-                    return array('status' => 'Specified target "'.$target."' does not exist.");
+                    return array('status' => 'Specified target "' . $target . "' does not exist.");
                 }
 
                 // Get the model, and walk to the appropriate path.
@@ -472,12 +475,12 @@ class SettingsController extends ApiMutableModelControllerBase
             $data = $this->request->getPost('data');
             $target = $this->request->getPost('target');
 
-            if ( ! is_null($target)) {  // Only do stuff if target is actually set.
+            if (! is_null($target)) {  // Only do stuff if target is actually set.
                 if (is_array($data)) {  // Only do this if the data we have is an array.
                     if (array_key_exists($target, $this->valid_grid_targets)) {  // Only operate on valid targets.
                         $path = $this->$target;  // Set the path to the class var of the same name as the value of $target.
                     } else {
-                        return array('status' => 'Specified target "'.$target."' does not exist.");
+                        return array('status' => 'Specified target "' . $target . "' does not exist.");
                     }
                     // Get the model for use later. (used for updating records)
                     $mdl = $this->getModel();
@@ -495,7 +498,7 @@ class SettingsController extends ApiMutableModelControllerBase
                         // Only do if our content is the correct format.
                         if (is_array($data_content)) {
                             // If the node exists (by UUID), this selects the node.
-                            $node = $mdl->getNodeByReference($path.'.'.$data_uuid);
+                            $node = $mdl->getNodeByReference($path . '.' . $data_uuid);
                             // If no node is found, create a new node.
                             if ($node == null) {
                                 $node = $tmp->Add();
@@ -518,7 +521,7 @@ class SettingsController extends ApiMutableModelControllerBase
                         $uuid = $parts[count($parts) - 2];
                         $fieldname = $parts[count($parts) - 1];
                         $uuid_mapping[$uuid] = "$uuid";
-                        $result['validations'][$uuid_mapping[$uuid].'.'.$fieldname] = $msg->getMessage();
+                        $result['validations'][$uuid_mapping[$uuid] . '.' . $fieldname] = $msg->getMessage();
                     }
 
                     // possibly use save() from ApiMutableModelControllerBase
@@ -647,13 +650,13 @@ class SettingsController extends ApiMutableModelControllerBase
         // Run the configd command and get the results put into an array. Expects to receive JSON. Maybe add validation later.
         $response = json_decode($backend->configdpRun($configd_cmd), true);
 
-        if ( ! empty($response)) {
+        if (! empty($response)) {
             // Pivot the data to create arrays of each column of data.
             // ex. rows['description'], rows['nolog'], etc.
             // These are used to sort based on column.
             foreach ($response as $item) {
                 foreach ($item as $key => $value) {
-                    if ( ! isset($rows[$key])) { // Establish the row if it does not already exist.
+                    if (! isset($rows[$key])) { // Establish the row if it does not already exist.
                         $rows[$key] = array();
                     }
                     $rows[$key][] = $value;
@@ -677,14 +680,14 @@ class SettingsController extends ApiMutableModelControllerBase
             // I added a boolean check in the search bit.
             foreach ($response as $row) {
                 // if a search phrase is provided, use it to search in all requested fields
-                if ( ! empty($searchPhrase)) {
+                if (! empty($searchPhrase)) {
                     $searchFound = false;
 
                     foreach ($fields as $fieldname) {  //Iterate through the field list provided as function param.
                         // For each field in the row, we check to see if the searchPhrase is found, one at a time.
                         // Catch a corner case where a row is missing from the data, test for null (manually defined servers have no description).
                         $field = (isset($row[$fieldname]) ? $row[$fieldname] : null);
-                        if ( ! is_null($field)) {
+                        if (! is_null($field)) {
                             if (is_array($field)) {  // Only do if this is an array
                                 foreach ($field as $fieldvalue) {  //Iterate through each value of this array and evaluate.
                                     if (strtolower($searchPhrase) == strtolower($fieldname)) {  // If the field name happens to match the searchPhrase, we might be a boolean.

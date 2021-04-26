@@ -55,9 +55,9 @@ $configObj = Config::getInstance()->object();
 
 // Check that the certificate, and key are set in the config.
 if (isset($configObj->OPNsense->$plugin_name->doh_client_x509_auth->creds)) {
-    if ( ! is_dir($plugin_dir.'/'.$client_cert_dir)) {
+    if (! is_dir($plugin_dir . '/' . $client_cert_dir)) {
         //Directory does not exist, so lets create it.
-        mkdir($plugin_dir.'/'.$client_cert_dir, 0755);
+        mkdir($plugin_dir . '/' . $client_cert_dir, 0755);
     }
 
     foreach ($configObj->OPNsense->$plugin_name->doh_client_x509_auth->creds as $cred) {
@@ -68,19 +68,19 @@ if (isset($configObj->OPNsense->$plugin_name->doh_client_x509_auth->creds)) {
 
         // Open and write out our files if we have something to write.
         if (isset($cred->client_cert)) {
-            $client_cert_handle = fopen($plugin_dir.'/'.$client_cert_dir.'/'.$uuid.$client_cert_suffix, 'w');
+            $client_cert_handle = fopen($plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $client_cert_suffix, 'w');
             fwrite($client_cert_handle, $cred->client_cert->__toString());
             fclose($client_cert_handle);
         }
 
         if (isset($cred->client_cert_key)) {
-            $client_cert_key_handle = fopen($plugin_dir.'/'.$client_cert_dir.'/'.$uuid.$client_cert_key_suffix, 'w');
+            $client_cert_key_handle = fopen($plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $client_cert_key_suffix, 'w');
             fwrite($client_cert_key_handle, $cred->client_cert_key->__toString());
             fclose($client_cert_key_handle);
         }
 
         if (isset($cred->root_ca)) {
-            $root_ca_cert_handle = fopen($plugin_dir.'/'.$client_cert_dir.'/'.$uuid.$root_ca_cert_suffix, 'w');
+            $root_ca_cert_handle = fopen($plugin_dir . '/' . $client_cert_dir . '/' . $uuid . $root_ca_cert_suffix, 'w');
             fwrite($root_ca_cert_handle, $cred->root_ca->__toString());
             fclose($root_ca_cert_handle);
         }
