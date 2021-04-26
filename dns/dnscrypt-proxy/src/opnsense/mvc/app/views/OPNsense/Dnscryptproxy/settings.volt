@@ -59,8 +59,10 @@ $( document ).ready(function() {
 {#/* Display a message to the user while we load settings. */#}
     BootstrapDialog.show({
         title: 'Loading settings',
-        message: 'Please wait while settings are loaded...',
-        closable: false
+        closable: false,
+        message:
+            '{{ lang._("Please wait while settings are loaded...") }}' +
+            '&nbsp&nbsp<i class="fa fa-cog fa-spin"></i>'
     });
 
 {#/* Attachment to trigger restoring the default sources via api. */#}
@@ -122,8 +124,10 @@ $( document ).ready(function() {
             $('div[class^="modal bootstrap-dialog"]').modal('toggle');
             BootstrapDialog.show({
                 title: 'First Time Configuration',
-                message: 'Performing first time configuration. Please wait...',
-                closable: false
+                closeable: false,
+                message:
+                    '{{ lang._("Performing first time configuration. Please wait... ") }}' +
+                    '&nbsp&nbsp<i class="fa fa-cog fa-spin"></i>'
             });
             ajaxCall("/api/dnscryptproxy/settings/restoreSources", {}, function(){
                 dfObj.resolve();
