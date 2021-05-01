@@ -1,8 +1,6 @@
 <model>
     <mount>//OPNsense/dnscrypt-proxy</mount>
-    <version>0.0.1</version>
-    <!-- <version>0.0.1</version> Can't get this to work correctly -->
-    <!-- <description>dnscrypt-proxy configuration</description> Doesn't work? -->
+    <version>2.0.45.1</version>
     <items>
         <first_time_setup type="BooleanField">
         </first_time_setup>
@@ -440,7 +438,8 @@
                             <source>OPNsense\Dnscryptproxy\Settings</source>
                             <!-- Node path within the Class's model. -->
                             <items>schedules.schedule</items>
-                            <!-- This references a key name and creates an internal OptionList array, containing the uuid=>key name pairs. -->
+                            <!-- This references a key name and creates an internal
+                            OptionList array, containing the uuid=>key name pairs. -->
                             <display>name</display>
                         </container> <!-- this element name is arbitrary, not used -->
                     </model>
