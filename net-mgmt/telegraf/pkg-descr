@@ -11,6 +11,9 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 
 Plugin Changelog
 ================
+1.10.1
+
+* Fix Suricata input controller being the output section and incorrect in statement in conf
 
 1.10.0
 
