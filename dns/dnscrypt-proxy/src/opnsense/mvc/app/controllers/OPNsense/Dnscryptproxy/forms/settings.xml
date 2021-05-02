@@ -2034,12 +2034,7 @@
                     <field>
                         <id>creds.client_cert</id>
                         <label>Client Certificate</label>
-                        <hint><![CDATA[
-                            -----BEGIN CERTIFICATE-----&#10;
-                            ...&#10;
-                            -----END CERTIFICATE-----
-                            ]]>
-                        </hint>
+                        <hint><![CDATA[-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----]]></hint>
                         <help><![CDATA[
                             The certificate (or certificate chain) in PEM
                             format.<br>
@@ -2060,12 +2055,7 @@
                     <field>
                         <id>creds.client_cert_key</id>
                         <label>Client Certificate Key</label>
-                        <hint><![CDATA[
-                            -----BEGIN PRIVATE KEY-----&#10;
-                            ...&#10;
-                            -----END PRIVATE KEY-----
-                            ]]>
-                        </hint>
+                        <hint><![CDATA[-----BEGIN PRIVATE KEY-----&#10;...&#10;-----END PRIVATE KEY-----]]></hint>
                         <help><![CDATA[
                             The certificate private key in PEM format.<br>
                             Example:<br>
@@ -2085,12 +2075,7 @@
                     <field>
                         <id>creds.root_ca</id>
                         <label>Root CA Certificate</label>
-                        <hint><![CDATA[
-                            -----BEGIN CERTIFICATE-----&#10;
-                            ...&#10;
-                            -----END CERTIFICATE-----
-                            ]]>
-                        </hint>
+                        <hint><![CDATA[-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----]]></hint>
                         <help><![CDATA[
                             The certificate private key in PEM format.<br>
                             Example:<br>

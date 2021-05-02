@@ -139,7 +139,7 @@ class SettingsController extends ApiMutableModelControllerBase
         $myController = new ControllerBase();
         $this_form = $myController->getForm('settings'); // Pull in the form data.
         // Search the form data for bootgrids.
-        $this->valid_grid_targets = $this->searchGrids($this_form['tabs']);
+        $this->searchGrids($this_form['tabs']);
     }
 
     /**
@@ -313,17 +313,15 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     private function searchGrids($tabs)
     {
-        $target_array = array();
-
         foreach ($tabs as $tab) {
             // Perform recursion based on which type of tabs we have.
             // Continue to the next tab  when we're done with this tab.
             if (isset($tab['subtabs'])) {
-                $target_array = $this->searchGrids($tab['subtabs']);
+                $this->searchGrids($tab['subtabs']);
 
                 continue;
             } elseif (isset($tab['tabs'])) {
-                $target_array = $this->searchGrids($tab['tabs']);
+                $this->searchGrids($tab['tabs']);
 
                 continue;
             }
@@ -369,14 +367,18 @@ class SettingsController extends ApiMutableModelControllerBase
                                                 }
                                                 // Add each column's id as a field.
                                                 foreach ($column_var as $column) {
-                                                    $target_array[$field['target']][] = $column['@attributes']['id'];
+                                                    $this->valid_grid_targets[$field['target']][] =
+                                                        $column['@attributes']['id'];
                                                 }
                                             }
                                         }
                                         // Add the enabled column if toggle api is present.
                                         foreach ($field['api'] as $field_element => $field_element_value) {
                                             if ($field_element == 'toggle') {
-                                                array_unshift($target_array[$field['target']], 'enabled');
+                                                array_unshift(
+                                                    $this->valid_grid_targets[$field['target']],
+                                                    'enabled'
+                                                );
                                             }
                                         }
                                     }
@@ -387,8 +389,6 @@ class SettingsController extends ApiMutableModelControllerBase
                 }
             }
         }
-        // Finally return our results.
-        return $target_array;
     }
 
     /**

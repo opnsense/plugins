@@ -96,9 +96,9 @@ class ServiceController extends ApiMutableServiceControllerBase
 
         // Create a backend to run our activities.
         $backend = new Backend();
-        $response = $backend->configdpRun($settings->configd_name . ' import-doh-client-certs');
+        $response = trim($backend->configdpRun($settings->configd_name . ' import-doh-client-certs'));
 
-        if ($response != "OK\n\n") {
+        if ($response != 'OK') {
             // Return an array containing a reponse for the message box to display.
             return array('status' => 'error', 'message' => $response);
         }

@@ -71,11 +71,10 @@ dns/dnscrypt-proxy/src
 │   │       ├── logs.volt
 │   │       └── settings.volt
 │   ├── scripts/OPNsense/Dnscryptproxy
-│   │   ├── get-relays.php
-│   │   ├── get-relays.py
-│   │   ├── get-resolvers.py
-│   │   ├── import-doh-client-certs.php
-│   │   └── import-list.py
+│   │   ├── get_relays.py
+│   │   ├── get_resolvers.py
+│   │   ├── import_doh_client_certs.py
+│   │   └── import_list.py
 │   └── service
 │       ├── conf/actions.d
 │       │   └── actions_dnscryptproxy.conf
@@ -396,8 +395,6 @@ For all of the files, I've added 'jinja' as a file extension because it makes it
 There are several new scripts here for performing back-end type activities, mostly with files or interacting with `dnscrypt-proxy` itself.
 
 There is one script for importing lists (allowed/blocked/cloaking), another for importing some certificates out of the config. The others are for getting info out of `dnscrypt-proxy` using some command parameters. These scripts are executed dynamically or on-demand from the user depending on the activity.
-
-The PHP scripts exist only because it was one way I found I could retrieve data out of the config from outside of an API. I'm not sure if this is the best approach. I see that configd is able to parse the config using pure python, this may be the preferred method, and I will probably switch to that approach later.
 
 The setup.sh script has been replaced with a +POST_INSTALL.post action. References to this script in the configd conf have been removed, as they're unnecessary.
 
