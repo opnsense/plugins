@@ -2100,7 +2100,8 @@
     <tab id="resolvers" description="Resolvers">
         <subtab id="resolvers" description="Resolvers">
             <field>
-                <target>resolver_list</target>
+                <mode>configd_cmd</mode>
+                <target>get-resolvers</target>
                 <label>Resolver List</label>
                 <help><![CDATA[
                     This is a live list of all of the servers currently
@@ -2591,7 +2592,8 @@
             </dialog>
         </field>
         <field>
-            <target>relays</target>
+            <mode>configd_cmd</mode>
+            <target>get-relays</target>
             <label>Available Relays</label>
             <help><![CDATA[
                 This is a list of detected relays dynamically populated by

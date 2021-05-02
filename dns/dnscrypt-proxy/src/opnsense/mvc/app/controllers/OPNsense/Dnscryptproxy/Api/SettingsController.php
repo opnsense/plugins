@@ -253,18 +253,16 @@ class SettingsController extends ApiMutableModelControllerBase
 
                 switch (true) {
                     case ($action === 'search' && isset($this->valid_grid_targets[$target])):
-                        if ($target === 'relays') { // Take care of custom searches first.
-                            return $this->bootgridConfigd(
-                                $settings->configd_name . ' get-relays',
-                                $this->valid_grid_targets[$target]
-                            );
-                        } elseif ($target === 'resolver_list') {
-                            return $this->bootgridConfigd(
-                                $settings->configd_name . ' get-resolvers',
-                                $this->valid_grid_targets[$target]
-                            );
+                        // Take care of special mode searches first.
+                        if (isset($this->valid_grid_targets[$target]['mode'])) {
+                            if ($this->valid_grid_targets[$target]['mode'] == 'configd_cmd') {
+                                return $this->bootgridConfigd(
+                                    $settings->configd_name . ' ' . $target,
+                                    $this->valid_grid_targets[$target]['columns']
+                                );
+                            }
                         } elseif (isset($target)) { // All other searches, check $target is set.
-                            return $this->searchBase($target, $this->valid_grid_targets[$target]);
+                            return $this->searchBase($target, $this->valid_grid_targets[$target]['columns']);
                         }
                         // no break
                     case ($action === 'get' && isset($key_name) && isset($target)):
@@ -346,6 +344,9 @@ class SettingsController extends ApiMutableModelControllerBase
                         if (isset($field['type'])) {
                             if ($field['type'] == 'bootgrid') {
                                 if (isset($field['target'])) {
+                                    if (isset($field['mode'])) {
+                                        $this->valid_grid_targets[$field['target']]['mode'] = $field['mode'];
+                                    }
                                     if (isset($field['columns'])) {
                                         foreach ($field['columns'] as $field_element => $field_element_value) {
                                             if ($field_element == 'column') {
@@ -367,7 +368,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                                 }
                                                 // Add each column's id as a field.
                                                 foreach ($column_var as $column) {
-                                                    $this->valid_grid_targets[$field['target']][] =
+                                                    $this->valid_grid_targets[$field['target']]['columns'][] =
                                                         $column['@attributes']['id'];
                                                 }
                                             }
@@ -376,7 +377,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                         foreach ($field['api'] as $field_element => $field_element_value) {
                                             if ($field_element == 'toggle') {
                                                 array_unshift(
-                                                    $this->valid_grid_targets[$field['target']],
+                                                    $this->valid_grid_targets[$field['target']]['columns'],
                                                     'enabled'
                                                 );
                                             }
@@ -573,7 +574,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
         $target = 'sources.source';
         // First we get the current sources to use the UUIDs of each to delete them.
-        $sources = $this->searchBase($target, $this->valid_grid_targets[$target]);
+        $sources = $this->searchBase($target, $this->valid_grid_targets[$target]['columns']);
 
         // Deleting each rows in the sources node. This is inefficient,
         // but negligable as most wont add more than these two anyway.
