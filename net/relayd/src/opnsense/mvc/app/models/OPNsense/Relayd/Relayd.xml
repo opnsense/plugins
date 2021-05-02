@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.2</version>
+   <version>1.0.3</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -35,6 +35,10 @@
          </timeout>
       </general>
       <host type="ArrayField">
+        <enabled type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+         </enabled>
          <name type="TextField">
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
