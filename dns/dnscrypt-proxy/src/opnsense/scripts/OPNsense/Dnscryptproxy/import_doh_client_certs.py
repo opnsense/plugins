@@ -40,15 +40,31 @@ import configparser
 import xml.etree.ElementTree
 
 result = {}
+CLIENT_CERT_DIR = "doh_client_x509_auth"
+CLIENT_CERT_SUFFIX = "-client_cert.pem"
+CLIENT_CERT_KEY_SUFFIX = "-client_cert_key.pem"
+ROOT_CA_CERT_SUFFIX = "-root_ca_cert.pem"
 
 # Parse the dnscrypt-proxy config for some settings.
 cnf = configparser.ConfigParser()
-cnf.read('/usr/local/opnsense/service/conf/dnscrypt-proxy.conf')
-
+cnf.read(
+    os.path.dirname(os.path.realpath(__file__))
+    + '/../../../service/conf/dnscrypt-proxy.conf'
+)
 # Create a dictionary for the key:value pairs.
 plugin = dict()
 for envKey in cnf.items('plugin'):
     plugin[envKey[0]] = envKey[1]
+
+DEFAULT_CONFIG = '/conf/config.xml'
+DEFAULT_CONFIG_PATH = \
+    "./OPNsense/" \
+    + plugin['config_node'] \
+    + "/doh_client_x509_auth/creds/[enabled='1']"
+DEFAULT_OUTPUT_DIR = \
+    plugin['conf_dir'] \
+    + "/" \
+    + CLIENT_CERT_DIR
 
 
 def error_out(message):
@@ -60,96 +76,89 @@ def error_out(message):
     sys.exit()
 
 
-def main():
-    """ Main function for outputing the certificates to files.
+def write_cred(cred_content, cred_suffix, cred, output_dir=DEFAULT_OUTPUT_DIR):
+    """ Write the cred out to a file.
     """
-    # //$cache_files = array();
-    # //$cmd =
-    #     '/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy/get-relays.py';
+    if cred_content:
+        with open(
+            output_dir
+            + '/'
+            + cred
+            + cred_suffix,
+            'w'
+        ) as file:
+            file.write(cred_content + "\n")
 
-    # $plugin_name = 'dnscrypt-proxy';
-    # $plugin_dir = '/usr/local/etc/dnscrypt-proxy';
 
-    client_cert_dir = "doh_client_x509_auth"
-    client_cert_suffix = "-client_cert.pem"
-    client_cert_key_suffix = "-client_cert_key.pem"
-    root_ca_cert_suffix = "-root_ca_cert.pem"
-
-    # // Pre-set this to an error message in the case of unexpected
-    # interruption
-    # $result = 'Error';
-    # // This bit came from the captive portal plugin, adapted for use here.
-
-    # // Get the config.
-    # $configObj = Config::getInstance()->object();
-
+def get_config_nodes(
+        config=DEFAULT_CONFIG,
+        xml_path=DEFAULT_CONFIG_PATH
+        ):
+    """ Get the nodes from the config
+    """
     # Parse the config.xml
-    tree = xml.etree.ElementTree.parse('/conf/config.xml')
+    tree = xml.etree.ElementTree.parse(config)
     root_node = tree.getroot()
 
-    # <creds uuid="57cddf7c-f383-4b0d-8d2c-e95e4efee5ea">
-    #   <enabled>0</enabled>
-    #   <server_name>acsacsar-ams-ipv4</server_name>
-    #   <client_cert>-----BEGIN CERTIFICATE-----
-
     # Set up our list, and walk the tree to our desired node.
-    creds = {}
-    config_path = "./OPNsense/" \
-        + plugin['config_node'] \
-        + "/doh_client_x509_auth/creds/[enabled='1']"
+    nodes = {}
 
     # Iterate through all enabled creds.
-    for node in root_node.findall(config_path):
+    for node in root_node.findall(xml_path):
         children = {}
         # Add each sub element as a key:value pair to the children dict.
         for childnode in node:
-            children.update({
-                childnode.tag:
-                    childnode.text})
+            children.update({childnode.tag: childnode.text})
 
         # Add our children array with the uuid of the current node as the key.
-        creds.update({node.get('uuid'): children})
+        nodes.update({node.get('uuid'): children})
 
-    if not os.path.isdir(plugin['conf_dir'] + "/" + client_cert_dir):
-        os.mkdir(plugin['conf_dir'] + "/" + client_cert_dir, 0o0750)
+    return nodes
+
+
+def main(
+        config=DEFAULT_CONFIG,
+        output_dir=DEFAULT_OUTPUT_DIR,
+        xml_path=DEFAULT_CONFIG_PATH,
+        ):
+    """ Main function for outputing the certificates to files.
+    """
+    # Set the desired config path, and get the nodes from that path.
+    creds = get_config_nodes(config, xml_path)
+
+    # Make the directory if we have creds
+    # and the directory if it doesn't exist.
+    if creds and not os.path.isdir(output_dir):
+        os.makedirs(output_dir, 0o0750)
 
     for cred in creds:
-        # Iterate through each creds entry, and create the files for each
-        # cert/key..
-
-        # Open and write out our files if we have something to write.
-        if creds[cred]['client_cert']:
-            with open(
-                plugin['conf_dir'] + '/' + client_cert_dir + '/' + cred
-                + client_cert_suffix,
-                    'w'
-            ) as file:
-                file.write(creds[cred]['client_cert'])
-                file.close()
-
-        # Open and write out our files if we have something to write.
-        if creds[cred]['client_cert_key']:
-            with open(
-                plugin['conf_dir'] + '/' + client_cert_dir + '/' + cred
-                + client_cert_key_suffix,
-                'w'
-            ) as file:
-                file.write(creds[cred]['client_cert_key'])
-                file.close()
-
-        # Open and write out our files if we have something to write.
-        if creds[cred]['root_ca']:
-            with open(
-                plugin['conf_dir'] + '/' + client_cert_dir + '/' + cred
-                + root_ca_cert_suffix,
-                'w'
-            ) as file:
-                file.write(creds[cred]['root_ca'])
-                file.close()
+        # Write the cred out if applicable.
+        write_cred(
+            creds[cred]['client_cert'],
+            CLIENT_CERT_SUFFIX,
+            cred,
+            output_dir
+            )
+        write_cred(
+            creds[cred]['client_cert_key'],
+            CLIENT_CERT_KEY_SUFFIX,
+            cred,
+            output_dir
+            )
+        write_cred(
+            creds[cred]['root_ca'],
+            ROOT_CA_CERT_SUFFIX,
+            cred,
+            output_dir
+            )
 
     result['status'] = "OK"
     print(result['status'])
 
 
 if __name__ == '__main__':
-    main()
+    main(
+        DEFAULT_CONFIG,
+        DEFAULT_OUTPUT_DIR,
+        DEFAULT_CONFIG_PATH
+    )
