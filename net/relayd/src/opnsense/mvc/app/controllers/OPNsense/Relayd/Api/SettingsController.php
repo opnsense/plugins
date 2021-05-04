@@ -2,7 +2,7 @@
 
 /**
  *    Copyright (C) 2018 EURO-LOG AG
- *
+ *    Copyright (c) 2021 Deciso B.V.
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -226,6 +226,7 @@ class SettingsController extends ApiMutableModelControllerBase
     public function delAction($nodeType = null, $uuid = null)
     {
         $result = array("result" => "failed");
+        Config::getInstance()->lock();
         if ($nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($uuid != null) {
