@@ -43,6 +43,12 @@
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Host names should be unique.</ValidationMessage>
+                    <type>UniqueConstraint</type>
+                </check001>
+            </Constraints>
          </name>
          <address type="TextField">
             <Required>Y</Required>
@@ -71,6 +77,12 @@
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Table names should be unique.</ValidationMessage>
+                    <type>UniqueConstraint</type>
+                </check001>
+            </Constraints>
          </name>
          <enabled type="BooleanField">
             <default>0</default>
@@ -138,6 +150,12 @@
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Virtual server names should be unique.</ValidationMessage>
+                    <type>UniqueConstraint</type>
+                </check001>
+            </Constraints>
          </name>
          <enabled type="BooleanField">
             <default>0</default>
