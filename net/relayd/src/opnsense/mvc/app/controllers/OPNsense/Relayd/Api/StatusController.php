@@ -48,6 +48,7 @@ class StatusController extends ApiControllerBase
     {
         $result = array("result" => "failed");
         $backend = new Backend();
+        $relaydMdl = new Relayd();
 
         // when $wait is set, try for max 10 seconds to receive a sensible status (wait for unknowns to resolve)
         $max_tries = !empty($wait) ? 10 : 1;
@@ -68,6 +69,7 @@ class StatusController extends ApiControllerBase
         if (empty($output[0])) {
             return $result;
         }
+        $output[] = "0\t****\t"; // end of data marker
         $result["result"] = 'ok';
         $virtualServerId = 0;
         $virtualServerType = '';
@@ -75,40 +77,91 @@ class StatusController extends ApiControllerBase
         $virtualserver = array();
         $rows = array();
         foreach ($output as $line) {
-            $words = explode("\t", $line);
-            $id = trim($words[0]);
-            $type = trim($words[1]);
-            if ($type == 'redirect' || $type == 'relay') {
+            $words = array_map('trim', explode("\t", $line));
+            $id = $words[0];
+            $type = $words[1];
+            if ($type == 'redirect' || $type == 'relay' || $type == '****') {
                 // new virtual server id/type means new record
                 if (
-                    ($id != $virtualServerId
-                    && $virtualServerId > 0)
-                    || ($type != $virtualServerType
-                    && strlen($virtualServerType) > 5)
+                    ($id != $virtualServerId && $virtualServerId > 0) ||
+                    ($type != $virtualServerType && strlen($virtualServerType) > 5) ||
+                    ($type == '****' && !empty($virtualserver))
                 ) {
+                    // append backend hosts not found in the list, since relayd only supports disabled tables
+                    // you might loose track of hosts that are disabled
+                    if (!empty($virtualserver['tables'])) {
+                        foreach ($virtualserver['tables'] as &$table) {
+                            if (!empty($table['uuid'])) {
+                                $tblnode = $relaydMdl->getNodeByReference("table.".$table['uuid']);
+                                foreach (explode(",", (string)$tblnode->hosts) as $host_uuid) {
+                                    $found = false;
+                                    if (!empty($table['hosts'])) {
+                                        foreach ($table['hosts'] as $tblhost) {
+                                            if (isset($tblhost['uuid']) && $tblhost['uuid'] == $host_uuid) {
+                                                $found = true;
+                                            }
+                                        }
+                                    } else {
+                                        $table['hosts'] = [];
+                                    }
+                                    if (!$found) {
+                                        $hostnode = $relaydMdl->getNodeByReference("host.".$host_uuid);
+                                        $table['hosts'][$host_uuid] = [
+                                            "name" => (string)$hostnode->name,
+                                            "avlblty" => null,
+                                            "status" => !empty((string)$hostnode->enabled) ? "disabled" : "-"
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
                     $rows[] = $virtualserver;
-                    $virtualserver = array();
+                    if ($type == '****') {
+                        break; // end
+                    }
+                    $virtualserver = [];
                 }
                 $virtualServerId = $id;
                 $virtualServerType = $type;
                 $virtualserver['id'] = $id;
                 $virtualserver['type'] = $type;
-                $virtualserver['name'] = trim($words[2]);
-                $virtualserver['status'] = trim($words[4]);
-            }
-            if ($type == 'table') {
+                $virtualserver['name'] = $words[2];
+                $virtualserver['status'] = $words[4];
+                $obj = $relaydMdl->getObjectByName("virtualserver", $virtualserver['name']);
+                if ($obj != null) {
+                    $virtualserver['uuid'] = $obj->getAttribute('uuid');
+                    $virtualserver['listen_address'] = (string)$obj->listen_address;
+                    $virtualserver['listen_startport'] = (string)$obj->listen_startport;
+                    $virtualserver['listen_endport'] = (string)$obj->listen_endport;
+                }
+            } elseif ($type == 'table') {
                 $tableId = $id;
-                $virtualserver['tables'][$tableId]['name'] = trim($words[2]);
-                $virtualserver['tables'][$tableId]['status'] = trim($words[4]);
-            }
-            if ($type == 'host') {
+                if (empty($virtualserver['tables'])) {
+                    $virtualserver['tables'] = [];
+                }
+                $virtualserver['tables'][$tableId] = [];
+                $virtualserver['tables'][$tableId]['name'] = $words[2];
+                $virtualserver['tables'][$tableId]['status'] = $words[4];
+                $obj = $relaydMdl->getObjectByName("table", explode(":", $words[2])[0]);
+                if ($obj != null) {
+                    $virtualserver['tables'][$tableId]['uuid'] = $obj->getAttribute('uuid');
+                }
+            } elseif ($type == 'host') {
                 $hostId = trim($words[0]);
-                $virtualserver['tables'][$tableId]['hosts'][$hostId]['name'] = trim($words[2]);
-                $virtualserver['tables'][$tableId]['hosts'][$hostId]['avlblty'] = trim($words[3]);
-                $virtualserver['tables'][$tableId]['hosts'][$hostId]['status'] = trim($words[4]);
+                if (empty($virtualserver['tables'][$tableId]['hosts'])) {
+                    $virtualserver['tables'][$tableId]['hosts'] = [];
+                }
+                $virtualserver['tables'][$tableId]['hosts'][$hostId] = [];
+                $virtualserver['tables'][$tableId]['hosts'][$hostId]['name'] = $words[2];
+                $virtualserver['tables'][$tableId]['hosts'][$hostId]['avlblty'] = $words[3];
+                $virtualserver['tables'][$tableId]['hosts'][$hostId]['status'] = $words[4];
+                $obj = $relaydMdl->getObjectByName("host", $words[2]);
+                if ($obj != null) {
+                    $virtualserver['tables'][$tableId]['hosts'][$hostId]['uuid'] = $obj->getAttribute('uuid');
+                }
             }
         }
-        $rows[] = $virtualserver;
         $result["rows"] = $rows;
         return $result;
     }

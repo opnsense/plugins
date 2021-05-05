@@ -64,4 +64,24 @@ class Relayd extends BaseModel
     {
         return @unlink("/tmp/relayd.dirty");
     }
+
+    /**
+     * @param string $type type of object (host, table, virtualserver)
+     * @param string $name value of name attribute
+     * @return ArrayField|null item found
+     */
+    public function getObjectByName($type, $name)
+    {
+        $results = [];
+        foreach ($this->$type->iterateItems() as $item) {
+            if ((string)$item->name == $name) {
+                  $results[] = $item;
+            }
+        }
+        if (count($results) == 1) {
+            // only return when a single unique item is found
+            return $results[0];
+        }
+        return null;
+    }
 }
