@@ -2,6 +2,7 @@
 
 /**
  *    Copyright (C) 2018 EURO-LOG AG
+ *    Copyright (c) 2021 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -43,12 +44,27 @@ class StatusController extends ApiControllerBase
     /**
      * get relayd summary
      */
-    public function sumAction()
+    public function sumAction($wait=0)
     {
         $result = array("result" => "failed");
         $backend = new Backend();
+
+        // when $wait is set, try for max 10 seconds to receive a sensible status (wait for unknowns to resolve)
+        $max_tries = !empty($wait) ? 10 : 1;
         $output = array();
-        $output = explode("\n", trim($backend->configdRun('relayd summary')));
+        for ($i = 0; $i < $max_tries; $i++) {
+            $output = explode("\n", trim($backend->configdRun('relayd summary')));
+            $unknowns = 0;
+            foreach ($output as $line) {
+                if (substr($line, -strlen("unknown")) == "unknown") {
+                    $unknowns++;
+                }
+            }
+            if (!empty($output[0]) && $unknowns == 0) {
+                break;
+            }
+            sleep(1);
+        }
         if (empty($output[0])) {
             return $result;
         }
@@ -119,7 +135,7 @@ class StatusController extends ApiControllerBase
             ) {
                 if ($id != null && $id > 0) {
                     $backend = new Backend();
-                    $result["output"] = $backend->configdRun("relayd toggle $nodeType $action $id");
+                    $result["output"] = $backend->configdpRun("relayd toggle",[$nodeType, $action, $id]);
                     if (isset($result["output"])) {
                         $result["result"] = 'ok';
                     }

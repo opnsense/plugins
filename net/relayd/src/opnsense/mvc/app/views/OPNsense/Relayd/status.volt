@@ -1,6 +1,7 @@
 {#
 
 Copyright © 2018 by EURO-LOG AG
+Copyright (c) 2021 Deciso B.V.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -27,128 +28,197 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <script type="text/javascript">
-   $( document ).ready(function() {
-      updateServiceControlUI('relayd');
-      // get status and build the table body
-      $('#btnRefresh').unbind('click').click(function() {
-         ajaxCall(url = "/api/relayd/status/sum", sendData={}, callback = function(result, status) {
-            if (status == "success" && result.result === 'ok') {
-               $('#tableStatus > tbody').empty();
-               $('#tableStatus > tbody').attr('style', 'display:none;');
-               /* create a table row for each host and combine
-                  virtualserver/table fields afterwards via rowspan */
-               $.each(result.rows, function (vkey, virtualserver) {
-                  var vrowspan = 0;
-                  var trowspan = [];
-                  var html = '<tr class="vrow"><td id="virtualServer' + vkey + '">';
-                  html += getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type);
-                  html += virtualserver.name + ' (' + virtualserver.type + '): ' + virtualserver.status + '</td>';
-                  var tfirst = true;
-                  $.each(virtualserver.tables, function(tkey, table) {
-                     trowspan[tkey] = 0;
-                     if (tfirst == true) {
-                        tfirst = false;
-                     } else {
-                        html += '<tr>';
-                     }
-                     html += '<td id="table' + tkey + '">';
-                     html += getControlButtons(table.status, tkey, 'table');
-                     html += table.name + ' ' + table.status + '</td>';
-                     var hfirst = true;
-                     $.each(table.hosts, function(hkey, host) {
-                        if (hfirst == true) {
-                           hfirst = false;
-                        } else {
-                           html += '<tr>';
-                        }
-                        vrowspan++;
-                        trowspan[tkey]++;
-                        html += '<td>';
-                        html += getControlButtons(host.status, hkey, 'host');
-                        html += host.name + ' ' + host.status + '</td></tr>';
-                     });
-                     // dummy host for disabled tables
-                     if (hfirst == true) {
-                        vrowspan++;
-                        html += '<td></td>';
-                     }
-                  });
+  $( document ).ready(function() {
+      /**
+       * create status and start/stop buttons
+       **/
+      function getControlButtons(status, id, nodeType) {
+          let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>');
+          let action_btn = $('<button class="btn btn-xs btn-default"/>').attr('data-nodeid', id).attr('data-nodetype', nodeType);
 
-                  $('#tableStatus > tbody').append(html);
-                  $('#virtualServer' + vkey).attr('rowspan', vrowspan);
-                  $.each(trowspan, function(tid, trowspan) {
-                     $('#table' + tid).attr('rowspan', trowspan);
-                  });
-                  $('#tableStatus > tbody > tr.vrow > td').css('border-top', '2px solid #ddd');
-                  $('#tableStatus > tbody').fadeIn();
-               });
+          if (status.substring(0, 6) === 'active' || status === 'up') {
+             status_btn.addClass('label-success').append($('<i class="fa fa-play fa-fw"/>'));
+             action_btn.addClass('node_action').append($('<i class="fa fa-stop fa-fw"/>')).attr('data-nodeaction', 'disable');
+          } else if (status === 'disabled') {
+             status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
+             action_btn.addClass('node_action').append($('<i class="fa fa-play fa-fw"/>')).attr('data-nodeaction', 'enable');
+          } else {
+             status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
+             action_btn.append($('<i class="fa fa-play fa-fw"/>')).attr('disabled', 'disabled');
+          }
+          // no action for relays; see relayctl(8)
+          if (nodeType === 'relay') {
+             action_btn.removeClass('node_action').attr('disabled', 'disabled');
+          }
+          return [
+              status_btn, action_btn
+          ];
+      };
+
+      /**
+       * apply provided filters on selected data, reformat virtual server and table groups with borders
+       */
+      function apply_filters() {
+          let prev_tr = null;
+          let filter_vs = $("#filter_virtualserver").val();
+          let filter_table = $("#filter_table").val();
+          let filter_host = $("#filter_host").val();
+
+          $('#tableStatus > tbody > tr').each(function(){
+              let vs_td = $(this).find("td.relayd_virtualserver");
+              let tbl_td = $(this).find("td.relayd_table");
+              let host_td = $(this).find("td.relayd_host");
+              let is_visible_row = true;
+
+              // filter;
+              if (filter_vs !== "" && vs_td.data("name") !== undefined && vs_td.data("name").indexOf(filter_vs) == -1) {
+                  is_visible_row=false;
+              } else if (filter_table !== "" && tbl_td.data("name") !== undefined && tbl_td.data("name").indexOf(filter_table) == -1) {
+                  is_visible_row=false;
+              } else if (filter_host !== "" && host_td.data("name") !== undefined && host_td.data("name").indexOf(filter_host) == -1) {
+                  is_visible_row=false;
+              }
+              if (is_visible_row) {
+                  $(this).show();
+                  if (prev_tr !== null && prev_tr.find("td.relayd_virtualserver").data('id') === vs_td.data('id')){
+                      vs_td.find("div.object_container").hide();
+                      vs_td.css('border-top-style', 'hidden');
+                  } else {
+                      vs_td.css('border-top-style', 'solid');
+                  }
+
+                  if (prev_tr !== null && prev_tr.find("td.relayd_table").data('id') === tbl_td.data('id')){
+                      tbl_td.find("div.object_container").hide();
+                      tbl_td.css('border-top-style', 'hidden');
+                  } else {
+                      tbl_td.css('border-top-style', 'solid');
+                  }
+                  prev_tr = $(this);
+              } else {
+                  $(this).hide();
+              }
+          });
+      }
+
+      /**
+       * bind form events
+       */
+      updateServiceControlUI('relayd');
+
+      // get status and build the table body
+      $('#btnRefresh').click(function(event) {
+        event.preventDefault();
+        if ($("#btnRefreshProgress").hasClass("fa-spinner")) {
+            return;
+        }
+        // do not wait for relayctl output on consecutive calls
+        let api_wait = $('#tableStatus > tbody > tr').length > 0 ? 1 : 0;
+        $("#btnRefreshProgress").addClass("fa-spinner fa-pulse");
+        ajaxCall("/api/relayd/status/sum/"+api_wait, {}, function(result, status) {
+            $('#tableStatus > tbody').empty();
+            if (status == "success" && result.result === 'ok') {
+                /* create a table row for each host and combine
+                  virtualserver/table fields afterwards (hide repeating items and align borders accordingly) */
+                $.each(result.rows, function (vkey, virtualserver) {
+                    let $vs_td = $('<td data-id="'+vkey+'" data-name="'+virtualserver.name+'" class="relayd_virtualserver"/>');
+                    $vs_td.append(
+                        $('<div class="object_container"/>').append(
+                            getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type),
+                            virtualserver.name + ' (' + virtualserver.type + '): ' + virtualserver.status
+                        )
+                    );
+                    if (virtualserver.tables) {
+                        $.each(virtualserver.tables, function(tkey, table) {
+                            let $tbl_td = $('<td data-id="'+tkey+'" data-name="'+table.name+'" class="relayd_table"/>');
+                            $tbl_td.append(
+                                $('<div class="object_container"/>').append(
+                                    getControlButtons(table.status, tkey, 'table'),
+                                    table.name + ' ' + table.status
+                                )
+                            );
+                            if (table.hosts) {
+                                $.each(table.hosts, function(hkey, host) {
+                                    let $host_td = $('<td data-id="'+hkey+'" data-name="'+host.name+'" class="relayd_host"/>');
+                                    $host_td.append(
+                                        $('<div class="object_container"/>').append(
+                                            getControlButtons(host.status, hkey, 'host'),
+                                            host.name + ' ' + host.status
+                                        )
+                                    );
+                                    $('#tableStatus > tbody').append(
+                                        $("<tr/>").append(
+                                            $vs_td.clone(),
+                                            $tbl_td.clone(),
+                                            $host_td
+                                        )
+                                    );
+                                });
+                            } else {
+                                $('#tableStatus > tbody').append(
+                                    $("<tr/>").append(
+                                        $vs_td.clone(),
+                                        $tbl_td.clone(),
+                                        $("<td/>")
+                                    )
+                                );
+                            }
+                        });
+                    } else {
+                        $('#tableStatus > tbody').append(
+                            $("<tr/>").append(
+                                $vs_td.clone(),
+                                $("<td/>"),
+                                $("<td/>")
+                              )
+                           );
+                    }
+                });
+                apply_filters();
+                $(".node_action").click(function(){
+                    ajaxCall("/api/relayd/status/toggle/" + $(this).data('nodetype') + "/" + $(this).data('nodeid') + "/" +  $(this).data('nodeaction'), {}, function(result, status) {
+                        $("#btnRefresh").click();
+                    });
+                });
             } else {
                $("#tableStatus").html("<tr><td><br/>{{ lang._('The status could not be fetched. Is Relayd running?') }}</td></tr>");
             }
-            $('#btnRefresh').blur();
+            $("#btnRefreshProgress").removeClass("fa-spinner fa-pulse");
          });
       });
+      $(".filter_item").keyup(apply_filters);
 
       // initial load
       $("#btnRefresh").click();
 
    });
 
-   // create status and start/stop buttons
-   function getControlButtons(status, id, nodeType) {
-       var statusClass = "btn btn-xs glyphicon ";
-       var controlClass = "btn btn-xs btn-default glyphicon ";
-       var action;
-
-       if (status.substring(0, 6) === 'active' || status === 'up') {
-          statusClass += "btn-success glyphicon-play";
-          controlClass += "glyphicon-stop";
-          controlTitle = "Stop this " + nodeType;
-          action = 'onclick="toggleNode(\'' + nodeType + '\', ' + id + ', \'disable\')""';
-       } else if (status === 'disabled') {
-          statusClass += "btn-danger glyphicon-stop";
-          controlClass += "glyphicon-play";
-          controlTitle = "Start this " + nodeType;
-          action = 'onclick="toggleNode(\'' + nodeType + '\', ' + id + ', \'enable\')"';
-       } else {
-          statusClass += "btn-danger glyphicon-stop";
-          controlClass += "glyphicon-play";
-          action = 'disabled="disabled"';
-       }
-       // no action for relays; see relayctl(8)
-       if (nodeType === 'relay') {
-          action = 'disabled="disabled"';
-       }
-       var html = '<span class="' + statusClass + '" style="cursor: default;"> </span>&nbsp;';
-       html += '<span ' + action + ' class="' + controlClass + '" title="' + controlTitle + '"> </span>&nbsp;';
-       return html;
-    };
-
-    // enable/disable redirects, tables or hosts
-    function toggleNode(nodeType, id, action) {
-        ajaxCall(url = "/api/relayd/status/toggle/" + nodeType + "/" + id + "/" + action, callback = function(result, status) {
-           $("#btnRefresh").click();
-        });
-     };
-
 </script>
 
 <div class="content-box">
    <table id="tableStatus" class="table table-condensed">
-      <thead><tr><th>{{ lang._('Virtual Server') }}</th><th>{{ lang._('Table') }}</th><th>{{ lang._('Host') }}</th></tr></thead>
-      <tbody style="display:none;"></tbody>
+      <thead>
+          <tr>
+              <th>{{ lang._('Virtual Server') }}</th>
+              <th>{{ lang._('Table') }}</th>
+              <th>{{ lang._('Host') }}</th>
+          </tr>
+          <tr>
+              <th><input type="text" id="filter_virtualserver" class="input-sm filter_item" autocomplete="off"></th>
+              <th><input type="text" id="filter_table" class="input-sm filter_item" autocomplete="off"></th>
+              <th><input type="text" id="filter_host" class="input-sm filter_item" autocomplete="off"></th>
+          </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr>
+           <td colspan="3">
+              <div class="pull-right">
+                 <button class="btn btn-primary" id="btnRefresh" type="button"><b>{{ lang._('Refresh') }}</b>
+                   <span id="btnRefreshProgress" class="fa fa-refresh"> </span>
+                 </button>
+              </div>
+           </td>
+        </tr>
+      </tfoot>
    </table>
-   <div  class="col-sm-12">
-      <div class="row">
-         <table class="table">
-            <tr>
-               <td>
-                  <div class="pull-right">
-                     <button class="btn btn-primary" id="btnRefresh" type="button"><b>{{ lang._('Refresh') }}</b> <span id="btnRefreshProgress" class="fa fa-refresh"> </span></button>
-                  </div>
-               </td>
-            </tr>
-         </table>
-      </div>
-   </div>
 </div>

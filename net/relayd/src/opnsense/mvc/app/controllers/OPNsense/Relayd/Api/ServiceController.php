@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2018 EURO-LOG AG
+ * Copyright (c) 2021 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

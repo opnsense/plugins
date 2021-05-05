@@ -1,6 +1,7 @@
 {#
 
 Copyright © 2018 by EURO-LOG AG
+Copyright (c) 2021 Deciso B.V.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
