@@ -84,6 +84,7 @@ POSSIBILITY OF SUCH DAMAGE.
                       vs_td.find("div.object_container").hide();
                       vs_td.css('border-top-style', 'hidden');
                   } else {
+                      vs_td.find("div.object_container").show();
                       vs_td.css('border-top-style', 'solid');
                   }
 
@@ -91,6 +92,7 @@ POSSIBILITY OF SUCH DAMAGE.
                       tbl_td.find("div.object_container").hide();
                       tbl_td.css('border-top-style', 'hidden');
                   } else {
+                      tbl_td.find("div.object_container").show();
                       tbl_td.css('border-top-style', 'solid');
                   }
                   prev_tr = $(this);
