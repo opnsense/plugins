@@ -71,11 +71,11 @@ POSSIBILITY OF SUCH DAMAGE.
               let is_visible_row = true;
 
               // filter;
-              if (filter_vs !== "" && vs_td.data("name") !== undefined && vs_td.data("name").indexOf(filter_vs) == -1) {
+              if (filter_vs !== "" && vs_td.data("name") !== undefined && vs_td.data("name").toUpperCase().indexOf(filter_vs.toUpperCase()) == -1) {
                   is_visible_row=false;
-              } else if (filter_table !== "" && tbl_td.data("name") !== undefined && tbl_td.data("name").indexOf(filter_table) == -1) {
+              } else if (filter_table !== "" && tbl_td.data("name") !== undefined && tbl_td.data("name").toUpperCase().indexOf(filter_table.toUpperCase()) == -1) {
                   is_visible_row=false;
-              } else if (filter_host !== "" && host_td.data("name") !== undefined && host_td.data("name").indexOf(filter_host) == -1) {
+              } else if (filter_host !== "" && host_td.data("name") !== undefined && host_td.data("name").toUpperCase().indexOf(filter_host.toUpperCase()) == -1) {
                   is_visible_row=false;
               }
               if (is_visible_row) {
