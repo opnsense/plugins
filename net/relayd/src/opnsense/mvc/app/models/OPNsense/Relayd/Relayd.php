@@ -67,21 +67,18 @@ class Relayd extends BaseModel
 
     /**
      * @param string $type type of object (host, table, virtualserver)
-     * @param string $name value of name attribute
-     * @return ArrayField|null item found
+     * @param string $name name of the attribute
+     * @param string $value value to match
+     * @return ArrayField[] items found
      */
-    public function getObjectByName($type, $name)
+    public function getObjectsByAttribute($type, $name, $value)
     {
         $results = [];
         foreach ($this->$type->iterateItems() as $item) {
-            if ((string)$item->name == $name) {
+            if ((string)$item->$name == $value) {
                   $results[] = $item;
             }
         }
-        if (count($results) == 1) {
-            // only return when a single unique item is found
-            return $results[0];
-        }
-        return null;
+        return $results;
     }
 }

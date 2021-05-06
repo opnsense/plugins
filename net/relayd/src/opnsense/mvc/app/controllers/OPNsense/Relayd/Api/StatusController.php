@@ -97,8 +97,10 @@ class StatusController extends ApiControllerBase
                                     $found = false;
                                     if (!empty($table['hosts'])) {
                                         foreach ($table['hosts'] as $tblhost) {
-                                            if (isset($tblhost['uuid']) && $tblhost['uuid'] == $host_uuid) {
-                                                $found = true;
+                                            foreach ($tblhost['properties'] as $hprops) {
+                                                if ($hprops['uuid'] == $host_uuid) {
+                                                    $found = true;
+                                                }
                                             }
                                         }
                                     } else {
@@ -107,9 +109,16 @@ class StatusController extends ApiControllerBase
                                     if (!$found) {
                                         $hostnode = $relaydMdl->getNodeByReference("host.".$host_uuid);
                                         $table['hosts'][$host_uuid] = [
-                                            "name" => (string)$hostnode->name,
+                                            "name" => (string)$hostnode->address,
+                                            "description" => (string)$hostnode->name,
                                             "avlblty" => null,
-                                            "status" => !empty((string)$hostnode->enabled) ? "disabled" : "-"
+                                            "status" => empty((string)$hostnode->enabled) ? "disabled" : "-",
+                                            "properties" => [
+                                                [
+                                                    "uuid" => $host_uuid,
+                                                    'name' => (string)$hostnode->name
+                                                ]
+                                            ]
                                         ];
                                     }
                                 }
@@ -128,8 +137,9 @@ class StatusController extends ApiControllerBase
                 $virtualserver['type'] = $type;
                 $virtualserver['name'] = $words[2];
                 $virtualserver['status'] = $words[4];
-                $obj = $relaydMdl->getObjectByName("virtualserver", $virtualserver['name']);
-                if ($obj != null) {
+                $objs = $relaydMdl->getObjectsByAttribute("virtualserver", "name", $virtualserver['name']);
+                if (count($objs) > 0) {
+                    $obj = $objs[0];
                     $virtualserver['uuid'] = $obj->getAttribute('uuid');
                     $virtualserver['listen_address'] = (string)$obj->listen_address;
                     $virtualserver['listen_startport'] = (string)$obj->listen_startport;
@@ -143,22 +153,37 @@ class StatusController extends ApiControllerBase
                 $virtualserver['tables'][$tableId] = [];
                 $virtualserver['tables'][$tableId]['name'] = $words[2];
                 $virtualserver['tables'][$tableId]['status'] = $words[4];
-                $obj = $relaydMdl->getObjectByName("table", explode(":", $words[2])[0]);
-                if ($obj != null) {
-                    $virtualserver['tables'][$tableId]['uuid'] = $obj->getAttribute('uuid');
+                $objs = $relaydMdl->getObjectsByAttribute("table", "name", explode(":", $words[2])[0]);
+                if (count($objs) > 0) {
+                    $virtualserver['tables'][$tableId]['uuid'] = $objs[0]->getAttribute('uuid');
                 }
             } elseif ($type == 'host') {
                 $hostId = trim($words[0]);
                 if (empty($virtualserver['tables'][$tableId]['hosts'])) {
                     $virtualserver['tables'][$tableId]['hosts'] = [];
                 }
-                $virtualserver['tables'][$tableId]['hosts'][$hostId] = [];
+                $virtualserver['tables'][$tableId]['hosts'][$hostId] = ['properties' => []];
                 $virtualserver['tables'][$tableId]['hosts'][$hostId]['name'] = $words[2];
                 $virtualserver['tables'][$tableId]['hosts'][$hostId]['avlblty'] = $words[3];
                 $virtualserver['tables'][$tableId]['hosts'][$hostId]['status'] = $words[4];
-                $obj = $relaydMdl->getObjectByName("host", $words[2]);
-                if ($obj != null) {
-                    $virtualserver['tables'][$tableId]['hosts'][$hostId]['uuid'] = $obj->getAttribute('uuid');
+                // XXX: `relayctl show summary` name is actually the number, append name as description when found
+                $objs = $relaydMdl->getObjectsByAttribute("host", "address", $words[2]);
+                if (count($objs) > 0) {
+                    $linked_hosts = [];
+                    if (!empty($virtualserver['tables'][$tableId]['uuid'])) {
+                        $tblnode = $relaydMdl->getNodeByReference("table.".$virtualserver['tables'][$tableId]['uuid']);
+                        $linked_hosts = explode(",", (string)$tblnode->hosts);
+                    }
+                    // hosts aren't necessarily unique due to address matching
+                    foreach ($objs as $obj) {
+                        $this_uuid = $obj->getAttribute('uuid');
+                        if (empty($linked_hosts) || in_array($this_uuid, $linked_hosts)) {
+                            $virtualserver['tables'][$tableId]['hosts'][$hostId]['properties'][] = [
+                                'uuid' => $this_uuid,
+                                'name' => (string)$obj->name
+                            ];
+                        }
+                    }
                 }
             }
         }
