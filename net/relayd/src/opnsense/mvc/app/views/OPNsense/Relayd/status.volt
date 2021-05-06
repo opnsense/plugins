@@ -34,14 +34,31 @@ POSSIBILITY OF SUCH DAMAGE.
        **/
       function getControlButtons(status, id, nodeType) {
           let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>');
-          let action_btn = $('<button class="btn btn-xs btn-default"/>').attr('data-nodeid', id).attr('data-nodetype', nodeType);
+          let action_btn = $('<button class="btn btn-xs btn-default" data-toggle="tooltip"/>').attr('data-nodeid', id).attr('data-nodetype', nodeType);
 
           if (status.substring(0, 6) === 'active' || status === 'up') {
              status_btn.addClass('label-success').append($('<i class="fa fa-play fa-fw"/>'));
              action_btn.addClass('node_action').append($('<i class="fa fa-stop fa-fw"/>')).attr('data-nodeaction', 'disable');
-          } else if (status === 'disabled') {
+             action_btn.attr('title', $("#stop_" + nodeType + "_label").text());
+          } else if (['unconfigured', 'disabled'].includes(status)) {
+             let action_btn2 = action_btn.clone(true);
              status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
              action_btn.addClass('node_action').append($('<i class="fa fa-play fa-fw"/>')).attr('data-nodeaction', 'enable');
+             action_btn.attr('title', $("#start_" + nodeType + "_label").text());
+             if (nodeType == 'host' && status == 'disabled') {
+                 action_btn2.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
+                 action_btn2.attr('title', $("#remove_host_label").text());
+                 return [
+                     status_btn,
+                     action_btn2,
+                     action_btn,
+                 ];
+             }
+          } else if (status === 'down' && nodeType == 'host') {
+             // remove host (permanent down)
+             status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
+             action_btn.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
+             action_btn.attr('title', $("#remove_host_label").text());
           } else {
              status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
              action_btn.append($('<i class="fa fa-play fa-fw"/>')).attr('disabled', 'disabled');
@@ -71,11 +88,11 @@ POSSIBILITY OF SUCH DAMAGE.
               let is_visible_row = true;
 
               // filter;
-              if (filter_vs !== "" && vs_td.data("name") !== undefined && vs_td.data("name").toUpperCase().indexOf(filter_vs.toUpperCase()) == -1) {
+              if (filter_vs !== "" && vs_td.data('display_name') !== undefined && vs_td.data('display_name').toUpperCase().indexOf(filter_vs.toUpperCase()) == -1) {
                   is_visible_row=false;
-              } else if (filter_table !== "" && tbl_td.data("name") !== undefined && tbl_td.data("name").toUpperCase().indexOf(filter_table.toUpperCase()) == -1) {
+              } else if (filter_table !== "" && tbl_td.data('display_name') !== undefined && tbl_td.data('display_name').toUpperCase().indexOf(filter_table.toUpperCase()) == -1) {
                   is_visible_row=false;
-              } else if (filter_host !== "" && host_td.data("name") !== undefined && host_td.data("name").toUpperCase().indexOf(filter_host.toUpperCase()) == -1) {
+              } else if (filter_host !== "" && host_td.data('display_name') !== undefined && host_td.data('display_name').toUpperCase().indexOf(filter_host.toUpperCase()) == -1) {
                   is_visible_row=false;
               }
               if (is_visible_row) {
@@ -122,35 +139,59 @@ POSSIBILITY OF SUCH DAMAGE.
                 /* create a table row for each host and combine
                   virtualserver/table fields afterwards (hide repeating items and align borders accordingly) */
                 $.each(result.rows, function (vkey, virtualserver) {
-                    let $vs_td = $('<td data-id="'+vkey+'" data-name="'+virtualserver.name+'" class="relayd_virtualserver"/>');
+                    let $vs_td = $('<td data-id="'+vkey+'" class="relayd_virtualserver"/>');
+                    let listen_str = "";
+                    if (virtualserver.listen_address !== undefined) {
+                        listen_str = " [" + virtualserver.listen_address + ":" + virtualserver.listen_startport +"] "
+                    }
                     $vs_td.append(
                         $('<div class="object_container"/>').append(
                             getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type),
-                            virtualserver.name + ' (' + virtualserver.type + '): ' + virtualserver.status
-                        )
+                            virtualserver.name,
+                            listen_str,
+                            ' (' + virtualserver.type + '): ',
+                            virtualserver.status
+                        ).data('payload', virtualserver).data('type', 'virtualserver')
                     );
+                    $vs_td.data('display_name', virtualserver.name + listen_str);
                     if (virtualserver.tables) {
                         $.each(virtualserver.tables, function(tkey, table) {
-                            let $tbl_td = $('<td data-id="'+tkey+'" data-name="'+table.name+'" class="relayd_table"/>');
+                            let $tbl_td = $('<td data-id="'+tkey+'" class="relayd_table"/>');
+                            $tbl_td.data('display_name', table.name);
                             $tbl_td.append(
                                 $('<div class="object_container"/>').append(
                                     getControlButtons(table.status, tkey, 'table'),
                                     table.name + ' ' + table.status
-                                )
+                                ).data('payload', table).data('type', 'table')
                             );
                             if (table.hosts) {
                                 $.each(table.hosts, function(hkey, host) {
-                                    let $host_td = $('<td data-id="'+hkey+'" data-name="'+host.name+'" class="relayd_host"/>');
+                                    let $host_td = $('<td data-id="'+hkey+'" class="relayd_host"/>');
+                                    let host_names = [];
+                                    let display_name = host.name ;
+                                    if (host.properties != undefined) {
+                                        for (i=0; i < host.properties.length; i++) {
+                                            if (host.properties[i].name !== host.name) {
+                                                host_names.push(host.properties[i].name);
+                                            }
+                                        }
+                                        if (host_names.length > 0) {
+                                            display_name = display_name + ' [' + host_names.join(',') + '] ';
+                                        }
+                                    }
                                     $host_td.append(
                                         $('<div class="object_container"/>').append(
                                             getControlButtons(host.status, hkey, 'host'),
-                                            host.name + ' ' + host.status
-                                        )
+                                            display_name,
+                                            " ",
+                                            host.status
+                                        ).data('payload', host).data('type', 'host')
                                     );
+                                    $host_td.data('display_name', display_name);
                                     $('#tableStatus > tbody').append(
                                         $("<tr/>").append(
-                                            $vs_td.clone(),
-                                            $tbl_td.clone(),
+                                            $vs_td.clone(true),
+                                            $tbl_td.clone(true),
                                             $host_td
                                         )
                                     );
@@ -158,8 +199,8 @@ POSSIBILITY OF SUCH DAMAGE.
                             } else {
                                 $('#tableStatus > tbody').append(
                                     $("<tr/>").append(
-                                        $vs_td.clone(),
-                                        $tbl_td.clone(),
+                                        $vs_td.clone(true),
+                                        $tbl_td.clone(true),
                                         $("<td/>")
                                     )
                                 );
@@ -168,18 +209,70 @@ POSSIBILITY OF SUCH DAMAGE.
                     } else {
                         $('#tableStatus > tbody').append(
                             $("<tr/>").append(
-                                $vs_td.clone(),
+                                $vs_td.clone(true),
                                 $("<td/>"),
                                 $("<td/>")
                               )
                            );
                     }
                 });
+                $('[data-toggle="tooltip"]').tooltip();
                 apply_filters();
+                // bind node actions
                 $(".node_action").click(function(){
-                    ajaxCall("/api/relayd/status/toggle/" + $(this).data('nodetype') + "/" + $(this).data('nodeid') + "/" +  $(this).data('nodeaction'), {}, function(result, status) {
-                        $("#btnRefresh").click();
-                    });
+                    let container = $(this).closest("div.object_container");
+                    let item_payload = container.data('payload');
+                    let action = $(this).data('nodeaction');
+                    let nodeid = $(this).data('nodeid');
+                    let nodetype = $(this).data('nodetype');
+                    let host_uuids = [];
+                    let host_enabled = false;
+                    if (item_payload.properties != undefined) {
+                        for (i=0; i < item_payload.properties.length; i++) {
+                            host_uuids.push(item_payload.properties[i].uuid);
+                            if (item_payload.properties[i].enabled === "1") {
+                                host_enabled = true;
+                            }
+                        }
+                    }
+                    if (action === "remove" && nodetype == 'host') {
+                        if (item_payload !== undefined) {
+                            stdDialogConfirm(
+                                '{{ lang._('Relayd') }}',
+                                $("#remove_host_message").text().trim(),
+                                '{{ lang._('Yes') }}',
+                                '{{ lang._('No') }}',
+                                function () {
+                                    if (host_uuids.length > 0) {
+                                        ajaxCall("/api/relayd/status/toggle/host/" + host_uuids.join(',') + "/remove", {}, function(result, status) {
+                                            $("#btnRefresh").click();
+                                        });
+                                    }
+                                }
+                            );
+                        }
+                    } else if (action === "enable" && nodetype == 'host' && !host_enabled) {
+                        stdDialogConfirm(
+                            '{{ lang._('Relayd') }}',
+                            $("#add_host_message").text().trim(),
+                            '{{ lang._('Yes') }}',
+                            '{{ lang._('No') }}',
+                            function () {
+                                if (item_payload.properties != undefined) {
+                                    if (host_uuids.length > 0) {
+                                      ajaxCall("/api/relayd/status/toggle/host/" + host_uuids.join(',') + "/add", {}, function(result, status) {
+                                          $("#btnRefresh").click();
+                                      });
+                                    }
+                                }
+                            }
+                        );
+                    } else {
+                        // default action, parameters for relayctl
+                        ajaxCall("/api/relayd/status/toggle/" + nodetype + "/" + nodeid + "/" +  action, {}, function(result, status) {
+                            $("#btnRefresh").click();
+                        });
+                    }
                 });
             } else {
                $("#tableStatus").html("<tr><td><br/>{{ lang._('The status could not be fetched. Is Relayd running?') }}</td></tr>");
@@ -195,6 +288,29 @@ POSSIBILITY OF SUCH DAMAGE.
    });
 
 </script>
+
+<div style="display:none" id="tooltips">
+    <!--
+      dynamic labels to ease translations
+    -->
+    <label id="stop_host_label">{{ lang._('Stop this host') }}</label>
+    <label id="stop_table_label">{{ lang._('Stop this table') }}</label>
+    <label id="stop_relay_label">{{ lang._('Stop this relay') }}</label>
+    <label id="stop_redirect_label">{{ lang._('Stop this redirect') }}</label>
+    <label id="start_host_label">{{ lang._('Start this host') }}</label>
+    <label id="start_table_label">{{ lang._('Start this table') }}</label>
+    <label id="start_relay_label">{{ lang._('Start this relay') }}</label>
+    <label id="start_redirect_label">{{ lang._('Start this redirect') }}</label>
+    <label id="remove_host_label">{{ lang._('Disable this host') }}</label>
+    <label id="remove_host_message">{{ lang._('
+      Are you sure you do want to disable this host?
+      When being used in other virtual servers it will be disabled in there as well.') }}
+    </label>
+    <label id="add_host_message">{{ lang._('
+      Are you sure you do want to enable this host?
+      When being used in other virtual servers it will be enabled in there as well.') }}
+    </label>
+</div>
 
 <div class="content-box">
    <table id="tableStatus" class="table table-condensed">

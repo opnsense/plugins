@@ -33,6 +33,7 @@ namespace OPNsense\Relayd\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 use OPNsense\Relayd\Relayd;
 
 /**
@@ -112,11 +113,12 @@ class StatusController extends ApiControllerBase
                                             "name" => (string)$hostnode->address,
                                             "description" => (string)$hostnode->name,
                                             "avlblty" => null,
-                                            "status" => empty((string)$hostnode->enabled) ? "disabled" : "-",
+                                            "status" => empty((string)$hostnode->enabled) ? "unconfigured" : "-",
                                             "properties" => [
                                                 [
                                                     "uuid" => $host_uuid,
-                                                    'name' => (string)$hostnode->name
+                                                    "name" => (string)$hostnode->name,
+                                                    "enabled" => (string)$hostnode->enabled
                                                 ]
                                             ]
                                         ];
@@ -180,7 +182,8 @@ class StatusController extends ApiControllerBase
                         if (empty($linked_hosts) || in_array($this_uuid, $linked_hosts)) {
                             $virtualserver['tables'][$tableId]['hosts'][$hostId]['properties'][] = [
                                 'uuid' => $this_uuid,
-                                'name' => (string)$obj->name
+                                'name' => (string)$obj->name,
+                                "enabled" => (string)$obj->enabled
                             ];
                         }
                     }
@@ -196,29 +199,32 @@ class StatusController extends ApiControllerBase
      */
     public function toggleAction($nodeType = null, $id = null, $action = null)
     {
+        $result = array("result" => "failed", "function" => "toggle");
         if ($this->request->isPost()) {
             $this->sessionClose();
-        }
-        $result = array("result" => "failed", "function" => "toggle");
-        if (
-            $nodeType != null &&
-                ($nodeType == 'redirect' ||
-                 $nodeType == 'table' ||
-                 $nodeType == 'host')
-        ) {
-            if (
-                $action != null &&
-                    ($action == 'enable' ||
-                     $action == 'disable')
-            ) {
+            $backend = new Backend();
+            if (in_array($nodeType, ['redirect', 'table', 'host']) && in_array($action, ['enable', 'disable'])){
                 if ($id != null && $id > 0) {
-                    $backend = new Backend();
                     $result["output"] = $backend->configdpRun("relayd toggle",[$nodeType, $action, $id]);
                     if (isset($result["output"])) {
                         $result["result"] = 'ok';
                     }
                     $result["output"] = trim($result["output"]);
                 }
+            } elseif ($nodeType == 'host' && in_array($action, ['remove', 'add'])) {
+                Config::getInstance()->lock();
+                $new_status = $action == "remove" ? "0" : "1";
+                $relaydMdl = new Relayd();
+                foreach (explode(",", $id) as $host_uuid) {
+                    $obj = $relaydMdl->getNodeByReference("host.".$host_uuid);
+                    if ($obj != null) {
+                        $obj->enabled = $new_status;
+                    }
+                }
+                $relaydMdl->serializeToConfig();
+                Config::getInstance()->save();
+                // invoke service controller
+                return (new ServiceController())->reconfigureAction();
             }
         }
         return $result;
