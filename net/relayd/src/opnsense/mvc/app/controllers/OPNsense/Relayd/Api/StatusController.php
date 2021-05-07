@@ -113,7 +113,7 @@ class StatusController extends ApiControllerBase
                                             "name" => (string)$hostnode->address,
                                             "description" => (string)$hostnode->name,
                                             "avlblty" => null,
-                                            "status" => empty((string)$hostnode->enabled) ? "unconfigured" : "-",
+                                            "status" => empty((string)$hostnode->enabled) ? "disabled" : "-",
                                             "properties" => [
                                                 [
                                                     "uuid" => $host_uuid,
@@ -167,7 +167,8 @@ class StatusController extends ApiControllerBase
                 $virtualserver['tables'][$tableId]['hosts'][$hostId] = ['properties' => []];
                 $virtualserver['tables'][$tableId]['hosts'][$hostId]['name'] = $words[2];
                 $virtualserver['tables'][$tableId]['hosts'][$hostId]['avlblty'] = $words[3];
-                $virtualserver['tables'][$tableId]['hosts'][$hostId]['status'] = $words[4];
+                $status = $words[4] == 'disabled' ? 'stopped' : $words[4];
+                $virtualserver['tables'][$tableId]['hosts'][$hostId]['status'] = $status;
                 // XXX: `relayctl show summary` name is actually the number, append name as description when found
                 $objs = $relaydMdl->getObjectsByAttribute("host", "address", $words[2]);
                 if (count($objs) > 0) {

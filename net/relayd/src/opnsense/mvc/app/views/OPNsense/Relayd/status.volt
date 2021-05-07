@@ -35,41 +35,47 @@ POSSIBILITY OF SUCH DAMAGE.
       function getControlButtons(status, id, nodeType) {
           let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>');
           let action_btn = $('<button class="btn btn-xs btn-default" data-toggle="tooltip"/>').attr('data-nodeid', id).attr('data-nodetype', nodeType);
+          let action_btn_remove = action_btn.clone(true);
+          let response = [];
 
           if (status.substring(0, 6) === 'active' || status === 'up') {
-             status_btn.addClass('label-success').append($('<i class="fa fa-play fa-fw"/>'));
-             action_btn.addClass('node_action').append($('<i class="fa fa-stop fa-fw"/>')).attr('data-nodeaction', 'disable');
-             action_btn.attr('title', $("#stop_" + nodeType + "_label").text());
-          } else if (['unconfigured', 'disabled'].includes(status)) {
-             let action_btn2 = action_btn.clone(true);
-             status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
-             action_btn.addClass('node_action').append($('<i class="fa fa-play fa-fw"/>')).attr('data-nodeaction', 'enable');
-             action_btn.attr('title', $("#start_" + nodeType + "_label").text());
-             if (nodeType == 'host' && status == 'disabled') {
-                 action_btn2.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
-                 action_btn2.attr('title', $("#remove_host_label").text());
-                 return [
-                     status_btn,
-                     action_btn2,
-                     action_btn,
-                 ];
-             }
+              status_btn.addClass('label-success').append($('<i class="fa fa-play fa-fw"/>'));
+              action_btn.addClass('node_action').append($('<i class="fa fa-stop fa-fw"/>')).attr('data-nodeaction', 'disable');
+              action_btn.attr('title', $("#stop_" + nodeType + "_label").text());
+              response.push(status_btn);
+              if (nodeType === 'host') {
+                  action_btn_remove.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
+                  action_btn_remove.attr('title', $("#remove_host_label").text());
+                  response.push(action_btn_remove);
+              }
+              response.push(action_btn);
+          } else if (['stopped', 'disabled'].includes(status)) {
+              status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
+              action_btn.addClass('node_action').append($('<i class="fa fa-play fa-fw"/>')).attr('data-nodeaction', 'enable');
+              action_btn.attr('title', $("#start_" + nodeType + "_label").text());
+              if (status === 'stopped' && nodeType === 'host') {
+                 action_btn_remove.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
+                 action_btn_remove.attr('title', $("#remove_host_label").text());
+                 response.push(status_btn, action_btn_remove, action_btn);
+              } else {
+                 response.push(status_btn, action_btn);
+              }
           } else if (status === 'down' && nodeType == 'host') {
-             // remove host (permanent down)
-             status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
-             action_btn.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
-             action_btn.attr('title', $("#remove_host_label").text());
+              // remove host (permanent down)
+              status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
+              action_btn.addClass('node_action').append($('<i class="fa fa-times fa-fw"/>')).attr('data-nodeaction', 'remove');
+              action_btn.attr('title', $("#remove_host_label").text());
+              response.push(status_btn, action_btn);
           } else {
-             status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
-             action_btn.append($('<i class="fa fa-play fa-fw"/>')).attr('disabled', 'disabled');
+              status_btn.addClass('label-danger').append($('<i class="fa fa-stop fa-fw"/>'));
+              action_btn.append($('<i class="fa fa-play fa-fw"/>')).attr('disabled', 'disabled');
+              response.push(status_btn, action_btn);
           }
           // no action for relays; see relayctl(8)
           if (nodeType === 'relay') {
-             action_btn.removeClass('node_action').attr('disabled', 'disabled');
+              action_btn.removeClass('node_action').attr('disabled', 'disabled');
           }
-          return [
-              status_btn, action_btn
-          ];
+          return response;
       };
 
       /**
