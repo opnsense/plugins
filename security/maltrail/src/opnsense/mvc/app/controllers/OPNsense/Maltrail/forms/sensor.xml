@@ -12,6 +12,12 @@
         <help>This will look into all IPv4 and IPv6 traffic. If disabled it will only look for traffic for icmp, udp, tcp syn packets and on known HTTP ports.</help>
     </field>
     <field>
+        <id>sensor.capturebuffer</id>
+        <label>Capture Buffer Size</label>
+        <type>text</type>
+        <help>Size of the ring buffer (in MB) to memory-map into the sensor processes for sharing captured network traffic. An undersized buffer may reduce detection rates. Defaults to 10% of available RAM when left blank.</help>
+    </field>
+    <field>
         <id>sensor.remoteserver</id>
         <label>Remote Server</label>
         <type>text</type>
@@ -22,5 +28,17 @@
         <label>Remote Port</label>
         <type>text</type>
         <help>Port of the logging server. Leave empty when sensor and server run on the same system.</help>
+    </field>
+    <field>
+        <id>sensor.syslogserver</id>
+        <label>Syslog Server</label>
+        <type>text</type>
+        <help>IP address of the remote syslog server.</help>
+    </field>
+    <field>
+        <id>sensor.syslogport</id>
+        <label>Syslog Port</label>
+        <type>text</type>
+        <help>Port of the syslog server.</help>
     </field>
 </form>

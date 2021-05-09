@@ -11,7 +11,9 @@
                 <md5>MD5</md5>
                 <mschapv2>MSCHAPv2</mschapv2>
                 <peap>PEAP</peap>
+                <tls>TLS</tls>
                 <ttls>TTLS</ttls>
+                <ttls-gtc>TTLS-GTC</ttls-gtc>
             </OptionValues>
         </default_eap_type>
         <enable_client_cert type="BooleanField">
@@ -30,5 +32,9 @@
             <Type>crl</Type>
             <Required>N</Required>
         </crl>
+        <check_tls_names type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </check_tls_names>
     </items>
 </model>

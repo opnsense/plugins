@@ -149,21 +149,21 @@ stevenblack() {
 
 blocklistads() {
         # Blocklist.site Ads
-        ${FETCH} https://blocklist.site/app/dl/ads -o ${WORKDIR}/blocklistads-raw
+        ${FETCH} https://blocklistproject.github.io/Lists/ads.txt -o ${WORKDIR}/blocklistads-raw
         sed "/\.$/d" ${WORKDIR}/blocklistads-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" > ${WORKDIR}/blocklistads
         rm ${WORKDIR}/blocklistads-raw
 }
 
 blocklistfraud() {
         # Blocklist.site Fraud
-        ${FETCH} https://blocklist.site/app/dl/fraud -o ${WORKDIR}/blocklistfraud-raw
+        ${FETCH} https://blocklistproject.github.io/Lists/fraud.txt -o ${WORKDIR}/blocklistfraud-raw
         sed "/\.$/d" ${WORKDIR}/blocklistfraud-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" > ${WORKDIR}/blocklistfraud
         rm ${WORKDIR}/blocklistfraud-raw
 }
 
 blocklistphishing() {
         # Blocklist.site Phishing
-        ${FETCH} https://blocklist.site/app/dl/phishing -o ${WORKDIR}/blocklistphishing-raw
+        ${FETCH} https://blocklistproject.github.io/Lists/phishing.txt -o ${WORKDIR}/blocklistphishing-raw
         sed "/\.$/d" ${WORKDIR}/blocklistphishing-raw | sed "/^#/d" | sed "/\_/d" | sed "/^\s*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/127\.0\.0\.1/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" > ${WORKDIR}/blocklistphishing
         rm ${WORKDIR}/blocklistphishing-raw
 }

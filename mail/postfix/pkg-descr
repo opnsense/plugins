@@ -6,6 +6,23 @@ is completely different.
 Plugin Changelog
 ================
 
+1.18
+
+* Add 'milter_default_action' choice
+* Fix Milter Protocol
+
+1.17
+
+* Add smtpd_sasl_auth_enable to configuration (contributed by fhloston)
+
+1.16
+
+* Add support for header_checks (contributed by Starkstromkonsument)
+
+1.15
+
+* Fix Log viewer
+
 1.14
 
 * Add more anti-spam features into postfix itself

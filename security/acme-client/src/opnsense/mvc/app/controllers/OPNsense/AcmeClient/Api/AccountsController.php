@@ -33,6 +33,7 @@ namespace OPNsense\AcmeClient\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Base\UIModelGrid;
+use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
 use OPNsense\AcmeClient\AcmeClient;
 
@@ -73,6 +74,29 @@ class AccountsController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('accounts.account', array('enabled', 'name', 'email'), 'name');
+        return $this->searchBase('accounts.account', array('enabled', 'name', 'email', 'statusCode', 'statusLastUpdate'), 'name');
+    }
+
+    /**
+     * register account by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function registerAction($uuid)
+    {
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            $mdlAcme = new AcmeClient();
+
+            if ($uuid != null) {
+                $node = $mdlAcme->getNodeByReference('accounts.account.' . $uuid);
+                if ($node != null) {
+                    $backend = new Backend();
+                    $response = $backend->configdRun("acmeclient register-account ${uuid}");
+                    return array("response" => $response);
+                }
+            }
+        }
+        return $result;
     }
 }

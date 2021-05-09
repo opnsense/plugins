@@ -104,5 +104,6 @@ function tinc_xmlrpc_sync()
     $result['id'] = 'tincvpn';
     $result['section'] = 'OPNsense.Tinc';
     $result['description'] = gettext('Tinc VPN');
+    $result['services'] = ['tincd'];
     return array($result);
 }

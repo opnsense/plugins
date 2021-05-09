@@ -5,6 +5,12 @@
     <type>checkbox</type>
     <help>Enable / Disable</help>
   </field>
+    <field>
+    <id>prefixlist.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Add an optional description for this Prefix-List.</help>
+  </field>
   <field>
     <id>prefixlist.name</id>
     <label>Name</label>
