@@ -27,3 +27,7 @@ udp_vars=" --id 1 --port 80 --dev eth0 --dev eth1"
 
 Warcraft 3 Server Discovery
 udp_vars=" --id 1 --port 6112 --dev eth0 --dev eth1"
+
+It is a requirement that generally a firewall entry will be required to allow the server responses
+back to the requesting client. As it's not known what the port/address of the server is then this
+entry will need to be created manually.
