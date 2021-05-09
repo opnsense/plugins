@@ -615,7 +615,6 @@ class SettingsController extends ApiMutableModelControllerBase
     /**
      * @param null $uuid the uuid which should get cleared before
      * @throws \ReflectionException if the model was not found
-     * @throws \Phalcon\Validation\Exception on validation errors
      */
     private function regenerate_hostname_map($uuid = null)
     {
@@ -644,7 +643,6 @@ class SettingsController extends ApiMutableModelControllerBase
     /**
      * @param null $uuid the uuid which should get cleared before
      * @throws \ReflectionException if the model was not found
-     * @throws \Phalcon\Validation\Exception on validation errors
      */
     private function regenerate_ipacl($uuid = null)
     {
@@ -673,7 +671,6 @@ class SettingsController extends ApiMutableModelControllerBase
     /**
      * @param $uuids array list of UUIDs
      * @param $path string the model prefix from the element to delete
-     * @throws \Phalcon\Validation\Exception
      */
     private function delete_uuids($uuids, $path): void
     {
