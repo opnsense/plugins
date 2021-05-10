@@ -101,7 +101,7 @@
         <id>certificate.domainalias</id>
         <label>Domain Alias</label>
         <type>text</type>
-        <help><![CDATA[When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+        <help><![CDATA[When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
     </field>
     <field>
         <label>DNS Alias Mode</label>
@@ -112,6 +112,6 @@
         <id>certificate.challengealias</id>
         <label>Challenge Alias</label>
         <type>text</type>
-        <help><![CDATA[When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+        <help><![CDATA[When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
     </field>
 </form>

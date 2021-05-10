@@ -8,6 +8,14 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+2.5
+
+Fixed:
+* ensure that the auto renewal cron job is properly disabled (#2178)
+
+Changed:
+* reload settings page to show/hide cron tab
+
 2.4
 
 Added:
