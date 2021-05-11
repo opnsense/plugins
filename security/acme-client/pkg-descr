@@ -10,6 +10,9 @@ Plugin Changelog
 
 2.5
 
+Added:
+* add native support for Vultr DNS API (#2344)
+
 Fixed:
 * ensure that the auto renewal cron job is properly disabled (#2178)
 
