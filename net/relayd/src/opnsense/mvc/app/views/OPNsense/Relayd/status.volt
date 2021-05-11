@@ -86,6 +86,13 @@ POSSIBILITY OF SUCH DAMAGE.
           let filter_vs = $("#filter_virtualserver").val();
           let filter_table = $("#filter_table").val();
           let filter_host = $("#filter_host").val();
+          if ($("#hide_table_column").prop('checked')) {
+              $(".relayd_table").hide();
+              $(".relayd_table_th").hide();
+          } else {
+              $(".relayd_table").show();
+              $(".relayd_table_th").show();
+          }
 
           $('#tableStatus > tbody > tr').each(function(){
               let vs_td = $(this).find("td.relayd_virtualserver");
@@ -288,12 +295,120 @@ POSSIBILITY OF SUCH DAMAGE.
       });
       $(".filter_item").keyup(apply_filters);
 
-      // initial load
+      /**
+       * stored selections (presets) events
+       */
+      function update_presets(selected) {
+          let settings = JSON.parse(window.localStorage.getItem("api.relayd.presets"));
+          if (settings === null) {
+              settings = {};
+          }
+          $("#stored_filters").empty();
+          $("#stored_filters").append($("<option/>").val("").text("{{ lang._('Add new')}}"));
+          $("#stored_filters").append($("<option/>").val("__clear__").text("{{ lang._('Clear')}}"));
+
+          Object.keys(settings).sort().forEach(function(name) {
+              $("#stored_filters").append(
+                  $("<option/>").val(name).text(name)
+              );
+          });
+          if (selected !== undefined) {
+              $("#stored_filters").val(selected);
+          }
+          $("#stored_filters").selectpicker("refresh");
+      }
+      $("#stored_filters").change(function(){
+          if ($(this).val() === "__clear__") {
+              $("#hide_table_column").prop("checked", false);
+              $(".filter_item").val("");
+          } else if ($(this).val() !== "" !== $(this).val() !== "__clear__") {
+              let settings = JSON.parse(window.localStorage.getItem("api.relayd.presets"));
+              if (settings !== null && settings[$(this).val()] !== undefined) {
+                  let selections = settings[$(this).val()];
+                  Object.keys(selections).forEach(function(prop) {
+                      let target = $("#"+prop);
+                      if (target.prop("type") === "checkbox") {
+                          target.prop('checked', selections[prop]);
+                      } else {
+                          target.val(selections[prop]);
+                      }
+                  });
+              }
+          }
+          apply_filters();
+      });
+      $("#hide_table_column").change(apply_filters);
+
+      $("#template_add").click(function(event){
+          event.preventDefault();
+          let selected_name = "";
+          if ($(this).val() !== "__clear__") {
+              selected_name = $("#stored_filters").val();
+          }
+          BootstrapDialog.show({
+              type:BootstrapDialog.TYPE_DANGER,
+              title: "<?= gettext("Relayd");?>",
+              message: [
+                  $("<span/>").text("<?=gettext('Save as :');?>"),
+                  $("<input type='text' class='form-control'/>").val(selected_name),
+              ],
+              buttons: [{
+                        label: "<?= gettext("Abort");?>",
+                        action: function(dialogRef) {
+                            dialogRef.close();
+                        }}, {
+                        label: "<?= gettext("Save");?>",
+                        action: function(dialogRef) {
+                          let template_name = dialogRef.getModalBody().find('input').val();
+                          let settings = JSON.parse(window.localStorage.getItem("api.relayd.presets"));
+                          if (settings === null) {
+                              settings = {};
+                          }
+                          settings[template_name] = {
+                            "filter_virtualserver": $("#filter_virtualserver").val(),
+                            "filter_table": $("#filter_table").val(),
+                            "filter_host": $("#filter_host").val(),
+                            "hide_table_column": $("#hide_table_column").is(':checked')
+                          };
+                          window.localStorage.setItem("api.relayd.presets", JSON.stringify(settings));
+                          update_presets(template_name);
+                          dialogRef.close();
+                      }
+                  }]
+          });
+      });
+      $("#template_delete").click(function(){
+          let settings = JSON.parse(window.localStorage.getItem("api.relayd.presets"));
+          let prop = $("#stored_filters").val();
+          if (settings !== null && settings[prop] !== undefined) {
+              delete settings[prop];
+              window.localStorage.setItem("api.relayd.presets", JSON.stringify(settings));
+              update_presets();
+          }
+      });
+
+      /**
+       * initial load
+       */
       $("#btnRefresh").click();
+      if (window.localStorage) {
+          update_presets();
+          $("#presets").collapse('show');
+      } else {
+          // without localStorage, presets aren't supported
+          $("#stored_presets_panel").delete();
+      }
 
    });
 
 </script>
+
+<style type="text/css">
+.panel-heading-sm{
+    height: 28px;
+    padding: 4px 10px;
+}
+</style>
 
 <div style="display:none" id="tooltips">
     <!--
@@ -318,18 +433,43 @@ POSSIBILITY OF SUCH DAMAGE.
     </label>
 </div>
 
-<div class="content-box">
+
+   <div class="panel panel-primary" id="stored_presets_panel">
+      <div class="panel-heading panel-heading-sm">
+        <i class="fa fa-chevron-down" style="cursor: pointer;" data-toggle="collapse" data-target="#presets"></i>
+        <b>{{ lang._('Presets') }}</b>
+      </div>
+      <div class="panel-body collapse" id="presets">
+          <form class="form-inline">
+            <div class="form-group">
+              <select class="selectpicker" id="stored_filters" data-toggle="tooltip" title="{{ lang._('Saved selections')}}">
+              </select>
+              <button id="template_add" type="button" class="btn btn-default" data-toggle="tooltip" title="{{ lang._('Add template')}}">
+                  <span class="fa fa-save"></span>
+              </button>
+              <button id="template_delete" type="button" class="btn btn-default" data-toggle="tooltip" title="{{ lang._('Deleted selected template')}}">
+                  <span class="fa fa-trash"></span>
+              </button>
+              <div class="checkbox">
+                <input type="checkbox" id="hide_table_column">
+                <label for="hide_table_column"><strong>{{ lang._('Hide table column')}}</strong></label>
+              </div>
+            </div>
+          </form>
+      </div>
+   </div>
+   <div class="panel panel-default">
    <table id="tableStatus" class="table table-condensed">
       <thead>
           <tr>
-              <th>{{ lang._('Virtual Server') }}</th>
-              <th>{{ lang._('Table') }}</th>
-              <th>{{ lang._('Host') }}</th>
+              <th class="relayd_virtualserver_th">{{ lang._('Virtual Server') }}</th>
+              <th class="relayd_table_th">{{ lang._('Table') }}</th>
+              <th class="relayd_host_th">{{ lang._('Host') }}</th>
           </tr>
           <tr>
-              <th><input type="text" id="filter_virtualserver" class="input-sm filter_item" autocomplete="off"></th>
-              <th><input type="text" id="filter_table" class="input-sm filter_item" autocomplete="off"></th>
-              <th><input type="text" id="filter_host" class="input-sm filter_item" autocomplete="off"></th>
+              <th class="relayd_virtualserver_th"><input type="text" id="filter_virtualserver" class="input-sm filter_item" autocomplete="off"></th>
+              <th class="relayd_table_th"><input type="text" id="filter_table" class="input-sm filter_item" autocomplete="off"></th>
+              <th class="relayd_host_th"><input type="text" id="filter_host" class="input-sm filter_item" autocomplete="off"></th>
           </tr>
       </thead>
       <tbody></tbody>
@@ -345,4 +485,5 @@ POSSIBILITY OF SUCH DAMAGE.
         </tr>
       </tfoot>
    </table>
+ </div>
 </div>
