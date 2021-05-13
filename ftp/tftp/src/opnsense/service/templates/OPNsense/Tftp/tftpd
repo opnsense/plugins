@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.tftp.general.enabled') and OPNsense.tftp.general.enabled == '1' %}
+tftpd_enable="YES"
+{% else %}
+tftpd_enable="NO"
+{% endif %}
