@@ -11,9 +11,5 @@
             <default>127.0.0.1</default>
             <Required>Y</Required>
         </listen>
-        <port type="PortField">
-            <default>19999</default>
-            <Required>Y</Required>
-        </port>
     </items>
 </model>
