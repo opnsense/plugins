@@ -1,5 +1,11 @@
 <form>
    <field>
+      <id>relayd.host.enabled</id>
+      <label>Enabled</label>
+      <type>checkbox</type>
+      <help>Set this option to enable this destination.</help>
+   </field>
+   <field>
       <id>relayd.host.name</id>
       <label>Name</label>
       <type>text</type>

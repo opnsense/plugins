@@ -2,7 +2,7 @@
 
 /**
  *    Copyright (C) 2018 EURO-LOG AG
- *
+ *    Copyright (c) 2021 Deciso B.V.
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 
 namespace OPNsense\Relayd\Api;
 
-use OPNsense\Base\ApiControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Config;
 use OPNsense\Relayd\Relayd;
 use OPNsense\Base\UIModelGrid;
@@ -39,25 +39,17 @@ use OPNsense\Base\UIModelGrid;
  * Class SettingsController
  * @package OPNsense\Relayd
  */
-class SettingsController extends ApiControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
 
     protected static $internalModelName = 'relayd';
     protected static $internalModelClass = '\OPNsense\Relayd\Relayd';
-    public $mdlRelayd = null;
 
     /**
      * list with valid model node types
      */
     private $nodeTypes = array('general', 'host', 'tablecheck', 'table', 'protocol', 'virtualserver');
 
-    /**
-     * initialize object properties
-     */
-    public function onConstruct()
-    {
-        $this->mdlRelayd = new Relayd();
-    }
 
     /**
      * check if changes to the relayd settings were made
@@ -66,7 +58,7 @@ class SettingsController extends ApiControllerBase
     public function dirtyAction()
     {
         $result = array('status' => 'ok');
-        $result['relayd']['dirty'] = $this->mdlRelayd->configChanged();
+        $result['relayd']['dirty'] = $this->getModel()->configChanged();
         return $result;
     }
 
@@ -82,12 +74,12 @@ class SettingsController extends ApiControllerBase
         if ($this->request->isGet() && $nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($nodeType == 'general') {
-                $node = $this->mdlRelayd->getNodeByReference($nodeType);
+                $node = $this->getModel()->getNodeByReference($nodeType);
             } else {
                 if ($uuid != null) {
-                    $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
+                    $node = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
-                    $node = $this->mdlRelayd->$nodeType->Add();
+                    $node = $this->getModel()->$nodeType->Add();
                 }
             }
             if ($node != null) {
@@ -111,12 +103,12 @@ class SettingsController extends ApiControllerBase
         if ($this->request->isPost() && $this->request->hasPost('relayd') && $nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($nodeType == 'general') {
-                $node = $this->mdlRelayd->getNodeByReference($nodeType);
+                $node = $this->getModel()->getNodeByReference($nodeType);
             } else {
                 if ($uuid != null) {
-                    $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
+                    $node = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid);
                 } else {
-                    $node = $this->mdlRelayd->$nodeType->Add();
+                    $node = $this->getModel()->$nodeType->Add();
                 }
             }
             if ($node != null) {
@@ -207,16 +199,16 @@ class SettingsController extends ApiControllerBase
                 }
 
                 $node->setNodes($relaydInfo[$nodeType]);
-                $valMsgs = $this->mdlRelayd->performValidation();
+                $valMsgs = $this->getModel()->performValidation();
                 foreach ($valMsgs as $field => $msg) {
                     $fieldnm = str_replace($node->__reference, "relayd." . $nodeType, $msg->getField());
                     $result["validations"][$fieldnm] = $msg->getMessage();
                 }
                 if (empty($result["validations"])) {
                     unset($result["validations"]);
-                    $this->mdlRelayd->serializeToConfig();
+                    $this->getModel()->serializeToConfig();
                     $cfgRelayd = Config::getInstance()->save();
-                    if ($this->mdlRelayd->configDirty()) {
+                    if ($this->getModel()->configDirty()) {
                         $result['status'] = 'ok';
                     }
                 }
@@ -234,13 +226,14 @@ class SettingsController extends ApiControllerBase
     public function delAction($nodeType = null, $uuid = null)
     {
         $result = array("result" => "failed");
+        Config::getInstance()->lock();
         if ($nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($uuid != null) {
-                $node = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid);
+                $node = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid);
                 if ($node != null) {
-                    $nodeName = $this->mdlRelayd->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
-                    if ($this->mdlRelayd->$nodeType->del($uuid) == true) {
+                    $nodeName = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
+                    if ($this->getModel()->$nodeType->del($uuid) == true) {
                         // delete relations
                         switch ($nodeType) {
                             case 'host':
@@ -250,7 +243,7 @@ class SettingsController extends ApiControllerBase
                                     $uuid,
                                     'host',
                                     $nodeName,
-                                    $this->mdlRelayd
+                                    $this->getModel()
                                 );
                                 break;
                             case 'tablecheck':
@@ -260,7 +253,7 @@ class SettingsController extends ApiControllerBase
                                     $uuid,
                                     'tablecheck',
                                     $nodeName,
-                                    $this->mdlRelayd
+                                    $this->getModel()
                                 );
                                 $this->deleteRelations(
                                     'virtualserver',
@@ -268,7 +261,7 @@ class SettingsController extends ApiControllerBase
                                     $uuid,
                                     'tablecheck',
                                     $nodeName,
-                                    $this->mdlRelayd
+                                    $this->getModel()
                                 );
                                 break;
                             case 'table':
@@ -278,7 +271,7 @@ class SettingsController extends ApiControllerBase
                                     $uuid,
                                     'table',
                                     $nodeName,
-                                    $this->mdlRelayd
+                                    $this->getModel()
                                 );
                                 $this->deleteRelations(
                                     'virtualserver',
@@ -286,7 +279,7 @@ class SettingsController extends ApiControllerBase
                                     $uuid,
                                     'table',
                                     $nodeName,
-                                    $this->mdlRelayd
+                                    $this->getModel()
                                 );
                                 break;
                             case 'protocol':
@@ -296,13 +289,13 @@ class SettingsController extends ApiControllerBase
                                     $uuid,
                                     'protocol',
                                     $nodeName,
-                                    $this->mdlRelayd
+                                    $this->getModel()
                                 );
                                 break;
                         }
-                        $this->mdlRelayd->serializeToConfig();
+                        $this->getModel()->serializeToConfig();
                         Config::getInstance()->save();
-                        if ($this->mdlRelayd->configDirty()) {
+                        if ($this->getModel()->configDirty()) {
                             $result['status'] = 'ok';
                         }
                     }
@@ -310,6 +303,21 @@ class SettingsController extends ApiControllerBase
             }
         }
         return $result;
+    }
+
+    /**
+     * toggle status
+     * @param string $nodeType node type to address
+     * @param string $uuid id to toggled
+     * @param string|null $enabled set enabled by default
+     * @return array status
+     * @throws \Phalcon\Validation\Exception when field validations fail
+     * @throws \ReflectionException when not bound to model
+     */
+    public function toggleAction($nodeType, $uuid, $enabled = null)
+    {
+        $this->getModel()->configDirty();
+        return $this->toggleBase($nodeType, $uuid, $enabled);
     }
 
     /**
@@ -322,11 +330,11 @@ class SettingsController extends ApiControllerBase
         $this->sessionClose();
         if ($this->request->isPost() && $nodeType != null) {
             $this->validateNodeType($nodeType);
-            $grid = new UIModelGrid($this->mdlRelayd->$nodeType);
+            $grid = new UIModelGrid($this->getModel()->$nodeType);
             $fields = array();
             switch ($nodeType) {
                 case 'host':
-                    $fields = array('name', 'address');
+                    $fields = array('enabled', 'name', 'address');
                     break;
                 case 'tablecheck':
                     $fields = array('name', 'type');
@@ -342,7 +350,7 @@ class SettingsController extends ApiControllerBase
                     break;
             }
             $result = $grid->fetchBindRequest($this->request, $fields);
-            $result['dirty'] = $this->mdlRelayd->configChanged();
+            $result['dirty'] = $this->getModel()->configChanged();
             return $result;
         }
     }
@@ -374,7 +382,7 @@ class SettingsController extends ApiControllerBase
         $relNodeType = null,
         $relNodeName = null
     ) {
-        $nodes = $this->mdlRelayd->$nodeType->getNodes();
+        $nodes = $this->getModel()->$nodeType->getNodes();
         // get nodes with relations
         foreach ($nodes as $nodeUuid => $node) {
             // get relation uuids
@@ -382,14 +390,14 @@ class SettingsController extends ApiControllerBase
                 // remove uuid from field
                 if ($fieldUuid == $relUuid) {
                     $refField = $nodeType . '.' . $nodeUuid . '.' . $nodeField;
-                    $relNode = $this->mdlRelayd->getNodeByReference($refField);
+                    $relNode = $this->getModel()->getNodeByReference($refField);
                     $nodeRels = str_replace($relUuid, '', $relNode->__toString());
                     $nodeRels = str_replace(',,', ',', $nodeRels);
                     $nodeRels = rtrim($nodeRels, ',');
                     $nodeRels = ltrim($nodeRels, ',');
-                    $this->mdlRelayd->setNodeByReference($refField, $nodeRels);
+                    $this->getModel()->setNodeByReference($refField, $nodeRels);
                     if ($relNode->isEmptyAndRequired()) {
-                        $nodeName = $this->mdlRelayd->getNodeByReference("{$nodeType}.{$nodeUuid}.name")->__toString();
+                        $nodeName = $this->getModel()->getNodeByReference("{$nodeType}.{$nodeUuid}.name")->__toString();
                         throw new \Exception("Cannot delete $relNodeType '$relNodeName' from $nodeType '$nodeName'");
                     }
                 }
