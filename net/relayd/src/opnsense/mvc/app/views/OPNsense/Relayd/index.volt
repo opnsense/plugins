@@ -117,6 +117,7 @@ POSSIBILITY OF SUCH DAMAGE.
          var transport_tablemode = $('#relayd\\.virtualserver\\.transport_tablemode').val();
          var backuptransport_tablemode = $('#relayd\\.virtualserver\\.backuptransport_tablemode').val();
 
+         $('tr[id="row_relayd.virtualserver.listen_proto"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.transport_type"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.routing_interface"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.stickyaddress"]').addClass('hidden');
@@ -129,6 +130,7 @@ POSSIBILITY OF SUCH DAMAGE.
          $('#relayd\\.virtualserver\\.backuptransport_tablemode').empty().append('<option value="roundrobin">Round Robin </option>');
 
          if(servertype == 'redirect'){
+            $('tr[id="row_relayd.virtualserver.listen_proto"]').removeClass('hidden');
             $('tr[id="row_relayd.virtualserver.transport_type"]').removeClass('hidden');
             if(transport_type == 'route'){
                $('tr[id="row_relayd.virtualserver.routing_interface"]').removeClass('hidden');

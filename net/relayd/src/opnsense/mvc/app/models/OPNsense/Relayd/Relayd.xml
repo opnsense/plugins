@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.3</version>
+   <version>1.0.4</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -175,6 +175,14 @@
             <ChangeCase>lower</ChangeCase>
             <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
          </listen_address>
+         <listen_proto type="OptionField">
+             <Required>Y</Required>
+             <default>tcp</default>
+             <OptionValues>
+                 <tcp>TCP</tcp>
+                 <udp>UDP</udp>
+             </OptionValues>
+         </listen_proto>
          <listen_startport type="PortField">
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
@@ -296,6 +304,15 @@
             <ValidationMessage>Table check not found</ValidationMessage>
             <multiple>N</multiple>
             <Required>N</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Table check must be set.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>backuptransport_table</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
          </backuptransport_tablecheck>
          <backuptransport_tablemode type="OptionField">
             <default>roundrobin</default>
