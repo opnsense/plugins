@@ -779,6 +779,7 @@ class updatedns
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
                 $server = str_replace("%IP%", $this->_dnsIP, $this->_dnsUpdateURL);
+                $server = str_replace("%Host%", $this->_dnsHost, $server);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'cloudflare':
@@ -1526,6 +1527,8 @@ class updatedns
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                 } else {
                     $status = "Dynamic DNS: (Error) Result did not match.";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case 'cloudflare':
