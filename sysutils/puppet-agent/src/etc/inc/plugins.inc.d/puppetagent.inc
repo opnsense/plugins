@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2021 Jan Winkler 
+ *    Copyright (C) 2021 Jan Winkler
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without

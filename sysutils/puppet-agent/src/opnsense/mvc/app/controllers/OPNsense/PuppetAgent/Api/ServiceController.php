@@ -67,8 +67,7 @@ class ServiceController extends ApiMutableServiceControllerBase
                 $this->stopAction();
             }
             return array("status" => "ok");
-            }
-        else {
+        } else {
             return array("status" => "failed");
         }
     }
