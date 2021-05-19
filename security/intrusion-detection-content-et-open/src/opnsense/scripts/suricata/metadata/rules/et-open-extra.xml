@@ -10,5 +10,6 @@
         <file description="drop" url="inline::rules/drop.rules">et_open.drop.rules</file>
         <file description="dshield" url="inline::rules/dshield.rules">et_open.dshield.rules</file>
         <file description="tor" url="inline::rules/tor.rules">et_open.tor.rules</file>
+        <file description="emerging-inappropriate" url="inline::rules/emerging-inappropriate.rules">et_open.emerging-inappropriate.rules</file>
     </files>
 </ruleset>
