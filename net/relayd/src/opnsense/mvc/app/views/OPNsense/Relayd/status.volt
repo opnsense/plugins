@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
        * create status and start/stop buttons
        **/
       function getControlButtons(status, id, nodeType) {
-          let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>');
+          let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>').css('cursor', 'auto');
           let action_btn = $('<button class="btn btn-xs btn-default" data-toggle="tooltip"/>').attr('data-nodeid', id).attr('data-nodetype', nodeType);
           let action_btn_remove = action_btn.clone(true);
           let response = [];
@@ -74,6 +74,14 @@ POSSIBILITY OF SUCH DAMAGE.
           // no action for relays; see relayctl(8)
           if (nodeType === 'relay') {
               action_btn.removeClass('node_action').attr('disabled', 'disabled');
+          }
+
+          if (nodeType == 'host' && response.length == 2) {
+              response.push(
+                $('<button class="label label-opnsense label-opnsense-xs"/>').css('cursor', 'auto').css('opacity', '0').append(
+                    $("<i class='fa fa-fw'/>")
+                )
+              );
           }
           return response;
       };
@@ -160,6 +168,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     $vs_td.append(
                         $('<div class="object_container"/>').append(
                             getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type),
+                            '&nbsp;',
                             virtualserver.name,
                             listen_str,
                             ' (' + virtualserver.type + '): ',
@@ -174,6 +183,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             $tbl_td.append(
                                 $('<div class="object_container"/>').append(
                                     getControlButtons(table.status, tkey, 'table'),
+                                    '&nbsp;',
                                     table.name + ' ' + table.status
                                 ).data('payload', table).data('type', 'table')
                             );
@@ -195,6 +205,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                     $host_td.append(
                                         $('<div class="object_container"/>').append(
                                             getControlButtons(host.status, hkey, 'host'),
+                                            '&nbsp;',
                                             display_name,
                                             " ",
                                             host.status
