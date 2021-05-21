@@ -74,6 +74,21 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("general", "route6", $format);
     }
 
+    public function bfdsummaryAction($format = "json"): array
+    {
+        return $this->getInformation("bfd", "summary", $format);
+    }
+
+    public function bfdneighborsAction($format = "json"): array
+    {
+        return $this->getInformation("bfd", "neighbors", $format);
+    }
+
+    public function bfdicountersAction($format = "json"): array
+    {
+        return $this->getInformation("bfd", "counters", $format);
+    }
+
     public function bgprouteAction($format = "json"): array
     {
         return $this->getInformation("bgp", "route", $format);
