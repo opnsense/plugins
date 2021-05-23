@@ -1,0 +1,36 @@
+<form>
+    <field>
+        <id>errorpage.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Enter a name for your error page.</help>
+    </field>
+    <field>
+        <id>errorpage.statuscodes</id>
+        <label>Status Codes</label>
+        <type>select_multiple</type>
+        <style>selectpicker</style>
+        <help>Enter the HTTP status codes for which the error page shall be shown.</help>
+    </field>
+    <field>
+        <id>errorpage.pagecontent</id>
+        <label>Page Content</label>
+        <type>textbox</type>
+        <help>The HTML page content to display.</help>
+    </field>
+    <field>
+        <id>errorpage.redirect</id>
+        <label>Redirect Target</label>
+        <type>text</type>
+        <help>Instead of displaying a static error page redirect to a URL.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>errorpage.response</id>
+        <label>Response Status Code</label>
+        <type>dropdown</type>
+        <style>selectpicker</style>
+        <help>Optionally enter a HTTP status code to change the response to. This does not work in combination with a redirection target.</help>
+        <advanced>true</advanced>
+    </field>
+</form>

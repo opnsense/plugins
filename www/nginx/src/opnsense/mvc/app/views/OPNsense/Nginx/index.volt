@@ -125,6 +125,9 @@
                 <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
             </li>
             <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-errorpages" href="#subtab_nginx-http-errorpages">{{ lang._('Error Pages')}}</a>
+            </li>
+            <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-tls-fingerprint" href="#subtab_nginx-http-tls-fingerprint">{{ lang._('TLS Fingerprint (Advanced)')}}</a>
             </li>
         </ul>
@@ -606,6 +609,29 @@
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-errorpages" class="tab-pane fade">
+        <table id="grid-errorpage" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="errorpage_dlg">
+            <thead>
+                <tr>
+                    <th data-column-id="name" data-width="15%" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="statuscodes" data-type="string" data-formatter="statuscodes" data-sortable="false" data-visible="true">{{ lang._('Status Codes') }}</th>
+                    <th data-column-id="response" data-width="13em" data-type="string" data-formatter="response" data-sortable="true">{{ lang._('Response') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-http-tls-fingerprint" class="tab-pane fade">
         <table id="grid-tls_fingerprint" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="tls_fingerprint_dlg">
             <thead>
@@ -670,5 +696,6 @@
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
 {{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
 {{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
+{{ partial("layout_partials/base_dialog",['fields': errorpage,'id':'errorpage_dlg', 'label':lang._('Edit Error Page')]) }}
 {{ partial("layout_partials/base_dialog",['fields': tls_fingerprint,'id':'tls_fingerprint_dlg', 'label':lang._('Edit TLS Fingerprint')]) }}
 {{ partial("layout_partials/base_dialog",['fields': syslog_target,'id':'syslog_target_dlg', 'label':lang._('Edit SYSLOG Target')]) }}
