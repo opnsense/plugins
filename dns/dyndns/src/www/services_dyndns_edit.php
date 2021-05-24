@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 break;
         }
 
-        if (!is_domain($host_to_check)) {
+        if (!is_hostname($host_to_check)) {
             $input_errors[] = gettext("The Hostname contains invalid characters.");
         }
     }
