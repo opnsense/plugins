@@ -2,6 +2,7 @@
 
 /*
  *    Copyright (C) 2017 Fabian Franz
+ *    Copyright (C) 2021 Marco Steiger
  *
  *    All rights reserved.
  *
@@ -54,10 +55,15 @@ class InstanceController extends ApiMutableModelControllerBase
             return array('status' => 'error',
                     'error' => 'interface parameter is missing');
         }
+        if (!isset($_POST['instance']['listenPort'])) {
+            return array('status' => 'error',
+                    'error' => 'listenPort parameter is missing');
+        }
         $interface_name = $_POST['instance']['interface'];
+        $listen_port = $_POST['instance']['listenPort'];
         if ($interface = $this->get_real_interface_name($interface_name)) {
             // start iperf
-            return $this->send_command("start $interface", $backend);
+            return $this->send_command("start $interface $listen_port", $backend);
         } else {
             return array('status' => 'error',
                       'error' => 'interface is unknown');

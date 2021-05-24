@@ -2,6 +2,7 @@
 
 =begin
 Copyright (C) 2017 Fabian Franz
+Copyright (C) 2021 Marco Steiger
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -123,9 +124,12 @@ def run_iperf3(port)
   output
 end
 
-def run_test(interface = 'any', data)
+def run_test(interface = 'any', port = 0, data)
   ret = nil
-  data[KEY_PORT] = port = find_open_port
+  if port == 0
+    port = find_open_port
+  end
+  data[KEY_PORT] = port
   # regenerate ruleset
   flush_firewall_rules
   gen_firewall_rules
@@ -149,12 +153,12 @@ def run_test(interface = 'any', data)
   ret
 end
 
-def run_test_thread(interface = 'any')
+def run_test_thread(interface = 'any', port = 0)
   data = {}
   t = Thread.new do
     data[KEY_START_TIME] = Time.now
     data['interface'] = interface
-    run_test(interface, data)
+    run_test(interface, port, data)
   end
   $instances[t] = data
 end
@@ -182,15 +186,20 @@ begin
       until connection.closed?
         begin
           command = connection.gets.strip.split(' ')
-          case command.shift
+          case command[0]
           when 'start'
             interface = 'any'
-            if command.length > 0
-              intf = command.shift
+            port = 0
+            if command.length > 1
+              intf = command[1]
               # check if a valid interface was given
               interface = intf if intf =~ /^[a-z0-9_-]+$/
             end
-            data = run_test_thread interface
+            if command.length > 2
+              port = command[2].to_i
+              port = 0 if !find_open_ports.include? port
+            end
+            data = run_test_thread(interface, port)
             connection.puts '{"status": "queued job"}'
           when 'query'
             connection.puts $instances.values.to_json
