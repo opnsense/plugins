@@ -46,12 +46,14 @@ class Telemetry:
         :return: datetime
         """
         self._file_handle.seek(0)
+        file_handle_stamp = None
+        max_age = datetime.datetime.now() - datetime.timedelta(days=self._init_last_days)
         try:
-            result = datetime.datetime.fromtimestamp(float(self._file_handle.readline()))
+            file_handle_stamp = datetime.datetime.fromtimestamp(float(self._file_handle.readline()))
         except ValueError:
-            result = datetime.datetime.now() - datetime.timedelta(days=self._init_last_days)
+            return max_age
 
-        return result
+        return max(file_handle_stamp, max_age)
 
     def set_last_update(self, stamp):
         """ set last timestamp
