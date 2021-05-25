@@ -26,6 +26,15 @@
  #}
 
 <div class="content-box" style="padding-bottom: 1.5em;">
+    <div id="about">
+        <table class="table-responsive table table-striped">
+            <tr>
+                <td>
+                The root folder for transfering files is /usr/local/tftp.
+                </td>
+            </tr>
+        </table>
+    </div>
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
     <div class="col-md-12">
         <hr />
@@ -46,11 +55,11 @@
         // link save button to API set action
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/tftp/general/set", formid='frm_general_settings',callback_ok=function(){
-                    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                        ajaxCall(url="/api/tftp/service/reconfigure", sendData={}, callback=function(data,status) {
-                            updateServiceControlUI('tftp');
-                            $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                        });
+                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                ajaxCall(url="/api/tftp/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('tftp');
+                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                });
             });
         });
     });
