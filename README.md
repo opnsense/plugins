@@ -38,7 +38,7 @@ dns/bind -- BIND domain name service
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
-emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense (development only)
+emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 mail/fetchmail -- Remote-mail retrieval utility (development only)
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
