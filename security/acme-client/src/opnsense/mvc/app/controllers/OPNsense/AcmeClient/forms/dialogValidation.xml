@@ -1262,4 +1262,9 @@
         <label>API Token</label>
         <type>password</type>
     </field>
+    <field>
+        <label>Nederhost API</label>
+        <type>header</type>
+        <style>table_dns table_dns_nederhost</style>
+    </field>
 </form>
