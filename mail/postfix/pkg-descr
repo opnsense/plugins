@@ -13,11 +13,11 @@ Plugin Changelog
 
 1.17
 
-* Add smtpd_sasl_auth_enable to configuration (by @fhloston)
+* Add smtpd_sasl_auth_enable to configuration (contributed by fhloston)
 
 1.16
 
-* Add support for header_checks (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+* Add support for header_checks (contributed by Starkstromkonsument)
 
 1.15
 
