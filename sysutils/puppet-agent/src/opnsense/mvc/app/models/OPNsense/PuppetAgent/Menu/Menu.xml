@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <PuppetAgent VisibleName="Puppet Agent" url="/ui/puppetagent"/>
+    </Services>
+</menu>

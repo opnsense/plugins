@@ -100,6 +100,7 @@ sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
+sysutils/puppet-agent -- Manage Puppet Agent (development only)
 sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
