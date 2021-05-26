@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.3
+
+Changed:
+* use HAProxy socket to apply updated OCSP stapling data (in cron job) (#2351)
+
 3.2
 
 Fixed:
