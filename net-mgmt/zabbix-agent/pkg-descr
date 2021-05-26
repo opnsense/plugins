@@ -14,6 +14,6 @@ Plugin Changelog
 
 1.8
 
-* Add Changelog (Starkstromkonsument <https://github.com/Starkstromkonsument>)
-* Fix logformat (Starkstromkonsument <https://github.com/Starkstromkonsument>)
+* Add Changelog (contributed by Starkstromkonsument)
+* Fix logformat (contributed by Starkstromkonsument)
 * Switch to Zabbix Agent 5.0
