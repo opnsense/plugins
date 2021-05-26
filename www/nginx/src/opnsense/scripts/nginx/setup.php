@@ -283,8 +283,7 @@ foreach ($nginx->errorpage->iterateItems() as $errorpage) {
                 @file_put_contents(ERRORPAGE_DIR . "/$filename", $content);
             }
             chmod(ERRORPAGE_DIR . "/$filename", 0644);
-        }
-        else {
+        } else {
             unset($used_errorpages[array_search($uuid, $used_errorpages)]);
         }
     }
