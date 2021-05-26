@@ -232,7 +232,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->acme_args[] = LeUtils::execSafe('--domain %s', $certname);
 
         // Main domain: Use DNS alias mode for domain validation?
-        // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+        // https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
         if ($this->getMethod() == 'dns01') {
             switch ((string)$aliasmode) {
                 case 'automatic':
@@ -256,7 +256,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                 $this->acme_args[] = LeUtils::execSafe('--domain %s', $altname);
 
                 // altNames: Use DNS alias mode for domain validation?
-                // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+                // https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
                 if ($this->getMethod() == 'dns01') {
                     switch ((string)$this->cert_aliasmode) {
                         case 'automatic':

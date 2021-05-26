@@ -54,8 +54,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
         // Save & reconfigure acme-client to activate changes
         $("#reconfigureAct").click(function(){
-            // TODO: reload the page afterwards to show/hide the "Schedule" tab
-
             // set progress animation
             $('[id*="reconfigureAct_progress"]').each(function(){
                 $(this).addClass("fa fa-spinner fa-pulse");
@@ -99,6 +97,10 @@ POSSIBILITY OF SUCH DAMAGE.
                                 // when done, disable progress animation
                                 $('[id*="reconfigureAct_progress"]').each(function(){
                                     $(this).removeClass("fa fa-spinner fa-pulse");
+                                    // reload page to show or hide links to cron edit page
+                                    setTimeout(function () {
+                                        window.location.reload(true)
+                                    }, 300);
                                 });
                                 dlg.close();
                             }
@@ -132,6 +134,10 @@ POSSIBILITY OF SUCH DAMAGE.
                                 // when done, disable progress animation
                                 $('[id*="reconfigureAct_progress"]').each(function(){
                                     $(this).removeClass("fa fa-spinner fa-pulse");
+                                    // reload page to show or hide links to cron edit page
+                                    setTimeout(function () {
+                                        window.location.reload(true)
+                                    }, 300);
                                 });
                             });
                         });
@@ -246,7 +252,7 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ lang._('Please use the %sissue tracker%s to report bugs or request new features.') | format('<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}
         <br/>
         <br/>
-        <p>{{ lang._('This plugin includes code from the %s project.') | format('<a href="https://github.com/Neilpang/acme.sh">Neilpang/acme.sh</a>' ) }} {{ lang._('Licensed under GPLv3.') }}<br/>{{ lang._('Let"s Encrypt(tm) is a trademark of the Internet Security Research Group. All rights reserved.') }}</p>
+        <p>{{ lang._('This plugin includes code from the %s project.') | format('<a href="https://github.com/acmesh-official/acme.sh">acmesh-official/acme.sh</a>' ) }} {{ lang._('Licensed under GPLv3.') }}<br/>{{ lang._('Let"s Encrypt(tm) is a trademark of the Internet Security Research Group. All rights reserved.') }}</p>
         <br/>
     </div>
 </div>

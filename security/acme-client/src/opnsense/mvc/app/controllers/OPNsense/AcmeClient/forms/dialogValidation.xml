@@ -973,6 +973,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>Vultr Cloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_vultr</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_vultr</style>
+    </field>
+    <field>
+        <id>validation.dns_vultr_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Yandex</label>
         <type>header</type>
         <style>table_dns table_dns_yandex</style>

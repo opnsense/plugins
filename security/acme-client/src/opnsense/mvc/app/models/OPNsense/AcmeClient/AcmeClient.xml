@@ -434,6 +434,7 @@
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
+                        <dns_vultr>Vultr API</dns_vultr>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
@@ -853,6 +854,9 @@
                 <dns_vscale_key type="TextField">
                     <Required>N</Required>
                 </dns_vscale_key>
+                <dns_vultr_key type="TextField">
+                    <Required>N</Required>
+                </dns_vultr_key>
                 <dns_yandex_token type="TextField">
                     <Required>N</Required>
                 </dns_yandex_token>
