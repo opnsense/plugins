@@ -49,7 +49,6 @@ function radsecproxy_syslog()
         'facility' => array('LOG_DAEMON'),
     );
     return $logfacilities;
-
 }
 
 
