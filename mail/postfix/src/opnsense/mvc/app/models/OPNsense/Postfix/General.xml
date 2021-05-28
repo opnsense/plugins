@@ -98,6 +98,7 @@
                 <none>none</none>
                 <may>may</may>
                 <encrypt>encrypt</encrypt>
+                <dane>dane</dane>
             </OptionValues>
         </smtpclient_security>
         <relayhost type="TextField">
