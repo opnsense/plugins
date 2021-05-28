@@ -861,6 +861,9 @@ class updatedns
             case 'hetzner-v6':
                 $baseUrl = 'https://dns.hetzner.com/api/v1';
                 $fqdn = str_replace(' ', '', $this->_dnsHost);
+                if ($this->_dnsWildcard == 'ON') {
+                      $fqdn = "*.$fqdn";
+                }
                 $recordType = ($this->_useIPv6) ? 'AAAA' : 'A';
                 $ttlData = intval($this->_dnsTTL) < 1 ? 120 : intval($this->_dnsTTL);
                 $hostData = [
