@@ -1267,4 +1267,9 @@
         <type>header</type>
         <style>table_dns table_dns_nederhost</style>
     </field>
+    <field>
+        <id>validation.dns_nederhost_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
 </form>
