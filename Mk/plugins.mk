@@ -73,10 +73,12 @@ PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
 .endfor
 
 .if "${PLUGIN_DEVEL}" != ""
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
 .else
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}
+PLUGIN_PKGSUFFIX=	# empty
 .endif
+
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_PKGSUFFIX}
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
@@ -309,7 +311,7 @@ lint-php: check
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" ! -name "*.md" \
 	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" ! -name "*.txz" \
-	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" \
+	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" ! -name "bootstrap80.php" \
 	    -type f -print0 | xargs -0 -n1 php -l
 
 lint: lint-desc lint-shell lint-xml lint-exec lint-php
