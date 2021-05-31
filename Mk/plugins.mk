@@ -104,8 +104,8 @@ manifest: check
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
 .if defined(PLUGIN_NO_ABI)
-	@echo "arch: `pkg config abi | tr '[:upper:]' '[:lower:]' | cut -d: -f1`:*:*"
-	@echo "abi: `pkg config abi | cut -d: -f1`:*:*"
+	@echo "arch: \"${OSABIPREFIX:tl}:*:*\""
+	@echo "abi: \"${OSABIPREFIX}:*:*\""
 .endif
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
