@@ -58,10 +58,27 @@ check:
 
 .if defined(_PLUGIN_DEVEL)
 PLUGIN_DEVEL?:=		${_PLUGIN_DEVEL}
+.else
+PLUGIN_DEVEL?=		yes
 .endif
 
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
+
+.if !empty(PLUGIN_VARIANTS)
+PLUGIN_VARIANT?=	${PLUGIN_VARIANTS:[1]}
+.endif
+
+.if !empty(PLUGIN_VARIANT)
+PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
+.if empty(PLUGIN_NAME)
+.error Plugin variant '${PLUGIN_VARIANT}' does not exist
+.endif
+.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS}
+PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
+.endfor
+PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.endif
 
 PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
 			${PLUGIN_PREFIX}${PLUGIN_NAME}
@@ -71,10 +88,12 @@ PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
 .endfor
 
 .if "${PLUGIN_DEVEL}" != ""
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
 .else
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}
+PLUGIN_PKGSUFFIX=	# empty
 .endif
+
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_PKGSUFFIX}
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
@@ -100,8 +119,8 @@ manifest: check
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
 .if defined(PLUGIN_NO_ABI)
-	@echo "arch: `pkg config abi | tr '[:upper:]' '[:lower:]' | cut -d: -f1`:*:*"
-	@echo "abi: `pkg config abi | cut -d: -f1`:*:*"
+	@echo "arch: \"${OSABIPREFIX:tl}:*:*\""
+	@echo "abi: \"${OSABIPREFIX}:*:*\""
 .endif
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
@@ -307,7 +326,7 @@ lint-php: check
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" ! -name "*.md" \
 	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" ! -name "*.txz" \
-	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" \
+	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" ! -name "bootstrap80.php" \
 	    -type f -print0 | xargs -0 -n1 php -l
 
 lint: lint-desc lint-shell lint-xml lint-exec lint-php
