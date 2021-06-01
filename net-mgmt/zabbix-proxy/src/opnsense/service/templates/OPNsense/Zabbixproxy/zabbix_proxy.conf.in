@@ -79,7 +79,7 @@ TLSAccept=psk
 {% else %}
 TLSConnect=psk
 {% endif %}
-TLSPSKFile=/usr/local/etc/zabbix5/zabbix_proxy.psk
+TLSPSKFile=/usr/local/etc/%%PLUGIN_VARIANT%%/zabbix_proxy.psk
 TLSPSKIdentity={{ OPNsense.zabbixproxy.general.encryptionidentity }}
 {% endif %}
 {% endif %}
