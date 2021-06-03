@@ -382,6 +382,7 @@
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_ddnss>DDNSS API</dns_ddnss>
                         <dns_desec>deSEC.io API</dns_desec>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
@@ -523,6 +524,9 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_da_insecure>
+                <dns_ddnss_token type="TextField">
+                    <Required>N</Required>
+                </dns_ddnss_token>
                 <dns_dgon_key type="TextField">
                     <Required>N</Required>
                 </dns_dgon_key>
