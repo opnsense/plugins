@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021 David Hughes
+ * Copyright (C) 2021 Manuel Hofmann
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
