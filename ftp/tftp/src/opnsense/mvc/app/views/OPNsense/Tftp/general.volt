@@ -30,7 +30,7 @@
         <table class="table-responsive table table-striped">
             <tr>
                 <td>
-                The root folder for transfering files is /usr/local/tftp.
+                {{ lang._('The root folder for transfering files is /usr/local/tftp.') }}
                 </td>
             </tr>
         </table>
