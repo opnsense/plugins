@@ -31,7 +31,7 @@
 
 namespace OPNsense\PuppetAgent\Api;
 
-use OPNsense\Base\ApiControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\PuppetAgent\PuppetAgent;
 use OPNsense\Core\Config;
 
@@ -39,55 +39,8 @@ use OPNsense\Core\Config;
  * Class SettingsController Handles settings related API actions for the PuppetAgent module
  * @package OPNsense\PuppetAgent
  */
-class SettingsController extends ApiControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
-    /**
-     * retrieve PuppetAgent general settings
-     * @return array general settings
-     * @throws \OPNsense\Base\ModelException
-     * @throws \ReflectionException
-     */
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlPuppetAgent = new PuppetAgent();
-            $result['puppetagent'] = $mdlPuppetAgent->getNodes();
-        }
-        return $result;
-    }
-
-    /**
-     * update PupppetAgent settings
-     * @return array status
-     * @throws \OPNsense\Base\ModelException
-     * @throws \ReflectionException
-     */
-    public function setAction()
-    {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlPuppetAgent = new PuppetAgent();
-            $mdlPuppetAgent->setNodes($this->request->getPost("puppetagent"));
-
-            // perform validation
-            $valMsgs = $mdlPuppetAgent->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["puppetagent." . $msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlPuppetAgent->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
+    protected static $internalModelName = 'puppetagent';
+    protected static $internalModelClass = 'OPNsense\PuppetAgent\PuppetAgent';
 }

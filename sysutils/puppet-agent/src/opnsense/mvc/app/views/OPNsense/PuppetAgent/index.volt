@@ -33,20 +33,19 @@ POSSIBILITY OF SUCH DAMAGE.
         mapDataToFormUI(data_get_map).done(function(data){
             // place actions to run after load, for example update form styles.
         });
-
-        updateServiceControlUI('puppetagent');
-
         // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/puppetagent/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
-                // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/puppetagent/service/reconfigure", sendData={},callback=function(data,status) {
-                    // action to run after reload
-                    updateServiceControlUI('puppetagent');
+        $("#saveAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint(url="/api/puppetagent/settings/set",formid='frm_GeneralSettings', function() {
+                    dfObj.resolve();
                 });
-            });
+                return dfObj;
+            }
         });
+        updateServiceControlUI('puppetagent');
     });
+
 </script>
 
 <div class="alert alert-info hidden" role="alert" id="responseMsg">
@@ -58,5 +57,11 @@ POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="col-md-12">
-    <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+    <button class="btn btn-primary"  id="saveAct"
+        data-endpoint='/api/puppetagent/service/reconfigure'
+        data-label="{{ lang._('Save') }}"
+        data-service-widget="puppetagent"
+        data-error-title="{{ lang._('Error reconfiguring puppetagent') }}"
+        type="button"
+    ></button>
 </div>
