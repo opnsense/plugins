@@ -1,0 +1,9 @@
+<acl>
+   <page-services-tftp>
+      <name>Services: TFTP</name>
+      <patterns>
+         <pattern>ui/tftp/*</pattern>
+         <pattern>api/tftp/*</pattern>
+      </patterns>
+   </page-services-tftp>
+</acl>
