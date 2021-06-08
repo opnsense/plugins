@@ -45,30 +45,4 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/PuppetAgent';
     protected static $internalServiceEnabled = 'general.Enabled';
     protected static $internalServiceName = 'puppetagent';
-
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
-            $backend = new Backend();
-            // generate template
-            $backend->configdRun('template reload OPNsense/PuppetAgent');
-
-            $mdlPuppetAgent = new PuppetAgent();
-
-            // (res)start daemon
-            if ($mdlPuppetAgent->general->Enabled->__toString() == 1) {
-                $this->startAction();
-            }
-            // stop Puppet Agent when disabled
-            else {
-                $this->stopAction();
-            }
-            return array("status" => "ok");
-        } else {
-            return array("status" => "failed");
-        }
-    }
 }
