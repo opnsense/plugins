@@ -17,8 +17,10 @@
                         <slave>slave</slave>
                     </OptionValues>
                 </type>
-                <masterip type="HostnameField">
+                <masterip type="NetworkField">
                     <Required>N</Required>
+                    <FieldSeparator>,</FieldSeparator>
+                    <asList>Y</asList>
                 </masterip>
                 <allownotifyslave type="NetworkField">
                     <Required>N</Required>
