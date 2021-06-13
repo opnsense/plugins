@@ -1,12 +1,16 @@
 <model>
     <mount>//OPNsense/maltrail/server</mount>
     <description>Maltrail server configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <addblocklistalias type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </addblocklistalias>
         <listenaddress type="HostnameField">
             <default>0.0.0.0</default>
             <Required>Y</Required>
