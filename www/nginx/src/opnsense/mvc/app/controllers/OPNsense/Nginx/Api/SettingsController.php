@@ -396,6 +396,42 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('limit_zone', 'limit_zone', $uuid);
     }
 
+    // Error pages
+    public function searcherrorpageAction()
+    {
+        return $this->searchBase('errorpage', array('name', 'statuscodes', 'response'));
+    }
+
+    public function geterrorpageAction($uuid = null)
+    {
+        $this->sessionClose();
+        $data = $this->getBase('errorpage', 'errorpage', $uuid);
+        // Decode base64 encoded page content
+        $data['errorpage']['pagecontent'] = base64_decode($data['errorpage']['pagecontent']);
+        return $data;
+    }
+
+    public function adderrorpageAction()
+    {
+        return $this->addBase('errorpage', 'errorpage', array(
+            // Encode page content with base64
+            'pagecontent' => base64_encode($this->request->getPost('errorpage')['pagecontent'])
+        ));
+    }
+
+    public function delerrorpageAction($uuid)
+    {
+        return $this->delBase('errorpage', $uuid);
+    }
+
+    public function seterrorpageAction($uuid)
+    {
+        return $this->setBase('errorpage', 'errorpage', $uuid, array(
+            // Encode page content with base64
+            'pagecontent' => base64_encode($this->request->getPost('errorpage')['pagecontent'])
+        ));
+    }
+
     // TLS fingerprints for MITM detection
     public function searchtls_fingerprintAction()
     {
@@ -615,7 +651,6 @@ class SettingsController extends ApiMutableModelControllerBase
     /**
      * @param null $uuid the uuid which should get cleared before
      * @throws \ReflectionException if the model was not found
-     * @throws \Phalcon\Validation\Exception on validation errors
      */
     private function regenerate_hostname_map($uuid = null)
     {
@@ -644,7 +679,6 @@ class SettingsController extends ApiMutableModelControllerBase
     /**
      * @param null $uuid the uuid which should get cleared before
      * @throws \ReflectionException if the model was not found
-     * @throws \Phalcon\Validation\Exception on validation errors
      */
     private function regenerate_ipacl($uuid = null)
     {
@@ -673,7 +707,6 @@ class SettingsController extends ApiMutableModelControllerBase
     /**
      * @param $uuids array list of UUIDs
      * @param $path string the model prefix from the element to delete
-     * @throws \Phalcon\Validation\Exception
      */
     private function delete_uuids($uuids, $path): void
     {

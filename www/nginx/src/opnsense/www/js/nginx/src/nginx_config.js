@@ -68,6 +68,7 @@ function init_grids() {
         'cache_path',
         'limit_request_connection',
         'snifwd',
+        'errorpage',
         'tls_fingerprint',
         'syslog_target',
         'naxsirule'].forEach(function (element) {
@@ -78,7 +79,29 @@ function init_grids() {
                 'set': '/api/nginx/settings/set' + element + '/',
                 'add': '/api/nginx/settings/add' + element + '/',
                 'del': '/api/nginx/settings/del' + element + '/',
-                'options': {selection: false, multiSelect: false}
+                'options': {
+                    selection: false,
+                    multiSelect: false,
+                    formatters: {
+                        "commands": function (column, row) {
+                            return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                        },
+                        "response": function (column, row) {
+                            return ((row.response == "none") ? "unchanged" : row.response);
+                        },
+                        // Extract 3 digit HTTP status code from string with human readable text (302 Found -> 302)
+                        "statuscodes": function (column, row) {
+                            const result = [];
+                            const elems = row.statuscodes.split(",");
+                            for (let elem of elems) {
+                                result.push(elem.substr(0, 3));
+                            }
+                            return result.join(", ");
+                        }
+                    }
+                }
             }
         );
     });
