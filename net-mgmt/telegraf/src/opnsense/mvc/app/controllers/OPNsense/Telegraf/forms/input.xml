@@ -147,6 +147,6 @@
         <id>input.resolver_log</id>
         <label>Resolver Logs</label>
         <type>checkbox</type>
-        <help>Requires Log Queries Option enabled under Services Unbound Adanved and logs be in plain text</help>
+        <help>Requires Log Queries option enabled under Services Unbound Adanved and logs be in plain text</help>
    </field>
 </form>
