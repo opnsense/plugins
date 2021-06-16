@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.0
+
+* Add resolver log input plugin
+
 1.11.0
 
 * Set telegraf.d as additional config include

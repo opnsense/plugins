@@ -143,4 +143,10 @@
         <type>checkbox</type>
         <help>Requires Intrustion detection alerts are stored locally.</help>
    </field>
+   <field>
+        <id>input.resolver_log</id>
+        <label>Resolver Logs</label>
+        <type>checkbox</type>
+        <help>Requires Log Queries Option enabled under Services Unbound Adanved and logs be in plain text</help>
+   </field>
 </form>
