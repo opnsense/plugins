@@ -47,7 +47,7 @@ class ServerController extends ApiMutableModelControllerBase
 
             if ($address == "0.0.0.0") {
                 $address = "127.0.0.1";
-            } else if ($address == "::") {
+            } elseif ($address == "::") {
                 $address = "::1";
             }
 
@@ -105,7 +105,7 @@ class ServerController extends ApiMutableModelControllerBase
 
                 $model->serializeToConfig();
             }
-        } else if ($blocklistIndex !== null) {
+        } elseif ($blocklistIndex !== null) {
             if ($model->aliases->alias->del($blocklistIndex)) {
                 $model->serializeToConfig();
             }
