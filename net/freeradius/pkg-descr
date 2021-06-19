@@ -15,6 +15,11 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.14
+
+* Updates comments in mods-enabled-eap to match upstream version 3.0.22
+* Set TLS minimum version to 1.0 for compatibility with older EAP clients
+
 1.9.13
 
 * Remove LEAP section from configuration
