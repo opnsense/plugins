@@ -75,8 +75,7 @@ net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
-net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
+net-mgmt/zabbix-proxy -- Zabbix monitoring proxy
 security/acme-client -- Let's Encrypt client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/etpro-telemetry -- ET Pro Telemetry Edition
