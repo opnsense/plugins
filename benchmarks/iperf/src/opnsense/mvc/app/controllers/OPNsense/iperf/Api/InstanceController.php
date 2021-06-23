@@ -60,7 +60,11 @@ class InstanceController extends ApiMutableModelControllerBase
                     'error' => 'listenPort parameter is missing');
         }
         $interface_name = $_POST['instance']['interface'];
-        $listen_port = $_POST['instance']['listenPort'];
+        $listen_port = intval($_POST['instance']['listenPort']);
+        if (($listen_port <= 2048 || $listen_port > 65535) && $listen_port != 0){
+            return array('status' => 'error',
+                    'error' => 'port number invalid');
+        }
         if ($interface = $this->get_real_interface_name($interface_name)) {
             // start iperf
             return $this->send_command("start $interface $listen_port", $backend);

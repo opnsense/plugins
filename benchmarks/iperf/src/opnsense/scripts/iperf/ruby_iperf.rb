@@ -197,7 +197,7 @@ begin
             end
             if command.length > 2
               port = command[2].to_i
-              port = 0 if !find_open_ports.include? port
+              port = 0 unless find_open_ports.include? port
             end
             data = run_test_thread(interface, port)
             connection.puts '{"status": "queued job"}'
