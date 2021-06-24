@@ -40,7 +40,7 @@ dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server (development only)
-mail/fetchmail -- Remote-mail retrieval utility (development only)
+mail/fetchmail -- Remote-mail retrieval utility
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - dark grey
