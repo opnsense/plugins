@@ -455,7 +455,8 @@ class updatedns
             case 'noip-free':
                 curl_setopt_array($ch, [
                     CURLOPT_SSL_VERIFYPEER => true,
-                    CURLOPT_USERPWD => $this->_dnsUser . ':' . $this->_dnsPass
+                    CURLOPT_USERNAME => curl_escape($ch, $this->_dnsUser),
+                    CURLOPT_PASSWORD => $this->_dnsPass
                 ]);
                 $server = "https://dynupdate.no-ip.com/nic/update";
                 $port = "";
@@ -1346,7 +1347,7 @@ class updatedns
             case 'noip':
             case 'noip-free':
                 $noIpPrc = explode(' ', $data);
-                $code = $noIpPrc[0];
+                $code = trim($noIpPrc[0]);
                 $ip = isset($noIpPrc[1]) ? $noIpPrc[1] : 'n/a';
                 switch ($code) {
                     case 'good':
@@ -1376,7 +1377,7 @@ class updatedns
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Account disabled due to violation of No-IP terms of service.";
                         break;
                     default:
-                        $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response) ($code)";
                         log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                         $this->_debug("Unknown Response: " . $data);
                         break;
