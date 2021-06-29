@@ -67,10 +67,6 @@ include("head.inc");
 
 legacy_html_escape_form_data($a_dyndns);
 
-$main_buttons = array(
-    array('label' => gettext('Add'), 'href' => 'services_dyndns_edit.php'),
-);
-
 ?>
 <body>
   <script>
@@ -125,7 +121,11 @@ $main_buttons = array(
                       <th><?=gettext("Hostname");?></th>
                       <th><?=gettext("Cached IP");?></th>
                       <th><?=gettext("Description");?></th>
-                      <th class="text-nowrap"></th>
+                      <th class="text-nowrap">
+                        <a href="services_dyndns_edit.php" class="btn btn-primary btn-xs" data-toggle="tooltip" title="<?= html_safe(gettext('Add')) ?>">
+                          <i class="fa fa-plus fa-fw"></i>
+                        </a>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>

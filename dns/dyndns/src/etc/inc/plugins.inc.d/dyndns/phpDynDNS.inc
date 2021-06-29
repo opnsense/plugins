@@ -1209,6 +1209,7 @@ class updatedns
                 }
                 curl_setopt($ch, CURLOPT_INTERFACE, $ipv4);
                 // fix end
+                break;
             case 'godaddy':
             case 'godaddy-v6':
                 /* Read https://developer.godaddy.com/ for API documentation */
