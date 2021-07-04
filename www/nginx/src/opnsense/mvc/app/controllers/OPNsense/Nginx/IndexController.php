@@ -82,7 +82,7 @@ class IndexController extends \OPNsense\Base\IndexController
     /**
      * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
      */
-    public function tls_handshakesAction()
+    public function tlsHandshakesAction()
     {
         $this->view->pick('OPNsense/Nginx/tls_handshakes');
     }
