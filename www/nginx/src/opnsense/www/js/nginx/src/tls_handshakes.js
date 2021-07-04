@@ -119,7 +119,7 @@ const FingerprintMain = Backbone.View.extend({
     render_all(attributes) {
         for (const ua in attributes) {
             // skip loop if the property is from prototype
-            if (attributes.hasOwnProperty(ua)) {
+            if (attributes.hasOwnProperty(ua) && typeof attributes[ua] !== 'undefined' && typeof attributes[ua] !== 'function') {
                 const fingerprints = new Backbone.Collection(attributes[ua]);
                 const fingerprints_view = new FingerPrintList({'collection': fingerprints, 'ua': ua});
                 this.$el.append(fingerprints_view.$el);
