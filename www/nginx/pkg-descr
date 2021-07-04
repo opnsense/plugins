@@ -10,6 +10,10 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.23_1
+
+* fix some issues with the MVC router
+
 1.23
 
 * Add custom error pages on a per HTTP server basis (contributed by 8191)
