@@ -9,6 +9,10 @@ and management interface.
 Plugin Changelog
 ----------------
 
+1.8
+
+* Add apcupsd-ups driver support
+
 1.7
 
 * Add PowerWare bcmxcp_usb driver
