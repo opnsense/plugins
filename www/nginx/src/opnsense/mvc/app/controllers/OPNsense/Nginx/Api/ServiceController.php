@@ -97,9 +97,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array();
     }
     
-       protected function reconfigureForceRestart()
-    {
+    protected function reconfigureForceRestart() {
         return 0;
     }
-
 }
