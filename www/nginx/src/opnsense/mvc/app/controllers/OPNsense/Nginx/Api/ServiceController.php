@@ -64,7 +64,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             $model = $this->getModel();
             $backend = new Backend();
             if ($this->reconfigureForceRestart()) {
-                $backend->configdRun('nginx stop');
+                $backend->configdRun('nginx reload');
             }
             $backend->configdRun('template reload OPNsense/Nginx');
             $runStatus = $this->statusAction();
