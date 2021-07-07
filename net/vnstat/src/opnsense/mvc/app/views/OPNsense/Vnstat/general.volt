@@ -53,6 +53,7 @@
     </div>
     <div id="monthly" class="tab-pane fade in">
       <pre id="listmonthly"></pre>
+    </div>
     <div id="yearly" class="tab-pane fade in">
       <pre id="listyearly"></pre>
     </div>
