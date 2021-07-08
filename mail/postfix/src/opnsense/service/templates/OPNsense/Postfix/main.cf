@@ -5,7 +5,7 @@
 ##########################
 alias_database = hash:/usr/local/etc/postfix/aliases
 alias_maps = hash:/usr/local/etc/postfix/aliases
-compatibility_level = 2
+compatibility_level = 3.6
 queue_directory = /var/spool/postfix
 command_directory = /usr/local/sbin
 daemon_directory = /usr/local/libexec/postfix
