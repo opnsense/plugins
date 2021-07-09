@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+2.6
+
+Fixed:
+* sftp update of write protected cert files with a numeric owner
+
 2.5
 
 Added:
