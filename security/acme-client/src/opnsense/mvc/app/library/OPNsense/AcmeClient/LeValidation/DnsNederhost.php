@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021 
+ * Copyright (C) 2021 Github-jjw
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
