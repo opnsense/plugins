@@ -439,6 +439,7 @@
                         <dns_vultr>Vultr API</dns_vultr>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
+                        <dns_zone>Zone.eu API</dns_zone>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
                     </OptionValues>
                 </dns_service>
@@ -965,6 +966,12 @@
                 <dns_infomaniak_token type="TextField">
                     <Required>N</Required>
                 </dns_infomaniak_token>
+                <dns_zone_username type="TextField">
+                    <Required>N</Required>
+                </dns_zone_username>
+                <dns_zone_key type="TextField">
+                    <Required>N</Required>
+                </dns_zone_key>
             </validation>
         </validations>
         <actions>

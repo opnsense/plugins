@@ -1273,6 +1273,22 @@
         <type>password</type>
     </field>
     <field>
+        <label>Zone.eu API</label>
+        <type>header</type>
+        <style>table_dns table_dns_zone</style>
+    </field>
+    <field>
+        <id>validation.dns_zone_username</id>
+        <label>Zone Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zone_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>Can be generated under ZoneID account management</help>
+    </field>
+    <field>
         <label>Nederhost API</label>
         <type>header</type>
         <style>table_dns table_dns_nederhost</style>
