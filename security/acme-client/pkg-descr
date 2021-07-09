@@ -19,6 +19,9 @@ Added:
 Fixed:
 * sftp update of write protected cert files with a numeric owner (#2426)
 
+Changed:
+* Namecheap: change IP discovery URL to avoid rate-limits (#2419)
+
 2.5
 
 Added:
