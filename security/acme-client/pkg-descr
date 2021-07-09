@@ -15,6 +15,7 @@ Added:
 * add support for DDNSS DNS API (#2415)
 * add support for Zone.eu DNS API (#2417)
 * add support for Njalla DNS API (#2446)
+* add support for Domeneshop DNS API (#2390)
 
 Fixed:
 * sftp update of write protected cert files with a numeric owner (#2426)

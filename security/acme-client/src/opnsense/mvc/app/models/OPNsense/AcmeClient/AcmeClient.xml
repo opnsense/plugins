@@ -387,6 +387,7 @@
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
+                        <dns_domeneshop>Domeneshop API</dns_domeneshop>
                         <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_dp>DNSPod.cn API</dns_dp>
                         <dns_doapi>Domain-Offensive LetsEncrypt API</dns_doapi>
@@ -545,6 +546,12 @@
                 <dns_do_password type="TextField">
                     <Required>N</Required>
                 </dns_do_password>
+                <dns_domeneshop_token type="TextField">
+                    <Required>N</Required>
+                </dns_domeneshop_token>
+                <dns_domeneshop_secret type="TextField">
+                    <Required>N</Required>
+                </dns_domeneshop_secret>
                 <dns_dp_id type="TextField">
                     <Required>N</Required>
                 </dns_dp_id>

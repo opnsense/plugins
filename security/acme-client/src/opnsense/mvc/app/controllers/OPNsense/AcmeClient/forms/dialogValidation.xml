@@ -340,6 +340,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>Domeneshop DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_domeneshop</style>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>DNSPod</label>
         <type>header</type>
         <style>table_dns table_dns_dp</style>
