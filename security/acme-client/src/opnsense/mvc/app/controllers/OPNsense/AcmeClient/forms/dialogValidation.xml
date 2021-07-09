@@ -1286,7 +1286,7 @@
         <id>validation.dns_zone_key</id>
         <label>API Key</label>
         <type>text</type>
-	<help>Can be generated under ZoneID account management</help>
+        <help>Can be generated under ZoneID account management</help>
     </field>
     <field>
         <label>Nederhost API</label>
