@@ -813,6 +813,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Njalla</label>
+        <type>header</type>
+        <style>table_dns table_dns_njalla</style>
+    </field>
+    <field>
+        <id>validation.dns_njalla_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>NS1.com</label>
         <type>header</type>
         <style>table_dns table_dns_nsone</style>
