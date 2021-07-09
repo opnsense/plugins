@@ -439,7 +439,7 @@
                         <dns_vultr>Vultr API</dns_vultr>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
-                        <dns_zone>ZoneID API (2.0)</dns_zone>
+                        <dns_zone>Zone.eu API</dns_zone>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
                     </OptionValues>
                 </dns_service>
