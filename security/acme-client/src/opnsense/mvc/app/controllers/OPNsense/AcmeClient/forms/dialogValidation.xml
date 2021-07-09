@@ -267,6 +267,16 @@
         <label>Password</label>
         <type>password</type>
     </field>
+	<field>
+        <label>DDNSS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ddnss</style>
+    </field>
+    <field>
+        <id>validation.dns_ddnss_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
     <field>
         <label>DirectAdmin</label>
         <type>header</type>
@@ -1263,7 +1273,7 @@
         <type>password</type>
     </field>
     <field>
-        <label>ZoneID API (2.0)</label>
+        <label>Zone.eu API</label>
         <type>header</type>
         <style>table_dns table_dns_zone</style>
     </field>
@@ -1277,5 +1287,14 @@
         <label>API Key</label>
         <type>text</type>
 		<help>Can be generated under ZoneID account management</help>
+    </field>
+        <label>Nederhost API</label>
+        <type>header</type>
+        <style>table_dns table_dns_nederhost</style>
+    </field>
+    <field>
+        <id>validation.dns_nederhost_key</id>
+        <label>Key</label>
+        <type>text</type>
     </field>
 </form>

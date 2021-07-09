@@ -382,6 +382,7 @@
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_ddnss>DDNSS API</dns_ddnss>
                         <dns_desec>deSEC.io API</dns_desec>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
@@ -421,6 +422,7 @@
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namecheap>Namecheap API</dns_namecheap>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
+                        <dns_nederhost>Nederhost API</dns_nederhost>
                         <dns_netcup>netcup DNS API</dns_netcup>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
@@ -524,6 +526,9 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_da_insecure>
+                <dns_ddnss_token type="TextField">
+                    <Required>N</Required>
+                </dns_ddnss_token>
                 <dns_dgon_key type="TextField">
                     <Required>N</Required>
                 </dns_dgon_key>
@@ -767,6 +772,9 @@
                 <dns_namesilo_key type="TextField">
                     <Required>N</Required>
                 </dns_namesilo_key>
+                <dns_nederhost_key type="TextField">
+                    <Required>N</Required>
+                </dns_nederhost_key>
                 <dns_netcup_cid type="TextField">
                     <Required>N</Required>
                 </dns_netcup_cid>

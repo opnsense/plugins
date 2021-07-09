@@ -6,6 +6,12 @@
         <help>This will activate the Maltrail server. You can use this service to also collect data from remote Maltrail sensors.</help>
     </field>
     <field>
+        <id>server.addblocklistalias</id>
+        <label>Add Blocklist Alias</label>
+        <type>checkbox</type>
+        <help>Adds firewall alias "BlocklistMaltrail" referencing Maltrail's "/fail2ban" IP list. You can use this alias to block IPs that Maltrail detected as malicious.</help>
+    </field>
+    <field>
         <id>server.listenaddress</id>
         <label>UI Listen Address</label>
         <type>text</type>

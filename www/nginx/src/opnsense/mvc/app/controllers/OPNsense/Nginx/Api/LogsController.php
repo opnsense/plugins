@@ -59,7 +59,7 @@ class LogsController extends ApiControllerBase
      * action to query the TLS handshake information - useful for building fingerprint databases
      * @throws \Exception
      */
-    public function tls_handshakesAction()
+    public function tlsHandshakesAction()
     {
         $this->sendConfigdToClient('nginx tls_handshakes');
     }
@@ -90,7 +90,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function stream_accessesAction($uuid = null)
+    public function streamAccessesAction($uuid = null)
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -109,7 +109,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function stream_errorsAction($uuid = null)
+    public function streamErrorsAction($uuid = null)
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {

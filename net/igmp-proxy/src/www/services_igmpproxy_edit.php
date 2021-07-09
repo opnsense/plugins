@@ -172,7 +172,7 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_descr" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Description");?></td>
                       <td>
-                        <input name="descr" type="text" class="formfld unknown" id="descr" size="40" value="<?=$pconfig['descr'];?>" />
+                        <input name="descr" type="text" id="descr" size="40" value="<?=$pconfig['descr'];?>" />
                         <div class="hidden" data-for="help_for_descr">
                           <?=gettext("You may enter a description here for your reference (not parsed).");?>
                         </div>
@@ -199,7 +199,7 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_threshold" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Threshold");?></td>
                       <td>
-                        <input name="threshold" type="text" class="formfld unknown" id="threshold" value="<?=$pconfig['threshold'];?>" />
+                        <input name="threshold" type="text" id="threshold" value="<?=$pconfig['threshold'];?>" />
                         <div class="hidden" data-for="help_for_threshold">
                           <?=gettext("Defines the TTL threshold for the network interface. ".
                                "Packets with a lower TTL than the threshold value will be ignored. ".
