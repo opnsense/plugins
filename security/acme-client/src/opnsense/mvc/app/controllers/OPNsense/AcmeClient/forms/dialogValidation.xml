@@ -551,6 +551,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>IONOS domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ionos</style>
+    </field>
+    <field>
+        <id>validation.dns_ionos_prefix</id>
+        <label>Prefix</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_ionos_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>IPSConfig</label>
         <type>header</type>
         <style>table_dns table_dns_ispconfig</style>
