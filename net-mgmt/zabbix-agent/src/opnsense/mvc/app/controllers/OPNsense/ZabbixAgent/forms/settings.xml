@@ -45,9 +45,8 @@
         <field>
             <id>zabbixagent.settings.main.syslogEnable</id>
             <label>Log to syslog</label>
-            <type>text</type>
-            <help><![CDATA[Use syslog, instead of logging to file.]]></help>
-            <advanced>true</advanced>
+            <type>checkbox</type>
+            <help><![CDATA[Use syslog instead of logging to a file.]]></help>
         </field>
         <field>
             <id>zabbixagent.settings.main.logFileSize</id>
