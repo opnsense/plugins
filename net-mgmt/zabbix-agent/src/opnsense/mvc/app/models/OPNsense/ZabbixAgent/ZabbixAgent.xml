@@ -22,7 +22,7 @@
                     <default>127.0.0.1</default>
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
+                    <mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid Zabbix server addresses, i.e. 10.0.0.1 or zabbix.example.com.</ValidationMessage>
                 </serverList>

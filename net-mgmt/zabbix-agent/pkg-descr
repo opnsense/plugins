@@ -12,6 +12,11 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.9
+
+Added:
+* Allow CIDR notation in "Zabbix Servers" field (#2296)
+
 1.8
 
 * Add Changelog (contributed by Starkstromkonsument)
