@@ -17,6 +17,9 @@ Plugin Changelog
 Added:
 * Allow CIDR notation in "Zabbix Servers" field (#2296)
 
+Changed:
+* Use "NetworkField" wherever applicable for better input validation
+
 1.8
 
 Added:
