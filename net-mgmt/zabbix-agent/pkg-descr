@@ -19,6 +19,11 @@ Added:
 
 1.8
 
+Added:
 * Add Changelog (contributed by Starkstromkonsument)
+
+Fixed:
 * Fix logformat (contributed by Starkstromkonsument)
+
+Changed:
 * Switch to Zabbix Agent 5.0
