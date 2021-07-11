@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <description>Zabbix monitoring agent</description>
     <items>
         <!-- local settings that should NOT be synced to another node -->

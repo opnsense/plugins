@@ -16,6 +16,7 @@ Plugin Changelog
 
 Added:
 * Allow CIDR notation in "Zabbix Servers" field (#2296)
+* Add syslog option, allow logging to syslog (#2348)
 
 Changed:
 * Use "NetworkField" wherever applicable for better input validation
