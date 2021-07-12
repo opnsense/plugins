@@ -18,7 +18,7 @@ Plugin Changelog
 1.9.15
 
 * Fixed validation of CIDR for client network ranges
-* Allow setting min and max TLS version
+* Allow setting of minimum TLS version
 
 1.9.14
 
