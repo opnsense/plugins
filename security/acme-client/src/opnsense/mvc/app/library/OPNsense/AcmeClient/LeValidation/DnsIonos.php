@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,20 +32,14 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Namecheap DNS API
+ * IONOS API
  * @package OPNsense\AcmeClient
  */
-class DnsNamecheap extends Base implements LeValidationInterface
+class DnsIonos extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['NAMECHEAP_USERNAME'] = (string)$this->config->dns_namecheap_user;
-        $this->acme_env['NAMECHEAP_API_KEY'] = (string)$this->config->dns_namecheap_api;
-        if (!empty((string)$this->config->dns_namecheap_sourceip)) {
-            $this->acme_env['NAMECHEAP_SOURCEIP'] = (string)$this->config->dns_namecheap_sourceip;
-        } else {
-            // Use a public service to get our source IP for Namecheap API
-            $this->acme_env['NAMECHEAP_SOURCEIP'] = 'https://ipinfo.io/ip';
-        }
+        $this->acme_env['IONOS_PREFIX'] = (string)$this->config->dns_ionos_prefix;
+        $this->acme_env['IONOS_SECRET'] = (string)$this->config->dns_ionos_secret;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2021 Github-jjw
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,20 +32,13 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Namecheap DNS API
+ * NederHost DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsNamecheap extends Base implements LeValidationInterface
+class DnsNederhost extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['NAMECHEAP_USERNAME'] = (string)$this->config->dns_namecheap_user;
-        $this->acme_env['NAMECHEAP_API_KEY'] = (string)$this->config->dns_namecheap_api;
-        if (!empty((string)$this->config->dns_namecheap_sourceip)) {
-            $this->acme_env['NAMECHEAP_SOURCEIP'] = (string)$this->config->dns_namecheap_sourceip;
-        } else {
-            // Use a public service to get our source IP for Namecheap API
-            $this->acme_env['NAMECHEAP_SOURCEIP'] = 'https://ipinfo.io/ip';
-        }
+        $this->acme_env['NederHost_Key'] = (string)$this->config->dns_nederhost_key;
     }
 }
