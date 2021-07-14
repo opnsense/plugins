@@ -51,6 +51,13 @@ PLUGIN_FLAVOUR?=	Base
 .endif
 .endif
 
+VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
+
+.if exists(${VERSIONBIN})
+_PLUGIN_ABI!=	${VERSIONBIN} -a
+PLUGIN_ABI?=	${_PLUGIN_ABI}
+.endif
+
 PHPBIN=		${LOCALBASE}/bin/php
 
 .if exists(${PHPBIN})
@@ -65,9 +72,15 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-PLUGIN_ABI?=	21.7
-PLUGIN_PHP?=	74
-PLUGIN_PYTHON?=	38
+.if empty(DEVABI)
+. for REPLACEMENT in ABI PHP PYTHON
+.  if empty(PLUGIN_${REPLACEMENT})
+.   error Cannot build without PLUGIN_${REPLACEMENT} set
+.  endif
+. endfor
+.else
+PLUGIN_ABI=	${DEVABI}
+.endif
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
