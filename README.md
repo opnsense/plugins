@@ -39,7 +39,7 @@ dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
-ftp/tftp -- TFTP server (development only)
+ftp/tftp -- TFTP server
 mail/fetchmail -- Remote-mail retrieval utility
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
