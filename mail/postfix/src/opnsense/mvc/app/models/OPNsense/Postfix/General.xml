@@ -190,7 +190,7 @@
             <Required>N</Required>
             <MinimumValue>0</MinimumValue>
             <MaximumValue>24</MaximumValue>
-            <ValidationMessage>Choose a value between 1 and 24 to activate - 0 to disable.</ValidationMessage>
+            <ValidationMessage>Choose a value between 1 and 24 to activate - 0 or empty to disable.</ValidationMessage>
         </delay_warning_time>
     </items>
 </model>
