@@ -223,6 +223,10 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
 {% endif %}
 
+{% if helpers.exists('OPNsense.postfix.general.delay_warning_time') and OPNsense.postfix.general.delay_warning_time != '0' %}
+delay_warning_time = {{ OPNsense.postfix.general.delay_warning_time }}h
+{% endif %}
+
 smtpd_helo_required = yes
 
 {% if helpers.exists('OPNsense.postfix.general.extensive_helo_restrictions') and OPNsense.postfix.general.extensive_helo_restrictions == '1' %}
