@@ -72,15 +72,15 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-.if empty(DEVABI)
-. for REPLACEMENT in ABI PHP PYTHON
-.  if empty(PLUGIN_${REPLACEMENT})
-.   error Cannot build without PLUGIN_${REPLACEMENT} set
-.  endif
-. endfor
-.else
+.if !empty(DEVABI)
 PLUGIN_ABI=	${DEVABI}
 .endif
+
+.for REPLACEMENT in ABI PHP PYTHON
+. if empty(PLUGIN_${REPLACEMENT})
+.  warning Cannot build without PLUGIN_${REPLACEMENT} set
+. endif
+.endfor
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
