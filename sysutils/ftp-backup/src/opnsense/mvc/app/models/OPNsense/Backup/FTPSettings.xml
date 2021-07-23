@@ -1,0 +1,49 @@
+<model>
+    <mount>//system/backup/ftp</mount>
+    <version>1.0.0</version>
+    <description>OPNsense FTP Backup Settings</description>
+    <items>
+        <enabled type="BooleanField">
+          <default>0</default>
+          <Required>Y</Required>
+        </enabled>
+        <url type="TextField">
+            <Required>N</Required>
+            <ValidationMessage>The url must be valid with a trailing slash. For example: ftp://ftp.example.com/ or ftp://ftp.example.com/folder/</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>An URL for a FTP server must be set.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </url>
+        <user type="TextField">
+            <Constraints>
+                <check001>
+                    <ValidationMessage>An user for FTP server must be set.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </user>
+        <password type="TextField">
+            <Constraints>
+                <check001>
+                    <ValidationMessage>A password for a FTP server must be set.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </password>
+        <password_encryption type="TextField">
+            <Required>N</Required>
+        </password_encryption>
+    </items>
+</model>
