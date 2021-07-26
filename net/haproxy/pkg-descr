@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.4
+
+Fixed:
+* fix empty resolve-prefer option (#2340)
+
 3.3
 
 Changed:
