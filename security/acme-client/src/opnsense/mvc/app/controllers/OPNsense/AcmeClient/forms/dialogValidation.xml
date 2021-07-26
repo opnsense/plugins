@@ -267,6 +267,16 @@
         <label>Password</label>
         <type>password</type>
     </field>
+	<field>
+        <label>DDNSS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ddnss</style>
+    </field>
+    <field>
+        <id>validation.dns_ddnss_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
     <field>
         <label>DirectAdmin</label>
         <type>header</type>
@@ -327,6 +337,21 @@
     <field>
         <id>validation.dns_do_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Domeneshop DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_domeneshop</style>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_secret</id>
+        <label>Secret</label>
         <type>password</type>
     </field>
     <field>
@@ -523,6 +548,21 @@
     <field>
         <id>validation.dns_inws_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>IONOS domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ionos</style>
+    </field>
+    <field>
+        <id>validation.dns_ionos_prefix</id>
+        <label>Prefix</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_ionos_secret</id>
+        <label>Secret</label>
         <type>password</type>
     </field>
     <field>
@@ -800,6 +840,16 @@
     <field>
         <id>validation.dns_netcup_pw</id>
         <label>API Password</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Njalla</label>
+        <type>header</type>
+        <style>table_dns table_dns_njalla</style>
+    </field>
+    <field>
+        <id>validation.dns_njalla_token</id>
+        <label>API Token</label>
         <type>text</type>
     </field>
     <field>
@@ -1261,5 +1311,31 @@
         <id>validation.dns_infomaniak_token</id>
         <label>API Token</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>Zone.eu API</label>
+        <type>header</type>
+        <style>table_dns table_dns_zone</style>
+    </field>
+    <field>
+        <id>validation.dns_zone_username</id>
+        <label>Zone Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zone_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>Can be generated under ZoneID account management</help>
+    </field>
+    <field>
+        <label>Nederhost API</label>
+        <type>header</type>
+        <style>table_dns table_dns_nederhost</style>
+    </field>
+    <field>
+        <id>validation.dns_nederhost_key</id>
+        <label>Key</label>
+        <type>text</type>
     </field>
 </form>
