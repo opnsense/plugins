@@ -10,6 +10,10 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.24
+
+* Add server ssl_protocols, ssl_ciphers, ssl_prefer_server_ciphers directives to GUI (contributed by kulikov-a)
+
 1.23
 
 * Add custom error pages on a per HTTP server basis (contributed by 8191)
