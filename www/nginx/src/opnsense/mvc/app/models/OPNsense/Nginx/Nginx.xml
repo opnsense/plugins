@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.20.1</version>
+  <version>1.24.1</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -773,6 +773,29 @@
         <default>0</default>
         <Required>Y</Required>
       </https_only>
+      <ssl_protocols type="OptionField">
+        <multiple>Y</multiple>
+        <Sorted>Y</Sorted>
+        <OptionValues>
+          <SSLv2 value="SSLv2">SSLv2</SSLv2>
+          <SSLv3 value="SSLv3">SSLv3</SSLv3>
+          <TLSv1 value="TLSv1">TLSv1</TLSv1>
+          <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
+          <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
+          <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
+        </OptionValues>
+        <Required>N</Required>
+        <default>TLSv1.2,TLSv1.3</default>
+      </ssl_protocols>
+      <ssl_ciphers type="TextField">
+        <default>ECDHE-ECDSA-CAMELLIA256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CAMELLIA256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-CAMELLIA128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-CAMELLIA128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-CAMELLIA256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-CAMELLIA256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-CAMELLIA128-SHA256:ECDHE-RSA-AES128-SHA256</default>
+        <Required>N</Required>
+        <mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</mask>
+      </ssl_ciphers>
+      <ssl_prefer_server_ciphers type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </ssl_prefer_server_ciphers>
       <ocsp_stapling type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
