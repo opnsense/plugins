@@ -133,6 +133,28 @@
     <help>If you check this box, a TLS encrypted connection is enforced.</help>
   </field>
   <field>
+    <id>httpserver.ssl_protocols</id>
+    <label>SSL Protocols</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3.</help>
+  </field> 
+  <field>
+    <id>httpserver.ssl_ciphers</id>
+    <label>SSL Ciphers</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Specify enabled ciphers in the format understood by the OpenSSL library. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
+  </field>
+  <field>
+    <id>httpserver.ssl_prefer_server_ciphers</id>
+    <label>Prefer server ciphers</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Prefers server ciphers over client ciphers.</help>
+  </field>
+  <field>
     <id>httpserver.ocsp_stapling</id>
     <label>OCSP Stapling</label>
     <type>checkbox</type>
