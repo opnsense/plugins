@@ -9,6 +9,6 @@
         <id>general.interface</id>
         <label>Interface</label>
         <type>select_multiple</type>
-        <help>Set the interface to listen on.</help>
+        <help>Choose which interface’s statistics to view. If multiple interfaces are chosen, statistics will be reported as an aggregate of all of the selected interfaces. There is roughly a four interface limit for aggregate statistics due to a 31 character limit within vnStat.</help>
     </field>
 </form>
