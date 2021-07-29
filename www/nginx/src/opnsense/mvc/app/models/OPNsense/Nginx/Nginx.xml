@@ -777,8 +777,6 @@
         <multiple>Y</multiple>
         <Sorted>Y</Sorted>
         <OptionValues>
-          <SSLv2 value="SSLv2">SSLv2</SSLv2>
-          <SSLv3 value="SSLv3">SSLv3</SSLv3>
           <TLSv1 value="TLSv1">TLSv1</TLSv1>
           <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
           <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
