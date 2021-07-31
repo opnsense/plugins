@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.0
+
+* Allow to start telegraf with wheel group permissions
+
 1.11.0
 
 * Set telegraf.d as additional config include
