@@ -32,7 +32,7 @@ use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeUtils;
 
 /**
- * Common constants and functions for all Let's Encrypt classes
+ * Common constants and functions for all ACME classes
  * @package OPNsense\AcmeClient
  */
 abstract class LeCommon

@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2017 Frank Wall
+Copyright (C) 2017-2021 Frank Wall
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
 
@@ -300,7 +300,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 if (gridParams['register'] != undefined) {
                     var uuid=$(this).data("row-id");
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Register the selected account with Lets Encrypt?') }}',
+                        '{{ lang._('Register the selected account with the configured ACME CA?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         ajaxCall(url=gridParams['register'] + uuid,sendData={},callback=function(data,status){
                             // reload grid afterwards

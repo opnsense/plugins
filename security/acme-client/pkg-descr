@@ -14,6 +14,7 @@ Added:
 * add support for new ACME CA's: buypass, buypass_test, sslcom, zerossl (#2361)
 
 Changed:
+* rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)
 * rename "Let's Encrypt Environment" to "ACME CA" (#2361)
 * preserve old LE accounts/certs by adding a compatibility layer (#2361)
 

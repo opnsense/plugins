@@ -31,7 +31,7 @@ namespace OPNsense\AcmeClient;
 use OPNsense\Core\Config;
 
 /**
- * Manage Let's Encrypt accounts with acme.sh
+ * Manage ACME CA accounts with acme.sh
  * @package OPNsense\AcmeClient
  */
 class LeAccount extends LeCommon
@@ -192,7 +192,7 @@ class LeAccount extends LeCommon
     }
 
     /**
-     * register account with Let's Encrypt
+     * register account with configured ACME CA
      * @return bool
      */
     public function register()

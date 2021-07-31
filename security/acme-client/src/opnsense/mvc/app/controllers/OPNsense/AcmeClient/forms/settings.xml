@@ -3,7 +3,7 @@
         <id>acmeclient.settings.enabled</id>
         <label>Enable Plugin</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable Let's Encrypt plugin.]]></help>
+        <help><![CDATA[Enable ACME client plugin.]]></help>
     </field>
     <field>
         <id>acmeclient.settings.autoRenewal</id>
@@ -33,7 +33,7 @@
         <id>acmeclient.settings.challengePort</id>
         <label>Local HTTP Port</label>
         <type>text</type>
-        <help><![CDATA[When using HTTP-01 as challenge type, a local webserver is used to provide acme challenge data to the Let's Encrypt servers. The local webserver is NOT directly exposed to the outside and should NOT use port 80 or any other well-known port. This setting allows you to change the local port of this webserver in case it interferes with another local service. Defaults to port 43580.]]></help>
+        <help><![CDATA[When using HTTP-01 as challenge type, a local webserver is used to provide acme challenge data to the ACME CA. The local webserver is NOT directly exposed to the outside and should NOT use port 80 or any other well-known port. This setting allows you to change the local port of this webserver in case it interferes with another local service. Defaults to port 43580.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

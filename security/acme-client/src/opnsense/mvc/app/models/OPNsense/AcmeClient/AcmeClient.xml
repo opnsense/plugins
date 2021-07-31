@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
     <version>3.0.0</version>
-    <description>A secure Let's Encrypt plugin</description>
+    <description>A secure ACME Client plugin</description>
     <items>
         <settings>
             <enabled type="BooleanField">
