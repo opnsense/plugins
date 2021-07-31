@@ -18,6 +18,9 @@ Changed:
 * rename "Let's Encrypt Environment" to "ACME CA" (#2361)
 * preserve old LE accounts/certs by adding a compatibility layer (#2361)
 
+Removed:
+* remove obsolete account parameters: certificateAuthority, lastUpdate
+
 2.6
 
 Added:

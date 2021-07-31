@@ -144,21 +144,10 @@
                 <email type="EmailField">
                     <Required>N</Required>
                 </email>
-                <certificateAuthority type="OptionField">
-                    <Required>Y</Required>
-                    <default>letsencrypt</default>
-                    <OptionValues>
-                        <letsencrypt>Let's Encrypt CA</letsencrypt>
-                    </OptionValues>
-                </certificateAuthority>
                 <!-- hidden field; the private key for this account -->
                 <key type="TextField">
                     <Required>N</Required>
                 </key>
-                <!-- TODO: old value that was migrated to statusLastUpdate, should be removed -->
-                <lastUpdate type="IntegerField">
-                    <Required>N</Required>
-                </lastUpdate>
                 <!-- hidden field; status of last operation -->
                 <statusCode type="IntegerField">
                     <Required>N</Required>

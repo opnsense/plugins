@@ -23,11 +23,4 @@
         <type>text</type>
         <help>Optional e-mail address for this account.</help>
     </field>
-    <field>
-        <id>account.certificateAuthority</id>
-        <label>Certificate Authority</label>
-        <type>dropdown</type>
-        <help><![CDATA[Select the certificate authority for this account.]]></help>
-        <advanced>true</advanced>
-    </field>
 </form>
