@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
     <description>A secure Let's Encrypt plugin</description>
     <items>
         <settings>
@@ -27,13 +27,25 @@
                 <Required>N</Required>
             </UpdateCron>
             <environment type="OptionField">
-                <Required>Y</Required>
+                <Required>N</Required>
                 <default>prod</default>
                 <OptionValues>
                     <prod>Production Environment [default]</prod>
                     <stg>Staging Environment</stg>
                 </OptionValues>
             </environment>
+            <ca type="OptionField">
+                <Required>Y</Required>
+                <default></default>
+                <OptionValues>
+                    <buypass>Buypass</buypass>
+                    <buypass_test>Buypass Test CA</buypass_test>
+                    <letsencrypt>Let's Encrypt [default]</letsencrypt>
+                    <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
+                    <sslcom>SSL.com</sslcom>
+                    <zerossl>ZeroSSL</zerossl>
+                </OptionValues>
+            </ca>
             <challengePort type="IntegerField">
                 <default>43580</default>
                 <MinimumValue>1024</MinimumValue>

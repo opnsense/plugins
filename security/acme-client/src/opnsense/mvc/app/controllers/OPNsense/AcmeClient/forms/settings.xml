@@ -12,10 +12,10 @@
         <help><![CDATA[Enable automatic renewal for certificates to prevent expiration. This will add a cron job to the system. You may want to customize the cron job schedule to your needs, because re-issueing a certificate may lead to a short downtime, depending on the selected challenge type and service.]]></help>
     </field>
     <field>
-        <id>acmeclient.settings.environment</id>
-        <label>Let's Encrypt Environment</label>
+        <id>acmeclient.settings.ca</id>
+        <label>ACME CA</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose Let's Encrypts staging environment when using it for the first time or while testing new challenge types. The staging environment offers <a href="https://letsencrypt.org/docs/staging-environment/">relaxed rate limits</a>.<br/><div class="text-info"><b>NOTE:</b>Certificates signed by the staging environment are NOT valid. You need to forcefully re-sign (or delete and re-create) them after switching from staging to production environment.</div>]]></help>
+        <help><![CDATA[The ACME CA that should be used to issue or renew certificates. Note that some of them offer paid services and may require a subscription. Check the <a href="https://github.com/acmesh-official/acme.sh/wiki/Server">acme.sh documentation</a> for a list of supported CAs.]]></help>
     </field>
     <field>
         <id>acmeclient.settings.haproxyIntegration</id>

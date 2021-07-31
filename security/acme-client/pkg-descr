@@ -8,6 +8,15 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.0
+
+Added:
+* add support for new ACME CA's: buypass, buypass_test, sslcom, zerossl (#2361)
+
+Changed:
+* rename "Let's Encrypt Environment" to "ACME CA" (#2361)
+* preserve old LE accounts/certs by adding a compatibility layer (#2361)
+
 2.6
 
 Added:

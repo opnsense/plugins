@@ -83,7 +83,8 @@ abstract class LeCommon
     protected $cron;                # Run from cron job
     protected $config;              # AcmeClient config object
     protected $debug;               # Debug logging (bool)
-    protected $environment;         # Let's Encrypt environment (uses shortnames)
+    protected $ca;                  # ACME CA
+    protected $ca_compat;           # ACME CA for compat with old LE CA names
     protected $force;               # Force operation
     protected $model;               # AcmeClient model object
     protected $uuid;                # AcmeClient config object uuid
@@ -136,12 +137,29 @@ abstract class LeCommon
     }
 
     /**
-     * set Let's Encrypt environment for acme.sh
+     * set ACME CA for acme.sh
      */
-    public function setEnvironment()
+    public function setCa()
     {
-        $this->environment = (string)$this->model->getNodeByReference('settings.environment');
-        $this->acme_args[] = $this->environment == 'stg' ? '--staging' : null;
+        $this->ca = (string)$this->model->getNodeByReference('settings.ca');
+        $this->acme_args[] = LeUtils::execSafe('--server %s', $this->ca);
+
+        // Evaluate how the CA should be represented in filenames.
+        // This is a compatibility layer. It ensures that old files that
+        // were generated for the Let's Encrypt Production/Staging CA
+        // can still be used.
+        switch ($this->ca) {
+            case 'letsencrypt':
+                $ca_compat = 'prod';
+                break;
+            case 'letsencrypt_test':
+                $ca_compat = 'stg';
+                break;
+            default:
+                $ca_compat = $this->ca;
+                break;
+        }
+        $this->ca_compat = $ca_compat;
     }
 
     /**

@@ -74,8 +74,8 @@ class LeCertificate extends LeCommon
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa();
 
         // Handle special key types
         if ($this->config->keyLength == 'key_ec256' || $this->config->keyLength == 'key_ec384') {
@@ -528,7 +528,7 @@ class LeCertificate extends LeCommon
         LeUtils::log('revoking certificate: ' . (string)$this->config->name);
 
         // Collect account information
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
