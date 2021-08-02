@@ -96,7 +96,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $this->response->setStatusCode(404, "Not Found");
         return array();
     }
-    
+
     protected function reconfigureForceRestart() {
         return 0;
     }
