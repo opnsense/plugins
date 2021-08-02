@@ -241,4 +241,10 @@
         <type>checkbox</type>
         <help>Use Recipient Address Verification. Please keep in mind that this could put significant load onto the next server.</help>
     </field>
+    <field>
+        <id>general.delay_warning_time</id>
+        <label>Delay Warning Time</label>
+        <type>text</type>
+        <help>Time until we send a notification to the sender if mail is delayed (in hours) - 0 or empty to disable.</help>
+    </field>
 </form>
