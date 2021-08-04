@@ -53,10 +53,10 @@ POSSIBILITY OF SUCH DAMAGE.
             url: '/api/acmeclient/accounts/search',
             formatters: {
                 "commands": function (column, row) {
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-register\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-address-book-o\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                    return "<button type=\"button\" title=\"{{ lang._('Edit account') }}\" class=\"btn btn-xs btn-default command-edit bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" title=\"{{ lang._('Copy account') }}\" class=\"btn btn-xs btn-default command-copy bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Register account') }}\" class=\"btn btn-xs btn-default command-register bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-address-book-o\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Remove account') }}\" class=\"btn btn-xs btn-default command-delete bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {
@@ -117,6 +117,9 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         var grid_accounts = $("#grid-accounts").bootgrid(gridopt).on("loaded.rs.jquery.bootgrid", function (e)
         {
+            // toggle all rendered tooltips (once for all)
+            $('.bootgrid-tooltip').tooltip();
+
             // scale footer on resize
             $(this).find("tfoot td:first-child").attr('colspan',$(this).find("th").length - 1);
             $(this).find('tr[data-row-id]').each(function(){
