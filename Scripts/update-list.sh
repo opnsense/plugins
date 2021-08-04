@@ -29,7 +29,7 @@ set -e
 
 PATTERN=XXXNEWLISTHEREXXX
 
-(echo '```'; ${MAKE} list; echo '```') > README.list
+(echo '```'; ${MAKE} list 2> /dev/null; echo '```') > README.list
 
 sed -e '/```/,/```/c\
 '"${PATTERN}"'
