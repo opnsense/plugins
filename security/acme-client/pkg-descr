@@ -18,6 +18,7 @@ Changed:
 * rename "Let's Encrypt Environment" to "ACME CA" (#2361)
 * preserve old LE accounts/certs by adding a compatibility layer (#2361)
 * remove the legacy log file and only rely on syslog logging (#2366)
+* update tooltip style for 21.7 (#2188)
 
 Removed:
 * remove obsolete account parameters: certificateAuthority, lastUpdate
