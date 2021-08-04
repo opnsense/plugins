@@ -42,7 +42,6 @@ abstract class LeCommon
     public const ACME_BASE_CERT_DIR = '/var/etc/acme-client/certs';
     public const ACME_BASE_CONFIG_DIR = '/var/etc/acme-client/configs';
     public const ACME_HOME_DIR = '/var/etc/acme-client/home';
-    public const ACME_LOG_FILE = '/var/log/acme.sh.log';
 
     // Defaults for acme.sh
     public const ACME_ACCOUNT_KEY_LENGTH = 4096;
@@ -61,6 +60,7 @@ abstract class LeCommon
     protected $acme_args = array(); # command line arguments to be passed to acme.sh
     protected $acme_env = array();  # environment variables to be used when running acme.sh
     protected $acme_keylength;      # private key length in acme.sh compatible format
+    protected $acme_syslog;         # syslog log level
 
     // Certificate details and configuration
     protected $cert_id;             # AcmeClient certificate object ID
@@ -173,34 +173,34 @@ abstract class LeCommon
             case 'extended':
                 $this->acme_args[] = '--syslog 6';
                 $this->acme_args[] = '--log-level 2';
+                $this->acme_syslog = 6;
                 $this->debug = false;
                 break;
             case 'debug':
                 $this->acme_args[] = '--syslog 7';
                 $this->acme_args[] = '--debug';
+                $this->acme_syslog = 7;
                 $this->debug = true;
                 break;
             case 'debug2':
                 $this->acme_args[] = '--syslog 7';
                 $this->acme_args[] = '--debug 2';
+                $this->acme_syslog = 7;
                 $this->debug = true;
                 break;
             case 'debug3':
                 $this->acme_args[] = '--syslog 7';
                 $this->acme_args[] = '--debug 3';
+                $this->acme_syslog = 7;
                 $this->debug = true;
                 break;
             default:
                 $this->acme_args[] = '--syslog 6';
                 $this->acme_args[] = '--log-level 1';
+                $this->acme_syslog = 6;
                 $this->debug = false;
                 break;
         }
-
-        // Set log file
-        // NOTE: This log file is no longer exposed to the GUI. However, it may
-        // still turn out to be useful for debug purposes in rare egde cases.
-        $this->acme_args[] = LeUtils::execSafe('--log %s', self::ACME_LOG_FILE);
     }
 
     /**

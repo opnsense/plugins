@@ -73,7 +73,7 @@ class LeAccount extends LeCommon
         $account_ca_file = $account_conf_dir . '/ca.conf';
         $acme_conf = array();
         $acme_conf[] = "CERT_HOME='" . self::ACME_HOME_DIR . "'";
-        $acme_conf[] = "LOG_FILE='" . self::ACME_LOG_FILE . "'";
+        $acme_conf[] = "SYS_LOG='" . $this->acme_syslog . "'";
         $acme_conf[] = "ACCOUNT_KEY_PATH='" . $account_key_file . "'";
         $acme_conf[] = "ACCOUNT_JSON_PATH='" . $account_json_file . "'";
         $acme_conf[] = "CA_CONF='" . $account_ca_file . "'";

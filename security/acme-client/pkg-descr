@@ -17,6 +17,7 @@ Changed:
 * rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)
 * rename "Let's Encrypt Environment" to "ACME CA" (#2361)
 * preserve old LE accounts/certs by adding a compatibility layer (#2361)
+* remove the legacy log file and only rely on syslog logging (#2366)
 
 Removed:
 * remove obsolete account parameters: certificateAuthority, lastUpdate
