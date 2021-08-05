@@ -21,6 +21,7 @@ Changed:
 * remove the legacy log file and only rely on syslog logging (#2366)
 * update tooltip style for 21.7 (#2188)
 * add tooltips for account command buttons (#2188)
+* show more options in list view for challenge types and automations
 
 Removed:
 * remove obsolete account parameters: certificateAuthority, lastUpdate
