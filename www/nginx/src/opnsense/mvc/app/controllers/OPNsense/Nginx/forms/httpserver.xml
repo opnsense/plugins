@@ -134,7 +134,7 @@
   </field>
   <field>
     <id>httpserver.ssl_protocols</id>
-    <label>SSL Protocols</label>
+    <label>TLS Protocols</label>
     <style>selectpicker</style>
     <type>select_multiple</type>
     <advanced>true</advanced>
@@ -142,7 +142,7 @@
   </field> 
   <field>
     <id>httpserver.ssl_ciphers</id>
-    <label>SSL Ciphers</label>
+    <label>TLS Ciphers</label>
     <type>text</type>
     <advanced>true</advanced>
     <help>Specify enabled ciphers in the format understood by the OpenSSL library. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
