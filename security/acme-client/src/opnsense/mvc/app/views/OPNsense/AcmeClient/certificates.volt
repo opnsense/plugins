@@ -2,7 +2,7 @@
 
 (Partially duplicates code from opnsense_bootgrid_plugin.js.)
 
-Copyright (C) 2017-2020 Frank Wall
+Copyright (C) 2017-2021 Frank Wall
 Copyright (C) 2015 Deciso B.V.
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
@@ -431,12 +431,28 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#certificates">{{ lang._('Certificates') }}</a></li>
+<ul class="nav nav-tabs" role="tablist" id="maintabs">
+    <li {% if showIntro|default('0')=='1' %}class="active"{% endif %}><a data-toggle="tab" id="certificates-introduction" href="#subtab_certificates-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    <li {% if showIntro|default('0')=='0' %}class="active"{% endif %}><a data-toggle="tab" id="certificates-tab" href="#certificates"><b>{{ lang._('Certificates') }}</b></a></li>
 </ul>
 
-<div class="tab-content content-box tab-content">
-    <div id="certificates" class="tab-pane fade in active">
+<div class="content-box tab-content">
+
+    <div id="subtab_certificates-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
+        <div class="col-md-12">
+            <h1>{{ lang._('Certificates') }}</h1>
+            <p>{{ lang._('This plugin supports an unlimited number of certificates. However, the CA may restrict the number of certificates per week or implement other rate-limits. Retrying a failed validation many times in a row may also cause further attempts to fail due to rate-limits. The CA documentation should contain further information.') }}</p>
+            <p>{{ lang._('The following principles apply when managing certificates with this plugin:') }}</p>
+            <ul>
+              <li>{{ lang._('Certificates must be %svalidated%s by the CA before they can be used. This process runs in the background and may take several minutes to complete. The progress can be monitored by using the %slog files%s.') | format('<b>', '</b>', '<a href="/ui/acmeclient/logs">', '</a>') }}</li>
+              <li>{{ lang._('Certificates are stored in the %sOPNsense certificate storage%s. When a CA has completed the validation of a certificate request, the resulting certificate is then automatically imported into the OPNsense certificate storage. The same applies when renewing certificates, the existing entry in the OPNsense certificate storage will automatically be updated.') | format('<a href="/system_certmanager.php">', '</a>') }}</li>
+              <li>{{ lang._('When removing a certificate from the plugin, the certificate in the %sOPNsense certificate storage%s is %sNOT removed%s, because it may still be used by a core application or another plugin. Obsolete certificates should be manually removed from the OPNsense certificate storage. Note that when creating a new certificate with the same name, a new certificated will be imported into the OPNsense certificate storage (instead of updating the existing entry).') | format('<a href="/system_certmanager.php">', '</a>', '<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('When experiencing issues, try setting the log level to "debug" in %ssettings%s.') | format('<a href="/ui/acmeclient#settings">', '</a>') }}</p>
+        </div>
+    </div>
+
+    <div id="certificates" class="tab-pane fade {% if showIntro|default('0')=='0' %}in active{% endif %}">
         <table id="grid-certificates" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCertificate">
             <thead>
             <tr>
@@ -463,15 +479,15 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="signallcertsAct" type="button"><b>{{ lang._('Issue/Renew Certificates Now') }}</b><i id="signallcertsAct_progress" class=""></i></button>
-        <br/>
-    </div>
-    <div class="col-md-12">
-        {{ lang._('Use the Issue/Renew button to let the acme client automatically issue any new certificate and renew existing certificates (only if required). If you want to only issue/renew or revoke a single certificate, use the buttons in the Commands column. This will forcefully issue/renew the certificate, even if it is not required.') }} <b>{{ lang._('The process may take some time and thus will run in the background, you will not get any notification in the GUI. Use the log file to monitor the progress and to see error messages.') }}</b>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="signallcertsAct" type="button"><b>{{ lang._('Issue/Renew Certificates Now') }}</b><i id="signallcertsAct_progress" class=""></i></button>
+            <br/>
+        </div>
+        <div class="col-md-12">
+            {{ lang._('Use the Issue/Renew button to let the acme client automatically issue any new certificate and renew existing certificates (only if required). If you want to only issue/renew or revoke a single certificate, use the buttons in the Commands column. This will forcefully issue/renew the certificate, even if it is not required.') }} <b>{{ lang._('The process may take some time and thus will run in the background, you will not get any notification in the GUI. Use the log file to monitor the progress and to see error messages.') }}</b>
+            <br/><br/>
+        </div>
     </div>
 </div>
 

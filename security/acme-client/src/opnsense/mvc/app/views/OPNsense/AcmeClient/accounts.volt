@@ -321,12 +321,28 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#accounts">{{ lang._('Accounts') }}</a></li>
+<ul class="nav nav-tabs" role="tablist" id="maintabs">
+    <li {% if showIntro|default('0')=='1' %}class="active"{% endif %}><a data-toggle="tab" id="accounts-introduction" href="#subtab_accounts-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    <li {% if showIntro|default('0')=='0' %}class="active"{% endif %}><a data-toggle="tab" id="accounts-tab" href="#accounts"><b>{{ lang._('Accounts') }}</b></a></li>
 </ul>
 
-<div class="tab-content content-box tab-content">
-    <div id="accounts" class="tab-pane fade in active">
+<div class="content-box tab-content">
+
+    <div id="subtab_accounts-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
+        <div class="col-md-12">
+            <h1>{{ lang._('Accounts') }}</h1>
+            <p>{{ lang._('In order to create certificates, an account is required. Also the following information should be considered:') }}</p>
+            <ul>
+              <li>{{ lang._('The account will be %sregistered automatically%s at the chosen CA. The CA will then associate new certificates to the selected account.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Usually CAs will let you know if something went wrong and a certificate is about to expire, therefore a %svalid e-mail address%s should be provided.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('For certain use-cases it can be useful to register %smultiple accounts%s, but the policy of the CA should be respected with this regard.') | format('<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('When requesting support from a CA the account ID may be required, %sthis documentation%s contains information how to get the internal account ID from the log files.') | format('<a href="https://letsencrypt.org/docs/account-id/">', '</a>') }}</p>
+        </div>
+    </div>
+
+    <div id="accounts" class="tab-pane fade {% if showIntro|default('0')=='0' %}in active{% endif %}">
+
         <table id="grid-accounts" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAccount">
             <thead>
             <tr>
@@ -351,7 +367,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
+
     </div>
+
 </div>
 
 {# include dialogs #}

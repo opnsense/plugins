@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * add support for new ACME CA's: buypass, buypass_test, sslcom, zerossl (#2361)
+* add introduction pages and an option to hide them
 
 Changed:
 * rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)

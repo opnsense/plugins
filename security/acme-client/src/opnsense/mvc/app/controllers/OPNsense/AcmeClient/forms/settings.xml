@@ -30,6 +30,12 @@
         <help><![CDATA[Specifies the log level for acme.sh, default is "normal". All other log levels add information for debug purposes, but be aware that this will break the log formatting in the GUI.  Levels "debug 2" and "debug 3" log successively deeper log messages from the acme.sh including messages from DNS-01 DNSAPI scripts.]]></help>
     </field>
     <field>
+        <id>acmeclient.settings.showIntro</id>
+        <label>Show introduction pages</label>
+        <type>checkbox</type>
+        <help><![CDATA[Uncheck to hide all additional introduction pages.]]></help>
+    </field>
+    <field>
         <id>acmeclient.settings.challengePort</id>
         <label>Local HTTP Port</label>
         <type>text</type>
