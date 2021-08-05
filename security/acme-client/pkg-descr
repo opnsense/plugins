@@ -13,17 +13,18 @@ Plugin Changelog
 Added:
 * add support for new ACME CA's: buypass, buypass_test, sslcom, zerossl (#2361)
 * add introduction pages and an option to hide them
+* add tooltips for account command buttons (#2188)
 
 Changed:
 * rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)
+* change the suffix for imports to the certificate storage to "ACME Client" (#2361)
 * rename "Let's Encrypt Environment" to "ACME CA" (#2361)
 * preserve old LE accounts/certs by adding a compatibility layer (#2361)
-* remove the legacy log file and only rely on syslog logging (#2366)
 * update tooltip style for 21.7 (#2188)
-* add tooltips for account command buttons (#2188)
 * show more options in list view for challenge types and automations
 
 Removed:
+* remove the legacy log file and only rely on syslog logging (#2366)
 * remove obsolete account parameters: certificateAuthority, lastUpdate
 
 2.6
