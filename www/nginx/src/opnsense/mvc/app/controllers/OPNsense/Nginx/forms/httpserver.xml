@@ -145,7 +145,7 @@
     <label>TLS Ciphers</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Specify enabled ciphers in the format understood by the OpenSSL library. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
+    <help>Specify enabled ciphers in the TLS library cipher string format. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
   </field>
   <field>
     <id>httpserver.ssl_ecdh_curve</id>
