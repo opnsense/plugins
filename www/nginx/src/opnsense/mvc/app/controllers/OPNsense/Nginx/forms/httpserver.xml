@@ -138,7 +138,7 @@
     <style>selectpicker</style>
     <type>select_multiple</type>
     <advanced>true</advanced>
-    <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3.</help>
+    <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3. TLSv1 and TLSv1.1 are insecure and deprecated. Use them only for compatibility and if you know what you are doing.</help>
   </field> 
   <field>
     <id>httpserver.ssl_ciphers</id>
