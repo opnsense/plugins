@@ -86,7 +86,7 @@
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#systemlog"><b>{{ lang._('System Log') }}</b></a></li>
-    <li><a data-toggle="tab" href="#acmelog">{{ lang._('Acme Log') }}</a></li>
+    <li><a data-toggle="tab" href="#acmelog">{{ lang._('ACME Log') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">

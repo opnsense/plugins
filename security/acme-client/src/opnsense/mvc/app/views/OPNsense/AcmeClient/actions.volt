@@ -206,7 +206,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_actions-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
         <div class="col-md-12">
             <h1>{{ lang._('Automations') }}</h1>
-            <p>{{ lang._('Automations are a completely optional feature, but they can make life much easier, especially when using short-lived certificates. Typically use-case include:') }}</p>
+            <p>{{ lang._('Automations are a completely optional feature, but they can make life much easier, especially when using short-lived certificates. Typically use-cases include:') }}</p>
             <ul>
               <li>{{ lang._("%sRestart a service%s when a certificate was renewed to ensure that the newest certificate is being used. This is especially useful when using an ACME certificate for the OPNsense WebGUI or in combination with the HAProxy or NGINX plugins. Any OPNsense core service or plugin service may be restarted.") | format('<b>', '</b>') }}</li>
               <li>{{ lang._("Copy a certificate to one or more other hosts using the %sSFTP/SSH protocol%s. This way OPNsense can be used as a central authority for ACME certificates and secrets for DNS providers can be kept on a secure device.") | format('<b>', '</b>') }}</li>

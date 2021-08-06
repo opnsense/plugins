@@ -461,8 +461,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="altNames" data-type="string">{{ lang._('Multi-Domain (SAN)') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="lastUpdate" data-type="string" data-formatter="certdate">{{ lang._('Issue/Renewal Date') }}</th>
-                <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last Acme Status') }}</th>
-                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last Acme Run') }}</th>
+                <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last ACME Status') }}</th>
+                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last ACME Run') }}</th>
                 <th data-column-id="commands" data-width="11em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
             </tr>

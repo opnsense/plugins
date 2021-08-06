@@ -201,7 +201,7 @@ POSSIBILITY OF SUCH DAMAGE.
             BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_DANGER,
                 title: "{{ lang._('Wipe all certificate and account data') }}",
-                message: "{{ lang._('This will remove ALL certificates, private keys, CSRs from acme client and reset all certificate and account states. However, existing certificates will remain in OPNsense trust storage. The acme client will automatically regenerate everything on its next scheduled run. This is most useful when importing a config backup to a new firewall. Continue?') }}",
+                message: "{{ lang._('This will remove ALL certificates, private keys, CSRs from ACME Client and reset all certificate and account states. However, existing certificates will remain in OPNsense trust storage. The ACME Client will automatically regenerate everything on its next scheduled run. This is most useful when importing a config backup to a new firewall. Continue?') }}",
                 buttons: [{
                     label: '{{ lang._('Continue') }}',
                     cssClass: 'btn-primary',
@@ -277,7 +277,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <hr/>
         <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
         <button class="btn btn-primary" id="configtestAct" type="button"><b>{{ lang._('Test Config') }}</b><i id="configtestAct_progress" class=""></i></button>
-        <button class="btn btn-primary" id="resetAct" type="button"><b>{{ lang._('Reset acme client') }}</b><i id="resetAct_progress" class=""></i></button>
+        <button class="btn btn-primary" id="resetAct" type="button"><b>{{ lang._('Reset ACME Client') }}</b><i id="resetAct_progress" class=""></i></button>
         <br/>
     </div>
     <div class="col-md-12">
