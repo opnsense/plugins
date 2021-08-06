@@ -777,8 +777,8 @@
         <multiple>Y</multiple>
         <Sorted>Y</Sorted>
         <OptionValues>
-          <TLSv1 value="TLSv1">TLSv1</TLSv1>
-          <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
+          <TLSv1 value="TLSv1">TLSv1 (deprecated)</TLSv1>
+          <TLSv1_1 value="TLSv1.1">TLSv1.1 (deprecated)</TLSv1_1>
           <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
           <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
         </OptionValues>
