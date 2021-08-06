@@ -148,6 +148,13 @@
     <help>Specify enabled ciphers in the format understood by the OpenSSL library. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
   </field>
   <field>
+    <id>httpserver.ssl_ecdh_curve</id>
+    <label>ECDH curve</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Specify a curve(s) for ECDHE ciphers. NGINX default (empty field): auto.</help>
+  </field>
+  <field>
     <id>httpserver.ssl_prefer_server_ciphers</id>
     <label>Prefer server ciphers</label>
     <type>checkbox</type>
