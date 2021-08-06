@@ -15,7 +15,7 @@
         <id>acmeclient.settings.ca</id>
         <label>ACME CA</label>
         <type>dropdown</type>
-        <help><![CDATA[The ACME CA that should be used to issue or renew certificates. Note that some of them offer paid services and may require a subscription. Check the <a href="https://github.com/acmesh-official/acme.sh/wiki/Server">acme.sh documentation</a> for a list of supported CAs.]]></help>
+        <help><![CDATA[The ACME CA that should be used to issue or renew certificates. Note that some of them offer paid services and may require a subscription. Check the <a href="https://github.com/acmesh-official/acme.sh/wiki/Server" target="_blank">acme.sh documentation</a> for a list of supported CAs.]]></help>
     </field>
     <field>
         <id>acmeclient.settings.haproxyIntegration</id>

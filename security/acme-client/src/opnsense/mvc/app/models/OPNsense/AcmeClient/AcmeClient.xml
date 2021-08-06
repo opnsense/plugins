@@ -148,6 +148,16 @@
                 <email type="EmailField">
                     <Required>N</Required>
                 </email>
+                <eab_kid type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,8192}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
+                </eab_kid>
+                <eab_hmac type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,8192}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
+                </eab_hmac>
                 <!-- hidden field; the private key for this account -->
                 <key type="TextField">
                     <Required>N</Required>

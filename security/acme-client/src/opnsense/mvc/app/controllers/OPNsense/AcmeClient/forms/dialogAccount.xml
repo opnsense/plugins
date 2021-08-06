@@ -23,4 +23,20 @@
         <type>text</type>
         <help>Optional e-mail address for this account.</help>
     </field>
+    <field>
+        <label>Optional EAB Credentials</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>account.eab_kid</id>
+        <label>Key Identifier</label>
+        <type>text</type>
+        <help><![CDATA[An optional value provided by the CA when using ACME External Account Binding (EAB).]]></help>
+    </field>
+    <field>
+        <id>account.eab_hmac</id>
+        <label>HMAC Key</label>
+        <type>password</type>
+        <help><![CDATA[An optional value provided by the CA when using ACME External Account Binding (EAB).]]></help>
+    </field>
 </form>

@@ -212,6 +212,13 @@ class LeAccount extends LeCommon
         if (!($this->isRegistered())) {
             LeUtils::log_debug('starting account registration for ' . (string)$this->config->name, $this->debug);
 
+            // Check if ACME External Account Binding (EAB) is enabled
+            if (!empty((string)$this->config->eab_kid) && !empty((string)$this->config->eab_hmac) {
+                LeUtils::log_debug('enabling ACME EAB for this account', $this->debug);
+                $this->acme_args[] = LeUtils::execSafe('--eab-kid %s', $this->config->eab_kid);
+                $this->acme_args[] = LeUtils::execSafe('--eab-hmac-key %s', $this->config->eab_hmac);
+            }
+
             // Preparation to run acme client
             $proc_env = $this->acme_env; // env variables for proc_open()
             $proc_env['PATH'] = $this::ACME_ENV_PATH;
