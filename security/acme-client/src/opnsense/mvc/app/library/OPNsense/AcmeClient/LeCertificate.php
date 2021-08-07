@@ -75,7 +75,7 @@ class LeCertificate extends LeCommon
         $this->setLoglevel();
 
         // Set ACME CA
-        $this->setCa();
+        $this->setCa((string)$this->config->account);
 
         // Handle special key types
         if ($this->config->keyLength == 'key_ec256' || $this->config->keyLength == 'key_ec384') {
@@ -351,6 +351,7 @@ class LeCertificate extends LeCommon
             return false;
         }
         LeUtils::log("${acme_action} certificate: " . (string)$this->config->name);
+        LeUtils::log('using CA: ' . $this->ca);
 
         // Ensure that account is registered.
         if (!($this->setAccount())) {

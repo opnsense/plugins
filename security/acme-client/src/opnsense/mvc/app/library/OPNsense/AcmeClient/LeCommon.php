@@ -105,7 +105,7 @@ abstract class LeCommon
      */
     public function getUuid()
     {
-        return (string)$this->config->uuid;
+        return (string)$this->uuid;
     }
 
     /**
@@ -124,6 +124,7 @@ abstract class LeCommon
         // Store config objects
         $this->config = $obj;
         $this->model = $model;
+        $this->uuid = $uuid;
         return true;
     }
 
@@ -139,16 +140,28 @@ abstract class LeCommon
     /**
      * set ACME CA for acme.sh
      */
-    public function setCa()
+    public function setCa(string $uuid)
     {
-        $this->ca = (string)$this->model->getNodeByReference('settings.ca');
-        $this->acme_args[] = LeUtils::execSafe('--server %s', $this->ca);
+        // Get account config object
+        $model = new \OPNsense\AcmeClient\AcmeClient();
+        $obj = $model->getNodeByReference("accounts.account.${uuid}");
+        if (empty($obj) || $obj == null) {
+            LeUtils::log_error("unable to set CA, account not found: ${uuid}");
+            return false;
+        }
+
+        // Extract ACME CA from account config
+        $acme_ca = (string)$obj->ca;
+        $this->ca = $acme_ca;
+
+        // Add CA to acme arguments
+        $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_ca);
 
         // Evaluate how the CA should be represented in filenames.
         // This is a compatibility layer. It ensures that old files that
         // were generated for the Let's Encrypt Production/Staging CA
         // can still be used.
-        switch ($this->ca) {
+        switch ($acme_ca) {
             case 'letsencrypt':
                 $ca_compat = 'prod';
                 break;
@@ -156,7 +169,7 @@ abstract class LeCommon
                 $ca_compat = 'stg';
                 break;
             default:
-                $ca_compat = $this->ca;
+                $ca_compat = $acme_ca;
                 break;
         }
         $this->ca_compat = $ca_compat;

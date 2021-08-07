@@ -46,9 +46,12 @@ class M3_0_0 extends BaseModelMigration
                 $new_ca = 'letsencrypt_test';
                 break;
         }
-
-        // Set new CA
-        $model->settings->ca = $new_ca;
         $model->settings->environment = null; // clear old value
+
+        // Search accounts
+        foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
+            // Set CA
+            $account->ca = $new_ca;
+        }
     }
 }

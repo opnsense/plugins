@@ -11,15 +11,19 @@ Plugin Changelog
 3.0
 
 Added:
-* add support for new ACME CA's: buypass, buypass_test, sslcom, zerossl (#2361)
+* add support for new ACME CAs: buypass, buypass_test, sslcom, zerossl (#2361)
+* add CA setting to accounts, make it possible to use multiple CAs
 * add introduction pages and an option to hide them
 * add tooltips for account command buttons (#2188)
 * add support for custom ACME EAB kid/hmac when registering accounts
 
+Fixed:
+* properly set/get the UUID of LE objects
+
 Changed:
 * rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)
 * change the suffix for imports to the certificate storage to "ACME Client" (#2361)
-* rename "Let's Encrypt Environment" to "ACME CA" (#2361)
+* rename "Let's Encrypt Environment" to "ACME CA" and move to account settings (#2361)
 * preserve old LE accounts/certs by adding a compatibility layer (#2361)
 * update tooltip style for 21.7 (#2188)
 * show more options in list view for challenge types and automations

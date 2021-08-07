@@ -74,7 +74,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->setLoglevel();
 
         // Set ACME CA
-        $this->setCa();
+        $this->setCa($accountuuid);
 
         // Store acme hook
         switch ((string)$this->config->method) {

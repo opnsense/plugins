@@ -260,7 +260,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <p>{{ lang._("Setting up this plugin for the first time involves the following steps") }}</p>
             <ul>
               <li>{{ lang._('%sEnable%s the plugin: When enabling this plugin in the %ssettings%s, a lightweight service is started and cron jobs are added for automatic tasks.') | format('<b>', '</b>', '<a href="/ui/acmeclient#settings">', '</a>') }}</li>
-              <li>{{ lang._('Create an %saccount%s: An %saccount%s is required and will be automatically at the chosen CA.') | format('<b>', '</b>', '<a href="/ui/acmeclient/accounts">', '</a>') }}</li>
+              <li>{{ lang._('Create an %saccount%s: An %saccount%s is required. It determines which CA will be used for all associated certificates.') | format('<b>', '</b>', '<a href="/ui/acmeclient/accounts">', '</a>') }}</li>
               <li>{{ lang._('Set up a %schallenge type%s: Choose the %schallenge type%s that works best for you and if necessary, add the credentials for your DNS provider.') | format('<b>', '</b>', '<a href="/ui/acmeclient/validations">', '</a>') }}</li>
               <li>{{ lang._('Add %sautomations%s: This is optional, but recommended when using short-lived certificates. %sAutomations%s allow to automatically run tasks when a certificate was created or renewed.') | format('<b>', '</b>', '<a href="/ui/acmeclient/actions">', '</a>') }}</li>
               <li>{{ lang._('Create %scertificates%s: Finally create the %scertificates%s and let the CA complete the validation process.') | format('<b>', '</b>', '<a href="/ui/acmeclient/certificates">', '</a>') }}</li>

@@ -54,7 +54,7 @@ class LeAccount extends LeCommon
         $this->setLoglevel();
 
         // Set ACME CA
-        $this->setCa();
+        $this->setCa($uuid);
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
@@ -213,7 +213,7 @@ class LeAccount extends LeCommon
             LeUtils::log_debug('starting account registration for ' . (string)$this->config->name, $this->debug);
 
             // Check if ACME External Account Binding (EAB) is enabled
-            if (!empty((string)$this->config->eab_kid) && !empty((string)$this->config->eab_hmac) {
+            if (!empty((string)$this->config->eab_kid) && !empty((string)$this->config->eab_hmac)) {
                 LeUtils::log_debug('enabling ACME EAB for this account', $this->debug);
                 $this->acme_args[] = LeUtils::execSafe('--eab-kid %s', $this->config->eab_kid);
                 $this->acme_args[] = LeUtils::execSafe('--eab-hmac-key %s', $this->config->eab_hmac);

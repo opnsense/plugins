@@ -34,18 +34,6 @@
                     <stg>Staging Environment</stg>
                 </OptionValues>
             </environment>
-            <ca type="OptionField">
-                <Required>Y</Required>
-                <default></default>
-                <OptionValues>
-                    <buypass>Buypass</buypass>
-                    <buypass_test>Buypass Test CA</buypass_test>
-                    <letsencrypt>Let's Encrypt [default]</letsencrypt>
-                    <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
-                    <sslcom>SSL.com</sslcom>
-                    <zerossl>ZeroSSL</zerossl>
-                </OptionValues>
-            </ca>
             <challengePort type="IntegerField">
                 <default>43580</default>
                 <MinimumValue>1024</MinimumValue>
@@ -148,6 +136,18 @@
                 <email type="EmailField">
                     <Required>N</Required>
                 </email>
+                <ca type="OptionField">
+                    <Required>Y</Required>
+                    <default>letsencrypt</default>
+                    <OptionValues>
+                        <buypass>Buypass</buypass>
+                        <buypass_test>Buypass Test CA</buypass_test>
+                        <letsencrypt>Let's Encrypt [default]</letsencrypt>
+                        <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
+                        <sslcom>SSL.com</sslcom>
+                        <zerossl>ZeroSSL</zerossl>
+                    </OptionValues>
+                </ca>
                 <eab_kid type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,8192}$/u</mask>

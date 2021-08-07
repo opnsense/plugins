@@ -18,10 +18,20 @@
         <help>Description for this account.</help>
     </field>
     <field>
+        <label>NOTE: Settings below must not be changed after account registration.</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>account.email</id>
         <label>E-Mail Address</label>
         <type>text</type>
         <help>Optional e-mail address for this account.</help>
+    </field>
+    <field>
+        <id>account.ca</id>
+        <label>ACME CA</label>
+        <type>dropdown</type>
+        <help><![CDATA[The ACME CA that should be used for this account and all associated certificates. Note that some of them offer paid services and may require a subscription. Check the <a href="https://github.com/acmesh-official/acme.sh/wiki/Server" target="_blank">acme.sh documentation</a> for a list of supported CAs.]]></help>
     </field>
     <field>
         <label>Optional EAB Credentials</label>
