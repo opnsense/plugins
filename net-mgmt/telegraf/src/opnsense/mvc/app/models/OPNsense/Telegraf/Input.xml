@@ -93,6 +93,18 @@
             <default>0</default>
             <Required>N</Required>
         </intrusion_detection_alerts>
+        <suricata_data_sink type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </suricata_data_sink>
+        <suricata_data_sink_delimiter type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </suricata_data_sink_delimiter>
+         <suricata_data_sink_alerts type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </suricata_data_sink_alerts>
         <unbound type="BooleanField">
             <Required>N</Required>
         </unbound>

@@ -2,3 +2,4 @@
 .idea
 venv
 /*/*/work
+.DS_Store

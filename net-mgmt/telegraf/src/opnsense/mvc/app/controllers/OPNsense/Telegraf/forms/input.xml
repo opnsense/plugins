@@ -141,7 +141,25 @@
         <id>input.intrusion_detection_alerts</id>
         <label>Intrusion Dectection Alerts</label>
         <type>checkbox</type>
-        <help>Requires Intrustion detection alerts are stored locally.</help>
+        <help>Requires Intrusion detection alerts are stored locally.</help>
+    </field>
+    <field>
+        <id>input.suricata_data_sink</id>
+        <label>Enable Suricata Data Sink</label>
+        <type>checkbox</type>
+        <help>Report internal performance counters of the Suricata IDS/IPS engine. Creates a UNIX-socket /tmp/suricata-stats.sock for Suricata stats. Remember to increase the localhost buffer space via Tunables, otherwise messages from Suricata are truncated as they exceed the default available buffer space (dependentant of number of interfaces, suggestion for both net.local.stream.recvspace and net.local.stream.sendspace are 81920).</help>
+    </field>
+     <field>
+        <id>input.suricata_data_sink_delimiter</id>
+        <label>Suricata Data Sink Delimiter</label>
+        <type>text</type>
+        <help>Delimiter for flattening field keys, e.g. subitem "alert" of "detect" becomes "detect_alert" when delimiter is "_". Default is "_".</help>
+    </field>
+    <field>
+        <id>input.suricata_data_sink_alerts</id>
+        <label>Suricata Data Sink Alerts</label>
+        <type>checkbox</type>
+        <help>Report triggered Suricata (Intrusion Detection) IDS/IPS alerts to Telegraf Output.</help>
     </field>
     <field>
         <id>input.unbound</id>
