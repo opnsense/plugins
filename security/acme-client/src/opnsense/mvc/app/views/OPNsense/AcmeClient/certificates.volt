@@ -448,7 +448,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Certificates are stored in the %sOPNsense certificate storage%s. When a CA has completed the validation of a certificate request, the resulting certificate is then automatically imported into the OPNsense certificate storage. The same applies when renewing certificates, the existing entry in the OPNsense certificate storage will automatically be updated.') | format('<a href="/system_certmanager.php">', '</a>') }}</li>
               <li>{{ lang._('When removing a certificate from the plugin, the certificate in the %sOPNsense certificate storage%s is %sNOT removed%s, because it may still be used by a core application or another plugin. Obsolete certificates should be manually removed from the OPNsense certificate storage. Note that when creating a new certificate with the same name, a new certificated will be imported into the OPNsense certificate storage (instead of updating the existing entry).') | format('<a href="/system_certmanager.php">', '</a>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._('When experiencing issues, try setting the log level to "debug" in %ssettings%s.') | format('<a href="/ui/acmeclient#settings">', '</a>') }}</p>
+            <p>{{ lang._('When experiencing issues, try setting the log level to "debug" on the %ssettings%s page.') | format('<a href="/ui/acmeclient#settings">', '</a>') }}</p>
         </div>
     </div>
 
@@ -481,12 +481,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </table>
         <div class="col-md-12">
             <hr/>
-            <button class="btn btn-primary" id="signallcertsAct" type="button"><b>{{ lang._('Issue/Renew Certificates Now') }}</b><i id="signallcertsAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="signallcertsAct" type="button"><b>{{ lang._('Issue/Renew All Certificates') }}</b><i id="signallcertsAct_progress" class=""></i></button>
             <br/>
-        </div>
-        <div class="col-md-12">
-            {{ lang._('Use the Issue/Renew button to let the acme client automatically issue any new certificate and renew existing certificates (only if required). If you want to only issue/renew or revoke a single certificate, use the buttons in the Commands column. This will forcefully issue/renew the certificate, even if it is not required.') }} <b>{{ lang._('The process may take some time and thus will run in the background, you will not get any notification in the GUI. Use the log file to monitor the progress and to see error messages.') }}</b>
-            <br/><br/>
+            <br/>
         </div>
     </div>
 </div>

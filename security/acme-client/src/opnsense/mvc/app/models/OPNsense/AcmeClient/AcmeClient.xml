@@ -1034,7 +1034,7 @@
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
                         <upload_sftp>Upload certificate via SFTP</upload_sftp>
-                        <configd>System or Plugin Command (select below)</configd>
+                        <configd>System or Plugin Command</configd>
                     </OptionValues>
                 </type>
                 <highwinds_account_hash type="TextField">

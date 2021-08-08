@@ -27,7 +27,7 @@
         <id>acmeclient.settings.showIntro</id>
         <label>Show introduction pages</label>
         <type>checkbox</type>
-        <help><![CDATA[Uncheck to hide all additional introduction pages.]]></help>
+        <help><![CDATA[Uncheck to hide all introduction pages.]]></help>
     </field>
     <field>
         <id>acmeclient.settings.challengePort</id>
