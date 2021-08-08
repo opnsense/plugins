@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017-2021 Frank Wall
- *    Copyright (C) 2015 Deciso B.V.
+ *    Copyright (C) 2021 Frank Wall
  *
  *    All rights reserved.
  *
@@ -29,22 +28,30 @@
  *
  */
 
-namespace OPNsense\AcmeClient;
+namespace OPNsense\AcmeClient\Migrations;
 
-/**
- * Class AccountsController
- * @package OPNsense\AcmeClient
- */
-class AccountsController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModelMigration;
+
+class M3_0_0 extends BaseModelMigration
 {
-    public function indexAction()
+    public function run($model)
     {
-        // include form definitions
-        $this->view->formDialogAccount = $this->getForm("dialogAccount");
-        // set additional view parameters
-        $mdlAcme = new \OPNsense\AcmeClient\AcmeClient();
-        $this->view->showIntro = (string)$mdlAcme ->settings->showIntro;
-        // choose template
-        $this->view->pick('OPNsense/AcmeClient/accounts');
+        // Get old LE environment and map to new value
+        $env = (string)$model->settings->environment;
+        switch ($env) {
+            case 'prod':
+                $new_ca = 'letsencrypt';
+                break;
+            case 'stg':
+                $new_ca = 'letsencrypt_test';
+                break;
+        }
+        $model->settings->environment = null; // clear old value
+
+        // Search accounts
+        foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
+            // Set CA
+            $account->ca = $new_ca;
+        }
     }
 }

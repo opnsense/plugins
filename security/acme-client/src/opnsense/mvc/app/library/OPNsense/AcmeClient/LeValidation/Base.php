@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -73,8 +73,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($accountuuid);
 
         // Store acme hook
         switch ((string)$this->config->method) {
@@ -141,8 +141,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             }
         }
 
-        // Use individual account config for each environment
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        // Use individual account config for each CA
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client

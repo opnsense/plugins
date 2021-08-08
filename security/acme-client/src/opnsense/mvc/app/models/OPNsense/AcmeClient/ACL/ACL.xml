@@ -1,9 +1,9 @@
 <acl>
-    <page-services-letsencrypt>
-        <name>Services: Let's Encrypt</name>
+    <page-services-acmeclient>
+        <name>Services: ACME Client</name>
         <patterns>
             <pattern>ui/acmeclient/*</pattern>
             <pattern>api/acmeclient/*</pattern>
         </patterns>
-    </page-services-letsencrypt>
+    </page-services-acmeclient>
 </acl>
