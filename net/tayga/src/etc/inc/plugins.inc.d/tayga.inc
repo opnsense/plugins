@@ -59,6 +59,7 @@ function tayga_xmlrpc_sync()
     $result['id'] = 'taygavpn';
     $result['section'] = 'OPNsense.tayga';
     $result['description'] = gettext('Tayga');
+    $result['services'] = ['tayga'];
     return array($result);
 }
 

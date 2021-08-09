@@ -30,7 +30,7 @@
 require_once("guiconfig.inc");
 require_once("widgets/include/wireguard.inc");
 
-$data = trim(configd_run("wireguard widget"));
+$data = trim(configd_run('wireguard showhandshake'));
 
 $empty = strlen($data) == 0;
 ?>
@@ -55,6 +55,7 @@ $empty = strlen($data) == 0;
         $latest = "-";
         if ($epoch > 0):
             $dt = new DateTime("@$epoch");
+            $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
             $latest = $dt->format(gettext("Y-m-d H:i:sP"));
         endif; ?>
 

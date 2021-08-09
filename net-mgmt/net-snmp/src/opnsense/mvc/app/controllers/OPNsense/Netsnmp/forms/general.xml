@@ -24,6 +24,12 @@
         <help>Set the contact address to use.</help>
     </field>
     <field>
+        <id>general.enableagentx</id>
+        <label>Add AgentX Support</label>
+        <type>checkbox</type>
+        <help>Enable support for AgentX Application (FRR, others).</help>
+    </field>
+    <field>
         <id>general.l3visibility</id>
         <label>Layer 3 Visibility</label>
         <type>checkbox</type>

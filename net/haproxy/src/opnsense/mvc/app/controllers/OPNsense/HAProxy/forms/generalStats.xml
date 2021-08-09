@@ -1,0 +1,60 @@
+<form>
+    <field>
+        <label>Statistics</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.stats.enabled</id>
+        <label>Stats enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HAProxy's statistics page.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.stats.port</id>
+        <label>Local stats TCP port</label>
+        <type>text</type>
+        <help><![CDATA[Choose a TCP port to be used for the local statistics page. The default value is 8822.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>haproxy.general.stats.remoteEnabled</id>
+        <label>Enable remote access</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable remote access to HAProxy's statistics page. <b>This may be a security risk if you do not enable authentication!</b> Note that you need to add appropiate firewall rules for this to work.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.stats.remoteBind</id>
+        <label>Remote listen addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Configure listen addresses for the statistics page to enable remote access, i.e. 10.0.0.1:8080 or haproxy.example.com:8999. Use TAB key to complete typing a listen address.]]></help>
+        <hint>Enter address:port here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>haproxy.general.stats.authEnabled</id>
+        <label>Enable authentication</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>haproxy.general.stats.allowedUsers</id>
+        <label>Allowed Users</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <hint>Type username or choose from list.</hint>
+    </field>
+    <field>
+        <id>haproxy.general.stats.allowedGroups</id>
+        <label>Allowed Groups</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <hint>Type group or choose from list.</hint>
+    </field>
+    <field>
+        <id>haproxy.general.stats.customOptions</id>
+        <label>Custom options</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the statistics settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

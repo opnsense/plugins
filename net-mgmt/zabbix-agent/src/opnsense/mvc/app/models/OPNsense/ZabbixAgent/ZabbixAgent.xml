@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/ZabbixAgent</mount>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <description>Zabbix monitoring agent</description>
     <items>
         <!-- local settings that should NOT be synced to another node -->
@@ -22,9 +22,9 @@
                     <default>127.0.0.1</default>
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
+                    <mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide valid Zabbix server addresses, i.e. 10.0.0.1 or zabbix.example.com.</ValidationMessage>
+                    <ValidationMessage>Please provide valid Zabbix server addresses, i.e. zabbix.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
                 </serverList>
                 <listenPort type="IntegerField">
                     <default>10050</default>
@@ -32,19 +32,24 @@
                     <MaximumValue>65535</MaximumValue>
                     <Required>Y</Required>
                 </listenPort>
-                <listenIP type="CSVListField">
+                <listenIP type="NetworkField">
                     <default>0.0.0.0</default>
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:]+)([,]){0,1}))*/u</mask>
-                    <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide valid IP addresses, i.e. 10.0.0.1.</ValidationMessage>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <asList>Y</asList>
+                    <FieldSeparator>,</FieldSeparator>
+                    <ValidationMessage>Please provide one or more valid IP addresses, i.e. 10.0.0.1.</ValidationMessage>
                 </listenIP>
-                <sourceIP type="TextField">
+                <sourceIP type="NetworkField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <ValidationMessage>Please provide a valid IP address, i.e. 10.0.0.1.</ValidationMessage>
                 </sourceIP>
+                <syslogEnable type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </syslogEnable>
                 <logFileSize type="IntegerField">
                     <default>100</default>
                     <MinimumValue>1</MinimumValue>

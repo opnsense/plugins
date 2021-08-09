@@ -53,10 +53,6 @@ include("head.inc");
 
 legacy_html_escape_form_data($a_igmpproxy);
 
-$main_buttons = array(
-    array('label' => gettext('Add'), 'href' => 'services_igmpproxy_edit.php'),
-);
-
 ?>
 <body>
   <script>
@@ -102,7 +98,11 @@ $main_buttons = array(
                       <td><?=gettext("Type");?></td>
                       <td><?=gettext("Values");?></td>
                       <td><?=gettext("Description");?></td>
-                      <td class="text-nowrap"></td>
+                      <td class="text-nowrap">
+                        <a href="services_igmpproxy_edit.php" class="btn btn-primary btn-xs" data-toggle="tooltip" title="<?= html_safe(gettext('Add')) ?>">
+                          <i class="fa fa-plus fa-fw"></i>
+                        </a>
+                      </td>
                     </tr>
                   </thead>
                   <tbody>

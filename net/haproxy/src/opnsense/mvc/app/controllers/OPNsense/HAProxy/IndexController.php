@@ -44,19 +44,27 @@ class IndexController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         // include form definitions
-        $this->view->mainForm = $this->getForm("main");
-        $this->view->formDialogFrontend = $this->getForm("dialogFrontend");
-        $this->view->formDialogBackend = $this->getForm("dialogBackend");
-        $this->view->formDialogServer = $this->getForm("dialogServer");
-        $this->view->formDialogHealthcheck = $this->getForm("dialogHealthcheck");
-        $this->view->formDialogAction = $this->getForm("dialogAction");
         $this->view->formDialogAcl = $this->getForm("dialogAcl");
-        $this->view->formDialogUser = $this->getForm("dialogUser");
-        $this->view->formDialogGroup = $this->getForm("dialogGroup");
-        $this->view->formDialogLua = $this->getForm("dialogLua");
-        $this->view->formDialogErrorfile = $this->getForm("dialogErrorfile");
-        $this->view->formDialogMapfile = $this->getForm("dialogMapfile");
+        $this->view->formDialogAction = $this->getForm("dialogAction");
+        $this->view->formDialogBackend = $this->getForm("dialogBackend");
         $this->view->formDialogCpu = $this->getForm("dialogCpu");
+        $this->view->formDialogErrorfile = $this->getForm("dialogErrorfile");
+        $this->view->formDialogFrontend = $this->getForm("dialogFrontend");
+        $this->view->formDialogGroup = $this->getForm("dialogGroup");
+        $this->view->formDialogHealthcheck = $this->getForm("dialogHealthcheck");
+        $this->view->formDialogLua = $this->getForm("dialogLua");
+        $this->view->formDialogMailer = $this->getForm("dialogMailer");
+        $this->view->formDialogMapfile = $this->getForm("dialogMapfile");
+        $this->view->formDialogResolver = $this->getForm("dialogResolver");
+        $this->view->formDialogServer = $this->getForm("dialogServer");
+        $this->view->formDialogUser = $this->getForm("dialogUser");
+        $this->view->generalCacheForm = $this->getForm("generalCache");
+        $this->view->generalDefaultsForm = $this->getForm("generalDefaults");
+        $this->view->generalLoggingForm = $this->getForm("generalLogging");
+        $this->view->generalPeersForm = $this->getForm("generalPeers");
+        $this->view->generalSettingsForm = $this->getForm("generalSettings");
+        $this->view->generalStatsForm = $this->getForm("generalStats");
+        $this->view->generalTuningForm = $this->getForm("generalTuning");
         // set additional view parameters
         $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
         $this->view->showIntro = (string)$mdlHAProxy->general->showIntro;

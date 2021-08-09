@@ -1,33 +1,31 @@
 <?php
 
-/**
- *    Copyright (C) 2015 - 2017 Deciso B.V.
- *    Copyright (C) 2017 Fabian Franz
- *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+/*
+ * Copyright (C) 2015-2017 Deciso B.V.
+ * Copyright (C) 2017 Fabian Franz
+ * Copyright (C) 2017-2020 Michael Muenz <m.muenz@gmail.com>
+ * All rights reserved.
  *
- *    All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Quagga\Api;
@@ -44,11 +42,15 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->searchBase(
             'neighbors.neighbor',
             array("enabled",
+                  "description",
                   "address",
                   "remoteas",
                   "updatesource",
                   "nexthopself",
                   "multihop",
+                  "keepalive",
+                  "holddown",
+                  "connecttimer",
                   "defaultoriginate",
                   "linkedPrefixlistIn",
                   "linkedPrefixlistOut",
@@ -82,7 +84,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'aspaths.aspath',
-            array("enabled", "number", "action", "as" )
+            array("enabled", "description", "number", "action", "as" )
         );
     }
 
@@ -111,7 +113,7 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'prefixlists.prefixlist',
-            array("enabled", "name", "seqnumber", "action", "network" )
+            array("enabled", "description", "name", "seqnumber", "action", "network" )
         );
     }
     public function getPrefixlistAction($uuid = null)
@@ -135,11 +137,39 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->setBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
 
+    public function searchCommunitylistAction()
+    {
+        return $this->searchBase(
+            'communitylists.communitylist',
+            array("enabled", "description", "number", "seqnumber", "action", "community" )
+        );
+    }
+    public function getCommunitylistAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('communitylist', 'communitylists.communitylist', $uuid);
+    }
+
+    public function addCommunitylistAction()
+    {
+        return $this->addBase('communitylist', 'communitylists.communitylist');
+    }
+
+    public function delCommunitylistAction($uuid)
+    {
+        return $this->delBase('communitylists.communitylist', $uuid);
+    }
+
+    public function setCommunitylistAction($uuid)
+    {
+        return $this->setBase('communitylist', 'communitylists.communitylist', $uuid);
+    }
+
     public function searchRoutemapAction()
     {
         return $this->searchBase(
             'routemaps.routemap',
-            array("enabled", "name", "action", "id", "match", "match2", "set")
+            array("enabled", "description", "name", "action", "id", "match", "match2", "set")
         );
     }
 

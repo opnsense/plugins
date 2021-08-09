@@ -1,0 +1,31 @@
+<form>
+    <field>
+        <label>Logging</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.logging.host</id>
+        <label>Log Host</label>
+        <type>text</type>
+        <help><![CDATA[Indicates where to send the logs. Takes an IPv4 or IPv6 address optionally followed by a colon (':') and a UDP port, i.e. 127.0.0.1 or 10.0.0.1:514]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.logging.facility</id>
+        <label>Syslog facility</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose one of the 24 standard syslog facilities. The default value is local0.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.logging.level</id>
+        <label>Filter syslog level</label>
+        <type>dropdown</type>
+        <help><![CDATA[Can be specified to filter outgoing messages. By default, all messages are sent. If a level is specified, only messages with a severity at least as important as this level will be sent.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.logging.length</id>
+        <label>Max. line length</label>
+        <type>text</type>
+        <help><![CDATA[Specify an optional maximum line length in characters. Log lines larger than this value will be truncated before being sent. The reason is that syslog servers act differently on log line length. All servers support the default value of 1024 characters, but some servers simply drop larger lines while others do log them.]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

@@ -43,6 +43,7 @@ class SftpUploader
 
     /* @var SftpClient */
     private $sftp;
+    private $sftp_connection_file_owner = -2;
 
     private $pending_files = [];
     private $pending_base_path = "";
@@ -237,7 +238,7 @@ class SftpUploader
                 $remote_filename = basename((empty($file["target"]) ? $local_file : $file["target"]));
                 $remote_file = $remote_files[$remote_filename] ?: ["type" => "-", "owner" => $username];
                 $remote_is_file = $remote_file["type"] === "-";
-                $remote_is_readonly = preg_match('/^-r-.r-.+$/', $remote_file["permissions"] ?: "");
+                $remote_is_readonly = preg_match('/^[^wW]+$/', $remote_file["permissions"] ?: "");
 
                 // Check if a folder/socket/symlink, etc is in the way
                 if (!$remote_is_file) {
@@ -253,38 +254,40 @@ class SftpUploader
 
 
                 // Initial upload when permissions are properly set.
-                $retry_with_permission_change =
+                $should_upload_with_permission_change =
                     $chmod !== false
-                    && $remote_file["owner"] === $username
                     && isset($remote_files[$remote_filename]);
 
                 if (!$remote_is_readonly) {
                     $preserve_times_and_mod = $chmod !== false;
 
                     if ($error = $this->sftp->put($local_file, $remote_filename, $preserve_times_and_mod)->lastError()) {
-                        Utils::log()->error("Failed uploading file '{$local_file}' to '{$file["target"]}'", $error);
-
                         if ($error["permission_denied"] !== true) {
-                            $retry_with_permission_change = false;
+                            $should_upload_with_permission_change = false;
                         }
 
-                        if ($retry_with_permission_change) {
-                            Utils::log()->info("Retrying file '{$local_file}' to '{$file["target"]}' with adjusted permissions");
+                        if ($should_upload_with_permission_change) {
+                            $this->sftp->clearError();
                         } else {
+                            Utils::log()->error("Failed uploading file '{$local_file}' to '{$file["target"]}'", $error);
                             return self::UPLOAD_ERROR_NO_PERMISSION;
                         }
                     } else {
-                        $retry_with_permission_change = false;
+                        $should_upload_with_permission_change = false;
                     }
                 }
 
-
                 // Second attempt when initial failed or was skipped due to write protection (only possible if we have chmod defined to reset permissions later)
-                if ($retry_with_permission_change) {
-                    $this->sftp->chmod($remote_filename, '0600');
+                if ($should_upload_with_permission_change && $this->isFileOwnedByConnection($remote_file, $connection)) {
+                    Utils::log()->info("Trying to upload file '{$local_file}' to '{$file["target"]}' with adjusted permissions");
+
+                    if ($error = $this->sftp->chmod($remote_filename, '0600')->lastError()) {
+                        Utils::log()->error("Failed changing permission to '0600' for '{$file["target"]}'. ", $error);
+                        $this->sftp->clearError();
+                    }
 
                     if ($error = $this->sftp->put($local_file, $remote_filename)->lastError()) {
-                        Utils::log()->error("Failed uploading file '{$local_file}' to '{$file["target"]}'", $error);
+                        Utils::log()->error("Failed uploading file (with adjusted permissions) '{$local_file}' to '{$file["target"]}'", $error);
                         return self::UPLOAD_ERROR_NO_PERMISSION;
                     }
                 } elseif ($remote_is_readonly) {
@@ -321,6 +324,45 @@ class SftpUploader
         }
 
         return self::UPLOAD_SUCCESS;
+    }
+
+    private function isFileOwnedByConnection(array $remote_file, array $connection): bool
+    {
+        if (isset($remote_file["owner"])) {
+            // Direct match when file owner was returned as username
+            if ($remote_file["owner"] === $connection["user"]) {
+                return true;
+            }
+
+            // Detect file owner when it was returned as numeric value.
+            if (preg_match('/^[0-9]+$/', $remote_file["owner"])) {
+                // Uploading a temp file to see what owner this connection creates
+                if ($this->sftp_connection_file_owner === -2) {
+                    $local_test_file = $this->temporaryFile();
+                    $remote_test_file = basename($local_test_file);
+
+                    $this->sftp->clearError();
+
+                    if ($error = $this->sftp->put($local_test_file, $remote_test_file)->lastError()) {
+                        Utils::log()->error("Failed uploading test file to detect ownership. Next uploads may fail as well.", $error);
+                    } else {
+                        // Get owner of the test file
+                        $file_info = $this->sftp->ls()[$remote_test_file] ?: ["owner" => -1];
+                        // Cleanup
+                        $this->sftp->rm($remote_test_file);
+                        $this->sftp->clearError();
+                        // Cache the result
+                        $this->sftp_connection_file_owner = $file_info["owner"];
+                    }
+                }
+
+                if ($remote_file["owner"] == $this->sftp_connection_file_owner) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function deleteSourceIfRequested($file)

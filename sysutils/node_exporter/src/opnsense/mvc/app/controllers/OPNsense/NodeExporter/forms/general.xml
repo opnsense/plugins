@@ -77,4 +77,10 @@
     <type>checkbox</type>
     <help>Enable the NTP collector.</help>
   </field>
+  <field>
+    <id>general.zfs</id>
+    <label>ZFS Statistics</label>
+    <type>checkbox</type>
+    <help>Enable the ZFS collector.</help>
+  </field>
 </form>

@@ -16,6 +16,27 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.7
+
+* Make tunnel address (wg interface address) optional
+
+1.6
+
+* Move DNS setting to advanced
+* Make listen port optional
+
+1.5
+
+* Allow synchronization of config
+
+1.4
+
+* Add IPv6 gateway support (contributed by Alexander Korinek)
+
+1.3
+
+* Client/peer name validation to use HostnameField
+
 1.2
 
 * Dashboard widget (contributed by D. Domig)

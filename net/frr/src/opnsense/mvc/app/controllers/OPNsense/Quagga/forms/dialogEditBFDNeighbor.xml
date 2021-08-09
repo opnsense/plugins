@@ -1,0 +1,19 @@
+<form>
+  <field>
+    <id>neighbor.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Set an optional description for this neighbor.</help>
+  </field>
+  <field>
+    <id>neighbor.address</id>
+    <label>Peer-IP</label>
+    <type>text</type>
+    <help>Specify the IP of your neighbor.</help>
+  </field>
+</form>

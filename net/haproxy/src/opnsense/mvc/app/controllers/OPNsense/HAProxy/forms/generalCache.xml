@@ -1,0 +1,30 @@
+<form>
+    <field>
+        <label>Cache</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.cache.enabled</id>
+        <label>Cache enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HAProxy's cache which was designed to perform cache on small objects (favicon, css...). This is a minimalist low-maintenance cache which runs in RAM.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.cache.totalMaxSize</id>
+        <label>Maximum Size of Cache (MB)</label>
+        <type>text</type>
+        <help><![CDATA[Define the size in RAM of the cache in megabytes. This size is split in blocks of 1kB which are used by the cache entries. Its maximum value is 4095.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.cache.maxAge</id>
+        <label>Maximum Object Age (sec)</label>
+        <type>text</type>
+        <help><![CDATA[Define the maximum expiration duration. Cache-Control response headers will be respected if they are less than this value. The default value is 60 seconds.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.cache.maxObjectSize</id>
+        <label>Maximum Object Size (bytes)</label>
+        <type>text</type>
+        <help><![CDATA[Define the maximum size of the objects to be cached. Must not be greater than an half of the maximum size of the cache. If not set, it equals to a 256th of the cache size. All objects with sizes larger than this value will not be cached.]]></help>
+    </field>
+</form>

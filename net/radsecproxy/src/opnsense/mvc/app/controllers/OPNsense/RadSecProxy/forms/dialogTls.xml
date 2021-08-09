@@ -1,0 +1,68 @@
+<form>
+
+    <field>
+        <type>section_title</type>
+        <label>General</label>
+    </field>
+
+    <field>
+        <id>tlsConfig.name</id>
+        <label>Unique name</label>
+        <type>text</type>
+        <help>This TLS-config's unique name</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Short description to identify this TLS-config</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.caCertificateRefId</id>
+        <label>CA-certificate</label>
+        <type>dropdown</type>
+        <help>The CA certificate file used to verify the peers certificate.</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.proxyCertificateRefId</id>
+        <label>This server's certificate</label>
+        <type>dropdown</type>
+        <help>The server certificate this proxy will use. The file may also contain a certificate chain.</help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Advanced settings</label>
+        <advanced>true</advanced>
+    </field>
+
+    <field>
+        <id>tlsConfig.policyOids</id>
+        <label>Policy OIDs</label>
+        <advanced>true</advanced>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Require the peers certificate to adhere to the policy specified by this oid / these oids.</help>
+    </field>
+
+    <field>
+        <id>tlsConfig.crlCheck</id>
+        <label>CRL-Check</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help><![CDATA[Enable checking peer certificate against the CRL (default off). Note that radsecproxy does not fetch the CRLs itslef. This has to be done separately, e.g. with <b>fetch-crl</b>.]]></help>
+    </field>
+
+    <field>
+        <id>tlsConfig.cacheExpiry</id>
+        <label>Cache Expiry (seconds)</label>
+        <advanced>true</advanced>
+        <type>text</type>
+        <help>Specify how many seconds the CA and CRL information should be cached. By default, the CA and CRL are loaded at startup and cached indefinetely. This option may be set to zero to disable caching.</help>
+    </field>
+
+</form>

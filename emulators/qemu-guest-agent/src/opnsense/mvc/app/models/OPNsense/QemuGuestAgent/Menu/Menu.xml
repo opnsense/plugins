@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <QemuGuestAgent VisibleName="QEMU Guest Agent" cssClass="fa fa-cog fa-fw">
+            <Settings order="10" url="/ui/qemuguestagent"/>
+            <Logs order="20" url="/ui/diagnostics/log/core/qemu-ga"/>
+      </QemuGuestAgent>
+    </Services>
+</menu>

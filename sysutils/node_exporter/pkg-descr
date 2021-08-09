@@ -2,3 +2,33 @@ Prometheus exporter for hardware and OS metrics exposed by *NIX kernels,
 written in Go with pluggable metric collectors.
 
 WWW: https://github.com/prometheus/node_exporter
+
+
+Changelog
+---------
+
+1.1
+
+* Allow to toggle the "zfs" collector
+* Fixed disabling collectors:
+    cpu
+    exec
+    filesystem
+    loadavg
+    meminfo
+    netdev
+    time
+
+1.0
+
+* Node exporter server
+* Allow to toggle collectors:
+    cpu
+    exec
+    filesystem
+    loadavg
+    meminfo
+    netdev
+    ntp
+    time
+    devstat

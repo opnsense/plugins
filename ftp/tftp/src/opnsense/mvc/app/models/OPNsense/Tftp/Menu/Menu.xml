@@ -1,0 +1,7 @@
+<menu>
+  <Services>
+    <TFTP cssClass="fa fa-rocket">
+      <General url="/ui/tftp/general/index"/>
+    </TFTP>
+  </Services>
+</menu>

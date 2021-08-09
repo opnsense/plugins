@@ -19,6 +19,13 @@
         <help>In some cases it might be clearer to set a fixed router-id.</help>
     </field>
     <field>
+        <id>bgp.graceful</id>
+        <label>Graceful Restart</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>BGP graceful restart functionality as defined in RFC-4724 defines the mechanisms that allows BGP speaker to continue to forward data packets along known routes while the routing protocol information is being restored.</help>
+    </field>
+    <field>
         <id>bgp.networks</id>
         <label>Network</label>
         <style>tokenize</style>

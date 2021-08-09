@@ -182,7 +182,6 @@ class ServiceController extends ApiControllerBase
         // finally run the syntax check
         $response = $backend->configdRun("acmeclient configtest");
         return array("result" => $response);
-        // TODO: We may also want to check for duplicate cert names, etc.
     }
 
     /**

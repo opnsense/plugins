@@ -1,0 +1,54 @@
+<form>
+    <field>
+        <id>resolver.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Choose a name for this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Choose a optional description for this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.nameservers</id>
+        <label>Nameservers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Add nameservers to this resolver configuration, i.e. 127.0.0.1:53 or 192.168.1.1:53. Use TAB key to complete typing.]]></help>
+        <hint>Enter ip:port here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>resolver.parse_resolv_conf</id>
+        <label>Use resolv.conf</label>
+        <type>checkbox</type>
+        <help>Add all nameservers found in /etc/resolv.conf to this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.resolve_retries</id>
+        <label>Resolve Retries</label>
+        <type>text</type>
+        <help><![CDATA[This configures the number of queries to send to resolve a server name before giving up.]]></help>
+    </field>
+    <field>
+        <id>resolver.timeout_resolve</id>
+        <label>Resolve Timeout</label>
+        <type>text</type>
+        <help><![CDATA[This configures the default time to trigger name resolutions when no other time applied. Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
+    </field>
+    <field>
+        <id>resolver.timeout_retry</id>
+        <label>Retry Timeout</label>
+        <type>text</type>
+        <help><![CDATA[This configures the default time between two DNS queries, when no valid response has been received. Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
+    </field>
+</form>

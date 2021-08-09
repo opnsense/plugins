@@ -1,0 +1,25 @@
+<model>
+    <mount>//OPNsense/postfix/headerchecks</mount>
+    <description>Postfix header_checks configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <headerchecks>
+            <headercheck type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <expression type="TextField">
+                    <Required>Y</Required>
+                </expression>
+                <filter type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <WHILE_DELIVERING>while delivering mail</WHILE_DELIVERING>
+                        <WHILE_RECEIVING>while receiving mail</WHILE_RECEIVING>
+                    </OptionValues>
+                </filter>
+            </headercheck>
+        </headerchecks>
+    </items>
+</model>

@@ -28,8 +28,8 @@ all:
 
 .include "Mk/defaults.mk"
 
-CATEGORIES=	benchmarks databases devel dns mail misc net-mgmt \
-		net security sysutils vendor www
+CATEGORIES!=	ls -1d [a-z0-9]*
+CATEGORIES:=	${CATEGORIES:Nruleset.xml}
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
@@ -38,12 +38,12 @@ PLUGIN_DIRS+=	${_${CATEGORY}}
 
 list:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_COMMENT) \
-	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -V PLUGIN_DEVEL _PLUGIN_DEVEL=)" ]; then echo "(development only)"; fi)
+	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_COMMENT) \
+	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_DEVEL _PLUGIN_DEVEL=)" ]; then echo "(development only)"; fi)
 .endfor
 
 # shared targets that are sane to run from the root directory
-TARGETS=	clean lint style style-fix style-python sweep test
+TARGETS=	clean lint revision style style-fix style-python sweep test
 
 .for TARGET in ${TARGETS}
 ${TARGET}:
