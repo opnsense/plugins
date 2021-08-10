@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>2.1.0</version>
-    <description>A secure Let's Encrypt plugin</description>
+    <version>3.0.0</version>
+    <description>A secure ACME Client plugin</description>
     <items>
         <settings>
             <enabled type="BooleanField">
@@ -27,7 +27,7 @@
                 <Required>N</Required>
             </UpdateCron>
             <environment type="OptionField">
-                <Required>Y</Required>
+                <Required>N</Required>
                 <default>prod</default>
                 <OptionValues>
                     <prod>Production Environment [default]</prod>
@@ -109,6 +109,10 @@
                     <debug3>debug 3</debug3>
                 </OptionValues>
             </logLevel>
+            <showIntro type="BooleanField">
+                <Required>Y</Required>
+                <default>1</default>
+            </showIntro>
         </settings>
         <accounts>
             <account type="ArrayField">
@@ -132,21 +136,32 @@
                 <email type="EmailField">
                     <Required>N</Required>
                 </email>
-                <certificateAuthority type="OptionField">
+                <ca type="OptionField">
                     <Required>Y</Required>
                     <default>letsencrypt</default>
                     <OptionValues>
-                        <letsencrypt>Let's Encrypt CA</letsencrypt>
+                        <buypass>Buypass</buypass>
+                        <buypass_test>Buypass Test CA</buypass_test>
+                        <letsencrypt>Let's Encrypt [default]</letsencrypt>
+                        <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
+                        <sslcom>SSL.com</sslcom>
+                        <zerossl>ZeroSSL</zerossl>
                     </OptionValues>
-                </certificateAuthority>
+                </ca>
+                <eab_kid type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,8192}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
+                </eab_kid>
+                <eab_hmac type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,8192}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
+                </eab_hmac>
                 <!-- hidden field; the private key for this account -->
                 <key type="TextField">
                     <Required>N</Required>
                 </key>
-                <!-- TODO: old value that was migrated to statusLastUpdate, should be removed -->
-                <lastUpdate type="IntegerField">
-                    <Required>N</Required>
-                </lastUpdate>
                 <!-- hidden field; status of last operation -->
                 <statusCode type="IntegerField">
                     <Required>N</Required>
@@ -1019,7 +1034,7 @@
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
                         <upload_sftp>Upload certificate via SFTP</upload_sftp>
-                        <configd>System or Plugin Command (select below)</configd>
+                        <configd>System or Plugin Command</configd>
                     </OptionValues>
                 </type>
                 <highwinds_account_hash type="TextField">

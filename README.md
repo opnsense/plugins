@@ -76,7 +76,7 @@ net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix-proxy -- Zabbix monitoring proxy
-security/acme-client -- Let's Encrypt client
+security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition

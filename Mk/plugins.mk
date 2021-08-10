@@ -101,12 +101,6 @@ PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
 
-name: check
-	@echo ${PLUGIN_PKGNAME}
-
-depends: check
-	@echo ${PLUGIN_DEPENDS}
-
 manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""

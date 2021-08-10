@@ -57,27 +57,6 @@ class ServiceController extends ApiMutableServiceControllerBase
      * @throws \Exception when configd action fails
      * @throws \ReflectionException when model can't be instantiated
      */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-            $model = $this->getModel();
-            $backend = new Backend();
-            if ($this->reconfigureForceRestart()) {
-                $backend->configdRun('nginx stop');
-            }
-            $backend->configdRun('template reload OPNsense/Nginx');
-            $runStatus = $this->statusAction();
-            if ($runStatus['status'] != 'running') {
-                $backend->configdRun('nginx start');
-            } else {
-                $backend->configdRun('nginx reload');
-            }
-            return array('status' => 'ok');
-        } else {
-            return array('status' => 'failed');
-        }
-    }
 
     /**
      * retrieve status of service
@@ -116,5 +95,9 @@ class ServiceController extends ApiMutableServiceControllerBase
 
         $this->response->setStatusCode(404, "Not Found");
         return array();
+    }
+
+    protected function reconfigureForceRestart() {
+        return 0;
     }
 }
