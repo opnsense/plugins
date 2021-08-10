@@ -2,7 +2,7 @@
 import re
 import csv
 import json
-import collections
+from collections import OrderedDict
 from io import StringIO
 
 class Cmd():
@@ -318,7 +318,7 @@ class showServers(baseStat):
 
         reader = self.getDict(res)
         for row in reader:
-            row = collections.OrderedDict(row)
+            row = OrderedDict(row)
             # show only server
             if row['svname'] in ['BACKEND', 'FRONTEND']:
                 continue
