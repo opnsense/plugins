@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>2.0.0</version>
-    <description>A secure Let's Encrypt plugin</description>
+    <version>3.0.0</version>
+    <description>A secure ACME Client plugin</description>
     <items>
         <settings>
             <enabled type="BooleanField">
@@ -27,7 +27,7 @@
                 <Required>N</Required>
             </UpdateCron>
             <environment type="OptionField">
-                <Required>Y</Required>
+                <Required>N</Required>
                 <default>prod</default>
                 <OptionValues>
                     <prod>Production Environment [default]</prod>
@@ -109,6 +109,10 @@
                     <debug3>debug 3</debug3>
                 </OptionValues>
             </logLevel>
+            <showIntro type="BooleanField">
+                <Required>Y</Required>
+                <default>1</default>
+            </showIntro>
         </settings>
         <accounts>
             <account type="ArrayField">
@@ -132,21 +136,32 @@
                 <email type="EmailField">
                     <Required>N</Required>
                 </email>
-                <certificateAuthority type="OptionField">
+                <ca type="OptionField">
                     <Required>Y</Required>
                     <default>letsencrypt</default>
                     <OptionValues>
-                        <letsencrypt>Let's Encrypt CA</letsencrypt>
+                        <buypass>Buypass</buypass>
+                        <buypass_test>Buypass Test CA</buypass_test>
+                        <letsencrypt>Let's Encrypt [default]</letsencrypt>
+                        <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
+                        <sslcom>SSL.com</sslcom>
+                        <zerossl>ZeroSSL</zerossl>
                     </OptionValues>
-                </certificateAuthority>
+                </ca>
+                <eab_kid type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,8192}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
+                </eab_kid>
+                <eab_hmac type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,8192}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
+                </eab_hmac>
                 <!-- hidden field; the private key for this account -->
                 <key type="TextField">
                     <Required>N</Required>
                 </key>
-                <!-- TODO: old value that was migrated to statusLastUpdate, should be removed -->
-                <lastUpdate type="IntegerField">
-                    <Required>N</Required>
-                </lastUpdate>
                 <!-- hidden field; status of last operation -->
                 <statusCode type="IntegerField">
                     <Required>N</Required>
@@ -382,10 +397,12 @@
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
                         <dns_cyon>cyon.ch API</dns_cyon>
+                        <dns_ddnss>DDNSS API</dns_ddnss>
                         <dns_desec>deSEC.io API</dns_desec>
                         <dns_dgon>DigitalOcean API</dns_dgon>
                         <dns_da>DirectAdmin API</dns_da>
                         <dns_dnsimple>DNSimple API</dns_dnsimple>
+                        <dns_domeneshop>Domeneshop API</dns_domeneshop>
                         <dns_me>DNSMadeEasy.com API</dns_me>
                         <dns_dp>DNSPod.cn API</dns_dp>
                         <dns_doapi>Domain-Offensive LetsEncrypt API</dns_doapi>
@@ -407,6 +424,7 @@
                         <dns_infoblox>Infoblox API</dns_infoblox>
                         <dns_infomaniak>Infomaniak API</dns_infomaniak>
                         <dns_inwx>INWX XMLRPC API</dns_inwx>
+                        <dns_ionos>IONOS domain API</dns_ionos>
                         <dns_ispconfig>ISPConfig 3.1+ API</dns_ispconfig>
                         <dns_joker>Joker API</dns_joker>
                         <dns_kinghost>KingHost DNS API</dns_kinghost>
@@ -421,7 +439,9 @@
                         <dns_namecom>Name.com API</dns_namecom>
                         <dns_namecheap>Namecheap API</dns_namecheap>
                         <dns_namesilo>Namesilo.com API</dns_namesilo>
+                        <dns_nederhost>Nederhost API</dns_nederhost>
                         <dns_netcup>netcup DNS API</dns_netcup>
+                        <dns_njalla>Njalla API</dns_njalla>
                         <dns_nsone>NS1.com API</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
                         <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
@@ -434,8 +454,10 @@
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
+                        <dns_vultr>Vultr API</dns_vultr>
                         <dns_yandex>Yandex PDD API</dns_yandex>
                         <dns_zilore>Zilore DNS API</dns_zilore>
+                        <dns_zone>Zone.eu API</dns_zone>
                         <dns_zonomi>zonomi.com domain API</dns_zonomi>
                     </OptionValues>
                 </dns_service>
@@ -522,6 +544,9 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_da_insecure>
+                <dns_ddnss_token type="TextField">
+                    <Required>N</Required>
+                </dns_ddnss_token>
                 <dns_dgon_key type="TextField">
                     <Required>N</Required>
                 </dns_dgon_key>
@@ -537,6 +562,12 @@
                 <dns_do_password type="TextField">
                     <Required>N</Required>
                 </dns_do_password>
+                <dns_domeneshop_token type="TextField">
+                    <Required>N</Required>
+                </dns_domeneshop_token>
+                <dns_domeneshop_secret type="TextField">
+                    <Required>N</Required>
+                </dns_domeneshop_secret>
                 <dns_dp_id type="TextField">
                     <Required>N</Required>
                 </dns_dp_id>
@@ -606,6 +637,12 @@
                 <dns_inws_password type="TextField">
                     <Required>N</Required>
                 </dns_inws_password>
+                <dns_ionos_prefix type="TextField">
+                    <Required>N</Required>
+                </dns_ionos_prefix>
+                <dns_ionos_secret type="TextField">
+                    <Required>N</Required>
+                </dns_ionos_secret>
                 <dns_ispconfig_user type="TextField">
                     <Required>N</Required>
                 </dns_ispconfig_user>
@@ -765,6 +802,9 @@
                 <dns_namesilo_key type="TextField">
                     <Required>N</Required>
                 </dns_namesilo_key>
+                <dns_nederhost_key type="TextField">
+                    <Required>N</Required>
+                </dns_nederhost_key>
                 <dns_netcup_cid type="TextField">
                     <Required>N</Required>
                 </dns_netcup_cid>
@@ -774,6 +814,9 @@
                 <dns_netcup_pw type="TextField">
                     <Required>N</Required>
                 </dns_netcup_pw>
+                <dns_njalla_token type="TextField">
+                    <Required>N</Required>
+                </dns_njalla_token>
                 <dns_nsone_key type="TextField">
                     <Required>N</Required>
                 </dns_nsone_key>
@@ -853,6 +896,9 @@
                 <dns_vscale_key type="TextField">
                     <Required>N</Required>
                 </dns_vscale_key>
+                <dns_vultr_key type="TextField">
+                    <Required>N</Required>
+                </dns_vultr_key>
                 <dns_yandex_token type="TextField">
                     <Required>N</Required>
                 </dns_yandex_token>
@@ -953,6 +999,12 @@
                 <dns_infomaniak_token type="TextField">
                     <Required>N</Required>
                 </dns_infomaniak_token>
+                <dns_zone_username type="TextField">
+                    <Required>N</Required>
+                </dns_zone_username>
+                <dns_zone_key type="TextField">
+                    <Required>N</Required>
+                </dns_zone_key>
             </validation>
         </validations>
         <actions>
@@ -982,7 +1034,7 @@
                         <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
                         <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
                         <upload_sftp>Upload certificate via SFTP</upload_sftp>
-                        <configd>System or Plugin Command (select below)</configd>
+                        <configd>System or Plugin Command</configd>
                     </OptionValues>
                 </type>
                 <highwinds_account_hash type="TextField">

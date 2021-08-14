@@ -21,6 +21,7 @@
               <Errorfiles VisibleName="Error Files" url="/ui/haproxy#errorfiles"/>
               <Mapfiles VisibleName="Map Files" url="/ui/haproxy#mapfiles"/>
               <Resolvers VisibleName="Resolvers" url="/ui/haproxy#resolvers"/>
+              <Mailers VisibleName="E-Mail Alerts" url="/ui/haproxy#mailers"/>
           </Settings>
           <Statistics order="20" url="/ui/haproxy/statistics">
               <Overview VisibleName="Overview" url="/ui/haproxy/statistics#info"/>
@@ -28,7 +29,11 @@
               <Counters VisibleName="Counters" url="/ui/haproxy/statistics#counters"/>
               <StickTables VisibleName="Stick Tables" url="/ui/haproxy/statistics#tables"/>
           </Statistics>
-          <Log VisibleName="Log File" order="30" url="/ui/diagnostics/log/core/haproxy"/>
+          <Maintenance VisibleName="Maintenance" order="30" url="/ui/haproxy/maintenance">
+              <Server VisibleName="Server" url="/ui/haproxy/maintenance#server"/>
+          </Maintenance>
+          <Log VisibleName="Log File" order="40" url="/ui/diagnostics/log/core/haproxy"/>
+          <Export VisibleName="Config Export" order="50" url="/ui/haproxy/export"/>
       </HAProxy>
     </Services>
 </menu>

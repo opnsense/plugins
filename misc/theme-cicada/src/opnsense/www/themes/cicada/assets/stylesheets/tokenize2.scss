@@ -18,7 +18,7 @@
 
   &.focus > .tokens-container {
     outline: 0;
-    border-color: #5a5a5a;
+    border-color: #191919;
     background-color: #2a2a2a;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -88,10 +88,8 @@
     }
 
     &:focus, &:hover {
-      border-color: #dd630d;
+      border-color: #191919;
       background-color: #2a2a2a;
-      -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
-      box-shadow: inset 0 1px 1px rgb(0, 0, 0), 0 0 8px rgba(0, 0, 0, 0.6);
     }
 
     > .token-search > input {

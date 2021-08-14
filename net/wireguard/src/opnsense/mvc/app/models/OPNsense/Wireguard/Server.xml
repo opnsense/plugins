@@ -13,7 +13,7 @@
                     <default></default>
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9a-zA-Z</ValidationMessage>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, and A-Z</ValidationMessage>
                 </name>
                 <instance type="AutoNumberField">
                     <MinimumValue>0</MinimumValue>
@@ -28,8 +28,7 @@
                     <Required>N</Required>
                 </privkey>
                 <port type="PortField">
-                    <default>51820</default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </port>
                 <mtu type="IntegerField">
                     <MinimumValue>1</MinimumValue>
@@ -44,7 +43,7 @@
                 <tunneladdress type="NetworkField">
                     <default></default>
                     <FieldSeparator>,</FieldSeparator>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <asList>Y</asList>
                 </tunneladdress>
                 <disableroutes type="BooleanField">

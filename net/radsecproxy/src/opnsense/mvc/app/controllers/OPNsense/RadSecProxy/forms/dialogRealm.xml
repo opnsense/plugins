@@ -1,0 +1,71 @@
+<form>
+
+    <field>
+        <type>section_title</type>
+        <label>General</label>
+    </field>
+
+    <field>
+        <id>realm.enabled</id>
+        <label>Enable Realm</label>
+        <type>checkbox</type>
+        <help>Enable this realm</help>
+    </field>
+
+    <field>
+        <id>realm.realm</id>
+        <label>Realm</label>
+        <type>text</type>
+        <help>* | realm | /regex/</help>
+    </field>
+
+    <field>
+        <id>realm.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Short description to identify this realm and its target</help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Authentication</label>
+    </field>
+
+    <field>
+        <id>realm.server</id>
+        <label>Server</label>
+        <type>select_multiple</type>
+        <sortable>true</sortable>
+        <style>tokenize</style>
+        <help>If not configured, the proxy will deny all Access-Requests for this realm.</help>
+    </field>
+
+    <field>
+        <id>realm.replyMessage</id>
+        <label>Reply-Message</label>
+        <type>text</type>
+        <help><![CDATA[Specify a message to be sent back to the client if a Access-Request is denied because no <b>server</b> is configured.]]></help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Accounting</label>
+    </field>
+
+    <field>
+        <id>realm.accountingServer</id>
+        <label>Accounting-Server</label>
+        <type>select_multiple</type>
+        <sortable>true</sortable>
+        <style>tokenize</style>
+        <help>If not configured, the proxy will silently ignore all Accounting-Requests for this realm.</help>
+    </field>
+
+    <field>
+        <id>realm.accountingResponse</id>
+        <label>Accounting-Response</label>
+        <type>dropdown</type>
+        <help><![CDATA[Enable sending Accounting-Response instead of ignoring Accounting-Requests when no <b>accoutingServer</b> is configured.]]></help>
+    </field>
+
+</form>

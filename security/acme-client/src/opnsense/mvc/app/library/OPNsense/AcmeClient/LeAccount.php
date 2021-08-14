@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ namespace OPNsense\AcmeClient;
 use OPNsense\Core\Config;
 
 /**
- * Manage Let's Encrypt accounts with acme.sh
+ * Manage ACME CA accounts with acme.sh
  * @package OPNsense\AcmeClient
  */
 class LeAccount extends LeCommon
@@ -53,8 +53,8 @@ class LeAccount extends LeCommon
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($uuid);
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
@@ -66,14 +66,14 @@ class LeAccount extends LeCommon
     public function generateKey()
     {
         // Collect account information
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . (string)$this->config->id . '_' . $this->environment;
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . (string)$this->config->id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
         $account_key_file = $account_conf_dir . '/account.key';
         $account_json_file = $account_conf_dir . '/account.json';
         $account_ca_file = $account_conf_dir . '/ca.conf';
         $acme_conf = array();
         $acme_conf[] = "CERT_HOME='" . self::ACME_HOME_DIR . "'";
-        $acme_conf[] = "LOG_FILE='" . self::ACME_LOG_FILE . "'";
+        $acme_conf[] = "SYS_LOG='" . $this->acme_syslog . "'";
         $acme_conf[] = "ACCOUNT_KEY_PATH='" . $account_key_file . "'";
         $acme_conf[] = "ACCOUNT_JSON_PATH='" . $account_json_file . "'";
         $acme_conf[] = "CA_CONF='" . $account_ca_file . "'";
@@ -192,7 +192,7 @@ class LeAccount extends LeCommon
     }
 
     /**
-     * register account with Let's Encrypt
+     * register account with configured ACME CA
      * @return bool
      */
     public function register()
@@ -211,6 +211,13 @@ class LeAccount extends LeCommon
         // Check if account is already registered
         if (!($this->isRegistered())) {
             LeUtils::log_debug('starting account registration for ' . (string)$this->config->name, $this->debug);
+
+            // Check if ACME External Account Binding (EAB) is enabled
+            if (!empty((string)$this->config->eab_kid) && !empty((string)$this->config->eab_hmac)) {
+                LeUtils::log_debug('enabling ACME EAB for this account', $this->debug);
+                $this->acme_args[] = LeUtils::execSafe('--eab-kid %s', $this->config->eab_kid);
+                $this->acme_args[] = LeUtils::execSafe('--eab-hmac-key %s', $this->config->eab_hmac);
+            }
 
             // Preparation to run acme client
             $proc_env = $this->acme_env; // env variables for proc_open()

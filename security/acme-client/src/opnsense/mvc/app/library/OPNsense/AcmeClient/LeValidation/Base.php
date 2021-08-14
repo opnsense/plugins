@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -73,8 +73,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($accountuuid);
 
         // Store acme hook
         switch ((string)$this->config->method) {
@@ -137,12 +137,12 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         if ($this->cert_keylength == 'ec256' || $this->cert_keylength == 'ec384') {
             if ($renew == true) {
                 // If it's a renew then pass --ecc to acme client to locate the correct cert directory
-                $acme_args[] = '--ecc';
+                $this->acme_args[] = '--ecc';
             }
         }
 
-        // Use individual account config for each environment
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        // Use individual account config for each CA
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
@@ -232,7 +232,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->acme_args[] = LeUtils::execSafe('--domain %s', $certname);
 
         // Main domain: Use DNS alias mode for domain validation?
-        // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+        // https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
         if ($this->getMethod() == 'dns01') {
             switch ((string)$aliasmode) {
                 case 'automatic':
@@ -256,7 +256,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                 $this->acme_args[] = LeUtils::execSafe('--domain %s', $altname);
 
                 // altNames: Use DNS alias mode for domain validation?
-                // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+                // https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
                 if ($this->getMethod() == 'dns01') {
                     switch ((string)$this->cert_aliasmode) {
                         case 'automatic':

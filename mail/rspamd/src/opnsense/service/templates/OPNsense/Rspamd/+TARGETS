@@ -22,3 +22,5 @@ spamtrap-map:/usr/local/etc/rspamd/maps.d/spamtrap.map
 classifier-bayes.conf:/usr/local/etc/rspamd/local.d/classifier-bayes.conf
 history_redis.conf:/usr/local/etc/rspamd/local.d/history_redis.conf
 options.inc:/usr/local/etc/rspamd/local.d/options.inc
+worker-normal.inc:/usr/local/etc/rspamd/local.d/worker-normal.inc
+worker-proxy.inc:/usr/local/etc/rspamd/local.d/worker-proxy.inc

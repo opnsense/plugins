@@ -6,9 +6,9 @@
         <help>This will allow Postfix to connect to rspamd via milter protocol.</help>
     </field>
     <field>
-        <id>antispam.milter_rspamd</id>
-        <label>Milter IP Version</label>
+        <id>antispam.default_action</id>
+        <label>Milter Default Action</label>
         <type>dropdown</type>
-        <help>Select the IP version for connecting to rspamd.</help>
+        <help>What Postfix will do when Rspamd becomes temporarily unavailable.</help>
     </field>
 </form>

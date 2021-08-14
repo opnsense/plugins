@@ -19,19 +19,23 @@
     <field>
         <id>naxsi_rule.identifier</id>
         <label>ID</label>
-        <type>text</type>
-       <help>The unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)</help>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <help>For blacklist rules, the unique numerical ID of the rule, that will be used in logs and in whitelists. IDs inferior to 1000 are reserved for Naxsi internal rules (protocol mismatch etc.)&lt;br&gt;For whitelists, specify one or more comma separated IDs to whitelist. 0 whitelists all rules.</help>
     </field>
     <field>
         <id>naxsi_rule.ruletype</id>
         <label>Rule Type</label>
         <type>dropdown</type>
+        <help>Main rules increase the policiy's score if matched. Basic rules are added directly to the location and match immeditaly. Basic rules are specifically useful for whitelist rules. Also basic rules need to be added to a policy to allow association with a location.</help>
     </field>
     <field>
         <id>naxsi_rule.regex</id>
         <label>Use Regular Expressions</label>
         <type>checkbox</type>
-       <help>If enabled, the match value, the URL, named parameters and headers are matched using regular expressions; otherwise only exact matches trigger the rule.</help>
+        <help>If enabled, the match value, the URL, named parameters and headers are matched using regular expressions; otherwise only exact matches trigger the rule.</help>
     </field>
     <field>
         <id>naxsi_rule.match_value</id>
@@ -43,12 +47,13 @@
         <label>Match Type</label>
         <type>dropdown</type>
         <style>selectpicker</style>
+        <help>A blacklist rule increases the policy's score if the pattern matches. A whitelist rule instructs Naxsi to ignore specific rules under specific conditions.</help>
     </field>
     <field>
         <id>naxsi_rule.args</id>
         <label>Search in any GET Argument</label>
         <type>checkbox</type>
-       <help>Search for matchs in a request's GET arguments.</help>
+        <help>Search for matchs in a request's GET arguments.</help>
     </field>
     <field>
         <id>naxsi_rule.url</id>
@@ -60,7 +65,7 @@
         <id>naxsi_rule.headers</id>
         <label>Search in any HTTP Header</label>
         <type>checkbox</type>
-       <help>Search for matchs in a request's HTTP headers.</help>
+        <help>Search for matchs in a request's HTTP headers.</help>
     </field>
     <field>
         <id>naxsi_rule.body</id>

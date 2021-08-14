@@ -51,7 +51,7 @@ parser.add_argument('-l', '--log', help='log directory containing eve.json files
                     default="/var/log/suricata/")
 parser.add_argument('-s', '--state', help='persistent state (and lock) filename',
                     default="/usr/local/var/run/et_telemetry.state")
-parser.add_argument('-d', '--days', help='Maximum number of days to look back on initial run', type=int, default=2)
+parser.add_argument('-d', '--days', help='Maximum number of days to look back', type=float, default=1)
 parser.add_argument('-D', '--direct',
                     help='do not sleep before send (disable traffic spread)',
                     action="store_true",

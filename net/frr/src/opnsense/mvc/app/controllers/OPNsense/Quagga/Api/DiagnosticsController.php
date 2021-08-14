@@ -44,7 +44,7 @@ class DiagnosticsController extends ApiControllerBase
     private function getInformation(string $daemon, string $name, string $format): array
     {
         $backend = new Backend();
-        $response = $backend->configdRun("quagga diagnostics ".$daemon."_".$name.($format === "json" ? "_json" : ""));
+        $response = $backend->configdRun("quagga diagnostics " . $daemon . "_" . $name . ($format === "json" ? "_json" : ""));
         return array("response" => ($format === "json" ? json_decode($response) : $response));
     }
 
@@ -60,7 +60,7 @@ class DiagnosticsController extends ApiControllerBase
         if ($format === "json") {
             return array("response" => array("ipv4" => $routes4, "ipv6" => $routes6));
         } else {
-            return array("response" => $routes4.$routes6);
+            return array("response" => $routes4 . $routes6);
         }
     }
 

@@ -1,2 +1,3 @@
-haproxy.conf:/usr/local/etc/haproxy.conf
+haproxy.conf:/usr/local/etc/haproxy.conf.staging
 rc.conf.d:/etc/rc.conf.d/haproxy
+sslCerts.yaml:/usr/local/etc/haproxy/sslCerts.yaml

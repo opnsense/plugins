@@ -151,6 +151,91 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_cust_hdr_beg</style>
+    </field>
+    <field>
+        <id>acl.cust_hdr_beg_name</id>
+        <label>Header Name</label>
+        <type>text</type>
+        <help><![CDATA[The name of the HTTP Header.]]></help>
+    </field>
+    <field>
+        <id>acl.cust_hdr_beg</id>
+        <label>Header Prefix</label>
+        <type>text</type>
+        <help><![CDATA[HTTP Header starts with string (prefix match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_cust_hdr_end</style>
+    </field>
+    <field>
+        <id>acl.cust_hdr_end_name</id>
+        <label>Header Name</label>
+        <type>text</type>
+        <help><![CDATA[The name of the HTTP Header.]]></help>
+    </field>
+    <field>
+        <id>acl.cust_hdr_end</id>
+        <label>Header Suffix</label>
+        <type>text</type>
+        <help><![CDATA[HTTP Header ends with string (suffix match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_cust_hdr</style>
+    </field>
+    <field>
+        <id>acl.cust_hdr_name</id>
+        <label>Header Name</label>
+        <type>text</type>
+        <help><![CDATA[The name of the HTTP Header.]]></help>
+    </field>
+    <field>
+        <id>acl.cust_hdr</id>
+        <label>Header Matches</label>
+        <type>text</type>
+        <help><![CDATA[HTTP Header matches exact string]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_cust_hdr_reg</style>
+    </field>
+    <field>
+        <id>acl.cust_hdr_reg_name</id>
+        <label>Header Name</label>
+        <type>text</type>
+        <help><![CDATA[The name of the HTTP Header.]]></help>
+    </field>
+    <field>
+        <id>acl.cust_hdr_reg</id>
+        <label>Header Regex</label>
+        <type>text</type>
+        <help><![CDATA[HTTP Header matches regular expression]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_cust_hdr_sub</style>
+    </field>
+    <field>
+        <id>acl.cust_hdr_sub_name</id>
+        <label>Header Name</label>
+        <type>text</type>
+        <help><![CDATA[The name of the HTTP Header.]]></help>
+    </field>
+    <field>
+        <id>acl.cust_hdr_sub</id>
+        <label>Header Contains</label>
+        <type>text</type>
+        <help><![CDATA[HTTP Header contains string (substring match)]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>expression_table table_url_param</style>
     </field>
     <field>

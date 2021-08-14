@@ -82,5 +82,6 @@ function zabbixagent_xmlrpc_sync()
     $result['id'] = 'zabbixagent';
     $result['section'] = 'OPNsense.zabbixagent.settings';
     $result['description'] = gettext('Zabbix monitoring agent');
+    $result['services'] = ['zabbix_agentd'];
     return array($result);
 }

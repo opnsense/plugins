@@ -23,11 +23,18 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+OSABIPREFIX=	FreeBSD
+
 LOCALBASE?=	/usr/local
 PAGER?=		less
 
-PKG!=		which pkg || echo true
+PKG=		${LOCALBASE}/sbin/pkg
+.if ! exists(${PKG})
+PKG=		true
+.endif
 GIT!=		which git || echo true
+
+GITVERSION=	${SCRIPTSDIR}/version.sh
 
 _PLUGIN_ARCH!=	uname -p
 PLUGIN_ARCH?=	${_PLUGIN_ARCH}
@@ -44,6 +51,13 @@ PLUGIN_FLAVOUR?=	Base
 .endif
 .endif
 
+VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
+
+.if exists(${VERSIONBIN})
+_PLUGIN_ABI!=	${VERSIONBIN} -a
+PLUGIN_ABI?=	${_PLUGIN_ABI}
+.endif
+
 PHPBIN=		${LOCALBASE}/bin/php
 
 .if exists(${PHPBIN})
@@ -58,13 +72,26 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-PLUGIN_ABI?=	20.7
-PLUGIN_PHP?=	73
-PLUGIN_PYTHON?=	37
+.if !empty(DEVABI)
+PLUGIN_ABI=	${DEVABI}
+.endif
+
+.for REPLACEMENT in ABI PHP PYTHON
+. if empty(PLUGIN_${REPLACEMENT})
+.  warning Cannot build without PLUGIN_${REPLACEMENT} set
+. endif
+.endfor
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
-		PLUGIN_FLAVOUR
+		PLUGIN_FLAVOUR \
+		PLUGIN_HASH \
+		PLUGIN_MAINTAINER \
+		PLUGIN_NAME \
+		PLUGIN_PKGNAME \
+		PLUGIN_PKGVERSION \
+		PLUGIN_VARIANT \
+		PLUGIN_WWW
 
 SED_REPLACE=	# empty
 
@@ -110,7 +137,9 @@ mfc: ensure-stable
 	fi
 .else
 	@git checkout stable/${PLUGIN_ABI}
-	@git cherry-pick -x ${MFC}
+	@if ! git cherry-pick -x ${MFC}; then \
+		git cherry-pick --abort; \
+	fi
 .endif
 	@git checkout master
 .endfor
@@ -119,4 +148,9 @@ stable:
 	@git checkout stable/${PLUGIN_ABI}
 
 master:
+	@git checkout master
+
+rebase:
+	@git checkout stable/${PLUGIN_ABI}
+	@git rebase -i
 	@git checkout master

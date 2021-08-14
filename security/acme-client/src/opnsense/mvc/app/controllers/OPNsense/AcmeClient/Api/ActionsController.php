@@ -72,7 +72,7 @@ class ActionsController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('actions.action', array('enabled', 'name', 'description'), 'name');
+        return $this->searchBase('actions.action', array('enabled', 'name', 'type', 'description'), 'name');
     }
 
     public function sftpGetIdentityAction()

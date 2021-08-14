@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>puppetagent.general.Enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable Puppet Agent</help>
+    </field>
+    <field>
+        <id>puppetagent.general.FQDN</id>
+        <label>Puppet Server FQDN</label>
+        <type>text</type>
+        <help>Change Puppet Server FQDN</help>
+    </field>
+    <field>
+        <id>puppetagent.general.Environment</id>
+        <label>Puppet Environment</label>
+        <type>text</type>
+        <help>Change Puppet Agent Environment</help>
+    </field>
+</form>

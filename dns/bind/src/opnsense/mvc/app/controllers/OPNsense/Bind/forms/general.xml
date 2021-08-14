@@ -74,6 +74,12 @@
         <help>Define an ACL where you allow which clients can resolve via this service. Usually use your local LAN.</help>
     </field>
     <field>
+        <id>general.allowtransfer</id>
+        <label>Allow Transfer</label>
+        <type>dropdown</type>
+        <help>Define an ACL where you allow which server can retrieve zones.</help>
+    </field>
+    <field>
         <id>general.dnssecvalidation</id>
         <label>DNSSEC Validation</label>
         <type>dropdown</type>

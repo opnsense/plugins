@@ -6,8 +6,7 @@
   padding-top: 1px !important;
   padding-right: 1px !important;
   padding-left: 5px !important;
-  min-height: 25px !important;
-  border: 1px solid #191919; }
+  min-height: 25px !important; }
 
   .widgetdiv .content-box-head .btn-group .btn {
     color: #FFFFFF !important;
@@ -596,7 +595,7 @@ th {
 
 .glyphicon-arrow-up:before {
   content: "\e093";
-  color: #1d511c !important; }
+  color: #196a18 !important; }
 
 .glyphicon-arrow-down:before {
   content: "\e094";
@@ -841,7 +840,7 @@ th {
 
 .glyphicon-transfer:before {
   content: "\e178";
-  color:#1d511c !important; }
+  color:#196a18 !important; }
 
 .glyphicon-cutlery:before {
   content: "\e179"; }
@@ -1051,7 +1050,8 @@ h6, .h6 {
     font-size: 75%; }
 
 h1, .h1 {
-  font-size: 23px; }
+  font-size: 22px;
+  text-transform: uppercase; }
 
 h2, .h2 {
   font-size: 16px; }
@@ -1127,7 +1127,7 @@ a.text-primary:hover {
   color: #b85904; }
 
 .text-success {
-  color: #027700; }
+  color: #05a202; }
 
 a.text-success:hover {
   color: #7fc54f; }
@@ -4209,10 +4209,10 @@ a.label:hover, a.label:focus {
 
 
 .label-success {
-  background-color: #1d511c;
+  background-color: #196a18;
   border-color: #191919;}
   .label-success[href]:hover, .label-success[href]:focus {
-    background-color: #1d511c;
+    background-color: #196a18;
     border-color: #191919;	}
 
 
@@ -4452,7 +4452,7 @@ a.thumbnail.active {
   box-shadow: none; }
 
 .progress-bar-success {
-  background-color: #1d511c; }
+  background-color: #196a18; }
   .progress-striped .progress-bar-success {
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -5486,7 +5486,7 @@ button.close {
 
 .show {
   display: block !important;
-  color:#757575;}
+  color: #22C400; }
 
 .invisible {
   visibility: hidden; }
@@ -5724,10 +5724,10 @@ body {
   margin-left: 20px;
   margin-right: 20px;
   border-top: 1px solid #191919;
-  border-radius: 3px;
+  border-radius: 0;
   min-height: 47px;
   height:auto;
-  padding: 6px 14px 5px 14px;
+  padding: 7px 14px 5px 14px;
   -webkit-box-shadow: 0 3px 4px rgb(23, 23, 23);
   box-shadow: 0 3px 4px rgb(23, 23, 23); }
 
@@ -5743,7 +5743,7 @@ body {
 
 .page-content-main {
   min-height: calc(100% - 64px);
-  padding: 9px 0px 21px 0px; }
+  padding: 10px 0px 21px 0px; }
 
 .page-side {
   background: #172229;
@@ -5778,7 +5778,7 @@ body {
   padding: 0px 0px;
   margin: 0px 0px;
   background-color: none;
-  border: 1px solid #191919;
+  border: 1px solid #111;
   -webkit-box-shadow: 0px 3px 3px rgba(17, 17, 17, 0.8);
   box-shadow: 0px 3px 3px rgba(17, 17, 17, 0.8); }
 .content-box hr {
@@ -5822,7 +5822,7 @@ body {
     padding-top: 0 !important; } }
 
 .page-login {
-  background: #172c38; }
+  background: #131c22; }
   .page-login .container {
     min-height: 100%;
     margin-bottom: -60px; }
@@ -6132,7 +6132,7 @@ button.toggle-sidebar {
   font-weight: normal; }
 
 .table > tbody > tr > td:last-child {
-padding-right: 15px; }
+  padding-right: 5px; }
 
 /* helpers */
 .__nowrap {
@@ -6333,13 +6333,15 @@ label > input[type="radio"] {
 }
 
 #ipsec .ipsec-tab {
-	background-color: #839caa !important;
+	background-color: #202f3a !important;
 	color: #FFF !important;
+  opacity: 0.5;
 }
 
 #ipsec .ipsec-tab.activetab {
-	background-color: #315a71 !important;
-	color: #FFF !important;
+	background-color: #202f3a !important;
+	color: #D77610 !important;
+  opacity: 1;
 }
 .fw_pass {
   background-color: #203a23 !important;
@@ -6571,4 +6573,25 @@ ul.jqtree-tree .jqtree-title {
 
 [role="listbox"] {
   border: 1px solid #191919 !important;
+}
+
+.interface-table-tr td {
+  background-color: #d77610 !important;
+  color: #FFF !important;
+}
+
+.table.border {
+  border: 1px solid #181818 !important;
+}
+
+.rule.text-muted > td:nth-child(1n+3) {
+  text-decoration: line-through;
+}
+
+.rule.text-muted > td:last-child {
+  text-decoration:none;
+}
+
+#reports-tab {
+    border-bottom: 1px solid #191919;
 }

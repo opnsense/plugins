@@ -11,6 +11,10 @@ WWW: http://www.net-snmp.org
 Plugin Changelog
 ----------------
 
+1.5
+
+* Add support for agentx.
+
 1.4
 
 * Include installed version number in extended OID

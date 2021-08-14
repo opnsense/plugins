@@ -5,6 +5,10 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.9
+
+* Fix logging due to Phalcon4 update
+
 1.8
 
 * Remove 8 discontinued DNSBL lists and 2 that are not updated any more

@@ -137,4 +137,16 @@
         <type>checkbox</type>
         <help>Can increase metric gather times.</help>
     </field>
+    <field>
+        <id>input.intrusion_detection_alerts</id>
+        <label>Intrusion Dectection Alerts</label>
+        <type>checkbox</type>
+        <help>Requires Intrustion detection alerts are stored locally.</help>
+    </field>
+    <field>
+        <id>input.unbound</id>
+        <label>Unbound</label>
+        <type>checkbox</type>
+        <help>Enable the collection of Unbound metrics.</help>
+    </field>
 </form>

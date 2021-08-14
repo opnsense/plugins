@@ -6,6 +6,7 @@
     <OSPFv3 VisibleName="OSPFv3" cssClass="fa fa-map fa-fw" url="/ui/quagga/ospf6/index" order="25" />
     <!--<ISIS VisibleName="IS-IS" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/isis/index" order="30" />-->
     <BGP VisibleName="BGP" cssClass="fa fa-globe fa-fw" url="/ui/quagga/bgp/index" order="40" />
+    <BFD VisibleName="BFD" cssClass="fa fa-exchange fa-fw" url="/ui/quagga/bfd/index" order="50" />
     <Diagnostics VisibleName="Diagnostics" cssClass="fa fa-medkit fa-fw" order="50">
       <General VisibleName="General" url="/ui/quagga/diagnostics/general" order="1" />
       <OSPF VisibleName="OSPF" url="/ui/quagga/diagnostics/ospf" order="20" />
