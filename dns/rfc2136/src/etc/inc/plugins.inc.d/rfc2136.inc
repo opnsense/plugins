@@ -133,6 +133,16 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         if (empty($keyalgo)) {
             $keyalgo = 'hmac-md5';
         }
+        
+        /* write nsupdate key file
+           use named.conf-keyformat: https://bind9.readthedocs.io/en/v9_16_4/manpages.html#nsupdate-dynamic-dns-update-utility */
+        $nskeypath = "/var/etc/nsupdate{$i}{$keyname}.key";
+        $fd = fopen("{$nskeypath}", "w");
+        fwrite($fd, "key \"{$keyname}\" {\n");
+        fwrite($fd, "        algorithm {$keyalgo};\n");
+        fwrite($fd, "        secret \"{$dnsupdate['keydata']}\";\n");
+        fwrite($fd, "};");
+        fclose($fd);
 
         /* generate update instructions */
         $upinst = "";
@@ -203,7 +213,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             @file_put_contents("/var/etc/nsupdatecmds{$i}", $upinst);
             unset($upinst);
             /* invoke nsupdate */
-            $cmd = "/usr/local/bin/nsupdate -y {$keyalgo}:{$keyname}:{$dnsupdate['keydata']}";
+            $cmd = "/usr/local/bin/nsupdate -k {$nskeypath}";
             if (isset($dnsupdate['usetcp'])) {
                 $cmd .= " -v";
             }
