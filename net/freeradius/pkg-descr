@@ -15,6 +15,10 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.16
+
+* Allow user to choose Elliptic Curve in EAP
+
 1.9.15
 
 * Fixed validation of CIDR for client network ranges
