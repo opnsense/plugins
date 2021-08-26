@@ -48,7 +48,7 @@
             <Required>N</Required>
         </clientcertificate>
         <protocol type="OptionField">
-            <default>sha256</default>
+            <default>anyconnect</default>
             <multiple>N</multiple>
             <Required>Y</Required>
                 <OptionValues>
