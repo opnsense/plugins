@@ -18,6 +18,7 @@ Plugin Changelog
 1.9.16
 
 * Allow user to choose Elliptic Curve in EAP
+* Allow client secrets starting with hash sign
 
 1.9.15
 
