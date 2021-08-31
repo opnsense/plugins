@@ -70,6 +70,26 @@
         <help>Set how many times one account is allowed to login at the same time.</help>
     </field>
     <field>
+        <id>user.exos_vlan_untagged</id>
+        <label>EXOS VLAN Untagged</label>
+        <type>text</type>
+        <help>Set exos vlan untagged</help>
+    </field>
+    <field>
+        <id>user.exos_vlan_tagged</id>
+        <label>EXOS VLAN Tagged list</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set exos vlan tagged</help>
+    </field>
+    <field>
+        <id>user.exos_policy</id>
+        <label>EXOS policy</label>
+        <type>text</type>
+        <help>Set exos policy filter id with Filter-ID="Entrasys:version=1:mgmt=su:policy=[policy_name]"</help>
+    </field>
+    <field>
         <id>user.wispr_bw_min_up</id>
         <label>WISPr Bandwith Min UP</label>
         <type>text</type>
