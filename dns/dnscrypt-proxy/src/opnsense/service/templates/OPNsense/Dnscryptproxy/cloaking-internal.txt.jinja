@@ -1,0 +1,17 @@
+{#- /usr/local/etc/dnscrypt-proxy/cloaking-internal.txt -#}
+
+{%- set plugin_name = 'dnscrypt-proxy' %}
+{#- Only do if service is enabled. -#}
+{% if OPNsense[plugin_name]['enabled'] == '1' %}
+{%     if OPNsense[plugin_name]['cloaking_enabled'] == '1' %}
+{%          if OPNsense[plugin_name]['cloaking_internal'] is defined %}
+{%              if OPNsense[plugin_name]['cloaking_internal']['cloak'] is defined %}
+{%                  for entry in helpers.toList('OPNsense.dnscrypt-proxy.cloaking_internal.cloak') if entry['enabled'] == '1' %}
+{% set schedule = helpers.getUUID(entry['schedule']) %}
+{{ entry['pattern'] }}	{{ entry['destination'] }}{% if entry['comment'] is defined %}	# {{ entry['comment'] }}{% endif %}
+
+{%                  endfor %}
+{%              endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}

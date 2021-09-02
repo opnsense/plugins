@@ -1,0 +1,167 @@
+<form>
+    <tab id="dnscryptproxy_logs_main" description="Main">
+        <field>
+            <target>main</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/main.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+    </tab>
+    <tab id="dnscryptproxy_logs_queries" description="Query">
+        <model>settings</model>
+        <field>
+            <id>settings.query_log.enabled</id>
+            <type>checkbox</type>
+            <hidden>true</hidden>
+            <field_control>
+                <field checked="true" state="show">tab_header_dnscryptproxy_logs_queries</field>
+                <field checked="false" state="hide">tab_header_dnscryptproxy_logs_queries</field>
+            </field_control>
+        </field>
+        <field>
+            <target>query</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/query.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+        <style>display:none</style> <!-- Tab will be hidden to begin with, and shown when logging is enabled. -->
+    </tab>
+    <tab id="dnscryptproxy_logs_nx" description="NX">
+        <model>settings</model>
+        <field>
+            <id>settings.nx_log.enabled</id>
+            <type>checkbox</type>
+            <hidden>true</hidden>
+            <field_control>
+                <field checked="true" state="show">tab_header_dnscryptproxy_logs_nx</field>
+                <field checked="false" state="hide">tab_header_dnscryptproxy_logs_nx</field>
+            </field_control>
+        </field>
+        <field>
+            <target>nx</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/nx.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+        <style>display:none</style> <!-- Tab will be hidden to begin with, and shown when logging is enabled. -->
+    </tab>
+    <tab id="dnscryptproxy_logs_blocked_names" description="Blocked Names">
+        <model>settings</model>
+        <field>
+            <id>settings.blocked_names_logging</id>
+            <type>checkbox</type>
+            <hidden>true</hidden>
+            <field_control>
+                <field checked="true" state="show">tab_header_dnscryptproxy_logs_blocked_names</field>
+                <field checked="false" state="hide">tab_header_dnscryptproxy_logs_blocked_names</field>
+            </field_control>
+        </field>
+        <field>
+            <target>blocked-names</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/blocked-names.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+        <style>display:none</style> <!-- Tab will be hidden to begin with, and shown when logging is enabled. -->
+    </tab>
+    <tab id="dnscryptproxy_logs_blocked_ips" description="Blocked IPs">
+        <model>settings</model>
+        <field>
+            <id>settings.blocked_ips_logging</id>
+            <type>checkbox</type>
+            <hidden>true</hidden>
+            <field_control>
+                <field checked="true" state="show">tab_header_dnscryptproxy_logs_blocked_ips</field>
+                <field checked="false" state="hide">tab_header_dnscryptproxy_logs_blocked_ips</field>
+            </field_control>
+        </field>
+        <field>
+            <target>blocked-ips</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/blocked-ips.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+        <style>display:none</style> <!-- Tab will be hidden to begin with, and shown when logging is enabled. -->
+    </tab>
+    <tab id="dnscryptproxy_logs_allowed_names" description="Allowed Names">
+        <model>settings</model>
+        <field>
+            <id>settings.allowed_names_logging</id>
+            <type>checkbox</type>
+            <hidden>true</hidden>
+            <field_control>
+                <field checked="true" state="show">tab_header_dnscryptproxy_logs_allowed_names</field>
+                <field checked="false" state="hide">tab_header_dnscryptproxy_logs_allowed_names</field>
+            </field_control>
+        </field>
+        <field>
+            <target>allowed-names</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/allowed-names.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+        <style>display:none</style> <!-- Tab will be hidden to begin with, and shown when logging is enabled. -->
+    </tab>
+    <tab id="dnscryptproxy_logs_allowed_ips" description="Allowed IPs">
+        <model>settings</model>
+        <field>
+            <id>settings.allowed_ips_logging</id>
+            <type>checkbox</type>
+            <hidden>true</hidden>
+            <field_control>
+                <field checked="true" state="show">tab_header_dnscryptproxy_logs_allowed_ips</field>
+                <field checked="false" state="hide">tab_header_dnscryptproxy_logs_allowed_ips</field>
+            </field_control>
+        </field>
+        <field>
+            <target>allowed-ips</target>
+            <type>bootgrid</type>
+            <style>log</style>
+            <columns>
+                <column id="line">/var/log/dnscrypt-proxy/allowed-ips.log</column>
+            </columns>
+            <api>
+                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+            </api>
+            <row_count>20,50,100,200,500,1000,-1</row_count>
+        </field>
+        <style>display:none</style> <!-- Tab will be hidden to begin with, and shown when logging is enabled. -->
+    </tab>
+    <activetab>dnscryptproxy_logs_main</activetab>
+</form>

@@ -1,52 +1,15 @@
-A flexible DNS proxy, with support for modern encrypted DNS protocols
-such as DNSCrypt v2 and DNS-over-HTTPS.
+ Manage dnscrypt-proxy configuration from within the OPNsense UI.
 
+Features:
+ * All settings represented in the UI
+ * Enable/disable complex/advanced features
+ * Upload/Download of allowed/blocked lists
+ * External allowed names/blocked names support
+ * Importing/Exporting of allowed/blocked lists and some others
+ * Diagnostics tools
+ * All logs supported
+ * Resolver list, displays all currently available resolvers.
+ * Anonymized DNS Relay list, displays all currently available relays.
 
-Plugin Changelog
-================
-
-1.9
-
-* Fix logging due to Phalcon4 update
-
-1.8
-
-* Remove 8 discontinued DNSBL lists and 2 that are not updated any more
-
-1.7
-
-* Add comment field to whitelist section
-
-1.6
-
-* Removed discontinued DNSBL Zeus Tracker list
-
-1.5
-
-* Add update and extra WindowsSpyBlocker list
-
-1.4
-
-* Added 7 new DNSBL blacklists
-
-1.3
-
-* Add DNS blacklisting
-
-1.2
-
-* Add logging to menu
-
-1.1
-
-* Allow manual server addition and selection
-
-1.0
-
-* Automatic selection of fastest DNS servers
-* Allow to set cloaks/overrides
-* Allow to set forwarders
-* Allow to set whitelists
-
-
-WWW: https://github.com/jedisct1/dnscrypt-proxy
+DNSCrypt project home page: https://dnscrypt.info
+DNSCrypt Proxy project source: https://github.com/DNSCrypt/dnscrypt-proxy

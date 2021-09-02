@@ -26,43 +26,48 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+namespace OPNsense\Dnscryptproxy;
+
+use OPNsense\Base\BaseModel;
+
 /**
- * Function to add dnscrypt-proxy plugin to the services of OPNsense.
+ * Class Settings is a BaseModel class used when retriving model data
+ * via getModel().
  *
- * This add the service to the System: Diagnostics: Services page at
- * http://<opnsense>/status_services.php
+ * Functionality of this class is inherited entirely from BaseModel.
  *
- * @return array the services array
-*/
-function dnscryptproxy_services()
+ * There are variables defined here that are used elsewhere to make code
+ * more portable, and reduce typographic errors.
+ *
+ * @package OPNsense\Dnscryptproxy
+ */
+class Settings extends BaseModel
 {
+    /**
+     * The name of this plugin.
+     *
+     * @var string $name
+     */
+    public $name = 'dnscrypt-proxy';
 
-    ///
-    ob_start();
-    var_dump('TEST');
-    $ob_var_dump = ob_get_clean();
-    file_put_contents('/tmp/php_debug.txt', strip_tags(strtr($ob_var_dump, ['=&gt;' => '=>'])) . "\n", FILE_APPEND);
-    ///
+    /**
+     * A label to use for this plugin.
+     *
+     * @var string $label
+     */
+    public $label = 'DNSCrypt Proxy';
 
-    $services = array();
+    /**
+     * The API endpoint name as created by Phalcon.
+     *
+     * @var string $api_name
+     */
+    public $api_name = 'dnscryptproxy';
 
-    $model = new \OPNsense\Dnscryptproxy\Settings();
-
-    if (! ((string) $model->enabled == '1')) {
-        // return empty array if not enabled
-        return $services;
-    }
-
-    $services[] = array(
-        'description' => gettext($model->label), // Description column
-        'configd' => array(
-            'restart' => array($model->configd_name . ' restart'),
-            'start' => array($model->configd_name . ' start'),
-            'stop' => array($model->configd_name . ' stop'),
-        ),
-        'name' => $model->name, // Service column
-        'pid' => '/var/run/dnscrypt-proxy.pid',
-    );
-
-    return $services;
+    /**
+     * The name to use to reference the service with configd.
+     *
+     * @var string $configd_name
+     */
+    public $configd_name = 'dnscryptproxy';
 }

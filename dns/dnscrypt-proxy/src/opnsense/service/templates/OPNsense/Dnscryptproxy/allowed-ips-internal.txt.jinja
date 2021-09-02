@@ -1,0 +1,16 @@
+{#- /usr/local/etc/dnscrypt-proxy/allowed-ips-internal.txt -#}
+
+{%- set plugin_name = 'dnscrypt-proxy' -%}
+{%- if OPNsense[plugin_name]['enabled'] == '1' -%}
+{%-     if OPNsense[plugin_name]['allowed_ips_enabled'] == '1' -%}
+{%-         if OPNsense[plugin_name]['allowed_ips_type'] == 'internal' -%}
+{%-              if OPNsense[plugin_name]['allowed_ips_internal'] is defined %}
+{%                   for entry in helpers.toList('OPNsense.dnscrypt-proxy.allowed_ips_internal.entries') if entry['enabled'] == '1' %}
+{% set schedule = helpers.getUUID(entry['schedule']) %}
+{{ entry['expression'] }}{% if entry['comment'] is defined %}	# {{ entry['comment'] }}{% endif %}
+
+{%                  endfor %}
+{%-              endif -%}
+{%-         endif -%}
+{%-     endif -%}
+{%- endif -%}

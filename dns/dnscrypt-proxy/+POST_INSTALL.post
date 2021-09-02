@@ -1,0 +1,17 @@
+export SCRIPTS_DIR=/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy
+# Set our scripts to executable.
+echo "Setting scripts executable: get-relays.php"
+chmod +x ${SCRIPTS_DIR}/get-relays.php
+echo "Setting scripts executable: get-relays.py"
+chmod +x ${SCRIPTS_DIR}/get-relays.py
+echo "Setting scripts executable: get-resolvers.py"
+chmod +x ${SCRIPTS_DIR}/get-resolvers.py
+echo "Setting scripts executable: import-doh-client-certs.php"
+chmod +x ${SCRIPTS_DIR}/import-doh-client-certs.php
+echo "Setting scripts executable: import-list.py"
+chmod +x ${SCRIPTS_DIR}/import-list.py
+
+echo "Set up logging directory for dnscrypt-proxy"
+mkdir -p /var/log/dnscrypt-proxy && chown -R _dnscrypt-proxy:_dnscrypt-proxy /var/log/dnscrypt-proxy
+echo "Set up config directory for dnscrypt-proxy"
+mkdir -p /usr/local/etc/dnscrypt-proxy && chown -R _dnscrypt-proxy:_dnscrypt-proxy /usr/local/etc/dnscrypt-proxy
