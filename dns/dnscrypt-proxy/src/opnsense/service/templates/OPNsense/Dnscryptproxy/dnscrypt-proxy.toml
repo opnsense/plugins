@@ -126,14 +126,14 @@ cache = false
   file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
 
-[whitelist]
-  whitelist_file = 'whitelist.txt'
+[allowed_names]
+  allowed_names_file = 'whitelist.txt'
   log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
   log_format = 'tsv'
 
 {% if helpers.exists('OPNsense.dnscryptproxy.dnsbl.enabled') and OPNsense.dnscryptproxy.dnsbl.enabled == '1' %}
-[blacklist]
-  blacklist_file = 'blacklist.txt'
+[blocked_names]
+  blocked_names_file = 'blacklist.txt'
   log_file = '/var/log/dnscrypt-proxy/blocked.log'
   log_format = 'tsv'
 {% endif %}
