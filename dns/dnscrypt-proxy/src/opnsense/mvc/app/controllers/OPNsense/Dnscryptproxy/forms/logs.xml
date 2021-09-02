@@ -5,10 +5,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/main.log</column>
+                <column id="line">/var/log/dnscryptproxy/main.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>
@@ -29,10 +29,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/query.log</column>
+                <column id="line">/var/log/dnscryptproxy/query.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>
@@ -54,10 +54,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/nx.log</column>
+                <column id="line">/var/log/dnscryptproxy/nx.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>
@@ -79,10 +79,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/blocked-names.log</column>
+                <column id="line">/var/log/dnscryptproxy/blocked-names.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>
@@ -104,10 +104,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/blocked-ips.log</column>
+                <column id="line">/var/log/dnscryptproxy/blocked-ips.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>
@@ -129,10 +129,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/allowed-names.log</column>
+                <column id="line">/var/log/dnscryptproxy/allowed-names.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>
@@ -154,10 +154,10 @@
             <type>bootgrid</type>
             <style>log</style>
             <columns>
-                <column id="line">/var/log/dnscrypt-proxy/allowed-ips.log</column>
+                <column id="line">/var/log/dnscryptproxy/allowed-ips.log</column>
             </columns>
             <api>
-                <search>/api/diagnostics/log/dnscrypt-proxy</search>
+                <search>/api/diagnostics/log/dnscryptproxy</search>
             </api>
             <row_count>20,50,100,200,500,1000,-1</row_count>
         </field>

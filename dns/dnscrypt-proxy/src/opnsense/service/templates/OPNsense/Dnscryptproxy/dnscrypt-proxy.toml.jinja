@@ -1,12 +1,13 @@
 {# /usr/local/etc/dnscrypt-proxy/dnscrypt-proxy.toml #}
 {% set plugin_name = 'dnscrypt-proxy' %}
 {% set plugin_dir = '/usr/local/etc/dnscrypt-proxy' %}
+{% set log_dir = '/var/log/dnscryptproxy' %}
 {% set cfg = OPNsense[plugin_name] %}
 {% set cfg_path = 'OPNsense.'~plugin_name %}
 
 ################################################################################
 #                                                                              #
-#              dnscrypt-proxy configuration file for v2.0.44                   #
+#              dnscrypt-proxy configuration file for v2.1.0                    #
 #                                                                              #
 ################################################################################
 
@@ -195,7 +196,7 @@ offline_mode = {{ 'true' if (cfg['offline_mode'] == '1') else 'false' }}
 # query_meta = [{{ "'" + ("','".join(cfg['query_meta'].split(','))) + "'" }}]
 {%  endif -%}
 
-log_file = '/var/log/dnscrypt-proxy/main.log'
+log_file = '{{ log_dir }}/main.log'
 use_syslog = false
 
 ################################################################################
@@ -322,7 +323,7 @@ cache = false
 {# Statically defined file, utilized by Logs page.
     Referenced via api call /api/diagnostics/log/dnscrypt-proxy/query
     dns/dnscrypt-proxy/src/opnsense/mvc/app/controllers/OPNsense/Dnscryptproxy/forms/page_logs.xml #}
-  file = '/var/log/dnscrypt-proxy/query.log'
+  file = '{{ log_dir }}/query.log'
   format = 'tsv'
 
 {%      if cfg['query_log']['ignored_qtypes'] is defined %}
@@ -339,7 +340,7 @@ cache = false
 [nx_log]
 {# Statically defined file, utilized by Logs page. Referenced via api call /api/diagnostics/log/dnscrypt-proxy/nx
    See: dns/dnscrypt-proxy/src/opnsense/mvc/app/controllers/OPNsense/Dnscryptproxy/forms/page_logs.xml #}
-  file = '/var/log/dnscrypt-proxy/nx.log'
+  file = '{{ log_dir }}/nx.log'
   format = 'tsv'
 {%  endif -%}
 
@@ -360,7 +361,7 @@ cache = false
   blocked_names_file = 'blocked-names-internal.txt'
 {%      endif %}
 {%      if cfg['blocked_names_logging'] == '1' %}
-  log_file = '/var/log/dnscrypt-proxy/blocked-names.log'
+  log_file = '{{ log_dir }}/blocked-names.log'
   log_format = 'tsv'
 {%      endif %}
 {%  endif -%}
@@ -382,7 +383,7 @@ cache = false
   blocked_ips_file = 'blocked-ips-internal.txt'
 {%      endif %}
 {%      if cfg['blocked_ips_logging'] == '1' %}
-  log_file = '/var/log/dnscrypt-proxy/blocked-ips.log'
+  log_file = '{{ log_dir }}/blocked-ips.log'
   log_format = 'tsv'
 {%      endif %}
 {%  endif -%}
@@ -404,7 +405,7 @@ cache = false
   allowed_names_file = 'allowed-names-internal.txt'
 {%      endif %}
 {%      if cfg['allowed_names_logging'] == '1' %}
-  log_file = '/var/log/dnscrypt-proxy/allowed-names.log'
+  log_file = '{{ log_dir }}/allowed-names.log'
   log_format = 'tsv'
 {%      endif %}
 {%  endif -%}
@@ -426,7 +427,7 @@ cache = false
   allowed_ips_file = 'allowed-ips-internal.txt'
 {%      endif %}
 {%      if cfg['allowed_ips_logging'] == '1' %}
-  log_file = '/var/log/dnscrypt-proxy/allowed-ips.log'
+  log_file = '{{ log_dir }}/allowed-ips.log'
   log_format = 'tsv'
 {%      endif %}
 {%  endif -%}
