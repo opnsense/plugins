@@ -136,5 +136,12 @@
         <serverlist type="CSVListField">
             <Required>N</Required>
         </serverlist>
+        <disabled_serverlist type="TextField">
+            <mask>/^([a-z0-9.,\-]{1,70})$/</mask>
+            <default></default>
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <asList>Y</asList>
+        </disabled_serverlist>
     </items>
 </model>
