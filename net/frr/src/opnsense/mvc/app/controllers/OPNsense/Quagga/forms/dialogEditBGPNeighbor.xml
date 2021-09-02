@@ -71,6 +71,12 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>neighbor.asoverride</id>
+    <label>Enable As-Override</label>
+    <type>checkbox</type>
+	<help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
+  </field>
+  <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
