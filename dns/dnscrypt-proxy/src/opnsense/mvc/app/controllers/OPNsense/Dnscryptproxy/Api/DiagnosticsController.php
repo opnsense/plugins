@@ -122,6 +122,10 @@ class DiagnosticsController extends ApiControllerBase
                 $configd_command = $settings->configd_name . ' config-check';
 
                 break;
+            case 'version':
+                $configd_command = $settings->configd_name . ' version';
+
+                break;
         }
 
         // Ignore any calls that don't use defined target.

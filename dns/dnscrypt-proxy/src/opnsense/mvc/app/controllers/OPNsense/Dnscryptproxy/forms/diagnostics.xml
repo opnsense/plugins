@@ -65,5 +65,26 @@
             <text>Command output will apper here.</text>
         </field>
     </tab>
+    <tab id="version" description="Version">
+        <field>
+            <label>DNSCrypt Proxy version</label>
+            <type>header</type>
+            <help><![CDATA[Display the version of dnscrypt-proxy.]]></help>
+        </field>
+        <field>
+            <id>version</id>
+            <label>Display the dnscrypt-proxy version.</label>
+            <type>command</type>
+            <api>/api/dnscryptproxy/diagnostics/command/version</api>
+            <output>version_output</output>
+            <button_label>Run</button_label>
+            <help><![CDATA[Press the run button to display the version of dnscrypt-proxy.<br><br>This utilizes the -version parameter of dnscrypt-proxy.]]></help>
+        </field>
+        <field>
+            <id>version_output</id>
+            <type>commandoutput</type>
+            <text>Command output will apper here.</text>
+        </field>
+    </tab>
     <activetab>resolve_hostname</activetab>
 </form>
