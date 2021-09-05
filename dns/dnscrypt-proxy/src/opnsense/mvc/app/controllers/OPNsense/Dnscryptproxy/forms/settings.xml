@@ -215,8 +215,8 @@
                 <hint>9.9.9.9:53, 8.8.8.8:53</hint>
                 <allownew>true</allownew>
                 <help><![CDATA[
-                    <b>bootstrap_resolver</b><br>
-                    These are normal, non-encrypted DNS resolver, that will be
+                    <b>bootstrap_resolvers</b><br>
+                    These are normal, non-encrypted DNS resolvers, that will be
                     only used for one-shot queries when retrieving the initial
                     resolvers list, and only if the system DNS configuration
                     does not work. No user queries will ever be leaked through
