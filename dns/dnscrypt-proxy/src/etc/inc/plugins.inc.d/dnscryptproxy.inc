@@ -37,13 +37,6 @@
 function dnscryptproxy_services()
 {
 
-    ///
-    ob_start();
-    var_dump('TEST');
-    $ob_var_dump = ob_get_clean();
-    file_put_contents('/tmp/php_debug.txt', strip_tags(strtr($ob_var_dump, ['=&gt;' => '=>'])) . "\n", FILE_APPEND);
-    ///
-
     $services = array();
 
     $model = new \OPNsense\Dnscryptproxy\Settings();

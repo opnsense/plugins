@@ -1,4 +1,4 @@
-# dnscrypt-proxy plugin v2.0.45
+# dnscrypt-proxy plugin for OPNsense
 
 # ![dnscrypt-proxy 2](https://raw.github.com/dnscrypt/dnscrypt-proxy/master/logo.png?3)
 
@@ -7,7 +7,7 @@
 This is a plugin for OPNsense firewall which provides a front-end UI for managing `dnscrypt-proxy`. Original plugin written by <original author>
 
 It helps to understand how `dnscrypt-proxy` functions in order to really take
-advantage of the features of the plugin. This plugin is designed to function with v2.0.45+. Here are some useful resources:
+advantage of the features of the plugin. This plugin is designed to function with v2.1.0+. Here are some useful resources for dnscrypt-proxy:
 
 * [DNSCrypt Proxy project source](https://github.com/DNSCrypt/dnscrypt-proxy)
 * **[dnscrypt-proxy documentation](https://dnscrypt.info/doc) ← Start here**
@@ -19,6 +19,8 @@ advantage of the features of the plugin. This plugin is designed to function wit
 * [FAQ](https://dnscrypt.info/faq)
 
 ## Features
+
+Here is a summary of the features of this plugin:
 
 * All settings represented in the UI
 * Enable/disable complex/advanced features
@@ -32,70 +34,100 @@ advantage of the features of the plugin. This plugin is designed to function wit
 
 ## Manifest
 ```
-dns/dnscrypt-proxy/src
-├── etc/inc/plugins.inc.d
-│   └── dnscryptproxy.inc
-├── opnsense
-│   ├── mvc
-│   │   ├── controllers/OPNsense/Dnscryptproxy
-│   │   │   ├── Api
-│   │   │   │   ├── DiagnosticsController.php
-│   │   │   │   ├── FileController.php
-│   │   │   │   ├── ServiceController.php
-│   │   │   │   └── SettingsController.php
-│   │   │   ├── forms
-│   │   │   │   ├── page_diagnostics.xml
-│   │   │   │   ├── page_logs.xml
-│   │   │   │   └── page_settings.xml
-│   │   │   ├── ControllerBase.php
-│   │   │   ├── DiagnosticsController.php
-│   │   │   ├── LogsController.php
-│   │   │   └── SettingsController.php
-│   │   ├── models/OPNsense/Dnscryptproxy
-│   │   │   ├── ACL
-│   │   │   │   └── ACL.xml
-│   │   │   ├── FieldTypes
-│   │   │   │   └── Menu.xml
-│   │   │   └── Menu
-│   │   │       ├── Settings.php
-│   │   │       └── Settings.xml
-│   │   └── views/OPNsense/Dnscryptproxy
-│   │       ├── layout_partials
-│   │       │   ├── base_dialog.volt
-│   │       │   ├── base_form.volt
-│   │       │   ├── base_script_content.volt
-│   │       │   ├── form_bootgrid_tr.volt
-│   │       │   └── form_input_tr.volt
-│   │       ├── macros.volt
-│   │       ├── diagnostics.volt
-│   │       ├── logs.volt
-│   │       └── settings.volt
-│   ├── scripts/OPNsense/Dnscryptproxy
-│   │   ├── get_relays.py
-│   │   ├── get_resolvers.py
-│   │   ├── import_doh_client_certs.py
-│   │   └── import_list.py
-│   └── service
-│       ├── conf/actions.d
-│       │   └── actions_dnscryptproxy.conf
-│       └── templates/OPNsense/Dnscryptproxy
-│           ├── +TARGETS
-│           ├── allowed-ips-internal.txt.jinja
-│           ├── allowed-names-internal.txt.jinja
-│           ├── blocked-ips-internal.txt.jinja
-│           ├── blocked-names-internal.txt.jinja
-│           ├── captive-portals.txt.jinja
-│           ├── cloaking-internal.txt.jinja
-│           ├── dnscrypt_proxy.jinja
-│           ├── dnscrypt-proxy.toml.jinja
-│           ├── forwarding-rules.txt.jinja
-│           ├── local_doh-cert.pem.jinja
-│           └── local_doh-cert_key.pem.jinja
-├── +POST_INSTALL.post
-├── +POST_DEINSTALL.post
-├── Makefile
-├── pkg-descr
-└── README.md -- You are here.
+|-- +POST_DEINSTALL.post -- script executed by pkg when plugin is uninstalled
+|-- +POST_INSTALL.post -- script executed by pkg when plugin is installed
+|-- CHANGELOG.md -- high-level change log used by OPNsense UI.
+|-- Makefile -- build file, includes dependencies, and version information.
+|-- README.md -- You are here.
+|-- pkg-descr -- package description used by OPNsense UI.
+`-- src
+    |-- etc
+    |   `-- inc
+    |       `-- plugins.inc.d
+    |           `-- dnscryptproxy.inc -- adds entry to services in OPNsense UI
+    `-- opnsense
+        |-- mvc
+        |   `-- app
+        |       |-- controllers
+        |       |   `-- OPNsense
+        |       |       `-- Dnscryptproxy
+        |       |           |-- Api
+        |       |           |   |-- DiagnosticsController.php
+        |       |           |   |-- FileController.php
+        |       |           |   |-- ServiceController.php
+        |       |           |   `-- SettingsController.php
+        |       |           |-- ControllerBase.php
+        |       |           |-- DiagnosticsController.php
+        |       |           |-- LogsController.php
+        |       |           |-- SettingsController.php
+        |       |           `-- forms
+        |       |               |-- diagnostics.xml
+        |       |               |-- logs.xml
+        |       |               `-- settings.xml
+        |       |-- models
+        |       |   `-- OPNsense
+        |       |       `-- Dnscryptproxy
+        |       |           |-- ACL
+        |       |           |   `-- ACL.xml
+        |       |           |-- Menu
+        |       |           |   `-- Menu.xml
+        |       |           |-- Settings.php
+        |       |           `-- Settings.xml
+        |       `-- views
+        |           `-- OPNsense
+        |               `-- Dnscryptproxy
+        |                   |-- +macros.volt
+        |                   |-- diagnostics.volt
+        |                   |-- layout_partials
+        |                   |   |-- base_dialog.volt
+        |                   |   |-- base_form.volt
+        |                   |   |-- base_script_content.volt
+        |                   |   |-- form_bootgrid_tr.volt
+        |                   |   `-- form_input_tr.volt
+        |                   |-- logs.volt
+        |                   `-- settings.volt
+        |-- scripts
+        |   `-- OPNsense
+        |       `-- Dnscryptproxy
+        |           |-- get_relays.py
+        |           |-- get_resolvers.py
+        |           |-- import_doh_client_certs.py
+        |           |-- import_list.py
+        |           `-- tests
+        |               |-- fixtures
+        |               |   `-- doh_client_certs
+        |               |       `-- one_enabled_of_two.xml
+        |               |-- output
+        |               |   `-- doh_client_certs
+        |               |       |-- 57cddf7c-f383-4b0d-8d2c-e95e4efee5ea-client_cert.pem
+        |               |       |-- 57cddf7c-f383-4b0d-8d2c-e95e4efee5ea-client_cert_key.pem
+        |               |       `-- 57cddf7c-f383-4b0d-8d2c-e95e4efee5ea-root_ca_cert.pem
+        |               |-- references
+        |               |   `-- doh_client_certs
+        |               |       |-- 57cddf7c-f383-4b0d-8d2c-e95e4efee5ea-client_cert.pem
+        |               |       |-- 57cddf7c-f383-4b0d-8d2c-e95e4efee5ea-client_cert_key.pem
+        |               |       `-- 57cddf7c-f383-4b0d-8d2c-e95e4efee5ea-root_ca.pem
+        |               `-- run_tests.py
+        `-- service
+            |-- conf
+            |   |-- actions.d
+            |   |   `-- actions_dnscryptproxy.conf
+            |   `-- dnscrypt-proxy.conf
+            `-- templates
+                `-- OPNsense
+                    `-- Dnscryptproxy
+                        |-- +TARGETS
+                        |-- allowed-ips-internal.txt.jinja
+                        |-- allowed-names-internal.txt.jinja
+                        |-- blocked-ips-internal.txt.jinja
+                        |-- blocked-names-internal.txt.jinja
+                        |-- captive-portals.txt.jinja
+                        |-- cloaking-internal.txt.jinja
+                        |-- dnscrypt-proxy.toml.jinja
+                        |-- dnscrypt_proxy.jinja
+                        |-- forwarding-rules.txt.jinja
+                        |-- local_doh-cert.pem.jinja
+                        `-- local_doh-cert_key.pem.jinja
 ```
 ## Operation
 
@@ -232,6 +264,10 @@ This tab uses the same new field type, but with the option for the text box disa
 #### Configuration Check
 
 This tab is most useful in mis-configuration situations. When `dnscrypt-proxy` won't start, it's likely due to a syntax error in the configuration file. There isn't an interface currently for this type of information to get to the user, so this tab has a button which runs a check on the configuration file with `dnscrypt-proxy` and displays the output which will include the error found in the configuration.
+
+#### Version
+
+This tab can be used to show the version of dnscrypt-proxy that's being used on OPNsense. The version of dnscrypt-proxy may drift from the plugin, and this will allow to confirm the version that's being used. It uses the dnscrypt-proxy command's `-version` parameter and displays the output of the command on the page.
 
 ### Logs
 
