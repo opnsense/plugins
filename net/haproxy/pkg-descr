@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.5
+
+Fixed:
+* fix maintenance page not loading (#2485)
+
 3.4
 
 Fixed:
