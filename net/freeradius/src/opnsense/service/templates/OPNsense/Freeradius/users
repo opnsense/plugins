@@ -31,7 +31,7 @@
        Tunnel-Private-Group-Id = {{ user_list.vlan }},
 {%         endif %}
 {%       endif %}
-{%       if helpers.exists('OPNsense.freeradius.general.extreme') and OPNsense.freeradius.general.extreme == '1' %}
+{%       if helpers.exists('OPNsense.freeradius.general.exos') and OPNsense.freeradius.general.exos == '1' %}
 {%         if user_list.exos_vlan_untagged is defined and user_list.exos_vlan_tagged is not defined %}
        Extreme-Netlogin-Extended-VLAN = "U{{ user_list.exos_vlan_untagged }}",
 {%         endif %}

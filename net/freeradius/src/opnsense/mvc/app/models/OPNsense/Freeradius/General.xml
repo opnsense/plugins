@@ -15,10 +15,10 @@
             <default>0</default>
             <Required>N</Required>
         </ldap_enabled>
-        <extreme type="BooleanField">
+        <exos type="BooleanField">
             <default>0</default>
             <Required>N</Required>
-        </extreme>
+        </exos>
         <wispr type="BooleanField">
             <default>0</default>
             <Required>N</Required>
