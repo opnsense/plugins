@@ -471,7 +471,7 @@ eap {
                 #
                 #        openssl ecparam -list_curves
                 #
-                ecdh_curve = "prime256v1"
+                ecdh_curve = "{{ OPNsense.freeradius.eap.elliptic_curve }}"
 
                 #  Session resumption / fast reauthentication
                 #  cache.
