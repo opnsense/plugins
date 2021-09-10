@@ -33,6 +33,12 @@
         <type>dropdown</type>
         <help><![CDATA[The ACME CA that should be used for this account and all associated certificates. Note that some of them offer paid services and may require a subscription. Check the <a href="https://github.com/acmesh-official/acme.sh/wiki/Server" target="_blank">acme.sh documentation</a> for a list of supported CAs.]]></help>
     </field>
+		<field>
+				<id>account.custom_ca</id>
+				<label>Custom ACME CA URL</label>
+				<type>text</type>
+				<help><![CDATA[The HTTPS URL of the custom ACME CA that should be used for this account and all associated certificates. If using your own CA, make sure the Root CA is added to OPNsense's trust store.]]></help>
+		</field>
     <field>
         <label>Optional EAB Credentials</label>
         <type>header</type>
