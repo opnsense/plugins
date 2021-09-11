@@ -160,7 +160,7 @@ abstract class LeCommon
         $this->custom_ca = $acme_custom_ca;
 
         // Add CA to acme arguments
-        if ($renew == true) {
+        if ($acme_ca == "custom") {
             // Custom CA
             $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_custom_ca);
         } else {
