@@ -41,7 +41,7 @@
        {% for exostaggedlist in user_list.exos_vlan_tagged.split(',') %}T{{ exostaggedlist }};{% endfor %}",
 {%           endif %}
 {%         if user_list.exos_policy is defined %}
-       Filter-ID="Enterasys:version=1:mgmt=su:policy={{ user_list.exos_policy }}"
+       Filter-ID="Enterasys:version=1:mgmt=su:policy={{ user_list.exos_policy }}",
 {%         endif %}
 {%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.wispr') and OPNsense.freeradius.general.wispr == '1' %}
