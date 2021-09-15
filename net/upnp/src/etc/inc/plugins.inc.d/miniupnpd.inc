@@ -148,7 +148,7 @@ function miniupnpd_configure_do($verbose = false)
             $if = get_real_interface($iface);
             /* above function returns iface if fail */
             if ($if != $iface) {
-                list ($addr) = interfaces_primary_address($iface);
+                $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
                     $config_text .= "listening_ip={$if}\n";
                     if (!$ifaces_active) {
