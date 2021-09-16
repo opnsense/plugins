@@ -1,10 +1,28 @@
+echo "Running POST_INSTALL script"
 export PLUGIN_USER=_dnscrypt-proxy
 export SCRIPTS_DIR=/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy
+###
 echo "Setting script modes..."
-chmod -v +x ${SCRIPTS_DIR}/get_relays.py
-chmod -v +x ${SCRIPTS_DIR}/get_resolvers.py
-chmod -v +x ${SCRIPTS_DIR}/import_doh_client_certs.py
-chmod -v +x ${SCRIPTS_DIR}/import_list.py
+for script_file in get_relays.py get_resolvers.py import_doh_client_certs.py import_list.py;do
+    echo "Setting +x on $SCRIPTS_DIR/$script_file"
+    chmod +x ${SCRIPTS_DIR}/$script_file
+done
+###
 echo "Making directories and setting permissions..."
-mkdir -vp /var/log/dnscrypt-proxy && chown -vR ${PLUGIN_USER}:${PLUGIN_USER} /var/log/dnscrypt-proxy
-mkdir -vp /usr/local/etc/dnscrypt-proxy && chown -vR ${PLUGIN_USER}:${PLUGIN_USER} /usr/local/etc/dnscrypt-proxy
+if [ ! -d "/var/log/dnscryptproxy" ]; then
+    mkdir -vp /var/log/dnscryptproxy
+fi
+if [ ! -d "/usr/local/etc/dnscrypt-proxy" ]; then
+    mkdir -vp /usr/local/etc/dnscrypt-proxy
+fi
+echo "Set ownership for /usr/local/etc/dnscrypt-proxy"
+chown -vR ${PLUGIN_USER}:${PLUGIN_USER} /usr/local/etc/dnscrypt-proxy
+echo "Set ownership for /var/log/dnscryptproxy"
+chown -vR ${PLUGIN_USER}:${PLUGIN_USER} /var/log/dnscryptproxy
+###
+echo "Checking for old log directory..."
+if [ -d "/var/log/dnscrypt-proxy" ]; then
+    echo "Removing /var/log/dnscrypt-proxy."
+    rm -r /var/log/dnscrypt-proxy
+fi
+echo "Done."
