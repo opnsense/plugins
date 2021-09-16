@@ -1,0 +1,7 @@
+This is the official driver from Realtek and can be loaded instead of
+the FreeBSD driver built into the GENERIC kernel if you experience
+issues with it (eg. watchdog timeouts), or your card is not supported.
+
+Please note this driver requires a system reboot to activate.
+
+WWW: https://www.realtek.com/en/component/zoo/category/network-interface-controllers-10-100-1000m-gigabit-ethernet-pci-express-software
