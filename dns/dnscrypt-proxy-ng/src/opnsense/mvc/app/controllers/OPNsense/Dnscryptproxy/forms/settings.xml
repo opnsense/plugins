@@ -1,0 +1,2763 @@
+<form>
+    <tab id="global" description="Global">
+        <subtab id="basic_settings" description="Basic Settings">
+            <model>settings</model>
+            <field>
+                <id>settings.first_time_setup</id>
+                <hidden>true</hidden>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>settings.enabled</id>
+                <label>Enable DNSCrypt Proxy</label>
+                <help><![CDATA[
+                    This will enable the dnscrypt-proxy service.
+                    ]]>
+                </help>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>settings.listen_addresses</id>
+                <label>Listen Addresses</label>
+                <help><![CDATA[
+                    <b>listen_addresses</b> (comma delimited list)</br>
+                    Set the IP address and port combinations this service should
+                    listen on, e.g 127.0.0.1:5353 and/or [::1]:5353
+                    ]]>
+                </help>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+            </field>
+            <field>
+                <id>settings.allowprivileged</id>
+                <label>Allow Privileged Ports</label>
+                <help><![CDATA[
+                    This will allow you to run the service on port 53.
+                    ]]>
+                </help>
+                <type>checkbox</type>
+            </field>
+            <field>
+                <id>settings.max_clients</id>
+                <help><![CDATA[
+                    <b>max_clients</b><br>
+                    Set the maximum number of simultaneous client connections to
+                    accept.
+                    ]]>
+                </help>
+                <label>Max Client Connections</label>
+                <type>text</type>
+            </field>
+            <field>
+                <label>Server Requirements</label>
+                <type>header</type>
+                <help><![CDATA[
+                    These are settings which are enforce specific requirements
+                    that a server must meet before dnscrypt-proxy will use it.
+                    This applies to both servers defined in sources, as well as
+                    statically defined servers.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.ipv4_servers</id>
+                <label>Use IPv4 Servers</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>ipv4_servers</b><br>
+                    Allow dnscrypt-proxy use IPv4 enabled servers.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.ipv6_servers</id>
+                <label>Use IPv6 Servers</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>ipv6_servers</b><br>
+                    Let DNSCrypt-Proxy use IPv6 enabled servers.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.dnscrypt_servers</id>
+                <label>Use DNSCrypt Servers</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>dnscrypt_servers</b><br>
+                    Let DNSCrypt-Proxy use servers with DNSCrypt protocol
+                    enabled.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.doh_servers</id>
+                <label>Use DNS-over-HTTPS Servers</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>doh_servers</b><br>
+                    Let DNSCrypt-Proxy use servers with DNS-over-HTTPS protocol
+                    enabled.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <label>Manual Server Selection Options</label>
+                <type>header</type>
+                <help><![CDATA[
+                    Manual server selection allows for selecting specific
+                    servers to be used by dnscrypt-proxy.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.server_selection_method</id>
+                <label>Use manual server selection</label>
+                <type>checkbox</type>
+                <field_control>
+                    <field checked="true" state="enabled">settings.server_names</field>
+                    <field checked="true" state="disabled">settings.require_nofilter</field>
+                    <field checked="true" state="disabled">settings.require_nolog</field>
+                    <field checked="true" state="disabled">settings.require_dnssec</field>
+                    <field checked="false" state="enabled">settings.require_dnssec</field>
+                    <field checked="false" state="enabled">settings.require_nolog</field>
+                    <field checked="false" state="enabled">settings.require_nofilter</field>
+                    <field checked="false" state="disabled">settings.server_names</field>
+                </field_control>
+                <help><![CDATA[
+                    Select to use manual server selection options, instead of
+                    the automatic server selection options. Selecting this
+                    setting will disable the automatic server selection options.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.server_names</id>
+                <label>Server Names</label>
+                <type>select_multiple</type>
+                <style>selectpicker</style>
+                <allownew>false</allownew>
+                <help><![CDATA[
+                    <b>server_names</b><br>
+                    Explicitely define which servers to use. With servers
+                    defined here dnscrypt-proxy will only pick working servers
+                    from this list.<br><b>Note</b> that the require_* filters do
+                    NOT apply when using this setting.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <label>Automatic Server Selection Options</label>
+                <type>header</type>
+                <help><![CDATA[
+                    When no servers are specified in server_names,
+                    dnscrypt-proxy will automatically analyze the resolvers
+                    available from <b>sources</b>, as defined in the config, and
+                    choose the best ones to use. These require_* selections will
+                    narrow the list to use only servers matching these
+                    requirements.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.require_dnssec</id>
+                <label>Require DNSSEC</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>require_dnssec</b><br>Only use DNS server with DNSSEC
+                    enabled. Note: This setting does not apply when defining
+                    servers by name (server_name)
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.require_nolog</id>
+                <label>Require No Logging</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>require_nolog</b><br>Only use DNS server without user
+                    request logging.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.require_nofilter</id>
+                <label>Require No Filtering</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>require_nofilter</b><br>Only use DNS server without own
+                    its blacklisting. There are many servers deleting ads or
+                    with parental control enabled.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <type>separator</type>
+            </field>
+            <field>
+                <id>settings.disabled_server_names</id>
+                <label>Disabled Server names</label>
+                <type>select_multiple</type>
+                <style>selectpicker</style>
+                <allownew>false</allownew>
+                <help><![CDATA[
+                    <b>disabled_server_names</b><br>Server names to
+                    avoid even if they match all of the require_* criteria.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.bootstrap_resolvers</id>
+                <label>Bootstrap Resolvers</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <hint>9.9.9.9:53, 8.8.8.8:53</hint>
+                <allownew>true</allownew>
+                <help><![CDATA[
+                    <b>bootstrap_resolvers</b><br>
+                    These are normal, non-encrypted DNS resolvers, that will be
+                    only used for one-shot queries when retrieving the initial
+                    resolvers list, and only if the system DNS configuration
+                    does not work. No user queries will ever be leaked through
+                    these resolvers, and they will not be used after IP
+                    addresses of DoH resolvers have been found (if you are using
+                    DoH).<br>
+                    <br>
+                    They will never be used if lists have already been cached,
+                    and if the stamps of the configured servers already include
+                    IP addresses (which is the case for most of DoH servers, and
+                    for all DNSCrypt servers and relays).<br>
+                    <br>
+                    They will not be used if the configured system DNS works,
+                    or after the proxy already has at least one usable secure
+                    resolver.<br>
+                    <br>
+                    Resolvers supporting DNSSEC are recommended, and, if you are
+                    using DoH, bootstrap resolvers should ideally be operated by
+                    a different entity than the DoH servers you will be using,
+                    especially if you have IPv6 enabled.<br>
+                    <br>
+                    People in China may want to use 114.114.114.114:53.<br>
+                    Other popular options include 8.8.8.8, 9.9.9.9 and 1.1.1.1.
+                    <br>
+                    <br>
+                    If more than one resolver is specified, they will be tried
+                    in sequence.<br>
+                    <br>
+                    TL;DR: put valid standard resolver addresses here. Your
+                    actual queries will not be sent there. If you're using
+                    DNSCrypt or Anonymized DNS and your lists are up to date,
+                    these resolvers will not even be used.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.ignore_system_dns</id>
+                <label>Ignore System DNS</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>ignore_system_dns</b><br>
+                    Use the bootstrap resolver before the system DNS settings.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.netprobe_timeout</id>
+                <label>Net Probe Timeout</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>netprobe_timeout</b><br>
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.netprobe_address</id>
+                <label>Net Probe Address</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>netprobe_address</b><br>
+                    ]]>
+                </help>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="advanced_settings" description="Advanced Settings">
+            <model>settings</model>
+            <field>
+                <id>settings.force_tcp</id>
+                <label>Force TCP</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>force_tcp</b><br>
+                    Always use TCP to connect to upstream servers. This can be
+                    can be useful if you need to route everything through Tor,
+                    otherwise keep it disabled.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.proxy</id>
+                <label>Proxy</label>
+                <type>text</type>
+                <hint>127.0.0.1:9050</hint>
+                <help><![CDATA[
+                    <b>proxy</b><br>
+                    Use this to route all TCP connections to a local Tor node,
+                    format has to be like 127.0.0.1:9050
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.http_proxy</id>
+                <label>HTTP Proxy</label>
+                <type>text</type>
+                <hint>http://127.0.0.1:8888</hint>
+                <help><![CDATA[
+                    <b>http_proxy</b><br>
+                    Only for DoH servers
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.timeout</id>
+                <label>Timeout</label>
+                <type>text</type>
+                <hint>2500</hint>
+                <help><![CDATA[
+                    <b>timeout</b><br>
+                    How long a DNS query will wait for a response in
+                    milliseconds.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.keepalive</id>
+                <label>Keepalive</label>
+                <type>text</type>
+                <hint>30</hint>
+                <help><![CDATA[
+                    <b>keepalive</b><br>
+                    Keepalive for HTTP (HTTPS, HTTP/2) queries in seconds.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.edns_client_subnet</id>
+                <label>EDNS Client Subnet</label>
+                <help><![CDATA[
+                    <b>edns_client_subnet</b><br>
+                    Add EDNS-client-subnet information to outgoing queries<br>
+                    <br>
+                    Multiple networks can be listed; they will be randomly
+                    chosen.<br>
+                    These networks don't have to match your actual networks.
+                    ]]>
+                </help>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <hint>0.0.0.0/0, 2001:db8::/32</hint>
+                <allownew>true</allownew>
+            </field>
+            <field>
+                <id>settings.blocked_query_response</id>
+                <label>Blocked Query Response</label>
+                <type>text</type>
+                <hint>refused</hint>
+                <help><![CDATA[
+                    <b>blocked_query_response</b><br>
+                    Response from dnscrypt-proxy for blocked queries. Options
+                    are 'refused', 'hinfo' (default) or an IP response.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.lb_strategy</id>
+                <label>Load Balancing Strategy</label>
+                <type>text</type>
+                <hint>p2</hint>
+                <help><![CDATA[
+                    <b>lb_strategy</b><br>
+                    Load-balancing strategy: 'p2' (default), 'ph', 'first' or
+                    'random.'
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.lb_estimator</id>
+                <label>Load Balance Estimator</label>
+                <type>text</type>
+                <hint>1</hint>
+                <help><![CDATA[
+                    <b>lb_estimator</b><br>
+                    Continuously estimate the latency of all the resolvers and
+                    adjust the load-balancing parameters accordingly.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cert_refresh_delay</id>
+                <label>Cert Refresh Delay</label>
+                <type>text</type>
+                <hint>240</hint>
+                <help><![CDATA[
+                    <b>cert_refresh_delay</b><br>
+                    Delay in minutes after which certificates are reloaded.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.dnscrypt_ephemeral_keys</id>
+                <label>Ephemeral Keys</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>dnscrypt_ephemeral_keys</b><br>
+                    Create a new, unique key for every single DNS query. This
+                    may improve privacy but can also have a significant impact
+                    on CPU usage.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.tls_disable_session_tickets</id>
+                <label>TLS Disable Session Tickets</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>tls_disable_session_tickets</b><br>
+                    Disable TLS session tickets - increases privacy but also
+                    latency.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.tls_cipher_suite</id>
+                <label>DoH TLS Cipher Suite</label>
+                <type>select_multiple</type>
+                <style>selectpicker</style>
+                <allownew>false</allownew>
+                <help><![CDATA[
+                    <b>tls_cipher_suite</b><br>
+                    Use a specific cipher suite instead of the server
+                    preference.<br>
+                    <br>
+                    On non-Intel CPUs such as MIPS routers and ARM systems
+                    (Android, Raspberry Pi...), these suites may improve
+                    performance:<pre>
+
+                    TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305<br>
+                    TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256<br></pre>
+
+                    This may also help on Intel CPUs running 32-bit operating
+                    systems.<br>
+                    <br>
+                    Keep <b>tls_cipher_suite</b> empty if you have issues
+                    fetching sources or<br>connecting to some DoH servers.
+                    Google and Cloudflare are fine with it.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.offline_mode</id>
+                <label>Offline Mode</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>offline_mode</b><br>
+                    Do not use any remote encrypted servers. The proxy will
+                    remain fully functional to respond to queries that plugins
+                    can handle directly (forwarding, cloaking, ...).
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.query_meta</id>
+                <label>Query Metadata</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <hint>key1:value1, key2:value2</hint>
+                <allownew>true</allownew>
+                <help><![CDATA[
+                    <b>query_meta</b><br>
+                    Additional data to attach to outgoing queries.<br>
+                    These strings will be added as TXT records to queries.<br>
+                    Do not use, except on servers explicitly asking for extra
+                    data to be present.<br>
+                    encrypted-dns-server can be configured to use this for
+                    access control in the [access_control] section<br>
+                    <br>
+                    Syntax: "key1:value1", "key2:value2", "token:MySecretToken"
+                    ]]>
+                </help>
+            </field>
+
+            <field>
+                <label>Logging</label>
+                <type>header</type>
+                <help><![CDATA[
+                    These options control aspects of the logging functionality.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.log_level</id>
+                <label>Log Level</label>
+                <type>dropdown</type>
+                <help><![CDATA[
+                    <b>log_level</b><br>
+                    Log level (0-6, default: 2 - 0 is very verbose, 6 only
+                    contains fatal errors)
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.log_file_latest</id>
+                <label>Only keep latest logs</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>log_file_latest</b><br>
+                    When using a log file, only keep logs from the most recent
+                    launch.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.log_files_max_size</id>
+                <label>Log File Maximum Size</label>
+                <type>text</type>
+                <hint>10</hint>
+                <help><![CDATA[
+                    <b>log_files_max_size</b><br>
+                    Maximum log files size in MB - Set to 0 for unlimited.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.log_files_max_age</id>
+                <label>Log File Maximum Age</label>
+                <type>text</type>
+                <hint>7</hint>
+                <help><![CDATA[
+                    <b>log_files_max_age</b><br>
+                    How long to keep backup files, in days.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.log_files_max_backups</id>
+                <label>Log File Maximum Backups</label>
+                <type>text</type>
+                <hint>1</hint>
+                <help><![CDATA[
+                    <b>log_files_max_backups</b><br>
+                    Maximum log files backups to keep (or 0 to keep all backups).
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.query_log.enabled</id>
+                <label>Enable Query Logging</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>[query_log].file</b><br>
+                    Enable logging of queries.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.query_log.ignored_qtypes</id>
+                <label>Ignored Query Types</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <hint>DNSKEY, NS</hint>
+                <help><![CDATA[
+                    <b>[query_log].ignored_qtypes</b><br>
+                    Do not log these query types, to reduce verbosity. Keep
+                    empty to log everything.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.nx_log.enabled</id>
+                <label>Enable NX (Non-Existant) Query Logging</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>[nx_log].file</b><br>
+                    Enable logging of NX queries.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <label>Filters</label>
+                <type>header</type>
+                <help><![CDATA[
+                    <b>Note:</b> if you are using <b>dnsmasq</b>, disable the
+                    `dnssec` option in <b>dnsmasq</b> if you configure
+                    dnscrypt-proxy to do any kind of filtering (including the
+                    filters below and block lists). You can still choose
+                    resolvers that do DNSSEC validation.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.block_ipv6</id>
+                <label>Block IPv6</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>block_ipv6</b><br>
+                    Immediately respond to IPv6-related queries with an empty
+                    response. This makes things faster when there is no IPv6
+                    connectivity, but can also cause reliability issues with
+                    some stub resolvers.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.block_unqualified</id>
+                <label>Block Unqualified</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>block_unqualified</b><br>
+                    Immediately respond to A and AAAA queries for host names
+                    without a domain name.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.block_undelegated</id>
+                <label>Block Undelegated</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>block_undelegated</b><br>
+                    Immediately respond to queries for local zones instead of
+                    leaking them to upstream resolvers (always causing errors
+                    or timeouts).
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.reject_ttl</id>
+                <label>Reject TTL</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>reject_ttl</b><br>
+                    TTL for synthetic responses sent when a request has been
+                    blocked (due to IPv6 or block lists).
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <label>DNS cache</label>
+                <type>header</type>
+                <help><![CDATA[
+                    These are settings that control how the cache operates.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cache</id>
+                <label>Enable Cache</label>
+                <type>checkbox</type>
+                <help><![CDATA[
+                    <b>cache</b><br>
+                    Enable a DNS cache to reduce latency and outgoing traffic.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cache_size</id>
+                <label>Cache Size</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>cache_size</b><br>
+                    Set the cache size.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cache_min_ttl</id>
+                <label>Cache Min TTL</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>cache_min_ttl</b><br>
+                    Minimum TTL for cached entries.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cache_max_ttl</id>
+                <label>Cache Max TTL</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>cache_max_ttl</b><br>
+                    Maximum TTL for cached entries.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cache_neg_min_ttl</id>
+                <label>Cache Negative Min TTL</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>cache_neg_min_ttl</b><br>
+                    Minimum TTL for negatively cached entries.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cache_neg_max_ttl</id>
+                <label>Cache Negative Max TTL</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>cache_neg_max_ttl</b><br>
+                    Maximum TTL for negatively cached entries.
+                    ]]>
+                </help>
+            </field>
+            <apply>true</apply>
+        </subtab>
+    </tab>
+    <tab id="lists" description="Lists/Rules">
+        <subtab id="blocked_names" description="Blocked Names">
+            <model>settings</model>
+            <field>
+                <label>Blocked Names List</label>
+                <type>header</type>
+                <help><![CDATA[
+                    The pattern-based blocklist specifies patterns which will
+                    block queries.<br>Example of valid patterns:<pre>
+
+                    ads.*         | matches anything with an "ads." prefix<br>
+                    *.example.com | matches example.com and all names within that zone such as www.example.com<br>
+                    example.com   | identical to the above<br>
+                    =example.com  | block example.com but not *.example.com<br>
+                    *sex*         | matches any name containing that substring<br>
+                    ads[0-9]*     | matches "ads" followed by one or more digits<br>
+                    ads*.example* | *, ? and [] can be used anywhere, but prefixes/suffixes are faster</pre>
+
+                    Specifying a schedule is also supported to make some
+                    websites only accessible at specific times of the day.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.blocked_names_enabled</id>
+                <type>checkbox</type>
+                <label>Enable Blocked Names</label>
+                <help><![CDATA[Select to enable the blocklist feature.
+                    ]]>
+                </help>
+                <field_control>
+                    <field checked="true" state="enabled">settings.blocked_names_type</field>
+                    <field checked="true" state="enabled">settings.blocked_names_logging</field>
+                    <field checked="false" state="disabled">settings.blocked_names_type</field>
+                    <field checked="false" state="disabled">settings.blocked_names_file_external</field>
+                    <field checked="false" state="disabled">settings.blocked_names_file_manual</field>
+                    <field checked="false" state="disabled">settings.blocked_names_logging</field>
+                    <field checked="false" state="disabled">blocked_names_internal_entries</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.blocked_names_type</id>
+                <label>Blocked Names List type</label>
+                <type>radio</type>
+                <help><![CDATA[
+                    Select which blocklist type to use:<br>
+                    <b>Internal</b> - blocklist entries are managed within
+                    OPNsense via the list on this page.<br>
+                    <b>External</b> - Specify the filesystem path to a blocklist
+                    file external to dnscrypt-proxy.<br>
+                    <b>Manual</b> - Manage the blocklist manaully by uploading
+                    a blocklist.
+                    ]]>
+                </help>
+                <buttons>
+                    <button value="external">External</button>
+                    <button value="manual">Manual</button>
+                    <button value="internal">Internal</button>
+                </buttons>
+                <field_control>
+                    <field checked="external" state="enabled">settings.blocked_names_file_external</field>
+                    <field checked="manual" state="enabled">settings.blocked_names_file_manual</field>
+                    <field checked="internal" state="enabled">blocked_names_internal_entries</field>
+                    <field checked="external" state="disabled">settings.blocked_names_file_manual</field>
+                    <field checked="external" state="disabled">blocked_names_internal_entries</field>
+                    <field checked="manual" state="disabled">settings.blocked_names_file_external</field>
+                    <field checked="manual" state="disabled">blocked_names_internal_entries</field>
+                    <field checked="internal" state="disabled">settings.blocked_names_file_manual</field>
+                    <field checked="internal" state="disabled">settings.blocked_names_file_external</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.blocked_names_file_external</id>
+                <type>text</type>
+                <label>External Blocked Names file</label>
+                <help><![CDATA[
+                    <b>External</b> blocklist file specifies a filesystem path
+                    to an externally managed blocklist.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.blocked_names_file_manual</id>
+                <type>managefile</type>
+                <label>Manual Blocked Names file management</label>
+                <api>
+                    <upload>/api/dnscryptproxy/file/upload</upload>
+                    <download>/api/dnscryptproxy/file/download</download>
+                    <remove>/api/dnscryptproxy/file/remove</remove>
+                </api>
+                <help><![CDATA[
+                    <b>Manual</b> blocklist management, allows for uploading a
+                    blocklist, downloading the current blocklist, or remove
+                    the blocklist.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.blocked_names_logging</id>
+                <type>checkbox</type>
+                <label>Enable Blocked Names Logging</label>
+                <help><![CDATA[
+                    Select to enable blocklist logging.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <target>blocked_names_internal.entries</target>
+                <label>Internal Blocked Names List</label>
+                <help><![CDATA[
+                    The blocklist is managed entirely in OPNsense. This allows
+                    for adding comments, editing individual entries, searching,
+                    sorting, as well as quick additions and removals along with
+                    importing and exporting the entire list.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="expression" width="" size="" type="string" visible="true" data-formatter="">Expression</column>
+                    <column id="schedule" width="" size="" type="string" visible="true" data-formatter="">Schedule</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Entry</label>
+                    <field>
+                        <id>entries.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable the blocklist entry.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.expression</id>
+                        <label>Expression</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the domain, IP or expression to blocklist, e.g. ads.* or *.example.com
+                            ]]>
+                        </help>
+                        <hint>*.example.com</hint>
+                    </field>
+                    <field>
+                        <id>entries.schedule</id>
+                        <label>Schedule</label>
+                        <type>dropdown</type>
+                        <style></style>
+                        <help><![CDATA[
+                            Optional schedule reference
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Optional comment field
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="blocked_ips" description="Blocked IPs">
+            <model>settings</model>
+            <field>
+                <label>Blocked IPs List</label>
+                <type>header</type>
+                <help><![CDATA[
+                    The Blocked IPs List specifies IP address patterns which
+                    will block be blocked.<br>
+                    Example of valid patterns:<pre>
+
+                    163.5.1.4<br>94.46.118.*<br>
+                    fe80:53:*</pre>
+
+                    Sample feeds of suspect IP addresses:<br>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/stamparm/ipsum"
+                        >https://github.com/stamparm/ipsum
+                    </a><br>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/tg12/bad_packets_blocklist"
+                        >https://github.com/tg12/bad_packets_blocklist
+                    </a><br>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://isc.sans.edu/block.txt"
+                        >https://isc.sans.edu/block.txt
+                    </a><br>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://block.energized.pro/extensions/ips/formats/list.txt"
+                        >https://block.energized.pro/extensions/ips/formats/list.txt
+                    </a>
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.blocked_ips_enabled</id>
+                <type>checkbox</type>
+                <label>Enable Blocked IPs</label>
+                <help><![CDATA[
+                    Select to enable the IP block list feature.
+                    ]]>
+                </help>
+                <field_control>
+                    <field checked="true" state="enabled">settings.blocked_ips_type</field>
+                    <field checked="true" state="enabled">settings.blocked_ips_logging</field>
+                    <field checked="false" state="disabled">settings.blocked_ips_type</field>
+                    <field checked="false" state="disabled">settings.blocked_ips_file_external</field>
+                    <field checked="false" state="disabled">settings.blocked_ips_file_manual</field>
+                    <field checked="false" state="disabled">settings.blocked_ips_logging</field>
+                    <field checked="false" state="disabled">blocked_ips_internal_entries</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.blocked_ips_type</id>
+                <label>Blocked IPs list type</label>
+                <type>radio</type>
+                <help><![CDATA[
+                    Select which IP block list type to use:<br>
+                    <b>Internal</b> - IP block list entries are managed within
+                    OPNsense via the list on this page.<br>
+                    <b>External</b> - Specify the filesystem path to a block
+                    list file external to dnscrypt-proxy.<br>
+                    <b>Manual</b> - Manage the block list manaully by uploading
+                    a block list.
+                    ]]>
+                </help>
+                <buttons>
+                    <button value="external">External</button>
+                    <button value="manual">Manual</button>
+                    <button value="internal">Internal</button>
+                </buttons>
+                <field_control>
+                    <field checked="external" state="enabled">settings.blocked_ips_file_external</field>
+                    <field checked="manual" state="enabled">settings.blocked_ips_file_manual</field>
+                    <field checked="internal" state="enabled">blocked_ips_internal_entries</field>
+                    <field checked="external" state="disabled">settings.blocked_ips_file_manual</field>
+                    <field checked="external" state="disabled">blocked_ips_internal_entries</field>
+                    <field checked="manual" state="disabled">settings.blocked_ips_file_external</field>
+                    <field checked="manual" state="disabled">blocked_ips_internal_entries</field>
+                    <field checked="internal" state="disabled">settings.blocked_ips_file_manual</field>
+                    <field checked="internal" state="disabled">settings.blocked_ips_file_external</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.blocked_ips_file_external</id>
+                <type>text</type>
+                <label>External Blocked IPs list file</label>
+                <help><![CDATA[
+                    <b>External</b> IP block list file specifies a filesystem
+                    path to an externally managed block list.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.blocked_ips_file_manual</id>
+                <type>managefile</type>
+                <label>Manual Blocked IPs list file management</label>
+                <api>
+                    <upload>/api/dnscryptproxy/file/upload</upload>
+                    <download>/api/dnscryptproxy/file/download</download>
+                    <remove>/api/dnscryptproxy/file/remove</remove>
+                </api>
+                <help><![CDATA[
+                    <b>Manual</b> IP block list management, allows for uploading
+                    a block list, downloading the current block list, or remove
+                    the block list.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.blocked_ips_logging</id>
+                <type>checkbox</type>
+                <label>Enable Blocked IPs Logging</label>
+                <help><![CDATA[
+                    Select to enable block list logging.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <target>blocked_ips_internal.entries</target>
+                <label>Internal IP Blocked IPs</label>
+                <help><![CDATA[
+                    The IP block list is managed entirely in OPNsense. This
+                    allows for adding comments, editing individual entries,
+                    searching, sorting, as well as quick additions and removals
+                    along with importing and exporting the entire list.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="expression" width="" size="" type="string" visible="true" data-formatter="">Expression</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Entry</label>
+                    <field>
+                        <id>entries.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable the block list entry.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.expression</id>
+                        <label>Expression</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the domain, IP or expression to block list,
+                            e.g. ads.* or *.example.com
+                            ]]>
+                        </help>
+                        <hint>*.example.com</hint>
+                    </field>
+                    <field>
+                        <id>entries.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Optional comment field
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="allowed_names" description="Allowed Names">
+            <model>settings</model>
+            <field>
+                <label>Allowed Names List</label>
+                <type>header</type>
+                <help><![CDATA[
+                    The Allowed Names List specifies patterns which bypass the
+                    block list.<br>
+                    Examples of valid patterns:<pre>
+
+                    ads.*         | matches anything with an "ads." prefix<br>
+                    *.example.com | matches example.com and all names within that zone such as www.example.com<br>
+                    example.com   | identical to the above<br>
+                    =example.com  | allow lists example.com but not *.example.com<br>
+                    *sex*         | matches any name containing that substring<br>
+                    ads[0-9]*     | matches "ads" followed by one or more digits<br>
+                    ads*.example* | *, ? and [] can be used anywhere, but prefixes/suffixes are faster</pre>
+
+                    If a name matches an allow list entry, the corresponding
+                    session will bypass names and IP filters.<br>
+                    Specifying a schedule is also supported to make some
+                    websites only accessible at specific times of the day.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.allowed_names_enabled</id>
+                <type>checkbox</type>
+                <label>Enable Allowed Names</label>
+                <field_control>
+                    <field checked="true" state="enabled">settings.allowed_names_type</field>
+                    <field checked="true" state="enabled">settings.allowed_names_logging</field>
+                    <field checked="false" state="disabled">settings.allowed_names_type</field>
+                    <field checked="false" state="disabled">settings.allowed_names_file_external</field>
+                    <field checked="false" state="disabled">settings.allowed_names_file_manual</field>
+                    <field checked="false" state="disabled">settings.allowed_names_logging</field>
+                    <field checked="false" state="disabled">allowed_names_internal_entries</field>
+                </field_control>
+                <help><![CDATA[
+                    Select to enable the allow list feature.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.allowed_names_type</id>
+                <label>Allowed Names list type</label>
+                <type>radio</type>
+                <help><![CDATA[
+                    Select which allow list type to use:<br>
+                    <b>Internal</b> - Allowed Names list entries are managed
+                    within OPNsense via the list on this page.<br>
+                    <b>External</b> - Specify the filesystem path to a allow
+                    list file external to dnscrypt-proxy.<br>
+                    <b>Manual</b> - Manage the allow list manaully by uploading
+                    a allow list.
+                    ]]>
+                </help>
+                <buttons>
+                    <button value="manual">Manual</button>
+                    <button value="internal">Internal</button>
+                </buttons>
+                <field_control>
+                    <field checked="manual" state="enabled">settings.allowed_names_file_manual</field>
+                    <field checked="internal" state="enabled">allowed_names_internal_entries</field>
+                    <field checked="manual" state="disabled">settings.allowed_names_file_external</field>
+                    <field checked="manual" state="disabled">allowed_names_internal_entries</field>
+                    <field checked="internal" state="disabled">settings.allowed_names_file_manual</field>
+                    <field checked="internal" state="disabled">settings.allowed_names_file_external</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.allowed_names_file_manual</id>
+                <type>managefile</type>
+                <label>Manual Allowed Names file management</label>
+                <api>
+                    <upload>/api/dnscryptproxy/file/upload</upload>
+                    <download>/api/dnscryptproxy/file/download</download>
+                    <remove>/api/dnscryptproxy/file/remove</remove>
+                </api>
+                <help><![CDATA[
+                    <b>Manual</b> allow list management, allows for uploading a
+                    allow list, downloading the current allow list, or remove
+                    the allow list.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.allowed_names_logging</id>
+                <help><![CDATA[
+                    Select to enable allow list logging.
+                    ]]>
+                </help>
+                <type>checkbox</type>
+                <label>Enable Allowed Names Logging</label>
+            </field>
+            <field>
+                <target>allowed_names_internal.entries</target>
+                <label>Internal Allowed Names List</label>
+                <help><![CDATA[
+                    The allow list is managed entirely in OPNsense. This allows
+                    for adding comments, editing individual entries, searching,
+                    sorting, as well as quick additions and removals along with
+                    importing and exporting the entire list.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="expression" width="" size="" type="string" visible="true" data-formatter="">Expression</column>
+                    <column id="schedule" width="" size="" type="string" visible="true" data-formatter="">Schedule</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Entry</label>
+                    <field>
+                        <id>entries.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable the allow list entry.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.expression</id>
+                        <label>Expression</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the domain, IP or expression to allow list,
+                            e.g. ads.* or *.example.com
+                            ]]>
+                        </help>
+                        <hint>*.example.com</hint>
+                    </field>
+                    <field>
+                        <id>entries.schedule</id>
+                        <label>Schedule</label>
+                        <type>dropdown</type>
+                        <style></style>
+                        <help><![CDATA[
+                            Optional schedule reference
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Optional comment field
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="allowed_ips" description="Allowed IPs">
+            <model>settings</model>
+            <field>
+                <label>Allowed IPs List</label>
+                <type>header</type>
+                <help><![CDATA[
+                    The Allowed IPs List specifies patterns which bypass the
+                    block list.<br>
+                    Examples of valid patterns:<pre>
+                    ads.*         | matches anything with an "ads." prefix<br>
+                    *.example.com | matches example.com and all names within that zone such as www.example.com<br>
+                    example.com   | identical to the above<br>
+                    =example.com  | allow lists example.com but not *.example.com<br>
+                    *sex*         | matches any name containing that substring<br>
+                    ads[0-9]*     | matches "ads" followed by one or more digits<br>
+                    ads*.example* | *, ? and [] can be used anywhere, but prefixes/suffixes are faster</pre>
+                    If a name matches an allow list entry, the corresponding
+                    session will bypass names and IP filters.<br>
+                    Specifying a schedule is also supported to make some
+                    websites only accessible at specific times of the day.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.allowed_ips_enabled</id>
+                <type>checkbox</type>
+                <label>Enable Allowed IPs</label>
+                <field_control>
+                    <field checked="true" state="enabled">settings.allowed_ips_type</field>
+                    <field checked="true" state="enabled">settings.allowed_ips_logging</field>
+                    <field checked="false" state="disabled">settings.allowed_ips_type</field>
+                    <field checked="false" state="disabled">settings.allowed_ips_file_external</field>
+                    <field checked="false" state="disabled">settings.allowed_ips_file_manual</field>
+                    <field checked="false" state="disabled">settings.allowed_ips_logging</field>
+                    <field checked="false" state="disabled">allowed_ips_internal_entries</field>
+                </field_control>
+                <help><![CDATA[
+                    Select to enable the allow list feature.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.allowed_ips_type</id>
+                <label>Allowed IPs list type</label>
+                <type>radio</type>
+                <help><![CDATA[
+                    Select which allow list type to use:<br>
+                    <b>Internal</b> - Allowed IPs entries are managed within
+                    OPNsense via the list on this page.<br>
+                    <b>External</b> - Specify the filesystem path to a allow
+                    list file external to dnscrypt-proxy.<br>
+                    <b>Manual</b> - Manage the allow list manaully by uploading
+                    a allow list.
+                    ]]>
+                </help>
+                <buttons>
+                    <button value="manual">Manual</button>
+                    <button value="internal">Internal</button>
+                </buttons>
+                <field_control>
+                    <field checked="manual" state="enabled">settings.allowed_ips_file_manual</field>
+                    <field checked="internal" state="enabled">allowed_ips_internal_entries</field>
+                    <field checked="manual" state="disabled">settings.allowed_ips_file_external</field>
+                    <field checked="manual" state="disabled">allowed_ips_internal_entries</field>
+                    <field checked="internal" state="disabled">settings.allowed_ips_file_manual</field>
+                    <field checked="internal" state="disabled">settings.allowed_ips_file_external</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.allowed_ips_file_manual</id>
+                <type>managefile</type>
+                <label>Manual allow list file management</label>
+                <api>
+                    <upload>/api/dnscryptproxy/file/upload</upload>
+                    <download>/api/dnscryptproxy/file/download</download>
+                    <remove>/api/dnscryptproxy/file/remove</remove>
+                </api>
+                <help><![CDATA[
+                    <b>Manual</b> allow list management, allows for uploading a
+                    allow list, downloading the current allow list, or remove
+                    the allow list.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.allowed_ips_logging</id>
+                <help><![CDATA[
+                    Select to enable allow list logging.
+                    ]]>
+                </help>
+                <type>checkbox</type>
+                <label>Enable Allowed IPs Logging</label>
+            </field>
+            <field>
+                <target>allowed_ips_internal.entries</target>
+                <label>Internal Allowed IPs List</label>
+                <help><![CDATA[
+                    The allow list is managed entirely in OPNsense. This allows
+                    for adding comments, editing individual entries, searching,
+                    sorting, as well as quick additions and removals along with
+                    importing and exporting the entire list.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="expression" width="" size="" type="string" visible="true" data-formatter="">Expression</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Entry</label>
+                    <field>
+                        <id>entries.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable the allow list entry.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.expression</id>
+                        <label>Expression</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the domain, IP or expression to allow list,
+                            e.g. ads.* or *.example.com
+                            ]]>
+                        </help>
+                        <hint>*.example.com</hint>
+                    </field>
+                    <field>
+                        <id>entries.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Optional comment.
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="schedules" description="Schedules">
+            <field>
+                <target>schedules.schedule</target>
+                <label>Schedules</label>
+                <help><![CDATA[
+                    One or more weekly schedules can be defined here.<br>
+                    Patterns in the name-based blocklist can optionally use
+                    these schedule to apply the pattern only when it matches
+                    a time range of that schedule.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="name" width="" size="" type="string" visible="true" data-formatter="">Name</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Schedule</label>
+                    <field>
+                        <id>schedule.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable this schedule.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>schedule.name</id>
+                        <label>Schedule Name</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Choose a unique name for this schedule.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>schedulde.monday</id>
+                        <label>Monday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.mon_start_hour</start_hour_id>
+                        <start_min_id>schedule.mon_start_min</start_min_id>
+                        <stop_hour_id>schedule.mon_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.mon_stop_min</stop_min_id>
+                    </field>
+                    <field>
+                        <id>schedulde.tuesday</id>
+                        <label>Tuesday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.tue_start_hour</start_hour_id>
+                        <start_min_id>schedule.tue_start_min</start_min_id>
+                        <stop_hour_id>schedule.tue_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.tue_stop_min</stop_min_id>
+                    </field>
+                    <field>
+                        <id>schedulde.wednesday</id>
+                        <label>Wednesday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.wed_start_hour</start_hour_id>
+                        <start_min_id>schedule.wed_start_min</start_min_id>
+                        <stop_hour_id>schedule.wed_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.wed_stop_min</stop_min_id>
+                    </field>
+                    <field>
+                        <id>schedulde.thursday</id>
+                        <label>Thursday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.thu_start_hour</start_hour_id>
+                        <start_min_id>schedule.thu_start_min</start_min_id>
+                        <stop_hour_id>schedule.thu_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.thu_stop_min</stop_min_id>
+                    </field>
+                    <field>
+                        <id>schedulde.friday</id>
+                        <label>Friday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.fri_start_hour</start_hour_id>
+                        <start_min_id>schedule.fri_start_min</start_min_id>
+                        <stop_hour_id>schedule.fri_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.fri_stop_min</stop_min_id>
+                    </field>
+                    <field>
+                        <id>schedulde.saturday</id>
+                        <label>Saturday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.sat_start_hour</start_hour_id>
+                        <start_min_id>schedule.sat_start_min</start_min_id>
+                        <stop_hour_id>schedule.sat_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.sat_stop_min</stop_min_id>
+                    </field>
+                    <field>
+                        <id>schedulde.sunday</id>
+                        <label>Sunday</label>
+                        <type>startstoptime</type>
+                        <help><![CDATA[
+                            Choose a start and stop time for this day.
+                            ]]>
+                        </help>
+                        <start_hour_id>schedule.sun_start_hour</start_hour_id>
+                        <start_min_id>schedule.sun_start_min</start_min_id>
+                        <stop_hour_id>schedule.sun_stop_hour</stop_hour_id>
+                        <stop_min_id>schedule.sun_stop_min</stop_min_id>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="cloaking" description="Cloaking Rules">
+            <model>settings</model>
+            <field>
+                <label>Cloaking Rules</label>
+                <type>header</type>
+                <help><![CDATA[
+                    Cloaking returns a predefined address for a specific name.
+                    In addition to acting as a HOSTS file, it can also return
+                    the IP address of a different name. It will also do CNAME
+                    flattening.<br>
+                    Examples of usage:<pre>
+
+                    www.google.*             forcesafesearch.google.com<br>
+                    www.bing.com             strict.bing.com<br>
+                    yandex.ru                familysearch.yandex.ru<br>
+                    =duckduckgo.com          safe.duckduckgo.com<br>
+                    <br>
+                    www.youtube.com          restrictmoderate.youtube.com<br>
+                    m.youtube.com            restrictmoderate.youtube.com<br>
+                    youtubei.googleapis.com  restrictmoderate.youtube.com<br>
+                    youtube.googleapis.com   restrictmoderate.youtube.com<br>
+                    www.youtube-nocookie.com restrictmoderate.youtube.com</pre>
+
+                    Multiple IP entries for the same name are supported.<br>
+                    In the following example, the same name maps both to IPv4
+                    and IPv6 addresses:<pre>
+
+                    localhost                127.0.0.1<br>
+                    localhost                ::1</pre>
+
+                    For load-balancing, multiple IP addresses of the same
+                    class can also be provided using the same format, one
+                    <pattern> <ip> pair per line.<pre>
+
+                    ads.*                 192.168.100.1<br>
+                    ads.*                 192.168.100.2<br>
+                    ads.*                 ::1</pre>
+
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cloaking_enabled</id>
+                <type>checkbox</type>
+                <label>Enable Cloaking</label>
+                <help><![CDATA[
+                    Select to enable the cloaking feature.
+                    ]]>
+                </help>
+                <field_control>
+                    <field checked="true" state="enabled">settings.cloaking_type</field>
+                    <field checked="true" state="enabled">settings.cloak_ttl</field>
+                    <field checked="false" state="disabled">settings.cloaking_type</field>
+                    <field checked="false" state="disabled">settings.cloaking_file_manual</field>
+                    <field checked="false" state="disabled">settings.cloak_ttl</field>
+                    <field checked="false" state="disabled">cloaking_internal_cloak</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.cloaking_type</id>
+                <label>Cloaking rules type</label>
+                <type>radio</type>
+                <help><![CDATA[
+                    Select which cloaking list type to use:<br>
+                    <b>Internal</b> - cloaking rules are managed within
+                    OPNsense via the list on this page.<br>
+                    <b>Manual</b> - Manage the cloaking rules manually by
+                    uploading a pre-made list.
+                    ]]>
+                </help>
+                <buttons>
+                    <button value="manual">Manual</button>
+                    <button value="internal">Internal</button>
+                </buttons>
+                <field_control>
+                    <field checked="manual" state="enabled">settings.cloaking_file_manual</field>
+                    <field checked="internal" state="enabled">cloaking_internal_cloak</field>
+                    <field checked="manual" state="disabled">settings.cloaking_file_external</field>
+                    <field checked="manual" state="disabled">cloaking_internal_cloak</field>
+                    <field checked="internal" state="disabled">settings.cloaking_file_manual</field>
+                    <field checked="internal" state="disabled">settings.cloaking_file_external</field>
+                </field_control>
+            </field>
+            <field>
+                <id>settings.cloaking_file_manual</id>
+                <type>managefile</type>
+                <label>Manual cloaking file management</label>
+                <api>
+                    <upload>/api/dnscryptproxy/file/upload</upload>
+                    <download>/api/dnscryptproxy/file/download</download>
+                    <remove>/api/dnscryptproxy/file/remove</remove>
+                </api>
+                <help><![CDATA[
+                    <b>Manual</b> cloaking management, allows for uploading
+                    cloaking rules, downloading the current rules, or remove it.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.cloak_ttl</id>
+                <label>Cloak TTL</label>
+                <type>text</type>
+                <help><![CDATA[
+                    <b>cloak_ttl</b><br>
+                    TTL (time to live) used when serving entries out to clients.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <target>cloaking_internal.cloak</target>
+                <label>Internal Cloaking Rules</label>
+                <help><![CDATA[
+                    The cloaking rules are managed entirely in OPNsense. This
+                    allows for adding comments, editing individual entries,
+                    searching, sorting, as well as quick additions and removals
+                    along with exporting and importing the entire list.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="pattern" width="" size="" type="string" visible="true" data-formatter="">Pattern</column>
+                    <column id="destination" width="" size="" type="string" visible="true" data-formatter="">Destination</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Override</label>
+                    <field>
+                        <id>cloak.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable this override.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>cloak.pattern</id>
+                        <label>Pattern</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the pattern to override, e.g. www.google.*
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>cloak.destination</id>
+                        <label>Destination</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the destination to use for this pattern.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>cloak.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            A field for a comment.
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="forwarding" description="Forwarding Rules">
+            <model>settings</model>
+            <field>
+                <label>Forwarding Rules</label>
+                <type>header</type>
+                <help><![CDATA[
+                    Fordwarding rules are used to route specific domain names
+                    to specific servers.<br>
+                    The general format is:<pre>
+
+                    <domain> <server address>[:port] [, <server address>[:port]...]</pre>
+
+                    IPv6 addresses can be specified by enclosing the address in
+                    square brackets.<br>
+                    Blocking IPv6 may prevent local devices from being
+                    discovered.<br>
+                    If this happens, uncheck <b>block_ipv6</b> in the Global
+                    settings tab.<br>
+                    Forward *.lan, *.local, *.home, *.internal and *.localdomain
+                    to 192.168.1.1<pre>
+
+                    lan             192.168.1.1<br>
+                    local           192.168.1.1<br>
+                    home            192.168.1.1<br>
+                    internal        192.168.1.1<br>
+                    localdomain     192.168.1.1</pre>
+
+                    Forward queries for example.com and *.example.com to 9.9.9.9 and 8.8.8.8<pre>
+
+                    example.com     9.9.9.9,8.8.8.8</pre>
+
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.forwarding_enabled</id>
+                <type>checkbox</type>
+                <label>Enable Forwarding</label>
+                <help><![CDATA[
+                    Select to enable the cloaking feature.
+                    ]]>
+                </help>
+                <field_control>
+                    <field checked="true" state="enabled">forwards_forward</field>
+                    <field checked="false" state="disabled">forwards_forward</field>
+                </field_control>
+            </field>
+            <field>
+                <target>forwards.forward</target>
+                <label>Forwards</label>
+                <help><![CDATA[
+                    Add and remove entries to the forwards list.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="domain" width="" size="" type="string" visible="true" data-formatter="">Domain</column>
+                    <column id="dns_server" width="" size="" type="string" visible="true" data-formatter="">DNS Server</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Forward</label>
+                    <field>
+                        <id>forward.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable this forward.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>forward.domain</id>
+                        <label>Domain</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the domain, e.g. example.com
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>forward.dns_server</id>
+                        <label>DNS Server</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the IP addresses to forward the domain.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>forward.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            A field for a comment.
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+    </tab>
+    <tab id="doh" description="DoH Server/Client">
+        <subtab id="local_doh" description="Local DoH Server">
+            <model>settings</model>
+            <field>
+                <label>Local DNS over HTTPS (DoH) Server</label>
+                <type>header</type>
+                <help><![CDATA[
+                    dnscrypt-proxy can act as a local DoH server. By doing so,
+                    web browsers requiring a direct connection to a DoH server
+                    in order to enable some features will enable these, without
+                    bypassing your DNS proxy.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.local_doh.enabled</id>
+                <label>Enable Local DoH server</label>
+                <type>checkbox</type>
+                <field_control>
+                    <field checked="true" state="enabled">settings.local_doh.listen_addresses</field>
+                    <field checked="true" state="enabled">settings.local_doh.path</field>
+                    <field checked="true" state="enabled">settings.local_doh.cert</field>
+                    <field checked="true" state="enabled">settings.local_doh.cert_key</field>
+                    <field checked="false" state="disabled">settings.local_doh.listen_addresses</field>
+                    <field checked="false" state="disabled">settings.local_doh.path</field>
+                    <field checked="false" state="disabled">settings.local_doh.cert</field>
+                    <field checked="false" state="disabled">settings.local_doh.cert_key</field>
+                </field_control>
+                <help><![CDATA[
+                    This will enable the local DoH (DNS over HTTP) server.<br>
+                    For details, visit the
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/DNSCrypt/dnscrypt-proxy/wiki/Local-DoH"
+                        >dnscrypt-proxy wiki
+                    </a>
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.local_doh.listen_addresses</id>
+                <label>DoH Listen Addresses</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <hint>127.0.0.1:3000</hint>
+                <allownew>true</allownew>
+                <help><![CDATA[
+                    <b>[local_doh].listen_addresses</b> (comma delimited list)</br>
+                    Set the IP address and port combinations this service should
+                    listen on, e.g 127.0.0.1:5353 and/or [::1]:5353
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.local_doh.path</id>
+                <label>DoH URL Path</label>
+                <type>text</type>
+                <hint>/dns-query</hint>
+                <help><![CDATA[
+                    <b>[local_doh].path</b><br>
+                    Path of the DoH URL. This is not a file, but the part after
+                    the hostname in the URL.<br>By convention, `/dns-query` is
+                    frequently chosen.<br>For each `listen_address` the complete
+                    URL to access the server will be:<br>
+                    `https://&lt;listen_address&gt;&lt;path&gt;`
+                    (ex: `https://127.0.0.1:3000/dns-query`)
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.local_doh.cert</id>
+                <label>DoH Certifcate (or Certificate Chain)</label>
+                <type>textbox</type>
+                <hint><![CDATA[
+                    -----BEGIN CERTIFICATE-----&#10;
+                    ...&#10;
+                    -----END CERTIFICATE-----
+                    ]]>
+                </hint>
+                <help><![CDATA[
+                    The certificate (or certificate chain) in PEM format.<br>
+                    Example:<br>
+                    -----BEGIN CERTIFICATE-----<br>
+                    MIIDAjCCAeoCCQCptj0+TjjIJjANBgkqhkiG9w0BAQsFADBDMREwDwYDVQQKDAhE<br>
+                    TlNDcnlwdDEaMBgGA1UECwwRTG9jYWwgdGVzdCBzZXJ2ZXIxEjAQBgNVBAMMCWxv<br>
+                    Y2FsaG9zdDAeFw0xOTExMTgxNDA2MzBaFw0zMzA3MjcxNDA2MzBaMEMxETAPBgNV<br>
+                    ...<br>
+                    MDMYSF0RPiL8+alfwLNqLcqMA5liHlmZa85uapQyoUI3ksKJkEgU53aD8cYhH9Yn<br>
+                    6mVpsrvrcRLBiHlbi24QBolhFkCSRK8bXes8XDIPuD8iYRwlrVBwOakMFQWMqNfI<br>
+                    IMOKJomU<br>
+                    -----END CERTIFICATE-----
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.local_doh.cert_key</id>
+                <label>DoH Certificate Key</label>
+                <type>textbox</type>
+                <hint><![CDATA[
+                    -----BEGIN PRIVATE KEY-----&#10;
+                    ...&#10;
+                    -----END PRIVATE KEY-----
+                    ]]>
+                </hint>
+                <help><![CDATA[
+                    The certificate private key in PEM format.<br>Example:<br>
+                    -----BEGIN PRIVATE KEY-----<br>
+                    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDBj08sp5++4anG<br>
+                    cmQxJjAkBgNVBAoTHVByb2dyZXNzIFNvZnR3YXJlIENvcnBvcmF0aW9uMSAwHgYD<br>
+                    VQQDDBcqLmF3cy10ZXN0LnByb2dyZXNzLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD<br>
+                    ...<br>
+                    bml6YXRpb252YWxzaGEyZzIuY3JsMIGgBggrBgEFBQcBAQSBkzCBkDBNBggrBgEF<br>
+                    BQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3Nvcmdh<br>
+                    z3P668YfhUbKdRF6S42Cg6zn<br>
+                    -----END PRIVATE KEY-----
+                    ]]>
+                </help>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="doh_client_x509_auth" description="DoH Client x509 Authentication">
+            <model>settings</model>
+            <field>
+                <label>DoH Client x509 Authentication</label>
+                <type>header</type>
+                <help><![CDATA[
+                    Use a X509 certificate to authenticate yourself when
+                    connecting to DoH servers.<br>This is only useful if you
+                    are operating your own, private DoH server(s).<br>'creds'
+                    maps servers to certificates, and supports multiple
+                    entries.<br>
+                    If you are not using the standard root CA, an optional
+                    "root_ca" property set to the path to a root CRT file can
+                    be added to a server entry.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <target>doh_client_x509_auth.creds</target>
+                <label>Server/Certificate Configurations</label>
+                <help><![CDATA[
+                    This is a list of servers and the certificates to use for
+                    each server configured.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <columns>
+                    <select>true</select>
+                    <column id="server_name" width="" size="" type="string" visible="true" data-formatter="">Server Name</column>
+                    <column id="client_cert" width="" size="" type="string" visible="true" data-formatter="">Client Certificate</column>
+                    <column id="client_cert_key" width="" size="" type="string" visible="true" data-formatter="">Client Certificate Key</column>
+                    <column id="root_ca" width="" size="" type="string" visible="true" data-formatter="">Root CA Certificate</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <style>white-space: pre; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: x-small;</style>
+                <dialog>
+                    <label>Add/Edit Certificates</label>
+                    <field>
+                        <id>creds.enabled</id>
+                        <label>Enabled</label>
+                        <help><![CDATA[
+                            This will enable or disable this server and
+                            certificate combination.
+                            ]]>
+                        </help>
+                        <type>checkbox</type>
+                    </field>
+                    <field>
+                        <id>creds.server_name</id>
+                        <label>Server Name</label>
+                        <help><![CDATA[
+                            The server on which to use the certificate.
+                            ]]>
+                        </help>
+                        <type>dropdown</type>
+                    </field>
+                    <field>
+                        <id>creds.client_cert</id>
+                        <label>Client Certificate</label>
+                        <hint><![CDATA[-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----]]></hint>
+                        <help><![CDATA[
+                            The certificate (or certificate chain) in PEM
+                            format.<br>
+                            Example:<br>
+                            -----BEGIN CERTIFICATE-----<br>
+                            MIIDAjCCAeoCCQCptj0+TjjIJjANBgkqhkiG9w0BAQsFADBDMREwDwYDVQQKDAhE<br>
+                            TlNDcnlwdDEaMBgGA1UECwwRTG9jYWwgdGVzdCBzZXJ2ZXIxEjAQBgNVBAMMCWxv<br>
+                            Y2FsaG9zdDAeFw0xOTExMTgxNDA2MzBaFw0zMzA3MjcxNDA2MzBaMEMxETAPBgNV<br>
+                            ...<br>
+                            MDMYSF0RPiL8+alfwLNqLcqMA5liHlmZa85uapQyoUI3ksKJkEgU53aD8cYhH9Yn<br>
+                            6mVpsrvrcRLBiHlbi24QBolhFkCSRK8bXes8XDIPuD8iYRwlrVBwOakMFQWMqNfI<br>
+                            IMOKJomU<br>
+                            -----END CERTIFICATE-----
+                            ]]>
+                        </help>
+                        <type>textbox</type>
+                    </field>
+                    <field>
+                        <id>creds.client_cert_key</id>
+                        <label>Client Certificate Key</label>
+                        <hint><![CDATA[-----BEGIN PRIVATE KEY-----&#10;...&#10;-----END PRIVATE KEY-----]]></hint>
+                        <help><![CDATA[
+                            The certificate private key in PEM format.<br>
+                            Example:<br>
+                            -----BEGIN PRIVATE KEY-----<br>
+                            MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDBj08sp5++4anG<br>
+                            cmQxJjAkBgNVBAoTHVByb2dyZXNzIFNvZnR3YXJlIENvcnBvcmF0aW9uMSAwHgYD<br>
+                            VQQDDBcqLmF3cy10ZXN0LnByb2dyZXNzLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD<br>
+                            ...<br>
+                            bml6YXRpb252YWxzaGEyZzIuY3JsMIGgBggrBgEFBQcBAQSBkzCBkDBNBggrBgEF<br>
+                            BQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3Nvcmdh<br>
+                            z3P668YfhUbKdRF6S42Cg6zn<br>
+                            -----END PRIVATE KEY-----
+                            ]]>
+                        </help>
+                        <type>textbox</type>
+                    </field>
+                    <field>
+                        <id>creds.root_ca</id>
+                        <label>Root CA Certificate</label>
+                        <hint><![CDATA[-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----]]></hint>
+                        <help><![CDATA[
+                            The certificate private key in PEM format.<br>
+                            Example:<br>
+                            -----BEGIN CERTIFICATE-----<br>
+                            MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDBj08sp5++4anG<br>
+                            cmQxJjAkBgNVBAoTHVByb2dyZXNzIFNvZnR3YXJlIENvcnBvcmF0aW9uMSAwHgYD<br>
+                            VQQDDBcqLmF3cy10ZXN0LnByb2dyZXNzLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD<br>
+                            ...<br>
+                            bml6YXRpb252YWxzaGEyZzIuY3JsMIGgBggrBgEFBQcBAQSBkzCBkDBNBggrBgEF<br>
+                            BQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3Nvcmdh<br>
+                            z3P668YfhUbKdRF6S42Cg6zn<br>
+                            -----END CERTIFICATE-----
+                            ]]>
+                        </help>
+                        <type>textbox</type>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+    </tab>
+    <tab id="resolvers" description="Resolvers">
+        <subtab id="resolvers" description="Resolvers">
+            <field>
+                <mode>configd_cmd</mode>
+                <target>get-resolvers</target>
+                <label>Resolver List</label>
+                <help><![CDATA[
+                    This is a live list of all of the servers currently
+                    available. This list comes from
+                    <b>dnscrypt-proxy -list-all</b> command.<br>
+                    This list will include resolvers defined in sources, as
+                    well as static resolvers.<br>Filter on boolean fields like
+                    nolog, and nofilter by using those words in the search box.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                </api>
+                <columns>
+                    <select>false</select>
+                    <column id="name" width="" size="" type="string" visible="true" data-formatter="">Name</column>
+                    <column id="proto" width="" size="" type="string" visible="true" data-formatter="">Protocol</column>
+                    <column id="ipv6" width="" size="" type="string" visible="true" data-formatter="boolean">IPv6</column>
+                    <column id="dnssec" width="" size="" type="string" visible="true" data-formatter="boolean">DNSSEC</column>
+                    <column id="nolog" width="" size="" type="string" visible="true" data-formatter="boolean">nolog</column>
+                    <column id="nofilter" width="" size="" type="string" visible="true" data-formatter="boolean">nofilter</column>
+                    <column id="description" width="" size="" type="string" visible="true" data-formatter="">Description</column>
+                </columns>
+                <row_count>14,20,50,100,-1</row_count>
+            </field>
+        </subtab>
+        <subtab id="sources" description="Sources">
+            <model>settings</model>
+            <field>
+                <label>Sources</label>
+                <type>header</type>
+                <help><![CDATA[
+                    Remote lists of available servers.<br>Multiple sources can
+                    be used simultaneously, but every source requires a
+                    dedicated cache file.<br>Refer to the documentation for
+                    URLs of public sources.<br>A prefix can be prepended to
+                    server names in order to avoid collisions if different
+                    sources share the same for different servers. In that case,
+                    names listed in <b>server_names</b> must include the
+                    prefixes.<br>
+                    If the <b>urls</b> property is missing, cache files and
+                    valid signatures must already be present. This doesn't
+                    prevent these cache files from expiring after
+                    <b>refresh_delay</b> hours.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <target>sources.source</target>
+                <label>Sources</label>
+                <help><![CDATA[
+                    This list controls the sources and allows quick editing,
+                    and enabling/disabling of individual sources.
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <edit>true</edit>
+                <columns>
+                    <select>true</select>
+                    <column id="name" width="" size="" type="string" visible="true" data-formatter="">Name</column>
+                    <column id="urls" width="" size="" type="string" visible="true" data-formatter="">URLs</column>
+                    <column id="cache_file" width="" size="" type="string" visible="true" data-formatter="">Cache File</column>
+                    <column id="minisign_key" width="" size="" type="string" visible="true" data-formatter="">Minisign Key</column>
+                    <column id="refresh_delay" width="" size="" type="string" visible="true" data-formatter="">Refresh Delay</column>
+                    <column id="prefix" width="" size="" type="string" visible="true" data-formatter="">Prefix</column>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Edit Source</label>
+                    <field>
+                        <id>source.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            Enable or disable this source.
+                            ]]></help>
+                    </field>
+                    <field>
+                        <id>source.name</id>
+                        <label>Source Name</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Server to be used for this route (*) wildcard is
+                            supported to apply to multiple servers (or all).
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>source.urls</id>
+                        <label>Source URLs</label>
+                        <type>select_multiple</type>
+                        <style>tokenize</style>
+                        <allownew>true</allownew>
+                        <help><![CDATA[
+                            Download URLs for this source.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>source.cache_file</id>
+                        <label>Cache File Name</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            File name of the source file once downloaded.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>source.minisign_key</id>
+                        <label>Minisign Key</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            This is the minisign key for this source to verify
+                            integrity.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>source.refresh_delay</id>
+                        <label>Refresh Delay</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            The amount to delay between refresh attempts in minutes.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>source.prefix</id>
+                        <label>Source Prefix</label>
+                        <type>text</type>
+                        <hint>prefix-</hint>
+                        <help><![CDATA[
+                            Specify a prefix to use for resolvers from this
+                            source. This prefix will differentiate resolvers
+                            from this source from resolvers from other sources,
+                            as well as static resolvers.
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <field>
+                <type>button</type>
+                <api>/api/dnscryptproxy/settings/restoreSources</api>
+                <id>btn_restoreSourcesAct</id>
+                <label>Restore to Default Sources</label>
+                <error>Error occurred executing API</error>
+                <widget>dnscryptproxy</widget>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="static" description="Static">
+            <model>settings</model>
+            <field>
+                <target>static.entries</target>
+                <label>Static Servers</label>
+                <help><![CDATA[
+                    <b>[static].[static.'name']</b><br>
+                    These are manually configured servers.<br>
+                    Specified only by a name and an sdns stamp.<br>
+                    ]]>
+                </help>
+                <type>bootgrid</type>
+                <columns>
+                    <column id="name" width="" size="" type="string" visible="true" data-formatter="">Name</column>
+                    <column id="stamp" width="" size="" type="string" visible="true" data-formatter="">Stamp</column>
+                    <column id="comment" width="" size="" type="string" visible="true" data-formatter="">Comment</column>
+                    <select>true</select>
+                </columns>
+                <api>
+                    <search>/api/dnscryptproxy/settings/grid/search</search>
+                    <get>/api/dnscryptproxy/settings/grid/get</get>
+                    <set>/api/dnscryptproxy/settings/grid/set</set>
+                    <add>/api/dnscryptproxy/settings/grid/add</add>
+                    <del>/api/dnscryptproxy/settings/grid/del</del>
+                    <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                    <import>/api/dnscryptproxy/settings/import</import>
+                    <export>/api/dnscryptproxy/settings/export</export>
+                </api>
+                <row_count>7,14,20,50,100,-1</row_count>
+                <dialog>
+                    <label>Add/Edit Server</label>
+                    <field>
+                        <id>entries.enabled</id>
+                        <label>Enabled</label>
+                        <type>checkbox</type>
+                        <help><![CDATA[
+                            This will enable or disable the server stamp.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.name</id>
+                        <label>Name</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the name of the stamp.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.stamp</id>
+                        <label>SDNS Stamp</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            Set the SDNS stamp without sdns:// prefix.
+                            ]]>
+                        </help>
+                    </field>
+                    <field>
+                        <id>entries.comment</id>
+                        <label>Comment</label>
+                        <type>text</type>
+                        <help><![CDATA[
+                            A field for a comment.
+                            ]]>
+                        </help>
+                    </field>
+                </dialog>
+            </field>
+            <apply>true</apply>
+        </subtab>
+        <subtab id="broken_implementations" description="Broken Implementations">
+            <model>settings</model>
+            <field>
+                <label>Broken Implementations</label>
+                <type>header</type>
+                <help><![CDATA[
+                    Cisco servers currently cannot handle queries larger than
+                    1472 bytes, and don't truncate reponses larger than
+                    questions as expected by the DNSCrypt protocol.<br>
+                    This prevents large responses from being received over UDP
+                    and over relays.<br>
+                    <br>
+                    The `dnsdist` server software drops client queries larger
+                    than 1500 bytes.<br>
+                    They are aware of it and are working on a fix.<br>
+                    <br>
+                    The <b>fragments_blocked</b> setting enables workarounds to
+                    make non-relayed usage more reliable until the servers are
+                    fixed. These servers are known to have this issue:<br>
+                    cisco<br>
+                    cisco-ipv6<br>
+                    cisco-familyshield<br>
+                    cisco-familyshield-ipv6<br>
+                    quad9-dnscrypt-ip4-filter-alt<br>
+                    quad9-dnscrypt-ip4-filter-pri<br>
+                    quad9-dnscrypt-ip4-nofilter-alt<br>
+                    quad9-dnscrypt-ip4-nofilter-pri<br>
+                    quad9-dnscrypt-ip6-filter-alt<br>
+                    quad9-dnscrypt-ip6-filter-pri<br>
+                    quad9-dnscrypt-ip6-nofilter-alt<br>
+                    quad9-dnscrypt-ip6-nofilter-pri<br>
+                    cleanbrowsing-adult<br>
+                    cleanbrowsing-family-ipv6<br>
+                    cleanbrowsing-family<br>
+                    cleanbrowsing-security
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.broken_implementations.fragments_blocked</id>
+                <label>Fragments Blocked</label>
+                <type>select_multiple</type>
+                <style>selectpicker</style>
+                <allownew>false</allownew>
+                <help><![CDATA[
+                    <b>fragments_blocked</b><br>
+                    This setting enables workarounds to make non-relayed usage
+                    more reliable until the servers are fixed.
+                    ]]>
+                </help>
+            </field>
+            <apply>true</apply>
+        </subtab>
+    </tab>
+    <tab id="captive_portals" description="Captive Portals">
+        <model>settings</model>
+        <field>
+            <label>Captive Portals</label>
+            <type>header</type>
+            <help><![CDATA[
+                Some operating systems send queries to these names after a
+                network change, in order to check if connectivity beyond the
+                router is possible without going through a captive portal.<br>
+                This is a list of hard-coded IP addresses that will be returned
+                when queries for these names are received, even before the
+                operating system an interface as usable for reaching the
+                Internet.
+                ]]>
+            </help>
+        </field>
+        <field>
+            <id>settings.captive_portals.enabled</id>
+            <label>Enable Captive Portals</label>
+            <help><![CDATA[
+                Enable Captive Portals
+                ]]>
+            </help>
+            <type>checkbox</type>
+            <field_control>
+                <field checked="true" state="enabled">captive_portals_entries</field>
+                <field checked="false" state="disabled">captive_portals_entries</field>
+            </field_control>
+        </field>
+        <field>
+            <target>captive_portals.entries</target>
+            <label>Captive Portals</label>
+            <help><![CDATA[
+                Use this list to add captive portal entires.
+                ]]>
+            </help>
+            <type>bootgrid</type>
+            <columns>
+                <column id="domain_name" width="" size="" type="string" visible="true" data-formatter="">Domain Name</column>
+                <column id="ips" width="" size="" type="string" visible="true" data-formatter="">IPs</column>
+                <select>true</select>
+            </columns>
+            <row_count>7,14,20,50,100,-1</row_count>
+            <edit>true</edit>
+            <api>
+                <search>/api/dnscryptproxy/settings/grid/search</search>
+                <get>/api/dnscryptproxy/settings/grid/get</get>
+                <set>/api/dnscryptproxy/settings/grid/set</set>
+                <add>/api/dnscryptproxy/settings/grid/add</add>
+                <del>/api/dnscryptproxy/settings/grid/del</del>
+                <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                <import>/api/dnscryptproxy/settings/import</import>
+                <export>/api/dnscryptproxy/settings/export</export>
+            </api>
+            <dialog>
+                <label>Edit Portal</label>
+                <field>
+                    <id>entries.enabled</id>
+                    <label>Enabled</label>
+                    <type>checkbox</type>
+                    <help><![CDATA[
+                        This will enable or disable this captive portal.
+                        ]]>
+                    </help>
+                </field>
+                <field>
+                    <id>entries.domain_name</id>
+                    <label>Domain Name</label>
+                    <type>text</type>
+                    <help><![CDATA[
+                        The domain name of the captive portal.
+                        ]]>
+                    </help>
+                </field>
+                <field>
+                    <id>entries.ips</id>
+                    <label>IPs</label>
+                    <type>select_multiple</type>
+                    <style>tokenize</style>
+                    <allownew>yes</allownew>
+                    <help><![CDATA[
+                        IP addresses to return when quries for this captive
+                        portal domain name are received.<br>
+                        <b>Note that IPv6 addresses don't need to be specified
+                        within brackets, as there are no port numbers.</b>
+                        ]]>
+                    </help>
+                </field>
+            </dialog>
+        </field>
+        <apply>true</apply>
+    </tab>
+    <tab id="anonymized_dns" description="Anonymized DNS">
+        <model>settings</model>
+        <field>
+            <label>Anonymized DNS</label>
+            <type>header</type>
+            <help><![CDATA[
+                Routes are indirect ways to reach DNSCrypt servers.<br>
+                A route maps a server name (<b>server_name</b>) to one or more
+                relays that will be used to connect to that server.<br>
+                A relay can be specified as a DNS Stamp (either a relay stamp,
+                or a DNSCrypt stamp), an IP:port, a hostname:port, or a server
+                name.<br>
+                Review the list of available relays at the bottom of this page,
+                and for each server you want to use, define the relays you want
+                connections to go through in the Routes section.
+                ]]>
+            </help>
+        </field>
+        <field>
+            <id>settings.anonymized_dns.skip_incompatible</id>
+            <label>Skip Incompatible Servers</label>
+            <type>checkbox</type>
+            <help><![CDATA[
+                <b>[anonymized_dns].skip_incompatible</b><br>
+                With this checked, it will force skipping incompatiable servers,
+                instead of failing over to direct requests (default is off for
+                reliability reasons).
+                ]]>
+            </help>
+        </field>
+        <field>
+            <id>settings.anonymized_dns.direct_cert_fallback</id>
+            <label>Direct Certificate Fallback</label>
+            <type>checkbox</type>
+            <help><![CDATA[
+                <b>[anonymized_dns].direct_cert_fallback</b><br>
+                If public server certificates for a non-conformant server
+                cannot be retrieved via a relay, try getting them directly.
+                Actual queries will then always go through relays.
+                ]]>
+            </help>
+        </field>
+        <field>
+            <target>anonymized_dns.routes</target>
+            <label>Routes</label>
+            <help><![CDATA[
+                <b>[anonymized_dns].routes</b><br>
+                Routes are indirect ways to reach DNSCrypt servers.<br><br>A
+                route specifies which relays to use when attempting to reach
+                any specified server.<br>
+                The asterisk (*) wildcard is supported as <b>Server Name</b>
+                and will match all servers.<br>
+                The relays listed in the table at the bottom of the page are
+                made available in the via field when defining routes.
+                ]]>
+            </help>
+            <type>bootgrid</type>
+            <columns>
+                <column id="server_name" width="" size="" type="string" visible="true" data-formatter="">Server Name</column>
+                <column id="via" width="" size="" type="string" visible="true" data-formatter="">Via</column>
+                <select>true</select>
+            </columns>
+            <row_count>7,14,20,50,100,-1</row_count>
+            <edit>true</edit>
+            <api>
+                <search>/api/dnscryptproxy/settings/grid/search</search>
+                <get>/api/dnscryptproxy/settings/grid/get</get>
+                <set>/api/dnscryptproxy/settings/grid/set</set>
+                <add>/api/dnscryptproxy/settings/grid/add</add>
+                <del>/api/dnscryptproxy/settings/grid/del</del>
+                <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+                <import>/api/dnscryptproxy/settings/import</import>
+                <export>/api/dnscryptproxy/settings/export</export>
+            </api>
+            <dialog>
+                <label>Edit Route</label>
+                <field>
+                    <id>routes.enabled</id>
+                    <label>Enabled</label>
+                    <type>checkbox</type>
+                    <help><![CDATA[
+                        This will enable or disable this route.
+                        ]]>
+                    </help>
+                </field>
+                <field>
+                    <id>routes.server_name</id>
+                    <label>Server Name</label>
+                    <type>dropdown</type>
+                    <help><![CDATA[
+                        Server to be used for this route. Can be set to "*" to
+                        define a default route, but this is not recommended. If
+                        you do so, keep <br>server_names</br> short and distinct
+                        from relays.
+                        ]]>
+                    </help>
+                </field>
+                <field>
+                    <id>routes.via</id>
+                    <label>via</label>
+                    <type>select_multiple</type>
+                    <style>selectpicker</style>
+                    <allownew>false</allownew>
+                    <help><![CDATA[
+                        These are the relays to be used for this server.
+                        ]]>
+                    </help>
+                </field>
+            </dialog>
+        </field>
+        <field>
+            <mode>configd_cmd</mode>
+            <target>get-relays</target>
+            <label>Available Relays</label>
+            <help><![CDATA[
+                This is a list of detected relays dynamically populated by
+                evaulating the currently configured <b>sources</b>.<br>
+                These servers are made availble in the via field when adding an
+                anonymized DNS route above.<br>This list is not directly used
+                in the configuration of dnscrypt-proxy.
+                ]]>
+            </help>
+            <type>bootgrid</type>
+            <columns>
+                <column id="name" width="" size="" type="string" visible="true" data-formatter="">Name</column>
+                <column id="description" width="" size="" type="string" visible="true" data-formatter="">Description</column>
+                <select>false</select>
+            </columns>
+            <api>
+                <search>/api/dnscryptproxy/settings/grid/search</search>
+            </api>
+            <row_count>7,14,20,50,100,-1</row_count>
+        </field>
+        <apply>true</apply>
+    </tab>
+    <tab id="dns64" description="DNS64">
+        <model>settings</model>
+        <field>
+            <label>DNS64</label>
+            <type>header</type>
+            <help><![CDATA[
+                DNS64 is a mechanism for synthesizing AAAA records from A
+                records. It is used with an IPv6/IPv4 translator to enable
+                client-server communication between an IPv6-only client and
+                an IPv4-only server, without requiring any changes to either
+                the IPv6 or the IPv4 node, for the class of applications that
+                work through NATs.<br>
+                <br>
+                There are two options to synthesize such records:<br>
+                <br>
+                Option 1: Using a set of static IPv6 prefixes;<br>
+                Option 2: By discovering the IPv6 prefix from DNS64-enabled
+                resolver.<br>
+                <br>
+                If both options are configured - only static prefixes are used.
+                (Ref. RFC6147, RFC6052, RFC7050)<br>
+                *** Do not enable unless you know what DNS64 is and why you need
+                it, or else you won't be able to connect to anything at all. ***
+                ]]>
+            </help>
+        </field>
+        <field>
+            <id>settings.dns64.enabled</id>
+            <label>Enable DNS64</label>
+            <help><![CDATA[
+                Select this to enable the DNS64 settings.<br>
+                <br>
+                Do not enable unless you know what DNS64 is and why you need it,
+                or else you won't be able to connect to anything at all.
+                ]]>
+            </help>
+            <type>checkbox</type>
+            <field_control>
+                <field checked="true" state="enabled">settings.dns64.prefixes</field>
+                <field checked="true" state="enabled">settings.dns64.resolvers</field>
+                <field checked="false" state="disabled">settings.dns64.prefixes</field>
+                <field checked="false" state="disabled">settings.dns64.resolvers</field>
+            </field_control>
+        </field>
+        <field>
+            <target>dns64.prefixes</target>
+            <label>DNS64 Prefixes</label>
+            <help><![CDATA[
+                Use a set of static IPv6 prefix(es) as Pref64::/n CIDRs.
+                ]]>
+            </help>
+            <type>bootgrid</type>
+            <columns>
+                <select>true</select>
+                <column id="prefix" width="" size="" type="string" visible="true" data-formatter="">Prefix</column>
+            </columns>
+            <api>
+                <search>/api/dnscryptproxy/settings/grid/search</search>
+                <get>/api/dnscryptproxy/settings/grid/get</get>
+                <set>/api/dnscryptproxy/settings/grid/set</set>
+                <add>/api/dnscryptproxy/settings/grid/add</add>
+                <del>/api/dnscryptproxy/settings/grid/del</del>
+                <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+            </api>
+            <row_count>7,14,20,50,100,-1</row_count>
+            <dialog>
+                <label>Edit Prefix</label>
+                <field>
+                    <id>prefixes.enabled</id>
+                    <label>Enabled</label>
+                    <type>checkbox</type>
+                    <help><![CDATA[
+                        This will enable or disable this prefix.
+                        ]]>
+                    </help>
+                </field>
+                <field>
+                    <id>prefixes.prefix</id>
+                    <label>Prefix</label>
+                    <type>text</type>
+                    <help><![CDATA[
+                        Static prefix(es) as Pref64::/n CIDRs.
+                        ]]>
+                    </help>
+                </field>
+            </dialog>
+        </field>
+        <field>
+            <target>dns64.resolvers</target>
+            <label>DNS64 Resolvers</label>
+            <help><![CDATA[
+                DNS64-enabled resolver(s) to discover Pref64::/n CIDRs.<br>
+                These resolvers are used to query for Well-Known IPv4-only Name
+                (WKN) "ipv4only.arpa." to discover only.<br>Set with your ISP's
+                resolvers in case of custom prefixes (other than Well-Known
+                Prefix 64:ff9b::/96).<br>
+                IMPORTANT: Default resolvers listed below support Well-Known
+                Prefix 64:ff9b::/96 only.<br>
+                <pre>
+
+                [2606:4700:4700::64]:53<br>
+                [2001:4860:4860::64]:53</pre>
+
+                ]]>
+            </help>
+            <type>bootgrid</type>
+            <columns>
+                <select>true</select>
+                <column id="resolver" width="" size="" type="string" visible="true" data-formatter="">Resolver</column>
+            </columns>
+            <api>
+                <search>/api/dnscryptproxy/settings/grid/search</search>
+                <get>/api/dnscryptproxy/settings/grid/get</get>
+                <set>/api/dnscryptproxy/settings/grid/set</set>
+                <add>/api/dnscryptproxy/settings/grid/add</add>
+                <del>/api/dnscryptproxy/settings/grid/del</del>
+                <toggle>/api/dnscryptproxy/settings/grid/toggle</toggle>
+            </api>
+            <row_count>7,14,20,50,100,-1</row_count>
+            <dialog>
+                <label>Edit Resolver</label>
+                <field>
+                    <id>resolvers.enabled</id>
+                    <label>Enabled</label>
+                    <type>checkbox</type>
+                    <help><![CDATA[
+                        This will enable or disable this resolver.
+                        ]]>
+                    </help>
+                </field>
+                <field>
+                    <id>resolvers.resolver</id>
+                    <label>Resolver</label>
+                    <type>text</type>
+                    <help><![CDATA[
+                        DNS64-enabled resolver(s) to discover Pref64::/n CIDRs.
+                        ]]>
+                    </help>
+                </field>
+            </dialog>
+        </field>
+        <apply>true</apply>
+    </tab>
+    <activetab>basic_settings</activetab>
+</form>

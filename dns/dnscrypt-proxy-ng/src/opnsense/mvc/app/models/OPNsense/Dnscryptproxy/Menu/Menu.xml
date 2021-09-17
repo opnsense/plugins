@@ -1,0 +1,10 @@
+<menu>
+    <Services>
+        <!-- Using capitals since menu is ASCII sorted, and puts lower case alphas after uppers. -->
+        <DNSCrypt-Proxy VisibleName="DNSCrypt Proxy" cssClass="fa fa-lock fa-fw">
+            <Settings url="/ui/dnscryptproxy/settings" order="10"/>
+            <Diagnostics url="/ui/dnscryptproxy/diagnostics" order="15" />
+            <Logs url="/ui/dnscryptproxy/logs" order="19" />
+        </DNSCrypt-Proxy>
+    </Services>
+</menu>

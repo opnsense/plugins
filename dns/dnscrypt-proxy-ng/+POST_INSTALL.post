@@ -1,0 +1,28 @@
+echo "Running POST_INSTALL script"
+export PLUGIN_USER=_dnscrypt-proxy
+export SCRIPTS_DIR=/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy
+###
+echo "Setting script modes..."
+for script_file in get_relays.py get_resolvers.py import_doh_client_certs.py import_list.py;do
+    echo "Setting +x on $SCRIPTS_DIR/$script_file"
+    chmod +x ${SCRIPTS_DIR}/$script_file
+done
+###
+echo "Making directories and setting permissions..."
+if [ ! -d "/var/log/dnscrypt-proxy" ]; then
+    mkdir -vp /var/log/dnscrypt-proxy
+fi
+if [ ! -d "/usr/local/etc/dnscrypt-proxy" ]; then
+    mkdir -vp /usr/local/etc/dnscrypt-proxy
+fi
+echo -n "Creating symlink for log directory..."
+if [ ! -e "/var/log/dnscryptProxy" ];then
+    ln -s dnscrypt-proxy /var/log/dnscryptProxy
+fi
+echo "Done."
+
+# Set ownership on the various directories. Assume that they exist.
+echo "Set ownership for /usr/local/etc/dnscrypt-proxy..."
+chown -vR ${PLUGIN_USER}:${PLUGIN_USER} /usr/local/etc/dnscrypt-proxy
+echo "Set ownership for /var/log/dnscrypt-proxy..."
+chown -vR ${PLUGIN_USER}:${PLUGIN_USER} /var/log/dnscrypt-proxy

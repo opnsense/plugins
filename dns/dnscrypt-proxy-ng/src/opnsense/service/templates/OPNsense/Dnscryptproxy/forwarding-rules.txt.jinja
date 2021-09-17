@@ -1,0 +1,13 @@
+{#- /usr/local/etc/dnscrypt-proxy/forward-rules.txt -#}
+{%  set plugin_name = 'dnscrypt-proxy' %}
+{%  if OPNsense[plugin_name]['enabled'] == '1' %}
+{%      if OPNsense[plugin_name]['forwarding_enabled'] == '1' %}
+{%          if OPNsense[plugin_name]['forwards'] is defined %}
+{%              for entry in helpers.toList('OPNsense.dnscrypt-proxy.forwards.forward') if entry['enabled'] == '1' %}
+{% set schedule = helpers.getUUID(entry['domain']) %}
+{{ entry['domain'] }}	{{ entry['dns_server'] }}{% if entry['comment'] is defined %}	# {{ entry['comment'] }}{% endif %}
+
+{%              endfor %}
+{%          endif %}
+{%      endif %}
+{%  endif %}

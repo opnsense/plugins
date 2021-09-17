@@ -1,0 +1,9 @@
+<acl>
+   <page-services-dnsbl>
+      <name>Services: DNSBL</name>
+      <patterns>
+         <pattern>ui/dnsbl/*</pattern>
+         <pattern>api/dnsbl/*</pattern>
+      </patterns>
+  </page-services-dnsbl>
+</acl>

@@ -1,0 +1,15 @@
+ Manage dnscrypt-proxy configuration with OPNsense.
+
+Features:
+ * All settings represented in the UI
+ * Enable/disable complex/advanced features
+ * Upload/Download of allowed/blocked lists
+ * External allowed names/blocked names support
+ * Importing/Exporting of allowed/blocked lists and some others
+ * Diagnostics tools
+ * All logs supported
+ * Resolver list, displays all currently available resolvers.
+ * Anonymized DNS Relay list, displays all currently available relays.
+
+DNSCrypt project home page: https://dnscrypt.info
+DNSCrypt Proxy project source: https://github.com/DNSCrypt/dnscrypt-proxy

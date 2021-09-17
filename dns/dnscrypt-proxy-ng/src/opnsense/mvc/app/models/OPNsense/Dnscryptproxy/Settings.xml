@@ -1,0 +1,1252 @@
+<model>
+    <mount>//OPNsense/dnscrypt-proxy</mount>
+    <version>2.0.45.1</version>
+    <items>
+        <first_time_setup type="BooleanField">
+        </first_time_setup>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </enabled>
+        <server_selection_method type="BooleanField">
+            <default>0</default> <!-- 0 = Automatic, 1 = Manual -->
+            <required>Y</required>
+            <ValidationMessage>A server selection method must be selected.</ValidationMessage>
+        </server_selection_method>
+        <server_names type="JsonKeyValueStoreField">
+            <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
+            <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
+            <ConfigdPopulateTTL>0</ConfigdPopulateTTL>
+            <SortByValue>N</SortByValue>
+            <Multiple>Y</Multiple>
+        </server_names>
+        <listen_addresses type="CSVListField">
+            <default>127.0.0.1:5353,[::1]:5353</default>
+            <required>Y</required>
+            <Multiple>Y</Multiple>
+        </listen_addresses>
+        <allowprivileged type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </allowprivileged>
+        <max_clients type="IntegerField">
+            <default>250</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </max_clients>
+        <ipv4_servers type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </ipv4_servers>
+        <ipv6_servers type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </ipv6_servers>
+        <dnscrypt_servers type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </dnscrypt_servers>
+        <doh_servers type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </doh_servers>
+        <require_dnssec type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </require_dnssec>
+        <require_nolog type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </require_nolog>
+        <require_nofilter type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </require_nofilter>
+        <disabled_server_names type="JsonKeyValueStoreField">
+            <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
+            <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
+            <ConfigdPopulateTTL>0</ConfigdPopulateTTL>
+            <SortByValue>N</SortByValue>
+            <Multiple>Y</Multiple>
+        </disabled_server_names>
+        <force_tcp type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </force_tcp>
+        <proxy type="TextField">
+        </proxy>
+        <http_proxy type="TextField">
+        </http_proxy>
+        <timeout type="IntegerField">
+            <default>5000</default>
+            <required>Y</required>
+            <MinimumValue>100</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a value between 100 and 10000.</ValidationMessage>
+        </timeout>
+        <keepalive type="IntegerField">
+            <default>30</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>600</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 600.</ValidationMessage>
+        </keepalive>
+        <dns_client_subnet type="CSVListField">
+        </dns_client_subnet>
+        <blocked_query_response type="TextField">
+        </blocked_query_response>
+        <lb_strategy type="TextField">
+        </lb_strategy>
+        <lb_estimator type="BooleanField">
+        </lb_estimator>
+        <log_level type="OptionField">
+            <default>2</default>
+            <required>Y</required>
+            <Multiple>N</Multiple>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>6</MaximumValue>
+            <OptionValues>
+                <option value="0">Debug (Very verbose)</option>
+                <option value="1">Info</option>
+                <option value="2">Notice (Default)</option>
+                <option value="3">Warning</option>
+                <option value="4">Error</option>
+                <option value="5">Critcal</option>
+                <option value="6">Fatal (Least verbose)</option>
+            </OptionValues>
+            <ValidationMessage>Only integers 0 to 6 are valid.</ValidationMessage>
+        </log_level>
+        <log_file_latest type="BooleanField">
+            <default>1</default>
+        </log_file_latest>
+        <query_log>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+            <ignored_qtypes type="CSVListField">
+            </ignored_qtypes>
+        </query_log>
+        <nx_log>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+        </nx_log>
+        <cert_refresh_delay type="IntegerField">
+            <default>240</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>3600</MaximumValue>
+            <ValidationMessage>Only integers 1 to 3600 are valid.</ValidationMessage>
+        </cert_refresh_delay>
+        <dnscrypt_ephemeral_keys type="BooleanField">
+            <default>0</default>
+        </dnscrypt_ephemeral_keys>
+        <tls_disable_session_tickets type="BooleanField">
+            <default>0</default>
+        </tls_disable_session_tickets>
+        <tls_cipher_suite type="OptionField">
+            <default></default>
+            <OptionValues>
+                <option value="49199">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</option>
+                <option value="49195">TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256</option>
+                <option value="52392">TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305</option>
+                <option value="52393">TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305</option>
+                <option value="4865">TLS_AES_128_GCM_SHA256</option>
+                <option value="4867">TLS_CHACHA20_POLY1305_SHA256</option>
+            </OptionValues>
+            <Multiple>Y</Multiple><!-- Multiple must be included here or  "none" will appear as a selectable option even when "select_multiple" is configured in the controller xml. -->
+        </tls_cipher_suite>
+        <bootstrap_resolvers type="CSVListField">
+            <default>9.9.9.9:53,8.8.8.8:53</default>
+            <required>Y</required>
+            <Multiple>Y</Multiple>
+        </bootstrap_resolvers>
+        <ignore_system_dns type="BooleanField">
+            <default>1</default>
+        </ignore_system_dns>
+        <netprobe_timeout type="IntegerField">
+            <default>60</default>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </netprobe_timeout>
+        <netprobe_address type="TextField">
+            <default>9.9.9.9:53</default>
+            <required>Y</required>
+        </netprobe_address>
+        <offline_mode type="BooleanField">
+            <default>0</default>
+        </offline_mode>
+        <query_meta type="CSVListField">
+            <Multiple>Y</Multiple>
+        </query_meta>
+        <log_files_max_size type="IntegerField">
+            <default>10</default>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </log_files_max_size>
+        <log_files_max_age type="IntegerField">
+            <default>7</default>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </log_files_max_age>
+        <log_files_max_backups type="IntegerField">
+            <default>1</default>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </log_files_max_backups>
+        <block_ipv6 type="BooleanField">
+            <default>0</default>
+            <required>Y</required>
+        </block_ipv6>
+        <block_unqualified type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </block_unqualified>
+        <block_undelegated type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </block_undelegated>
+        <reject_ttl type="IntegerField">
+            <default>600</default>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>10000</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </reject_ttl>
+        <cache type="BooleanField">
+            <default>1</default>
+            <required>Y</required>
+        </cache>
+        <cache_size type="IntegerField">
+            <default>512</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>20480</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 20480.</ValidationMessage>
+        </cache_size>
+        <cache_min_ttl type="IntegerField">
+            <default>600</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>3600</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 3600.</ValidationMessage>
+        </cache_min_ttl>
+        <cache_max_ttl type="IntegerField">
+            <default>86400</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 86400.</ValidationMessage>
+        </cache_max_ttl>
+        <cache_neg_min_ttl type="IntegerField">
+            <default>60</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>3600</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 3600.</ValidationMessage>
+        </cache_neg_min_ttl>
+        <cache_neg_max_ttl type="IntegerField">
+            <default>600</default>
+            <required>Y</required>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+            <ValidationMessage>Choose a number between 1 and 86400.</ValidationMessage>
+        </cache_neg_max_ttl>
+        <captive_portals>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+            <entries type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>y</required>
+                </enabled>
+                <domain_name type="HostnameField">
+                    <required>y</required>
+                </domain_name>
+                <ips type="CSVListField">
+                    <required>y</required>
+                </ips>
+            </entries>
+        </captive_portals>
+        <local_doh>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+            <listen_addresses type="CSVListField">
+                <Multiple>Y</Multiple>
+            </listen_addresses>
+            <path type="TextField">
+            </path>
+            <cert type="TextField">
+            </cert>
+            <cert_key type="TextField">
+            </cert_key>
+        </local_doh>
+        <sources>
+            <source type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <name type="TextField">
+                    <required>Y</required>
+                </name>
+                <urls type="CSVListField">
+                    <required>Y</required>
+                </urls>
+                <cache_file type="TextField">
+                    <required>Y</required>
+                </cache_file>
+                <minisign_key type="TextField">
+                    <required>Y</required>
+                </minisign_key>
+                <refresh_delay type="IntegerField">
+                </refresh_delay>
+                <prefix type="TextField">
+                </prefix>
+            </source>
+        </sources>
+        <resolvers>
+            <resolver type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <name type="TextField">
+                    <required>Y</required>
+                </name>
+                <type type="TextField">
+                    <required>Y</required>
+                </type>
+                <stamp type="TextField">
+                    <required>Y</required>
+                </stamp>
+            </resolver>
+        </resolvers>
+        <blocked_names_enabled type="BooleanField">
+            <default>0</default>
+        </blocked_names_enabled>
+        <blocked_names_type type="TextField">
+            <default>internal</default>
+            <required>Y</required>
+        </blocked_names_type>
+        <blocked_names_file_external type="TextField">
+        </blocked_names_file_external>
+        <blocked_names_file_manual type="TextField">
+            <default></default>
+        </blocked_names_file_manual>
+        <blocked_names_logging type="BooleanField">
+            <default>0</default>
+        </blocked_names_logging>
+        <blocked_names_internal>
+            <entries type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <expression type="TextField">
+                    <required>Y</required>
+                </expression>
+                <schedule type="ModelRelationField">
+                    <Model>
+                        <container> <!-- this element name is arbitrary, name is not important -->
+                            <!-- ============================================================
+                            THIS IS ACTUALLY A CLASS REFERNCE NOT A "NODE/MODEL" REFERENCE
+                            ============================================================ -->
+                            <!-- <source>OPNsense.Dnscryptproxy.Settings</source> -->
+                            <!-- The dots in source get replaced with slashes anyway. -->
+                            <!-- This is a PHP Class name -->
+                            <source>OPNsense\Dnscryptproxy\Settings</source>
+                            <!-- Node path within the Class's model. -->
+                            <items>schedules.schedule</items>
+                            <!-- This references a key name and creates an internal OptionList array, containing the uuid=>key name pairs. -->
+                            <display>name</display>
+                        </container> <!-- this element name is arbitrary, not used -->
+                    </Model>
+                    <BlankDesc>--</BlankDesc>
+                    <ValidationMessage>Please select a schedule.</ValidationMessage>
+                </schedule>
+                <comment type="TextField">
+                </comment>
+            </entries>
+        </blocked_names_internal>
+        <blocked_ips_enabled type="BooleanField">
+            <default>0</default>
+        </blocked_ips_enabled>
+        <blocked_ips_type type="TextField">
+            <default>internal</default>
+            <required>Y</required>
+        </blocked_ips_type>
+        <blocked_ips_file_external type="TextField">
+        </blocked_ips_file_external>
+        <blocked_ips_file_manual type="TextField">
+            <default></default>
+        </blocked_ips_file_manual>
+        <blocked_ips_logging type="BooleanField">
+            <default>0</default>
+        </blocked_ips_logging>
+        <blocked_ips_internal>
+            <entries type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <expression type="TextField">
+                    <required>Y</required>
+                </expression>
+                <comment type="TextField">
+                </comment>
+            </entries>
+        </blocked_ips_internal>
+        <allowed_names_enabled type="BooleanField">
+            <default>0</default>
+        </allowed_names_enabled>
+        <allowed_names_type type="TextField">
+            <default>internal</default>
+            <required>Y</required>
+        </allowed_names_type>
+        <allowed_names_file_manual type="TextField">
+            <default></default>
+        </allowed_names_file_manual>
+        <allowed_names_logging type="BooleanField">
+            <default>0</default>
+        </allowed_names_logging>
+        <allowed_names_internal>
+            <entries type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <expression type="TextField">
+                    <required>Y</required>
+                </expression>
+                <schedule type="ModelRelationField">
+                    <model>
+                        <container> <!-- this element name is arbitrary, name is not important -->
+                            <!-- ============================================================
+                            THIS IS ACTUALLY A CLASS REFERNCE NOT A "NODE/MODEL" REFERENCE
+                            ============================================================ -->
+                            <!-- <source>OPNsense.Dnscryptproxy.Settings</source> -->
+                            <!-- The dots in source get replaced with slashes anyway. -->
+                            <!-- This is a PHP Class name -->
+                            <source>OPNsense\Dnscryptproxy\Settings</source>
+                            <!-- Node path within the Class's model. -->
+                            <items>schedules.schedule</items>
+                            <!-- This references a key name and creates an internal
+                            OptionList array, containing the uuid=>key name pairs. -->
+                            <display>name</display>
+                        </container> <!-- this element name is arbitrary, not used -->
+                    </model>
+                    <BlankDesc></BlankDesc>
+                    <ValidationMessage>Please select a schedule.</ValidationMessage>
+                </schedule>
+                <comment type="TextField">
+                </comment>
+            </entries>
+        </allowed_names_internal>
+        <allowed_ips_enabled type="BooleanField">
+            <default>0</default>
+        </allowed_ips_enabled>
+        <allowed_ips_type type="TextField">
+            <default>internal</default>
+            <required>Y</required>
+        </allowed_ips_type>
+        <allowed_ips_file_manual type="TextField">
+            <default></default>
+        </allowed_ips_file_manual>
+        <allowed_ips_logging type="BooleanField">
+            <default>0</default>
+        </allowed_ips_logging>
+        <allowed_ips_internal>
+            <entries type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <expression type="TextField">
+                    <required>Y</required>
+                </expression>
+                <comment type="TextField">
+                </comment>
+            </entries>
+        </allowed_ips_internal>
+        <cloaking_enabled type="BooleanField">
+            <default>0</default>
+        </cloaking_enabled>
+        <cloaking_type type="TextField">
+            <default>internal</default>
+            <required>Y</required>
+        </cloaking_type>
+        <cloaking_file_manual type="TextField">
+            <default></default>
+        </cloaking_file_manual>
+        <cloak_ttl type="IntegerField">
+           <default>600</default>
+           <required>N</required>
+           <MinimumValue>0</MinimumValue>
+           <MaximumValue>10000</MaximumValue>
+           <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
+        </cloak_ttl>
+        <cloaking_internal>
+            <cloak type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <pattern type="TextField">
+                    <required>Y</required>
+                </pattern>
+                <destination type="HostnameField">
+                    <required>Y</required>
+                </destination>
+                <comment type="TextField">
+                </comment>
+            </cloak>
+        </cloaking_internal>
+        <forwarding_enabled type="BooleanField">
+            <default>0</default>
+        </forwarding_enabled>
+        <forwards>
+            <forward type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <domain type="HostnameField">
+                    <required>Y</required>
+                </domain>
+                <dns_server type="HostnameField">
+                    <required>Y</required>
+                </dns_server>
+                <comment type="TextField">
+                </comment>
+            </forward>
+        </forwards>
+        <static>
+            <entries type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <name type="TextField">
+                    <required>Y</required>
+                </name>
+                <stamp type="TextField">
+                    <required>Y</required>
+                </stamp>
+                <comment type="TextField">
+                </comment>
+            </entries>
+        </static>
+        <dns64>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+            <prefixes type="ArrayField">
+                    <enabled type="BooleanField">
+                        <default>1</default>
+                        <required>Y</required>
+                    </enabled>
+                    <prefix type="TextField">
+                        <required>Y</required>
+                    </prefix>
+            </prefixes>
+            <resolvers type="ArrayField">
+                    <enabled type="BooleanField">
+                        <default>1</default>
+                        <required>Y</required>
+                    </enabled>
+                    <resolver type="TextField">
+                        <required>Y</required>
+                    </resolver>
+            </resolvers>
+        </dns64>
+        <schedules>
+            <schedule type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <name type="TextField">
+                    <required>Y</required>
+                </name>
+                <!-- Monday -->
+                <mon_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </mon_start_hour>
+                <mon_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </mon_start_min>
+                <mon_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </mon_stop_hour>
+                <mon_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </mon_stop_min>
+                <!-- Tuesday -->
+                <tue_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </tue_start_hour>
+                <tue_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </tue_start_min>
+                <tue_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </tue_stop_hour>
+                <tue_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </tue_stop_min>
+                <!-- Wednesday -->
+                <wed_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </wed_start_hour>
+                <wed_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </wed_start_min>
+                <wed_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </wed_stop_hour>
+                <wed_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </wed_stop_min>
+                <!-- Thursday -->
+                <thu_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </thu_start_hour>
+                <thu_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </thu_start_min>
+                <thu_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </thu_stop_hour>
+                <thu_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </thu_stop_min>
+                <!-- Friday -->
+                <fri_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </fri_start_hour>
+                <fri_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </fri_start_min>
+                <fri_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </fri_stop_hour>
+                <fri_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </fri_stop_min>
+                <!-- Saturday -->
+                <sat_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sat_start_hour>
+                <sat_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sat_start_min>
+                <sat_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sat_stop_hour>
+                <sat_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sat_stop_min>
+                <!-- Sunday -->
+                <sun_start_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sun_start_hour>
+                <sun_start_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sun_start_min>
+                <sun_stop_hour type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <OptionValues>
+                        <option value="000">0</option>
+                        <option value="001">1</option>
+                        <option value="002">2</option>
+                        <option value="003">3</option>
+                        <option value="004">4</option>
+                        <option value="005">5</option>
+                        <option value="006">6</option>
+                        <option value="007">7</option>
+                        <option value="008">8</option>
+                        <option value="009">9</option>
+                        <option value="010">10</option>
+                        <option value="011">11</option>
+                        <option value="012">12</option>
+                        <option value="013">13</option>
+                        <option value="014">14</option>
+                        <option value="015">15</option>
+                        <option value="016">16</option>
+                        <option value="017">17</option>
+                        <option value="018">18</option>
+                        <option value="019">19</option>
+                        <option value="020">20</option>
+                        <option value="021">21</option>
+                        <option value="022">22</option>
+                        <option value="023">23</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sun_stop_hour>
+                <sun_stop_min type="OptionField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>59</MaximumValue>
+                    <OptionValues>
+                        <option value="000">00</option>
+                        <option value="015">15</option>
+                        <option value="030">30</option>
+                        <option value="045">45</option>
+                        <option value="059">59</option>
+                    </OptionValues>
+                    <BlankDesc>--</BlankDesc>
+                </sun_stop_min>
+            </schedule>
+        </schedules>
+        <broken_implementations>
+            <fragments_blocked type="JsonKeyValueStoreField">
+                <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
+                <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
+                <ConfigdPopulateTTL>0</ConfigdPopulateTTL>
+                <SortByValue>N</SortByValue>
+                <Multiple>Y</Multiple>
+            </fragments_blocked>
+        </broken_implementations>
+        <doh_client_x509_auth>
+            <creds type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <required>Y</required>
+                </enabled>
+                <server_name type="JsonKeyValueStoreField">
+                    <ConfigdPopulateAct>dnscryptproxy get-resolvers names</ConfigdPopulateAct>
+                    <SourceFile>/tmp/dnscrypt-proxy_resolvers_names.json</SourceFile>
+                    <SortByValue>N</SortByValue>
+                    <required>Y</required>
+                    <Multiple>N</Multiple>
+                </server_name>
+                <client_cert  type="TextField">
+                    <required>Y</required>
+                </client_cert>
+                <client_cert_key type="TextField">
+                    <required>Y</required>
+                </client_cert_key>
+                <root_ca type="TextField">
+                </root_ca>
+            </creds>
+        </doh_client_x509_auth>
+        <anonymized_dns>
+            <skip_incompatible type="BooleanField">
+                <default>0</default>
+            </skip_incompatible>
+            <direct_cert_fallback type="BooleanField">
+                <default>0</default>
+            </direct_cert_fallback>
+            <routes type="ArrayField">
+                    <enabled type="BooleanField">
+                        <default>1</default>
+                        <required>Y</required>
+                    </enabled>
+                    <server_name type="JsonKeyValueStoreField">
+                        <ConfigdPopulateAct>dnscryptproxy get-resolvers route</ConfigdPopulateAct>
+                        <SourceFile>/tmp/dnscrypt-proxy_resolvers_route.json</SourceFile>
+                        <SortByValue>N</SortByValue>
+                        <required>Y</required>
+                        <Multiple>N</Multiple>
+                    </server_name>
+                    <via type="JsonKeyValueStoreField">
+                        <ConfigdPopulateAct>dnscryptproxy get-relays names</ConfigdPopulateAct>
+                        <ConfigdPopulateTTL>30</ConfigdPopulateTTL>
+                        <SourceFile>/tmp/dnscrypt-proxy_relays_names.json</SourceFile>
+                        <SortByValue>N</SortByValue>
+                        <required>Y</required>
+                        <Multiple>Y</Multiple>
+                    </via>
+            </routes>
+        </anonymized_dns>
+    </items>
+</model>

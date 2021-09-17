@@ -1,0 +1,11 @@
+dnscrypt_proxy.jinja:/etc/rc.conf.d/dnscrypt_proxy
+dnscrypt-proxy.toml.jinja:/usr/local/etc/dnscrypt-proxy/dnscrypt-proxy.toml:/tmp/dnscryptproxy_*
+cloaking-internal.txt.jinja:/usr/local/etc/dnscrypt-proxy/cloaking-internal.txt
+forwarding-rules.txt.jinja:/usr/local/etc/dnscrypt-proxy/forwarding-rules.txt
+captive-portals.txt.jinja:/usr/local/etc/dnscrypt-proxy/captive-portals.txt
+local_doh-cert.pem.jinja:/usr/local/etc/dnscrypt-proxy/local_doh-cert.pem
+local_doh-cert_key.pem.jinja:/usr/local/etc/dnscrypt-proxy/local_doh-cert_key.pem
+allowed-names-internal.txt.jinja:/usr/local/etc/dnscrypt-proxy/allowed-names-internal.txt
+allowed-ips-internal.txt.jinja:/usr/local/etc/dnscrypt-proxy/allowed-ips-internal.txt
+blocked-names-internal.txt.jinja:/usr/local/etc/dnscrypt-proxy/blocked-names-internal.txt
+blocked-ips-internal.txt.jinja:/usr/local/etc/dnscrypt-proxy/blocked-ips-internal.txt

@@ -1,0 +1,15 @@
+{#- /usr/local/etc/dnscrypt-proxy/allowed-names-internal.txt -#}
+{%  set plugin_name = 'dnscrypt-proxy' %}
+{%  if OPNsense[plugin_name]['enabled'] == '1' %}
+{%      if OPNsense[plugin_name]['allowed_names_enabled'] == '1' %}
+{%          if OPNsense[plugin_name]['allowed_names_type'] == 'internal' %}
+{%              if OPNsense[plugin_name]['allowed_names_internal'] is defined %}
+{%                  for entry in helpers.toList('OPNsense.dnscrypt-proxy.allowed_names_internal.entries') if entry['enabled'] == '1' %}
+{% set schedule = helpers.getUUID(entry['schedule']) %}
+{{ entry['expression'] }}{% if schedule['name'] is defined %}	@{{ schedule['name'] }}{% endif	%}{% if entry['comment'] is defined %}	# {{ entry['comment'] }}{% endif %}
+
+{%                  endfor %}
+{%              endif %}
+{%          endif %}
+{%      endif %}
+{%  endif %}
