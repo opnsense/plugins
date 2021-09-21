@@ -13,7 +13,7 @@
         <id>certificate.name</id>
         <label>Common Name</label>
         <type>text</type>
-        <help>Common Name (CN) for this certificate.</help>
+        <help>Common Name (CN) and first Alt Name (subjectAltName) for this certificate.</help>
     </field>
     <field>
         <id>certificate.description</id>
@@ -36,7 +36,7 @@
     </field>
     <field>
         <id>certificate.account</id>
-        <label>LE Account</label>
+        <label>ACME Account</label>
         <type>dropdown</type>
         <help><![CDATA[Set the ACME CA account to use for this certificate.]]></help>
     </field>
