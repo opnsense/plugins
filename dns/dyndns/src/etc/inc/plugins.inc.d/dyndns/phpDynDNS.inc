@@ -1257,10 +1257,15 @@ class updatedns
                 * dnsPass should be the token, NOT the token id
                 * IPv6 is empty so deSEC API will not set this to the IPv6 of the sending interface if the connection is made via IPv6
                 */
+                $dnsHost = trim($this->_dnsHost);
+                if ($this->_dnsWildcard == 'ON') {
+                    $dnsHost = "*.$dnsHost";
+                }
+
                 $server = "https://update.dedyn.io/";
-                $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $this->_dnsIP . '&myipv6=""';
+                $url = '?hostname=' . $dnsHost . '&myipv4=' . $this->_dnsIP . '&myipv6=""';
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_USERPWD, $dnsHost . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
             case 'desec-v4-v6':
@@ -1276,10 +1281,15 @@ class updatedns
                 $ipv4 = $this->_checkIP();
                 $this->_useIPv6 = true;
 
+                $dnsHost = trim($this->_dnsHost);
+                if ($this->_dnsWildcard == 'ON') {
+                    $dnsHost = "*.$dnsHost";
+                }
+
                 $server = "https://update.dedyn.io/";
-                $url = '?hostname=' . $this->_dnsHost . '&myipv4=' . $ipv4 . '&myipv6=' . $this->_dnsIP;
+                $url = '?hostname=' . $dnsHost . '&myipv4=' . $ipv4 . '&myipv6=' . $this->_dnsIP;
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_USERPWD, $dnsHost . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
             case 'desec-v6':
@@ -1288,11 +1298,16 @@ class updatedns
                 * dnsHost should be the domain
                 * dnsPass should be the token, NOT the 36-character token id (https://forum.netgate.com/post/930114)
                 */
+                $dnsHost = trim($this->_dnsHost);
+                if ($this->_dnsWildcard == 'ON') {
+                    $dnsHost = "*.$dnsHost";
+                }
+
                 $server = "https://update6.dedyn.io/";
-                $url = '?hostname=' . $this->_dnsHost . '&myipv6=' . $this->_dnsIP;
+                $url = '?hostname=' . $dnsHost . '&myipv6=' . $this->_dnsIP;
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
-                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_USERPWD, $dnsHost . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
             default:
