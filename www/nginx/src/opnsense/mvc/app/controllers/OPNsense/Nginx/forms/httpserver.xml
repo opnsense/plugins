@@ -133,29 +133,29 @@
     <help>If you check this box, a TLS encrypted connection is enforced.</help>
   </field>
   <field>
-    <id>httpserver.ssl_protocols</id>
+    <id>httpserver.tls_protocols</id>
     <label>TLS Protocols</label>
     <style>selectpicker</style>
     <type>select_multiple</type>
     <advanced>true</advanced>
-    <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3. TLSv1 and TLSv1.1 are insecure and deprecated. Use them only for compatibility and if you know what you are doing.</help>
+    <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3. TLSv1 and TLSv1.1 are insecure and excluded from GUI.</help>
   </field> 
   <field>
-    <id>httpserver.ssl_ciphers</id>
+    <id>httpserver.tls_ciphers</id>
     <label>TLS Ciphers</label>
     <type>text</type>
     <advanced>true</advanced>
     <help>Specify enabled ciphers in the TLS library cipher string format. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
   </field>
   <field>
-    <id>httpserver.ssl_ecdh_curve</id>
+    <id>httpserver.tls_ecdh_curve</id>
     <label>ECDH curve</label>
     <type>text</type>
     <advanced>true</advanced>
     <help>Specify a curve(s) for ECDHE ciphers. NGINX default (empty field): auto.</help>
   </field>
   <field>
-    <id>httpserver.ssl_prefer_server_ciphers</id>
+    <id>httpserver.tls_prefer_server_ciphers</id>
     <label>Prefer server ciphers</label>
     <type>checkbox</type>
     <advanced>true</advanced>
