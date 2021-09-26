@@ -20,7 +20,7 @@
 
 {%  if cfg['server_selection_method'] == '1' %}
 {%      set server_list = [] %}
-{#      # server_names is comma delimited string of UUIDs, split() to iterate through. #}
+{#      # server_names is comma delimited string of names, split() to iterate through. #}
 {%      if helpers.exists(cfg_path~'.server_names') %}
 {%          for for_server in cfg['server_names'].split(',') %}
 {#              # Add the server name to the list. #}
@@ -77,9 +77,9 @@ require_nolog = {{ 'true' if (cfg['require_nolog'] == '1') else 'false' }}
 require_nofilter = {{ 'true' if (cfg['require_nolog'] == '1') else 'false' }}
 {%      endif -%}
 
-{%      if cfg['disabled_server_names'] is defined %}
+{%      if cfg['disabled_server_names'] is defined or cfg['disabled_server_names_extra'] is defined %}
 {%          set disabled_server_list = [] %}
-{#          # disabled_server_names is comma delimited string of UUIDs, split() to iterate through. #}
+{#          # disabled_server_names is comma delimited string of names, split() to iterate through. #}
 {%          if helpers.exists(cfg_path~'.disabled_server_names') %}
 {%              for for_server in cfg['disabled_server_names'].split(',') %}
 {#                  # Add the server name to the list. #}
@@ -87,8 +87,15 @@ require_nofilter = {{ 'true' if (cfg['require_nolog'] == '1') else 'false' }}
 {%              endfor %}
 {#              # Print the server list, joining and surrounding each server with single quotes. #}
 {%          endif %}
+{%          if helpers.exists(cfg_path~'.disabled_server_names_extra') %}
+{%              for for_server in cfg['disabled_server_names_extra'].split(',') %}
+{#                  # Add the server name to the list. #}
+{%                  do disabled_server_list.append(for_server) %}
+{%              endfor %}
+{#              # Print the server list, joining and surrounding each server with single quotes. #}
+{%          endif %}
 {%      endif %}
-disabled_server_names = [{{ "'" + disabled_server_list|join("','") + "'" }}]
+disabled_server_names = [{{ "'" + disabled_server_list|unique|join("','") + "'" }}]
 {%  endif %}
 
 ################################################################################

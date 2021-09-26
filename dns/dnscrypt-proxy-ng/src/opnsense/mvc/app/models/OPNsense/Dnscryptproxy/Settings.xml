@@ -71,6 +71,10 @@
             <SortByValue>N</SortByValue>
             <Multiple>Y</Multiple>
         </disabled_server_names>
+        <disabled_server_names_extra type="CSVListField">
+            <Required>n</Required>
+            <Multiple>Y</Multiple>
+        </disabled_server_names_extra>
         <force_tcp type="BooleanField">
             <default>0</default>
             <required>Y</required>

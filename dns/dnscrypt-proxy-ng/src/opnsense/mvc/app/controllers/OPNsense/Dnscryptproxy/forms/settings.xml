@@ -197,13 +197,33 @@
             </field>
             <field>
                 <id>settings.disabled_server_names</id>
-                <label>Disabled Server names</label>
+                <label>Disabled Server Names</label>
                 <type>select_multiple</type>
                 <style>selectpicker</style>
-                <allownew>false</allownew>
                 <help><![CDATA[
                     <b>disabled_server_names</b><br>Server names to
                     avoid even if they match all of the require_* criteria.
+                    ]]>
+                </help>
+            </field>
+            <field>
+                <id>settings.disabled_server_names_extra</id>
+                <label>Disabled Server Names (Extra)</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help><![CDATA[
+                    <b>disabled_server_names</b> (comma delimited list)<br>
+                    This serves the same purpose as above, but allows extra
+                    server names to be entered which are not available for
+                    selection in the Disabled Server Names dropdown box
+                    above. These extra names will be combined together with
+                    Disabled Server Names.<br>
+                    <br>
+                    <b>Don't include single quotes around individual
+                    entries.</b><br>
+                    Example valid input:<br>
+                    cloudflare-family,cloudflare-ipv6,plan9-ns1,plan9-ns2
                     ]]>
                 </help>
             </field>
