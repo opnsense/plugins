@@ -309,7 +309,7 @@
 {%          endfor %}
             </div>
 {%      elseif this_field['type'] == "command" %}
-{%          if this_field['input']|default(false) %}
+{%          if this_field['style']|default('') == "input" %}
                 <input
                     id="inpt_{{ this_field['id'] }}_command"
                     class="form-control"
@@ -317,6 +317,27 @@
                     size="{{this_field['size']|default("36")}}"
                     style="height: 34px;padding-left:11px;display: inline;"
                 >
+{%          elseif this_field['style']|default('') == "selectpicker" %}
+                <select
+                    data-size="{{ this_field['size']|default(10) }}"
+                    id="{{ this_field['id'] }}"
+                    class="selectpicker"
+                    data-width="{{ this_field['width']|default("334px") }}"
+                    data-live-search="true"
+                    {{ this_field['separator'] is defined ?
+                        'data-separator="'~this_field['separator']~'"' : '' }}
+                >
+{#              # Make sure we're dealing with a list for use in the
+                # following for loop #}
+{%              if this_field['options']['option'] is not iterable %}
+{%                  set options_var = [this_field['options']['option']] %}
+{%              elseif this_field['options']['option'] is iterable %}
+{%                  set options_var = this_field['options']['option'] %}
+{%              endif %}
+{%              for option in options_var %}
+                    <option value="{{ lang._('%s')|format(option) }}">{{ lang._('%s')|format(option) }}</option>
+{%              endfor %}
+                </select>
 {%          endif %}
             <button
                 id="btn_{{ this_field['id'] }}_command"

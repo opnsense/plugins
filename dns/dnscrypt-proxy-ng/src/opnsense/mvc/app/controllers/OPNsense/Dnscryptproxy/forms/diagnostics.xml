@@ -4,17 +4,25 @@
             <id>diag_resolve_hostname</id>
             <label>Resolve Hostname</label>
             <type>header</type>
-            <help><![CDATA[Use dnscrypt-proxy's -resolve parameter to resolve a hostname. This will perform forward lookups only.]]></help>
+            <help><![CDATA[
+                Use dnscrypt-proxy's -resolve parameter to resolve a hostname.
+                This will perform forward lookups only.
+                ]]>
+            </help>
         </field>
         <field>
             <id>hostname</id>
             <label>Hostname</label>
             <type>command</type>
-            <input>true</input>
+            <style>input</style>
             <api>/api/dnscryptproxy/diagnostics/command/resolve</api>
             <button_label>Run</button_label>
             <output>resolve_command</output>
-            <help><![CDATA[Enter a DNS hostname, and click Run button to perform a look up.]]></help>
+            <help><![CDATA[
+                Enter a DNS hostname, and click Run button to perform a look
+                up.
+                ]]>
+            </help>
         </field>
         <field>
             <id>resolve_command</id>
@@ -27,7 +35,10 @@
             <id>show_doh_certs</id>
             <label>Show DoH Certificates</label>
             <type>header</type>
-            <help><![CDATA[Print DoH certificate chain hashes]]></help>
+            <help><![CDATA[
+                Print DoH certificate chain hashes
+                ]]>
+            </help>
         </field>
         <field>
             <id>diag_show_certs</id>
@@ -36,7 +47,11 @@
             <api>/api/dnscryptproxy/diagnostics/command/show-certs</api>
             <output>show_certs_command</output>
             <button_label>Run</button_label>
-            <help><![CDATA[Press the run button to display DoH certificate chain hashes below.]]></help>
+            <help><![CDATA[
+                Press the run button to display DoH certificate chain hashes
+                below.
+                ]]>
+            </help>
         </field>
         <field>
             <id>show_certs_command</id>
@@ -48,7 +63,11 @@
         <field>
             <label>Configuration Check</label>
             <type>header</type>
-            <help><![CDATA[Perform a check on the configuration file using dnscrypt-proxy's -check parameter.]]></help>
+            <help><![CDATA[
+                Perform a check on the configuration file using
+                dnscrypt-proxy's -check parameter.
+                ]]>
+            </help>
         </field>
         <field>
             <id>config_check</id>
@@ -57,12 +76,65 @@
             <api>/api/dnscryptproxy/diagnostics/command/config-check</api>
             <output>config_check_output</output>
             <button_label>Run</button_label>
-            <help><![CDATA[Press the run button to perform a check on the config.<br><br>Configuration errors will appear in the command output below. If there is no output returned, then there is no error with the configuraiton.]]></help>
+            <help><![CDATA[
+                Press the run button to perform a check on the config.<br>
+                <br>
+                Configuration errors will appear in the command output below.
+                If there is no output returned, then there is no error with
+                the configuraiton.
+                ]]>
+            </help>
         </field>
         <field>
             <id>config_check_output</id>
             <type>commandoutput</type>
             <text>Command output will apper here.</text>
+        </field>
+    </tab>
+    <tab id="config_view" description="View Configuration">
+        <field>
+            <label>View Configuration</label>
+            <type>header</type>
+            <help><![CDATA[
+                View configuration files for dnscrypt-proxy.
+                ]]>
+            </help>
+        </field>
+        <field>
+            <id>config_view</id>
+            <label>View dnscrypt-proxy Configuration</label>
+            <type>command</type>
+            <style>selectpicker</style>
+            <api>/api/dnscryptproxy/diagnostics/command/config-view</api>
+            <options>
+                <option>dnscrypt-proxy.toml</option>
+                <option>allowed-ips-internal.txt</option>
+                <option>allowed-ips-manual.txt</option>
+                <option>allowed-names-internal.txt</option>
+                <option>allowed-names-manual.txt</option>
+                <option>blocked-ips-internal.txt</option>
+                <option>blocked-ips-manual.txt</option>
+                <option>blocked-names-internal.txt</option>
+                <option>blocked-names-manual.txt</option>
+                <option>captive-portals.txt</option>
+                <option>cloaking-internal.txt</option>
+                <option>cloaking-manual.txt</option>
+                <option>forwarding-rules.txt</option>
+                <option>local_doh-cert.pem</option>
+                <option>local_doh-cert_key.pem</option>
+                <option>public-resolvers.md</option>
+                <option>relays.md</option>
+            </options>
+            <output>config_view_output</output>
+            <button_label>View</button_label>
+            <help><![CDATA[
+                Select a configuration file to view its contents.<br>
+                ]]></help>
+        </field>
+        <field>
+            <id>config_view_output</id>
+            <type>commandoutput</type>
+            <text>Configuration will apper here.</text>
         </field>
     </tab>
     <tab id="version" description="Version">

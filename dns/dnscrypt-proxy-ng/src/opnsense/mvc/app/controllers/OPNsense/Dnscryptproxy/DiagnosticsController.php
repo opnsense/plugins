@@ -46,15 +46,15 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-        // Create a settings object to get some variables.
-        $settings = new Settings();
+        // Create a model object to get some variables.
+        $thisModel = new Settings();
 
         // Create our own instance of a Controller to use getForm().
         $myController = new ControllerBase();
 
         $this->view->setVars(
             [
-                'plugin_name' => $settings->api_name,
+                'plugin_name' => $thisModel->api_name,
                 'this_form' => $myController->getForm('diagnostics'),
                 // controllers/OPNsense/Dnscryptproxy/forms/diagnostics.xml
             ]

@@ -103,6 +103,47 @@ Due to the malleable nature of the `layout_partials` being within this plugin, i
 
 The XML structure now utilizes the tab/subtab feature rather than everything being on individual tabs. Tabs/Subtabs are grouped together based on related features. These tabs are then drawn by `layout_partials` entirely instead of needing to be defined in the volt template. Along the same vein, the edit dialogs for bootgrids are contained within `<dialog>` elements and reside within the field definition for their respective bootgrid. API calls for bootgrids are also defined here instead of statically in the volt template for the page.
 
+One of the challenges I ran into while working with the XMLs is how nested elements are interpreted. I'm not convinced this is the best method of handling the situation. The approach that I ended up going with is accommodating the discrepancy when the data is used. A much better approach would be to fix it or process it properly in the first place, so that the data is always predictable. There are two primary configurations which are being interpreted differently, a single nested element, and multiple nested elements.
+
+A single nested element looks like this in the XML:
+```
+<options>
+    <option>dnscrypt-proxy.toml</option>
+</options>
+
+```
+This translates to an associative array with a single named string, "option":
+```
+array(1) {
+  ["option"]=>
+  string(19) "dnscrypt-proxy.toml"
+}
+```
+
+Multiple nested elements looks like this in the XML:
+```
+<options>
+    <option>dnscrypt-proxy.toml</option>
+    <option>allowed-ips-internal.txt</option>
+</options>
+```
+This translates to an associative array with a single named array, "option":
+
+```
+array(1) {
+  ["option"]=>
+  array(17) {
+    [0]=>
+    string(19) "dnscrypt-proxy.toml"
+    [1]=>
+    string(24) "allowed-ips-internal.txt"
+    ...
+  }
+}
+```
+
+This means that any time that the object named "option" is evaluated it could be a string OR an array. The issue here is that any procedure designed to process this object must accommodate both scenarios. In most cases what I decided to do was evaluate if the object is a string, and wrap it in an array if it was. This is not ideal, but seems to work, but adds a bunch of code in various places. It's also easy to forget about this condition because most of the time when this functionality is used, it is a multi-selection situation.
+
 ##### Api
 
 With respect to the topic of multiple files for bootgrids, the primary reason that I found that the multiple model/controllers/forms approach is used is due to how the tutorial/documentation is written. The example describes creating an additional API controller, using an additional model, uses hard coded paths, hard coded array definitions, and function names like 'setItemAction()'. This all leads developers to copying the code wholesale and changing the parts that are changing, like setForwardAction(), setCloakAction(), setServerAction(), etc. Which results in the duplication of all of it.

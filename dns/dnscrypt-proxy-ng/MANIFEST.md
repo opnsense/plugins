@@ -56,6 +56,7 @@ This a manifest of the relevant files in this plugin, and a description of what 
         |           |-- get_resolvers.py ----------------------- gets the current resolvers from dnscrypt-proxy
         |           |-- import_doh_client_certs.py ------------- imports the doh client certificates in OPNsense into files for dnscrypt-proxy
         |           |-- import_list.py ------------------------- imports an allowed/blocked list into dnscrypt-proxy's configuration files
+        |           |-- view_config.py ------------------------- views various pre-defined configuration files from dnscrypt-proxy
         |           `-- tests ---------------------------------  base directory for tests for python scripts for this plugin
         `-- service -------------------------------------------- base directory for OPNsense's configd configurations
             |-- conf ------------------------------------------- configuration directory to include actions

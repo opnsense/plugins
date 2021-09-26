@@ -422,7 +422,12 @@
                                 field['id']|default('') != '' and
                                 field['api']|default('') != '' ) %}
     $('#btn_{{ field['id'] }}_command').click(function(){
-        var command_input = $('#inpt_{{ field['id'] }}_command').val()
+        var command_input;
+{%                              if field['style']|default('') == 'input' %}
+        command_input = $("#inpt_" + $.escapeSelector("{{ field['id'] }}_command")).val();
+{%                              elseif field['style']|default('') == 'selectpicker' %}
+        command_input = $("button[data-id=" + $.escapeSelector("{{ field['id'] }}")).attr('title');
+{%                              endif %}
 {%                              if field['output']|default('') != '' %}
         $('#pre_{{ field['output'] }}_output').text("Executing...");
 {%                              endif %}

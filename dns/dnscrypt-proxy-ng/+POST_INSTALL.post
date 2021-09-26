@@ -3,7 +3,7 @@ export PLUGIN_USER=_dnscrypt-proxy
 export SCRIPTS_DIR=/usr/local/opnsense/scripts/OPNsense/Dnscryptproxy
 ###
 echo "Setting script modes..."
-for script_file in get_relays.py get_resolvers.py import_doh_client_certs.py import_list.py;do
+for script_file in get_relays.py get_resolvers.py import_doh_client_certs.py import_list.py view_config.py;do
     echo "Setting +x on $SCRIPTS_DIR/$script_file"
     chmod +x ${SCRIPTS_DIR}/$script_file
 done

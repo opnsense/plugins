@@ -122,6 +122,11 @@ class DiagnosticsController extends ApiControllerBase
                 $configd_command = $settings->configd_name . ' config-check';
 
                 break;
+            case 'config-view':
+                $filename = $this->request->getPost('command_input', 'striptags');
+                $configd_command = $settings->configd_name . ' config-view ' . $filename;
+
+                break;
             case 'version':
                 $configd_command = $settings->configd_name . ' version';
 
