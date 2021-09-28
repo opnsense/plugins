@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
             revoke:'/api/acmeclient/certificates/revoke/',
             removekey:'/api/acmeclient/certificates/removekey/',
             automation:'/api/acmeclient/certificates/automation/',
+            import:'/api/acmeclient/certificates/import/',
         };
 
         var gridopt = {
@@ -62,6 +63,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     return "<button type=\"button\" title=\"{{ lang._('Edit certificate') }}\" class=\"btn btn-xs btn-default command-edit bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
                         "<button type=\"button\" title=\"{{ lang._('Copy certificate') }}\" class=\"btn btn-xs btn-default command-copy bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
                         "<button type=\"button\" title=\"{{ lang._('Issue or renew certificate') }}\" class=\"btn btn-xs btn-default command-sign bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('(Re-) Import certificate') }}\" class=\"btn btn-xs btn-default command-import bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-certificate\"></span></button>" +
                         "<button type=\"button\" title=\"{{ lang._('Run automations') }}\" class=\"btn btn-xs btn-default command-automation bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
                         "<button type=\"button\" title=\"{{ lang._('Revoke certificate') }}\" class=\"btn btn-xs btn-default command-revoke bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
                         "<button type=\"button\" title=\"{{ lang._('Reset certificate') }}\" class=\"btn btn-xs btn-default command-removekey bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
@@ -394,6 +396,25 @@ POSSIBILITY OF SUCH DAMAGE.
                     });
                 } else {
                     console.log("[grid] action automation missing")
+                }
+            });
+
+            // import certificate into trust storage
+            grid_certificates.find(".command-import").on("click", function(e)
+            {
+                if (gridParams['import'] != undefined) {
+                    var uuid=$(this).data("row-id");
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('(Re-) import the selected certificate into the trust storage?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['import'] + uuid,
+                            sendData={},callback=function(data,status){
+                                // reload grid after sign
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    });
+                } else {
+                    console.log("[grid] action import missing")
                 }
             });
 

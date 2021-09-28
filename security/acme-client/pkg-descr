@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.2
+
+Added:
+* add button to (re-) import a certificate into the trust storage
+
 3.1
 
 Changed:
