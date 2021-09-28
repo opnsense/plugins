@@ -13,6 +13,9 @@ Plugin Changelog
 Added:
 * add button to (re-) import a certificate into the trust storage
 
+Fixed:
+* associate certificates with the correct CA when multiple CAs use the same name (#2550)
+
 3.1
 
 Changed:
