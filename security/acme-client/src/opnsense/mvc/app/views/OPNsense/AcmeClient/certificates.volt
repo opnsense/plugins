@@ -484,7 +484,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="lastUpdate" data-type="string" data-formatter="certdate">{{ lang._('Issue/Renewal Date') }}</th>
                 <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last ACME Status') }}</th>
                 <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last ACME Run') }}</th>
-                <th data-column-id="commands" data-width="11em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-width="13em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
             </tr>
             </thead>
