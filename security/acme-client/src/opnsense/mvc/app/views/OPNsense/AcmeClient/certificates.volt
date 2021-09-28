@@ -405,7 +405,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 if (gridParams['import'] != undefined) {
                     var uuid=$(this).data("row-id");
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('(Re-) import the selected certificate into the trust storage?') }}',
+                        '{{ lang._('(Re-) import the selected certificate and associated CA certificates into the trust storage?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         ajaxCall(url=gridParams['import'] + uuid,
                             sendData={},callback=function(data,status){
