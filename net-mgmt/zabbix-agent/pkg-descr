@@ -12,8 +12,59 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.9
+
+Added:
+* Allow CIDR notation in "Zabbix Servers" field (#2296)
+* Add syslog option, allow logging to syslog (#2348)
+
+Changed:
+* Use "NetworkField" wherever applicable for better input validation
+
 1.8
 
-* Add Changelog (contributed by Starkstromkonsument)
-* Fix logformat (contributed by Starkstromkonsument)
+Added:
+* Add Changelog (contributed by Starkstromkonsument, #1954)
+
+Fixed:
+* Fix logformat (contributed by Starkstromkonsument, #1954)
+
+Changed:
 * Switch to Zabbix Agent 5.0
+
+1.7
+
+Added:
+* Add support for PSK encryption (#1618)
+
+Changed:
+* Switch to new log view (#1593)
+
+1.6
+
+Added:
+* Add option to grant sudo root access
+
+1.5
+
+Fixed:
+* Relax validation mask for User Parameters (#1252)
+
+Changed:
+* Migrate to ApiMutableServiceController
+
+1.4
+
+Added:
+* Add support for Item Key Aliases
+* Add support for User Parameters
+
+Changed:
+* Switch to Zabbix Agent 4.0 (#1091)
+* Remove default comments from template
+
+1.3
+
+Fixed:
+* Add working default values (#491)
+* Fixed service controls (#551)

@@ -8,6 +8,51 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.1
+
+Changed:
+* rename "LE Account" to "ACME Account" in certificate dialog (#2526)
+
+3.0
+
+Added:
+* add support for new ACME CAs: buypass, buypass_test, sslcom, zerossl (#2361)
+* add CA setting to accounts, make it possible to use multiple CAs
+* add introduction pages and an option to hide them
+* add tooltips for account command buttons (#2188)
+* add support for custom ACME EAB kid/hmac when registering accounts
+
+Fixed:
+* properly set/get the UUID of LE objects
+
+Changed:
+* rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)
+* change the suffix for imports to the certificate storage to "ACME Client" (#2361)
+* rename "Let's Encrypt Environment" to "ACME CA" and move to account settings (#2361)
+* preserve old LE accounts/certs by adding a compatibility layer (#2361)
+* update tooltip style for 21.7 (#2188)
+* show more options in list view for challenge types and automations
+
+Removed:
+* remove the legacy log file and only rely on syslog logging (#2366)
+* remove obsolete account parameters: certificateAuthority, lastUpdate
+
+2.6
+
+Added:
+* add support for Nederhost DNS API (#2407)
+* add support for DDNSS DNS API (#2415)
+* add support for Zone.eu DNS API (#2417)
+* add support for Njalla DNS API (#2446)
+* add support for Domeneshop DNS API (#2390)
+* add support for IONOS domain API (#2345)
+
+Fixed:
+* sftp update of write protected cert files with a numeric owner (#2426)
+
+Changed:
+* Namecheap: change IP discovery URL to avoid rate-limits (#2419)
+
 2.5
 
 Added:

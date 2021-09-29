@@ -45,7 +45,7 @@ class StatusController extends ApiControllerBase
     /**
      * get relayd summary
      */
-    public function sumAction($wait=0)
+    public function sumAction($wait = 0)
     {
         $result = array("result" => "failed");
         $backend = new Backend();
@@ -93,7 +93,7 @@ class StatusController extends ApiControllerBase
                     if (!empty($virtualserver['tables'])) {
                         foreach ($virtualserver['tables'] as &$table) {
                             if (!empty($table['uuid'])) {
-                                $tblnode = $relaydMdl->getNodeByReference("table.".$table['uuid']);
+                                $tblnode = $relaydMdl->getNodeByReference("table." . $table['uuid']);
                                 foreach (explode(",", (string)$tblnode->hosts) as $host_uuid) {
                                     $found = false;
                                     if (!empty($table['hosts'])) {
@@ -108,7 +108,7 @@ class StatusController extends ApiControllerBase
                                         $table['hosts'] = [];
                                     }
                                     if (!$found) {
-                                        $hostnode = $relaydMdl->getNodeByReference("host.".$host_uuid);
+                                        $hostnode = $relaydMdl->getNodeByReference("host." . $host_uuid);
                                         $table['hosts'][$host_uuid] = [
                                             "name" => (string)$hostnode->address,
                                             "description" => (string)$hostnode->name,
@@ -174,7 +174,7 @@ class StatusController extends ApiControllerBase
                 if (count($objs) > 0) {
                     $linked_hosts = [];
                     if (!empty($virtualserver['tables'][$tableId]['uuid'])) {
-                        $tblnode = $relaydMdl->getNodeByReference("table.".$virtualserver['tables'][$tableId]['uuid']);
+                        $tblnode = $relaydMdl->getNodeByReference("table." . $virtualserver['tables'][$tableId]['uuid']);
                         $linked_hosts = explode(",", (string)$tblnode->hosts);
                     }
                     // hosts aren't necessarily unique due to address matching
@@ -204,9 +204,9 @@ class StatusController extends ApiControllerBase
         if ($this->request->isPost()) {
             $this->sessionClose();
             $backend = new Backend();
-            if (in_array($nodeType, ['redirect', 'table', 'host']) && in_array($action, ['enable', 'disable'])){
+            if (in_array($nodeType, ['redirect', 'table', 'host']) && in_array($action, ['enable', 'disable'])) {
                 if ($id != null && $id > 0) {
-                    $result["output"] = $backend->configdpRun("relayd toggle",[$nodeType, $action, $id]);
+                    $result["output"] = $backend->configdpRun("relayd toggle", [$nodeType, $action, $id]);
                     if (isset($result["output"])) {
                         $result["result"] = 'ok';
                     }
@@ -217,7 +217,7 @@ class StatusController extends ApiControllerBase
                 $new_status = $action == "remove" ? "0" : "1";
                 $relaydMdl = new Relayd();
                 foreach (explode(",", $id) as $host_uuid) {
-                    $obj = $relaydMdl->getNodeByReference("host.".$host_uuid);
+                    $obj = $relaydMdl->getNodeByReference("host." . $host_uuid);
                     if ($obj != null) {
                         $obj->enabled = $new_status;
                     }

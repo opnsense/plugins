@@ -38,8 +38,9 @@ dns/bind -- BIND domain name service
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
 dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
-emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense (development only)
-mail/fetchmail -- Remote-mail retrieval utility (development only)
+emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
+ftp/tftp -- TFTP server
+mail/fetchmail -- Remote-mail retrieval utility
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-cicada -- The cicada theme - dark grey
@@ -56,7 +57,8 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ntopng -- Traffic Analysis and Flow Collection
-net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport (development only)
+net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
+net/realtek-re -- Realtek re(4) vendor driver
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
@@ -74,9 +76,8 @@ net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
-net-mgmt/zabbix4-proxy -- Zabbix Proxy enables decentralized monitoring
-net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
-security/acme-client -- Let's Encrypt client
+net-mgmt/zabbix-proxy -- Zabbix monitoring proxy
+security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
@@ -98,8 +99,10 @@ sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
+sysutils/nextcloud-backup -- Track config changes using NextCloud
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
+sysutils/puppet-agent -- Manage Puppet Agent (development only)
 sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools

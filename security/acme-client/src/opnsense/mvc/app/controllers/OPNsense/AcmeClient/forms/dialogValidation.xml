@@ -21,7 +21,7 @@
         <id>validation.method</id>
         <label>Challenge Type</label>
         <type>dropdown</type>
-        <help>Set the Let's Encrypt challenge type. You'll have to add configuration for the selected challenge type below.</help>
+        <help>Set the ACME challenge type. You'll have to add configuration for the selected challenge type below.</help>
     </field>
     <field>
         <label>HTTP-01</label>
@@ -48,7 +48,7 @@
         <id>validation.http_opn_interface</id>
         <label>Interface</label>
         <type>dropdown</type>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
     </field>
     <field>
         <id>validation.http_opn_ipaddresses</id>
@@ -56,7 +56,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
         <hint>Enter IP addresses here. Finish each with TAB.</hint>
     </field>
     <field>
@@ -267,6 +267,16 @@
         <label>Password</label>
         <type>password</type>
     </field>
+	<field>
+        <label>DDNSS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ddnss</style>
+    </field>
+    <field>
+        <id>validation.dns_ddnss_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
     <field>
         <label>DirectAdmin</label>
         <type>header</type>
@@ -327,6 +337,21 @@
     <field>
         <id>validation.dns_do_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Domeneshop DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_domeneshop</style>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_secret</id>
+        <label>Secret</label>
         <type>password</type>
     </field>
     <field>
@@ -523,6 +548,21 @@
     <field>
         <id>validation.dns_inws_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>IONOS domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ionos</style>
+    </field>
+    <field>
+        <id>validation.dns_ionos_prefix</id>
+        <label>Prefix</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_ionos_secret</id>
+        <label>Secret</label>
         <type>password</type>
     </field>
     <field>
@@ -800,6 +840,16 @@
     <field>
         <id>validation.dns_netcup_pw</id>
         <label>API Password</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Njalla</label>
+        <type>header</type>
+        <style>table_dns table_dns_njalla</style>
+    </field>
+    <field>
+        <id>validation.dns_njalla_token</id>
+        <label>API Token</label>
         <type>text</type>
     </field>
     <field>
@@ -1261,5 +1311,31 @@
         <id>validation.dns_infomaniak_token</id>
         <label>API Token</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>Zone.eu API</label>
+        <type>header</type>
+        <style>table_dns table_dns_zone</style>
+    </field>
+    <field>
+        <id>validation.dns_zone_username</id>
+        <label>Zone Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zone_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>Can be generated under ZoneID account management</help>
+    </field>
+    <field>
+        <label>Nederhost API</label>
+        <type>header</type>
+        <style>table_dns table_dns_nederhost</style>
+    </field>
+    <field>
+        <id>validation.dns_nederhost_key</id>
+        <label>Key</label>
+        <type>text</type>
     </field>
 </form>

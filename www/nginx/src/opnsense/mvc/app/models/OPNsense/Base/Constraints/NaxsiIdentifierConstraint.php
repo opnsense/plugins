@@ -38,7 +38,7 @@ use Phalcon\Messages\Message;
  */
 class NaxsiIdentifierConstraint extends BaseConstraint
 {
-    public function validate(\Phalcon\Validation $validator, $attribute) : bool
+    public function validate(\Phalcon\Validation $validator, $attribute): bool
     {
         $node = $this->getOption('node');
         if ($node) {

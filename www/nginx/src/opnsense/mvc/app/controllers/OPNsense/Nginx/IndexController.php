@@ -61,6 +61,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->cache_path = $this->getForm("cache_path");
         $this->view->sni_hostname_map = $this->getForm("sni_hostname_map");
         $this->view->ipacl = $this->getForm("ipacl");
+        $this->view->errorpage = $this->getForm("errorpage");
         $this->view->tls_fingerprint = $this->getForm("tls_fingerprint");
         $this->view->syslog_target = $this->getForm("syslog_target");
         $nginx = new Nginx();
@@ -81,7 +82,7 @@ class IndexController extends \OPNsense\Base\IndexController
     /**
      * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
      */
-    public function tls_handshakesAction()
+    public function tlsHandshakesAction()
     {
         $this->view->pick('OPNsense/Nginx/tls_handshakes');
     }

@@ -45,7 +45,7 @@ class DnsNamecheap extends Base implements LeValidationInterface
             $this->acme_env['NAMECHEAP_SOURCEIP'] = (string)$this->config->dns_namecheap_sourceip;
         } else {
             // Use a public service to get our source IP for Namecheap API
-            $this->acme_env['NAMECHEAP_SOURCEIP'] = 'https://ifconfig.co/ip';
+            $this->acme_env['NAMECHEAP_SOURCEIP'] = 'https://ipinfo.io/ip';
         }
     }
 }

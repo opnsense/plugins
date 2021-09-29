@@ -1,0 +1,2 @@
+puppetagent.conf:/usr/local/etc/puppet/puppet.conf
+rc.conf.d:/etc/rc.conf.d/puppet

@@ -1,22 +1,23 @@
+<% if (typeof count !== 'undefined' && typeof ciphers !== 'undefined' && typeof curves !== 'undefined') { %>
 <div>
     <div class="col-md-10">
         <div class="row">
             <div class="col-md-3">
                 Count
             </div>
-            <div class="col-md-9"><%= _.escape(count) %></div>
+            <div class="col-md-9"><%= _.escape(count || '') %></div>
             <div class="col-md-3">
                 Ciphers
             </div>
-            <div class="col-md-9"><%= _.escape(ciphers) %></div>
+            <div class="col-md-9"><%= _.escape(ciphers || '') %></div>
             <div class="col-md-3">
                 Curves
             </div>
-            <div class="col-md-9"><%= _.escape(curves) %></div>
+            <div class="col-md-9"><%= _.escape(curves || '') %></div>
         </div>
     </div>
     <div class="col-md-2">
         <button class="btn btn-primary"><i class="fa fa-thumbs-up"></i> Store / Trust</button>
     </div>
-
 </div>
+<% } %>

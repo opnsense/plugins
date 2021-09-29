@@ -1,31 +1,29 @@
 {#
-
-Copyright © 2018 by EURO-LOG AG
-Copyright (c) 2021 Deciso B.V.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-1.  Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
-
-2.  Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation
-and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-
-#}
+ # Copyright (c) 2018 EURO-LOG AG
+ # Copyright (c) 2021 Deciso B.V.
+ # All rights reserved.
+ #
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #
+ # 1. Redistributions of source code must retain the above copyright notice,
+ #    this list of conditions and the following disclaimer.
+ #
+ # 2. Redistributions in binary form must reproduce the above copyright notice,
+ #    this list of conditions and the following disclaimer in the documentation
+ #    and/or other materials provided with the distribution.
+ #
+ # THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ # AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ # AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ # OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ #}
 
 <script type="text/javascript">
   $( document ).ready(function() {
@@ -33,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
        * create status and start/stop buttons
        **/
       function getControlButtons(status, id, nodeType) {
-          let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>');
+          let status_btn = $('<button class="label label-opnsense label-opnsense-xs"/>').css('cursor', 'auto');
           let action_btn = $('<button class="btn btn-xs btn-default" data-toggle="tooltip"/>').attr('data-nodeid', id).attr('data-nodetype', nodeType);
           let action_btn_remove = action_btn.clone(true);
           let response = [];
@@ -74,6 +72,14 @@ POSSIBILITY OF SUCH DAMAGE.
           // no action for relays; see relayctl(8)
           if (nodeType === 'relay') {
               action_btn.removeClass('node_action').attr('disabled', 'disabled');
+          }
+
+          if (nodeType == 'host' && response.length == 2) {
+              response.push(
+                $('<button class="label label-opnsense label-opnsense-xs"/>').css('cursor', 'auto').css('opacity', '0').append(
+                    $("<i class='fa fa-fw'/>")
+                )
+              );
           }
           return response;
       };
@@ -160,6 +166,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     $vs_td.append(
                         $('<div class="object_container"/>').append(
                             getControlButtons(virtualserver.status, virtualserver.id, virtualserver.type),
+                            '&nbsp;',
                             virtualserver.name,
                             listen_str,
                             ' (' + virtualserver.type + '): ',
@@ -174,6 +181,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             $tbl_td.append(
                                 $('<div class="object_container"/>').append(
                                     getControlButtons(table.status, tkey, 'table'),
+                                    '&nbsp;',
                                     table.name + ' ' + table.status
                                 ).data('payload', table).data('type', 'table')
                             );
@@ -181,7 +189,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 $.each(table.hosts, function(hkey, host) {
                                     let $host_td = $('<td data-id="'+hkey+'" class="relayd_host"/>');
                                     let host_names = [];
-                                    let display_name = host.name ;
+                                    let display_name = host.name;
                                     if (host.properties != undefined) {
                                         for (i=0; i < host.properties.length; i++) {
                                             if (host.properties[i].name !== host.name) {
@@ -195,6 +203,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                     $host_td.append(
                                         $('<div class="object_container"/>').append(
                                             getControlButtons(host.status, hkey, 'host'),
+                                            '&nbsp;',
                                             display_name,
                                             " ",
                                             host.status
