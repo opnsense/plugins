@@ -162,6 +162,10 @@ abstract class LeCommon
         // Add CA to acme arguments
         if ($acme_ca == "custom") {
             // Custom CA
+            if (empty($acme_custom_ca)) || $acme_custom_ca) == null) {
+                LeUtils::log_error("custom CA must not be empty.");
+                return false;
+            }
             $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_custom_ca);
         } else {
             // Normal CAs
