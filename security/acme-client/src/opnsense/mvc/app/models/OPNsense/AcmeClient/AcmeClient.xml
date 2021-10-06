@@ -146,8 +146,14 @@
                         <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
                         <sslcom>SSL.com</sslcom>
                         <zerossl>ZeroSSL</zerossl>
+                        <custom>Custom CA URL</custom>
                     </OptionValues>
                 </ca>
+                <custom_ca type="TextField">
+                    <Required>N</Required>
+                    <mask>/^https?:\/\/.*[^\/]$/</mask>
+                    <ValidationMessage>The url must be a valid ACME endpoint without a trailing slash.</ValidationMessage>
+                </custom_ca>
                 <eab_kid type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,8192}$/u</mask>
