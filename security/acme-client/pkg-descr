@@ -10,6 +10,9 @@ Plugin Changelog
 
 3.3
 
+Added:
+* add support for custom ACME CAs (#2529)
+
 Fixed:
 * fix ACME Client reset (#2562)
 
