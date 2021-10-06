@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.6
+
+Added:
+* add support for advanced resolver properties (#2330)
+
 3.5
 
 Fixed:
