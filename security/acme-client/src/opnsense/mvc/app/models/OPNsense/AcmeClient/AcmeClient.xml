@@ -152,7 +152,7 @@
                 <custom_ca type="TextField">
                     <Required>N</Required>
                     <mask>/^https?:\/\/.*[^\/]$/</mask>
-                    <ValidationMessage>The url must be a valid ACME endpoint without a trailing slash. For example: https://acme-v02.api.letsencrypt.org/directory or https://ca.internal/acme/directory</ValidationMessage>
+                    <ValidationMessage>The url must be a valid ACME endpoint without a trailing slash.</ValidationMessage>
                 </custom_ca>
                 <eab_kid type="TextField">
                     <Required>N</Required>
