@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * add support for custom ACME CAs (#2529)
+* add support for Porkbun API (#2561)
 
 Fixed:
 * fix ACME Client reset (#2562)

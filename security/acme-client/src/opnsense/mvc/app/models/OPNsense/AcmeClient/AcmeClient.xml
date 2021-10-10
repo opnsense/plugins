@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -454,6 +454,7 @@
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_pleskxml>Plesk XML API</dns_pleskxml>
+                        <dns_porkbun>Porkbun API</dns_porkbun>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_servercow>Servercow API v1</dns_servercow>
@@ -884,6 +885,12 @@
                 <dns_pdns_token type="TextField">
                     <Required>N</Required>
                 </dns_pdns_token>
+                <dns_porkbun_key type="TextField">
+                    <Required>N</Required>
+                </dns_porkbun_key>
+                <dns_porkbun_secret type="TextField">
+                    <Required>N</Required>
+                </dns_porkbun_secret>
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
