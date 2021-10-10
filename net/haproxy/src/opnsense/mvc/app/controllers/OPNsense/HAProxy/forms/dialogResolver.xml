@@ -88,7 +88,7 @@
     </field>
     <field>
         <id>resolver.hold_timeout</id>
-        <label>Valid hold time</label>
+        <label>Timeout hold time</label>
         <type>text</type>
         <help><![CDATA[When a DNS resolve request times out haproxy will not retry until [hold timeout] elapses. Default "30s"]]></help>
         <advanced>true</advanced>
