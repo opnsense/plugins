@@ -17,6 +17,9 @@ Added:
 Fixed:
 * fix ACME Client reset (#2562)
 
+Changed:
+* change default Challenge Type from HTTP-01 to DNS-01
+
 3.2
 
 Added:

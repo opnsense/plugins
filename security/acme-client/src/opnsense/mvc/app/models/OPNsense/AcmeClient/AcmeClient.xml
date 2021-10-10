@@ -335,7 +335,7 @@
                 </description>
                 <method type="OptionField">
                     <Required>Y</Required>
-                    <default>http01</default>
+                    <default>dns01</default>
                     <OptionValues>
                         <http01>HTTP-01</http01>
                         <dns01>DNS-01</dns01>
@@ -386,7 +386,7 @@
                 </http_haproxyFrontends>
                 <dns_service type="OptionField">
                     <Required>Y</Required>
-                    <default>dns_nsupdate</default>
+                    <default>dns_freedns</default>
                     <OptionValues>
                         <dns_1984hosting>1984Hosting API</dns_1984hosting>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
