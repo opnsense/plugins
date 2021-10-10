@@ -321,8 +321,9 @@ include("head.inc");
                       <div class="hidden" data-for="help_for_host">
                         <?= gettext("Enter the complete host/domain name. example: myhost.dyndns.org") ?><br />
                         <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?><br />
-                        <?= gettext("For DigitalOcean, enter the zone/domain name.") ?>
-                        <?= gettext('Gandi LiveDNS: Enter the 2nd-level domain ("example.org").') ?>
+                        <?= gettext("For DigitalOcean, enter the zone/domain name.") ?><br />
+                        <?= gettext('Gandi LiveDNS: Enter the 2nd-level domain ("example.org").') ?> <br />
+                        <?= gettext("For DNSPod, enter the domain name. example: myhost.org") ?> <br />
                       </div>
                     </td>
                   </tr>
@@ -376,6 +377,7 @@ include("head.inc");
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
                         <br /><?= gettext('deSEC: no Username necessary. Your Hostname is used instead.') ?>
                         <br /><?= gettext('FreeDNS: Leave blank.') ?>
+                        <br /><?= gettext('DNSPod: API token\'s id.') ?>
                       </div>
                     </td>
                   </tr>
@@ -395,6 +397,7 @@ include("head.inc");
                         <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
                         <br /><?= gettext('deSEC: Enter your Token for your hostname, NOT the 36-character Token ID from the webinterface.') ?>
+                        <br /><?= gettext('DNSPod: API token.') ?>
                       </div>
                     </td>
                   </tr>

@@ -60,6 +60,7 @@
  *  dynv6 v6                    - Last Tested: 25 June 2019
  *  regfish                     - Last Tested: 15 August 2017
  *  regfish v6                  - Last Tested: 15 August 2017
+ *  dnspod                      - Last Tested: 10 Oct. 2021
  * +====================================================+
  *
  * @author    E.Kristensen
@@ -233,6 +234,15 @@ class updatedns
                     $this->_error(5);
                 }
                 break;
+            case 'dnspod':
+                if (!$dnsUser) {
+                    $this->_error(3);
+                } elseif (!$dnsPass) {
+                    $this->_error(4);
+                } elseif (!$dnsHost) {
+                    $this->_error(5);
+                }
+                break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
@@ -359,6 +369,7 @@ class updatedns
                 case 'staticcling':
                 case 'strato':
                 case 'zoneedit':
+                case 'dnspod':
                     $this->_update();
                     if ($this->_dnsDummyUpdateDone == true) {
                         // If a dummy update was needed, then sleep a while and do the update again to put the proper address back.
@@ -719,7 +730,7 @@ class updatedns
                         $result = array();
                         foreach ($records as $record) {
                             if (strtolower($record['Name']) == strtolower($name)) {
-                                $result [] = $record;
+                                $result[] = $record;
                             }
                         }
                         return ($result) ? $result : false;
@@ -1097,7 +1108,7 @@ class updatedns
                         }
                     }
 
-                    $hostData = [ 'target' => "{$this->_dnsIP}" ];
+                    $hostData = ['target' => "{$this->_dnsIP}"];
 
                     if ($recordId) {
                         // Update record
@@ -1160,7 +1171,7 @@ class updatedns
                     log_error("Tenant ID not found");
                     return false;
                 }
-                 // get an bearer token
+                // get an bearer token
                 curl_setopt($ch, CURLOPT_URL, "https://login.microsoftonline.com/" . $tenantid . "/oauth2/token");
                 curl_setopt($ch, CURLOPT_POST, 1);
                 $body = "resource=" . urlencode("https://management.core.windows.net/") . "&grant_type=client_credentials&client_id=" . $app_id . "&client_secret=" . urlencode($client_secret);
@@ -1242,9 +1253,9 @@ class updatedns
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Accept: application/json',
-                        'Content-Type: application/json',
-                        'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
+                    'Accept: application/json',
+                    'Content-Type: application/json',
+                    'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
                 ));
                 curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -1294,6 +1305,83 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
+
+            case 'dnspod':
+                $token = $this->_dnsUser . "," . $this->_dnsPass;
+                // get current records
+                $post_data['domain'] = $this->_dnsHost;
+                $post_data['record_type'] = 'A';
+                $post_data['login_token'] = $token;
+                $post_data['format'] = 'json';
+                $post_data['lang'] = 'en';
+                $body = json_encode($post_data);
+                log_error("get current records, body:" . $body);
+
+                $server = "https://dnsapi.cn/Record.List";
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+
+                $data = curl_exec($ch);
+                $output = json_decode($data);
+                if ($output->status->code == 1) {
+                    log_error("Dynamic DNS: (Success) get {$this->_dnsHost} records, records_num: {$output->info->records_num}");
+                } elseif ( $output->status->code == 10) {
+                    log_error("Dynamic DNS: (Success) get {$this->_dnsHost} records, message: {$output->status->message}");
+                } else {
+                    log_error("Dynamic DNS (Failed) get {$this->_dnsHost} records, code: {$output->status->code}, message: {$output->status->message}");
+                    @curl_close($ch);
+                    return false;
+                }
+
+                $recordId = null;
+                $recordLineId = "0";
+                $oldIP = "";
+                // find recordId
+                if (!empty($output->records)) {
+                    foreach ($output->records as $key => $recordObj) {
+                        if (preg_match("/^{$recordObj->name}$/", "@")) { // FIXME by name
+                            if ($recordObj->type == 'A') {
+                                // Found matching host
+                                $recordId = $recordObj->id;
+                                $oldIP = $recordObj->value;
+                                $recordLineId = $recordObj->line_id;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // check if IP changed
+                if ($this->_dnsIP === $oldIP) {
+                    log_error("recordId: {$recordId} IP not changed, skip update");
+                    @curl_close($ch);
+                    return true;
+                }
+
+                // create new record or modify exist one 
+                if (!$recordId) {
+                    $server = "https://dnsapi.cn/Record.Create";
+                } else {
+                    $server = "https://dnsapi.cn/Record.Modify";
+                    $post_data['record_id'] = $recordId;
+                }
+
+                $post_data['domain'] = $this->_dnsHost;
+                $post_data['record_type'] = 'A';
+                $post_data['record_line_id'] = $recordLineId;
+                $post_data['value'] = $this->_dnsIP;
+                $post_data['mx'] = $this->_dnsMX;
+                $post_data['login_token'] = $token;
+                $post_data['format'] = 'json';
+                $post_data['lang'] = 'en';
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             default:
                 break;
@@ -1594,45 +1682,45 @@ class updatedns
                 break;
             case 'gratisdns':
                 if (preg_match('/Forkerte værdier/i', $data)) {
-                        $status = "Dynamic DNS: (Error) Wrong values - Update could not be completed.";
+                    $status = "Dynamic DNS: (Error) Wrong values - Update could not be completed.";
                 } elseif (preg_match('/Bruger login: Bruger eksistere ikke/i', $data)) {
-                        $status = "Dynamic DNS: (Error) Unknown username - User does not exist.";
+                    $status = "Dynamic DNS: (Error) Unknown username - User does not exist.";
                 } elseif (preg_match('/Bruger login: 1Fejl i kodeord/i', $data)) {
-                        $status = "Dynamic DNS: (Error) Wrong password - Remember password is case sensitive.";
+                    $status = "Dynamic DNS: (Error) Wrong password - Remember password is case sensitive.";
                 } elseif (preg_match('/Domæne kan IKKE administreres af bruger/i', $data)) {
-                        $status = "Dynamic DNS: (Error) User unable to administer the selected domain.";
+                    $status = "Dynamic DNS: (Error) User unable to administer the selected domain.";
                 } elseif (preg_match('/OK/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                        $successful_update = true;
+                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                    $successful_update = true;
                 } else {
-                        $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                    $status = "Dynamic DNS: (Unknown Response)";
+                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case 'duckdns':
                 if (preg_match('/OK/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                        $successful_update = true;
+                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                    $successful_update = true;
                 } else {
-                        $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                    $status = "Dynamic DNS: (Unknown Response)";
+                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case 'dynv6':
             case 'dynv6-v6':
                 /* API-Documentation: https://dynv6.com/docs/apis */
                 if (preg_match('/addresses updated/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
-                        $successful_update = true;
+                    $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
+                    $successful_update = true;
                 } elseif (preg_match('/addresses unchanged/i', $data)) {
-                        $status = "Dynamic DNS: (Success) IP Address Unchanged!";
-                        $successful_update = true;
+                    $status = "Dynamic DNS: (Success) IP Address Unchanged!";
+                    $successful_update = true;
                 } else {
-                        $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                    $status = "Dynamic DNS: (Unknown Response)";
+                    log_error("Dynamic DNS: PAYLOAD: {$data}");
+                    $this->_debug($data);
                 }
                 break;
             case '3322':
@@ -1802,6 +1890,17 @@ class updatedns
                     $successful_update = true;
                 }
                 break;
+            case 'dnspod':
+                $output = json_decode($data);
+                if ($output->status->code == 1) {
+                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): update err, code: {$output->status->code}, message: {$output->status->message}";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): update err, code: {$output->status->code}, message: {$output->status->message}");
+                }
+                break;
+
             default:
                 break;
         }
@@ -1894,7 +1993,7 @@ class updatedns
         if ($this->_useIPv6 == true) {
             if (file_exists($this->_cacheFile_v6)) {
                 $contents = file_get_contents($this->_cacheFile_v6);
-                list($cacheIP,$cacheTime) = explode('|', $contents);
+                list($cacheIP, $cacheTime) = explode('|', $contents);
                 $this->_debug($cacheIP . '/' . $cacheTime);
                 $initial = false;
                 $log_error .= "Cached IPv6: {$cacheIP} ";
@@ -1908,7 +2007,7 @@ class updatedns
         } else {
             if (file_exists($this->_cacheFile)) {
                 $contents = file_get_contents($this->_cacheFile);
-                list($cacheIP,$cacheTime) = explode('|', $contents);
+                list($cacheIP, $cacheTime) = explode('|', $contents);
                 $this->_debug($cacheIP . '/' . $cacheTime);
                 $initial = false;
                 $log_error .= "Cached IP: {$cacheIP} ";

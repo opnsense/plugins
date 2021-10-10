@@ -152,6 +152,7 @@ function dyndns_list()
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
         'zoneedit' => 'ZoneEdit',
+        'dnspod' => 'DNSPod',
     );
 }
 
