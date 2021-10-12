@@ -31,9 +31,9 @@ from . import BaseLogFormat
 puppet_timeformat = r'^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+[-+]{1}\d{4}).*'
 
 
-class TelegrafLogFormat(BaseLogFormat):
+class PuppetLogFormat(BaseLogFormat):
     def __init__(self, filename):
-        super(TelegrafLogFormat, self).__init__(filename)
+        super(PuppetLogFormat, self).__init__(filename)
         self._priority = 100
 
     def match(self, line):
