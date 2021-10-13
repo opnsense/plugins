@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -12,6 +12,12 @@
                 <default>0</default>
                 <Required>Y</Required>
             </gracefulStop>
+            <hardStopAfter type="TextField">
+                <default>60s</default>
+                <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                <Required>N</Required>
+            </hardStopAfter>
             <seamlessReload type="BooleanField">
                 <default>0</default>
                 <Required>Y</Required>
@@ -2062,6 +2068,7 @@
                         <http-response_replace-value>http-response header replace value</http-response_replace-value>
                         <http-response_set-status>http-response set-status</http-response_set-status>
                         <http-response_set-var>http-response set-var</http-response_set-var>
+                        <monitor_fail>monitor fail: report failure to a monitor request</monitor_fail>
                         <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
                         <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
                         <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
@@ -2246,6 +2253,10 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_response_set_var_expr>
+                <monitor_fail_uri type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </monitor_fail_uri>
                 <tcp_request_content_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
