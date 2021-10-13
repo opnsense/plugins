@@ -10,12 +10,14 @@ Plugin Changelog
 
 Added:
 * add support for advanced resolver properties (#2330)
+* add graceful stop timeout to service settings
 
 Fixed:
 * no haproxy.conf after restoring a config backup (#2474)
 
 Changed:
 * deploy haproxy.conf if it does not exist (#2474)
+* add new timeout (60s) which will terminate open connections when using graceful stop
 
 3.5
 
