@@ -233,7 +233,7 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('http_server', array(
             'servername', 'locations', 'root', 'https_only', 'certificate',
-            'listen_http_port', 'listen_https_port'
+            'listen_http_address', 'listen_https_address', 'default_server'
         ));
     }
 
@@ -261,7 +261,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // stream server
     public function searchstreamserverAction()
     {
-        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_port'));
+        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_address'));
     }
 
     public function getstreamserverAction($uuid = null)
