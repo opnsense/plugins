@@ -665,12 +665,14 @@
       <listen_http_address type="CSVListField">
         <Required>N</Required>
         <multiple>Y</multiple>
+        <default>80,[::]:80</default>
         <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
         <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
       </listen_http_address>
       <listen_https_address type="CSVListField">
         <Required>N</Required>
         <multiple>Y</multiple>
+        <default>443,[::]:443</default>
         <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
         <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
       </listen_https_address>
