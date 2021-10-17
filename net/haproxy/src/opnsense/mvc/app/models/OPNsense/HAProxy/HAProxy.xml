@@ -223,7 +223,7 @@
                     <Required>N</Required>
                 </timeoutServer>
                 <retries type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                     <default>3</default>
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
@@ -1143,7 +1143,7 @@
                     <Required>N</Required>
                 </tuning_timeoutServer>
                 <tuning_retries type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
                     <Required>N</Required>
@@ -1585,6 +1585,10 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </negate>
+                <caseSensitive type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </caseSensitive>
                 <hdr_beg type="TextField">
                     <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
