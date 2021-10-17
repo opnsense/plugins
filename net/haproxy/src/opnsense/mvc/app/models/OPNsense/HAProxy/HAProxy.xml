@@ -223,7 +223,7 @@
                     <Required>N</Required>
                 </timeoutServer>
                 <retries type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                     <default>3</default>
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
@@ -1143,7 +1143,7 @@
                     <Required>N</Required>
                 </tuning_timeoutServer>
                 <tuning_retries type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
                     <Required>N</Required>
