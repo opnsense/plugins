@@ -116,6 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'cloudflare-v6':
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'eurodns':
             case 'godaddy':
             case 'godaddy-v6':

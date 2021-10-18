@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2017 Frank Wall
+Copyright (C) 2017-2021 Frank Wall
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
 
@@ -90,17 +90,32 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#validations">{{ lang._('Challenge Types') }}</a></li>
+<ul class="nav nav-tabs" role="tablist" id="maintabs">
+    <li {% if showIntro|default('0')=='1' %}class="active"{% endif %}><a data-toggle="tab" id="validations-introduction" href="#subtab_validations-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    <li {% if showIntro|default('0')=='0' %}class="active"{% endif %}><a data-toggle="tab" id="validations-tab" href="#validations"><b>{{ lang._('Challenge Types') }}</b></a></li>
 </ul>
 
-<div class="tab-content content-box tab-content">
-    <div id="validations" class="tab-pane fade in active">
+<div class="content-box tab-content">
+
+    <div id="subtab_validations-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
+        <div class="col-md-12">
+            <h1>{{ lang._('Challenge Types') }}</h1>
+            <p>{{ lang._('As defined by the ACME standard, Certificate Authorities (CAs) must validate that you control a domain name. This is done by using "challenges". The following challenge types are supported:') }}</p>
+            <ul>
+              <li>{{ lang._('%sDNS-01:%s This is the most reliable challenge type and thus highly recommended when using this plugin. It requires that you control the DNS for your domain name and that your DNS provider is supported both %sby acme.sh%s and this plugin.') | format('<b>', '</b>', '<a href="https://github.com/acmesh-official/acme.sh/wiki/dnsapi" target="_blank">', '</a>') }}</li>
+              <li>{{ lang._("%sHTTP-01:%s This challenge type usually requires manual configuration and is not recommended. The DNS name used in the certificate must point to the OPNsense host where the ACME Client plugin is running on. The integrated web service will try to guess the correct settings for your setup, but this may not always work out-of-the-box. Furthermore this challenge type cannot be used to create %swildcard certificates with Let's Encrypt%s.") | format('<b>', '</b>', '<a href="https://letsencrypt.org/docs/challenge-types/#http-01-challenge" target="_blank">', '</a>') }}</li>
+            </ul>
+            <p>{{ lang._('When experiencing issues with a challenge type, try setting the log level to "debug". Please provide full logs when %sreporting issues%s for a challenge type. You should also consider to ask the Certificate Authority for support, if you choose to use a commercial CA.') | format('<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}</p>
+        </div>
+    </div>
+
+    <div id="validations" class="tab-pane fade {% if showIntro|default('0')=='0' %}in active{% endif %}">
         <table id="grid-validations" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogValidation">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                <th data-column-id="method" data-type="string">{{ lang._('Challenge Type') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -119,6 +134,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
+
 </div>
 
 {# include dialogs #}

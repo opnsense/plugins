@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# fallback if no config file exists (i.e. after config backup restore)
+if [ ! -e /usr/local/etc/haproxy.conf -a -e /usr/local/etc/haproxy.conf.staging ]; then
+    cp /usr/local/etc/haproxy.conf.staging /usr/local/etc/haproxy.conf
+    /usr/local/etc/rc.d/haproxy start
+fi
