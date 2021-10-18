@@ -32,7 +32,7 @@ namespace OPNsense\Nginx\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 
-class M1_21_0 extends BaseModelMigration
+class M1_24_0 extends BaseModelMigration
 {
     public function run($model)
     {
