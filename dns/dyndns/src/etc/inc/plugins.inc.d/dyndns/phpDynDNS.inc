@@ -1044,9 +1044,11 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'regfish':
+                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&ipv4={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                break;
             case 'regfish-v6':
-                $family = $this->_useIPv6 ? 'ipv6' : 'ipv4';
-                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&{$family}={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                $server = "https://dyndns6.regfish.de/?fqdn={$this->_dnsHost}&ipv6={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'linode':
