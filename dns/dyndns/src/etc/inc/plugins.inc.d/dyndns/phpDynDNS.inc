@@ -248,19 +248,19 @@ class updatedns
         switch ($dnsService) {
             case 'all-inkl-v6':
             case 'azurev6':
+            case 'cloudflare-token-v6':
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'digitalocean-v6':
             case 'dynv6-v6':
-            case 'he-net-v6':
             case 'godaddy-v6':
+            case 'he-net-v6':
+            case 'hetzner-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
-            case 'cloudflare-token-v6':
-            case 'desec-v4-v6':
-            case 'desec-v6':
-            case 'hetzner-v6':
             case 'strato-v6':
                 $this->_useIPv6 = true;
                 break;
