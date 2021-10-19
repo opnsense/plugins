@@ -226,7 +226,7 @@
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                     <default>3</default>
-                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <ValidationMessage>Please specify a value between 0 and 100.</ValidationMessage>
                     <Required>Y</Required>
                 </retries>
                 <redispatch type="OptionField">
@@ -1145,7 +1145,7 @@
                 <tuning_retries type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <ValidationMessage>Please specify a value between 0 and 100.</ValidationMessage>
                     <Required>N</Required>
                 </tuning_retries>
                 <customOptions type="TextField">
