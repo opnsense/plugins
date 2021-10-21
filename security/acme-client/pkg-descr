@@ -8,6 +8,31 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.3
+
+Added:
+* add support for custom ACME CAs (#2529)
+* add support for Porkbun API (#2561)
+
+Fixed:
+* fix ACME Client reset (#2562)
+
+Changed:
+* change default Challenge Type from HTTP-01 to DNS-01
+
+3.2
+
+Added:
+* add button to (re-) import a certificate into the trust storage
+
+Fixed:
+* associate certificates with the correct CA when multiple CAs use the same name (#2550)
+
+3.1
+
+Changed:
+* rename "LE Account" to "ACME Account" in certificate dialog (#2526)
+
 3.0
 
 Added:

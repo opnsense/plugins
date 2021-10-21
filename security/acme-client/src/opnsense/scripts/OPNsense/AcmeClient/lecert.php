@@ -171,7 +171,9 @@ function main()
         }
     } elseif ($options['mode'] === 'import' && isset($options['cert'])) {
         $cert = new LeCertificate($options['cert']);
-        $cert->import();
+        // Set $skip_validation to allow import even when validation
+        // is currently failing.
+        $cert->import(true);
     } elseif ($options['mode'] === 'revoke' && isset($options['cert'])) {
         $cert = new LeCertificate($options['cert']);
         $cert->revoke();

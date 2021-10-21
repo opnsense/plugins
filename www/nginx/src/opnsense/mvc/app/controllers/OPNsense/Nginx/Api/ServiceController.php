@@ -50,14 +50,6 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array('status' => 'failed');
     }
 
-
-    /**
-     * reconfigure with optional stop, generate config and start / reload
-     * @return array response message
-     * @throws \Exception when configd action fails
-     * @throws \ReflectionException when model can't be instantiated
-     */
-
     /**
      * retrieve status of service
      * @return array response message
@@ -97,7 +89,8 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array();
     }
 
-    protected function reconfigureForceRestart() {
+    protected function reconfigureForceRestart()
+    {
         return 0;
     }
 }

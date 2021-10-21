@@ -58,6 +58,7 @@ net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
+net/realtek-re -- Realtek re(4) vendor driver
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
@@ -101,7 +102,7 @@ sysutils/munin-node -- Munin monitoring agent
 sysutils/nextcloud-backup -- Track config changes using NextCloud
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
-sysutils/puppet-agent -- Manage Puppet Agent (development only)
+sysutils/puppet-agent -- Manage Puppet Agent
 sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools

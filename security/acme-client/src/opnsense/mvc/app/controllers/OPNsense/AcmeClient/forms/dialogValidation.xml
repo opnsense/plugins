@@ -1338,4 +1338,19 @@
         <label>Key</label>
         <type>text</type>
     </field>
+    <field>
+        <label>Porkbun API</label>
+        <type>header</type>
+        <style>table_dns table_dns_porkbun</style>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_secret</id>
+        <label>Secret API Key</label>
+        <type>password</type>
+    </field>
 </form>
