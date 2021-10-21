@@ -36,6 +36,12 @@
         <help>Set the password for authentication.</help>
     </field>
     <field>
+        <id>output.influx_ssl_verify</id>
+        <label>Disable SSL verification</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
         <id>output.influx_v2_enable</id>
         <label>Enable Influx v2 Output</label>
         <type>checkbox</type>
