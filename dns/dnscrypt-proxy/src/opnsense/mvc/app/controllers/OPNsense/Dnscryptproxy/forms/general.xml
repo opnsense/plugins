@@ -165,8 +165,7 @@
         <allownew>true</allownew>
         <help><![CDATA[Set a list of <a href="https://dnscrypt.info/public-servers">known servers</a> e.g. if you want to stick with Cisco only. You can also put your manually added servers here. Please use on your own risk.]]></help>
     </field>
-    </field>
-        <field>
+    <field>
         <id>general.query_logs</id>
         <label>Enable query logs</label>
         <type>checkbox</type>
