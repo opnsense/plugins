@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.2</version>
+   <version>1.0.4</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -35,10 +35,20 @@
          </timeout>
       </general>
       <host type="ArrayField">
+        <enabled type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+         </enabled>
          <name type="TextField">
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Host names should be unique.</ValidationMessage>
+                    <type>UniqueConstraint</type>
+                </check001>
+            </Constraints>
          </name>
          <address type="TextField">
             <Required>Y</Required>
@@ -67,6 +77,12 @@
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Table names should be unique.</ValidationMessage>
+                    <type>UniqueConstraint</type>
+                </check001>
+            </Constraints>
          </name>
          <enabled type="BooleanField">
             <default>0</default>
@@ -134,6 +150,12 @@
             <Required>Y</Required>
             <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Virtual server names should be unique.</ValidationMessage>
+                    <type>UniqueConstraint</type>
+                </check001>
+            </Constraints>
          </name>
          <enabled type="BooleanField">
             <default>0</default>
@@ -153,6 +175,14 @@
             <ChangeCase>lower</ChangeCase>
             <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
          </listen_address>
+         <listen_proto type="OptionField">
+             <Required>Y</Required>
+             <default>tcp</default>
+             <OptionValues>
+                 <tcp>TCP</tcp>
+                 <udp>UDP</udp>
+             </OptionValues>
+         </listen_proto>
          <listen_startport type="PortField">
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
@@ -274,6 +304,15 @@
             <ValidationMessage>Table check not found</ValidationMessage>
             <multiple>N</multiple>
             <Required>N</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Table check must be set.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>backuptransport_table</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
          </backuptransport_tablecheck>
          <backuptransport_tablemode type="OptionField">
             <default>roundrobin</default>

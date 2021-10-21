@@ -74,6 +74,10 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </multihop>
+                        <bfd type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </bfd>
                         <keepalive type="IntegerField">
                                 <Required>N</Required>
                                 <MinimumValue>1</MinimumValue>

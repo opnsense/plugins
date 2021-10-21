@@ -86,7 +86,7 @@ if (isset($nginx['http_server'])) {
           // try to find the reference
             $cert = find_cert($http_server['certificate']);
             if (!isset($cert)) {
-                next;
+                continue;
             }
             $chain = [];
             $ca_chain = ca_chain_array($cert);
@@ -121,7 +121,7 @@ if (isset($nginx['http_server'])) {
 }
 // end http, begin streams
 if (isset($nginx['stream_server'])) {
-    if (is_array($nginx['stream_server']) && !isset($nginx['stream_server']['servername'])) {
+    if (is_array($nginx['stream_server']) && !isset($nginx['stream_server']['@attributes']['uuid'])) {
         $stream_servers = $nginx['stream_server'];
     } else {
         $stream_servers = array($nginx['stream_server']);
@@ -131,7 +131,7 @@ if (isset($nginx['stream_server'])) {
           // try to find the reference
             $cert = find_cert($stream_server['certificate']);
             if (!isset($cert)) {
-                next;
+                continue;
             }
             $chain = [];
             $ca_chain = ca_chain_array($cert);
@@ -154,7 +154,7 @@ if (isset($nginx['stream_server'])) {
                     $ca = find_ca($caref);
                     if (isset($ca)) {
                         export_pem_file(
-                            KEY_DIRECTORY . $hostname . '_ca.pem',
+                            KEY_DIRECTORY . $stream_server['@attributes']['uuid'] . '_ca.pem',
                             $ca['crt']
                         );
                     }
@@ -184,7 +184,7 @@ if (isset($nginx['upstream'])) {
                     foreach (ca_chain_array($cert) as $entry) {
                         $chain[] = base64_decode($entry['crt']);
                     }
-                    $hostname = explode(',', $http_server['servername'])[0];
+
                     export_pem_file(
                         KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.pem',
                         $cert['crt'],
@@ -239,9 +239,63 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
         unset($file);
     }
 }
+
 // create directories for cache
 foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
+}
+
+// create custom error pages
+const ERRORPAGE_DIR = '/usr/local/etc/nginx/views';
+@mkdir(ERRORPAGE_DIR, 0755, true);
+$used_errorpages = array();
+// search used error pages in http servers and locations
+foreach (array($nginx->http_server, $nginx->location) as $entity) {
+    foreach ($entity->iterateItems() as $element) {
+        $pages = explode(',', $element->errorpages);
+        foreach ($pages as $page) {
+            $page = str_replace('-', '', $page);
+            if (!in_array($page, $used_errorpages)) {
+                $used_errorpages[] = $page;
+            }
+        }
+    }
+}
+// search used WAF error pages
+foreach ($nginx->location->iterateItems() as $location) {
+    if ($location->secrules_errorpage != '') {
+        $page = str_replace('-', '', $location->secrules_errorpage);
+        if (!in_array($page, $used_errorpages)) {
+            $used_errorpages[] = $page;
+        }
+    }
+}
+// create/update error pages
+foreach ($nginx->errorpage->iterateItems() as $errorpage) {
+    $uuid = str_replace('-', '', $errorpage->getAttributes()['uuid']);
+    if (in_array($uuid, $used_errorpages)) {
+        $filename = "error_$uuid.html";
+        $content = base64_decode((string)$errorpage->pagecontent);
+        // Does error page have a content?
+        if (strlen($content) > 0) {
+            $fs_hash = @hash_file("sha1", ERRORPAGE_DIR . "/$filename");
+            if ($fs_hash !== hash("sha1", $content)) {
+                @file_put_contents(ERRORPAGE_DIR . "/$filename", $content);
+            }
+            chmod(ERRORPAGE_DIR . "/$filename", 0644);
+        } else {
+            unset($used_errorpages[array_search($uuid, $used_errorpages)]);
+        }
+    }
+}
+// delete unused (old) error pages
+$dir = new \DirectoryIterator(ERRORPAGE_DIR);
+foreach ($dir as $file) {
+    if ($file->isFile() && strpos($file->getFilename(), 'error_') === 0) {
+        if (!in_array(substr($file->getFilename(), 6, 32), $used_errorpages)) {
+            @unlink($file->getPathname());
+        }
+    }
 }
 
 // export TLS fingerprint database for MitM detection

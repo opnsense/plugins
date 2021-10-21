@@ -41,7 +41,7 @@ use OPNsense\AcmeClient\LeCertificate;
 const ABOUT = <<<TXT
 
 This script acts as a bridge between the OPNsense WebGUI/API and the
-acme.sh Let's Encrypt client.
+acme.sh ACME client.
 
 TXT;
 
@@ -66,7 +66,7 @@ const MODES = [
         'description' => 'run automations for the specified certificate',
     ],
     'register' => [
-        'description' => 'register the specified account with Lets Encrypt',
+        'description' => 'register the specified account with ACME CA',
     ],
 ];
 
@@ -76,7 +76,7 @@ const STATIC_OPTIONS = <<<TXT
 --mode              Specify the mode of operation
 --cert              The certificate UUID when working with a single certificate
 --all               Work with ALL enabled certificates
---account           The account UUID when working with an Lets Encrypt account
+--account           The account UUID when working with an ACME CA account
 --force             Force certain operations (i.e. renew)
 --cron              Special mode when running from cron (i.e. consider auto renew settings)
 TXT;
@@ -98,7 +98,7 @@ const EXAMPLES = <<<TXT
 - Completely remove a certificate (keeping the copy in Trust Store untouched)
   lecert.php --mode remove --cert 00000000-0000-0000-0000-000000000000
 
-- When registering a new account with Lets Encrypt
+- When registering a new account with ACME CA
   lecert.php --mode register --account 00000000-0000-0000-0000-000000000000
 TXT;
 
@@ -171,7 +171,9 @@ function main()
         }
     } elseif ($options['mode'] === 'import' && isset($options['cert'])) {
         $cert = new LeCertificate($options['cert']);
-        $cert->import();
+        // Set $skip_validation to allow import even when validation
+        // is currently failing.
+        $cert->import(true);
     } elseif ($options['mode'] === 'revoke' && isset($options['cert'])) {
         $cert = new LeCertificate($options['cert']);
         $cert->revoke();

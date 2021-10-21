@@ -1,0 +1,514 @@
+<model>
+    <mount>//OPNsense/radsecproxy</mount>
+    <description>
+        RadSecProxy-Management
+    </description>
+    <version>0.0.1</version>
+    <items>
+        <general>
+
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+
+            <logLevel type="OptionField">
+                <Required>Y</Required>
+                <default>2</default>
+                <OptionValues>
+                    <ll1 value="1">1 (only serious errors)</ll1>
+                    <ll2 value="2">2 (default)</ll2>
+                    <ll3 value="3">3</ll3>
+                    <ll4 value="4">4</ll4>
+                    <ll5 value="5">5 (log everything)</ll5>
+                </OptionValues>
+            </logLevel>
+
+            <logFullUsername type="OptionField">
+                <Required>Y</Required>
+                <default>off</default>
+                <OptionValues>
+                    <on>On</on>
+                    <off>Off</off>
+                </OptionValues>
+            </logFullUsername>
+
+            <logMac type="OptionField">
+                <Required>Y</Required>
+                <default>Original</default>
+                <OptionValues>
+                    <Static>Static</Static>
+                    <Original>Original</Original>
+                    <VendorHashed>VendorHashed</VendorHashed>
+                    <VendorKeyHashed>VendorKeyHashed</VendorKeyHashed>
+                    <FullyHashed>FullyHashed</FullyHashed>
+                    <FullyKeyHashed>FullyKeyHashed</FullyKeyHashed>
+                </OptionValues>
+            </logMac>
+
+            <loopPrevention type="OptionField">
+                <Required>Y</Required>
+                <default>on</default>
+                <OptionValues>
+                    <on>On</on>
+                    <off>Off</off>
+                </OptionValues>
+            </loopPrevention>
+
+            <listenUdp type="TextField">
+                <Required>N</Required>
+            </listenUdp>
+
+            <listenTcp type="TextField">
+                <Required>N</Required>
+            </listenTcp>
+
+            <listenTls type="TextField">
+                <Required>N</Required>
+            </listenTls>
+
+            <listenDtls type="TextField">
+                <Required>N</Required>
+            </listenDtls>
+
+            <sourceUdp type="TextField">
+                <Required>N</Required>
+            </sourceUdp>
+
+            <sourceTcp type="TextField">
+                <Required>N</Required>
+            </sourceTcp>
+
+            <sourceTls type="TextField">
+                <Required>N</Required>
+            </sourceTls>
+
+            <sourceDtls type="TextField">
+                <Required>N</Required>
+            </sourceDtls>
+
+        </general>
+
+        <clients>
+            <client type="ArrayField">
+
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+                <identifier type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Identifier already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </identifier>
+
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+
+                <host type="NetworkField">
+                    <Required>Y</Required>
+                    <IpAllowed>Y</IpAllowed>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </host>
+
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <default>udp</default>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <tls>TLS</tls>
+                        <dtls>DTLS</dtls>
+                    </OptionValues>
+                </type>
+
+                <secret type="TextField">
+                    <Required>N</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Must be set for UDP-clients.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>type</field>
+                            <check>udp</check>
+                        </check001>
+                        <check002>
+                            <ValidationMessage>Must be set for TCP-clients.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>type</field>
+                            <check>tcp</check>
+                        </check002>
+                    </Constraints>
+                </secret>
+
+                <tlsConfig type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <tlsConfigs>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>tlsConfigs.tlsConfig</items>
+                            <display>name</display>
+                        </tlsConfigs>
+                    </Model>
+                </tlsConfig>
+
+                <certificateNameCheck type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </certificateNameCheck>
+
+                <matchCertificateAttribute type="TextField">
+                    <Required>N</Required>
+                </matchCertificateAttribute>
+
+                <rewriteIn type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteIn>
+
+                <rewriteOut type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteOut>
+
+            </client>
+        </clients>
+
+        <servers>
+            <server type="ArrayField">
+
+                <identifier type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Identifier already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </identifier>
+
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+
+                <host type="TextField">
+                    <Required>Y</Required>
+                    <IpAllowed>Y</IpAllowed>
+                </host>
+
+                <port type="PortField">
+                    <Required>N</Required>
+                </port>
+
+                <statusServer type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                        <minimal>Minimal</minimal>
+                        <auto>Auto</auto>
+                    </OptionValues>
+                </statusServer>
+
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <default>udp</default>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <tls>TLS</tls>
+                        <dtls>DTLS</dtls>
+                    </OptionValues>
+                </type>
+
+                <secret type="TextField">
+                    <Required>N</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Must be set for UDP-servers.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>type</field>
+                            <check>udp</check>
+                        </check001>
+                        <check002>
+                            <ValidationMessage>Must be set for TCP-servers.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>type</field>
+                            <check>tcp</check>
+                        </check002>
+                    </Constraints>
+                </secret>
+
+                <tlsConfig type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <tlsConfigs>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>tlsConfigs.tlsConfig</items>
+                            <display>name</display>
+                        </tlsConfigs>
+                    </Model>
+                </tlsConfig>
+
+                <certificateNameCheck type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </certificateNameCheck>
+
+                <matchCertificateAttribute type="TextField">
+                    <Required>N</Required>
+                </matchCertificateAttribute>
+
+                <rewriteIn type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteIn>
+
+                <rewriteOut type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <rewrites>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>rewrites.rewrite</items>
+                            <display>name</display>
+                        </rewrites>
+                    </Model>
+                </rewriteOut>
+
+            </server>
+        </servers>
+
+        <tlsConfigs>
+            <tlsConfig type="ArrayField">
+
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <default>default</default>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Name already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </name>
+
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+
+                <caCertificateRefId type="CertificateField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Field is required</ValidationMessage>
+                    <Type>ca</Type>
+                </caCertificateRefId>
+
+                <proxyCertificateRefId type="CertificateField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Field is required</ValidationMessage>
+                    <Type>cert</Type>
+                </proxyCertificateRefId>
+
+                <policyOids type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                </policyOids>
+
+                <crlCheck type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </crlCheck>
+
+                <cacheExpiry type="IntegerField">
+                    <Required>N</Required>
+                </cacheExpiry>
+
+            </tlsConfig>
+        </tlsConfigs>
+
+        <realms>
+            <realm type="ArrayField">
+
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+
+                <realm type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Must not be empty</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Must be unique</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </realm>
+
+                <server type="ModelRelationField">
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <Model>
+                        <servers>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>servers.server</items>
+                            <display>identifier</display>
+                        </servers>
+                    </Model>
+                    <ValidationMessage>Related server not found</ValidationMessage>
+                </server>
+
+                <accountingServer type="ModelRelationField">
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <Model>
+                        <servers>
+                            <source>OPNsense.RadSecProxy.RadSecProxy</source>
+                            <items>servers.server</items>
+                            <display>identifier</display>
+                        </servers>
+                    </Model>
+                    <ValidationMessage>Related server not found</ValidationMessage>
+                </accountingServer>
+
+                <accountingResponse type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </accountingResponse>
+
+                <replyMessage type="TextField">
+                    <Required>N</Required>
+                </replyMessage>
+
+            </realm>
+        </realms>
+
+        <rewrites>
+            <rewrite type="ArrayField">
+
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
+                    <default>default</default>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>Name already in use</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </name>
+
+                <addAttributes type="TextField">
+                    <Required>N</Required>
+                </addAttributes>
+
+                <addVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </addVendorAttributes>
+
+                <supplementAttributes type="TextField">
+                    <Required>N</Required>
+                </supplementAttributes>
+
+                <supplementVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </supplementVendorAttributes>
+
+                <modifyAttributes type="TextField">
+                    <Required>N</Required>
+                </modifyAttributes>
+
+                <modifyVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </modifyVendorAttributes>
+
+                <removeAttributes type="TextField">
+                    <Required>N</Required>
+                </removeAttributes>
+
+                <removeVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </removeVendorAttributes>
+
+                <whitelistMode type="OptionField">
+                    <Required>Y</Required>
+                    <default>off</default>
+                    <OptionValues>
+                        <on>On</on>
+                        <off>Off</off>
+                    </OptionValues>
+                </whitelistMode>
+
+                <whitelistAttributes type="TextField">
+                    <Required>N</Required>
+                </whitelistAttributes>
+
+                <whitelistVendorAttributes type="TextField">
+                    <Required>N</Required>
+                </whitelistVendorAttributes>
+
+            </rewrite>
+        </rewrites>
+    </items>
+</model>

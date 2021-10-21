@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2018 EURO-LOG AG
+ * Copyright (c) 2021 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -98,10 +99,9 @@ class ServiceController extends ApiMutableServiceControllerBase
                 $this->sessionClose();
                 $result['function'] = "reconfigure";
                 $result['status'] = 'failed';
-                $mdlRelayd = new Relayd();
                 $backend = new Backend();
                 $status = $this->statusAction();
-                if ($mdlRelayd->general->enabled->__toString() == 1) {
+                if (!empty((string)$this->getModel()->general->enabled)) {
                     $result = $this->configtestAction();
                     if ($result['template'] == 'OK' && preg_match('/configuration OK$/', $result['result']) == 1) {
                         if ($status['status'] != 'running') {
@@ -118,8 +118,7 @@ class ServiceController extends ApiMutableServiceControllerBase
                     }
                 }
                 $this->lock(1);
-                $mdlRelayd = new Relayd();
-                if ($mdlRelayd->configClean()) {
+                if ($this->getModel()->configClean()) {
                     $result['status'] = 'ok';
                 }
                 return $result;

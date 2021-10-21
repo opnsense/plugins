@@ -19,6 +19,12 @@
         <help>This will activate the routing service only on the master device.</help>
     </field>
     <field>
+        <id>general.enablesnmp</id>
+        <label>Enable SNMP AgentX Support</label>
+        <type>checkbox</type>
+        <help>This will activate support for Net-SNMP AgentX.</help>
+    </field>
+    <field>
         <id>general.enablesyslog</id>
         <label>Enable logging</label>
         <type>checkbox</type>
@@ -26,7 +32,7 @@
     </field>
     <field>
         <id>general.sysloglevel</id>
-        <label>log level</label>
+        <label>Log Level</label>
         <type>dropdown</type>
         <help>This is the detail level of the log. A higher level means more data is logged.</help>
     </field>

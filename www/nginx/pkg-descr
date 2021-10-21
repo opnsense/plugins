@@ -5,8 +5,25 @@ NGINX functionality includes HTTP server, HTTP and mail reverse proxy, caching,
 load balancing, compression, request throttling, connection multiplexing and
 reuse, SSL offload and HTTP media streaming.
 
+WWW: https://nginx.org/
+
 Plugin Changelog
 ================
+
+1.23
+
+* Add custom error pages on a per HTTP server basis (contributed by 8191)
+* Migration for PHP Phalcon 4 (non breaking change for UI/API)
+
+1.22
+
+* Add X-Forwarded-Port and X-Forwarded-Host headers (contributed by Carlos Cesario)
+* Fix wrong stream server CA filename (contributed by Ingo Theiss)
+* Fix proxy_ssl_name and add hook (contributed by kulikov-a)
+* Apply loadbalancing for UDP (contributed by Thomas Laubrock)
+* Naxsi whitelist improvements (contributed by Manuel Faux)
+* Grid view improvements (contributed by Manuel Faux)
+* Minor fixes in setup.php (contributed by kulikov-a)
 
 1.21
 
@@ -164,5 +181,3 @@ Plugin Changelog
 * add experimental support to handle the web interface (can only be enabled via CLI)
 * add WAF (NAXSI) support
 * add Authentication support
-
-WWW: https://nginx.org/

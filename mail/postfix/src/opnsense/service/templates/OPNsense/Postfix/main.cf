@@ -83,29 +83,66 @@ message_size_limit = {{ OPNsense.postfix.general.message_size_limit }}
 {% if helpers.exists('OPNsense.postfix.general.masquerade_domains') and OPNsense.postfix.general.masquerade_domains != '' %}
 masquerade_domains = {{ OPNsense.postfix.general.masquerade_domains }}
 {% endif %}
-{% if helpers.exists('OPNsense.postfix.general.disable_ssl') and OPNsense.postfix.general.disable_ssl == '1' %}
-smtpd_tls_mandatory_protocols=!SSLv2,!SSLv3
-smtp_tls_mandatory_protocols=!SSLv2,!SSLv3
-smtpd_tls_protocols=!SSLv2,!SSLv3
-smtp_tls_protocols=!SSLv2,!SSLv3
-{% endif %}
-{% if helpers.exists('OPNsense.postfix.general.disable_weak_ciphers') and OPNsense.postfix.general.disable_weak_ciphers == '1' %}
-smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
-{% endif %}
 {% if helpers.exists('OPNsense.postfix.general.tlswrappermode') and OPNsense.postfix.general.tlswrappermode == '1' %}
 smtp_tls_wrappermode = yes
 {% endif %}
+
 {% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
+smtp_tls_loglevel = 1
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.tls_client_compatibility') %}
+{% if OPNsense.postfix.general.tls_client_compatibility == 'modern' %}
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1, !TLSv1.2
+{% elif OPNsense.postfix.general.tls_client_compatibility == 'intermediate' %}
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtp_tls_mandatory_ciphers = medium
+{% elif OPNsense.postfix.general.tls_client_compatibility == 'old' %}
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtp_tls_mandatory_ciphers = low
+{% endif %}
+smtp_tls_protocols = $smtp_tls_mandatory_protocols
+{% if OPNsense.postfix.general.tls_client_compatibility != 'modern' %}
+smtp_tls_ciphers = $smtp_tls_mandatory_ciphers
+{% endif %}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.certificate') and OPNsense.postfix.general.certificate != '' %}
 smtpd_use_tls = yes
+smtpd_tls_auth_only = yes
+smtpd_tls_loglevel = 1
+smtpd_tls_received_header = yes
 smtpd_tls_cert_file = /usr/local/etc/postfix/cert_opn.pem
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.ca') and OPNsense.postfix.general.ca != '' %}
 smtpd_tls_CAfile = /usr/local/etc/postfix/ca_opn.pem
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.tls_server_compatibility') %}
+{% if OPNsense.postfix.general.tls_server_compatibility == 'modern' %}
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1, !TLSv1.2
+{% elif OPNsense.postfix.general.tls_server_compatibility == 'intermediate' %}
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtpd_tls_dh1024_param_file = /usr/local/etc/dh-parameters.2048
+smtpd_tls_mandatory_ciphers = medium
+{% elif OPNsense.postfix.general.tls_server_compatibility == 'old' %}
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtpd_tls_dh1024_param_file = /usr/local/etc/dh-parameters.2048
+smtpd_tls_mandatory_ciphers = low
+{% endif %}
+smtpd_tls_protocols = $smtpd_tls_mandatory_protocols
+{% if OPNsense.postfix.general.tls_server_compatibility != 'modern' %}
+smtpd_tls_ciphers = $smtpd_tls_mandatory_ciphers
+{% endif %}
+{% if helpers.exists('OPNsense.postfix.general.tls_client_compatibility') or helpers.exists('OPNsense.postfix.general.tls_server_compatibility') %}
+tls_low_cipherlist = ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA
+tls_medium_cipherlist = ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+{% if OPNsense.postfix.general.tls_server_compatibility == 'old' %}
+tls_preempt_cipherlist = yes
+{% else %}
+tls_preempt_cipherlist = no
+{% endif %}
+{% endif%}
 
+{% endif %}
 {% if helpers.exists('OPNsense.postfix.general.relayhost') and OPNsense.postfix.general.relayhost != '' %}
 relayhost = {{ OPNsense.postfix.general.relayhost }}
 {% endif %}
@@ -184,6 +221,10 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 
 {% if smtpd_recipient_restrictions|length >= 1 %}
 smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
+{% endif %}
+
+{% if helpers.exists('OPNsense.postfix.general.delay_warning_time') and OPNsense.postfix.general.delay_warning_time != '0' %}
+delay_warning_time = {{ OPNsense.postfix.general.delay_warning_time }}h
 {% endif %}
 
 smtpd_helo_required = yes

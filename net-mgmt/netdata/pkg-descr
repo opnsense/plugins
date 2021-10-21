@@ -7,3 +7,15 @@ happening on the systems it runs (including web servers, databases,
 applications), using highly interactive web dashboards.
 
 WWW: https://github.com/netdata/netdata
+
+
+Plugin Changelog
+================
+
+1.1
+
+* Allow listening to IPv6 address
+
+1.0
+
+* Allow to set listening IP and port
