@@ -140,5 +140,12 @@
             <default>1</default>
             <Required>Y</Required>
         </query_logs>
+        <disabled_serverlist type="TextField">
+            <mask>/^([a-z0-9.,\-]{1,70})$/</mask>
+            <default></default>
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <asList>Y</asList>
+        </disabled_serverlist>
     </items>
 </model>

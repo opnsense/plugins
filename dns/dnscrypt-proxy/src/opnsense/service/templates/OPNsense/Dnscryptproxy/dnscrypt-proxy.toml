@@ -4,6 +4,10 @@
 server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.serverlist.split(','))) + "'" }}]
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.disabled_serverlist') and OPNsense.dnscryptproxy.general.disabled_serverlist != '' %}
+disabled_server_names = ['{{OPNsense.dnscryptproxy.general.disabled_serverlist}}']
+{%   endif %}
+
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
 listen_addresses = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.listen_addresses.split(','))) + "'" }}]
 {%   else %}
