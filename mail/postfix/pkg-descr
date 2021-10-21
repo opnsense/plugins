@@ -6,6 +6,14 @@ is completely different.
 Plugin Changelog
 ================
 
+1.20
+
+* Make 'delay_warning_time' configurable in the UI
+
+1.19
+
+* Add TLS server/ client compatibility modes based on Mozilla's TLS configuration recommendations (https://ssl-config.mozilla.org).
+
 1.18
 
 * Add 'milter_default_action' choice

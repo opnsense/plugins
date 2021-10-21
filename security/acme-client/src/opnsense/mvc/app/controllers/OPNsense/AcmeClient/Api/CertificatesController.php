@@ -172,4 +172,23 @@ class CertificatesController extends ApiMutableModelControllerBase
         }
         return $result;
     }
+
+    /**
+     * (re-) import the certificate by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function importAction($uuid)
+    {
+        $result = array("result" => "failed");
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient import ${uuid}");
+            }
+        }
+        return $result;
+    }
 }

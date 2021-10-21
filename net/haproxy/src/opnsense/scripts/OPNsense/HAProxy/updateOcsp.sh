@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 HAPROXY_DIR="/tmp/haproxy/ssl"
+HAPROXY_SOCKET="/var/run/haproxy.socket"
 
 for _pem in "$HAPROXY_DIR"/*.pem; do
     cert_file="$(basename "$_pem")"
@@ -64,6 +65,11 @@ for _pem in "$HAPROXY_DIR"/*.pem; do
 
             if [ "${_ret}" != "0" ]; then
                 echo "Updating OCSP stapling failed with return code ${_ret}"
+            else
+                _update="$(openssl enc -base64 -A -in "${_ocsp}")"
+                if ! echo "set ssl ocsp-response ${_update}" | socat stdio $HAPROXY_SOCKET; then
+                    echo "Updating haproxy OCSP stapling via socket failed"
+                fi
             fi
         fi
     fi

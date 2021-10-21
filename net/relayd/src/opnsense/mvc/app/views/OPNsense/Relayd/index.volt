@@ -1,6 +1,7 @@
 {#
 
 Copyright © 2018 by EURO-LOG AG
+Copyright (c) 2021 Deciso B.V.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -95,13 +96,17 @@ POSSIBILITY OF SUCH DAMAGE.
       });
 
       ['host', 'tablecheck', 'table', 'protocol', 'virtualserver'].forEach(function(element) {
-         $("#grid-" + element).UIBootgrid({
+         let endpoints = {
             'search': '/api/relayd/settings/search/' + element + '/',
             'get':    '/api/relayd/settings/get/' + element + '/',
             'set':    '/api/relayd/settings/set/' + element + '/',
             'add':    '/api/relayd/settings/set/' + element + '/',
             'del':    '/api/relayd/settings/del/' + element + '/'
-         });
+         };
+         if (['virtualserver', 'host', 'table'].includes(element)) {
+            endpoints['toggle'] = '/api/relayd/settings/toggle/' + element + '/';
+         }
+         $("#grid-" + element).UIBootgrid(endpoints);
       });
 
       // show/hide options depending on other options
@@ -112,6 +117,7 @@ POSSIBILITY OF SUCH DAMAGE.
          var transport_tablemode = $('#relayd\\.virtualserver\\.transport_tablemode').val();
          var backuptransport_tablemode = $('#relayd\\.virtualserver\\.backuptransport_tablemode').val();
 
+         $('tr[id="row_relayd.virtualserver.listen_proto"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.transport_type"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.routing_interface"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.stickyaddress"]').addClass('hidden');
@@ -124,6 +130,7 @@ POSSIBILITY OF SUCH DAMAGE.
          $('#relayd\\.virtualserver\\.backuptransport_tablemode').empty().append('<option value="roundrobin">Round Robin </option>');
 
          if(servertype == 'redirect'){
+            $('tr[id="row_relayd.virtualserver.listen_proto"]').removeClass('hidden');
             $('tr[id="row_relayd.virtualserver.transport_type"]').removeClass('hidden');
             if(transport_type == 'route'){
                $('tr[id="row_relayd.virtualserver.routing_interface"]').removeClass('hidden');
@@ -239,6 +246,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <table id="grid-host" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEditHost">
          <thead>
             <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Address') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
@@ -285,7 +293,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <table id="grid-table" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEditTable">
          <thead>
             <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="boolean">{{ lang._('Enabled') }}</th>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Edit') }} | {{ lang._('Delete') }}</th>
@@ -331,7 +339,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <table id="grid-virtualserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEditVirtualServer">
          <thead>
             <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="boolean">{{ lang._('Enabled') }}</th>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>

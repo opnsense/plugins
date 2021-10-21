@@ -37,7 +37,9 @@
     <field>
         <id>domain.masterip</id>
         <label>Master IP</label>
-        <type>text</type>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Set the IP address of master server when using slave mode.</help>
     </field>
     <field>

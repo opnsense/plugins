@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/domain</mount>
     <description>BIND domain configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <domains>
             <domain type="ArrayField">
@@ -17,8 +17,10 @@
                         <slave>slave</slave>
                     </OptionValues>
                 </type>
-                <masterip type="HostnameField">
+                <masterip type="NetworkField">
                     <Required>N</Required>
+                    <FieldSeparator>,</FieldSeparator>
+                    <asList>Y</asList>
                 </masterip>
                 <allownotifyslave type="NetworkField">
                     <Required>N</Required>

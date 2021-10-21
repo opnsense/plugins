@@ -12,6 +12,7 @@ Plugin Changelog
 
 1.23
 
+* Add custom error pages on a per HTTP server basis (contributed by 8191)
 * Migration for PHP Phalcon 4 (non breaking change for UI/API)
 
 1.22

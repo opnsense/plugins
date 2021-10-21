@@ -38,7 +38,7 @@ use Phalcon\Messages\Message;
  */
 class NgxBusyBufferConstraint extends BaseConstraint
 {
-    public function validate(\Phalcon\Validation $validator, $attribute) : bool
+    public function validate(\Phalcon\Validation $validator, $attribute): bool
     {
         $node = $this->getOption('node');
         if ($node) {
@@ -64,7 +64,8 @@ class NgxBusyBufferConstraint extends BaseConstraint
                     $proxy_buffer_size_int = intval((string) $proxy_buffer_size_node);
                 }
 
-                if (isset($proxy_buffers_total_minus1_size) && isset($proxy_busy_buffers_size) &&
+                if (
+                    isset($proxy_buffers_total_minus1_size) && isset($proxy_busy_buffers_size) &&
                     $proxy_buffers_total_minus1_size < $proxy_busy_buffers_size
                 ) {
                     $validator->appendMessage(new Message(
@@ -74,7 +75,8 @@ class NgxBusyBufferConstraint extends BaseConstraint
                 }
 
                 // nginx: [emerg] "proxy_busy_buffers_size" must be equal to or greater than the maximum of the value of "proxy_buffer_size" and one of the "proxy_buffers"
-                if (isset($proxy_busy_buffers_size) && isset($proxy_buffers_size_int) &&
+                if (
+                    isset($proxy_busy_buffers_size) && isset($proxy_buffers_size_int) &&
                     $proxy_busy_buffers_size < $proxy_buffers_size_int
                 ) {
                     $validator->appendMessage(new Message(

@@ -51,4 +51,53 @@
         <type>text</type>
         <help><![CDATA[This configures the default time between two DNS queries, when no valid response has been received. Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
     </field>
+    <field>
+        <id>resolver.accepted_payload_size</id>
+        <label>Max DNS answer size</label>
+        <type>text</type>
+        <help><![CDATA[Defines the maximum payload size accepted by HAProxy and announced to all the name servers configured in this resolvers section. The default is 512 bytes, the maximum allowed is 8192.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_valid</id>
+        <label>Valid hold time</label>
+        <type>text</type>
+        <help><![CDATA[When haproxy receives a valid NS response it will not query DNS until valid time expires. Default is "10s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_obsolete</id>
+        <label>Obsolete hold time</label>
+        <type>text</type>
+        <help><![CDATA[As a DNS server may not answer all the IPs in one DNS request, haproxy keeps a cache of previous answers. An answer will be considered obsolete after [hold obsolete] seconds without the IP returned. Default is "30s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_refused</id>
+        <label>Refused hold time</label>
+        <type>text</type>
+        <help><![CDATA[When the DNS server refuses the resolve request haproxy will not retry until [hold refused] elapses. Default "30s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_nx</id>
+        <label>NX hold time</label>
+        <type>text</type>
+        <help><![CDATA[When haproxy receives a NXDOMAIN error message (domain does not exist) from the resolver it will not retry until [hold nx] elapses. Default "30s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_timeout</id>
+        <label>Timeout hold time</label>
+        <type>text</type>
+        <help><![CDATA[When a DNS resolve request times out haproxy will not retry until [hold timeout] elapses. Default "30s"]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_other</id>
+        <label>Other hold time</label>
+        <type>text</type>
+        <help><![CDATA[Sets the "hold other" timeout value for the resolver. Default "30s"]]></help>
+        <advanced>true</advanced>
+    </field>
 </form>
