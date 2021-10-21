@@ -87,16 +87,16 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-proxies" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEdit">
             <thead>
             <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="interfaces" data-width="10em" data-type="string" data-visible="true">{{ lang._('Interfaces') }}</th>
-                <th data-column-id="multicastaddress" data-width="15em" data-type="string" data-visible="true">{{ lang._('Multicast Addresses') }}</th>
-                <th data-column-id="sourceaddress"  data-width="11em" data-type="string" data-visible="true">{{ lang._('Source Address') }}</th>
-                <th data-column-id="listenport" data-width="8em" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>
-                <th data-column-id="InstanceID" data-width="6em" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                <th data-column-id="description" data-width="15em" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="enabled" data-width="1em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="interfaces" data-width="2em" data-type="string" data-visible="true">{{ lang._('Interfaces') }}</th>
+                <th data-column-id="multicastaddress" data-width="2em" data-type="string" data-visible="true">{{ lang._('Multicast Addresses') }}</th>
+                <th data-column-id="sourceaddress"  data-width="2em" data-type="string" data-visible="true">{{ lang._('Source Address') }}</th>
+                <th data-column-id="listenport" data-width="2em" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>
+                <th data-column-id="InstanceID" data-width="1em" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
+                <th data-column-id="description" data-width="2em" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="RevertTTL" data-width="10em" data-type="string"  data-visible="true" data-formatter="boolean">{{ lang._('Use ID as TTL') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="RevertTTL" data-width="2em" data-type="string"  data-visible="true" data-formatter="boolean">{{ lang._('Use ID as TTL') }}</th>
+                <th data-column-id="commands" data-width="2em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
