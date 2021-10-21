@@ -15,6 +15,10 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.17
+
+* Added support for Extreme networks EXOS switch Extreme-Netlogin-Extended-VLAN VSA and policy for GEN2 (contributed by Pasi Suominen)
+
 1.9.16
 
 * Allow user to choose Elliptic Curve in EAP
