@@ -1,0 +1,75 @@
+#!/usr/local/bin/python3
+"""
+    Copyright (c) 2020 Ad Schellevis <ad@opnsense.org>
+    All rights reserved.
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+    1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+    2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+"""
+import datetime
+import os
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+
+if len(sys.argv) > 1:
+    commit_msg =  "unknown change"
+    try:
+        tree = ET.parse(sys.argv[1])
+        xmlroot = tree.getroot()
+    except (FileNotFoundError, ET.ParseError):
+        xmlroot = None
+
+    if xmlroot:
+        # extract configuration revision data
+        metadata_fields = {
+            './system/hostname': 'localhost',
+            './system/domain': 'localdomain',
+            './revision/description': '',
+            './revision/username': 'unknown',
+            './revision/time': '0',
+        }
+        metadata = dict()
+        for key in metadata_fields:
+            metadata[key] = xmlroot.findall(key)[0].text if xmlroot.findall(key) else metadata_fields[key]
+
+        if metadata['./revision/time'].replace('.', '').isdigit():
+            revdate = datetime.datetime.fromtimestamp(float(metadata['./revision/time'])).isoformat()
+        else:
+            revdate = "-"
+
+        username = metadata['./revision/username'].split('@')[0]
+        fullname = username
+        user_email = "%s@%s.%s" % (username, metadata['./system/hostname'], metadata['./system/domain'])
+        for user in xmlroot.findall('./system/user'):
+            try:
+                if user.find('name').text == username:
+                    if user.find('email') is not None:
+                        user_email = user.find('email').text
+                    if user.find('descr') is not None:
+                        fullname = user.find('descr').text
+                    break
+            except AttributeError:
+                pass
+
+        # snapshot provided config.xml into git staging and commit with extracted data
+        os.chdir('/conf/backup/git/')
+        subprocess.run(['cp', sys.argv[1], '/conf/backup/git/config.xml'])
+        subprocess.run(['/usr/local/bin/git', 'add', 'config.xml'])
+        message = "%s @ %s (%s)" % (metadata['./revision/description'], revdate, metadata['./revision/username'])
+        subprocess.run(['/usr/local/bin/git', 'commit', '--author', "%s<%s>" % (fullname, user_email), '-m', message])

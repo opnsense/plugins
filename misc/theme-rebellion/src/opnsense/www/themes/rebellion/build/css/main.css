@@ -4708,7 +4708,7 @@ tbody.collapse.in {
   background-color: transparent;
 }
 .navbar-default .navbar-text {
-  color: #2B2B2B;
+  color: #aaaaaa;
 }
 .navbar-default .navbar-nav > li > a {
   color: #C1C1c1;
@@ -7819,4 +7819,8 @@ div.Tokenize ul.TokensContainer li.Token a.Close {
 
 .image_invertible {
         filter: invert(1);
+}
+
+.phase1_tr td {
+  background-color: #282828 !important;
 }

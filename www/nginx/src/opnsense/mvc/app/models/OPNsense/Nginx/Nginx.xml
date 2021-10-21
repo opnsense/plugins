@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.19.0</version>
+  <version>1.20.1</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -204,6 +204,21 @@
         <default>0</default>
         <Required>Y</Required>
       </enable_learning_mode>
+      <secrules_errorpage type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>errorpage</items>
+            <display>name</display>
+            <filters>
+              <pagecontent>/.+/</pagecontent>
+            </filters>
+          </template>
+        </Model>
+        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </secrules_errorpage>
       <xss_block_score type="IntegerField">
         <Required>N</Required>
       </xss_block_score>
@@ -464,6 +479,18 @@
         <Required>Y</Required>
         <default>0</default>
       </proxy_ssl_server_name>
+      <errorpages type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>errorpage</items>
+            <display>name</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </errorpages>
     </location>
 
     <custom_policy type="ArrayField">
@@ -530,14 +557,14 @@
           </check001>
         </Constraints>
       </message>
-      <identifier type="IntegerField">
+      <identifier type="CSVListField">
         <Required>Y</Required>
-        <minValue>1000</minValue>
+        <Constraints>
+          <check001>
+            <type>NaxsiIdentifierConstraint</type>
+          </check001>
+        </Constraints>
       </identifier>
-      <url type="TextField">
-        <Required>N</Required>
-        <pattern>/^[^"]+$/</pattern>
-      </url>
       <dollar_url type="TextField">
         <Required>N</Required>
         <pattern>/^[^"]+$/</pattern>
@@ -561,6 +588,11 @@
           <id>Blacklist</id>
           <wl>Whitelist</wl>
         </OptionValues>
+        <Constraints>
+          <check001>
+            <reference>identifier.check001</reference>
+          </check001>
+        </Constraints>
       </match_type>
       <negate type="BooleanField">
         <Required>Y</Required>
@@ -590,6 +622,10 @@
       <headers type="BooleanField">
         <Required>Y</Required>
       </headers>
+      <body type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </body>
       <dollar_args_var type="TextField">
         <pattern>/^[^"]+$/</pattern>
       </dollar_args_var>
@@ -843,6 +879,18 @@
         <Required>Y</Required>
         <default>0</default>
       </zero_rtt>
+      <errorpages type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>errorpage</items>
+            <display>name</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </errorpages>
     </http_server>
 
     <stream_server type="ArrayField">
@@ -1432,6 +1480,71 @@
         <MinimumValue>1</MinimumValue>
       </rate>
     </limit_zone>
+
+    <errorpage type="ArrayField">
+      <name type="TextField">
+        <Required>Y</Required>
+      </name>
+      <statuscodes type="OptionField">
+        <multiple>Y</multiple>
+        <OptionValues>
+          <status_400 value="400">400 Bad Request</status_400>
+          <status_401 value="401">401 Unauthorized</status_401>
+          <status_403 value="403">403 Forbidden</status_403>
+          <status_404 value="404">404 Not Found</status_404>
+          <status_405 value="405">405 Method Not Allowed</status_405>
+          <status_407 value="407">407 Proxy Authentication Required</status_407>
+          <status_408 value="408">408 Request Timeout</status_408>
+          <status_410 value="410">410 Gone</status_410>
+          <status_415 value="415">415 Unsupported Media Type</status_415>
+          <status_429 value="429">429 Too Many Requests</status_429>
+          <status_431 value="431">431 Request Header Fields Too Large</status_431>
+          <status_500 value="500">500 Internal Server Error</status_500>
+          <status_501 value="501">501 Not Implemented</status_501>
+          <status_502 value="502">502 Bad Gateway</status_502>
+          <status_503 value="503">503 Service Unavailable</status_503>
+          <status_504 value="504">504 Gateway Timeout</status_504>
+        </OptionValues>
+        <Required>Y</Required>
+      </statuscodes>
+      <pagecontent type="Base64Field">
+        <default>PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsaW5pdGlhbC1zY2FsZT0xIiAvPgogICAgPHRpdGxlPkVycm9yPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KICAgIDxoMT5FcnJvcjwvaDE+CiAgICA8cD5Tb3JyeSwgYnV0IHNvbWV0aGluZyB3ZW50IHdyb25nLjwvcD4KPC9ib2R5Pgo8L2h0bWw+</default>
+        <Constraints>
+          <check001>
+            <type>SingleSelectConstraint</type>
+            <ValidationMessage>Page content is required if redirect is not used and needs to be empty otherwise.</ValidationMessage>
+            <addFields>
+              <field1>redirect</field1>
+            </addFields>
+            <isRequired>Y</isRequired>
+          </check001>
+        </Constraints>
+      </pagecontent>
+      <redirect type="UrlField">
+        <Required>N</Required>
+        <Constraints>
+          <check001>
+            <reference>pagecontent.check001</reference>
+          </check001>
+        </Constraints>
+      </redirect>
+      <response type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <status_200 value="200">200 OK</status_200>
+          <status_300 value="300">300 Multiple Choice</status_300>
+          <status_301 value="301">301 Moved Permanently</status_301>
+          <status_302 value="302">302 Found</status_302>
+          <status_401 value="401">401 Unauthorized</status_401>
+          <status_403 value="403">403 Forbidden</status_403>
+          <status_404 value="404">404 Not Found</status_404>
+          <status_451 value="451">451 Unavailable For Legal Reasons</status_451>
+          <status_500 value="500">500 Internal Server Error</status_500>
+          <status_503 value="503">503 Service Unavailable</status_503>
+        </OptionValues>
+        <Required>N</Required>
+      </response>
+    </errorpage>
 
     <tls_fingerprint type="ArrayField">
       <description type="TextField">

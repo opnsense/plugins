@@ -46,10 +46,5 @@ class DnsLexicon extends Base implements LeValidationInterface
         $this->acme_env['PROVIDER'] = $provider;
         $this->acme_env[$env_user] = (string)$this->config->dns_lexicon_user;
         $this->acme_env[$env_token] = (string)$this->config->dns_lexicon_token;
-
-        if ((string)$this->config->dns_lexicon_provider == 'namesilo') {
-            // Namesilo applies changes to DNS records only every 15 minutes.
-            $this->acme_args[] = '--dnssleep 960';
-        }
     }
 }

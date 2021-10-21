@@ -6,8 +6,8 @@
     min-height: 34px;
     cursor: text;
     border-radius: 3px;
-	border: 1px solid #4d83a1;
-	background-color: #ffffff;
+    border: 1px solid #a8a8a8;
+    background-color: #ffffff;
 }
 
 .tokenize > .tokens-container.disabled {
@@ -17,7 +17,7 @@
 
 .tokenize.focus > .tokens-container {
     outline: 0;
-	border-color:#4d83a1;
+	border-color:#a8a8a8;
 	background-color:#FFFFFF;
 	-webkit-box-shadow: none;
 	box-shadow: none;
@@ -80,7 +80,7 @@
 
 .tokenize > .tokens-container:focus,
 .tokenize > .tokens-container:hover {
-	border-color:#00A7FF;
+	border-color:#FF6E05;
 	background-color:#FFFFFF;
 }
 

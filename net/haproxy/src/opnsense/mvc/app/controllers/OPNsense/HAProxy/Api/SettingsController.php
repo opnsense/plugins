@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2016-2021 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -44,6 +44,7 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'haproxy';
     protected static $internalModelClass = '\OPNsense\HAProxy\HAProxy';
+    protected static $internalModelUseSafeDelete = true;
 
     public function getFrontendAction($uuid = null)
     {
@@ -132,7 +133,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchServersAction()
     {
-        return $this->searchBase('servers.server', array('enabled', 'name', 'address', 'port', 'description'), 'name');
+        return $this->searchBase('servers.server', array('enabled', 'name', 'type', 'address', 'port', 'description'), 'name');
     }
 
     public function getHealthcheckAction($uuid = null)
@@ -408,5 +409,35 @@ class SettingsController extends ApiMutableModelControllerBase
     public function searchresolversAction()
     {
         return $this->searchBase('resolvers.resolver', array('enabled', 'name', 'nameservers'), 'name');
+    }
+
+    public function getmailerAction($uuid = null)
+    {
+        return $this->getBase('mailer', 'mailers.mailer', $uuid);
+    }
+
+    public function setmailerAction($uuid)
+    {
+        return $this->setBase('mailer', 'mailers.mailer', $uuid);
+    }
+
+    public function addmailerAction()
+    {
+        return $this->addBase('mailer', 'mailers.mailer');
+    }
+
+    public function delmailerAction($uuid)
+    {
+        return $this->delBase('mailers.mailer', $uuid);
+    }
+
+    public function togglemailerAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('mailers.mailer', $uuid);
+    }
+
+    public function searchmailersAction()
+    {
+        return $this->searchBase('mailers.mailer', array('enabled', 'name', 'mailservers', 'sender', 'recipient'), 'name');
     }
 }

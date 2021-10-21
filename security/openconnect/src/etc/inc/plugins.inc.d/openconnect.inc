@@ -79,5 +79,6 @@ function openconnect_xmlrpc_sync()
     $result['id'] = 'openconnectvpn';
     $result['section'] = 'OPNsense.openconnect';
     $result['description'] = gettext('OpenConnect');
+    $result['services'] = ['openconnect'];
     return array($result);
 }

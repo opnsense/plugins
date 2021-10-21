@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall (derived from OPNsense\Backup)
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -33,9 +33,6 @@ namespace OPNsense\AcmeClient\LeValidation;
 use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
 use OPNsense\AcmeClient\LeUtils;
-
-// Load legacy functions
-require_once("util.inc"); // for exec_safe()
 
 /**
  * LeValidation stub file, contains shared logic for all validation methods.
@@ -76,14 +73,14 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($accountuuid);
 
         // Store acme hook
         switch ((string)$this->config->method) {
             case 'dns01':
-                $this->acme_args[] = '--dns ' . (string)$this->config->dns_service;
-                $this->acme_args[] = '--dnssleep ' . (string)$this->config->dns_sleep;
+                $this->acme_args[] = LeUtils::execSafe('--dns %s', (string)$this->config->dns_service);
+                $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
                 break;
             case 'http01':
                 $this->acme_args[] = '--webroot /var/etc/acme-client/challenges';
@@ -91,11 +88,11 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         }
 
         // Store acme filenames
-        $this->acme_args[] = '--home ' . self::ACME_HOME_DIR;
-        $this->acme_args[] = '--certpath ' . sprintf(self::ACME_CERT_FILE, $this->cert_id);
-        $this->acme_args[] = '--keypath ' . sprintf(self::ACME_KEY_FILE, $this->cert_id);
-        $this->acme_args[] = '--capath ' . sprintf(self::ACME_CHAIN_FILE, $this->cert_id);
-        $this->acme_args[] = '--fullchainpath ' . sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id);
+        $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--certpath %s', sprintf(self::ACME_CERT_FILE, $this->cert_id));
+        $this->acme_args[] = LeUtils::execSafe('--keypath %s', sprintf(self::ACME_KEY_FILE, $this->cert_id));
+        $this->acme_args[] = LeUtils::execSafe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
+        $this->acme_args[] = LeUtils::execSafe('--fullchainpath %s', sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id));
 
         return true;
     }
@@ -140,12 +137,12 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         if ($this->cert_keylength == 'ec256' || $this->cert_keylength == 'ec384') {
             if ($renew == true) {
                 // If it's a renew then pass --ecc to acme client to locate the correct cert directory
-                $acme_args[] = '--ecc';
+                $this->acme_args[] = '--ecc';
             }
         }
 
-        // Use individual account config for each environment
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        // Use individual account config for each CA
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
@@ -165,7 +162,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . "--${acme_action} "
           . implode(' ', $this->acme_args) . ' '
-          . "--accountconf ${account_conf_file}";
+          . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -215,7 +212,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             $key_length = $length;
         }
 
-        $this->acme_args[] = '--keylength ' . $key_length;
+        $this->acme_args[] = LeUtils::execSafe('--keylength %s', $key_length);
         $this->cert_keylength = $length;
     }
 
@@ -232,23 +229,23 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->cert_challengealias = $challengealias;
 
         // Main domain for acme
-        $this->acme_args[] = exec_safe('--domain %s', $certname);
+        $this->acme_args[] = LeUtils::execSafe('--domain %s', $certname);
 
         // Main domain: Use DNS alias mode for domain validation?
-        // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+        // https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
         if ($this->getMethod() == 'dns01') {
             switch ((string)$aliasmode) {
                 case 'automatic':
                     $name = '_acme-challenge.' . ltrim((string)$this->cert_name, '*.');
                     if ($dst = dns_get_record($name, DNS_CNAME)) {
-                        $this->acme_args[] = exec_safe('--domain-alias %s', $dst[0]['target']);
+                        $this->acme_args[] = LeUtils::execSafe('--domain-alias %s', $dst[0]['target']);
                     }
                     break;
                 case 'domain':
-                    $this->acme_args[] = exec_safe('--domain-alias %s', (string)$this->cert_domainalias);
+                    $this->acme_args[] = LeUtils::execSafe('--domain-alias %s', (string)$this->cert_domainalias);
                     break;
                 case 'challenge':
-                    $this->acme_args[] = exec_safe('--challenge-alias %s', (string)$this->cert_challengealias);
+                    $this->acme_args[] = LeUtils::execSafe('--challenge-alias %s', (string)$this->cert_challengealias);
                     break;
             }
         }
@@ -256,23 +253,23 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // altNames
         if (!empty((string)$this->cert_altnames)) {
             foreach (explode(",", (string)$this->cert_altnames) as $altname) {
-                $this->acme_args[] = exec_safe('--domain %s', $altname);
+                $this->acme_args[] = LeUtils::execSafe('--domain %s', $altname);
 
                 // altNames: Use DNS alias mode for domain validation?
-                // https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode
+                // https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
                 if ($this->getMethod() == 'dns01') {
                     switch ((string)$this->cert_aliasmode) {
                         case 'automatic':
                             $name = "_acme-challenge." . ltrim($altname, '*.');
                             if ($dst = dns_get_record($name, DNS_CNAME)) {
-                                $this->acme_args[] = exec_safe('--domain-alias %s', $dst[0]['target']);
+                                $this->acme_args[] = LeUtils::execSafe('--domain-alias %s', $dst[0]['target']);
                             }
                             break;
                         case 'domain':
-                            $this->acme_args[] = exec_safe('--domain-alias %s', (string)$this->cert_domainalias);
+                            $this->acme_args[] = LeUtils::execSafe('--domain-alias %s', (string)$this->cert_domainalias);
                             break;
                         case 'challenge':
-                            $this->acme_args[] = exec_safe('--challenge-alias %s', (string)$this->cert_challengealias);
+                            $this->acme_args[] = LeUtils::execSafe('--challenge-alias %s', (string)$this->cert_challengealias);
                             break;
                     }
                 }
@@ -296,6 +293,6 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      */
     public function setRenewal(int $interval = 60)
     {
-        $this->acme_args[] = '--days ' . (string)$interval;
+        $this->acme_args[] = LeUtils::execSafe('--days %s', (string)$interval);
     }
 }

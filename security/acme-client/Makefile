@@ -1,6 +1,6 @@
 PLUGIN_NAME=		acme-client
-PLUGIN_VERSION=		2.0
-PLUGIN_COMMENT=		Let's Encrypt client
+PLUGIN_VERSION=		3.3
+PLUGIN_COMMENT=		ACME Client
 PLUGIN_MAINTAINER=	opnsense@moov.de
 PLUGIN_DEPENDS=		acme.sh py${PLUGIN_PYTHON}-dns-lexicon
 

@@ -1,0 +1,11 @@
+<acl>
+    <page-services-qemuguestagent>
+        <name>Services: QEMU Guest Agent</name>
+        <patterns>
+            <pattern>ui/qemuguestagent/*</pattern>
+            <pattern>api/qemuguestagent/*</pattern>
+            <pattern>ui/diagnostics/log/core/qemu-ga/*</pattern>
+            <pattern>api/diagnostics/log/core/qemu-ga/*</pattern>
+        </patterns>
+    </page-services-qemuguestagent>
+</acl>

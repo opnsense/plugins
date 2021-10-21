@@ -6,6 +6,102 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.6
+
+Added:
+* add support for advanced resolver properties (#2330)
+* add graceful stop timeout to service settings
+* support "monitor-uri" and "monitor fail" in rules (#2387)
+* add new option "case-sensitive" to conditions (#2576)
+
+Fixed:
+* no haproxy.conf after restoring a config backup (#2474)
+
+Changed:
+* deploy haproxy.conf if it does not exist (#2474)
+* add new timeout (60s) which will terminate open connections when using graceful stop
+* allow retries to be set to "0" (#2585)
+
+3.5
+
+Fixed:
+* fix maintenance page not loading (#2485)
+
+3.4
+
+Fixed:
+* fix empty resolve-prefer option (#2340)
+
+3.3
+
+Changed:
+* use HAProxy socket to apply updated OCSP stapling data (in cron job) (#2351)
+
+3.2
+
+Fixed:
+* fix config test when HAProxy service is not enabled
+
+Changed:
+* ignore incompatible ciphersuites options when LibreSSL is used (#2013)
+
+3.1
+
+Fixed:
+* fix items that cannot be deleted (#2266)
+
+Changed:
+* rules: only accept a single value for backend/server fields (#2266)
+
+3.0
+
+Added:
+* add new maintenance page to change server state and weight on-the-fly (#2213)
+* add new commands to update SSL certificates in runtime (#2244, #1882)
+* add new SSL bind option: prefer-client-ciphers
+* add global option to enable old buggy behaviour for PROXY v2 connections
+* add support for HTTP/2 in health checks
+* add config export (#2035)
+* add config diff
+* guard against broken config by using a staging config file
+* add basic OCSP stapling support (#1430)
+* add support for e-mail alerts and mailers (#1669)
+* add support for custom header checks (#1907)
+* add support for server templates (#1975)
+* add support for additional resolver options (#1975)
+* add support for resolve-prefer option (#1975)
+* add pre-defined cron jobs to maintenance page
+
+Fixed:
+* prevent service outage by aborting "Apply" when configtest fails
+* fix direct links to individual statistics tabs
+* prevent the deletion of items that are still referenced elsewhere (core/#1897)
+
+Changed:
+* change default SSL version to TLSv1.2 (ssl-min-ver)
+* remove weak ciphers from (default) SSL settings
+* remove default SSL bind options that would conflict with ssl-min-ver
+* move SSL bind options below other SSL settings, they are rarely used nowadays
+* change default for tune.ssl.default-dh-param from 1024 to 2048
+* use new "http-check send" command for HTTP health checks
+* change default for spreadChecks from 0 to 2
+* no longer overwrite live config file when running a syntax check
+* make restart/reload commands usable in cron jobs
+* relax GUI input validation for servers, move validation to jinja template (#1975)
+
+Deprecated:
+* nbproc is deprecated and will be removed in os-haproxy 4.0
+
+2.26
+
+Fixed:
+* preserve sort order of default SSL bind options
+
+2.25
+
+Added:
+* add support for TLSv1.3 (#790)
+
 2.24
 
 Added:
@@ -20,7 +116,7 @@ Fixed:
 Changed:
 * add "Save & Test syntax" button to all "Settings" pages
 * add "introduction" page for Settings tab
-* streamine "Settings" subtabs
+* streamline "Settings" subtabs
 
 2.23
 

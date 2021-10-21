@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Tinc</mount>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <description>
         OPNsense Tinc VPN
     </description>
@@ -21,9 +21,11 @@
                     <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
-                <extaddress type="TextField">
-                    <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+                <extaddress type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>Y</IpAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
                 </extaddress>
                 <extport type="IntegerField">
                     <Required>Y</Required>
@@ -41,6 +43,7 @@
                     <WildcardEnabled>N</WildcardEnabled>
                     <NetMaskRequired>Y</NetMaskRequired>
                     <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
                     <Constraints>
                         <check001>
                             <ValidationMessage>Subnet field must be set in router mode.</ValidationMessage>
@@ -131,15 +134,26 @@
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Port number must be between 1...65535</ValidationMessage>
                 </extport>
-                <extaddress type="TextField">
-                    <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+                <extaddress type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>Y</IpAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Need external address if you intend to "Connect To" this host</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>connectTo</field>
+                            <check>1</check>
+                        </check001>
+                    </Constraints>
                 </extaddress>
                 <subnet type="NetworkField">
                     <Required>N</Required>
                     <WildcardEnabled>N</WildcardEnabled>
                     <NetMaskRequired>Y</NetMaskRequired>
                     <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
                 </subnet>
                 <pubkey type="TextField">
                     <Required>Y</Required>
@@ -154,6 +168,11 @@
                 <connectTo type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <reference>extaddress.check001</reference>
+                        </check001>
+                    </Constraints>
                 </connectTo>
                 <enabled type="BooleanField">
                     <default>1</default>

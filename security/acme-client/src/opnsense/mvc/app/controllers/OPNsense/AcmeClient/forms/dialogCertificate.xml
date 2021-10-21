@@ -7,13 +7,13 @@
         <id>certificate.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this certificate</help>
+        <help>Enable this certificate. When disabled, no attemps to issue or renew the certificate will be made.</help>
     </field>
     <field>
         <id>certificate.name</id>
         <label>Common Name</label>
         <type>text</type>
-        <help>Common Name (CN) for this certificate.</help>
+        <help>Common Name (CN) and first Alt Name (subjectAltName) for this certificate.</help>
     </field>
     <field>
         <id>certificate.description</id>
@@ -27,30 +27,30 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure additional names that should be part of the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>You need to forcefully re-issue the certificate if you change "Alt Names" after the certificate was signed by the Let's Encrypt Authority! Use the "issue" button in the Commands column in this case.</div>]]></help>
+        <help><![CDATA[Configure additional names that should be part of the certificate, i.e. www.example.com or mail.example.com. Use TAB key to complete typing a FQDN.<br/><div class="text-info"><b>NOTE:</b>You need to forcefully re-issue the certificate if you change "Alt Names" after the certificate was signed by the ACME CA! Use the "issue" button in the Commands column in this case.</div>]]></help>
         <hint>Enter FQDN here. Finish with TAB.</hint>
     </field>
     <field>
-        <label>Let's Encrypt Settings</label>
+        <label>ACME CA Settings</label>
         <type>header</type>
     </field>
     <field>
         <id>certificate.account</id>
-        <label>LE Account</label>
+        <label>ACME Account</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt account to use for this certificate.]]></help>
+        <help><![CDATA[Set the ACME CA account to use for this certificate.]]></help>
     </field>
     <field>
         <id>certificate.validationMethod</id>
         <label>Challenge Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the Let's Encrypt challenge type for this certificate.]]></help>
+        <help><![CDATA[Set the ACME challenge type for this certificate.]]></help>
     </field>
     <field>
         <id>certificate.autoRenewal</id>
         <label>Auto Renewal</label>
         <type>checkbox</type>
-        <help>Enable automatic renewal for this certificate to prevent expiration.</help>
+        <help>Enable automatic renewal for this certificate to prevent expiration. When disabled, the cron job will ignore this certificate. Note that it is still possible to renew the certificate from the GUI.</help>
     </field>
     <field>
         <id>certificate.renewInterval</id>
@@ -101,7 +101,7 @@
         <id>certificate.domainalias</id>
         <label>Domain Alias</label>
         <type>text</type>
-        <help><![CDATA[When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+        <help><![CDATA[When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
     </field>
     <field>
         <label>DNS Alias Mode</label>
@@ -112,6 +112,6 @@
         <id>certificate.challengealias</id>
         <label>Challenge Alias</label>
         <type>text</type>
-        <help><![CDATA[When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
+        <help><![CDATA[When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used for certificate validation. Please refer to the <a href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode">acme.sh documentation</a> for further information.]]></help>
     </field>
 </form>

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@ namespace OPNsense\AcmeClient;
 
 // Load legacy functions
 require_once("certs.inc"); // used in import()
-require_once("util.inc"); // for exec_safe()
 
 use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
@@ -38,7 +37,7 @@ use OPNsense\AcmeClient\LeAutomationFactory;
 use OPNsense\AcmeClient\LeValidationFactory;
 
 /**
- * Manage Let's Encrypt certificates with acme.sh
+ * Manage ACME certificates with acme.sh
  * @package OPNsense\AcmeClient
  */
 class LeCertificate extends LeCommon
@@ -46,14 +45,17 @@ class LeCertificate extends LeCommon
     public const CONFIG_PATH = 'certificates.certificate';
 
     /*
-     * create the object by collecting and storing all required data
+     * Create the object by collecting and storing all required data
      * @param $uuid string the UUID of the configuration object
+     * @param $force bool whether to enforce issue/renewal of the cert
+     * @param $cron bool run from cron job
      */
-    public function __construct(string $uuid, bool $force = false)
+    public function __construct(string $uuid, bool $force = false, bool $cron = false)
     {
         // Store basic information
         $this->uuid = $uuid;
         $this->force = $force;
+        $this->cron = $cron;
 
         // Get config object
         $this->loadConfig(self::CONFIG_PATH, $this->uuid);
@@ -72,8 +74,8 @@ class LeCertificate extends LeCommon
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa((string)$this->config->account);
 
         // Handle special key types
         if ($this->config->keyLength == 'key_ec256' || $this->config->keyLength == 'key_ec384') {
@@ -88,11 +90,11 @@ class LeCertificate extends LeCommon
         $this->cert_fullchain_file = (string)sprintf(self::ACME_FULLCHAIN_FILE, $this->config->id);
 
         // Store acme filenames
-        $this->acme_args[] = '--home ' . self::ACME_HOME_DIR;
-        $this->acme_args[] = '--certpath ' . $this->cert_file;
-        $this->acme_args[] = '--keypath ' . $this->cert_key_file;
-        $this->acme_args[] = '--capath ' . $this->cert_chain_file;
-        $this->acme_args[] = '--fullchainpath ' . $this->cert_fullchain_file;
+        $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--certpath %s', $this->cert_file);
+        $this->acme_args[] = LeUtils::execSafe('--keypath %s', $this->cert_key_file);
+        $this->acme_args[] = LeUtils::execSafe('--capath %s', $this->cert_chain_file);
+        $this->acme_args[] = LeUtils::execSafe('--fullchainpath %s', $this->cert_fullchain_file);
     }
 
     /**
@@ -157,7 +159,7 @@ class LeCertificate extends LeCommon
         foreach (Config::getInstance()->object()->ca as $cacrt) {
             $cacrt_subject = cert_get_subject($cacrt->crt, true);
             $cacrt_issuer = cert_get_issuer($cacrt->crt, true);
-            if (($ca_subject == $cacrt_subject) and ($ca_issuer == $cacrt_issuer)) {
+            if (($ca_subject === $cacrt_subject) and ($ca_issuer === $cacrt_issuer)) {
                 // Use old refid instead of generating a new one
                 $ca['refid'] = (string)$cacrt->refid;
                 $ca_found = true;
@@ -167,7 +169,7 @@ class LeCertificate extends LeCommon
 
         // Collect required CA information
         $ca_cn = LeUtils::local_cert_get_cn($ca_content, false);
-        $ca['descr'] = (string)$ca_cn . ' (Let\'s Encrypt)';
+        $ca['descr'] = (string)$ca_cn . ' (ACME Client)';
 
         // Prepare CA for import
         LeUtils::local_ca_import($ca, $ca_content);
@@ -184,7 +186,7 @@ class LeCertificate extends LeCommon
             }
         } else {
             // Create new CA
-            LeUtils::log("importing Let's Encrypt CA: ${ca_cn}");
+            LeUtils::log("importing ACME CA: ${ca_cn}");
             $newca = Config::getInstance()->object()->addChild('ca');
             foreach (array_keys($ca) as $cacfg) {
                 $newca->addChild($cacfg, (string)$ca[$cacfg]);
@@ -249,11 +251,17 @@ class LeCertificate extends LeCommon
 
         // Collect required cert information
         $cert_cn = LeUtils::local_cert_get_cn($cert_content, false);
-        $cert['descr'] = (string)$cert_cn . ' (Let\'s Encrypt)';
+        $cert['descr'] = (string)$cert_cn . ' (ACME Client)';
         $cert['refid'] = $cert_refid;
 
         // Prepare certificate for import
         cert_import($cert, $cert_content, $key_content);
+
+        // Overwrite caref in order to use the correct CA (GH #2550).
+        // This is required because cert_import() uses lookup_ca_by_subject()
+        // to find a matching CA. If multiple CAs are using the same name, the
+        // first CA wins, but it may still be the wrong CA.
+        $cert['caref'] = (string)$ca['refid'];
 
         // Check if cert was found in config
         if ($cert_found == true) {
@@ -263,6 +271,8 @@ class LeCertificate extends LeCommon
                     $cfgCert->crt = $cert['crt'];
                     $cfgCert->prv = $cert['prv'];
                     $cfgCert->descr = $cert['descr'];
+                    // Update CA ref, because it may be signed by a different CA.
+                    $cfgCert->caref = $cert['caref'];
                     break;
                 }
             }
@@ -273,7 +283,7 @@ class LeCertificate extends LeCommon
                 $newcert->addChild($certcfg, (string)$cert[$certcfg]);
             }
         }
-        LeUtils::log("${import_log_message} Let's Encrypt X.509 certificate: ${cert_cn}");
+        LeUtils::log("${import_log_message} ACME X.509 certificate: ${cert_cn}");
 
         /**
          * Step 3: update configuration
@@ -296,7 +306,7 @@ class LeCertificate extends LeCommon
     }
 
     /**
-     * check if certificate is already issued by Let's Encrypt
+     * check if certificate is already issued by ACME CA
      * @return bool
      */
     public function isIssued()
@@ -317,13 +327,13 @@ class LeCertificate extends LeCommon
 
         // Issue or renew?
         if (!empty((string)$this->config->lastUpdate) and !($this->force)) {
-            $acme_action = "renew";
+            $acme_action = 'renew';
             $renew = true;
         } else {
             // Default: Issue a new certificate.
             // If "force" is specified, forcefully re-issue the cert, no matter if it's required.
             // NOTE: This is useful when switching from acme staging to production servers.
-            $acme_action = "issue";
+            $acme_action = 'issue';
             $renew = false;
         }
 
@@ -333,7 +343,21 @@ class LeCertificate extends LeCommon
             LeUtils::log("issue/renewal not required for certificate: " . (string)$this->config->name);
             return false;
         }
+
+        // Get auto renewal plugin setting.
+        $configObj = Config::getInstance()->object();
+        $auto_renewal = $configObj->OPNsense->AcmeClient->settings->autoRenewal;
+
+        // Check if called by auto renewal process.
+        if (($acme_action == 'renew') and ($this->cron == 1) and ($auto_renewal == 0)) {
+            LeUtils::log('auto renewal is globally disabled, skipping certificate: ' . (string)$this->config->name);
+            return false;
+        } elseif (($acme_action == 'renew') and ($this->cron == 1) and ((string)$this->config->autoRenewal == 0)) {
+            LeUtils::log('auto renewal is disabled for certificate: ' . (string)$this->config->name);
+            return false;
+        }
         LeUtils::log("${acme_action} certificate: " . (string)$this->config->name);
+        LeUtils::log('using CA: ' . $this->ca);
 
         // Ensure that account is registered.
         if (!($this->setAccount())) {
@@ -437,7 +461,7 @@ class LeCertificate extends LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--remove '
           . implode(' ', $this->acme_args) . ' '
-          . exec_safe('--domain %s', (string)$this->config->name);
+          . LeUtils::execSafe('--domain %s', (string)$this->config->name);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -511,7 +535,7 @@ class LeCertificate extends LeCommon
         LeUtils::log('revoking certificate: ' . (string)$this->config->name);
 
         // Collect account information
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
@@ -528,8 +552,8 @@ class LeCertificate extends LeCommon
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--revoke '
           . implode(' ', $this->acme_args) . ' '
-          . exec_safe('--domain %s', (string)$this->config->name) . ' '
-          . "--accountconf ${account_conf_file}";
+          . LeUtils::execSafe('--domain %s', (string)$this->config->name) . ' '
+          . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
@@ -636,9 +660,10 @@ class LeCertificate extends LeCommon
             }
 
             // Configure validation object
-            $val->setNames($this->config->name, $this->config->altNames);
+            $val->setNames($this->config->name, $this->config->altNames, $this->config->aliasmode, $this->config->domainalias, $this->config->challengealias);
             $val->setRenewal((int)$this->config->renewInterval);
             $val->setForce($this->force);
+            $val->setOcsp((string)$this->config->ocsp == 1 ? true : false);
             // strip prefix from key value
             $val->setKey(substr($this->config->keyLength, 4));
             $val->prepare();

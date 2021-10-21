@@ -40,7 +40,5 @@ class DnsLinode extends Base implements LeValidationInterface
     public function prepare()
     {
         $this->acme_env['LINODE_API_KEY'] = (string)$this->config->dns_linode_key;
-        // Linode can take up to 15 to update DNS records
-        $this->acme_args[] = '--dnssleep 960';
     }
 }

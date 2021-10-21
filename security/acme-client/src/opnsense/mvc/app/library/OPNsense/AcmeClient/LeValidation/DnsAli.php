@@ -40,6 +40,6 @@ class DnsAli extends Base implements LeValidationInterface
     public function prepare()
     {
         $this->acme_env['Ali_Key'] = (string)$this->config->dns_ali_key;
-        $this->acme_env['Ali_Secret'] = (string)$this->config->dns_ali_key;
+        $this->acme_env['Ali_Secret'] = (string)$this->config->dns_ali_secret;
     }
 }

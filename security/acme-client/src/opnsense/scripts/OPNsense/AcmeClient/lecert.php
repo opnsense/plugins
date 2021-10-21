@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall (derived from upload_sftp.php)
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ use OPNsense\AcmeClient\LeCertificate;
 const ABOUT = <<<TXT
 
 This script acts as a bridge between the OPNsense WebGUI/API and the
-acme.sh Let's Encrypt client.
+acme.sh ACME client.
 
 TXT;
 
@@ -66,7 +66,7 @@ const MODES = [
         'description' => 'run automations for the specified certificate',
     ],
     'register' => [
-        'description' => 'register the specified account with Lets Encrypt',
+        'description' => 'register the specified account with ACME CA',
     ],
 ];
 
@@ -76,8 +76,9 @@ const STATIC_OPTIONS = <<<TXT
 --mode              Specify the mode of operation
 --cert              The certificate UUID when working with a single certificate
 --all               Work with ALL enabled certificates
---account           The account UUID when working with an Lets Encrypt account
+--account           The account UUID when working with an ACME CA account
 --force             Force certain operations (i.e. renew)
+--cron              Special mode when running from cron (i.e. consider auto renew settings)
 TXT;
 
 // Examples that will be display in usage information.
@@ -97,7 +98,7 @@ const EXAMPLES = <<<TXT
 - Completely remove a certificate (keeping the copy in Trust Store untouched)
   lecert.php --mode remove --cert 00000000-0000-0000-0000-000000000000
 
-- When registering a new account with Lets Encrypt
+- When registering a new account with ACME CA
   lecert.php --mode register --account 00000000-0000-0000-0000-000000000000
 TXT;
 
@@ -138,12 +139,15 @@ function validateMode($mode)
 function main()
 {
     // Parse command line arguments
-    $options = getopt('h', ['account:', 'all', 'cert:', 'force', 'help', 'mode:']);
+    $options = getopt('h', ['account:', 'all', 'cert:', 'cron', 'force', 'help', 'mode:']);
     $force = isset($options['force']) ? true : false;
+    $cron = isset($options['cron']) ? true : false;
 
     // Verify mode and arguments
-    if (empty($options) || isset($options['h']) || isset($options['help']) ||
-        (isset($options['mode']) and !validateMode($options['mode']))) {
+    if (
+        empty($options) || isset($options['h']) || isset($options['help']) ||
+        (isset($options['mode']) and !validateMode($options['mode']))
+    ) {
          // Not enough or invalid arguments specified.
          help();
     } elseif (($options['mode'] === 'issue') && (isset($options['cert']) || isset($options['all']))) {
@@ -156,7 +160,7 @@ function main()
             // Iterate over all certificates
             foreach ($acme->certificates->children() as $certCfg) {
                 $cert_uuid = (string)$certCfg->attributes()['uuid'];
-                $cert = new LeCertificate($cert_uuid, $force);
+                $cert = new LeCertificate($cert_uuid, $force, $cron);
                 // NOTE: Disabled certificates are automatically ignored by LeCertificate.
                 $cert->issue();
             }
@@ -167,7 +171,9 @@ function main()
         }
     } elseif ($options['mode'] === 'import' && isset($options['cert'])) {
         $cert = new LeCertificate($options['cert']);
-        $cert->import();
+        // Set $skip_validation to allow import even when validation
+        // is currently failing.
+        $cert->import(true);
     } elseif ($options['mode'] === 'revoke' && isset($options['cert'])) {
         $cert = new LeCertificate($options['cert']);
         $cert->revoke();

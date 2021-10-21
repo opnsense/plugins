@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2020 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -27,12 +27,21 @@ all: check
 
 .include "defaults.mk"
 
+PLUGINSDIR?=		${.CURDIR}/../..
+SCRIPTSDIR=		${PLUGINSDIR}/Scripts
+TEMPLATESDIR=		${PLUGINSDIR}/Templates
+
+.if exists(${GIT}) && exists(${GITVERSION})
+PLUGIN_COMMIT!=		${GITVERSION}
+.else
+PLUGIN_COMMIT=		unknown 0 undefined
+.endif
+
+PLUGIN_HASH?=		${PLUGIN_COMMIT:[3]}
+
 PLUGIN_DESC=		pkg-descr
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
-
-PLUGINSDIR=		${.CURDIR}/../..
-TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
 PLUGIN_WWW?=		https://opnsense.org/
 PLUGIN_REVISION?=	0
@@ -56,6 +65,21 @@ PLUGIN_DEVEL?=		yes
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
 
+.if !empty(PLUGIN_VARIANTS)
+PLUGIN_VARIANT?=	${PLUGIN_VARIANTS:[1]}
+.endif
+
+.if !empty(PLUGIN_VARIANT)
+PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
+.if empty(PLUGIN_NAME)
+.error Plugin variant '${PLUGIN_VARIANT}' does not exist
+.endif
+.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS}
+PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
+.endfor
+PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.endif
+
 PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
 			${PLUGIN_PREFIX}${PLUGIN_NAME}
 .for CONFLICT in ${PLUGIN_CONFLICTS}
@@ -64,22 +88,18 @@ PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
 .endfor
 
 .if "${PLUGIN_DEVEL}" != ""
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
 .else
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}
+PLUGIN_PKGSUFFIX=	# empty
 .endif
+
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_PKGSUFFIX}
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 .else
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
-
-name: check
-	@echo ${PLUGIN_PKGNAME}
-
-depends: check
-	@echo ${PLUGIN_DEPENDS}
 
 manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
@@ -93,8 +113,8 @@ manifest: check
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
 .if defined(PLUGIN_NO_ABI)
-	@echo "arch: `pkg config abi | tr '[:upper:]' '[:lower:]' | cut -d: -f1`:*:*"
-	@echo "abi: `pkg config abi | cut -d: -f1`:*:*"
+	@echo "arch: \"${OSABIPREFIX:tl}:*:*\""
+	@echo "abi: \"${OSABIPREFIX}:*:*\""
 .endif
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
@@ -183,7 +203,7 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" "${DESTDIR}${LOCALBASE}/$${FILE%%.in}"; \
 		fi; \
 	done
-	@echo "${PLUGIN_PKGVERSION}" > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
+	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
 	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
@@ -237,6 +257,8 @@ package: check
 	@echo -n ">>> Staging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
 	@${MAKE} DESTDIR=${WRKSRC} install
 	@echo " done"
+	@echo ">>> Generated version info for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
+	@cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME}
 	@echo ">>> Packaging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
@@ -273,7 +295,7 @@ lint-desc: check
 
 lint-shell:
 	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
-	    if [ "$$(head $${FILE} | grep -c '^#!\/bin\/sh$$')" == "0" ]; then \
+	    if [ "$$(head $${FILE} | grep -cx '#!\/bin\/sh')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
 	    sh -n $${FILE} || exit 1; \
@@ -292,14 +314,20 @@ lint-exec: check
 .endif
 .endfor
 
+LINTBIN?=	${.CURDIR}/../../../core/contrib/parallel-lint/parallel-lint
+
 lint-php: check
+.if exists(${LINTBIN})
+	@if [ -d ${.CURDIR}/src ]; then ${LINTBIN} src; fi
+.else
 	@find ${.CURDIR}/src \
 	    ! -name "*.xml" ! -name "*.xml.sample" ! -name "*.eot" \
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
-	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" \
-	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" \
-	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" \
+	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" ! -name "*.md" \
+	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" ! -name "*.txz" \
+	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" ! -name "bootstrap80.php" \
 	    -type f -print0 | xargs -0 -n1 php -l
+.endif
 
 lint: lint-desc lint-shell lint-xml lint-exec lint-php
 
@@ -312,9 +340,12 @@ sweep: check
 	fi
 	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
 	    ! -name "*.ser" -type f -print0 | \
-	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 	find ${.CURDIR} -type f -depth 1 -print0 | \
-	    xargs -0 -n1 ${.CURDIR}/../../Scripts/cleanfile
+	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
+
+revision:
+	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 
@@ -322,7 +353,7 @@ style: check
 	@: > ${.CURDIR}/.style.out
 .for STYLEDIR in ${STYLEDIRS}
 	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		(phpcs --standard=${.CURDIR}/../../ruleset.xml \
+		(phpcs --standard=${PLUGINSDIR}/ruleset.xml \
 		    ${.CURDIR}/${STYLEDIR} || true) > \
 		    ${.CURDIR}/.style.out; \
 	fi
@@ -337,7 +368,7 @@ style: check
 style-fix: check
 .for STYLEDIR in ${STYLEDIRS}
 	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		phpcbf --standard=${.CURDIR}/../../ruleset.xml \
+		phpcbf --standard=${PLUGINSDIR}/ruleset.xml \
 		    ${.CURDIR}/${STYLEDIR} || true; \
 	fi
 .endfor

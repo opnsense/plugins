@@ -70,7 +70,7 @@ function parse_rules($data)
 {
     $parsed = [];
     $tmp = null;
-    $description = array('rule', 'match_type', 'match', 'message', 'match_zone', 'variable', 'value', 'id');
+    $description = array('rule', 'match_type', 'match', 'message', 'match_zone', 'variable', 'score', 'id');
 
     foreach ($data as $line) {
         $line = trim($line);
@@ -113,9 +113,12 @@ function save_to_model($data)
             $rule_mdl->args = '0';
             $rule_mdl->headers = '0';
             $rule_mdl->name = '0';
+            $rule_mdl->body = '0';
+            $rule_mdl->url = '0';
             $rule_mdl->raw_body = '0';
             $rule_mdl->file_extension = '0';
             $rule_mdl->negate = '0';
+            $rule_mdl->score = $rule['score'];
             foreach ($rule['match_zone'] as $match_zone) {
                 if (stripos($match_zone, ':') === false) {
                     switch ($match_zone) {
@@ -127,6 +130,12 @@ function save_to_model($data)
                             break;
                         case 'NAME':
                             $rule_mdl->name = '1';
+                            break;
+                        case 'BODY':
+                            $rule_mdl->body = '1';
+                            break;
+                        case 'URL':
+                            $rule_mdl->url = '1';
                             break;
                         case 'RAW_BODY':
                             $rule_mdl->raw_body = '1';

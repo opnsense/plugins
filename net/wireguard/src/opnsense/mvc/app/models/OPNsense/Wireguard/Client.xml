@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/client</mount>
     <description>Wireguard Client configuration</description>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <items>
         <clients>
             <client type="ArrayField">
@@ -13,12 +13,12 @@
                     <default></default>
                     <Required>Y</Required>
                 </name>
-                <pubkey type="TextField">
-                    <Required>N</Required>
+                <pubkey type="Base64Field">
+                    <Required>Y</Required>
+                    <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
                 </pubkey>
-                <psk type="TextField">
+                <psk type="Base64Field">
                     <Required>N</Required>
-                    <mask>/^[a-zA-Z0-9+\/]{43}=$/</mask>
                     <ValidationMessage>Should be a base64-encoded 32 byte string.</ValidationMessage>
                 </psk>
                 <tunneladdress type="NetworkField">

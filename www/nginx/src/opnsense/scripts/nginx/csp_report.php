@@ -29,7 +29,7 @@
 $log_file = '/var/log/nginx/csp_violations.log';
 
 // make sure we don't have any formatting issues here
-if (stristr($_SERVER['CONTENT_TYPE'], 'json') === false) {
+if (stristr($_SERVER['CONTENT_TYPE'], 'csp-report') === false) {
     http_response_code(400);
     echo "This endpoint expects JSON data. Please send data using a json mime time (for example application/json)";
     exit(0);
