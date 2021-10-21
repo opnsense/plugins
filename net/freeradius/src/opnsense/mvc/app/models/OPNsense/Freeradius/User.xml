@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/user</mount>
     <description>FreeRADIUS user configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <users>
             <user type="ArrayField">
@@ -49,6 +49,17 @@
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>1024</MaximumValue>
                 </simuse>
+                <exos_vlan_untagged type="IntegerField">
+                    <Required>N</Required>
+                    <MaximumValue>4096</MaximumValue>
+                </exos_vlan_untagged>
+                <exos_vlan_tagged type="CSVListField">
+                    <Required>N</Required>
+                    <mask>/^(\d{1,4},)*(\d{1,4})$/</mask>
+                </exos_vlan_tagged>
+                <exos_policy type="TextField">
+                    <Required>N</Required>
+                </exos_policy>
                 <wispr_bw_min_up type="IntegerField">
                     <Required>N</Required>
                 </wispr_bw_min_up>
