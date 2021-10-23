@@ -26,14 +26,14 @@
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>select_multiple</type>
-    <help>Physical name of the interface facing the peer</help>
+    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
   </field>
   <field>
     <id>neighbor.linklocalinterface</id>
     <label>IPv6 link-local interface</label>
     <type>dropdown</type>
     <advanced>true</advanced>
-    <help>Interface to use for IPv6 link-local neighbours</help>
+    <help><![CDATA[Interface to use for IPv6 link-local neighbours. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERinterfaceIFNAME">FRR documentation</a> for more information.]]></help>
   </field>
   <field>
     <id>neighbor.nexthopself</id>
