@@ -53,4 +53,11 @@
         <type>dropdown</type>
         <help>Select the protocol to use.</help>
     </field>
+    <field>
+        <id>general.vpncscript</id>
+        <label>Config Script</label>
+        <type>textbox</type>
+        <height>10</height>
+        <help>Optional vpnc-compatible script to replace default vpnc-script.</help>
+    </field>
 </form>

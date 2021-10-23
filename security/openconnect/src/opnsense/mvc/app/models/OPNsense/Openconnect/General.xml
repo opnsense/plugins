@@ -61,5 +61,8 @@
                     <array>Array Networks AG</array>
                 </OptionValues>
         </protocol>
+        <vpncscript type="TextField">
+            <Required>N</Required>
+        </vpncscript>
     </items>
 </model>

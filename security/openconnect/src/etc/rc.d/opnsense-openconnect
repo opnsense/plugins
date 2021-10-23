@@ -36,6 +36,7 @@ openconnect_status()
 
 openconnect_stop()
 {
+	chmod 755 /usr/local/etc/openconnect-script.sh
         if [ -n "$rc_pid" ]; then
             echo "stopping openconnect"
             ifconfig ocvpn0 name tun30000
@@ -47,6 +48,7 @@ openconnect_stop()
 
 openconnect_start()
 {
+	chmod 755 /usr/local/etc/openconnect-script.sh
         echo "starting openconnect"
 	/usr/local/sbin/openconnect ${openconnect_flags} < /usr/local/etc/openconnect.secret 2>&1 > /dev/null
         sleep 5
