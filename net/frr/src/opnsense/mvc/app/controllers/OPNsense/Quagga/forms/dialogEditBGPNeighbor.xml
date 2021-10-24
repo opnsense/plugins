@@ -39,6 +39,13 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>neighbor.multiprotocol</id>
+    <label>Multi-Protocol</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Is this neighbour multiprotocol capable per <a href="https://datatracker.ietf.org/doc/html/rfc2283.html">RFC 2283</a>]]></help>
+  </field>
+  <field>
     <id>neighbor.bfd</id>
     <label>BFD</label>
     <type>checkbox</type>
