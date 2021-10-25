@@ -5,4 +5,10 @@
         <type>checkbox</type>
         <help>This will activate WireGuard and start all enabled instances.</help>
     </field>
+    <field>
+        <id>general.verbose_logging</id>
+        <label>Enable verbose logging</label>
+        <type>checkbox</type>
+        <help>This will activate verbose logging across all instances.</help>
+    </field>
 </form>

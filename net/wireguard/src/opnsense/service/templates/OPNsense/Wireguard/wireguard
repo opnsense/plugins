@@ -1,6 +1,9 @@
 {% if helpers.exists('OPNsense.wireguard.general.enabled') and OPNsense.wireguard.general.enabled == '1' %}
 wireguard_var_script="/usr/local/opnsense/scripts/OPNsense/Wireguard/setup.sh"
 wireguard_enable="YES"
+{%   if helpers.exists('OPNsense.wireguard.general.verbose_logging') and OPNsense.wireguard.general.verbose_logging == '1' %}
+wireguard_env="LOG_LEVEL=verbose"
+{%   endif %}
 {%   if helpers.exists('OPNsense.wireguard.server.servers.server') %}
 {%   set activeservers=[] %}
 {%     for servers in helpers.toList('OPNsense.wireguard.server.servers.server') %}
