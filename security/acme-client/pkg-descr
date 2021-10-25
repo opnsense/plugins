@@ -8,6 +8,12 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.4
+
+Fixed:
+* rename "Linode Cloud API" to "Linode API (v4)"
+* rename "Linode API" to "Linode API (v3 / Deprecated)"
+
 3.3
 
 Added:
