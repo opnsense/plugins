@@ -50,7 +50,8 @@
  *  No-IP                       - Last Tested: 15 May 2020
  *  ODS                         - Last Tested: 02 August 2005
  *  Oray                        - Last Tested: 26 May 2017
- *  STRATO                      - Last Tested: 09 May 2017
+ *  STRATO                      - Last Tested: 08 October 2021
+ *  STRATO V6                   - Last Tested: 08 October 2021
  *  SelfHost                    - Last Tested: 26 December 2011
  *  StaticCling                 - Last Tested: 27 April 2006
  *  deSEC                       - Last Tested: 09 September 2020
@@ -247,19 +248,20 @@ class updatedns
         switch ($dnsService) {
             case 'all-inkl-v6':
             case 'azurev6':
+            case 'cloudflare-token-v6':
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'digitalocean-v6':
             case 'dynv6-v6':
-            case 'he-net-v6':
             case 'godaddy-v6':
+            case 'he-net-v6':
+            case 'hetzner-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
-            case 'cloudflare-token-v6':
-            case 'desec-v4-v6':
-            case 'desec-v6':
-            case 'hetzner-v6':
+            case 'strato-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -358,6 +360,7 @@ class updatedns
                 case 'selfhost':
                 case 'staticcling':
                 case 'strato':
+                case 'strato-v6':
                 case 'zoneedit':
                     $this->_update();
                     if ($this->_dnsDummyUpdateDone == true) {
@@ -1019,11 +1022,14 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'strato':
+            case 'strato-v6':
                 $server = "https://dyndns.strato.com/nic/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server);
-                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                if ($this->_curlIpresolveV4) {
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                }
                 break;
             case '3322':
                 $server = "http://members.3322.net/dyndns/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
@@ -1038,9 +1044,11 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'regfish':
+                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&ipv4={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                break;
             case 'regfish-v6':
-                $family = $this->_useIPv6 ? 'ipv6' : 'ipv4';
-                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&{$family}={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                $server = "https://dyndns6.regfish.de/?fqdn={$this->_dnsHost}&ipv6={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'linode':
@@ -1651,6 +1659,7 @@ class updatedns
             case 'ovh-dynhost':
             case 'selfhost':
             case 'strato':
+            case 'strato-v6':
                 if (preg_match('/notfqdn/i', $data)) {
                     $status = "Dynamic DNS: (Error) Not a FQDN";
                 } elseif (preg_match('/nochg/i', $data)) {

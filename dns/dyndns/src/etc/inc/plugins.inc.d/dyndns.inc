@@ -151,6 +151,7 @@ function dyndns_list()
         'route53-v6' => 'Route 53 (v6)',
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
+        'strato-v6' => 'STRATO (v6)',
         'zoneedit' => 'ZoneEdit',
     );
 }
