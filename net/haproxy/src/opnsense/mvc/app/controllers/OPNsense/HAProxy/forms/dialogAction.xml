@@ -357,6 +357,17 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_monitor_fail</style>
+    </field>
+    <field>
+        <id>action.monitor_fail_uri</id>
+        <label>Monitoring URI</label>
+        <type>text</type>
+        <help><![CDATA[Specifies a URI which will be intercepted to return HAProxy's health status instead of forwarding the request. When a HTTP request is received, HAProxy will return either "HTTP/1.0 200 OK" or "HTTP/1.0 503 Service unavailable", depending on the fined failure conditions.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_tcp-request_content_lua</style>
     </field>
     <field>
