@@ -7,9 +7,14 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
-        <verbose_logging type="BooleanField">
-            <default>0</default>
-            <Required>N</Required>
-        </verbose_logging>
+        <loglevel type="OptionField">
+            <default>quiet</default>
+            <OptionValues>
+                <quiet>Quiet</quiet>
+                <verbose>Verbose</verbose>
+                <debug>Debug</debug>
+            </OptionValues>
+            <Required>Y</Required>
+        </loglevel>
     </items>
 </model>
