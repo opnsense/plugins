@@ -39,6 +39,11 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>neighbor.rrclient</id>
+    <label>Route Reflector Client</label>
+    <type>checkbox</type>
+  </field>
+  <field>
     <id>neighbor.bfd</id>
     <label>BFD</label>
     <type>checkbox</type>
