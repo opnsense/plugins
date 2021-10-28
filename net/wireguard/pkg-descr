@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.8
+
+* PortField in Endpoint is mandatory now
+
 1.7
 
 * Make tunnel address (wg interface address) optional
