@@ -664,7 +664,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode</label>
+        <label>Linode API (v3 / Deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
     </field>
@@ -679,7 +679,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode Cloud API</label>
+        <label>Linode API (v4)</label>
         <type>header</type>
         <style>table_dns table_dns_linode_v4</style>
     </field>
