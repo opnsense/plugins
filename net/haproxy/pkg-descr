@@ -6,6 +6,17 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.7
+
+Added:
+* add options "preload" and "filename scheme" to Lua scripts (#2265)
+
+Fixed:
+* unable to use the "require" function in Lua scripts (#2265)
+
+Changed:
+* set "lua-prepend-path" so that Lua scripts can be found (#2265)
+
 3.6
 
 Added:

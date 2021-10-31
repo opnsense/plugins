@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -2364,6 +2364,18 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
+                <preload type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </preload>
+                <filename_scheme type="OptionField">
+                    <Required>Y</Required>
+                    <default>id</default>
+                    <OptionValues>
+                        <id>Use a random ID for the filename [default]</id>
+                        <name>Use the specified name as filename</name>
+                    </OptionValues>
+                </filename_scheme>
                 <content type="TextField">
                     <Required>Y</Required>
                 </content>
