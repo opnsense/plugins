@@ -3,6 +3,10 @@
     <description>LDAP configuration</description>
     <version>1.0.0</version>
     <items>
+        <innertunnel type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </innertunnel>
         <protocol type="OptionField">
             <default>LDAPS</default>
             <Required>Y</Required>
