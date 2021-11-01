@@ -356,6 +356,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                 message: data['status'],
                                 draggable: true
                             });
+                        } else {
+                            // reload page to hide pending changes reminder
+                            setTimeout(function () {
+                                window.location.reload(true)
+                            }, 300);
                         }
                         // when done, disable progress animation
                         $('[id*="reconfigureAct_progress"]').each(function(){
@@ -509,6 +514,11 @@ POSSIBILITY OF SUCH DAMAGE.
                                         message: data['status'],
                                         draggable: true
                                     });
+                                } else {
+                                    // reload page to hide pending changes reminder
+                                    setTimeout(function () {
+                                        window.location.reload(true)
+                                    }, 300);
                                 }
                                 // when done, disable progress animation
                                 $('[id*="saveAndReconfigureAct_progress"]').each(function(){
@@ -522,9 +532,25 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
+        /***********************************************************************
+         * UI tricks
+         **********************************************************************/
+
+        // show reminder when config has pending changes
+        function pending_changes_reminder() {
+            ajaxCall(url="/api/haproxy/export/diff/", sendData={}, callback=function(data,status) {
+                if (data['response'] && data['response'].trim()) {
+                    $("#haproxyPendingReminder").show();
+                } else {
+                    $("#haproxyPendingReminder").hide();
+                }
+            });
+        }
+        pending_changes_reminder();
+
         // show hint after every config change
         function add_apply_reminder() {
-            hint_msg = "{{ lang._('After changing settings, please remember to apply them with the button below') }}"
+            hint_msg = "{{ lang._('After changing settings, please remember to test and apply them with the buttons below.') }}"
             $('[id*="haproxyChangeMessage"]').each(function(){
                 $(this).append(hint_msg);
             });
@@ -1208,6 +1234,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <!-- buttons for all grid pages -->
     <div class="col-md-12" id="haproxyCommonButtons" style="display: none">
+        <div id="haproxyPendingReminder" class="alert alert-warning" style="display: none" role="alert">
+            {{ lang._("There are pending configuration changes that must be applied in order for them to take effect. To review them visit the %sConfig Diff%s page.") | format('<a href="/ui/haproxy/export#diff" class="alert-link" target="_blank">', '</a>') }}
+        </div>
         <div id="haproxyChangeMessage" class="alert alert-info" style="display: none" role="alert">
         </div>
         <hr/>

@@ -12,6 +12,7 @@ Added:
 * add options "preload" and "filename scheme" to Lua scripts (#2265)
 * add syslog-ng socket for logging (#2620)
 * show hint to apply changes after every config change (#2590)
+* show warning for pending configuration changes (#2590)
 
 Fixed:
 * unable to use the "require" function in Lua scripts (#2265)
