@@ -10,9 +10,11 @@ Plugin Changelog
 
 Added:
 * add options "preload" and "filename scheme" to Lua scripts (#2265)
+* add syslog-ng socket for logging (#2620)
 
 Fixed:
 * unable to use the "require" function in Lua scripts (#2265)
+* request logging not working (#2587)
 
 Changed:
 * set "lua-prepend-path" so that Lua scripts can be found (#2265)
