@@ -300,7 +300,6 @@ POSSIBILITY OF SUCH DAMAGE.
             $("#healthcheck\\.type").change(function(){
                 var service_id = 'table_' + $(this).val();
                 $(".type_table").hide();
-                // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
             });
             $("#healthcheck\\.type").change();
@@ -517,15 +516,35 @@ POSSIBILITY OF SUCH DAMAGE.
                                 });
                             });
                         }
-                    //});
                     });
 
                 });
             });
         });
 
+        // show hint after every config change
+        function add_apply_reminder() {
+            hint_msg = "{{ lang._('After changing settings, please remember to apply them with the button below') }}"
+            $('[id*="haproxyChangeMessage"]').each(function(){
+                $(this).append(hint_msg);
+            });
+
+        };
+        add_apply_reminder();
+
+        // show or hide the correct buttons depending on which tab is shown
+        // NOTE: This does not work on already shown tabs, so this event must
+        // fire first.
+        $('.nav-tabs a').on('show.bs.tab', function (e) {
+            if (/^\#general/.test(e.target.hash)) {
+              $("#haproxyCommonButtons").hide();
+            } else {
+              $("#haproxyCommonButtons").show();
+            }
+        });
+
         // update history on tab state and implement navigation
-        if(window.location.hash != "") {
+        if (window.location.hash != "") {
             $('a[href="' + window.location.hash + '"]').click()
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
@@ -745,7 +764,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 
     <div id="frontends" class="tab-pane fade">
-        <table id="grid-frontends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFrontend">
+        <table id="grid-frontends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFrontend" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -768,17 +787,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-frontends" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-frontends" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="backends" class="tab-pane fade">
-        <table id="grid-backends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogBackend">
+        <table id="grid-backends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogBackend" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -801,17 +813,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-backends" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-backends" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="servers" class="tab-pane fade">
-        <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer">
+        <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -837,17 +842,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-servers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-servers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="healthchecks" class="tab-pane fade">
-        <table id="grid-healthchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogHealthcheck">
+        <table id="grid-healthchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogHealthcheck" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="healthcheckid" data-type="number"  data-visible="false">{{ lang._('Health Monitor ID') }}</th>
@@ -869,17 +867,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-healthchecks" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-healthchecks" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="actions" class="tab-pane fade">
-        <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction">
+        <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="actionid" data-type="number"  data-visible="false">{{ lang._('Rule ID') }}</th>
@@ -901,17 +892,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-actions" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-actions" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="acls" class="tab-pane fade">
-        <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAcl">
+        <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAcl" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="aclid" data-type="number"  data-visible="false">{{ lang._('Condition ID') }}</th>
@@ -933,17 +917,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-acls" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-acls" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="users" class="tab-pane fade">
-        <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogUser">
+        <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogUser" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -966,17 +943,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-users" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-users" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="groups" class="tab-pane fade">
-        <table id="grid-groups" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogGroup">
+        <table id="grid-groups" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogGroup" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -999,17 +969,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-groups" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-groups" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="luas" class="tab-pane fade">
-        <table id="grid-luas" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogLua">
+        <table id="grid-luas" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogLua" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -1032,17 +995,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-luas" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-luas" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="errorfiles" class="tab-pane fade">
-        <table id="grid-errorfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogErrorfile">
+        <table id="grid-errorfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogErrorfile" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="errorfileid" data-type="number"  data-visible="false">{{ lang._('Error Message ID') }}</th>
@@ -1064,17 +1020,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-errorfiles" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-errorfiles" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="mapfiles" class="tab-pane fade">
-        <table id="grid-mapfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMapfile">
+        <table id="grid-mapfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMapfile" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="mapfileid" data-type="number"  data-visible="false">{{ lang._('Map File ID') }}</th>
@@ -1096,17 +1045,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-mapfiles" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-mapfiles" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="cpus" class="tab-pane fade">
-        <table id="grid-cpus" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCpu">
+        <table id="grid-cpus" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCpu" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="cpuid" data-type="number"  data-visible="false">{{ lang._('CPU Rule ID') }}</th>
@@ -1131,17 +1073,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-cpus" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-cpus" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="resolvers" class="tab-pane fade">
-        <table id="grid-resolvers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogResolver">
+        <table id="grid-resolvers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogResolver" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="resolverid" data-type="number"  data-visible="false">{{ lang._('Resolver ID') }}</th>
@@ -1164,17 +1099,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-resolvers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-resolvers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="mailers" class="tab-pane fade">
-        <table id="grid-mailers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMailer">
+        <table id="grid-mailers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMailer" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="mailerid" data-type="number"  data-visible="false">{{ lang._('Mailer ID') }}</th>
@@ -1198,13 +1126,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-mailers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-mailers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <!-- subtabs for general "Settings" tab below -->
@@ -1284,6 +1205,17 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
+
+    <!-- buttons for all grid pages -->
+    <div class="col-md-12" id="haproxyCommonButtons" style="display: none">
+        <div id="haproxyChangeMessage" class="alert alert-info" style="display: none" role="alert">
+        </div>
+        <hr/>
+        <button class="btn btn-primary" id="reconfigureAct-common" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+        <button class="btn btn-primary" id="configtestAct-common" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
+        <br/><br/>
+    </div>
+
 </div>
 
 {# include dialogs #}
