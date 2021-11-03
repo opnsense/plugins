@@ -59,7 +59,7 @@
         <label>Transfer Source IPv6</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>This determines which local address is bound to IPv6 TCP connections used to fetch zones transferred inbound by the server.</help>
+        <help>Specify the IPv6 address used as a source for zone transfers.</help>
     </field>
     <field>
         <id>general.forwarders</id>
