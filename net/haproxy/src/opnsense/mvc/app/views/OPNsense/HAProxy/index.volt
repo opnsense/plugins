@@ -431,18 +431,26 @@ POSSIBILITY OF SUCH DAMAGE.
                         if (data['result'].indexOf('ALERT') > -1) {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
-                                title: "{{ lang._('HAProxy config contains critical errors') }}",
+                                title: "{{ lang._('HAProxy configtest found critical errors') }}",
                                 message: data['result'],
                                 draggable: true
                             });
                         } else if (data['result'].indexOf('WARNING') > -1) {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('HAProxy config contains minor errors') }}",
+                                title: "{{ lang._('HAProxy configtest found minor errors') }}",
                                 message: data['result'],
                                 draggable: true
                             });
+                        } else {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_WARNING,
+                                title: "{{ lang._('HAProxy configtest result') }}",
+                                message: "{{ lang._('Your HAProxy config contains no errors.') }}",
+                                draggable: true
+                            });
                         }
+
                         // when done, disable progress animation
                         $('[id*="saveAndTestAct_progress"]').each(function(){
                             $(this).removeClass("fa fa-spinner fa-pulse");
