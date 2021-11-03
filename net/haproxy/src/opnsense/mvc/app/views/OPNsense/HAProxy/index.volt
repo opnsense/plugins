@@ -322,94 +322,92 @@ POSSIBILITY OF SUCH DAMAGE.
         // reconfigure haproxy to activate changes
         $('[id*="reconfigureAct"]').each(function(){
             $(this).click(function(){
-
-            // set progress animation
-            $('[id*="reconfigureAct_progress"]').each(function(){
-                $(this).addClass("fa fa-spinner fa-pulse");
-            });
-            // first run syntax check to catch critical errors
-            ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
-                // show warning in case of critical errors
-                if (data['result'].indexOf('ALERT') > -1) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_DANGER,
-                        title: "{{ lang._('HAProxy configtest found critical errors') }}",
-                        message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Run syntax check for further details or review the changes in the %sConfiguration Diff%s.')|format('<a href=\"/ui/haproxy/export#diff\">','</a>') }}",
-                        buttons: [{
-                            icon: 'fa fa-trash-o',
-                            label: '{{ lang._('Abort') }}',
-                            action: function(dlg){
-                                // when done, disable progress animation
-                                $('[id*="reconfigureAct_progress"]').each(function(){
-                                    $(this).removeClass("fa fa-spinner fa-pulse");
-                                });
-                                dlg.close();
-                            }
-                        }]
-                    });
-                } else {
-                    ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
-                        if (status != "success" || data['status'] != 'ok') {
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
-                                message: data['status'],
-                                draggable: true
-                            });
-                        } else {
-                            // reload page to hide pending changes reminder
-                            setTimeout(function () {
-                                window.location.reload(true)
-                            }, 300);
-                        }
-                        // when done, disable progress animation
-                        $('[id*="reconfigureAct_progress"]').each(function(){
-                            $(this).removeClass("fa fa-spinner fa-pulse");
+                // set progress animation
+                $('[id*="reconfigureAct_progress"]').each(function(){
+                    $(this).addClass("fa fa-spinner fa-pulse");
+                });
+                // first run syntax check to catch critical errors
+                ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
+                    // show warning in case of critical errors
+                    if (data['result'].indexOf('ALERT') > -1) {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_DANGER,
+                            title: "{{ lang._('HAProxy configtest found critical errors') }}",
+                            message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Run syntax check for further details or review the changes in the %sConfiguration Diff%s.')|format('<a href=\"/ui/haproxy/export#diff\">','</a>') }}",
+                            buttons: [{
+                                icon: 'fa fa-trash-o',
+                                label: '{{ lang._('Abort') }}',
+                                action: function(dlg){
+                                    // when done, disable progress animation
+                                    $('[id*="reconfigureAct_progress"]').each(function(){
+                                        $(this).removeClass("fa fa-spinner fa-pulse");
+                                    });
+                                    dlg.close();
+                                }
+                            }]
                         });
-                    });
-                }
-            });
+                    } else {
+                        ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                            if (status != "success" || data['status'] != 'ok') {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_WARNING,
+                                    title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                    message: data['status'],
+                                    draggable: true
+                                });
+                            } else {
+                                // reload page to hide pending changes reminder
+                                setTimeout(function () {
+                                    window.location.reload(true)
+                                }, 300);
+                            }
+                            // when done, disable progress animation
+                            $('[id*="reconfigureAct_progress"]').each(function(){
+                                $(this).removeClass("fa fa-spinner fa-pulse");
+                            });
+                        });
+                    }
+                });
             });
         });
 
         // test configuration file
         $('[id*="configtestAct"]').each(function(){
             $(this).click(function(){
-
-            // set progress animation
-            $('[id*="configtestAct_progress"]').each(function(){
-                $(this).addClass("fa fa-spinner fa-pulse");
-            });
-
-            ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
-                // when done, disable progress animation
+                // set progress animation
                 $('[id*="configtestAct_progress"]').each(function(){
-                    $(this).removeClass("fa fa-spinner fa-pulse");
+                    $(this).addClass("fa fa-spinner fa-pulse");
                 });
 
-                if (data['result'].indexOf('ALERT') > -1) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_DANGER,
-                        title: "{{ lang._('HAProxy configtest found critical errors') }}",
-                        message: data['result'],
-                        draggable: true
+                ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
+                    // when done, disable progress animation
+                    $('[id*="configtestAct_progress"]').each(function(){
+                        $(this).removeClass("fa fa-spinner fa-pulse");
                     });
-                } else if (data['result'].indexOf('WARNING') > -1) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('HAProxy configtest found minor errors') }}",
-                        message: data['result'],
-                        draggable: true
-                    });
-                } else {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('HAProxy configtest result') }}",
-                        message: "{{ lang._('Your HAProxy config contains no errors.') }}",
-                        draggable: true
-                    });
-                }
-            });
+
+                    if (data['result'].indexOf('ALERT') > -1) {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_DANGER,
+                            title: "{{ lang._('HAProxy configtest found critical errors') }}",
+                            message: data['result'],
+                            draggable: true
+                        });
+                    } else if (data['result'].indexOf('WARNING') > -1) {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_WARNING,
+                            title: "{{ lang._('HAProxy configtest found minor errors') }}",
+                            message: data['result'],
+                            draggable: true
+                        });
+                    } else {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_WARNING,
+                            title: "{{ lang._('HAProxy configtest result') }}",
+                            message: "{{ lang._('Your HAProxy config contains no errors.') }}",
+                            draggable: true
+                        });
+                    }
+                });
             });
         });
 
