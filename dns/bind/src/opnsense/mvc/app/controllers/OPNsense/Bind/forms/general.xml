@@ -34,6 +34,20 @@
         <help>Set the port the service should listen to.</help>
     </field>
     <field>
+        <id>general.querysource</id>
+        <label>Query Source IP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv4 address used as a source for outbound queries.</help>
+    </field>
+    <field>
+        <id>general.querysourcev6</id>
+        <label>Query Source IPv6</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv6 address used as a source for outbound queries.</help>
+    </field>
+    <field>
         <id>general.transfersource</id>
         <label>Transfer Source IP</label>
         <type>text</type>
