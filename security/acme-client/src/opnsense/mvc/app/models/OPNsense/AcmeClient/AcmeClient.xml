@@ -437,8 +437,8 @@
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
                         <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
-                        <dns_linode>Linode API</dns_linode>
-                        <dns_linode_v4>Linode Cloud API</dns_linode_v4>
+                        <dns_linode>Linode API (v3 / Deprecated)</dns_linode>
+                        <dns_linode_v4>Linode API (v4)</dns_linode_v4>
                         <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_miab>MailinaBox API</dns_miab>
