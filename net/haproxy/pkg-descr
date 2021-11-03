@@ -17,6 +17,7 @@ Added:
 Fixed:
 * unable to use the "require" function in Lua scripts (#2265)
 * request logging not working (#2587)
+* fix syntax error in template (#2619)
 
 Changed:
 * set "lua-prepend-path" so that Lua scripts can be found (#2265)
