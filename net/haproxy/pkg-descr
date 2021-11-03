@@ -6,6 +6,23 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.7
+
+Added:
+* add options "preload" and "filename scheme" to Lua scripts (#2265)
+* add syslog-ng socket for logging (#2620)
+* show hint to apply changes after every config change (#2590)
+* show warning for pending configuration changes (#2590)
+
+Fixed:
+* unable to use the "require" function in Lua scripts (#2265)
+* request logging not working (#2587)
+* fix syntax error in template (#2619)
+
+Changed:
+* set "lua-prepend-path" so that Lua scripts can be found (#2265)
+* show "apply" and "test syntax" buttons on introduction pages
+
 3.6
 
 Added:
