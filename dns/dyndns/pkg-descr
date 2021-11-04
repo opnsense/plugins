@@ -6,6 +6,8 @@ Plugin Changelog
 1.26
 
 * Added support for 1984 Hosting Company (contributed by Adrian Fedoreanu)
+* Added %HOST% support for custom dynamic DNS (contributed by Marc Collins)
+* Add PAYLOAD log and debug support for missing code spots
 
 1.25
 
