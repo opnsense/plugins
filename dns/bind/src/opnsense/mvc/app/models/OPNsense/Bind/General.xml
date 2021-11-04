@@ -27,6 +27,16 @@
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv6>
+        <querysource type="NetworkField">
+            <Required>N</Required>
+            <AddressFamily>ipv4</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </querysource>
+        <querysourcev6 type="NetworkField">
+            <Required>N</Required>
+            <AddressFamily>ipv6</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </querysourcev6>
         <transfersource type="NetworkField">
             <Required>N</Required>
             <AddressFamily>ipv4</AddressFamily>
