@@ -14,7 +14,7 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
- *  1984Hosting                 - Last Tested: 03 August 2020
+ *  1984 Hosting Company        - Last Tested: 03 August 2020
  *  3322                        - Last Tested: 26 May 2017
  *  All-Inkl                    - Last Tested: 02 March 2020
  *  Amazon Route53              - Last Tested: 01 April 2012
