@@ -1653,7 +1653,9 @@ class updatedns
                 break;
             case '1984-hosting':
                 $output = json_decode($data);
-                if ($output->ok === true) {
+                if ($output === null) {
+                    /* empty response */
+                } elseif ($output->ok === true) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
                     $successful_update = true;
                 } elseif ($output->error) {
