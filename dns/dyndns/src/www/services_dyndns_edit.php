@@ -421,7 +421,8 @@ include("head.inc");
                         <?= gettext("This is the only field required by for Custom Dynamic DNS, and is only used by Custom Entries.") ?>
                         <br />
                         <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
-                        <?= gettext("If you need the new Host to be included in the request, put %Host% in its place.") ?>
+                        <br />
+                        <?= gettext("If you need the new host to be included in the request, put %HOST% in its place.") ?>
                       </div>
                     </td>
                   </tr>
