@@ -20,8 +20,10 @@
     <field>
         <id>host.extaddress</id>
         <label>Ext. Address</label>
-        <type>text</type>
-        <help>This machines external address to use</help>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>External address of selected machine</help>
     </field>
     <field>
         <id>host.extport</id>
@@ -32,7 +34,9 @@
     <field>
         <id>host.subnet</id>
         <label>Subnet</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <help>This machines part of the network</help>
     </field>
     <field>

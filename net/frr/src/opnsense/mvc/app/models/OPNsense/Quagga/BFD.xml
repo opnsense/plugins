@@ -1,0 +1,27 @@
+<model>
+    <mount>//OPNsense/quagga/bfd</mount>
+    <description>BFD configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <neighbors>
+            <neighbor type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </description>
+                <address type="NetworkField">
+                    <default></default>
+                    <Required>Y</Required>
+                </address>
+            </neighbor>
+        </neighbors>
+    </items>
+</model>

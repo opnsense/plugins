@@ -1,0 +1,102 @@
+<form>
+
+    <field>
+        <type>section_title</type>
+        <label>General</label>
+    </field>
+
+    <field>
+        <id>server.identifier</id>
+        <label>Unique identifier</label>
+        <type>text</type>
+        <help>Unique identifier for this server</help>
+    </field>
+
+    <field>
+        <id>server.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Short description to identify this server</help>
+    </field>
+
+    <field>
+        <id>server.host</id>
+        <label>Hostname / IP</label>
+        <type>text</type>
+        <help>The server's IP or hostname to connect to</help>
+    </field>
+
+    <field>
+        <id>server.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>The port (UDP/TCP) to connect to. If omitted, UDP and TCP will default to 1812 while TLS and DTLS will default to 2083.</help>
+    </field>
+
+    <field>
+        <id>server.statusServer</id>
+        <label>Status-Server</label>
+        <type>dropdown</type>
+        <help><![CDATA[Enable the use of status-server messages for this server (default <b>off</b>). If statusserver is enabled (<b>on</b>), the proxy will send regular status-server messages to the server to verify that it is alive. Status tracking of the server will solely depend on status-server message and ignore lost requests. This should only be enabled if the server supports it. With the option <b>minimal</b> status-server messages are only sent when regular requests have been lost and no other replies have been received.]]></help>
+    </field>
+
+    <field>
+        <id>server.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Choose the type of server. Default Radius-clients use UDP.</help>
+    </field>
+
+    <field>
+        <id>server.secret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <help>The shared RADIUS key with this server. This option is optional for TLS/DTLS and if omitted will default to "radsec". (Note that using a secret other than "radsec" for TLS is a violation of the standard (RFC 6614) and that the proposed standard for DTLS stipulates that the secret must be "radius/dtls".)</help>
+    </field>
+
+    <field>
+        <id>server.tlsConfig</id>
+        <label>TLS-Config</label>
+        <type>dropdown</type>
+        <help>For a TLS/DTLS client you may also specify the tls option. The option value must be the name of a previously defined TLS block. If this option is not specified, the TLS block with the name defaultClient or default will be used if defined (in that order). If the specified TLS block name does not exist, or the option is not specified and none of the defaults exist, the proxy will exit with an error.</help>
+    </field>
+
+    <field>
+        <type>section_title</type>
+        <label>Advanced settings</label>
+        <advanced>true</advanced>
+    </field>
+
+    <field>
+        <id>server.certificateNameCheck</id>
+        <label>Certificate-Name-Check</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help>For a TLS/DTLS server, disable the default behaviour of matching CN or SubjectAltName against the specified hostname or IP address.</help>
+    </field>
+
+    <field>
+        <id>server.matchCertificateAttribute</id>
+        <label>Match Certificate-Attribute</label>
+        <advanced>true</advanced>
+        <type>text</type>
+        <help>Perform additional validation of certificate attributes (CN | SubjectAltName:URI | SubjectAltName:DNS). Currently matching of CN and SubjectAltName types URI DNS and IP is supported. Note that currently this option can only be specified once in a client block.</help>
+    </field>
+
+    <field>
+        <id>server.rewriteIn</id>
+        <label>Rewrite incoming requests</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help><![CDATA[Apply the operations in the specified rewrite block on incoming (request) or outgoing (response) messages for this server. Rewriting incoming messages is done before, outgoing after other processing. If the <b>RewriteIn</b> is not configured, the rewrite blocks <b>defaultClient</b> or <b>default</b> will be applied if defined. No default blocks are applied for <b>RewriteOut</b>.]]></help>
+    </field>
+
+    <field>
+        <id>server.rewriteOut</id>
+        <label>Rewrite outgoing requests</label>
+        <advanced>true</advanced>
+        <type>dropdown</type>
+        <help><![CDATA[Apply the operations in the specified rewrite block on incoming (request) or outgoing (response) messages for this server. Rewriting incoming messages is done before, outgoing after other processing. If the <b>RewriteIn</b> is not configured, the rewrite blocks <b>defaultClient</b> or <b>default</b> will be applied if defined. No default blocks are applied for <b>RewriteOut</b>.]]></help>
+    </field>
+
+</form>

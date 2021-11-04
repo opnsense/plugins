@@ -1,0 +1,8 @@
+<menu>
+  <Services>
+    <Zabbixproxy VisibleName="Zabbix Proxy" cssClass="fa fa-eye">
+        <Settings order="10" url="/ui/zabbixproxy/general/index"/>
+        <Log VisibleName="Log File" order="50" url="/ui/diagnostics/log/zabbix/zabbix_proxy"/>
+    </Zabbixproxy>
+  </Services>
+</menu>

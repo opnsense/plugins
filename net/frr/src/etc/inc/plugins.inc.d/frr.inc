@@ -142,5 +142,6 @@ function frr_xmlrpc_sync()
     $result['id'] = 'quagga';
     $result['section'] = 'OPNsense.quagga';
     $result['description'] = gettext('FRR');
+    $result['services'] = ['frr'];
     return array($result);
 }

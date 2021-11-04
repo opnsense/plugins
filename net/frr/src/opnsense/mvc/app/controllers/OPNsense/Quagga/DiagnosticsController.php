@@ -44,8 +44,4 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
     {
         $this->view->pick('OPNsense/Quagga/diagnosticsgeneral');
     }
-    public function logAction()
-    {
-        $this->view->pick('OPNsense/Quagga/log');
-    }
 }

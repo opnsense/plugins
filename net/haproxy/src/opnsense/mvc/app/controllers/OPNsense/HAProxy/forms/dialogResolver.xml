@@ -1,0 +1,103 @@
+<form>
+    <field>
+        <id>resolver.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Choose a name for this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Choose a optional description for this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.nameservers</id>
+        <label>Nameservers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <sortable>true</sortable>
+        <help><![CDATA[Add nameservers to this resolver configuration, i.e. 127.0.0.1:53 or 192.168.1.1:53. Use TAB key to complete typing.]]></help>
+        <hint>Enter ip:port here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>resolver.parse_resolv_conf</id>
+        <label>Use resolv.conf</label>
+        <type>checkbox</type>
+        <help>Add all nameservers found in /etc/resolv.conf to this resolver configuration.</help>
+    </field>
+    <field>
+        <id>resolver.resolve_retries</id>
+        <label>Resolve Retries</label>
+        <type>text</type>
+        <help><![CDATA[This configures the number of queries to send to resolve a server name before giving up.]]></help>
+    </field>
+    <field>
+        <id>resolver.timeout_resolve</id>
+        <label>Resolve Timeout</label>
+        <type>text</type>
+        <help><![CDATA[This configures the default time to trigger name resolutions when no other time applied. Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
+    </field>
+    <field>
+        <id>resolver.timeout_retry</id>
+        <label>Retry Timeout</label>
+        <type>text</type>
+        <help><![CDATA[This configures the default time between two DNS queries, when no valid response has been received. Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
+    </field>
+    <field>
+        <id>resolver.accepted_payload_size</id>
+        <label>Max DNS answer size</label>
+        <type>text</type>
+        <help><![CDATA[Defines the maximum payload size accepted by HAProxy and announced to all the name servers configured in this resolvers section. The default is 512 bytes, the maximum allowed is 8192.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_valid</id>
+        <label>Valid hold time</label>
+        <type>text</type>
+        <help><![CDATA[When haproxy receives a valid NS response it will not query DNS until valid time expires. Default is "10s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_obsolete</id>
+        <label>Obsolete hold time</label>
+        <type>text</type>
+        <help><![CDATA[As a DNS server may not answer all the IPs in one DNS request, haproxy keeps a cache of previous answers. An answer will be considered obsolete after [hold obsolete] seconds without the IP returned. Default is "30s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_refused</id>
+        <label>Refused hold time</label>
+        <type>text</type>
+        <help><![CDATA[When the DNS server refuses the resolve request haproxy will not retry until [hold refused] elapses. Default "30s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_nx</id>
+        <label>NX hold time</label>
+        <type>text</type>
+        <help><![CDATA[When haproxy receives a NXDOMAIN error message (domain does not exist) from the resolver it will not retry until [hold nx] elapses. Default "30s".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_timeout</id>
+        <label>Timeout hold time</label>
+        <type>text</type>
+        <help><![CDATA[When a DNS resolve request times out haproxy will not retry until [hold timeout] elapses. Default "30s"]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>resolver.hold_other</id>
+        <label>Other hold time</label>
+        <type>text</type>
+        <help><![CDATA[Sets the "hold other" timeout value for the resolver. Default "30s"]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

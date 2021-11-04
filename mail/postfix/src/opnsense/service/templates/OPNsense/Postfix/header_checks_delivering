@@ -1,0 +1,9 @@
+{% if helpers.exists('OPNsense.postfix.general.enabled') and OPNsense.postfix.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.postfix.headerchecks.headerchecks.headercheck') %}
+{%     for headercheck_list in helpers.toList('OPNsense.postfix.headerchecks.headerchecks.headercheck') %}
+{%       if headercheck_list.enabled == '1' and headercheck_list.filter == 'WHILE_DELIVERING' %}
+{{ headercheck_list.expression }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}

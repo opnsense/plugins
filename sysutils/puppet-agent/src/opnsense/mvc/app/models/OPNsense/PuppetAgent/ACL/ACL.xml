@@ -1,0 +1,9 @@
+<acl>
+    <page-user-puppetagent>
+        <name>Services: Puppet Agent</name>
+        <patterns>
+            <pattern>ui/puppetagent/*</pattern>
+            <pattern>api/puppetagent/*</pattern>
+        </patterns>
+    </page-user-puppetagent>
+</acl>

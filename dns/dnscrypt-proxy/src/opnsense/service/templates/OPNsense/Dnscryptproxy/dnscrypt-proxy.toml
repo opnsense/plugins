@@ -4,6 +4,10 @@
 server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.serverlist.split(','))) + "'" }}]
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.disabled_serverlist') and OPNsense.dnscryptproxy.general.disabled_serverlist != '' %}
+disabled_server_names = ['{{OPNsense.dnscryptproxy.general.disabled_serverlist}}']
+{%   endif %}
+
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
 listen_addresses = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.listen_addresses.split(','))) + "'" }}]
 {%   else %}
@@ -118,6 +122,7 @@ cache_neg_max_ttl = {{ OPNsense.dnscryptproxy.general.cache_neg_max_ttl }}
 cache = false
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.query_logs') and OPNsense.dnscryptproxy.general.query_logs == '1' %}
 [query_log]
   file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
@@ -125,22 +130,23 @@ cache = false
 [nx_log]
   file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
+{%   endif %}
 
-[whitelist]
-  whitelist_file = 'whitelist.txt'
+[allowed_names]
+  allowed_names_file = 'whitelist.txt'
   log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
   log_format = 'tsv'
 
 {% if helpers.exists('OPNsense.dnscryptproxy.dnsbl.enabled') and OPNsense.dnscryptproxy.dnsbl.enabled == '1' %}
-[blacklist]
-  blacklist_file = 'blacklist.txt'
+[blocked_names]
+  blocked_names_file = 'blacklist.txt'
   log_file = '/var/log/dnscrypt-proxy/blocked.log'
   log_format = 'tsv'
 {% endif %}
 
 [sources]
   [sources.'public-resolvers']
-  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md']
   cache_file = 'public-resolvers.md'
   minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
   refresh_delay = 72

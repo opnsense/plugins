@@ -3,4 +3,357 @@ availability, load balancing, and proxying for TCP and HTTP-based
 applications. It is particularly suited for web sites crawling under
 very high loads while needing persistence or Layer7 processing.
 
-WWW: https://haproxy.org/
+Plugin Changelog
+================
+
+3.7
+
+Added:
+* add options "preload" and "filename scheme" to Lua scripts (#2265)
+* add syslog-ng socket for logging (#2620)
+* show hint to apply changes after every config change (#2590)
+* show warning for pending configuration changes (#2590)
+
+Fixed:
+* unable to use the "require" function in Lua scripts (#2265)
+* request logging not working (#2587)
+* fix syntax error in template (#2619)
+
+Changed:
+* set "lua-prepend-path" so that Lua scripts can be found (#2265)
+* show "apply" and "test syntax" buttons on introduction pages
+
+3.6
+
+Added:
+* add support for advanced resolver properties (#2330)
+* add graceful stop timeout to service settings
+* support "monitor-uri" and "monitor fail" in rules (#2387)
+* add new option "case-sensitive" to conditions (#2576)
+
+Fixed:
+* no haproxy.conf after restoring a config backup (#2474)
+
+Changed:
+* deploy haproxy.conf if it does not exist (#2474)
+* add new timeout (60s) which will terminate open connections when using graceful stop
+* allow retries to be set to "0" (#2585)
+
+3.5
+
+Fixed:
+* fix maintenance page not loading (#2485)
+
+3.4
+
+Fixed:
+* fix empty resolve-prefer option (#2340)
+
+3.3
+
+Changed:
+* use HAProxy socket to apply updated OCSP stapling data (in cron job) (#2351)
+
+3.2
+
+Fixed:
+* fix config test when HAProxy service is not enabled
+
+Changed:
+* ignore incompatible ciphersuites options when LibreSSL is used (#2013)
+
+3.1
+
+Fixed:
+* fix items that cannot be deleted (#2266)
+
+Changed:
+* rules: only accept a single value for backend/server fields (#2266)
+
+3.0
+
+Added:
+* add new maintenance page to change server state and weight on-the-fly (#2213)
+* add new commands to update SSL certificates in runtime (#2244, #1882)
+* add new SSL bind option: prefer-client-ciphers
+* add global option to enable old buggy behaviour for PROXY v2 connections
+* add support for HTTP/2 in health checks
+* add config export (#2035)
+* add config diff
+* guard against broken config by using a staging config file
+* add basic OCSP stapling support (#1430)
+* add support for e-mail alerts and mailers (#1669)
+* add support for custom header checks (#1907)
+* add support for server templates (#1975)
+* add support for additional resolver options (#1975)
+* add support for resolve-prefer option (#1975)
+* add pre-defined cron jobs to maintenance page
+
+Fixed:
+* prevent service outage by aborting "Apply" when configtest fails
+* fix direct links to individual statistics tabs
+* prevent the deletion of items that are still referenced elsewhere (core/#1897)
+
+Changed:
+* change default SSL version to TLSv1.2 (ssl-min-ver)
+* remove weak ciphers from (default) SSL settings
+* remove default SSL bind options that would conflict with ssl-min-ver
+* move SSL bind options below other SSL settings, they are rarely used nowadays
+* change default for tune.ssl.default-dh-param from 1024 to 2048
+* use new "http-check send" command for HTTP health checks
+* change default for spreadChecks from 0 to 2
+* no longer overwrite live config file when running a syntax check
+* make restart/reload commands usable in cron jobs
+* relax GUI input validation for servers, move validation to jinja template (#1975)
+
+Deprecated:
+* nbproc is deprecated and will be removed in os-haproxy 4.0
+
+2.26
+
+Fixed:
+* preserve sort order of default SSL bind options
+
+2.25
+
+Added:
+* add support for TLSv1.3 (#790)
+
+2.24
+
+Added:
+* add support for http-request set-var and http-response set-var (#1796)
+* add group as userlist to HAProxy config to make it usable in rules/conditions (#1796)
+* add support for resolvers to customize how HAProxy handles name resolution (#1787)
+* add support for init-addr to allow HAProxy to start when DNS does not resolve (#1787)
+
+Fixed:
+* honor sort order of all rules, remove special handling of "use_[backend|server]" options (#1925)
+
+Changed:
+* add "Save & Test syntax" button to all "Settings" pages
+* add "introduction" page for Settings tab
+* streamline "Settings" subtabs
+
+2.23
+
+Fixed:
+* add missing acl SNI regex text field (#1883)
+
+2.22
+
+Added:
+* enable SSL verification for a server when "Force SSL" is enabled in the associated health check (#1761)
+* use the systems local Root CA Certificates for SSL verification when no CA was selected (#1761)
+
+Fixed:
+* fix label of src_sess_cnt (#1780)
+* fix invalid use of option httplog (resolves a warning in config test)
+* fix invalid use of option forwardfor (resolves a warning in config test)
+
+2.21
+
+Fixed:
+* override "graceful" restart if required (#1745)
+
+2.20
+
+Changed:
+* update stats socket permission for easier (non-root) monitoring (#1232)
+
+2.19
+
+Added:
+* switch to HAProxy 2.0 release series (#1089)
+* add support for the "max-object-size" cache configuration option (#1458)
+* add end-to-end HTTP/2 support (details)
+* add support for the random balancing algorithm (details)
+
+Fixed:
+* fix IPv6 validation in frontends (#540)
+
+Changed:
+* add IPv6 example to listen address help text
+* update URLs to HAProxy 2.0 documentation
+* frontends: move HTTP/2 option to HTTP settings
+* change order of frontend options
+
+2.18
+
+Added:
+* add support for HAProxy cache (#1442)
+
+Changed:
+* change http-reuse default (align with HAProxy's default value, #1439)
+
+2.17
+
+Added:
+* allow backends without servers (#1304)
+* add support for deciphered SNI check in ACLs (#1365)
+* allow to force SSL for health checks (#1282)
+
+Changed:
+* improve wording for SNI conditions to differentiate between deciphered vs. not deciphered
+
+2.16
+
+Fixed:
+* allow hyphens in server, frontend and backend names (#1346)
+
+2.15
+
+Added:
+* rules can finally be sorted by using drag'n'drop (#582)
+* added "enabled" field to servers (#1208)
+* TCP inspection delays are supported in rules (#1188)
+
+Changed:
+* server option "mode" is always visible, no longer requires "advanced mode" (#1208)
+* most dropdown fields finally have alphanumeric sorting (#687, opnsense/core#3251)
+* rules: align indentation of comments in haproxy.conf
+
+2.14
+
+Fixed:
+* bulk deleting does not work (#1164)
+
+Changed:
+* migrate to mutable controller (required to fix #1164)
+
+2.13
+
+Added:
+* support multiple CAs for SSL verification for servers
+
+Fixed:
+* fix export of CAs (#1074)
+
+Changed:
+* export a frontend's default SSL certificate (#1088)
+* it is no longer required to add a default SSL certificate to a frontend's "certificates" list (#1088)
+* avoid duplicate entry in certlist file if a default SSL certificate is specified
+* always show "Default certificate" option in frontends, it's no longer an "advanced" option
+
+2.12
+
+Added:
+* add support for HTTP/2 (#1047)
+
+2.11
+
+Fixed:
+* fix warning: a 'http-request' rule placed after a 'use_backend' rule will still be processed before (#999)
+* fix wrong parameter name when using tcp-request content lua (#999)
+
+Changed:
+* internal: trim whitespace, remove empty lines in haproxy.conf (#999)
+
+2.10
+
+Added:
+* add support for multithreading (available as new option in Settings -> Global Parameters) (#1003)
+* add support for client certificate authentication (#426)
+* add support for HTTP Basic Auth to frontends/backends/ACLs (#300)
+* add basic user/group management functionality (supports Basic Auth as well as stats users)
+* add new CPU Affinity Rules feature (which is a combination of HAProxy's cpu-map, bind-process and process options) (see #1003 for a short explanation)
+
+Fixed:
+* function "http-request header-delete" generated a corrupted haproxy.conf (#882)
+
+Changed:
+* migrate all stats users from old (and cumbersome) username:password format to new user management feature
+* internal: use /tmp for autogenerated files (now they are automatically cleaned up on boot)
+* internal: change filename of cert lists from id.crtlist to id.certlist
+
+2.9
+
+Added:
+* add "http-reuse" option (#836)
+
+2.8
+
+Added:
+* support truly seamless reloads (#224)
+* add support for the "map" feature (#180)
+
+Fixed:
+* fix reload of service template in "reconfigure" action (#690; introduced in 7381101)
+* enabling "hard stop" mode resulted in an invalid "hardrestart" RC command
+
+Changed:
+* use "reload" instead of "restart" RC action
+* if "reload" fails, also issue a "restart" command (required when enabling seamless reloads)
+* start progress animation (spinner) earlier when applying settings
+
+2.7
+
+Added:
+* support rise/fall parameters in backends and health checks
+* support set-path in ACLs
+* support for cookie-based persistence (#680)
+
+Fixed:
+* fix X-Forwarded-For option disappeared (#647)
+* fix validation for source address fields (#695)
+
+2.6
+
+Added:
+* add support for http-response set-status in ACLs to manipulate HTTP status codes
+
+Fixed:
+* fix invalid backend name when using nbsrv in ACLs
+
+2.5
+
+Added:
+* add support for the PROXY protocol (i.e. in combination with postfix or dovecot)
+* switch to HAProxy 1.8.4
+
+2.4
+
+Added:
+* add support for "preload" and "includeSubDomains" HSTS options (#447)
+* support session sync / HAProxy peers (#165)
+* add new HTTP timeout options (to mitigate slowloris attacks) (#202)
+* allow tracking additional values in stick-tables (#202)
+* add stick-table config for frontends (optional, disabled by default) (#202)
+* add support for many new conditions (#202)
+* enable sticky counters for frontend stick-tables (required for new conditions) (#202)
+
+Changed:
+* relax validation masks for several "name" fields (to allow more "special" characters)
+* switch to new mutable service controller
+
+2.3
+
+Added:
+* new option to hide introduction pages (#340)
+
+Fixed:
+* fix wrong introduction for "Advanced" tab (regression introduced in 8cdcbda)
+
+2.2
+
+Fixed:
+* fix for rules parameters (values could not be saved, leading to invalid rules)
+
+2.1
+
+Fixed:
+* do not enable HSTS unconditionally (now works as described in #380)
+* enable HSTS only for HTTP frontends
+
+2.0
+
+Added:
+* new GUI to guide new users and improve general usability (#208)
+* make server port optional (#341)
+* new SSL settings for frontends (#380)
+* new global SSL default values (#380)
+* new option for HTTP Strict Transport Security (#380)
+
+Fixed:
+* rephrase text to make it clear that aliases cannot be used (#360)
+* rephrase text to make it clear that "use_server" will only work for backends (#361)

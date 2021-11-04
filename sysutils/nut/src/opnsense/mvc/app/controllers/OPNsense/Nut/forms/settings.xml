@@ -76,6 +76,26 @@
                 <help>Set extra arguments for this UPS, e.g. "port=auto".</help>
             </field>
         </subtab>
+        <subtab id="nut-ups-apcupsd" description="APCUPSD-Driver">
+            <field>
+                <id>nut.apcupsd.enable</id>
+                <label>Enable</label>
+                <type>checkbox</type>
+                <help>Enable the APCUPSD controlled devices driver.</help>
+            </field>
+            <field>
+                <id>nut.apcupsd.hostname</id>
+                <label>Hostname</label>
+                <type>text</type>
+                <help>Set the hostname or ip of the remote apcupsd server.</help>
+            </field>
+            <field>
+                <id>nut.apcupsd.port</id>
+                <label>Port</label>
+                <type>text</type>
+                <help>Set the port of the remote apcupsd server (optional).</help>
+            </field>
+        </subtab>
         <subtab id="nut-ups-bcmxcpusb" description="BCMXCPUSB-Driver">
             <field>
                 <id>nut.bcmxcpusb.enable</id>
@@ -136,6 +156,12 @@
                 <label>IP Address</label>
                 <type>text</type>
                 <help>Set the IP address of the remote NUT server.</help>
+            </field>
+            <field>
+                <id>nut.netclient.port</id>
+                <label>Port</label>
+                <type>text</type>
+                <help>Set the TCP port of the remote NUT server.</help>
             </field>
             <field>
                 <id>nut.netclient.user</id>

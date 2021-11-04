@@ -1,6 +1,457 @@
 This plugin contains a full ACME protocol implementation based on the
-acme.sh project. According to the authors, it's probably "the easiest
+acme.sh project.  According to the authors, it's probably "the easiest
 and smallest and smartest shell script" to automatically issue and renew
 the free certificates from Let's Encrypt.
 
 WWW: https://github.com/acmesh-official/acme.sh
+
+Plugin Changelog
+================
+
+3.4
+
+Changed:
+* rename "Linode Cloud API" to "Linode API (v4)" (#2609)
+* rename "Linode API" to "Linode API (v3 / Deprecated)" (#2609)
+
+3.3
+
+Added:
+* add support for custom ACME CAs (#2529)
+* add support for Porkbun API (#2561)
+
+Fixed:
+* fix ACME Client reset (#2562)
+
+Changed:
+* change default Challenge Type from HTTP-01 to DNS-01
+
+3.2
+
+Added:
+* add button to (re-) import a certificate into the trust storage
+
+Fixed:
+* associate certificates with the correct CA when multiple CAs use the same name (#2550)
+
+3.1
+
+Changed:
+* rename "LE Account" to "ACME Account" in certificate dialog (#2526)
+
+3.0
+
+Added:
+* add support for new ACME CAs: buypass, buypass_test, sslcom, zerossl (#2361)
+* add CA setting to accounts, make it possible to use multiple CAs
+* add introduction pages and an option to hide them
+* add tooltips for account command buttons (#2188)
+* add support for custom ACME EAB kid/hmac when registering accounts
+
+Fixed:
+* properly set/get the UUID of LE objects
+
+Changed:
+* rename plugin from "Let's Encrypt client" to "ACME Client" (#2361)
+* change the suffix for imports to the certificate storage to "ACME Client" (#2361)
+* rename "Let's Encrypt Environment" to "ACME CA" and move to account settings (#2361)
+* preserve old LE accounts/certs by adding a compatibility layer (#2361)
+* update tooltip style for 21.7 (#2188)
+* show more options in list view for challenge types and automations
+
+Removed:
+* remove the legacy log file and only rely on syslog logging (#2366)
+* remove obsolete account parameters: certificateAuthority, lastUpdate
+
+2.6
+
+Added:
+* add support for Nederhost DNS API (#2407)
+* add support for DDNSS DNS API (#2415)
+* add support for Zone.eu DNS API (#2417)
+* add support for Njalla DNS API (#2446)
+* add support for Domeneshop DNS API (#2390)
+* add support for IONOS domain API (#2345)
+
+Fixed:
+* sftp update of write protected cert files with a numeric owner (#2426)
+
+Changed:
+* Namecheap: change IP discovery URL to avoid rate-limits (#2419)
+
+2.5
+
+Added:
+* add native support for Vultr DNS API (#2344)
+
+Fixed:
+* ensure that the auto renewal cron job is properly disabled (#2178)
+
+Changed:
+* reload settings page to show/hide cron tab
+
+2.4
+
+Added:
+* add new page to show AcmeClient entries from system log
+* add tooltips for certificate command buttons (#2188)
+
+Fixed:
+* fix missing "--ecc" parameter when renewing ECC certs (#2223)
+* fix log file location (#2227)
+* fix GUI log formatting (by using the syslog log)
+* fix OCSP setting not honored (#2234)
+
+Changed:
+* let acme.sh log through syslog
+* revamp logs page, move acme.sh log to a sub tab
+* remove legacy logs page
+
+2.3
+
+Added:
+* add support for Infomaniak domain API (#2169)
+
+Fixed:
+* fix "auto renewal" options not working in certificate and plugin settings (#2178)
+* fix Aliyun DNS API (#2200)
+
+2.2
+
+Added:
+* add support for hexonet.com DNS API (#2134)
+
+Fixed:
+* fix DNS challenge alias mode (#2128, #2130)
+
+Changed:
+* BREAKING: use configured DNS sleep time for Namesilo instead of hardcoded value (#2121)
+* BREAKING: use configured DNS sleep time for Lexicon/Namesilo instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Linode instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Linode v4 instead of hardcoded value
+* BREAKING: use configured DNS sleep time for Netcup instead of hardcoded value
+
+2.1
+
+Added:
+* add support for deSEC.io domain API (#2120)
+
+Fixed:
+* fix creation of nsupdate secrets file
+* fix certificate chain when existing cert was signed by a new CA (#2126)
+
+2.0
+
+Added:
+* add new OOP backend to improve reliability and maintainability (#1398)
+* add status for accounts to backend and WebGUI
+* add button to manually trigger account registration
+* add support for All-Inkl.com domain API (#1130)
+* add plugin changelog
+
+Fixed:
+* fix bug where configuration changes could get lost (#1526)
+* fix Cyon DNS API (password not set)
+
+Changed:
+* now an Automation may run multiple times during bulk issue/renewal (previously only once)
+* rename "Validation Methods" to "Challenge Types" to adopt official LE wording
+* rename menu entry "Automation" to "Automations"
+* specify python version for gcloud SDK
+* rephrase several log messages
+* add more detailed output when debug logging is enabled
+
+1.36
+
+Added:
+* add ability to rerun automations (#1962)
+
+1.35
+
+Added:
+* add support for Linode Cloud API (#1940)
+* add support for 1984Hosting API (#1945)
+
+Changed:
+* remove outdated bundled version of dns_opnsense.sh (#1888)
+
+1.34
+
+Added:
+* add support for dnsapi ArvanCloud (#1834)
+* add support for dnsapi Hetzner (#1870)
+
+Changed:
+* restore proper sorting in DNS API list
+
+1.33
+
+Added:
+* add NSUPDATE_ZONE support to nsupdate DNS-01 service (#1851)
+
+1.32
+
+Added:
+* add support for Acmeproxy DNS provider (#1838)
+
+Changed:
+* improve support for dnsapi Euserv.eu (#1790)
+
+1.31
+
+Added:
+* add support for dnsapi SchlundTech (#1728)
+* add support for dnsapi Euserv (#1779)
+* add support for dnsapi Leaseweb (#1670)
+
+Changed:
+* sftp export: make the "fullchain" filename configurable (#1776)
+
+1.30
+
+Changed:
+* update acme.sh GitHub link to new repo URL (#1744)
+
+1.29
+
+Added:
+* add support for CloudFlare token (#1625)
+* add support for MailinaBox DNS API (#1531)
+* add support for Plesk XML API (#1567)
+* add support for Variomedia DNS API
+
+Fixed:
+* fix IPv6 support for "automatic port forward" validation method (#1590)
+
+Changed:
+* validate IPv4 and IPv6 addresses before using them for "automatic port forward"
+* enable IPv6 support on local ACME webservice (when system.ipv6allow is enabled)
+
+1.28
+
+Changed:
+* correct minor spelling error (#1628)
+* log filename not compatible with new log view (#1593)
+
+1.27
+
+Added:
+* add support for Loopia DNS API (#1529)
+* automations can now restart Captive Portal or IPsec service after cert renewal (#1534)
+* add support for 60+ DNS APIs through Lexicon (#1524)
+
+Fixed:
+* don't break accounts when switching between stg/prod Let's Encrypt environments (#1528)
+
+Changed:
+* add py-dns-lexicon as plugin dependency to support it in DNS-01 out-of-the-box
+* support acme.sh debug log level 2 and 3 (#1546)
+
+1.26
+
+Added:
+* new automation: support cert upload via sftp (#1455)
+* add support for OPNsense's BIND plugin (#1491)
+* add support for DNS alias mode (#1492, #1301)
+
+Changed:
+* add headers for certificate options for the sake of clarity
+
+1.25
+
+Added:
+* add support for netcup DNS API (#1350)
+
+Fixed:
+* updating an existing cert in Highwinds API failed with a 404 error (wrong HTTP method)
+
+Changed:
+* fix "Use of undefined constant" PHP errors
+* treat certificate serial number as string not as integer
+* move "remove certificate" button to the end of the button list
+
+1.24
+
+Added:
+* add support for Domain-Offensive LetsEncrypt API dns_doapi (#1294)
+* add support for Namecheap API (dns_namecheap)
+* add support for Google Cloud DNS API dns_gcloud (#549)
+* run acme.sh --remove when a cert is removed from the GUI (#1380)
+* add a new button to remove the private key (#990)
+
+Fixed:
+* certificate status not correctly updated (#1307)
+
+Changed:
+* add log message when certificate status is updated (refs #1307)
+
+1.23
+
+Fixed:
+* renewal interval is ignored (#1221)
+
+1.22
+
+Added:
+* support DNS-01 with hosting.de API (#1234)
+
+Changed:
+* streamline log messages, use "AcmeClient" instead of "LE"
+
+1.21
+
+Added:
+* possible breaking change: the API endpoint to update individual certs/accounts/etc. has been renamed from "set" to "update"
+
+Fixed:
+* bulk deleting does not work (#1163)
+
+Changed:
+* migrate to mutable controller (required to fix #1163)
+
+1.20
+
+Added:
+* new button to reset all acme states, useful after importing a config backup to a new installation (#243)
+
+1.19
+
+Added:
+* new automation: automatically upload certificates to Highwinds CDN (proof-of-concept, support for other APIs possible)
+
+Changed:
+* rename "Restart Actions" to "Automation" (the old name has always been rather clumsy)
+* change "Automation" position in Menu (it's optional, the new position reflects this)
+
+1.18
+
+Added:
+* add support for GratisDNS.dk (#1042)
+* add support for ACME DNS
+
+1.17
+
+Fixed:
+* fix OCSP always enabled (#794)
+* fix acme operations when using multiple accounts (#789)
+
+1.16
+
+Added:
+* add support for OCSP Must Staple extension
+
+Fixed:
+* fix ecc certs renewal bug
+
+1.15
+
+Added:
+* add support to multiple dns api providers (#712)
+
+Changed:
+* mask passwords by using password fields (#707)
+
+1.14
+
+Added:
+* add support for ClouDNS (#574)
+
+1.13
+
+Added:
+* update acme.sh to 2.7.5 (#418)
+
+Changed:
+* fix missing fields for several DNS providers (#481)
+
+1.12
+
+Added:
+* compatibility with HAProxy plugin version 2.0 (refs #330)
+
+Fixed:
+* fix missing fields for Hurricane Electric (#334)
+
+1.11
+
+Fixed:
+* add missing field for DuckDNS (#287)
+
+1.9
+
+Added:
+* update acme.sh to version 2.7.2 (#210)
+* add support for new DNS API hooks (#225)
+
+Fixed:
+* Rename Certificate "Name" to "Common Name" for better clarity (#214)
+* Fix title in "Renew" and "Revoke" dialogs
+* Add dependency to BIND to fix nsupdate support
+* fix 'Compilation failed: number too big' (#227)
+
+1.8
+
+Added:
+* drop bundled acme.sh in favour of the FreeBSD port
+
+Fixed:
+* rename validation method "OPNsense Port Forward" to "OPNsense Web Service" to make it more clear that we're using an internal web service
+
+1.7
+
+Fixed:
+* fix $backend is not declared (#132)
+* fix null exception in api
+
+1.6
+
+Fixed:
+* fix broken translation strings
+
+1.5
+
+Fixed:
+* try to solve disconnection issue (mostly during auto-renewal) (#109)
+* try to fix "Node no longer exists"
+
+1.4
+
+Changed:
+* rename label "Validation Method" to "Challenge Type"
+
+1.3
+
+Changed:
+* remove support for custom restart actions (#100)
+* avoid log message on missing restart action
+* simplify JS code
+
+1.2
+
+Fixed:
+* properly import CA certificates (#84)
+* don't make sensitive data world-readable
+
+Changed:
+* hide params for restart actions when not selected
+* remove prefixes from validation name
+* hide http service entries when not selected
+* log acme status for each cert
+
+1.1
+
+Added:
+* add HAProxy integration
+
+Fixed:
+* avoid API exception when HAProxy integration is incomplete
+* avoid error message if no restart action was specified
+* do not run restart actions if cert was not changed
+
+Changed:
+* add hide() trickery to hide entries when not selected
+* relax fields validation (#70)
+
+1.0
+
+Initial release (#6)

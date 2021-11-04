@@ -37,9 +37,7 @@ function haproxy_syslog()
     $syslogconf = array();
 
     $syslogconf['haproxy'] = array(
-        'local' => '/var/haproxy/var/run/log',
         'facility' => array('haproxy'),
-        'remote' => 'relayd',
     );
 
     return $syslogconf;
@@ -79,5 +77,6 @@ function haproxy_xmlrpc_sync()
     $result['id'] = 'haproxy';
     $result['section'] = 'OPNsense.HAProxy';
     $result['description'] = gettext('HAProxy Load Balancer');
+    $result['services'] = ['haproxy'];
     return array($result);
 }

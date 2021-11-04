@@ -12,6 +12,12 @@
         <help>Set the port chrony listen to.</help>
     </field>
     <field>
+        <id>general.ntsclient</id>
+        <label>NTS Client Support</label>
+        <type>checkbox</type>
+        <help>Enable NTS in client mode. This will add another layer of security for peers when OPNsense is the client. Every server in Peers has to support NTS.</help>
+    </field>
+    <field>
         <id>general.peers</id>
         <label>NTP Peers</label>
         <style>tokenize</style>

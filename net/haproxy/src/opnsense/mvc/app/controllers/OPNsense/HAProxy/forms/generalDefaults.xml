@@ -1,0 +1,63 @@
+<form>
+    <field>
+        <label>Default Parameters</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.maxConnections</id>
+        <label>Max. Connections</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum number of concurrent connections for this frontend.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.timeoutClient</id>
+        <label>Client Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum inactivity time on the client side. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.timeoutConnect</id>
+        <label>Connection Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum time to wait for a connection attempt to a server to succeed. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.timeoutCheck</id>
+        <label>Check Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Sets an additional read timeout for running health checks on a server. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.timeoutServer</id>
+        <label>Server Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum inactivity time on the server side. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.retries</id>
+        <label>Retries</label>
+        <type>text</type>
+        <help><![CDATA[Set the number of retries to perform on a server after a connection failure (default is 3).]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.redispatch</id>
+        <label>Session redistribution</label>
+        <type>dropdown</type>
+        <help><![CDATA[Enable or disable session redistribution in case of connection failure.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.init_addr</id>
+        <label>DNS Resolve Order</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <sortable>true</sortable>
+        <help><![CDATA[Indicates in which order server addresses should be resolved upon startup. Method "last" suggests to pick the address which appears in the state file. Method "libc" uses the libc's internal resolver. Method "none" specifically indicates that the server should start without any valid IP address in a down state. It can be useful to ignore some DNS issues upon startup, waiting for the situation to get fixed later. Defaults to "last,libc".]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.customOptions</id>
+        <label>Custom options</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the defaults settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

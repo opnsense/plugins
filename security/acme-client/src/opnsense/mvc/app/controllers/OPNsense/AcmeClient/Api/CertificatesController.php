@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017-2019 Frank Wall
+ *    Copyright (C) 2017-2020 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -69,9 +69,11 @@ class CertificatesController extends ApiMutableModelControllerBase
         if ($uuid != null) {
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
-                $cert_id = $node->id;
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient remove-cert {$cert_id}");
+                $response = $backend->configdRun("acmeclient remove-cert {$uuid}");
+                // Give configd some time to start this operation before the
+                // cert is removed from config.
+                sleep(2);
             }
         }
         return $this->delBase('certificates.certificate', $uuid);
@@ -101,9 +103,8 @@ class CertificatesController extends ApiMutableModelControllerBase
             if ($uuid != null) {
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
-                    $cert_id = $node->id;
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient sign-cert {$cert_id}");
+                    $response = $backend->configdRun("acmeclient sign-cert ${uuid}");
                     return array("response" => $response);
                 }
             }
@@ -123,9 +124,8 @@ class CertificatesController extends ApiMutableModelControllerBase
         if ($uuid != null) {
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
-                $cert_id = $node->id;
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient remove-key {$cert_id}");
+                $response = $backend->configdRun("acmeclient remove-key ${uuid}");
             }
         }
         return $result;
@@ -145,11 +145,48 @@ class CertificatesController extends ApiMutableModelControllerBase
             if ($uuid != null) {
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
-                    $cert_id = $node->id;
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient revoke-cert {$cert_id}");
+                    $response = $backend->configdRun("acmeclient revoke-cert ${uuid}");
                     return array("response" => $response);
                 }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * rerun automation for the certificate by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function automationAction($uuid)
+    {
+        $result = array("result" => "failed");
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient run-automation ${uuid}");
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * (re-) import the certificate by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function importAction($uuid)
+    {
+        $result = array("result" => "failed");
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient import ${uuid}");
             }
         }
         return $result;

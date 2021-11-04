@@ -41,12 +41,12 @@ function tinc_enabled()
 
 function tinc_syslog()
 {
-    $logfacilities = array();
+    $logfacilities = [];
 
-    $logfacilities['tinc'] = array(
-        'facility' => array('tincd'),
-        'remote' => 'vpn',
-    );
+    $logfacilities['tinc'] = [
+        'facility' => ['tincd'],
+    ];
+
     $mdl = new \OPNsense\Tinc\Tinc();
 
     foreach ($mdl->networks->network->iterateItems() as $network) {
@@ -104,5 +104,6 @@ function tinc_xmlrpc_sync()
     $result['id'] = 'tincvpn';
     $result['section'] = 'OPNsense.Tinc';
     $result['description'] = gettext('Tinc VPN');
+    $result['services'] = ['tincd'];
     return array($result);
 }

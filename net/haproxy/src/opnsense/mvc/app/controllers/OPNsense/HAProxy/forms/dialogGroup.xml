@@ -24,4 +24,10 @@
         <allownew>true</allownew>
         <hint>Type username or choose from list.</hint>
     </field>
+    <field>
+        <id>group.add_userlist</id>
+        <label>Add userlist</label>
+        <type>checkbox</type>
+        <help>Usually HAproxy userlists are created automatically in a context sensitive way. This option adds this group as userlist, so that it can be referenced in rules/conditions. All special and non-alphanumeric characters will be removed from the userlist name.</help>
+    </field>
 </form>

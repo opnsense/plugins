@@ -21,7 +21,7 @@
         <id>validation.method</id>
         <label>Challenge Type</label>
         <type>dropdown</type>
-        <help>Set the Let's Encrypt challenge type. You'll have to add configuration for the selected challenge type below.</help>
+        <help>Set the ACME challenge type. You'll have to add configuration for the selected challenge type below.</help>
     </field>
     <field>
         <label>HTTP-01</label>
@@ -48,7 +48,7 @@
         <id>validation.http_opn_interface</id>
         <label>Interface</label>
         <type>dropdown</type>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
     </field>
     <field>
         <id>validation.http_opn_ipaddresses</id>
@@ -56,7 +56,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
         <hint>Enter IP addresses here. Finish each with TAB.</hint>
     </field>
     <field>
@@ -267,6 +267,16 @@
         <label>Password</label>
         <type>password</type>
     </field>
+	<field>
+        <label>DDNSS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ddnss</style>
+    </field>
+    <field>
+        <id>validation.dns_ddnss_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
     <field>
         <label>DirectAdmin</label>
         <type>header</type>
@@ -327,6 +337,21 @@
     <field>
         <id>validation.dns_do_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Domeneshop DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_domeneshop</style>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_secret</id>
+        <label>Secret</label>
         <type>password</type>
     </field>
     <field>
@@ -526,6 +551,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>IONOS domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ionos</style>
+    </field>
+    <field>
+        <id>validation.dns_ionos_prefix</id>
+        <label>Prefix</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_ionos_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>IPSConfig</label>
         <type>header</type>
         <style>table_dns table_dns_ispconfig</style>
@@ -550,6 +590,21 @@
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
         <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
+    </field>
+    <field>
+        <label>Joker</label>
+        <type>header</type>
+        <style>table_dns table_dns_joker</style>
+    </field>
+    <field>
+        <id>validation.dns_joker_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_joker_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
     <field>
         <label>KingHost</label>
@@ -589,6 +644,11 @@
         <style>table_dns table_dns_lexicon</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 1000 may be required.</label>
+        <type>header</type>
+        <style>table_dns table_dns_lexicon</style>
+    </field>
+    <field>
         <id>validation.dns_lexicon_provider</id>
         <label>Provider</label>
         <type>dropdown</type>
@@ -604,7 +664,12 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode</label>
+        <label>Linode API (v3 / Deprecated)</label>
+        <type>header</type>
+        <style>table_dns table_dns_linode</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
     </field>
@@ -614,7 +679,12 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode Cloud API</label>
+        <label>Linode API (v4)</label>
+        <type>header</type>
+        <style>table_dns table_dns_linode_v4</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
         <type>header</type>
         <style>table_dns table_dns_linode_v4</style>
     </field>
@@ -738,12 +808,22 @@
         <style>table_dns table_dns_namesilo</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_namesilo</style>
+    </field>
+    <field>
         <id>validation.dns_namesilo_key</id>
         <label>Key</label>
         <type>text</type>
     </field>
     <field>
         <label>netcup DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_netcup</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 600 is recommended.</label>
         <type>header</type>
         <style>table_dns table_dns_netcup</style>
     </field>
@@ -760,6 +840,16 @@
     <field>
         <id>validation.dns_netcup_pw</id>
         <label>API Password</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Njalla</label>
+        <type>header</type>
+        <style>table_dns table_dns_njalla</style>
+    </field>
+    <field>
+        <id>validation.dns_njalla_token</id>
+        <label>API Token</label>
         <type>text</type>
     </field>
     <field>
@@ -930,6 +1020,21 @@
     <field>
         <id>validation.dns_vscale_key</id>
         <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Vultr Cloud API</label>
+        <type>header</type>
+        <style>table_dns table_dns_vultr</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 1000 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_vultr</style>
+    </field>
+    <field>
+        <id>validation.dns_vultr_key</id>
+        <label>Key</label>
         <type>text</type>
     </field>
     <field>
@@ -1144,6 +1249,108 @@
     <field>
         <id>validation.dns_1984hosting_password</id>
         <label>API Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>All-Inkl.com domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_kas</style>
+    </field>
+    <field>
+        <id>validation.dns_kas_login</id>
+        <label>KAS Login</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_kas_authdata</id>
+        <label>KAS Authdata</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_kas_authtype</id>
+        <label>KAS Authtype</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <label>deSEC.io API</label>
+        <type>header</type>
+        <style>table_dns table_dns_desec</style>
+    </field>
+    <field>
+        <id>validation.dns_desec_token</id>
+        <label>deSEC token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_desec_name</id>
+        <label>deSEC domain</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>hexonet.com DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hexonet</style>
+    </field>
+    <field>
+        <id>validation.dns_hexonet_login</id>
+        <label>Login</label>
+        <type>text</type>
+        <help>This should be a combination of the username and role ID. For example, when the username is "myuser" and role ID is "testrole", then "myuser!testrole" must be used here.</help>
+    </field>
+    <field>
+        <id>validation.dns_hexonet_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Infomaniak DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_infomaniak</style>
+    </field>
+    <field>
+        <id>validation.dns_infomaniak_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Zone.eu API</label>
+        <type>header</type>
+        <style>table_dns table_dns_zone</style>
+    </field>
+    <field>
+        <id>validation.dns_zone_username</id>
+        <label>Zone Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zone_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>Can be generated under ZoneID account management</help>
+    </field>
+    <field>
+        <label>Nederhost API</label>
+        <type>header</type>
+        <style>table_dns table_dns_nederhost</style>
+    </field>
+    <field>
+        <id>validation.dns_nederhost_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Porkbun API</label>
+        <type>header</type>
+        <style>table_dns table_dns_porkbun</style>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_secret</id>
+        <label>Secret API Key</label>
         <type>password</type>
     </field>
 </form>

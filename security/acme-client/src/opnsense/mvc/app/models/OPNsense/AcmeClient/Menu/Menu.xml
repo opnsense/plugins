@@ -1,15 +1,17 @@
 <menu>
     <Services>
-      <!-- using LE prefix for proper sorting -->
-      <LEAcmeClient VisibleName="Let's Encrypt" cssClass="fa fa-certificate fa-fw">
+      <AcmeClient VisibleName="ACME Client" cssClass="fa fa-certificate fa-fw">
           <Settings order="10" url="/ui/acmeclient">
               <General url="/ui/acmeclient#general-settings"/>
           </Settings>
           <Accounts VisibleName="Accounts" order="20" url="/ui/acmeclient/accounts"/>
-          <Validations VisibleName="Validation Methods" order="30" url="/ui/acmeclient/validations"/>
+          <Validations VisibleName="Challenge Types" order="30" url="/ui/acmeclient/validations"/>
           <Certificates order="40" url="/ui/acmeclient/certificates"/>
-          <Automation VisibleName="Automation" order="50" url="/ui/acmeclient/actions"/>
-          <LogFile VisibleName="Log File" order="60" url="/diag_logs_acmeclient.php"/>
-      </LEAcmeClient>
+          <Automations VisibleName="Automations" order="50" url="/ui/acmeclient/actions"/>
+          <Logs VisibleName="Log Files" order="60" url="/ui/acmeclient/logs">
+              <SystemLog VisibleName="System Log" order="10" url="/ui/acmeclient/logs"/>
+              <AcmeLog VisibleName="Acme Log" order="20" url="/ui/diagnostics/log/core/acmeclient"/>
+          </Logs>
+      </AcmeClient>
     </Services>
 </menu>

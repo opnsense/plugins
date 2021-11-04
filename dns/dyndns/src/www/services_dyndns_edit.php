@@ -75,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6"|| $pconfig['type'] == "1984Hosting") && $pconfig['username'] == "") {
+
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6" || $pconfig['type'] == "1984Hosting") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -113,13 +114,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         switch ($pconfig['type']) {
             case 'cloudflare':
-            case 'cloudflare-v6':
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
+            case 'cloudflare-v6':
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'eurodns':
             case 'godaddy':
             case 'godaddy-v6':
             case 'googledomains':
+            case 'hetzner':
+            case 'hetzner-v6':
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
@@ -318,7 +324,9 @@ include("head.inc");
                       <input name="host" type="text" id="host" value="<?= $pconfig['host'] ?>" />
                       <div class="hidden" data-for="help_for_host">
                         <?= gettext("Enter the complete host/domain name. example: myhost.dyndns.org") ?><br />
-                        <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?>
+                        <?= gettext("For he.net tunnelbroker, enter your tunnel ID") ?><br />
+                        <?= gettext("For DigitalOcean, enter the zone/domain name.") ?>
+                        <?= gettext('Gandi LiveDNS: Enter the 2nd-level domain ("example.org").') ?>
                       </div>
                     </td>
                   </tr>
@@ -366,8 +374,12 @@ include("head.inc");
                         <br /><?= gettext('Duck DNS: Enter your Token.') ?>
                         <br /><?= gettext('dynv6: Enter your Token.') ?>
                         <br /><?= gettext('Azure: Enter your Azure AD application ID.') ?>
+                        <br /><?= gettext('DigitalOcean: Enter the domain record ID.') ?>
                         <br /><?= gettext('For Custom Entries, Username and Password represent HTTP Authentication username and passwords.') ?>
+                        <br /><?= gettext('Gandi LiveDNS: The subdomain / record to update.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Key Token.') ?>
+                        <br /><?= gettext('deSEC: no Username necessary. Your Hostname is used instead.') ?>
+                        <br /><?= gettext('FreeDNS: Leave blank.') ?>
                       </div>
                     </td>
                   </tr>
@@ -382,8 +394,11 @@ include("head.inc");
                         <br /><?= gettext('dynv6: Leave blank.') ?>
                         <br /><?= gettext('Azure: client secret of the AD application') ?>
                         <br /><?= gettext('Linode: Enter your Personal Access Token.') ?>
+                        <br /><?= gettext('DigitalOcean: Enter your Access Token.') ?>
                         <br /><?= gettext('Cloudflare: Enter your API token or Global API key.') ?>
+                        <br /><?= gettext('Gandi LiveDNS: Enter your API token.') ?>
                         <br /><?= gettext('GoDaddy: Enter your API Secret Token.') ?>
+                        <br /><?= gettext('deSEC: Enter your Token for your hostname, NOT the 36-character Token ID from the webinterface.') ?>
                       </div>
                     </td>
                   </tr>

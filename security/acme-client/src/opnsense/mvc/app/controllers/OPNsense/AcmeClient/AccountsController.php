@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2021 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -41,6 +41,9 @@ class AccountsController extends \OPNsense\Base\IndexController
     {
         // include form definitions
         $this->view->formDialogAccount = $this->getForm("dialogAccount");
+        // set additional view parameters
+        $mdlAcme = new \OPNsense\AcmeClient\AcmeClient();
+        $this->view->showIntro = (string)$mdlAcme ->settings->showIntro;
         // choose template
         $this->view->pick('OPNsense/AcmeClient/accounts');
     }

@@ -1,0 +1,38 @@
+<form>
+  <field>
+    <id>communitylist.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+    <help>Enable / Disable</help>
+  </field>
+    <field>
+    <id>communitylist.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Add an optional description for this Community-List.</help>
+  </field>
+  <field>
+    <id>communitylist.number</id>
+    <label>Number</label>
+    <type>text</type>
+    <help>Set the number of your Community-List. 1-99 are stardard lists while 100-500 are expanded lists.</help>
+  </field>
+  <field>
+    <id>communitylist.seqnumber</id>
+    <label>Sequence Number</label>
+    <type>text</type>
+    <help>The ACL sequence number (10-99)</help>
+  </field>
+  <field>
+    <id>communitylist.action</id>
+    <label>Action</label>
+    <type>select_multiple</type>
+    <help>Set permit for match or deny to negate the rule.</help>
+  </field>
+  <field>
+    <id>communitylist.community</id>
+    <label>Community</label>
+    <type>text</type>
+    <help>The community you want to match. You can also regex and it is not validated so please be careful.</help>
+  </field>
+</form>

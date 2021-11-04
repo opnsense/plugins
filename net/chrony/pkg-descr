@@ -4,6 +4,22 @@ better in virtual environments.
 Plugin Changelog
 ----------------
 
+1.4
+
+* Adjust timeouts and retries for chronyc
+
+1.3
+
+* Add makestep to configuration
+
+1.2
+
+* Add Diagnostics
+
+1.1
+
+* Add NTS support
+
 1.0
 
 * Allow to adjust the listening port

@@ -1,7 +1,7 @@
 <model>
   <mount>//OPNsense/Rspamd</mount>
   <description>rspamd anti spam filter</description>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <items>
     <general>
       <enabled type="BooleanField">
@@ -126,6 +126,12 @@
         <MaximumValue>100000</MaximumValue>
         <ValidationMessage>Choose a value between 1 and 100000.</ValidationMessage>
       </historyrows>
+      <nameserver type="HostnameField">
+        <default>127.0.0.1</default>
+        <Required>Y</Required>
+        <FieldSeparator>,</FieldSeparator>
+        <asList>Y</asList>
+      </nameserver>
     </general>
 
     <milter_headers>
