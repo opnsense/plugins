@@ -306,7 +306,7 @@ class updatedns
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
-                case '1984Hosting':
+                case '1984-hosting':
                 case '3322':
                 case 'all-inkl':
                 case 'all-inkl-v6':
