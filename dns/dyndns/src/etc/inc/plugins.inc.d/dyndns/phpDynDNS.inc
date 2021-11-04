@@ -169,7 +169,7 @@ class updatedns
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
-            case '1984Hosting':
+            case '1984-hosting':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
