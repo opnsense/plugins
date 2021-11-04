@@ -113,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $host_to_check = $pconfig['host'];
 
         switch ($pconfig['type']) {
+            case '1984-hosting':
             case 'cloudflare':
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
@@ -129,7 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
-            case '1984-hosting':
                 $host_to_check = preg_replace('/^[@*]\./', '', $host_to_check);
                 break;
             default:
