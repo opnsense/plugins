@@ -436,7 +436,8 @@ include("head.inc");
                         <?= gettext("This field should be identical to what your dynamic DNS Provider will return if the update succeeds, leave it blank to disable checking of returned results.");?>
                         <br />
                         <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
-                        <?= gettext("If you need the new Host to be included in the request, put %Host% in its place.") ?>
+                        <br />
+                        <?= gettext("If you need the new Host to be included in the request, put %HOST% in its place.") ?>
                         <br />
                         <?= gettext('If you need to include multiple possible values, separate them with a |. If your provider includes a |, escape it with \|') ?>
                         <br />
