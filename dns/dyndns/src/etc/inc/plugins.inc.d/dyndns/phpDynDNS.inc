@@ -1034,7 +1034,7 @@ class updatedns
                     curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 }
                 break;
-            case '1984Hosting':
+            case '1984-hosting':
                 $server = "https://api.1984.is/1.0/freedns/?apikey={$this->_dnsPass}&domain={$this->_dnsHost}&ip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_URL, $server);
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
