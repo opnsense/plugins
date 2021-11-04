@@ -27,7 +27,7 @@
         <id>general.inet_interfaces</id>
         <label>Listen IPs</label>
         <type>text</type>
-        <help>The 'Listen IPs' parameter specifies the IP address to listen to. Default is to listen on all interfaces.</help>
+        <help>The 'Listen IPs' parameter specifies a comma-separated list of IP addresses to listen to. Default is to listen on all interfaces.</help>
     </field>
     <field>
         <id>general.inet_port</id>
@@ -90,10 +90,16 @@
         <help>Disable SSLv2 and SSLv3, only TLS allowed.</help>
     </field>
     <field>
-        <id>general.disable_weak_ciphers</id>
-        <label>Disable Weak Ciphers And Algorithms</label>
-        <type>checkbox</type>
-        <help>This will disable known weak ciphers like DES, RC4 or MD5.</help>
+        <id>general.tls_server_compatibility</id>
+        <label>TLS Server Compatibility</label>
+        <type>dropdown</type>
+        <help>TLS version/ cipher compatibility of the SMTP service</help>
+    </field>
+    <field>
+        <id>general.tls_client_compatibility</id>
+        <label>TLS Client Compatibility</label>
+        <type>dropdown</type>
+        <help>TLS version/ cipher compatibility of the SMTP Client</help>
     </field>
     <field>
         <id>general.tlswrappermode</id>
@@ -234,5 +240,11 @@
         <label>Reject Unverified Recipient</label>
         <type>checkbox</type>
         <help>Use Recipient Address Verification. Please keep in mind that this could put significant load onto the next server.</help>
+    </field>
+    <field>
+        <id>general.delay_warning_time</id>
+        <label>Delay Warning Time</label>
+        <type>text</type>
+        <help>Time until we send a notification to the sender if mail is delayed (in hours) - 0 or empty to disable.</help>
     </field>
 </form>

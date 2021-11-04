@@ -75,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6") && $pconfig['username'] == "") {
+
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6" || $pconfig['type'] == "1984-hosting") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -112,14 +113,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $host_to_check = $pconfig['host'];
 
         switch ($pconfig['type']) {
+            case '1984-hosting':
             case 'cloudflare':
-            case 'cloudflare-v6':
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
+            case 'cloudflare-v6':
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'eurodns':
             case 'godaddy':
             case 'godaddy-v6':
             case 'googledomains':
+            case 'hetzner':
+            case 'hetzner-v6':
             case 'linode':
             case 'linode-v6':
             case 'namecheap':

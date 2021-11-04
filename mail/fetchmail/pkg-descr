@@ -6,6 +6,10 @@ KPOP, all flavors of IMAP, ETRN, and ODMR.
 Plugin Changelog
 ================
 
+1.1
+
+* Fix "ssl" keyword syntax (contributed by mr44er)
+
 1.0
 
 * Allow fetching IMAP mailboxes

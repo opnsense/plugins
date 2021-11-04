@@ -15,9 +15,35 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.17
+
+* Added support for Extreme networks EXOS switch Extreme-Netlogin-Extended-VLAN VSA and policy for GEN2 (contributed by Pasi Suominen)
+
+1.9.16
+
+* Allow user to choose Elliptic Curve in EAP
+* Allow client secrets starting with hash sign
+
+1.9.15
+
+* Fixed validation of CIDR for client network ranges
+
+1.9.14
+
+* Updates comments in mods-enabled-eap to match upstream version 3.0.22
+* Set TLS minimum version to 1.0 for compatibility with older EAP clients
+
+1.9.13
+
+* Remove LEAP section from configuration
+
+1.9.12
+
+* Fix leading space in freeradius logformat (contributed by nan0)
+
 1.9.11
 
-Add IPv6 support to client IP
+* Add IPv6 support to client IP
 
 1.9.10
 

@@ -6,6 +6,12 @@
         <help>Set the default EAP type.</help>
     </field>
     <field>
+        <id>eap.elliptic_curve</id>
+        <label>Elliptic Curve</label>
+        <type>dropdown</type>
+        <help>Set the Elliptical cryptography configuration.</help>
+    </field>
+    <field>
         <id>eap.enable_client_cert</id>
         <label>Use own certificates</label>
         <type>checkbox</type>

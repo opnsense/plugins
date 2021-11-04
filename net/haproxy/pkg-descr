@@ -6,6 +6,54 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.7
+
+Added:
+* add options "preload" and "filename scheme" to Lua scripts (#2265)
+* add syslog-ng socket for logging (#2620)
+* show hint to apply changes after every config change (#2590)
+* show warning for pending configuration changes (#2590)
+
+Fixed:
+* unable to use the "require" function in Lua scripts (#2265)
+* request logging not working (#2587)
+* fix syntax error in template (#2619)
+
+Changed:
+* set "lua-prepend-path" so that Lua scripts can be found (#2265)
+* show "apply" and "test syntax" buttons on introduction pages
+
+3.6
+
+Added:
+* add support for advanced resolver properties (#2330)
+* add graceful stop timeout to service settings
+* support "monitor-uri" and "monitor fail" in rules (#2387)
+* add new option "case-sensitive" to conditions (#2576)
+
+Fixed:
+* no haproxy.conf after restoring a config backup (#2474)
+
+Changed:
+* deploy haproxy.conf if it does not exist (#2474)
+* add new timeout (60s) which will terminate open connections when using graceful stop
+* allow retries to be set to "0" (#2585)
+
+3.5
+
+Fixed:
+* fix maintenance page not loading (#2485)
+
+3.4
+
+Fixed:
+* fix empty resolve-prefer option (#2340)
+
+3.3
+
+Changed:
+* use HAProxy socket to apply updated OCSP stapling data (in cron job) (#2351)
+
 3.2
 
 Fixed:

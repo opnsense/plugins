@@ -217,7 +217,7 @@ include("head.inc");
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Server");?></td>
                     <td>
-                      <input name="server" type="text" class="formfld" id="server" size="30" value="<?=$pconfig['server'];?>" />
+                      <input name="server" type="text" id="server" size="30" value="<?=$pconfig['server'];?>" />
                     </td>
                   </tr>
                   <tr>

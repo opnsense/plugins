@@ -14,6 +14,7 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
+ *  1984 Hosting Company        - Last Tested: 03 August 2020
  *  3322                        - Last Tested: 26 May 2017
  *  All-Inkl                    - Last Tested: 02 March 2020
  *  Amazon Route53              - Last Tested: 01 April 2012
@@ -50,7 +51,8 @@
  *  No-IP                       - Last Tested: 15 May 2020
  *  ODS                         - Last Tested: 02 August 2005
  *  Oray                        - Last Tested: 26 May 2017
- *  STRATO                      - Last Tested: 09 May 2017
+ *  STRATO                      - Last Tested: 08 October 2021
+ *  STRATO V6                   - Last Tested: 08 October 2021
  *  SelfHost                    - Last Tested: 26 December 2011
  *  StaticCling                 - Last Tested: 27 April 2006
  *  deSEC                       - Last Tested: 09 September 2020
@@ -167,6 +169,7 @@ class updatedns
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
+            case '1984-hosting':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
@@ -247,19 +250,20 @@ class updatedns
         switch ($dnsService) {
             case 'all-inkl-v6':
             case 'azurev6':
+            case 'cloudflare-token-v6':
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'digitalocean-v6':
             case 'dynv6-v6':
-            case 'he-net-v6':
             case 'godaddy-v6':
+            case 'he-net-v6':
+            case 'hetzner-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
-            case 'cloudflare-token-v6':
-            case 'desec-v4-v6':
-            case 'desec-v6':
-            case 'hetzner-v6':
+            case 'strato-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -302,6 +306,7 @@ class updatedns
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
+                case '1984-hosting':
                 case '3322':
                 case 'all-inkl':
                 case 'all-inkl-v6':
@@ -358,6 +363,7 @@ class updatedns
                 case 'selfhost':
                 case 'staticcling':
                 case 'strato':
+                case 'strato-v6':
                 case 'zoneedit':
                     $this->_update();
                     if ($this->_dnsDummyUpdateDone == true) {
@@ -1019,9 +1025,17 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'strato':
+            case 'strato-v6':
                 $server = "https://dyndns.strato.com/nic/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                if ($this->_curlIpresolveV4) {
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                }
+                break;
+            case '1984-hosting':
+                $server = "https://api.1984.is/1.0/freedns/?apikey={$this->_dnsPass}&domain={$this->_dnsHost}&ip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_URL, $server);
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
@@ -1038,9 +1052,11 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'regfish':
+                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&ipv4={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                break;
             case 'regfish-v6':
-                $family = $this->_useIPv6 ? 'ipv6' : 'ipv4';
-                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&{$family}={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                $server = "https://dyndns6.regfish.de/?fqdn={$this->_dnsHost}&ipv6={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'linode':
@@ -1209,6 +1225,7 @@ class updatedns
                 }
                 curl_setopt($ch, CURLOPT_INTERFACE, $ipv4);
                 // fix end
+                break;
             case 'godaddy':
             case 'godaddy-v6':
                 /* Read https://developer.godaddy.com/ for API documentation */
@@ -1634,6 +1651,22 @@ class updatedns
                         $this->_debug($data);
                 }
                 break;
+            case '1984-hosting':
+                $output = json_decode($data);
+                if ($output === null) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - empty response.";
+                } elseif ($output->ok === true) {
+                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } elseif ($output->error) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with 1984 Hosting Company.";
+                } elseif ($output->lookup) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
+                } else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                }
+                break;
             case '3322':
             case 'citynetwork':
             case 'dnsomatic':
@@ -1650,6 +1683,7 @@ class updatedns
             case 'ovh-dynhost':
             case 'selfhost':
             case 'strato':
+            case 'strato-v6':
                 if (preg_match('/notfqdn/i', $data)) {
                     $status = "Dynamic DNS: (Error) Not a FQDN";
                 } elseif (preg_match('/nochg/i', $data)) {

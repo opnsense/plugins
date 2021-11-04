@@ -215,7 +215,7 @@ class ServiceController extends ApiControllerBase
         }
         // reset account states
         foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
-            $account->lastUpdate = null;
+            $account->statusLastUpdate = null;
         }
         // reset acme.sh data
         $backend = new Backend();
