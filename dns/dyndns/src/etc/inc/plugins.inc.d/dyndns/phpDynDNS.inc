@@ -1657,7 +1657,7 @@ class updatedns
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
                     $successful_update = true;
                 } elseif ($output->error) {
-                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with 1984Hosting.";
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with 1984 Hosting Company.";
                 } elseif ($output->lookup) {
                     $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
                 } else {
