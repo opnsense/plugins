@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
-            case '1984Hosting':
+            case '1984-hosting':
                 $host_to_check = preg_replace('/^[@*]\./', '', $host_to_check);
                 break;
             default:
