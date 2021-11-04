@@ -1376,6 +1376,7 @@ class updatedns
                         break;
                     default:
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                         $this->_debug("Unknown Response: " . $data);
                         break;
                 }
@@ -1395,7 +1396,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'hn':
@@ -1415,7 +1416,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'dyns':
@@ -1433,7 +1434,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'ods':
@@ -1443,7 +1444,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'freedns':
@@ -1456,7 +1457,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'dnsexit':
@@ -1469,7 +1470,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'staticcling':
@@ -1493,7 +1494,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'namecheap':
@@ -1516,8 +1517,8 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'route53':
@@ -1544,6 +1545,8 @@ class updatedns
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                 } else {
                     $status = "Dynamic DNS: (Error) Result did not match.";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'cloudflare':
@@ -1561,6 +1564,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'hetzner':
@@ -1576,8 +1580,8 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
-                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'digitalocean':
@@ -1588,7 +1592,8 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
-                    log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'gandi-livedns':
@@ -1606,7 +1611,7 @@ class updatedns
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             case 'gratisdns':
@@ -1623,8 +1628,8 @@ class updatedns
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                        $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'duckdns':
@@ -1633,8 +1638,8 @@ class updatedns
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                        $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'dynv6':
@@ -1648,8 +1653,8 @@ class updatedns
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                        $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case '1984-hosting':
@@ -1666,6 +1671,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case '3322':
@@ -1713,8 +1719,8 @@ class updatedns
                     $status = "Dynamic DNS: (Error) Specified hostname does not exist under this username";
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'regfish':
@@ -1747,8 +1753,8 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Cannot update load balancer';
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
             case 'linode':
             case 'linode-v6':
@@ -1766,6 +1772,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ($fqdn): UNKNOWN ERROR";
                     log_error("Dynamic DNS ($fqdn): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'azure':
@@ -1781,8 +1788,8 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
-                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             case 'all-inkl':
@@ -1798,7 +1805,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'godaddy':
@@ -1815,7 +1822,8 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Resource not found';
                 } else {
                     $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
-                    log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             case 'desec':
@@ -1834,6 +1842,10 @@ class updatedns
                 } elseif ($http_code == 200 && preg_match('/good/i', $data)) {
                     $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
                     $successful_update = true;
+                } else {
+                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             default:
