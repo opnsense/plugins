@@ -785,6 +785,7 @@ class updatedns
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
                 $server = str_replace("%IP%", $this->_dnsIP, $this->_dnsUpdateURL);
+                $server = str_replace("%HOST%", $this->_dnsHost, $server);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'cloudflare':
