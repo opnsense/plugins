@@ -1654,7 +1654,7 @@ class updatedns
             case '1984-hosting':
                 $output = json_decode($data);
                 if ($output === null) {
-                    /* empty response */
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - empty response.";
                 } elseif ($output->ok === true) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
                     $successful_update = true;
