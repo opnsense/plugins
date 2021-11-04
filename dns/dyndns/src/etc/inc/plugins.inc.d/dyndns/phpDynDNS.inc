@@ -1651,7 +1651,7 @@ class updatedns
                         $this->_debug($data);
                 }
                 break;
-            case '1984Hosting':
+            case '1984-hosting':
                 $output = json_decode($data);
                 if ($output->ok === true) {
                     $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
