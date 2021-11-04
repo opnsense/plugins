@@ -14,6 +14,7 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
+ *  1984 Hosting Company        - Last Tested: 03 August 2020
  *  3322                        - Last Tested: 26 May 2017
  *  All-Inkl                    - Last Tested: 02 March 2020
  *  Amazon Route53              - Last Tested: 01 April 2012
@@ -168,6 +169,7 @@ class updatedns
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
+            case '1984-hosting':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
@@ -304,6 +306,7 @@ class updatedns
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
+                case '1984-hosting':
                 case '3322':
                 case 'all-inkl':
                 case 'all-inkl-v6':
@@ -1031,6 +1034,11 @@ class updatedns
                     curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 }
                 break;
+            case '1984-hosting':
+                $server = "https://api.1984.is/1.0/freedns/?apikey={$this->_dnsPass}&domain={$this->_dnsHost}&ip={$this->_dnsIP}";
+                curl_setopt($ch, CURLOPT_URL, $server);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                break;
             case '3322':
                 $server = "http://members.3322.net/dyndns/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
@@ -1641,6 +1649,22 @@ class updatedns
                         $status = "Dynamic DNS: (Unknown Response)";
                         log_error("Dynamic DNS: PAYLOAD: {$data}");
                         $this->_debug($data);
+                }
+                break;
+            case '1984-hosting':
+                $output = json_decode($data);
+                if ($output === null) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - empty response.";
+                } elseif ($output->ok === true) {
+                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } elseif ($output->error) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with 1984 Hosting Company.";
+                } elseif ($output->lookup) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
+                } else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                 }
                 break;
             case '3322':

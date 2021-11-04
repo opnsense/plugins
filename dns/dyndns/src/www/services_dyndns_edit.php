@@ -75,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6") && $pconfig['username'] == "") {
+
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6" || $pconfig['type'] == "1984-hosting") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -128,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
+            case '1984-hosting':
                 $host_to_check = preg_replace('/^[@*]\./', '', $host_to_check);
                 break;
             default:
