@@ -41,4 +41,10 @@
         <type>checkbox</type>
         <help>Checks that the username given by the user matches the Common-Name of the certificate.</help>
     </field>
+    <field>
+        <id>eap.tls_min_version</id>
+        <label>TLS Minimum Version</label>
+        <type>dropdown</type>
+        <help>Set minimum TLS version. Please be aware that every version below 1.2 is considered as insecure.</help>
+    </field>
 </form>
