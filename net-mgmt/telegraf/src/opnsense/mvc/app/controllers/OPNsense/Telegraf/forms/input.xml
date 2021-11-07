@@ -139,7 +139,7 @@
     </field>
     <field>
         <id>input.intrusion_detection_alerts</id>
-        <label>Intrusion Dectection Alerts</label>
+        <label>Intrusion Detection Alerts</label>
         <type>checkbox</type>
         <help>Requires Intrustion detection alerts are stored locally.</help>
     </field>
