@@ -50,6 +50,18 @@
         <help>Read metrics about disk IO by device.</help>
     </field>
     <field>
+        <id>input.internet_speed</id>
+        <label>Internet Speed Test</label>
+        <type>checkbox</type>
+        <help>Enable the collection of data about the internet speed on the system.</help>
+    </field>
+    <field>
+        <id>input.internet_speed_file</id>
+        <label>Internet Speed File Download</label>
+        <type>checkbox</type>
+        <help>Enable the file download speed test.</help>
+    </field>
+    <field>
         <id>input.mem</id>
         <label>Memory</label>
         <type>checkbox</type>
