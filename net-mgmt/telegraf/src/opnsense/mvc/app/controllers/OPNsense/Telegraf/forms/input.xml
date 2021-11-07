@@ -62,6 +62,12 @@
         <help>Enable the file download speed test.</help>
     </field>
     <field>
+        <id>input.internet_speed_interval</id>
+        <label>Interval</label>
+        <type>text</type>
+        <help>Default internet speed test interval in seconds.</help>
+    </field>
+    <field>
         <id>input.mem</id>
         <label>Memory</label>
         <type>checkbox</type>
