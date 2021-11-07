@@ -12,6 +12,18 @@
         <help>This will start the process with wheel group and root user permission. Please use this with care, currently only needed for Unbound and Suricata.</help>
     </field>
     <field>
+        <id>general.enableinfluxdbconfig</id>
+        <label>Use influxdb2 config</label>
+        <type>checkbox</type>
+        <help>Enable influxdb2 config.</help>
+    </field>
+    <field>
+        <id>general.influxdbconfig</id>
+        <label>Influxdb2 Config</label>
+        <type>text</type>
+        <help>Influxdb config URL</help>
+    </field>
+    <field>
         <id>general.interval</id>
         <label>Interval</label>
         <type>text</type>

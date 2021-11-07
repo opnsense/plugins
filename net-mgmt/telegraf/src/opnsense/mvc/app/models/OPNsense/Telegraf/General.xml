@@ -11,6 +11,14 @@
             <default>0</default>
             <Required>Y</Required>
         </wheelgroup>
+        <enableinfluxdbconfig type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </enableinfluxdbconfig>
+        <influxdbconfig type="TextField">
+            <default></default>
+	        <Required>N</Required>
+	    </influxdbconfig>
         <interval type="IntegerField">
             <default>10</default>
             <Required>Y</Required>

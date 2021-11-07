@@ -3,6 +3,9 @@
 telegraf_user="root"
 telegraf_group="wheel"
 {%   endif %}
+{%   if OPNsense.telegraf.general.enableinfluxdbconfig == '1' %}
+telegraf_conf={{ OPNsense.telegraf.general.influxdbconfig|default("") }}
+{%   endif %}
 telegraf_var_script="/usr/local/opnsense/scripts/OPNsense/Telegraf/setup.sh"
 telegraf_enable="YES"
 telegraf_confdir="/usr/local/etc/telegraf.d"
