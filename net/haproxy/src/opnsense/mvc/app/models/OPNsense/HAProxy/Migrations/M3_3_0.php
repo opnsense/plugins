@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2021 Frank Wall
  *
  *    All rights reserved.
  *
@@ -28,55 +28,18 @@
  *
  */
 
-/**
- *  register legacy syslog facilities
- * @return array
- */
-function haproxy_syslog()
+namespace OPNsense\HAProxy\Migrations;
+
+use OPNsense\Base\BaseModelMigration;
+
+class M3_3_0 extends BaseModelMigration
 {
-    $syslogconf = array();
-
-    $syslogconf['haproxy'] = array(
-        'facility' => array('haproxy'),
-    );
-
-    return $syslogconf;
-}
-
-/**
- *  register legacy service
- * @return array
- */
-function haproxy_services()
-{
-    global $config;
-    $services = array();
-
-    if (isset($config['OPNsense']['HAProxy']['general']['enabled']) && $config['OPNsense']['HAProxy']['general']['enabled'] == 1) {
-        $services[] = array(
-            'description' => gettext('HAProxy load balancer'),
-            'configd' => array(
-                'restart' => array('haproxy restart'),
-                'start' => array('haproxy start'),
-                'stop' => array('haproxy stop'),
-            ),
-            'name' => 'haproxy',
-        );
+    public function run($model)
+    {
+        // Lua scripts have a 'filename_scheme' and 'preload' field now
+        foreach ($model->getNodeByReference('luas.lua')->iterateItems() as $lua) {
+            $lua->filename_scheme = 'id';
+            $lua->preload = '1';
+        }
     }
-
-    return $services;
-}
-
-/**
- *  sync configuration via xmlrpc
- * @return array
- */
-function haproxy_xmlrpc_sync()
-{
-    $result = array();
-    $result['id'] = 'haproxy';
-    $result['section'] = 'OPNsense.HAProxy';
-    $result['description'] = gettext('HAProxy Load Balancer');
-    $result['services'] = ['haproxy'];
-    return array($result);
 }

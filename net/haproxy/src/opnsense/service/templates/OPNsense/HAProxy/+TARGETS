@@ -1,3 +1,4 @@
 haproxy.conf:/usr/local/etc/haproxy.conf.staging
 rc.conf.d:/etc/rc.conf.d/haproxy
 sslCerts.yaml:/usr/local/etc/haproxy/sslCerts.yaml
+log_socket.conf:/usr/local/opnsense/service/templates/OPNsense/Syslog/sources/haproxy.conf

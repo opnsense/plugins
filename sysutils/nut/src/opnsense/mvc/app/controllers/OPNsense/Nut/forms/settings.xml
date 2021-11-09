@@ -158,6 +158,12 @@
                 <help>Set the IP address of the remote NUT server.</help>
             </field>
             <field>
+                <id>nut.netclient.port</id>
+                <label>Port</label>
+                <type>text</type>
+                <help>Set the TCP port of the remote NUT server.</help>
+            </field>
+            <field>
                 <id>nut.netclient.user</id>
                 <label>Username</label>
                 <type>text</type>
