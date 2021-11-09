@@ -20,7 +20,7 @@
   <field>
     <id>prefixlist.version</id>
     <label>IP Version</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set the IP version to use.</help>
   </field>
   <field>
@@ -32,7 +32,7 @@
   <field>
     <id>prefixlist.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
