@@ -32,6 +32,7 @@ use Phalcon\Messages\Message;
 
 /**
  * a very specific nginx check - not reusable
+ * it checks for the uniqueness of servers with the default_server directive
  *
  * Class NgxUniqueDefaultServerConstraint
  * @package OPNsense\Nginx\Constraints
@@ -65,26 +66,20 @@ class NgxUniqueDefaultServerConstraint extends BaseConstraint
 							$listenHTTPAddressNode = $httpServer->getChild("listen_http_address");
 							if ($this->compareListenAddresses($myListenHTTPAddress, $listenHTTPAddressNode, $msg))
 							{
-								$msg = "There can only be one Default Server on each listening address: " . $msg . " conflict.";
 								$validator->appendMessage(new Message(
-									gettext($msg),
+									sprintf(gettext("There can only be one Default Server on each listening address: %s conflict."), $msg),
 									$attribute
 								));
 							}
 						}
 					}
-					
 				}
-
-				
 			}
-			
-
         }
         return true;
     }
     
-    private function compareListenAddresses($as, $bs, &$msg)
+    private function compareListenAddresses($as, $bs, &$msg): bool
     {
 		foreach (explode(",", $as) as $a)
 		{
@@ -104,7 +99,7 @@ class NgxUniqueDefaultServerConstraint extends BaseConstraint
 		}
 		return false;
 	}
-	private function extractAFIPPort($in)
+	private function extractAFIPPort($in): array
 	{
 		$af = null;
 		$ip = null;
