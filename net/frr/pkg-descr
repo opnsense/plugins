@@ -11,6 +11,14 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.23
+
+* Add route-reflector-client to BGP neighbor config
+* bugfix: BGP Prefix List "IP version" field appears to be ineffective (#2602)
+* feature: IPv6 link-local neighbors require an interface to be specified (#2604)
+* feature: multiprotocol BGP sessions are not supported (#2606)
+* bugfix: Multiple BGP peers causes config generation error (#2623)
+
 1.22
 
 * Add BFD support
