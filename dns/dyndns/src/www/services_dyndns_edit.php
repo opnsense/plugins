@@ -266,6 +266,7 @@ include("head.inc");
                     <td>
                       <label for="enable">
                         <input name="enable" type="checkbox" id="enable" value="<?= gettext("yes") ?>" <?= empty($pconfig['enable']) ? '' : 'checked="checked"' ?> />
+                        <strong><?= gettext("Enable this service") ?></strong>
                       </label>
                     </td>
                   </tr>
