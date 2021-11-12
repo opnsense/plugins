@@ -199,4 +199,25 @@
         <type>checkbox</type>
         <help>This option ensures that a new certificate is created in Synology DSM if it does not exist yet. If unchecked only existing certificates will be updated.</help>
     </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_fritzbox</style>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_url</id>
+        <label>FRITZ!Box URL</label>
+        <type>text</type>
+        <help>URL of the router, i.e. https://fritzbox.example.com.</help>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
 </form>

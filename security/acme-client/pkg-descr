@@ -11,7 +11,8 @@ Plugin Changelog
 3.5
 
 Added:
-* add support for Synology DSM deploy hook (#2236)
+* new automation: cert upload to Synology DSM (#2236)
+* new automation: cert upload to FRITZ!Box router
 
 Changed:
 * refactor code to support acme.sh deploy hooks
