@@ -23,6 +23,13 @@
     <help>Neighbor AS.</help>
   </field>
   <field>
+    <id>neighbor.password</id>
+    <label>BGP MD5 Password</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Set a password for BGP authentication.</help>
+  </field>
+  <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>select_multiple</type>
