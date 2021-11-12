@@ -45,6 +45,8 @@ class BgpController extends ApiMutableModelControllerBase
                   "description",
                   "address",
                   "remoteas",
+                  "password",
+                  "localip",
                   "updatesource",
                   "nexthopself",
                   "multihop",
