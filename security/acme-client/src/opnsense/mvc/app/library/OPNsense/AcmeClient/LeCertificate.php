@@ -605,7 +605,7 @@ class LeCertificate extends LeCommon
         foreach ($automations as $auto_uuid) {
             $autoFactory = new LeAutomationFactory();
             $automation = $autoFactory->getAutomation($auto_uuid);
-            $automation->init($this->getId(), (string)$this->config->account);
+            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account);
             // Ignore invalid automations.
             if ($automation->prepare()) {
                 $automation->run();

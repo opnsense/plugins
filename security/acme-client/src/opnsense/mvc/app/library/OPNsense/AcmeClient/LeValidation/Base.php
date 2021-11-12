@@ -68,7 +68,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->account_uuid = (string)$account->getUuid();
 
         // Teach acme.sh about DNS API hook location
-        $this->acme_env['_SCRIPT_HOME'] = '/usr/local/share/examples/acme.sh';
+        $this->acme_env['_SCRIPT_HOME'] = self::ACME_SCRIPT_HOME;
 
         // Set log level
         $this->setLoglevel();
@@ -83,7 +83,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                 $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
                 break;
             case 'http01':
-                $this->acme_args[] = '--webroot /var/etc/acme-client/challenges';
+                $this->acme_args[] = '--webroot ' . self::ACME_WEBROOT;
                 break;
         }
 
@@ -159,7 +159,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // NOTE: We "export" certificates to our own directory, so we don't have to deal
         // with domain names in filesystem, but instead can use the ID of our certObj, which
         // will never change.
-        $acmecmd = '/usr/local/sbin/acme.sh '
+        $acmecmd = self::ACME_CMD
+          . ' '
           . "--${acme_action} "
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);

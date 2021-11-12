@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,15 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Upload certificate via SFTP to arbitrary hosts
+ * Restart OPNsense WebGUI
  * @package OPNsense\AcmeClient
  */
-class UploadSftp extends Base implements LeAutomationInterface
+class ConfigdRestartGui extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $command = 'acmeclient upload-sftp ' . $this->cert_id . ' ' . $this->config->id;
-        $this->command = $command;
+        $this->command = 'webgui restart 2';
+        $this->command_args = true;
         return true;
     }
 }
