@@ -91,7 +91,7 @@
   </field>
   <field>
     <id>neighbor.asoverride</id>
-    <label>Enable As-Override</label>
+    <label>Enable AS-Override</label>
     <type>checkbox</type>
 	<help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
   </field>
