@@ -1,5 +1,8 @@
 <menu>
     <Services>
-        <PuppetAgent VisibleName="Puppet Agent" url="/ui/puppetagent"/>
+        <PuppetAgent VisibleName="Puppet Agent" cssClass="fa fa-certificate fa-fw">
+            <Settings order="10" url="/ui/puppetagent"/>
+            <Logs order="20" url="/ui/diagnostics/log/core/puppet-agent"/>
+      </PuppetAgent>
     </Services>
 </menu>

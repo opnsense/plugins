@@ -84,6 +84,7 @@ abstract class LeCommon
     protected $config;              # AcmeClient config object
     protected $debug;               # Debug logging (bool)
     protected $ca;                  # ACME CA
+    protected $custom_ca;           # Custom ACME CA URL
     protected $ca_compat;           # ACME CA for compat with old LE CA names
     protected $force;               # Force operation
     protected $model;               # AcmeClient model object
@@ -154,8 +155,22 @@ abstract class LeCommon
         $acme_ca = (string)$obj->ca;
         $this->ca = $acme_ca;
 
+        // Extract custom ACME CA URL
+        $acme_custom_ca = (string)$obj->custom_ca;
+        $this->custom_ca = $acme_custom_ca;
+
         // Add CA to acme arguments
-        $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_ca);
+        if ($acme_ca == "custom") {
+            // Custom CA
+            if (empty($acme_custom_ca) || ($acme_custom_ca == null)) {
+                LeUtils::log_error("custom CA must not be empty.");
+                return false;
+            }
+            $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_custom_ca);
+        } else {
+            // Normal CAs
+            $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_ca);
+        }
 
         // Evaluate how the CA should be represented in filenames.
         // This is a compatibility layer. It ensures that old files that

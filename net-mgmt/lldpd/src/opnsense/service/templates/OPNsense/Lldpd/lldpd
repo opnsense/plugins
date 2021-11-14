@@ -1,6 +1,6 @@
 {% if helpers.exists('OPNsense.lldpd.general.enabled') and OPNsense.lldpd.general.enabled == '1' %}
 lldpd_enable="YES"
-lldpd_flags="{% if helpers.exists('OPNsense.lldpd.general.cdp') and OPNsense.lldpd.general.cdp == '1' %}-c{% endif %}{% if helpers.exists('OPNsense.lldpd.general.fdp') and OPNsense.lldpd.general.fdp == '1' %} -f{% endif %}{% if helpers.exists('OPNsense.lldpd.general.edp') and OPNsense.lldpd.general.edp == '1' %} -e{% endif %}{% if helpers.exists('OPNsense.lldpd.general.sonmp') and OPNsense.lldpd.general.sonmp == '1' %} -s{% endif %}{% if helpers.exists('OPNsense.lldpd.general.interface') and OPNsense.lldpd.general.interface != '' %} -I {{ OPNsense.lldpd.general.interface }}{% endif %}"
+lldpd_flags="{% if helpers.exists('OPNsense.lldpd.general.cdp') and OPNsense.lldpd.general.cdp == '1' %}-c{% endif %}{% if helpers.exists('OPNsense.lldpd.general.fdp') and OPNsense.lldpd.general.fdp == '1' %} -f{% endif %}{% if helpers.exists('OPNsense.lldpd.general.edp') and OPNsense.lldpd.general.edp == '1' %} -e{% endif %}{% if helpers.exists('OPNsense.lldpd.general.sonmp') and OPNsense.lldpd.general.sonmp == '1' %} -s{% endif %}{% if helpers.exists('OPNsense.lldpd.general.interface') and OPNsense.lldpd.general.interface != '' %} -I {{ OPNsense.lldpd.general.interface }}{% endif %} -M 4"
 {% else %}
 lldpd_enable="NO"
 {% endif %}

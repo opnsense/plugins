@@ -159,7 +159,7 @@ class LeCertificate extends LeCommon
         foreach (Config::getInstance()->object()->ca as $cacrt) {
             $cacrt_subject = cert_get_subject($cacrt->crt, true);
             $cacrt_issuer = cert_get_issuer($cacrt->crt, true);
-            if (($ca_subject == $cacrt_subject) and ($ca_issuer == $cacrt_issuer)) {
+            if (($ca_subject === $cacrt_subject) and ($ca_issuer === $cacrt_issuer)) {
                 // Use old refid instead of generating a new one
                 $ca['refid'] = (string)$cacrt->refid;
                 $ca_found = true;
@@ -256,6 +256,12 @@ class LeCertificate extends LeCommon
 
         // Prepare certificate for import
         cert_import($cert, $cert_content, $key_content);
+
+        // Overwrite caref in order to use the correct CA (GH #2550).
+        // This is required because cert_import() uses lookup_ca_by_subject()
+        // to find a matching CA. If multiple CAs are using the same name, the
+        // first CA wins, but it may still be the wrong CA.
+        $cert['caref'] = (string)$ca['refid'];
 
         // Check if cert was found in config
         if ($cert_found == true) {

@@ -18,6 +18,12 @@
         <help>This allows you to bind to an external LDAP server. Be aware that FreeRADIUS will not start if there is no further configuration.</help>
     </field>
     <field>
+        <id>general.exos</id>
+        <label>Enable EXOS attributes</label>
+        <type>checkbox</type>
+        <help>This enables the EXOS VLAN and policy attributes assignment via users tab.</help>
+    </field>
+    <field>
         <id>general.wispr</id>
         <label>Enable WISPr attributes</label>
         <type>checkbox</type>

@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/eap</mount>
     <description>EAP configuration</description>
-    <version>1.0.0</version>
+    <version>1.9.17</version>
     <items>
         <default_eap_type type="OptionField">
             <default>md5</default>
@@ -16,6 +16,15 @@
                 <ttls-gtc>TTLS-GTC</ttls-gtc>
             </OptionValues>
         </default_eap_type>
+        <elliptic_curve type="OptionField">
+            <default>prime256v1</default>
+            <Required>Y</Required>
+            <multiple>N</multiple>
+            <OptionValues>
+                <prime256v1>prime256v1</prime256v1>
+                <secp384r1>secp384r1</secp384r1>
+            </OptionValues>
+        </elliptic_curve>
         <enable_client_cert type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
@@ -36,5 +45,15 @@
             <default>0</default>
             <Required>Y</Required>
         </check_tls_names>
+        <tls_min_version type="OptionField">
+            <default>Option1</default>
+            <Required>Y</Required>
+            <multiple>N</multiple>
+            <OptionValues>
+                <Option1 value="1.0">1.0</Option1>
+                <Option2 value="1.1">1.1</Option2>
+                <Option3 value="1.2">1.2</Option3>
+            </OptionValues>
+        </tls_min_version>
     </items>
 </model>

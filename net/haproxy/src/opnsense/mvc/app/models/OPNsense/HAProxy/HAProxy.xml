@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.1.0</version>
+    <version>3.3.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -12,6 +12,12 @@
                 <default>0</default>
                 <Required>Y</Required>
             </gracefulStop>
+            <hardStopAfter type="TextField">
+                <default>60s</default>
+                <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                <Required>N</Required>
+            </hardStopAfter>
             <seamlessReload type="BooleanField">
                 <default>0</default>
                 <Required>Y</Required>
@@ -217,10 +223,10 @@
                     <Required>N</Required>
                 </timeoutServer>
                 <retries type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                     <default>3</default>
-                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <ValidationMessage>Please specify a value between 0 and 100.</ValidationMessage>
                     <Required>Y</Required>
                 </retries>
                 <redispatch type="OptionField">
@@ -1137,9 +1143,9 @@
                     <Required>N</Required>
                 </tuning_timeoutServer>
                 <tuning_retries type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 100.</ValidationMessage>
+                    <ValidationMessage>Please specify a value between 0 and 100.</ValidationMessage>
                     <Required>N</Required>
                 </tuning_retries>
                 <customOptions type="TextField">
@@ -1579,6 +1585,10 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </negate>
+                <caseSensitive type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </caseSensitive>
                 <hdr_beg type="TextField">
                     <mask>/^.{1,255}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
@@ -2062,6 +2072,7 @@
                         <http-response_replace-value>http-response header replace value</http-response_replace-value>
                         <http-response_set-status>http-response set-status</http-response_set-status>
                         <http-response_set-var>http-response set-var</http-response_set-var>
+                        <monitor_fail>monitor fail: report failure to a monitor request</monitor_fail>
                         <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
                         <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
                         <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
@@ -2246,6 +2257,10 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </http_response_set_var_expr>
+                <monitor_fail_uri type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <Required>N</Required>
+                </monitor_fail_uri>
                 <tcp_request_content_lua type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
@@ -2349,6 +2364,18 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
+                <preload type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </preload>
+                <filename_scheme type="OptionField">
+                    <Required>Y</Required>
+                    <default>id</default>
+                    <OptionValues>
+                        <id>Use a random ID for the filename [default]</id>
+                        <name>Use the specified name as filename</name>
+                    </OptionValues>
+                </filename_scheme>
                 <content type="TextField">
                     <Required>Y</Required>
                 </content>
@@ -2754,6 +2781,42 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </timeout_retry>
+                <accepted_payload_size type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>8192</MaximumValue>
+                    <ValidationMessage>Should be a number between 0 and 8192</ValidationMessage>
+                    <Required>N</Required>
+                </accepted_payload_size>
+                <hold_valid type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </hold_valid>
+                <hold_obsolete type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </hold_obsolete>
+                <hold_refused type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </hold_refused>
+                <hold_nx type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </hold_nx>
+                <hold_timeout type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </hold_timeout>
+                <hold_other type="TextField">
+                    <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </hold_other>
             </resolver>
         </resolvers>
         <mailers>
