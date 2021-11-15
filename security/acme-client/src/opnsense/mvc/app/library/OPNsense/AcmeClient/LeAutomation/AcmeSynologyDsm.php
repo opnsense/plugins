@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,26 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Restart OPNsense WebGUI
+ * Run acme.sh deploy hook synology_dsm
  * @package OPNsense\AcmeClient
  */
-class RestartGui extends Base implements LeAutomationInterface
+class AcmeSynologyDsm extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $this->command = 'webgui restart 2';
-        $this->command_args = true;
+        $this->acme_env['SYNO_Certificate'] = 'OPNsense ACME cert ' . $this->cert_id;
+        $this->acme_env['SYNO_Hostname'] = (string)$this->config->acme_synology_dsm_hostname;
+        $this->acme_env['SYNO_Port'] = (string)$this->config->acme_synology_dsm_port;
+        $this->acme_env['SYNO_Scheme'] = (string)$this->config->acme_synology_dsm_scheme;
+        $this->acme_env['SYNO_Username'] = (string)$this->config->acme_synology_dsm_username;
+        $this->acme_env['SYNO_Password'] = (string)$this->config->acme_synology_dsm_password;
+        if (!empty((string)$this->config->acme_synology_dsm_create)) {
+            $this->acme_env['SYNO_Create'] = (string)$this->config->acme_synology_dsm_create;
+        }
+        if (!empty((string)$this->config->acme_synology_dsm_deviceid)) {
+            $this->acme_env['SYNO_DID'] = (string)$this->config->acme_synology_dsm_deviceid;
+        }
+        $this->acme_args[] = '--deploy-hook synology_dsm';
         return true;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ use OPNsense\AcmeClient\LeAutomationInterface;
  * Restart local Nginx service
  * @package OPNsense\AcmeClient
  */
-class RestartNginx extends Base implements LeAutomationInterface
+class ConfigdRestartNginx extends Base implements LeAutomationInterface
 {
     public function prepare()
     {

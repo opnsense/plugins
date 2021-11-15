@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,23 +29,17 @@
 namespace OPNsense\AcmeClient\LeAutomation;
 
 use OPNsense\AcmeClient\LeAutomationInterface;
-use OPNsense\AcmeClient\LeUtils;
 
 /**
- * Run selected configd command
+ * Upload certificate to Highwinds CDN API
  * @package OPNsense\AcmeClient
  */
-class Configd extends Base implements LeAutomationInterface
+class ConfigdUploadHighwinds extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        // Make sure a configd command was specified.
-        if (empty((string)$this->config->configd)) {
-            LeUtils::log_error('no configd command specified for automation: ' . $this->config->name);
-            return false;
-        }
-
-        $this->command = (string)$this->config->configd;
+        $command = 'acmeclient upload_highwinds ' . $this->cert_id . ' ' . $this->config->id;
+        $this->command = $command;
         return true;
     }
 }

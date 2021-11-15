@@ -26,7 +26,7 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_upload_highwinds</style>
+        <style>method_table method_table_configd_upload_highwinds</style>
     </field>
     <field>
         <id>action.highwinds_account_hash</id>
@@ -43,7 +43,7 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_upload_sftp</style>
+        <style>method_table method_table_configd_upload_sftp</style>
     </field>
     <field>
         <id>action.sftp_host</id>
@@ -145,13 +145,79 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_configd</style>
+        <style>method_table method_table_configd_generic</style>
     </field>
     <field>
-        <id>action.configd</id>
+        <id>action.configd_generic_command</id>
         <label>System Command</label>
         <type>dropdown</type>
         <help>Select a pre-defined system command which should be run.</help>
-        <style>table_optional table_optional_configd</style>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_synology_dsm</style>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_hostname</id>
+        <label>Synology Hostname</label>
+        <type>text</type>
+        <help>Hostname of IP adress of the Synology DSM, i.e. synology.example.com or 192.168.0.1.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_port</id>
+        <label>Synology Port</label>
+        <type>text</type>
+        <help>Port that will be used when connecting to Synology DSM.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_scheme</id>
+        <label>Scheme</label>
+        <type>dropdown</type>
+        <help>Connection scheme that will be used when uploading certificates to Synology DSM.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Username to login, must be an administrator.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_deviceid</id>
+        <label>Device ID</label>
+        <type>text</type>
+        <help>If Synology DSM has OTP enabled, then the device ID has to be provided so that no OTP is required when running the automation.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_create</id>
+        <label>Create certificates</label>
+        <type>checkbox</type>
+        <help>This option ensures that a new certificate is created in Synology DSM if it does not exist yet. If unchecked only existing certificates will be updated.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_fritzbox</style>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_url</id>
+        <label>FRITZ!Box URL</label>
+        <type>text</type>
+        <help>URL of the router, i.e. https://fritzbox.example.com.</help>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
 </form>

@@ -41,11 +41,14 @@ abstract class LeCommon
     public const ACME_BASE_ACCOUNT_DIR = '/var/etc/acme-client/accounts';
     public const ACME_BASE_CERT_DIR = '/var/etc/acme-client/certs';
     public const ACME_BASE_CONFIG_DIR = '/var/etc/acme-client/configs';
+    public const ACME_CMD = '/usr/local/sbin/acme.sh';
     public const ACME_HOME_DIR = '/var/etc/acme-client/home';
 
     // Defaults for acme.sh
     public const ACME_ACCOUNT_KEY_LENGTH = 4096;
     public const ACME_ENV_PATH = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin';
+    public const ACME_SCRIPT_HOME = '/usr/local/share/examples/acme.sh';
+    public const ACME_WEBROOT = '/var/etc/acme-client/challenges';
 
     // Filenames for certs, configs, ...
     public const ACME_CERT_DIR = '/var/etc/acme-client/certs/%s/';
