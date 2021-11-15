@@ -72,6 +72,12 @@
         <help>Set the name of the bucket in Influx v2.</help>
     </field>
     <field>
+        <id>output.influx_v2_insecure_skip_verify</id>
+        <label>Disable SSL verification v2</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
         <id>output.graphite_enable</id>
         <label>Enable Graphite Output</label>
         <type>checkbox</type>
