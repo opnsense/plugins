@@ -26,7 +26,14 @@
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>select_multiple</type>
-    <help>Physical name of the interface facing the peer</help>
+    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+  </field>
+  <field>
+    <id>neighbor.linklocalinterface</id>
+    <label>IPv6 link-local interface</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Interface to use for IPv6 link-local neighbours. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERinterfaceIFNAME">FRR documentation</a> for more information.]]></help>
   </field>
   <field>
     <id>neighbor.nexthopself</id>
@@ -36,6 +43,18 @@
   <field>
     <id>neighbor.multihop</id>
     <label>Multi-Hop</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.multiprotocol</id>
+    <label>Multi-Protocol</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Is this neighbour multiprotocol capable per <a href="https://datatracker.ietf.org/doc/html/rfc2283.html">RFC 2283</a>]]></help>
+  </field>
+  <field>
+    <id>neighbor.rrclient</id>
+    <label>Route Reflector Client</label>
     <type>checkbox</type>
   </field>
   <field>
@@ -69,6 +88,12 @@
     <id>neighbor.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.asoverride</id>
+    <label>Enable AS-Override</label>
+    <type>checkbox</type>
+	<help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
   </field>
   <field>
     <id>neighbor.linkedPrefixlistIn</id>

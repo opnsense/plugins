@@ -165,4 +165,18 @@
         <allownew>true</allownew>
         <help><![CDATA[Set a list of <a href="https://dnscrypt.info/public-servers">known servers</a> e.g. if you want to stick with Cisco only. You can also put your manually added servers here. Please use on your own risk.]]></help>
     </field>
+    <field>
+        <id>general.query_logs</id>
+        <label>Enable query logs</label>
+        <type>checkbox</type>
+        <help>This will enable/disable local logs. This includes both [query_log] and [nx_log] as described in the DNSCrypt-Proxy documentation.</help>
+    </field>
+    <field>
+        <id>general.disabled_serverlist</id>
+        <label>Disabled Servers List</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Exclude servers from automatic selection. Add any specific server names here if you do not want to use them for any reason.]]></help>
+    </field>
 </form>

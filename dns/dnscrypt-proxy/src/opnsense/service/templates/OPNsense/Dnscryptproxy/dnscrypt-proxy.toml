@@ -4,6 +4,10 @@
 server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.serverlist.split(','))) + "'" }}]
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.disabled_serverlist') and OPNsense.dnscryptproxy.general.disabled_serverlist != '' %}
+disabled_server_names = ['{{OPNsense.dnscryptproxy.general.disabled_serverlist}}']
+{%   endif %}
+
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
 listen_addresses = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.listen_addresses.split(','))) + "'" }}]
 {%   else %}
@@ -118,6 +122,7 @@ cache_neg_max_ttl = {{ OPNsense.dnscryptproxy.general.cache_neg_max_ttl }}
 cache = false
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.query_logs') and OPNsense.dnscryptproxy.general.query_logs == '1' %}
 [query_log]
   file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
@@ -125,6 +130,7 @@ cache = false
 [nx_log]
   file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
+{%   endif %}
 
 [allowed_names]
   allowed_names_file = 'whitelist.txt'
