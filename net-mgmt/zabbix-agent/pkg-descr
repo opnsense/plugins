@@ -12,6 +12,11 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.10
+
+Changed:
+* Replace EnableRemoteCommands with AllowKey/DenyKey (#1978)
+
 1.9
 
 Added:
