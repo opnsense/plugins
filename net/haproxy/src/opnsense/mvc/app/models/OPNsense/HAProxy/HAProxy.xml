@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -1251,6 +1251,7 @@
                     <OptionValues>
                         <static>static</static>
                         <template>template</template>
+                        <unix>unix socket</unix>
                     </OptionValues>
                 </type>
                 <serviceName type="TextField">
@@ -1342,6 +1343,21 @@
                 <advanced type="TextField">
                     <Required>N</Required>
                 </advanced>
+                <unix_socket type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>frontends.frontend</items>
+                            <display>name</display>
+                            <filters>
+                                <bind>/unix@/</bind>
+                            </filters>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related frontend item not found</ValidationMessage>
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                </unix_socket>
             </server>
         </servers>
         <healthchecks>
