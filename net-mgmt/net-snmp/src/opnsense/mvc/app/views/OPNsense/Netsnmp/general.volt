@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#users">{{ lang._('SNMPv3 Users') }}</a></li>
+    <li><a data-toggle="tab" href="#trapd">{{ lang._('SNMP Trap Daemon') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -72,6 +73,15 @@ POSSIBILITY OF SUCH DAMAGE.
             <br /><br />
         </div>
     </div>
+    <div id="trapd" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':trapdForm,'id':'frm_trapd_settings'])}}
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary"  id="saveAct_trapd" type="button"><b>{{ lang._('Save') }}</b><i id="saveAct_trapd_progress"></i></button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetsnmpUser,'id':'dialogEditNetsnmpUser','label':lang._('Edit User')])}}
@@ -98,6 +108,12 @@ $( document ).ready(function() {
         }
     );
 
+    data_get_map = {'frm_trapd_settings':"/api/netsnmp/trapd/get"};
+    mapDataToFormUI(data_get_map).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
+
     $("#saveAct").click(function(){
         saveFormToEndpoint(url="/api/netsnmp/general/set", formid='frm_general_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
@@ -118,6 +134,18 @@ $( document ).ready(function() {
                     updateServiceStatusUI(data['status']);
                 });
                 $("#saveAct_user_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_trapd").click(function(){
+        saveFormToEndpoint(url="/api/netsnmp/trapd/set", formid='frm_trapd_settings',callback_ok=function(){
+        $("#saveAct_trapd_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/netsnmp/service/reconfigure", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/netsnmp/service/status", sendData={}, callback=function(data,status) {
+                    updateServiceStatusUI(data['status']);
+                });
+                $("#saveAct_trapd_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
