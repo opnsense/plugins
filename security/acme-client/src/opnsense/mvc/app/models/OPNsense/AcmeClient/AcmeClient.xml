@@ -1042,12 +1042,14 @@
                 <type type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <restart_gui>Restart OPNsense Web UI</restart_gui>
-                        <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
-                        <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
-                        <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
-                        <upload_sftp>Upload certificate via SFTP</upload_sftp>
-                        <configd>System or Plugin Command</configd>
+                        <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
+                        <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
+                        <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
+                        <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
+                        <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
+                        <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
+                        <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
+                        <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
                 <highwinds_account_hash type="TextField">
@@ -1136,6 +1138,7 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_fullchain>
+                <!-- old value, should be removed in next major release -->
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
@@ -1143,6 +1146,62 @@
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
                 </configd>
+                <configd_generic_command type="ConfigdActionsField">
+                    <filters>
+                        <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
+                    </filters>
+                    <ValidationMessage>Select a command from the list.</ValidationMessage>
+                    <Required>N</Required>
+                </configd_generic_command>
+                <acme_synology_dsm_hostname type="HostnameField">
+                    <default></default>
+                    <Required>N</Required>
+                </acme_synology_dsm_hostname>
+                <acme_synology_dsm_port type="PortField">
+                    <default>5000</default>
+                    <Required>N</Required>
+                </acme_synology_dsm_port>
+                <acme_synology_dsm_scheme type="OptionField">
+                    <default>http</default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <http>HTTP [default]</http>
+                        <https>HTTPS</https>
+                    </OptionValues>
+                </acme_synology_dsm_scheme>
+                <acme_synology_dsm_username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_username>
+                <acme_synology_dsm_password type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_password>
+                <acme_synology_dsm_create type="BooleanField">
+                    <default>1</default>
+                </acme_synology_dsm_create>
+                <acme_synology_dsm_deviceid type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_deviceid>
+                <acme_fritzbox_url type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_fritzbox_url>
+                <acme_fritzbox_username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_fritzbox_username>
+                <acme_fritzbox_password type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_fritzbox_password>
             </action>
         </actions>
     </items>
