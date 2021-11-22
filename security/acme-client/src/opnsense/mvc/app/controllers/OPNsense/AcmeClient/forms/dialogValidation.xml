@@ -664,7 +664,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode</label>
+        <label>Linode API (v3 / Deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
     </field>
@@ -679,7 +679,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode Cloud API</label>
+        <label>Linode API (v4)</label>
         <type>header</type>
         <style>table_dns table_dns_linode_v4</style>
     </field>
@@ -1337,5 +1337,20 @@
         <id>validation.dns_nederhost_key</id>
         <label>Key</label>
         <type>text</type>
+    </field>
+    <field>
+        <label>Porkbun API</label>
+        <type>header</type>
+        <style>table_dns table_dns_porkbun</style>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_secret</id>
+        <label>Secret API Key</label>
+        <type>password</type>
     </field>
 </form>

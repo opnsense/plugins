@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2021 Markus Peter <mpeter@one-it.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,19 +26,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\Nginx\Migrations;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\Base\BaseModelMigration;
 
-/**
- * Restart local HAProxy service
- * @package OPNsense\AcmeClient
- */
-class RestartHaproxy extends Base implements LeAutomationInterface
+class M1_24_0 extends BaseModelMigration
 {
-    public function prepare()
+    public function run($model)
     {
-        $this->command = 'haproxy restart';
-        return true;
+        foreach ($model->getNodeByReference('http_server')->iterateItems() as $http_server) {
+            if ($http_server->listen_http_port != '') {
+                $http_server->listen_http_address = $http_server->listen_http_port . ',[::]:' . $http_server->listen_http_port;
+                $http_server->listen_http_port = null;
+            }
+            if ($http_server->listen_https_port != '') {
+                $http_server->listen_https_address = $http_server->listen_https_port . ',[::]:' . $http_server->listen_https_port;
+                $http_server->listen_https_port = null;
+            }
+        }
+        foreach ($model->getNodeByReference('stream_server')->iterateItems() as $server) {
+            if ($server->listen_port != '') {
+                $server->listen_address = $server->listen_port . ',[::]:' . $server->listen_port;
+                $server->listen_port = null;
+            }
+        }
     }
 }

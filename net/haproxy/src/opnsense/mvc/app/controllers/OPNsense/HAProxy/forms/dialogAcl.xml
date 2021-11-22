@@ -28,6 +28,12 @@
         <help><![CDATA[Use this to invert the meaning of the expression.]]></help>
     </field>
     <field>
+        <id>acl.caseSensitive</id>
+        <label>Case-sensitive</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable to make the condition case-sensitive (if applicable). By default all conditions are not case-sensitive.]]></help>
+    </field>
+    <field>
         <label>Parameters</label>
         <type>header</type>
         <style>expression_table table_hdr_beg</style>

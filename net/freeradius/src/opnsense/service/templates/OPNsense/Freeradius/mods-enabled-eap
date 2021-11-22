@@ -453,7 +453,7 @@ eap {
                 #
                 #  The values must be in quotes.
                 #
-                tls_min_version = "1.0"
+                tls_min_version = "{{ OPNsense.freeradius.eap.tls_min_version }}"
                 tls_max_version = "1.2"
 
                 #  Elliptical cryptography configuration
@@ -471,7 +471,7 @@ eap {
                 #
                 #        openssl ecparam -list_curves
                 #
-                ecdh_curve = "prime256v1"
+                ecdh_curve = "{{ OPNsense.freeradius.eap.elliptic_curve }}"
 
                 #  Session resumption / fast reauthentication
                 #  cache.

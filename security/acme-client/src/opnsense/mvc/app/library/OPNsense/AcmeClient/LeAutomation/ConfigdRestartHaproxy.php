@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,14 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Upload certificate to Highwinds CDN API
+ * Restart local HAProxy service
  * @package OPNsense\AcmeClient
  */
-class UploadHighwinds extends Base implements LeAutomationInterface
+class ConfigdRestartHaproxy extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $command = 'acmeclient upload_highwinds ' . $this->cert_id . ' ' . $this->config->id;
-        $this->command = $command;
+        $this->command = 'haproxy restart';
         return true;
     }
 }

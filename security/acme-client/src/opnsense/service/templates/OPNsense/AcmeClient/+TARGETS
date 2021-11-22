@@ -1,2 +1,3 @@
 lighttpd-acme-challenge.conf:/var/etc/lighttpd-acme-challenge.conf
 rc.conf.d:/etc/rc.conf.d/acme_http_challenge
+syslog-filter.conf:/usr/local/opnsense/service/templates/OPNsense/Syslog/local/acmeclient.conf

@@ -52,6 +52,7 @@ class BgpController extends ApiMutableModelControllerBase
                   "holddown",
                   "connecttimer",
                   "defaultoriginate",
+                  "asoverride",
                   "linkedPrefixlistIn",
                   "linkedPrefixlistOut",
                   "linkedRoutemapIn",

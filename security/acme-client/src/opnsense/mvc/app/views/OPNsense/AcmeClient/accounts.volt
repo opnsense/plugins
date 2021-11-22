@@ -317,6 +317,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
         });
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAccount').on('shown.bs.modal', function (e) {
+            // hide options that are irrelevant for the selected CA
+            $("#account\\.ca").change(function(){
+                $(".ca_options").hide();
+                $(".ca_options_"+$(this).val()).show();
+            });
+            $("#account\\.ca").change();
+        })
+
     });
 
 </script>

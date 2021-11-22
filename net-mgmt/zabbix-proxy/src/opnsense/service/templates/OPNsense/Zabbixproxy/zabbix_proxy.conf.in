@@ -22,7 +22,7 @@ SourceIP={{ OPNsense.zabbixproxy.general.sourceip }}
 {% endif %}
 LogFile=/var/log/zabbix/zabbix_proxy.log
 PidFile=/var/run/zabbix/zabbix_proxy.pid
-DBName=/var/db/zabbix/zabbix_proxy.db
+DBName=/var/db/zabbix/%%PLUGIN_VARIANT%%_proxy.db
 {% if helpers.exists('OPNsense.zabbixproxy.general.proxyofflinebuffer') and OPNsense.zabbixproxy.general.proxyofflinebuffer != '' %}
 ProxyOfflineBuffer={{ OPNsense.zabbixproxy.general.proxyofflinebuffer }}
 {% endif %}

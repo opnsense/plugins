@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,15 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Restart OPNsense WebGUI
+ * Upload certificate to Highwinds CDN API
  * @package OPNsense\AcmeClient
  */
-class RestartGui extends Base implements LeAutomationInterface
+class ConfigdUploadHighwinds extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $this->command = 'webgui restart 2';
-        $this->command_args = true;
+        $command = 'acmeclient upload_highwinds ' . $this->cert_id . ' ' . $this->config->id;
+        $this->command = $command;
         return true;
     }
 }
