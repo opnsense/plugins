@@ -14,6 +14,7 @@ Plugin Changelog
 
 * Change all Listen Port directives to Listen Address and migrate the Port data to Addresses
 * Add default_server option to HTTP Server
+* Replace stop action by the reload option in reconfigureForceRestart (#2450)
 
 1.23
 
