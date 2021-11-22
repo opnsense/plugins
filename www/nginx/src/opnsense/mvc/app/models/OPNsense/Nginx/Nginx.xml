@@ -800,7 +800,7 @@
           <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
           <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
         </OptionValues>
-        <Required>N</Required>
+        <Required>Y</Required>
         <default>TLSv1.2,TLSv1.3</default>
       </tls_protocols>
       <tls_ciphers type="TextField">
