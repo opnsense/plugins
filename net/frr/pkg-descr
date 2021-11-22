@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.24
+
+* Add AS-Override (#2517)
+
 1.23
 
 * Add route-reflector-client to BGP neighbor config
