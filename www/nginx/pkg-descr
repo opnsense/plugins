@@ -15,6 +15,7 @@ Plugin Changelog
 * Change all Listen Port directives to Listen Address and migrate the Port data to Addresses
 * Add default_server option to HTTP Server
 * Replace stop action by the reload option in reconfigureForceRestart (#2450)
+* Add server ssl_protocols, ssl_ciphers, ssl_prefer_server_ciphers directives to GUI
 
 1.23
 
