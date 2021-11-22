@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.3
+
+* Add insecure_skip_verify as an option for Influx v2 output
+
 1.12.2
 
 * Add insecure_skip_verify as an option for Influx v1 output
