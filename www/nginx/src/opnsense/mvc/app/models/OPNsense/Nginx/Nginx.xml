@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.20.1</version>
+  <version>1.24.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -662,14 +662,34 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </syslog_targets>
-      <listen_http_port type="PortField">
+      <listen_http_address type="CSVListField">
         <Required>N</Required>
-        <default>80</default>
-      </listen_http_port>
-      <listen_https_port type="PortField">
+        <multiple>Y</multiple>
+        <default>80,[::]:80</default>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+        <Constraints>
+          <check001>
+            <type>NgxUniqueDefaultServerConstraint</type>
+          </check001>
+        </Constraints>
+      </listen_http_address>
+      <listen_https_address type="CSVListField">
         <Required>N</Required>
-        <default>443</default>
-      </listen_https_port>
+        <multiple>Y</multiple>
+        <default>443,[::]:443</default>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+      </listen_https_address>
+      <default_server type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+        <Constraints>
+          <check001>
+            <type>NgxUniqueDefaultServerConstraint</type>
+          </check001>
+        </Constraints>
+      </default_server>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -894,16 +914,12 @@
     </http_server>
 
     <stream_server type="ArrayField">
-      <listen_port type="PortField">
+      <listen_address type="CSVListField">
         <Required>N</Required>
-        <default>80</default>
-        <Constraints>
-          <check001>
-            <ValidationMessage>You can only use one server at this port.</ValidationMessage>
-            <type>UniqueConstraint</type>
-          </check001>
-        </Constraints>
-      </listen_port>
+        <multiple>Y</multiple>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+      </listen_address>
       <syslog_targets type="ModelRelationField">
         <Model>
           <template>

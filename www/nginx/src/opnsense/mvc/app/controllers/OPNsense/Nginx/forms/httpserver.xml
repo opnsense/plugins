@@ -1,13 +1,24 @@
 <form>
   <field>
-    <id>httpserver.listen_http_port</id>
-    <label>HTTP Listen Port</label>
-    <type>text</type>
+    <id>httpserver.listen_http_address</id>
+    <label>HTTP Listen Address</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a list of IP addresses and ports which can be used in nginx listen directives. To listen on a port on all IPs, use for example "80,[::]:80"</help>
   </field>
   <field>
-    <id>httpserver.listen_https_port</id>
-    <label>HTTPS Listen Port</label>
-    <type>text</type>
+    <id>httpserver.listen_https_address</id>
+    <label>HTTPS Listen Address</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a list of IP addresses and ports which can be used in nginx listen directives. To listen on a port on all IPs, use for example "443,[::]:443"</help>
+  </field>
+  <field>
+    <id>httpserver.default_server</id>
+    <label>Default Server</label>
+    <type>checkbox</type>
   </field>
   <field>
     <id>httpserver.syslog_targets</id>

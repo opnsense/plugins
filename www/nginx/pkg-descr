@@ -10,6 +10,11 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.24
+
+* Change all Listen Port directives to Listen Address and migrate the Port data to Addresses
+* Add default_server option to HTTP Server
+
 1.23
 
 * Add custom error pages on a per HTTP server basis (contributed by 8191)
