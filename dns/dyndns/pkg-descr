@@ -7,7 +7,6 @@ Plugin Changelog
 
 * Add support for 1984 Hosting Company (contributed by Adrian Fedoreanu)
 * Add %HOST% support for custom dynamic DNS (contributed by Marc Collins)
-* Revert FreeDNS URL change (contributed by andrewhotlab)
 * Add PAYLOAD log and debug support for missing code spots
 
 1.25
