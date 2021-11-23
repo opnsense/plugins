@@ -150,7 +150,7 @@
     <type>select_multiple</type>
     <advanced>true</advanced>
     <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3. TLSv1 and TLSv1.1 are insecure and excluded from GUI.</help>
-  </field> 
+  </field>
   <field>
     <id>httpserver.tls_ciphers</id>
     <label>TLS Ciphers</label>
