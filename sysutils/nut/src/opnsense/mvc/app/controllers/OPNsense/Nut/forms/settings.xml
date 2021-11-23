@@ -5,7 +5,7 @@
                 <id>nut.general.enable</id>
                 <label>Enable Nut</label>
                 <type>checkbox</type>
-                <help>Enable or disable the nut service.</help>
+                <help>Enable or disable the nut service. If enabled, the system will shutdown when the UPS emits a low battery warning.</help>
             </field>
             <field>
                 <id>nut.general.mode</id>
