@@ -324,6 +324,7 @@ class updatedns
                 case 'desec-v6':
                 case 'dhs':
                 case 'digitalocean':
+                case 'digitalocean-v6':
                 case 'gandi-livedns':
                 case 'dnsexit':
                 case 'dnsomatic':
