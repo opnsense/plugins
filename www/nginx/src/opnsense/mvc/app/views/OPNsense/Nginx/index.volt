@@ -345,8 +345,9 @@
                     <th data-column-id="root" data-type="string" data-sortable="true" data-visible="false">{{ lang._('File System Root') }}</th>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
                     <th data-column-id="https_only" data-type="boolean" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Only') }}</th>
-                    <th data-column-id="listen_http_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
-                    <th data-column-id="listen_https_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
+                    <th data-column-id="listen_http_address" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Address') }}</th>
+                    <th data-column-id="listen_https_address" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Address') }}</th>
+                    <th data-column-id="default_server" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Default') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -369,7 +370,7 @@
                 <tr>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
                     <th data-column-id="udp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('UDP') }}</th>
-                    <th data-column-id="listen_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="listen_address" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Address') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>

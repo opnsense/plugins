@@ -170,7 +170,7 @@ class LogsController extends ApiControllerBase
     {
         $data = [];
         foreach ($this->nginx->stream_server->iterateItems() as $item) {
-            $data[] = array('id' => $item->getAttributes()['uuid'], 'port' => (string)$item->listen_port);
+            $data[] = array('id' => $item->getAttributes()['uuid'], 'port' => (string)$item->listen_address);
         }
         return $data;
     }
