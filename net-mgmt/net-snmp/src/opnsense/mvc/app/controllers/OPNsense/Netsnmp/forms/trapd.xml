@@ -1,0 +1,46 @@
+<form>
+    <field>
+        <id>trapd.enabled</id>
+        <label>Enable SNMPTRAPD Service</label>
+        <type>checkbox</type>
+        <help>This will activate the snmpdtrapd service.</help>
+    </field>
+    <field>
+        <id>trapd.community</id>
+        <label>SNMP Community</label>
+        <type>text</type>
+        <help>Set the community string to use.</help>
+    </field>
+    <field>
+        <id>trapd.listen</id>
+        <label>Listen IPs</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IP addresses the service should listen to.</help>
+    </field>
+    <field>
+        <id>trapd.traptomail</id>
+        <label>Forward traps to mail?</label>
+        <type>checkbox</type>
+        <help>This will forward all traps to the mail contact specified below</help>
+    </field>
+    <field>
+        <id>trapd.mailserver</id>
+        <label>Mailserver</label>
+        <type>text</type>
+        <help>Forward mail via this machine</help>
+    </field>
+    <field>
+        <id>trapd.mailto</id>
+        <label>Mail contact</label>
+        <type>text</type>
+        <help>Set the contact address to use.</help>
+    </field>
+    <field>
+        <id>trapd.mailfrom</id>
+        <label>Mail from</label>
+        <type>text</type>
+        <help>Set the sender's address to use.</help>
+    </field>
+</form>

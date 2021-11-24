@@ -1,0 +1,15 @@
+{% if helpers.exists('OPNsense.netsnmp.trapd.enabled') and OPNsense.netsnmp.trapd.enabled == '1' %}
+snmpd_var_script="/usr/local/opnsense/scripts/OPNsense/Netsnmp/setup.sh"
+snmptrapd_enable="YES"
+{% else %}
+snmptrapd_enable="NO"
+{% endif %}
+{% if helpers.exists('OPNsense.netsnmp.trapd.listen') and OPNsense.netsnmp.trapd.listen != '' %}
+{%   set interface = [] %}
+{%   for network in OPNsense.netsnmp.trapd.listen.split(',') %}
+{{     ( interface.append( "udp:" + network + ":162" ) if ':' not in network else interface.append( "udp6:[" + network + "]:162" ) )|default("", True ) }}
+{%   endfor %}
+snmptrapd_flags="-p /var/run/snmptrapd.pid -X -m ALL {{ interface|join(' ') }}"
+{% else %}
+snmptrapd_flags="-p /var/run/snmptrapd.pid -X -m ALL"
+{% endif %}

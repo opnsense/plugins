@@ -1,0 +1,36 @@
+<model>
+    <mount>//OPNsense/netsnmp/trapd</mount>
+    <description>Netsnmp Trapd configuration</description>
+    <version>1.0.4</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <community type="TextField">
+            <default>public</default>
+            <Required>Y</Required>
+        </community>
+        <listen type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+            <asList>Y</asList>
+        </listen>
+        <traptomail type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </traptomail>
+        <mailserver type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mailserver>
+        <mailto type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mailto>
+        <mailfrom type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mailfrom>
+    </items>
+</model>

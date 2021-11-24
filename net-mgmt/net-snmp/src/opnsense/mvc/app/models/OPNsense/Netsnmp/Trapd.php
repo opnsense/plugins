@@ -28,13 +28,8 @@
 
 namespace OPNsense\Netsnmp;
 
-class GeneralController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class Trapd extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->formDialogEditNetsnmpUser = $this->getForm("dialogEditNetsnmpUser");
-        $this->view->trapdForm = $this->getForm("trapd");
-        $this->view->pick('OPNsense/Netsnmp/general');
-    }
 }
