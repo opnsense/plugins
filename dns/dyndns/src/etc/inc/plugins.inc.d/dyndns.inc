@@ -116,6 +116,8 @@ function dyndns_list()
         'digitalocean-v6' => 'DigitalOcean (v6)',
         'dnsexit' => 'DNSexit',
         'dnsomatic' => 'DNS-O-Matic',
+        'domain-offensive' => 'Domain-Offensive',
+        'domain-offensive-v6' => 'Domain-Offensive (v6)',
         'duckdns' => 'Duck DNS',
         'dyndns' => 'DynDNS (dynamic)',
         'dyndns-custom' => 'DynDNS (custom)',

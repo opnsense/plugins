@@ -28,6 +28,8 @@
  *  DNSexit                     - Last Tested: 20 July 2008
  *  DigitalOcean                - Last Tested: 25 June 2019
  *  DigitalOcean v6             - Last Tested: 13 May 2020
+ *  Domain-Offensive            - Last Tested: 25 Nov 2021
+ *  Domain-Offensive v6         - Last Tested: 25 Nov 2021
  *  Duck DNS                    - Last Tested: 04 March 2015
  *  DynDNS Dynamic              - Last Tested: 12 July 2005
  *  EasyDNS                     - Last Tested: 20 July 2008
@@ -198,6 +200,13 @@ class updatedns
                     $this->_error(5);
                 }
                 break;
+            case 'domain-offensive':
+            case 'domain-offensive-v6':
+                if (!$dnsUser) {
+                    $this->_error(3);
+                } elseif (!$dnsPass) {
+                    $this->_error(4);
+                }
             case 'azure':
             case 'azurev6':
                 if (!$dnsUser) {
@@ -250,6 +259,7 @@ class updatedns
             case 'cloudflare-v6':
             case 'custom-v6':
             case 'digitalocean-v6':
+            case 'domain-offensive-v6':
             case 'dynv6-v6':
             case 'he-net-v6':
             case 'godaddy-v6':
@@ -322,6 +332,8 @@ class updatedns
                 case 'gandi-livedns':
                 case 'dnsexit':
                 case 'dnsomatic':
+                case 'domain-offensive':
+                case 'domain-offensive-v6':
                 case 'duckdns':
                 case 'dyndns':
                 case 'dyndns-custom':
@@ -603,6 +615,13 @@ class updatedns
                     $port = ":" . $this->_dnsPort;
                 }
                 curl_setopt($ch, CURLOPT_URL, $server . $this->_dnsHost . '&myip=' . $this->_dnsIP . '&wildcard=' . $this->_dnsWildcard . '&mx=' . $this->_dnsMX . '&backmx=NOCHG');
+                break;
+            case 'domain-offensive':
+            case 'domain-offensive-v6':
+                $server = 'https://ddns.do.de/';
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server . '?myip=' . $this->_dnsIP);
                 break;
             case 'namecheap':
                 /* Example:
@@ -1572,6 +1591,38 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
                     log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
+                }
+                break;
+            case 'domain-offensive':
+            case 'domain-offensive-v6':
+                $noIpPrc = explode(' ', $data);
+                $code = $noIpPrc[0];
+                switch ($code) {
+                    case 'good':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) DNS hostname update successful.";
+                        $successful_update = true;
+                        break;
+                    case 'nochg':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Success) IP address is current, no update performed.";
+                        $successful_update = true;
+                        break;
+                    case 'numhost':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) No resource record from the domain zone is assigned to the DDNS/FlexDNS user.";
+                        break;
+                    case 'badauth':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Invalid Username or Password.";
+                        break;
+                    case 'toomanyrequests':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Either too many requests were sent from your public IP or your user.";
+                        break;
+                    case '911':
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Error) Fatal error. PAYLOAD: {$data}";
+                        break;
+                    default:
+                        $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
+                        log_error("Dynamic DNS ({$this->_dnsHost}): (Unknown Response) PAYLOAD: {$data}");
+                        $this->_debug($data);
+                        break;
                 }
                 break;
             case 'gandi-livedns':
