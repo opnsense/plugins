@@ -1499,7 +1499,8 @@ class updatedns
                 }
                 break;
             case 'namecheap':
-                $tmp = str_replace("^M", "", $data);
+                /* technically this is wrong but proves a point about the document being broken remotely */
+                $tmp = preg_replace('/(\<\?xml[^?]+?encoding=.?)utf-16([^?]+?\?\>)/i', '$1utf-8$2', $data);
                 $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
                     $status = "Dynamic DNS: (Error) Server side error.";
