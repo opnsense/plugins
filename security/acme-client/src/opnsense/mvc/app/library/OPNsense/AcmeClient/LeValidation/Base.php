@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -68,13 +68,13 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->account_uuid = (string)$account->getUuid();
 
         // Teach acme.sh about DNS API hook location
-        $this->acme_env['_SCRIPT_HOME'] = '/usr/local/share/examples/acme.sh';
+        $this->acme_env['_SCRIPT_HOME'] = self::ACME_SCRIPT_HOME;
 
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($accountuuid);
 
         // Store acme hook
         switch ((string)$this->config->method) {
@@ -83,7 +83,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                 $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
                 break;
             case 'http01':
-                $this->acme_args[] = '--webroot /var/etc/acme-client/challenges';
+                $this->acme_args[] = '--webroot ' . self::ACME_WEBROOT;
                 break;
         }
 
@@ -141,8 +141,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             }
         }
 
-        // Use individual account config for each environment
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        // Use individual account config for each CA
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
@@ -159,7 +159,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // NOTE: We "export" certificates to our own directory, so we don't have to deal
         // with domain names in filesystem, but instead can use the ID of our certObj, which
         // will never change.
-        $acmecmd = '/usr/local/sbin/acme.sh '
+        $acmecmd = self::ACME_CMD
+          . ' '
           . "--${acme_action} "
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);

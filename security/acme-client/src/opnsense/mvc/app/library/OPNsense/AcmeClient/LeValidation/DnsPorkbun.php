@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,26 +26,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
-use OPNsense\AcmeClient\LeUtils;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Run selected configd command
+ * Porkbun API
  * @package OPNsense\AcmeClient
  */
-class Configd extends Base implements LeAutomationInterface
+class DnsPorkbun extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        // Make sure a configd command was specified.
-        if (empty((string)$this->config->configd)) {
-            LeUtils::log_error('no configd command specified for automation: ' . $this->config->name);
-            return false;
-        }
-
-        $this->command = (string)$this->config->configd;
-        return true;
+        $this->acme_env['PORKBUN_API_KEY'] = (string)$this->config->dns_porkbun_key;
+        $this->acme_env['PORKBUN_SECRET_API_KEY'] = (string)$this->config->dns_porkbun_secret;
     }
 }

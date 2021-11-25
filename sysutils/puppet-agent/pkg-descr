@@ -5,3 +5,16 @@ hosts, along with obviously discrete elements like packages, services, and
 files.
 
 WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
+
+Plugin Changelog
+================
+
+1.0
+
+Added:
+* add log file
+* add introduction page
+
+0.1
+
+* Initial release

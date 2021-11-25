@@ -8,6 +8,14 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.19
+
+* Add support for "Query Source [IP|IPv6]" options.
+
+1.18
+
+* Allow specifying multiple masters for slave zones
+
 1.17
 
 * Make "Allow Transfer" and "Allow Query" configuration available to slave zones (contributed by Ang Iongchun)

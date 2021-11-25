@@ -75,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $input_errors = array();
     $pconfig = $_POST;
-    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6") && $pconfig['username'] == "") {
+
+    if(($pconfig['type'] == "freedns" || $pconfig['type'] == "linode" || $pconfig['type'] == "linode-v6" || $pconfig['type'] == "namecheap" || $pconfig['type'] == "cloudflare-token" || $pconfig['type'] == "cloudflare-token-v6" || $pconfig['type'] == "desec" || $pconfig['type'] == "desec-v4-v6" || $pconfig['type'] == "desec-v6" || $pconfig['type'] == "1984-hosting") && $pconfig['username'] == "") {
         $pconfig['username'] = "none";
     }
 
@@ -112,14 +113,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $host_to_check = $pconfig['host'];
 
         switch ($pconfig['type']) {
+            case '1984-hosting':
             case 'cloudflare':
-            case 'cloudflare-v6':
             case 'cloudflare-token':
             case 'cloudflare-token-v6':
+            case 'cloudflare-v6':
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'eurodns':
             case 'godaddy':
             case 'godaddy-v6':
             case 'googledomains':
+            case 'hetzner':
+            case 'hetzner-v6':
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
@@ -421,6 +428,8 @@ include("head.inc");
                         <?= gettext("This is the only field required by for Custom Dynamic DNS, and is only used by Custom Entries.") ?>
                         <br />
                         <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
+                        <br />
+                        <?= gettext("If you need the new host to be included in the request, put %HOST% in its place.") ?>
                       </div>
                     </td>
                   </tr>
@@ -434,6 +443,8 @@ include("head.inc");
                         <?= gettext("This field should be identical to what your dynamic DNS Provider will return if the update succeeds, leave it blank to disable checking of returned results.");?>
                         <br />
                         <?= gettext("If you need the new IP to be included in the request, put %IP% in its place.") ?>
+                        <br />
+                        <?= gettext("If you need the new Host to be included in the request, put %HOST% in its place.") ?>
                         <br />
                         <?= gettext('If you need to include multiple possible values, separate them with a |. If your provider includes a |, escape it with \|') ?>
                         <br />

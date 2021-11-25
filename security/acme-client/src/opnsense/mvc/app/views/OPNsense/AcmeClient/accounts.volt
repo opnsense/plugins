@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2017 Frank Wall
+Copyright (C) 2017-2021 Frank Wall
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
 
@@ -53,10 +53,10 @@ POSSIBILITY OF SUCH DAMAGE.
             url: '/api/acmeclient/accounts/search',
             formatters: {
                 "commands": function (column, row) {
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-register\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-address-book-o\"></span></button>" +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                    return "<button type=\"button\" title=\"{{ lang._('Edit account') }}\" class=\"btn btn-xs btn-default command-edit bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" title=\"{{ lang._('Copy account') }}\" class=\"btn btn-xs btn-default command-copy bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Register account') }}\" class=\"btn btn-xs btn-default command-register bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-address-book-o\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Remove account') }}\" class=\"btn btn-xs btn-default command-delete bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {
@@ -117,6 +117,9 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         var grid_accounts = $("#grid-accounts").bootgrid(gridopt).on("loaded.rs.jquery.bootgrid", function (e)
         {
+            // toggle all rendered tooltips (once for all)
+            $('.bootgrid-tooltip').tooltip();
+
             // scale footer on resize
             $(this).find("tfoot td:first-child").attr('colspan',$(this).find("th").length - 1);
             $(this).find('tr[data-row-id]').each(function(){
@@ -300,7 +303,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 if (gridParams['register'] != undefined) {
                     var uuid=$(this).data("row-id");
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Register the selected account with Lets Encrypt?') }}',
+                        '{{ lang._('Register the selected account with the configured ACME CA?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         ajaxCall(url=gridParams['register'] + uuid,sendData={},callback=function(data,status){
                             // reload grid afterwards
@@ -314,16 +317,42 @@ POSSIBILITY OF SUCH DAMAGE.
 
         });
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAccount').on('shown.bs.modal', function (e) {
+            // hide options that are irrelevant for the selected CA
+            $("#account\\.ca").change(function(){
+                $(".ca_options").hide();
+                $(".ca_options_"+$(this).val()).show();
+            });
+            $("#account\\.ca").change();
+        })
+
     });
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#accounts">{{ lang._('Accounts') }}</a></li>
+<ul class="nav nav-tabs" role="tablist" id="maintabs">
+    <li {% if showIntro|default('0')=='1' %}class="active"{% endif %}><a data-toggle="tab" id="accounts-introduction" href="#subtab_accounts-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    <li {% if showIntro|default('0')=='0' %}class="active"{% endif %}><a data-toggle="tab" id="accounts-tab" href="#accounts"><b>{{ lang._('Accounts') }}</b></a></li>
 </ul>
 
-<div class="tab-content content-box tab-content">
-    <div id="accounts" class="tab-pane fade in active">
+<div class="content-box tab-content">
+
+    <div id="subtab_accounts-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
+        <div class="col-md-12">
+            <h1>{{ lang._('Accounts') }}</h1>
+            <p>{{ lang._('In order to create certificates, an account is required. Also the following information should be considered:') }}</p>
+            <ul>
+              <li>{{ lang._('The account will be %sregistered automatically%s at the chosen CA. The CA will then associate new certificates to the selected account.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Usually CAs will let you know if something went wrong and a certificate is about to expire, therefore a %svalid e-mail address%s should be provided.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('For certain use-cases it can be useful to register %smultiple accounts%s, but the policy of the CA should be respected with this regard.') | format('<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('When requesting support from a CA the account ID may be required, %sthis documentation%s contains information how to get the internal account ID from the log files.') | format('<a href="https://letsencrypt.org/docs/account-id/">', '</a>') }}</p>
+        </div>
+    </div>
+
+    <div id="accounts" class="tab-pane fade {% if showIntro|default('0')=='0' %}in active{% endif %}">
+
         <table id="grid-accounts" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAccount">
             <thead>
             <tr>
@@ -348,7 +377,9 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
+
     </div>
+
 </div>
 
 {# include dialogs #}

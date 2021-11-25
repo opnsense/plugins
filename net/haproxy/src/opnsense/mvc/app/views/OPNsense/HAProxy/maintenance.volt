@@ -548,7 +548,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <div class="col-md-12">
-          <p>{{ lang._("%sChoose a command to change a server's state in runtime:%s") | format('<b>', '</b>') }}</p>
+          <p>{{ lang._("%sThe following commands are available to change a server's state in runtime:%s") | format('<b>', '</b>') }}</p>
           <ul>
             <li><span class="fa fa-check"></span> {{ lang._('%sSet state to ready:%s This puts the server in normal mode.') | format('<b>', '</b>') }}</li>
             <li><span class="fa fa-sort-amount-desc"></span> {{ lang._('%sSet state to drain:%s This removes the server from load balancing. Health checks will continue to run and it still accepts new persistent connections.') | format('<b>', '</b>') }}</li>

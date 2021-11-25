@@ -16,6 +16,14 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.9
+
+* Rename interface label in filter rules (#2577)
+
+1.8
+
+* Empty port in Endpoint is allowed
+
 1.7
 
 * Make tunnel address (wg interface address) optional

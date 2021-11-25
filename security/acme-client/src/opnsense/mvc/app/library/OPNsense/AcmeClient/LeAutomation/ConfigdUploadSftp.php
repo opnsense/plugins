@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,14 +31,15 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Restart local Nginx service
+ * Upload certificate via SFTP to arbitrary hosts
  * @package OPNsense\AcmeClient
  */
-class RestartNginx extends Base implements LeAutomationInterface
+class ConfigdUploadSftp extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $this->command = 'nginx restart';
+        $command = 'acmeclient upload-sftp ' . $this->cert_id . ' ' . $this->config->id;
+        $this->command = $command;
         return true;
     }
 }

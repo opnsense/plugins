@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/openconnect/general</mount>
     <description>Openconnect configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -47,5 +47,19 @@
             <Type>cert</Type>
             <Required>N</Required>
         </clientcertificate>
+        <protocol type="OptionField">
+            <default>anyconnect</default>
+            <multiple>N</multiple>
+            <Required>Y</Required>
+                <OptionValues>
+                    <anyconnect>Cisco AnyConnect</anyconnect>
+                    <nc>Juniper</nc>
+                    <pulse>Pulse Connect Secure</pulse>
+                    <gp>Palo Alto Networks GlobalProtect</gp>
+                    <f5>F5 Big-IP</f5>
+                    <fortinet>Fortinet Fortigate</fortinet>
+                    <array>Array Networks AG</array>
+                </OptionValues>
+        </protocol>
     </items>
 </model>

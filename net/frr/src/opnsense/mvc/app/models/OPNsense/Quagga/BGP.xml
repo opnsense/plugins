@@ -66,6 +66,15 @@
                                         <enable>/^(?!0).*$/</enable>
                                 </filters>
                         </updatesource>
+                        <linklocalinterface type="InterfaceField">
+                                <default></default>
+                                <Required>N</Required>
+                                <multiple>N</multiple>
+                                <AllowDynamic>Y</AllowDynamic>
+                                <filters>
+                                        <enable>/^(?!0).*$/</enable>
+                                </filters>
+                        </linklocalinterface>
                         <nexthopself type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
@@ -74,6 +83,14 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </multihop>
+                        <multiprotocol type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </multiprotocol>
+                        <rrclient type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </rrclient>
                         <bfd type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
@@ -97,6 +114,10 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </defaultoriginate>
+                        <asoverride type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </asoverride>
                         <linkedPrefixlistIn type="ModelRelationField">
                                 <Model>
                                         <template>

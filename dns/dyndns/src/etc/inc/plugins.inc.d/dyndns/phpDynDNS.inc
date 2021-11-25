@@ -14,6 +14,7 @@
  *    - _debug()
  *    - _checkIP()
  * +----------------------------------------------------+
+ *  1984 Hosting Company        - Last Tested: 03 August 2020
  *  3322                        - Last Tested: 26 May 2017
  *  All-Inkl                    - Last Tested: 02 March 2020
  *  Amazon Route53              - Last Tested: 01 April 2012
@@ -52,7 +53,8 @@
  *  No-IP                       - Last Tested: 15 May 2020
  *  ODS                         - Last Tested: 02 August 2005
  *  Oray                        - Last Tested: 26 May 2017
- *  STRATO                      - Last Tested: 09 May 2017
+ *  STRATO                      - Last Tested: 08 October 2021
+ *  STRATO V6                   - Last Tested: 08 October 2021
  *  SelfHost                    - Last Tested: 26 December 2011
  *  StaticCling                 - Last Tested: 27 April 2006
  *  deSEC                       - Last Tested: 09 September 2020
@@ -169,6 +171,7 @@ class updatedns
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
+            case '1984-hosting':
                 if (!$dnsPass) {
                     $this->_error(4);
                 } elseif (!$dnsHost) {
@@ -256,20 +259,21 @@ class updatedns
         switch ($dnsService) {
             case 'all-inkl-v6':
             case 'azurev6':
+            case 'cloudflare-token-v6':
             case 'cloudflare-v6':
             case 'custom-v6':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'digitalocean-v6':
             case 'domain-offensive-v6':
             case 'dynv6-v6':
-            case 'he-net-v6':
             case 'godaddy-v6':
+            case 'he-net-v6':
+            case 'hetzner-v6':
             case 'linode-v6':
             case 'regfish-v6':
             case 'route53-v6':
-            case 'cloudflare-token-v6':
-            case 'desec-v4-v6':
-            case 'desec-v6':
-            case 'hetzner-v6':
+            case 'strato-v6':
                 $this->_useIPv6 = true;
                 break;
             default:
@@ -312,6 +316,7 @@ class updatedns
             $this->_error(10);
         } else {
             switch ($this->_dnsService) {
+                case '1984-hosting':
                 case '3322':
                 case 'all-inkl':
                 case 'all-inkl-v6':
@@ -329,6 +334,7 @@ class updatedns
                 case 'desec-v6':
                 case 'dhs':
                 case 'digitalocean':
+                case 'digitalocean-v6':
                 case 'gandi-livedns':
                 case 'dnsexit':
                 case 'dnsomatic':
@@ -370,6 +376,7 @@ class updatedns
                 case 'selfhost':
                 case 'staticcling':
                 case 'strato':
+                case 'strato-v6':
                 case 'zoneedit':
                     $this->_update();
                     if ($this->_dnsDummyUpdateDone == true) {
@@ -798,6 +805,7 @@ class updatedns
                     curl_setopt($ch, CURLOPT_USERPWD, "{$this->_dnsUser}:{$this->_dnsPass}");
                 }
                 $server = str_replace("%IP%", $this->_dnsIP, $this->_dnsUpdateURL);
+                $server = str_replace("%HOST%", $this->_dnsHost, $server);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'cloudflare':
@@ -1038,9 +1046,17 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'strato':
+            case 'strato-v6':
                 $server = "https://dyndns.strato.com/nic/update?hostname={$this->_dnsHost}&myip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser . ':' . $this->_dnsPass);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                if ($this->_curlIpresolveV4) {
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                }
+                break;
+            case '1984-hosting':
+                $server = "https://api.1984.is/1.0/freedns/?apikey={$this->_dnsPass}&domain={$this->_dnsHost}&ip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_URL, $server);
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
@@ -1057,9 +1073,11 @@ class updatedns
                 curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 break;
             case 'regfish':
+                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&ipv4={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                curl_setopt($ch, CURLOPT_URL, $server);
+                break;
             case 'regfish-v6':
-                $family = $this->_useIPv6 ? 'ipv6' : 'ipv4';
-                $server = "https://dyndns.regfish.de/?fqdn={$this->_dnsHost}&{$family}={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
+                $server = "https://dyndns6.regfish.de/?fqdn={$this->_dnsHost}&ipv6={$this->_dnsIP}&forcehost=1&token=" . urlencode($this->_dnsUser);
                 curl_setopt($ch, CURLOPT_URL, $server);
                 break;
             case 'linode':
@@ -1378,6 +1396,7 @@ class updatedns
                         break;
                     default:
                         $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
                         $this->_debug("Unknown Response: " . $data);
                         break;
                 }
@@ -1397,7 +1416,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'hn':
@@ -1417,7 +1436,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'dyns':
@@ -1435,7 +1454,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'ods':
@@ -1445,7 +1464,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'freedns':
@@ -1458,7 +1477,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'dnsexit':
@@ -1471,7 +1490,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'staticcling':
@@ -1495,11 +1514,12 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'namecheap':
-                $tmp = str_replace("^M", "", $data);
+                /* technically this is wrong but proves a point about the document being broken remotely */
+                $tmp = preg_replace('/(\<\?xml[^?]+?encoding=.?)utf-16([^?]+?\?\>)/i', '$1utf-8$2', $data);
                 $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
                     $status = "Dynamic DNS: (Error) Server side error.";
@@ -1518,8 +1538,8 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'route53':
@@ -1546,6 +1566,8 @@ class updatedns
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
                 } else {
                     $status = "Dynamic DNS: (Error) Result did not match.";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'cloudflare':
@@ -1563,6 +1585,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'hetzner':
@@ -1578,8 +1601,8 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Access to the resource is denied. Mainly due to a lack of permissions to access it!';
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
-                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'digitalocean':
@@ -1590,7 +1613,8 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $status = "Dynamic DNS Record ID ({$this->_dnsUser}): UNKNOWN ERROR";
-                    log_error("Dynamic DNS Record ID ({$this->_dnsUser}): PAYLOAD: {$data}");
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'domain-offensive':
@@ -1640,7 +1664,7 @@ class updatedns
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
                     log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             case 'gratisdns':
@@ -1657,8 +1681,8 @@ class updatedns
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                        $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'duckdns':
@@ -1667,8 +1691,8 @@ class updatedns
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                        $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'dynv6':
@@ -1682,8 +1706,25 @@ class updatedns
                         $successful_update = true;
                 } else {
                         $status = "Dynamic DNS: (Unknown Response)";
-                        log_error("Dynamic DNS: PAYLOAD: {$data}");
-                        $this->_debug($data);
+                        log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                        $this->_debug("Unknown Response: " . $data);
+                }
+                break;
+            case '1984-hosting':
+                $output = json_decode($data);
+                if ($output === null) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - empty response.";
+                } elseif ($output->ok === true) {
+                    $status = "Dynamic DNS: (Success) {$this->_dnsHost} updated to {$this->_dnsIP}";
+                    $successful_update = true;
+                } elseif ($output->error) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Invalid Credentials! Don't forget to use API Key for password field with 1984 Hosting Company.";
+                } elseif ($output->lookup) {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): ERROR - Zone ID was not found.";
+                } else {
+                    $status = "Dynamic DNS ({$this->_dnsHost}): UNKNOWN ERROR - {$output->errors[0]->message}";
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case '3322':
@@ -1702,6 +1743,7 @@ class updatedns
             case 'ovh-dynhost':
             case 'selfhost':
             case 'strato':
+            case 'strato-v6':
                 if (preg_match('/notfqdn/i', $data)) {
                     $status = "Dynamic DNS: (Error) Not a FQDN";
                 } elseif (preg_match('/nochg/i', $data)) {
@@ -1730,8 +1772,8 @@ class updatedns
                     $status = "Dynamic DNS: (Error) Specified hostname does not exist under this username";
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'regfish':
@@ -1764,8 +1806,8 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Cannot update load balancer';
                 } else {
                     $status = "Dynamic DNS: (Unknown Response)";
-                    log_error("Dynamic DNS: PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
             case 'linode':
             case 'linode-v6':
@@ -1783,6 +1825,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ($fqdn): UNKNOWN ERROR";
                     log_error("Dynamic DNS ($fqdn): PAYLOAD: {$data}");
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'azure':
@@ -1798,8 +1841,8 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $status = 'Dynamic DNS: (Error) "Unknown Response"';
-                    log_error("Dynamic DNS: HTTP Status: {$http_code}  PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             case 'all-inkl':
@@ -1815,7 +1858,7 @@ class updatedns
                 } else {
                     $status = "Dynamic DNS ({$this->_dnsHost}): (Unknown Response)";
                     log_error("Dynamic DNS ({$this->_dnsHost}): PAYLOAD: {$data}");
-                    $this->_debug($data);
+                    $this->_debug("Unknown Response: " . $data);
                 }
                 break;
             case 'godaddy':
@@ -1832,7 +1875,8 @@ class updatedns
                     $status = 'Dynamic DNS: (Error) Resource not found';
                 } else {
                     $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
-                    log_error("Dynamic DNS: (Error) HTTPS Status: {$http_code} PAYLOAD: {$data}");
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             case 'desec':
@@ -1851,6 +1895,10 @@ class updatedns
                 } elseif ($http_code == 200 && preg_match('/good/i', $data)) {
                     $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
                     $successful_update = true;
+                } else {
+                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
                 }
                 break;
             default:

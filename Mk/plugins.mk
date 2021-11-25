@@ -101,12 +101,6 @@ PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
 
-name: check
-	@echo ${PLUGIN_PKGNAME}
-
-depends: check
-	@echo ${PLUGIN_DEPENDS}
-
 manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
@@ -320,7 +314,12 @@ lint-exec: check
 .endif
 .endfor
 
+LINTBIN?=	${.CURDIR}/../../../core/contrib/parallel-lint/parallel-lint
+
 lint-php: check
+.if exists(${LINTBIN})
+	@if [ -d ${.CURDIR}/src ]; then ${LINTBIN} src; fi
+.else
 	@find ${.CURDIR}/src \
 	    ! -name "*.xml" ! -name "*.xml.sample" ! -name "*.eot" \
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
@@ -328,6 +327,7 @@ lint-php: check
 	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" ! -name "*.txz" \
 	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" ! -name "bootstrap80.php" \
 	    -type f -print0 | xargs -0 -n1 php -l
+.endif
 
 lint: lint-desc lint-shell lint-xml lint-exec lint-php
 
