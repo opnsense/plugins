@@ -14,6 +14,9 @@ Plugin Changelog
 
 1.10
 
+Added:
+* Plugin variant for Zabbix Agent 5.4
+
 Changed:
 * Replace EnableRemoteCommands with AllowKey/DenyKey (#1978)
 
