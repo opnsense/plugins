@@ -66,7 +66,7 @@
             <id>zabbixagent.settings.main.sudoRoot</id>
             <label>Enable sudo root permissions</label>
             <type>checkbox</type>
-            <help><![CDATA[When enabled, a sudo rule is created to grant full root access to Zabbix Agent. This may be required for certain checks.]]></help>
+            <help><![CDATA[When enabled, a sudo rule is created to grant root access to the Zabbix user. When adding a User Parameter, just add "sudo" to the command to run it as root, i.e. instead of "echo test" use "sudo echo test".]]></help>
             <advanced>false</advanced>
         </field>
     </tab>
