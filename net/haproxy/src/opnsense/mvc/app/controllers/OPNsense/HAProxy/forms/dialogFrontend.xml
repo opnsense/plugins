@@ -242,7 +242,7 @@
     </field>
     <field>
         <id>frontend.tuning_maxConnections</id>
-        <label>Max. Connections</label>
+        <label>Maximum Connections</label>
         <type>text</type>
         <help><![CDATA[Set the maximum number of concurrent connections for this Public Service.]]></help>
     </field>

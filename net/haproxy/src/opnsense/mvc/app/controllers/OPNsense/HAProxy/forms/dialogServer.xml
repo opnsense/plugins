@@ -139,6 +139,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>server.maxConnections</id>
+        <label>Max Connections</label>
+        <type>text</type>
+        <help><![CDATA[Specifies the maximal number of concurrent connections that will be sent to this server. The default value is "0" which means unlimited.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>server.weight</id>
         <label>Weight</label>
         <type>text</type>

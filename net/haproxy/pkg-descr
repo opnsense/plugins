@@ -10,6 +10,11 @@ Plugin Changelog
 
 Added:
 * add support for unix sockets (#2040)
+* add "max connections" option to servers (#2641)
+
+Changed:
+* allow setting "max connections" to "0" (unlimited)
+* raise maximum value for "max connections" to 10000000
 
 3.7
 
