@@ -408,7 +408,7 @@ function getOptionsById($automation_id, $silent = false)
     }
 
     if (is_object($action = getActionById($automation_id))) {
-        if ($action->enabled && "upload_sftp" === (string)$action->type) {
+        if ($action->enabled && "configd_upload_sftp" === (string)$action->type) {
             return [
                 "host" => trim((string)$action->sftp_host),
                 "host-key" => trim((string)$action->sftp_host_key),
