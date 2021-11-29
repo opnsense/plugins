@@ -23,7 +23,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
+        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443 or unix@socket-name. Use TAB key to complete typing a listen address.]]></help>
         <hint>Enter address:port here. Finish with TAB.</hint>
     </field>
     <field>
@@ -242,7 +242,7 @@
     </field>
     <field>
         <id>frontend.tuning_maxConnections</id>
-        <label>Max. Connections</label>
+        <label>Maximum Connections</label>
         <type>text</type>
         <help><![CDATA[Set the maximum number of concurrent connections for this Public Service.]]></help>
     </field>

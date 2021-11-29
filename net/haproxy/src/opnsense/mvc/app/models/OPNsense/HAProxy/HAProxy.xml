@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -67,9 +67,9 @@
                     <Required>Y</Required>
                 </root>
                 <maxConnections type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>500000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
                     <Required>N</Required>
                 </maxConnections>
                 <nbproc type="IntegerField">
@@ -194,11 +194,17 @@
             </tuning>
             <defaults>
                 <maxConnections type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>500000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
                     <Required>N</Required>
                 </maxConnections>
+                <maxConnectionsServers type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </maxConnectionsServers>
                 <timeoutClient type="TextField">
                     <default>30s</default>
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
@@ -427,9 +433,9 @@
                 <bind type="CSVListField">
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:+[0-9]+(-[0-9]+)?|unix@[0-9a-z_\-]+)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080, www.example.com:443 or unix@socket-name. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
                 <bindOptions type="TextField">
                     <Required>N</Required>
@@ -598,9 +604,9 @@
                     <Required>N</Required>
                 </basicAuthGroups>
                 <tuning_maxConnections type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>500000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
                     <Required>N</Required>
                 </tuning_maxConnections>
                 <tuning_timeoutClient type="TextField">
@@ -1251,6 +1257,7 @@
                     <OptionValues>
                         <static>static</static>
                         <template>template</template>
+                        <unix>unix socket</unix>
                     </OptionValues>
                 </type>
                 <serviceName type="TextField">
@@ -1317,6 +1324,12 @@
                     <Type>cert</Type>
                     <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
                 </sslClientCertificate>
+                <maxConnections type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </maxConnections>
                 <weight type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>256</MaximumValue>
@@ -1342,6 +1355,21 @@
                 <advanced type="TextField">
                     <Required>N</Required>
                 </advanced>
+                <unix_socket type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>frontends.frontend</items>
+                            <display>name</display>
+                            <filters>
+                                <bind>/unix@/</bind>
+                            </filters>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related frontend item not found</ValidationMessage>
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                </unix_socket>
             </server>
         </servers>
         <healthchecks>
