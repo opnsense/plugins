@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021 Frank Wall
+ * Copyright (C) 2021 Alexander Noack
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
