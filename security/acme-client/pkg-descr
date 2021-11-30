@@ -12,6 +12,7 @@ Plugin Changelog
 
 Fixed:
 * fix SFTP upload (#2671)
+* fix PHP error when acme.sh deploy hook returns an error (#2674)
 
 3.5
 
