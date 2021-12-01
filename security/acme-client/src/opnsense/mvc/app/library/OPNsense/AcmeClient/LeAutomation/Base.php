@@ -143,9 +143,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             return false;
         }
 
-        // Check validation result
+        // Check result
         if ($result) {
-            LeUtils::log_error('running acme.sh deploy hook failed (' . $this->getMethod() . ')');
+            LeUtils::log_error('running acme.sh deploy hook failed (' . $this->getType() . ')');
             return false;
         }
 
