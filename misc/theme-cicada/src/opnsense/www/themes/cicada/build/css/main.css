@@ -1382,7 +1382,7 @@ pre {
 
 .row {
   margin-left: -20px;
-  margin-right: -20px; }
+  margin-right: -0px; }
   .row:before, .row:after {
     content: " ";
     display: table; }
@@ -1393,7 +1393,7 @@ pre {
   position: relative;
   min-height: 1px;
   padding-left: 20px;
-  padding-right: 20px; }
+  padding-right: 0px; }
 
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left; }
