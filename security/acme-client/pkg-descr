@@ -10,6 +10,9 @@ Plugin Changelog
 
 3.6
 
+Added:
+* new automation: update local Unifi keystore (#2664)
+
 Fixed:
 * fix SFTP upload (#2671)
 * fix PHP error when acme.sh deploy hook returns an error (#2674)
