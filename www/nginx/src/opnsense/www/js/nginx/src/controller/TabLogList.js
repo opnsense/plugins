@@ -21,6 +21,10 @@ let TabLogList = Backbone.View.extend({
 
     renderCollection: function() {
         this.$el.addClass('dropdown');
+        if (this.model.get('id') == "global") {
+            this.$el.addClass('active');
+            this.logview.get_log('errors', 'global', -1);
+        }
         this.$el.html('');
         this.$el.append(
             TabTemplateCollection({
