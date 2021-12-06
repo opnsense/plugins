@@ -288,7 +288,7 @@ class updatedns
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
         }
-        $this->_dnsRequestIfIP = $this->_useIPv6 ? get_interface_ipv6($this->_dnsRequestIf) : get_interface_ip($this->_dnsRequestIf);
+        $this->_dnsRequestIfIP = $this->_dnsRequestIf;
         $this->_dnsMaxCacheAgeDays = 25;
         $this->_dnsDummyUpdateDone = false;
         $this->_forceUpdateNeeded = $forceUpdate;
