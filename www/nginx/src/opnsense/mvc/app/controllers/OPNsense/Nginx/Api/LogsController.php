@@ -170,13 +170,12 @@ class LogsController extends ApiControllerBase
     private function get_logs($type, $uuid, $fileno, $page, $perPage, $query)
     {
         if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
-        // TODO check $fileno
-            $this->response->setStatusCode(404, "Not Found");
+            return $this->response->setStatusCode(404, "Not Found");
         }
 
         $page = intval($page);
         $perPage = intval($perPage);
-        $query = str_replace('"', '\"', urldecode($query));
+        $query = base64_encode(urldecode($query));
 
         return $this->sendConfigdToClient("nginx log $type $uuid $fileno $page $perPage $query");
     }

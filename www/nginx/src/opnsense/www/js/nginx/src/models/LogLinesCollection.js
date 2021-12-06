@@ -25,7 +25,7 @@ const LogLinesCollection = Backbone.Collection.extend({
         }
     },
     create_filter: function() {
-        return JSON.stringify(this.filter_model);
+        return encodeURIComponent(JSON.stringify(this.filter_model));
     }
 });
 

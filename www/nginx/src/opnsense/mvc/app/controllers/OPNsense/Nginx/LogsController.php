@@ -59,7 +59,7 @@ class LogsController extends \OPNsense\Base\IndexController
     }
 
     /**
-     * show the nginx logs page /ui/nginx/logs/accesses
+     * show the nginx logs page /ui/nginx/logs/errors
      */
     public function errorsAction()
     {
@@ -68,7 +68,7 @@ class LogsController extends \OPNsense\Base\IndexController
     }
 
     /**
-     * show the nginx logs page /ui/nginx/logs/accesses
+     * show the nginx logs page /ui/nginx/logs/stream_accesses
      */
     public function stream_accessesAction()
     {
@@ -77,7 +77,7 @@ class LogsController extends \OPNsense\Base\IndexController
     }
 
     /**
-     * show the nginx logs page /ui/nginx/logs/accesses
+     * show the nginx logs page /ui/nginx/logs/stream_errors
      */
     public function stream_errorsAction()
     {

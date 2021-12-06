@@ -109,6 +109,8 @@ abstract class LogParserBase
             $this->total_lines = count($lines);
             $this->query_lines = $cnt;
         }
+
+        unset($lines);
     }
 
     abstract protected function parse_line($line);

@@ -53,7 +53,7 @@ $page = max(intval($_SERVER['argv'][4]), 0);
 // fourth parameter: lines per page
 $per_page = max(intval($_SERVER['argv'][5]), 0);
 // fifth parameter: filter query
-$query = json_decode($_SERVER['argv'][6], true);
+$query = json_decode(base64_decode($_SERVER['argv'][6]), true);
 $nginx = new Nginx();
 
 if (!is_array($query)) {
@@ -127,16 +127,11 @@ if ($logparser === null) {
 }
 else {
     $result['lines'] = $logparser->get_result();
-    if (count($result['lines']) > 0) {
-        $result['pages'] = $logparser->page_count;
-        $result['total'] = $logparser->total_lines;
-        $result['found'] = $logparser->query_lines;
-        $result['returned'] = count($result['lines']);
-        $result['query'] = json_encode($query);
-    }
-    else {
-        $result['error'] = 'no lines found';
-    }
+    $result['pages'] = $logparser->page_count;
+    $result['total'] = $logparser->total_lines;
+    $result['found'] = $logparser->query_lines;
+    $result['returned'] = count($result['lines']);
+    $result['query'] = json_encode($query);
 }
 
 echo json_encode($result);

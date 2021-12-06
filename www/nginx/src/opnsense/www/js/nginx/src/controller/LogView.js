@@ -63,36 +63,37 @@ const LogView = Backbone.View.extend({
         else {
             tbody.html('');
         }
+        
         if (this.collection.length !== 0) {
             if (this.current_filtered_collection == null) {
                 this.collection.forEach(
                     (model) => this.render_one(tbody, model)
                 );
             }
+        }
 
-            this.$('#entrycountdisplay').html(this.page_entry_count);
-            this.$('#currentpage').html(this.current_page + 1);
-            this.$('#pagecount').html(this.collection.page_count);
-            this.$('#totalcount').html(this.collection.total_entries);
-            this.$('#resultcount').html(this.collection.displayed_entries);
+        this.$('#entrycountdisplay').html(this.page_entry_count);
+        this.$('#currentpage').html(this.current_page + 1);
+        this.$('#pagecount').html(this.collection.page_count);
+        this.$('#totalcount').html(this.collection.total_entries);
+        this.$('#resultcount').html(this.collection.displayed_entries);
 
-            if (this.current_page >= this.collection.page_count - 1) {
-                this.$('#paging_last').addClass("disabled");
-                this.$('#paging_forward').addClass("disabled");
-            }
-            else {
-                this.$('#paging_last').removeClass("disabled");
-                this.$('#paging_forward').removeClass("disabled");
-            }
+        if (this.current_page >= this.collection.page_count - 1) {
+            this.$('#paging_last').addClass("disabled");
+            this.$('#paging_forward').addClass("disabled");
+        }
+        else {
+            this.$('#paging_last').removeClass("disabled");
+            this.$('#paging_forward').removeClass("disabled");
+        }
 
-            if (this.current_page <= 0) {
-                this.$('#paging_back').addClass("disabled");
-                this.$('#paging_first').addClass("disabled");
-            }
-            else {
-                this.$('#paging_back').removeClass("disabled");
-                this.$('#paging_first').removeClass("disabled");
-            }
+        if (this.current_page <= 0) {
+            this.$('#paging_back').addClass("disabled");
+            this.$('#paging_first').addClass("disabled");
+        }
+        else {
+            this.$('#paging_back').removeClass("disabled");
+            this.$('#paging_first').removeClass("disabled");
         }
     },
 
