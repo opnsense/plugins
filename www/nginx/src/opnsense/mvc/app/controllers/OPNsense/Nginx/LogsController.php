@@ -70,7 +70,7 @@ class LogsController extends \OPNsense\Base\IndexController
     /**
      * show the nginx logs page /ui/nginx/logs/stream_accesses
      */
-    public function stream_accessesAction()
+    public function streamaccessesAction()
     {
         $this->view->log = 'stream_accesses';
         $this->view->pick('OPNsense/Nginx/logs');
@@ -79,7 +79,7 @@ class LogsController extends \OPNsense\Base\IndexController
     /**
      * show the nginx logs page /ui/nginx/logs/stream_errors
      */
-    public function stream_errorsAction()
+    public function streamerrorsAction()
     {
         $this->view->log = 'stream_errors';
         $this->view->pick('OPNsense/Nginx/logs');

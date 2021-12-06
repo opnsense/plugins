@@ -111,7 +111,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function stream_accessesAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
+    public function streamaccessesAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -119,7 +119,7 @@ class LogsController extends ApiControllerBase
             return $this->list_streams();
         }
         elseif (!isset($fileno)) {
-            return $this->list_logfiles('streamaccess', $uuid);
+            return $this->list_stream_logfiles('streamaccess', $uuid);
         }
         else {
             // emulate REST call for a specific log /stream_accesses/uuid
@@ -138,7 +138,7 @@ class LogsController extends ApiControllerBase
      * @return array if feasible, otherwise null and the data is sent directly back
      * @throws \OPNsense\Base\ModelException ?
      */
-    public function stream_errorsAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
+    public function streamerrorsAction($uuid = null, $fileno = null, $page = 0, $perPage = 0, $query = "")
     {
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
@@ -146,7 +146,7 @@ class LogsController extends ApiControllerBase
             return $this->list_streams();
         }
         elseif (!isset($fileno)) {
-            return $this->list_logfiles('streamerror', $uuid);
+            return $this->list_stream_logfiles('streamerror', $uuid);
         }
         else {
             // emulate REST call for a specific log /stream_errors/uuid
@@ -191,7 +191,7 @@ class LogsController extends ApiControllerBase
     private function list_logfiles($type, $uuid)
     {
         if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
-            $this->response->setStatusCode(404, "Not Found");
+            return $this->response->setStatusCode(404, "Not Found");
         }
 
         return $this->sendConfigdToClient("nginx listlogs $type $uuid");
@@ -209,14 +209,17 @@ class LogsController extends ApiControllerBase
      * @return |null
      * @throws \Exception ?
      */
-    private function get_stream_logs($type, $uuid, $fileno, $page, $perPage)
+    private function get_stream_logs($type, $uuid, $fileno, $page, $perPage, $query)
     {
         if (!$this->stream_exists($uuid)) {
-        // TODO check $fileno
-            $this->response->setStatusCode(404, "Not Found");
+            return $this->response->setStatusCode(404, "Not Found");
         }
 
-        return $this->sendConfigdToClient("nginx log $type $uuid $fileno $page $perPage");
+        $page = intval($page);
+        $perPage = intval($perPage);
+        $query = base64_encode(urldecode($query));
+
+        return $this->sendConfigdToClient("nginx log $type $uuid $fileno $page $perPage $query");
     }
 
     /**
@@ -230,7 +233,7 @@ class LogsController extends ApiControllerBase
     private function list_stream_logfiles($type, $uuid)
     {
         if (!$this->stream_exists($uuid)) {
-            $this->response->setStatusCode(404, "Not Found");
+            return $this->response->setStatusCode(404, "Not Found");
         }
 
         return $this->sendConfigdToClient("nginx listlogs $type $uuid");
