@@ -35,6 +35,7 @@ const LogView = Backbone.View.extend({
         "keyup .filter input": "update_filter",
         "click #paging_first": "page_first",
         "click #paging_back": "page_back",
+        "click #refresh": "update",
         "click #paging_forward": "page_forward",
         "click #paging_last": "page_last",
         "change #entrycount": "change_entry_count",
