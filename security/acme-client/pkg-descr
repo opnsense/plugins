@@ -18,6 +18,7 @@ Added:
 Fixed:
 * fix SFTP upload (#2671)
 * fix PHP error when acme.sh deploy hook returns an error (#2674)
+* fix path for storing pf config files when using HTTP-01
 
 3.5
 
