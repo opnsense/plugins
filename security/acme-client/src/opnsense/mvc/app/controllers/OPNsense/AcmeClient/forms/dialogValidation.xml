@@ -79,6 +79,42 @@
         <help>Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed.</help>
     </field>
     <field>
+        <label>TLS-ALPN-01</label>
+        <type>header</type>
+        <style>method_table method_table_tlsalpn01</style>
+    </field>
+    <field>
+        <id>validation.tlsalpn_service</id>
+        <label>TLS-ALPN Service</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <label>acme.sh TLS Web Server</label>
+        <type>header</type>
+        <style>table_tlsalpn table_tlsalpn_acme</style>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_autodiscovery</id>
+        <label>IP Auto-Discovery</label>
+        <type>checkbox</type>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose this option to let OPNsense try to auto-discover these IP addresses. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_ipaddresses</id>
+        <label>IP Addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <hint>Enter IP addresses here. Finish each with TAB.</hint>
+    </field>
+    <field>
         <label>DNS-01</label>
         <type>header</type>
         <style>method_table method_table_dns01</style>

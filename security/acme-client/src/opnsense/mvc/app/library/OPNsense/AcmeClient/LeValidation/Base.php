@@ -85,6 +85,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             case 'http01':
                 $this->acme_args[] = '--webroot ' . self::ACME_WEBROOT;
                 break;
+            case 'tlsalpn01':
+                $this->acme_args[] = '--alpn';
+                break;
         }
 
         // Store acme filenames
