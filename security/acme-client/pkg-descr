@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * new automation: update local Unifi keystore (#2664)
+* add support for dynv6 HTTP API (#2678)
 
 Fixed:
 * fix SFTP upload (#2671)
