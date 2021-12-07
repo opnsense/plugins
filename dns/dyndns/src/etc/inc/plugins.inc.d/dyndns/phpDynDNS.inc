@@ -1265,8 +1265,8 @@ class updatedns
                         'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
                 ));
                 curl_setopt($ch, CURLOPT_URL, $url);
-
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
                 break;
             case 'desec':
                 /*
