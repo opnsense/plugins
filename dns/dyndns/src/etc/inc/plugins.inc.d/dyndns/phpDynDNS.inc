@@ -1265,8 +1265,8 @@ class updatedns
                         'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
                 ));
                 curl_setopt($ch, CURLOPT_URL, $url);
-
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
                 break;
             case 'desec':
                 /*
@@ -1499,7 +1499,8 @@ class updatedns
                 }
                 break;
             case 'namecheap':
-                $tmp = str_replace("^M", "", $data);
+                /* technically this is wrong but proves a point about the document being broken remotely */
+                $tmp = preg_replace('/(\<\?xml[^?]+?encoding=.?)utf-16([^?]+?\?\>)/i', '$1utf-8$2', $data);
                 $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
                     $status = "Dynamic DNS: (Error) Server side error.";
