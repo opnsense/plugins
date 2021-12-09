@@ -9,8 +9,8 @@ let TabLogList = Backbone.View.extend({
     },
 
     initialize: function(data) {
-        this.listenTo(this.collection, "sync", this.render);
         this.listenTo(this.collection, "update", this.render);
+        this.logType = data.logType;
         this.logview = data.logview;
     },
 
@@ -21,21 +21,31 @@ let TabLogList = Backbone.View.extend({
 
     renderCollection: function() {
         this.$el.addClass('dropdown');
+        if (this.model.get('id') == "global") {
+            this.$el.addClass('active');
+            this.logview.get_log('errors', 'global', -1);
+        }
         this.$el.html('');
         this.$el.append(
-            TabTemplateCollection({model: this.collection, name: this.model.attributes.name})
+            TabTemplateCollection({
+                model: this.collection,
+                id: this.model.get('id'),
+                name: this.model.has('server_name') ? this.model.get('server_name') : "Port " + this.model.get('port')
+            })
         );
     },
     mainMenuClick: function () {
         if (this.collection.models[0]) {
-            this.handleElementClick(this.collection.models[0].id);
+            this.handleElementClick(this.model.get('id'), this.collection.models[0].get('number'));
+            $(`#tab_${this.model.get('id')} li`).removeClass('active');
+            $(`#subtab_item_${this.model.get('id')}_${this.collection.models[0].get('number')}`).parent().addClass('active');
         }
     },
     menuEntryClick: function (event) {
-        this.handleElementClick(event.target.dataset['modelUuid']);
+        this.handleElementClick(event.target.dataset['modelUuid'], event.target.dataset['modelFileno']);
     },
-    handleElementClick: function (uuid) {
-        this.logview.get_log(this.model.get('logType'), uuid);
+    handleElementClick: function (uuid, fileNo) {
+        this.logview.get_log(this.logType, uuid, fileNo);
     }
 });
 export default TabLogList;

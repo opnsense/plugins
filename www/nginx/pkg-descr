@@ -10,6 +10,10 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.25
+
+* Reworked logging frontent to support filtering and historic view (contributed by Manuel Faux)
+
 1.24
 
 * Change all Listen Port directives to Listen Address and migrate the Port data to Addresses

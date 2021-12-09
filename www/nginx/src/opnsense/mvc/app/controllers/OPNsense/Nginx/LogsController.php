@@ -2,8 +2,8 @@
 
 /*
 
-    Copyright (C) 2018-2020 Fabian Franz
     Copyright (C) 2020 Manuel Faux
+    Copyright (C) 2018-2020 Fabian Franz
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -26,24 +26,62 @@
     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
+
+
 */
+
 
 namespace OPNsense\Nginx;
 
-class ErrorLogParser extends LogParserBase
+/**
+* Class IndexController
+* @package OPNsense/Nginx
+*/
+class LogsController extends \OPNsense\Base\IndexController
 {
-    private const LogLineRegex = '/(\S+) (\S+) \[([\d\sa-z\:\-\/\+\#]+)\] ([\S:]+): (.+)/i';
-
-    protected function parse_line($line)
+    /**
+     * show the configuration page /ui/nginx/logs
+     * @throws \Exception when a form cannot be loaded
+     */
+    public function indexAction()
     {
-        $container = new ErrorLogLine();
-        if (preg_match(self::LogLineRegex, $line, $data)) {
-            $container->date = $data[1];
-            $container->time = $data[2];
-            $container->severity = $data[3];
-            $container->number = $data[4];
-            $container->message = $data[5];
-        }
-        return $container;
+        $this->view->log = 'global';
+        $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * show the nginx logs page /ui/nginx/logs/accesses
+     */
+    public function accessesAction()
+    {
+        $this->view->log = 'accesses';
+        $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * show the nginx logs page /ui/nginx/logs/errors
+     */
+    public function errorsAction()
+    {
+        $this->view->log = 'errors';
+        $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * show the nginx logs page /ui/nginx/logs/stream_accesses
+     */
+    public function streamaccessesAction()
+    {
+        $this->view->log = 'stream_accesses';
+        $this->view->pick('OPNsense/Nginx/logs');
+    }
+
+    /**
+     * show the nginx logs page /ui/nginx/logs/stream_errors
+     */
+    public function streamerrorsAction()
+    {
+        $this->view->log = 'stream_errors';
+        $this->view->pick('OPNsense/Nginx/logs');
     }
 }
