@@ -11,6 +11,7 @@ Plugin Changelog
 ================
 
 1.25
+
 * Reworked logging frontent to support filtering and historic view (contributed by Manuel Faux)
 
 1.24
