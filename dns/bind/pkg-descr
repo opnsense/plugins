@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.20
+
+* Separate tables for master and slave zones in UI.
+
 1.19
 
 * Add support for "Query Source [IP|IPv6]" options.
