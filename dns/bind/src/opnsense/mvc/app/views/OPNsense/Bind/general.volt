@@ -84,10 +84,10 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
     <div id="domains" class="tab-pane fade in">
-        <div class="alert alert-warning" role="alert" style="min-height:65px;">
-            <div style="margin-top: 8px;">{{ lang._('Zone management is still in experimental state, use with caution.') }}</div>
+        <div class="col-md-12">
+            <h2>{{ lang._('Master Zones') }}</h2>
         </div>
-        <table id="grid-domains" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
+        <table id="grid-master-domains" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -109,7 +109,32 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td colspan="5"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <hr/>
+        <div class="col-md-12">
+            <h2>{{ lang._('Slave Zones') }}</h2>
+        </div>
+        <table id="grid-slave-domains" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
+                    <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
+                    <th data-column-id="masterip" data-type="string" data-visible="true">{{ lang._('Master IPs') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -184,8 +209,8 @@ $( document ).ready(function() {
             'toggle':'/api/bind/acl/toggleAcl/'
         }
     );
-    $("#grid-domains").UIBootgrid({
-        'search':'/api/bind/domain/searchDomain',
+    $("#grid-master-domains").UIBootgrid({
+        'search':'/api/bind/domain/searchMasterDomain',
         'get':'/api/bind/domain/getDomain/',
         'set':'/api/bind/domain/setDomain/',
         'add':'/api/bind/domain/addDomain/',
@@ -202,9 +227,29 @@ $( document ).ready(function() {
     }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
         $("#grid-records").bootgrid('reload');
     }).on("loaded.rs.jquery.bootgrid", function (e) {
-        let ids = $("#grid-domains").bootgrid("getCurrentRows");
+        let ids = $("#grid-master-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
-            $("#grid-domains").bootgrid('select', [ids[0].uuid]);
+            $("#grid-master-domains").bootgrid('select', [ids[0].uuid]);
+        }
+    });
+
+    $("#grid-slave-domains").UIBootgrid({
+        'search':'/api/bind/domain/searchSlaveDomain',
+        'get':'/api/bind/domain/getDomain/',
+        'set':'/api/bind/domain/setDomain/',
+        'add':'/api/bind/domain/addDomain/',
+        'del':'/api/bind/domain/delDomain/',
+        'toggle':'/api/bind/domain/toggleDomain/',
+        options:{
+            selection: false,
+            multiSelect: false,
+            rowSelect: false,
+            rowCount: [3,7,14,20,50,100,-1]
+        }
+    }).on("loaded.rs.jquery.bootgrid", function (e) {
+        let ids = $("#grid-slave-domains").bootgrid("getCurrentRows");
+        if (ids.length > 0) {
+            $("#grid-slave-domains").bootgrid('select', [ids[0].uuid]);
         }
     });
 
@@ -218,7 +263,7 @@ $( document ).ready(function() {
         options:{
             useRequestHandlerOnGet: true,
             requestHandler: function(request) {
-                let ids = $("#grid-domains").bootgrid("getSelectedRows");
+                let ids = $("#grid-master-domains").bootgrid("getSelectedRows");
                 if (ids.length > 0) {
                     request['domain'] = ids[0];
                     $("#recordAddBtn").show();
