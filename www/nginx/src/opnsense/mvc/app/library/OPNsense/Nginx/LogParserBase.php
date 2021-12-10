@@ -74,7 +74,7 @@ abstract class LogParserBase
                     $filtering = true;
                 }
             }
-            
+
             $cnt = 0;
             foreach ($lines as $line) {
                 $pass = true;
@@ -120,4 +120,3 @@ abstract class LogParserBase
         return $this->result;
     }
 }
-

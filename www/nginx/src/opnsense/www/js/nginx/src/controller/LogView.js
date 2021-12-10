@@ -64,7 +64,7 @@ const LogView = Backbone.View.extend({
         else {
             tbody.html('');
         }
-        
+
         if (this.collection.length !== 0) {
             if (this.current_filtered_collection == null) {
                 this.collection.forEach(
