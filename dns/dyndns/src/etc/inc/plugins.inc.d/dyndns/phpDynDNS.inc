@@ -616,11 +616,8 @@ class updatedns
                     https://dynamicdns.park-your-domain.com/update?host=[host_name]&domain=[domain.com]&password=[domain_password]&ip=[your_ip]
                 */
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                $dparts = explode(".", trim($this->_dnsHost));
-                $domain_part_count = ($dparts[count($dparts) - 1] == "uk") ? 3 : 2;
-                $domain_offset = count($dparts) - $domain_part_count;
-                $hostname = implode(".", array_slice($dparts, 0, $domain_offset));
-                $domain = implode(".", array_slice($dparts, $domain_offset));
+                $hostname = explode(".", trim($this->_dnsHost))[0];
+                $domain = substr(trim($this->_dnsHost),strlen($hostname)+1);
                 $dnspass = trim($this->_dnsPass);
                 $server = "https://dynamicdns.park-your-domain.com/update?host={$hostname}&domain={$domain}&password={$dnspass}&ip={$this->_dnsIP}";
                 curl_setopt($ch, CURLOPT_URL, $server);
