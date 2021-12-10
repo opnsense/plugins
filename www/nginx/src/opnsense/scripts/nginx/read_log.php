@@ -68,8 +68,7 @@ $result = [];
 // special case: the global error log
 if ($server == 'global') {
     $logparser = new ErrorLogParser($log_prefix . 'error' . $log_suffix, $page, $per_page, $query);
-}
-else {
+} else {
     switch ($mode) {
         case 'error':
         case 'access':
@@ -90,8 +89,7 @@ else {
                 } elseif ($mode == 'access') {
                     $logparser = new AccessLogParser($log_file_name, $page, $per_page, $query);
                 }
-            }
-            else {
+            } else {
                 die('{"error": "UUID not found"}');
             }
             break;
@@ -124,8 +122,7 @@ else {
 // we cannot parse the file - something went wrong
 if ($logparser === null) {
     $result['error'] = 'cannot retrieve requested logs';
-}
-else {
+} else {
     $result['lines'] = $logparser->get_result();
     $result['pages'] = $logparser->page_count;
     $result['total'] = $logparser->total_lines;

@@ -34,7 +34,8 @@ use OPNsense\Nginx\Nginx;
 $log_prefix = '/var/log/nginx/';
 $log_suffix = '.log';
 
-function list_logfiles($prefix) {
+function list_logfiles($prefix)
+{
     global $log_prefix;
     $filename = $log_prefix . $prefix;
 
@@ -70,8 +71,7 @@ $result = [];
 // special case: the global error log
 if ($server == 'global') {
     $result = list_logfiles('error.log');
-}
-else {
+} else {
     switch ($mode) {
         case 'error':
         case 'access':
@@ -83,8 +83,7 @@ else {
 
                 $log_file_name = basename($server_names) . '.' . $mode . $log_suffix;
                 $result = list_logfiles($log_file_name);
-            }
-            else {
+            } else {
                 die('{"error": "UUID not found"}');
             }
             break;

@@ -54,11 +54,9 @@ class LogsController extends ApiControllerBase
         if (!isset($uuid)) {
             // emulate REST API -> /accesses delivers a list of servers with access logs
             return $this->list_vhosts();
-        }
-        elseif (!isset($fileno)) {
+        } elseif (!isset($fileno)) {
             return $this->list_logfiles('access', $uuid);
-        }
-        else {
+        } else {
             // emulate REST call for a specific log /accesses/uuid
             $this->get_logs('access', $uuid, $fileno, $page, $perPage, $query);
         }
@@ -90,11 +88,9 @@ class LogsController extends ApiControllerBase
         if (!isset($uuid)) {
             // emulate REST API -> /errors delivers a list of servers with error logs
             return $this->list_vhosts();
-        }
-        elseif (!isset($fileno)) {
+        } elseif (!isset($fileno)) {
             return $this->list_logfiles('error', $uuid);
-        }
-        else {
+        } else {
             // emulate REST call for a specific log /errors/uuid
             $this->get_logs('error', $uuid, $fileno, $page, $perPage, $query);
         }
@@ -117,11 +113,9 @@ class LogsController extends ApiControllerBase
         if (!isset($uuid)) {
             // emulate REST API -> /stream_accesses delivers a list of servers with access logs
             return $this->list_streams();
-        }
-        elseif (!isset($fileno)) {
+        } elseif (!isset($fileno)) {
             return $this->list_stream_logfiles('streamaccess', $uuid);
-        }
-        else {
+        } else {
             // emulate REST call for a specific log /stream_accesses/uuid
             $this->get_stream_logs('streamaccess', $uuid, $fileno, $page, $perPage, $query);
         }
@@ -144,11 +138,9 @@ class LogsController extends ApiControllerBase
         if (!isset($uuid)) {
             // emulate REST API -> /stream_errors delivers a list of servers with error logs
             return $this->list_streams();
-        }
-        elseif (!isset($fileno)) {
+        } elseif (!isset($fileno)) {
             return $this->list_stream_logfiles('streamerror', $uuid);
-        }
-        else {
+        } else {
             // emulate REST call for a specific log /stream_errors/uuid
             $this->get_stream_logs('streamerror', $uuid, $fileno, $page, $perPage, $query);
         }
