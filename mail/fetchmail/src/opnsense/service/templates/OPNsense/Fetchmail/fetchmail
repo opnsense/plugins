@@ -1,6 +1,0 @@
-{% if helpers.exists('OPNsense.fetchmail.general.enabled') and OPNsense.fetchmail.general.enabled == '1' %}
-fetchmail_var_script="/usr/local/opnsense/scripts/OPNsense/Fetchmail/setup.sh"
-fetchmail_enable="YES"
-{% else %}
-fetchmail_enable="NO"
-{% endif %}
