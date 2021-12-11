@@ -98,6 +98,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Default Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_default_src_enabled</id>
@@ -166,6 +167,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Script Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_script_src_enabled</id>
@@ -234,6 +236,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Image Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_img_src_enabled</id>
@@ -302,6 +305,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Stylesheet Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_style_src_enabled</id>
@@ -370,6 +374,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Media Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_media_src_enabled</id>
@@ -438,6 +443,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Font Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_font_src_enabled</id>
@@ -506,6 +512,7 @@
     <field>
       <type>header</type>
       <label>Content Security Policy: Form Action</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
     </field>
     <field>
       <id>security_header.csp_form_action_enabled</id>
