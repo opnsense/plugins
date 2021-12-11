@@ -478,6 +478,12 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="referrer" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Referrer') }}</th>
+                    <th data-column-id="xssprotection" data-type="string" data-sortable="true" data-visible="true">{{ lang._('XSS Protection') }}</th>
+                    <th data-column-id="hsts" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HSTS') }}</th>
+                    <th data-column-id="hpkp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HPKP') }}</th>
+                    <th data-column-id="csp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('CSP') }}</th>
+                    <th data-column-id="csp_details" data-type="string" data-sortable="true" data-visible="false">{{ lang._('CSP Rules') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>

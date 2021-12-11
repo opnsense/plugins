@@ -42,20 +42,29 @@
       <type>checkbox</type>
     </field>
     <field>
+      <type>header</type>
+      <label>HTTP Strict Transport Security (HSTS)</label>
+    </field>
+    <field>
       <id>security_header.strict_transport_security_time</id>
-      <label>Strict Transport Security: Time</label>
+      <label>Time (Max Age)</label>
       <type>text</type>
       <help>A time in seconds in which the transport security (TLS) should be enforced.</help>
     </field>
     <field>
       <id>security_header.strict_transport_security_include_subdomains</id>
-      <label>Strict Transport Security: Include Subdomains</label>
+      <label>Include Subdomains</label>
       <type>checkbox</type>
       <help>If checked, also subdomains are affected.</help>
     </field>
     <field>
+      <type>header</type>
+      <label>HTTP Public Key Pinning (HPKP)</label>
+      <hint>This feature is no longer recommended. Though some browsers might still support it, it may have already been removed from the relevant web standards, maybe in the process of being dropped, or may only be kept for compatibility purposes. Avoid using it, and update existing code if possible.</hint>
+    </field>
+    <field>
       <id>security_header.hpkp_keys</id>
-      <label>HTTP Public Key Pinning: Fingerprints</label>
+      <label>Fingerprints</label>
       <type>select_multiple</type>
       <style>tokenize</style>
       <allownew>true</allownew>
@@ -66,30 +75,34 @@
     </field>
     <field>
       <id>security_header.hpkp_report_only</id>
-      <label>HTTP Public Key Pinning: Report Only</label>
+      <label>Report Only</label>
       <type>checkbox</type>
       <help>If you only want to test it, you can check this box (policy will be deployed but not enforced).</help>
     </field>
     <field>
       <id>security_header.hpkp_time</id>
-      <label>HTTP Public Key Pinning: Max Age</label>
+      <label>Time (Max Age)</label>
       <type>text</type>
     </field>
     <field>
       <id>security_header.hpkp_include_subdomains</id>
-      <label>HTTP Public Key Pinning: Include Subdomains</label>
+      <label>Include Subdomains</label>
       <type>checkbox</type>
       <help>If checked, also subdomains are affected.</help>
     </field>
     <field>
+      <type>header</type>
+      <label>Content Security Policy (CSP)</label>
+    </field>
+    <field>
       <id>security_header.enable_csp</id>
-      <label>Content Security Policy: Enable</label>
+      <label>Enable</label>
       <type>checkbox</type>
-      <help>If checked, the CSP is enabled.</help>
+      <help>If checked, the Content Security Policy (CSP) header is enabled. A detailed configuration is still required via the other tabs of this sheet.</help>
     </field>
     <field>
       <id>security_header.csp_report_only</id>
-      <label>Content Security Policy: Report Only</label>
+      <label>Report Only</label>
       <type>checkbox</type>
       <help>If checked, the CSP is not enforced (learning mode).</help>
     </field>
