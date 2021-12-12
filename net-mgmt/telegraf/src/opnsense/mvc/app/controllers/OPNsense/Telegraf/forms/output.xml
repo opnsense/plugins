@@ -143,6 +143,18 @@
         <type>text</type>
         <help>Set the URL where metrics shoud be sent to.</help>
     </field>
+        <field>
+        <id>output.elastic_username</id>
+        <label>Elasticsearch username</label>
+        <type>text</type>
+        <help>Optional HTTP basic authentication details for Elasticsearch.</help>
+    </field>
+        <field>
+        <id>output.elastic_password</id>
+        <label>Elasticsearch password</label>
+        <type>text</type>
+        <help>Optional HTTP basic authentication details for Elasticsearch.</help>
+    </field>
     <field>
         <id>output.elastic_timeout</id>
         <label>Timeout</label>
