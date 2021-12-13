@@ -68,8 +68,20 @@
         <hint>Type option name or choose from list.</hint>
     </field>
     <field>
+        <label>UNIX Socket</label>
+        <type>header</type>
+        <style>table_server_type table_server_type_unix</style>
+    </field>
+    <field>
+        <id>server.unix_socket</id>
+        <label>Frontend (Socket Origin)</label>
+        <type>dropdown</type>
+        <help>Select the frontend that provides the UNIX socket. This UNIX socket will be used as the server's address, making it possible to send connections to this frontend. Only frontends that provide the unix@ pattern as listen address can be selected.</help>
+    </field>
+    <field>
         <label>Common Options</label>
         <type>header</type>
+        <style>table_server_type table_server_type_static table_server_type_template</style>
     </field>
     <field>
         <id>server.port</id>
@@ -124,6 +136,13 @@
         <type>dropdown</type>
         <help><![CDATA[This certificate will be sent if the server send a client certificate request.<br/>To import additional certificates, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
         <hint>Type certificate name or choose from list.</hint>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>server.maxConnections</id>
+        <label>Max Connections</label>
+        <type>text</type>
+        <help><![CDATA[Specifies the maximal number of concurrent connections that will be sent to this server. The default value is "0" which means unlimited.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
