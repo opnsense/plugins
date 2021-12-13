@@ -44,6 +44,7 @@
     <id>neighbor.nexthopselfall</id>
     <label>Next-Hop-Self All</label>
     <type>checkbox</type>
+    <help>Add the parameter "all" after next-hop-self command.</help>
   </field>
   <field>
     <id>neighbor.multihop</id>
