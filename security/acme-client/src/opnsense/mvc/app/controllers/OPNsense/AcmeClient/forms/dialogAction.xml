@@ -220,4 +220,15 @@
         <label>Password</label>
         <type>password</type>
     </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_unifi</style>
+    </field>
+    <field>
+        <id>action.acme_unifi_keystore</id>
+        <label>Unifi keystore file</label>
+        <type>text</type>
+        <help>Path to the Unifi keystore file in the local filesystem, i.e. /usr/local/share/java/unifi/data/keystore.</help>
+    </field>
 </form>

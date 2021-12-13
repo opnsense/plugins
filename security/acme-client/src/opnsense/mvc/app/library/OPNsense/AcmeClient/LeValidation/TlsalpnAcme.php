@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,24 +35,25 @@ use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
 
 /**
- * Use internal OPNsense webserver for HTTP-01 validation
+ * Use acme.sh TLS web server for TLS-ALPN-01 validation
  * @package OPNsense\AcmeClient
  */
-class HttpOpnsense extends Base implements LeValidationInterface
+class TlsalpnAcme extends Base implements LeValidationInterface
 {
     public function prepare()
     {
         $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
 
-        // Get configured HTTP port for local lighttpd server.
+        // Get configured TLS port for acme.sh web server.
         $configObj = Config::getInstance()->object();
-        $local_http_port = $configObj->OPNsense->AcmeClient->settings->challengePort;
+        $local_tls_port = $configObj->OPNsense->AcmeClient->settings->TLSchallengePort;
+        $this->acme_args[] = LeUtils::execSafe('--tlsport %s', (string)$local_tls_port);
 
         // Collect all IP addresses here, automatic port forward will be applied for each IP
         $iplist = array();
 
         // Add IP addresses from auto-discovery feature
-        if ($this->config->http_opn_autodiscovery == 1) {
+        if ($this->config->tlsalpn_acme_autodiscovery == 1) {
             $dnslist = explode(',', $this->cert_altnames);
             $dnslist[] = $this->cert_name;
             foreach ($dnslist as $fqdn) {
@@ -65,7 +66,7 @@ class HttpOpnsense extends Base implements LeValidationInterface
         }
 
         // Add IP addresses from user input
-        $additional_ip = (string)$this->config->http_opn_ipaddresses;
+        $additional_ip = (string)$this->config->tlsalpn_acme_ipaddresses;
         if (!empty($additional_ip)) {
             foreach (explode(',', $additional_ip) as $ip) {
                 $iplist[] = $ip;
@@ -73,8 +74,8 @@ class HttpOpnsense extends Base implements LeValidationInterface
         }
 
         // Add IP address from chosen interface
-        if (!empty((string)$this->config->http_opn_interface)) {
-            $interface_ip = get_interface_ip((string)$this->config->http_opn_interface);
+        if (!empty((string)$this->config->tlsalpn_acme_interface)) {
+            $interface_ip = get_interface_ip((string)$this->config->tlsalpn_acme_interface);
             if (!empty($interface_ip)) {
                 $iplist[] = $interface_ip;
             }
@@ -106,7 +107,7 @@ class HttpOpnsense extends Base implements LeValidationInterface
                 } else {
                     continue; // skip broken entries
                 }
-                $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 80 -> ${_dst} port ${local_http_port}\n";
+                $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 443 -> ${_dst} port ${local_tls_port}\n";
             }
         } else {
             LeUtils::log_error("no IP addresses found to setup port forward");

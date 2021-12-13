@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -34,12 +34,18 @@
                     <stg>Staging Environment</stg>
                 </OptionValues>
             </environment>
-            <challengePort type="IntegerField">
+            <challengePort type="PortField">
                 <default>43580</default>
                 <MinimumValue>1024</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
                 <Required>Y</Required>
             </challengePort>
+            <TLSchallengePort type="PortField">
+                <default>43581</default>
+                <MinimumValue>1024</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <Required>Y</Required>
+            </TLSchallengePort>
             <restartTimeout type="IntegerField">
                 <default>600</default>
                 <MinimumValue>10</MinimumValue>
@@ -339,6 +345,7 @@
                     <OptionValues>
                         <http01>HTTP-01</http01>
                         <dns01>DNS-01</dns01>
+                        <tlsalpn01>TLS-ALPN-01</tlsalpn01>
                     </OptionValues>
                 </method>
                 <http_service type="OptionField">
@@ -384,6 +391,28 @@
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </http_haproxyFrontends>
+                <tlsalpn_service type="OptionField">
+                    <Required>Y</Required>
+                    <default>acme</default>
+                    <OptionValues>
+                        <acme>acme.sh TLS Web Server (automatic port forward)</acme>
+                    </OptionValues>
+                </tlsalpn_service>
+                <tlsalpn_acme_autodiscovery type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </tlsalpn_acme_autodiscovery>
+                <tlsalpn_acme_interface type="InterfaceField">
+                    <Required>N</Required>
+                    <default>wan</default>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </tlsalpn_acme_interface>
+                <tlsalpn_acme_ipaddresses type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                </tlsalpn_acme_ipaddresses>
                 <dns_service type="OptionField">
                     <Required>Y</Required>
                     <default>dns_freedns</default>
@@ -417,6 +446,7 @@
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
                         <dns_dynu>Dynu API</dns_dynu>
+                        <dns_dynv6>dynv6 HTTP API</dns_dynv6>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
@@ -1018,6 +1048,9 @@
                 <dns_zone_key type="TextField">
                     <Required>N</Required>
                 </dns_zone_key>
+                <dns_dynv6_token type="TextField">
+                    <Required>N</Required>
+                </dns_dynv6_token>
             </validation>
         </validations>
         <actions>
@@ -1049,6 +1082,7 @@
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
+                        <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
@@ -1202,6 +1236,10 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_fritzbox_password>
+                <acme_unifi_keystore type="TextField">
+                    <default>/usr/local/share/java/unifi/data/keystore</default>
+                    <Required>N</Required>
+                </acme_unifi_keystore>
             </action>
         </actions>
     </items>
