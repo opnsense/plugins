@@ -12,7 +12,7 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
-1.7 
+1.7
 
 * Add StatsIP field to allow retrieving statistics (#2697)
 
