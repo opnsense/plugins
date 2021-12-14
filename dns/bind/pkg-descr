@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.20
+
+* Allow signed zone transfers (contributed by Michael Newton)
+
 1.19
 
 * Add support for "Query Source [IP|IPv6]" options.
