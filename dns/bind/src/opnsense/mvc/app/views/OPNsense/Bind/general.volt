@@ -83,10 +83,10 @@ POSSIBILITY OF SUCH DAMAGE.
             <br /><br />
         </div>
     </div>
+    <div class="col-md-12">
+        <h2>{{ lang._('Zones') }}</h2>
+    </div>
     <div id="domains" class="tab-pane fade in">
-        <div class="col-md-12">
-            <h2>{{ lang._('Master Zones') }}</h2>
-        </div>
         <table id="grid-master-domains" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
@@ -114,9 +114,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
         <hr/>
-        <div class="col-md-12">
-            <h2>{{ lang._('Slave Zones') }}</h2>
-        </div>
         <table id="grid-slave-domains" class="table table-condensed table-hover table-striped table-responsive" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindDomain">
             <thead>
                 <tr>
